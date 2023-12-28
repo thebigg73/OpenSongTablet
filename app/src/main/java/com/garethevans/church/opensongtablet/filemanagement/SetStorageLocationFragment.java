@@ -161,8 +161,12 @@ public class SetStorageLocationFragment extends Fragment {
                     @Override
                     public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
                         // Try to show the help showcase
-                        if (screenHelp!=null) {
-                            mainActivityInterface.getShowCase().singleShowCase(getActivity(), screenHelp, null, getString(R.string.help), false, "webHelp");
+                        try {
+                            if (screenHelp != null && mainActivityInterface!=null && getActivity()!=null) {
+                                mainActivityInterface.getShowCase().singleShowCase(getActivity(), screenHelp, null, getString(R.string.help), false, "webHelp");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });

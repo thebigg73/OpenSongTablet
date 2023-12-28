@@ -689,6 +689,8 @@ public class PerformanceGestures {
 
     // Next song
     public void nextSong() {
+        Log.d(TAG,"mainActivityInterface.getPedalActions().getPedalScrollBeforeMove():"+mainActivityInterface.getPedalActions().getPedalScrollBeforeMove());
+        Log.d(TAG,"canScroll(true):"+canScroll(true));
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(true)) {
             scroll(true);
         } else {
@@ -761,6 +763,8 @@ public class PerformanceGestures {
                     return !scrollDown && currentPos > 0;
                 }
             } else {
+                Log.d(TAG,"scrollDown:"+scrollDown);
+                Log.d(TAG,"recyclerView.getScrolledToBottom():"+recyclerView.getScrolledToBottom());
                 if (scrollDown && !recyclerView.getScrolledToBottom()) {
                     return true;
                 } else {

@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 367
-        versionName '6.0.0_beta42'
+        versionCode 368
+        versionName '6.0.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-cast:21.4.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.4.0'         // For casting obviously!
     implementation 'androidx.mediarouter:mediarouter:1.6.0'                             // For casting obviously!
-    implementation 'com.google.android.gms:play-services-nearby:19.0.0'                 // For Google Nearby Connect devices
+    implementation 'com.google.android.gms:play-services-nearby:19.1.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0' // For OCR text recognition (PDF/Camera)
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'                 // RecyclerView (obviously)
     implementation 'androidx.recyclerview:recyclerview:1.3.2'                           // RecyclerView (obviously)

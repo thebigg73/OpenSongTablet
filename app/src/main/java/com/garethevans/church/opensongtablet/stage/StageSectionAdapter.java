@@ -37,7 +37,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final float alphaoff = 0.4f;
     private int availableWidth;
     private int availableHeight;
-    private final int inlineSetWidth;
+    private int inlineSetWidth;
     private int padding;
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -56,8 +56,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         sectionInfos = new ArrayList<>();
         floatHSizes = new ArrayList<>();
         floatVSizes = new ArrayList<>();
-        setSongInfo();
         this.inlineSetWidth = inlineSetWidth;
+        setSongInfo();
 
         setAvailableSize();
     }
@@ -113,6 +113,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             floatHeight += itemHeight;
             floatVSizes.add(itemHeight);
 
+            Log.d(TAG,"inlineSetWidth:"+inlineSetWidth);
+            Log.d(TAG,"Screen:"+availableWidth+"x"+availableHeight);
+            Log.d(TAG,"View:"+sectionWidth+"x"+sectionHeight);
+            Log.d(TAG,"Scaled:"+itemWidth+"x"+itemHeight);
             stageSectionInfo.section = x;
             stageSectionInfo.width = sectionWidth;
             stageSectionInfo.height = sectionHeight;
@@ -249,7 +253,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     }
 
     public void clickOnSection(int position) {
-        // TODO TEST
         if (displayInterface.getIsSecondaryDisplaying() &&
                 sectionInfos.size()>=position) {
             fakeClick = true;

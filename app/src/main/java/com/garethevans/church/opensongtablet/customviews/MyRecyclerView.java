@@ -335,6 +335,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
                 }
                 mainActivityInterface.getGestures().setPdfStart(scrolledToStart);
                 mainActivityInterface.getGestures().setPdfEnd(scrolledToEnd);
+                getScrolledToBottom();
             }
         }
     }
@@ -555,7 +556,8 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     @Override
     public void scrollTo(int x, int y) {
         Log.d(TAG, "MyRecyclerView does not support scrolling to an absolute position.");
-        // Either don't call super here or call just for some phones, or try catch it. From default implementation we have removed the Runtime Exception trown
+        // Either don't call super here or call just for some phones, or try catch it.
+        // From default implementation we have removed the Runtime Exception thrown
     }
 
 }

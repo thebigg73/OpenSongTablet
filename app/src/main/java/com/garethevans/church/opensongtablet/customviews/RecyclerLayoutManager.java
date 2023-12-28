@@ -15,6 +15,7 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
     private ArrayList<Integer> childHSizes = new ArrayList<>(), childVSizes = new ArrayList<>();
     private int hSize;
     private int vSize;
+    private float scale;
     private int vScreenSize, hScreenSize;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "RecyclerLayoutMan";
@@ -24,7 +25,7 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
     }
 
     public void setSizes(ArrayList<Float> floatHSizes, ArrayList<Float> floatVSizes,
-                         int hScreenSize, int vScreenSize) {
+                         int hScreenSize, int vScreenSize, float scale) {
         float vTotal = 0;
         float hTotal = 0;
         childHSizes = new ArrayList<>();
@@ -42,6 +43,7 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
 
         this.vScreenSize = vScreenSize;
         this.hScreenSize = hScreenSize;
+        this.scale = scale;
     }
 
     @Override

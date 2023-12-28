@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -90,20 +89,20 @@ public class WindowFlags {
         smallestScreenWidthDp = c.getResources().getConfiguration().smallestScreenWidthDp;
 
         // Get the preferences
-        boolean defaultKeepNavSpace = false;
+        /*boolean defaultKeepNavSpace = false;
         try {
             @SuppressLint("DiscouragedApi") int resourceId = c.getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
             if (resourceId > 0) {
                 // Tries to detect gesture navigation, but doesn't always work
                 if (c.getResources().getInteger(resourceId) == 2) {
-                    gestureNavigation = true;
-                    defaultKeepNavSpace = true;
+                    gestureNavigation = false;
+                    defaultKeepNavSpace = false;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        navBarKeepSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean("navBarKeepSpace", defaultKeepNavSpace);
+        }*/
+        navBarKeepSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean("navBarKeepSpace", false);
         customMarginLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginLeft", 0);
         customMarginRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginRight", 0);
         customMarginTop = mainActivityInterface.getPreferences().getMyPreferenceInt("marginTop", 0);
@@ -113,7 +112,7 @@ public class WindowFlags {
         ignoreRoundedCorners = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners",true);
         marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarLeft",0);
         marginToolbarRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarRight",0);
-        gestureNavigation = mainActivityInterface.getPreferences().getMyPreferenceBoolean("gestureNavigation",true);
+        gestureNavigation = mainActivityInterface.getPreferences().getMyPreferenceBoolean("gestureNavigation",false);
     }
 
     // Initialise the WindowInsetsCompat from MainActivity (once it is ready)

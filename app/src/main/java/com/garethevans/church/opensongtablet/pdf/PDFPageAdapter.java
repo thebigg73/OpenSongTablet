@@ -61,7 +61,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                           DisplayInterface displayInterface, int viewWidth, int viewHeight, int inlineSetWidth) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
-        Log.d(TAG,"viewWidth:"+viewWidth+"  viewHeight:"+viewHeight);
         this.displayInterface = displayInterface;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
@@ -124,23 +123,25 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     }
 
                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
-                        float x_scale = (float)(viewWidth-inlineSetWidth)/(float)width;
+                        float x_scale = (float)(viewWidth - inlineSetWidth) / (float)width;
                         float y_scale = (float)(viewHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))/(float)height;
                         scaleFactor = Math.min(x_scale,y_scale);
                     } else {
                         if (scaleType.equals("Y") && width > 0 && height > 0) {
-                            scaleFactor = Math.min((float) (viewWidth - inlineSetWidth) / (float) width, (float) viewHeight / (float) height);
-                        } else if (scaleType.equals("W")) {
-                            scaleFactor = (float) (viewWidth-inlineSetWidth) / (float) width;
+                            float widthScale = (float)(viewWidth)/(float)width;
+                            float heightScale = (float)viewHeight/(float)height;
+                            scaleFactor = Math.min(widthScale, heightScale);
+                        } else if (scaleType.equals("W") && width > 0) {
+                            scaleFactor = (float) (viewWidth) / (float) width;
                         } else {
                             scaleFactor = 1f;
                         }
                     }
                     // If we are using horizontal PDF view, then change the scale factor
                     if (mainActivityInterface.getGestures().getPdfLandscapeView() &&
-                            scaleType.equals("Y") &&
+                            (scaleType.equals("Y") || scaleType.equals("W")) &&
                             mainActivityInterface.getOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
-                        scaleFactor = (float) viewHeight / (float) height;
+                        scaleFactor = Math.min((float) viewHeight / (float) height, (viewWidth - inlineSetWidth - 2*(32f * mainActivityInterface.getDisplayDensity())) / (float) width);
                     }
 
                     float itemWidth = width * scaleFactor;
@@ -210,7 +211,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                             }
                             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
                                 alphaval = 1f;
-                                //pageInfos.get(position).alpha = 1f;
                             }
                             holder.v.setAlpha(alphaval);
                         } catch (Exception e) {
@@ -250,20 +250,23 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         // By default PDF pages are set to scale by width
         // If we have full autoscale and have switched on horizontal PDFs
-        // and we are in a landscape layout, then do that
+        // and we are in a landscape layout and have more than one page, then do that
         if (mainActivityInterface.getGestures().getPdfLandscapeView() &&
                 mainActivityInterface.getOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
-            pdfHorizontalScale = (float) viewHeight / (float) height;
+            pdfHorizontalScale = 1.0f;
             holder.v.getLayoutParams().height = viewHeight;
             holder.pdfPageImage.getLayoutParams().height = viewHeight;
+
         } else {
-            pdfHorizontalScale = 1f;
+            pdfHorizontalScale = (float) viewWidth / (float) width;
             holder.v.getLayoutParams().height = height;
             holder.pdfPageImage.getLayoutParams().height = height;
+
         }
 
-        holder.pdfPageImage.getLayoutParams().width = (int)(width*pdfHorizontalScale);
-        holder.v.getLayoutParams().width = (int)(width*pdfHorizontalScale);
+        holder.pdfPageImage.getLayoutParams().width = width;
+        holder.v.getLayoutParams().width = width;
+
 
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                 pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"), true);
@@ -320,7 +323,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 }
             });
         }
-
     }
 
     @Override
@@ -332,10 +334,10 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     public int getWidth() {
-        return (int) floatWidth;
+        return (int) (floatWidth);
     }
     public int getHeight() {
-        return (int) floatHeight;
+        return (int) (floatHeight);
     }
 
     private void onTouchAction() {

@@ -672,11 +672,12 @@ public class PerformanceFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                float scale = pdfPageAdapter.getPdfHorizontalScale();
                 widthBeforeScale = pdfPageAdapter.getWidth();
                 widthAfterScale = widthBeforeScale;
                 heightBeforeScale = pdfPageAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(pdfPageAdapter.getWidths(), pdfPageAdapter.getHeights(), availableWidth, availableHeight);
+                recyclerLayoutManager.setSizes(pdfPageAdapter.getWidths(), pdfPageAdapter.getHeights(), availableWidth, availableHeight,scale);
                 myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                 //IV - Reset zoom
@@ -797,7 +798,7 @@ public class PerformanceFragment extends Fragment {
                 widthAfterScale = widthBeforeScale;
                 heightBeforeScale = imageSlideAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(imageSlideAdapter.getWidths(), imageSlideAdapter.getHeights(), availableWidth, availableHeight);
+                recyclerLayoutManager.setSizes(imageSlideAdapter.getWidths(), imageSlideAdapter.getHeights(), availableWidth, availableHeight,1f);
                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                 //IV - Reset zoom
                 myView.recyclerView.toggleScale();
@@ -968,7 +969,7 @@ public class PerformanceFragment extends Fragment {
                             heightBeforeScale = stageSectionAdapter.getHeight();
                             heightAfterScale = heightBeforeScale;
 
-                            recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight);
+                            recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight, 1f);
                             myView.recyclerView.setHasFixedSize(false);
                             myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                             myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(), 0, 0, 0);

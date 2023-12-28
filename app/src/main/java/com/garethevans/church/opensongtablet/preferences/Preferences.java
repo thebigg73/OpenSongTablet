@@ -363,6 +363,7 @@ public class Preferences extends Activity {
     // forceColumns                     boolean     When full autoscale is on and a song has !-- page breaks, use these to force column breaks (def:true)
     // gestureDoubleTap                 String      The action for double tapping on the song screen (def:editsong)
     // gestureLongPress                 String      The action for long pressing on the song screen (def:addtoset)
+    // gestureNavigation                boolean     Should the gesture bar be overlaid on top of the display (def:false)
     // graceTime                        boolean     Should the default 2 second grace time after song load be respected (def:true)
     // hideActionBar                    boolean     Should the action bar auto hide (def:false)
     // hideActionBarTime                int         How long should the action bar be visible for before hiding (def:1200)
