@@ -1546,8 +1546,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             default:
                 whichShowcase = "performanceMode";
                 // Get the hamburger icon if shown
+                for (int z=0; z<myView.myToolbar.getChildCount(); z++) {
+                    Log.d(TAG,"childAt("+z+"):"+myView.myToolbar.getChildAt(z).getClass().toString());
+                    Log.d(TAG,"contains ImageButton:"+myView.myToolbar.getChildAt(z).getClass().toString().contains("ImageButton"));
+                    Log.d(TAG,"contains ImageButton:"+myView.myToolbar.getChildAt(z).getClass().toString().contains("ActionMenu"));
+                }
                 if (myView.myToolbar.getChildCount() > 2 &&
                         myView.myToolbar.getChildAt(2).getClass().toString().contains("ImageButton")) {
+                    Log.d(TAG,"found hamburger");
                     final View view = myView.myToolbar.getChildAt(2);
                     targets.add(view);
                     infos.add(menu_showcase_info);
@@ -1558,6 +1564,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (myView.myToolbar.getChildCount() > 3 &&
                         myView.myToolbar.getChildAt(3).getClass().toString().contains("ActionMenu")) {
                     final View view = myView.myToolbar.getChildAt(3);
+                    Log.d(TAG,"found settings");
                     targets.add(view);
                     infos.add(extra_settings);
                     rects.add(false);
@@ -1630,9 +1637,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 break;
 
         }
-
         showCase.sequenceShowCase(this, targets, null, infos, rects, whichShowcase);
-
     }
 
     private void initialiseArrayLists() {

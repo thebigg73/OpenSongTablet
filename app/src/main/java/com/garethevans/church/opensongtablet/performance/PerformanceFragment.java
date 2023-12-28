@@ -238,17 +238,23 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getAlertChecks().showBackup() || mainActivityInterface.getAlertChecks().showUpdateInfo()) {
                     AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
                     alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
+                    // When we close the alert, we check again
         } else {
             // Check for the showcase for new users
             // Set tutorials
-            Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
-            mainActivityInterface.getMainHandler().postDelayed(r,1000);
+            checkMainShowcase();
         }
 
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
         mainActivityInterface.getDisplayPrevNext().setZoomLayout(myView.zoomLayout);
 
         return myView.getRoot();
+    }
+
+    public void checkMainShowcase() {
+        // Called when first opening and also if alert bottom sheet is closed
+        Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
+        mainActivityInterface.getMainHandler().postDelayed(r,1000);
     }
 
     private void prepareStrings() {
@@ -568,28 +574,27 @@ public class PerformanceFragment extends Fragment {
 
             // If we are in a set, send that info to the inline set custom view to see if it should draw
             myView.inlineSetList.checkVisibility();
-            myView.inlineSetList.post(() -> {
-                if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                if (myView!=null && myView.inlineSetList.getChildCount()>=0) {
                     myView.inlineSetList.prepareSet();
                     // Showcase what this is
                     if (myView.inlineSetList.getVisibility() == View.VISIBLE) {
                         // Just in case it is empty!
                         try {
-                            mainActivityInterface.getMainHandler().postDelayed(() -> {
-                                if (myView != null && myView.inlineSetList != null) {
+                            if (myView != null) {
+                                myView.inlineSetList.post(() -> {
                                     mainActivityInterface.getShowCase().singleShowCase(
                                             (Activity) mainActivityInterface,
                                             myView.inlineSetList.getChildAt(0), null,
                                             inline_set_string, true, "inline_set");
-                                }
-                            }, 500);
+                                });
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                    }
-            );
+            },800);
 
             int[] screenSizes = mainActivityInterface.getDisplayMetrics();
             int screenWidth = screenSizes[0];
