@@ -57,7 +57,7 @@ public class BootUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        // mainActivityInterface.getShowCase().resetShowcase(getContext(),null);
+        mainActivityInterface.getShowCase().resetShowcase(getContext(),null);
 
         prepareStrings();
 

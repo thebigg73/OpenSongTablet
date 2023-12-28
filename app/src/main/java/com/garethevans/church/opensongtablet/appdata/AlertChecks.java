@@ -14,7 +14,7 @@ public class AlertChecks {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean alreadySeen = false, ignorePlayServicesWarning, firstcheck = true,
-            hasPlayServices = false;
+            hasPlayServices = false, isShowing = true;
     public AlertChecks(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
@@ -61,7 +61,7 @@ public class AlertChecks {
         // Decide if the current app version is newer than the previous version.
         // If so, we want the user to be notified of changed.  The prefs are updated when the button is clicked
 
-        return !alreadySeen && currentVersion > lastUsedVersion && lastUsedVersion>0;
+        return !alreadySeen && currentVersion > lastUsedVersion;
     }
 
     public boolean showBackup() {
@@ -74,5 +74,12 @@ public class AlertChecks {
 
     public void setAlreadySeen(boolean alreadySeen) {
         this.alreadySeen = alreadySeen;
+    }
+
+    public void setIsShowing(boolean isShowing) {
+        this.isShowing = isShowing;
+    }
+    public boolean getIsShowing() {
+        return isShowing;
     }
 }

@@ -53,6 +53,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
                 BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+        mainActivityInterface.getAlertChecks().setIsShowing(true);
         return dialog;
     }
 
@@ -158,6 +159,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getAlertChecks().setAlreadySeen(true);
 
         // Check if we need to see the showcase for first use
+        mainActivityInterface.getAlertChecks().setIsShowing(false);
         mainActivityInterface.showTutorial("performanceView",null);
     }
 

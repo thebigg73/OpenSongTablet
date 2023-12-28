@@ -239,22 +239,12 @@ public class PerformanceFragment extends Fragment {
                     AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
                     alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
                     // When we close the alert, we check again
-        } else {
-            // Check for the showcase for new users
-            // Set tutorials
-            checkMainShowcase();
         }
 
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
         mainActivityInterface.getDisplayPrevNext().setZoomLayout(myView.zoomLayout);
 
         return myView.getRoot();
-    }
-
-    public void checkMainShowcase() {
-        // Called when first opening and also if alert bottom sheet is closed
-        Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
-        mainActivityInterface.getMainHandler().postDelayed(r,1000);
     }
 
     private void prepareStrings() {
@@ -582,12 +572,12 @@ public class PerformanceFragment extends Fragment {
                         // Just in case it is empty!
                         try {
                             if (myView != null) {
-                                myView.inlineSetList.post(() -> {
+                                myView.inlineSetList.postDelayed(() -> {
                                     mainActivityInterface.getShowCase().singleShowCase(
                                             (Activity) mainActivityInterface,
                                             myView.inlineSetList.getChildAt(0), null,
                                             inline_set_string, true, "inline_set");
-                                });
+                                },800);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
