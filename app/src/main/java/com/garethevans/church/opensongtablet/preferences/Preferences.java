@@ -379,7 +379,7 @@ public class Preferences extends Activity {
     // indexSkipAllowed                 boolean     Can we skip indexing (only allowed if it has been completed) (def:false)
     // inlineSet                        boolean     Should we show the inline setlist (def:true)
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)
-    // inlineSetWidth                   float       The width (as a percentage of screen width) of the inline setlist (def:0.3f)
+    // inlineSetWidth                   float       The width (as a percentage of screen width) of the inline setlist (def:0.15f)
     // inlineSetWidthPresenter          float       The width (as a percentage of screen width) of the inline setlist in Presenter Mode (def:0.3f)
     // inlineSetTextSize                float       The text size for the inline set (def:14f)
     // inlineSetTextSizePresenter       float       The text size for the inline set for Presenter mode (def:14f)

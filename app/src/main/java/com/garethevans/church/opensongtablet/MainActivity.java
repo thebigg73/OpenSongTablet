@@ -1637,7 +1637,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 break;
 
         }
-        showCase.sequenceShowCase(this, targets, null, infos, rects, whichShowcase);
+        getMainHandler().postDelayed(()-> {
+            showCase.sequenceShowCase(this, targets, null, infos, rects, whichShowcase);
+        },800);
     }
 
     private void initialiseArrayLists() {

@@ -59,7 +59,7 @@ public class InlineSetList extends RecyclerView {
         this.mainActivityInterface = mainActivityInterface;
         showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet", true);
         int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
-        width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * screenWidth);
+        width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.10f) * screenWidth);
         adjustTextSize();
         showInlinePresenter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter", true);
         inlineSetListAdapter = new InlineSetListAdapter(c);
