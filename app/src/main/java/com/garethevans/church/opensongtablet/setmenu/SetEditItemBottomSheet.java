@@ -213,7 +213,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private void checkAllowEdit() {
         // Only allow key change for song or variation
         String folderChosen = myView.editFolder.getText().toString();
+        Log.d(TAG,"folderChosen:"+folderChosen);
         myView.editKey.setEnabled(folderChosen.startsWith("**Variation") || !folderChosen.startsWith("**"));
+        Log.d(TAG,"isEnabled:"+myView.editKey.isEnabled());
     }
 
     private void updateEditView() {
@@ -289,6 +291,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
+            checkAllowEdit();
             if (editable!=null && exposedDropDown!=null && exposedDropDown.getUserEditing()) {
                 switch (which) {
                     case "folder":
