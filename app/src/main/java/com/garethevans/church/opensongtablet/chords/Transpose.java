@@ -355,7 +355,6 @@ public class Transpose {
                 // IV - Use leading \n as we can be certain it is safe to remove later
                 sb.append("\n");
                 if (line.startsWith(".")) {
-                    //Log.d(TAG,"PRETRANSPOSE LINE: "+line);
                     line = line.replaceFirst("."," ");
                     switch (oldChordFormat) {
                         default:
@@ -375,11 +374,9 @@ public class Transpose {
                             }
                             break;
                         case 7:
-                            //Log.d(TAG,"Original line:"+line);
                             for (int z = 0; z < fromChords7.length; z++) {
                                 line = line.replace(fromChords7[z], toChordsNums7[z]);
                             }
-                            //Log.d(TAG,"As numbers   :"+line);
                             break;
                         case 4:
                             for (int z = 0; z < fromChords4.length; z++) {
@@ -400,9 +397,7 @@ public class Transpose {
                     // If the old format has transposable chords - transpose
                     if (oldChordFormat < 5 || oldChordFormat == 7) {
                         line = transposeNumber(line, transposeDirection, transposeTimes);
-                        //Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
                     }
-                    //Log.d(TAG,"newChordFormat="+newChordFormat);
                     switch (newChordFormat) {
                         default:
                         case 1:
@@ -442,7 +437,6 @@ public class Transpose {
                                     line = line.replace(fromChordsNumM[z], toSharpChords7[z]);
                                 }
                             }
-                            //Log.d(TAG,"New line      :"+line);
                             break;
                         case 4:
                             if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
@@ -474,8 +468,6 @@ public class Transpose {
                             break;
                     }
 
-                    //Log.d(TAG,"NEARLY DONE LINE: "+line);
-
                     // Space adjustments: Remove patterns that cancel out
                     line = line.replace("««»»", "").replace("«»", "");
 
@@ -491,7 +483,6 @@ public class Transpose {
                         line = line.substring(0, myindex) + line.substring(myindex + 1).replaceFirst(" {2}", " ");
                         myindex = line.indexOf("«");
                     }
-                    //Log.d(TAG,"TRANSPOSED LINE: "+line);
                     line = line.replaceFirst(" ",".");
                 }
 

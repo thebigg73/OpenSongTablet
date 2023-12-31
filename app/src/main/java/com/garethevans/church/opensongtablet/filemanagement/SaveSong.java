@@ -23,9 +23,8 @@ public class SaveSong {
         // This is called from the EditSong fragment where we check for file/folder changes too
         // Because we haven't written the changes, we receive the 'newSong' object to compare with the current song
 
-        Log.d(TAG,"filename:"+newSong.getFilename()+"  title:"+newSong.getTitle());
         // Only if we aren't messing with the welcome song!
-        if (checkNotWelcomeSong(newSong)) {
+        if (newSong!=null && newSong.getFilename()!=null && newSong.getFolder()!=null && checkNotWelcomeSong(newSong)) {
             // Check for folders
             String oldFolder = mainActivityInterface.getSong().getFolder();
             String oldFilename = mainActivityInterface.getSong().getFilename();
