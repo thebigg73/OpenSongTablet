@@ -970,7 +970,7 @@ public class Transpose {
         // This looks to see if we have an original key set.
         // If not, and we have a key, set it to that
         if (!originalKeyIsSet(thisSong) &&
-            thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
+            thisSong!=null && thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
             // Copy the current key as the original
             thisSong.setKeyOriginal(thisSong.getKey());
         }
