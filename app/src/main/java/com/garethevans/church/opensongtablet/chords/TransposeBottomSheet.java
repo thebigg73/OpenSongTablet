@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,7 @@ import java.util.concurrent.Executors;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "TransposeBottomSheet";
     private boolean editSong = false;  // This is set to true when coming here from EditSongFragment
     private boolean editFileRequired, transposeCapo, transposeSet, transposeVariation, assumePreferred, transposeCopy;
@@ -288,7 +288,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         });
 
         myView.doTransposeButton.setOnClickListener(v -> {
-            Log.d(TAG,"about to call doTranspose");
             doTranspose();
         });
 
@@ -322,7 +321,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(mainActivityInterface.getSong().getKey(),
                         mainActivityInterface.getSong().getKeyOriginal());
                 myView.transposeSlider.setValue(transposeTimes);
-                Log.d(TAG,"transposeTimes:"+transposeTimes);
             }
         });
     }
@@ -394,7 +392,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void doTranspose() {
-        Log.d(TAG,"doTranspose() called");
         getValues();
         transposeSet = myView.transposeSetItem.getChecked();
         transposeVariation = myView.transposeVariation.getChecked();
@@ -427,7 +424,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
 
             transposeTimes = Math.abs(transposeTimes);
-            Log.d(TAG,"transposeTimes="+transposeTimes);
 
             editFileRequired = true;
 
@@ -437,7 +433,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 // This deals with normal songs and songs that are already had temp key changes from the set list
                 try {
                     mainActivityInterface.getCurrentSet().setKey(position, newKey);
-                    Log.d(TAG, "setFolder:" + setFolder + "  songFolder:" + songFolder + "  position:" + position);
 
                     if ((songFolder.equals("**Variation") || songFolder.equals(string_variation)) && (!setFolder.contains("**Variation") && !setFolder.contains(string_variation))) {
                         // This song is already a temp variation that is transposed
