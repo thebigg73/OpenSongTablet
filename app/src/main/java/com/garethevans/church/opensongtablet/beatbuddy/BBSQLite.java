@@ -763,7 +763,7 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
     }
 
-    // When loading a song, and option is checked, T
+    // When loading a song, and option is checked,
     // The app will look for matching song names in the database
     // If found, the song will be sent to the BeatBuddy automatically
     public int checkAutoBeatBuddy(Context c,
@@ -852,7 +852,8 @@ public class BBSQLite extends SQLiteOpenHelper {
                 }
                 String timesigString = "";
                 // If valid the timeSig isn't empty, contains '/' and will have two non-empty bits when split
-                if (thisSong.getTimesig() != null && thisSong.getTimesig().contains("/")) {
+                if (thisSong.getTimesig() != null && thisSong.getTimesig().contains("/") &&
+                        !thisSong.getTimesig().replace("/","").isEmpty()) {
                     String[] timeSigBits = thisSong.getTimesig().split("/");
                     if (timeSigBits.length == 2 && timeSigBits[0].length() > 0 && timeSigBits[1].length() > 0) {
                         String numerator = timeSigBits[0].replaceAll("\\D", "");

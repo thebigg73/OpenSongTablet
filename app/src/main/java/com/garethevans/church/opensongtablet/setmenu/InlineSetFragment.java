@@ -90,7 +90,7 @@ public class InlineSetFragment extends Fragment {
             myView.showInlineSetPresenter.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter",true));
         });
 
-        int value1 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.15f)*100);
+        int value1 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.20f)*100);
         int value2 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidthPresenter",0.3f)*100);
         myView.widthSlider.post(() -> {
             myView.widthSlider.setLabelFormatter(value -> ((int)value)+"%");

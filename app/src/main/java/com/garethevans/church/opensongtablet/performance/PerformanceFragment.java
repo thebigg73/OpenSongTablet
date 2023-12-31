@@ -573,10 +573,14 @@ public class PerformanceFragment extends Fragment {
                         try {
                             if (myView != null) {
                                 myView.inlineSetList.postDelayed(() -> {
-                                    mainActivityInterface.getShowCase().singleShowCase(
-                                            (Activity) mainActivityInterface,
-                                            myView.inlineSetList.getChildAt(0), null,
-                                            inline_set_string, true, "inline_set");
+                                    try {
+                                        mainActivityInterface.getShowCase().singleShowCase(
+                                                (Activity) mainActivityInterface,
+                                                myView.inlineSetList.getChildAt(0), null,
+                                                inline_set_string, true, "inline_set");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 },800);
                             }
                         } catch (Exception e) {
