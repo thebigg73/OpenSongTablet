@@ -10,7 +10,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -35,6 +34,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
     private final SetItemTouchInterface setItemTouchInterface;
     private final MainActivityInterface mainActivityInterface;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetListItemCallback";
 
     SetListItemCallback(Context c, SetAdapter setAdapter) {
@@ -86,7 +86,6 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         // Here we set the code for the drag and drop
-        Log.d(TAG,"onMove()");
         setItemTouchInterface.onItemMoved(viewHolder.getAbsoluteAdapterPosition(), target.getAbsoluteAdapterPosition());
         return true;
     }
@@ -96,7 +95,6 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             dragging = true;
         } else if (!dragging) {
-            Log.d(TAG,"drawing delete");
             View itemView = viewHolder.itemView;
             int itemHeight = itemView.getHeight();
 
@@ -146,8 +144,6 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
     public void onSelectedChanged(@Nullable @org.jetbrains.annotations.Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         // Based on the current state of the RecyclerView and whether it’s pressed or swiped, this method gets triggered.
         // Here we can customize the RecyclerView row. For example, changing the background color.
-        Log.d(TAG,"onSelectedChanged()");
-        Log.d(TAG,"actionState:"+actionState);
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             if (viewHolder instanceof SetListItemViewHolder) {
                 SetListItemViewHolder myViewHolder =
@@ -165,7 +161,6 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         // This method gets triggered when the user interaction stops with the RecyclerView row
-        Log.d(TAG,"clearView called");
         dragging = false;
         // Called when dragged item is released
         super.clearView(recyclerView, viewHolder);
@@ -178,7 +173,6 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
             SetAdapter setAdapter = (SetAdapter) recyclerView.getAdapter();
             int currentPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
             if (currentPosition>=0 && currentPosition<setAdapter.getItemCount()) {
-                Log.d(TAG,"trying to highlight position");
                 viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition,500);
                 viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition,800);
             }

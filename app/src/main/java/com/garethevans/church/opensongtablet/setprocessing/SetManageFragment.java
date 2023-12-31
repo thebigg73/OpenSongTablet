@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -379,12 +378,6 @@ public class SetManageFragment extends Fragment {
             foundSet.setLastModifiedLong(lastModifiedLong);
             foundSet.setLastModifiedString(lastModifiedString);
             foundSets.add(foundSet);
-            Log.d(TAG,"filename:"+foundSet.getFilename());
-            Log.d(TAG,"title:"+foundSet.getTitle());
-            Log.d(TAG,"tag:"+foundSet.getTag());
-            Log.d(TAG,"uri:"+foundSet.getUri());
-            Log.d(TAG,"lastModifiedString:"+foundSet.getLastModifiedString());
-            Log.d(TAG,"lastModifiedLong:"+foundSet.getLastModifiedLong());
         }
 
         String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
