@@ -21,7 +21,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InlineSetList extends RecyclerView {
@@ -34,7 +33,6 @@ public class InlineSetList extends RecyclerView {
     private String mode_presenter_string="";
     private InlineSetListAdapter inlineSetListAdapter;
     private MainActivityInterface mainActivityInterface;
-    private ArrayList<InlineSetItemInfo> setList;
     private final LinearLayoutManager llm;
     private float textSize = 12;
     private boolean useTitle = true;
@@ -83,7 +81,7 @@ public class InlineSetList extends RecyclerView {
 
     public void checkVisibility() {
         boolean reloadSong = false;
-        if (mainActivityInterface.getCurrentSet().getSetItems().size() > 0 && needInline()) {
+        if (mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0 && needInline()) {
             if (getVisibility() == View.GONE) {
                 // This will require a reload of the song to resize it
                 reloadSong = true;
@@ -101,7 +99,7 @@ public class InlineSetList extends RecyclerView {
             setVisibility(View.GONE);
         }
         if (reloadSong) {
-            if (selectedItem==-1 || setList==null || setList.isEmpty()) {
+            if (selectedItem==-1 || mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()<1) {
                 // Load the song
                 mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
                         mainActivityInterface.getSong().getFilename(),false);
@@ -122,7 +120,7 @@ public class InlineSetList extends RecyclerView {
     }
 
     public int getInlineSetWidth() {
-        if (showInline && mainActivityInterface.getCurrentSet().getSetItems().size() > 0) {
+        if (showInline && mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
             return width;
         } else {
             return 0;
@@ -143,40 +141,14 @@ public class InlineSetList extends RecyclerView {
 
     public void prepareSet() {
         if (inlineSetListAdapter!=null) {
-            inlineSetListAdapter.clearSetList();
             selectedItem = -1;
 
-            if (setList == null) {
-                setList = new ArrayList<>();
-            } else {
-                setList.clear();
-            }
-            for (int i = 0; i < mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
-                InlineSetItemInfo info = new InlineSetItemInfo();
-                info.item = i + 1;
-                info.songfolder = mainActivityInterface.getCurrentSet().getFolder(i);
-                info.songtitle = mainActivityInterface.getCurrentSet().getTitle(i);
-                info.songfilename = mainActivityInterface.getCurrentSet().getFilename(i);
-                info.songkey = mainActivityInterface.getCurrentSet().getKey(i);
-                setList.add(info);
-            }
-            if (inlineSetListAdapter!=null) {
-                inlineSetListAdapter.updateSetList();
-            }
             // Look for current item
             selectedItem = mainActivityInterface.getCurrentSet().getIndexSongInSet();
             scrollToItem(selectedItem);
             inlineSetListAdapter.initialiseInlineSetItem(selectedItem);
             checkVisibility();
         }
-    }
-
-    private static class InlineSetItemInfo {
-        public String songtitle;
-        public String songfilename;
-        public String songfolder;
-        public String songkey;
-        public int item;
     }
 
     private class InlineSetListAdapter extends RecyclerView.Adapter<InlineSetItemViewHolder> {
@@ -190,40 +162,22 @@ public class InlineSetList extends RecyclerView {
             offColor = context.getResources().getColor(R.color.colorAltPrimary);
         }
 
-        public void clearSetList() {
-            if (setList != null) {
-                int size = getItemCount();
-                setList.clear();
-                try {
-                    notifyItemRangeRemoved(0, size);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                setList = new ArrayList<>();
-            }
-            selectedItem = -1;
-        }
-
         public void updateSetList() {
             if (mainActivityInterface!=null) {
                 useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
-            }
-            for (int x = 0; x < setList.size(); x++) {
-                try {
-                    notifyItemInserted(x);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
+                    try {
+                        notifyItemInserted(x);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
 
         @Override
         public int getItemCount() {
-            if (setList == null) {
-                return 0;
-            }
-            return setList.size();
+            return mainActivityInterface.getCurrentSet().getCurrentSetSize();
         }
 
         @Override
@@ -235,13 +189,10 @@ public class InlineSetList extends RecyclerView {
                 // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
                 for (Object payload : payloads) {
                     if (payload.equals(updateNumber)) {
-                        InlineSetItemInfo si = setList.get(position);
-                        if (si.item!=position+1) {
-                            si.item = position+1;
-                            setList.set(position,si);
-                        }
-                        String textsn = si.item + ". " + si.songtitle;
-                        String textfn = si.item + ". " + si.songfilename;
+                        SetItemInfo si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+
+                        String textsn = si.songitem + ". " + si.songtitle;
+                        String textfn = si.songitem + ". " + si.songfilename;
 
                         if (si.songkey != null && !si.songkey.isEmpty()) {
                             textsn = textsn + " (" + si.songkey + ")";
@@ -275,7 +226,7 @@ public class InlineSetList extends RecyclerView {
         @Override
         public void onBindViewHolder(@NonNull InlineSetItemViewHolder setitemViewHolder, int i) {
             i = setitemViewHolder.getAbsoluteAdapterPosition();
-            InlineSetItemInfo si = setList.get(i);
+            SetItemInfo si = mainActivityInterface.getCurrentSet().getSetItemInfo(i);
             String titlesongname = si.songtitle;
             String filename = si.songfilename;
             if (i == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
@@ -285,13 +236,8 @@ public class InlineSetList extends RecyclerView {
                 setColor(setitemViewHolder, offColor);
             }
 
-            if (si.item!=i+1) {
-                si.item = i+1;
-                setList.set(i,si);
-            }
-
-            String textsn = si.item + ". " + titlesongname;
-            String textfn = si.item + ". " + filename;
+            String textsn = si.songitem + ". " + titlesongname;
+            String textfn = si.songitem + ". " + filename;
 
             if (si.songkey != null && !si.songkey.isEmpty()) {
                 textsn = textsn + " (" + si.songkey + ")";
@@ -327,27 +273,20 @@ public class InlineSetList extends RecyclerView {
         }
 
         public void updateInlineSetMove(int from, int to) {
-            if (setList != null) {
-                setList.get(from).item = (to + 1);
-                setList.get(to).item = (from + 1);
-                InlineSetItemInfo thisItem = setList.get(from);
-                setList.remove(from);
-                setList.add(to, thisItem);
-                notifyItemMoved(from, to);
-                notifyItemChanged(from,updateNumber);
-                notifyItemChanged(to,updateNumber);
+            notifyItemMoved(from, to);
+            notifyItemChanged(from, updateNumber);
+            notifyItemChanged(to, updateNumber);
 
-                // If we have changed the position of the selected item...
-                if (from == selectedItem) {
-                    selectedItem = to;
-                } else if (to == selectedItem) {
-                    selectedItem = from;
-                }
+            // If we have changed the position of the selected item...
+            if (from == selectedItem) {
+                selectedItem = to;
+            } else if (to == selectedItem) {
+                selectedItem = from;
             }
+
         }
 
         public void updateInlineSetRemoved(int from) {
-            setList.remove(from);
             notifyItemRemoved(from);
 
             if (selectedItem == from) {
@@ -356,36 +295,33 @@ public class InlineSetList extends RecyclerView {
             }
 
             // Go through the setList from this position and sort the numbers
-            notifyItemRangeChanged(from,setList.size(),updateNumber);
+            notifyItemRangeChanged(from,mainActivityInterface.getCurrentSet().getCurrentSetSize(),updateNumber);
 
-            if (setList.size()==0) {
+            if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
                 // This was the last item removed, we need to check visibility
                 checkVisibility();
             }
         }
 
-        public void updateInlineSetChanged(int position, InlineSetItemInfo inlineSetItemInfo) {
-            if (setList!=null) {
-                setList.set(position, inlineSetItemInfo);
+        public void updateInlineSetChanged(int position) {
+            if (mainActivityInterface.getCurrentSet().getSetItemInfos()!=null) {
                 notifyItemChanged(position,updateNumber);
             }
         }
 
-        public void updateInlineSetAdded(InlineSetItemInfo inlineSetItemInfo) {
-            setList.add(inlineSetItemInfo);
-            notifyItemInserted(setList.size() - 1);
-            if (setList.size()==1) {
+        public void updateInlineSetAdded() {
+            notifyItemInserted(mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1);
+            if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==1) {
                 // This is the first item, we need to check visibility
                 checkVisibility();
             }
         }
 
-        public void updateInlineSetInserted(int position, InlineSetItemInfo inlineSetItemInfo) {
-            setList.add(position,inlineSetItemInfo);
+        public void updateInlineSetInserted(int position) {
             notifyItemInserted(position);
 
             // Need to fix the items afterwards too
-            notifyItemRangeChanged(position,setList.size(),updateNumber);
+            notifyItemRangeChanged(position,mainActivityInterface.getCurrentSet().getCurrentSetSize(),updateNumber);
         }
 
         public void initialiseInlineSetItem(int position) {
@@ -450,34 +386,16 @@ public class InlineSetList extends RecyclerView {
         inlineSetListAdapter.updateInlineSetRemoved(from);
     }
 
-    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
-        InlineSetItemInfo info = new InlineSetItemInfo();
-        info.item = setList.size() + 1;
-        info.songtitle = setItemInfo.songtitle;
-        info.songfilename = setItemInfo.songfilename;
-        info.songfolder = setItemInfo.songfolder;
-        info.songkey = setItemInfo.songkey;
-        inlineSetListAdapter.updateInlineSetAdded(info);
+    public void updateInlineSetAdded() {
+        inlineSetListAdapter.updateInlineSetAdded();
     }
 
-    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
-        InlineSetItemInfo info = new InlineSetItemInfo();
-        info.item = position + 1;
-        info.songtitle = setItemInfo.songtitle;
-        info.songfilename = setItemInfo.songfilename;
-        info.songfolder = setItemInfo.songfolder;
-        info.songkey = setItemInfo.songkey;
-        inlineSetListAdapter.updateInlineSetChanged(position,info);
+    public void updateInlineSetChanged(int position) {
+        inlineSetListAdapter.updateInlineSetChanged(position);
     }
 
-    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
-        InlineSetItemInfo info = new InlineSetItemInfo();
-        info.item = position + 1;
-        info.songtitle = setItemInfo.songtitle;
-        info.songfilename = setItemInfo.songfilename;
-        info.songfolder = setItemInfo.songfolder;
-        info.songkey = setItemInfo.songkey;
-        inlineSetListAdapter.updateInlineSetInserted(position,info);
+    public void updateInlineSetInserted(int position) {
+        inlineSetListAdapter.updateInlineSetInserted(position);
     }
 
     public void updateInlineSetAll() {
@@ -492,11 +410,11 @@ public class InlineSetList extends RecyclerView {
     private void scrollToItem(int position) {
         this.post(() -> {
             if (position > -1 &&
-                    position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
+                    position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
                 // Scroll to that item
                 llm.scrollToPositionWithOffset(position, 0);
             } else if (position == -1 &&
-                    mainActivityInterface.getCurrentSet().getSetItems().size() > 0) {
+                    mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
                 // Scroll to the top
                 llm.scrollToPositionWithOffset(0, 0);
             }

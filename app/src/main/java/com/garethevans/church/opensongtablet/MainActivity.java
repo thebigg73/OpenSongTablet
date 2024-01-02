@@ -52,7 +52,7 @@ import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.appdata.MyFonts;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.beatbuddy.BBOptionsFragment;
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ProfileActions profileActions;
     private SaveSong saveSong;
     private SetActions setActions;
-    private SetTypeFace setTypeFace;
+    private MyFonts myFonts;
     private ShowCase showCase;
     private ShowToast showToast;
     private Song song, tempSong, indexingSong;
@@ -320,9 +320,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (savedInstanceState != null) {
             bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
             rebooted = true;
-            if (songListBuildIndex == null) {
-                songListBuildIndex = new SongListBuildIndex(this);
-            }
+            getSongListBuildIndex();
 
             songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
             songListBuildIndex.setFullIndexRequired(!songListBuildIndex.getIndexComplete());
@@ -471,33 +469,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     String dealingWithIntent;
                     if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osb")) {
                         // OpenSongApp backup file
-                        Log.d(TAG, "Opening import song backup");
                         dealingWithIntent = deeplink_import_osb;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osbs")) {
                         // OpenSongApp sets backup file
                         setWhattodo("intentlaunch");
-                        Log.d(TAG, "Opening import set backup");
                         dealingWithIntent = deeplink_sets_backup_restore;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".ost")) {
                         // OpenSong song
-                        Log.d(TAG, "Opening import song");
                         setWhattodo("intentlaunch");
                         dealingWithIntent = deeplink_import_file;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osts")) {
                         // OpenSong set
-                        Log.d(TAG, "Opening import set");
                         setWhattodo("intentlaunch");
                         dealingWithIntent = deeplink_import_file;
                     } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".backup")) {
                         // OnSong backup file
-                        Log.d(TAG, "Opening import onsong backup");
                         dealingWithIntent = deeplink_onsong;
                     } else if (getStorageAccess().isSpecificFileExtension("imageorpdf", importFilename) ||
                             getStorageAccess().isSpecificFileExtension("chordpro", importFilename) ||
                             getStorageAccess().isSpecificFileExtension("text", importFilename) ||
                             getStorageAccess().isSpecificFileExtension("onsong", importFilename)) {
                         // Set, song, pdf or image files are initially sent to the import file
-                        Log.d(TAG, "Opening pdf, etc");
                         dealingWithIntent = deeplink_import_file;
                     } else {
                         // Might be an opensong file (with no extension)
@@ -515,7 +507,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (content!=null && content.contains("</set>") && content.contains("</slide_groups>")) {
                             isOpenSongSet = true;
                         }
-                        Log.d(TAG,"isOpenSong:"+isOpenSong);
                         if (isOpenSong || isOpenSongSet) {
                             setWhattodo("intentlaunch");
                             dealingWithIntent = deeplink_import_file;
@@ -568,8 +559,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // The app setup
         versionNumber = getVersionNumber();
 
-        getFixLocale();
-        locale = fixLocale.getLocale();
+        locale = getFixLocale().getLocale();
 
         checkInternet = getCheckInternet();
         getNearbyConnections();
@@ -578,7 +568,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         alertChecks.setAlreadySeen(rebooted);
 
         // For user preferences
-        setTypeFace = getMyFonts();
+        myFonts = getMyFonts();
         themeColors = getMyThemeColors();
         profileActions = getProfileActions();
         appPermissions = getAppPermissions();
@@ -639,6 +629,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         webServer = getWebServer();
     }
 
+    @Override
+    public String getMainfoldername() {
+        return mainfoldername;
+    }
 
     @Override
     public BatteryStatus getBatteryStatus() {
@@ -843,31 +837,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void initialiseStartVariables() {
-        if (themeColors != null && preferences != null && setActions != null && fixLocale != null && setTypeFace != null) {
-            themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
-            whichMode = preferences.getMyPreferenceString("whichMode", performance);
+            getMyThemeColors().setThemeName(getPreferences().getMyPreferenceString("appTheme", "dark"));
+            whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
             // Fix old mode from old profile
             if (whichMode.equals("Presentation")) {
                 whichMode = presenter;
             }
 
             // Song location
-            song.setFilename(preferences.getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
-            song.setFolder(preferences.getMyPreferenceString("songFolder", mainfoldername));
-
-            // Set dealt with elsewhere
-            setActions.preferenceStringToArrays();
+            song.setFilename(getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
+            song.setFolder(getPreferences().getMyPreferenceString("songFolder", mainfoldername));
 
             // Set the locale
-            fixLocale.setLocale(this, this);
+            getFixLocale().setLocale(this, this);
             locale = fixLocale.getLocale();
 
             // ThemeColors
-            themeColors.getDefaultColors();
+            getMyThemeColors().getDefaultColors();
 
             // Typefaces
-            setTypeFace.setUpAppFonts(new Handler(), new Handler(), new Handler(), new Handler(), new Handler());
-        }
+            getMyFonts().setUpAppFonts(new Handler(), new Handler(), new Handler(), new Handler(), new Handler());
+
     }
 
     private void setListeners() {
@@ -2061,28 +2051,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
+    public void updateInlineSetAdded() {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetAdded(setItemInfo);
+            performanceFragment.updateInlineSetAdded();
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetAdded(setItemInfo);
+            presenterFragment.updateInlineSetAdded();
         }
     }
     @Override
-    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+    public void updateInlineSetInserted(int position) {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetInserted(position, setItemInfo);
+            performanceFragment.updateInlineSetInserted(position);
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetInserted(position, setItemInfo);
+            presenterFragment.updateInlineSetInserted(position);
         }
     }
 
     @Override
-    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+    public void updateInlineSetChanged(int position) {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetChanged(position, setItemInfo);
+            performanceFragment.updateInlineSetChanged(position);
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetChanged(position, setItemInfo);
+            presenterFragment.updateInlineSetChanged(position);
         }
     }
 
@@ -2348,11 +2338,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public SetTypeFace getMyFonts() {
-        if (setTypeFace == null) {
-            setTypeFace = new SetTypeFace(this);
+    public MyFonts getMyFonts() {
+        if (myFonts == null) {
+            myFonts = new MyFonts(this);
         }
-        return setTypeFace;
+        return myFonts;
     }
 
     @Override
@@ -2524,99 +2514,100 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             displayPrevNext.setSwipeDirection("L2R");
         }
-        // Get the key of the set item
-        String setKey = currentSet.getKey(position);
-        String setFolder = currentSet.getFolder(position);
-        String setFilename = currentSet.getFilename(position);
-        String songKey;
 
-        // Update the index in the set
-        // Remove highlighting from the old position
-        setMenuFragment.clearOldHighlight(currentSet.getIndexSongInSet());
-        currentSet.setIndexSongInSet(position);
-        setMenuFragment.updateItem(position);
+        if (getCurrentSet().getCurrentSetSize()>position) {
+            // Get the set item
+            SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
 
-        // Get the song key (from the database)
-        if (storageAccess.isSpecificFileExtension("imageorpdf", currentSet.getFilename(position))) {
-            songKey = nonOpenSongSQLiteHelper.getKey(setFolder, setFilename);
-        } else {
-            if (setFolder.contains("**") || setFolder.contains("../")) {
-                Song quickSong = new Song();
-                quickSong.setFolder(setFolder);
-                quickSong.setFilename(setFilename);
-                quickSong = loadSong.doLoadSongFile(quickSong, false);
-                songKey = quickSong.getKey();
+            // Update the index in the set
+            // Remove highlighting from the old position
+            setMenuFragment.clearOldHighlight(currentSet.getIndexSongInSet());
+            currentSet.setIndexSongInSet(position);
+            setMenuFragment.updateItem(position);
+
+            // Get the song key (from the database)
+            String songKey = "";
+            if (storageAccess.isSpecificFileExtension("imageorpdf", getCurrentSet().getSetItemInfo(position).songfilename)) {
+                songKey = nonOpenSongSQLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
             } else {
-                songKey = sqLiteHelper.getKey(setFolder, setFilename);
-            }
-        }
-
-        if (setKey != null && songKey != null &&
-                !setKey.isEmpty() && !songKey.isEmpty() && !setKey.equals(songKey)) {
-            // The set has specified a key that is different from our song
-            // We will use a variation of the current song
-            String newFolder;
-            String newFilename;
-            if (!setFolder.contains("**")) {
-                // Not a variation already, so we'll make it one with the set key
-                newFolder = "**" + variation;
-                newFilename = setFolder.replace("/", "_") + "_" + setFilename + "_" + setKey;
-                newFilename = newFilename.replace("__", "_");
-                //newFilename = setFilename + "_" + setKey;
-            } else {
-                // Already a variation, don't change the file name
-                newFolder = setFolder;
-                newFilename = setFilename;
+                if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
+                    Song quickSong = new Song();
+                    quickSong.setFolder(setItemInfo.songfolder);
+                    quickSong.setFilename(setItemInfo.songfilename);
+                    quickSong = loadSong.doLoadSongFile(quickSong, false);
+                    songKey = quickSong.getKey();
+                } else {
+                    songKey = sqLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
+                }
             }
 
-            // Get a tempSong we can write
-            Song copySong = new Song();
-            if (setFolder.contains("**") || setFolder.contains("../")) {
-                // Already a variation (or other), so don't use the database
-                copySong.setFilename(setFilename);
-                copySong.setFolder(setFolder);
-                copySong = loadSong.doLoadSongFile(copySong, false);
-            } else {
-                // Just a song, so use the database
-                copySong = sqLiteHelper.getSpecificSong(setFolder, setFilename);
+            if (setItemInfo.songkey != null && songKey != null &&
+                    !setItemInfo.songkey.isEmpty() && !songKey.isEmpty() && !setItemInfo.songkey.equals(songKey)) {
+                // The set has specified a key that is different from our song
+                // We will use a variation of the current song
+                String newFolder;
+                String newFilename;
+                if (!setItemInfo.songfolder.contains("**")) {
+                    // Not a variation already, so we'll make it one with the set key
+                    newFolder = "**" + variation;
+                    newFilename = setItemInfo.songfolder.replace("/", "_") + "_" + setItemInfo.songfilename + "_" + setItemInfo.songkey;
+                    newFilename = newFilename.replace("__", "_");
+                } else {
+                    // Already a variation, don't change the file name
+                    newFolder = setItemInfo.songfolder;
+                    newFilename = setItemInfo.songfilename;
+                }
+
+                // Get a tempSong we can write
+                Song copySong = new Song();
+                if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
+                    // Already a variation (or other), so don't use the database
+                    copySong.setFilename(setItemInfo.songfilename);
+                    copySong.setFolder(setItemInfo.songfolder);
+                    copySong = loadSong.doLoadSongFile(copySong, false);
+                } else {
+                    // Just a song, so use the database
+                    copySong = sqLiteHelper.getSpecificSong(setItemInfo.songfolder, setItemInfo.songfilename);
+                }
+                copySong.setFolder(newFolder);
+                copySong.setFilename(newFilename);
+
+                // Transpose the lyrics
+                // Get the number of transpose times
+                int transposeTimes = transpose.getTransposeTimes(songKey, setItemInfo.songkey);
+                copySong.setKey(songKey); // This will be transposed in the following...
+                copySong.setLyrics(transpose.doTranspose(copySong,
+                        "+1", transposeTimes, copySong.getDetectedChordFormat(),
+                        copySong.getDesiredChordFormat()).getLyrics());
+                // Get the song XML
+                String songXML = processSong.getXML(copySong);
+                // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
+                getStorageAccess().updateFileActivityLog(TAG + " loadSongFromSet doStringWriteToFile Variations/" + newFilename + " with: " + songXML);
+                storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
+
+                setItemInfo.songfolder = newFolder;
+                setItemInfo.songfilename = newFilename;
             }
-            copySong.setFolder(newFolder);
-            copySong.setFilename(newFilename);
 
-            // Transpose the lyrics
-            // Get the number of transpose times
-            int transposeTimes = transpose.getTransposeTimes(songKey, setKey);
-            copySong.setKey(songKey); // This will be transposed in the following...
-            copySong.setLyrics(transpose.doTranspose(copySong,
-                    "+1", transposeTimes, copySong.getDetectedChordFormat(),
-                    copySong.getDesiredChordFormat()).getLyrics());
-            // Get the song XML
-            String songXML = processSong.getXML(copySong);
-            // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
-            getStorageAccess().updateFileActivityLog(TAG + " loadSongFromSet doStringWriteToFile Variations/" + newFilename + " with: " + songXML);
-            storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
-
-            setFolder = newFolder;
-            setFilename = newFilename;
-        }
-
-        // If the set menu is open/exists, try to scroll to this item
-        if (setMenuFragment != null) {
-            try {
-                setMenuFragment.scrollToItem();
-            } catch (Exception e) {
-                e.printStackTrace();
+            // If the set menu is open/exists, try to scroll to this item
+            if (setMenuFragment != null) {
+                try {
+                    setMenuFragment.scrollToItem();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
-        // If we are using the inline set, scroll to this item
-        if (presenterValid()) {
-            presenterFragment.updateInlineSetItem(position);
-        } else if (performanceValid()) {
-            performanceFragment.updateInlineSetItem(position);
-        }
+            // If we are using the inline set, scroll to this item
+            if (presenterValid()) {
+                presenterFragment.updateInlineSetItem(position);
+            } else if (performanceValid()) {
+                performanceFragment.updateInlineSetItem(position);
+            }
 
-        doSongLoad(setFolder, setFilename, true);
+            doSongLoad(setItemInfo.songfolder, setItemInfo.songfilename, true);
+
+        }
     }
 
     @Override
@@ -2821,17 +2812,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void addSetItem(int currentSetPosition) {
-        if (setMenuFragment != null) {
-            try {
-                setMenuFragment.addSetItem(currentSetPosition);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
     public void updateSongList() {
         // This uses the existing database objects
         if (songMenuFragment != null) {
@@ -2847,17 +2827,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateCheckForThisSong(Song thisSong) {
         songMenuFragment.updateCheckForThisSong(thisSong);
-    }
-
-    @Override
-    public void removeSetItem(int currentSetPosition) {
-        if (setMenuFragment != null) {
-            try {
-                setMenuFragment.removeSetItem(currentSetPosition);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
@@ -3102,10 +3071,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-    private void getFixLocale() {
+    public FixLocale getFixLocale() {
         if (fixLocale == null) {
             fixLocale = new FixLocale();
         }
+        return fixLocale;
     }
 
     @Override

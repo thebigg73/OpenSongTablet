@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -123,21 +124,17 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView.transposeCapo.setChecked(false);
 
         if (position>-1 && mainActivityInterface.getCurrentSet()!=null &&
-                mainActivityInterface.getCurrentSet().getSetFolders()!=null &&
-                position < mainActivityInterface.getCurrentSet().getSetFolders().size() &&
-                mainActivityInterface.getCurrentSet().getSetFilenames()!=null &&
-                position < mainActivityInterface.getCurrentSet().getSetFilenames().size() &&
-                mainActivityInterface.getCurrentSet().getSetKeys().get(position)!=null &&
-                !mainActivityInterface.getCurrentSet().getSetKeys().get(position).isEmpty()) {
+                mainActivityInterface.getCurrentSet().getSetItemInfos()!=null &&
+                position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
 
             // In a set, so hide the song only transpose options
             myView.transposeCapo.setVisibility(View.GONE);
             myView.transposeCopy.setVisibility(View.GONE);
 
             // Show the set options
-            setFolder = mainActivityInterface.getCurrentSet().getFolder(position);
-            setFilename = mainActivityInterface.getCurrentSet().getFilename(position);
-            if (setFolder.contains("**Variation") || setFolder.contains(string_variation)) {
+            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+
+            if (setItemInfo.songfolder.contains("**Variation") || setItemInfo.songfolder.contains(string_variation)) {
                 // Hide variation creation and the set item transpose
                 myView.transposeVariation.setVisibility(View.GONE);
                 myView.transposeSetItem.setVisibility(View.GONE);
@@ -428,11 +425,11 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             editFileRequired = true;
 
             // If we are in a set (position>-1)
-            if (position>-1 && mainActivityInterface.getCurrentSet().getSetKeys()!=null && mainActivityInterface.getCurrentSet().getSetKeys().size()>position) {
+            if (position>-1 && mainActivityInterface.getCurrentSet().getSetItemInfos()!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>position) {
                 // Transpose the key in the set.
                 // This deals with normal songs and songs that are already had temp key changes from the set list
                 try {
-                    mainActivityInterface.getCurrentSet().setKey(position, newKey);
+                    mainActivityInterface.getCurrentSet().getSetItemInfo(position).songkey = newKey;
 
                     if ((songFolder.equals("**Variation") || songFolder.equals(string_variation)) && (!setFolder.contains("**Variation") && !setFolder.contains(string_variation))) {
                         // This song is already a temp variation that is transposed

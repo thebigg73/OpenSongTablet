@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 
 import java.util.ArrayList;
 
@@ -139,19 +140,17 @@ public class CustomSlide {
                 mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "", file, xml);
             }
 
-            // Add to set $**_**{customsfolder}/filename_***key***_**$
-            String songforsetwork = "$**_**" + folder + "/" + file + "_***" + key + "***__**$";
-            mainActivityInterface.getCurrentSet().addToCurrentSetString(songforsetwork);
-            mainActivityInterface.getCurrentSet().addSetItem(songforsetwork);
-            mainActivityInterface.getCurrentSet().addSetValues("**" + folder, file, key);
-            mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
-
+            // Update the current set and save the preference
+            String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**"+folder,file,key);
+            SetItemInfo setItemInfo = new SetItemInfo();
+            setItemInfo.setItem("**"+folder,file,title,key,mainActivityInterface.getCurrentSet().getCurrentSetSize()+1,setItem,"");
+            mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             // Update the set menu
-            //mainActivityInterface.updateSetList();
             mainActivityInterface.refreshSetList();
 
+            // Let the user know the action was successful
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));
 
         } else {

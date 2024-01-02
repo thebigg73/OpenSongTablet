@@ -79,9 +79,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     }
     private void checkViewsAllowed() {
         // Check there are songs!
-        boolean songs = mainActivityInterface.getCurrentSet().getSetFilenames().size()>0;
-
-        if (!songs) {
+        if (mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
             myView.edit.setVisibility(View.GONE);
             myView.shuffleSet.setVisibility(View.GONE);
             myView.randomSong.setVisibility(View.GONE);

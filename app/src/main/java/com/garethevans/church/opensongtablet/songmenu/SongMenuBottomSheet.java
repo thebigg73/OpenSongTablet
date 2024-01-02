@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.songmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,7 +214,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         addToCurrentSet();
 
         // Now change it to a variation
-        int position = mainActivityInterface.getCurrentSet().getSetItems().size() - 1;
+        int position = mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1;
         if (position>=0) {
             mainActivityInterface.getSetActions().makeVariation(position);
         }
@@ -226,15 +225,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void addToCurrentSet() {
-        String songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(mainActivityInterface.getSong());
-        Log.d(TAG,"songforsetwork="+songforsetwork);
-        mainActivityInterface.getCurrentSet().addToCurrentSetString(songforsetwork);
-        mainActivityInterface.getCurrentSet().addSetItem(songforsetwork);
-        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
-        mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size() - 1);
-        mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-        mainActivityInterface.updateSongList();
-        mainActivityInterface.updateSetList();
+        mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
     }
 
     private void alertSuccess(String message) {

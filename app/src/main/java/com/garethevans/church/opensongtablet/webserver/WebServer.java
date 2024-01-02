@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
@@ -122,13 +123,12 @@ public class WebServer extends NanoHTTPD {
                 if (!pagerequest.isEmpty()) {
                     // Get the song to load
                     int setItemNum = Integer.parseInt(pagerequest);
-                    String folder = mainActivityInterface.getCurrentSet().getFolder(setItemNum);
-                    String filename = mainActivityInterface.getCurrentSet().getFilename(setItemNum);
+                    SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setItemNum);
                     Song songForHTML = new Song();
-                    songForHTML.setFolder(folder);
-                    songForHTML.setFilename(filename);
+                    songForHTML.setFolder(setItemInfo.songfolder);
+                    songForHTML.setFilename(setItemInfo.songfilename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getSetItems().size() - 1, "setitem/" + setItemNum);
+                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1, "setitem/" + setItemNum);
                 }
 
             } else if (pagerequest.contains("/songitem/")) {
@@ -338,8 +338,8 @@ public class WebServer extends NanoHTTPD {
 
         if (setlist) {
             // Now cycle through our set list and add a new div element for each one
-            for (int x=0; x < mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
-                String title = mainActivityInterface.getCurrentSet().getTitle(x);
+            for (int x=0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
+                String title = mainActivityInterface.getCurrentSet().getSetItemInfo(x).songtitle;
                 String curritemId = "";
                 if (x == setMenuIndex) {
                     curritemId = " id =\"currentItem\"";
@@ -396,7 +396,7 @@ public class WebServer extends NanoHTTPD {
             if (findindex>-1) {
                 index = findindex;
                 inset = true;
-                max = mainActivityInterface.getCurrentSet().getSetItems().size() - 1;
+                max = mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1;
             }
         }
         String songContent = "";

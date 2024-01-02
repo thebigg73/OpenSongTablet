@@ -38,7 +38,6 @@ import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
-import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
@@ -363,28 +362,28 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
-    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
+    public void updateInlineSetAdded() {
         if (myView!=null) {
             try {
-                myView.inlineSetList.updateInlineSetAdded(setItemInfo);
+                myView.inlineSetList.updateInlineSetAdded();
             } catch (Exception e) {
                 Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
             }
         }
     }
-    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+    public void updateInlineSetInserted(int position) {
         if (myView!=null) {
             try {
-                myView.inlineSetList.updateInlineSetInserted(position, setItemInfo);
+                myView.inlineSetList.updateInlineSetInserted(position);
             } catch (Exception e) {
                 Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
             }
         }
     }
-    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+    public void updateInlineSetChanged(int position) {
         if (myView!=null) {
             try {
-                myView.inlineSetList.updateInlineSetChanged(position, setItemInfo);
+                myView.inlineSetList.updateInlineSetChanged(position);
             } catch (Exception e) {
                 e.printStackTrace();
             }

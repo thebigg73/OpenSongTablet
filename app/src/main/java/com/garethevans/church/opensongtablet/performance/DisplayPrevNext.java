@@ -14,6 +14,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -194,7 +195,7 @@ public class DisplayPrevNext {
                 prevIndex = -1;
                 movePrevInSet = false;
             }
-            if (setPosition < mainActivityInterface.getCurrentSet().getSetItems().size() - 1) {
+            if (setPosition < mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1) {
                 nextIndex = setPosition + 1;
                 moveNextInSet = true;
             } else {
@@ -225,16 +226,16 @@ public class DisplayPrevNext {
         String text = "";
         if (position>-1) {
             if (isSetMove(position)) {
-                if (position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
-                    text = mainActivityInterface.getCurrentSet().getFilename(position);
+                if (position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
+                    SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+                    text = setItemInfo.songfilename;
 
                     // Look for the key in the set (it might be specified)
-                    String key = mainActivityInterface.getCurrentSet().getKey(position);
+                    String key = setItemInfo.songkey;
                     // If it isn't there, for the song key from the user database instead
                     if (key==null || key.isEmpty()) {
                         key = mainActivityInterface.getSQLiteHelper().getKey(
-                                mainActivityInterface.getCurrentSet().getFolder(position),
-                                mainActivityInterface.getCurrentSet().getFilename(position));
+                                setItemInfo.songfolder, setItemInfo.songfilename);
                     }
 
                     if (key != null && !key.isEmpty() && !key.equals("null")) {

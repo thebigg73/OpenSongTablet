@@ -26,6 +26,7 @@ import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsAdapter;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
@@ -570,13 +571,15 @@ public class PerformanceGestures {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
             int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-            if (positionInSet>-1 && mainActivityInterface.getCurrentSet().getSetItems().size()>positionInSet) {
-                if (!mainActivityInterface.getCurrentSet().getFolder(positionInSet).equals(mainActivityInterface.getSong().getFolder())) {
-                    mainActivityInterface.getSong().setFolder(mainActivityInterface.getCurrentSet().getFolder(positionInSet));
-                    mainActivityInterface.getSong().setFilename(mainActivityInterface.getCurrentSet().getFilename(positionInSet));
+            if (positionInSet>-1 && mainActivityInterface.getCurrentSet().getCurrentSetSize()>positionInSet) {
+                SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(positionInSet);
+
+                if (!setItemInfo.songfolder.equals(mainActivityInterface.getSong().getFolder())) {
+                    mainActivityInterface.getSong().setFolder(setItemInfo.songfolder);
+                    mainActivityInterface.getSong().setFilename(setItemInfo.songfilename);
                     mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false);
                     mainActivityInterface.setWhattodo("editTempVariation");
-                } else if (mainActivityInterface.getCurrentSet().getFolder(positionInSet).contains("**Variation")) {
+                } else if (setItemInfo.songfolder.contains("**Variation")) {
                     mainActivityInterface.setWhattodo("editActualVariation");
                 }
             }
@@ -590,24 +593,14 @@ public class PerformanceGestures {
 
     // Add to set
     public void addToSet() {
-        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(mainActivityInterface.getSong());
-
-        // Allow the song to be added, even if it is already there
-        String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);
-
-        // TODO remove after fixing weird set behaviour
-        String[] setbits = val.replace("_**$","SPLIT").split("SPLIT");
-        for (int x=0; x<setbits.length; x++) {
-            Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
-        }
+        // Add to the currently loaded to the currentSet
+        mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
 
         // Tell the user that the song has been added.
         mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
                 c.getString(R.string.added_to_set));
-        
-        mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
-        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
+
+        // Update the set list
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
     }
@@ -619,24 +612,14 @@ public class PerformanceGestures {
                 mainActivityInterface.getSong().getFilename(),mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
         mainActivityInterface.getSong().setFolder("**Variations");
 
-        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(mainActivityInterface.getSong());
-
-        // Allow the song to be added, even if it is already there
-        String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);
-
-        // TODO remove after fixing weird set behaviour
-        String[] setbits = val.replace("_**$","SPLIT").split("SPLIT");
-        for (int x=0; x<setbits.length; x++) {
-            Log.d(TAG,x+". "+setbits[x].replace("$**_",""));
-        }
+        // Add to the current set
+        mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
 
         // Tell the user that the song has been added.
         mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
                 c.getString(R.string.added_to_set)+" (" + c.getString(R.string.variation) + " )");
 
-        mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
-        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
+        // Update the set list
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
     }
@@ -699,7 +682,7 @@ public class PerformanceGestures {
                 if (pos==-1) {
                     pos = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
-                if (pos>-1 && pos<mainActivityInterface.getCurrentSet().getSetItems().size()) {
+                if (pos>-1 && pos<mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
                     mainActivityInterface.loadSongFromSet(pos+1);
                 } else {
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.last_song));

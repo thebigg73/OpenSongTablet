@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SetTypeFace {
+public class MyFonts {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetTypeFace";
     private final Context c;
@@ -41,7 +41,7 @@ public class SetTypeFace {
 
     private String lyricFontName, chordFontName, monoFontName;
 
-    public SetTypeFace(Context c) {
+    public MyFonts(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
     }

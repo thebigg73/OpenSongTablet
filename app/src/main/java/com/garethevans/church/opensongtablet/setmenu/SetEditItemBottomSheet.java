@@ -35,7 +35,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetSetitemeditBinding myView;
     private final String TAG = "SetEditItemBottomSheet";
     private ArrayList<String> filenames;
-    private ArrayList<String> currentSetFolder;
     private int setPosition = 0;
     private View selectedCard;
     private boolean useTitle=true;
@@ -77,9 +76,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
-        // Get a copy of the original set folders in case we want to undo
-        currentSetFolder = mainActivityInterface.getCurrentSet().getSetFolders();
-
         // Build the set view items
         buildSetItems(inflater, container);
 
@@ -108,7 +104,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         }
         myView.editKey.setAdapter(keyAdapter);
         myView.editKey.setUserEditing(false);
-        myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(0));
+        myView.editKey.setText(mainActivityInterface.getCurrentSet().getSetItemInfo(0).songkey);
         myView.editKey.setUserEditing(true);
 
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
@@ -119,9 +115,13 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             folderAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFolder, R.layout.view_exposed_dropdown_item, folders);
         }
+
+        // Get the item at the start of the set list
+        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(0);
+
         myView.editFolder.setAdapter(folderAdapter);
         myView.editFolder.setUserEditing(false);
-        myView.editFolder.setText(mainActivityInterface.getCurrentSet().getFolder(0));
+        myView.editFolder.setText(setItemInfo.songfolder);
         myView.editFolder.setUserEditing(true);
 
         filenames = new ArrayList<>();
@@ -129,7 +129,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
         }
         myView.editFilename.setAdapter(filenameAdapter);
-        updateFilesInFolder(mainActivityInterface.getCurrentSet().getFolder(0));
+        updateFilesInFolder(setItemInfo.songfolder);
 
         checkAllowEdit();
     }
@@ -156,7 +156,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         }
         myView.editFilename.setAdapter(filenameAdapter);
         myView.editFilename.setUserEditing(false);
-        myView.editFilename.setText(mainActivityInterface.getCurrentSet().getFilename(setPosition));
+        myView.editFilename.setText(mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songfilename);
         myView.editFilename.setUserEditing(true);
     }
 
@@ -164,11 +164,12 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         // Firstly show the progressBar (list is hidden already)
         myView.progressBar.setVisibility(View.VISIBLE);
         useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
-        for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
+        for (int x=0; x<mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
             // Show all items, but disable the non-songs
+            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
             String displayNum = (x+1)+".";
-            String folder = mainActivityInterface.getCurrentSet().getFolder(x);
-            String title = getTitleAndKey(x,useTitle);
+            String folder = setItemInfo.songfolder;
+            String title = getTitleAndKey(setItemInfo);
             View cardView = inflater.inflate(R.layout.view_set_item, container);
             if (x==0) {
                 selectedCard = cardView;
@@ -197,16 +198,15 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         myView.progressBar.setVisibility(View.GONE);
     }
 
-    private String getTitleAndKey(int position, boolean useTitle) {
-        String key = mainActivityInterface.getCurrentSet().getKey(position);
+    private String getTitleAndKey(SetItemInfo setItemInfo) {
+        String key =setItemInfo.songkey;
         if (key!=null && !key.equals("null") && !key.isEmpty()) {
             key = " ("+key+")";
         } else {
             key = "";
         }
         String name = useTitle ?
-                mainActivityInterface.getCurrentSet().getTitle(position) :
-                mainActivityInterface.getCurrentSet().getFilename(position);
+                setItemInfo.songtitle : setItemInfo.songfilename;
         return name + key;
     }
 
@@ -219,13 +219,14 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void updateEditView() {
+        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
         myView.editFolder.setUserEditing(false);
         myView.editFilename.setUserEditing(false);
         myView.editKey.setUserEditing(false);
-        myView.editFolder.setText(mainActivityInterface.getCurrentSet().getFolder(setPosition));
-        myView.editFilename.setText(mainActivityInterface.getCurrentSet().getFilename(setPosition));
-        myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(setPosition));
-        myView.editVariation.setChecked(mainActivityInterface.getCurrentSet().getFolder(setPosition).contains("**Variation"));
+        myView.editFolder.setText(setItemInfo.songfolder);
+        myView.editFilename.setText(setItemInfo.songfilename);
+        myView.editKey.setText(setItemInfo.songkey);
+        myView.editVariation.setChecked(setItemInfo.songfolder.contains("**Variation"));
         myView.editFolder.setUserEditing(true);
         myView.editFilename.setUserEditing(true);
         myView.editKey.setUserEditing(true);
@@ -247,16 +248,17 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getStorageAccess().deleteFile(variationUri);
             }
             // Update the matching card
-            newFolder = currentSetFolder.get(setPosition);
+            newFolder = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songfolder;
             if (newFolder.startsWith("**")) {
                 Log.d(TAG,"newFolder="+newFolder);
                 // Try to find a matching song in the database, if not it will return mainfoldername
-                newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(mainActivityInterface.getCurrentSet().getFilename(setPosition));
+                newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songfilename);
             }
             // Fix the item in the set
-            String filename = mainActivityInterface.getCurrentSet().getFilename(setPosition);
-            String key = mainActivityInterface.getCurrentSet().getKey(setPosition);
-            mainActivityInterface.getSetActions().adjustItemInSet(setPosition,newFolder,filename,key);
+            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
+            setItemInfo.songfolder = newFolder;
+            setItemInfo.songfoldernice = newFolder;
+            mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
         }
 
         // Change the dropdown to match.  This also triggers a change in the card here
@@ -293,34 +295,32 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         public void afterTextChanged(Editable editable) {
             checkAllowEdit();
             if (editable!=null && exposedDropDown!=null && exposedDropDown.getUserEditing()) {
+                SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
                 switch (which) {
                     case "folder":
-                        mainActivityInterface.getCurrentSet().setFolder(setPosition, editable.toString());
+                        setItemInfo.songfolder = editable.toString();
                         updateFilesInFolder(editable.toString());
                         checkAllowEdit();
                         // Update the matching card
                         ((TextView)selectedCard.findViewById(R.id.cardview_folder)).setText(editable.toString());
                         break;
                     case "filename":
-                        mainActivityInterface.getCurrentSet().setFilename(setPosition, editable.toString());
+                        setItemInfo.songfilename = editable.toString();
                         break;
                     case "key":
-                        mainActivityInterface.getCurrentSet().setKey(setPosition, editable.toString());
+                        mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songkey = editable.toString();
                         break;
                 }
 
+                // Update the set item
+                mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
+
                 // Update the cardview
-                ((TextView)selectedCard.findViewById(R.id.cardview_songtitle)).setText(getTitleAndKey(setPosition,useTitle));
-                ((TextView)selectedCard.findViewById(R.id.cardview_folder)).setText(mainActivityInterface.getCurrentSet().getFolder(setPosition));
+                ((TextView)selectedCard.findViewById(R.id.cardview_songtitle)).setText(getTitleAndKey(setItemInfo));
+                ((TextView)selectedCard.findViewById(R.id.cardview_folder)).setText(setItemInfo.songfolder);
 
                 // Update the cardview in the setList behind.  Pass position as string in array
                 updateCurrentSetView();
-
-                // Fix the item in the set
-                String folder = mainActivityInterface.getCurrentSet().getFolder(setPosition);
-                String filename = mainActivityInterface.getCurrentSet().getFilename(setPosition);
-                String key = mainActivityInterface.getCurrentSet().getKey(setPosition);
-                mainActivityInterface.getSetActions().adjustItemInSet(setPosition,folder,filename,key);
             }
         }
     }

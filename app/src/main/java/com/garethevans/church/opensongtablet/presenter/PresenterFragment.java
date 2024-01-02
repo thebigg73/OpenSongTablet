@@ -20,7 +20,6 @@ import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
@@ -448,22 +447,22 @@ public class PresenterFragment extends Fragment {
     public void updateInlineSetRemoved(int from) {
         myView.inlineSetList.updateInlineSetRemoved(from);
     }
-    public void updateInlineSetAdded(SetItemInfo setItemInfo) {
-        myView.inlineSetList.updateInlineSetAdded(setItemInfo);
+    public void updateInlineSetAdded() {
+        myView.inlineSetList.updateInlineSetAdded();
     }
-    public void updateInlineSetChanged(int position, SetItemInfo setItemInfo) {
+    public void updateInlineSetChanged(int position) {
         if (myView!=null) {
             try {
-                myView.inlineSetList.updateInlineSetChanged(position, setItemInfo);
+                myView.inlineSetList.updateInlineSetChanged(position);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    public void updateInlineSetInserted(int position, SetItemInfo setItemInfo) {
+    public void updateInlineSetInserted(int position) {
         if (myView!=null) {
             try {
-                myView.inlineSetList.updateInlineSetInserted(position, setItemInfo);
+                myView.inlineSetList.updateInlineSetInserted(position);
             } catch (Exception e) {
                 Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
             }

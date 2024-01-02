@@ -15,7 +15,7 @@ import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.appdata.MyFonts;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddy;
@@ -57,7 +57,6 @@ import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
-import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
@@ -98,7 +97,7 @@ public interface MainActivityInterface {
     Preferences getPreferences();
     PresenterSettings getPresenterSettings();
     ProfileActions getProfileActions();
-    SetTypeFace getMyFonts();
+    MyFonts getMyFonts();
     ThemeColors getMyThemeColors();
     AppPermissions getAppPermissions();
 
@@ -110,6 +109,8 @@ public interface MainActivityInterface {
     SaveSong getSaveSong();
     void setSong(Song song);
     void setTempSong(Song tempSong);
+    String getMainfoldername();
+
 
     // Capo
     void dealWithCapo();
@@ -132,16 +133,14 @@ public interface MainActivityInterface {
     void updateSetTitle();
     void refreshSetList();
     void updateSetList();
-    void addSetItem(int currentSetPosition);
-    void removeSetItem(int currentSetPosition);
     void checkSetMenuItemHighlighted(int setPosition);
     void toggleInlineSet();
     void updateInlineSetMove(int from, int to);
     void updateInlineSetRemoved(int from);
-    void updateInlineSetAdded(SetItemInfo setItemInfo);
+    void updateInlineSetAdded();
     void initialiseInlineSetItem(int position);
-    void updateInlineSetChanged(int position, SetItemInfo setItemInfo);
-    void updateInlineSetInserted(int position, SetItemInfo setItemInfo);
+    void updateInlineSetChanged(int position);
+    void updateInlineSetInserted(int position);
     void updateInlineSetAll();
 
     // Menus

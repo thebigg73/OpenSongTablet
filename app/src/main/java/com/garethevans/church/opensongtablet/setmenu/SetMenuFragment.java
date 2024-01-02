@@ -54,12 +54,6 @@ public class SetMenuFragment extends Fragment {
 
         mainActivityInterface.registerFragment(this,"SetMenuFragment");
 
-        // Load up current set details by initialising them in the CurrentSet class
-        // They can be called up or saved in that class
-        mainActivityInterface.getCurrentSet().loadCurrentSet();
-        mainActivityInterface.getCurrentSet().loadSetCurrentBeforeEdits();
-        mainActivityInterface.getCurrentSet().loadSetCurrentBeforeEdits();
-
         // Initialise the set title by passing reference to the views
         mainActivityInterface.getCurrentSet().initialiseSetTitleViews(myView.setTitle.getImageView(),myView.setTitle, myView.saveSetButton);
 
@@ -117,7 +111,7 @@ public class SetMenuFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
                 final int position = viewHolder.getAbsoluteAdapterPosition();
-                final SetItemInfo item = setAdapter.setList.get(position);
+                final SetItemInfo item = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
 
                 setAdapter.removeItem(position);
 
@@ -182,7 +176,7 @@ public class SetMenuFragment extends Fragment {
 
     public void scrollToItem() {
         if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
-                mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
+                mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
             myView.myRecyclerView.post(() -> {
                 if (llm!=null) {
                     llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
@@ -200,27 +194,35 @@ public class SetMenuFragment extends Fragment {
         // If the key has changed on some items, update them
         if (mainActivityInterface.getSetActions().getMissingKeyPositions()!=null &&
                 setAdapter!=null &&
-                setAdapter.getSetList()!=null &&
-                setAdapter.getSetList().size()>0) {
+                mainActivityInterface.getCurrentSet().getSetItemInfos()!=null &&
+                mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
             setAdapter.updateKeys();
         }
     }
 
     public void prepareCurrentSet() {
-        // We have received a call to redraw the set list either on first load or after song indexing
-        myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.INVISIBLE));
-        myView.progressBar.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+        if (myView!=null && mainActivityInterface!=null) {
+            // We have received a call to redraw the set list either on first load or after song indexing
+            myView.myRecyclerView.post(() -> {
+                if (myView != null) {
+                    myView.myRecyclerView.setVisibility(View.INVISIBLE);
+                }
+            });
+            myView.progressBar.post(() -> {
+                if (myView != null) {
+                    myView.progressBar.setVisibility(View.VISIBLE);
+                }
+            });
 
-        if (setAdapter!=null) {
-            setAdapter.buildSetList();
-            // Notify the adapter (this is run on UI thread)
-            setAdapter.notifyAllChanged();
+            if (setAdapter != null) {
+                // Notify the adapter (this is run on UI thread)
+                setAdapter.notifyAllChanged();
+            }
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
+
+            myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.VISIBLE));
+            myView.progressBar.post(() -> myView.progressBar.setVisibility(View.INVISIBLE));
         }
-        mainActivityInterface.getCurrentSet().updateSetTitleView();
-
-        myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.VISIBLE));
-        myView.progressBar.post(() -> myView.progressBar.setVisibility(View.INVISIBLE));
-
     }
 
     public void updateItem(int position) {
@@ -235,13 +237,6 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
-    public void addSetItem(int currentSetPosition) {
-        if (setAdapter!=null) {
-            setAdapter.addNewItem(currentSetPosition);
-        }
-        mainActivityInterface.getCurrentSet().updateSetTitleView();
-    }
-
     public void runSetShowcase() {
         if (getActivity()!=null) {
             try {
@@ -252,13 +247,6 @@ public class SetMenuFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    // Called from clicking on checkboxes in song menu (via MainActivity)
-    public void removeSetItem(int currentSetPosition) {
-        if (setAdapter!=null) {
-            setAdapter.removeItem(currentSetPosition);
         }
     }
 
@@ -282,7 +270,7 @@ public class SetMenuFragment extends Fragment {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
-            mainActivityInterface.getSetActions().buildSetArraysFromItems();
+            mainActivityInterface.getSetActions().parseCurrentSet();
             handler.post(() -> {
                 setupAdapter();
                 prepareCurrentSet();

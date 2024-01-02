@@ -35,7 +35,6 @@ public class SongListBuildIndex {
     }
 
 
-
     // This is true if we need to scan the song folder (quick or full)
     private boolean indexRequired;
     public void setIndexRequired(boolean indexRequired) {
@@ -60,6 +59,9 @@ public class SongListBuildIndex {
     private boolean indexComplete;
     public void setIndexComplete(boolean indexComplete) {
         this.indexComplete = indexComplete;
+        if (indexComplete) {
+            mainActivityInterface.getSetActions().updateSetTitlesAndIndexes();
+        }
     }
     public boolean getIndexComplete() {
         return indexComplete;
@@ -201,7 +203,7 @@ public class SongListBuildIndex {
             progressText.post(() -> progressText.setVisibility(View.GONE));
             cursor.close();
             indexRequired = false;
-            indexComplete = true;
+            setIndexComplete(true);
             fullIndexRequired = false;
             mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
 
