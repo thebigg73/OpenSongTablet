@@ -23,6 +23,8 @@ import java.util.Random;
 
 public class RandomSongBottomSheet extends BottomSheetDialogFragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "RandomBottomSheet";
     private BottomSheetRandomSongBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final String whichMenu;
@@ -109,8 +111,9 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
 
     private void findRandomSong() {
         Random random = new Random();
+        int randomNum;
         if (whichMenu.equals("song")) {
-            int randomNum = random.nextInt(mainActivityInterface.getSongsFound("song").size());
+            randomNum = random.nextInt(mainActivityInterface.getSongsFound("song").size());
             randomSong = mainActivityInterface.getSongsFound("song").get(randomNum);
         } else if (!whichMenu.isEmpty()){
             indexSongInSet = random.nextInt(mainActivityInterface.getSongsFound("set").size());
@@ -119,11 +122,10 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void doLoad() {
-        mainActivityInterface.getCurrentSet().setIndexSongInSet(indexSongInSet);
         if (indexSongInSet!=-1) {
-            mainActivityInterface.loadSongFromSet(indexSongInSet);
+           mainActivityInterface.loadSongFromSet(indexSongInSet);
         } else {
-            mainActivityInterface.doSongLoad(randomSong.getFolder(), randomSong.getFilename(), true);
+           mainActivityInterface.doSongLoad(randomSong.getFolder(), randomSong.getFilename(), true);
         }
         dismiss();
     }

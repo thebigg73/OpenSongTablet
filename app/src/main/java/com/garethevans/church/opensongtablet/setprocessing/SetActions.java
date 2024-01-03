@@ -64,9 +64,8 @@ public class SetActions {
     // Convert between the currentSet string in preferences and the arrayLists
 
 
-    // Called from the setMenuFragment on first boot, clearing, sorting or on loading new set in
+    // Called from the BootFragment on first boot and when clearing, sorting or on loading new set in
     public void parseCurrentSet() {
-        Log.d(TAG,"parseCurrentSet()");
         // Sets may or may not have the preferred key embedded in them (old sets before V6 will not)
         // $**_folder1/song1_**$$**_folder2/song2_**A**__**$
 
@@ -140,15 +139,15 @@ public class SetActions {
                 thisSong.setFolder(folder);
                 thisSong.setFilename(filename);
                 thisSong.setKey(key);
-                mainActivityInterface.updateCheckForThisSong(thisSong);
             }
         }
+
+        // Try to update the set title (might not be initialised)
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
 
     // Called after the songs have been indexed.  Check titles from database
     public void updateSetTitlesAndIndexes() {
-        Log.d(TAG,"updateSetTitlesAndIndexes()");
-
         for (int x=0; x<mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
             // Update the title
             Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(

@@ -41,7 +41,7 @@ public class BootUpFragment extends Fragment {
     private BootupLogoBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String deeplink_set_storage="", processing="", storage="", wait="", success="",
-            mode_performance="", mainfoldername="", welcome="";
+            mode_performance="", mainfoldername="", welcome="", set_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -74,6 +74,7 @@ public class BootUpFragment extends Fragment {
         if (getContext()!=null) {
             deeplink_set_storage = getString(R.string.deeplink_set_storage);
             processing = getString(R.string.processing);
+            set_string = getString(R.string.set_current);
             storage = getString(R.string.storage);
             wait = getString(R.string.wait);
             success = getString(R.string.success);
@@ -191,6 +192,12 @@ public class BootUpFragment extends Fragment {
                     int runssincebackupdismissed = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackupdismissed", 0);
                     mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup + 1);
                     mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed", runssincebackupdismissed + 1);
+
+                    // Load in the setCurrent
+                    message = set_string;
+                    updateMessage();
+                    mainActivityInterface.getSetActions().parseCurrentSet();
+
 
                     // Set up the rest of the main activity
                     mainActivityInterface.getMainHandler().post(() -> {

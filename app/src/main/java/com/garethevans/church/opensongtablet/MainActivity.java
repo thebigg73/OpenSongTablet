@@ -871,9 +871,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         bootUpCompleted = true;
         myView.myAppBarLayout.setVisibility(View.VISIBLE);
 
-        // Update the current set
-        updateCurrentSet();
-
     }
 
     private void initialiseStartVariables() {
@@ -1797,8 +1794,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (myView != null) {
             myView.drawerLayout.post(()-> {
                 if (lock) {
+                    myView.drawerLayout.requestDisallowInterceptTouchEvent(true);
                     myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 } else {
+                    myView.drawerLayout.requestDisallowInterceptTouchEvent(false);
                     myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
             });
@@ -2860,8 +2859,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "saveset":
                     // Overwriting the last loaded set with the current one via bottom sheet
                     // This is only called if we are editing a previously saved set
-                    String xml = setActions.createSetXML();
-                    String setString = setActions.getSetAsPreferenceString();
+                    String xml = getSetActions().createSetXML();
+                    String setString = getSetActions().getSetAsPreferenceString();
                     result = storageAccess.doStringWriteToFile("Sets", "", currentSet.getSetCurrentLastName(), xml);
                     if (result) {
                         // Update the last edited version (current set already has this)
@@ -2926,13 +2925,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-    // Called after passing the boot fragment or after loading in new set
-    public void updateCurrentSet() {
-        if (setMenuFragment!=null) {
-            setMenuFragment.processTheSet();
-        }
-    }
-
     @Override
     public void updateSetList() {
         updateFragment("set_updateView", null, null);
@@ -2954,11 +2946,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateCheckForThisSong(Song thisSong) {
         songMenuFragment.updateCheckForThisSong(thisSong);
-    }
-
-    @Override
-    public void updateSetTitle() {
-        currentSet.updateSetTitleView();
     }
 
     @Override

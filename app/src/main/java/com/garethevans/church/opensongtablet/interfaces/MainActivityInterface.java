@@ -132,7 +132,6 @@ public interface MainActivityInterface {
     // Set stuff
     CurrentSet getCurrentSet();
     SetActions getSetActions();
-    void updateSetTitle();
     void refreshSetList();
     void updateSetList();
     void checkSetMenuItemHighlighted(int setPosition);

@@ -119,6 +119,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
         holder.cardFolder.setText(newfoldername);
 
+        if (si.songicon==null || si.songicon.isEmpty()) {
+            si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
+        }
+
         // Set the icon
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
         holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
@@ -187,27 +191,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         }
     }
 
-
-
-    // TODO rationalise or check
-
-    // Called when we reset the set list (notify removed and notifiy inserted
-    public void resetTheSetList(int originalItems) {
-        // This needs to be done on the mainUI
-        recyclerView.post(() -> {
-            if (originalItems>0) {
-                notifyItemRangeRemoved(0, originalItems);
-            }
-            if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-                notifyItemRangeInserted(0, mainActivityInterface.getCurrentSet().getCurrentSetSize());
-            }
-        });
-    }
-
-
-
-
-
     // The callbacks from the SetItemTouchInterface (called from the SetListItemCallback class)
     @Override
     // This method deals with dragging items up and down in the set list
@@ -241,7 +224,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             }
 
             // Update the title
-            mainActivityInterface.updateSetTitle();
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
 
             // Update the inline set to mirror these changes
             mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
@@ -275,27 +258,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
 
             // Update the title
-            mainActivityInterface.updateSetTitle();
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
 
             // Update the inline set to mirror these changes
             mainActivityInterface.updateInlineSetRemoved(fromPosition);
         }
-    }
-
-    public void notifyToClearSet() {
-        // Notify to clear the set
-        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-            mainActivityInterface.getMainHandler().post(() -> notifyItemRangeRemoved(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
-        }
-    }
-
-    public void notifyToInsertAllSet() {
-        // Notify to insert the entire set
-        if (mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
-            notifyItemRangeInserted(0, mainActivityInterface.getCurrentSet().getCurrentSetSize());
-        }
-        // Now make sure the set is visible and the progress bar is hidden
-        mainActivityInterface.updateFragment("set_showSetList", null, null);
     }
 
 
@@ -316,7 +283,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         updateCheckedItem(setItemInfo);
 
         // Update the title
-        mainActivityInterface.updateSetTitle();
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
 
         // Update the inline set to mirror this change
         mainActivityInterface.updateInlineSetInserted(position);

@@ -3571,22 +3571,26 @@ public class ProcessSong {
 
     public Bitmap getBitmapFromUri(Uri uri, int w, int h) {
         // Load in the bitmap
-        try {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            if (w > 0 && h > 0) {
-                options.outWidth = w;
-                options.outHeight = h;
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, w,
-                        h, true);
-                inputStream.close();
-                return newBitmap;
-            } else {
-                return BitmapFactory.decodeStream(inputStream, null, options);
+        if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
+            try {
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                if (w > 0 && h > 0) {
+                    options.outWidth = w;
+                    options.outHeight = h;
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                    Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, w,
+                            h, true);
+                    inputStream.close();
+                    return newBitmap;
+                } else {
+                    return BitmapFactory.decodeStream(inputStream, null, options);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
             return null;
         }
     }

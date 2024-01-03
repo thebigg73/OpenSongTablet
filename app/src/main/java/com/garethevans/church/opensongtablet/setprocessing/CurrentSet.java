@@ -21,7 +21,7 @@ public class CurrentSet {
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String TAG = "CurrentSet";
     private ArrayList<SetItemInfo> setItemInfos = new ArrayList<>();
-    private String setCurrent = "", setCurrentBeforeEdits, setCurrentLastName;
+    private String setCurrent = "", setCurrentBeforeEdits="", setCurrentLastName="";
     private final String currentSetText, notSavedText, setTitleText;
     private int indexSongInSet, prevIndexSongInSet=-1;
     private ImageView asteriskView;
@@ -231,59 +231,62 @@ public class CurrentSet {
         this.setTitleView = setTitleView;
         this.saveButtonView = saveButtonView;
         asteriskView.setPadding(0, 8, 0, 0);
+        updateSetTitleView();
     }
 
     public void updateSetTitleView() {
-        if (setCurrent!=null && setCurrentBeforeEdits!=null && setCurrentLastName!=null) {
+
+        if (setCurrent!=null && setCurrentBeforeEdits!=null && setCurrentLastName!=null &&
+            setTitleView!=null && saveButtonView!=null && asteriskView!=null) {
             String changedOrEmpty = "";
-            if (asteriskView != null) {
-                if (!setCurrent.equals(setCurrentBeforeEdits)) {
-                    asteriskView.post(() -> asteriskView.setVisibility(View.VISIBLE));
-                    changedOrEmpty += notSavedText;
-                } else {
-                    asteriskView.post(() -> asteriskView.setVisibility(View.GONE));
-                }
+            if (!setCurrent.equals(setCurrentBeforeEdits)) {
+                changedOrEmpty += notSavedText;
             }
-            if (setTitleView != null) {
-                String title = "";
-                // Adjust for set category
-                if (setCurrentLastName.contains("__")) {
-                    String[] setBits = setCurrentLastName.split("__");
-                    if (setBits.length > 0) {
-                        title += "(" + setBits[0] + ") ";
-                    }
-                    if (setBits.length > 1) {
-                        title += setBits[1];
-                    } else {
-                        title = setCurrentLastName;
-                    }
+
+            // Deal with the asterisk
+            String finalChangedOrEmpty = changedOrEmpty;
+            asteriskView.post(() -> asteriskView.setVisibility(finalChangedOrEmpty.isEmpty() ? View.GONE : View.VISIBLE));
+
+            // Deal with the title
+            String title = "";
+            // Adjust for set category
+            if (setCurrentLastName.contains("__")) {
+                String[] setBits = setCurrentLastName.split("__");
+                if (setBits.length > 0) {
+                    title += "(" + setBits[0] + ") ";
+                }
+                if (setBits.length > 1) {
+                    title += setBits[1];
                 } else {
                     title = setCurrentLastName;
                 }
-
-                String changed = changedOrEmpty;
-                if (setCurrentLastName == null || setCurrentLastName.isEmpty()) {
-                    title = currentSetText;
-                } else {
-                    title = setTitleText + title;
-                }
-                String finalTitle = title;
-
-                setTitleView.post(() -> {
-                    setTitleView.setText(finalTitle);
-                    if (changed.isEmpty()) {
-                        setTitleView.setHint(null);
-                    } else {
-                        setTitleView.setHint(changed);
-                    }
-                });
+            } else {
+                title = setCurrentLastName;
             }
-            if (saveButtonView != null) {
-                if (changedOrEmpty.isEmpty()) {
-                    saveButtonView.post(() -> saveButtonView.setVisibility(View.INVISIBLE));
+
+            String changed = changedOrEmpty;
+            if (setCurrentLastName == null || setCurrentLastName.isEmpty()) {
+                title = currentSetText;
+            } else {
+                title = setTitleText + title;
+            }
+
+            String finalTitle = title;
+
+            setTitleView.post(() -> {
+                setTitleView.setText(finalTitle);
+                if (changed.isEmpty()) {
+                    setTitleView.setHint(null);
                 } else {
-                    saveButtonView.post(() -> saveButtonView.setVisibility(View.VISIBLE));
+                    setTitleView.setHint(changed);
                 }
+            });
+
+            // Deal with the save button
+            if (changedOrEmpty.isEmpty()) {
+                saveButtonView.post(() -> saveButtonView.setVisibility(View.INVISIBLE));
+            } else {
+                saveButtonView.post(() -> saveButtonView.setVisibility(View.VISIBLE));
             }
         }
     }

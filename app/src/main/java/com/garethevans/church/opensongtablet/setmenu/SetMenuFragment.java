@@ -105,6 +105,7 @@ public class SetMenuFragment extends Fragment {
                 myView.myRecyclerView.setAdapter(setAdapter);
                 myView.myRecyclerView.setItemAnimator(null);
             });
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
         }
     }
 
@@ -189,31 +190,6 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
-    public void processTheSet() {
-        if (mainActivityInterface!=null) {
-            // Now process the set on a new thread
-            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                // Firstly hide the view and show the progress bar
-                changeVisibility(false);
-
-                // Clear out any existing set items from the recyclerView
-                // Get a note of the number of items currently in the setCurrent
-                int numPrevItems = mainActivityInterface.getCurrentSet().getCurrentSetSize();
-                mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeRemoved(0,numPrevItems));
-
-                // Parse the currentSet preference into set items
-                mainActivityInterface.getSetActions().parseCurrentSet();
-
-                // Now notify the recyclerView that it is ready to clear and redraw
-                if (setAdapter != null && mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
-                    mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeChanged(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
-                }
-
-                // Finally show the recyclerView
-                changeVisibility(true);
-            });
-        }
-    }
 
     public void changeVisibility(boolean visible) {
         if (myView!=null) {
@@ -319,6 +295,9 @@ public class SetMenuFragment extends Fragment {
 
 
     public void prepareCurrentSet() {
+        // Reset the setCurrent
+        Log.d(TAG,"prepareCurrentSet()");
+        mainActivityInterface.getCurrentSet().updateSetTitleView();
         /*if (!mainActivityInterface.getSetActions().getProcessingSet()) {
             Log.d(TAG, "prepareCurrentSet()");
             if (myView != null && mainActivityInterface != null) {

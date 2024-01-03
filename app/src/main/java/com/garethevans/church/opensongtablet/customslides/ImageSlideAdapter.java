@@ -93,16 +93,21 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             int width;
             int height;
 
-            try {
-                ParcelFileDescriptor fd = c.getContentResolver().openFileDescriptor(uri, "r");
-                BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, options);
-                width = options.outWidth;
-                height = options.outHeight;
-                fd.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                width = 200;
-                height = 200;
+            if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
+                try {
+                    ParcelFileDescriptor fd = c.getContentResolver().openFileDescriptor(uri, "r");
+                    BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, options);
+                    width = options.outWidth;
+                    height = options.outHeight;
+                    fd.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    width = 200;
+                    height = 200;
+                }
+            } else {
+                width = 0;
+                height = 0;
             }
             float scaleFactor;
             if (scaleType.equals("Y") && width > 0 && height > 0) {

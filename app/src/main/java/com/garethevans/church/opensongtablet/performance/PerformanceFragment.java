@@ -214,14 +214,20 @@ public class PerformanceFragment extends Fragment {
 
         removeViews();
 
-        if (mainActivityInterface.getWhattodo().equals("pendingLoadSet")) {
+        if (mainActivityInterface.getWhattodo().equals("pendingLoadSet") &&
+            mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
             mainActivityInterface.setWhattodo("");
             // If we have chosen to open the first item (preference), do that, otherwise, look for the current song
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst",true)) {
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(0);
                 mainActivityInterface.loadSongFromSet(0);
             } else {
+                int position = mainActivityInterface.getCurrentSet().getIndexSongInSet();
                 // Check if the current song is in the set, if not, load the first item
-                int position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                if (position<0) {
+                    position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                    mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
+                }
                 mainActivityInterface.loadSongFromSet(Math.max(position, 0));
             }
         } else {

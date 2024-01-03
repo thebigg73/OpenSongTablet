@@ -57,6 +57,9 @@ public class EditSongFragmentLyrics extends Fragment {
                     // Add listeners
                     setupListeners();
 
+                    myView.lyricsScrollView.smoothScrollTo(0,0);
+                    myView.lyrics.setTop(0);
+
                     myView.lyrics.clearFocus();
                 });
             } catch (Exception e) {
@@ -244,11 +247,10 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyricsScrollView.setFab3ToAnimate(myView.settingsButton);
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
+        //mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
     }
 
     private void manualScrollTo () {
-
         myView.lyrics.postDelayed(() -> {
             int cursorStart = myView.lyrics.getSelectionStart();
             Log.d(TAG, "onClicked().  cursorStart:" + cursorStart);
