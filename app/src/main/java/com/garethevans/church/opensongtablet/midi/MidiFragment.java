@@ -40,8 +40,6 @@ import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MidiFragment extends Fragment {
 
@@ -90,20 +88,16 @@ public class MidiFragment extends Fragment {
         // Set up the permission launcher for Nearby
         setPermissions();
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
-                // Set known values
-                setValues();
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+            // Set known values
+            setValues();
 
-                // Hide the desired views
-                hideShowViews(true, false);
+            // Hide the desired views
+            hideShowViews(true, false);
 
-                // Set listeners
-                setListeners();
-            });
-        });
+            // Set listeners
+            setListeners();
+        }));
         return myView.getRoot();
     }
 

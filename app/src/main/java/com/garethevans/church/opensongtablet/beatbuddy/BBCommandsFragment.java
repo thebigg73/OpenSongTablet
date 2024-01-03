@@ -26,8 +26,6 @@ import com.garethevans.church.opensongtablet.midi.MidiMessagesAdapter;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BBCommandsFragment extends Fragment {
 
@@ -69,8 +67,7 @@ public class BBCommandsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyCommandsBinding.inflate(inflater,container,false);
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (getContext()!=null) {
                 bbsqLite = new BBSQLite(getContext());
                 myView.currentSongMessages.post(() -> myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext())));
@@ -882,8 +879,7 @@ public class BBCommandsFragment extends Fragment {
     private void buildBBDefaultSongs() {
         // Built the default BB songs from the library
         // Do this on a separate thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (bbsqLite!=null) {
                 BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
                         BBCommandsFragment.this,bbsqLite);

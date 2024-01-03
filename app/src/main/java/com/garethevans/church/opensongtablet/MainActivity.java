@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -162,17 +163,36 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
 
+    public MainActivity() {
+        StrictMode.ThreadPolicy.Builder policy = new StrictMode.ThreadPolicy.Builder();
+        policy.detectAll();
+        policy.permitDiskReads();
+        policy.permitDiskWrites();
+        StrictMode.setThreadPolicy(policy.build());
+    }
+
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
     private boolean rebooted = false, alreadyBackPressed = false;
+
+    // Initialise the Executors and main handlers for async tasks
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            Runtime.getRuntime().availableProcessors(),     // Initial pool size
+            Runtime.getRuntime().availableProcessors(),     // Max pool size
+            1,                                              // Time
+            TimeUnit.SECONDS,                               // Unit
+            new LinkedBlockingQueue<>()                     // Blocking queue
+    );
+
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -298,7 +318,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
@@ -310,71 +329,88 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         };
         this.getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
-        prepareStrings();
-
-        // TODO can remove once we track down TransactionTooLarge crash
-        TooLargeTool.startLogging(this.getApplication());
-
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-
-        if (savedInstanceState != null) {
-            bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
-            rebooted = true;
-            getSongListBuildIndex();
-
-            songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
-            songListBuildIndex.setFullIndexRequired(!songListBuildIndex.getIndexComplete());
-
-            nearbyConnections = getNearbyConnections();
-            nearbyConnections.setIsHost(savedInstanceState.getBoolean("isHost", false));
-            nearbyConnections.setUsingNearby(savedInstanceState.getBoolean("usingNearby", false));
-            nearbyConnections.setDiscoveredEndpoints(savedInstanceState.getStringArrayList("discoveredEndpoints"));
-            nearbyConnections.setConnectedEndpoints(savedInstanceState.getStringArrayList("connectedEndpoints"));
-            // If we were using Nearby, try to start it again
-            if (nearbyConnections.getUsingNearby() && nearbyConnections.getIsHost()) {
-                nearbyConnections.doTempAdvertise();
-            } else if (nearbyConnections.getUsingNearby() && !nearbyConnections.getIsHost()) {
-                        nearbyConnections.doTempDiscover();
-            }
-
-            // Make sure the song title is there
-            updateToolbar(null);
-
-            // Clear the saved instance state - we've finished with everything we need.
-            savedInstanceState.clear();
-
-        } else {
-            rebooted = false;
-        }
-
-        // Did we receive an intent (user clicked on an openable file)?
-        fileOpenIntent = getIntent();
-        onNewIntent(fileOpenIntent);
-
         if (myView == null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
         }
 
-        setContentView(myView.getRoot());
+        // Attempt stuff using the threadPooleExecutor
+        getThreadPoolExecutor().execute(() -> {
 
-        // Set up the action bar
-        setupActionbar();
+            Log.d(TAG,"cores:"+threadPoolExecutor.getCorePoolSize());
 
-        // Initialise helpers (the ones needed to start - others are set up later)
-        setupHelpers();
+            prepareStrings();
 
-        // Set up views
-        setupViews();
+            mainLooper.post(() -> {
+                // TODO can remove once we track down TransactionTooLarge crash
+                TooLargeTool.startLogging(this.getApplication());
 
-        // Set up the navigation controller
-        setupNavigation();
+                WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+            });
 
-        initialiseActivity();
+            if (savedInstanceState != null) {
+                bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
+                rebooted = true;
+                getSongListBuildIndex();
+
+                songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
+                songListBuildIndex.setFullIndexRequired(!songListBuildIndex.getIndexComplete());
+
+                nearbyConnections = getNearbyConnections();
+                nearbyConnections.setIsHost(savedInstanceState.getBoolean("isHost", false));
+                nearbyConnections.setUsingNearby(savedInstanceState.getBoolean("usingNearby", false));
+                nearbyConnections.setDiscoveredEndpoints(savedInstanceState.getStringArrayList("discoveredEndpoints"));
+                nearbyConnections.setConnectedEndpoints(savedInstanceState.getStringArrayList("connectedEndpoints"));
+                // If we were using Nearby, try to start it again
+                if (nearbyConnections.getUsingNearby() && nearbyConnections.getIsHost()) {
+                    nearbyConnections.doTempAdvertise();
+                } else if (nearbyConnections.getUsingNearby() && !nearbyConnections.getIsHost()) {
+                    nearbyConnections.doTempDiscover();
+                }
+
+                // Make sure the song title is there
+                updateToolbar(null);
+
+                // Clear the saved instance state - we've finished with everything we need.
+                savedInstanceState.clear();
+
+            } else {
+                rebooted = false;
+            }
+
+            // Did we receive an intent (user clicked on an openable file)?
+            fileOpenIntent = getIntent();
+            onNewIntent(fileOpenIntent);
+
+            mainLooper.post(() -> {
+                setContentView(myView.getRoot());
+
+                // Set up the helpers
+                setupHelpers();
+
+                // Set up the action bar
+                setupActionbar();
+
+                // Set up views
+                setupViews();
+
+                // Set up the navigation controller
+                setupNavigation();
+
+                // Initialise the activity
+                //initialiseActivity();
+            });
+        });
+
     }
 
     @Override
     public Handler getMainHandler() {
         return mainLooper;
+    }
+
+    @Override
+    public ThreadPoolExecutor getThreadPoolExecutor() {
+        return threadPoolExecutor;
     }
 
     private void prepareStrings() {
@@ -834,6 +870,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Tell the second screen we are ready
         bootUpCompleted = true;
         myView.myAppBarLayout.setVisibility(View.VISIBLE);
+
+        // Update the current set
+        updateCurrentSet();
+
     }
 
     private void initialiseStartVariables() {
@@ -1151,9 +1191,53 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     break;
 
+                case "sortSet":
+                case "shuffleSet":
+                    getThreadPoolExecutor().execute(() -> {
+                        if (setMenuFragment!=null) {
+                            // Firstly hide the set
+                            setMenuFragment.changeVisibility(false);
+
+                            // Sort the set as required
+                            if (fragName.equals("sortSet")) {
+                                getSetActions().sortSet();
+                            } else {
+                                getSetActions().shuffleSet();
+                            }
+
+                            // Update the set items
+                            setMenuFragment.notifyItemRangeChanged(0,getCurrentSet().getCurrentSetSize());
+
+                            // Show the set
+                            setMenuFragment.changeVisibility(true);
+                        }
+                    });
+                    break;
+
+                case "set_hideSetList":
+                    // Sorting or preparing.  Hide it and show the progress bar
+                    if (setMenuFragment!=null) {
+                        setMenuFragment.changeVisibility(false);
+                    }
+                    break;
+
+                case "set_showSetList":
+                    // Sorting or preparing finished.  Show it and hide the progress bar
+                    if (setMenuFragment!=null) {
+                        setMenuFragment.changeVisibility(true);
+                    }
+                    break;
+
+                case "set_clearItems":
+                    if (setMenuFragment!=null) {
+                        setMenuFragment.notifyToClearSet();
+                    }
+                    break;
+
                 case "set_updateKeys":
                 case "set_updateView":
                 case "set_updateItem":
+                    Log.d(TAG,"fragName:"+fragName);
                     // User has the set menu open and wants to do something
                     if (setMenuFragment != null) {
                         if (fragName.equals("set_updateView")) {
@@ -1856,8 +1940,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void indexSongs() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        getThreadPoolExecutor().execute(() -> {
             try {
                 mainLooper.post(() -> {
                     if (showToast != null && search_index_start != null) {
@@ -1971,6 +2054,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+
+    // Called after indexing the songs
     @Override
     public void updateSongMenu(Song song) {
         // This only asks for an update from the database
@@ -2031,7 +2116,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         loadSong();
     }
-
+    @Override
+    public void notifyToClearInlineSet() {
+        if (performanceValid()) {
+            performanceFragment.notifyToClearInlineSet();
+        } else if (presenterValid()) {
+            presenterFragment.notifyToClearInlineSet();
+        }
+    }
+    @Override
+    public void notifyToInsertAllInlineSet() {
+        if (performanceValid()) {
+            performanceFragment.notifyToInsertAllInlineSet();
+        } else if (presenterValid()) {
+            presenterFragment.notifyToInsertAllInlineSet();
+        }
+    }
+    @Override
+    public void updateInlineSetHighlight() {
+        if (performanceValid()) {
+            performanceFragment.updateInlineSetHighlight();
+        } else if (presenterValid()) {
+            presenterFragment.updateInlineSetHighlight();
+        }
+    }
     @Override
     public void updateInlineSetMove(int from, int to) {
         if (performanceValid()) {
@@ -2085,11 +2193,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public void initialiseInlineSetItem(int position) {
+    public void initialiseInlineSetItem() {
         if (performanceValid()) {
-            performanceFragment.initialiseInlineSetItem(position);
+            performanceFragment.initialiseInlineSetItem();
         } else if (presenterValid()) {
-            presenterFragment.initialiseInlineSetItem(position);
+            presenterFragment.initialiseInlineSetItem();
         }
     }
 
@@ -2488,7 +2596,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         int delay = 0;
         if (getMenuOpen() && closeDrawer) {
             closeDrawer(true);
-            delay = 200;
+            delay = 100;
         }
         mainLooper.postDelayed(() -> {
             if (whichMode.equals(presenter)) {
@@ -2509,105 +2617,104 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSongFromSet(int position) {
-        if (position >= currentSet.getIndexSongInSet()) {
-            displayPrevNext.setSwipeDirection("R2L");
-        } else {
-            displayPrevNext.setSwipeDirection("L2R");
-        }
-
-        if (getCurrentSet().getCurrentSetSize()>position) {
-            // Get the set item
-            SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
-
-            // Update the index in the set
-            // Remove highlighting from the old position
-            setMenuFragment.clearOldHighlight(currentSet.getIndexSongInSet());
-            currentSet.setIndexSongInSet(position);
-            setMenuFragment.updateItem(position);
-
-            // Get the song key (from the database)
-            String songKey = "";
-            if (storageAccess.isSpecificFileExtension("imageorpdf", getCurrentSet().getSetItemInfo(position).songfilename)) {
-                songKey = nonOpenSongSQLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
+        getThreadPoolExecutor().execute(() -> {
+            if (position >= currentSet.getIndexSongInSet()) {
+                displayPrevNext.setSwipeDirection("R2L");
             } else {
-                if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
-                    Song quickSong = new Song();
-                    quickSong.setFolder(setItemInfo.songfolder);
-                    quickSong.setFilename(setItemInfo.songfilename);
-                    quickSong = loadSong.doLoadSongFile(quickSong, false);
-                    songKey = quickSong.getKey();
+                displayPrevNext.setSwipeDirection("L2R");
+            }
+
+            if (getCurrentSet().getCurrentSetSize() > position) {
+                // Get the set item
+                SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
+
+                // Update the index in the set
+                // Remove highlighting from the old position
+                currentSet.setIndexSongInSet(position);
+                setMenuFragment.updateHighlight();
+
+                // Get the song key (from the database)
+                String songKey;
+                if (storageAccess.isSpecificFileExtension("imageorpdf", getCurrentSet().getSetItemInfo(position).songfilename)) {
+                    songKey = nonOpenSongSQLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
                 } else {
-                    songKey = sqLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
-                }
-            }
-
-            if (setItemInfo.songkey != null && songKey != null &&
-                    !setItemInfo.songkey.isEmpty() && !songKey.isEmpty() && !setItemInfo.songkey.equals(songKey)) {
-                // The set has specified a key that is different from our song
-                // We will use a variation of the current song
-                String newFolder;
-                String newFilename;
-                if (!setItemInfo.songfolder.contains("**")) {
-                    // Not a variation already, so we'll make it one with the set key
-                    newFolder = "**" + variation;
-                    newFilename = setItemInfo.songfolder.replace("/", "_") + "_" + setItemInfo.songfilename + "_" + setItemInfo.songkey;
-                    newFilename = newFilename.replace("__", "_");
-                } else {
-                    // Already a variation, don't change the file name
-                    newFolder = setItemInfo.songfolder;
-                    newFilename = setItemInfo.songfilename;
+                    if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
+                        Song quickSong = new Song();
+                        quickSong.setFolder(setItemInfo.songfolder);
+                        quickSong.setFilename(setItemInfo.songfilename);
+                        quickSong = loadSong.doLoadSongFile(quickSong, false);
+                        songKey = quickSong.getKey();
+                    } else {
+                        songKey = sqLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
+                    }
                 }
 
-                // Get a tempSong we can write
-                Song copySong = new Song();
-                if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
-                    // Already a variation (or other), so don't use the database
-                    copySong.setFilename(setItemInfo.songfilename);
-                    copySong.setFolder(setItemInfo.songfolder);
-                    copySong = loadSong.doLoadSongFile(copySong, false);
-                } else {
-                    // Just a song, so use the database
-                    copySong = sqLiteHelper.getSpecificSong(setItemInfo.songfolder, setItemInfo.songfilename);
+                if (setItemInfo.songkey != null && songKey != null &&
+                        !setItemInfo.songkey.isEmpty() && !songKey.isEmpty() && !setItemInfo.songkey.equals(songKey)) {
+                    // The set has specified a key that is different from our song
+                    // We will use a variation of the current song
+                    String newFolder;
+                    String newFilename;
+                    if (!setItemInfo.songfolder.contains("**")) {
+                        // Not a variation already, so we'll make it one with the set key
+                        newFolder = "**" + variation;
+                        newFilename = setItemInfo.songfolder.replace("/", "_") + "_" + setItemInfo.songfilename + "_" + setItemInfo.songkey;
+                        newFilename = newFilename.replace("__", "_");
+                    } else {
+                        // Already a variation, don't change the file name
+                        newFolder = setItemInfo.songfolder;
+                        newFilename = setItemInfo.songfilename;
+                    }
+
+                    // Get a tempSong we can write
+                    Song copySong = new Song();
+                    if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
+                        // Already a variation (or other), so don't use the database
+                        copySong.setFilename(setItemInfo.songfilename);
+                        copySong.setFolder(setItemInfo.songfolder);
+                        copySong = loadSong.doLoadSongFile(copySong, false);
+                    } else {
+                        // Just a song, so use the database
+                        copySong = sqLiteHelper.getSpecificSong(setItemInfo.songfolder, setItemInfo.songfilename);
+                    }
+                    copySong.setFolder(newFolder);
+                    copySong.setFilename(newFilename);
+
+                    // Transpose the lyrics
+                    // Get the number of transpose times
+                    int transposeTimes = transpose.getTransposeTimes(songKey, setItemInfo.songkey);
+                    copySong.setKey(songKey); // This will be transposed in the following...
+                    copySong.setLyrics(transpose.doTranspose(copySong,
+                            "+1", transposeTimes, copySong.getDetectedChordFormat(),
+                            copySong.getDesiredChordFormat()).getLyrics());
+                    // Get the song XML
+                    String songXML = processSong.getXML(copySong);
+                    // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
+                    getStorageAccess().updateFileActivityLog(TAG + " loadSongFromSet doStringWriteToFile Variations/" + newFilename + " with: " + songXML);
+                    storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
+
+                    setItemInfo.songfolder = newFolder;
+                    setItemInfo.songfilename = newFilename;
                 }
-                copySong.setFolder(newFolder);
-                copySong.setFilename(newFilename);
 
-                // Transpose the lyrics
-                // Get the number of transpose times
-                int transposeTimes = transpose.getTransposeTimes(songKey, setItemInfo.songkey);
-                copySong.setKey(songKey); // This will be transposed in the following...
-                copySong.setLyrics(transpose.doTranspose(copySong,
-                        "+1", transposeTimes, copySong.getDetectedChordFormat(),
-                        copySong.getDesiredChordFormat()).getLyrics());
-                // Get the song XML
-                String songXML = processSong.getXML(copySong);
-                // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
-                getStorageAccess().updateFileActivityLog(TAG + " loadSongFromSet doStringWriteToFile Variations/" + newFilename + " with: " + songXML);
-                storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
-
-                setItemInfo.songfolder = newFolder;
-                setItemInfo.songfilename = newFilename;
-            }
-
-            // If the set menu is open/exists, try to scroll to this item
-            if (setMenuFragment != null) {
-                try {
-                    setMenuFragment.scrollToItem();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // If the set menu is open/exists, try to scroll to this item
+                if (setMenuFragment != null) {
+                    try {
+                        setMenuFragment.scrollToItem();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+
+                // If we are using the inline set, highlight and scroll to to this item
+                if (presenterValid()) {
+                    presenterFragment.updateInlineSetHighlight();
+                } else if (performanceValid()) {
+                    performanceFragment.updateInlineSetHighlight();
+                }
+                doSongLoad(setItemInfo.songfolder, setItemInfo.songfilename, true);
             }
-
-            // If we are using the inline set, scroll to this item
-            if (presenterValid()) {
-                presenterFragment.updateInlineSetItem(position);
-            } else if (performanceValid()) {
-                performanceFragment.updateInlineSetItem(position);
-            }
-
-            doSongLoad(setItemInfo.songfolder, setItemInfo.songfilename, true);
-
-        }
+        });
     }
 
     @Override
@@ -2616,7 +2723,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // This is called from the MyToolbar
         // Will only do something if the set item isn't already highlighted - normally on boot
         if (setPosition > -1) {
-            setMenuFragment.initialiseSetItem(setPosition);
+            setMenuFragment.initialiseSetItem();
         }
     }
 
@@ -2724,16 +2831,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "newSet":
-                    // Clear the current set
-                    currentSet.initialiseTheSet();
-                    currentSet.setSetCurrent("");
-                    currentSet.setSetCurrentBeforeEdits("");
-                    currentSet.setSetCurrentLastName("");
-                    preferences.setMyPreferenceString("setCurrent", "");
-                    preferences.setMyPreferenceString("setCurrentLastName", "");
-                    // Untick song menu items
-                    updateSongList();
-                    updateFragment("set_updateView", null, null);
+                    getThreadPoolExecutor().execute(() -> {
+                        if (setMenuFragment!=null) {
+                            // Firstly hide the set
+                            setMenuFragment.changeVisibility(false);
+
+                            int count = getCurrentSet().getCurrentSetSize();
+
+                            // Now clear the current set and preferences
+                            getSetActions().clearCurrentSet();
+
+                            // Untick the songs in the song menu
+                            updateSongList();
+
+                            // Notify the set that we removed items
+                            setMenuFragment.notifyItemRangeRemoved(0, count);
+
+                            // Update the set
+                            setMenuFragment.updateSet();
+
+                            // Show the set
+                            setMenuFragment.changeVisibility(true);
+                        }
+                    });
                     result = true;
                     break;
 
@@ -2803,6 +2923,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             } else if (allowToast && showToast != null && getResources() != null) {
                 showToast.doIt(error);
             }
+        }
+    }
+
+    // Called after passing the boot fragment or after loading in new set
+    public void updateCurrentSet() {
+        if (setMenuFragment!=null) {
+            setMenuFragment.processTheSet();
         }
     }
 
@@ -2895,8 +3022,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 showToast = new ShowToast(this, myView.getRoot());
             }
             showToast.doIt(search_index_start);
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
+            getThreadPoolExecutor().execute(() -> {
                 String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 if (songMenuFragment != null && !songMenuFragment.isDetached()) {
                     try {

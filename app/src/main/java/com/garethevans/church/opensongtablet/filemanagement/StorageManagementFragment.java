@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet.filemanagement;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +19,6 @@ import com.garethevans.church.opensongtablet.databinding.StorageFolderDisplayBin
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class StorageManagementFragment extends Fragment {
 
@@ -77,10 +73,8 @@ public class StorageManagementFragment extends Fragment {
         }
     }
     private void setUpThread() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 myView.progressBar.setVisibility(View.VISIBLE);
                 String text = "OpenSong\n("+root_string+")";
                 myView.rootFolder.setText(text);
@@ -99,7 +93,7 @@ public class StorageManagementFragment extends Fragment {
 
             // Prepare the showcase
             initialiseShowcaseArrays();
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 prepareShowcaseViews();
                 if (getActivity()!=null) {
                     mainActivityInterface.getShowCase().sequenceShowCase(getActivity(), views, null, infos, rects, "storageManagement");

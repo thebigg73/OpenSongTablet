@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,8 +20,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class EditSongFragmentMain extends Fragment  {
 
@@ -37,7 +33,6 @@ public class EditSongFragmentMain extends Fragment  {
     private TextInputBottomSheet textInputBottomSheet;
     private ArrayList<String> folders;
     private ExposedDropDownArrayAdapter arrayAdapter;
-    private Handler handler;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,10 +44,7 @@ public class EditSongFragmentMain extends Fragment  {
     @Override
     public void onResume() {
         super.onResume();
-        handler = new Handler(Looper.getMainLooper());
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             prepareStrings();
 
             // Initialise the views
@@ -79,7 +71,7 @@ public class EditSongFragmentMain extends Fragment  {
     }
     // Initialise the views
     private void setupValues() {
-        handler.post(() -> {
+        mainActivityInterface.getMainHandler().post(() -> {
             myView.title.setText(mainActivityInterface.getTempSong().getTitle());
             myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
             myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
@@ -102,7 +94,7 @@ public class EditSongFragmentMain extends Fragment  {
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",new_folder_string,new_folder_name_string,null,"","",true);
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        handler.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
+        mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
     }
 
     // Sor the view visibility, listeners, etc.

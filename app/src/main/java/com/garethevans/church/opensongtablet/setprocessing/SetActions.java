@@ -48,7 +48,6 @@ public class SetActions {
     private final String customLocBasic = "../";
     private final String nicePDF, niceVariation, niceImage, niceSlide,
         niceScripture, niceNote;
-
     private ArrayList<Integer> missingKeyPositions;
 
     public SetActions(Context c) {
@@ -64,9 +63,15 @@ public class SetActions {
 
     // Convert between the currentSet string in preferences and the arrayLists
 
+
+    // Called from the setMenuFragment on first boot, clearing, sorting or on loading new set in
     public void parseCurrentSet() {
+        Log.d(TAG,"parseCurrentSet()");
         // Sets may or may not have the preferred key embedded in them (old sets before V6 will not)
         // $**_folder1/song1_**$$**_folder2/song2_**A**__**$
+
+        // Initialise set object array
+        mainActivityInterface.getCurrentSet().initialiseTheSet();
 
         // Get the current set and the last edited version.
         // These are stored as variables in the CurrentSet class in this process
@@ -85,10 +90,15 @@ public class SetActions {
         currentSet = currentSet.replace(itemStart,"");
         currentSet = currentSet.replace(itemEnd,"");
         String[] setItems = currentSet.split("\n");
-        mainActivityInterface.getCurrentSet().initialiseTheSet();
 
+        int songitem = 1;
         for (String setItem:setItems) {
             SetItemInfo setItemInfo = new SetItemInfo();
+
+            // Add the set item number and increment for the next one if required
+            setItemInfo.songitem = songitem;
+            songitem ++;
+
             if (!setItem.isEmpty()) {
                 // If we have a key, get it
                 String key = "";
@@ -109,9 +119,11 @@ public class SetActions {
                     folder = setItem.substring(0, setItem.lastIndexOf("/"));
                     setItem = setItem.replace(folder+"/","");
                 }
+                String foldernice = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(folder);
                 String filename = setItem.replace("/","");
 
                 setItemInfo.songfolder = folder;
+                setItemInfo.songfoldernice = foldernice;
                 setItemInfo.songfilename = filename;
                 if (!mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                     // Get the title from the database
@@ -124,13 +136,19 @@ public class SetActions {
                 setItemInfo.songkey = key;
                 setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo,false);
+                Song thisSong = new Song();
+                thisSong.setFolder(folder);
+                thisSong.setFilename(filename);
+                thisSong.setKey(key);
+                mainActivityInterface.updateCheckForThisSong(thisSong);
             }
         }
-        mainActivityInterface.updateSetList();
     }
 
     // Called after the songs have been indexed.  Check titles from database
     public void updateSetTitlesAndIndexes() {
+        Log.d(TAG,"updateSetTitlesAndIndexes()");
+
         for (int x=0; x<mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
             // Update the title
             Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
@@ -166,31 +184,35 @@ public class SetActions {
                 mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Songs";
             }
             mainActivityInterface.updateSetList();
+
+            // Update checks in the song menu
+            mainActivityInterface.updateCheckForThisSong(tempSong);
         }
     }
 
-
-    private String getKeyFromDatabaseOrFile(String key, String folder, String filename) {
-        // First off, check, the database.  If it isn't there, it might be coming soon
-        // If we've finished indexing, the last chance is to try the file directly if it
-        // still isn't in the database - could be a variation file created from the set.
-        // We only check the variation file last to avoid any issues during indexing.
-        if ((key==null || key.isEmpty()) && folder.startsWith(customLocBasic) && folder.startsWith(customLocStart)) {
-            // If this is an image or pdf, check the nonOpenSongSQLite database
-            // Otherwise use the normal database
-            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("imageorpdf",filename)) {
-                key = mainActivityInterface.getNonOpenSongSQLiteHelper().getKey(folder,filename);
-            } else {
-                key = mainActivityInterface.getSQLiteHelper().getKey(folder,filename);
+    public boolean isSongInSet(String folderNamePair) {
+        boolean inSet = false;
+        for (SetItemInfo setItemInfo : mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+            if (folderNamePair.equals(setItemInfo.songfolder + "/" + setItemInfo.songfilename)) {
+                inSet = true;
+                break;
             }
-        } else if ((key==null || key.isEmpty()) && folder.contains(folderVariations)) {
-            // This is a custom variation item so load the key from the file
-            key = mainActivityInterface.getLoadSong().loadKeyOfSong(folder,filename);
         }
-
-        return fixNull(key);
+        return inSet;
     }
+
+    public void clearCurrentSet() {
+        mainActivityInterface.getCurrentSet().initialiseTheSet();
+        mainActivityInterface.getCurrentSet().setSetCurrent("");
+        mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
+        mainActivityInterface.getCurrentSet().setSetCurrentLastName("");
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", "");
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentLastName", "");
+    }
+
     public String getSetAsPreferenceString() {
+        Log.d(TAG,"getSetAsPreferenceString()");
+
         // Build the set list into a string that can be saved to preferences
         // Use the arrays for folder, song title and key.  These should match!
         // As a precaution, each item is in a try/catch incase the arrays are different sizes
@@ -229,6 +251,8 @@ public class SetActions {
     }
 
     public int indexSongInSet(Song thisSong) {
+        Log.d(TAG,"indexSongInSet(song)");
+
         // Because set items can be stored with or without a specified key, we search for both
         String searchText = getSongForSetWork(thisSong);
         Song noKeySong = new Song();
@@ -298,6 +322,7 @@ public class SetActions {
 
         if (position>-1) {
             // If a key was specified in the set and it matches this song, go to that position in the set
+            Log.d(TAG,"found song with key at position:"+position);
             return position;
         } else {
             // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
@@ -305,11 +330,13 @@ public class SetActions {
             // If a key was specified in the set, but the song clicked on in the song menu is different,
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
+            Log.d(TAG,"found song with no key at position:"+positionNoKey);
             return positionNoKey;
         }
     }
 
     public void shuffleSet() {
+        Log.d(TAG,"shuffleSet()");
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         Collections.shuffle(mainActivityInterface.getCurrentSet().getSetItemInfos());
 
@@ -317,6 +344,7 @@ public class SetActions {
     }
 
     public void sortSet() {
+        Log.d(TAG,"sortSet()");
         // Sort the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         // Comparator used to process the items and sort case insensitive and including accented chars
         Comparator<SetItemInfo> comparator = (o1, o2) -> {
@@ -329,9 +357,11 @@ public class SetActions {
     }
 
     private void finishChangingSet() {
-        // Now reset the folder, filename and key arrays as we will rebuild them
-        // We don't initialise all arrays as we need to keep the currentSet one
-        mainActivityInterface.getCurrentSet().initialiseTheSet();
+        Log.d(TAG,"finishChangingSet()");
+
+        // Save the current set
+        mainActivityInterface.getCurrentSet().updateCurrentSetPreferences();
+        Log.d(TAG,"currentSetAfterChange:"+mainActivityInterface.getCurrentSet().getSetCurrent());
 
         // Now build the individual values from the set item array which we shuffled
         parseCurrentSet();
@@ -341,12 +371,14 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setSetCurrent(setCurrent);
         indexSongInSet(mainActivityInterface.getSong());
 
-        mainActivityInterface.updateSetList();
+        //mainActivityInterface.updateSetList();
         mainActivityInterface.updateInlineSetAll();
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
     }
 
     public void checkMissingKeys() {
+        Log.d(TAG,"checkMissingKeys()");
+
         // Called once song indexing is complete
         // Some keys may not have been loaded to the database when they were first looked for
         // If there is an empty value, try again
@@ -372,25 +404,31 @@ public class SetActions {
         }
     }
     public ArrayList<Integer> getMissingKeyPositions() {
+
+        Log.d(TAG,"getMissingKeyPositions()");
         return missingKeyPositions;
     }
     public void nullMissingKeyPositions() {
+
+        Log.d(TAG,"nullMissingKeyPositions()");
         missingKeyPositions = null;
     }
 
     public void saveTheSet() {
+        Log.d(TAG,"saveTheSet()");
+
         // This saves the set to user preferences for loading in next time
         // Not to be confused with exporting/saving the set as a file
         String setString = getSetAsPreferenceString();
         mainActivityInterface.getCurrentSet().setSetCurrent(setString);
         mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(setString);
-        mainActivityInterface.updateSetList();
+        //mainActivityInterface.updateSetList();
         mainActivityInterface.updateSongList();
-
-        // TODO Check references for set name that gets saved.  Especially if we have merged sets.
     }
 
     public String niceCustomLocationFromFolder(String folderLocation) {
+        Log.d(TAG,"niceCustomLocationFromFolder()");
+
         // This gives a nice output for the folderLocation for viewing
         folderLocation = folderLocation.replace(customLocBasic,"");
         folderLocation = folderLocation.replace("/_cache","");
@@ -413,34 +451,15 @@ public class SetActions {
         }
         return customLocStart + folderLocation;
     }
-    public String folderFromNiceCustomLocation(String niceFolder) {
-        // This converts things like **Variations, **Scripture back to the folder
-        niceFolder = niceFolder.replace(customLocStart,"");
-        niceFolder = niceFolder.replace(c.getString(R.string.variation),folderVariations);
-        niceFolder = niceFolder.replace(c.getString(R.string.note),folderNotes);
-        niceFolder = niceFolder.replace(c.getString(R.string.slide),folderSlides);
-        niceFolder = niceFolder.replace(c.getString(R.string.scripture),folderScripture);
-        niceFolder = niceFolder.replace(c.getString(R.string.image),folderImages);
-
-        // Some of the above actually go into a _cache subfolder, but that is dealt with later
-        return niceFolder;
-    }
-    public String whatToLookFor(Song thisSong) {
-        // This deals with custom locations (variations, notes, slides, etc)
-        String folder;
-        if (thisSong.getFolder().startsWith(customLocBasic)) {
-            folder = thisSong.getFolder().replaceFirst(customLocBasic,customLocStart);
-        } else {
-            folder = thisSong.getFolder();
-        }
-        return itemStart + folder + "/" + thisSong.getFilename() + keyStart + thisSong.getKey() +
-                keyEnd + itemEnd;
-    }
 
     public ArrayList<String> getAllSets() {
+        Log.d(TAG,"getAllSets()");
+
         return mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
     }
     public ArrayList<String> getCategories(ArrayList<String> allSets) {
+        Log.d(TAG,"getCategories");
+
         ArrayList<String> categories = new ArrayList<>();
 
         for (String setName:allSets) {
@@ -458,6 +477,8 @@ public class SetActions {
         return categories;
     }
     public ArrayList<String> setsInCategory(ArrayList<String> allSets) {
+        Log.d(TAG,"setsInCategory");
+
         ArrayList<String> availableSets = new ArrayList<>();
         String category = mainActivityInterface.getPreferences().getMyPreferenceString(
                 "whichSetCategory", c.getString(R.string.mainfoldername));
@@ -476,6 +497,8 @@ public class SetActions {
         return availableSets;
     }
     public ArrayList<String> listSetsWithCategories(ArrayList<String> allSets) {
+        Log.d(TAG,"listSetsWithCategories");
+
         ArrayList<String> availableSets = new ArrayList<>();
         for (String possibleSet:allSets) {
             if (possibleSet.contains(setCategorySeparator)) {
@@ -496,6 +519,8 @@ public class SetActions {
         return availableSets;
     }
     public void makeVariation(int position) {
+        Log.d(TAG,"makeVariation");
+
         // Takes the chosen song and copies it to a temporary file in the Variations folder
         // This also updates the set menu to point to the new temporary item
         // This allows the user to freely edit the variation object
@@ -542,6 +567,8 @@ public class SetActions {
     }
 
     public int getItemIcon(String valueToDecideFrom) {
+        Log.d(TAG,"getItemIcon()");
+
         int icon;
         // Get rid of ** and ../
         valueToDecideFrom = valueToDecideFrom.replace(customLocBasic,"");
@@ -574,6 +601,8 @@ public class SetActions {
         return icon;
     }
     public String getIconIdentifier(String folder, String filename) {
+        Log.d(TAG,"getIconIdentifier");
+
         // If the filename is an image, we use that
         String valueToDecideFrom;
         if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {
@@ -589,6 +618,8 @@ public class SetActions {
     }
 
     public String createSetXML() {
+        Log.d(TAG,"createSetXML");
+
         StringBuilder stringBuilder = new StringBuilder();
 
         // The starting of the xml file
@@ -660,6 +691,8 @@ public class SetActions {
         return stringBuilder.toString();
     }
     private Song getTempSong(String folder, String name) {
+        Log.d(TAG,"getTempSong()");
+
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(folder,name);
         try {
             tempSong = mainActivityInterface.getLoadSong().doLoadSong(tempSong,false);
@@ -670,6 +703,8 @@ public class SetActions {
         return tempSong;
     }
     private StringBuilder buildSong(String path, String name, String key) {
+        Log.d(TAG,"buildSong()");
+
         // If we have a key set add this as a value.  Desktop will ignore
         String keyText = "";
         if (key!=null && !key.isEmpty()) {
@@ -691,6 +726,8 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildScripture(Song tempSong) {
+        Log.d(TAG,"buildScripture()");
+
         StringBuilder sb = new StringBuilder();
 
         // The scripture is loaded to a new, temp song object
@@ -730,6 +767,8 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildVariation(Song tempSong) {
+        Log.d(TAG,"buildVariation()");
+
         StringBuilder sb = new StringBuilder();
 
         // The variation is loaded to a new, temp song object
@@ -799,6 +838,8 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildSlide(Song tempSong) {
+        Log.d(TAG,"buildSlide()");
+
         StringBuilder sb = new StringBuilder();
         // Adding a custom slide
         String slide_lyrics = tempSong.getLyrics();
@@ -838,6 +879,8 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildNote(Song tempSong) {
+        Log.d(TAG,"buildNote()");
+
         StringBuilder sb = new StringBuilder();
         // Adding a note
 
@@ -861,6 +904,8 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildImage(Song tempSong) {
+        Log.d(TAG,"buildImage()");
+
         // Adding a custom image slide
         StringBuilder sb = new StringBuilder();
 
@@ -911,6 +956,8 @@ public class SetActions {
     }
 
     public void loadSets(ArrayList<Uri> setsToLoad, String setName) {
+        Log.d(TAG,"loadSets()");
+
         // This is called via a new thread in the manage sets fragment
         // We can append multiple sets together
         // If the set loaded has a song has a key specified with it, we compare with our key
@@ -928,7 +975,7 @@ public class SetActions {
         mainActivityInterface.getStorageAccess().createOrCheckRootFolders(null);
 
         // Initialise the arrays that will hold the loaded information
-        mainActivityInterface.getCurrentSet().initialiseTheSet();
+        //mainActivityInterface.getCurrentSet().initialiseTheSet();
 
         // Prepare the set name
         mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
@@ -947,6 +994,8 @@ public class SetActions {
     }
 
     public void extractSetFile(Uri uri, boolean asExport) {
+        Log.d(TAG,"extractSetFile()");
+
         // This loads individual set files and populates the arrays
         // Set up the xml utility
         try {
@@ -1013,6 +1062,8 @@ public class SetActions {
     }
 
     private String stripSlashes(String string) {
+        Log.d(TAG,"stripSlashes()");
+
         if (string.startsWith("/")) {
             string = string.replaceFirst("/", "");
         }
@@ -1024,6 +1075,8 @@ public class SetActions {
 
     private void getSong(XmlPullParser xpp, boolean asExport)
             throws IOException, XmlPullParserException {
+        Log.d(TAG,"getSong()");
+
         // Set this info into the current set.  We will just load our song
         // When we load, we will transpose our song if the key is different
         String path = stripSlashes(mainActivityInterface.getProcessSong().
@@ -1050,6 +1103,8 @@ public class SetActions {
     }
 
     private void getScripture(XmlPullParser xpp, boolean asExport) throws IOException, XmlPullParserException {
+        Log.d(TAG,"getScripture()");
+
         // Scripture entries in a set are custom slides.  Get the data and save it
         // This will ultimately be saved in our Scripture/_cache folder
         String scripture_title = "";
@@ -1154,6 +1209,8 @@ public class SetActions {
     }
 
     private void getCustom(XmlPullParser xpp, boolean asExport) throws XmlPullParserException {
+        Log.d(TAG,"getCustom()");
+
         // Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
@@ -1314,6 +1371,8 @@ public class SetActions {
     }
 
     private void getImage(XmlPullParser xpp, boolean asExport) throws IOException, XmlPullParserException {
+        Log.d(TAG,"getImage()");
+
         // Ok parse this bit separately.  This could have multiple images
         String image_name = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name"));
         String image_seconds = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "seconds"));
@@ -1445,6 +1504,8 @@ public class SetActions {
     }
 
     private String fixNull(String s) {
+        Log.d(TAG,"fixNull()");
+
         if (s == null) {
             s = "";
         }
@@ -1452,6 +1513,8 @@ public class SetActions {
     }
 
     private void removeCacheItemsFromDB(String folder) {
+        Log.d(TAG,"removeCacheItemsFromDF");
+
         ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "_cache");
         for (String filename:filesInFolder) {
             mainActivityInterface.getSQLiteHelper().deleteSong(customLocStart+folder, filename);
@@ -1473,6 +1536,8 @@ public class SetActions {
     }
 
     private void writeTempSlide(String folder, String subfolder, Song tempSong) {
+        Log.d(TAG,"writeTempSlide");
+
         // Get the song as XML
         tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(tempSong));
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTempSlide doStringWriteToFile "+folder+"/"+subfolder+"/"+tempSong.getFilename()+" with: "+tempSong.getSongXML());
@@ -1480,6 +1545,8 @@ public class SetActions {
     }
 
     private String safeNextText(XmlPullParser xpp) {
+        Log.d(TAG,"safeNextText()");
+
         try {
             if (!xpp.isEmptyElementTag()) {
                 String result = xpp.nextText();
@@ -1496,6 +1563,8 @@ public class SetActions {
     }
 
     private String emptyTagCheck(String tag, String value) {
+        Log.d(TAG,"emptyTagCheck()");
+
         if (value!=null && !value.isEmpty()) {
             return "<" + tag + ">" + mainActivityInterface.getProcessSong().parseToHTMLEntities(value) + "</" + tag + ">";
         } else {

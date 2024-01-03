@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,6 @@ import com.garethevans.church.opensongtablet.databinding.SettingsFontsPreviewBin
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class FontSetupPreviewFragment extends DialogFragment {
 
@@ -74,9 +71,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     }
 
     private void setupWebView(String ab) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (fontNames==null || fontNames.isEmpty()) {
                 fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
                 getAlphaList();
@@ -159,15 +154,11 @@ public class FontSetupPreviewFragment extends DialogFragment {
     private void doSave(String fontName) {
         fontName = fontName.replace("+"," ");
         mainActivityInterface.getMyFonts().changeFont(mainActivityInterface.getWhattodo(),fontName,handler);
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
-                mainActivityInterface.popTheBackStack(R.id.fontSetupFragment, true);
-                mainActivityInterface.navigateToFragment(deeplink_fonts_string, 0);
-                dismiss();
-            });
-        });
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+            mainActivityInterface.popTheBackStack(R.id.fontSetupFragment, true);
+            mainActivityInterface.navigateToFragment(deeplink_fonts_string, 0);
+            dismiss();
+        }));
     }
 
     @Override

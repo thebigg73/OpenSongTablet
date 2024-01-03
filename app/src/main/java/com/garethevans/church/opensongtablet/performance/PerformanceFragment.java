@@ -41,9 +41,6 @@ import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class PerformanceFragment extends Fragment {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -320,12 +317,26 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void toggleInlineSet() {
+        Log.d(TAG,"toggleInlineSet()");
         myView.inlineSetList.toggleInlineSet();
+    }
+    public void notifyToClearInlineSet() {
+        Log.d(TAG,"notifiyToClearInlineSet");
+        if (myView!=null) {
+            myView.inlineSetList.notifyToClearInlineSet();
+        }
+    }
+    public void notifyToInsertAllInlineSet() {
+        if (myView!=null) {
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyToInsertAllInlineSet());
+        }
     }
     public void orientationInlineSet(int orientation) {
         myView.inlineSetList.orientationChanged(orientation);
     }
+    @SuppressWarnings("ConstantConditions")
     public void updateInlineSetSet() {
+        Log.d(TAG,"updateInlineSetSet()");
         if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
                 myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
@@ -398,14 +409,17 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
-    public void initialiseInlineSetItem(int position) {
+    public void initialiseInlineSetItem() {
         if (myView!=null) {
             try {
-                myView.inlineSetList.initialiseInlineSetItem(position);
+                myView.inlineSetList.initialiseInlineSetItem();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+    public void updateInlineSetHighlight() {
+        myView.inlineSetList.updateHighlight();
     }
 
     // This stuff loads the song and prepares the views
@@ -416,6 +430,7 @@ public class PerformanceFragment extends Fragment {
         }
 
         try {
+            Log.d(TAG,"started doSongLoad()");
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
@@ -449,8 +464,7 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getSong().setFolder(folder);
                 mainActivityInterface.getSong().setFilename(filename);
 
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                executorService.execute(() -> {
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                             // Prepare the slide out and in animations based on swipe direction
                             setupSlideOut();
                             setupSlideIn();
@@ -542,6 +556,7 @@ public class PerformanceFragment extends Fragment {
         }
     }
     private void prepareSongViews() {
+        Log.d(TAG,"started prepareSongViews()");
         if (myView!=null) {
             // This is called on the UI thread above via the handler from mainLooper()
             // Reset the song views

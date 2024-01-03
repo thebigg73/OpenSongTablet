@@ -25,8 +25,6 @@ import com.garethevans.church.opensongtablet.tags.TagsBottomSheet;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class EditSongFragmentTags extends Fragment {
 
@@ -64,8 +62,7 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void updateViews() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             prepareStrings();
 
             Log.d(TAG,"song.getTheme:"+mainActivityInterface.getSong().getTheme());
@@ -158,9 +155,7 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void checkBeatBuddyValues() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Decide which songs and kits to use
             if (getContext()!=null) {
                 try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
@@ -172,7 +167,7 @@ public class EditSongFragmentTags extends Fragment {
                     }
                     ArrayList<String> songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
                     ArrayList<String> kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
-                    handler.post(() -> {
+                    mainActivityInterface.getMainHandler().post(() -> {
                         ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
                         ExposedDropDownArrayAdapter kitsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddyKit, R.layout.view_exposed_dropdown_item, kits);
                         myView.beatBuddySong.setAdapter(songsAdapter);

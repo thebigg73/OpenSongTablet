@@ -10,9 +10,6 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class CheckInternet {
 
     private String searchPhrase;
@@ -50,8 +47,7 @@ public class CheckInternet {
     }
 
     public void checkConnection(Context c, Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             boolean connected = false;
             if (c!=null) {
                 ConnectivityManager connectivityManager =

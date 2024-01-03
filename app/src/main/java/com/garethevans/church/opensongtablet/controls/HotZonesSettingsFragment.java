@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,8 +18,6 @@ import com.garethevans.church.opensongtablet.databinding.SettingsHotZonesBinding
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HotZonesSettingsFragment extends Fragment {
 
@@ -57,11 +53,7 @@ public class HotZonesSettingsFragment extends Fragment {
         webAddress = website_hot_zones_string;
 
         // Set dropDowns
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(this::setupDropDowns);
-        });
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(this::setupDropDowns));
 
         // Fix the warnings to concatenate text;
         String warning_left = "(" + inline_set_string + ") " + disable_left_string;

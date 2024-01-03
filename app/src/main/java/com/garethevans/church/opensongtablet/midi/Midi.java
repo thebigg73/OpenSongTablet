@@ -9,7 +9,6 @@ import android.media.midi.MidiOutputPort;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -25,8 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Midi {
 
@@ -492,9 +489,7 @@ public class Midi {
         // Now we have the midi information as a string arraylist, convert the strings to the byte array
         // This was originally done via the MidiDriver / billthefarmer library
         // However this was causing crashes on 64 bit devices, so changed
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             /*for (int i = 0; i < midiNotesOnArray.size(); i++) {
                 String thisOnMessage = midiNotesOnArray.get(i);
                 handler.postDelayed(() -> mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(thisOnMessage)), noteOnDelta);
@@ -512,7 +507,7 @@ public class Midi {
             }*/
 
             // Write the midi file and play it
-            handler.post(this::createMidiFile);
+            mainActivityInterface.getMainHandler().post(this::createMidiFile);
         });
     }
 

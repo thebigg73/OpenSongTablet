@@ -32,11 +32,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private ItemTouchHelper itemTouchHelper;
     private final RecyclerView recyclerView;
     private final String highlightItem="highlightItem", updateNumber="updateNumber";
-    private int currentHighlightPosition = -1;
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
-
-    // The songs in the set are held in and array of SetItemInfos
-    //ArrayList<SetItemInfo> setList = new ArrayList<>();
 
     //Initialise the class
     public SetAdapter(Context c, RecyclerView recyclerView) {
@@ -86,6 +82,23 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             si.songkey = "";
         }
 
+        String foldername = si.songfolder;
+        String newfoldername = si.songfoldernice;
+        if (newfoldername==null || newfoldername.isEmpty()) {
+            newfoldername = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(foldername);
+            si.songfoldernice = newfoldername;
+        }
+        if (newfoldername != null && newfoldername.startsWith("**")) {
+            newfoldername = newfoldername.replace("**", "");
+        }
+
+        // If we don't have a indexSongInSet, but this song should be it, do it
+        if (mainActivityInterface.getCurrentSet().getIndexSongInSet()==-1 &&
+                mainActivityInterface.getSong().getFilename().equals(filename) &&
+                mainActivityInterface.getSong().getFolder().equals(foldername)) {
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
+        }
+
         // If this is the current set item, highlight it
         if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
             setColor(holder,onColor);
@@ -96,15 +109,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardItem.setTextSize(titleSize);
         String text = si.songitem + ".";
         holder.cardItem.setText(text);
-        String foldername = si.songfolder;
-        String newfoldername = si.songfoldernice;
-        if (newfoldername==null || newfoldername.isEmpty()) {
-            newfoldername = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(foldername);
-            si.songfoldernice = newfoldername;
-        }
-        if (newfoldername != null && newfoldername.startsWith("**")) {
-            newfoldername = newfoldername.replace("**", "");
-        }
+
         holder.cardTitle.setTextSize(titleSize);
         holder.cardTitle.setText(titlesongname);
         holder.cardFilename.setTextSize(titleSize);
@@ -123,7 +128,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // Use a payload to update the background color or text of the items
     public void onBindViewHolder(@NonNull SetListItemViewHolder holder, int position, @NonNull List<Object> payloads) {
         position = holder.getAbsoluteAdapterPosition();
-
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
@@ -163,6 +167,47 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     }
 
 
+    // Update the keys of set items (in case the database wasn't ready)
+    public void updateKeys() {
+        uiHandler.post(() -> notifyItemRangeChanged(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
+        mainActivityInterface.getSetActions().nullMissingKeyPositions();
+    }
+
+    // Called when loading a song from the set
+    public void updateHighlight() {
+        if (recyclerView!=null && !recyclerView.isComputingLayout()) {
+            recyclerView.post(() -> {
+                try {
+                    notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), highlightItem);
+                    notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(), highlightItem);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
+
+
+
+    // TODO rationalise or check
+
+    // Called when we reset the set list (notify removed and notifiy inserted
+    public void resetTheSetList(int originalItems) {
+        // This needs to be done on the mainUI
+        recyclerView.post(() -> {
+            if (originalItems>0) {
+                notifyItemRangeRemoved(0, originalItems);
+            }
+            if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                notifyItemRangeInserted(0, mainActivityInterface.getCurrentSet().getCurrentSetSize());
+            }
+        });
+    }
+
+
+
+
+
     // The callbacks from the SetItemTouchInterface (called from the SetListItemCallback class)
     @Override
     // This method deals with dragging items up and down in the set list
@@ -172,53 +217,44 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                 mainActivityInterface.getCurrentSet().getCurrentSetSize()>toPosition &&
                 mainActivityInterface.getCurrentSet().getSetItemInfos()!=null) {
 
-            // Move the item in the setList array
-            mainActivityInterface.getCurrentSet().getSetItemInfos().add(toPosition,mainActivityInterface.getCurrentSet().getSetItemInfos().remove(fromPosition));
-
-            // Notify the adapter that we have moved items
-            notifyItemMoved(fromPosition, toPosition);
+            // Update the currentSet and save the set string
+            mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
+            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             // Notify the adapter that we have updated the item numbers
             notifyItemChanged(toPosition, updateNumber);
             notifyItemChanged(fromPosition, updateNumber);
 
-            // Update the currentSet and save the set string
-            mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
-            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
+            // Notify the adapter that we have moved items
+            notifyItemMoved(fromPosition, toPosition);
 
-            // Check for the current item position being changed
+            // Check for the current item or prev set item position being changed
             if (fromPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(toPosition);
             } else if (toPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(fromPosition);
             }
-
-            // Update the inline set to mirror these changes
-            mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
+            if (fromPosition == mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()) {
+                mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(toPosition);
+            } else if (toPosition == mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()) {
+                mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(fromPosition);
+            }
 
             // Update the title
             mainActivityInterface.updateSetTitle();
 
-            // Update the prev/next
-            updateSetPrevNext();
+            // Update the inline set to mirror these changes
+            mainActivityInterface.updateInlineSetMove(fromPosition, toPosition);
         }
     }
 
     // This method is called when an item is swiped away.
     public void removeItem(int fromPosition) {
-
         if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition &&
                 mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition) {
 
-            // Remove the check mark for this song in the song menu
-            mainActivityInterface.updateCheckForThisSong(
-                    mainActivityInterface.getSQLiteHelper().getSpecificSong(
-                            mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfolder,
-                            mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfilename));
-
             // Remove the item from the current set and save the set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
-            mainActivityInterface.getCurrentSet().updateCurrentSetPreferences(false);
 
             // If the currently selected set item is after this position, we need to drop it by 1
             if (fromPosition<mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
@@ -231,17 +267,37 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             // Update the numbers of the items below this
             updateNumbersBelowPosition(fromPosition);
 
-            // Update the inline set to mirror these changes
-            mainActivityInterface.updateInlineSetRemoved(fromPosition);
+            // Remove the check mark for this song in the song menu
+            mainActivityInterface.updateCheckForThisSong(
+                    mainActivityInterface.getSQLiteHelper().getSpecificSong(
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfolder,
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfilename));
+
 
             // Update the title
             mainActivityInterface.updateSetTitle();
 
-            // Update the prev/next
-            updateSetPrevNext();
-
+            // Update the inline set to mirror these changes
+            mainActivityInterface.updateInlineSetRemoved(fromPosition);
         }
     }
+
+    public void notifyToClearSet() {
+        // Notify to clear the set
+        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+            mainActivityInterface.getMainHandler().post(() -> notifyItemRangeRemoved(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
+        }
+    }
+
+    public void notifyToInsertAllSet() {
+        // Notify to insert the entire set
+        if (mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
+            notifyItemRangeInserted(0, mainActivityInterface.getCurrentSet().getCurrentSetSize());
+        }
+        // Now make sure the set is visible and the progress bar is hidden
+        mainActivityInterface.updateFragment("set_showSetList", null, null);
+    }
+
 
     // This method is used to undo a swiped away item
     public void restoreItem(SetItemInfo setItemInfo, int position) {
@@ -257,24 +313,28 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         updateNumbersBelowPosition(position);
 
         // Update the checked items
+        updateCheckedItem(setItemInfo);
+
+        // Update the title
+        mainActivityInterface.updateSetTitle();
+
+        // Update the inline set to mirror this change
+        mainActivityInterface.updateInlineSetInserted(position);
+    }
+
+    // Update the item checkbox in the song menu
+    private void updateCheckedItem(SetItemInfo setItemInfo) {
+        // Update the checked items
         Song updateSong = new Song();
         updateSong.setFolder(setItemInfo.songfolder);
         updateSong.setFilename(setItemInfo.songfilename);
         updateSong.setTitle(setItemInfo.songtitle);
         updateSong.setKey(setItemInfo.songkey);
         mainActivityInterface.updateCheckForThisSong(updateSong);
-
-        // Update the inline set to mirror this change
-        mainActivityInterface.updateInlineSetInserted(position);
-
-        // Update the title
-        mainActivityInterface.updateSetTitle();
-
-        // Update the prev/next
-        updateSetPrevNext();
     }
 
     // Change the numbers below the changed item (either +1 or -1)
+    // Called when swiping away to delete and item or restoring it
     private void updateNumbersBelowPosition(int fromPosition) {
         for (int i=fromPosition; i<mainActivityInterface.getCurrentSet().getCurrentSetSize(); i++) {
             mainActivityInterface.getCurrentSet().getSetItemInfo(i).songitem = (i+1);
@@ -287,11 +347,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         notifyItemRangeChanged(fromPosition,count);
     }
 
-    // Update item (could be a key change, etc)
-    public void updateKeys() {
-        uiHandler.post(() -> notifyItemRangeChanged(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()-1));
-        mainActivityInterface.getSetActions().nullMissingKeyPositions();
-    }
+
+
+
+    // Called when we edit a set item
     public void updateItem(int position) {
         if (position>=0 && mainActivityInterface.getCurrentSet().getSetItemInfos()!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>position) {
             try {
@@ -300,21 +359,19 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                         getIconIdentifier(mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder,
                                 mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfilename);
 
-                // Update the inline set
-                mainActivityInterface.updateInlineSetChanged(position);
-
                 // Update the title
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                 notifyItemChanged(position);
 
-                // Update the highlight on the previous item to off
-                if (currentHighlightPosition>=0 && currentHighlightPosition<mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
-                    notifyItemChanged(currentHighlightPosition,highlightItem);
-                }
+                // Update the highlighting
+                notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
+                notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
+
+                // Update the inline set
+                mainActivityInterface.updateInlineSetChanged(position);
 
                 // Update the prev/next
-                updateSetPrevNext();
-
+                uiHandler.post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -322,30 +379,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         }
     }
 
-    public void clearOldHighlight(int position) {
-        // Update the highlight on the previous item to off
-        if (currentHighlightPosition>=0 && currentHighlightPosition<mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
-            notifyItemChanged(currentHighlightPosition,highlightItem);
-        }
-        notifyItemChanged(position,highlightItem);
-    }
 
-    public boolean initialiseSetItem(int setPosition) {
+    public boolean initialiseSetItem() {
         // Only used when app boots and we are already viewing a set item
         // This comes via the MyToolbar where we add a tick for a set item
         uiHandler.post(() -> {
-            notifyItemChanged(currentHighlightPosition, highlightItem);
-            notifyItemChanged(setPosition, highlightItem);
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet());
         });
         return true;
     }
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
-        mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
-        mainActivityInterface.initialiseInlineSetItem(position);
         mainActivityInterface.loadSongFromSet(position);
-        currentHighlightPosition = position;
     }
 
     @Override
@@ -355,23 +402,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     public void recoverCurrentSetPosition() {
         // Get the set position as we might have moved things around
-        uiHandler.post(() -> notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem));
+        uiHandler.post(() -> {
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
+        });
     }
 
-    private void updateSetPrevNext() {
-        mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-        uiHandler.post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
-    }
-
-    public void notifyAllChanged() {
-        if (mainActivityInterface.getCurrentSet().getSetItemInfos()!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-            uiHandler.post(()-> notifyItemRangeChanged(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
-
-            // Update the inline set
-            mainActivityInterface.updateInlineSetAll();
-
-            updateSetPrevNext();
-        }
-    }
 
 }

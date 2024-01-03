@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -32,8 +30,6 @@ import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SetManageFragment extends Fragment {
 
@@ -641,14 +637,12 @@ public class SetManageFragment extends Fragment {
         }
         mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
         String finalSetName = setName;
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Empty the cache directories as new sets can have custom items
             mainActivityInterface.getSetActions().loadSets(setUris, finalSetName);
             // Import ended
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
                 mainActivityInterface.setWhattodo("pendingLoadSet");
                 mainActivityInterface.navHome();

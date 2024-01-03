@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet.bible;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,8 +23,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
 
@@ -161,13 +157,11 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void initialiseBible() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             bible.buildDefaultBibleBooks();
-            handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.VISIBLE));
             bible.buildBibleFiles();
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 updateExposedDropDown(myView.bible, bible.getBibleFiles(), bible.getBibleFile());
                 myView.progressBar.setVisibility(View.GONE);
             });
@@ -189,17 +183,15 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
             switch (which) {
                 case "bible":
-                    executorService.execute(() -> {
-                        Handler handler = new Handler(Looper.getMainLooper());
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                         String chosen = getTextFromView(myView.bible);
                         if (chosen !=null && !chosen.isEmpty()) {
-                            handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+                            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.VISIBLE));
                             bible.setBibleFile(chosen);
                             bible.buildBibleBooks();
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 updateExposedDropDown(myView.book,bible.getBibleBooks(), bible.getBibleBook());
                                 myView.progressBar.setVisibility(View.GONE);
                             });
@@ -207,17 +199,16 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                     });
                     break;
                 case "book":
-                    executorService.execute(() -> {
-                        Handler handler = new Handler(Looper.getMainLooper());
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                         String chosen = getTextFromView(myView.book);
                         if (chosen !=null && !chosen.isEmpty()) {
-                            handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+                            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.VISIBLE));
                             bible.setBibleBook(chosen);
                             bible.setBibleChapter("1");
                             bible.setBibleVerseFrom("1");
                             bible.setBibleVerseTo("1");
                             bible.buildBibleChapters();
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 updateExposedDropDown(myView.chapter,bible.getBibleChapters(), bible.getBibleChapter());
                                 myView.progressBar.setVisibility(View.GONE);
                             });
@@ -225,16 +216,15 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                     });
                     break;
                 case "chapter":
-                    executorService.execute(() -> {
-                        Handler handler = new Handler(Looper.getMainLooper());
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                         String chosen = getTextFromView(myView.chapter);
                         if (chosen !=null && !chosen.isEmpty()) {
-                            handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+                            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.VISIBLE));
                             bible.setBibleChapter(chosen);
                             bible.setBibleVerseFrom("1");
                             bible.setBibleVerseTo("1");
                             bible.buildBibleVerses();
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 updateExposedDropDown(myView.verseFrom,bible.getBibleVerses(), bible.getBibleVerseFrom());
                                 updateExposedDropDown(myView.verseTo,bible.getBibleVerses(), bible.getBibleVerseTo());
                                 myView.verseTo.setText("1");
@@ -244,13 +234,12 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                     });
                     break;
                 case "verseFrom":
-                    executorService.execute(() -> {
-                        Handler handler = new Handler(Looper.getMainLooper());
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                         String chosen = getTextFromView(myView.verseFrom);
                         if (chosen !=null && !chosen.isEmpty()) {
-                            handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+                            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.VISIBLE));
                             bible.setBibleVerseFrom(chosen);
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 // Check the 'to' value is the same or bigger than this
                                 if (myView.verseTo.getText()!=null && (myView.verseTo.getText().toString().isEmpty() || rangeIsIncorrect(myView.verseFrom, chosen, false))) {
                                     myView.verseTo.setText(chosen);
@@ -268,13 +257,12 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                     });
                     break;
                 case "verseTo":
-                    executorService.execute(() -> {
-                        Handler handler = new Handler(Looper.getMainLooper());
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                         String chosen = getTextFromView(myView.verseTo);
                         if (chosen !=null && !chosen.isEmpty()) {
-                            handler.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+                            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.VISIBLE));
                             bible.setBibleVerseTo(chosen);
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 // Check the 'from' value is the same or smaller than this
                                 if (myView.verseFrom.getText()!=null && (myView.verseFrom.getText().toString().isEmpty() || rangeIsIncorrect(myView.verseFrom, chosen, true))) {
                                     myView.verseFrom.setText(chosen);

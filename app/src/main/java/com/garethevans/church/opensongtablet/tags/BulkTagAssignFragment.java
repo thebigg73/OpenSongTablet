@@ -25,8 +25,6 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BulkTagAssignFragment extends Fragment {
 
@@ -360,8 +358,7 @@ public class BulkTagAssignFragment extends Fragment {
     public void renameTag(String newTagName) {
         myView.progressBar.setVisibility(View.VISIBLE);
         // Go through the database and replace existing tags with the new one
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (getContext()!=null) {
                 Handler handler = new Handler(getContext().getMainLooper());
                 newValues = mainActivityInterface.getSQLiteHelper().renameThemeTags(currentTagName, newTagName);

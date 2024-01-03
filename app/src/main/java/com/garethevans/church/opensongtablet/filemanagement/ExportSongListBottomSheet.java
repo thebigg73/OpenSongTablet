@@ -29,8 +29,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
@@ -201,10 +199,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
         outputSong = new Song();
         processing(true);
         boolean exportPDF = myView.exportPDF.isChecked();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Initialise the arrays
             mimeTypes = new ArrayList<>();
             uris = new ArrayList<>();
@@ -259,7 +254,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
             // Now, if we are expecting a PDF or printing, prepare the views on the UI
             if (exportPDF || printing) {
-                preparePDF(handler);
+                preparePDF(mainActivityInterface.getMainHandler());
             } else {
                 // Just proceed to the share
                 initiateShare();

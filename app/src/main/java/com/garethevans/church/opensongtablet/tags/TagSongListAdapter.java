@@ -19,8 +19,6 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
@@ -181,8 +179,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
     public void updateSongTags(String folder, String filename, boolean isChecked, int position) {
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder,filename);
             String thisTheme = fixTagStringForSaving(tempSong.getTheme());
             String thisAltTheme = fixTagStringForSaving(tempSong.getAlttheme());

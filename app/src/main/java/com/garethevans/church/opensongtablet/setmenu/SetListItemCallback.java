@@ -177,6 +177,8 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
                 viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition,800);
             }
         }
+        // Update the prev/next
+        mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
     }
 
 }

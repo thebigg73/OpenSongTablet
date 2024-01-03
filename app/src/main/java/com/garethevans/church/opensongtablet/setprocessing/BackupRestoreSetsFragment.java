@@ -34,8 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -199,9 +197,7 @@ public class BackupRestoreSetsFragment extends Fragment {
 
             // Get a list of the sets in the zip file (alphabetically)
             // Do this in a new Thread
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 ArrayList<String> setList = new ArrayList<>();
 
                 InputStream inputStream = null;
@@ -235,7 +231,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    handler.post(() -> {
+                    mainActivityInterface.getMainHandler().post(() -> {
                         // Add the checkboxes
                         addCheckBoxes(setList);
                         myView.progressBar.setVisibility(View.GONE);
@@ -304,9 +300,7 @@ public class BackupRestoreSetsFragment extends Fragment {
         backupFilename = myView.backupName.getText().toString();
 
         // Do the main lifting in a new thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (backupFilename.isEmpty()) {
                 backupFilename = "OpenSongSetBackup.osbs";
             }
@@ -347,7 +341,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 if (myView!=null) {
                     myView.progressBar.setVisibility(View.GONE);
                 }
@@ -365,8 +359,7 @@ public class BackupRestoreSetsFragment extends Fragment {
         success = false;
         boolean overwrite = myView.overWrite.isChecked();
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             Handler handler = new Handler(Looper.getMainLooper());
             // Get a note of the chosen sets
             getChosenSets();

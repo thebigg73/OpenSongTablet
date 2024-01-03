@@ -22,8 +22,6 @@ import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterfac
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class EditSongFragmentFeatures extends Fragment {
 
@@ -56,9 +54,7 @@ public class EditSongFragmentFeatures extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             prepareStrings();
 
             // Set up the values

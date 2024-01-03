@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +17,6 @@ import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterfac
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 // When we edit a song, we create a write the current song to tempSong in MainActivity
 // We compare the two objects to look for changes and save if requested
@@ -100,8 +94,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
 
     private void showWarning() {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // If we tried to edit a temporary variation or an actual variation - let the user know
             InformationBottomSheet informationBottomSheet = null;
             if (mainActivityInterface.getWhattodo()!=null &&
@@ -143,8 +136,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
     private void setUpTabs() {
         if (getActivity()!=null) {
-            Executor executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
+            mainActivityInterface.getThreadPoolExecutor().execute(new Runnable() {
                 @Override
                 public void run() {
                     if (getActivity() != null) {
@@ -221,9 +213,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         mainActivityInterface.getWindowFlags().hideKeyboard();
 
         // Send this off for processing in a new Thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // If we were editing the lyrics as ChoPro, convert to OpenSong
             if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
                 String lyrics = mainActivityInterface.getTempSong().getLyrics();
@@ -247,9 +237,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
             if (oktoproceed && mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
-                handler.post(() -> mainActivityInterface.navHome());
+                mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.navHome());
             } else if (oktoproceed) {
-                handler.post(() -> mainActivityInterface.getShowToast().doIt(not_saved_string));
+                mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(not_saved_string));
             }
         });
     }

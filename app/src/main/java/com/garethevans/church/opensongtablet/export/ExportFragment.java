@@ -32,8 +32,6 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ExportFragment extends Fragment {
 
@@ -57,7 +55,6 @@ public class ExportFragment extends Fragment {
             setPDFDone = false, setPNGDone = false, screenShot = false;
     private String[] location, setData, ids, setKeys;
     private StringBuilder songsAlreadyAdded;
-    private Handler handler;
     private float scaleComments;
     private Bitmap setPNGContent;
     private String webAddress;
@@ -121,23 +118,19 @@ public class ExportFragment extends Fragment {
             isPrint = false;
             prepareExport();
         });
-        myView.print.setOnClickListener(v -> {
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                handler = new Handler(Looper.getMainLooper());
+        myView.print.setOnClickListener(v -> mainActivityInterface.getThreadPoolExecutor().execute(() -> {
 
-                isPrint = true;
-                if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
-                    doPrint(true);
+            isPrint = true;
+            if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
+                doPrint(true);
+            } else {
+                if (sectionViewsPDF == null || sectionViewsPDF.size() == 0) {
+                    createOnTheFly(mainActivityInterface.getSong(), mainActivityInterface.getSong().getFilename() + ".pdf");
                 } else {
-                    if (sectionViewsPDF == null || sectionViewsPDF.size() == 0) {
-                        createOnTheFly(mainActivityInterface.getSong(), mainActivityInterface.getSong().getFilename() + ".pdf");
-                    } else {
-                        doPrint(false);
-                    }
+                    doPrint(false);
                 }
-            });
-        });
+            }
+        }));
 
         myView.exportTextAsMessage.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportTextAsMessage",b));
         myView.nestedScrollView.setExtendedFabToAnimate(myView.shareButton);
@@ -399,10 +392,7 @@ public class ExportFragment extends Fragment {
 
     private void doExportSet() {
         // Do this in a new Thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            handler = new Handler(Looper.getMainLooper());
-
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Load in the sets
             // First up add the simple set files that don't require drawing pdfs
             // Add the .osts file
@@ -583,7 +573,7 @@ public class ExportFragment extends Fragment {
             if ((includeSongs && (pdf || png || image || screenShot)) || setPDF || setPNG) {
                 // We need to render PDFs which get drawn and added one at a time
                 // From here on we need to be on the UI thread (ouch!)
-                handler.post(this::renderPDFSet);
+                mainActivityInterface.getMainHandler().post(this::renderPDFSet);
             } else {
                 initiateShare();
             }
@@ -675,10 +665,7 @@ public class ExportFragment extends Fragment {
     }
     private void doExportSong() {
         // Do this in a new Thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            handler = new Handler(Looper.getMainLooper());
-
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Sharing a song should initiate the CCLI Log of printed (value 6)
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
                 mainActivityInterface.getCCLILog().addEntry(mainActivityInterface.getSong(),"6");
@@ -787,8 +774,7 @@ public class ExportFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_TEXT, textContent);
         }
 
-        handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
+        mainActivityInterface.getMainHandler().post(() -> {
             startActivity(Intent.createChooser(intent, shareTitle));
             myView.scrim.setVisibility(View.GONE);
             myView.progressText.setVisibility(View.GONE);
@@ -803,7 +789,7 @@ public class ExportFragment extends Fragment {
     // We can create nice views on the fly here by processing the Song, then populating the views
     private void createOnTheFly(Song thisSong, String pdfName) {
         // Make sure any current headers/sections are wiped
-        handler.post(()-> {
+        mainActivityInterface.getMainHandler().post(()-> {
             try {
                 initialiseViews();
                 // Now start preparing the views.  First up the header

@@ -428,6 +428,18 @@ public class PresenterFragment extends Fragment {
     public void toggleInlineSet() {
         myView.inlineSetList.toggleInlineSet();
     }
+    public void notifyToClearInlineSet() {
+        if (myView!=null) {
+            myView.inlineSetList.notifyToClearInlineSet();
+            myView.inlineSetList.setVisibility(View.GONE);
+        }
+    }
+    public void notifyToInsertAllInlineSet() {
+        if (myView!=null) {
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyToInsertAllInlineSet());
+        }
+    }
+
     public void orientationInlineSet(int orientation) {
         myView.inlineSetList.orientationChanged(orientation);
     }
@@ -438,8 +450,8 @@ public class PresenterFragment extends Fragment {
         }
     }
     public void updateInlineSetItem(int position) {
-        Log.d(TAG,"update :"+position);
-        myView.inlineSetList.updateSelected(position);
+        myView.inlineSetList.updateHighlight();
+        myView.inlineSetList.scrollToPosition(position);
     }
     public void updateInlineSetMove(int from, int to) {
         myView.inlineSetList.updateInlineSetMove(from,to);
@@ -477,8 +489,11 @@ public class PresenterFragment extends Fragment {
             }
         }
     }
-    public void initialiseInlineSetItem(int position) {
-        myView.inlineSetList.initialiseInlineSetItem(position);
+    public void initialiseInlineSetItem() {
+        myView.inlineSetList.initialiseInlineSetItem();
+    }
+    public void updateInlineSetHighlight() {
+        myView.inlineSetList.updateHighlight();
     }
 
 }

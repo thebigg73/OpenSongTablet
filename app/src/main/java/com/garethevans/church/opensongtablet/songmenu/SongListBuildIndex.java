@@ -230,7 +230,7 @@ public class SongListBuildIndex {
         // Any songs with rogue endings would've been logged, so fix if needed
         mainActivityInterface.getLoadSong().fixSongs();
         // Update the set lists which might be using song titles (that need the index)
-        mainActivityInterface.updateSetList();
+        //mainActivityInterface.updateSetList();
 
         // Get a timestamp of this update into preferences
         mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());

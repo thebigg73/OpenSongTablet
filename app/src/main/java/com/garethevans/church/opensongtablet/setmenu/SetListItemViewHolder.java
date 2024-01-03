@@ -18,8 +18,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class SetListItemViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener,
         GestureDetector.OnGestureListener{
-    //
-
     // Identify the views
     final CardView cardView;
     final MaterialTextView cardItem, cardTitle, cardFilename, cardFolder;

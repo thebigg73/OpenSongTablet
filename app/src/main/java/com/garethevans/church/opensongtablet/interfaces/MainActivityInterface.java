@@ -75,6 +75,7 @@ import com.garethevans.church.opensongtablet.webserver.WebServer;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public interface MainActivityInterface {
 
@@ -84,6 +85,7 @@ public interface MainActivityInterface {
     int[] getDisplayMetrics();
     float getDisplayDensity();
     Handler getMainHandler();
+    ThreadPoolExecutor getThreadPoolExecutor();
     Locale getLocale();
     VersionNumber getVersionNumber();
     String getMode();
@@ -135,13 +137,16 @@ public interface MainActivityInterface {
     void updateSetList();
     void checkSetMenuItemHighlighted(int setPosition);
     void toggleInlineSet();
+    void notifyToClearInlineSet();
+    void notifyToInsertAllInlineSet();
     void updateInlineSetMove(int from, int to);
     void updateInlineSetRemoved(int from);
     void updateInlineSetAdded();
-    void initialiseInlineSetItem(int position);
+    void initialiseInlineSetItem();
     void updateInlineSetChanged(int position);
     void updateInlineSetInserted(int position);
     void updateInlineSetAll();
+    void updateInlineSetHighlight();
 
     // Menus
     void lockDrawer(boolean lock);

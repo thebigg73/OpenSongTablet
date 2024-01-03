@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,8 +25,6 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class FontSetupFragment extends Fragment {
     private SettingsFontsBinding myView;
@@ -63,14 +60,12 @@ public class FontSetupFragment extends Fragment {
         webAddress = website_fonts_string;
 
         getPreferences();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Got the fonts from Google
             fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
 
             try {
-                handler.post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     if (fontNames!=null && fontNames.size()>0) {
                         // Set up the previews
                         initialisePreviews();
@@ -221,12 +216,10 @@ public class FontSetupFragment extends Fragment {
                     displayInterface.updateDisplay("newSongLoaded");
                     displayInterface.updateDisplay("setSongContent");
                 });
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                executorService.execute(() -> {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(runnable);
-                    handler.postDelayed(runnable,500);
-                    handler.postDelayed(runnable,3000);
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    mainActivityInterface.getMainHandler().post(runnable);
+                    mainActivityInterface.getMainHandler().postDelayed(runnable,500);
+                    mainActivityInterface.getMainHandler().postDelayed(runnable,3000);
                 });
             }
         } catch (Exception e) {
@@ -245,14 +238,10 @@ public class FontSetupFragment extends Fragment {
     public void isConnected(boolean connected) {
         if (connected) {
             // Because this is called from another thread, we need to post back via the UIThread
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> {
-                    mainActivityInterface.setWhattodo(which);
-                    mainActivityInterface.navigateToFragment(null, R.id.fontSetupPreviewFragment);
-                });
-            });
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+                mainActivityInterface.setWhattodo(which);
+                mainActivityInterface.navigateToFragment(null, R.id.fontSetupPreviewFragment);
+            }));
         }
     }
 

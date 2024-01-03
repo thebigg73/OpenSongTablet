@@ -232,7 +232,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getShowToast().doItBottomSheet(message,myView.getRoot());
 
         // Now send the call to update the set menu fragment
-        mainActivityInterface.updateSetList();
+        //mainActivityInterface.updateSetList();
 
         dismiss();
     }

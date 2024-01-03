@@ -6,8 +6,6 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,8 +60,7 @@ public class Chordinator {
         if (content.length()>20) {
             Log.d(TAG, "HELLO got [" + content.substring(0, 10) + "..." + content.substring(content.length() - 10));
         }
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Look for start of song (i.e. {title:
             int start;
             int end;

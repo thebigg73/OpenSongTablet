@@ -33,8 +33,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -322,10 +320,7 @@ public class SetStorageLocationFragment extends Fragment {
         // Run in a new thread
         // This is only for KitKat.  Not allowed for newer versions without
         // Manage Storage permissions, which is overkill!
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Go through the directories recursively and add them to an arraylist
             folder = new File("/storage");
             walkFiles(folder);
@@ -334,7 +329,7 @@ public class SetStorageLocationFragment extends Fragment {
             walkFiles(folder);
 
             // Set up the file list, as long as the user wasn't bored and closed the window!
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 if (locations != null) {
                     // Hide the  and reenable stuff
                     setEnabledOrDisabled(true);

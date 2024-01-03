@@ -377,6 +377,7 @@ public class Preferences extends Activity {
     // hotZoneTopLeftLong               String      The action for short pressing on this hot zone (def:"")
     // ignorePlayServicesWarning        boolean     Has the user ticked the box to not show this again (def:false);
     // indexSkipAllowed                 boolean     Can we skip indexing (only allowed if it has been completed) (def:false)
+    // indexSongInSet                   int         The currently selected set item (def:-1)
     // inlineSet                        boolean     Should we show the inline setlist (def:true)
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)
     // inlineSetWidth                   float       The width (as a percentage of screen width) of the inline setlist (def:0.15f)

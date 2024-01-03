@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.SparseBooleanArray;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.LinkedHashMap;
@@ -23,11 +22,9 @@ import java.util.Set;
 
 public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
-    private final List<Song> songList;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongListAdapter";
     private final MainActivityInterface mainActivityInterface;
-    private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
     private boolean songMenuSortTitles;
     private final float titleSize;
@@ -37,14 +34,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     AdapterCallback callback;
 
-    public SongListAdapter(Context c, List<Song> songList,
+    public SongListAdapter(Context c,
                            AdapterCallback callback) {
-        this.songList = songList;
         mainActivityInterface = (MainActivityInterface) c;
         this.callback = callback;
-        if (songList != null) {
-            initialiseCheckedArray(mainActivityInterface.getCurrentSet());
-        }
         this.showChecked = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow", true);
 
@@ -60,26 +53,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         void onItemLongClicked(int position, String folder, String filename, String key);
     }
 
-    public void initialiseCheckedArray(CurrentSet currentSet) {
-        for (int i = 0; i < songList.size(); i++) {
-            String filename = songList.get(i).getFilename();
-            String folder = songList.get(i).getFolder();
-            String key = songList.get(i).getKey();
-            String item = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,key).replace("***null***","******");
-            String itemalt1 = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,"");
-            String itemalt2 = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,null);
-
-            if (currentSet.getMatchingSetItem(item)>0 || currentSet.getMatchingSetItem(itemalt1)>0 ||
-            currentSet.getMatchingSetItem(itemalt2)>0) {
-                checkedArray.put(i, true);
-            }
-        }
-    }
-
     @Override
     public int getItemCount() {
-        if (songList != null) {
-            return songList.size();
+        if (mainActivityInterface.getSongMenuFragment()!=null &&
+                mainActivityInterface.getSongMenuFragment().getSongsFound() != null) {
+            return mainActivityInterface.getSongMenuFragment().getSongsFound().size();
         } else {
             return 0;
         }
@@ -87,16 +65,34 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SongItemViewHolder holder, int position, @NonNull List<Object> payloads) {
+        position = holder.getAbsoluteAdapterPosition();
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
             // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
             for (Object payload : payloads) {
-                if (payload.equals("checkChange")) {
+                Log.d(TAG,"payload:"+payload);
+                boolean changeCheck = false;
+                boolean checked;
+                if (payload.equals("checkOn")) {
+                    Log.d(TAG,"onBindPayload()  pos:"+position+"  ON");
+                    changeCheck = true;
+                    checked = true;
+                } else if (payload.equals("checkOff")) {
+                    Log.d(TAG,"onBindPayload()  pos:"+position+"  OFF");
+                    changeCheck = true;
+                    checked = false;
+                } else {
+                    Log.d(TAG,"onBindPayload()  pos:"+position+"  OFF");
+                    checked = false;
+                }
+
+                if (changeCheck) {
                     // We want to update the checkbox
                     holder.itemChecked.post(()->{
                         try {
-                            holder.itemChecked.setChecked(checkedArray.get(position));
+                            // Is this item in the set?
+                            holder.itemChecked.setChecked(checked);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -108,161 +104,162 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int z) {
-        try {
-            int position = songItemViewHolder.getAbsoluteAdapterPosition();
-            if (position < songList.size()) {
-                Song song = songList.get(position);
-                String filename = song.getFilename();
-                String title = song.getTitle();
-                String displayname;
-                if (!song.getTitle().isEmpty() && songMenuSortTitles) {
-                    displayname = song.getTitle();
-                } else {
-                    displayname = song.getFilename();
-                }
-                String folder = song.getFolder();
-                String author = song.getAuthor();
-                String key = song.getKey();
-                String folderNamePair = song.getFolderNamePair();
+        if (mainActivityInterface.getSongMenuFragment()!=null &&
+                mainActivityInterface.getSongMenuFragment().getSongsFound()!=null) {
+            try {
+                int position = songItemViewHolder.getAbsoluteAdapterPosition();
+                if (position < mainActivityInterface.getSongMenuFragment().getSongsFound().size()) {
+                    Song song = mainActivityInterface.getSongMenuFragment().getSongsFound().get(position);
+                    String filename = song.getFilename();
+                    String title = song.getTitle();
+                    String displayname;
+                    if (!song.getTitle().isEmpty() && songMenuSortTitles) {
+                        displayname = song.getTitle();
+                    } else {
+                        displayname = song.getFilename();
+                    }
+                    String folder = song.getFolder();
+                    String author = song.getAuthor();
+                    String key = song.getKey();
+                    String folderNamePair = song.getFolderNamePair();
 
-                if (folder == null) {
-                    folder = "";
-                }
-                if (author == null) {
-                    author = "";
-                }
-                if (filename == null) {
-                    filename = "";
-                }
-                if (displayname == null) {
-                    displayname = "";
-                }
-                if (key == null) {
-                    key = "";
-                }
+                    if (folder == null) {
+                        folder = "";
+                    }
+                    if (author == null) {
+                        author = "";
+                    }
+                    if (filename == null) {
+                        filename = "";
+                    }
+                    if (displayname == null) {
+                        displayname = "";
+                    }
+                    if (key == null) {
+                        key = "";
+                    }
 
-                // Add the key if it exists
-                if (!key.isEmpty()) {
-                    displayname += " (" + key + ")";
-                }
+                    // Add the key if it exists
+                    if (!key.isEmpty()) {
+                        displayname += " (" + key + ")";
+                    }
 
-                // Set the display name
-                songItemViewHolder.itemTitle.setTextSize(titleSize);
-                songItemViewHolder.itemTitle.setText(displayname);
+                    // Set the display name
+                    songItemViewHolder.itemTitle.setTextSize(titleSize);
+                    songItemViewHolder.itemTitle.setText(displayname);
 
-                if (subtitleSizeFile==7) {
-                    // This is the 'off' value
-                    songItemViewHolder.itemFolderNamePair.setVisibility(View.GONE);
-                } else {
-                    // Set the path
-                    songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
-                    songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSizeFile);
-                    songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
-                }
+                    if (subtitleSizeFile == 7) {
+                        // This is the 'off' value
+                        songItemViewHolder.itemFolderNamePair.setVisibility(View.GONE);
+                    } else {
+                        // Set the path
+                        songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
+                        songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSizeFile);
+                        songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
+                    }
 
-                if (subtitleSizeAuthor==7) {
-                    // This is the 'off' value
-                    songItemViewHolder.itemAuthor.setVisibility(View.GONE);
-                } else {
-                    // Set the author if present
-                    songItemViewHolder.itemAuthor.setTextSize(subtitleSizeAuthor);
-                    if (author.isEmpty()) {
+                    if (subtitleSizeAuthor == 7) {
+                        // This is the 'off' value
                         songItemViewHolder.itemAuthor.setVisibility(View.GONE);
                     } else {
-                        // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
-                        // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
-                        songItemViewHolder.itemAuthor.setText(author);
-                        songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
+                        // Set the author if present
+                        songItemViewHolder.itemAuthor.setTextSize(subtitleSizeAuthor);
+                        if (author.isEmpty()) {
+                            songItemViewHolder.itemAuthor.setVisibility(View.GONE);
+                        } else {
+                            // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
+                            // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
+                            songItemViewHolder.itemAuthor.setText(author);
+                            songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
+                        }
                     }
-                }
 
-                // Set the checkbox if the song is in the set
-                bindCheckBox(songItemViewHolder.itemChecked, position);
+                    // Set the checkbox if the song is in the set
+                    bindCheckBox(songItemViewHolder.itemChecked, folderNamePair);
 
-                if (showChecked) {
-                    songItemViewHolder.itemChecked.setVisibility(View.VISIBLE);
-                    songItemViewHolder.itemCheckedFrame.setVisibility(View.VISIBLE);
-                } else {
-                    songItemViewHolder.itemChecked.setVisibility(View.GONE);
-                    songItemViewHolder.itemCheckedFrame.setVisibility(View.GONE);
-                }
-
-                // Set the listeners
-                final String itemFilename = filename;
-                final String itemTitle = title;
-                final String itemFolder = folder;
-                final String itemKey = key;
-                final String setentryalt1 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, null);
-                final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
-                final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey).replace("***null***","******");
-
-                songItemViewHolder.itemCard.setOnClickListener(v -> {
-                    song.setFilename(itemFilename);
-                    song.setFolder(itemFolder);
-                    song.setKey(itemKey);
-                    // Since we clicked on a song in the song list, check for it in the set
-                    mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(song));
-                    if (callback != null) {
-                        callback.onItemClicked(position, itemFolder, itemFilename, itemKey);
+                    if (showChecked) {
+                        songItemViewHolder.itemChecked.setVisibility(View.VISIBLE);
+                        songItemViewHolder.itemCheckedFrame.setVisibility(View.VISIBLE);
+                    } else {
+                        songItemViewHolder.itemChecked.setVisibility(View.GONE);
+                        songItemViewHolder.itemCheckedFrame.setVisibility(View.GONE);
                     }
-                });
 
-                // For Chromebooks (need to be running Marshmallow or higher
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    songItemViewHolder.itemCard.setOnContextClickListener(v -> {
+                    // Set the listeners
+                    final String itemFilename = filename;
+                    final String itemTitle = title;
+                    final String itemFolder = folder;
+                    final String itemKey = key;
+                    final String setentryalt1 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, null);
+                    final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
+                    final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey).replace("***null***", "******");
+                    songItemViewHolder.itemCard.setOnClickListener(v -> {
                         song.setFilename(itemFilename);
                         song.setFolder(itemFolder);
-                        // Since we clicked on a song in the song list, check for it in the set
-                        mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(song));
+                        song.setKey(itemKey);
+                        // Look for the song index based on the folder, filename and key of the song
+                        mainActivityInterface.getSetActions().indexSongInSet(song);
+                        if (callback != null) {
+                            callback.onItemClicked(position, itemFolder, itemFilename, itemKey);
+                        }
+                    });
+
+                    // For Chromebooks (need to be running Marshmallow or higher
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        songItemViewHolder.itemCard.setOnContextClickListener(v -> {
+                            song.setFilename(itemFilename);
+                            song.setFolder(itemFolder);
+                            song.setKey(itemKey);
+                            // Look for the song index based on the folder, filename and key of the song
+                            mainActivityInterface.getSetActions().indexSongInSet(song);
+
+                            if (callback != null) {
+                                callback.onItemLongClicked(position, itemFolder, itemFilename, itemKey);
+                            }
+                            return true;
+                        });
+                    }
+
+                    songItemViewHolder.itemCard.setOnLongClickListener(v -> {
+                        song.setFilename(itemFilename);
+                        song.setFolder(itemFolder);
+                        song.setKey(itemKey);
                         if (callback != null) {
                             callback.onItemLongClicked(position, itemFolder, itemFilename, itemKey);
                         }
                         return true;
                     });
-                }
 
-                songItemViewHolder.itemCard.setOnLongClickListener(v -> {
-                    song.setFilename(itemFilename);
-                    song.setFolder(itemFolder);
-                    if (callback != null) {
-                        callback.onItemLongClicked(position, itemFolder, itemFilename, itemKey);
-                    }
-                    return true;
-                });
-
-                songItemViewHolder.itemChecked.setOnClickListener(v -> {
-                    int adapterPosition = songItemViewHolder.getAbsoluteAdapterPosition();
-                    if (!checkedArray.get(adapterPosition, false)) {
-                        songItemViewHolder.itemChecked.setChecked(true);
-                        mainActivityInterface.getCurrentSet().addItemToSet(itemFolder,itemFilename,itemTitle,itemKey);
-                        checkedArray.put(adapterPosition, true);
-
-                    } else {
-                        songItemViewHolder.itemChecked.setChecked(false);
-                        checkedArray.put(adapterPosition, false);
-                        // Remove all entries of this song from the set
-                        // Check for entries with actual, empty or null keys
-                        for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
-                            String setItemString = mainActivityInterface.getSetActions().
-                                    getSongForSetWork(mainActivityInterface.getCurrentSet().getSetItemInfo(x));
-                            if (setItemString.equals(setentry) ||
-                                    setItemString.equals(setentryalt1) ||
-                                    setItemString.equals(setentryalt2)) {
-                                mainActivityInterface.getCurrentSet().removeFromCurrentSet(x, null);
+                    songItemViewHolder.itemChecked.setOnClickListener(v -> {
+                        if (mainActivityInterface.getSetActions().isSongInSet(songItemViewHolder.itemFolderNamePair.getText().toString())) {
+                            // This was in the set, so remove it
+                            songItemViewHolder.itemChecked.setChecked(false);
+                            for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
+                                String setItemString = mainActivityInterface.getSetActions().
+                                        getSongForSetWork(mainActivityInterface.getCurrentSet().getSetItemInfo(x));
+                                if (setItemString.equals(setentry) ||
+                                        setItemString.equals(setentryalt1) ||
+                                        setItemString.equals(setentryalt2)) {
+                                    mainActivityInterface.getCurrentSet().removeFromCurrentSet(x, null);
+                                }
                             }
+                        } else {
+                            // This wasn't in the set, so add it
+                            songItemViewHolder.itemChecked.setChecked(true);
+                            mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey);
                         }
-                    }
-                });
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    void bindCheckBox(CheckBox checkBox, int position) {
-        // use the sparse boolean array to check
+    void bindCheckBox(CheckBox checkBox, String folderNamePair) {
+        // Is this item in the set?
         try {
-            checkBox.setChecked(checkedArray.get(position, false));
+            checkBox.setChecked(mainActivityInterface.getSetActions().isSongInSet(folderNamePair));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -282,10 +279,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public int getPositionOfSong(Song song) {
-        if (songList!=null && songList.size()>0) {
-            for (int x = 0; x < songList.size(); x++) {
-                if (songList.get(x).getFilename().equals(song.getFilename()) &&
-                        songList.get(x).getFolder().equals(song.getFolder())) {
+        if (mainActivityInterface.getSongMenuFragment()!=null && mainActivityInterface.getSongMenuFragment().getSongsFound()!=null) {
+            for (int x = 0; x < mainActivityInterface.getSongMenuFragment().getSongsFound().size(); x++) {
+                if (mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFilename().equals(song.getFilename()) &&
+                        mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFolder().equals(song.getFolder())) {
                     return x;
                 }
             }
@@ -351,12 +348,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public void changeCheckBox(int pos) {
-        if (songList.size()>pos) {
+        if (mainActivityInterface.getSongMenuFragment()!=null &&
+                mainActivityInterface.getSongMenuFragment().getSongsFound()!=null &&
+                mainActivityInterface.getSongMenuFragment().getSongsFound().size()>pos) {
             // Get the current value and change it
             try {
-                checkedArray.put(pos, !checkedArray.get(pos));
-                notifyItemChanged(pos, "checkChange");
+                Log.d(TAG,"attempt to post bind");
+                notifyItemChanged(pos,"checkOn");
             } catch (Exception e) {
+                mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(pos,"checkOn"));
                 e.printStackTrace();
             }
         }

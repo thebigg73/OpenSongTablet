@@ -22,8 +22,6 @@ import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Metronome {
 
@@ -565,18 +563,14 @@ public class Metronome {
         tapTempoRunnableCheck = () -> {
             // This is called after 2 seconds when a tap is initiated
             // Any previous instance is of course cancelled first
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> {
-                    tapButton.setEnabled(false);
-                    tapButton.setText(c.getString(R.string.reset));
-                    tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorPrimary));
-                    // Waited too long, reset count
-                    total_calc_bpm = 0;
-                    total_counts = 0;
-                });
-            });
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+                tapButton.setEnabled(false);
+                tapButton.setText(c.getString(R.string.reset));
+                tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorPrimary));
+                // Waited too long, reset count
+                total_calc_bpm = 0;
+                total_counts = 0;
+            }));
             if (tapTempoHandlerReset != null) {
                 tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
             }
@@ -585,15 +579,11 @@ public class Metronome {
         };
         tapTempoRunnableReset = () -> {
             // Reset the tap tempo timer
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> {
-                    tapButton.setEnabled(true);
-                    tapButton.setText(c.getString(R.string.tap_tempo));
-                    tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorSecondary));
-                });
-            });
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+                tapButton.setEnabled(true);
+                tapButton.setText(c.getString(R.string.tap_tempo));
+                tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorSecondary));
+            }));
             // Start the metronome if we are in the metronome fragment where divisions isn't null
             if (divisionsView!=null) {
                 startMetronome();

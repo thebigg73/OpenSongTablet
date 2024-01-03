@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +20,6 @@ import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
@@ -398,9 +393,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         assumePreferred = myView.assumePreferred.getChecked();
 
         // Need to decide what file gets transposed
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             String transposeDirection;
 
             // Simplify slider to minimum number of transpose steps
@@ -464,7 +457,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 // Nothing more is required
 
                 // Update the set list/menu
-                handler.post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     try {
                         mainActivityInterface.getSetActions().saveTheSet();
                         mainActivityInterface.updateSetList();
@@ -515,7 +508,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 }
 
                 // Update the song menu and load the song again
-                handler.post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     try {
                         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
                         mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),true);

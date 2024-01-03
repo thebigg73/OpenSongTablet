@@ -34,8 +34,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class GetBPMBottomSheet extends BottomSheetDialogFragment {
 
@@ -126,8 +124,7 @@ public class GetBPMBottomSheet extends BottomSheetDialogFragment {
 
     private void searchAndExtract() {
         // We have already checked for connection, so set up the webView
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(this::setupWebView);
+        mainActivityInterface.getThreadPoolExecutor().execute(this::setupWebView);
 
     }
 

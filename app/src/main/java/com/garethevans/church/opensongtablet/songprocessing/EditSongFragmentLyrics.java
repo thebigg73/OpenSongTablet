@@ -5,8 +5,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.TextWatcher;
@@ -24,9 +22,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 // This fragment purely deals with the lyrics/chords
 
@@ -52,14 +47,13 @@ public class EditSongFragmentLyrics extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             try {
                 prepareStrings();
                 setupValues();
 
                 // The stuff that needs to be on the UI
-                new Handler(Looper.getMainLooper()).post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     // Add listeners
                     setupListeners();
 

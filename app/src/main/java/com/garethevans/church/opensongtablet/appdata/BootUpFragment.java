@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /*
 This fragment is the first one that the main activity loads up.
@@ -144,9 +139,7 @@ public class BootUpFragment extends Fragment {
 
         // Start the boot process
         if (getContext() != null) {
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 // Tell the user we're initialising the storage
                 if (getContext() != null) {
                     message = processing + ": " + storage;
@@ -200,7 +193,7 @@ public class BootUpFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackupdismissed", runssincebackupdismissed + 1);
 
                     // Set up the rest of the main activity
-                    handler.post(() -> {
+                    mainActivityInterface.getMainHandler().post(() -> {
                         mainActivityInterface.initialiseActivity();
                         mainActivityInterface.navHome();
                         mainActivityInterface.showActionBar();
@@ -262,6 +255,5 @@ public class BootUpFragment extends Fragment {
         myView = null;
         mainActivityInterface.registerFragment(null,"BootUpFragment");
     }
-
 
 }

@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -26,8 +24,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 // This allows the user to decide on the actions of the 6 customisable page buttons
 
@@ -88,73 +84,68 @@ public class PageButtonFragment extends Fragment {
         }
     }
     private void setupPageButtons() {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> {
-                myView.pageButtonHide.setHint(autohide_info_string + " ("+performance_mode_string+")");
-                myView.pageButtonMini.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false));
-                myView.pageButtonMini.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonMini",isChecked);
-                    mainActivityInterface.getPageButtons().updatePageButtonMini(isChecked);
-                    mainActivityInterface.getDisplayPrevNext().updateShow();
-                    mainActivityInterface.miniPageButton(isChecked);
-                });
-
-                myView.pageButtonHide.setChecked(mainActivityInterface.getPageButtons().getPageButtonHide());
-                myView.pageButtonHide.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPageButtons().setPageButtonHide(isChecked));
-
-                int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
-                if (opacity<myView.opacity.getValueFrom()) {
-                    opacity = (int)myView.opacity.getValueFrom();
-                }
-                myView.opacity.setLabelFormatter(value -> ((int)value)+"%");
-                myView.opacity.setValue(opacity);
-                myView.opacity.setHint(opacity+"%");
-                myView.opacity.addOnChangeListener((slider, value, fromUser) -> myView.opacity.setHint((int)value+"%"));
-                myView.opacity.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-                    @Override
-                    public void onStartTrackingTouch(@NonNull Slider slider) { }
-
-                    @Override
-                    public void onStopTrackingTouch(@NonNull Slider slider) {
-                        float value = myView.opacity.getValue() /100f;
-                        int newColor = mainActivityInterface.getMyThemeColors().changePageButtonAlpha(value);
-                        mainActivityInterface.getPreferences().setMyPreferenceInt(
-                                mainActivityInterface.getMyThemeColors().getThemeName()+"_pageButtonsColor",
-                                newColor);
-                    }
-                });
-                // We will programatically draw the page buttons and their options based on our preferences
-                // Add the buttons to our array (so we can iterate through)
-                addMyButtons();
-                addButtonLayouts();
-                addVisibleSwitches();
-                addTextViews();
-
-                // Also set the dropdowns here
-                if (getActivity()!=null) {
-                    arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
-                }
-                for (int x=0;x<mainActivityInterface.getPageButtons().getPageButtonNum();x++) {
-                    setTheDropDowns(x);
-                    setTheText(x);
-                }
-
-                // Now iterate through each button and set it up
-                for (int x = 0; x < mainActivityInterface.getPageButtons().getPageButtonNum(); x++) {
-                    mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x, true);
-                    myButtons.get(x).setVisibility(View.VISIBLE);
-                    setVisibilityFromBoolean(myLayouts.get(x), mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
-                    mySwitches.get(x).setChecked(mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
-                    String string = button_string + " " + (x + 1) + ": " + visible_string;
-                    mySwitches.get(x).setText(string);
-                    int finalX = x;
-                    mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
-                }
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+            myView.pageButtonHide.setHint(autohide_info_string + " ("+performance_mode_string+")");
+            myView.pageButtonMini.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false));
+            myView.pageButtonMini.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonMini",isChecked);
+                mainActivityInterface.getPageButtons().updatePageButtonMini(isChecked);
+                mainActivityInterface.getDisplayPrevNext().updateShow();
+                mainActivityInterface.miniPageButton(isChecked);
             });
 
-        });
+            myView.pageButtonHide.setChecked(mainActivityInterface.getPageButtons().getPageButtonHide());
+            myView.pageButtonHide.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPageButtons().setPageButtonHide(isChecked));
+
+            int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
+            if (opacity<myView.opacity.getValueFrom()) {
+                opacity = (int)myView.opacity.getValueFrom();
+            }
+            myView.opacity.setLabelFormatter(value -> ((int)value)+"%");
+            myView.opacity.setValue(opacity);
+            myView.opacity.setHint(opacity+"%");
+            myView.opacity.addOnChangeListener((slider, value, fromUser) -> myView.opacity.setHint((int)value+"%"));
+            myView.opacity.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                @Override
+                public void onStartTrackingTouch(@NonNull Slider slider) { }
+
+                @Override
+                public void onStopTrackingTouch(@NonNull Slider slider) {
+                    float value = myView.opacity.getValue() /100f;
+                    int newColor = mainActivityInterface.getMyThemeColors().changePageButtonAlpha(value);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
+                            mainActivityInterface.getMyThemeColors().getThemeName()+"_pageButtonsColor",
+                            newColor);
+                }
+            });
+            // We will programatically draw the page buttons and their options based on our preferences
+            // Add the buttons to our array (so we can iterate through)
+            addMyButtons();
+            addButtonLayouts();
+            addVisibleSwitches();
+            addTextViews();
+
+            // Also set the dropdowns here
+            if (getActivity()!=null) {
+                arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+            }
+            for (int x=0;x<mainActivityInterface.getPageButtons().getPageButtonNum();x++) {
+                setTheDropDowns(x);
+                setTheText(x);
+            }
+
+            // Now iterate through each button and set it up
+            for (int x = 0; x < mainActivityInterface.getPageButtons().getPageButtonNum(); x++) {
+                mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x, true);
+                myButtons.get(x).setVisibility(View.VISIBLE);
+                setVisibilityFromBoolean(myLayouts.get(x), mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
+                mySwitches.get(x).setChecked(mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
+                String string = button_string + " " + (x + 1) + ": " + visible_string;
+                mySwitches.get(x).setText(string);
+                int finalX = x;
+                mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
+            }
+        }));
     }
 
     private void addMyButtons() {

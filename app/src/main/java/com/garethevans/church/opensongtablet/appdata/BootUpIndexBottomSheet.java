@@ -206,4 +206,12 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView.getRoot().removeAllViews();
+        myView = null;
+        System.gc();
+    }
 }

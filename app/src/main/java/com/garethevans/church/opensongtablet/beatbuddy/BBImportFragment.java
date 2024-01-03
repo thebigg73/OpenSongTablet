@@ -25,8 +25,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class BBImportFragment extends Fragment {
 
@@ -134,9 +132,8 @@ public class BBImportFragment extends Fragment {
                         myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.VISIBLE));
 
                         // Do this on a new thread
-                        ExecutorService executorService = Executors.newSingleThreadExecutor();
                         Uri finalSdCard = sdCard;
-                        executorService.execute(() -> {
+                        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                             String drumKits = getConfigCSVText(finalSdCard,"DRUMSETS");
                             String songFolders = getConfigCSVText(finalSdCard,"SONGS");
                             if (songFolders!=null && drumKits!=null) {
@@ -164,8 +161,7 @@ public class BBImportFragment extends Fragment {
         myView.importBBProgress.post(() -> myView.importBBProgress.setVisibility(View.VISIBLE));
 
         // Do this on a new thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
             String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
             mainActivityInterface.setImportUri(uri);

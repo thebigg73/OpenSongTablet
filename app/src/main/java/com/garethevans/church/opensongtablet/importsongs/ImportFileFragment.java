@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,8 +29,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ImportFileFragment extends Fragment {
 
@@ -81,9 +77,7 @@ public class ImportFileFragment extends Fragment {
         myView.folder.setVisibility(View.GONE);
         myView.filename.setVisibility(View.GONE);
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Get the available folders and base name
             if (mainActivityInterface.getImportFilename()!=null) {
                 basename = mainActivityInterface.getImportFilename().replaceAll("\\.[^.]*$", "");
@@ -129,7 +123,7 @@ public class ImportFileFragment extends Fragment {
             }
 
             // Set up the folder exposed dropdown
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 if (getContext()!=null) {
                     exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
                     myView.folder.setAdapter(exposedDropDownArrayAdapter);
@@ -145,7 +139,7 @@ public class ImportFileFragment extends Fragment {
                 readInFile();
             }
 
-            handler.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 // Update the views and get the
                 updateViews();
 

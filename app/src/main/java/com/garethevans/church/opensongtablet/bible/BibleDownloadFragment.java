@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +24,6 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -136,9 +132,7 @@ public class BibleDownloadFragment extends Fragment {
             Log.d(TAG,"Connected!");
             progressBar(true);
             // Run this in a new Thread
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 try {
                     // Get the url based on the text position
                     int position = -1;
@@ -153,15 +147,15 @@ public class BibleDownloadFragment extends Fragment {
                             Uri uri = Uri.parse(downloadInfo[1]);
                             // Now we need to extract the xmm file from the zip file
                             if (extractBibleZipFile(uri)) {
-                                handler.post(() -> mainActivityInterface.getShowToast().doIt(success_string));
+                                mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(success_string));
                             } else {
-                                handler.post(() -> mainActivityInterface.getShowToast().doIt(error_string));
+                                mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(error_string));
                             }
                         } else {
-                            handler.post(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
+                            mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
                         }
                     }
-                    handler.post(() -> progressBar(false));
+                    mainActivityInterface.getMainHandler().post(() -> progressBar(false));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

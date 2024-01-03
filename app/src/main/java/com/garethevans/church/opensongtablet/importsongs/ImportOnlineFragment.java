@@ -44,8 +44,6 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ImportOnlineFragment extends Fragment {
 
@@ -425,8 +423,7 @@ public class ImportOnlineFragment extends Fragment {
         }
 
         // Run the rest in a new thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             webString = "";
 
             webView.post(() -> {

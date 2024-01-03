@@ -9,8 +9,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +32,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
 
 import java.io.OutputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HighlighterEditFragment extends Fragment {
 
@@ -525,9 +521,7 @@ public class HighlighterEditFragment extends Fragment {
         // Get the bitmap of the drawNotes in a new thread
         if (getContext()!=null) {
             int orientation = getContext().getResources().getConfiguration().orientation;
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT,-1);
                 highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", hname);
                 // Check the uri exists for the outputstream to be valid
@@ -535,7 +529,7 @@ public class HighlighterEditFragment extends Fragment {
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                         false, highlighterUri, null, "Highlighter", "", hname);
 
-                handler.post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
                     try {
                         highlighterBitmap = mainActivityInterface.getDrawNotes().getDrawingCache();

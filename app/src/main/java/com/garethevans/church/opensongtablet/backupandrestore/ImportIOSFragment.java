@@ -5,8 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +30,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -143,17 +139,17 @@ public class ImportIOSFragment extends Fragment {
 
     private void indexBackup() {
         // Run this as a new thread
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(() -> setupViews(true));
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            mainActivityInterface.getMainHandler().post(() -> setupViews(true));
 
             // Count 'loose' songs into zipContents
             // If a db is found, index that too
             countSongs();
 
-            handler.post(() -> myView.filename.setHint(items));
-            handler.post(() -> setupViews(false));
+            mainActivityInterface.getMainHandler().post(() -> {
+                myView.filename.setHint(items);
+                setupViews(false);
+            });
         });
     }
 
@@ -260,9 +256,7 @@ public class ImportIOSFragment extends Fragment {
 
         // Do this in a separate thread
         // Anything requiring the main UI checks this fragment is still alive
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
-            Handler handler = new Handler(Looper.getMainLooper());
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
 
             // Check the chosen folder (likely OnSong) exists
             // Create the folder (if it doesn't already exist).
@@ -296,7 +290,7 @@ public class ImportIOSFragment extends Fragment {
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
 
                             zipProgress++;
-                            handler.post(() -> {
+                            mainActivityInterface.getMainHandler().post(() -> {
                                 String name;
                                 if (ze==null || ze.getName()==null) {
                                     name = "";
@@ -347,7 +341,7 @@ public class ImportIOSFragment extends Fragment {
 
                             if (alive) {
                                 String file = newSong.getFilename();
-                                handler.post(() -> {
+                                mainActivityInterface.getMainHandler().post(() -> {
                                     try {
                                         String message = processing + " (" + zipProgress + "/" + totalSongs + "):\n" + file;
                                         myView.progressText.setText(message);
@@ -402,7 +396,7 @@ public class ImportIOSFragment extends Fragment {
             sqLiteDatabase.close();
 
             if (alive) {
-                handler.post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     String message  = songs_string+ ": " + totalSongs;
                     message += "\n\n" + success + ": " + filesCopied + " / " + totalSongs;
                     if (!errorFiles.toString().trim().isEmpty()) {

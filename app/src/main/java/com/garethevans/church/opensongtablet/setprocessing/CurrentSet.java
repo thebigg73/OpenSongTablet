@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // All actions related to building/processing are in the SetActions class
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,7 +23,7 @@ public class CurrentSet {
     private ArrayList<SetItemInfo> setItemInfos = new ArrayList<>();
     private String setCurrent = "", setCurrentBeforeEdits, setCurrentLastName;
     private final String currentSetText, notSavedText, setTitleText;
-    private int indexSongInSet;
+    private int indexSongInSet, prevIndexSongInSet=-1;
     private ImageView asteriskView;
     private MyMaterialTextView setTitleView;
     private ExtendedFloatingActionButton saveButtonView;
@@ -37,8 +36,6 @@ public class CurrentSet {
         setTitleText = c.getString(R.string.set_name) + ": ";
     }
 
-
-    // NEW - Use the SetItemInfos array for the set items
     public void initialiseTheSet() {
         // Clears ALL arraylists and values
         if (setItemInfos != null) {
@@ -48,9 +45,9 @@ public class CurrentSet {
         }
 
         indexSongInSet = -1;
+        prevIndexSongInSet = -1;
         updateSetTitleView();
     }
-
 
     // Get the setItemInfos
     public ArrayList<SetItemInfo> getSetItemInfos() {
@@ -129,7 +126,7 @@ public class CurrentSet {
 
         // Update the currentSet preferences
         if (doSave) {
-            updateCurrentSetPreferences(false);
+            updateCurrentSetPreferences();
         }
     }
 
@@ -144,7 +141,7 @@ public class CurrentSet {
         setItemInfos.add(setItemInfo);
 
         // Update the currentSet preferences
-        updateCurrentSetPreferences(false);
+        updateCurrentSetPreferences();
     }
 
     public void addItemToSet(String folder, String filename, String title, String key) {
@@ -159,7 +156,7 @@ public class CurrentSet {
         setItemInfos.add(setItemInfo);
 
         // Update the currentSet preferences
-        updateCurrentSetPreferences(false);
+        updateCurrentSetPreferences();
     }
 
 
@@ -180,9 +177,8 @@ public class CurrentSet {
             setItemInfos.remove(pos);
         }
 
-
         // Update the currentSet preferences
-        updateCurrentSetPreferences(false);
+        updateCurrentSetPreferences();
     }
 
 
@@ -194,36 +190,36 @@ public class CurrentSet {
             setItemInfos.set(position, setItemInfo);
 
             // Update the currentSet preferences
-            updateCurrentSetPreferences(false);
+            updateCurrentSetPreferences();
         }
     }
 
 
     // Save the currentSet preference
-    public void updateCurrentSetPreferences(boolean updateSetMenu) {
+    public void updateCurrentSetPreferences() {
         setCurrent = mainActivityInterface.getSetActions().getSetAsPreferenceString();
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setCurrent);
         updateSetTitleView();
-
-        // Refresh the set list (try as may not be initialised yet!)
-        if (updateSetMenu) {
-            try {
-                mainActivityInterface.updateSetList();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 
 
     // The currently selected song in the set
     public void setIndexSongInSet(int indexSongInSet) {
+        this.prevIndexSongInSet = this.indexSongInSet;
         this.indexSongInSet = indexSongInSet;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("indexSongInSet",indexSongInSet);
     }
 
     public int getIndexSongInSet() {
         return indexSongInSet;
+    }
+    public void setPrevIndexSongInSet(int prevIndexSongInSet) {
+        this.prevIndexSongInSet = prevIndexSongInSet;
+    }
+
+    public int getPrevIndexSongInSet() {
+        return prevIndexSongInSet;
     }
 
 
@@ -284,7 +280,7 @@ public class CurrentSet {
             }
             if (saveButtonView != null) {
                 if (changedOrEmpty.isEmpty()) {
-                    saveButtonView.post(() -> saveButtonView.setVisibility(View.GONE));
+                    saveButtonView.post(() -> saveButtonView.setVisibility(View.INVISIBLE));
                 } else {
                     saveButtonView.post(() -> saveButtonView.setVisibility(View.VISIBLE));
                 }
@@ -327,40 +323,21 @@ public class CurrentSet {
     }
 
 
+    // Called when items are dragged around in the set
     public void swapPositions(int fromPosition, int toPosition) {
         if (setItemInfos != null && getCurrentSetSize() > fromPosition && getCurrentSetSize() > toPosition) {
             SetItemInfo fromSetItemInfo = setItemInfos.get(fromPosition);
             SetItemInfo toSetItemInfo = setItemInfos.get(toPosition);
 
-            // Get the values
-            int from_item = fromSetItemInfo.songitem;
-            String from_filename = fromSetItemInfo.songfilename;
-            String from_folder = fromSetItemInfo.songfolder;
-            String from_key = fromSetItemInfo.songkey;
-            int to_item = toSetItemInfo.songitem;
-            String to_filename = toSetItemInfo.songfilename;
-            String to_folder = toSetItemInfo.songfolder;
-            String to_key = toSetItemInfo.songkey;
-
-            // Update the values to their new locations
-            fromSetItemInfo.songitem = to_item;
-            fromSetItemInfo.songfilename = to_filename;
-            fromSetItemInfo.songfolder = to_folder;
-            fromSetItemInfo.songkey = to_key;
-            fromSetItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(fromSetItemInfo);
-
-            toSetItemInfo.songitem = from_item;
-            toSetItemInfo.songfilename = from_filename;
-            toSetItemInfo.songfolder = from_folder;
-            toSetItemInfo.songkey = from_key;
-            toSetItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(toSetItemInfo);
+            fromSetItemInfo.songitem = toPosition;
+            toSetItemInfo.songitem = fromPosition;
 
             // Put the new values back into the setitems
             setItemInfos.set(fromPosition,toSetItemInfo);
             setItemInfos.set(toPosition,fromSetItemInfo);
 
             // Update the preference
-            updateCurrentSetPreferences(false);
+            updateCurrentSetPreferences();
         }
     }
 
@@ -369,9 +346,7 @@ public class CurrentSet {
         setItemInfos.add(position,setItemInfo);
 
         // Update the preference
-        updateCurrentSetPreferences(false);
+        updateCurrentSetPreferences();
     }
-
-
 
 }

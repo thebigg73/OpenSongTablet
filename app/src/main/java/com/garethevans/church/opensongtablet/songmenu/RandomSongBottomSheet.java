@@ -27,12 +27,17 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private final String whichMenu;
     private Song randomSong;
+    private int indexSongInSet = -1;
 
     public RandomSongBottomSheet() {
         // Default constructor required to avoid re-instantiation failures
         // Just close the bottom sheet
         whichMenu = "";
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public RandomSongBottomSheet(String whichMenu) {
@@ -63,43 +68,63 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetRandomSongBinding.inflate(inflater,container,false);
 
-        if (getContext()!=null) {
-            myView.dialogHeader.setText(getString(R.string.random_song));
-        }
-        myView.dialogHeader.setClose(this);
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (getContext()!=null) {
+                    myView.dialogHeader.setText(getString(R.string.random_song));
+                }
+                myView.dialogHeader.setClose(this);
+            });
 
-        // Get a random song
-        findRandomSong();
+            // Get a random song
+            findRandomSong();
 
-        // Set up the listeners
-        setupListeners();
+            mainActivityInterface.getMainHandler().post(() -> {
+                // Set the random song values
+                myView.currentRandomSong.setText(randomSong.getTitle());
+                myView.currentRandomSong.setHint(randomSong.getFolder());
+
+                // Set up the listeners
+                setupListeners();
+            });
+        });
 
         return myView.getRoot();
     }
 
     private void setupListeners() {
-        myView.findRandom.setOnClickListener(v -> findRandomSong());
+        myView.findRandom.setOnClickListener(v -> mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Find a new random song
+            findRandomSong();
+
+            mainActivityInterface.getMainHandler().post(() -> {
+                // Set the random song values
+                myView.currentRandomSong.setText(randomSong.getTitle());
+                myView.currentRandomSong.setHint(randomSong.getFolder());
+            });
+        }));
         myView.loadRandom.setOnClickListener(v -> doLoad());
         myView.currentRandomSong.setOnClickListener(v -> doLoad());
     }
 
     private void findRandomSong() {
         Random random = new Random();
-
-        int randomNum;
         if (whichMenu.equals("song")) {
-            randomNum = random.nextInt(mainActivityInterface.getSongsFound("song").size());
+            int randomNum = random.nextInt(mainActivityInterface.getSongsFound("song").size());
             randomSong = mainActivityInterface.getSongsFound("song").get(randomNum);
         } else if (!whichMenu.isEmpty()){
-            randomNum = random.nextInt(mainActivityInterface.getSongsFound("set").size());
-            randomSong = mainActivityInterface.getSongsFound("set").get(randomNum);
+            indexSongInSet = random.nextInt(mainActivityInterface.getSongsFound("set").size());
+            randomSong = mainActivityInterface.getSongsFound("set").get(indexSongInSet);
         }
-        myView.currentRandomSong.setText(randomSong.getTitle());
-        myView.currentRandomSong.setHint(randomSong.getFolder());
     }
 
     private void doLoad() {
-        mainActivityInterface.doSongLoad(randomSong.getFolder(),randomSong.getFilename(),true);
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(indexSongInSet);
+        if (indexSongInSet!=-1) {
+            mainActivityInterface.loadSongFromSet(indexSongInSet);
+        } else {
+            mainActivityInterface.doSongLoad(randomSong.getFolder(), randomSong.getFilename(), true);
+        }
         dismiss();
     }
 }

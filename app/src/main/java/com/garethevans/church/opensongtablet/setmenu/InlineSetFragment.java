@@ -16,9 +16,6 @@ import com.garethevans.church.opensongtablet.databinding.SettingsSetsInlineBindi
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class InlineSetFragment extends Fragment {
     // This class gives the settings for displaying an inline set list
 
@@ -47,8 +44,7 @@ public class InlineSetFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsSetsInlineBinding.inflate(inflater,container,false);
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             prepareStrings();
             webAddress = website_inline_set_string;
 
