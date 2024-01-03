@@ -1,96 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_above="@+id/setItemEditLayout"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp">
+        android:layout_height="wrap_content" />
 
-        <com.garethevans.church.opensongtablet.customviews.DialogHeader
-            android:id="@+id/dialogHeading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:paddingBottom="4dp"
-            android:contentDescription="@string/edit_set_item">
-
-            <LinearLayout
-                android:id="@+id/setList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:isScrollContainer="true"
-                android:orientation="vertical"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp"/>
-        </ScrollView>
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="@dimen/progress_bar_size"
-        android:layout_height="@dimen/progress_bar_size"
-        android:layout_centerInParent="true" />
-
-    <LinearLayout
-        android:id="@+id/setItemEditLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:padding="8dp">
-
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-            android:id="@+id/editVariation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/variation"
-            android:hint="@string/variation_info"/>
-        <TableRow style="@style/DividerLine"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/set_item_info"
-            android:layout_marginBottom="8dp"/>
-
-        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-            android:id="@+id/editFolder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/folder"/>
+        android:layout_height="match_parent"
+        android:contentDescription="@string/edit_set_item"
+        android:paddingBottom="4dp">
 
         <LinearLayout
+            android:id="@+id/setItemEditLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/editVariation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/variation_info"
+                android:text="@string/variation" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/set_item_info" />
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/editFilename"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:id="@+id/editFolder"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/filename"
-                android:layout_marginEnd="8dp"/>
+                android:hint="@string/folder" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/editKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/key"
-                android:layout_marginStart="8dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/editFilename"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:hint="@string/filename" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/editKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:hint="@string/key" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </ScrollView>
+</LinearLayout>

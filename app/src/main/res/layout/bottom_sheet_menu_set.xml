@@ -44,15 +44,6 @@
                     android:text="@string/set_manage" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/edit_set_item_info"
-                    custom:mydrawable="@drawable/pencil"
-                    android:padding="12dp"
-                    android:text="@string/edit_set_item" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/addScripture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

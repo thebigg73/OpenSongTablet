@@ -17,6 +17,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -102,8 +103,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         // If this is the current set item, highlight it
         if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
             setColor(holder,onColor);
+            setFABColor(holder.cardEdit,offColor);
         } else {
             setColor(holder,offColor);
+            setFABColor(holder.cardEdit,offColor);
         }
 
         holder.cardItem.setTextSize(titleSize);
@@ -118,6 +121,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
         holder.cardTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
         holder.cardFolder.setText(newfoldername);
+
+        // Set the listener for the edit button
+        holder.cardEdit.setOnClickListener(view -> {
+            SetEditItemBottomSheet setEditItemBottomSheet = new SetEditItemBottomSheet(position);
+            setEditItemBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"SetEditItemBottomSheet");
+        });
 
         if (si.songicon==null || si.songicon.isEmpty()) {
             si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
@@ -148,8 +157,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                     // We want to update the highlight colour to on/off
                     if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                         setColor(holder, onColor);
+                        setFABColor(holder.cardEdit,offColor);
+
                     } else {
                         setColor(holder, offColor);
+                        setFABColor(holder.cardEdit,onColor);
+
                     }
                 }
             }
@@ -170,6 +183,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         }
     }
 
+    private void setFABColor(FloatingActionButton fab, int fabColor) {
+        fab.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
+        } else {
+            fab.setBackgroundColor(fabColor);
+        }
+    }
 
     // Update the keys of set items (in case the database wasn't ready)
     public void updateKeys() {
@@ -300,6 +321,19 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         mainActivityInterface.updateCheckForThisSong(updateSong);
     }
 
+    // Called when we edited an item from the bottom sheet
+    public void updateItem(int position) {
+        // Get the current item
+        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+
+        // Notify we changed the item
+        mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(position));
+
+        // Update the checked item
+        updateCheckedItem(setItemInfo);
+    }
+
+
     // Change the numbers below the changed item (either +1 or -1)
     // Called when swiping away to delete and item or restoring it
     private void updateNumbersBelowPosition(int fromPosition) {
@@ -312,49 +346,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
         // Notify the changes
         notifyItemRangeChanged(fromPosition,count);
-    }
-
-
-
-
-    // Called when we edit a set item
-    public void updateItem(int position) {
-        if (position>=0 && mainActivityInterface.getCurrentSet().getSetItemInfos()!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>position) {
-            try {
-                // Check for icon
-                mainActivityInterface.getCurrentSet().getSetItemInfo(position).songicon = mainActivityInterface.getSetActions().
-                        getIconIdentifier(mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder,
-                                mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfilename);
-
-                // Update the title
-                mainActivityInterface.getCurrentSet().updateSetTitleView();
-                notifyItemChanged(position);
-
-                // Update the highlighting
-                notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
-                notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
-
-                // Update the inline set
-                mainActivityInterface.updateInlineSetChanged(position);
-
-                // Update the prev/next
-                uiHandler.post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public boolean initialiseSetItem() {
-        // Only used when app boots and we are already viewing a set item
-        // This comes via the MyToolbar where we add a tick for a set item
-        uiHandler.post(() -> {
-            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
-            notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet());
-        });
-        return true;
     }
 
     @Override
@@ -374,6 +365,5 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
         });
     }
-
 
 }

@@ -331,11 +331,12 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
+    // Called when we edit a set item from the bottom sheet
     public void updateItem(int position) {
         Log.d(TAG,"updateItem("+position+")");
-        /*if (setAdapter!=null) {
+        if (setAdapter!=null) {
             setAdapter.updateItem(position);
-        }*/
+        }
     }
 
 

@@ -19,15 +19,16 @@
             android:layout_alignParentTop="true"
             android:drawablePadding="16dp"
             android:padding="4dp"
-            android:text="@string/title"
+            android:text="@string/number_1"
             app:drawableStartCompat="@drawable/amplifier" />
 
         <FrameLayout
             android:id="@+id/fileOrTitle"
             android:layout_width="match_parent"
+            android:layout_toEndOf="@+id/cardview_item"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/cardview_item">
+            android:layout_toStartOf="@+id/cardview_edit">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/cardview_songtitle"
@@ -55,19 +56,32 @@
 
         </FrameLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/cardview_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:src="@drawable/pencil"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/edit"
+            android:visibility="gone"/>
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_folder"
             android:layout_width="match_parent"
+            android:layout_toEndOf="@+id/cardview_item"
+            android:layout_toStartOf="@+id/cardview_edit"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fileOrTitle"
             android:layout_alignParentTop="false"
-            android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:paddingStart="8dp"
             android:paddingTop="0dp"
             android:paddingEnd="4dp"
             android:paddingBottom="4dp"
             android:text="@string/mainfoldername" />
+
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

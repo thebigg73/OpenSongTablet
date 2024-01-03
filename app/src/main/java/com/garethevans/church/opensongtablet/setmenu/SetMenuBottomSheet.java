@@ -80,7 +80,6 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     private void checkViewsAllowed() {
         // Check there are songs!
         if (mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
-            myView.edit.setVisibility(View.GONE);
             myView.shuffleSet.setVisibility(View.GONE);
             myView.randomSong.setVisibility(View.GONE);
         }
@@ -94,13 +93,6 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         myView.manageSet.setOnClickListener(v -> {
             mainActivityInterface.navigateToFragment(deeplink_sets_string,-1);
             dismiss();
-        });
-        myView.edit.setOnClickListener(v -> {
-            if (getActivity()!=null) {
-                SetEditItemBottomSheet setVariationBottomSheet = new SetEditItemBottomSheet();
-                setVariationBottomSheet.show(getActivity().getSupportFragmentManager(), "setVariation");
-                dismiss();
-            }
         });
         myView.addScripture.setOnClickListener(v -> {
             mainActivityInterface.navigateToFragment(deeplink_bible_string,0);
