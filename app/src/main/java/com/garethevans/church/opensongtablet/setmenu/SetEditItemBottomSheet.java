@@ -41,6 +41,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private String[] key_choice_string = {};
     private ArrayList<String> filenames;
 
+    @SuppressWarnings("unused")
     SetEditItemBottomSheet() {
         // The default constructor which wasn't set up properly
         try {
@@ -240,37 +241,47 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         @Override
         public void afterTextChanged(Editable editable) {
             checkAllowEdit();
-            if (editable!=null && exposedDropDown!=null && exposedDropDown.getUserEditing()) {
+
+
+            if (exposedDropDown.getUserEditing()) {
                 SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
                 switch (which) {
                     case "folder":
-                        setItemInfo.songfolder = editable.toString();
-                        updateFilesInFolder(editable.toString());
-                        checkAllowEdit();
+                        if (myView.editFolder.getText()!=null) {
+                            String folder = myView.editFolder.getText().toString();
+                            String nicefolder = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(folder);
+                            setItemInfo.songfolder = folder;
+                            setItemInfo.songfoldernice = nicefolder;
+                            updateFilesInFolder(folder);
+                            checkAllowEdit();
+                        }
                         break;
                     case "filename":
-                        setItemInfo.songfilename = editable.toString();
-                        // Because we have indexed the songs, we can look up the title of the new song
-                        Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(setItemInfo.songfolder,setItemInfo.songfilename);
-                        setItemInfo.songtitle = tempSong.getTitle();
-                        // Update the key too
-                        setItemInfo.songkey = tempSong.getKey();
-                        // Change this item
-                        mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
-                        myView.editKey.setUserEditing(false);
-                        myView.editKey.setText(setItemInfo.songkey);
-                        myView.editKey.setUserEditing(true);
+                        if (myView.editFilename.getText()!=null) {
+                            String filename = myView.editFilename.getText().toString();
+                            setItemInfo.songfilename = filename;
+                            // Because we have indexed the songs, we can look up the title of the new song
+                            Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(setItemInfo.songfolder,filename);
+                            setItemInfo.songtitle = tempSong.getTitle();
+                            // Update the key too
+                            setItemInfo.songkey = tempSong.getKey();
+                            // Change this item without triggering the text watcher
+                            myView.editKey.setUserEditing(false);
+                            myView.editKey.setText(setItemInfo.songkey);
+                            myView.editKey.setUserEditing(true);
+                        }
                         break;
                     case "key":
-                        mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songkey = editable.toString();
+                        if (myView.editKey.getText()!=null) {
+                            setItemInfo.songkey = myView.editKey.getText().toString();
+                        }
                         break;
                 }
 
-                // Update the set item in the background
+                // Update the set item in the background and notify the set menu for changes
+                mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
                 mainActivityInterface.updateFragment("set_updateItem",null, arguments);
 
-                // Update the set item
-                mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
             }
         }
     }

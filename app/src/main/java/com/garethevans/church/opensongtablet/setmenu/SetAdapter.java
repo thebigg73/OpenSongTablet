@@ -166,6 +166,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                     }
                 }
             }
+            // Set the listener for the edit button as the position may have changed
+            int finalPosition = position;
+            holder.cardEdit.setOnClickListener(view -> {
+                SetEditItemBottomSheet setEditItemBottomSheet = new SetEditItemBottomSheet(finalPosition);
+                setEditItemBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"SetEditItemBottomSheet");
+            });
+
         }
     }
 
