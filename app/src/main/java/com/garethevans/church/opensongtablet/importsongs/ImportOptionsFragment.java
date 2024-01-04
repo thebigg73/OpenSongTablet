@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.CreateSongBottomSheet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -212,8 +213,9 @@ public class ImportOptionsFragment extends Fragment {
 
     private void setListeners() {
         myView.createSong.setOnClickListener(v -> {
-            mainActivityInterface.setSong(new Song());
-            mainActivityInterface.navigateToFragment(deeplink_edit_string,0);
+            // Open the bottom sheet to create a new song folder/filename
+            CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet();
+            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"CreateSongBottomSheet");
         });
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));

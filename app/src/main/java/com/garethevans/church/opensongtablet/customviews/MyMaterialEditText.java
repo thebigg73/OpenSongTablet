@@ -391,4 +391,11 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     public Layout getLayout() {
         return editText.getLayout();
     }
+
+    public void setErrorEnabled(boolean errorEnabled) {
+        textInputLayout.setErrorEnabled(errorEnabled);
+    }
+    public void setError(String error) {
+        textInputLayout.setError(error);
+    }
 }
