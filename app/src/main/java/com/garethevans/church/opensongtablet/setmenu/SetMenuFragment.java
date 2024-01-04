@@ -22,10 +22,6 @@ import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomShee
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.snackbar.Snackbar;
 
-
-// TODO - set title not updating
-
-
 public class SetMenuFragment extends Fragment {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -37,7 +33,6 @@ public class SetMenuFragment extends Fragment {
             set_item_removed_string="", undo_string="";
     private MainActivityInterface mainActivityInterface;
     private SetAdapter setAdapter;
-    boolean firstLoad = true;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -232,13 +227,6 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
-    // Clear the set
-    public void clearSet() {
-        if (setAdapter!=null) {
-            mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeRemoved(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
-        }
-    }
-
     // Called when clicking on clear set/create new set or sorting/shuffling
     public void notifyItemRangeRemoved(int from, int count) {
         if (setAdapter!=null && mainActivityInterface!=null) {
@@ -340,9 +328,6 @@ public class SetMenuFragment extends Fragment {
     }
 
 
-
-
-
     public void initialiseSetItem() {
         Log.d(TAG,"initialiseSetItem()");
         /*// Only do this if we actually needed to highlight an item
@@ -351,21 +336,6 @@ public class SetMenuFragment extends Fragment {
         }*/
     }
 
-
-
-    public void notifyToInsertAllSet() {
-        Log.d(TAG,"notifyToInsertAllSet()");
-
-        /*// Called when a set is recalculated
-        if (!mainActivityInterface.getSetActions().getProcessingSet()) {
-            if (myView != null && setAdapter != null && mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
-                Log.d(TAG, "notifyToUpdateSet()");
-                // Because this can be done from a different menu/view, post
-                myView.myRecyclerView.post(() -> setAdapter.notifyToInsertAllSet());
-            }
-            mainActivityInterface.notifyToInsertAllInlineSet();
-        }*/
-    }
 
     public void refreshLayout() {
         Log.d(TAG,"refreshLayout()");
