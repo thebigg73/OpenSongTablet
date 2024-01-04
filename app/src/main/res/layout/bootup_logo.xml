@@ -4,7 +4,7 @@
     android:id="@+id/pagesplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorAltPrimary"
     android:padding="16dp">
 
     <ImageView
@@ -14,10 +14,10 @@
         android:layout_above="@+id/currentAction"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/splash_logo"
         android:padding="64dp"
-        android:visibility="visible" />
+        android:scaleType="fitCenter"
+        android:visibility="visible"
+        app:srcCompat="@drawable/splash_logo" />
 
     <TextView
         android:id="@+id/currentAction"
