@@ -2,11 +2,9 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,9 +55,6 @@ public class EditSongFragmentLyrics extends Fragment {
                     // Add listeners
                     setupListeners();
 
-                    myView.lyricsScrollView.smoothScrollTo(0,0);
-                    myView.lyrics.setTop(0);
-
                     myView.lyrics.clearFocus();
                 });
             } catch (Exception e) {
@@ -83,7 +78,6 @@ public class EditSongFragmentLyrics extends Fragment {
         return myView.getRoot();
     }
 
-
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -103,7 +97,6 @@ public class EditSongFragmentLyrics extends Fragment {
         }
         boolean editAsChordPro = mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false);
         mainActivityInterface.getTempSong().setEditingAsChoPro(editAsChordPro);
-        Log.d(TAG,"editAsChordPro:"+editAsChordPro);
         if (mainActivityInterface.getTempSong()!=null && !mainActivityInterface.getTempSong().getEditingAsChoPro()) {
             mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
         } else if (mainActivityInterface.getTempSong()!=null) {
@@ -114,7 +107,6 @@ public class EditSongFragmentLyrics extends Fragment {
             // Now set the lyrics back as chordpro
             mainActivityInterface.getTempSong().setLyrics(choProLyrics);
         }
-
 
         if (mainActivityInterface.getSong().getFiletype()==null) {
             mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong());
@@ -133,56 +125,17 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.imageEdit.post(() -> myView.imageEdit.setVisibility(View.GONE));
         }
 
-        int lines = Math.max(20,mainActivityInterface.getTempSong().getLyrics().split("\n").length+1);
-
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
         myView.lyrics.post(() -> {
             myView.lyrics.setTextSize(editTextSize);
-            try {
-                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics, lines);
-            } catch (Exception e) {
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
-                e.printStackTrace();
-            }
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         });
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
     }
 
-    private void setupListeners() {
-        myView.lyrics.setOnFocusChangeListener((view, b) -> {
-            if (b) {
-                // Get the text position and 100ms later set this again
-                // Hopefully deals with soft keyboard hiding cursor position
-                int cursorPos = myView.lyrics.getSelectionStart();
-                myView.lyrics.postDelayed(() -> {
-                    myView.lyrics.setSelection(cursorPos);
-                    Log.d(TAG,"cursor set to:"+cursorPos);
-
-                    Layout layout = myView.lyrics.getLayout();
-                    int line = layout.getLineForOffset(cursorPos);
-                    int baseline = layout.getLineBaseline(line);
-                    int ascent = layout.getLineAscent(line);
-
-                    Log.d(TAG,"line:"+line+"  baseline:"+baseline+"  ascent:"+ascent);
-
-                    int[] location = new int[2];
-                    myView.lyrics.getLocationOnScreen(location);
-
-                    Point point = new Point();
-                    point.x = (int) layout.getPrimaryHorizontal(cursorPos);
-                    point.y = baseline + ascent - location[1] - myView.lyricsScrollView.getScrollY();
-
-                    myView.lyrics.scrollTo(0,point.y);
-                },100);
-
-            }
-            //mainActivityInterface.enableSwipe("edit",!b);
-        });
-
-        myView.lyrics.addTextChangedListener(new TextWatcher() {
+    private void setupListeners() {myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
@@ -206,8 +159,6 @@ public class EditSongFragmentLyrics extends Fragment {
                     // We were undoing/redoing, so we didn't do the above.  Now turn this off
                     addUndoStep = true;
                 }
-                int lines = Math.max(20, mainActivityInterface.getTempSong().getLyrics().split("\n").length);
-                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics, lines);
             }
         });
 
@@ -246,32 +197,6 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyricsScrollView.setFab2ToAnimate(myView.redoButton);
         myView.lyricsScrollView.setFab3ToAnimate(myView.settingsButton);
 
-        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        //mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout);
-    }
-
-    private void manualScrollTo () {
-        myView.lyrics.postDelayed(() -> {
-            int cursorStart = myView.lyrics.getSelectionStart();
-            Log.d(TAG, "onClicked().  cursorStart:" + cursorStart);
-            if (cursorStart > 0) {
-                // Get the text between the start and this position
-                String substring = myView.lyrics.getText().toString().substring(0, cursorStart);
-                // Get the number of lines to this position
-                int linesDown = substring.split("\n").length;
-                int totalLines = myView.lyrics.getMinLines();
-                float proportionOfView = (float) linesDown / (float) totalLines;
-                int heightOfView = myView.lyrics.getMeasuredHeight();
-                int scrollYneeded = (int) (heightOfView * proportionOfView);
-                if (heightOfView != 0) {
-                    int screenHeight = myView.parentView.getMeasuredHeight();
-                    screenHeight = Math.min(400,screenHeight/4);
-                    // Because selection is >0, the keyboard is open.
-                    // Make sure the view has scroll up by this proportion
-                    myView.lyricsScrollView.scrollTo(0, scrollYneeded - screenHeight);
-                }
-            }
-        }, 50);
     }
 
     private void undoLyrics() {
@@ -349,7 +274,7 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.lyrics.postDelayed(() -> myView.lyrics.setSelection(cursorPos + moveCursorBy), 1000);
 
             mainActivityInterface.getWindowFlags().showKeyboard();
-            manualScrollTo();
+            //manualScrollTo();
         } catch (Exception e) {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+": \n"+e);
         }
@@ -486,21 +411,21 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     public void autoFix() {
-        String lyrics;
+        String fixedlyrics;
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());
+            fixedlyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());
         } else {
-            lyrics = mainActivityInterface.getTempSong().getLyrics();
+            fixedlyrics = mainActivityInterface.getTempSong().getLyrics();
         }
 
         // Use the text conversion to fix
-        lyrics = mainActivityInterface.getConvertTextSong().convertText(lyrics);
+        fixedlyrics = mainActivityInterface.getConvertTextSong().convertText(fixedlyrics);
 
         // Put back (includes undo step)
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(lyrics);
+            fixedlyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(fixedlyrics);
         }
-        myView.lyrics.setText(lyrics);
+        myView.lyrics.setText(fixedlyrics);
         mainActivityInterface.getShowToast().doIt(success_string);
     }
 
