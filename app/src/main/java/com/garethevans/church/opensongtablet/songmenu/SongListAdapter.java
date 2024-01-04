@@ -352,13 +352,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                 mainActivityInterface.getSongMenuFragment().getSongsFound()!=null &&
                 mainActivityInterface.getSongMenuFragment().getSongsFound().size()>pos) {
             // Get the current value and change it
-            try {
-                Log.d(TAG,"attempt to post bind");
-                notifyItemChanged(pos,"checkOn");
-            } catch (Exception e) {
-                mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(pos,"checkOn"));
-                e.printStackTrace();
-            }
+            mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(pos,"checkOn"));
         }
     }
 

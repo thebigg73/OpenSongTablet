@@ -213,7 +213,6 @@ public class InlineSetList extends RecyclerView {
 
         @Override
         public int getItemCount() {
-            Log.d(TAG,"getItemCount()");
             return mainActivityInterface.getCurrentSet().getCurrentSetSize();
         }
 
@@ -352,7 +351,7 @@ public class InlineSetList extends RecyclerView {
 
         public void updateInlineSetAll() {
             Log.d(TAG,"updateInlineSetAll()");
-            mainActivityInterface.getMainHandler().post(() -> notifyItemRangeChanged(0,getItemCount()));
+            mainActivityInterface.getMainHandler().post(() -> notifyItemRangeChanged(0,mainActivityInterface.getCurrentSet().getCurrentSetSize()));
         }
 
     }

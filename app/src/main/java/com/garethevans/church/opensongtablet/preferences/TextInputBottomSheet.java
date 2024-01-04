@@ -59,7 +59,11 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         prefVal = "";
         singleLine = true;
         simpleEditText = true;
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public TextInputBottomSheet(Fragment fragment, String fragname, String title, String hint,

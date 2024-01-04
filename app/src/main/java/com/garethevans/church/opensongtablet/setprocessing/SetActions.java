@@ -1503,8 +1503,6 @@ public class SetActions {
     }
 
     private String fixNull(String s) {
-        Log.d(TAG,"fixNull()");
-
         if (s == null) {
             s = "";
         }
