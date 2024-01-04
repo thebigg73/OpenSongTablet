@@ -77,19 +77,24 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
-        prepareStrings(getContext());
-
         myView = BottomSheetImageAdjustBinding.inflate(inflater,container,false);
         myView.dialogHeading.setWebHelp(mainActivityInterface,crop_website);
         myView.dialogHeading.setClose(this);
+        myView.progressBar.setVisibility(View.GONE);
 
-        // Prepare views
-        prepareViews();
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            prepareStrings(getContext());
 
-        // Prepare listeners
-        prepareListeners();
+            mainActivityInterface.getMainHandler().post(() -> {
+                // Prepare views
+                prepareViews();
 
-        return myView.getRoot();
+                // Prepare listeners
+                prepareListeners();
+            });
+        });
+
+    return myView.getRoot();
 
     }
 
@@ -143,42 +148,51 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
     @SuppressLint("ClickableViewAccessibility")
     private void prepareListeners() {
         // Set up the slider and button listeners
-        myView.rotateImageLeft.setOnClickListener(view -> myView.cropImageView.rotateImage(270));
-        myView.rotateImageRight.setOnClickListener(view -> myView.cropImageView.rotateImage(90));
+        myView.rotateImageLeft.setOnClickListener(view -> mainActivityInterface.getMainHandler().post(() -> myView.cropImageView.rotateImage(270)));
+        myView.rotateImageRight.setOnClickListener(view -> mainActivityInterface.getMainHandler().post(() -> myView.cropImageView.rotateImage(90)));
         myView.saveChanges.setOnClickListener(view -> doCrop());
     }
 
     private void doCrop() {
+        myView.progressBar.setVisibility(View.VISIBLE);
+
         Bitmap bmp = myView.cropImageView.getCroppedImage();
         Rect cropPoints = myView.cropImageView.getCropRect();
-        if (thisSong.getFiletype().equals("PDF") && cropPoints!=null) {
-            Log.d(TAG,"cropPoints:"+ cropPoints.flattenToString());
-            String destClip = "destClip:"+cropPoints.left + "," +
-                    cropPoints.top + "," +
-                    cropPoints.right + "," +
-                    cropPoints.bottom + ";";
 
-            Log.d(TAG,"destClip:"+destClip);
-            // Set the crop points to the user3 field - overwrite everything else!
-            thisSong.setUser3(destClip);
-            mainActivityInterface.getSaveSong().updateSong(thisSong,false);
-            dismiss();
+        if (thisSong.getFiletype().equals("PDF") && cropPoints!=null) {
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                Log.d(TAG, "cropPoints:" + cropPoints.flattenToString());
+                String destClip = "destClip:" + cropPoints.left + "," +
+                        cropPoints.top + "," +
+                        cropPoints.right + "," +
+                        cropPoints.bottom + ";";
+
+                Log.d(TAG, "destClip:" + destClip);
+
+                // Set the crop points to the user3 field - overwrite everything else!
+                thisSong.setUser3(destClip);
+                mainActivityInterface.getSaveSong().updateSong(thisSong, false);
+
+                dismiss();
+            });
         } else if (thisSong.getFiletype().equals("IMG") && bmp!=null) {
-            Log.d(TAG, "bmp:" + bmp.getWidth() + "x" + bmp.getHeight());
-            // Write a temporary version of this image to the export folder.
-            // After showing the are you sure prompt, we either cancel (delete the temp file)
-            // or we copy the temp file to replace the original one.
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",thisSong.getFilename());
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,"null","Export","",thisSong.getFilename());
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-            mainActivityInterface.getStorageAccess().writeImage(outputStream,bmp);
-            String oldSize = originalWidth + "x" + originalHeight;
-            String newSize = bmp.getWidth() + "x" + bmp.getHeight();
-            String okString = crop_image_string + ": " + oldSize + " -> " + newSize;
-            AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("cropImage",okString,null,null,null,thisSong);
-            areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSureBottomSheet");
-            dismiss();
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                Log.d(TAG, "bmp:" + bmp.getWidth() + "x" + bmp.getHeight());
+                // Write a temporary version of this image to the export folder.
+                // After showing the are you sure prompt, we either cancel (delete the temp file)
+                // or we copy the temp file to replace the original one.
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", thisSong.getFilename());
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, "null", "Export", "", thisSong.getFilename());
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                mainActivityInterface.getStorageAccess().writeImage(outputStream, bmp);
+                String oldSize = originalWidth + "x" + originalHeight;
+                String newSize = bmp.getWidth() + "x" + bmp.getHeight();
+                String okString = crop_image_string + ": " + oldSize + " -> " + newSize;
+                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("cropImage", okString, null, null, null, thisSong);
+                areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AreYouSureBottomSheet");
+
+                dismiss();
+            });
         }
     }
-
 }
