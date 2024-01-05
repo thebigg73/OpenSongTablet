@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,13 +175,16 @@ public class InlineSetList extends RecyclerView {
             }
         }
         if (reloadSong) {
+            Log.d(TAG,"reload song");
             if (mainActivityInterface.getCurrentSet().getIndexSongInSet()==-1 || mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()<1) {
                 // Load the song
+                mainActivityInterface.getMainHandler().postDelayed(() ->
                 mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                        mainActivityInterface.getSong().getFilename(),false);
+                        mainActivityInterface.getSong().getFilename(),false),800);
             } else {
                 // Load from the set
-                mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                mainActivityInterface.getMainHandler().postDelayed(() ->
+                        mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet()),800);
             }
         }
     }

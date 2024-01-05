@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 setupNavigation();
 
                 // Initialise the activity
-                //initialiseActivity();
+                initialiseActivity();
             });
         });
 
@@ -1120,9 +1120,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navigateToFragment(String deepLink, int id) {
         // Either sent a deeplink string, or a fragment id
+        Log.d(TAG,"lockDrawer");
         lockDrawer(true);
+        Log.d(TAG,"closeDrawer");
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         actionButtonWasExpanded = myView.actionFAB.getRotation() != 0;
+        Log.d(TAG,"hideActionButton");
         hideActionButton(true);
         // Stop the autoscroll if running
         if (autoscroll!=null) {
@@ -1144,7 +1147,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             runOnUiThread(() -> {
                 try {
+                    Log.d(TAG,"navController:"+navController);
+                    if (navController==null) {
+                        setupActionbar();
+                        setupNavigation();
+                    }
                     if (deepLink != null && navController!=null) {
+                        Log.d(TAG,"navigate to:"+Uri.parse(deepLink));
+
                         navController.navigate(Uri.parse(deepLink));
                     } else if (navController!=null) {
                         navController.navigate(id);
@@ -1533,7 +1543,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
         if (myView != null) {
-            myView.myToolbar.setActionBar(what);
+            myView.myToolbar.setActionBar(this,what);
             myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
         }
     }
@@ -1673,7 +1683,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
             }
-            getMainHandler().postDelayed(() -> showCase.sequenceShowCase(this, targets, null, infos, rects, whichShowcase), 800);
+            getMainHandler().postDelayed(() -> showCase.sequenceShowCase(this, targets, null, infos, rects, whichShowcase), 200);
         }
     }
 
@@ -1780,7 +1790,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menuOpen = true;
         }
         // Hide the keyboard
-        windowFlags.hideKeyboard();
+        getWindowFlags().hideKeyboard();
 
         // Check if we need to hide the actionbar
         showActionBar();
@@ -2054,6 +2064,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public WindowFlags getWindowFlags() {
+        if (windowFlags==null) {
+            windowFlags = new WindowFlags(this,getWindow());
+        }
         return windowFlags;
     }
 
@@ -2613,9 +2626,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Update the index in the set
                 // Remove highlighting from the old position
                 currentSet.setIndexSongInSet(position);
-                setMenuFragment.updateHighlight();
+                if (setMenuFragment!=null) {
+                    setMenuFragment.updateHighlight();
+                }
 
-                // Get the song key (from the database)
+                        // Get the song key (from the database)
                 String songKey;
                 if (storageAccess.isSpecificFileExtension("imageorpdf", getCurrentSet().getSetItemInfo(position).songfilename)) {
                     songKey = nonOpenSongSQLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);

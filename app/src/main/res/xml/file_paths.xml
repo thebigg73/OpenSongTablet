@@ -5,4 +5,5 @@
     <external-files-path name="OpenSongBackups" path="/" />
     <external-files-path name="Backups" path="Backups/" />
     <files-path name="files" path="/"/>
+    <files-path name="export" path="/export/" />
 </paths>

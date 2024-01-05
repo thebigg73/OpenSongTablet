@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.print.PrintManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -29,6 +31,9 @@ import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -85,13 +90,20 @@ public class ExportFragment extends Fragment {
 
         webAddress = export_string;
 
-        // Empty the export folder
+        // Empty the export folder - this is a backup location (for user manual access)
+        // The files shared are places in the app private files/ folder and are shared via the FileProvider
         mainActivityInterface.getStorageAccess().wipeFolder("Export","");
+        File exportFolder = mainActivityInterface.getStorageAccess().getAppSpecificFile("files","export",null);
+        File[] filesInExportFolder = exportFolder.listFiles();
+        if (filesInExportFolder!=null) {
+            for (File fileInExportFolder : filesInExportFolder) {
+                // DON'T REMOVE!!  Deletes the file
+                Log.d(TAG, "Deleted file " + fileInExportFolder.getName() + ": " + fileInExportFolder.delete());
+            }
+        }
+
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
-
-        // Empty the export folder
-        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
 
         // If we are exporting a song, we do this once, if not, we do it for each song in the set
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
@@ -759,11 +771,36 @@ public class ExportFragment extends Fragment {
     }
 
     private void initiateShare() {
+        // Copy the exported folder into the local app files/export folder (for sharing permission)
+        File exportFolder = mainActivityInterface.getStorageAccess().getAppSpecificFile("files","export",null);
+        Log.d(TAG,"maked dirs:"+exportFolder.mkdirs());
+        ArrayList<Uri> newUris = new ArrayList<>();
+        if (getContext()!=null) {
+            for (Uri uri : uris) {
+                if (uri != null) {
+                    try {
+                        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                        String name = uri.getLastPathSegment().replace("OpenSong/Export/","");
+                        Log.d(TAG, "uri to copy:" + uri);
+                        Log.d(TAG, "name:" + name);
+                        File file = new File(exportFolder, name);
+                        OutputStream outputStream = new FileOutputStream(file);
+                        Log.d(TAG, "Copy:" + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
+                        Uri newUri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
+                        Log.d(TAG, "add newUri:" + newUri);
+                        newUris.add(newUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
         Intent intent;
         if (setContent!=null && !myView.exportTextAsMessage.getChecked()) {
-            intent = mainActivityInterface.getExportActions().setShareIntent(null, "*/*", null, uris);
+            intent = mainActivityInterface.getExportActions().setShareIntent(null, "*/*", null, newUris);
         } else {
-            intent = mainActivityInterface.getExportActions().setShareIntent(textContent, "*/*", null, uris);
+            intent = mainActivityInterface.getExportActions().setShareIntent(textContent, "*/*", null, newUris);
         }
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.putExtra(Intent.EXTRA_SUBJECT, app_name_string + " " +

@@ -180,7 +180,10 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     // Update the text in the actionbar to either be a song info, or menu title
-    public void setActionBar(String newtitle) {
+    public void setActionBar(Context c, String newtitle) {
+        if (mainActivityInterface==null) {
+            mainActivityInterface = (MainActivityInterface) c;
+        }
         // If changing, reset help
         if (title!=null && !title.getText().equals(newtitle)) {
             // By default hide help (can be shown later)
@@ -352,7 +355,9 @@ public class MyToolbar extends MaterialToolbar {
     public void showActionBar(boolean menuOpen) {
         // Remove any existing callbacks to hide the actionbar
         try {
-            delayActionBarHide.removeCallbacks(hideActionBarRunnable);
+            if (delayActionBarHide!=null) {
+                delayActionBarHide.removeCallbacks(hideActionBarRunnable);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
