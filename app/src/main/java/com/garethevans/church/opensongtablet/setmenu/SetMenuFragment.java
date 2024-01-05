@@ -200,9 +200,14 @@ public class SetMenuFragment extends Fragment {
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
             myView.myRecyclerView.postDelayed(() -> {
                 if (llm!=null) {
-                    llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
+                    try {
+                        llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
+                        mainActivityInterface.notifyInlineSetScrollToItem();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            },800);
+            },100);
         }
     }
 
@@ -230,7 +235,9 @@ public class SetMenuFragment extends Fragment {
     // Called when clicking on clear set/create new set or sorting/shuffling
     public void notifyItemRangeRemoved(int from, int count) {
         if (setAdapter!=null && mainActivityInterface!=null) {
-            mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeRemoved(from, count));
+            mainActivityInterface.getMainHandler().post(() -> {
+                setAdapter.notifyItemRangeRemoved(from, count);
+            });
         }
     }
 
@@ -241,75 +248,27 @@ public class SetMenuFragment extends Fragment {
         }
     }
 
-    public void notifyToClearSet() {
-        Log.d(TAG,"notifyToClearSet()");
-        // Called when a set is cleared
-        if (myView!=null && setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-            if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-                // Just in case it is on the wrong thread!
-                // Calling it post stops it working for some reason?
-                try {
-                    mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeRemoved(0, mainActivityInterface.getCurrentSet().getCurrentSetSize()));
-                    //setAdapter.notifyItemRangeRemoved(0, mainActivityInterface.getCurrentSet().getCurrentSetSize());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+    // Called when adding a song to the end of the set
+    public void notifyItemInserted() {
+        // The item was added to the set already by the calling method (song menu or action)
+        if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+            mainActivityInterface.getMainHandler().post(() -> setAdapter.insertItem());
         }
-        mainActivityInterface.notifyToClearInlineSet();
+        for (SetItemInfo setItemInfo:mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+            Log.d(TAG,"set now contains:"+setItemInfo.songfilename);
+        }
+    }
+    public void notifyItemRemoved(int position) {
+        if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>position) {
+            mainActivityInterface.getMainHandler().post(() -> setAdapter.removeItem(position));
+        }
     }
 
-
-
-    // TODO reinstate these once I've rationalised them
-
-
-
-
-
-
-
-
-
-
-
-
-    // Called after rebuilding the set list
-    public void updateSet() {
-        Log.d(TAG,"updateSet()");
-        prepareCurrentSet();
-    }
-
-
-
-    public void prepareCurrentSet() {
-        // Reset the setCurrent
-        Log.d(TAG,"prepareCurrentSet()");
-        mainActivityInterface.getCurrentSet().updateSetTitleView();
-        /*if (!mainActivityInterface.getSetActions().getProcessingSet()) {
-            Log.d(TAG, "prepareCurrentSet()");
-            if (myView != null && mainActivityInterface != null) {
-                // We have received a call to redraw the set list either on first load or after song indexing
-                // The current adapter has been cleared already via notify
-                myView.myRecyclerView.post(() -> {
-                    if (myView != null) {
-                        myView.myRecyclerView.setVisibility(View.INVISIBLE);
-                    }
-                });
-                myView.progressBar.post(() -> {
-                    if (myView != null) {
-                        myView.progressBar.setVisibility(View.VISIBLE);
-                    }
-                });
-
-                //notifyToInsertAllSet();
-
-                mainActivityInterface.getCurrentSet().updateSetTitleView();
-
-                myView.myRecyclerView.post(() -> myView.myRecyclerView.setVisibility(View.VISIBLE));
-                myView.progressBar.post(() -> myView.progressBar.setVisibility(View.INVISIBLE));
-            }
-        }*/
+    // Called when we edit a set item from the bottom sheet
+    public void updateItem(int position) {
+        if (setAdapter!=null) {
+            setAdapter.updateItem(position);
+        }
     }
 
     public void updateHighlight() {
@@ -317,47 +276,6 @@ public class SetMenuFragment extends Fragment {
         if (setAdapter!=null) {
             setAdapter.updateHighlight();
         }
-    }
-
-    // Called when we edit a set item from the bottom sheet
-    public void updateItem(int position) {
-        Log.d(TAG,"updateItem("+position+")");
-        if (setAdapter!=null) {
-            setAdapter.updateItem(position);
-        }
-    }
-
-
-    public void initialiseSetItem() {
-        Log.d(TAG,"initialiseSetItem()");
-        /*// Only do this if we actually needed to highlight an item
-        if (setAdapter!=null && setAdapter.initialiseSetItem()) {
-            myView.myRecyclerView.post(() -> llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0));
-        }*/
-    }
-
-
-    public void refreshLayout() {
-        Log.d(TAG,"refreshLayout()");
-
-        /*// First run or we have adjusted the font sizes from MenuSettingsFragment
-        if (mainActivityInterface != null) {
-            mainActivityInterface.getThreadPoolExecutor.execute(() -> {
-                Handler handler = new Handler(Looper.getMainLooper());
-                if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-                    setAdapter.notifyItemRangeRemoved(0,mainActivityInterface.getCurrentSet().getCurrentSetSize());
-                }
-                mainActivityInterface.getSetActions().parseCurrentSet();
-                handler.post(() -> {
-                    setupAdapter();
-                    Log.d(TAG,"refreshLayout()");
-                    prepareCurrentSet();
-                    setListeners();
-                    mainActivityInterface.getCurrentSet().updateSetTitleView();
-                    scrollToItem();
-                });
-            });
-        }*/
     }
 
 }

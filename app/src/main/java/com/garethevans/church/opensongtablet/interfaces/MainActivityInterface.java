@@ -132,20 +132,22 @@ public interface MainActivityInterface {
     // Set stuff
     CurrentSet getCurrentSet();
     SetActions getSetActions();
-    void refreshSetList();
     void updateSetList();
     void checkSetMenuItemHighlighted(int setPosition);
     void toggleInlineSet();
-    void notifyToClearInlineSet();
+    void notifyInlineSetInserted();
+    void notifyInlineSetInserted(int position);
+    void notifyInlineSetMove(int from, int to);
+    void notifyInlineSetRemoved(int postion);
+    void notifyInlineSetChanged(int position);
+    void notifyInlineSetRangeChanged(int from, int count);
+    void notifyToClearInlineSet(int from, int count);
     void notifyToInsertAllInlineSet();
-    void updateInlineSetMove(int from, int to);
-    void updateInlineSetRemoved(int from);
-    void updateInlineSetAdded();
-    void initialiseInlineSetItem();
-    void updateInlineSetChanged(int position);
-    void updateInlineSetInserted(int position);
-    void updateInlineSetAll();
-    void updateInlineSetHighlight();
+    void updateInlineSetVisibility();
+    void notifyInlineSetHighlight();
+    void notifySetFragment(String what, int position);
+    void notifyInlineSetScrollToItem();
+
 
     // Menus
     void lockDrawer(boolean lock);

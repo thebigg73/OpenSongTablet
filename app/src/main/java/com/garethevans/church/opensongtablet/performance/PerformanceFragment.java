@@ -120,12 +120,8 @@ public class PerformanceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         prepareStrings();
-        updateInlineSetSet();
+        updateInlineSetSortTitles();
         displayInterface.checkDisplays();
-        /* GE - hidden this option, but reserving the right to reinstate even just for me
-        if (getContext()!=null && mainActivityInterface!=null) {
-            graceTime = mainActivityInterface.getPreferences().getMyPreferenceBoolean("graceTime",true) ? 2000 : 50;
-        }*/
     }
 
     @Override
@@ -322,14 +318,24 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
+
+    // Inline set
+    public void orientationInlineSet(int orientation) {
+        myView.inlineSetList.orientationChanged(orientation);
+    }
     public void toggleInlineSet() {
         Log.d(TAG,"toggleInlineSet()");
         myView.inlineSetList.toggleInlineSet();
     }
-    public void notifyToClearInlineSet() {
+    public void updateInlineSetVisibility() {
+        if (myView!=null) {
+            myView.inlineSetList.checkVisibility();
+        }
+    }
+    public void notifyToClearInlineSet(int from, int count) {
         Log.d(TAG,"notifiyToClearInlineSet");
         if (myView!=null) {
-            myView.inlineSetList.notifyToClearInlineSet();
+            myView.inlineSetList.notifyToClearInlineSet(from,count);
         }
     }
     public void notifyToInsertAllInlineSet() {
@@ -337,96 +343,85 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.post(() -> myView.inlineSetList.notifyToInsertAllInlineSet());
         }
     }
-    public void orientationInlineSet(int orientation) {
-        myView.inlineSetList.orientationChanged(orientation);
+    public void notifyInlineSetUpdated() {
+        if (myView!=null) {
+            myView.inlineSetList.notifyInlineSetUpdated();
+        }
     }
+    public void notifyInlineSetInserted() {
+        Log.d(TAG,"notifyInlineSetInserted");
+        if (myView!=null) {
+            myView.inlineSetList.notifyInlineSetInserted();
+        }
+    }
+    public void notifyInlineSetInserted(int position) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.notifyInlineSetInserted(position);
+            } catch (Exception e) {
+                Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
+            }
+        }
+    }
+    public void notifyInlineSetRemoved(int position) {
+        Log.d(TAG,"notifyInlineSetRemoved("+position+")");
+        if (myView!=null) {
+            myView.inlineSetList.notifyInlineSetRemoved(position);
+        }
+    }
+    public void notifyInlineSetMove(int from, int to) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.notifyInlineSetMove(from, to);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void notifyInlineSetChanged(int position) {
+        if (myView!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                myView.inlineSetList.notifyInlineSetChanged(position);
+                myView.inlineSetList.scrollToPosition(position);
+            });
+        }
+    }
+    public void notifyInlineSetRangeChanged(int from, int count) {
+        if (myView!=null) {
+            myView.inlineSetList.notifyInlineSetRangeChanged(from,count);
+        }
+    }
+    public void notifyInlineSetHighlight() {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.notifyInlineSetHighlight();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void notifyInlineSetScrollToItem() {
+        if (myView!=null) {
+            myView.inlineSetList.notifyInlineSetScrollToItem();
+        }
+    }
+
+
     @SuppressWarnings("ConstantConditions")
-    public void updateInlineSetSet() {
-        Log.d(TAG,"updateInlineSetSet()");
+    public void updateInlineSetSortTitles() {
+        Log.d(TAG,"updateInlineSetSortTitles()");
         if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
                 myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
-                myView.inlineSetList.post(() -> myView.inlineSetList.prepareSet());
+                myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetUpdated());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    public void updateInlineSetItem(int position) {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateSelected(position);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void updateInlineSetMove(int from, int to) {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateInlineSetMove(from, to);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void updateInlineSetRemoved(int from) {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateInlineSetRemoved(from);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void updateInlineSetAdded() {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateInlineSetAdded();
-            } catch (Exception e) {
-                Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
-            }
-        }
-    }
-    public void updateInlineSetInserted(int position) {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateInlineSetInserted(position);
-            } catch (Exception e) {
-                Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
-            }
-        }
-    }
-    public void updateInlineSetChanged(int position) {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateInlineSetChanged(position);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void updateInlineSetAll() {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.updateInlineSetAll();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void initialiseInlineSetItem() {
-        if (myView!=null) {
-            try {
-                myView.inlineSetList.initialiseInlineSetItem();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void updateInlineSetHighlight() {
-        myView.inlineSetList.updateHighlight();
-    }
+
+
+
 
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
@@ -536,6 +531,10 @@ public class PerformanceFragment extends Fragment {
                                 });
                             }
                             if (getContext()!=null) {
+                                // Scroll to the item in the set menus
+                                mainActivityInterface.notifySetFragment("scrollTo",mainActivityInterface.getCurrentSet().getIndexSongInSet());
+
+                                // Now continue with the song prep
                                 mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
                             }
                 });
@@ -586,7 +585,7 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.checkVisibility();
             mainActivityInterface.getMainHandler().postDelayed(() -> {
                 if (myView!=null && myView.inlineSetList.getChildCount()>=0) {
-                    myView.inlineSetList.prepareSet();
+                    myView.inlineSetList.notifyInlineSetHighlight();
                     // Showcase what this is
                     if (myView.inlineSetList.getVisibility() == View.VISIBLE) {
                         // Just in case it is empty!

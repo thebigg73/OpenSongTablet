@@ -370,8 +370,7 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setSetCurrent(setCurrent);
         indexSongInSet(mainActivityInterface.getSong());
 
-        //mainActivityInterface.updateSetList();
-        mainActivityInterface.updateInlineSetAll();
+        mainActivityInterface.notifyToInsertAllInlineSet();
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
     }
 

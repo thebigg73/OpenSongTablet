@@ -240,13 +240,28 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                 if (setItemString.equals(setentry) ||
                                         setItemString.equals(setentryalt1) ||
                                         setItemString.equals(setentryalt2)) {
-                                    mainActivityInterface.getCurrentSet().removeFromCurrentSet(x, null);
+                                    // Notify the set menu fragment which removes the entry and updates the set and inline adapters
+                                    mainActivityInterface.notifySetFragment("setItemRemoved",position);
+
+                                    // If the set is now empty, hide the inline set
+                                    if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
+                                        mainActivityInterface.updateInlineSetVisibility();
+                                    }
                                 }
                             }
                         } else {
                             // This wasn't in the set, so add it
+                            boolean firstItem = mainActivityInterface.getCurrentSet().getCurrentSetSize()==0;
                             songItemViewHolder.itemChecked.setChecked(true);
                             mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey);
+
+                            // Notify the set menu fragment which updates the adapters
+                            mainActivityInterface.notifySetFragment("setItemInserted",-1);
+
+                            if (firstItem) {
+                                // Notify the inline set to appear if required
+                                mainActivityInterface.updateInlineSetVisibility();
+                            }
                         }
                     });
                 }

@@ -1211,26 +1211,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     });
                     break;
 
-                case "set_hideSetList":
-                    // Sorting or preparing.  Hide it and show the progress bar
-                    if (setMenuFragment!=null) {
-                        setMenuFragment.changeVisibility(false);
-                    }
-                    break;
-
-                case "set_showSetList":
-                    // Sorting or preparing finished.  Show it and hide the progress bar
-                    if (setMenuFragment!=null) {
-                        setMenuFragment.changeVisibility(true);
-                    }
-                    break;
-
-                case "set_clearItems":
-                    if (setMenuFragment!=null) {
-                        setMenuFragment.notifyToClearSet();
-                    }
-                    break;
-
                 case "set_updateKeys":
                 case "set_updateView":
                 case "set_updateItem":
@@ -1238,25 +1218,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // User has the set menu open and wants to do something
                     if (setMenuFragment != null) {
                         if (fragName.equals("set_updateView")) {
-                            setMenuFragment.updateSet();
+                            getCurrentSet().updateSetTitleView();
                         } else if (fragName.equals("set_updateKeys")) {
                             setMenuFragment.updateKeys();
                         } else if (arguments != null && arguments.size() > 0) {
                             setMenuFragment.updateItem(Integer.parseInt(arguments.get(0)));
-                        }
-                    }
-                    // If we are not in presenter mode and using inline set, update that
-                    if (performanceValid()) {
-                        if (fragName.equals("set_updateView")) {
-                            performanceFragment.updateInlineSetSet();
-                        } else if (arguments != null && arguments.size() > 0) {
-                            performanceFragment.updateInlineSetItem(Integer.parseInt(arguments.get(0)));
-                        }
-                    } else if (presenterValid()) {
-                        if (fragName.equals("set_updateView")) {
-                            presenterFragment.updateInlineSetSet();
-                        } else if (arguments != null && arguments.size() > 0) {
-                            presenterFragment.updateInlineSetItem(Integer.parseInt(arguments.get(0)));
                         }
                     }
                     break;
@@ -1330,9 +1296,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         songMenuFragment.updateSongMenuSortTitles();
                     }
                     if (performanceValid()) {
-                        performanceFragment.updateInlineSetSet();
+                        performanceFragment.updateInlineSetSortTitles();
                     } else if (presenterValid()) {
-                        presenterFragment.updateInlineSetSet();
+                        presenterFragment.updateInlineSetSortTitles();
                     }
                     break;
 
@@ -2001,13 +1967,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void refreshSetList() {
-        if (setMenuFragment != null) {
-            setMenuFragment.prepareCurrentSet();
-        }
-    }
-
-    @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
         // If the fragName is menuSettingsFragment, we just want to change the alpha index view or sizes
         if (fragName != null && fragName.equals("menuSettingsFragment")) {
@@ -2015,7 +1974,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 songMenuFragment.changeAlphabeticalLayout();
             }
             if (setMenuFragment !=null) {
-                setMenuFragment.refreshLayout();
+                setMenuFragment.notifyItemRangeChanged(0,getCurrentSet().getCurrentSetSize());
             }
         } else if ((rebooted && bootUpCompleted && songMenuFragment != null) || (bootUpCompleted && fragName!=null && fragName.equals("menuSettingsFrag"))) {
             // We have resumed from stale state or changed between title/filename, build the index but from the database
@@ -2023,9 +1982,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 songMenuFragment.prepareSearch();
             }
             if (performanceValid()) {
-                performanceFragment.updateInlineSetSet();
+                performanceFragment.updateInlineSetSortTitles();
             } else if (presenterValid()) {
-                presenterFragment.updateInlineSetSet();
+                presenterFragment.updateInlineSetSortTitles();
             }
 
         } else if (songListBuildIndex != null && songMenuFragment != null) {
@@ -2107,6 +2066,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public void notifySetFragment(String what, int position) {
+        if (setMenuFragment!=null) {
+            switch (what) {
+                case "setItemRemoved":
+                    setMenuFragment.notifyItemRemoved(position);
+                    break;
+                case "setItemInserted":
+                    setMenuFragment.notifyItemInserted();
+                    break;
+                case "scrollTo":
+                    setMenuFragment.scrollToItem();
+                    break;
+            }
+        }
+    }
+    @Override
     public void toggleInlineSet() {
         if (performanceValid()) {
             performanceFragment.toggleInlineSet();
@@ -2116,11 +2091,43 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         loadSong();
     }
     @Override
-    public void notifyToClearInlineSet() {
+    public void updateInlineSetVisibility() {
         if (performanceValid()) {
-            performanceFragment.notifyToClearInlineSet();
+            performanceFragment.updateInlineSetVisibility();
         } else if (presenterValid()) {
-            presenterFragment.notifyToClearInlineSet();
+            presenterFragment.updateInlineSetVisibility();
+        }
+    }
+    @Override
+    public void notifyInlineSetInserted() {
+        if (performanceValid()) {
+            performanceFragment.notifyInlineSetInserted();
+        } else if (presenterValid()) {
+            presenterFragment.notifyInlineSetInserted();
+        }
+    }
+    @Override
+    public void notifyInlineSetInserted(int position) {
+        if (performanceValid()) {
+            performanceFragment.notifyInlineSetInserted(position);
+        } else if (presenterValid()) {
+            presenterFragment.notifyInlineSetInserted(position);
+        }
+    }
+    @Override
+    public void notifyInlineSetRemoved(int position) {
+        if (performanceValid()) {
+            performanceFragment.notifyInlineSetRemoved(position);
+        } else if (presenterValid()) {
+            presenterFragment.notifyInlineSetRemoved(position);
+        }
+    }
+    @Override
+    public void notifyToClearInlineSet(int from, int count) {
+        if (performanceValid()) {
+            performanceFragment.notifyToClearInlineSet(from,count);
+        } else if (presenterValid()) {
+            presenterFragment.notifyToClearInlineSet(from,count);
         }
     }
     @Override
@@ -2132,71 +2139,47 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public void updateInlineSetHighlight() {
+    public void notifyInlineSetMove(int from, int to) {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetHighlight();
+            performanceFragment.notifyInlineSetMove(from, to);
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetHighlight();
-        }
-    }
-    @Override
-    public void updateInlineSetMove(int from, int to) {
-        if (performanceValid()) {
-            performanceFragment.updateInlineSetMove(from, to);
-        } else if (presenterValid()) {
-            presenterFragment.updateInlineSetMove(from, to);
+            presenterFragment.notifyInlineSetMove(from, to);
         }
     }
 
     @Override
-    public void updateInlineSetRemoved(int from) {
+    public void notifyInlineSetChanged(int position) {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetRemoved(from);
+            performanceFragment.notifyInlineSetChanged(position);
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetRemoved(from);
+            presenterFragment.notifyInlineSetChanged(position);
         }
     }
 
     @Override
-    public void updateInlineSetAdded() {
+    public void notifyInlineSetRangeChanged(int from, int count) {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetAdded();
+            performanceFragment.notifyInlineSetRangeChanged(from,count);
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetAdded();
-        }
-    }
-    @Override
-    public void updateInlineSetInserted(int position) {
-        if (performanceValid()) {
-            performanceFragment.updateInlineSetInserted(position);
-        } else if (presenterValid()) {
-            presenterFragment.updateInlineSetInserted(position);
+            presenterFragment.notifyInlineSetRangeChanged(from,count);
         }
     }
 
     @Override
-    public void updateInlineSetChanged(int position) {
+    public void notifyInlineSetHighlight() {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetChanged(position);
+            performanceFragment.notifyInlineSetHighlight();
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetChanged(position);
+            presenterFragment.notifyInlineSetHighlight();
         }
     }
 
     @Override
-    public void updateInlineSetAll() {
+    public void notifyInlineSetScrollToItem() {
         if (performanceValid()) {
-            performanceFragment.updateInlineSetAll();
+            performanceFragment.notifyInlineSetScrollToItem();
         } else if (presenterValid()) {
-            presenterFragment.updateInlineSetAll();
-        }
-    }
-    @Override
-    public void initialiseInlineSetItem() {
-        if (performanceValid()) {
-            performanceFragment.initialiseInlineSetItem();
-        } else if (presenterValid()) {
-            presenterFragment.initialiseInlineSetItem();
+            presenterFragment.notifyInlineSetScrollToItem();
         }
     }
 
@@ -2696,21 +2679,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     setItemInfo.songfilename = newFilename;
                 }
 
-                // If the set menu is open/exists, try to scroll to this item
-                if (setMenuFragment != null) {
-                    try {
-                        setMenuFragment.scrollToItem();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // If we are using the inline set, highlight and scroll to to this item
-                if (presenterValid()) {
-                    presenterFragment.updateInlineSetHighlight();
-                } else if (performanceValid()) {
-                    performanceFragment.updateInlineSetHighlight();
-                }
                 doSongLoad(setItemInfo.songfolder, setItemInfo.songfilename, true);
             }
         });
@@ -2722,7 +2690,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // This is called from the MyToolbar
         // Will only do something if the set item isn't already highlighted - normally on boot
         if (setPosition > -1) {
-            setMenuFragment.initialiseSetItem();
+            setMenuFragment.updateHighlight();
         }
     }
 
@@ -2845,9 +2813,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                             // Notify the set that we removed items
                             setMenuFragment.notifyItemRangeRemoved(0, count);
+                            notifyToClearInlineSet(0,count);
 
-                            // Update the set
-                            setMenuFragment.updateSet();
+                            // Update the set title
+                            getCurrentSet().updateSetTitleView();
 
                             // Show the set
                             setMenuFragment.changeVisibility(true);

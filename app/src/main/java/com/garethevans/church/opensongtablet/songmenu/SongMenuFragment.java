@@ -128,9 +128,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
-        Log.d(TAG,"initialise removeallviews");
-
-        //myView.songmenualpha.sideIndex.removeAllViews();
         if (getContext()!=null) {
             try {
                 songListLayoutManager = new LinearLayoutManager(getContext()){
@@ -439,7 +436,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
             getSearchVals();
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                Log.d(TAG,"prepareSearch()");
                 mainActivityInterface.getMainHandler().post(() -> buttonsEnabled(false));
                 try {
                     songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
@@ -451,8 +447,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     e.printStackTrace();
                 }
                 if (mainActivityInterface!=null) {
-                    Log.d(TAG,"prepareSearch() do updateSongList");
-
                     mainActivityInterface.getMainHandler().post(this::updateSongList);
                 }
             });
@@ -462,7 +456,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     public void updateCheckForThisSong(Song thisSong) {
         // Call to update something about a specific song
-        Log.d(TAG,"Check for song:"+thisSong.getFolder()+"/"+thisSong.getFilename());
         getSongsFound();
         if (songsFound!=null) {
             int pos = -1;
@@ -486,10 +479,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public void displayIndex() {
-        Log.d(TAG,"displayIndex()");
         if (mainActivityInterface!=null && getContext()!=null) {
             try {
-                Log.d(TAG,"myView.songmenualpha.sideIndex.removeAllViews()");
                 myView.songmenualpha.sideIndex.removeAllViews();
                 TextView textView;
                 final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
@@ -529,13 +520,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                     e.printStackTrace();
                                 }
                             });
-                            Log.d(TAG,"songmenualpha.sideIndex.addView(textView)");
                             myView.songmenualpha.sideIndex.addView(textView);
                         }
                     }
                 }
-                Log.d(TAG,"change alphabetical visibility to:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
-
                 changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
 
                 myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -558,7 +546,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void displayIndex2() {
         try {
-            Log.d(TAG,"displayIndex2 remove allViews()");
             myView.songmenualpha.sideIndex.removeAllViews();
             TextView textView;
             final Map<String, Integer> map2 = songListAdapter.getAlphaIndex2();
@@ -592,11 +579,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                             e.printStackTrace();
                         }
                     });
-                    Log.d(TAG,"add views");
                     myView.songmenualpha.sideIndex.addView(textView);
                 }
             }
-            Log.d(TAG,"displayIndex2 change visibility");
 
             changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
             myView.songmenualpha.sideIndex.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -624,7 +609,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         refreshSongList();
     }
     private void changeAlphabeticalVisibility(boolean isVisible) {
-        Log.d(TAG,"changeAlphaVisibility("+isVisible+")");
         myView.songmenualpha.sideIndex.setVisibility(isVisible ? View.VISIBLE:View.GONE);
     }
     @Override

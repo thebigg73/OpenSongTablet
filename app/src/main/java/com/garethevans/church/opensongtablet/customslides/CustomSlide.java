@@ -147,8 +147,8 @@ public class CustomSlide {
             mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
-            // Update the set menu
-            mainActivityInterface.refreshSetList();
+            // Update the set menu title
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
 
             // Let the user know the action was successful
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));
