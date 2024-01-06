@@ -598,8 +598,6 @@ public class SetActions {
         return icon;
     }
     public String getIconIdentifier(String folder, String filename) {
-        Log.d(TAG,"getIconIdentifier");
-
         // If the filename is an image, we use that
         String valueToDecideFrom;
         if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {

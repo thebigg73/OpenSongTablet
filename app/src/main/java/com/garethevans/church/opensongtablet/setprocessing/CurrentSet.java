@@ -210,7 +210,6 @@ public class CurrentSet {
     public void setIndexSongInSet(int indexSongInSet) {
         this.prevIndexSongInSet = this.indexSongInSet;
         this.indexSongInSet = indexSongInSet;
-        mainActivityInterface.getPreferences().setMyPreferenceInt("indexSongInSet",indexSongInSet);
     }
 
     public int getIndexSongInSet() {

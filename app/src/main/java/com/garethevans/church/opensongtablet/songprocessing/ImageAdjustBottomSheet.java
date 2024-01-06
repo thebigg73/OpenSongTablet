@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfRenderer;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,8 +20,8 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.exifinterface.media.ExifInterface;
 
-import com.canhub.cropper.CropImageView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetImageAdjustBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
@@ -119,37 +118,35 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         try {
                             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-                            ExifInterface ei = null;
-                            ei = new ExifInterface(inputStream);
-                            int currentOrientation = Integer.parseInt(ei.getAttribute(ExifInterface.TAG_ORIENTATION));
-
-                            switch (currentOrientation) {
-                                case ExifInterface.ORIENTATION_ROTATE_90:
-                                    exifRotation = 90;
-                                    break;
-                                case ExifInterface.ORIENTATION_ROTATE_180:
-                                    exifRotation = 180;
-                                    break;
-                                case ExifInterface.ORIENTATION_ROTATE_270:
-                                    exifRotation = 270;
-                                    break;
+                            if (inputStream!=null) {
+                                ExifInterface ei = new ExifInterface(inputStream);
+                                String attributeOrientation = ei.getAttribute(ExifInterface.TAG_ORIENTATION);
+                                if (attributeOrientation != null && !attributeOrientation.isEmpty() &&
+                                        !attributeOrientation.replaceAll("\\D", "").isEmpty()) {
+                                    int currentOrientation = Integer.parseInt(attributeOrientation.replaceAll("\\D", ""));
+                                    switch (currentOrientation) {
+                                        case ExifInterface.ORIENTATION_ROTATE_90:
+                                            exifRotation = 90;
+                                            break;
+                                        case ExifInterface.ORIENTATION_ROTATE_180:
+                                            exifRotation = 180;
+                                            break;
+                                        case ExifInterface.ORIENTATION_ROTATE_270:
+                                            exifRotation = 270;
+                                            break;
+                                    }
+                                }
+                                inputStream.close();
                             }
-
-                            inputStream.close();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     int finalRotation = exifRotation;
-                    Log.d(TAG,"finalRotation:"+finalRotation);
-
                     myView.cropImageView.setImageUriAsync(uri);
-                    myView.cropImageView.setOnSetImageUriCompleteListener(new CropImageView.OnSetImageUriCompleteListener() {
-                        @Override
-                        public void onSetImageUriComplete(@NonNull CropImageView cropImageView, @NonNull Uri uri, @org.jetbrains.annotations.Nullable Exception e) {
-                            // Rotate in opposite direction
-                            myView.cropImageView.rotateImage(-finalRotation);
-                        }
+                    myView.cropImageView.setOnSetImageUriCompleteListener((cropImageView, uri1, e) -> {
+                        // Rotate in opposite direction
+                        myView.cropImageView.rotateImage(-finalRotation);
                     });
 
 
@@ -173,9 +170,6 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
                     Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(thisSong.getFolder(),
                             thisSong.getFilename(),0,page.getWidth(),page.getHeight(),"Y", false);
                     myView.cropImageView.setImageBitmap(bmp);
-                    Log.d(TAG,"bmp.width:"+bmp.getWidth()+"  bmp.height:"+bmp.getHeight());
-                    Log.d(TAG,"page.getWidth:"+page.getWidth());
-                    Log.d(TAG,"page.getHeight:"+page.getHeight());
                     originalWidth = page.getWidth();
                     originalHeight = page.getHeight();
                 }
@@ -204,13 +198,10 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
 
         if (thisSong.getFiletype().equals("PDF") && cropPoints!=null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                Log.d(TAG, "cropPoints:" + cropPoints.flattenToString());
                 String destClip = "destClip:" + cropPoints.left + "," +
                         cropPoints.top + "," +
                         cropPoints.right + "," +
                         cropPoints.bottom + ";";
-
-                Log.d(TAG, "destClip:" + destClip);
 
                 // Set the crop points to the user3 field - overwrite everything else!
                 thisSong.setUser3(destClip);
@@ -220,7 +211,6 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
             });
         } else if (thisSong.getFiletype().equals("IMG") && bmp!=null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                Log.d(TAG, "bmp:" + bmp.getWidth() + "x" + bmp.getHeight());
                 // Write a temporary version of this image to the export folder.
                 // After showing the are you sure prompt, we either cancel (delete the temp file)
                 // or we copy the temp file to replace the original one.

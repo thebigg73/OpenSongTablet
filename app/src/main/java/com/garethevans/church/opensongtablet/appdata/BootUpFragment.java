@@ -96,25 +96,17 @@ public class BootUpFragment extends Fragment {
 
     // Checks made before starting the app
     public void startOrSetUp() {
-        Log.d(TAG,"storageIsCorrectlySet():"+storageIsCorrectlySet());
-        Log.d(TAG,"mainActivityInterface.getAlertChecks().showUpdateInfo()():"+mainActivityInterface.getAlertChecks().showUpdateInfo());
-
         if (storageIsCorrectlySet()) {
-            Log.d(TAG,"BootUpIndexBottomSheet");
             if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
                     mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    mainActivityInterface.getMainHandler().post(() -> {
-                        BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
-                        bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
-                    });
-                });
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+                    BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+                    bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                }));
             } else {
-                Log.d(TAG,"startBootProcess()");
                 startBootProcess(true,true);
             }
         } else {
-            Log.d(TAG,"requireStorageCheck");
             requireStorageCheck();
         }
     }

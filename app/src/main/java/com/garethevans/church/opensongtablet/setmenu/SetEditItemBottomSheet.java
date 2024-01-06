@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     // This allows the user to select a set item to make it a variation
     private MainActivityInterface mainActivityInterface;
     private BottomSheetSetitemeditBinding myView;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetEditItemBottomSheet";
     private int setPosition = 0;
     private final ArrayList<String> arguments = new ArrayList<>();
@@ -163,7 +163,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private void updateFilesInFolder(String folder) {
         // Do this check as we might be using Notes, Variations, etc.
         String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(folder);
-        Log.d(TAG,"folderNames: "+foldersFromNice[0]+" / "+foldersFromNice[1]);
         filenames = mainActivityInterface.getStorageAccess().listFilesInFolder(foldersFromNice[0],foldersFromNice[1]);
         if (getContext()!=null) {
             filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
@@ -177,9 +176,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     private void checkAllowEdit() {
         // Only allow key change for song or variation
         String folderChosen = myView.editFolder.getText().toString();
-        Log.d(TAG,"folderChosen:"+folderChosen);
         myView.editKey.setEnabled(folderChosen.startsWith("**Variation") || !folderChosen.startsWith("**"));
-        Log.d(TAG,"isEnabled:"+myView.editKey.isEnabled());
     }
 
     private void setAsVariation(boolean createVariation) {
@@ -202,7 +199,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             // Update the matching card
             newFolder = setItemInfo.songfolder;
             if (newFolder.startsWith("**")) {
-                Log.d(TAG,"newFolder="+newFolder);
                 // Try to find a matching song in the database, if not it will return mainfoldername
                 newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(setItemInfo.songfilename);
             }
@@ -270,12 +266,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
                             // Because we have indexed the songs, we can look up the title of the new song
                             Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(setItemInfo.songfolder,filename);
                             setItemInfo.songtitle = tempSong.getTitle();
-                            /*// Update the key too
-                            setItemInfo.songkey = tempSong.getKey();
-                            // Change this item without triggering the text watcher
-                            myView.editKey.setUserEditing(false);
-                            myView.editKey.setText(setItemInfo.songkey);
-                            myView.editKey.setUserEditing(true);*/
                         }
                         break;
                     case "key":

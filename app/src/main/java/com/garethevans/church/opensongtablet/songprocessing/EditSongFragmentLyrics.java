@@ -3,13 +3,11 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -165,28 +164,31 @@ public class EditSongFragmentLyrics extends Fragment {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     try {
                         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-                        ExifInterface ei = null;
-                        ei = new ExifInterface(inputStream);
-                        int currentOrientation = Integer.parseInt(ei.getAttribute(ExifInterface.TAG_ORIENTATION));
-                        switch (currentOrientation) {
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                rotation = 90;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                rotation = 180;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                rotation = 270;
-                                break;
+                        if (inputStream!=null) {
+                            ExifInterface ei = new ExifInterface(inputStream);
+                            String attributeOrientation = ei.getAttribute(ExifInterface.TAG_ORIENTATION);
+                            if (attributeOrientation != null && !attributeOrientation.isEmpty() &&
+                                    !attributeOrientation.replaceAll("\\D", "").isEmpty()) {
+                                int currentOrientation = Integer.parseInt(attributeOrientation.replaceAll("\\D", ""));
+                                switch (currentOrientation) {
+                                    case ExifInterface.ORIENTATION_ROTATE_90:
+                                        rotation = 90;
+                                        break;
+                                    case ExifInterface.ORIENTATION_ROTATE_180:
+                                        rotation = 180;
+                                        break;
+                                    case ExifInterface.ORIENTATION_ROTATE_270:
+                                        rotation = 270;
+                                        break;
+                                }
+                            }
+                            inputStream.close();
                         }
-
-                        inputStream.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 int finalRotation = rotation;
-                Log.d(TAG,"finalRotation:"+finalRotation);
                 myView.previewImage.post(()-> {
                     myView.previewImage.setVisibility(View.VISIBLE);
                     myView.previewImage.setRotationX(0.5f);
@@ -242,8 +244,6 @@ public class EditSongFragmentLyrics extends Fragment {
                         mainActivityInterface.getSong().getFolder(),
                         mainActivityInterface.getSong().getFilename());
             }
-            Log.d(TAG,"filetype:"+mainActivityInterface.getSong().getFiletype());
-            Log.d(TAG,"filename:"+mainActivityInterface.getSong().getFilename());
             mainActivityInterface.navHome();
         });
         myView.imageEdit.setOnClickListener(v -> {
@@ -444,7 +444,6 @@ public class EditSongFragmentLyrics extends Fragment {
             LyricsChordCopyBottomSheet lyricsChordCopyBottomSheet = new LyricsChordCopyBottomSheet(this, sections);
             lyricsChordCopyBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "LyricsChordCopyBottomSheet");
         }
-        Log.d(TAG,"allLyrics="+allLyrics);
     }
 
     public void doCopyChords(String oldText, String newText) {

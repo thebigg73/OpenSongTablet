@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,19 +70,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         } else {
             // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
             for (Object payload : payloads) {
-                Log.d(TAG,"payload:"+payload);
                 boolean changeCheck = false;
                 boolean checked;
                 if (payload.equals("checkOn")) {
-                    Log.d(TAG,"onBindPayload()  pos:"+position+"  ON");
                     changeCheck = true;
                     checked = true;
                 } else if (payload.equals("checkOff")) {
-                    Log.d(TAG,"onBindPayload()  pos:"+position+"  OFF");
                     changeCheck = true;
                     checked = false;
                 } else {
-                    Log.d(TAG,"onBindPayload()  pos:"+position+"  OFF");
                     checked = false;
                 }
 
