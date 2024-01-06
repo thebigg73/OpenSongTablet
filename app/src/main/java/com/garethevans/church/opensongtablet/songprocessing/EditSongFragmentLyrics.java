@@ -159,7 +159,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
             } else if (mainActivityInterface.getTempSong().getFiletype().equals("IMG")) {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                        mainActivityInterface.getTempSong().getFolder(), mainActivityInterface.getTempSong().getFilename());
+                        mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
                 // Get the Exif rotation
                 int rotation = 0;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

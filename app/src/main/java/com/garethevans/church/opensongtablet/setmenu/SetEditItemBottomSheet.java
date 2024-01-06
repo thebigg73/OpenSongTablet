@@ -40,6 +40,8 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             slide_string="";
     private String[] key_choice_string = {};
     private ArrayList<String> filenames;
+    private String originalIcon = "";
+    private SetItemInfo setItemInfo;
 
     @SuppressWarnings("unused")
     SetEditItemBottomSheet() {
@@ -85,6 +87,10 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
         prepareStrings();
 
+        // Get the chosen item
+        setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
+        originalIcon = setItemInfo.songicon;
+
         myView.dialogHeading.setText(edit_set_item_string);
 
         // Initialise the 'close' floatingactionbutton
@@ -115,7 +121,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         }
         myView.editKey.setAdapter(keyAdapter);
         myView.editKey.setUserEditing(false);
-        myView.editKey.setText(mainActivityInterface.getCurrentSet().getSetItemInfo(0).songkey);
+        myView.editKey.setText(setItemInfo.songkey);
         myView.editKey.setUserEditing(true);
 
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
@@ -126,9 +132,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             folderAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFolder, R.layout.view_exposed_dropdown_item, folders);
         }
-
-        // Get the chosen item
-        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
 
         myView.editFolder.setAdapter(folderAdapter);
         myView.editFolder.setUserEditing(false);
@@ -167,7 +170,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         }
         myView.editFilename.setAdapter(filenameAdapter);
         myView.editFilename.setUserEditing(false);
-        myView.editFilename.setText(mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songfilename);
+        myView.editFilename.setText(setItemInfo.songfilename);
         myView.editFilename.setUserEditing(true);
     }
 
@@ -186,6 +189,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.getSetActions().makeVariation(setPosition);
             // Update the matching card
             newFolder = "**"+variation_string;
+            setItemInfo.songicon = "Variation";
 
         } else {
             // Delete the variation file and put the original folder back?
@@ -194,18 +198,22 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" setAsVariation deleteFile "+variationUri);
                 mainActivityInterface.getStorageAccess().deleteFile(variationUri);
             }
+            setItemInfo.songicon = originalIcon;
             // Update the matching card
-            newFolder = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songfolder;
+            newFolder = setItemInfo.songfolder;
             if (newFolder.startsWith("**")) {
                 Log.d(TAG,"newFolder="+newFolder);
                 // Try to find a matching song in the database, if not it will return mainfoldername
-                newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition).songfilename);
+                newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(setItemInfo.songfilename);
             }
             // Fix the item in the set
-            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
             setItemInfo.songfolder = newFolder;
             setItemInfo.songfoldernice = newFolder;
+
+            // Update the set item in the background and notify the set menu for changes
             mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
+            mainActivityInterface.updateFragment("set_updateItem",null, arguments);
+
         }
 
         // Change the dropdown to match.  This also triggers a change in the card here
@@ -244,7 +252,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
 
             if (exposedDropDown.getUserEditing()) {
-                SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
                 switch (which) {
                     case "folder":
                         if (myView.editFolder.getText()!=null) {
@@ -263,12 +270,12 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
                             // Because we have indexed the songs, we can look up the title of the new song
                             Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(setItemInfo.songfolder,filename);
                             setItemInfo.songtitle = tempSong.getTitle();
-                            // Update the key too
+                            /*// Update the key too
                             setItemInfo.songkey = tempSong.getKey();
                             // Change this item without triggering the text watcher
                             myView.editKey.setUserEditing(false);
                             myView.editKey.setText(setItemInfo.songkey);
-                            myView.editKey.setUserEditing(true);
+                            myView.editKey.setUserEditing(true);*/
                         }
                         break;
                     case "key":
