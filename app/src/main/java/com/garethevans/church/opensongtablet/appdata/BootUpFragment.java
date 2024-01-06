@@ -52,7 +52,7 @@ public class BootUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        mainActivityInterface.getShowCase().resetShowcase(getContext(),null);
+        //mainActivityInterface.getShowCase().resetShowcase(getContext(),null);
 
         prepareStrings();
 
@@ -103,8 +103,12 @@ public class BootUpFragment extends Fragment {
             Log.d(TAG,"BootUpIndexBottomSheet");
             if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
                     mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
-                BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
-                bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+                        bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                    });
+                });
             } else {
                 Log.d(TAG,"startBootProcess()");
                 startBootProcess(true,true);

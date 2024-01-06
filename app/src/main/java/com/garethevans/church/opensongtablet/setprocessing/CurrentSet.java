@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // All actions related to building/processing are in the SetActions class
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -72,6 +73,7 @@ public class CurrentSet {
 
     // The current set (a string of each item)
     public void loadCurrentSet() {
+        Log.d(TAG,"loadCurrentSet()");
         setCurrent = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent", "");
         mainActivityInterface.updateSetList();
     }

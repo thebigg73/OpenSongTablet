@@ -2,6 +2,9 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,10 +19,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
+import java.io.InputStream;
 
 // This fragment purely deals with the lyrics/chords
 
@@ -49,6 +56,7 @@ public class EditSongFragmentLyrics extends Fragment {
             try {
                 prepareStrings();
                 setupValues();
+                setupPreview();
 
                 // The stuff that needs to be on the UI
                 mainActivityInterface.getMainHandler().post(() -> {
@@ -133,6 +141,68 @@ public class EditSongFragmentLyrics extends Fragment {
         });
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
+    }
+
+    public void setupPreview() {
+        // If we have a PDF or image, show a small preview window
+        if (getContext()!=null && mainActivityInterface.getTempSong().getFiletype()!=null) {
+            if (mainActivityInterface.getTempSong().getFiletype().equals("PDF")) {
+                // Load in a preview if the version of Android is high enough
+                Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(
+                        mainActivityInterface.getTempSong().getFolder(),
+                        mainActivityInterface.getTempSong().getFilename(),
+                        1, 200, 200, "N", true);
+                myView.previewImage.post(() -> {
+                    myView.previewImage.setVisibility(View.VISIBLE);
+                    Glide.with(getContext()).load(bmp).into(myView.previewImage);
+                });
+
+            } else if (mainActivityInterface.getTempSong().getFiletype().equals("IMG")) {
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",
+                        mainActivityInterface.getTempSong().getFolder(), mainActivityInterface.getTempSong().getFilename());
+                // Get the Exif rotation
+                int rotation = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    try {
+                        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                        ExifInterface ei = null;
+                        ei = new ExifInterface(inputStream);
+                        int currentOrientation = Integer.parseInt(ei.getAttribute(ExifInterface.TAG_ORIENTATION));
+                        switch (currentOrientation) {
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                rotation = 90;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                rotation = 180;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                rotation = 270;
+                                break;
+                        }
+
+                        inputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                int finalRotation = rotation;
+                Log.d(TAG,"finalRotation:"+finalRotation);
+                myView.previewImage.post(()-> {
+                    myView.previewImage.setVisibility(View.VISIBLE);
+                    myView.previewImage.setRotationX(0.5f);
+                    myView.previewImage.setRotationY(0.5f);
+                    Glide.with(getContext()).load(uri).signature(new ObjectKey(String.valueOf(System.currentTimeMillis()))).into(myView.previewImage);
+                    // Rotate in opposite direction
+                    myView.previewImage.setRotation(-finalRotation);
+                });
+            } else {
+                myView.previewImage.setVisibility(View.GONE);
+            }
+        } else {
+            myView.previewImage.setVisibility(View.GONE);
+        }
+
+
     }
 
     private void setupListeners() {myView.lyrics.addTextChangedListener(new TextWatcher() {

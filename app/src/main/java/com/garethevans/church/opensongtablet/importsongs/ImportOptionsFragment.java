@@ -5,28 +5,29 @@ import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.CreateSongBottomSheet;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,6 +46,7 @@ public class ImportOptionsFragment extends Fragment {
     private ActivityResultLauncher<Uri> takePhoto;
     private int whichFileType;
     private Uri uri;
+    private File file;
     private String cameraFilename, import_main_string="", deeplink_edit_string="",
             deeplink_import_osb_string="", network_error_string="";
     private String currentPhotoPath;
@@ -133,39 +135,32 @@ public class ImportOptionsFragment extends Fragment {
                     e.printStackTrace();
                 }
             } else {
-                // Get a date for the file name
+                // Save the image to the app private folder for now
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",mainActivityInterface.getLocale());
                 cameraFilename = "Camera_"+sdf.format(new Date())+".jpg";
                 Log.d(TAG,"cameraFilename:"+cameraFilename);
-                uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", mainActivityInterface.getSong().getFolder(),
-                        cameraFilename);
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create camerafile Songs/"+mainActivityInterface.getSong().getFolder()+"/"+cameraFilename+"  deleteOld=false");
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri,null,"Songs",
-                        mainActivityInterface.getSong().getFolder(),cameraFilename);
-
-                Log.d(TAG,"uri:" +uri);
-
-                takePhoto.launch(uri);
+                file = mainActivityInterface.getStorageAccess().getAppSpecificFile("files","export",cameraFilename);
+                if (getContext()!=null) {
+                    uri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
+                    takePhoto.launch(uri);
+                }
             }
         });
 
         grabPhoto = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        Log.d(TAG,"result.getResultCode():"+result.getResultCode());
-                        if (result.getResultCode() == Activity.RESULT_OK || result.getResultCode()==0) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            if (data!=null) {
-                                try {
-                                    Log.d(TAG, "data:" + data);
-                                    Log.d(TAG, "data.getExtras().get(\"uri\"):" + data.getExtras().get("uri"));
-                                    Log.d(TAG, "data.getData():" + data.getData());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                result -> {
+                    Log.d(TAG,"result.getResultCode():"+result.getResultCode());
+                    if (result.getResultCode() == Activity.RESULT_OK || result.getResultCode()==0) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        if (data!=null) {
+                            try {
+                                Log.d(TAG, "data:" + data);
+                                Log.d(TAG, "data.getExtras().get(\"uri\"):" + data.getExtras().get("uri"));
+                                Log.d(TAG, "data.getData():" + data.getData());
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -179,33 +174,42 @@ public class ImportOptionsFragment extends Fragment {
 
                         // Do this with a delay handler to give time for the file to finish
                         myView.importCamera.postDelayed(() -> {
-                            // The file should now be created
-                            // Set the song name and folder as required
-                            Song newSong = new Song();
-                            newSong.setTitle(cameraFilename);
-                            newSong.setFilename(cameraFilename);
-                            newSong.setFolder(mainActivityInterface.getSong().getFolder());
-                            newSong.setFiletype("IMG");
-
-                            //mainActivityInterface.setSong(newSong);
-
-                            // Add to the database
-                            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(
-                                    newSong.getFolder(), newSong.getFilename());
-                            mainActivityInterface.getSQLiteHelper().createSong(
-                                    newSong.getFolder(), newSong.getFilename());
-                            // Update the created song to include the filetype as IMG
-                            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
-
-                            // Update the song with the new filename in the song menu
-                            mainActivityInterface.updateSongMenu(newSong);
-
-                            // Now set the current songFilename
-                            mainActivityInterface.getPreferences().setMyPreferenceString(
-                                    "songFilename",newSong.getFilename());
-
-                            // Now open the song window
-                            mainActivityInterface.navHome();
+                            // Change the exif data to match the device orientation
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                try {
+                                    int surfaceRotation = myView.getRoot().getDisplay().getRotation();
+                                    int newExifRotation = 0;
+                                    switch (surfaceRotation) {
+                                        case Surface.ROTATION_0:
+                                            Log.d(TAG,"surfaceRotation:ROTATION_0");
+                                            newExifRotation = ExifInterface.ORIENTATION_NORMAL;
+                                            break;
+                                        case Surface.ROTATION_90:
+                                            newExifRotation = ExifInterface.ORIENTATION_ROTATE_90;
+                                            Log.d(TAG,"surfaceRotation:ROTATION_90");
+                                            break;
+                                        case Surface.ROTATION_180:
+                                            Log.d(TAG,"surfaceRotation:ROTATION_180");
+                                            newExifRotation = ExifInterface.ORIENTATION_ROTATE_180;
+                                            break;
+                                        case Surface.ROTATION_270:
+                                            Log.d(TAG,"surfaceRotation:ROTATION_270");
+                                            newExifRotation = ExifInterface.ORIENTATION_ROTATE_270;
+                                            break;
+                                    }
+                                    Log.d(TAG,"newExifRotation:"+newExifRotation);
+                                    ExifInterface ei = new ExifInterface(file.getPath());
+                                    String currentOrientation = ei.getAttribute(ExifInterface.TAG_ORIENTATION);
+                                    Log.d(TAG,"current exif orientation:"+currentOrientation);
+                                    ei.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(newExifRotation));
+                                    ei.saveAttributes();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            // Now ask the user for a file name and folder using the bottom sheet
+                            CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet(uri);
+                            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"CreateSongBottomSheet");
                         },100);
                     }
                 });

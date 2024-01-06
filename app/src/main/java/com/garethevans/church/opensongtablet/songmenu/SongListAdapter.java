@@ -194,11 +194,17 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
                     final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey).replace("***null***", "******");
                     songItemViewHolder.itemCard.setOnClickListener(v -> {
+                        if (!songItemViewHolder.itemChecked.isChecked()) {
+                            // Remove the indexSongInSet
+                            mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+                        } else {
+                            // Look for the song index based on the folder, filename and key of the song
+                            mainActivityInterface.getSetActions().indexSongInSet(song);
+                        }
+                        mainActivityInterface.notifySetFragment("highlight",-1);
                         song.setFilename(itemFilename);
                         song.setFolder(itemFolder);
                         song.setKey(itemKey);
-                        // Look for the song index based on the folder, filename and key of the song
-                        mainActivityInterface.getSetActions().indexSongInSet(song);
                         if (callback != null) {
                             callback.onItemClicked(position, itemFolder, itemFilename, itemKey);
                         }
@@ -241,10 +247,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                         setItemString.equals(setentryalt1) ||
                                         setItemString.equals(setentryalt2)) {
                                     // Notify the set menu fragment which removes the entry and updates the set and inline adapters
+                                    int prevSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
                                     mainActivityInterface.notifySetFragment("setItemRemoved",position);
 
                                     // If the set is now empty, hide the inline set
-                                    if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
+                                    if (prevSize>0 && mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
                                         mainActivityInterface.updateInlineSetVisibility();
                                     }
                                 }

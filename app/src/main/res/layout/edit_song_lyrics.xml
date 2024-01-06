@@ -41,17 +41,26 @@
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/lyrics"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/imageEdit"
                 android:layout_marginBottom="72dp"
                 android:hint="@string/lyrics"
                 android:inputType="text|textMultiLine"
-                android:minLines="50"
+                android:minLines="25"
                 app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:useMonospace="true" />
+
+            <ImageView
+                android:id="@+id/previewImage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_below="@+id/lyrics"
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"
+                android:contentDescription="@string/image" />
         </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 

@@ -1126,6 +1126,7 @@ public class PerformanceFragment extends Fragment {
     }
 
     // This stuff deals with running song actions
+    @SuppressWarnings("ConstantConditions")
     private void dealWithStuffAfterReady(boolean callEndProcessing) {
 
         if (callEndProcessing) {
@@ -1180,31 +1181,23 @@ public class PerformanceFragment extends Fragment {
         // If we are in a set, send that info to the inline set custom view to see if it should draw
         myView.inlineSetList.checkVisibility();
         mainActivityInterface.getMainHandler().postDelayed(() -> {
-            Log.d(TAG,"step 1 showcase inlineSet");
             if (myView!=null && myView.inlineSetList.getChildCount()>=0) {
-                Log.d(TAG,"step 2 showcase inlineSet");
                 myView.inlineSetList.notifyInlineSetHighlight();
                 // Showcase what this is
                 if (myView.inlineSetList.getVisibility() == View.VISIBLE) {
-                    Log.d(TAG,"step 3 showcase inlineSet");
-
                     // Just in case it is empty!
                     try {
                         if (myView != null) {
-                            Log.d(TAG,"step 4 showcase inlineSet");
-
                             myView.inlineSetList.postDelayed(() -> {
-                                Log.d(TAG,"step 5 showcase inlineSet");
-
-                                try {
-                                    Log.d(TAG,"step 6 showcase inlineSet");
-
-                                    mainActivityInterface.getShowCase().singleShowCase(
-                                            (Activity) mainActivityInterface,
-                                            myView.inlineSetList.getChildAt(0), null,
-                                            inline_set_string, true, "inline_set");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                if (myView!=null && myView.inlineSetList!=null) {
+                                    try {
+                                        mainActivityInterface.getShowCase().singleShowCase(
+                                                (Activity) mainActivityInterface,
+                                                myView.inlineSetList.getChildAt(0), null,
+                                                inline_set_string, true, "inline_set");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             },800);
                         }

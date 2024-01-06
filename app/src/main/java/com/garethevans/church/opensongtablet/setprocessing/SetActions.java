@@ -182,11 +182,10 @@ public class SetActions {
             } else {
                 mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Songs";
             }
-            mainActivityInterface.updateSetList();
-
             // Update checks in the song menu
             mainActivityInterface.updateCheckForThisSong(tempSong);
         }
+        mainActivityInterface.updateSetList();
     }
 
     public boolean isSongInSet(String folderNamePair) {

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfRenderer;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.canhub.cropper.CropImageView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetImageAdjustBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
@@ -29,6 +31,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
@@ -39,7 +42,7 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private Song thisSong;
     private String crop_image_string, crop_website;
-    private int originalWidth, originalHeight;
+    private int originalWidth, originalHeight, exifRotation=0;
 
     @SuppressWarnings("unused")
     ImageAdjustBottomSheet() {
@@ -112,7 +115,44 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
                         thisSong.getFolder(), thisSong.getFilename());
 
                 if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        try {
+                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                            ExifInterface ei = null;
+                            ei = new ExifInterface(inputStream);
+                            int currentOrientation = Integer.parseInt(ei.getAttribute(ExifInterface.TAG_ORIENTATION));
+
+                            switch (currentOrientation) {
+                                case ExifInterface.ORIENTATION_ROTATE_90:
+                                    exifRotation = 90;
+                                    break;
+                                case ExifInterface.ORIENTATION_ROTATE_180:
+                                    exifRotation = 180;
+                                    break;
+                                case ExifInterface.ORIENTATION_ROTATE_270:
+                                    exifRotation = 270;
+                                    break;
+                            }
+
+                            inputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    int finalRotation = exifRotation;
+                    Log.d(TAG,"finalRotation:"+finalRotation);
+
                     myView.cropImageView.setImageUriAsync(uri);
+                    myView.cropImageView.setOnSetImageUriCompleteListener(new CropImageView.OnSetImageUriCompleteListener() {
+                        @Override
+                        public void onSetImageUriComplete(@NonNull CropImageView cropImageView, @NonNull Uri uri, @org.jetbrains.annotations.Nullable Exception e) {
+                            // Rotate in opposite direction
+                            myView.cropImageView.rotateImage(-finalRotation);
+                        }
+                    });
+
+
                     // Get the original sizes
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
@@ -122,6 +162,7 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
                             options);
                     originalWidth = options.outWidth;
                     originalHeight= options.outHeight;
+
                 } else if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     // Hide the rotate buttons
                     myView.rotateImageLeft.setVisibility(View.GONE);
@@ -155,7 +196,9 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
 
     private void doCrop() {
         myView.progressBar.setVisibility(View.VISIBLE);
-
+        // Put the rotation back to the default (don't change the exif rotation)
+        myView.cropImageView.rotateImage(exifRotation);
+        myView.cropImageView.setVisibility(View.INVISIBLE);
         Bitmap bmp = myView.cropImageView.getCroppedImage();
         Rect cropPoints = myView.cropImageView.getCropRect();
 

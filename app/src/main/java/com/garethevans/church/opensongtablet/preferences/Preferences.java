@@ -575,7 +575,7 @@ public class Preferences extends Activity {
     // songAutoScaleOverrideFull        boolean     If the app can override full autoscale if the font is too small (def:true)
     // songAutoScaleOverrideWidth       boolean     If the app can override width autoscale if the font is too small (def:false)
     // songFilename                     String      The name of the current song file (def:"")
-    // songFolder                        String      The song folder we are currently in (def:c.getString(R.string.mainfoldername))
+    // songFolder                       String      The song folder we are currently in (def:c.getString(R.string.mainfoldername))
     // songListSearchByFolder           boolean     Should we search in the song list using a custom folder (def:true)
     // songListSearchByArtist           boolean     Should we search in the song list using a custom artist (def:false)
     // songListSearchByKey              boolean     Should we search in the song list using a custom key (def:false)

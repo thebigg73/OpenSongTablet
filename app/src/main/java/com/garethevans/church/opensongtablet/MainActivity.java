@@ -1485,7 +1485,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (hideActionButtonRunnable == null) {
                     setHideActionButtonRunnable();
                 }
-                if (pageButtons.getPageButtonHide() && pageButtons.getPageButtonActivated()) {
+                if (getPageButtons().getPageButtonHide() && pageButtons.getPageButtonActivated()) {
                     myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
                 }
                 myView.actionFAB.show();
@@ -1543,8 +1543,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
         if (myView != null) {
-            myView.myToolbar.setActionBar(this,what);
-            myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+            mainLooper.post(() -> {
+                myView.myToolbar.setActionBar(this, what);
+                myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+            });
         }
     }
 
@@ -2090,6 +2092,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
                 case "scrollTo":
                     setMenuFragment.scrollToItem();
+                    break;
+                case "highlight":
+                    setMenuFragment.updateHighlight();
                     break;
             }
         }
