@@ -635,11 +635,15 @@ public class SetManageFragment extends Fragment {
                 setUris.add(newSetUri);
             } else {
                 for (String checkedItem : setManageAdapter.getCheckedItems()) {
+                    Log.d(TAG,"checkedItem:"+checkedItem);
                     checkedItem = getFilenameFromIdentifier(checkedItem);
+                    newSetFilename = checkedItem;
+                    Log.d(TAG,"checkedItem:"+checkedItem);
                     setUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", checkedItem));
                 }
             }
 
+            Log.d(TAG,"setUris.size():"+setUris.size());
             // Use the set name as long as there is only one set chosen
             String newSetTitle = "";
             if (setUris.size()==1) {
