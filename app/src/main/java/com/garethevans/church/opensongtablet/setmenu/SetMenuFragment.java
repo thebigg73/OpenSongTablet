@@ -268,6 +268,8 @@ public class SetMenuFragment extends Fragment {
     public void updateItem(int position) {
         if (setAdapter!=null) {
             setAdapter.updateItem(position);
+            // Save the currentSet
+            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
         }
     }
 

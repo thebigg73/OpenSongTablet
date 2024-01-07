@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -366,6 +367,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
+        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+        Log.d(TAG,"onItemClicked()  folder:"+setItemInfo.songfolder+"  filename:"+setItemInfo.songfilename);
         mainActivityInterface.loadSongFromSet(position);
     }
 

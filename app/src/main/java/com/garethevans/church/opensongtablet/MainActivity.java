@@ -1236,6 +1236,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                     break;
+
+                case "setSelectedSetItem":
+                    // We are in the setManageFragment and have clicked on an item, so need to update a view
+                    ((SetManageFragment) callingFragment).updateSelectedSet(arguments);
+                    break;
+
                 case "linksFragment":
                     // Update the values in the links
                     if (callingFragment != null && callingFragment.isVisible()) {
@@ -2096,6 +2102,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "highlight":
                     setMenuFragment.updateHighlight();
                     break;
+                case "clear":
+                    setMenuFragment.notifyItemRangeRemoved(0,position);
+                    break;
             }
         }
     }
@@ -2846,14 +2855,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "saveset":
+                    Log.d(TAG,"saveset");
                     // Overwriting the last loaded set with the current one via bottom sheet
                     // This is only called if we are editing a previously saved set
                     String xml = getSetActions().createSetXML();
                     String setString = getSetActions().getSetAsPreferenceString();
                     result = storageAccess.doStringWriteToFile("Sets", "", currentSet.getSetCurrentLastName(), xml);
+                    Log.d(TAG,"result:"+result);
                     if (result) {
                         // Update the last edited version (current set already has this)
                         currentSet.setSetCurrentBeforeEdits(setString);
+                        Log.d(TAG,"success:"+success);
+                        Log.d(TAG,"allowToast"+allowToast);
                     }
                     // Update the set title
                     currentSet.updateSetTitleView();

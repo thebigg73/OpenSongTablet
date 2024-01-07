@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,11 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public class SetActionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetActionsFragment";
     private String set_manage_string="", set_new_string="", deeplink_sets_manage_string="",
             file_type_string="", unknown_string="";
@@ -110,28 +107,17 @@ public class SetActionsFragment extends Fragment {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 try {
                     Intent data = result.getData();
-                    Log.d(TAG,"data="+data);
 
                     if (data != null) {
                         Uri contentUri = data.getData();
-                        Log.d(TAG,"contentUri="+contentUri);
                         String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(contentUri);
-                        //String location = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
-                        Log.d(TAG,"filename="+importFilename);
-                        if (importFilename.endsWith(".osts") || !importFilename.contains(".")) {
-                            // Copy the file into the sets folder
-                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(contentUri);
-                            importFilename = importFilename.replace(".osts","");
+                        if (importFilename.endsWith(".osts") || !importFilename.contains(".") || !importFilename.endsWith(".xml")) {
+                            // Keep a record of the uri
+                            mainActivityInterface.setImportUri(contentUri);
+                            mainActivityInterface.setImportFilename(importFilename);
 
-                            Log.d(TAG,"importFile: "+importFilename);
-                            Uri copyToUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", importFilename);
-                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" initialiseLauncher Create Sets/"+importFilename+" deleteOld=true");
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyToUri, null, "Sets", "", importFilename);
-                            OutputStream outputStream = mainActivityInterface.getStorageAccess().
-                                    getOutputStream(copyToUri);
-                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyPDF copyFile from "+contentUri+" to Sets/"+importFilename);
-                            mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-                            mainActivityInterface.setWhattodo("loadset:"+importFilename);
+                            // Now go the to manage set fragment
+                            mainActivityInterface.setWhattodo("importset");
                             mainActivityInterface.navigateToFragment(deeplink_sets_manage_string, 0);
                         } else {
                             mainActivityInterface.getShowToast().doIt(file_type_string+" "+unknown_string);

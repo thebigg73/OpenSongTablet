@@ -9,6 +9,9 @@ public class FoundSet {
     private String tag;
     private String lastModifiedString;
     private long lastModifiedLong;
+    private String category;
+    private boolean checked;
+    private String identifier;
 
     public void setFilename(String filename) {
         this.filename = filename;
@@ -28,6 +31,15 @@ public class FoundSet {
     public void setLastModifiedLong(long lastModifiedLong) {
         this.lastModifiedLong = lastModifiedLong;
     }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
     public String getFilename() {
         return filename;
@@ -46,5 +58,14 @@ public class FoundSet {
     }
     public long getLastModifiedLong() {
         return lastModifiedLong;
+    }
+    public String getCategory() {
+        return category;
+    }
+    public boolean getChecked() {
+        return checked;
+    }
+    public String getIdentifier() {
+        return identifier;
     }
 }

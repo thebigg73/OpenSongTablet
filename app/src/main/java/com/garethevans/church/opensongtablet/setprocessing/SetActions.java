@@ -209,8 +209,6 @@ public class SetActions {
     }
 
     public String getSetAsPreferenceString() {
-        Log.d(TAG,"getSetAsPreferenceString()");
-
         // Build the set list into a string that can be saved to preferences
         // Use the arrays for folder, song title and key.  These should match!
         // As a precaution, each item is in a try/catch incase the arrays are different sizes
@@ -219,7 +217,6 @@ public class SetActions {
             if (setItemInfo.songfilename!=null && !setItemInfo.songfilename.isEmpty())
                 try {
                     String key = fixNull(setItemInfo.songkey);
-
                     stringBuilder.append(itemStart).
                             append(setItemInfo.songfolder).
                             append("/").
@@ -249,8 +246,6 @@ public class SetActions {
     }
 
     public int indexSongInSet(Song thisSong) {
-        Log.d(TAG,"indexSongInSet(song)");
-
         // Because set items can be stored with or without a specified key, we search for both
         String searchText = getSongForSetWork(thisSong);
         Song noKeySong = new Song();
@@ -320,7 +315,6 @@ public class SetActions {
 
         if (position>-1) {
             // If a key was specified in the set and it matches this song, go to that position in the set
-            Log.d(TAG,"found song with key at position:"+position);
             return position;
         } else {
             // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
@@ -328,13 +322,11 @@ public class SetActions {
             // If a key was specified in the set, but the song clicked on in the song menu is different,
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
-            Log.d(TAG,"found song with no key at position:"+positionNoKey);
             return positionNoKey;
         }
     }
 
     public void shuffleSet() {
-        Log.d(TAG,"shuffleSet()");
         // Shuffle the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         Collections.shuffle(mainActivityInterface.getCurrentSet().getSetItemInfos());
 
@@ -342,7 +334,6 @@ public class SetActions {
     }
 
     public void sortSet() {
-        Log.d(TAG,"sortSet()");
         // Sort the currentSet item array - all entries are like $$_folder/filename_**key**__$$
         // Comparator used to process the items and sort case insensitive and including accented chars
         Comparator<SetItemInfo> comparator = (o1, o2) -> {
@@ -355,11 +346,8 @@ public class SetActions {
     }
 
     private void finishChangingSet() {
-        Log.d(TAG,"finishChangingSet()");
-
         // Save the current set
         mainActivityInterface.getCurrentSet().updateCurrentSetPreferences();
-        Log.d(TAG,"currentSetAfterChange:"+mainActivityInterface.getCurrentSet().getSetCurrent());
 
         // Now build the individual values from the set item array which we shuffled
         parseCurrentSet();
@@ -374,8 +362,6 @@ public class SetActions {
     }
 
     public void checkMissingKeys() {
-        Log.d(TAG,"checkMissingKeys()");
-
         // Called once song indexing is complete
         // Some keys may not have been loaded to the database when they were first looked for
         // If there is an empty value, try again
@@ -401,19 +387,13 @@ public class SetActions {
         }
     }
     public ArrayList<Integer> getMissingKeyPositions() {
-
-        Log.d(TAG,"getMissingKeyPositions()");
         return missingKeyPositions;
     }
     public void nullMissingKeyPositions() {
-
-        Log.d(TAG,"nullMissingKeyPositions()");
         missingKeyPositions = null;
     }
 
     public void saveTheSet() {
-        Log.d(TAG,"saveTheSet()");
-
         // This saves the set to user preferences for loading in next time
         // Not to be confused with exporting/saving the set as a file
         String setString = getSetAsPreferenceString();
@@ -424,8 +404,6 @@ public class SetActions {
     }
 
     public String niceCustomLocationFromFolder(String folderLocation) {
-        Log.d(TAG,"niceCustomLocationFromFolder()");
-
         // This gives a nice output for the folderLocation for viewing
         folderLocation = folderLocation.replace(customLocBasic,"");
         folderLocation = folderLocation.replace("/_cache","");
@@ -450,13 +428,29 @@ public class SetActions {
     }
 
     public ArrayList<String> getAllSets() {
-        Log.d(TAG,"getAllSets()");
-
         return mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
     }
+    public ArrayList<String> getRequiredSets(boolean all) {
+        // If we want all of them, we simply want all the filenames
+        if (all) {
+            return getAllSets();
+        } else {
+            // Get the sets in the current user preference category
+            ArrayList<String> returnSets = new ArrayList<>();
+            String category = mainActivityInterface.getPreferences().getMyPreferenceString(
+                    "whichSetCategory", mainActivityInterface.getMainfoldername());
+            boolean isMain = category.equals(mainActivityInterface.getMainfoldername());
+            for (String set:getAllSets()) {
+                if (isMain && !set.contains(setCategorySeparator)) {
+                    returnSets.add(set);
+                } else if (!isMain && set.startsWith(category+setCategorySeparator)) {
+                    returnSets.add(set);
+                }
+            }
+            return returnSets;
+        }
+    }
     public ArrayList<String> getCategories(ArrayList<String> allSets) {
-        Log.d(TAG,"getCategories");
-
         ArrayList<String> categories = new ArrayList<>();
 
         for (String setName:allSets) {
@@ -473,51 +467,7 @@ public class SetActions {
         categories.add(0,c.getString(R.string.mainfoldername));
         return categories;
     }
-    public ArrayList<String> setsInCategory(ArrayList<String> allSets) {
-        Log.d(TAG,"setsInCategory");
-
-        ArrayList<String> availableSets = new ArrayList<>();
-        String category = mainActivityInterface.getPreferences().getMyPreferenceString(
-                "whichSetCategory", c.getString(R.string.mainfoldername));
-        boolean mainCategory = category.equals(c.getString(R.string.mainfoldername));
-
-        for (String possibleSet:allSets) {
-            if (mainCategory && !possibleSet.contains(setCategorySeparator)) {
-                availableSets.add(possibleSet);
-            } else if (possibleSet.contains(category+setCategorySeparator)) {
-                availableSets.add(possibleSet);
-            }
-        }
-        Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
-        coll.setStrength(Collator.SECONDARY);
-        Collections.sort(availableSets, coll);
-        return availableSets;
-    }
-    public ArrayList<String> listSetsWithCategories(ArrayList<String> allSets) {
-        Log.d(TAG,"listSetsWithCategories");
-
-        ArrayList<String> availableSets = new ArrayList<>();
-        for (String possibleSet:allSets) {
-            if (possibleSet.contains(setCategorySeparator)) {
-                possibleSet = possibleSet.replace(setCategorySeparator,"/");
-            } else {
-                possibleSet = c.getString(R.string.mainfoldername) + "/" + possibleSet;
-            }
-            availableSets.add(possibleSet);
-        }
-        Collator collator;
-        if (mainActivityInterface.getLocale() == null) {
-            collator = Collator.getInstance(Locale.getDefault());
-        } else {
-            collator = Collator.getInstance(mainActivityInterface.getLocale());
-        }
-        collator.setStrength(Collator.SECONDARY);
-        Collections.sort(availableSets,collator);
-        return availableSets;
-    }
     public void makeVariation(int position) {
-        Log.d(TAG,"makeVariation");
-
         // Takes the chosen song and copies it to a temporary file in the Variations folder
         // This also updates the set menu to point to the new temporary item
         // This allows the user to freely edit the variation object
@@ -564,8 +514,6 @@ public class SetActions {
     }
 
     public int getItemIcon(String valueToDecideFrom) {
-        Log.d(TAG,"getItemIcon()");
-
         int icon;
         // Get rid of ** and ../
         valueToDecideFrom = valueToDecideFrom.replace(customLocBasic,"");
@@ -613,8 +561,6 @@ public class SetActions {
     }
 
     public String createSetXML() {
-        Log.d(TAG,"createSetXML");
-
         StringBuilder stringBuilder = new StringBuilder();
 
         // The starting of the xml file
@@ -627,23 +573,20 @@ public class SetActions {
         // Now go through each set entry and build the appropriate xml
         for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
             SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
-            String key = fixNull(setItemInfo.songkey);
-            // If the path isn't empty, add a forward slash to the end
-            if (!setItemInfo.songfolder.isEmpty()) {
-                setItemInfo.songfolder = setItemInfo.songfolder + "/";
-            }
-            setItemInfo.songfolder = setItemInfo.songfolder.replace("//","/");
 
-            boolean isImage = setItemInfo.songfolder.contains("**Image") ||
-                    setItemInfo.songfolder.contains("**"+c.getString(R.string.image));
-            boolean isVariation = setItemInfo.songfolder.contains("**Variation") ||
-                    setItemInfo.songfolder.contains("**"+c.getString(R.string.variation));
-            boolean isScripture = setItemInfo.songfolder.contains("**Scripture") ||
-                    setItemInfo.songfolder.contains("**"+c.getString(R.string.scripture));
-            boolean isSlide = setItemInfo.songfolder.contains("**Slide") ||
-                    setItemInfo.songfolder.contains("**"+c.getString(R.string.slide));
-            boolean isNote = setItemInfo.songfolder.contains("**Note") ||
-                    setItemInfo.songfolder.contains("**"+c.getString(R.string.note));
+            String key = fixNull(setItemInfo.songkey);
+            String folder = setItemInfo.songfolder;
+            // If the path isn't empty, add a forward slash to the end
+            if (!folder.isEmpty()) {
+                folder = setItemInfo.songfolder + "/";
+            }
+            folder = folder.replace("//","/");
+
+            boolean isImage = folder.contains("**Image") || folder.contains("**"+c.getString(R.string.image));
+            boolean isVariation = folder.contains("**Variation") || folder.contains("**"+c.getString(R.string.variation));
+            boolean isScripture = folder.contains("**Scripture") || folder.contains("**"+c.getString(R.string.scripture));
+            boolean isSlide = folder.contains("**Slide") || folder.contains("**"+c.getString(R.string.slide));
+            boolean isNote = folder.contains("**Note") || folder.contains("**"+c.getString(R.string.note));
 
             if (isImage) {
                 // Adding an image
@@ -677,7 +620,7 @@ public class SetActions {
 
             } else {
                 // Adding a song
-                stringBuilder.append(buildSong(setItemInfo.songfolder,setItemInfo.songfilename,key));
+                stringBuilder.append(buildSong(folder,setItemInfo.songfilename,key));
             }
         }
         // Now add the final part of the xml
@@ -686,8 +629,6 @@ public class SetActions {
         return stringBuilder.toString();
     }
     private Song getTempSong(String folder, String name) {
-        Log.d(TAG,"getTempSong()");
-
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(folder,name);
         try {
             tempSong = mainActivityInterface.getLoadSong().doLoadSong(tempSong,false);
@@ -698,8 +639,6 @@ public class SetActions {
         return tempSong;
     }
     private StringBuilder buildSong(String path, String name, String key) {
-        Log.d(TAG,"buildSong()");
-
         // If we have a key set add this as a value.  Desktop will ignore
         String keyText = "";
         if (key!=null && !key.isEmpty()) {
@@ -721,8 +660,6 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildScripture(Song tempSong) {
-        Log.d(TAG,"buildScripture()");
-
         StringBuilder sb = new StringBuilder();
 
         // The scripture is loaded to a new, temp song object
@@ -762,8 +699,6 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildVariation(Song tempSong) {
-        Log.d(TAG,"buildVariation()");
-
         StringBuilder sb = new StringBuilder();
 
         // The variation is loaded to a new, temp song object
@@ -833,8 +768,6 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildSlide(Song tempSong) {
-        Log.d(TAG,"buildSlide()");
-
         StringBuilder sb = new StringBuilder();
         // Adding a custom slide
         String slide_lyrics = tempSong.getLyrics();
@@ -874,8 +807,6 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildNote(Song tempSong) {
-        Log.d(TAG,"buildNote()");
-
         StringBuilder sb = new StringBuilder();
         // Adding a note
 
@@ -899,8 +830,6 @@ public class SetActions {
         return sb;
     }
     private StringBuilder buildImage(Song tempSong) {
-        Log.d(TAG,"buildImage()");
-
         // Adding a custom image slide
         StringBuilder sb = new StringBuilder();
 
@@ -969,11 +898,9 @@ public class SetActions {
         // Create the cache directories again as we likely deleted them in SAF
         mainActivityInterface.getStorageAccess().createOrCheckRootFolders(null);
 
-        // Initialise the arrays that will hold the loaded information
-        //mainActivityInterface.getCurrentSet().initialiseTheSet();
-
         // Prepare the set name
         mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
+        Log.d(TAG,"setName:"+setName);
 
         // Now users can load multiple sets and merge them, we need to load each one it turn
         for (Uri setToLoad:setsToLoad) {
@@ -989,8 +916,6 @@ public class SetActions {
     }
 
     public void extractSetFile(Uri uri, boolean asExport) {
-        Log.d(TAG,"extractSetFile()");
-
         // This loads individual set files and populates the arrays
         // Set up the xml utility
         try {
@@ -1057,8 +982,6 @@ public class SetActions {
     }
 
     private String stripSlashes(String string) {
-        Log.d(TAG,"stripSlashes()");
-
         if (string.startsWith("/")) {
             string = string.replaceFirst("/", "");
         }
@@ -1070,8 +993,6 @@ public class SetActions {
 
     private void getSong(XmlPullParser xpp, boolean asExport)
             throws IOException, XmlPullParserException {
-        Log.d(TAG,"getSong()");
-
         // Set this info into the current set.  We will just load our song
         // When we load, we will transpose our song if the key is different
         String path = stripSlashes(mainActivityInterface.getProcessSong().
@@ -1098,8 +1019,6 @@ public class SetActions {
     }
 
     private void getScripture(XmlPullParser xpp, boolean asExport) throws IOException, XmlPullParserException {
-        Log.d(TAG,"getScripture()");
-
         // Scripture entries in a set are custom slides.  Get the data and save it
         // This will ultimately be saved in our Scripture/_cache folder
         String scripture_title = "";
@@ -1204,8 +1123,6 @@ public class SetActions {
     }
 
     private void getCustom(XmlPullParser xpp, boolean asExport) throws XmlPullParserException {
-        Log.d(TAG,"getCustom()");
-
         // Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
@@ -1366,8 +1283,6 @@ public class SetActions {
     }
 
     private void getImage(XmlPullParser xpp, boolean asExport) throws IOException, XmlPullParserException {
-        Log.d(TAG,"getImage()");
-
         // Ok parse this bit separately.  This could have multiple images
         String image_name = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name"));
         String image_seconds = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "seconds"));
@@ -1506,8 +1421,6 @@ public class SetActions {
     }
 
     private void removeCacheItemsFromDB(String folder) {
-        Log.d(TAG,"removeCacheItemsFromDF");
-
         ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "_cache");
         for (String filename:filesInFolder) {
             mainActivityInterface.getSQLiteHelper().deleteSong(customLocStart+folder, filename);
@@ -1529,8 +1442,6 @@ public class SetActions {
     }
 
     private void writeTempSlide(String folder, String subfolder, Song tempSong) {
-        Log.d(TAG,"writeTempSlide");
-
         // Get the song as XML
         tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(tempSong));
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTempSlide doStringWriteToFile "+folder+"/"+subfolder+"/"+tempSong.getFilename()+" with: "+tempSong.getSongXML());
@@ -1538,8 +1449,6 @@ public class SetActions {
     }
 
     private String safeNextText(XmlPullParser xpp) {
-        Log.d(TAG,"safeNextText()");
-
         try {
             if (!xpp.isEmptyElementTag()) {
                 String result = xpp.nextText();
@@ -1556,8 +1465,6 @@ public class SetActions {
     }
 
     private String emptyTagCheck(String tag, String value) {
-        Log.d(TAG,"emptyTagCheck()");
-
         if (value!=null && !value.isEmpty()) {
             return "<" + tag + ">" + mainActivityInterface.getProcessSong().parseToHTMLEntities(value) + "</" + tag + ">";
         } else {
@@ -1565,4 +1472,25 @@ public class SetActions {
         }
     }
 
+    public String getSetCategorySeparator() {
+        return setCategorySeparator;
+    }
+
+    public String getItemStart() {
+        return itemStart;
+    }
+
+    public String getItemEnd() {
+        return itemEnd;
+    }
+
+    public String getNiceSetNameFromFile(String filename) {
+        // If the file has a category, make it look nicer
+        if (filename.contains(setCategorySeparator)) {
+            String[] bits = filename.split(setCategorySeparator);
+            return "(" + bits[0] + ") " + bits[bits.length-1];
+        } else {
+            return filename;
+        }
+    }
 }

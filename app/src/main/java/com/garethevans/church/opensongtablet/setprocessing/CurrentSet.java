@@ -75,10 +75,13 @@ public class CurrentSet {
     public void loadCurrentSet() {
         Log.d(TAG,"loadCurrentSet()");
         setCurrent = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent", "");
+        Log.d(TAG,"setCurrent:"+setCurrent);
         mainActivityInterface.updateSetList();
     }
 
     public void setSetCurrent(String setCurrent) {
+        Log.d(TAG,"setSetCurrent()");
+        Log.d(TAG,"setCurrent:"+setCurrent);
         // Keep a reference
         this.setCurrent = setCurrent;
 
@@ -251,19 +254,8 @@ public class CurrentSet {
             // Deal with the title
             String title = "";
             // Adjust for set category
-            if (setCurrentLastName.contains("__")) {
-                String[] setBits = setCurrentLastName.split("__");
-                if (setBits.length > 0) {
-                    title += "(" + setBits[0] + ") ";
-                }
-                if (setBits.length > 1) {
-                    title += setBits[1];
-                } else {
-                    title = setCurrentLastName;
-                }
-            } else {
-                title = setCurrentLastName;
-            }
+            title = mainActivityInterface.getSetActions().getNiceSetNameFromFile(setCurrentLastName);
+            Log.d(TAG,"title:"+title);
 
             String changed = changedOrEmpty;
             if (setCurrentLastName == null || setCurrentLastName.isEmpty()) {
@@ -273,6 +265,7 @@ public class CurrentSet {
             }
 
             String finalTitle = title;
+            Log.d(TAG,"finalTitle:"+finalTitle);
 
             setTitleView.post(() -> {
                 setTitleView.setText(finalTitle);

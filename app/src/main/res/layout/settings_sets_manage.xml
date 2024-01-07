@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
-        android:id="@+id/nestedScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/setItemSelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_selected"
+                android:layout_marginBottom="16dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/setName"
@@ -129,16 +131,17 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/setLists"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="96dp"
+                android:paddingBottom="96dp"
+                android:clipToPadding="false"
                 android:layout_weight="1"
-                android:isScrollContainer="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="vertical" />
-        </LinearLayout>
-    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/progressBar"

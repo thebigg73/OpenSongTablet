@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
+    android:id="@+id/itemLayout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="48dp"
     android:orientation="horizontal">
-<CheckBox
-    android:id="@+id/checkBoxItem"
-    android:layout_width="0dp"
-    android:layout_weight="1"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:layout_gravity="start"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:padding="16dp"
+        android:visibility="visible"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:text="@string/title" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/modifiedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:text="@string/date"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/lightgrey"
-        android:layout_gravity="center_vertical"/>
+        android:textColor="@color/vlightgrey"
+        android:textSize="@dimen/text_small" />
 </LinearLayout>

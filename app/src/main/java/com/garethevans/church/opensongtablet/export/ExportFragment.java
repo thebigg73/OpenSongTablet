@@ -107,7 +107,9 @@ public class ExportFragment extends Fragment {
 
         // If we are exporting a song, we do this once, if not, we do it for each song in the set
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
-            setToExport = mainActivityInterface.getWhattodo().replace("exportset:", "").replace("%_%","");
+            setToExport = mainActivityInterface.getWhattodo().replace("exportset:", "").
+                    replace(mainActivityInterface.getSetActions().getItemStart(),"").
+                    replace(mainActivityInterface.getSetActions().getItemEnd(),"");
             setNames = mainActivityInterface.getExportActions().getListOfSets(setToExport);
             setData = mainActivityInterface.getExportActions().parseSets(setNames);
             myView.exportTextAsMessage.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportTextAsMessage",true));

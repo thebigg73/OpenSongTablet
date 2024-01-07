@@ -117,6 +117,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     String author = song.getAuthor();
                     String key = song.getKey();
                     String folderNamePair = song.getFolderNamePair();
+                    if (song.getFolderNamePair()==null || song.getFolderNamePair().isEmpty()) {
+                        folderNamePair = folder + "/" +filename;
+                    }
 
                     if (folder == null) {
                         folder = "";
@@ -231,8 +234,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                         return true;
                     });
 
+                    String finalFolderNamePair = folderNamePair;
                     songItemViewHolder.itemChecked.setOnClickListener(v -> {
-                        if (mainActivityInterface.getSetActions().isSongInSet(songItemViewHolder.itemFolderNamePair.getText().toString())) {
+                        if (mainActivityInterface.getSetActions().isSongInSet(finalFolderNamePair)) {
                             // This was in the set, so remove it
                             songItemViewHolder.itemChecked.setChecked(false);
                             for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
@@ -259,6 +263,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
                             // Notify the set menu fragment which updates the adapters
                             mainActivityInterface.notifySetFragment("setItemInserted",-1);
+
+                            // Save the current set
+                            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
                             if (firstItem) {
                                 // Notify the inline set to appear if required
