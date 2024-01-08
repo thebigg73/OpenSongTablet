@@ -250,6 +250,8 @@ public class SetManageFragment extends Fragment {
                     myView.setLoadInfo2.setVisibility(View.GONE);
                     myView.setLoadFirst.setVisibility(View.GONE);
                     myView.setName.setText(setName);
+                    // Changing the category in rename mode shouldn't update the songs adapter
+                    myView.setCategory.setUserEditing(false);
                     myView.newCategory.setVisibility(View.VISIBLE);
                     myView.setCategory.setText(setCategory);
                     myView.loadorsaveButton.setText(rename_string);
@@ -357,8 +359,11 @@ public class SetManageFragment extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    mainActivityInterface.getPreferences().setMyPreferenceString("whichSetCategory",myView.setCategory.getText().toString());
-                    setManageAdapter.prepareSetManageInfos();
+                    if (myView.setCategory.getUserEditing()) {
+                        // Only do this if we are expecting to change (not in rename mode)
+                        mainActivityInterface.getPreferences().setMyPreferenceString("whichSetCategory",myView.setCategory.getText().toString());
+                        setManageAdapter.prepareSetManageInfos();
+                    }
                 }
             });
 
@@ -675,9 +680,16 @@ public class SetManageFragment extends Fragment {
                     replace(mainActivityInterface.getSetActions().getItemStart(), "").
                     replace(mainActivityInterface.getSetActions().getItemEnd(), "");
 
-            if (whattodo.equals("saveset") || whattodo.equals("importset")) {
+            if (whattodo.equals("saveset") || whattodo.equals("importset") || whattodo.equals("renameset")) {
                 // We need to update the set name in the edit text
-                myView.setName.setText(selectedItem.replace(myView.setCategory.getText()+mainActivityInterface.getSetActions().getSetCategorySeparator(),""));
+                setName = selectedItem;
+                if (selectedItem.contains(mainActivityInterface.getSetActions().getSetCategorySeparator())) {
+                    String[] bits = selectedItem.split(mainActivityInterface.getSetActions().getSetCategorySeparator());
+                    setCategory = bits[0];
+                    setName = bits[bits.length-1];
+                } else {
+                    setCategory = mainActivityInterface.getMainfoldername();
+                }
             }
 
             // If the return value has __ make it look nicer
@@ -695,9 +707,16 @@ public class SetManageFragment extends Fragment {
         if (what.endsWith(", ")) {
             what = what.substring(0,what.lastIndexOf(", "));
         }
-        if (whattodo.equals("loadset")) {
-            myView.setItemSelected.setHint(what);
-        }
+
+
+        String finalWhat = what;
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.setName.setText(setName);
+            myView.setCategory.setText(setCategory);
+            if (whattodo.equals("loadset") || whattodo.equals("renameset")) {
+                myView.setItemSelected.setHint(finalWhat);
+            }
+        });
     }
 
     // This comes back from the activity after it gets the text from the TextInputBottomSheet dialog
