@@ -1196,7 +1196,7 @@ public class ExportFragment extends Fragment {
                     }
 
                     boolean takingScreenShot = (png && !isSetFile) || (screenShot && !isSetFile);
-                    if (takingScreenShot) {
+                    if (takingScreenShot && thisWidth>0 && thisHeight>0) {
                         // Now take a bitmap of the layout for the song
                         // Get the maximum width of the views
 

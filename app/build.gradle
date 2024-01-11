@@ -37,7 +37,7 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         versionCode 368
-        versionName '6.0.0'
+        versionName '6.0.0_beta43'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -82,7 +82,7 @@ android {
 dependencies {
     implementation 'androidx.activity:activity:1.8.2'                                   // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.6.2'                                   // Using fragments and navigation
-    implementation 'com.google.android.material:material:1.12.0-alpha02'                // Required for material design goodness
+    implementation 'com.google.android.material:material:1.12.0-alpha03'                // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
     implementation 'com.google.android.gms:play-services-cast:21.4.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.4.0'         // For casting obviously!

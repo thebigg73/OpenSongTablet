@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,8 +63,11 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
 
     private void setupViews() {
         myView.songSheet.removeAllViews();
-        myView.songSheet.addView(mainActivityInterface.getSongSheetHeaders().getSongSheet(
-                mainActivityInterface.getSong(), 0.9f, getResources().getColor(R.color.vlightgrey)));
+        LinearLayout linearLayout = mainActivityInterface.getSongSheetHeaders().getSongSheet(mainActivityInterface.getSong(),0.9f,getResources().getColor(R.color.vlightgrey));
+        if (linearLayout!=null) {
+            myView.songSheet.addView(mainActivityInterface.getSongSheetHeaders().getSongSheet(
+                    mainActivityInterface.getSong(), 0.9f, getResources().getColor(R.color.vlightgrey)));
+        }
         String val;
         val = mainActivityInterface.getSong().getCcli();
         if (val==null || val.isEmpty()) {
