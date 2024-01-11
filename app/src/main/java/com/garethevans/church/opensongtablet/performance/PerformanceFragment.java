@@ -1522,4 +1522,9 @@ public class PerformanceFragment extends Fragment {
         }
     }
 
+    // Get the width of the song display (to check it fits)
+    public int getSongWidth() {
+        return myView.songView.getWidth() - myView.songView.getPaddingStart();
+    }
+
 }

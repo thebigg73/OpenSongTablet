@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +104,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                 mainActivityInterface.getSongMenuFragment().getSongsFound()!=null) {
             try {
                 int position = songItemViewHolder.getAbsoluteAdapterPosition();
-                if (position < mainActivityInterface.getSongMenuFragment().getSongsFound().size()) {
+                if (position!=-1 && position < mainActivityInterface.getSongMenuFragment().getSongsFound().size()) {
                     Song song = mainActivityInterface.getSongMenuFragment().getSongsFound().get(position);
                     String filename = song.getFilename();
                     String title = song.getTitle();
@@ -245,13 +246,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                 if (setItemString.equals(setentry) ||
                                         setItemString.equals(setentryalt1) ||
                                         setItemString.equals(setentryalt2)) {
+                                    int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(finalFolderNamePair);
                                     // Notify the set menu fragment which removes the entry and updates the set and inline adapters
                                     int prevSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
-                                    mainActivityInterface.notifySetFragment("setItemRemoved",position);
-
-                                    // If the set is now empty, hide the inline set
-                                    if (prevSize>0 && mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
-                                        mainActivityInterface.updateInlineSetVisibility();
+                                    Log.d(TAG,"about to notifySetFramgent that item removed:"+positionInSet);
+                                    if (positionInSet>-1) {
+                                        mainActivityInterface.notifySetFragment("setItemRemoved", positionInSet);
+                                        // If the set is now empty, hide the inline set
+                                        if (prevSize > 0 && mainActivityInterface.getCurrentSet().getCurrentSetSize() == 0) {
+                                            mainActivityInterface.updateInlineSetVisibility();
+                                        }
                                     }
                                 }
                             }

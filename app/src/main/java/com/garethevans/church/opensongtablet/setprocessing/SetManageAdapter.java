@@ -51,14 +51,9 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
                 foundSet.setUri(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", foundSet.getFilename()));
 
                 // Get the set title and category separately
-                if (foundSet.getFilename().contains(mainActivityInterface.getSetActions().getSetCategorySeparator())) {
-                    String[] bits = foundSet.getFilename().split(mainActivityInterface.getSetActions().getSetCategorySeparator());
-                    foundSet.setCategory(bits[0]);
-                    foundSet.setTitle(bits[1]);
-                } else {
-                    foundSet.setCategory(mainActivityInterface.getMainfoldername());
-                    foundSet.setTitle(foundSet.getFilename());
-                }
+                String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(foundSet.getFilename());
+                foundSet.setCategory(bits[0]);
+                foundSet.setTitle(bits[1]);
 
                 // Set the tag which is what is shown on the screen to the user
                 if (whatView.equals("renameset")) {

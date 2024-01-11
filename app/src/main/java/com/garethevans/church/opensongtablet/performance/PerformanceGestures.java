@@ -490,6 +490,18 @@ public class PerformanceGestures {
             case "beatbuddydoubleexit":
                 beatBuddyDoubleTimeExit();
                 break;
+            case "beatbuddyvolup":
+                beatBuddyVolUp();
+                break;
+            case "beatbuddyvoldown":
+                beatBuddyVolDown();
+                break;
+            case "beatbuddyvolhpup":
+                beatBuddyVolHPUp();
+                break;
+            case "beatbuddyvolhpdown":
+                beatBuddyVolHPDown();
+                break;
             case "midiaction1":
                 midiAction(1);
                 break;
@@ -1238,6 +1250,18 @@ public class PerformanceGestures {
     }
     public void beatBuddyDoubleTimeExit() {
         mainActivityInterface.getBeatBuddy().beatBuddyDoubleTimeExit();
+    }
+    public void beatBuddyVolUp() {
+        mainActivityInterface.getBeatBuddy().beatBuddyVolUp();
+    }
+    public void beatBuddyVolDown() {
+        mainActivityInterface.getBeatBuddy().beatBuddyVolDown();
+    }
+    public void beatBuddyVolHPUp() {
+        mainActivityInterface.getBeatBuddy().beatBuddyVolHPUp();
+    }
+    public void beatBuddyVolHPDown() {
+        mainActivityInterface.getBeatBuddy().beatBuddyVolHPDown();
     }
     public void midiAction(int which) {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));

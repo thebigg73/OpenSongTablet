@@ -112,7 +112,7 @@ public class SetMenuFragment extends Fragment {
                 final int position = viewHolder.getAbsoluteAdapterPosition();
                 final SetItemInfo item = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
 
-                setAdapter.removeItem(position);
+                setAdapter.removeItem(position, true);
 
                 Snackbar snackbar = Snackbar.make(myView.coordinatorLayout, set_item_removed_string, Snackbar.LENGTH_LONG);
                 snackbar.setAction(undo_string, view -> {
@@ -259,8 +259,11 @@ public class SetMenuFragment extends Fragment {
         }
     }
     public void notifyItemRemoved(int position) {
+        Log.d(TAG,"setAdapter:"+setAdapter);
+        Log.d(TAG,"currentSetSize():"+mainActivityInterface.getCurrentSet().getCurrentSetSize());
+        Log.d(TAG,"position:"+position);
         if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>position) {
-            mainActivityInterface.getMainHandler().post(() -> setAdapter.removeItem(position));
+            mainActivityInterface.getMainHandler().post(() -> setAdapter.removeItem(position,false));
         }
     }
 

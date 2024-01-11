@@ -2091,6 +2091,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (setMenuFragment!=null) {
             switch (what) {
                 case "setItemRemoved":
+                    Log.d(TAG,"about to remove item at a position");
                     setMenuFragment.notifyItemRemoved(position);
                     break;
                 case "setItemInserted":
@@ -2143,7 +2144,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void notifyInlineSetRemoved(int position) {
+        Log.d(TAG,"notifyInlineSetRemoved:"+position);
         if (performanceValid()) {
+            Log.d(TAG,"send to performanceFragment");
             performanceFragment.notifyInlineSetRemoved(position);
         } else if (presenterValid()) {
             presenterFragment.notifyInlineSetRemoved(position);
@@ -2207,6 +2210,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             performanceFragment.notifyInlineSetScrollToItem();
         } else if (presenterValid()) {
             presenterFragment.notifyInlineSetScrollToItem();
+        }
+    }
+
+    @Override
+    public int getSongWidth() {
+        if (performanceValid()) {
+            return performanceFragment.getSongWidth();
+        } else {
+            return 0;
         }
     }
 

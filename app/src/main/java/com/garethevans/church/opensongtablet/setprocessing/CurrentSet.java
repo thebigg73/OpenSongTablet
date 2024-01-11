@@ -63,7 +63,7 @@ public class CurrentSet {
     }
 
     public SetItemInfo getSetItemInfo(int position) {
-        if (getCurrentSetSize() > position) {
+        if (getCurrentSetSize() > position && position!=-1) {
             return setItemInfos.get(position);
         } else {
             return new SetItemInfo();
@@ -252,7 +252,7 @@ public class CurrentSet {
             asteriskView.post(() -> asteriskView.setVisibility(finalChangedOrEmpty.isEmpty() ? View.GONE : View.VISIBLE));
 
             // Deal with the title
-            String title = "";
+            String title;
             // Adjust for set category
             title = mainActivityInterface.getSetActions().getNiceSetNameFromFile(setCurrentLastName);
             Log.d(TAG,"title:"+title);

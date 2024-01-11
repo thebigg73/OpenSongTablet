@@ -40,7 +40,7 @@ public class InlineSetList extends RecyclerView {
     private MainActivityInterface mainActivityInterface;
     private final LinearLayoutManager llm;
     private float textSize = 12;
-    private boolean useTitle = true;
+    private boolean useTitle = true, reloadSong = false;
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
 
     public InlineSetList(@NonNull Context context) {
@@ -154,7 +154,34 @@ public class InlineSetList extends RecyclerView {
 
     // Check if the inline set is required (Visible) or not (Gone)
     public void checkVisibility() {
-        boolean reloadSong = false;
+        // Check if a reload is required
+        // Do this check after a delay (allow the view to be drawn)
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            checkReload();
+            // Load the song if the song view is wider or narrower than it should be
+            int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
+            int songWidth = mainActivityInterface.getSongWidth();
+
+            boolean wrongSize = songWidth!=0 && screenWidth-songWidth-width!=0;
+
+            Log.d(TAG,"size mismatch:"+wrongSize);
+            if (reloadSong && wrongSize) {
+                if (mainActivityInterface.getCurrentSet().getIndexSongInSet() == -1) {
+                    // Load the song
+                    mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
+                            mainActivityInterface.getSong().getFilename(), false);
+                } else {
+                    // Load from the set
+                    mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                }
+            }
+            reloadSong = false;
+        },0);
+    }
+
+    // Will reload be required?
+    public void checkReload() {
+        reloadSong = false;
         if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0 && needInline()) {
             if (getVisibility() == View.GONE) {
                 // This will require a reload of the song to resize it
@@ -172,19 +199,6 @@ public class InlineSetList extends RecyclerView {
                 // This will require a reload of the song to resize it
                 reloadSong = true;
                 mainActivityInterface.getMainHandler().post(() -> setVisibility(View.GONE));
-            }
-        }
-        if (reloadSong) {
-            Log.d(TAG,"reload song");
-            if (mainActivityInterface.getCurrentSet().getIndexSongInSet()==-1 || mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()<1) {
-                // Load the song
-                mainActivityInterface.getMainHandler().postDelayed(() ->
-                mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                        mainActivityInterface.getSong().getFilename(),false),800);
-            } else {
-                // Load from the set
-                mainActivityInterface.getMainHandler().postDelayed(() ->
-                        mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet()),800);
             }
         }
     }

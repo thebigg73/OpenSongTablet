@@ -150,14 +150,9 @@ public class SetManageFragment extends Fragment {
     private void checkForImporting() {
         if (mainActivityInterface.getWhattodo().equals("importset")) {
             // If the imported set has a category, get it
-            setName = mainActivityInterface.getImportFilename();
-            if (setName.contains(mainActivityInterface.getSetActions().getSetCategorySeparator())) {
-                String[] bits = setName.split(mainActivityInterface.getSetActions().getSetCategorySeparator());
-                setCategory = bits[0];
-                setName = bits[bits.length-1];
-            } else {
-                setCategory = mainActivityInterface.getMainfoldername();
-            }
+            String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(mainActivityInterface.getImportFilename());
+            setName = bits[0];
+            setCategory = bits[1];
             whattodo = "importset";
         }
     }
@@ -180,14 +175,10 @@ public class SetManageFragment extends Fragment {
             setCategory = mainActivityInterface.getMainfoldername();
         }
         if (setName==null || setName.isEmpty()) {
-            setName = mainActivityInterface.getCurrentSet().getSetCurrentLastName();
-            if (setName.contains("__")) {
-                String[] bits = setName.split("__");
-                if (bits.length > 0) {
-                    setCategory = bits[0];
-                    setName = bits[1];
-                }
-            }
+            String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(mainActivityInterface.getCurrentSet().getSetCurrentLastName());
+            setName = bits[0];
+            setCategory = bits[1];
+
         }
 
         if (setName.equals(set_current_string)) {
@@ -682,14 +673,9 @@ public class SetManageFragment extends Fragment {
 
             if (whattodo.equals("saveset") || whattodo.equals("importset") || whattodo.equals("renameset")) {
                 // We need to update the set name in the edit text
-                setName = selectedItem;
-                if (selectedItem.contains(mainActivityInterface.getSetActions().getSetCategorySeparator())) {
-                    String[] bits = selectedItem.split(mainActivityInterface.getSetActions().getSetCategorySeparator());
-                    setCategory = bits[0];
-                    setName = bits[bits.length-1];
-                } else {
-                    setCategory = mainActivityInterface.getMainfoldername();
-                }
+                String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(selectedItem);
+                setName = bits[0];
+                setCategory = bits[1];
             }
 
             // If the return value has __ make it look nicer

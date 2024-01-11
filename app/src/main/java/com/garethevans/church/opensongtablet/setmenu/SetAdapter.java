@@ -277,9 +277,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
 
     // This method is called when an item is swiped away or unticked in the song menu.
-    public void removeItem(int fromPosition) {
-        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition &&
-                mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition) {
+    public void removeItem(int fromPosition,boolean updateMenu) {
+        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition) {
 
             // Remove the item from the current set and save the set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
@@ -298,10 +297,12 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             });
 
             // Remove the check mark for this song in the song menu
-            mainActivityInterface.updateCheckForThisSong(
+            if (updateMenu) {
+                mainActivityInterface.updateCheckForThisSong(
                         mainActivityInterface.getSQLiteHelper().getSpecificSong(
                                 mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfolder,
                                 mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfilename));
+            }
 
             // Update the title
             mainActivityInterface.getCurrentSet().updateSetTitleView();

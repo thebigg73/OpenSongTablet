@@ -147,6 +147,7 @@ public interface MainActivityInterface {
     void notifyInlineSetHighlight();
     void notifySetFragment(String what, int position);
     void notifyInlineSetScrollToItem();
+    int getSongWidth();
 
 
     // Menus

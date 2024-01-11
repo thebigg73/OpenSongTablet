@@ -245,6 +245,15 @@ public class SetActions {
         return itemStart + folder + "/" + filename + keyStart + key + keyEnd + itemEnd;
     }
 
+    public int indexSongInSet(String folderNamePair) {
+        for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItemInfos().size(); x++) {
+            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
+            if ((setItemInfo.songfolder + "/" + setItemInfo.songfilename).equals(folderNamePair)) {
+                return x;
+            }
+        }
+        return -1;
+    }
     public int indexSongInSet(Song thisSong) {
         // Because set items can be stored with or without a specified key, we search for both
         String searchText = getSongForSetWork(thisSong);
@@ -1492,5 +1501,18 @@ public class SetActions {
         } else {
             return filename;
         }
+    }
+
+    public String[] getSetCategoryAndName(String setFilename) {
+        String[] returnBits = new String[2];
+        if (!setFilename.contains(setCategorySeparator)) {
+            returnBits[0] = mainActivityInterface.getMainfoldername();
+            returnBits[1] = setFilename;
+        } else {
+            String[] bits = setFilename.split(mainActivityInterface.getSetActions().getSetCategorySeparator());
+            returnBits[0] = bits[0];
+            returnBits[1] = bits[bits.length-1];
+        }
+        return returnBits;
     }
 }
