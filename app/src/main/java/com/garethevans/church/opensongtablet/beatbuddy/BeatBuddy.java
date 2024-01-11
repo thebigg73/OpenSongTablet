@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.beatbuddy;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -16,7 +17,11 @@ public class BeatBuddy {
     final private String TAG = "BeatBuddy";
 
     // Control options are:
-    private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyHPVolume = 100, beatBuddyDrumKit = 1;
+    private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyHPVolume = 100,
+            beatBuddyDrumKit = 1, incrementalVol = -1, incrementalHPVol = -1;
+    private final int volumeIncrement = 5;
+
+    // Prebuilt commands
     private byte[] commandStart, commandStop, commandAccent, commandFill, commandTransition1,
             commandTransition2, commandTransition3, commandTransitionNext, commandTransitionPrev,
             commandTransitionExit, commandExclusiveTransition1, commandExclusiveTransition2,
@@ -297,6 +302,66 @@ public class BeatBuddy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mainActivityInterface.getMidi().sendMidi(commandDoubleTimeExit);
         }
+    }
+    public void beatBuddyVolUp() {
+        if (incrementalVol == -1) {
+            // Not been set yet, so start at 5%
+            incrementalVol = volumeIncrement;
+        } else {
+            incrementalVol = incrementalVol + volumeIncrement;
+        }
+        // Check we don't exceed 100%
+        if (incrementalVol > 100) {
+            incrementalVol = 100;
+        }
+        Log.d(TAG,"vol set to:"+incrementalVol);
+        // Send the MIDI code
+        mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Mix_vol,incrementalVol);
+    }
+    public void beatBuddyVolDown() {
+        if (incrementalVol == -1) {
+            // Not been set yet, so start at 95%
+            incrementalVol = 100-volumeIncrement;
+        } else {
+            incrementalVol = incrementalVol - volumeIncrement;
+        }
+        // Check we don't drop below 0%
+        if (incrementalVol < 0) {
+            incrementalVol = 0;
+        }
+        Log.d(TAG,"vol set to:"+incrementalVol);
+        // Send the MIDI code
+        mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Mix_vol,incrementalVol);
+    }
+    public void beatBuddyVolHPUp() {
+        if (incrementalHPVol == -1) {
+            // Not been set yet, so start at 5%
+            incrementalHPVol = volumeIncrement;
+        } else {
+            incrementalHPVol = incrementalHPVol + volumeIncrement;
+        }
+        // Check we don't exceed 100%
+        if (incrementalHPVol > 100) {
+            incrementalHPVol = 100;
+        }
+        Log.d(TAG,"hpvol set to:"+incrementalHPVol);
+        // Send the MIDI code
+        mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_HP_vol,incrementalHPVol);
+    }
+    public void beatBuddyVolHPDown() {
+        if (incrementalHPVol == -1) {
+            // Not been set yet, so start at 95%
+            incrementalHPVol = 100-volumeIncrement;
+        } else {
+            incrementalHPVol = incrementalHPVol - volumeIncrement;
+        }
+        // Check we don't drop below 0%
+        if (incrementalHPVol < 0) {
+            incrementalHPVol = 0;
+        }
+        Log.d(TAG,"hpvol set to:"+incrementalHPVol);
+        // Send the MIDI code
+        mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_HP_vol,incrementalHPVol);
     }
 
 

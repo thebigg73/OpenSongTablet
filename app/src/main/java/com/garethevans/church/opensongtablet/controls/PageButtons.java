@@ -292,6 +292,10 @@ public class PageButtons {
         prepareOption("beatbuddyxtransprev",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.exclusive)+" "+c.getString(R.string.transition)+" "+c.getString(R.string.previous),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_transprev);
         prepareOption("beatbuddyhalf",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_halftime);
         prepareOption("beatbuddydouble",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time),c.getString(R.string.start),c.getString(R.string.exit),R.drawable.beatbuddy_doubletime);
+        prepareOption("beatbuddyvolup",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume) + " +",c.getString(R.string.select),"",R.drawable.beatbuddy_volhp_up);
+        prepareOption("beatbuddyvoldown",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume) + " -",c.getString(R.string.select),"",R.drawable.beatbuddy_vol_down);
+        prepareOption("beatbuddyvolhpup",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume_headphone) + " +",c.getString(R.string.select),"",R.drawable.beatbuddy_volhp_up);
+        prepareOption("beatbuddyvolhpdown",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume_headphone) + " -",c.getString(R.string.select),"",R.drawable.beatbuddy_volhp_down);
         prepareOption("midiaction1",c.getString(R.string.midi_action)+" "+1,c.getString(R.string.select),"",R.drawable.midi1);
         prepareOption("midiaction2",c.getString(R.string.midi_action)+" "+2,c.getString(R.string.select),"",R.drawable.midi2);
         prepareOption("midiaction3",c.getString(R.string.midi_action)+" "+3,c.getString(R.string.select),"",R.drawable.midi3);

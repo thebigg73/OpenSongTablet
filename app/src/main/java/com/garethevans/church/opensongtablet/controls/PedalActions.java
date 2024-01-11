@@ -214,6 +214,10 @@ public class PedalActions {
         addString("beatbuddyhalfexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.half_time)+" "+c.getString(R.string.exit));
         addString("beatbuddydouble",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time));
         addString("beatbuddydoubleexit",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.double_time)+" "+c.getString(R.string.exit));
+        addString("beatbuddyvolup",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume) + " +");
+        addString("beatbuddyvoldown",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume) + " -");
+        addString("beatbuddyvolhpup",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume_headphone) + " +");
+        addString("beatbuddyvolhpdown",c.getString(R.string.beat_buddy)+ " " + c.getString(R.string.volume_headphone) + " -");
         addString("midiaction1",c.getString(R.string.midi_action)+" "+1);
         addString("midiaction2",c.getString(R.string.midi_action)+" "+2);
         addString("midiaction3",c.getString(R.string.midi_action)+" "+3);
