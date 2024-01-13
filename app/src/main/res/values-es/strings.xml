@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Si una canción se muestra en varias columnas (por ejemplo, cuando se gira a la posición horizontal), esto permite que cada columna se amplíe para llenar la parte de la pantalla que se le asigna.</string>
     <string name="media">Medios de comunicación</string>
     <string name="media_selected">Cargados de medios</string>
-    <string name="menu_showcase_info">Abra el menú para ver y administrar sus canciones y conjuntos</string>
     <string name="menu_set_info">Use este botón para ver y administrar sus conjuntos</string>
     <string name="menu_settings">"Configuración del menú"</string>
     <string name="menu_settings_description">Cambiar la configuración de la canción/menú fijo</string>
+    <string name="menu_showcase_info">Abra el menú para ver y administrar sus canciones y conjuntos</string>
     <string name="menu_song_info">Usa este botón para ver y administrar tus canciones</string>
     <string name="menu_song_order">¿Cómo deben aparecer las canciones en el menú?</string>
     <string name="metronome">"Metrónomo"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Eliminar todas las canciones del conjunto actual</string>
     <string name="set_save_info">Guardar el conjunto actual para uso futuro</string>
     <string name="set_saved_not_current">Seleccione un conjunto guardado. Los conjuntos actuales deben guardarse antes de exportar.</string>
+    <string name="set_selected">Establecer artículo / artículos seleccionados</string>
     <string name="set_share_info">Compartir o exportar un conjunto con otros</string>
     <string name="set_shuffle">Conjunto aleatorio</string>
     <string name="set_shuffle_info">Conjunto aleatorio</string>

@@ -151,8 +151,8 @@ public class SetManageFragment extends Fragment {
         if (mainActivityInterface.getWhattodo().equals("importset")) {
             // If the imported set has a category, get it
             String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(mainActivityInterface.getImportFilename());
-            setName = bits[0];
-            setCategory = bits[1];
+            setCategory = bits[0];
+            setName = bits[1];
             whattodo = "importset";
         }
     }
@@ -176,8 +176,8 @@ public class SetManageFragment extends Fragment {
         }
         if (setName==null || setName.isEmpty()) {
             String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(mainActivityInterface.getCurrentSet().getSetCurrentLastName());
-            setName = bits[0];
-            setCategory = bits[1];
+            setName = bits[1];
+            setCategory = bits[0];
 
         }
 
@@ -447,7 +447,6 @@ public class SetManageFragment extends Fragment {
 
                 // Copy the file
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
-                    Log.d(TAG,"copy successfull");
                     // Now load the set as well
                     mainActivityInterface.getMainHandler().post(this::loadSet);
                 }
@@ -631,15 +630,12 @@ public class SetManageFragment extends Fragment {
                 setUris.add(newSetUri);
             } else {
                 for (String checkedItem : setManageAdapter.getCheckedItems()) {
-                    Log.d(TAG,"checkedItem:"+checkedItem);
                     checkedItem = getFilenameFromIdentifier(checkedItem);
                     newSetFilename = checkedItem;
-                    Log.d(TAG,"checkedItem:"+checkedItem);
                     setUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", checkedItem));
                 }
             }
 
-            Log.d(TAG,"setUris.size():"+setUris.size());
             // Use the set name as long as there is only one set chosen
             String newSetTitle = "";
             if (setUris.size()==1) {
@@ -674,8 +670,8 @@ public class SetManageFragment extends Fragment {
             if (whattodo.equals("saveset") || whattodo.equals("importset") || whattodo.equals("renameset")) {
                 // We need to update the set name in the edit text
                 String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(selectedItem);
-                setName = bits[0];
-                setCategory = bits[1];
+                setName = bits[1];
+                setCategory = bits[0];
             }
 
             // If the return value has __ make it look nicer
@@ -698,7 +694,6 @@ public class SetManageFragment extends Fragment {
         String finalWhat = what;
         mainActivityInterface.getMainHandler().post(() -> {
             myView.setName.setText(setName);
-            myView.setCategory.setText(setCategory);
             if (whattodo.equals("loadset") || whattodo.equals("renameset")) {
                 myView.setItemSelected.setHint(finalWhat);
             }

@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Jeśli piosenka jest wyświetlany w wielu kolumnach (np. gdy urządzenie jest ustawione poziomo), umożliwia to powiększenie każdej kolumny w celu wypełnienia przydzielonej części ekranu.</string>
     <string name="media">Multimedia</string>
     <string name="media_selected">Załadowane multimedia</string>
-    <string name="menu_showcase_info">Otwórz menu, aby przeglądać i zarządzać utworami i setami</string>
     <string name="menu_set_info">Użyj tego przycisku, aby przeglądać i zarządzać swoimi zestawami</string>
     <string name="menu_settings">Ustawienia menu</string>
     <string name="menu_settings_description">Zmień ustawienia dla menu piosenki/zestawu</string>
+    <string name="menu_showcase_info">Otwórz menu, aby przeglądać i zarządzać utworami i setami</string>
     <string name="menu_song_info">Użyj tego przycisku, aby wyświetlać i zarządzać swoimi piosenkami</string>
     <string name="menu_song_order">Jak piosenki powinny być ułożone w menu?</string>
     <string name="metronome">Metronom</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Usuń wszystkie piosenki z bieżącego zestawu</string>
     <string name="set_save_info">Zapisz bieżący zestaw do wykorzystania w przyszłości</string>
     <string name="set_saved_not_current">Wybierz zapisany zestaw. Aktualny zestaw należy zapisać przed eksportem.</string>
+    <string name="set_selected">Zestaw elementów wybranych</string>
     <string name="set_share_info">Udostępnij lub wyeksportuj zestaw</string>
     <string name="set_shuffle">Przemieszaj zestaw</string>
     <string name="set_shuffle_info">Losuj kolejność piosenek w zestawie</string>

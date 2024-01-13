@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,6 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
             foundSets = new ArrayList<>();
 
             for (String setToUse : setsToUse) {
-                Log.d(TAG, "setToUse:" + setToUse);
                 FoundSet foundSet = new FoundSet();
 
                 // Add the filename as it is
@@ -141,7 +139,6 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
                 // Only one item allowed in the other modes
                 checkedItems.clear();
                 checkedItems.add(foundSets.get(finalPosition).getIdentifier());
-                Log.d(TAG,"foundSets.get("+finalPosition+").getIdentifier():"+foundSets.get(finalPosition).getIdentifier());
             }
             mainActivityInterface.updateFragment("setSelectedSetItem",setManageFragment,checkedItems);
         });
@@ -158,7 +155,6 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
     }
 
     public void changeSortOrder() {
-        Log.d(TAG,"changeSortOrder()");
         // Now do the sorting based on the user preference
         String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
         switch (setsSortOrder) {

@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Si une chanson est affichée dans plusieurs colonnes (par exemple lorsqu\'elle est tournée en paysage), cela permet à chaque colonne de zoomer pour remplir la partie de l\'écran qui lui est attribuée.</string>
     <string name="media">Médias</string>
     <string name="media_selected">Médias chargés</string>
-    <string name="menu_showcase_info">Ouvrez le menu pour afficher et gérer vos morceaux et vos sets</string>
     <string name="menu_set_info">Utilisez ce bouton pour afficher et gérer vos ensembles</string>
     <string name="menu_settings">"Paramètres du menu"</string>
     <string name="menu_settings_description">Modifier les paramètres du menu morceau/set</string>
+    <string name="menu_showcase_info">Ouvrez le menu pour afficher et gérer vos morceaux et vos sets</string>
     <string name="menu_song_info">Utilisez ce bouton pour afficher et gérer vos chansons</string>
     <string name="menu_song_order">Comment les chansons doivent-elles être répertoriées dans le menu ?</string>
     <string name="metronome">"Métronome"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Supprimer toutes les chansons de l\'ensemble actuel</string>
     <string name="set_save_info">Enregistrer l\'ensemble actuel pour une utilisation future</string>
     <string name="set_saved_not_current">Sélectionnez un ensemble enregistré. Les ensembles actuels doivent être enregistrés avant l\'exportation.</string>
+    <string name="set_selected">Définir l’élément ou les éléments sélectionnés</string>
     <string name="set_share_info">Partager ou exporter un ensemble avec d\'autres</string>
     <string name="set_shuffle">Jeu aléatoire</string>
     <string name="set_shuffle_info">Aléatoire l\'ordre des chansons dans l\'ensemble</string>

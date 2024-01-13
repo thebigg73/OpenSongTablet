@@ -635,10 +635,10 @@
     <string name="maximise_columns_info">If a song is shown in multiple columns (e.g. when rotated to landscape), this allows each column to zoom to fill the portion of the screen it is allocated.</string>
     <string name="media">Media</string>
     <string name="media_selected">Media loaded</string>
-    <string name="menu_showcase_info">Open the menu to view and manage your songs and sets</string>
     <string name="menu_set_info">Use this button to view and manage your sets</string>
     <string name="menu_settings">Menu settings</string>
     <string name="menu_settings_description">Change settings for the song/set menu</string>
+    <string name="menu_showcase_info">Open the menu to view and manage your songs and sets</string>
     <string name="menu_song_info">Use this button view and manage your songs</string>
     <string name="menu_song_order">How should songs be listed in the menu?</string>
     <string name="metronome">Metronome</string>
@@ -911,6 +911,7 @@
     <string name="set_new_info">Remove all songs from the current set</string>
     <string name="set_save_info">Save the current set for future use</string>
     <string name="set_saved_not_current">Select a saved set.  Current sets should be saved before exporting.</string>
+    <string name="set_selected">Set item / items selected</string>
     <string name="set_share_info">Share or export a set with others</string>
     <string name="set_shuffle">Shuffle set</string>
     <string name="set_shuffle_info">Randomise the order of songs in the set</string>
@@ -1263,5 +1264,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="set_selected">Set item/items selected</string>
 </resources>

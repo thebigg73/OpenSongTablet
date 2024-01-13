@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Ako je pesma prikazana u više kolona (npr. kada je rotirana u pejzaž), to omogućava svakoj koloni da zumira kako bi ispunila deo ekrana koji joj je dodeljen.</string>
     <string name="media">Mediji</string>
     <string name="media_selected">Učitavanje medija</string>
-    <string name="menu_showcase_info">Otvaranje menija za prikazivanje i upravljanje pesmama i skupovima</string>
     <string name="menu_set_info">Koristite ovo dugme za pregled i upravljanje vašim setovima</string>
     <string name="menu_settings">Postavke menija</string>
     <string name="menu_settings_description">Promenite podešavanja za pesmu/set meni</string>
+    <string name="menu_showcase_info">Otvaranje menija za prikazivanje i upravljanje pesmama i skupovima</string>
     <string name="menu_song_info">Koristite ovo dugme za pregled i upravljanje svojim pesmama</string>
     <string name="menu_song_order">Kako pesme treba da budu navedene u meniju?</string>
     <string name="metronome">Metronom</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Ukloni sve pesme iz trenutnog skupa</string>
     <string name="set_save_info">Sačuvajte trenutni set za buduću upotrebu</string>
     <string name="set_saved_not_current">Izaberite sačuvani skup. Trenutne skupove treba sačuvati pre izvoza.</string>
+    <string name="set_selected">Postavi izabrane stavke / stavke</string>
     <string name="set_share_info">Delite ili izvezite skup sa drugima</string>
     <string name="set_shuffle">Shuffle set</string>
     <string name="set_shuffle_info">Nasumično podesite redosled pesama u setu</string>

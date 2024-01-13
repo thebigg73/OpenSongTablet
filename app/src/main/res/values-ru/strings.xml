@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Если песня отображается в нескольких столбцах (например, при повороте в альбомную ориентацию), эта настройка масштабирует каждый столбец, чтобы заполнить выделенную ему часть экрана.</string>
     <string name="media">Медиа</string>
     <string name="media_selected">Медиафайл загружен</string>
-    <string name="menu_showcase_info">Откройте меню для просмотра песен и сетов и управления ими</string>
     <string name="menu_set_info">Нажмите эту кнопку для просмотра и управления сетами</string>
     <string name="menu_settings">Настройка меню</string>
     <string name="menu_settings_description">Изменение настроек меню песни/сета</string>
+    <string name="menu_showcase_info">Откройте меню для просмотра песен и сетов и управления ими</string>
     <string name="menu_song_info">Нажмите эту кнопку для просмотра и управления своими песнями</string>
     <string name="menu_song_order">Как песни должны быть упорядочены в меню?</string>
     <string name="metronome">Метроном</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Удалить все песни из текущего сета</string>
     <string name="set_save_info">Сохранить текущий сет для последующего использования</string>
     <string name="set_saved_not_current">Выбрать и отобразить сохраненный сет. Текущие сеты должны быть сохранены, прежде чем их можно будет экспортировать</string>
+    <string name="set_selected">Набор элементов / выбранных элементов</string>
     <string name="set_share_info">Поделиться сетом с другими или экспортировать сет в файл</string>
     <string name="set_shuffle">Случайный порядок в сете</string>
     <string name="set_shuffle_info">Перемешать песни в сете</string>

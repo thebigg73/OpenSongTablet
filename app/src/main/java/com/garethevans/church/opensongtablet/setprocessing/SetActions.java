@@ -889,8 +889,6 @@ public class SetActions {
     }
 
     public void loadSets(ArrayList<Uri> setsToLoad, String setName) {
-        Log.d(TAG,"loadSets()");
-
         // This is called via a new thread in the manage sets fragment
         // We can append multiple sets together
         // If the set loaded has a song has a key specified with it, we compare with our key
@@ -909,7 +907,6 @@ public class SetActions {
 
         // Prepare the set name
         mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
-        Log.d(TAG,"setName:"+setName);
 
         // Now users can load multiple sets and merge them, we need to load each one it turn
         for (Uri setToLoad:setsToLoad) {

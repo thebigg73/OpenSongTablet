@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Se uma música for mostrada em várias colunas (por exemplo, quando girada para paisagem), isso permite que cada coluna aumente o zoom para preencher a parte da tela que está alocada.</string>
     <string name="media">Meios de comunicação</string>
     <string name="media_selected">Mídia carregada</string>
-    <string name="menu_showcase_info">Abra o menu para ver e gerir as suas músicas e conjuntos</string>
     <string name="menu_set_info">Use este botão para visualizar e gerenciar seus conjuntos</string>
     <string name="menu_settings">"Definições do menu"</string>
     <string name="menu_settings_description">Alterar as configurações do menu de músicas/conjuntos</string>
+    <string name="menu_showcase_info">Abra o menu para ver e gerir as suas músicas e conjuntos</string>
     <string name="menu_song_info">Use este botão para visualizar e gerenciar suas músicas</string>
     <string name="menu_song_order">Como as músicas devem ser listadas no menu?</string>
     <string name="metronome">"Metrónomo"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Remova todas as músicas do conjunto atual</string>
     <string name="set_save_info">Salve o conjunto atual para uso futuro</string>
     <string name="set_saved_not_current">Selecione um conjunto salvo. Os conjuntos atuais devem ser salvos antes da exportação.</string>
+    <string name="set_selected">Definir item / itens selecionados</string>
     <string name="set_share_info">Compartilhe ou exporte um conjunto com outras pessoas</string>
     <string name="set_shuffle">Conjunto aleatório</string>
     <string name="set_shuffle_info">Randomize a ordem das músicas no conjunto</string>

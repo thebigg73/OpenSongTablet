@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Om en låt visas i flera kolumner (t.ex. när den roteras till liggande), tillåter detta att varje kolumn zoomar för att fylla den del av skärmen som den är tilldelad.</string>
     <string name="media">Media</string>
     <string name="media_selected">"Media laddad"</string>
-    <string name="menu_showcase_info">Öppna menyn för att visa och hantera dina låtar och set</string>
     <string name="menu_set_info">Använd den här knappen för att visa och hantera dina uppsättningar</string>
     <string name="menu_settings">"Menyinställningar"</string>
     <string name="menu_settings_description">Ändra inställningar för låt/set-menyn</string>
+    <string name="menu_showcase_info">Öppna menyn för att visa och hantera dina låtar och set</string>
     <string name="menu_song_info">Använd den här knappen visa och hantera dina låtar</string>
     <string name="menu_song_order">Hur ska låtar listas i menyn?</string>
     <string name="metronome">"Metronom"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Ta bort alla låtar från den aktuella uppsättningen</string>
     <string name="set_save_info">Spara den aktuella uppsättningen för framtida bruk</string>
     <string name="set_saved_not_current">Välj en sparad uppsättning. Aktuella uppsättningar bör sparas innan export.</string>
+    <string name="set_selected">Ställ in post/valda objekt</string>
     <string name="set_share_info">Dela eller exportera en uppsättning med andra</string>
     <string name="set_shuffle">Blanda set</string>
     <string name="set_shuffle_info">Slumpmässig ordning på låtarna i uppsättningen</string>

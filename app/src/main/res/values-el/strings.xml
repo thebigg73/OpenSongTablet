@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Εάν ένα τραγούδι εμφανίζεται σε πολλές στήλες (π.χ. όταν περιστρέφεται σε οριζόντιο προσανατολισμό), αυτό επιτρέπει σε κάθε στήλη να μεγεθύνει για να γεμίσει το τμήμα της οθόνης που της έχει εκχωρηθεί.</string>
     <string name="media">Μεσο ΜΑΖΙΚΗΣ ΕΝΗΜΕΡΩΣΗΣ</string>
     <string name="media_selected">"Media loaded"</string>
-    <string name="menu_showcase_info">Ανοίξτε το μενού για να προβάλετε και να διαχειριστείτε τα τραγούδια και τα σύνολα σας</string>
     <string name="menu_set_info">Χρησιμοποιήστε αυτό το κουμπί για να δείτε και να διαχειριστείτε τα σύνολά σας</string>
     <string name="menu_settings">"Ρυθμίσεις μενού"</string>
     <string name="menu_settings_description">Αλλάξτε τις ρυθμίσεις για το μενού τραγουδιών/σετ</string>
+    <string name="menu_showcase_info">Ανοίξτε το μενού για να προβάλετε και να διαχειριστείτε τα τραγούδια και τα σύνολα σας</string>
     <string name="menu_song_info">Χρησιμοποιήστε αυτό το κουμπί προβολή και διαχείριση των τραγουδιών σας</string>
     <string name="menu_song_order">Πώς πρέπει να εμφανίζονται τα τραγούδια στο μενού;</string>
     <string name="metronome">"Metronome"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Καταργήστε όλα τα τραγούδια από το τρέχον σετ</string>
     <string name="set_save_info">Αποθηκεύστε το τρέχον σύνολο για μελλοντική χρήση</string>
     <string name="set_saved_not_current">Επιλέξτε ένα αποθηκευμένο σύνολο. Τα τρέχοντα σύνολα θα πρέπει να αποθηκευτούν πριν από την εξαγωγή.</string>
+    <string name="set_selected">Ορισμός επιλεγμένου στοιχείου / στοιχείων</string>
     <string name="set_share_info">Μοιραστείτε ή εξάγετε ένα σύνολο με άλλους</string>
     <string name="set_shuffle">Σετ ανακάτεμα</string>
     <string name="set_shuffle_info">Τυχαιοποιήστε τη σειρά των τραγουδιών στο σετ</string>

@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">As \'n liedjie in veelvuldige kolomme gewys word (bv. wanneer dit na landskap gedraai word), laat dit elke kolom toe om in te zoem om die gedeelte van die skerm wat dit toegeken is, te vul.</string>
     <string name="media">Media</string>
     <string name="media_selected">Media gelaai</string>
-    <string name="menu_showcase_info">Maak die spyskaart oop om u liedjies en stelle te sien en te bestuur</string>
     <string name="menu_set_info">Gebruik hierdie knoppie om jou stelle te bekyk en te bestuur</string>
     <string name="menu_settings">"Kieslys instellings"</string>
     <string name="menu_settings_description">Verander instellings vir die liedjie/stel-kieslys</string>
+    <string name="menu_showcase_info">Maak die spyskaart oop om u liedjies en stelle te sien en te bestuur</string>
     <string name="menu_song_info">Gebruik hierdie knoppie sien en bestuur jou liedjies</string>
     <string name="menu_song_order">Hoe moet liedjies in die spyskaart gelys word?</string>
     <string name="metronome">"Metronoom"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Verwyder alle liedjies uit die huidige stel</string>
     <string name="set_save_info">Stoor die huidige stel vir toekomstige gebruik</string>
     <string name="set_saved_not_current">Kies \'n gestoorde stel. Huidige stelle moet gestoor word voor uitvoer.</string>
+    <string name="set_selected">Stel item / items gekies</string>
     <string name="set_share_info">Deel of voer \'n stel met ander uit</string>
     <string name="set_shuffle">Skommelstel</string>
     <string name="set_shuffle_info">Maak die volgorde van liedjies in die stel ewekansig</string>

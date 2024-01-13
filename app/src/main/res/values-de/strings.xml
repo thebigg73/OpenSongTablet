@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Wenn ein Lied in mehreren Spalten angezeigt wird (z. B. wenn es ins Querformat gedreht wird), ermöglicht dies, dass jede Spalte gezoomt wird, um den Teil des Bildschirms auszufüllen, der ihr zugewiesen ist.</string>
     <string name="media">Medien</string>
     <string name="media_selected">Medien geladen</string>
-    <string name="menu_showcase_info">Öffne das Menü, um deine Songs und Sets anzuzeigen und zu verwalten</string>
     <string name="menu_set_info">Verwenden Sie diese Schaltfläche, um Ihre Sets anzuzeigen und zu verwalten</string>
     <string name="menu_settings">"Menüeinstellungen"</string>
     <string name="menu_settings_description">Ändern Sie die Einstellungen für das Song-/Set-Menü</string>
+    <string name="menu_showcase_info">Öffne das Menü, um deine Songs und Sets anzuzeigen und zu verwalten</string>
     <string name="menu_song_info">Verwenden Sie diese Schaltflächenansicht und verwalten Sie Ihre Songs</string>
     <string name="menu_song_order">Wie sollten Songs im Menü aufgelistet werden?</string>
     <string name="metronome">"Metronom"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Entfernen Sie alle Songs aus dem aktuellen Set</string>
     <string name="set_save_info">Speichern Sie den aktuellen Satz für die zukünftige Verwendung</string>
     <string name="set_saved_not_current">Wählen Sie einen gespeicherten Satz aus. Aktuelle Sätze sollten vor dem Export gespeichert werden.</string>
+    <string name="set_selected">Set-Element / ausgewählte Elemente</string>
     <string name="set_share_info">Teilen oder exportieren Sie ein Set mit anderen</string>
     <string name="set_shuffle">Shuffle-Set</string>
     <string name="set_shuffle_info">Randomisieren Sie die Reihenfolge der Songs im Set</string>

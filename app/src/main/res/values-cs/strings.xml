@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Pokud je skladba zobrazena ve více sloupcích (např. při otočení na šířku), umožňuje to každému sloupci přiblížit tak, aby vyplnil část obrazovky, které je přidělen.</string>
     <string name="media">Média</string>
     <string name="media_selected">Media naloženo</string>
-    <string name="menu_showcase_info">Otevřete nabídku view a spravujte své skladby a sady</string>
     <string name="menu_set_info">Pomocí tohoto tlačítka můžete zobrazit a spravovat své sady</string>
     <string name="menu_settings">"Nastavení nabídky"</string>
     <string name="menu_settings_description">Změňte nastavení pro nabídku skladby/nastavení</string>
+    <string name="menu_showcase_info">Otevřete nabídku view a spravujte své skladby a sady</string>
     <string name="menu_song_info">Použijte toto tlačítko pro zobrazení a správu skladeb</string>
     <string name="menu_song_order">Jak by měly být skladby uvedeny v nabídce?</string>
     <string name="metronome">"Metronom"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Odebrat všechny skladby z aktuální sady</string>
     <string name="set_save_info">Uložte aktuální sadu pro budoucí použití</string>
     <string name="set_saved_not_current">Vyberte uloženou sadu. Aktuální sady by měly být před exportem uloženy.</string>
+    <string name="set_selected">Nastavit vybranou položku / položky</string>
     <string name="set_share_info">Sdílejte nebo exportujte sadu s ostatními</string>
     <string name="set_shuffle">Náhodná sada</string>
     <string name="set_shuffle_info">Náhodné pořadí skladeb v sadě</string>

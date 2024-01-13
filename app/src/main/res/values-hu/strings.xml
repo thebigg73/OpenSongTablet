@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Ha egy dal több oszlopban jelenik meg (például fekvő helyzetbe forgatva), ez lehetővé teszi az egyes oszlopok nagyítását, hogy kitöltsék a képernyő rájuk eső részét.</string>
     <string name="media">Média</string>
     <string name="media_selected">Media betöltött</string>
-    <string name="menu_showcase_info">Nyissa meg a menüt a dalok és készletek megtekintéséhez és kezeléséhez</string>
     <string name="menu_set_info">Ezzel a gombbal megtekintheti és kezelheti készleteit</string>
     <string name="menu_settings">"A menü beállításai"</string>
     <string name="menu_settings_description">Módosítsa a dal/készlet menü beállításait</string>
+    <string name="menu_showcase_info">Nyissa meg a menüt a dalok és készletek megtekintéséhez és kezeléséhez</string>
     <string name="menu_song_info">Ezzel a gombbal megtekintheti és kezelheti dalait</string>
     <string name="menu_song_order">Hogyan kell a dalokat felsorolni a menüben?</string>
     <string name="metronome">"Metronóm"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Az összes dal eltávolítása az aktuális készletből</string>
     <string name="set_save_info">Mentse el az aktuális készletet későbbi használatra</string>
     <string name="set_saved_not_current">Válasszon ki egy mentett készletet. Az aktuális készleteket exportálás előtt el kell menteni.</string>
+    <string name="set_selected">Kiválasztott elem/elemek beállítása</string>
     <string name="set_share_info">Ossza meg vagy exportálja a készletet másokkal</string>
     <string name="set_shuffle">Shuffle készlet</string>
     <string name="set_shuffle_info">Véletlenszerűsítse a dalok sorrendjét a készletben</string>

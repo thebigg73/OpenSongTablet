@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Se un brano viene mostrato in più colonne (ad esempio quando viene ruotato in orizzontale), ciò consente a ciascuna colonna di eseguire lo zoom per riempire la parte dello schermo a cui è assegnata.</string>
     <string name="media">Media</string>
     <string name="media_selected">Media caricati</string>
-    <string name="menu_showcase_info">Apri il menu per visualizzare e gestire i tuoi brani e set</string>
     <string name="menu_set_info">Usa questo pulsante per visualizzare e gestire i tuoi set</string>
     <string name="menu_settings">"Impostazioni del menu"</string>
     <string name="menu_settings_description">Modifica le impostazioni per il menu del brano/set</string>
+    <string name="menu_showcase_info">Apri il menu per visualizzare e gestire i tuoi brani e set</string>
     <string name="menu_song_info">Usa questo pulsante per visualizzare e gestire le tue canzoni</string>
     <string name="menu_song_order">Come dovrebbero essere elencate le canzoni nel menu?</string>
     <string name="metronome">"Metronomo"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Rimuovi tutti i brani dal set corrente</string>
     <string name="set_save_info">Salva il set corrente per un uso futuro</string>
     <string name="set_saved_not_current">Seleziona un set salvato. I set correnti devono essere salvati prima dell\'esportazione.</string>
+    <string name="set_selected">Impostare l\'elemento o gli elementi selezionati</string>
     <string name="set_share_info">Condividi o esporta un set con altri</string>
     <string name="set_shuffle">Mescolare insieme</string>
     <string name="set_shuffle_info">Randomizza l\'ordine delle canzoni nel set</string>

@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">曲が複数の列に表示されている場合（たとえば、横向きに回転した場合）、これにより、各列をズームして、割り当てられた画面の一部を埋めることができます。</string>
     <string name="media">メディア</string>
     <string name="media_selected">メディアがロードされました</string>
-    <string name="menu_showcase_info">メニューを開いて、曲とセットを表示および管理します</string>
     <string name="menu_set_info">このボタンを使用して、セットを表示および管理します</string>
     <string name="menu_settings">"メニュー設定"</string>
     <string name="menu_settings_description">ソング/セットメニューの設定を変更する</string>
+    <string name="menu_showcase_info">メニューを開いて、曲とセットを表示および管理します</string>
     <string name="menu_song_info">このボタンを使用して、曲を表示および管理します</string>
     <string name="menu_song_order">メニューに曲をどのように表示する必要がありますか？</string>
     <string name="metronome">"メトロノーム"</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">現在のセットからすべての曲を削除します</string>
     <string name="set_save_info">将来の使用のために現在のセットを保存します</string>
     <string name="set_saved_not_current">保存したセットを選択します。 エクスポートする前に、現在のセットを保存する必要があります。</string>
+    <string name="set_selected">設定項目/選択項目</string>
     <string name="set_share_info">セットを他の人と共有またはエクスポートする</string>
     <string name="set_shuffle">シャッフルセット</string>
     <string name="set_shuffle_info">セット内の曲の順序をランダム化する</string>

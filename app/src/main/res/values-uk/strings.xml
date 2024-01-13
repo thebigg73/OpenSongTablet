@@ -484,10 +484,10 @@
     <string name="maximise_columns_info">Якщо пісня відображається в кількох стовпцях (наприклад, при повороті в альбомну орієнтацію), це дає змогу кожному стовпцю збільшити масштаб, щоб заповнити виділену йому частину екрана.</string>
     <string name="media">Медіафайл</string>
     <string name="media_selected">Медіафайл завантажений</string>
-    <string name="menu_showcase_info">Відкрийте меню, щоб переглядати та керувати своїми піснями та сетами</string>
     <string name="menu_set_info">Використовуйте цю кнопку, щоб переглядати набори та керувати ними</string>
     <string name="menu_settings">Параметри меню</string>
     <string name="menu_settings_description">Змініть налаштування для пісні/меню налаштувань</string>
+    <string name="menu_showcase_info">Відкрийте меню, щоб переглядати та керувати своїми піснями та сетами</string>
     <string name="menu_song_info">Використовуйте цю кнопку для перегляду та керування своїми піснями</string>
     <string name="menu_song_order">Як пісні мають бути перераховані в меню?</string>
     <string name="metronome">Метроном</string>
@@ -742,6 +742,7 @@
     <string name="set_new_info">Видалити всі пісні з поточного набору</string>
     <string name="set_save_info">Збережіть поточний набір для подальшого використання</string>
     <string name="set_saved_not_current">Виберіть збережений набір. Поточні набори слід зберегти перед експортом.</string>
+    <string name="set_selected">Встановити вибраний елемент / елементи</string>
     <string name="set_share_info">Поділіться або експортуйте набір з іншими</string>
     <string name="set_shuffle">Набір для перемішування</string>
     <string name="set_shuffle_info">Визначте у випадковому порядку порядок пісень у наборі</string>

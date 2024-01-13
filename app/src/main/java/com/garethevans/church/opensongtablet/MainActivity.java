@@ -336,8 +336,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Attempt stuff using the threadPooleExecutor
         getThreadPoolExecutor().execute(() -> {
 
-            Log.d(TAG,"cores:"+threadPoolExecutor.getCorePoolSize());
-
             prepareStrings();
 
             mainLooper.post(() -> {
@@ -1120,12 +1118,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navigateToFragment(String deepLink, int id) {
         // Either sent a deeplink string, or a fragment id
-        Log.d(TAG,"lockDrawer");
         lockDrawer(true);
-        Log.d(TAG,"closeDrawer");
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         actionButtonWasExpanded = myView.actionFAB.getRotation() != 0;
-        Log.d(TAG,"hideActionButton");
         hideActionButton(true);
         // Stop the autoscroll if running
         if (autoscroll!=null) {
@@ -1147,14 +1142,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             runOnUiThread(() -> {
                 try {
-                    Log.d(TAG,"navController:"+navController);
                     if (navController==null) {
                         setupActionbar();
                         setupNavigation();
                     }
                     if (deepLink != null && navController!=null) {
-                        Log.d(TAG,"navigate to:"+Uri.parse(deepLink));
-
                         navController.navigate(Uri.parse(deepLink));
                     } else if (navController!=null) {
                         navController.navigate(id);
@@ -1224,7 +1216,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "set_updateKeys":
                 case "set_updateView":
                 case "set_updateItem":
-                    Log.d(TAG,"fragName:"+fragName);
                     // User has the set menu open and wants to do something
                     if (setMenuFragment != null) {
                         if (fragName.equals("set_updateView")) {
@@ -2091,7 +2082,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (setMenuFragment!=null) {
             switch (what) {
                 case "setItemRemoved":
-                    Log.d(TAG,"about to remove item at a position");
                     setMenuFragment.notifyItemRemoved(position);
                     break;
                 case "setItemInserted":
@@ -2144,9 +2134,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void notifyInlineSetRemoved(int position) {
-        Log.d(TAG,"notifyInlineSetRemoved:"+position);
         if (performanceValid()) {
-            Log.d(TAG,"send to performanceFragment");
             performanceFragment.notifyInlineSetRemoved(position);
         } else if (presenterValid()) {
             presenterFragment.notifyInlineSetRemoved(position);
@@ -2867,18 +2855,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "saveset":
-                    Log.d(TAG,"saveset");
                     // Overwriting the last loaded set with the current one via bottom sheet
                     // This is only called if we are editing a previously saved set
                     String xml = getSetActions().createSetXML();
                     String setString = getSetActions().getSetAsPreferenceString();
                     result = storageAccess.doStringWriteToFile("Sets", "", currentSet.getSetCurrentLastName(), xml);
-                    Log.d(TAG,"result:"+result);
                     if (result) {
                         // Update the last edited version (current set already has this)
                         currentSet.setSetCurrentBeforeEdits(setString);
-                        Log.d(TAG,"success:"+success);
-                        Log.d(TAG,"allowToast"+allowToast);
                     }
                     // Update the set title
                     currentSet.updateSetTitleView();
@@ -3795,10 +3779,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean("bootUpCompleted", bootUpCompleted);
-        outState.putBoolean("indexComplete", songListBuildIndex.getIndexComplete());
+        if (songListBuildIndex!=null) {
+            outState.putBoolean("indexComplete", songListBuildIndex.getIndexComplete());
+        } else {
+            outState.putBoolean("indexComplete",false);
+        }
 
         // If we were using nearby, keep a reference of known devices and a call to restart it
-        if (nearbyConnections.getUsingNearby() && nearbyConnections.hasValidConnections()) {
+        if (getNearbyConnections().getUsingNearby() && getNearbyConnections().hasValidConnections()) {
             // Note we were using
             outState.putBoolean("usingNearby", nearbyConnections.getUsingNearby());
             // Are we a host or client?
