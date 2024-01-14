@@ -73,15 +73,11 @@ public class CurrentSet {
 
     // The current set (a string of each item)
     public void loadCurrentSet() {
-        Log.d(TAG,"loadCurrentSet()");
         setCurrent = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent", "");
-        Log.d(TAG,"setCurrent:"+setCurrent);
         mainActivityInterface.updateSetList();
     }
 
     public void setSetCurrent(String setCurrent) {
-        Log.d(TAG,"setSetCurrent()");
-        Log.d(TAG,"setCurrent:"+setCurrent);
         // Keep a reference
         this.setCurrent = setCurrent;
 
@@ -255,7 +251,6 @@ public class CurrentSet {
             String title;
             // Adjust for set category
             title = mainActivityInterface.getSetActions().getNiceSetNameFromFile(setCurrentLastName);
-            Log.d(TAG,"title:"+title);
 
             String changed = changedOrEmpty;
             if (setCurrentLastName == null || setCurrentLastName.isEmpty()) {
@@ -265,7 +260,6 @@ public class CurrentSet {
             }
 
             String finalTitle = title;
-            Log.d(TAG,"finalTitle:"+finalTitle);
 
             setTitleView.post(() -> {
                 setTitleView.setText(finalTitle);

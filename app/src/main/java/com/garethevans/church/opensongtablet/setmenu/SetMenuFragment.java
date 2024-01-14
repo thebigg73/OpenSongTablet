@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -195,7 +194,6 @@ public class SetMenuFragment extends Fragment {
 
     // Scroll to the item in the set list menu
     public void scrollToItem() {
-        Log.d(TAG,"scrollToItem()");
         if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
             myView.myRecyclerView.postDelayed(() -> {
@@ -254,14 +252,8 @@ public class SetMenuFragment extends Fragment {
         if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
             mainActivityInterface.getMainHandler().post(() -> setAdapter.insertItem());
         }
-        for (SetItemInfo setItemInfo:mainActivityInterface.getCurrentSet().getSetItemInfos()) {
-            Log.d(TAG,"set now contains:"+setItemInfo.songfilename);
-        }
     }
     public void notifyItemRemoved(int position) {
-        Log.d(TAG,"setAdapter:"+setAdapter);
-        Log.d(TAG,"currentSetSize():"+mainActivityInterface.getCurrentSet().getCurrentSetSize());
-        Log.d(TAG,"position:"+position);
         if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>position) {
             mainActivityInterface.getMainHandler().post(() -> setAdapter.removeItem(position,false));
         }
@@ -277,7 +269,6 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateHighlight() {
-        Log.d(TAG,"updateHighlight() called");
         if (setAdapter!=null) {
             setAdapter.updateHighlight();
         }

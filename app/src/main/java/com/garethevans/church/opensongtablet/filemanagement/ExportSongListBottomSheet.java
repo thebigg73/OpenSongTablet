@@ -282,6 +282,9 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void preparePDFSections(Handler handler) {
+        // Set the exporting scale to be min of 0.75f
+        mainActivityInterface.getMakePDF().setExportingSongList(true);
+
         sectionViews = new ArrayList<>();
         sectionWidths = new ArrayList<>();
         sectionHeights = new ArrayList<>();
@@ -347,6 +350,9 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
             // to handle the generation of a print document
 
             processing(false);
+
+            // Set the exporting scale to be min of 0.75f
+            mainActivityInterface.getMakePDF().setExportingSongList(true);
 
             PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
             printerAdapter.updateSections(sectionViews, sectionWidths, sectionHeights,

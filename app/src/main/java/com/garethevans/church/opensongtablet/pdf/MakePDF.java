@@ -33,7 +33,7 @@ public class MakePDF {
     private Canvas pageCanvas;
     private final String TAG = "MakePDF";
     private PrintAttributes printAttributes;
-    private boolean isSetListPrinting = false;
+    private boolean isSetListPrinting = false, exportingSongList = false;
     private boolean showTotalPage = true;
     private String exportFilename;
     private final Context c;
@@ -82,6 +82,10 @@ public class MakePDF {
         //pdfDocument.finishPage(page);
         saveThePDF(uri);
         return uri;
+    }
+
+    public void setExportingSongList(boolean exportingSongList) {
+        this.exportingSongList = exportingSongList;
     }
 
     // This makes a single PDF based on one item
@@ -186,6 +190,9 @@ public class MakePDF {
         // To avoid text being too large, make sure the scaling doesn't exceed the maxScaling
         headerScaling = Math.min(headerScaling,maxScaling);
 
+        // Check for min scaling of 0.5
+        headerScaling = Math.max(headerScaling,0.5f);
+
         headerWidth = (int) ((float)headerWidth * headerScaling);
         headerHeight = (int) ((float)headerHeight * headerScaling);
 
@@ -245,11 +252,21 @@ public class MakePDF {
         // If it is bigger than maxScaling, it will look silly, so set this as max
         sectionScaling = Math.min(sectionScaling,maxScaling);
 
+        Log.d(TAG,"sectionScaling:"+sectionScaling);
+
         // Now check how this affects the height of the views
         // We only reduce the scaling if the section heights are too big
         if ((maxHeight*sectionScaling) > availableHeight) {
             sectionScaling = (float)availableHeight/(float)maxHeight;
         }
+
+        // Check for min scaling of 0.75f if exporting song list
+        Log.d(TAG,"exportingSongList:"+exportingSongList);
+        if (exportingSongList) {
+            sectionScaling = Math.max(sectionScaling, 0.75f);
+        }
+
+        Log.d(TAG,"sectionScaling:"+sectionScaling);
 
         // Now plan out how many pages we will need
         // We need to do this before being able to write the footer
@@ -262,6 +279,7 @@ public class MakePDF {
                 spaceStillAvailable = spaceStillAvailable - (int)(sectionHeight*sectionScaling);
             }
         }
+        exportingSongList = false;
     }
 
     // The footer creation with OpenSongApp credit and page numbering if required

@@ -332,7 +332,6 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void notifyToClearInlineSet(int from, int count) {
-        Log.d(TAG,"notifiyToClearInlineSet");
         if (myView!=null) {
             myView.inlineSetList.notifyToClearInlineSet(from,count);
         }
@@ -348,7 +347,6 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void notifyInlineSetInserted() {
-        Log.d(TAG,"notifyInlineSetInserted");
         if (myView!=null) {
             myView.inlineSetList.notifyInlineSetInserted();
         }
@@ -363,7 +361,6 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void notifyInlineSetRemoved(int position) {
-        Log.d(TAG,"notifyInlineSetRemoved("+position+")");
         if (myView!=null) {
             myView.inlineSetList.notifyInlineSetRemoved(position);
         }
@@ -408,7 +405,6 @@ public class PerformanceFragment extends Fragment {
 
     @SuppressWarnings("ConstantConditions")
     public void updateInlineSetSortTitles() {
-        Log.d(TAG,"updateInlineSetSortTitles()");
         if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
                 myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
@@ -430,7 +426,6 @@ public class PerformanceFragment extends Fragment {
         }
 
         try {
-            Log.d(TAG,"started doSongLoad()");
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
 
@@ -560,7 +555,6 @@ public class PerformanceFragment extends Fragment {
         }
     }
     private void prepareSongViews() {
-        Log.d(TAG,"started prepareSongViews()");
         if (myView!=null) {
             // This is called on the UI thread above via the handler from mainLooper()
             // Reset the song views
@@ -859,7 +853,9 @@ public class PerformanceFragment extends Fragment {
                     }
                 });
                 try {
-                    myView.testPaneHeader.addView(mainActivityInterface.getSongSheetTitleLayout());
+                    if (myView!=null) {
+                        myView.testPaneHeader.addView(mainActivityInterface.getSongSheetTitleLayout());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     setUpTestViewListener();
