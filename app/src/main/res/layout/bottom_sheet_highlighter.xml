@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="32dp"
+    app:behavior_peekHeight="24dp"
+    app:elevation="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:layout_insetEdge="bottom">
 

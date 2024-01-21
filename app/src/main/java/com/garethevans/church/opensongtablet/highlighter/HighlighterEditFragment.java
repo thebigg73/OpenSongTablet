@@ -241,7 +241,10 @@ public class HighlighterEditFragment extends Fragment {
         myView.bottomSheet.bottomSheetTab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                bottomSheetBehavior.setPeekHeight(myView.bottomSheet.bottomSheetTab.getMeasuredHeight());
+                Log.d(TAG,"density:"+mainActivityInterface.getDisplayDensity());
+                Log.d(TAG,"measuredHeight:"+myView.bottomSheet.bottomSheetTab.getMeasuredHeight());
+                //bottomSheetBehavior.setPeekHeight(myView.bottomSheet.bottomSheetTab.getMeasuredHeight()/2);
+                //bottomSheetBehavior.setPeekHeight((int)(mainActivityInterface.getDisplayDensity()*36));
                 myView.bottomSheet.bottomSheetTab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
