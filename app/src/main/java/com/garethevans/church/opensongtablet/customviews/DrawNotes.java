@@ -16,6 +16,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 
@@ -73,7 +74,7 @@ public class DrawNotes extends View {
 
     // For the image background (when annotating)
     private int canvasWidth, canvasHeight;
-
+    private HighlighterEditFragment highlighterEditFragment;
 
     public DrawNotes(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -84,6 +85,9 @@ public class DrawNotes extends View {
         initialiseCurrentObjs();
     }
 
+    public void setHighlighterEditFrag(HighlighterEditFragment highlighterEditFragment) {
+        this.highlighterEditFragment = highlighterEditFragment;
+    }
     private void initialiseArrays() {
         allPaths = new ArrayList<>();
         allPaints = new ArrayList<>();
@@ -201,6 +205,7 @@ public class DrawNotes extends View {
                 canvas.drawPath(thisPath, thisPaint);
             }
         }
+        updateUndoRedo();
     }
 
 
@@ -336,6 +341,7 @@ public class DrawNotes extends View {
             allPaints.remove(paintpos);
         }
         postInvalidate();
+        updateUndoRedo();
     }
     public void redo() {
         int pathpos = undoPaths.size()-1;
@@ -350,6 +356,7 @@ public class DrawNotes extends View {
             undoPaints.remove(paintpos);
         }
         postInvalidate();
+        updateUndoRedo();
     }
 
     public void delete() {
@@ -361,8 +368,8 @@ public class DrawNotes extends View {
         undoPaints.clear();
         existingHighlighterFile = null;
         postInvalidate();
+        updateUndoRedo();
     }
-
 
     // Existing highlighter notes to be loaded
     public void loadExistingHighlighter(MainActivityInterface mainActivityInterface, int w, int h) {
@@ -377,4 +384,10 @@ public class DrawNotes extends View {
         postInvalidate();
     }
 
+    private void updateUndoRedo() {
+        if (highlighterEditFragment!=null) {
+            highlighterEditFragment.checkUndos();
+            highlighterEditFragment.checkRedos();
+        }
+    }
 }

@@ -51,6 +51,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/edit"
-        app:srcCompat="@drawable/pencil"
+        app:srcCompat="@drawable/pen"
         app:useCompatPadding="true" />
 </RelativeLayout>

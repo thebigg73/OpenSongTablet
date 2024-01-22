@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,15 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
     private final ArrayList<String> checkedItems = new ArrayList<>();
     private final String whatView;
     private final SetManageFragment setManageFragment;
+    private String setChosen = "";
+    private int prevSelected = -1;
 
     SetManageAdapter(Context c, SetManageFragment setManageFragment, String whatView) {
         mainActivityInterface = (MainActivityInterface) c;
         this.whatView = whatView;
         this.setManageFragment = setManageFragment;
         setHasStableIds(false);
+        Log.d(TAG,"whatView:"+whatView);
     }
 
     public void prepareSetManageInfos() {
@@ -108,12 +112,14 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
         // Get the values for this view
         FoundSet foundSet = foundSets.get(position);
 
+        // Set filename
+
         // Decide if this value is selected (only available/visible when loading set)
         holder.checkBox.setChecked(foundSet.getChecked());
-        if (!whatView.equals("loadset")) {
-            holder.checkBox.setVisibility(View.GONE);
-        } else {
+        if (whatView.equals("loadset")) {
             holder.checkBox.setVisibility(View.VISIBLE);
+        } else {
+            holder.checkBox.setVisibility(View.GONE);
         }
 
         holder.checkBox.setChecked(foundSet.getChecked());

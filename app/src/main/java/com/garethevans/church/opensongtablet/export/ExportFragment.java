@@ -782,7 +782,16 @@ public class ExportFragment extends Fragment {
                 if (uri != null) {
                     try {
                         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-                        String name = uri.getLastPathSegment().replace("OpenSong/Export/","");
+                        // Get the file name after the OpenSong/Export/ bit
+                        String name = uri.getLastPathSegment();
+                        String bitToRemove = "OpenSong/Export/";
+                        if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
+                            name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
+                        }
+                        bitToRemove = "OpenSong%2FExport%2F";
+                        if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
+                            name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
+                        }
                         Log.d(TAG, "uri to copy:" + uri);
                         Log.d(TAG, "name:" + name);
                         File file = new File(exportFolder, name);
@@ -797,6 +806,7 @@ public class ExportFragment extends Fragment {
                 }
             }
         }
+
 
         Intent intent;
         if (setContent!=null && !myView.exportTextAsMessage.getChecked()) {

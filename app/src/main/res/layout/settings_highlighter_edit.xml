@@ -32,8 +32,13 @@
             android:background="@color/black"
             android:visibility="gone" />
     </RelativeLayout>
+    <com.garethevans.church.opensongtablet.customviews.HighlighterToolBox
+        android:id="@+id/draggableToolbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-    <!-- The bottom dialog -->
+    <!-- The bottom dialog
     <include android:id="@+id/bottomSheet"
-        layout="@layout/bottom_sheet_highlighter" />
+        layout="@layout/bottom_sheet_highlighter" /> -->
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
