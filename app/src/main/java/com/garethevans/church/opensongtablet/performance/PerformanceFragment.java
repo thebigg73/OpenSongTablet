@@ -1301,12 +1301,6 @@ public class PerformanceFragment extends Fragment {
                                         // If the bitmap doesn't match the view, scale it
                                         float bmpXScale = (float)w/(float)highlighterBitmap.getWidth();
                                         float bmpYScale = (float)h/(float)highlighterBitmap.getHeight();
-                                        Log.d(TAG,"bitmap sizes:"+highlighterBitmap.getWidth()+"x"+highlighterBitmap.getHeight());
-                                        Log.d(TAG,"bmpScale:"+bmpXScale+"x"+bmpYScale);
-                                        Log.d(TAG,"new bitmap sizes:"+(highlighterBitmap.getWidth()*scaleFactor)+"x"+(highlighterBitmap.getHeight()*scaleFactor));
-                                        Log.d(TAG,"w and h sent:"+w+"x"+h);
-                                        Log.d(TAG,"songView size:"+myView.songView.getWidth()+"x"+myView.songView.getMeasuredHeight());
-
 
                                         myView.highlighterView.setVisibility(View.VISIBLE);
                                         ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
