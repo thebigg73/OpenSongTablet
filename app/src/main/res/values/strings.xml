@@ -1264,4 +1264,7 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="redo">Redo</string>
+    <string name="highligher_drag">Drag the toolbar around using this button</string>
+    <string name="highligher_tool_current">This shows your current highlighter tool.  Click on it to change the tool or its settings.</string>
 </resources>
