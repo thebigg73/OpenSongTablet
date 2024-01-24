@@ -372,6 +372,8 @@
     <string name="help">"Guida (online)"</string>
     <string name="hex_color_code">Codice colore esadecimale</string>
     <string name="hide">Nascondere</string>
+    <string name="highligher_drag">Trascinare la casella degli strumenti utilizzando questo pulsante</string>
+    <string name="highligher_tool_current">Questo mostra il tuo attuale strumento evidenziatore.  Fare clic su di esso per modificare lo strumento o le sue impostazioni</string>
     <string name="highlight">"Evidenziatore"</string>
     <string name="highlight_info">Modifica note/annotazioni dell\'evidenziatore</string>
     <string name="highlighter_low_memory">Il dispositivo non è stato in grado di creare uno screenshot del brano per l\'anteprima con l\'evidenziatore perché era troppo grande.  Prova a modificare il ridimensionamento automatico del brano al massimo o a ridurre la dimensione massima del ridimensionamento del carattere.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Valuta questa applicazione"</string>
     <string name="rate_description">Si prega di lasciare una recensione</string>
     <string name="red">Rosso</string>
+    <string name="redo">Rifare</string>
     <string name="refrain">"Ritornello"</string>
     <string name="refresh_song">Aggiorna brano corrente</string>
     <string name="rename">"Rinominare"</string>

@@ -372,6 +372,8 @@
     <string name="help">"Segítség (Online)"</string>
     <string name="hex_color_code">Hex színkód</string>
     <string name="hide">Elrejt</string>
+    <string name="highligher_drag">Húzza körbe az eszköztárat ezzel a gombbal</string>
+    <string name="highligher_tool_current">Ekkor megjelenik az aktuális kiemelő eszköz.  Kattintson rá az eszköz vagy annak beállításainak módosításához</string>
     <string name="highlight">"Kiemelő"</string>
     <string name="highlight_info">Kiemelő jegyzetek / megjegyzések szerkesztése</string>
     <string name="highlighter_low_memory">Az eszköz nem tudott képernyőképet készíteni a dalról a kiemelővel való előnézethez, mert túl nagy volt.  Kérjük, próbálja meg megváltoztatni a dal automatikus méretezését teljesre, vagy csökkentse a maximális betűméretező méretet.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Értékeld ezt az alkalmazást"</string>
     <string name="rate_description">Kérjük, írjon véleményt</string>
     <string name="red">Piros</string>
+    <string name="redo">Újra kifest</string>
     <string name="refrain">"Refrén"</string>
     <string name="refresh_song">Frissítés aktuális zeneszám</string>
     <string name="rename">"Átnevezése"</string>

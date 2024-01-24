@@ -372,6 +372,8 @@
     <string name="help">"Hjälp (Online)"</string>
     <string name="hex_color_code">Hex färgkod</string>
     <string name="hide">Dölj</string>
+    <string name="highligher_drag">Dra runt verktygslådan med den här knappen</string>
+    <string name="highligher_tool_current">Då visas ditt aktuella överstrykningspenna.  Klicka på den för att ändra verktyget eller dess inställningar</string>
     <string name="highlight">"Highlighter"</string>
     <string name="highlight_info">Redigera anteckningar/kommentarer med överstrykningspenna</string>
     <string name="highlighter_low_memory">Din enhet kunde inte skapa en skärmdump av låten för förhandsgranskning med överstrykningspennan eftersom den var för stor.  Försök att ändra den automatiska skalningen av låten till full eller minska den maximala teckenskalningsstorleken.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Betygsätt denna app"</string>
     <string name="rate_description">Lämna en recension</string>
     <string name="red">Röd</string>
+    <string name="redo">Göra om</string>
     <string name="refrain">"Avstå"</string>
     <string name="refresh_song">"Uppdatera aktuell sång"</string>
     <string name="rename">"Döpa om"</string>

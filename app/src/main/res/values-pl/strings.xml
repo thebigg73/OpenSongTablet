@@ -372,6 +372,8 @@
     <string name="help">"Pomoc (online)"</string>
     <string name="hex_color_code">Kod szesnastkowy (hex) koloru</string>
     <string name="hide">Ukryj</string>
+    <string name="highligher_drag">Przeciągnij przybornik za pomocą tego przycisku</string>
+    <string name="highligher_tool_current">Spowoduje to wyświetlenie aktualnego narzędzia zakreślacza.  Kliknij go, aby zmienić narzędzie lub jego ustawienia</string>
     <string name="highlight">Zakreślacz</string>
     <string name="highlight_info">Edytuj notatki/adnotacje zakreślacza</string>
     <string name="highlighter_low_memory">Twoje urządzenie nie mogło utworzyć zrzutu ekranu piosenki do podglądu z zakreślaczem, ponieważ był zbyt duży. Spróbuj zmienić automatyczne skalowanie piosenki na pełne lub zmniejszyć maksymalny rozmiar skalowania czcionki.</string>
@@ -671,6 +673,7 @@
     <string name="rate">Oceń tę aplikację</string>
     <string name="rate_description">Proszę zostaw recenzję</string>
     <string name="red">Czerwony</string>
+    <string name="redo">Ponowić</string>
     <string name="refrain">Refren</string>
     <string name="refresh_song">Odśwież bieżącą piosenkę</string>
     <string name="rename">Zmień nazwę</string>

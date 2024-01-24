@@ -372,6 +372,8 @@
     <string name="help">"Help (Online)"</string>
     <string name="hex_color_code">Hekskleurkode</string>
     <string name="hide">Steek weg</string>
+    <string name="highligher_drag">Sleep die gereedskapskis rond met hierdie knoppie</string>
+    <string name="highligher_tool_current">Dit wys jou huidige highlighter-instrument.  Klik daarop om die instrument of die instellings daarvan te verander.</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Wysig highlighter notas / aantekeninge</string>
     <string name="highlighter_low_memory">U toestel kon nie \'n skermkiekie van die liedjie skep om met die highlighter voorskou te word nie, aangesien dit te groot was. Probeer asseblief om die outoskaal van die liedjie na volle te verander of om die maksimum letterskaalgrootte te verminder.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Gradeer hierdie inligting"</string>
     <string name="rate_description">Laat asseblief \'n resensie</string>
     <string name="red">Rooi</string>
+    <string name="redo">Oordoen</string>
     <string name="refrain">Weerhou</string>
     <string name="refresh_song">Verfris huidige liedjie</string>
     <string name="rename">"Hernoem"</string>

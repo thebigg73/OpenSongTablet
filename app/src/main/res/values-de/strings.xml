@@ -372,6 +372,8 @@
     <string name="help">"Hilfe (Online)"</string>
     <string name="hex_color_code">Hex-Farbcode</string>
     <string name="hide">Ausblenden</string>
+    <string name="highligher_drag">Ziehen Sie die Toolbox mit dieser Schaltfläche</string>
+    <string name="highligher_tool_current">Hier wird Ihr aktuelles Textmarker-Tool angezeigt.  Klicken Sie darauf, um das Werkzeug oder seine Einstellungen zu ändern.</string>
     <string name="highlight">"Textmarker"</string>
     <string name="highlight_info">Textmarker-Notizen / Anmerkungen bearbeiten</string>
     <string name="highlighter_low_memory">Ihr Gerät konnte keinen Screenshot des Songs für die Vorschau mit dem Textmarker erstellen, da er zu groß war.  Bitte versuchen Sie, die automatische Skalierung des Songs vollständig zu ändern oder die maximale Schriftgröße zu reduzieren.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Diese App bewerten"</string>
     <string name="rate_description">Bitte hinterlassen Sie eine Bewertung</string>
     <string name="red">Rot</string>
+    <string name="redo">Noch einmal machen</string>
     <string name="refrain">"Refrain"</string>
     <string name="refresh_song">Aktuellen Song aktualisieren</string>
     <string name="rename">"Umbenennen"</string>

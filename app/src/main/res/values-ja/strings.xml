@@ -372,6 +372,8 @@
     <string name="help">"ヘルプ（オンライン）"</string>
     <string name="hex_color_code">16進カラーコード</string>
     <string name="hide">隠す</string>
+    <string name="highligher_drag">このボタンを使用してツールボックスをドラッグします</string>
+    <string name="highligher_tool_current">これは、現在の蛍光ペンツールを示しています。 それをクリックして、ツールまたはその設定を変更します</string>
     <string name="highlight">"蛍光ペン"</string>
     <string name="highlight_info">蛍光ペンのメモ/注釈を編集する</string>
     <string name="highlighter_low_memory">デバイスは、蛍光ペンでプレビューするための曲のスクリーンショットを作成できませんでした。 曲の自動スケーリングをフルに変更するか、最大フォントスケーリングサイズを小さくしてみてください。</string>
@@ -671,6 +673,7 @@
     <string name="rate">"このアプリを評価"</string>
     <string name="rate_description">レビューを残してください</string>
     <string name="red">赤</string>
+    <string name="redo">やり直す</string>
     <string name="refrain">"控える"</string>
     <string name="refresh_song">現在の曲をリフレッシュ</string>
     <string name="rename">"リネーム"</string>

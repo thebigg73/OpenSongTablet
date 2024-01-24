@@ -372,6 +372,8 @@
     <string name="help">Допомога (онлайн)</string>
     <string name="hex_color_code">Шістнадцятковий код кольору</string>
     <string name="hide">Сховати</string>
+    <string name="highligher_drag">Перетягніть панель інструментів за допомогою цієї кнопки</string>
+    <string name="highligher_tool_current">Тут відображається ваш поточний інструмент маркетера.  Натисніть на нього, щоб змінити інструмент або його налаштування</string>
     <string name="highlight">Маркер</string>
     <string name="highlight_info">Редагувати примітки/анотації маркера</string>
     <string name="highlighter_low_memory">Ваш пристрій не зміг створити знімок екрана пісні для попереднього перегляду за допомогою маркера, оскільки він був занадто великим.  Будь ласка, спробуйте змінити автоматичне масштабування пісні на повне або зменшити максимальний розмір масштабування шрифту.</string>
@@ -671,6 +673,7 @@
     <string name="rate">Оцініть це додаток</string>
     <string name="rate_description">Будь ласка, залиште відгук</string>
     <string name="red">червоний</string>
+    <string name="redo">Повторити</string>
     <string name="refrain">рефрен</string>
     <string name="refresh_song">Виправлення пісні</string>
     <string name="rename">Перейменування</string>

@@ -372,6 +372,8 @@
     <string name="help">"Aide (en ligne)"</string>
     <string name="hex_color_code">Code couleur hexadécimal</string>
     <string name="hide">Cacher</string>
+    <string name="highligher_drag">Faites glisser la boîte à outils à l’aide de ce bouton</string>
+    <string name="highligher_tool_current">Cela montre votre outil de surligneur actuel.  Cliquez dessus pour modifier l’outil ou ses paramètres.</string>
     <string name="highlight">"Surligneur"</string>
     <string name="highlight_info">Modifier les notes/annotations du surligneur</string>
     <string name="highlighter_low_memory">Votre appareil n’a pas pu créer de capture d’écran de la chanson pour la prévisualiser avec le surligneur, car elle était trop grande.  Veuillez essayer de modifier la mise à l’échelle automatique de la chanson en pleine ou de réduire la taille maximale de la mise à l’échelle de la police.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Notez cette application"</string>
     <string name="rate_description">Merci de laisser un avis</string>
     <string name="red">Rouge</string>
+    <string name="redo">Refaire</string>
     <string name="refrain">"Refrain"</string>
     <string name="refresh_song">Actualiser la chanson en cours</string>
     <string name="rename">"Renomer"</string>

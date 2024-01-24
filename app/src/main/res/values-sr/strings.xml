@@ -372,6 +372,8 @@
     <string name="help">Pomoć (Online)</string>
     <string name="hex_color_code">Heksadecimalni kod boja</string>
     <string name="hide">Sakriti</string>
+    <string name="highligher_drag">Prevucite okvir sa alatkama pomoću ovog dugmeta</string>
+    <string name="highligher_tool_current">Ovo prikazuje trenutnu alatku za marker.  Kliknite na njega da biste promenili alatku ili njene postavke</string>
     <string name="highlight">Alat za isticanje</string>
     <string name="highlight_info">Uredite beleške/napomene u markeru</string>
     <string name="highlighter_low_memory">Uređaj nije mogao da kreira snimak ekrana pesme za pregled sa markerom jer je bila prevelika.  Pokušajte da promenite automatsko podešavanje pesme u punu ili da smanjite maksimalnu veličinu fonta.</string>
@@ -671,6 +673,7 @@
     <string name="rate">Ocenite ovu aplikaciju</string>
     <string name="rate_description">Molimo ostavite recenziju</string>
     <string name="red">Crveni</string>
+    <string name="redo">Ponovi</string>
     <string name="refrain">Refren</string>
     <string name="refresh_song">Osvežiti trenutnu pesmu</string>
     <string name="rename">Promeniti ime</string>

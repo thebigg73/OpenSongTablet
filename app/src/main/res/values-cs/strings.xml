@@ -372,6 +372,8 @@
     <string name="help">"Help (online)"</string>
     <string name="hex_color_code">Hexadecimální kód barvy</string>
     <string name="hide">Skrýt</string>
+    <string name="highligher_drag">Přetáhněte panel nástrojů pomocí tohoto tlačítka</string>
+    <string name="highligher_tool_current">Zobrazí se váš aktuální nástroj zvýrazňovače.  Kliknutím na něj změníte nástroj nebo jeho nastavení.</string>
     <string name="highlight">"Zvýrazňovač"</string>
     <string name="highlight_info">Upravit poznámky / anotace zvýrazňovače</string>
     <string name="highlighter_low_memory">Vaše zařízení nedokázalo vytvořit snímek obrazovky skladby pro náhled pomocí zvýrazňovače, protože byl příliš velký.  Zkuste změnit automatické měřítko skladby na plné nebo zmenšit maximální velikost měřítka písma.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Ohodnoťte tuto aplikaci"</string>
     <string name="rate_description">Zanechte prosím recenzi</string>
     <string name="red">Červené</string>
+    <string name="redo">Předělat</string>
     <string name="refrain">"Refrén"</string>
     <string name="refresh_song">Obnovit aktuální skladbu</string>
     <string name="rename">"Přejmenovat"</string>

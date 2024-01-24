@@ -466,6 +466,8 @@
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>
     <string name="hide">Hide</string>
+    <string name="highligher_drag">Drag the toolbox around using this button</string>
+    <string name="highligher_tool_current">This shows your current highlighter tool.  Click on it to change the tool or its settings</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
     <string name="highlighter_low_memory">Your device was unable to create a screenshot of the song for previewing with the highlighter as it was too large.  Please try changing the autoscaling of the song to full or reducing the maximum font scaling size.</string>
@@ -839,6 +841,7 @@
     <string name="rate">Rate this app</string>
     <string name="rate_description">Please leave a review</string>
     <string name="red">Red</string>
+    <string name="redo">Redo</string>
     <string name="refrain">Refrain</string>
     <string name="refresh_song">Refresh current song</string>
     <string name="rename">Rename</string>
@@ -1264,7 +1267,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="redo">Redo</string>
-    <string name="highligher_drag">Drag the toolbar around using this button</string>
-    <string name="highligher_tool_current">This shows your current highlighter tool.  Click on it to change the tool or its settings.</string>
 </resources>

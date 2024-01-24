@@ -372,6 +372,8 @@
     <string name="help">"帮助（在线）"</string>
     <string name="hex_color_code">十六进制颜色代码</string>
     <string name="hide">隐藏</string>
+    <string name="highligher_drag">使用此按钮拖动工具箱</string>
+    <string name="highligher_tool_current">这会显示您当前的荧光笔工具。 单击它以更改工具或其设置。</string>
     <string name="highlight">"荧光笔"</string>
     <string name="highlight_info">编辑荧光笔注释/注释</string>
     <string name="highlighter_low_memory">您的设备无法创建歌曲的屏幕截图，以便使用荧光笔预览，因为它太大。 请尝试将歌曲的自动缩放更改为完整或减小最大字体缩放大小。</string>
@@ -671,6 +673,7 @@
     <string name="rate">"为这个应用软件评分"</string>
     <string name="rate_description">请留下评论</string>
     <string name="red">红色的</string>
+    <string name="redo">重做</string>
     <string name="refrain">"副歌"</string>
     <string name="refresh_song">刷新当前歌曲</string>
     <string name="rename">"重命名"</string>

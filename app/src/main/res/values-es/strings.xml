@@ -372,6 +372,8 @@
     <string name="help">"Ayuda (Online)"</string>
     <string name="hex_color_code">Código hexadecimal de colores</string>
     <string name="hide">Esconder</string>
+    <string name="highligher_drag">Arrastre la caja de herramientas con este botón</string>
+    <string name="highligher_tool_current">Esto muestra su herramienta de resaltado actual.  Haga clic en él para cambiar la herramienta o su configuración</string>
     <string name="highlight">"Resaltador"</string>
     <string name="highlight_info">Editar notas/anotaciones de resaltado</string>
     <string name="highlighter_low_memory">Su dispositivo no pudo crear una captura de pantalla de la canción para obtener una vista previa con el resaltador, ya que era demasiado grande.  Intente cambiar el escalado automático de la canción a completo o reducir el tamaño máximo de escala de fuente.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Califica esta aplicación"</string>
     <string name="rate_description">Por favor deja una reseña</string>
     <string name="red">Rojo</string>
+    <string name="redo">Rehacer</string>
     <string name="refrain">"Estribillo"</string>
     <string name="refresh_song">Actualizar canción actual</string>
     <string name="rename">"Cambiar el nombre de"</string>

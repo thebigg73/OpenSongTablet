@@ -372,6 +372,8 @@
     <string name="help">Помощь (онлайн)</string>
     <string name="hex_color_code">Hex код цвета</string>
     <string name="hide">Спрятать</string>
+    <string name="highligher_drag">Перетащите набор инструментов с помощью этой кнопки</string>
+    <string name="highligher_tool_current">Это покажет ваш текущий инструмент маркера.  Нажмите на него, чтобы изменить инструмент или его настройки</string>
     <string name="highlight">Маркер</string>
     <string name="highlight_info">Редактировать заметки/аннотации, подписанные маркером</string>
     <string name="highlighter_low_memory">Вашему устройству не удалось создать снимок экрана песни для предварительного просмотра с помощью маркера, так как он был слишком большим.  Попробуйте изменить автомасштабирование песни на полное или уменьшить максимальный размер масштабирования шрифта.</string>
@@ -671,6 +673,7 @@
     <string name="rate">Оцените это приложение</string>
     <string name="rate_description">Пожалуйста, оставьте отзыв о приложении</string>
     <string name="red">Красный</string>
+    <string name="redo">Повторить</string>
     <string name="refrain">Рефрен</string>
     <string name="refresh_song">Обновить текущую песню</string>
     <string name="rename">Переименование</string>

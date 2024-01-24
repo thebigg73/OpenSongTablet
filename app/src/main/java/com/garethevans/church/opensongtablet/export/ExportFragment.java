@@ -775,7 +775,7 @@ public class ExportFragment extends Fragment {
     private void initiateShare() {
         // Copy the exported folder into the local app files/export folder (for sharing permission)
         File exportFolder = mainActivityInterface.getStorageAccess().getAppSpecificFile("files","export",null);
-        Log.d(TAG,"maked dirs:"+exportFolder.mkdirs());
+        Log.d(TAG,"makedirs:"+exportFolder.mkdirs());
         ArrayList<Uri> newUris = new ArrayList<>();
         if (getContext()!=null) {
             for (Uri uri : uris) {
@@ -789,6 +789,10 @@ public class ExportFragment extends Fragment {
                             name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
                         }
                         bitToRemove = "OpenSong%2FExport%2F";
+                        if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
+                            name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
+                        }
+                        bitToRemove = "/";
                         if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
                             name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
                         }

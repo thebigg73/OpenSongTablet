@@ -372,6 +372,8 @@
     <string name="help">"Βοήθεια (Online)"</string>
     <string name="hex_color_code">Hex χρωματικός κωδικός</string>
     <string name="hide">Κρύβω</string>
+    <string name="highligher_drag">Σύρετε την εργαλειοθήκη χρησιμοποιώντας αυτό το κουμπί</string>
+    <string name="highligher_tool_current">Αυτό εμφανίζει το τρέχον εργαλείο επισήμανσης.  Κάντε κλικ σε αυτό για να αλλάξετε το εργαλείο ή τις ρυθμίσεις του.</string>
     <string name="highlight">"Υψηλός φωτισμός"</string>
     <string name="highlight_info">Επεξεργασία σημειώσεων / σχολιασμών επισήμανσης</string>
     <string name="highlighter_low_memory">Η συσκευή σας δεν μπόρεσε να δημιουργήσει ένα στιγμιότυπο οθόνης του τραγουδιού για προεπισκόπηση με το εργαλείο επισήμανσης, καθώς ήταν πολύ μεγάλο.  Δοκιμάστε να αλλάξετε την αυτόματη κλιμάκωση του τραγουδιού σε πλήρη ή να μειώσετε το μέγιστο μέγεθος κλιμάκωσης γραμματοσειράς.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Αξιολόγησε την εφαρμογή"</string>
     <string name="rate_description">Αφήστε μια κριτική</string>
     <string name="red">το κόκκινο</string>
+    <string name="redo">Ξανακάνω</string>
     <string name="refrain">"Επωδός"</string>
     <string name="refresh_song">"Refresh current song"</string>
     <string name="rename">"Μετονομασία"</string>

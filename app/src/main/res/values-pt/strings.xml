@@ -372,6 +372,8 @@
     <string name="help">"Ajuda (Online)"</string>
     <string name="hex_color_code">Código de cor hexadecimal</string>
     <string name="hide">Ocultar</string>
+    <string name="highligher_drag">Arraste a caixa de ferramentas usando este botão</string>
+    <string name="highligher_tool_current">Isso mostra sua ferramenta de marcador atual.  Clique nele para alterar a ferramenta ou suas configurações</string>
     <string name="highlight">"Marcador"</string>
     <string name="highlight_info">Editar notas/anotações do marcador</string>
     <string name="highlighter_low_memory">O dispositivo não conseguiu criar uma captura de ecrã da música para pré-visualização com o marcador, uma vez que era demasiado grande.  Tente alterar o dimensionamento automático da música para completo ou reduzir o tamanho máximo de escala de fonte.</string>
@@ -671,6 +673,7 @@
     <string name="rate">"Avalie este aplicativo"</string>
     <string name="rate_description">Por favor, deixe um comentário</string>
     <string name="red">Vermelho</string>
+    <string name="redo">Refazer</string>
     <string name="refrain">"Refrão"</string>
     <string name="refresh_song">Refresque música atual</string>
     <string name="rename">"Rebatizar"</string>
