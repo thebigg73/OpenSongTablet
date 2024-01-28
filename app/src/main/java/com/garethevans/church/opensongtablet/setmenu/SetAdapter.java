@@ -78,20 +78,19 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         si.songitem = position+1;
         String titlesongname = si.songtitle;
         String filename = si.songfilename;
+        String foldername = si.songfolder;
+        String newfoldername = si.songfoldernice;
+
+        // If this is a variation, we can prettify the output (remove the reference to the original folder)
+        if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(foldername,filename)) {
+            filename = filename.substring(filename.lastIndexOf("_")).replace("_","");
+            titlesongname = filename;
+        }
+
         if (key != null && !key.equals("null") && !key.isEmpty()) {
             titlesongname = titlesongname + " (" + key + ")";
         } else {
             si.songkey = "";
-        }
-
-        String foldername = si.songfolder;
-        String newfoldername = si.songfoldernice;
-        if (newfoldername==null || newfoldername.isEmpty()) {
-            newfoldername = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(foldername);
-            si.songfoldernice = newfoldername;
-        }
-        if (newfoldername != null && newfoldername.startsWith("**")) {
-            newfoldername = newfoldername.replace("**", "");
         }
 
         // If we don't have a indexSongInSet, but this song should be it, do it

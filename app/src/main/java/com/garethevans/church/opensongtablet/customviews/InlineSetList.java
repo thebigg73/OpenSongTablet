@@ -164,7 +164,6 @@ public class InlineSetList extends RecyclerView {
 
             boolean wrongSize = songWidth!=0 && screenWidth-songWidth-width!=0;
 
-            Log.d(TAG,"size mismatch:"+wrongSize);
             if (reloadSong && wrongSize) {
                 if (mainActivityInterface.getCurrentSet().getIndexSongInSet() == -1) {
                     // Load the song
@@ -323,8 +322,21 @@ public class InlineSetList extends RecyclerView {
                     if (payload.equals(updateNumber)) {
                         SetItemInfo si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
                         si.songitem = position+1;
-                        String textsn = (position+1) + ". " + si.songtitle;
-                        String textfn = (position+1) + ". " + si.songfilename;
+
+                        String textsn = si.songtitle;
+                        String textfn = si.songfilename;
+
+                        Log.d(TAG,"si.songfolder:"+si.songfolder);
+                        Log.d(TAG,"si.songfilename:"+si.songfilename);
+
+                        // If this is a variation, we can prettify the output (remove the reference to the original folder)
+                        if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
+                            textfn = "*" + textfn.substring(textfn.lastIndexOf("_")).replace("_","");
+                            textsn = textfn;
+                        }
+
+                        textsn = (position+1) + ". " + textsn;
+                        textfn = (position+1) + ". " + textfn;
 
                         if (si.songkey != null && !si.songkey.isEmpty()) {
                             textsn = textsn + " (" + si.songkey + ")";
@@ -365,8 +377,21 @@ public class InlineSetList extends RecyclerView {
             }
 
             si.songitem = position+1;
-            String textsn = (position+1) + ". " + si.songtitle;
-            String textfn = (position+1) + ". " + si.songfilename;
+
+            String textsn = si.songtitle;
+            String textfn = si.songfilename;
+
+            Log.d(TAG,"si.songfolder:"+si.songfolder);
+            Log.d(TAG,"si.songfilename:"+si.songfilename);
+
+            // If this is a variation, we can prettify the output (remove the reference to the original folder)
+            if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
+                textfn = "*" + textfn.substring(textfn.lastIndexOf("_")).replace("_","");
+                textsn = textfn;
+            }
+
+            textsn = (position+1) + ". " + textsn;
+            textfn = (position+1) + ". " + textfn;
 
             if (si.songkey != null && !si.songkey.isEmpty()) {
                 textsn = textsn + " (" + si.songkey + ")";
