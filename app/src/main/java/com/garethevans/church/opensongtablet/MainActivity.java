@@ -1153,7 +1153,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         setupNavigation();
                     }
                     if (deepLink != null && navController!=null) {
-                        Log.d(TAG,"navigate to deepLink:"+deepLink);
                         navController.navigate(Uri.parse(deepLink));
                     } else if (navController!=null) {
                         navController.navigate(id);
@@ -2657,8 +2656,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String setFilename = setItemInfo.songfilename;
                 String setKey = setItemInfo.songkey;
                 Uri setUri = getStorageAccess().getUriForItem("Songs",setFolder,setFilename);
-                Log.d(TAG,"setFolder:"+setFolder+"  setFilename:"+setFilename);
-                Log.d(TAG,"setUri:"+setUri);
 
                 // If we are viewing a set item with a temp key change, we will need these variables
                 String[] bits = getSetActions().getPreVariationFolderFilename(setItemInfo);
@@ -2667,12 +2664,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String originalKey = null;
                 Uri originalUri = getStorageAccess().getUriForItem("Songs",originalFolder,originalFilename);
 
-                Log.d(TAG,"originalFolder:"+originalFolder+"  originalFilename:"+originalFilename);
-                Log.d(TAG,"originalUri:"+originalUri);
-
                 // Determine if this is a variation file based on the filename
                 boolean isNormalVariation = getSetActions().getIsNormalVariation(setFolder, setFilename);
-                Log.d(TAG,"isNormalVariation:"+isNormalVariation);
 
                 // Create a null/empty song object in case we need to load it to get the key or transpose
                 Song quickSong = null;
@@ -2680,11 +2673,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Get the key of the song from the file
                 if (storageAccess.isSpecificFileExtension("imageorpdf",setFilename)) {
                     // This is a pdf, we query the persistent database
-                    Log.d(TAG,"isimageorpdf");
                     originalKey = nonOpenSongSQLiteHelper.getKey(setFolder,setFilename);
-                    Log.d(TAG,"originalKey:"+originalKey);
                 } else if (isNormalVariation) {
-                    Log.d(TAG,"isNormalVariation");
                     if (storageAccess.uriExists(setUri)) {
                         // We are a variation and the file already exists.
                         // We can get the key from the variation file
@@ -2710,13 +2700,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     originalKey = sqLiteHelper.getKey(setFolder, setFilename);
                 }
 
-                Log.d(TAG,"originalKey:"+originalKey);
-                Log.d(TAG,"setKey:"+setKey);
-
                 boolean isKeyVariation = setKey!=null && originalKey!=null && !setKey.isEmpty() &&
                                 !originalKey.isEmpty() && !setKey.equals(originalKey);
-
-                Log.d(TAG,"isKeyVariation:"+isKeyVariation+" isNormalVariation:"+isNormalVariation);
 
                 if (isKeyVariation) {
                     // Could be just a key variation, or a standard variation needing adjusted
@@ -2733,7 +2718,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         needToTranspose = true;
                         targetFilename = setFilename;
                         targetUri = getStorageAccess().getUriForItem("Variations", "", setFilename);
-                        Log.d(TAG, "Standard variation file:" + targetUri);
 
                     } else {
                         // Look for an already created key Variation file so we don't need to do it again
@@ -2742,7 +2726,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         targetUri = getStorageAccess().getUriForItem("Variations", "_cache", targetFilename);
                         targetSubfolder = "_cache";
 
-                        Log.d(TAG,"looking for key var targetUri:"+targetUri);
                         if (!getStorageAccess().uriExists(targetUri)) {
                             needToTranspose = true;
                         }
@@ -2758,7 +2741,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         Log.d(TAG, "Need to transpose...");
 
                         if (quickSong == null) {
-                            Log.d(TAG, "quickSong was null as standard song file (not variation)");
                             // This was a straightforward song (i.e. not a standard variation)
                             // Get the song object from the database
                             if (storageAccess.isSpecificFileExtension("imageorpdf", setFilename)) {
@@ -2773,7 +2755,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                         // Transpose the lyrics in the song file
                         // Get the number of transpose times
-                        Log.d(TAG, "originalKey:" + originalKey + "  setKey:" + setKey);
                         int transposeTimes = transpose.getTransposeTimes(originalKey, setKey);
 
                         // Why transpose up 11 times, when you can just transpose down once.
@@ -2808,10 +2789,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                         // Now we need to write the transposed file
                         // If this is a standard variation (not a key variation)
-                        Log.d(TAG, "About to write the transposed file");
-                        Log.d(TAG, "setFolder:" + setFolder);
-                        Log.d(TAG, "setFilename:" + setFilename);
-
                         if (!getStorageAccess().uriExists(targetUri)) {
                             // We need to create the new key variation file for writing to
                             Log.d(TAG, "Key variation file creation");
@@ -2820,7 +2797,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                     targetSubfolder, targetFilename);
                         }
 
-                        Log.d(TAG, "targetUri:" + targetUri);
                         if (targetUri != null) {
                             // Write the transposed file
                             OutputStream outputStream = getStorageAccess().getOutputStream(targetUri);
@@ -2829,8 +2805,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     } else if (!getSetActions().getIsNormalOrKeyVariation(setFolder,setFilename)) {
                         // Load the song in the original key
                         Log.d(TAG, "Load the original file as no key varation required");
-                        Log.d(TAG, "setFolder:" + setFolder + "  setFilename:" + setFilename);
-                        Log.d(TAG, "originalFolder:" + originalFolder + "  originalFilename:" + originalFilename);
                         setFolder = originalFolder;
                         setFilename = originalFilename;
                         setItemInfo.songfolder = originalFolder;
@@ -2838,9 +2812,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         setItemInfo.songfoldernice = originalFolder;
                     }
                 }
-                Log.d(TAG,"setItemInfo.songfolder:"+setItemInfo.songfolder);
-                Log.d(TAG,"setItemInfo.songfoldernice:"+setItemInfo.songfoldernice);
-                Log.d(TAG,"setItemInfo.songfilename:"+setItemInfo.songfilename);
 
                 Log.d(TAG,"finished processing, now load from:"+setFolder+"/"+setFilename);
                 doSongLoad(setFolder, setFilename, true);

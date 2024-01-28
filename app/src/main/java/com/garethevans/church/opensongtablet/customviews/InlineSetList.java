@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -331,9 +330,6 @@ public class InlineSetList extends RecyclerView {
                         String textsn = si.songtitle;
                         String textfn = si.songfilename;
 
-                        Log.d(TAG,"si.songfolder:"+si.songfolder);
-                        Log.d(TAG,"si.songfilename:"+si.songfilename);
-
                         // If this is a variation, we can prettify the output (remove the reference to the original folder)
                         if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
                             textfn = "*" + textfn.substring(textfn.lastIndexOf("_")).replace("_","");
@@ -385,9 +381,6 @@ public class InlineSetList extends RecyclerView {
 
             String textsn = si.songtitle;
             String textfn = si.songfilename;
-
-            Log.d(TAG,"si.songfolder:"+si.songfolder);
-            Log.d(TAG,"si.songfilename:"+si.songfilename);
 
             // If this is a variation, we can prettify the output (remove the reference to the original folder)
             if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {

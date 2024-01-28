@@ -218,11 +218,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             // Likely the first run
             // Do on the UI thread - force a folder change when the song menu is opened
             if (song.getFolder().contains("**")) {
-                Log.d(TAG,"custom folder");
                 // This is a variation or custom slide.
                 // If it is a variation, look for the original folder
                 if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(song.getFolder(),song.getFilename())) {
-                    Log.d(TAG,"variation");
                     myView.filters.folderSearch.setText(mainActivityInterface.getSetActions().getPreVariationFolderFilename(song.getFolder()+"/"+song.getFilename())[0]);
                 }
             } else {
@@ -288,13 +286,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
                         if (pos >= 0) {
                             if (mainActivityInterface.getSong().getFolder().contains("**")) {
-                                Log.d(TAG,"custom folder");
                                 // This is a variation or custom slide.
                                 // If it is a variation, look for the original folder
                                 if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
                                         mainActivityInterface.getSong().getFolder(),
                                         mainActivityInterface.getSong().getFilename())) {
-                                    Log.d(TAG,"variation");
                                     myView.filters.folderSearch.setText(
                                             mainActivityInterface.getSetActions().getPreVariationFolderFilename(
                                                     mainActivityInterface.getSong().getFolder() + "/" +
@@ -668,7 +664,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
 
     public void moveToSongInMenu(Song song) {
-        Log.d(TAG,"moveToSongInMenu:"+song.getFolder()+" / "+song.getFilename());
         // scroll to the song in the song menu
         try {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {

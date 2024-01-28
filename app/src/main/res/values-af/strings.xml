@@ -731,7 +731,6 @@
     <string name="set_inline_info">Wys die stellys op die skerm langs die liedjievenster</string>
     <string name="set_inline_showcase">This is the inline set which allows a view of the setlist while you are performing.  You can change the settings in Settings / Display / Inline set.</string>
     <string name="set_is_empty">Daar is geen items in jou stel nie</string>
-    <string name="set_is_empty">Daar is geen items in jou stel nie</string>
     <string name="set_item_info">U kan die vouer/lêernaam van die liedjie wat uit die stel gelaai is, verander, en u kan ook die sleutel vir die vertoon van die liedjie verander (dit voer \'n tydelike transponeer van die liedjie op u toestel uit indien nodig)</string>
     <string name="set_item_removed">Item verwyder van stel</string>
     <string name="set_load_first">Maak die gelaaide stel by die eerste item oop</string>

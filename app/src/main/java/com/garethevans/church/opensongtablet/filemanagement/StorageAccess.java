@@ -554,7 +554,9 @@ public class StorageAccess {
             //subfolder = subfolder.replace(c.getString(R.string.note),"Note");
             // This is used when custom slides are created as part of a set, making the folder look more obvious
             subfolder = subfolder.replace("**", "../");
-            subfolder = subfolder.replace("Images", "Images/_cache");
+            if (isSpecificFileExtension("image",filename)) {
+                subfolder = subfolder.replace("Images", "Images/_cache");
+            }
             subfolder = subfolder.replace("Slides", "Slides/_cache");
             subfolder = subfolder.replace("Scripture", "Scripture/_cache");
             subfolder = subfolder.replace("Variations", "Variation");
@@ -594,6 +596,9 @@ public class StorageAccess {
                 filename = filename.replace("/", "");
             }
         }
+
+        // Now unencode
+        filename = Uri.decode(filename);
 
         returnvals[0] = folder;
         returnvals[1] = subfolder;

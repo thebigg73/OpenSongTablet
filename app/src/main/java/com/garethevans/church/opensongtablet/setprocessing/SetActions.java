@@ -48,7 +48,7 @@ public class SetActions {
     private final String customLocStart = "**";
     private final String customLocBasic = "../";
     private final String nicePDF, niceVariation, niceImage, niceSlide,
-        niceScripture, niceNote, niceKey;
+        niceScripture, niceNote;
     private ArrayList<Integer> missingKeyPositions;
 
     public SetActions(Context c) {
@@ -60,7 +60,6 @@ public class SetActions {
         niceSlide = c.getString(R.string.slide);
         niceScripture = c.getString(R.string.scripture);
         niceNote = c.getString(R.string.note);
-        niceKey = c.getString(R.string.key);
     }
 
     // Convert between the currentSet string in preferences and the arrayLists
@@ -193,10 +192,8 @@ public class SetActions {
     public boolean isSongInSet(String folderNamePair) {
         boolean inSet = false;
         for (SetItemInfo setItemInfo : mainActivityInterface.getCurrentSet().getSetItemInfos()) {
-            Log.d(TAG,"checking "+folderNamePair+"  in setItemInfo:"+setItemInfo.songfolder+"/"+setItemInfo.songfilename);
             if (folderNamePair.equals(setItemInfo.songfolder + "/" + setItemInfo.songfilename)) {
                 inSet = true;
-                Log.d(TAG,"MATCH!!!!");
                 break;
             }
         }
@@ -426,30 +423,6 @@ public class SetActions {
         mainActivityInterface.updateSongList();
     }
 
-    public String niceCustomLocationFromFolder(String folderLocation) {
-        // This gives a nice output for the folderLocation for viewing
-        folderLocation = folderLocation.replace(customLocBasic,"");
-        folderLocation = folderLocation.replace("/_cache","");
-        switch (folderLocation) {
-            case folderVariations:
-                folderLocation = c.getString(R.string.variation);
-                break;
-            case folderNotes:
-                folderLocation = c.getString(R.string.note);
-                break;
-            case folderSlides:
-                folderLocation = c.getString(R.string.slide);
-                break;
-            case folderScripture:
-                folderLocation = c.getString(R.string.scripture);
-                break;
-            case folderImages:
-                folderLocation = c.getString(R.string.image);
-                break;
-        }
-        return customLocStart + folderLocation;
-    }
-
     public ArrayList<String> getAllSets() {
         return mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
     }
@@ -491,7 +464,6 @@ public class SetActions {
         return categories;
     }
     public void makeVariation(int position) {
-        Log.d(TAG,"makeVariation("+position+")");
         // Takes the chosen song and copies it to a temporary file in the Variations folder
         // If the key is different to the song file key, it will be transposed
         // This also updates the set menu to point to the new temporary item
@@ -510,7 +482,6 @@ public class SetActions {
         String existingFolder = setItemInfo.songfolder;
         String newFilename = setItemInfo.songfilename;
 
-        Log.d(TAG,"Existing:"+existingFolder+"  /  "+newFilename);
         // Get the original file uri
         Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem("Songs", existingFolder, newFilename);
 
@@ -528,24 +499,15 @@ public class SetActions {
         }
         newFilename = newFilename.replace("__","_");
 
-        Log.d(TAG,"newFilename:"+newFilename);
-
         setItemInfo.songfolder = "**" + niceVariation;
         setItemInfo.songfoldernice = "**" + niceVariation;
         setItemInfo.songfilename = newFilename;
-
-        Log.d(TAG,"setItemInfo.songfolder:" + setItemInfo.songfolder);
-        Log.d(TAG,"setItemInfo.songfoldernice:" + setItemInfo.songfoldernice);
-        Log.d(TAG,"setItemInfo.songfilename:" + setItemInfo.songfilename);
 
         // Fix the item in the set
         mainActivityInterface.getCurrentSet().setSetItemInfo(position,setItemInfo);
 
         // Get the uri of the new variation file (Variations/filename)
         Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(folderVariations, "", newFilename);
-
-        Log.d(TAG,"uriOriginal:"+uriOriginal);
-        Log.d(TAG,"uriVariation:"+uriVariation);
 
         // As long as the original and target uris are different, do the copy
         if (!uriOriginal.equals(uriVariation)) {
@@ -1151,8 +1113,11 @@ public class SetActions {
         }
 
         // Make sure to safe encode the filename as it will likely have : in it
+        // Make the filename safe, but not URI encoded
+        String new_title = mainActivityInterface.getStorageAccess().safeFilename(scripture_title);
+        new_title = Uri.decode(new_title);
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
-                customLocStart + folderScripture, Uri.encode(scripture_title));
+                customLocStart + folderScripture, new_title);
         tempSong.setTitle(scripture_title);
         tempSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(customLocStart + folderScripture, Uri.encode(scripture_title)));
         tempSong.setAuthor(scripture_translation);
@@ -1262,8 +1227,11 @@ public class SetActions {
 
         // Get a new tempSong ready for the info
         // Make sure to safe encode the filename as it might have unsafe characters
+        // Make the filename safe, but not URI encoded
+        String new_title = mainActivityInterface.getStorageAccess().safeFilename(custom_title);
+        new_title = Uri.decode(new_title);
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
-                customLocStart + folderSlides, mainActivityInterface.getStorageAccess().safeFilename(custom_title));
+                customLocStart + folderSlides, new_title);
 
         if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
             // Prepare for a note
@@ -1448,9 +1416,11 @@ public class SetActions {
         image_notes = fixNull(image_notes);
 
         // Get a new tempSong ready for the info
-        // Make sure to safe encode the filename as it might have unsafe characters
+        // Make the filename safe, but not URI encoded
+        String new_title = mainActivityInterface.getStorageAccess().safeFilename(image_title.toString());
+        new_title = Uri.decode(new_title);
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
-                customLocStart+folderImages, Uri.encode(image_title.toString()));
+                customLocStart+folderImages, new_title);
 
         tempSong.setTitle(image_title.toString());
         tempSong.setAuthor(image_subtitle);
@@ -1549,9 +1519,6 @@ public class SetActions {
     public String getKeyTextInFilename() {
         return keyTextInFilename;
     }
-    public String getNiceVariation() {
-        return niceVariation;
-    }
     public String getNiceSetNameFromFile(String filename) {
         // If the file has a category, make it look nicer
         if (filename.contains(setCategorySeparator)) {
@@ -1603,7 +1570,6 @@ public class SetActions {
             }
         }
 
-        Log.d(TAG,"modified:"+newFolder+"/"+newFilename);
         bits[0] = newFolder;
         bits[1] = newFilename;
         return bits;
@@ -1611,8 +1577,8 @@ public class SetActions {
 
     public String[] getPreVariationFolderFilename(String folderFilenamePair) {
         String[] bits = new String[2];
-        String newFolder = "";
-        String newFilename = "";
+        String newFolder;
+        String newFilename;
 
         if (folderFilenamePair.contains("/")) {
             newFolder = folderFilenamePair.substring(0,folderFilenamePair.lastIndexOf("/"));
@@ -1628,9 +1594,7 @@ public class SetActions {
             newFilename = newFilename.substring(0,newFilename.indexOf(keyTextInFilename));
         }
 
-        Log.d(TAG,"prevariationcheck() isvariation checking..");
         if (getIsNormalOrKeyVariation(newFolder,newFilename)) {
-            Log.d(TAG,"Is a variation, so process");
             // Get the folder from the prefix of the file name
             newFolder = newFilename.substring(0, newFilename.lastIndexOf("_")).replace("_", "/");
             if (newFolder.endsWith("/")) {
@@ -1639,7 +1603,6 @@ public class SetActions {
             newFilename = newFilename.substring(newFilename.lastIndexOf("_")).replace("_", "");
         }
 
-        Log.d(TAG,"newFilename:"+newFilename);
         bits[0] = newFolder;
         bits[1] = newFilename;
         return bits;
