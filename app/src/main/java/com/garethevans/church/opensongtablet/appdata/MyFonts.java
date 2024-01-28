@@ -165,7 +165,6 @@ public class MyFonts {
             @Override
             public void onTypefaceRequestFailed(int reason) {
                 // Default to Lato
-                Log.d(TAG,"onTypefaceRequestFailed("+reason+")");
                 Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
                 setDesiredFont(typeface,"Lato");
             }
@@ -178,7 +177,6 @@ public class MyFonts {
 
     private void doSetDesiredFont(String which, Typeface typeface, String fontName,TextView textView) {
         // Set the desired font
-        Log.d(TAG,"doSetDesiredFont("+which+", " + typeface+", "+ fontName+")");
         switch (which) {
             case "fontLyric":
                 setLyricFont(fontName,typeface);
@@ -220,6 +218,7 @@ public class MyFonts {
     public Typeface getAppDefault() {
         return Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
     }
+    @SuppressWarnings("Redundant")
     public ArrayList<String> getFontsFromGoogle() {
         ArrayList<String> fontNames;
         String response = null;
