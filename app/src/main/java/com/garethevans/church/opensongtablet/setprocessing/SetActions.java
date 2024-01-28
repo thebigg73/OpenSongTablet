@@ -35,6 +35,7 @@ public class SetActions {
     private final String itemEnd = "_**$";
     private final String keyStart = "_***";
     private final String keyEnd = "***_";
+    private final String keyTextInFilename = "_K-";
     private final String setCategorySeparator = "__";
     private final String folderVariations = "Variations";
     private final String folderNotes = "Notes";
@@ -47,7 +48,7 @@ public class SetActions {
     private final String customLocStart = "**";
     private final String customLocBasic = "../";
     private final String nicePDF, niceVariation, niceImage, niceSlide,
-        niceScripture, niceNote;
+        niceScripture, niceNote, niceKey;
     private ArrayList<Integer> missingKeyPositions;
 
     public SetActions(Context c) {
@@ -59,6 +60,7 @@ public class SetActions {
         niceSlide = c.getString(R.string.slide);
         niceScripture = c.getString(R.string.scripture);
         niceNote = c.getString(R.string.note);
+        niceKey = c.getString(R.string.key);
     }
 
     // Convert between the currentSet string in preferences and the arrayLists
@@ -118,7 +120,7 @@ public class SetActions {
                     folder = setItem.substring(0, setItem.lastIndexOf("/"));
                     setItem = setItem.replace(folder+"/","");
                 }
-                String foldernice = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(folder);
+                String foldernice = folder;
                 String filename = setItem.replace("/","");
 
                 setItemInfo.songfolder = folder;
@@ -191,8 +193,10 @@ public class SetActions {
     public boolean isSongInSet(String folderNamePair) {
         boolean inSet = false;
         for (SetItemInfo setItemInfo : mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+            Log.d(TAG,"checking "+folderNamePair+"  in setItemInfo:"+setItemInfo.songfolder+"/"+setItemInfo.songfilename);
             if (folderNamePair.equals(setItemInfo.songfolder + "/" + setItemInfo.songfilename)) {
                 inSet = true;
+                Log.d(TAG,"MATCH!!!!");
                 break;
             }
         }
@@ -238,6 +242,11 @@ public class SetActions {
                 keyStart + thisSong.getKey() + keyEnd + itemEnd;
     }
     public String getSongForSetWork(SetItemInfo setItemInfo) {
+        if (getIsKeyVariation(setItemInfo.songfolder,setItemInfo.songfilename)) {
+            String[] originalFolderFile = mainActivityInterface.getSetActions().getPreVariationFolderFilename(setItemInfo);
+            setItemInfo.songfolder = originalFolderFile[0];
+            setItemInfo.songfilename = originalFolderFile[1];
+        }
         return itemStart + setItemInfo.songfolder + "/" + setItemInfo.songfilename +
                 keyStart + setItemInfo.songkey + keyEnd + itemEnd;
     }
@@ -265,6 +274,11 @@ public class SetActions {
         int position = mainActivityInterface.getCurrentSet().getMatchingSetItem(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getMatchingSetItem(searchTextNoKeySpecified);
         int positionVariation = -1;
+        if (position==-1 && positionNoKey==-1) {
+            // Might be a different key, so search without that part
+            positionNoKey = mainActivityInterface.getCurrentSet().getMatchingSetItemBeforeKey(
+                    searchTextNoKeySpecified.replace(keyStart,"").replace(keyEnd,""));
+        }
         if (positionNoKey==-1 && position==-1) {
             // One last chance to find the song in the set (key changed variation)
             // Because transposed set items are variations, we need to check for those
@@ -477,7 +491,9 @@ public class SetActions {
         return categories;
     }
     public void makeVariation(int position) {
+        Log.d(TAG,"makeVariation("+position+")");
         // Takes the chosen song and copies it to a temporary file in the Variations folder
+        // If the key is different to the song file key, it will be transposed
         // This also updates the set menu to point to the new temporary item
         // This allows the user to freely edit the variation object
         // This is also called after an item is clicked in a set with a different key to the default
@@ -487,31 +503,55 @@ public class SetActions {
         // The set may have been edited and then the user clicks on a song, so save the set to preferences first
         mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getCurrentSet().getSetCurrent());
 
-        // Get the current set item
-        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
-        setItemInfo.songfolder = niceCustomLocationFromFolder(folderVariations);
-
-        // Fix the item in the set
-        mainActivityInterface.getCurrentSet().setSetItemInfo(position,setItemInfo);
-
         // Get the uri of the original file (if it exists)
         // We receive a song object as it isn't necessarily the one loaded to MainActivity
-        Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem("Songs", setItemInfo.songfolder, setItemInfo.songfilename);
+        // Get the current set item
+        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+        String existingFolder = setItemInfo.songfolder;
+        String newFilename = setItemInfo.songfilename;
 
-        // Get the uri of the new variation file (Variations/filename)
+        Log.d(TAG,"Existing:"+existingFolder+"  /  "+newFilename);
+        // Get the original file uri
+        Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem("Songs", existingFolder, newFilename);
 
         // IV - When a received song - use the stored received song filename
         if (setItemInfo.songfilename.equals("ReceivedSong")) {
             setItemInfo.songfilename = mainActivityInterface.getNearbyConnections().getReceivedSongFilename();
         }
 
-        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(folderVariations, "", setItemInfo.songfilename);
+        // Build a new filename based on the folder name
+        if (existingFolder!=null && !existingFolder.isEmpty()) {
+            existingFolder = existingFolder.replace("/","_");
+            newFilename = (existingFolder + "_" + newFilename).replace("__","_");
+        } else {
+            newFilename = mainActivityInterface.getMainfoldername() + "_" + newFilename;
+        }
+        newFilename = newFilename.replace("__","_");
+
+        Log.d(TAG,"newFilename:"+newFilename);
+
+        setItemInfo.songfolder = "**" + niceVariation;
+        setItemInfo.songfoldernice = "**" + niceVariation;
+        setItemInfo.songfilename = newFilename;
+
+        Log.d(TAG,"setItemInfo.songfolder:" + setItemInfo.songfolder);
+        Log.d(TAG,"setItemInfo.songfoldernice:" + setItemInfo.songfoldernice);
+        Log.d(TAG,"setItemInfo.songfilename:" + setItemInfo.songfilename);
+
+        // Fix the item in the set
+        mainActivityInterface.getCurrentSet().setSetItemInfo(position,setItemInfo);
+
+        // Get the uri of the new variation file (Variations/filename)
+        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(folderVariations, "", newFilename);
+
+        Log.d(TAG,"uriOriginal:"+uriOriginal);
+        Log.d(TAG,"uriVariation:"+uriVariation);
 
         // As long as the original and target uris are different, do the copy
         if (!uriOriginal.equals(uriVariation)) {
             // Make sure there is a file to write the output to (remove any existing first)
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeVariation Create Variations/"+setItemInfo.songfilename+" deleteOld=true");
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", setItemInfo.songfilename);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeVariation Create Variations/"+newFilename+" deleteOld=true");
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", newFilename);
 
             // Get an input/output stream reference and copy (streams are closed in copyFile())
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
@@ -613,6 +653,7 @@ public class SetActions {
                 // Adding a variation
                 Song tempSong = getTempSong("**" + folderVariations,
                         setItemInfo.songfilename);
+                tempSong.setTitle(tempSong.getFilename());
                 stringBuilder.append(buildVariation(tempSong));
 
             } else if (isSlide) {
@@ -742,6 +783,11 @@ public class SetActions {
                 currentslide = new StringBuilder();
             }
         }
+        // Check the filename has a folder, but if not, add one
+        if (!tempSong.getFilename().contains("_")) {
+            tempSong.setFilename(mainActivityInterface.getMainfoldername()+"_"+tempSong.getFilename());
+        }
+        tempSong.setTitle(tempSong.getFilename());
         newslides.add(currentslide.toString());
         // Now go back through the currentslides and write the slide text
         StringBuilder slidetexttowrite = new StringBuilder();
@@ -1227,6 +1273,11 @@ public class SetActions {
         } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
+            // Check we have a folder, but if not add one
+            if (!custom_name.contains("_")) {
+                custom_name = mainActivityInterface.getMainfoldername() + "_" + custom_name;
+            }
+            tempSong.setTitle(custom_name);
             tempSong.setFolder(customLocStart + folderVariations);
             tempSong.setKey(custom_key);
             tempcache = "";
@@ -1489,7 +1540,18 @@ public class SetActions {
     public String getItemEnd() {
         return itemEnd;
     }
-
+    public String getKeyStart() {
+        return keyStart;
+    }
+    public String getKeyEnd() {
+        return keyEnd;
+    }
+    public String getKeyTextInFilename() {
+        return keyTextInFilename;
+    }
+    public String getNiceVariation() {
+        return niceVariation;
+    }
     public String getNiceSetNameFromFile(String filename) {
         // If the file has a category, make it look nicer
         if (filename.contains(setCategorySeparator)) {
@@ -1511,5 +1573,96 @@ public class SetActions {
             returnBits[1] = bits[bits.length-1];
         }
         return returnBits;
+    }
+
+    public String[] getPreVariationFolderFilename(SetItemInfo setItemInfo) {
+        String[] bits = new String[2];
+        String newFolder = setItemInfo.songfolder;
+        String newFilename = setItemInfo.songfilename;
+        String newKey = setItemInfo.songkey;
+
+        if (getIsKeyVariation(newFolder,newFilename)) {
+            if (newFilename.endsWith(keyTextInFilename + newKey)) {
+                // Get rid of the key
+                newFilename = newFilename.replace(keyTextInFilename + newKey, "");
+            }
+
+            // If this is a variation, get the orginal file information
+            if (newFolder.startsWith("**") || newFolder.startsWith("../") &&
+                    (newFolder.contains(niceVariation) || newFolder.contains("Variation"))) {
+                // Get the folder from the prefix of the file name
+                if (newFilename.contains("_")) {
+                    newFolder = newFilename.substring(0, newFilename.lastIndexOf("_")).replace("_", "/");
+                    if (newFolder.endsWith("/")) {
+                        newFolder = newFolder.substring(0, newFolder.lastIndexOf("/"));
+                    }
+                    newFilename = newFilename.substring(newFilename.lastIndexOf("_")).replace("_", "");
+                } else {
+                    newFolder = mainActivityInterface.getMainfoldername();
+                }
+            }
+        }
+
+        Log.d(TAG,"modified:"+newFolder+"/"+newFilename);
+        bits[0] = newFolder;
+        bits[1] = newFilename;
+        return bits;
+    }
+
+    public String[] getPreVariationFolderFilename(String folderFilenamePair) {
+        String[] bits = new String[2];
+        String newFolder = "";
+        String newFilename = "";
+
+        if (folderFilenamePair.contains("/")) {
+            newFolder = folderFilenamePair.substring(0,folderFilenamePair.lastIndexOf("/"));
+            newFilename = folderFilenamePair.replace(newFolder,"");
+            newFilename = newFilename.replace("/","");
+        } else {
+            newFolder = mainActivityInterface.getMainfoldername();
+            newFilename = folderFilenamePair;
+        }
+
+        // Remove the existing key in the filename if it exists
+        if (newFilename.contains(keyTextInFilename)) {
+            newFilename = newFilename.substring(0,newFilename.indexOf(keyTextInFilename));
+        }
+
+        Log.d(TAG,"prevariationcheck() isvariation checking..");
+        if (getIsNormalOrKeyVariation(newFolder,newFilename)) {
+            Log.d(TAG,"Is a variation, so process");
+            // Get the folder from the prefix of the file name
+            newFolder = newFilename.substring(0, newFilename.lastIndexOf("_")).replace("_", "/");
+            if (newFolder.endsWith("/")) {
+                newFolder = newFolder.substring(0, newFolder.lastIndexOf("/"));
+            }
+            newFilename = newFilename.substring(newFilename.lastIndexOf("_")).replace("_", "");
+        }
+
+        Log.d(TAG,"newFilename:"+newFilename);
+        bits[0] = newFolder;
+        bits[1] = newFilename;
+        return bits;
+    }
+
+    public boolean getIsKeyVariation(String folder, String filename) {
+        return (folder.contains("**") || folder.contains("../")) &&
+                (folder.contains(niceVariation) || folder.contains("Variation")) &&
+                folder.contains("_cache") &&
+                filename.contains("_") &&
+                filename.contains(keyTextInFilename);
+    }
+
+    public boolean getIsNormalVariation(String folder, String filename) {
+        return (folder.contains("**") || folder.contains("../")) &&
+                (folder.contains(niceVariation) || folder.contains("Variation")) &&
+                !folder.contains("_cache") &&
+                filename.contains("_");
+    }
+
+    public boolean getIsNormalOrKeyVariation(String folder, String filename) {
+        return (folder.contains("**") || folder.contains("../")) &&
+                (folder.contains(niceVariation) || folder.contains("Variation")) &&
+                filename.contains("_");
     }
 }

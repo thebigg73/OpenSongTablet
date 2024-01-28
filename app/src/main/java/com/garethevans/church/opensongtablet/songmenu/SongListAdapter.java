@@ -184,6 +184,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                         songItemViewHolder.itemCheckedFrame.setVisibility(View.GONE);
                     }
 
+                    // Look for the song index based on the folder, filename and key of the song
+                    mainActivityInterface.getSetActions().indexSongInSet(song);
+
                     // Set the listeners
                     final String itemFilename = filename;
                     final String itemTitle = title;
@@ -209,14 +212,13 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                         }
                     });
 
+
                     // For Chromebooks (need to be running Marshmallow or higher
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         songItemViewHolder.itemCard.setOnContextClickListener(v -> {
                             song.setFilename(itemFilename);
                             song.setFolder(itemFolder);
                             song.setKey(itemKey);
-                            // Look for the song index based on the folder, filename and key of the song
-                            mainActivityInterface.getSetActions().indexSongInSet(song);
 
                             if (callback != null) {
                                 callback.onItemLongClicked(position, itemFolder, itemFilename, itemKey);
@@ -243,10 +245,22 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                             for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
                                 String setItemString = mainActivityInterface.getSetActions().
                                         getSongForSetWork(mainActivityInterface.getCurrentSet().getSetItemInfo(x));
+                                String setItemStringLessWithoutKey = setItemString.substring(0,
+                                        setItemString.indexOf(mainActivityInterface.getSetActions().getKeyStart())) +
+                                        mainActivityInterface.getSetActions().getKeyStart() +
+                                        mainActivityInterface.getSetActions().getKeyEnd() +
+                                        mainActivityInterface.getSetActions().getItemEnd();
+                                Log.d(TAG,"setItemString:"+setItemString);
+                                Log.d(TAG,"setItemStringLessWithoutKey:" + setItemStringLessWithoutKey);
+                                Log.d(TAG,"setentry:"+setentry);
+                                Log.d(TAG,"setentryalt1:"+setentryalt1);
+                                Log.d(TAG,"setentryalt2:"+setentryalt2);
                                 if (setItemString.equals(setentry) ||
                                         setItemString.equals(setentryalt1) ||
-                                        setItemString.equals(setentryalt2)) {
+                                        setItemString.equals(setentryalt2) ||
+                                        setItemStringLessWithoutKey.equals(setentryalt2)) {
                                     int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(finalFolderNamePair);
+                                    Log.d(TAG,"positionInSet:"+positionInSet);
                                     // Notify the set menu fragment which removes the entry and updates the set and inline adapters
                                     int prevSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
                                     Log.d(TAG,"about to notifySetFramgent that item removed:"+positionInSet);
@@ -307,7 +321,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public int getPositionOfSong(Song song) {
-        if (mainActivityInterface.getSongMenuFragment()!=null && mainActivityInterface.getSongMenuFragment().getSongsFound()!=null) {
+        if (mainActivityInterface.getSongMenuFragment()!=null && mainActivityInterface.getSongMenuFragment().getSongsFound()!=null &&
+                mainActivityInterface.getSongMenuFragment().getSongsFound().size()>0) {
             for (int x = 0; x < mainActivityInterface.getSongMenuFragment().getSongsFound().size(); x++) {
                 if (mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFilename().equals(song.getFilename()) &&
                         mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFolder().equals(song.getFolder())) {

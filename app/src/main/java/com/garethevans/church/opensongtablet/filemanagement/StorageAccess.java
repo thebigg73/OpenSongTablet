@@ -550,6 +550,7 @@ public class StorageAccess {
             subfolder = subfolder.replace(c.getString(R.string.variation), "Variation");
             //subfolder = subfolder.replace(c.getString(R.string.slide),"Slides");
             subfolder = subfolder.replace(c.getString(R.string.scripture), "Scripture");
+            subfolder = subfolder.replace("**"+ c.getString(R.string.key),"../Variations/_cache");
             //subfolder = subfolder.replace(c.getString(R.string.note),"Note");
             // This is used when custom slides are created as part of a set, making the folder look more obvious
             subfolder = subfolder.replace("**", "../");
@@ -1167,10 +1168,11 @@ public class StorageAccess {
         if (folder.contains("../") || folder.contains("**")) {
             folder = folder.replace("../", "");
             folder = folder.replace("**", "");
+            boolean hadCache = folder.contains("_cache");
             folder = folder.replace("/_cache", "");
             if (folder.contains(c.getString(R.string.variation)) || folder.contains("Variation")) {
                 location[0] = "Variations";
-                location[1] = "";
+                location[1] = hadCache ? "_cache":"";
             } else if (folder.contains(c.getString(R.string.note)) || folder.contains("Note")) {
                 location[0] = "Notes";
                 location[1] = "_cache";
@@ -1284,6 +1286,12 @@ public class StorageAccess {
             e.printStackTrace();
         }
         return success;
+    }
+
+    public boolean copyUriToUri(Uri sourceUri, Uri targetUri) {
+        InputStream inputStream = getInputStream(sourceUri);
+        OutputStream outputStream = getOutputStream(targetUri);
+        return copyFile(inputStream,outputStream);
     }
 
     public boolean doStringWriteToFile(String folder, String subfolder, String filename, String string) {
@@ -2152,6 +2160,10 @@ public class StorageAccess {
             folder = folder.replace("**","");
             subfolder = "";
         }
+        if (subfolder.equals(mainActivityInterface.getMainfoldername())) {
+            subfolder = "";
+        }
+        Log.d(TAG,"folder:"+folder+"  subfolder:"+subfolder);
 
         if (lollipopOrLater()) {
             return listFilesInFolder_SAF(folder, subfolder);

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             slide_string="";
     private String[] key_choice_string = {};
     private ArrayList<String> filenames;
-    private String originalIcon = "";
     private SetItemInfo setItemInfo;
 
     @SuppressWarnings("unused")
@@ -89,7 +89,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
         // Get the chosen item
         setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(setPosition);
-        originalIcon = setItemInfo.songicon;
 
         myView.dialogHeading.setText(edit_set_item_string);
 
@@ -125,25 +124,42 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         myView.editKey.setUserEditing(true);
 
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
-        folders.add("**"+note_string);
-        folders.add("**"+variation_string);
-        folders.add("**"+scripture_string);
-        folders.add("**"+slide_string);
+        // Remove custom folders and then re-add to put them at the bottom
+        folders.remove("**" + note_string);
+        folders.remove("**" + variation_string);
+        folders.remove("**" + scripture_string);
+        folders.remove("**" + slide_string);
+
+        folders.add("**" + note_string);
+        folders.add("**" + variation_string);
+        folders.add("**" + scripture_string);
+        folders.add("**" + slide_string);
+
         if (getContext()!=null) {
             folderAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFolder, R.layout.view_exposed_dropdown_item, folders);
         }
 
         myView.editFolder.setAdapter(folderAdapter);
+
+        // Because the song could be a temporary transposed variation, get the originals
+        String[] originalFolderFilename = mainActivityInterface.getSetActions().getPreVariationFolderFilename(setItemInfo);
+
         myView.editFolder.setUserEditing(false);
-        myView.editFolder.setText(setItemInfo.songfolder);
+        myView.editFolder.setText(originalFolderFilename[0]);
         myView.editFolder.setUserEditing(true);
+
+        myView.editFolder.setEnabled(!myView.editVariation.getChecked());
+        // Set the variation swith based on the filder
+        myView.editVariation.setChecked(originalFolderFilename[0].equals("**" + variation_string) || originalFolderFilename[0].equals("**Variations"));
+        myView.editFolder.setEnabled(!myView.editVariation.getChecked());
+        myView.editFilename.setEnabled(!myView.editVariation.getChecked());
 
         filenames = new ArrayList<>();
         if (getContext()!=null) {
             filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
         }
         myView.editFilename.setAdapter(filenameAdapter);
-        updateFilesInFolder(setItemInfo.songfolder);
+        updateFilesInFolder(originalFolderFilename);
 
         checkAllowEdit();
     }
@@ -160,16 +176,16 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         });
     }
 
-    private void updateFilesInFolder(String folder) {
+    private void updateFilesInFolder(String[] originalFolderFile) {
         // Do this check as we might be using Notes, Variations, etc.
-        String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(folder);
+        String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(originalFolderFile[0]);
         filenames = mainActivityInterface.getStorageAccess().listFilesInFolder(foldersFromNice[0],foldersFromNice[1]);
         if (getContext()!=null) {
             filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
         }
         myView.editFilename.setAdapter(filenameAdapter);
         myView.editFilename.setUserEditing(false);
-        myView.editFilename.setText(setItemInfo.songfilename);
+        myView.editFilename.setText(originalFolderFile[1]);
         myView.editFilename.setUserEditing(true);
     }
 
@@ -180,36 +196,44 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setAsVariation(boolean createVariation) {
-        String newFolder;
+        Log.d(TAG,"setAsVariation("+createVariation+")");
+        String newFolder = setItemInfo.songfolder;
+        String newFilename = setItemInfo.songfilename;
+        Log.d(TAG,"Original values newFolder:"+newFolder+"  newFilename:"+newFilename);
         if (createVariation) {
+            Log.d(TAG,"make the variation)");
             // Make the variation file which also updates the set references
             mainActivityInterface.getSetActions().makeVariation(setPosition);
+            // Get the updated values
+            newFolder = setItemInfo.songfolder;
+            newFilename = setItemInfo.songfilename;
+            Log.d(TAG,"Updated values newFolder:"+newFolder+"  newFilename:"+newFilename);
             // Update the matching card
-            newFolder = "**"+variation_string;
             setItemInfo.songicon = "Variation";
+            myView.editFilename.setEnabled(false);
+            myView.editFolder.setEnabled(false);
+            myView.editFilename.setUserEditing(false);
+            myView.editFilename.setText(newFilename);
+            myView.editFilename.setUserEditing(true);
 
         } else {
             // Delete the variation file and put the original folder back?
             Uri variationUri = mainActivityInterface.getStorageAccess().getUriForItem("Variations","",myView.editFilename.getText().toString());
+
             if (mainActivityInterface.getStorageAccess().uriExists(variationUri)) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" setAsVariation deleteFile "+variationUri);
                 mainActivityInterface.getStorageAccess().deleteFile(variationUri);
             }
-            setItemInfo.songicon = originalIcon;
+
             // Update the matching card
-            newFolder = setItemInfo.songfolder;
-            if (newFolder.startsWith("**")) {
-                // Try to find a matching song in the database, if not it will return mainfoldername
-                newFolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(setItemInfo.songfilename);
+            if (newFilename.contains("_")) {
+                newFolder = newFilename.substring(0,newFilename.lastIndexOf("_"));
+                newFilename = newFilename.replace(newFolder,"").replace("_","");
+                newFolder = newFolder.replace("_","/").replace("//","/");
             }
-            // Fix the item in the set
-            setItemInfo.songfolder = newFolder;
-            setItemInfo.songfoldernice = newFolder;
 
-            // Update the set item in the background and notify the set menu for changes
-            mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
-            mainActivityInterface.updateFragment("set_updateItem",null, arguments);
-
+            myView.editFilename.setEnabled(true);
+            myView.editFolder.setEnabled(true);
         }
 
         // Change the dropdown to match.  This also triggers a change in the card here
@@ -217,8 +241,26 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         myView.editFolder.setText(newFolder);
         myView.editFolder.setUserEditing(true);
 
+        myView.editFilename.setUserEditing(false);
+        myView.editFilename.setText(newFilename);
+        myView.editFilename.setUserEditing(true);
+
+        // Fix the item in the set
+        setItemInfo.songfolder = newFolder;
+        setItemInfo.songfoldernice = newFolder;
+        setItemInfo.songfilename = newFilename;
+
+        // Try to guess the icon
+        setItemInfo.songicon = mainActivityInterface.getSetActions().getIconIdentifier(myView.editFolder.getText().toString(),myView.editFilename.getText().toString());
+
         // Update the cardview in the setList behind.  Pass position as string in array
+        // Update the set item in the background and notify the set menu for changes
+        mainActivityInterface.getCurrentSet().setSetItemInfo(setPosition,setItemInfo);
+        mainActivityInterface.updateFragment("set_updateItem",null, arguments);
+
         updateCurrentSetView();
+
+        Log.d(TAG,"currentSet:"+mainActivityInterface.getCurrentSet().getSetCurrent());
     }
 
     private void updateCurrentSetView() {
@@ -252,10 +294,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
                     case "folder":
                         if (myView.editFolder.getText()!=null) {
                             String folder = myView.editFolder.getText().toString();
-                            String nicefolder = mainActivityInterface.getSetActions().niceCustomLocationFromFolder(folder);
                             setItemInfo.songfolder = folder;
-                            setItemInfo.songfoldernice = nicefolder;
-                            updateFilesInFolder(folder);
+                            setItemInfo.songfoldernice = folder;
+                            updateFilesInFolder(new String[]{folder,setItemInfo.songfilename});
                             checkAllowEdit();
                         }
                         break;

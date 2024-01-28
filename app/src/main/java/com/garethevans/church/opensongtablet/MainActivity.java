@@ -333,10 +333,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             myView = ActivityBinding.inflate(getLayoutInflater());
         }
 
+        // Get the user locale and prepare the strings
+        prepareStrings();
+
         // Attempt stuff using the threadPooleExecutor
         getThreadPoolExecutor().execute(() -> {
-
-            prepareStrings();
 
             mainLooper.post(() -> {
                 // TODO can remove once we track down TransactionTooLarge crash
@@ -396,9 +397,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 // Initialise the activity
                 initialiseActivity();
+
             });
         });
-
     }
 
     @Override
@@ -414,6 +415,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void prepareStrings() {
         // To avoid null context for long tasks throwing error when getting strings
         if (getApplicationContext() != null) {
+
+            // Fix the user locale preference
+            getFixLocale().setLocale(this, this);
+            locale = fixLocale.getLocale();
+
             deeplink_import_osb = getString(R.string.deeplink_import_osb);
             deeplink_sets_backup_restore = getString(R.string.deeplink_sets_backup_restore);
             deeplink_onsong = getString(R.string.deeplink_onsong);
@@ -593,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // The app setup
         versionNumber = getVersionNumber();
 
-        locale = getFixLocale().getLocale();
+        //locale = getFixLocale().getLocale();
 
         checkInternet = getCheckInternet();
         getNearbyConnections();
@@ -884,8 +890,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song.setFolder(getPreferences().getMyPreferenceString("songFolder", mainfoldername));
 
             // Set the locale
-            getFixLocale().setLocale(this, this);
-            locale = fixLocale.getLocale();
+            //getFixLocale().setLocale(this, this);
+            //locale = fixLocale.getLocale();
 
             // ThemeColors
             getMyThemeColors().getDefaultColors();
@@ -1147,6 +1153,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         setupNavigation();
                     }
                     if (deepLink != null && navController!=null) {
+                        Log.d(TAG,"navigate to deepLink:"+deepLink);
                         navController.navigate(Uri.parse(deepLink));
                     } else if (navController!=null) {
                         navController.navigate(id);
@@ -2096,6 +2103,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "clear":
                     setMenuFragment.notifyItemRangeRemoved(0,position);
                     break;
+                case "changed":
+                    setMenuFragment.notifyItemChanged(position);
+                    break;
             }
         }
     }
@@ -2634,9 +2644,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
 
             if (getCurrentSet().getCurrentSetSize() > position) {
-                // Get the set item
-                SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
-
                 // Update the index in the set
                 // Remove highlighting from the old position
                 currentSet.setIndexSongInSet(position);
@@ -2644,71 +2651,199 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     setMenuFragment.updateHighlight();
                 }
 
-                        // Get the song key (from the database)
-                String songKey;
-                if (storageAccess.isSpecificFileExtension("imageorpdf", getCurrentSet().getSetItemInfo(position).songfilename)) {
-                    songKey = nonOpenSongSQLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
+                // Get the set item
+                SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
+                String setFolder = setItemInfo.songfolder;
+                String setFilename = setItemInfo.songfilename;
+                String setKey = setItemInfo.songkey;
+                Uri setUri = getStorageAccess().getUriForItem("Songs",setFolder,setFilename);
+                Log.d(TAG,"setFolder:"+setFolder+"  setFilename:"+setFilename);
+                Log.d(TAG,"setUri:"+setUri);
+
+                // If we are viewing a set item with a temp key change, we will need these variables
+                String[] bits = getSetActions().getPreVariationFolderFilename(setItemInfo);
+                String originalFolder = bits[0];
+                String originalFilename = bits[1];
+                String originalKey = null;
+                Uri originalUri = getStorageAccess().getUriForItem("Songs",originalFolder,originalFilename);
+
+                Log.d(TAG,"originalFolder:"+originalFolder+"  originalFilename:"+originalFilename);
+                Log.d(TAG,"originalUri:"+originalUri);
+
+                // Determine if this is a variation file based on the filename
+                boolean isNormalVariation = getSetActions().getIsNormalVariation(setFolder, setFilename);
+                Log.d(TAG,"isNormalVariation:"+isNormalVariation);
+
+                // Create a null/empty song object in case we need to load it to get the key or transpose
+                Song quickSong = null;
+
+                // Get the key of the song from the file
+                if (storageAccess.isSpecificFileExtension("imageorpdf",setFilename)) {
+                    // This is a pdf, we query the persistent database
+                    Log.d(TAG,"isimageorpdf");
+                    originalKey = nonOpenSongSQLiteHelper.getKey(setFolder,setFilename);
+                    Log.d(TAG,"originalKey:"+originalKey);
+                } else if (isNormalVariation) {
+                    Log.d(TAG,"isNormalVariation");
+                    if (storageAccess.uriExists(setUri)) {
+                        // We are a variation and the file already exists.
+                        // We can get the key from the variation file
+                        Log.d(TAG,"Variation file already exists, so load that at:"+setFolder+" / "+setFilename);
+                        quickSong = new Song();
+                        quickSong.setFolder(setFolder);
+                        quickSong.setFilename(setFilename);
+                    } else if (storageAccess.uriExists(originalUri)) {
+                        // The variation file doesn't exist yet
+                        // We can get the original file
+                        Log.d(TAG,"variation file doesn't exist, so load the original:"+setFolder+" / "+setFilename);
+                        quickSong = new Song();
+                        quickSong.setFolder(originalFolder);
+                        quickSong.setFilename(originalFilename);
+                    }
+                    if (quickSong!=null && quickSong.getFilename()!=null &&
+                            !quickSong.getFilename().isEmpty()) {
+                        quickSong = getLoadSong().doLoadSong(quickSong,false);
+                        originalKey = quickSong.getKey();
+                    }
                 } else {
-                    if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
-                        Song quickSong = new Song();
-                        quickSong.setFolder(setItemInfo.songfolder);
-                        quickSong.setFilename(setItemInfo.songfilename);
-                        quickSong = loadSong.doLoadSongFile(quickSong, false);
-                        songKey = quickSong.getKey();
-                    } else {
-                        songKey = sqLiteHelper.getKey(setItemInfo.songfolder, setItemInfo.songfilename);
-                    }
+                    Log.d(TAG,"Just a normal song (or a key variation), get from the database");
+                    originalKey = sqLiteHelper.getKey(setFolder, setFilename);
                 }
 
-                if (setItemInfo.songkey != null && songKey != null &&
-                        !setItemInfo.songkey.isEmpty() && !songKey.isEmpty() && !setItemInfo.songkey.equals(songKey)) {
-                    // The set has specified a key that is different from our song
-                    // We will use a variation of the current song
-                    String newFolder;
-                    String newFilename;
-                    if (!setItemInfo.songfolder.contains("**")) {
-                        // Not a variation already, so we'll make it one with the set key
-                        newFolder = "**" + variation;
-                        newFilename = setItemInfo.songfolder.replace("/", "_") + "_" + setItemInfo.songfilename + "_" + setItemInfo.songkey;
-                        newFilename = newFilename.replace("__", "_");
+                Log.d(TAG,"originalKey:"+originalKey);
+                Log.d(TAG,"setKey:"+setKey);
+
+                boolean isKeyVariation = setKey!=null && originalKey!=null && !setKey.isEmpty() &&
+                                !originalKey.isEmpty() && !setKey.equals(originalKey);
+
+                Log.d(TAG,"isKeyVariation:"+isKeyVariation+" isNormalVariation:"+isNormalVariation);
+
+                if (isKeyVariation) {
+                    // Could be just a key variation, or a standard variation needing adjusted
+
+                    boolean needToTranspose = false;
+                    Uri targetUri = null;
+                    String targetFolder = "Variations";
+                    String targetSubfolder = "";
+                    String targetFilename = null;
+
+                    if (isNormalVariation) {
+                        // We must already have the variation file, so we can edit directly
+                        Log.d(TAG, "Normal variation that needs to be transposed (file already exists)");
+                        needToTranspose = true;
+                        targetFilename = setFilename;
+                        targetUri = getStorageAccess().getUriForItem("Variations", "", setFilename);
+                        Log.d(TAG, "Standard variation file:" + targetUri);
+
                     } else {
-                        // Already a variation, don't change the file name
-                        newFolder = setItemInfo.songfolder;
-                        newFilename = setItemInfo.songfilename;
+                        // Look for an already created key Variation file so we don't need to do it again
+                        targetFilename = originalFolder + "/" + originalFilename + getSetActions().getKeyTextInFilename() + setKey;
+                        targetFilename = targetFilename.replace("//", "/").replace("/", "_");
+                        targetUri = getStorageAccess().getUriForItem("Variations", "_cache", targetFilename);
+                        targetSubfolder = "_cache";
+
+                        Log.d(TAG,"looking for key var targetUri:"+targetUri);
+                        if (!getStorageAccess().uriExists(targetUri)) {
+                            needToTranspose = true;
+                        }
+
+                        // We adjust the folder and filename on a temporary basis
+                        // This isn't used in the set, just in the loading process
+                        setFolder = "../Variations/_cache";
+                        setFilename = targetFilename;
                     }
 
-                    // Get a tempSong we can write
-                    Song copySong = new Song();
-                    if (setItemInfo.songfolder.contains("**") || setItemInfo.songfolder.contains("../")) {
-                        // Already a variation (or other), so don't use the database
-                        copySong.setFilename(setItemInfo.songfilename);
-                        copySong.setFolder(setItemInfo.songfolder);
-                        copySong = loadSong.doLoadSongFile(copySong, false);
-                    } else {
-                        // Just a song, so use the database
-                        copySong = sqLiteHelper.getSpecificSong(setItemInfo.songfolder, setItemInfo.songfilename);
+                    if (needToTranspose) {
+                        // The set has specified a key that is different from our song
+                        Log.d(TAG, "Need to transpose...");
+
+                        if (quickSong == null) {
+                            Log.d(TAG, "quickSong was null as standard song file (not variation)");
+                            // This was a straightforward song (i.e. not a standard variation)
+                            // Get the song object from the database
+                            if (storageAccess.isSpecificFileExtension("imageorpdf", setFilename)) {
+                                quickSong = nonOpenSongSQLiteHelper.getSpecificSong(originalFolder, originalFilename);
+                            } else {
+                                quickSong = sqLiteHelper.getSpecificSong(originalFolder, originalFilename);
+                            }
+                        } else if (quickSong.getLyrics() == null || quickSong.getLyrics().isEmpty()) {
+                            Log.d(TAG, "Likely a variation file or empty lyrics, import it");
+                            quickSong = getLoadSong().doLoadSong(quickSong, false);
+                        }
+
+                        // Transpose the lyrics in the song file
+                        // Get the number of transpose times
+                        Log.d(TAG, "originalKey:" + originalKey + "  setKey:" + setKey);
+                        int transposeTimes = transpose.getTransposeTimes(originalKey, setKey);
+
+                        // Why transpose up 11 times, when you can just transpose down once.
+                        // Giving the option as it makes it easier for the user to select new key
+                        if (transposeTimes > 6) {
+                            // 7>-5  8>-4 9>-3 10>-2 11>-1 12>0
+                            transposeTimes = transposeTimes - 12;
+                        } else if (transposeTimes < -6) {
+                            // -7>5 -8>4 -9>3 -10>2 -11>1 -12>0
+                            transposeTimes = 12 + transposeTimes;
+                        }
+
+                        String transposeDirection;
+                        if (transposeTimes >= 0) {
+                            transposeDirection = "+1";
+                        } else {
+                            transposeDirection = "-1";
+                        }
+
+                        transposeTimes = Math.abs(transposeTimes);
+
+                        Log.d(TAG, "transposeTimes:" + transposeTimes + "  transposeDirection:" + transposeDirection);
+
+                        quickSong.setKey(originalKey); // This will be transposed in the following...
+                        quickSong.setLyrics(transpose.doTranspose(quickSong,
+                                transposeDirection, transposeTimes, quickSong.getDetectedChordFormat(),
+                                quickSong.getDesiredChordFormat()).getLyrics());
+                        // Get the song XML
+                        String songXML = processSong.getXML(quickSong);
+
+                        Log.d(TAG, "transposed songXML:\n" + songXML);
+
+                        // Now we need to write the transposed file
+                        // If this is a standard variation (not a key variation)
+                        Log.d(TAG, "About to write the transposed file");
+                        Log.d(TAG, "setFolder:" + setFolder);
+                        Log.d(TAG, "setFilename:" + setFilename);
+
+                        if (!getStorageAccess().uriExists(targetUri)) {
+                            // We need to create the new key variation file for writing to
+                            Log.d(TAG, "Key variation file creation");
+                            getStorageAccess().lollipopCreateFileForOutputStream(false,
+                                    targetUri, null, targetFolder,
+                                    targetSubfolder, targetFilename);
+                        }
+
+                        Log.d(TAG, "targetUri:" + targetUri);
+                        if (targetUri != null) {
+                            // Write the transposed file
+                            OutputStream outputStream = getStorageAccess().getOutputStream(targetUri);
+                            storageAccess.writeFileFromString(songXML, outputStream);
+                        }
+                    } else if (!getSetActions().getIsNormalOrKeyVariation(setFolder,setFilename)) {
+                        // Load the song in the original key
+                        Log.d(TAG, "Load the original file as no key varation required");
+                        Log.d(TAG, "setFolder:" + setFolder + "  setFilename:" + setFilename);
+                        Log.d(TAG, "originalFolder:" + originalFolder + "  originalFilename:" + originalFilename);
+                        setFolder = originalFolder;
+                        setFilename = originalFilename;
+                        setItemInfo.songfolder = originalFolder;
+                        setItemInfo.songfilename = originalFilename;
+                        setItemInfo.songfoldernice = originalFolder;
                     }
-                    copySong.setFolder(newFolder);
-                    copySong.setFilename(newFilename);
-
-                    // Transpose the lyrics
-                    // Get the number of transpose times
-                    int transposeTimes = transpose.getTransposeTimes(songKey, setItemInfo.songkey);
-                    copySong.setKey(songKey); // This will be transposed in the following...
-                    copySong.setLyrics(transpose.doTranspose(copySong,
-                            "+1", transposeTimes, copySong.getDetectedChordFormat(),
-                            copySong.getDesiredChordFormat()).getLyrics());
-                    // Get the song XML
-                    String songXML = processSong.getXML(copySong);
-                    // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
-                    getStorageAccess().updateFileActivityLog(TAG + " loadSongFromSet doStringWriteToFile Variations/" + newFilename + " with: " + songXML);
-                    storageAccess.doStringWriteToFile("Variations", "", newFilename, songXML);
-
-                    setItemInfo.songfolder = newFolder;
-                    setItemInfo.songfilename = newFilename;
                 }
+                Log.d(TAG,"setItemInfo.songfolder:"+setItemInfo.songfolder);
+                Log.d(TAG,"setItemInfo.songfoldernice:"+setItemInfo.songfoldernice);
+                Log.d(TAG,"setItemInfo.songfilename:"+setItemInfo.songfilename);
 
-                doSongLoad(setItemInfo.songfolder, setItemInfo.songfilename, true);
+                Log.d(TAG,"finished processing, now load from:"+setFolder+"/"+setFilename);
+                doSongLoad(setFolder, setFilename, true);
             }
         });
     }

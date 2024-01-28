@@ -245,6 +245,16 @@ public class SetMenuFragment extends Fragment {
             mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeChanged(from, count));
         }
     }
+    // Called when editing a set item
+    public void notifyItemChanged(int position) {
+        if (setAdapter!=null && mainActivityInterface!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                setAdapter.notifyItemChanged(position);
+                mainActivityInterface.notifyInlineSetChanged(position);
+            });
+
+        }
+    }
 
     // Called when adding a song to the end of the set
     public void notifyItemInserted() {

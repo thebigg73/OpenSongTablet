@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // All actions related to building/processing are in the SetActions class
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -70,7 +69,6 @@ public class CurrentSet {
         }
     }
 
-
     // The current set (a string of each item)
     public void loadCurrentSet() {
         setCurrent = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent", "");
@@ -92,7 +90,6 @@ public class CurrentSet {
         return setCurrent;
     }
 
-
     // The last loaded set before any changes.  Used for comparison to signify changes
     public void loadSetCurrentBeforeEdits() {
         setCurrentBeforeEdits = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentBeforeEdits", "");
@@ -102,7 +99,6 @@ public class CurrentSet {
         this.setCurrentBeforeEdits = setCurrentBeforeEdits;
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentBeforeEdits", setCurrentBeforeEdits);
     }
-
 
     // The set name for the most recently loaded/created set
     // An empty name is a new current set that hasn't been saved
@@ -118,7 +114,6 @@ public class CurrentSet {
     public String getSetCurrentLastName() {
         return setCurrentLastName;
     }
-
 
     // Add items to the set (various options) - all update the preferences
     public void addItemToSet(SetItemInfo setItemInfo, boolean doSave) {
@@ -154,12 +149,13 @@ public class CurrentSet {
         setItemInfo.songkey = key;
         setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
         setItemInfo.songitem = (getCurrentSetSize()+1);
+
+        // Add to the set
         setItemInfos.add(setItemInfo);
 
         // Update the currentSet preferences
         updateCurrentSetPreferences();
     }
-
 
     // Remove an item from the set
     public void removeFromCurrentSet(int pos, String item) {
@@ -182,7 +178,6 @@ public class CurrentSet {
         updateCurrentSetPreferences();
     }
 
-
     // Update an entry
     public void setSetItemInfo(int position, SetItemInfo setItemInfo) {
         if (getCurrentSetSize() > position) {
@@ -195,15 +190,12 @@ public class CurrentSet {
         }
     }
 
-
     // Save the currentSet preference
     public void updateCurrentSetPreferences() {
         setCurrent = mainActivityInterface.getSetActions().getSetAsPreferenceString();
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setCurrent);
         updateSetTitleView();
     }
-
-
 
     // The currently selected song in the set
     public void setIndexSongInSet(int indexSongInSet) {
@@ -221,7 +213,6 @@ public class CurrentSet {
     public int getPrevIndexSongInSet() {
         return prevIndexSongInSet;
     }
-
 
     // Update the title in the set menu (add asterisk for changes)
     public void initialiseSetTitleViews(ImageView asteriskView,
@@ -279,7 +270,6 @@ public class CurrentSet {
         }
     }
 
-
     // Get array of set items as song objects
     // This is called for random song where we need a array of songs to choose
     public ArrayList<Song> getSetSongObject() {
@@ -295,7 +285,6 @@ public class CurrentSet {
         return songsInSet;
     }
 
-
     public int getMatchingSetItem(String songForSetWork) {
         int pos = -1;
         for (SetItemInfo setItemInfo:setItemInfos) {
@@ -305,6 +294,17 @@ public class CurrentSet {
         }
         return pos;
     }
+
+    public int getMatchingSetItemBeforeKey(String partialSongForSetWork) {
+        int pos = -1;
+        for (SetItemInfo setItemInfo:setItemInfos) {
+            if (setItemInfo.songforsetwork.startsWith(partialSongForSetWork)) {
+                return pos;
+            }
+        }
+        return pos;
+    }
+
     public boolean getIsMatchingSetItem(int position, String songForSetWork) {
         if (setItemInfos!=null && getCurrentSetSize()>position) {
             return setItemInfos.get(position).songforsetwork.equals(songForSetWork);
@@ -312,7 +312,6 @@ public class CurrentSet {
             return false;
         }
     }
-
 
     // Called when items are dragged around in the set
     public void swapPositions(int fromPosition, int toPosition) {

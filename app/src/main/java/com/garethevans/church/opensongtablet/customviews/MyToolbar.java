@@ -197,8 +197,11 @@ public class MyToolbar extends MaterialToolbar {
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
                 String text = mainActivityInterface.getSong().getTitle();
-                if (mainActivityInterface.getSong().getFolder().startsWith("*")) {
-                    text = "*" + text;
+                if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
+                        mainActivityInterface.getSong().getFolder(),
+                        mainActivityInterface.getSong().getFilename())) {
+                    text = "*" + mainActivityInterface.getSetActions().getPreVariationFolderFilename(
+                            mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename())[1];
                 }
                 title.setText(text);
                 int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
@@ -370,7 +373,9 @@ public class MyToolbar extends MaterialToolbar {
         // If we need to hide the actionbar again, set a runnable, as long as the menu isn't open
         if (hideActionBar && performanceMode && !menuOpen) {
             try {
-                delayActionBarHide.postDelayed(hideActionBarRunnable, actionBarHideTime);
+                if (delayActionBarHide!=null) {
+                    delayActionBarHide.postDelayed(hideActionBarRunnable, actionBarHideTime);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

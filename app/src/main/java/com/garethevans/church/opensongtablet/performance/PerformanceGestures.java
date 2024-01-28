@@ -26,7 +26,6 @@ import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsAdapter;
-import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
@@ -76,7 +75,6 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
-        Log.d(TAG,"doAction():"+action);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":
@@ -583,18 +581,19 @@ public class PerformanceGestures {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
             int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-            if (positionInSet>-1 && mainActivityInterface.getCurrentSet().getCurrentSetSize()>positionInSet) {
-                SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(positionInSet);
-
-                if (!setItemInfo.songfolder.equals(mainActivityInterface.getSong().getFolder())) {
-                    mainActivityInterface.getSong().setFolder(setItemInfo.songfolder);
-                    mainActivityInterface.getSong().setFilename(setItemInfo.songfilename);
-                    mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false);
-                    mainActivityInterface.setWhattodo("editTempVariation");
-                } else if (setItemInfo.songfolder.contains("**Variation")) {
-                    mainActivityInterface.setWhattodo("editActualVariation");
-                }
+            if (mainActivityInterface.getSetActions().getIsNormalVariation(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
+                mainActivityInterface.setWhattodo("editActualVariation");
+            } else if (mainActivityInterface.getSetActions().getIsKeyVariation(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
+                mainActivityInterface.setWhattodo("editTempVariation");
+                String[] getOriginal = mainActivityInterface.getSetActions().getPreVariationFolderFilename(mainActivityInterface.getSong().getFolder() +
+                        "/" + mainActivityInterface.getSong().getFilename());
+                mainActivityInterface.getSong().setFolder(getOriginal[0]);
+                mainActivityInterface.getSong().setFilename(getOriginal[1]);
+                mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false);
+            } else {
+                mainActivityInterface.setWhattodo("");
             }
+
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
         } else {
             if (mainActivityInterface!=null) {
