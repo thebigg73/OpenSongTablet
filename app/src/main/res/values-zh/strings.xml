@@ -730,6 +730,7 @@
     <string name="set_inline">内联集</string>
     <string name="set_inline_info">在歌曲窗口旁边的屏幕上显示设置列表</string>
     <string name="set_inline_showcase">这是内嵌式设置，允许您在表演时查看歌单。 您可以在设置/显示/内联设置中更改设置。</string>
+    <string name="set_is_empty">您的套装中没有物品</string>
     <string name="set_item_info">您可以更改从集合加载的歌曲的文件夹/文件名，也可以更改歌曲显示的键（如果需要，这会在您的设备上临时转置歌曲）</string>
     <string name="set_item_removed">从集合中删除的项目</string>
     <string name="set_load_first">在第一项打开加载的集</string>

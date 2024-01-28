@@ -730,6 +730,7 @@
     <string name="set_inline">Conjunto en línea</string>
     <string name="set_inline_info">Mostrar la lista de canciones en la pantalla al lado de la ventana de la canción</string>
     <string name="set_inline_showcase">Este es el set en línea que permite ver la lista de canciones mientras actúas.  Puede cambiar la configuración en Configuración / Pantalla / Conjunto en línea.</string>
+    <string name="set_is_empty">No hay elementos en tu colección</string>
     <string name="set_item_info">Puede cambiar la carpeta / nombre de archivo de la canción cargada desde el conjunto y también puede cambiar la tecla para la visualización de la canción (esto realiza una transposición temporal de la canción en su dispositivo si es necesario)</string>
     <string name="set_item_removed">Objeto eliminado del conjunto</string>
     <string name="set_load_first">Abra el conjunto cargado en el primer elemento</string>

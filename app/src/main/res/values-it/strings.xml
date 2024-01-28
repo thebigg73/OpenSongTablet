@@ -730,6 +730,7 @@
     <string name="set_inline">Insieme in linea</string>
     <string name="set_inline_info">Mostra la scaletta sullo schermo accanto alla finestra del brano</string>
     <string name="set_inline_showcase">Questo è il set in linea che consente di visualizzare la scaletta durante l\'esecuzione.  È possibile modificare le impostazioni in Impostazioni / Display / Set in linea.</string>
+    <string name="set_is_empty">Non ci sono oggetti nel tuo set</string>
     <string name="set_item_info">È possibile modificare la cartella / nome del file del brano caricato dal set e si può anche cambiare la chiave per la visualizzazione del brano (questo esegue una trasposizione temporanea del brano sul dispositivo, se necessario)</string>
     <string name="set_item_removed">Elemento rimosso dal set</string>
     <string name="set_load_first">Aprire il set caricato al primo elemento</string>

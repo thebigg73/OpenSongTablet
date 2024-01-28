@@ -730,6 +730,7 @@
     <string name="set_inline">Conjunto embutido</string>
     <string name="set_inline_info">Mostrar o setlist na tela ao lado da janela da música</string>
     <string name="set_inline_showcase">Este é o conjunto embutido que permite uma visualização do setlist enquanto você está executando.  Você pode alterar as configurações em Configurações / Display / Inline set.</string>
+    <string name="set_is_empty">Não há itens no seu conjunto</string>
     <string name="set_item_info">Você pode alterar a pasta / nome do arquivo da música carregada a partir do conjunto e você também pode alterar a chave para exibição da música (isso executa uma transposição temporária da música no seu dispositivo, se necessário)</string>
     <string name="set_item_removed">Item removido do conjunto</string>
     <string name="set_load_first">Abra o conjunto carregado no primeiro item</string>

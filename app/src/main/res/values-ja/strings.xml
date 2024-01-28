@@ -730,6 +730,7 @@
     <string name="set_inline">インライン セット</string>
     <string name="set_inline_info">曲ウィンドウの横の画面にセットリストを表示します</string>
     <string name="set_inline_showcase">これは、演奏中にセットリストを表示できるインラインセットです。 設定/表示/インラインセットで設定を変更できます。</string>
+    <string name="set_is_empty">セットにアイテムがありません</string>
     <string name="set_item_info">セットからロードされた曲のフォルダ/ファイル名を変更したり、曲表示のキーを変更したりすることもできます(これにより、必要に応じてデバイス上の曲の一時的な移調が実行されます)</string>
     <string name="set_item_removed">セットから削除されたアイテム</string>
     <string name="set_load_first">ロードされたセットを最初のアイテムで開く</string>

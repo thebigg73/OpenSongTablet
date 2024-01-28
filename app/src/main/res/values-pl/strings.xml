@@ -730,6 +730,7 @@
     <string name="set_inline">Zestaw wbudowany</string>
     <string name="set_inline_info">Pokaż setlistę na ekranie obok okna piosenki</string>
     <string name="set_inline_showcase">Jest to zestaw wbudowany, który umożliwia podgląd setlisty podczas występu.  Ustawienia można zmienić w Ustawienia / Wyświetlacz / Zestaw wbudowany.</string>
+    <string name="set_is_empty">W zestawie nie ma żadnych przedmiotów</string>
     <string name="set_item_info">Możesz zmienić katalog/nazwę pliku piosenki załadowanego z zestawu, a także zmienić tonację do wyświetlania (w razie potrzeby wykonuje tymczasową transpozycję piosenki na urządzeniu)</string>
     <string name="set_item_removed">Element usunięty z zestawu</string>
     <string name="set_load_first">Otwórz załadowany zestaw na pierwszym elemencie</string>

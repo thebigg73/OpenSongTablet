@@ -730,6 +730,7 @@
     <string name="set_inline">Inline sada</string>
     <string name="set_inline_info">Zobrazit setlist na obrazovce vedle okna skladby</string>
     <string name="set_inline_showcase">Toto je vložená sada, která umožňuje view setlist během hraní.  Nastavení můžete změnit v Nastavení / Zobrazení / Inline sada.</string>
+    <string name="set_is_empty">Ve vaší sadě nejsou žádné položky</string>
     <string name="set_item_info">Můžete změnit složku/název souboru skladby načtené ze sady a můžete také změnit klávesu pro zobrazení skladby (v případě potřeby provede dočasnou transpozici skladby do vašeho zařízení)</string>
     <string name="set_item_removed">Položka odstraněna ze sady</string>
     <string name="set_load_first">Otevřete načtenou sadu u první položky</string>

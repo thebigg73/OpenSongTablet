@@ -42,7 +42,7 @@ public class InlineSetList extends RecyclerView {
     private float textSize = 12;
     private boolean useTitle = true, reloadSong = false;
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
-
+    private String no_set_string;
     public InlineSetList(@NonNull Context context) {
         super(context);
         llm = new LinearLayoutManager(context);
@@ -70,6 +70,7 @@ public class InlineSetList extends RecyclerView {
         setAdapter(inlineSetListAdapter);
         setVisibility(View.GONE);
         mode_presenter_string = c.getString(R.string.mode_presenter);
+        no_set_string = c.getString(R.string.set_is_empty);
         useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
     }
 
@@ -77,6 +78,10 @@ public class InlineSetList extends RecyclerView {
     public void setInlineSet(boolean showInline) {
         this.showInline = showInline;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet", showInline);
+        setVisibility(showInline ? View.VISIBLE:View.GONE);
+        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
+            mainActivityInterface.getShowToast().doIt(no_set_string);
+        }
     }
 
     // Adjust the inline text size
