@@ -507,6 +507,28 @@ public class CommonSQL {
             return collator.compare(o1,o2);
         };
         Collections.sort(folders, comparator);
+
+        // If we have custom folders (variations, etc.) listed, remove them
+        if (folders.contains("../Variations/_cache") ||
+                folders.contains("../"+c.getString(R.string.variation)+"/_cache") ||
+                folders.contains("**Variations/_cache") ||
+                folders.contains("**"+c.getString(R.string.variation)+"/_cache")) {
+            folders.remove("../Variations/_cache");
+            folders.remove("../"+c.getString(R.string.variation)+"/_cache");
+            folders.remove("**Variations/_cache");
+            folders.remove("**"+c.getString(R.string.variation)+"/_cache");
+        }
+
+        if (folders.contains("../Variations") ||
+                folders.contains("../"+c.getString(R.string.variation)) ||
+                folders.contains("**Variations") ||
+                folders.contains("**"+c.getString(R.string.variation))) {
+            folders.remove("../Variations");
+            folders.remove("../"+c.getString(R.string.variation));
+            folders.remove("**Variations");
+            folders.remove("**"+c.getString(R.string.variation));
+        }
+
         return folders;
     }
 
