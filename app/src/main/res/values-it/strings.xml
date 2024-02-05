@@ -584,6 +584,7 @@
     <string name="pad">"Musica di sottofondo"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Pad a dissolvenza incrociata</string>
+    <string name="pad_cross_fade_info">Questo avvierà automaticamente i pad quando ci si sposta tra i brani e consentirà una dissolvenza incrociata fluida. È necessario avviare manualmente il pad la prima volta.</string>
     <string name="pad_custom_info">Imposta pad personalizzati da utilizzare come basi musicali corrispondenti ai tasti dei brani. Questi file devono essere salvati nella cartella OpenSong/Pads. Le canzoni che hanno il pad impostato come \'Auto\' e hanno una chiave impostata utilizzeranno il file qui annotato.</string>
     <string name="pad_custom_pad_error">Si è verificato un problema con il set di tastierino automatico personalizzato per questo tasto</string>
     <string name="pad_custom_short">Scegli pad integrati o personalizzati per abbinare ogni tasto</string>

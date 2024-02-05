@@ -584,6 +584,7 @@
     <string name="pad">"Hudba na pozadí"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Cross-fade podložky</string>
+    <string name="pad_cross_fade_info">Tím se automaticky spustí pady při přechodu mezi skladbami a umožní plynulé prolínání. Poprvé musíte podložku spustit ručně.</string>
     <string name="pad_custom_info">Nastavte vlastní pady, které se mají použít jako doprovodné stopy odpovídající klávesám písně. Tyto soubory musí být uloženy ve složce OpenSong/Pad. Skladby, které mají pad nastavený jako „Auto“ a mají nastavenou klávesu, použijí zde uvedený soubor.</string>
     <string name="pad_custom_pad_error">Došlo k problému s vlastní automatickou podložkou nastavenou pro tuto klávesu</string>
     <string name="pad_custom_short">Vyberte si vestavěné nebo vlastní podložky, které odpovídají každé klávese</string>

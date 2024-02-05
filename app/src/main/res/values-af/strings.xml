@@ -584,6 +584,7 @@
     <string name="pad">"Agtergrond musiek"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Kruis-vervaag pads</string>
+    <string name="pad_cross_fade_info">Dit sal outomaties pads begin wanneer jy tussen liedjies beweeg en \'n gladde kruis laat vervaag. U moet die pad die eerste keer handmatig begin.</string>
     <string name="pad_custom_info">Stel pasgemaakte pads om as agtergrondsnitte te gebruik wat by liedjiesleutels pas. Hierdie lêers moet in die OpenSong/Pads-lêergids gestoor word. Liedjies wat die pad ingestel het as \'Outo\' en \'n sleutelstel het, sal die lêer gebruik wat hier genoem word.</string>
     <string name="pad_custom_pad_error">Daar is \'n probleem met die pasgemaakte outomatiese padstel vir hierdie sleutel</string>
     <string name="pad_custom_short">Kies ingeboude of pasgemaakte blokkies om by elke sleutel te pas</string>

@@ -584,6 +584,7 @@
     <string name="pad">"Vaddera"</string>
     <string name="pad_auto">"Bil"</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
+    <string name="pad_cross_fade_info">Detta kommer automatiskt att starta pads när du rör dig mellan låtar och tillåta en smidig övertoning. Du måste starta dynan manuellt första gången.</string>
     <string name="pad_custom_info">Ställ in anpassade pads som ska användas som bakgrundsspår som matchar sångtangenterna. Dessa filer måste sparas i mappen OpenSong/Pads. Låtar som har pad inställd som \'Auto\' och har en tangentuppsättning kommer att använda filen som anges här.</string>
     <string name="pad_custom_pad_error">Det finns ett problem med den anpassade autopad-uppsättningen för denna nyckel</string>
     <string name="pad_custom_short">Välj inbyggda eller anpassade kuddar för att matcha varje tangent</string>

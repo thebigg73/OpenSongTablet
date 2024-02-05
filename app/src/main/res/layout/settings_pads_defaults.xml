@@ -39,11 +39,12 @@
                 app:textL="@string/pan_left"
                 app:textR="@string/pan_right" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/crossFadePad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pad_cross_fade" />
+                android:text="@string/pad_cross_fade"
+                android:hint="@string/pad_cross_fade_info"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/crossFadeTime"

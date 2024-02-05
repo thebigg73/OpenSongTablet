@@ -584,6 +584,7 @@
     <string name="pad">"バックグラウンドミュージック"</string>
     <string name="pad_auto">"オート"</string>
     <string name="pad_cross_fade">クロスフェードパッド</string>
+    <string name="pad_cross_fade_info">これにより、曲間を移動するときにパッドが自動的に開始され、スムーズなクロスフェードが可能になります。パッドは、最初に手動で開始する必要があります。</string>
     <string name="pad_custom_info">曲のキーに一致するバッキングトラックとして使用するカスタムパッドを設定します。 これらのファイルは、OpenSong / Padsフォルダーに保存する必要があります。 パッドが「自動」に設定され、キーが設定されている曲は、ここに記載されているファイルを使用します。</string>
     <string name="pad_custom_pad_error">このキーに設定されているカスタムオートパッドに問題があります</string>
     <string name="pad_custom_short">各キーに一致する組み込みまたはカスタムパッドを選択します</string>

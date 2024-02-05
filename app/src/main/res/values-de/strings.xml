@@ -584,6 +584,7 @@
     <string name="pad">"Hintergrundmusik"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Crossfade-Pads</string>
+    <string name="pad_cross_fade_info">Dadurch werden die Pads automatisch gestartet, wenn zwischen den Songs gewechselt wird, und es wird ein sanftes Überblenden ermöglicht. Sie müssen das Pad beim ersten Mal manuell starten.</string>
     <string name="pad_custom_info">Stellen Sie benutzerdefinierte Pads ein, die als Backing-Tracks verwendet werden sollen, die den Song-Tonarten entsprechen. Diese Dateien müssen im Ordner „OpenSong/Pads“ gespeichert werden. Songs, bei denen das Pad auf „Auto“ eingestellt ist und die eine Tonart haben, verwenden die hier angegebene Datei.</string>
     <string name="pad_custom_pad_error">Es gibt ein Problem mit dem benutzerdefinierten Auto-Pad-Set für diese Taste</string>
     <string name="pad_custom_short">Wählen Sie integrierte oder benutzerdefinierte Pads, die zu jeder Taste passen</string>

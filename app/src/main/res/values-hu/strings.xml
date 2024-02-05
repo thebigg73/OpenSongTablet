@@ -584,6 +584,7 @@
     <string name="pad">"Háttérzene"</string>
     <string name="pad_auto">"Kocsi"</string>
     <string name="pad_cross_fade">Kereszthalványuló párnák</string>
+    <string name="pad_cross_fade_info">Ez automatikusan elindítja a párnákat a dalok közötti mozgáskor, és lehetővé teszi a sima kereszt elhalványulását. Az első alkalommal manuálisan kell elindítania a betétet.</string>
     <string name="pad_custom_info">Állítson be egyéni padokat a dalbillentyűknek megfelelő háttérzeneként. Ezeket a fájlokat az OpenSong/Pads mappába kell menteni. Azok a dalok, amelyek padja „Auto”-ra van állítva, és kulcs van beállítva, az itt megjelölt fájlt fogják használni.</string>
     <string name="pad_custom_pad_error">Probléma van az ehhez a kulcshoz tartozó egyéni automata pad-beállítással</string>
     <string name="pad_custom_short">Válasszon beépített vagy egyedi padokat az egyes kulcsokhoz</string>

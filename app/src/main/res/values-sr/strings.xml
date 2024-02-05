@@ -584,6 +584,7 @@
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_cross_fade">Cross-fade jastučići</string>
+    <string name="pad_cross_fade_info">Ovo će automatski pokrenuti jastučiće kada se krećete između pesama i dozvoliti glatko postepeno iščezavanje. Morate ručno pokrenuti tablu pri prvom trenutku.</string>
     <string name="pad_custom_info">Podesite prilagođene podloge da se koriste kao prateće numere koje odgovaraju tasterima pesme. Ove datoteke moraju biti sačuvane u fascikli OpenSong/Pads. Pesme koje imaju pad podešen na \'Auto\' i imaju set tastera koristiće fajl koji je ovde naveden.</string>
     <string name="pad_custom_pad_error">Postoji problem sa prilagođenim automatskim padovima za ovaj taster</string>
     <string name="pad_custom_short">Odaberite ugrađene ili prilagođene padove koji odgovaraju svakom tasteru</string>

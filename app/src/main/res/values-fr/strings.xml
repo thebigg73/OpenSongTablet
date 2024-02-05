@@ -584,6 +584,7 @@
     <string name="pad">"Musique de fond"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Pads de fondu enchaîné</string>
+    <string name="pad_cross_fade_info">Cela lancera automatiquement les pads lors du passage d’une chanson à l’autre et permettra un fondu enchaîné en douceur. Vous devez démarrer manuellement le pad la première fois.</string>
     <string name="pad_custom_info">Définissez des pads personnalisés à utiliser comme pistes d\'accompagnement correspondant aux touches de la chanson. Ces fichiers doivent être enregistrés dans le dossier OpenSong/Pads. Les morceaux dont le pad est réglé sur « Auto » et dont la tonalité est définie utiliseront le fichier indiqué ici.</string>
     <string name="pad_custom_pad_error">Il y a un problème avec le pad automatique personnalisé défini pour cette touche</string>
     <string name="pad_custom_short">Choisissez des pads intégrés ou personnalisés pour correspondre à chaque touche</string>

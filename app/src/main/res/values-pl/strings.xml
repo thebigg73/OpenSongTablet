@@ -584,6 +584,7 @@
     <string name="pad">Podkład muzyczny</string>
     <string name="pad_auto">Automatyczny</string>
     <string name="pad_cross_fade">Płynnie łącz podkłady</string>
+    <string name="pad_cross_fade_info">Spowoduje to automatyczne uruchomienie padów podczas przechodzenia między utworami i umożliwi płynne zanikanie krzyża. Za pierwszym razem musisz ręcznie uruchomić pad.</string>
     <string name="pad_custom_info">Ustaw niestandardowe podkłady, które będą używane jako ścieżki dopasowane do tonacji piosenki. Te pliki muszą być zapisane w folderze OpenSong/Pads. Piosenki, w których podkład jest ustawiony jako „Auto” i mają ustawioną tonację, będą korzystać z podanego tutaj pliku.</string>
     <string name="pad_custom_pad_error">Wystąpił problem z niestandardowym podkładem automatycznym ustawionym dla tej tonacji</string>
     <string name="pad_custom_short">Wybierz wbudowane lub niestandardowe podkłady pasujące do każdej tonacji</string>

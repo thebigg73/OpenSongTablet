@@ -747,6 +747,7 @@
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
+    <string name="pad_cross_fade_info">This will automatically start pads when moving between songs and allow a smooth cross fade.  You must manually start the pad the first time.</string>
     <string name="pad_custom_info">Set custom pads to use as backing tracks matching song keys.  These files must be saved in the OpenSong/Pads folder.  Songs that have the pad set as \'Auto\' and have a key set will use the file noted here.</string>
     <string name="pad_custom_pad_error">There is a problem with the custom auto pad set for this key</string>
     <string name="pad_custom_short">Choose built in or custom pads to match each key</string>

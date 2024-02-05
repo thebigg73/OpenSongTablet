@@ -584,6 +584,7 @@
     <string name="pad">"背景音乐"</string>
     <string name="pad_auto">"汽车"</string>
     <string name="pad_cross_fade">交叉渐变垫</string>
+    <string name="pad_cross_fade_info">这将在歌曲之间移动时自动启动打击垫，并允许平滑的交叉淡入淡出。您必须在第一次手动启动打击垫。</string>
     <string name="pad_custom_info">设置自定义打击垫以用作匹配歌曲键的背景音轨。 这些文件必须保存在 OpenSong/Pads 文件夹中。 将打击垫设置为“自动”并设置键的歌曲将使用此处注明的文件。</string>
     <string name="pad_custom_pad_error">为该键设置的自定义自动垫有问题</string>
     <string name="pad_custom_short">选择内置或自定义打击垫以匹配每个键</string>

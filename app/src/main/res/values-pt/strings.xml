@@ -584,6 +584,7 @@
     <string name="pad">"Música de fundo"</string>
     <string name="pad_auto">"Automático"</string>
     <string name="pad_cross_fade">Pads de crossfade</string>
+    <string name="pad_cross_fade_info">Isso iniciará automaticamente os blocos ao se mover entre as músicas e permitirá um desvanecimento cruzado suave. Você deve iniciar manualmente o pad na primeira vez.</string>
     <string name="pad_custom_info">Defina pads personalizados para usar como faixas de acompanhamento correspondentes às teclas da música. Esses arquivos devem ser salvos na pasta OpenSong/Pads. As músicas que têm o pad definido como \'Auto\' e um conjunto de teclas usarão o arquivo indicado aqui.</string>
     <string name="pad_custom_pad_error">Há um problema com o conjunto de autopad personalizado para esta tecla</string>
     <string name="pad_custom_short">Escolha pads integrados ou personalizados para combinar com cada tecla</string>

@@ -584,6 +584,7 @@
     <string name="pad">"Música de fondo"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Pads de fundido cruzado</string>
+    <string name="pad_cross_fade_info">Esto iniciará automáticamente los pads cuando se mueva entre canciones y permitirá un fundido cruzado suave. Debe iniciar manualmente la almohadilla la primera vez.</string>
     <string name="pad_custom_info">Configure almohadillas personalizadas para usar como pistas de acompañamiento que coincidan con las teclas de la canción. Estos archivos deben guardarse en la carpeta OpenSong/Pads. Las canciones que tienen el pad configurado como \'Auto\' y tienen un conjunto de teclas usarán el archivo que se indica aquí.</string>
     <string name="pad_custom_pad_error">Hay un problema con el teclado automático personalizado configurado para esta tecla</string>
     <string name="pad_custom_short">Elija almohadillas integradas o personalizadas para que coincidan con cada tecla</string>
