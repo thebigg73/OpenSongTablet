@@ -86,7 +86,10 @@ public class ConvertChoPro {
             Uri newUri = getNewSongUri(songSubFolder, newSongFileName);
 
             // Now write the modified song as long as it isn't an import in progress (from Variations/_cache)
-            if (!songSubFolder.contains("Variations/_cache")) {
+            // And as long as it isn't a PDF file
+            if (!songSubFolder.contains("Variations/_cache") &&
+                    thisSong.getFilename()!=null &&
+                    !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName, songSubFolder, newUri, uri, newXML);
             }
         }

@@ -149,7 +149,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
 
         myView.singleColor.setOnLongClickListener(view -> {
             if (callingFragment!=null) {
@@ -274,7 +274,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
                                 if (getContext()!=null && !mainActivityInterface.getStorageAccess().fixUriToLocal(uri).startsWith("../OpenSong/")) {
                                     // Only need to take permission if it isn't in the OpenSong folder
                                     getContext().getContentResolver().takePersistableUriPermission(
-                                            uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                            uri, mainActivityInterface.getStorageAccess().getTakePersistentReadUriFlags());
                                 }
 
                                 switch (pickThis) {

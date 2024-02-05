@@ -151,7 +151,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
                         if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
                             ContentResolver resolver = getActivity().getContentResolver();
-                            resolver.takePersistableUriPermission(contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            resolver.takePersistableUriPermission(contentUri, mainActivityInterface.getStorageAccess().getTakePersistentReadUriFlags());
                         }
                         myView.padLinkAudio.setText(mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri));
                     }
@@ -231,8 +231,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             myView.padLinkAudio.setText(""); // Trigger a reset that is saved
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("audio/*");
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
             activityResultLauncher.launch(intent);
         });
     }

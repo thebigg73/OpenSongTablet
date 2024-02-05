@@ -30,6 +30,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -363,7 +364,9 @@ public class ImportIOSFragment extends Fragment {
                             if (allowOverwrite || !uriExists) {
 
                                 // Write the new song as OpenSong xml
-                                if (newSong.getFilename()!=null && !newSong.getFilename().isEmpty()) {
+                                if (newSong.getFilename()!=null && !newSong.getFilename().isEmpty()
+                                    && newSong.getFilename()!=null &&
+                                        !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                                     // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
                                     String xml = mainActivityInterface.getProcessSong().getXML(newSong);
                                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" updateFragment doStringWriteToFile Songs/"+folder+"/"+newSong.getFilename()+" with: "+xml);

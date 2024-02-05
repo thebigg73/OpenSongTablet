@@ -5,8 +5,8 @@ android {
     compileSdk 34
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         beta {
@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 370
-        versionName '6.0.0_beta45'
+        versionCode 372
+        versionName '6.0.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -110,7 +110,8 @@ dependencies {
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'                    // To highlight new features in the app
     implementation 'org.nanohttpd:nanohttpd:2.3.1'                                      // For a webserver to display songs for non OpenSongApp users
     implementation("com.vanniktech:android-image-cropper:4.5.0")                        // For image cropping/rotation
-    implementation 'com.google.zxing:core:3.5.2'                                        // To generate QR code
+    implementation 'com.google.zxing:core:3.5.3'
+    // To generate QR code
     implementation 'com.gu.android:toolargetool:0.3.0'                                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
     implementation ('androidx.exifinterface:exifinterface:1.3.7')                       // To get image exif data (orientation for camera)

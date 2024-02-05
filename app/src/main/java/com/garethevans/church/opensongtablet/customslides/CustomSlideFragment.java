@@ -123,8 +123,7 @@ public class CustomSlideFragment extends Fragment {
             if (mainActivityInterface.getCustomSlide().getCreateType().equals("image")) {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("image/*");
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
                 addImagesLauncher.launch(intent);
             } else {
                 String currentText = "";
@@ -172,7 +171,6 @@ public class CustomSlideFragment extends Fragment {
         myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
     }
 
-    @SuppressLint("WrongConstant")
     private void setupLaunchers() {
         // Initialise the launcher
         addImagesLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -186,8 +184,7 @@ public class CustomSlideFragment extends Fragment {
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
                         if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
                             ContentResolver resolver = getActivity().getContentResolver();
-                            resolver.takePersistableUriPermission(contentUri, data.getFlags()
-                                    & Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            resolver.takePersistableUriPermission(contentUri, mainActivityInterface.getStorageAccess().getTakePersistentReadUriFlags());
                         }
                         // Add item to the list
                         mainActivityInterface.getCustomSlide().setCreateImages(mainActivityInterface.getCustomSlide().getCreateImages()+"\n"+localisedUri);

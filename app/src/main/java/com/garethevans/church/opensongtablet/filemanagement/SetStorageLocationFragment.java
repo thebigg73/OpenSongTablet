@@ -493,9 +493,7 @@ public class SetStorageLocationFragment extends Fragment {
             Intent intent;
             if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentWriteUriFlags());
 
                 // IV - 'Commented in' this extra to try to always show internal and sd card storage
                 intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
@@ -539,8 +537,7 @@ public class SetStorageLocationFragment extends Fragment {
         }
         if (uriTree != null && getActivity()!=null) {
             getActivity().getContentResolver().takePersistableUriPermission(uriTree,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    mainActivityInterface.getStorageAccess().getTakePersistentWriteUriFlags());
         }
         uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(uriTree);
         if (uriTree == null || uriTreeHome == null) {

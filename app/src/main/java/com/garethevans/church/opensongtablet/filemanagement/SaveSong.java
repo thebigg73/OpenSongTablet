@@ -8,6 +8,8 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.util.Locale;
+
 public class SaveSong {
 
     private final Context c;
@@ -141,7 +143,9 @@ public class SaveSong {
             Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
             Log.d(TAG,"thisSong.getFiletype():"+thisSong.getFiletype());
             // Now save the song file and return the success!
-            if (thisSong.getFiletype().equals("XML")) {
+            if (thisSong.getFiletype().equals("XML") &&
+                    thisSong.getFilename()!=null &&
+                    !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" updateSong Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename());
                 return mainActivityInterface.getStorageAccess().saveThisSongFile(thisSong);
             } else {

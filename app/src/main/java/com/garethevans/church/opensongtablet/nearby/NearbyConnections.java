@@ -38,6 +38,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -853,7 +854,9 @@ public class NearbyConnections implements NearbyInterface {
             // FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
             // songTag = "_xx____xx_";
 
-            if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
+            if (mainActivityInterface.getSong().getFiletype().equals("XML")  &&
+                    mainActivityInterface.getSong().getFilename()!=null &&
+                    !mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 // By default, this should be smaller than 32kb, so probably going to send as bytes
                 // We'll measure the actual size to check though
                 infoPayload = mainActivityInterface.getSong().getFolder() + songTag +

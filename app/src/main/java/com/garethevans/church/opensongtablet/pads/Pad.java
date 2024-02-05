@@ -159,7 +159,7 @@ public class Pad {
         Uri padUri = null;
         if (isCustomAutoPad()) {
             padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(
-                    "../OpenSong/Pads/" + mainActivityInterface.getPreferences().getMyPreferenceString(
+                    mainActivityInterface.getPreferences().getMyPreferenceString(
                             "customPad"+keyToFlat(mainActivityInterface.getSong().getKey()),""));
         } else if (isLinkAudio()) {
             padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(
@@ -198,6 +198,11 @@ public class Pad {
         // Decide if the pad is valid
         boolean padValid = (assetFileDescriptor!=null || isPadValid(padUri)) &&
                 !padFile.equals("off");
+
+        Log.d(TAG,"assetFileDescriptor:"+assetFileDescriptor);
+        Log.d(TAG,"padUri:"+padUri);
+        Log.d(TAG,"exists:"+mainActivityInterface.getStorageAccess().uriExists(padUri));
+        Log.d(TAG,"isPadValid():"+isPadValid(padUri));
 
         // Prepare any error message
         if (!padValid) {

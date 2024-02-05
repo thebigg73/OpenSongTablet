@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.links;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -102,7 +101,6 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             link_error_string = getString(R.string.link_error);
         }
     }
-    @SuppressLint("WrongConstant") // takeFlags is correct on Google documentation!!!!
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -123,11 +121,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
                         if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
                             ContentResolver resolver = getActivity().getContentResolver();
-                            resolver.takePersistableUriPermission(contentUri, data.getFlags()
-                                    & ( Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                    + Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                            ));
-
+                            resolver.takePersistableUriPermission(contentUri, mainActivityInterface.getStorageAccess().getTakePersistentWriteUriFlags());
                         }
                         myView.linkLocation.setText(mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri));
                     }
@@ -222,8 +216,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         // Try to open at the default OpenSong location
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType(mimeType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentWriteUriFlags());
         activityResultLauncher.launch(intent);
     }
 

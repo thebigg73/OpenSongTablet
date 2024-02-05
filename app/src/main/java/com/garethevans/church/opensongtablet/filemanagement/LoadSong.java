@@ -488,7 +488,9 @@ public class LoadSong {
                         } catch (Exception e) {
                             Log.d(TAG, "Not an straightforward xml file: " + thisSong.getFolder() + "/" + thisSong.getFilename() + "  filetype:" + thisSong.getFilename());
                             e.printStackTrace();
-                            if (thisSong.getFiletype().equals("XML")) {
+                            if (thisSong.getFiletype().equals("XML") &&
+                                    thisSong.getFilename()!=null &&
+                                    !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                                 // This was an XML file and it wasn't a simple issue
                                 // Sometimes songs get weird extra bits added after the closing tag
                                 // Try to remove that after we are finished indexing
@@ -536,7 +538,9 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
-                if (thisSong.getFiletype().equals("XML")) {
+                if (thisSong.getFiletype().equals("XML") &&
+                        thisSong.getFilename()!=null &&
+                        !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                     Log.d(TAG, "songToFix:" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  " + thisSong.getFiletype());
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Fix Songs/" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  deleteOld=true");
                     Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisSong.getFolder(), thisSong.getFilename());

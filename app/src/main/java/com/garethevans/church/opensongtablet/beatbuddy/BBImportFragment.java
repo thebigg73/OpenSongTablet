@@ -121,8 +121,7 @@ public class BBImportFragment extends Fragment {
                         Uri sdCard = result.getData().getData();
                         if (getContext()!=null) {
                             getContext().getContentResolver().takePersistableUriPermission(sdCard,
-                                    Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    mainActivityInterface.getStorageAccess().getTakePersistentWriteUriFlags());
                             DocumentFile df = DocumentFile.fromTreeUri(getContext(),sdCard);
                             if (df!=null) {
                                 sdCard = df.getUri();
@@ -174,16 +173,14 @@ public class BBImportFragment extends Fragment {
     private void selectFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("text/*");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         importCSVLauncher.launch(intent);
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void selectDirectory() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         // IV - 'Commented in' this extra to try to always show internal and sd card storage
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentWriteUriFlags());
         intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
         folderChooser.launch(intent);
     }

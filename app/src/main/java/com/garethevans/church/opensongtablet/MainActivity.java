@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -172,13 +171,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
 
-    public MainActivity() {
+    /*public MainActivity() {
         StrictMode.ThreadPolicy.Builder policy = new StrictMode.ThreadPolicy.Builder();
         policy.detectAll();
         policy.permitDiskReads();
         policy.permitDiskWrites();
         StrictMode.setThreadPolicy(policy.build());
-    }
+    }*/
 
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
@@ -2707,10 +2706,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Could be just a key variation, or a standard variation needing adjusted
 
                     boolean needToTranspose = false;
-                    Uri targetUri = null;
+                    Uri targetUri;
                     String targetFolder = "Variations";
                     String targetSubfolder = "";
-                    String targetFilename = null;
+                    String targetFilename;
 
                     if (isNormalVariation) {
                         // We must already have the variation file, so we can edit directly

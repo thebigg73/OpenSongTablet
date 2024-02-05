@@ -6,6 +6,8 @@ import android.net.Uri;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.Locale;
+
 public class ConvertOnSong {
 
     // This is virtually the same as convertChoPro, but with a few extra tags
@@ -99,8 +101,11 @@ public class ConvertOnSong {
             thisSong.setFilename(newSongFileName);
 
             // Now write the modified song
-            mainActivityInterface.getConvertChoPro().writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName,
-                    songSubFolder, newUri, uri, myNewXML);
+            if (thisSong.getFilename()!=null &&
+                    !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+                mainActivityInterface.getConvertChoPro().writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName,
+                        songSubFolder, newUri, uri, myNewXML);
+            }
 
         } else {
             newSongFileName = thisSong.getFilename();

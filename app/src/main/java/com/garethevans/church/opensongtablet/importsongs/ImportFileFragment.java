@@ -354,7 +354,8 @@ public class ImportFileFragment extends Fragment {
                     success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                     Log.d(TAG, "success:" + success);
 
-                } else {
+                } else if (newSong.getFilename()!=null &&
+                        !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                     // This is now a proper song, so write it
                     newSong.setFolder(folder);
                     newSong.setFilename(filename);
@@ -366,6 +367,8 @@ public class ImportFileFragment extends Fragment {
                     String xml = mainActivityInterface.getProcessSong().getXML(newSong);
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport writeFileFromString Songs/"+folder+"/"+filename+" with: "+xml);
                     success = mainActivityInterface.getStorageAccess().writeFileFromString(xml, outputStream);
+                } else {
+                    success = false;
                 }
 
                 if (success) {

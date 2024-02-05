@@ -122,6 +122,9 @@ public class PerformanceFragment extends Fragment {
         prepareStrings();
         updateInlineSetSortTitles();
         displayInterface.checkDisplays();
+        if (myView!=null) {
+            updateInlineSetVisibility();
+        }
     }
 
     @Override
@@ -151,6 +154,7 @@ public class PerformanceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        Log.d(TAG,"onCreateView()");
         myView = ModePerformanceBinding.inflate(inflater, container, false);
         prepareStrings();
 
@@ -224,9 +228,11 @@ public class PerformanceFragment extends Fragment {
                     position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                     mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
                 }
+                processingTestView = false;
                 mainActivityInterface.loadSongFromSet(Math.max(position, 0));
             }
         } else {
+            processingTestView = false;
             doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername),
                     mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
         }

@@ -242,7 +242,7 @@ public class ImportOptionsFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         activityResultLauncher.launch(intent);
     }
 

@@ -85,7 +85,7 @@ public class SetActionsFragment extends Fragment {
             intent.setType("*/*");
             String[] mimetypes = {"text/xml","application/octet-stream"};
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
             activityResultLauncher.launch(intent);
         });
         return myView.getRoot();

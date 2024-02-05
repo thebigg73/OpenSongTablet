@@ -343,7 +343,7 @@ public class ImportOSBFragment extends Fragment {
         intent.setType("*/*");
         String[] mimetypes = {"application/zip","application/octet-stream","application/*"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         activityResultLauncher.launch(intent);
 
     }

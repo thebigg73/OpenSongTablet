@@ -49,7 +49,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             // Handle the returned Uri
             if (uri != null && getActivity() != null) {
                 getActivity().getContentResolver().takePersistableUriPermission(uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        mainActivityInterface.getStorageAccess().getTakePersistentReadUriFlags());
                 String localised = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
                 mainActivityInterface.getPresenterSettings().setLogo(uri);
                 mainActivityInterface.getPreferences().setMyPreferenceString("customLogo", localised);
@@ -261,8 +261,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
 
             // Optionally, specify a URI for the file that should appear in the
             // system file picker when it loads.

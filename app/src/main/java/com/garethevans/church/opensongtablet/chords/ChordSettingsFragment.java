@@ -71,6 +71,7 @@ public class ChordSettingsFragment extends DialogFragment {
         myView.chordsFormat.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.chordFormatFragment));
         myView.chordsTranspose.setOnClickListener(v -> {
             if (getActivity()!=null) {
+                mainActivityInterface.navHome();
                 TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet(false);
                 transposeBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "TransposeBottomSheet");
             }

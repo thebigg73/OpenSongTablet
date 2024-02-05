@@ -32,6 +32,8 @@ import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 import com.garethevans.church.opensongtablet.utilities.TunerBottomSheet;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Locale;
+
 public class PerformanceGestures {
 
     private final Context c;
@@ -43,6 +45,7 @@ public class PerformanceGestures {
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
     private RecyclerView presenterRecyclerView;
+    private String not_allowed_string="";
     private final Handler scrollPosCheckHandler = new Handler(Looper.getMainLooper());
     private final Runnable scrollPosRunnable = new Runnable() {
         @Override
@@ -59,6 +62,7 @@ public class PerformanceGestures {
         mainActivityInterface = (MainActivityInterface) c;
         actionInterface = (ActionInterface) c;
         displayInterface = (DisplayInterface) c;
+        not_allowed_string = c.getString(R.string.not_allowed);
     }
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
@@ -618,21 +622,26 @@ public class PerformanceGestures {
 
     // Add to set as a variation
     public void addToSetAsVariation() {
-        // Make a copy of this song in the variations folder
-        mainActivityInterface.getStorageAccess().doStringWriteToFile("Variations","",
-                mainActivityInterface.getSong().getFilename(),mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
-        mainActivityInterface.getSong().setFolder("**Variations");
+        if (mainActivityInterface.getSong().getFilename() != null &&
+                !mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+            // Make a copy of this song in the variations folder
+            mainActivityInterface.getStorageAccess().doStringWriteToFile("Variations", "",
+                    mainActivityInterface.getSong().getFilename(), mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
+            mainActivityInterface.getSong().setFolder("**Variations");
 
-        // Add to the current set
-        mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
+            // Add to the current set
+            mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
 
-        // Tell the user that the song has been added.
-        mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
-                c.getString(R.string.added_to_set)+" (" + c.getString(R.string.variation) + " )");
+            // Tell the user that the song has been added.
+            mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
+                    c.getString(R.string.added_to_set) + " (" + c.getString(R.string.variation) + " )");
 
-        // Update the set list
-        mainActivityInterface.updateSetList();
-        mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
+            // Update the set list
+            mainActivityInterface.updateSetList();
+            mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
+        } else {
+            mainActivityInterface.getShowToast().doIt(not_allowed_string);
+        }
     }
 
     public void exportSet() {

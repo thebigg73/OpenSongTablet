@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -75,6 +76,23 @@ public class StorageAccess {
 
     private DocumentFile uriTreeDF, songsDF;
     private long databaseLastUpdate;
+
+    // Permissions for accessing non OpenSong folder uris
+    public int getTakePersistentReadUriFlags() {
+        return Intent.FLAG_GRANT_READ_URI_PERMISSION;
+    }
+    public int getTakePersistentWriteUriFlags() {
+        return Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION;
+    }
+    public int getAddPersistentReadUriFlags() {
+        return Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+    }
+    public int getAddPersistentWriteUriFlags() {
+        return Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+    }
+    public int getAddReadUriFlags() {
+        return Intent.FLAG_GRANT_READ_URI_PERMISSION;
+    }
 
     // These are used primarily on start up to initialise stuff
     private String getStoragePreference() {
@@ -1161,9 +1179,13 @@ public class StorageAccess {
         String[] fixLocations = getActualFoldersFromNice(thisSong.getFolder());
         //ArrayList<String> newLocation = fixNonSongs(thisSong.getFolder());
         // Write the string file
-        return doStringWriteToFile(fixLocations[0], fixLocations[1],
-                thisSong.getFilename(),
-                mainActivityInterface.getProcessSong().getXML(thisSong));
+        if (thisSong.getFilename()!=null && !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+            return doStringWriteToFile(fixLocations[0], fixLocations[1],
+                    thisSong.getFilename(),
+                    mainActivityInterface.getProcessSong().getXML(thisSong));
+        } else {
+            return false;
+        }
     }
 
     public String[] getActualFoldersFromNice(String folder) {
