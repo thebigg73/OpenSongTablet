@@ -669,18 +669,20 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 if (mainActivityInterface!=null && songListLayoutManager!=null) {
                     mainActivityInterface.getMainHandler().post(() -> {
-                        try {
-                            int position = songListAdapter.getPositionOfSong(song);
-                            if (position == -1) {
-                                position = 0;
+                        if (songListAdapter.getItemCount()>songListAdapter.getPositionOfSong(song)) {
+                            try {
+                                int position = songListAdapter.getPositionOfSong(song);
+                                if (position == -1) {
+                                    position = 0;
+                                }
+                                songListLayoutManager.scrollToPositionWithOffset(position, 0);
+                                // IV - Reset to a 1 char alphabetic index
+                                alphalistposition = -1;
+                                displayIndex();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            songListLayoutManager.scrollToPositionWithOffset(position,0);
-                            // IV - Reset to a 1 char alphabetic index
-                            alphalistposition = -1;
-                            displayIndex();
-                        } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                        }
                     });
                 }
             });

@@ -92,6 +92,8 @@ public class LoadSong {
 
     public Song doLoadSongFile(Song thisSong, boolean indexing) {
 
+        ArrayList<String> fileExtensionsToRemove = new ArrayList<>();
+
         // This extracts what it can from the song, and returning an updated song object.
         // Once indexing has finished, we load from the database instead
         // This is only for indexing and impatient users or if we are loading a PDF/IMG or importing
@@ -180,26 +182,15 @@ public class LoadSong {
                     }
                 } else if (thisSong.getFiletype().equals("TXT")) {
                     // 5.  Run the text convert script
-                    Log.d(TAG,"thisSong.getLyrics():"+thisSong.getLyrics());
+                    Log.d(TAG,"Loading a text file");
                     thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(thisSong.getLyrics()));
-                    // Save the new song
-                    String oldname = thisSong.getFilename();
-                    String newname = oldname.replace(".txt","");
-                    thisSong.setTitle(newname);
-                    thisSong.setFilename(newname);
-                    Uri olduri = uri;
-                    uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
-                    //String newSongContent = mainActivityInterface.getProcessSong().getXML(thisSong);
-                    if (mainActivityInterface.getStorageAccess().doStringWriteToFile(where,thisSong.getFolder(),newname,thisSong.getSongXML())) {
-                        mainActivityInterface.getStorageAccess().deleteFile(olduri);
-                    }
-                    // Now read in the proper OpenSong xml file
-                    try {
-                        readFileAsXML(thisSong, where, uri, "UTF-8");
-                    } catch (Exception e) {
-                        Log.d(TAG, "Error performing grabOpenSongXML()");
-                    }
+
+                    // Identify the potential file extensions to remove
+                    fileExtensionsToRemove.add(".txt");
+                    fileExtensionsToRemove.add(".TXT");
+
+                    // Now try to put the content into an opensong file
+                    thisSong = changeTextBasedSongFile(thisSong,where,fileExtensionsToRemove);
                 }
 
                 // Fix all the rogue code
@@ -230,6 +221,67 @@ public class LoadSong {
         // Send the song back with all of its children populated!
         return thisSong;
     }
+
+    public Song changeTextBasedSongFile(Song thisSong, String where, ArrayList<String> fileExtensionsToRemove) {
+        if (thisSong.getLyrics().contains("<lyrics>") && thisSong.getLyrics().contains("</lyrics>")) {
+            // It shouldn't have!!!  Get the bit in between and ignore the rest
+            int start = thisSong.getLyrics().lastIndexOf("<lyrics>");
+            int end = thisSong.getLyrics().lastIndexOf("</lyrics>");
+            if (start!=-1 && end>start) {
+                thisSong.setLyrics(thisSong.getLyrics().substring(start+"<lyrics>".length() , end));
+            }
+        }
+
+        // Save the new song
+        String oldname = thisSong.getFilename();
+        String newname = oldname;
+        for (String fileExtensionToRemove:fileExtensionsToRemove) {
+            if (!fileExtensionToRemove.startsWith(".")) {
+                fileExtensionToRemove = "." +fileExtensionToRemove;
+            }
+            newname = newname.replace(fileExtensionToRemove,"");
+        }
+
+        thisSong.setTitle(newname);
+        thisSong.setFilename(newname);
+        Uri olduri = uri;
+        uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
+        thisSong.setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
+        if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Songs",thisSong.getFolder(),newname,thisSong.getSongXML())) {
+            Log.d(TAG,"success writing:"+thisSong.getSongXML());
+            mainActivityInterface.getStorageAccess().deleteFile(olduri);
+            // Remove the old item from the database
+            Log.d(TAG,"remove from database:" + mainActivityInterface.getSQLiteHelper().deleteSong(thisSong.getFolder(),oldname));
+            // Add the new item to the database
+            try {
+                mainActivityInterface.getSQLiteHelper().createSong(thisSong.getFolder(), newname);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Update the song
+            try {
+                thisSong.setFiletype("XML");
+                mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d(TAG,"Failed writing:"+thisSong.getSongXML());
+        }
+        // Update the song menu
+        mainActivityInterface.updateSongList();
+
+        // Now read in the proper OpenSong xml file
+        try {
+            thisSong = readFileAsXML(thisSong, "Songs", uri, "UTF-8");
+        } catch (Exception e) {
+            Log.d(TAG, "Error performing grabOpenSongXML()");
+        }
+
+        return thisSong;
+    }
+
 
     private void sortLoadingSuccessful(Song thisSong) {
         // Check if the song has been loaded (will now have a lyrics value)
@@ -335,186 +387,192 @@ public class LoadSong {
         if ((importingFile && thisSong.getFiletype().equals("XML")) || !mainActivityInterface.getStorageAccess().badFileExtension(thisSong.getFilename())) {
             // Extract all of the key bits of the song
             if (mainActivityInterface.getStorageAccess().uriIsFile(uri)) {
-                try {
-                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-                    XmlPullParserFactory factory;
-                    factory = XmlPullParserFactory.newInstance();
-                    factory.setNamespaceAware(true);
-                    XmlPullParser xpp;
-                    xpp = factory.newPullParser();
-                    xpp.setInput(inputStream, utf);
-                    int eventType;
+                if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("text", thisSong.getFilename())) {
+                    // This is a text file, make sure it is identified as this
+                    Log.d(TAG,"Text file");
+                    thisSong.setFiletype("TXT");
+                    // Don't fix here as this happens when it is opened
+                } else {
+                    try {
+                        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                        XmlPullParserFactory factory;
+                        factory = XmlPullParserFactory.newInstance();
+                        factory.setNamespaceAware(true);
+                        XmlPullParser xpp;
+                        xpp = factory.newPullParser();
+                        xpp.setInput(inputStream, utf);
+                        int eventType;
 
-                    // Extract all of the stuff we need
-                    eventType = xpp.getEventType();
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_TAG) {
-                            switch (xpp.getName()) {
-                                case "author":
-                                    try {
-                                        thisSong.setAuthor(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        // Try to read in the xml
-                                        thisSong.setAuthor(fixXML(thisSong, "author", where));
-                                    }
-                                    break;
-                                case "copyright":
-                                    thisSong.setCopyright(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "title":
-                                    String testthetitle = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
-                                    if (testthetitle != null && !testthetitle.isEmpty()) {
-                                        thisSong.setTitle(mainActivityInterface.getProcessSong().parseHTML(testthetitle));
-                                    } else if (testthetitle != null && testthetitle.equals("")) {
-                                        thisSong.setTitle(thisSong.getFilename());
-                                    }
-                                    break;
-                                case "lyrics":
-                                    try {
-                                        thisSong.setLyrics(mainActivityInterface.getProcessSong().fixStartOfLines(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText())));
-                                    } catch (Exception e) {
-                                        // Try to read in the xml
-                                        e.printStackTrace();
-                                        thisSong.setLyrics(fixXML(thisSong, "lyrics", where));
-                                    }
-                                    break;
-                                case "ccli":
-                                    thisSong.setCcli(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "theme":
-                                    thisSong.setTheme(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "alttheme":
-                                    thisSong.setAlttheme(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "presentation":
-                                    thisSong.setPresentationorder(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "hymn_number":
-                                    thisSong.setHymnnum(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "user1":
-                                    thisSong.setUser1(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "user2":
-                                    thisSong.setUser2(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "user3":
-                                    thisSong.setUser3(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "beatbuddysong":
-                                    thisSong.setBeatbuddysong(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "beatbuddykit":
-                                    thisSong.setBeatbuddykit(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "key":
-                                    thisSong.setKey(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "keyoriginal":
-                                    thisSong.setKeyOriginal(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "aka":
-                                    thisSong.setAka(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "capo":
-                                    if (xpp.getAttributeCount() > 0) {
-                                        thisSong.setCapoprint(xpp.getAttributeValue(0));
-                                    }
-                                    thisSong.setCapo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "tempo":
-                                    thisSong.setTempo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "time_sig":
-                                    thisSong.setTimesig(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "duration":
-                                    thisSong.setAutoscrolllength(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "predelay":
-                                    thisSong.setAutoscrolldelay(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "midi":
-                                    thisSong.setMidi(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "midi_index":
-                                    thisSong.setMidiindex(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "notes":
-                                    thisSong.setNotes(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "pad_file":
-                                    thisSong.setPadfile(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "custom_chords":
-                                    thisSong.setCustomChords(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "link_youtube":
-                                    thisSong.setLinkyoutube(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "link_web":
-                                    thisSong.setLinkweb(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "link_audio":
-                                    thisSong.setLinkaudio(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "loop_audio":
-                                    thisSong.setPadloop(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "link_other":
-                                    thisSong.setLinkother(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "abcnotation":
-                                    thisSong.setAbc(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "abctranspose":
-                                    thisSong.setAbcTranspose(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                                    break;
-                                case "style":
-                                case "backgrounds":
-                                    // Simplest way to get this is to keep a record that it exists
-                                    // That way we can extracted it if we need it (for saving edits)
-                                    thisSong.setHasExtraStuff(true);
-                                    break;
-                            }
-                        }
-                        // If it isn't an xml file, an error is about to be thrown
-                        try {
-                            eventType = xpp.next();
-                            thisSong.setFiletype("XML");
-
-                        } catch (Exception e) {
-                            Log.d(TAG, "Not an straightforward xml file: " + thisSong.getFolder() + "/" + thisSong.getFilename() + "  filetype:" + thisSong.getFilename());
-                            e.printStackTrace();
-                            if (thisSong.getFiletype().equals("XML") &&
-                                    thisSong.getFilename()!=null &&
-                                    !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-                                // This was an XML file and it wasn't a simple issue
-                                // Sometimes songs get weird extra bits added after the closing tag
-                                // Try to remove that after we are finished indexing
-                                if (songsToFix == null) {
-                                    songsToFix = new ArrayList<>();
+                        // Extract all of the stuff we need
+                        eventType = xpp.getEventType();
+                        while (eventType != XmlPullParser.END_DOCUMENT) {
+                            if (eventType == XmlPullParser.START_TAG) {
+                                switch (xpp.getName()) {
+                                    case "author":
+                                        try {
+                                            thisSong.setAuthor(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            // Try to read in the xml
+                                            thisSong.setAuthor(fixXML(thisSong, "author", where));
+                                        }
+                                        break;
+                                    case "copyright":
+                                        thisSong.setCopyright(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "title":
+                                        String testthetitle = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
+                                        if (testthetitle != null && !testthetitle.isEmpty()) {
+                                            thisSong.setTitle(mainActivityInterface.getProcessSong().parseHTML(testthetitle));
+                                        } else if (testthetitle != null && testthetitle.equals("")) {
+                                            thisSong.setTitle(thisSong.getFilename());
+                                        }
+                                        break;
+                                    case "lyrics":
+                                        try {
+                                            thisSong.setLyrics(mainActivityInterface.getProcessSong().fixStartOfLines(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText())));
+                                        } catch (Exception e) {
+                                            // Try to read in the xml
+                                            e.printStackTrace();
+                                            thisSong.setLyrics(fixXML(thisSong, "lyrics", where));
+                                        }
+                                        break;
+                                    case "ccli":
+                                        thisSong.setCcli(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "theme":
+                                        thisSong.setTheme(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "alttheme":
+                                        thisSong.setAlttheme(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "presentation":
+                                        thisSong.setPresentationorder(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "hymn_number":
+                                        thisSong.setHymnnum(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "user1":
+                                        thisSong.setUser1(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "user2":
+                                        thisSong.setUser2(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "user3":
+                                        thisSong.setUser3(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "beatbuddysong":
+                                        thisSong.setBeatbuddysong(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "beatbuddykit":
+                                        thisSong.setBeatbuddykit(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "key":
+                                        thisSong.setKey(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "keyoriginal":
+                                        thisSong.setKeyOriginal(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "aka":
+                                        thisSong.setAka(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "capo":
+                                        if (xpp.getAttributeCount() > 0) {
+                                            thisSong.setCapoprint(xpp.getAttributeValue(0));
+                                        }
+                                        thisSong.setCapo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "tempo":
+                                        thisSong.setTempo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "time_sig":
+                                        thisSong.setTimesig(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "duration":
+                                        thisSong.setAutoscrolllength(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "predelay":
+                                        thisSong.setAutoscrolldelay(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "midi":
+                                        thisSong.setMidi(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "midi_index":
+                                        thisSong.setMidiindex(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "notes":
+                                        thisSong.setNotes(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "pad_file":
+                                        thisSong.setPadfile(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "custom_chords":
+                                        thisSong.setCustomChords(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "link_youtube":
+                                        thisSong.setLinkyoutube(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "link_web":
+                                        thisSong.setLinkweb(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "link_audio":
+                                        thisSong.setLinkaudio(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "loop_audio":
+                                        thisSong.setPadloop(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "link_other":
+                                        thisSong.setLinkother(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "abcnotation":
+                                        thisSong.setAbc(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "abctranspose":
+                                        thisSong.setAbcTranspose(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "style":
+                                    case "backgrounds":
+                                        // Simplest way to get this is to keep a record that it exists
+                                        // That way we can extracted it if we need it (for saving edits)
+                                        thisSong.setHasExtraStuff(true);
+                                        break;
                                 }
-                                songsToFix.add(thisSong);
-
-                            } else {
-                                Log.d(TAG, uri + ":  Not xml so exiting");
-                                thisSong.setFiletype("?");
                             }
-                            eventType = XmlPullParser.END_DOCUMENT;
+                            // If it isn't an xml file, an error is about to be thrown
+                            try {
+                                eventType = xpp.next();
+                                thisSong.setFiletype("XML");
+
+                            } catch (Exception e) {
+                                Log.d(TAG, "Not a straightforward xml file: " + thisSong.getFolder() + "/" + thisSong.getFilename() + "  filetype:" + thisSong.getFilename());
+                                e.printStackTrace();
+                                if (thisSong.getFiletype().equals("XML") &&
+                                        thisSong.getFilename() != null &&
+                                        !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+                                    // This was an XML file and it wasn't a simple issue
+                                    // Sometimes songs get weird extra bits added after the closing tag
+                                    // Try to remove that after we are finished indexing
+                                    if (songsToFix == null) {
+                                        songsToFix = new ArrayList<>();
+                                    }
+                                    songsToFix.add(thisSong);
+
+                                } else {
+                                    Log.d(TAG, uri + ":  Not xml so exiting");
+                                    thisSong.setFiletype("?");
+                                }
+                                eventType = XmlPullParser.END_DOCUMENT;
+                            }
                         }
+                        inputStream.close();
+
+                        if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
+                            thisSong = thisSong.showWelcomeSong(c, thisSong);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    inputStream.close();
-
-                    if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
-                        thisSong = thisSong.showWelcomeSong(c, thisSong);
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         } else {
@@ -538,7 +596,8 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
-                if (thisSong.getFiletype().equals("XML") &&
+                if (thisSong.getFiletype()!=null &&
+                        (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) &&
                         thisSong.getFilename()!=null &&
                         !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                     Log.d(TAG, "songToFix:" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  " + thisSong.getFiletype());
@@ -571,26 +630,37 @@ public class LoadSong {
                                 "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
                         Log.d(TAG, "fixSong: " + success);
 
-                    } else if (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) {
+                    } else if (thisSong.getFiletype().equals("TXT")) {
+                        Log.d(TAG,"old content:"+content);
+                        content = mainActivityInterface.getConvertTextSong().convertText(content);
+                        Log.d(TAG,"new content:"+content);
                         thisSong.setLyrics(content);
                         String oldname = thisSong.getFilename();
+                        Log.d(TAG,"oldname:"+oldname);
                         Uri oldUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisSong.getFolder(), thisSong.getFilename());
-                        String newname = oldname.replace(".txt", "");
+                        Log.d(TAG,"oldUri:"+oldUri);
+                        String newname = oldname.replace(".txt", "").replace(".TXT","");
+                        Log.d(TAG,"newname:"+newname);
                         thisSong.setFilename(newname);
                         thisSong.setTitle(newname);
                         String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
+                        Log.d(TAG,"xml:"+xml);
                         success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
                                 "Songs", thisSong.getFolder(), newname, xml);
                         Log.d(TAG,"oldname:"+oldname+"  newname:"+newname+"  success:"+success);
                         if (success && !newname.equals(oldname)) {
-                            // Remove the obsolete file
+                            // Remove the obsolete text file
                             mainActivityInterface.getStorageAccess().deleteFile(oldUri);
+                            // Remove the old item from the database
+                            Log.d(TAG,"remove from database:" + mainActivityInterface.getSQLiteHelper().deleteSong(thisSong.getFolder(),oldname));
                         }
                     }
                     Log.d(TAG, "fixSong: " + success);
                     if (success) {
                         mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
                     }
+                } else if (thisSong.getFiletype().equals("TXT")) {
+
                 }
             }
         }

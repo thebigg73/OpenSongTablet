@@ -60,7 +60,7 @@ public class InlineSetList extends RecyclerView {
     // Get the user preferences and set up the adapter
     public void initialisePreferences(Context c, MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
-        showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet", true);
+        showInline = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet", false);
         int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
         width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.20f) * screenWidth);
         adjustTextSize();
@@ -116,9 +116,9 @@ public class InlineSetList extends RecyclerView {
         int portraitWidth = Math.min(metrics[0], metrics[1]);
         int landscapeWidth = Math.max(metrics[0], metrics[1]);
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * portraitWidth);
+            width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.2f) * portraitWidth);
         } else {
-            width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.3f) * landscapeWidth);
+            width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.2f) * landscapeWidth);
         }
         checkVisibility();
     }

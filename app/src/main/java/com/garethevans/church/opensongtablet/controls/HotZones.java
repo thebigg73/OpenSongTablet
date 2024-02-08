@@ -83,7 +83,7 @@ public class HotZones {
             // If the inline set is open the top left zone is disabled
             // If the inline set size is greater than 40%, the center zones are also disabled
             boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",true);
-            float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.3f);
+            float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.2f);
 
             hotZoneTopLeftView.setVisibility(
                     hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && !inlineSet &&

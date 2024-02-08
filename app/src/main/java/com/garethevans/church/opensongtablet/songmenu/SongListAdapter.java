@@ -323,11 +323,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     public int getPositionOfSong(Song song) {
         if (mainActivityInterface.getSongMenuFragment()!=null && mainActivityInterface.getSongMenuFragment().getSongsFound()!=null &&
                 mainActivityInterface.getSongMenuFragment().getSongsFound().size()>0) {
-            for (int x = 0; x < mainActivityInterface.getSongMenuFragment().getSongsFound().size(); x++) {
-                if (mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFilename().equals(song.getFilename()) &&
-                        mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFolder().equals(song.getFolder())) {
-                    return x;
+            try {
+                for (int x = 0; x < mainActivityInterface.getSongMenuFragment().getSongsFound().size(); x++) {
+                    if (mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFilename().equals(song.getFilename()) &&
+                            mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFolder().equals(song.getFolder())) {
+                        return x;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Might happen if the menu changes mid check
             }
         }
         // Not found;

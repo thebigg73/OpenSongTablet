@@ -77,7 +77,7 @@ public class InlineSetFragment extends Fragment {
 
         myView.showInlineSet.post(() -> {
             myView.showInlineSet.setText(text1);
-            myView.showInlineSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",true));
+            myView.showInlineSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false));
 
         });
 
