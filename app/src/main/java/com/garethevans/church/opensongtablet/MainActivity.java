@@ -1490,18 +1490,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (getPageButtons().getPageButtonHide() && pageButtons.getPageButtonActivated()) {
                     myView.actionFAB.postDelayed(hideActionButtonRunnable, 3000);
                 }
-                myView.actionFAB.show();
-                myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
+                if (myView!=null) {
+                    myView.actionFAB.show();
+                    myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
 
-                myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
-                if (displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
+                    myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
+                }
+                if (displayPrevNext!=null && displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
                     myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
                 }
-                if (!displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
+                if (displayPrevNext!=null && !displayPrevNext.getTextButtons() && (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext())) {
                     myView.nextPrevInfo.nextPrevInfoFABLayout.setVisibility(View.VISIBLE);
                 }
                 // Do this with a delay
-                customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());
+                if (myView!=null) {
+                    customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());
+                }
             }
         });
     }
@@ -2823,7 +2827,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // See if we need to force the highlighting of the setItem in the set menu
         // This is called from the MyToolbar
         // Will only do something if the set item isn't already highlighted - normally on boot
-        if (setPosition > -1) {
+        if (setPosition > -1 && setMenuFragment!=null) {
             setMenuFragment.updateHighlight();
         }
     }

@@ -657,6 +657,7 @@
     <string name="profile_backup">Utwórz kopię zapasową bieżącego profilu</string>
     <string name="profile_explanation">Profile służą do przechowywania preferencji wyświetlania.</string>
     <string name="profile_restore">Przywróć zapisany profil</string>
+    <string name="profiles_found">Następujące profile zostały znalezione w folderze OpenSong/Profiles. Kliknij element, aby go wybrać.</string>
     <string name="project">Wyświetlaj</string>
     <string name="project_panic">Kliknij tutaj, aby zresetować wszystkie podłączone wyświetlacze</string>
     <string name="promptbackup">Nie utworzyłeś kopii zapasowej biblioteki piosenek w ciągu ostatnich 10 razy, kiedy korzystałeś z tej aplikacji. Jest to wysoce zalecane, ponieważ możesz odzyskać swoje piosenki, jeśli coś pójdzie nie tak. Najlepiej byłoby trzymać kopię pliku kopii zapasowej w chmurze (np. Dysk Google) lub przesłać go e-mailem do siebie."</string>

@@ -657,6 +657,7 @@
     <string name="profile_backup">Säkerhetskopiera aktuell profil</string>
     <string name="profile_explanation">"Profiler används för att lagra dina visningsinställningar."</string>
     <string name="profile_restore">Återställ en sparad profil</string>
+    <string name="profiles_found">Följande profiler har hittats i mappen OpenSong/Profiles. Klicka på ett objekt för att välja det.</string>
     <string name="project">"Projekt"</string>
     <string name="project_panic">Klicka här för att återställa eventuella anslutna bildskärmar</string>
     <string name="promptbackup">"Du har inte säkerhetskopierat ditt låtbibliotek under de senaste 10 gånger du har använt den här appen. Detta rekommenderas starkt eftersom du kan återställa dina låtar om något går fel. Helst bör du hålla en kopia av din säkerhetskopia på molnet (t.ex. Google Drive) eller maila det till dig själv."</string>

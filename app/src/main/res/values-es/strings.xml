@@ -657,6 +657,7 @@
     <string name="profile_backup">Copia de seguridad del perfil actual</string>
     <string name="profile_explanation">"Los perfiles se utilizan para almacenar sus preferencias de visualización."</string>
     <string name="profile_restore">Restaurar un perfil guardado</string>
+    <string name="profiles_found">Los siguientes perfiles se han encontrado en la carpeta OpenSong/Profiles. Haga clic en un elemento para seleccionarlo.</string>
     <string name="project">"Proyecto"</string>
     <string name="project_panic">Haga clic aquí para restablecer cualquier pantalla conectada</string>
     <string name="promptbackup">"No ha hecho una copia de seguridad de su biblioteca de canciones en las últimas 10 veces que ha utilizado esta aplicación. Esto es altamente recomendable ya que puedes recuperar tus canciones si algo sale mal. Lo ideal sería mantener una copia de su archivo de copia de seguridad en la nube (por ejemplo, Google Drive) o enviarlo por correo electrónico a usted mismo."</string>

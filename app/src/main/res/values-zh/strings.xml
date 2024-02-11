@@ -657,6 +657,7 @@
     <string name="profile_backup">备份当前配置文件</string>
     <string name="profile_explanation">"配置文件用于存储您的显示首选项。"</string>
     <string name="profile_restore">恢复已保存的配置文件</string>
+    <string name="profiles_found">在 OpenSong/Profiles 文件夹中可以找到以下配置文件。单击一个项目以将其选中。</string>
     <string name="project">"投射"</string>
     <string name="project_panic">单击此处重置任何连接的显示器</string>
     <string name="promptbackup">"在过去10次使用此应用程序时，您尚未备份歌曲库。强烈建议您这样做，因为如果出现任何问题，您可以恢复歌曲。理想情况下，您应该将备份文件的副本保存在云端（例如Google Drive）或通过电子邮件发送给自己。"</string>

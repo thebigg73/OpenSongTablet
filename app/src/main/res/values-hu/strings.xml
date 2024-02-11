@@ -657,6 +657,7 @@
     <string name="profile_backup">Az aktuális profil biztonsági mentése</string>
     <string name="profile_explanation">"A profilok tárolására használt megjelenítési beállításait."</string>
     <string name="profile_restore">Mentett profil visszaállítása</string>
+    <string name="profiles_found">A következő profilok találhatók az OpenSong/Profiles mappában. Kattintson egy elemre a kiválasztásához.</string>
     <string name="project">"Vetít"</string>
     <string name="project_panic">Kattintson ide a csatlakoztatott kijelzők visszaállításához</string>
     <string name="promptbackup">"Az elmúlt tíz alkalommal, amikor ezt az alkalmazást használta, még nem készítette el a dalkönyvtárát. Ez rendkívül ajánlott, mert ha visszaáll a dolog, akkor visszaállíthatja a dalokat. Ideális esetben a biztonsági másolat egy példányát a felhőben (pl. Google Drive) kell tárolni, vagy e-mailben elküldeni magának."</string>

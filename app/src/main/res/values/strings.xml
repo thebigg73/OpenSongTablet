@@ -823,6 +823,7 @@
     <string name="profile_backup">Backup current profile</string>
     <string name="profile_explanation">Profiles are used to store your display preferences.</string>
     <string name="profile_restore">Restore a saved profile</string>
+    <string name="profiles_found">The following profiles have been found in the OpenSong/Profiles folder.  Click on an item to select it.</string>
     <string name="project">Project</string>
     <string name="project_panic">Click here to reset any connected displays</string>
     <string name="promptbackup">You haven\'t backed up your song library in the last 10 times you have used this app.

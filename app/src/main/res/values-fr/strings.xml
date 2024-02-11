@@ -657,6 +657,7 @@
     <string name="profile_backup">Sauvegarder le profil actuel</string>
     <string name="profile_explanation">"Les profils sont utilisés pour stocker vos préférences d\'affichage."</string>
     <string name="profile_restore">Restaurer un profil enregistré</string>
+    <string name="profiles_found">Les profils suivants ont été trouvés dans le dossier OpenSong/Profiles. Cliquez sur un élément pour le sélectionner.</string>
     <string name="project">"Projeter"</string>
     <string name="project_panic">Cliquez ici pour réinitialiser tous les écrans connectés</string>
     <string name="promptbackup">"Vous n'avez pas sauvegardé votre bibliothèque de chansons au cours des 10 dernières fois où vous avez utilisé cette application. Ceci est fortement recommandé car vous pouvez récupérer vos chansons si quelque chose ne va pas. Idéalement, vous devez conserver une copie de votre fichier de sauvegarde sur le cloud (par exemple, Google Drive) ou l'envoyer par e-mail."</string>

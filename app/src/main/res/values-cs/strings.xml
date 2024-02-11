@@ -657,6 +657,7 @@
     <string name="profile_backup">Zálohujte aktuální profil</string>
     <string name="profile_explanation">"Profily se používají k ukládání vašich preferencí zobrazení."</string>
     <string name="profile_restore">Obnovte uložený profil</string>
+    <string name="profiles_found">Ve složce OpenSong/Profiles byly nalezeny následující profily. Kliknutím na položku ji vyberte.</string>
     <string name="project">"Vrhat"</string>
     <string name="project_panic">Klepnutím sem resetujete všechny připojené displeje</string>
     <string name="promptbackup">"Během posledních 10krát jste tuto aplikaci nepodporili. To je velmi doporučeno, protože můžete obnovit skladby, pokud se něco pokazí. V ideálním případě byste měli uchovávat kopii svého záložního souboru v cloudu (např. Disk Google) nebo ho poslat e-mailem."</string>

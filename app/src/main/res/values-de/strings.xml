@@ -657,6 +657,7 @@
     <string name="profile_backup">Aktuelles Profil sichern</string>
     <string name="profile_explanation">"Die Profile werden verwendet, um Ihre Anzeigeeinstellungen zu speichern."</string>
     <string name="profile_restore">Ein gespeichertes Profil wiederherstellen</string>
+    <string name="profiles_found">Die folgenden Profile wurden im Ordner OpenSong/Profiles gefunden. Klicken Sie auf ein Element, um es auszuwählen.</string>
     <string name="project">"Projizieren"</string>
     <string name="project_panic">Klicken Sie hier, um angeschlossene Displays zurückzusetzen</string>
     <string name="promptbackup">"Sie haben Ihre Songbibliothek in den letzten 10 Mal, in denen Sie diese App verwendet haben, nicht gesichert. Dies wird dringend empfohlen, da Sie Ihre Songs wiederherstellen können, wenn etwas schief geht. Idealerweise sollten Sie eine Kopie Ihrer Sicherungsdatei in der Cloud (z. B. Google Drive) aufbewahren oder per E-Mail an sich selbst senden."</string>

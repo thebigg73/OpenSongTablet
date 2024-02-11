@@ -1,17 +1,12 @@
 package com.garethevans.church.opensongtablet.preferences;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,7 +21,6 @@ public class ProfileFragment extends Fragment {
 
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private ActivityResultLauncher<Intent> activityLoadResultLauncher, activitySaveResultLauncher;
     private String profile_string="", website_profiles_string="";
     private String webAddress;
 
@@ -48,14 +42,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsProfilesBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.setWhattodo("");
+
         prepareStrings();
         webAddress = website_profiles_string;
 
         // Setup helpers
         setupHelpers();
-
-        // Initialise launcher
-        initialiseLauncher();
 
         // Setup listeners
         setupListeners();
@@ -74,38 +67,6 @@ public class ProfileFragment extends Fragment {
         mainActivityInterface.registerFragment(this,"ProfileFragment");
     }
 
-    private void initialiseLauncher() {
-        activityLoadResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> doLoadSave(result,"load"));
-        activitySaveResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> doLoadSave(result,"save"));
-    }
-
-    private void doLoadSave(ActivityResult result, String which) {
-        boolean success = false;
-        String extrainfo = "";
-        if (result.getResultCode()==Activity.RESULT_OK || result.getResultCode()==Activity.RESULT_CANCELED) {
-            Intent intent = result.getData();
-            if (intent==null) {
-                extrainfo += " (intent null) ";
-            } else if (intent.getData()==null) {
-                extrainfo += " (intent.getData() null) ";
-            }
-            if (intent!=null && intent.getData()!=null) {
-                if (which.equals("load")) {
-                    success = mainActivityInterface.getProfileActions().loadProfile(intent.getData());
-                } else {
-                    success = mainActivityInterface.getProfileActions().saveProfile(intent.getData());
-                }
-            }
-        } else {
-            extrainfo += " (Wrong result code:"+result.getResultCode()+") ";
-        }
-        if (success && getContext()!=null) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
-        } else if (getContext()!=null){
-            mainActivityInterface.getShowToast().doIt(getString(R.string.error)+extrainfo);
-        }
-    }
-
     private void setupListeners() {
         myView.loadButton.setOnClickListener(v -> loadProfile());
         myView.saveButton.setOnClickListener(v -> saveProfile());
@@ -113,28 +74,18 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadProfile() {
-        // Open the file picker and when the user has picked a file, deal with it
-        Intent loadIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        Uri uri = mainActivityInterface.getStorageAccess().
-                getUriForItem("Profiles","",null);
-        loadIntent.setDataAndType(uri,"application/xml");
-        String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
-        loadIntent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
-        loadIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        loadIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
-        loadIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-        activityLoadResultLauncher.launch(loadIntent);
+        // Open the bottom sheet
+        mainActivityInterface.setWhattodo("loadprofile");
+        ProfileBottomSheet profileBottomSheet = new ProfileBottomSheet();
+        profileBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ProfileBottomSheet");
     }
 
     private void saveProfile() {
-        // Open the file picker and when the user has picked a file, deal with it
-        Intent saveIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Profiles","",null);
-        saveIntent.setDataAndType(uri,"application/xml");
-        saveIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
-        saveIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-        saveIntent.putExtra(Intent.EXTRA_TITLE,"MyProfile");
-        activitySaveResultLauncher.launch(saveIntent);
+        // Open the bottom sheet
+        // Used to use Intent.ACTION_CREATE_DOCUMENT but this wouldn't allow overwrite
+        mainActivityInterface.setWhattodo("saveprofile");
+        ProfileBottomSheet profileBottomSheet = new ProfileBottomSheet();
+        profileBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ProfileBottomSheet");
     }
 
     private void resetPreferences() {

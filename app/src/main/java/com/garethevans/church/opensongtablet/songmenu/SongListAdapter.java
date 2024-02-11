@@ -331,7 +331,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d(TAG,"Position of song in the menu couldn't be checked just now");
                 // Might happen if the menu changes mid check
             }
         }

@@ -135,7 +135,8 @@ public class LyricsChordCopyBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void updateCopyTo() {
-        if (myView.copyTo.getText()!=null && !myView.copyTo.getText().toString().isEmpty()) {
+        if (myView.copyTo.getText()!=null && !myView.copyTo.getText().toString().isEmpty() &&
+                sectionsWithChords.size()>0) {
             // Get the position number
             int positionFrom = positionFromText(myView.copyFrom.getText().toString())-1;
             int positionTo = positionFromText(myView.copyTo.getText().toString())-1;

@@ -100,8 +100,12 @@ public class BootUpFragment extends Fragment {
             if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
                     mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
-                    BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
-                    bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                    try {
+                        BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+                        bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }));
             } else {
                 startBootProcess(true,true);

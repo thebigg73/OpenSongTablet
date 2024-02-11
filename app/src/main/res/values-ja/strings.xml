@@ -657,6 +657,7 @@
     <string name="profile_backup">現在のプロファイルをバックアップする</string>
     <string name="profile_explanation">"プロファイルは、あなたの表示設定を保存するために使用されます。"</string>
     <string name="profile_restore">保存したプロファイルを復元する</string>
+    <string name="profiles_found">次のプロファイルは、OpenSong/Profiles フォルダーにあります。項目をクリックして選択します。</string>
     <string name="project">"張り出す"</string>
     <string name="project_panic">接続されているディスプレイをリセットするには、ここをクリックしてください</string>
     <string name="promptbackup">"あなたはこのアプリを使ったことがある過去10回の間あなたのソングライブラリをバックアップしていません。問題が発生した場合は曲を復元できますので、これを強くお勧めします。理想的には、バックアップファイルのコピーをクラウド（Googleドライブなど）に保存するか、自分自身に電子メールで送信する必要があります。"</string>

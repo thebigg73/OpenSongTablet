@@ -657,6 +657,7 @@
     <string name="profile_backup">Rugsteun huidige profiel</string>
     <string name="profile_explanation">"Profiele word gebruik om jou vertoning voorkeure te stoor."</string>
     <string name="profile_restore">Herstel \'n gestoorde profiel</string>
+    <string name="profiles_found">Die volgende profiele is in die OpenSong/Profiles-lêergids gevind. Klik op \'n item om dit te kies.</string>
     <string name="project">"Projek"</string>
     <string name="project_panic">Klik hier om enige gekoppelde skerms terug te stel</string>
     <string name="promptbackup">"Jy het nie jou liedjie biblioteek gerugsteun nie in die laaste 10 keer wat jy hierdie program gebruik het. Dit word sterk aanbeveel omdat jy jou liedjies kan herstel as daar iets fout gaan. Ideaal gesproke moet jy 'n kopie van jou rugsteunlêer op die wolk hou (bv. Google Drive) of e-pos dit aan jouself."</string>

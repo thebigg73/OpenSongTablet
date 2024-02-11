@@ -657,6 +657,7 @@
     <string name="profile_backup">Napravite rezervnu kopiju trenutnog profila</string>
     <string name="profile_explanation">Profili se koriste da sačuvate postavke prikaza</string>
     <string name="profile_restore">Vratite sačuvani profil</string>
+    <string name="profiles_found">Sledeći profili su pronađeni u fascikli OpenSong/Profiles. Kliknite na stavku da biste je izabrali.</string>
     <string name="project">Projektovati</string>
     <string name="project_panic">Kliknite ovde da biste resetovali sve povezane ekrane</string>
     <string name="promptbackup">Niste napravili sigurnosnu kopiju svoje biblioteke pjesama u zadnjih 10 puta koje ste koristili ovu aplikaciju. To je vrlo preporučljivo jer možete oporaviti svoje pjesme ako nešto pođe po zlu. U idealnom slučaju trebate čuvati kopiju datoteke sigurnosne kopije na oblaku (npr. Google pogon) ili je poslati e-poštom.</string>

@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 372
-        versionName '6.0.0'
+        versionCode 373
+        versionName '6.0.1'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -53,7 +53,7 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.7.6'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7'
         }
     }
 
@@ -96,9 +96,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.7.6'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.7.6'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.7.6'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment:2.7.7'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui:2.7.7'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.7.7'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.7.1'                               // Allows annotations in code

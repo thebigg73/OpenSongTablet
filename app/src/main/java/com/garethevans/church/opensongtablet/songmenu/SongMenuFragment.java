@@ -31,10 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-// TODO - alphabetical index disappearing
-
-
 public class SongMenuFragment extends Fragment implements SongListAdapter.AdapterCallback {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -247,12 +243,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                             myView.filters.keySearch, R.layout.view_exposed_dropdown_item, key_choice_string);
                     mainActivityInterface.getMainHandler().post(() -> {
-                        myView.filters.keySearch.setAdapter(keyArrayAdapter);
-                        myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
-                        myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
-                        myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
-                        myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
-                        myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
+                        if (myView!=null) {
+                            myView.filters.keySearch.setAdapter(keyArrayAdapter);
+                            myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
+                            myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
+                            myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
+                            myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
+                            myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
+                        }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
