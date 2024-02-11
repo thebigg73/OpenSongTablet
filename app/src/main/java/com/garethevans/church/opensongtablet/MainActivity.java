@@ -171,14 +171,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
 
-    /*public MainActivity() {
-        StrictMode.ThreadPolicy.Builder policy = new StrictMode.ThreadPolicy.Builder();
-        policy.detectAll();
-        policy.permitDiskReads();
-        policy.permitDiskWrites();
-        StrictMode.setThreadPolicy(policy.build());
-    }*/
-
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
     private boolean rebooted = false, alreadyBackPressed = false;
@@ -306,10 +298,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
             song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
-            search_index_start = "", search_index_end = "", deeplink_metronome = "", variation = "",
+            search_index_start = "", search_index_end = "", deeplink_metronome = "",
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info ="";
+
+    // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
+    public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
+    private static final String KEY_PAGER_ID = "pager_id";
+    private Bundle savedInstanceState;
 
     // Used if implementing Oboe using C++ injection
     /* static {System.loadLibrary("lowlatencyaudio");} */
@@ -318,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
@@ -346,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             });
 
             if (savedInstanceState != null) {
+                ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
                 bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
                 rebooted = true;
                 getSongListBuildIndex();
@@ -399,6 +398,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             });
         });
+    }
+
+    /**
+     * ViewCompat.generateViewId stores the current ID in a static variable.
+     * When the process is killed, the variable gets reset.
+     * This makes sure that we do not get ID collisions
+     * and therefore errors when trying to restore state from another view.
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
+    private void ensureGeneratedViewIdGreaterThan(int minimum) {
+        while (ViewCompat.generateViewId() <= minimum) {
+            // Generate new IDs
+        }
     }
 
     @Override
@@ -455,7 +467,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             search_index_start = getString(R.string.index_songs_start);
             search_index_end = getString(R.string.index_songs_end);
             deeplink_metronome = getString(R.string.deeplink_metronome);
-            variation = getString(R.string.variation);
             mode_presenter = getString(R.string.mode_presenter);
             mode_performance = getString(R.string.mode_performance);
             mode_stage = getString(R.string.mode_stage);
@@ -1863,6 +1874,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
         }
         viewPager = myView.viewpager;
+        int newId = ViewCompat.generateViewId();
+        if (savedInstanceState != null && savedInstanceState.getInt(KEY_PAGER_ID, 0) != 0) {
+            // Restore state by using the same ID as before. ID collisions are prevented in MainActivity.
+            newId = savedInstanceState.getInt(KEY_PAGER_ID, 0);
+        }
+        viewPager.setId(newId);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(1);
         // Disable the swiping gesture
@@ -3900,6 +3917,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean("bootUpCompleted", bootUpCompleted);
+        outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
         if (songListBuildIndex!=null) {
             outState.putBoolean("indexComplete", songListBuildIndex.getIndexComplete());
         } else {
