@@ -24,8 +24,6 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
     private final ArrayList<String> checkedItems = new ArrayList<>();
     private final String whatView;
     private final SetManageFragment setManageFragment;
-    private String setChosen = "";
-    private int prevSelected = -1;
 
     SetManageAdapter(Context c, SetManageFragment setManageFragment, String whatView) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -110,49 +108,55 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
         position = holder.getAbsoluteAdapterPosition();
 
         // Get the values for this view
-        FoundSet foundSet = foundSets.get(position);
+        if (position<foundSets.size()) {
+            FoundSet foundSet = foundSets.get(position);
 
-        // Set filename
+            // Set filename
 
-        // Decide if this value is selected (only available/visible when loading set)
-        holder.checkBox.setChecked(foundSet.getChecked());
-        if (whatView.equals("loadset")) {
-            holder.checkBox.setVisibility(View.VISIBLE);
-        } else {
-            holder.checkBox.setVisibility(View.GONE);
-        }
-
-        holder.checkBox.setChecked(foundSet.getChecked());
-
-
-        // Set the listener for this item
-        int finalPosition = position;
-        holder.itemLayout.setOnClickListener(view -> {
+            // Decide if this value is selected (only available/visible when loading set)
+            holder.checkBox.setChecked(foundSet.getChecked());
             if (whatView.equals("loadset")) {
-                // Set the item checked value as the opposite to what it currently was
-                foundSets.get(finalPosition).setChecked(!foundSets.get(finalPosition).getChecked());
-                notifyItemChanged(finalPosition);
-                if (foundSets.get(finalPosition).getChecked()) {
-                    // Add the item if it isn't already there
-                    if (!checkedItems.contains(foundSets.get(finalPosition).getIdentifier())) {
-                        checkedItems.add(foundSets.get(finalPosition).getIdentifier());
+                holder.checkBox.setVisibility(View.VISIBLE);
+            } else {
+                holder.checkBox.setVisibility(View.GONE);
+            }
+
+            holder.checkBox.setChecked(foundSet.getChecked());
+
+
+            // Set the listener for this item
+            int finalPosition = position;
+            holder.itemLayout.setOnClickListener(view -> {
+                if (whatView.equals("loadset")) {
+                    // Set the item checked value as the opposite to what it currently was
+                    foundSets.get(finalPosition).setChecked(!foundSets.get(finalPosition).getChecked());
+                    notifyItemChanged(finalPosition);
+                    if (foundSets.get(finalPosition).getChecked()) {
+                        // Add the item if it isn't already there
+                        if (!checkedItems.contains(foundSets.get(finalPosition).getIdentifier())) {
+                            checkedItems.add(foundSets.get(finalPosition).getIdentifier());
+                        }
+                    } else {
+                        // Remove the item if it isn't already there
+                        checkedItems.remove(foundSets.get(finalPosition).getIdentifier());
                     }
                 } else {
-                    // Remove the item if it isn't already there
-                    checkedItems.remove(foundSets.get(finalPosition).getIdentifier());
+                    // Only one item allowed in the other modes
+                    checkedItems.clear();
+                    try {
+                        checkedItems.add(foundSets.get(finalPosition).getIdentifier());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } else {
-                // Only one item allowed in the other modes
-                checkedItems.clear();
-                checkedItems.add(foundSets.get(finalPosition).getIdentifier());
-            }
-            mainActivityInterface.updateFragment("setSelectedSetItem",setManageFragment,checkedItems);
-        });
+                mainActivityInterface.updateFragment("setSelectedSetItem", setManageFragment, checkedItems);
+            });
 
-        mainActivityInterface.updateFragment("setSelectedSetItem",setManageFragment,checkedItems);
+            mainActivityInterface.updateFragment("setSelectedSetItem", setManageFragment, checkedItems);
 
-        holder.itemName.setText(foundSet.getTag());
-        holder.modifiedDate.setText(foundSet.getLastModifiedString());
+            holder.itemName.setText(foundSet.getTag());
+            holder.modifiedDate.setText(foundSet.getLastModifiedString());
+        }
     }
 
     @Override

@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Η κάθετη κίνηση επιτρέπεται"</string>
     <string name="swipe_distance">"Σύρετε την απόσταση"</string>
     <string name="swipe_info">Προσαρμόστε τις χειρονομίες για να μετακινηθείτε μεταξύ των τραγουδιών</string>
+    <string name="tabs_scale">Κλιμάκωση κειμένου καρτέλας (κιθάρα, ντραμς κ.λπ.)</string>
     <string name="tag">"Tag"</string>
     <string name="tag_add_remove">Τα επισημασμένα τραγούδια περιέχουν την επιλεγμένη ετικέτα. Κάντε κλικ σε οποιοδήποτε τραγούδι για να προσθέσετε/αφαιρέσετε την επιλεγμένη ετικέτα.</string>
     <string name="tag_background">"Tag background"</string>

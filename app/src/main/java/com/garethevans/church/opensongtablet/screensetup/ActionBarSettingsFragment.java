@@ -241,10 +241,14 @@ public class ActionBarSettingsFragment extends Fragment {
     }
 
     private void changeVisibilities() {
-        mainActivityInterface.getToolbar().batteryholderVisibility(true, false);
-        mainActivityInterface.getBatteryStatus().showBatteryStuff(true);
-        mainActivityInterface.getToolbar().getBatteryimage().setVisibility(myView.batteryDialOnOff.isChecked() ? View.VISIBLE:View.INVISIBLE);
-        mainActivityInterface.getToolbar().getBatterycharge().setVisibility(myView.batteryTextOnOff.isChecked() ? View.VISIBLE:View.INVISIBLE);
-        mainActivityInterface.getToolbar().getClock().setVisibility(myView.clockTextOnOff.isChecked() ? View.VISIBLE:View.INVISIBLE);
+        try {
+            mainActivityInterface.getToolbar().batteryholderVisibility(true, false);
+            mainActivityInterface.getBatteryStatus().showBatteryStuff(true);
+            mainActivityInterface.getToolbar().getBatteryimage().setVisibility(myView.batteryDialOnOff.isChecked() ? View.VISIBLE : View.INVISIBLE);
+            mainActivityInterface.getToolbar().getBatterycharge().setVisibility(myView.batteryTextOnOff.isChecked() ? View.VISIBLE : View.INVISIBLE);
+            mainActivityInterface.getToolbar().getClock().setVisibility(myView.clockTextOnOff.isChecked() ? View.VISIBLE : View.INVISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

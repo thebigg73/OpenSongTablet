@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Movimiento vertical permitido"</string>
     <string name="swipe_distance">"Distancia de desplazamiento"</string>
     <string name="swipe_info">Ajusta los gestos para moverte entre canciones</string>
+    <string name="tabs_scale">Texto de la tablatura de escala (guitarra, batería, etc.)</string>
     <string name="tag">Etiqueta</string>
     <string name="tag_add_remove">Las canciones destacadas contienen la etiqueta elegida. Haga clic en cualquier canción para agregar/eliminar la etiqueta elegida.</string>
     <string name="tag_background">"Fondo Tag"</string>

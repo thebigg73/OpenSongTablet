@@ -1008,6 +1008,7 @@
     <string name="swipe_allowance">Vertical movement allowed</string>
     <string name="swipe_distance">Swipe distance</string>
     <string name="swipe_info">Adjust gestures to move between songs</string>
+    <string name="tabs_scale">Scale tab text (guitar, drums, etc.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Highlighted songs contain the chosen tag.  Click on any song to add/remove the chosen tag.</string>
     <string name="tag_background">Tag background</string>

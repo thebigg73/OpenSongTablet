@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Permesso il movimento verticale"</string>
     <string name="swipe_distance">"Spostare la distanza"</string>
     <string name="swipe_info">Regola i gesti per spostarti tra i brani</string>
+    <string name="tabs_scale">Testo della scheda Scala (chitarra, batteria, ecc.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">I brani in evidenza contengono il tag scelto. Fare clic su qualsiasi brano per aggiungere/rimuovere il tag scelto.</string>
     <string name="tag_background">"Tag sfondo"</string>

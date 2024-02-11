@@ -27,7 +27,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
     private final Paint mClearPaint;
     private final ColorDrawable mBackground;
     private int backgroundColor;
-    private final Drawable deleteDrawable;
+    private Drawable deleteDrawable;
     private final int intrinsicWidth;
     private final int intrinsicHeight;
     private boolean dragging;
@@ -52,7 +52,12 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         }
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        deleteDrawable = ContextCompat.getDrawable(c, R.drawable.delete);
+        deleteDrawable = null;
+        try {
+            deleteDrawable = ContextCompat.getDrawable(c, R.drawable.delete);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (deleteDrawable!=null) {
             intrinsicWidth = deleteDrawable.getIntrinsicWidth();
             intrinsicHeight = deleteDrawable.getIntrinsicHeight();

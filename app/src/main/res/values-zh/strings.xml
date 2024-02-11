@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"允许垂直运动"</string>
     <string name="swipe_distance">"滑动距离"</string>
     <string name="swipe_info">调整手势以在歌曲之间移动</string>
+    <string name="tabs_scale">音阶选项卡文本（吉他、鼓等）</string>
     <string name="tag">标签</string>
     <string name="tag_add_remove">突出显示的歌曲包含所选标签。单击任何歌曲以添加/删除所选标签。</string>
     <string name="tag_background">"标签背景"</string>

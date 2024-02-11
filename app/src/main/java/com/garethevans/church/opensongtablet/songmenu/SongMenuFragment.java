@@ -286,19 +286,25 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                             if (mainActivityInterface.getSong().getFolder().contains("**")) {
                                 // This is a variation or custom slide.
                                 // If it is a variation, look for the original folder
-                                if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
-                                        mainActivityInterface.getSong().getFolder(),
-                                        mainActivityInterface.getSong().getFilename())) {
-                                    myView.filters.folderSearch.setText(
-                                            mainActivityInterface.getSetActions().getPreVariationFolderFilename(
-                                                    mainActivityInterface.getSong().getFolder() + "/" +
-                                                    mainActivityInterface.getSong().getFilename())[0]);
+                                if (myView!=null) {
+                                    if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
+                                            mainActivityInterface.getSong().getFolder(),
+                                            mainActivityInterface.getSong().getFilename())) {
+                                        myView.filters.folderSearch.setText(
+                                                mainActivityInterface.getSetActions().getPreVariationFolderFilename(
+                                                        mainActivityInterface.getSong().getFolder() + "/" +
+                                                                mainActivityInterface.getSong().getFilename())[0]);
+                                    }
                                 }
                             } else {
-                                myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(
-                                        mainActivityInterface.getSong().getFolder()));
+                                if (myView!=null) {
+                                    myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(
+                                            mainActivityInterface.getSong().getFolder()));
+                                }
                             }
-                            myView.filters.folderSearch.setText(foundFolders.get(pos));
+                            if (myView!=null) {
+                                myView.filters.folderSearch.setText(foundFolders.get(pos));
+                            }
                         }
                     }
                 });
@@ -443,13 +449,19 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void buttonsEnabled(boolean enabled) {
-        myView.filterButtons.folderButton.setEnabled(enabled);
-        myView.filterButtons.artistButton.setEnabled(enabled);
-        myView.filterButtons.keyButton.setEnabled(enabled);
-        myView.filterButtons.tagButton.setEnabled(enabled);
-        myView.filterButtons.filterButton.setEnabled(enabled);
-        myView.filterButtons.titleButton.setEnabled(enabled);
-        myView.actionFAB.setEnabled(enabled);
+        if (myView!=null) {
+            try {
+                myView.filterButtons.folderButton.setEnabled(enabled);
+                myView.filterButtons.artistButton.setEnabled(enabled);
+                myView.filterButtons.keyButton.setEnabled(enabled);
+                myView.filterButtons.tagButton.setEnabled(enabled);
+                myView.filterButtons.filterButton.setEnabled(enabled);
+                myView.filterButtons.titleButton.setEnabled(enabled);
+                myView.actionFAB.setEnabled(enabled);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void refreshSongList() {

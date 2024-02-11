@@ -1475,13 +1475,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         runOnUiThread(() -> {
             if (hide) {
                 if (hideActionButtonRunnable != null) {
-                    myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
+                    if (myView!=null) {
+                        try {
+                            myView.actionFAB.removeCallbacks(hideActionButtonRunnable);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-                myView.actionFAB.hide();
-                myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
-                myView.onScreenInfo.getInfo().setVisibility(View.GONE);
-                myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
-                myView.nextPrevInfo.nextPrevInfoFABLayout.setVisibility(View.GONE);
+                if (myView!=null) {
+                    myView.actionFAB.hide();
+                    myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
+                    myView.onScreenInfo.getInfo().setVisibility(View.GONE);
+                    myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
+                    myView.nextPrevInfo.nextPrevInfoFABLayout.setVisibility(View.GONE);
+                }
 
             } else {
                 if (hideActionButtonRunnable == null) {
@@ -1504,7 +1512,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Do this with a delay
                 if (myView!=null) {
-                    customAnimation.fadeActionButton(myView.actionFAB, themeColors.getPageButtonsSplitAlpha());
+                    try {
+                        getCustomAnimation().fadeActionButton(myView.actionFAB, getMyThemeColors().getPageButtonsSplitAlpha());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

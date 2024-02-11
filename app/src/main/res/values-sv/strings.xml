@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Vertikal rörelse tillåten"</string>
     <string name="swipe_distance">"Dra avstånd"</string>
     <string name="swipe_info">Justera gester för att flytta mellan låtarna</string>
+    <string name="tabs_scale">Skala fliktext (gitarr, trummor, etc.)</string>
     <string name="tag">"Märka"</string>
     <string name="tag_add_remove">Markerade låtar innehåller den valda taggen. Klicka på valfri låt för att lägga till/ta bort den valda taggen.</string>
     <string name="tag_background">"Tag bakgrund"</string>

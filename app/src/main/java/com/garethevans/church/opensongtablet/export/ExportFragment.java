@@ -310,24 +310,26 @@ public class ExportFragment extends Fragment {
     }
 
     private String getPDFThemeText() {
-        String theme;
-        switch (mainActivityInterface.getMyThemeColors().getPdfTheme()) {
-            case "default":
-            default:
-                theme = default_string;
-                break;
-            case "dark":
-                theme = dark_string;
-                break;
-            case "light":
-                theme = light_string;
-                break;
-            case "custom1":
-                theme = custom1_string;
-                break;
-            case "custom2":
-                theme = custom2_string;
-                break;
+        String theme = default_string;
+        if (mainActivityInterface!=null && mainActivityInterface.getMyThemeColors()!=null) {
+            switch (mainActivityInterface.getMyThemeColors().getPdfTheme()) {
+                case "default":
+                default:
+                    theme = default_string;
+                    break;
+                case "dark":
+                    theme = dark_string;
+                    break;
+                case "light":
+                    theme = light_string;
+                    break;
+                case "custom1":
+                    theme = custom1_string;
+                    break;
+                case "custom2":
+                    theme = custom2_string;
+                    break;
+            }
         }
         return theme;
     }

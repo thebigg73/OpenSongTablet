@@ -838,6 +838,7 @@
     <string name="swipe_allowance">Дозволено вертикальне переміщення</string>
     <string name="swipe_distance">Інтервал ковзання</string>
     <string name="swipe_info">Налаштуйте жести, щоб переміщатися між піснями</string>
+    <string name="tabs_scale">Текст табуляції звукоряду (гітара, барабани тощо)</string>
     <string name="tag">Тег</string>
     <string name="tag_add_remove">Виділені пісні містять вибраний тег. Натисніть будь-яку пісню, щоб додати/видалити вибраний тег.</string>
     <string name="tag_background">Фон тегів</string>

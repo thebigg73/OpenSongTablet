@@ -101,6 +101,10 @@ public class ChordFormatFragment extends Fragment {
         showHideView(myView.chooseFormatLinearLayout,myView.assumePreferred.getSwitch().isChecked());
         showHideView(myView.autoChange,myView.assumePreferred.getSwitch().isChecked());
         formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
+        if (formattouse<1) {
+            formattouse = 1;
+            mainActivityInterface.getPreferences().setMyPreferenceInt("chordFormat",1);
+        }
 
         chordFormats = mainActivityInterface.getTranspose().getChordFormatAppearances();
         chordFormatNames = mainActivityInterface.getTranspose().getChordFormatNames();

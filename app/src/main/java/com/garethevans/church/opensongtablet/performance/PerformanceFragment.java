@@ -953,35 +953,37 @@ public class PerformanceFragment extends Fragment {
                     myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                         @Override
                         public void onGlobalLayout() {
-                            myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            if (myView!=null) {
+                                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                            widthBeforeScale = stageSectionAdapter.getWidth();
-                            widthAfterScale = widthBeforeScale;
-                            heightBeforeScale = stageSectionAdapter.getHeight();
-                            heightAfterScale = heightBeforeScale;
+                                widthBeforeScale = stageSectionAdapter.getWidth();
+                                widthAfterScale = widthBeforeScale;
+                                heightBeforeScale = stageSectionAdapter.getHeight();
+                                heightAfterScale = heightBeforeScale;
 
-                            recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight, 1f);
-                            myView.recyclerView.setHasFixedSize(false);
-                            myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
-                            myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(), 0, 0, 0);
+                                recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight, 1f);
+                                myView.recyclerView.setHasFixedSize(false);
+                                myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                                myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(), 0, 0, 0);
 
-                            endProcessing();
+                                endProcessing();
 
-                            // Slide in
-                            long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
+                                // Slide in
+                                long QOSAdjustment = doSongLoadQOSTime - (System.currentTimeMillis() - doSongLoadStartTime);
 
-                            myView.recyclerView.setVisibility(View.VISIBLE);
-                            //IV - Reset zoom
-                            myView.recyclerView.toggleScale();
+                                myView.recyclerView.setVisibility(View.VISIBLE);
+                                //IV - Reset zoom
+                                myView.recyclerView.toggleScale();
 
-                            mainActivityInterface.getMainHandler().postDelayed(() -> {
-                                myView.recyclerView.startAnimation(animSlideIn);
+                                mainActivityInterface.getMainHandler().postDelayed(() -> {
+                                    myView.recyclerView.startAnimation(animSlideIn);
 
-                                dealWithStuffAfterReady(false);
+                                    dealWithStuffAfterReady(false);
 
-                                // Get a null screenshot
-                                getScreenshot(0, 0, 0);
-                            }, Math.max(0, QOSAdjustment));
+                                    // Get a null screenshot
+                                    getScreenshot(0, 0, 0);
+                                }, Math.max(0, QOSAdjustment));
+                            }
                         }
                     });
                     myView.recyclerView.post(() -> {

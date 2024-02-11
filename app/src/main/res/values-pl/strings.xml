@@ -838,6 +838,7 @@
     <string name="swipe_allowance">Dopuszczalny ruch pionowy</string>
     <string name="swipe_distance">Odległość przeciągnięcia</string>
     <string name="swipe_info">Dostosuj gesty, aby poruszać się między piosenkami</string>
+    <string name="tabs_scale">Skaluj tekst tabulatora (gitara, perkusja itp.)</string>
     <string name="tag">Etykieta</string>
     <string name="tag_add_remove">Wyróżnione piosenki zawierają wybraną etykietę. Kliknij dowolną piosenkę, aby dodać/usunąć wybraną etykietę.</string>
     <string name="tag_background">Tło etykiety</string>

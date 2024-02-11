@@ -86,7 +86,7 @@ public class ProcessSong {
     private boolean forceColumns;
     private boolean makingScaledScreenShot;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha, lineSpacing;
-    public float scaleChords, scaleHeadings, scaleComments;
+    public float scaleChords, scaleHeadings, scaleComments, scaleTabs;
     private String songAutoScale;
     // Stuff for resizing/scaling
     private int padding = 8, primaryScreenColumns=1;
@@ -131,6 +131,7 @@ public class ProcessSong {
         scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleHeadings", 0.6f);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
+        scaleTabs = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleTabs",0.8f);
         multiLineVerseKeepCompact = mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false);
         bracketsStyle = mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL);
         curlyBrackets = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true);
@@ -2275,6 +2276,9 @@ public class ProcessSong {
             case "comment":
                 f = defFontSize * scaleComments;
                 break;
+            case "tab":
+                f = defFontSize * scaleTabs;
+                break;
             case "heading":
                 f = defFontSize * scaleHeadings;
                 break;
@@ -3501,33 +3505,40 @@ public class ProcessSong {
 
     public ArrayList<String> getInfoFromHighlighterFilename(String filename) {
         ArrayList<String> bits = new ArrayList<>();
-        String[] filebits = filename.split("_");
-        int namepos = 1;
-        for (int x = 0; x < filebits.length; x++) {
-            if (filebits[x].equals("p") || filebits[x].equals("l")) {
-                // the pos is before this
-                namepos = x - 1;
+        if (filename!=null) {
+            String[] filebits = filename.split("_");
+            int namepos = 1;
+            for (int x = 0; x < filebits.length; x++) {
+                if (filebits[x].equals("p") || filebits[x].equals("l")) {
+                    // the pos is before this
+                    namepos = x - 1;
+                }
             }
-        }
-        if (namepos > 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int x = 0; x < namepos; x++) {
-                stringBuilder.append(filebits[x]).append("_");
-            }
-            bits.add(stringBuilder.toString());   // The folder
+            if (namepos > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int x = 0; x < namepos; x++) {
+                    stringBuilder.append(filebits[x]).append("_");
+                }
+                bits.add(stringBuilder.toString());   // The folder
 
-            stringBuilder = new StringBuilder();
-            for (int x = namepos; x < filebits.length; x++) {
-                stringBuilder.append(filebits[x]).append("_");
-            }
-            bits.add(stringBuilder.toString());   // The file
+                stringBuilder = new StringBuilder();
+                for (int x = namepos; x < filebits.length; x++) {
+                    try {
+                        stringBuilder.append(filebits[x]).append("_");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
-            // Get rid of underscores
-            bits.set(0, bits.get(0).substring(0, bits.get(0).lastIndexOf("_")));
-            bits.set(1, bits.get(1).substring(0, bits.get(1).lastIndexOf("_")));
-        } else {
-            bits.add(0, "");
-            bits.add(1, filename);
+                bits.add(stringBuilder.toString());   // The file
+
+                // Get rid of underscores
+                bits.set(0, bits.get(0).substring(0, bits.get(0).lastIndexOf("_")));
+                bits.set(1, bits.get(1).substring(0, bits.get(1).lastIndexOf("_")));
+            } else {
+                bits.add(0, "");
+                bits.add(1, filename);
+            }
         }
         return bits;
 

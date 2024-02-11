@@ -547,6 +547,7 @@ public class Preferences extends Activity {
     // scaleChords                      float       The scale factor for chords relative to the lyrics (def:0.8f)
     // scaleComments                    float       The scale factor for comments relative to the lyrics (def:0.8f)
     // scaleHeadings                    float       The scale factor for headings relative to the lyrics (def:0.6f)
+    // scaleTabs                        float       The scale factor for tabs relative to the lyrics (def:0.8f)
     // scrollDistance                   float       The percentage of the screen that is scrolled using the scroll buttons/pedals (def:0.7f)
     // scrollSpeed                      int         How quick should the scroll animation be (def:1500)
     // searchAka                        boolean     Should the aka be included in the search (def:true)

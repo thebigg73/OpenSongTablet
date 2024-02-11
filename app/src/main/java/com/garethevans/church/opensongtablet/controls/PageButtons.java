@@ -151,8 +151,12 @@ public class PageButtons {
         if (actionButton!=null && actionButton.getRotation()==0) {
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
-        for (MyFAB fab:fabs) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        if (fabs!=null) {
+            for (MyFAB fab : fabs) {
+                if (fab!=null) {
+                    fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+                }
+            }
         }
         if (pageButtonsLayout!=null) {
             pageButtonsLayout.setAlpha(pageButtonAlpha);

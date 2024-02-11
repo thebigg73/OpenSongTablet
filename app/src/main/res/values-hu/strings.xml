@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Függőleges mozgás megengedett"</string>
     <string name="swipe_distance">"Swipe távolság"</string>
     <string name="swipe_info">A dalok közötti mozgáshoz módosítsa a kézmozdulatokat</string>
+    <string name="tabs_scale">A lap szövegének méretezése (gitár, dob stb.)</string>
     <string name="tag">Címke</string>
     <string name="tag_add_remove">A kiemelt dalok tartalmazzák a kiválasztott címkét. Kattintson bármelyik dalra a kiválasztott címke hozzáadásához/eltávolításához.</string>
     <string name="tag_background">"Tag háttér"</string>

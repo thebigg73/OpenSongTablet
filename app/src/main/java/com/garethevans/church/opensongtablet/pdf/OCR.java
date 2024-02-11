@@ -216,8 +216,11 @@ public class OCR {
                         textFromLinesArray.append(thisLine).append("\n");
                     }
                 }
-
-                pdfPages.add(currpage,textFromLinesArray.toString());
+                try {
+                    pdfPages.add(currpage, textFromLinesArray.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 pageHeightRunning = maxTop;
                 if (pdfPages.size()==pageCount) {
                     // We're done

@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Vertikální pohyb povolen"</string>
     <string name="swipe_distance">"Přesuňte vzdálenost"</string>
     <string name="swipe_info">Upravte gesta pro pohyb mezi skladbami</string>
+    <string name="tabs_scale">Text karty Měřítko (kytara, bicí atd.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Zvýrazněné skladby obsahují vybranou značku. Kliknutím na libovolnou skladbu přidáte/odstraníte vybranou značku.</string>
     <string name="tag_background">"Tag pozadí"</string>

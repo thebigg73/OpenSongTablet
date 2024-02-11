@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Mouvement vertical autorisé"</string>
     <string name="swipe_distance">"Balayez la distance"</string>
     <string name="swipe_info">Ajustez les gestes pour passer d\'une chanson à l\'autre</string>
+    <string name="tabs_scale">Texte de la tablature de gamme (guitare, batterie, etc.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Les chansons en surbrillance contiennent la balise choisie. Cliquez sur n\'importe quelle chanson pour ajouter/supprimer la balise choisie.</string>
     <string name="tag_background">"Fond des Tags"</string>

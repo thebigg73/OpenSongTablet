@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"垂直移動が許可されている"</string>
     <string name="swipe_distance">"スワイプ距離"</string>
     <string name="swipe_info">ジェスチャーを調整して曲間を移動する</string>
+    <string name="tabs_scale">音階タブのテキスト(ギター、ドラムなど)</string>
     <string name="tag">荷札</string>
     <string name="tag_add_remove">強調表示された曲には、選択したタグが含まれています。任意の曲をクリックして、選択したタグを追加/削除します。</string>
     <string name="tag_background">"タグの背景"</string>

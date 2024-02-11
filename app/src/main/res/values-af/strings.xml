@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Vertikale beweging toegelaat"</string>
     <string name="swipe_distance">"Swipe afstand"</string>
     <string name="swipe_info">Pas gebare aan om tussen liedjies te beweeg</string>
+    <string name="tabs_scale">Skaal oortjie teks (kitaar, tromme, ens.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Gemerkte liedjies bevat die gekose merker. Klik op enige liedjie om die gekose merker by te voeg/verwyder.</string>
     <string name="tag_background">"Tag agtergrond"</string>

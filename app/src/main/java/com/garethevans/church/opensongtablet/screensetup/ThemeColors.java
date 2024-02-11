@@ -490,6 +490,9 @@ public class ThemeColors {
 
 
     public String getPdfTheme() {
+        if (pdfTheme==null) {
+            pdfTheme = mainActivityInterface.getPreferences().getMyPreferenceString("pdfTheme","default");
+        }
         return pdfTheme;
     }
     public int getPdfTextColor() {

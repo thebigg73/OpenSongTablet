@@ -838,6 +838,7 @@
     <string name="swipe_allowance">Dopušteno je vertikalno kretanje</string>
     <string name="swipe_distance">Prijeđite prstom udaljenost</string>
     <string name="swipe_info">Podesite pokrete za kretanje između pesama</string>
+    <string name="tabs_scale">Razmera teksta kartice (gitara, bubnjevi itd.)</string>
     <string name="tag">Oznaka</string>
     <string name="tag_add_remove">Istaknute pesme sadrže izabranu oznaku. Kliknite na bilo koju pesmu da biste dodali/uklonili izabranu oznaku.</string>
     <string name="tag_background">Pozadina oznake</string>

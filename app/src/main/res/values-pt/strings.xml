@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Movimento vertical permitido"</string>
     <string name="swipe_distance">"Deslizar a distância"</string>
     <string name="swipe_info">Ajuste os gestos para se mover entre as músicas</string>
+    <string name="tabs_scale">Dimensionar o texto da aba (guitarra, bateria, etc.)</string>
     <string name="tag">Etiqueta</string>
     <string name="tag_add_remove">As músicas destacadas contêm a tag escolhida. Clique em qualquer música para adicionar/remover a tag escolhida.</string>
     <string name="tag_background">"Tag fundo"</string>

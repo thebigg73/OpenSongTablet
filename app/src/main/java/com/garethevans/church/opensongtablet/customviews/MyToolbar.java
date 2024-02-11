@@ -367,7 +367,14 @@ public class MyToolbar extends MaterialToolbar {
 
         // Now show the action bar
         if (actionBar!=null) {
-            actionBar.show();
+
+            mainActivityInterface.getMainHandler().post(() -> {
+                try {
+                    actionBar.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
         // If we need to hide the actionbar again, set a runnable, as long as the menu isn't open

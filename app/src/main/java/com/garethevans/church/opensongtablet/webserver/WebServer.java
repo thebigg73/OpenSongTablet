@@ -510,9 +510,9 @@ public class WebServer extends NanoHTTPD {
         //importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+", 'Courier New', Courier, monospace; color:" +
         importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+"; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleComments)+"pt; " +
-                "text-decoration:underline;}\n";
-        return importString;
+                "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleTabs)+"pt; " +
+                "text-decoration:none;}\n";
+         return importString;
     }
     private String getResizeJS() {
         return  "  var contentWidth;\n" +

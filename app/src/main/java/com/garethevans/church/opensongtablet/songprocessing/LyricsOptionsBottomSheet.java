@@ -33,7 +33,11 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         // Default constructor required to avoid re-instantiation failures
         // Just close the bottom sheet
         openingFragment = null;
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Initialise with a reference to the opening fragment

@@ -838,6 +838,7 @@
     <string name="swipe_allowance">Разрешено вертикальное перемещение</string>
     <string name="swipe_distance">Интервал свайпа</string>
     <string name="swipe_info">Настройте жесты для перемещения между песнями</string>
+    <string name="tabs_scale">Текст вкладки гаммы (гитара, ударные и т.д.)</string>
     <string name="tag">Тэг</string>
     <string name="tag_add_remove">Подсвеченные песни содержат выбранный тег. Нажмите на любую песню, чтобы добавить/удалить выбранный тег.</string>
     <string name="tag_background">Фон тегов</string>

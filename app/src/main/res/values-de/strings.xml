@@ -838,6 +838,7 @@
     <string name="swipe_allowance">"Vertikale Bewegung erlaubt"</string>
     <string name="swipe_distance">"Wisch-Weite"</string>
     <string name="swipe_info">Passen Sie Gesten an, um zwischen Songs zu wechseln</string>
+    <string name="tabs_scale">Skalen-Tab-Text (Gitarre, Schlagzeug usw.)</string>
     <string name="tag">Markierung</string>
     <string name="tag_add_remove">Hervorgehobene Songs enthalten das ausgewählte Tag. Klicken Sie auf ein beliebiges Lied, um das ausgewählte Tag hinzuzufügen/zu entfernen.</string>
     <string name="tag_background">"Hintergrund Tag"</string>
