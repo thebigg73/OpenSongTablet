@@ -57,6 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:layout_gravity="start"
+                android:gravity="start"
                 android:hint="@string/key" />
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -65,6 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:layout_gravity="start"
+                android:gravity="start"
                 android:hint="@string/pad_onoroff" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
@@ -76,6 +80,8 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:hint="@string/link_audio"
+                android:layout_gravity="start"
+                android:gravity="start"
                 android:inputType="none" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -84,6 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:layout_gravity="start"
+                android:gravity="start"
                 android:text="@string/loop" />
 
             <com.google.android.material.button.MaterialButton
