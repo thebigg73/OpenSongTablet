@@ -296,7 +296,9 @@ public class Song implements Serializable {
     public void setKeyOriginal(String keyoriginal) {
         this.keyoriginal = keyoriginal;
     }
-    public void setTimesig(String timesig) {this.timesig = timesig;}
+    public void setTimesig(String timesig) {
+        this.timesig = timesig;
+    }
     public void setTempo(String tempo) {
         this.tempo = tempo;
     }

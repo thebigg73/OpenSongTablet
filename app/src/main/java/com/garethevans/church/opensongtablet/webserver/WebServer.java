@@ -665,5 +665,4 @@ public class WebServer extends NanoHTTPD {
         }
         return text;
     }
-
 }

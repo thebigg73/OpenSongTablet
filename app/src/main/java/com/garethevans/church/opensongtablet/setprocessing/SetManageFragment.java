@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +88,6 @@ public class SetManageFragment extends Fragment {
             prepareStrings();
 
             whattodo = mainActivityInterface.getWhattodo();
-            Log.d(TAG,"whattodo:"+whattodo);
 
             // Check if we are importing a set.  If so, extract the filename/uri
             checkForImporting();
@@ -663,12 +661,10 @@ public class SetManageFragment extends Fragment {
         // Go through the array and build the text of the sets selected
         StringBuilder stringBuilder = new StringBuilder();
         for (String selectedItem:selectedItems) {
-            Log.d(TAG,"selectedItem:"+selectedItem);
             // Replace the start and end bits of the string
             selectedItem = selectedItem.
                     replace(mainActivityInterface.getSetActions().getItemStart(), "").
                     replace(mainActivityInterface.getSetActions().getItemEnd(), "");
-
             if (whattodo.equals("saveset") || whattodo.equals("importset") || whattodo.equals("renameset") || whattodo.equals("exportset")) {
                 // We need to update the set name in the edit text
                 String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(selectedItem);
@@ -685,7 +681,6 @@ public class SetManageFragment extends Fragment {
             if (!selectedItem.startsWith("(")) {
                 selectedItem = "(" + mainActivityInterface.getMainfoldername() + ") " + selectedItem;
             }
-            Log.d(TAG,"building stringBuilder + :"+selectedItem);
             stringBuilder.append(selectedItem).append(", ");
         }
         String what = stringBuilder.toString();
