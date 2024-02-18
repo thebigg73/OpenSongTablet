@@ -304,9 +304,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menu_showcase_info ="";
 
     // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
-    public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
-    private static final String KEY_PAGER_ID = "pager_id";
-    private Bundle savedInstanceState;
+    //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
+    //private static final String KEY_PAGER_ID = "pager_id";
+    //private Bundle savedInstanceState;
 
     // Used if implementing Oboe using C++ injection
     /* static {System.loadLibrary("lowlatencyaudio");} */
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.savedInstanceState = savedInstanceState;
+        //this.savedInstanceState = savedInstanceState;
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             });
 
             if (savedInstanceState != null) {
-                ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
+                //ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
                 bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
                 rebooted = true;
                 getSongListBuildIndex();
@@ -405,13 +405,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
      * When the process is killed, the variable gets reset.
      * This makes sure that we do not get ID collisions
      * and therefore errors when trying to restore state from another view.
-     */
-    @SuppressWarnings("StatementWithEmptyBody")
+
+    //@SuppressWarnings("StatementWithEmptyBody")
     private void ensureGeneratedViewIdGreaterThan(int minimum) {
         while (ViewCompat.generateViewId() <= minimum) {
             // Generate new IDs
         }
-    }
+    }*/
 
     @Override
     public Handler getMainHandler() {
@@ -1880,12 +1880,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
         }
         viewPager = myView.viewpager;
+        /*
         int newId = ViewCompat.generateViewId();
         if (savedInstanceState != null && savedInstanceState.getInt(KEY_PAGER_ID, 0) != 0) {
             // Restore state by using the same ID as before. ID collisions are prevented in MainActivity.
             newId = savedInstanceState.getInt(KEY_PAGER_ID, 0);
         }
         viewPager.setId(newId);
+        */
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(1);
         // Disable the swiping gesture
@@ -3924,7 +3926,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean("bootUpCompleted", bootUpCompleted);
-        outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
+        //outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
         if (songListBuildIndex!=null) {
             outState.putBoolean("indexComplete", songListBuildIndex.getIndexComplete());
         } else {
