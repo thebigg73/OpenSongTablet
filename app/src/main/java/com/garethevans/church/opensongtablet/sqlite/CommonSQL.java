@@ -251,8 +251,16 @@ public class CommonSQL {
         ArrayList<String> args = new ArrayList<>();
         String sqlMatch = "";
         if (searchByFolder && folderVal != null && folderVal.length() > 0) {
-            sqlMatch += SQLite.COLUMN_FOLDER + "= ? AND ";
-            args.add(folderVal);
+            if (folderVal.equals(mainActivityInterface.getMainfoldername()) ||
+            folderVal.equals("MAIN")) {
+                sqlMatch += SQLite.COLUMN_FOLDER + "= ? AND ";
+                args.add(folderVal);
+            } else {
+                Log.d(TAG,"folderVal="+folderVal);
+                // Allows the inclusion of subfolders contents
+                sqlMatch += SQLite.COLUMN_FOLDER + " LIKE ? AND ";
+                args.add(folderVal + "%");
+            }
         }
         if (searchByArtist && artistVal != null && artistVal.length() > 0) {
             sqlMatch += SQLite.COLUMN_AUTHOR + " LIKE ? AND ";
