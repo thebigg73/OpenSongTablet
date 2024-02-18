@@ -240,6 +240,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/page_buttons"/>
 
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/hotZoneButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hot_zones"/>
+
             </LinearLayout>
 
             <LinearLayout

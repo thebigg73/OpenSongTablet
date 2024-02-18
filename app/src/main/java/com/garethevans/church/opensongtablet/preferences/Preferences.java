@@ -235,6 +235,7 @@ public class Preferences extends Activity {
     // custom1_extraInfoBgColor         int         The color for the extra info background in the custom1 theme
     // custom1_highlightChordColor      int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // custom1_highlightHeadingColor    int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // custom1_hotZoneColor             int         The color to tint the hot zones (def: transparent/0x00000000);
     // custom2_invertPDF                boolean     Should the PDF colours be inverted (def:false)
     // custom2_lyricsBackgroundColor    int         The color for the lyrics background in the custom2 theme
     // custom2_lyricsBridgeColor        int         The color for the background for the bridge in the custom2 theme
@@ -261,6 +262,7 @@ public class Preferences extends Activity {
     // custom2_extraInfoBgColor         int         The color for the extra info background in the custom2 theme
     // custom2_highlightChordColor      int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // custom2_highlightHeadingColor    int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // custom2_hotZoneColor             int         The color to tint the hot zones (def: transparent/0x00000000);
     // customLogo                       String      The uri of the user logo for presentations (def:"")
     // customLogoSize                   float       Size of the custom logo (% of screen) (def:0.5f)
     // customPadAb                      String      Custom pad uri for the key specified
@@ -313,6 +315,7 @@ public class Preferences extends Activity {
     // dark_extraInfoBgColor            int         The color for the extra info background in the dark theme
     // dark_highlightChordColor         int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // dark_highlightHeadingColor       int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // dark_hotZoneColor                int         The color to tint the hot zones (def: transparent/0x00000000);
     // databaseLastUpdate               long        The timestamp the song folder was last indexed (def:-1)
     // defaultPresentationText          boolean     Should the 'Words and music by' and 'Used by permission' be included (def:true)
     // deviceId                         String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
@@ -413,6 +416,7 @@ public class Preferences extends Activity {
     // light_extraInfoBgColor           int         The color for the extra info background in the light theme
     // light_highlightChordColor        int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // light_highlightHeadingColor      int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
+    // light_hotZoneColor               int         The color to tint the hot zones (def: transparent/0x00000000);
     // lineSpacing                      float       The line spacing trim value to use (def:0.1f)
     // marginToolbarLeft                int         Any additional padding to the left of the actionbar content (def:0)
     // marginToolbarRight               int         Any additional padding to the right of the actionbar content (def:0)
