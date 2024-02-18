@@ -164,22 +164,27 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                String message = skip_string + " ("+countdownNumber+")";
-                if (myView!=null) {
-                    myView.skipButton.post(() -> myView.skipButton.setText(message));
-                }
+                try {
+                    String message = skip_string + " (" + countdownNumber + ")";
+                    if (myView != null) {
+                        myView.skipButton.post(() -> myView.skipButton.setText(message));
+                    }
 
-                if (countdownNumber==0) {
-                    this.cancel();
-                    if (timer!=null) {
-                        timer.purge();
+                    if (countdownNumber == 0) {
+                        this.cancel();
+                        if (timer != null) {
+                            timer.purge();
+                        }
+                        timer = null;
+                        if (myView != null) {
+                            myView.skipButton.post(() -> myView.skipButton.performClick());
+                        }
+                    } else {
+                        countdownNumber--;
                     }
-                    timer = null;
-                    if (myView!=null) {
-                        myView.skipButton.post(() -> myView.skipButton.performClick());
-                    }
-                } else {
-                    countdownNumber --;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG,"The view was lost!");
                 }
             }
         };

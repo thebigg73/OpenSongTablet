@@ -1373,7 +1373,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private boolean isCurrentFragment(int fragId) {
-        runOnUiThread(() -> getSupportFragmentManager().executePendingTransactions());
+        runOnUiThread(() -> {
+            try {
+                getSupportFragmentManager().executePendingTransactions();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         int currFrag = -1;
         if (navController != null && navController.getCurrentDestination() != null) {
@@ -3407,6 +3413,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public Metronome getMetronome() {
         if (metronome == null) {
             metronome = new Metronome(this);
+            metronome.initialiseMetronome();
         }
         return metronome;
     }
@@ -3964,7 +3971,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
 
+        // Prepare the themes
+        getMyThemeColors();
+
         // Prepapre the metronome
+        getMetronome();
+
         if (metronome!=null) {
             metronome.initialiseMetronome();
         }

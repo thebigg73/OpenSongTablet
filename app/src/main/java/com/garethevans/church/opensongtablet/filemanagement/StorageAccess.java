@@ -637,6 +637,9 @@ public class StorageAccess {
 
     public String safeFilename(String filename) {
         // Remove bad characters from filenames
+        if (filename==null) {
+            filename = "";
+        }
         filename = filename.replaceAll("[*?<>&!#$+\":{}@\\\\]", " "); // Removes bad characters - leave ' and / though
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         // Don't allow the name OpenSong

@@ -142,7 +142,11 @@ public class PageButtons {
         return pageButtonHide;
     }
     public boolean getPageButtonActivated() {
-        return actionButton.getRotation()!=0;
+        if (actionButton!=null) {
+            return actionButton.getRotation() != 0;
+        } else {
+            return false;
+        }
     }
     public void updateColors() {
         pageButtonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
@@ -207,7 +211,7 @@ public class PageButtons {
         longText = new ArrayList<>();
         drawableIds = new ArrayList<>();
 
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Set actions
         prepareOption("set",c.getString(R.string.set_current),c.getString(R.string.show),"",R.drawable.list_number);
@@ -221,6 +225,10 @@ public class PageButtons {
         prepareOption("pad",c.getString(R.string.pad),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.amplifier);
         prepareOption("metronome",c.getString(R.string.metronome),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.metronome);
         prepareOption("autoscroll",c.getString(R.string.autoscroll),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.autoscroll);
+        prepareOption("pad_autoscroll",c.getString(R.string.pad) + " / " + c.getString(R.string.autoscroll),c.getString(R.string.start)+" / "+c.getString(R.string.stop),"",R.drawable.autoscroll_pad);
+        prepareOption("pad_metronome",c.getString(R.string.pad) + " / " + c.getString(R.string.metronome),c.getString(R.string.start)+" / "+c.getString(R.string.stop),"",R.drawable.metronome_pad);
+        prepareOption("autoscroll_metronome",c.getString(R.string.autoscroll) + " / " + c.getString(R.string.metronome),c.getString(R.string.start)+" / "+c.getString(R.string.stop),"",R.drawable.metronome_autoscroll);
+        prepareOption("pad_autoscroll_metronome",c.getString(R.string.pad) + " / " + c.getString(R.string.autoscroll) + " / " + c.getString(R.string.metronome),c.getString(R.string.start)+" / "+c.getString(R.string.stop),"",R.drawable.metronome_autoscroll_pad);
         prepareOption("inc_autoscroll_speed",c.getString(R.string.inc_autoscroll_speed),c.getString(R.string.inc_autoscroll_speed),"",R.drawable.timer_plus);
         prepareOption("dec_autoscroll_speed",c.getString(R.string.dec_autoscroll_speed),c.getString(R.string.dec_autoscroll_speed),"",R.drawable.timer_minus);
         prepareOption("toggle_autoscroll_pause",c.getString(R.string.autoscroll_pause),c.getString(R.string.pause) + " / " + c.getString(R.string.resume),"",R.drawable.timer_pause);

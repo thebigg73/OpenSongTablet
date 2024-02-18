@@ -71,30 +71,35 @@ public class EditSongFragmentMain extends Fragment  {
     }
     // Initialise the views
     private void setupValues() {
-        mainActivityInterface.getMainHandler().post(() -> {
-            myView.title.setText(mainActivityInterface.getTempSong().getTitle());
-            myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
-            myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
-            myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
-            mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
-            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
-            myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
-        });
-
-        getFoldersFromStorage();
-        newFolder = "+ " + new_folder_add_string;
-        folders.add(newFolder);
-        if (getContext()!=null) {
-            myView.folder.post(() -> {
-                arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-                myView.folder.setAdapter(arrayAdapter);
-                myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
-            });
+        if (mainActivityInterface.getTempSong()==null) {
+            mainActivityInterface.setTempSong(mainActivityInterface.getSong());
         }
-        textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",new_folder_string,new_folder_name_string,null,"","",true);
+        if (mainActivityInterface.getTempSong()!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                myView.title.setText(mainActivityInterface.getTempSong().getTitle());
+                myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
+                myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
+                myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
+                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
+                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
+                myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
+            });
 
-        // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
+            getFoldersFromStorage();
+            newFolder = "+ " + new_folder_add_string;
+            folders.add(newFolder);
+            if (getContext() != null) {
+                myView.folder.post(() -> {
+                    arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                    myView.folder.setAdapter(arrayAdapter);
+                    myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+                });
+            }
+            textInputBottomSheet = new TextInputBottomSheet(this, "EditSongFragmentMain", new_folder_string, new_folder_name_string, null, "", "", true);
+
+            // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+            mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface, myView.resizeForKeyboardLayout));
+        }
     }
 
     // Sor the view visibility, listeners, etc.

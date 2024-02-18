@@ -77,7 +77,9 @@ public class InlineSetList extends RecyclerView {
     public void setInlineSet(boolean showInline) {
         this.showInline = showInline;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet", showInline);
-        setVisibility(showInline ? View.VISIBLE:View.GONE);
+        mainActivityInterface.getMainHandler().post(() -> {
+            setVisibility(showInline ? View.VISIBLE:View.GONE);
+        });
         if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
             mainActivityInterface.getShowToast().doIt(no_set_string);
         }

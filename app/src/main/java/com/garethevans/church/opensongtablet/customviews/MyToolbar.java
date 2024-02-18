@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -492,14 +493,24 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void highlightBeat(int beat, int colorOn, long bufferFix) {
+        Log.d(TAG,"beat:"+beat+"  beats:"+beats+"  colorOn:"+colorOn+"  bufferFix:"+bufferFix);
         // Highlight the beat
-        beatView.get(beat).postDelayed(() -> beatView.get(beat).setBackgroundColor(colorOn),bufferFix);
-        if (beat==1) {
-            // Hide the last beat
-            beatView.get(beats).postDelayed(() -> beatView.get(beats).setBackgroundColor(Color.TRANSPARENT),bufferFix);
-        } else {
-            // Hide the previous beat
-            beatView.get(beat-1).postDelayed(() -> beatView.get(beat-1).setBackgroundColor(Color.TRANSPARENT),bufferFix);
-        }
+
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                try {
+                    beatView.get(beat).setBackgroundColor(colorOn);
+                    if (beat == 1) {
+                        // Hide the last beat
+                        beatView.get(beats).setBackgroundColor(Color.TRANSPARENT);
+                    } else {
+                        // Hide the previous beat
+                        beatView.get(beat - 1).setBackgroundColor(Color.TRANSPARENT);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "Likely the beat view was lost when trying to update");
+                }
+            },bufferFix);
+
     }
 }

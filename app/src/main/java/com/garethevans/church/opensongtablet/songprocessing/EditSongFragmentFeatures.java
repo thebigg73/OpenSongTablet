@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -92,24 +90,25 @@ public class EditSongFragmentFeatures extends Fragment {
         }
     }
     private void setupValues() {
+        if (mainActivityInterface.getTempSong()==null) {
+            mainActivityInterface.setTempSong(mainActivityInterface.getSong());
+        }
+
         // The key
         mainActivityInterface.getTranspose().checkOriginalKeySet(mainActivityInterface.getTempSong());
         if (getContext()!=null) {
-            myView.key.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 ExposedDropDownArrayAdapter keyArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
                         myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
                 myView.key.setAdapter(keyArrayAdapter1);
                 myView.key.setText(mainActivityInterface.getTempSong().getKey());
-            });
-            myView.originalkey.post(() -> {
                 ExposedDropDownArrayAdapter keyArrayAdapter2 = new ExposedDropDownArrayAdapter(getContext(),
                         myView.originalkey, R.layout.view_exposed_dropdown_item, key_choice_string);
                 myView.originalkey.setAdapter(keyArrayAdapter2);
                 myView.originalkey.setText(mainActivityInterface.getTempSong().getKeyOriginal());
             });
-
         }
-        myView.searchOnline.post(() -> myView.searchOnline.setText(online_search_string));
+        mainActivityInterface.getMainHandler().post(() -> myView.searchOnline.setText(online_search_string));
 
         // The capo
         setupCapo();
@@ -120,7 +119,7 @@ public class EditSongFragmentFeatures extends Fragment {
         padfiles.add(link_audio_string);
         padfiles.add(off_string);
         if (getContext()!=null) {
-            myView.pad.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
                 myView.pad.setAdapter(padArrayAdapter);
@@ -134,9 +133,9 @@ public class EditSongFragmentFeatures extends Fragment {
 
         // The loop
         if (mainActivityInterface.getTempSong().getPadloop()!=null) {
-            myView.loop.post(() -> myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true")));
+            mainActivityInterface.getMainHandler().post(() -> myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true")));
         } else {
-            myView.loop.post(() -> myView.loop.setChecked(false));
+            mainActivityInterface.getMainHandler().post(() -> myView.loop.setChecked(false));
         }
 
         // The tempo
@@ -146,7 +145,7 @@ public class EditSongFragmentFeatures extends Fragment {
             tempos.add(String.valueOf(x));
         }
         if (getContext()!=null) {
-            myView.tempo.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
                 myView.tempo.setAdapter(tempoArrayAdapter);
@@ -166,7 +165,7 @@ public class EditSongFragmentFeatures extends Fragment {
             }
         }
         if (getContext()!=null) {
-            myView.timesig.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
                 myView.timesig.setAdapter(timesigArrayAdapter);
@@ -181,32 +180,22 @@ public class EditSongFragmentFeatures extends Fragment {
         }
         int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Integer.parseInt(mainActivityInterface.getTempSong().getAutoscrolllength()));
 
-        myView.durationMins.post(() -> {
+        mainActivityInterface.getMainHandler().post(() -> {
             myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.durationMins.setDigits("0123456789");
             myView.durationMins.setText(String.valueOf(timeVals[0]));
-        });
-        myView.durationSecs.post(() -> {
             myView.durationSecs.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.durationSecs.setDigits("0123456789");
             myView.durationSecs.setText(String.valueOf(timeVals[1]));
-        });
-        myView.delay.post(() -> {
             myView.delay.setInputType(InputType.TYPE_CLASS_NUMBER);
             myView.delay.setDigits("0123456789");
             myView.delay.setText(mainActivityInterface.getTempSong().getAutoscrolldelay());
-        });
 
         // The midi, abc and customchords
-        myView.midi.post(() -> {
             myView.midi.setText(mainActivityInterface.getTempSong().getMidi());
             mainActivityInterface.getProcessSong().editBoxToMultiline(myView.midi);
-        });
-        myView.abc.post(() -> {
             myView.abc.setText(mainActivityInterface.getTempSong().getAbc());
             mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abc);
-        });
-        myView.customChords.post(() -> {
             myView.customChords.setText(mainActivityInterface.getTempSong().getCustomchords());
             mainActivityInterface.getProcessSong().editBoxToMultiline(myView.customChords);
         });
@@ -219,7 +208,7 @@ public class EditSongFragmentFeatures extends Fragment {
         linkOptions.add(link_web_string);
         linkOptions.add(link_file_string);
         if (getContext()!=null) {
-            myView.linkType.post(() -> {
+            mainActivityInterface.getMainHandler().post(() -> {
                 ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.linkType, R.layout.view_exposed_dropdown_item, linkOptions);
                 myView.linkType.setAdapter(linkArrayAdapter);
@@ -229,60 +218,68 @@ public class EditSongFragmentFeatures extends Fragment {
         setLink();
 
         // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-        myView.resizeForKeyboardLayout.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
+        mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface,myView.resizeForKeyboardLayout));
     }
 
     private void setupCapo() {
         ArrayList<String> capos = new ArrayList<>();
-        capos.add("");
-        String songkey = mainActivityInterface.getTempSong().getKey();
-        String origkey = mainActivityInterface.getTempSong().getKeyOriginal();
-        if ((songkey==null || songkey.isEmpty()) && origkey!=null && !origkey.isEmpty()) {
-            songkey = origkey;
-            mainActivityInterface.getTempSong().setKey(origkey);
-            String finalOrigkey = origkey;
-            myView.key.post(() -> myView.key.setText(finalOrigkey));
-
-        }
-        if ((origkey==null || origkey.isEmpty()) && songkey!=null && !songkey.isEmpty()) {
-            origkey = songkey;
-            mainActivityInterface.getTempSong().setKeyOriginal(songkey);
-            String finalSongkey = songkey;
-            myView.originalkey.post(() -> myView.originalkey.setText(finalSongkey));
-        }
-
-        for (int x = 1; x < 12; x++) {
-            // If we have a ket set, work out the capo key
-            String capokey = "";
-            if (songkey!=null && !songkey.isEmpty()) {
-                capokey = " (" + mainActivityInterface.getTranspose().transposeChordForCapo(x,"."+songkey) + ")";
+        if (mainActivityInterface.getTempSong()!=null) {
+            capos.add("");
+            String songkey = "";
+            String origkey = "";
+            if (mainActivityInterface.getTempSong().getKey()!=null) {
+                songkey = mainActivityInterface.getTempSong().getKey();
             }
-            capos.add(x + capokey.replace(".",""));
-        }
-
-        if (getContext()!=null) {
-            myView.capo.post(() -> {
-                ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.capo, R.layout.view_exposed_dropdown_item, capos);
-                myView.capo.setAdapter(capoArrayAdapter);
-            });
-        }
-
-        String songcapo = mainActivityInterface.getTempSong().getCapo();
-        if (songcapo==null) {
-            songcapo = "";
-        }
-
-        Log.d(TAG,"songcapo:"+songcapo+"  songkey:"+songkey);
-        if (songkey!=null && !songkey.isEmpty() && !songcapo.isEmpty()) {
-            songcapo = songcapo.replaceAll("\\D","").trim();
-            if (!songcapo.isEmpty()) {
-                songcapo += " (" + mainActivityInterface.getTranspose().transposeChordForCapo(Integer.parseInt(songcapo),"."+songkey) + ")";
+            if (mainActivityInterface.getTempSong().getKeyOriginal()!=null) {
+                origkey = mainActivityInterface.getTempSong().getKeyOriginal();
             }
-        }
+            if ((songkey == null || songkey.isEmpty()) && origkey != null && !origkey.isEmpty()) {
+                songkey = origkey;
+                mainActivityInterface.getTempSong().setKey(origkey);
+                String finalOrigkey = origkey;
+                mainActivityInterface.getMainHandler().post(() -> myView.key.setText(finalOrigkey));
 
-        String finalSongcapo = songcapo;
-        myView.capo.post(() -> myView.capo.setText(finalSongcapo.replace(".","")));
+            }
+            if ((origkey == null || origkey.isEmpty()) && songkey != null && !songkey.isEmpty()) {
+                origkey = songkey;
+                mainActivityInterface.getTempSong().setKeyOriginal(songkey);
+                String finalSongkey = songkey;
+                mainActivityInterface.getMainHandler().post(() -> myView.originalkey.setText(finalSongkey));
+            }
+
+            for (int x = 1; x < 12; x++) {
+                // If we have a ket set, work out the capo key
+                String capokey = "";
+                if (songkey != null && !songkey.isEmpty()) {
+                    capokey = " (" + mainActivityInterface.getTranspose().transposeChordForCapo(x, "." + songkey) + ")";
+                }
+                capos.add(x + capokey.replace(".", ""));
+            }
+
+            if (getContext() != null) {
+                mainActivityInterface.getMainHandler().post(() -> {
+                    ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.capo, R.layout.view_exposed_dropdown_item, capos);
+                    myView.capo.setAdapter(capoArrayAdapter);
+                });
+            }
+
+            String songcapo = mainActivityInterface.getTempSong().getCapo();
+            if (songcapo == null) {
+                songcapo = "";
+            }
+
+            Log.d(TAG, "songcapo:" + songcapo + "  songkey:" + songkey);
+            if (songkey != null && !songkey.isEmpty() && !songcapo.isEmpty()) {
+                songcapo = songcapo.replaceAll("\\D", "").trim();
+                if (!songcapo.isEmpty()) {
+                    songcapo += " (" + mainActivityInterface.getTranspose().transposeChordForCapo(Integer.parseInt(songcapo), "." + songkey) + ")";
+                }
+            }
+
+            String finalSongcapo = songcapo;
+            mainActivityInterface.getMainHandler().post(() -> myView.capo.setText(finalSongcapo.replace(".", "")));
+        }
     }
 
     private void setLink() {
@@ -302,7 +299,7 @@ public class EditSongFragmentFeatures extends Fragment {
                 linkvalue = mainActivityInterface.getTempSong().getLinkother();
                 break;
         }
-        myView.linkValue.post(() -> myView.linkValue.setText(linkvalue));
+        mainActivityInterface.getMainHandler().post(() -> myView.linkValue.setText(linkvalue));
     }
 
     private void editLink(String value) {
@@ -324,11 +321,13 @@ public class EditSongFragmentFeatures extends Fragment {
     }
 
     private void checkLines() {
-        myView.midi.post(() -> mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.midi, 2));
-        myView.abc.post(() -> mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.abc, 2));
+        mainActivityInterface.getMainHandler().post(() -> {
+            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.midi, 2);
+            mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.abc, 2);
+        });
     }
     private void setupListeners() {
-        new Handler(Looper.getMainLooper()).post(() -> {
+        mainActivityInterface.getMainHandler().post(() -> {
             myView.searchOnline.setOnClickListener(view -> {
                 GetBPMBottomSheet getBPMBottomSheet = new GetBPMBottomSheet(EditSongFragmentFeatures.this);
                 getBPMBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "GetBPMBottomSheet");

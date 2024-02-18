@@ -154,6 +154,17 @@ public class ImportIOSFragment extends Fragment {
         });
     }
 
+    private void setOnSongDBFile() {
+        File loc;
+        if (getContext()!=null) {
+            loc = mainActivityInterface.getStorageAccess().getAppSpecificFile("OnSong", "Database", "");
+            if (!loc.mkdirs()) {
+                Log.d(TAG, "Database folder already exists - ok");
+            }
+            onsongdbfile = new File(loc, "OnSong.sqlite3");
+        }
+    }
+
     private void countSongs() {
         alive = true;
         ArrayList<String> allZipItems = new ArrayList<>();
@@ -176,13 +187,7 @@ public class ImportIOSFragment extends Fragment {
                 if (ze.getName().equals("OnSong.sqlite3") || ze.getName().equals("OnSong.Backup.sqlite3")) {
                     File loc;
                     if (getContext()!=null) {
-                        loc = mainActivityInterface.getStorageAccess().getAppSpecificFile("OnSong","Database","");
-                        //loc = new File(getContext().getExternalFilesDir("OnSong"), "Database");
-
-                        if (!loc.mkdirs()) {
-                            Log.d(TAG, "Database file already exists - ok");
-                        }
-                        onsongdbfile = new File(loc, "OnSong.sqlite3");
+                        setOnSongDBFile();
                         OutputStream outputStream = new FileOutputStream(onsongdbfile);
                         final BufferedOutputStream bout = new BufferedOutputStream(outputStream);
                         try {
@@ -321,82 +326,86 @@ public class ImportIOSFragment extends Fragment {
             }
 
             // Now we deal with extracting the songs from the database
-            SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(onsongdbfile,null);
+            if (onsongdbfile==null) {
+                setOnSongDBFile();
+            }
+            if (onsongdbfile!=null) {
+                SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openOrCreateDatabase(onsongdbfile, null);
 
-            String query = "SELECT title,content FROM Song";
-            Cursor cursor;
+                String query = "SELECT title,content FROM Song";
+                Cursor cursor;
 
-            try {
-                cursor = sqLiteDatabase.rawQuery(query, null);
-                if (cursor.moveToFirst()) {
+                try {
+                    cursor = sqLiteDatabase.rawQuery(query, null);
+                    if (cursor.moveToFirst()) {
 
-                    do {
-                        zipProgress++;
-                        try {
-                            Song newSong = new Song();
-                            // Set basic title/filename that may be improved from the content
-                            newSong.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
-                            newSong.setFilename(newSong.getTitle());
-                            newSong.setFolder(folder);
-                            newSong.setLyrics(cursor.getString(cursor.getColumnIndexOrThrow("content")));
+                        do {
+                            zipProgress++;
+                            try {
+                                Song newSong = new Song();
+                                // Set basic title/filename that may be improved from the content
+                                newSong.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
+                                newSong.setFilename(newSong.getTitle());
+                                newSong.setFolder(folder);
+                                newSong.setLyrics(cursor.getString(cursor.getColumnIndexOrThrow("content")));
 
-                            if (alive) {
-                                String file = newSong.getFilename();
-                                mainActivityInterface.getMainHandler().post(() -> {
-                                    try {
-                                        String message = processing + " (" + zipProgress + "/" + totalSongs + "):\n" + file;
-                                        myView.progressText.setText(message);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                });
-                            }
+                                if (alive) {
+                                    String file = newSong.getFilename();
+                                    mainActivityInterface.getMainHandler().post(() -> {
+                                        try {
+                                            String message = processing + " (" + zipProgress + "/" + totalSongs + "):\n" + file;
+                                            myView.progressText.setText(message);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                }
 
-                            // Now extract the song as an OpenSong song and improve the title/filename
-                            newSong = mainActivityInterface.getConvertOnSong().convertTextToTags(null, newSong);
-                            newSong.setFilename(mainActivityInterface.getStorageAccess().safeFilename(newSong.getFilename()));
-                            newSong.setFilename(newSong.getFilename().replace("/","_"));
+                                // Now extract the song as an OpenSong song and improve the title/filename
+                                newSong = mainActivityInterface.getConvertOnSong().convertTextToTags(null, newSong);
+                                newSong.setFilename(mainActivityInterface.getStorageAccess().safeFilename(newSong.getFilename()));
+                                newSong.setFilename(newSong.getFilename().replace("/", "_"));
 
-                            uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, newSong.getFilename());
-                            uriExists = mainActivityInterface.getStorageAccess().uriExists(uri);
+                                uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, newSong.getFilename());
+                                uriExists = mainActivityInterface.getStorageAccess().uriExists(uri);
 
-                            // Only proceed if we allow overwrite or the file doesn't exist
-                            if (allowOverwrite || !uriExists) {
+                                // Only proceed if we allow overwrite or the file doesn't exist
+                                if (allowOverwrite || !uriExists) {
 
-                                // Write the new song as OpenSong xml
-                                if (newSong.getFilename()!=null && !newSong.getFilename().isEmpty()
-                                    && newSong.getFilename()!=null &&
-                                        !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-                                    // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
-                                    String xml = mainActivityInterface.getProcessSong().getXML(newSong);
-                                    mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" updateFragment doStringWriteToFile Songs/"+folder+"/"+newSong.getFilename()+" with: "+xml);
-                                    if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Songs",
-                                            folder, newSong.getFilename(), xml)) {
-                                        // Add to the actual database
-                                        mainActivityInterface.getSQLiteHelper().createSong(folder,newSong.getFilename());
-                                        mainActivityInterface.getSQLiteHelper().updateSong(newSong);
-                                        filesCopied++;
+                                    // Write the new song as OpenSong xml
+                                    if (newSong.getFilename() != null && !newSong.getFilename().isEmpty()
+                                            && newSong.getFilename() != null &&
+                                            !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+                                        // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
+                                        String xml = mainActivityInterface.getProcessSong().getXML(newSong);
+                                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " updateFragment doStringWriteToFile Songs/" + folder + "/" + newSong.getFilename() + " with: " + xml);
+                                        if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Songs",
+                                                folder, newSong.getFilename(), xml)) {
+                                            // Add to the actual database
+                                            mainActivityInterface.getSQLiteHelper().createSong(folder, newSong.getFilename());
+                                            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+                                            filesCopied++;
+                                        } else {
+                                            errorFiles.append(newSong.getTitle()).append("\n");
+                                        }
                                     } else {
                                         errorFiles.append(newSong.getTitle()).append("\n");
                                     }
                                 } else {
-                                    errorFiles.append(newSong.getTitle()).append("\n");
+                                    notOverwritten.append(newSong.getTitle()).append("\n");
                                 }
-                            } else {
-                                notOverwritten.append(newSong.getTitle()).append("\n");
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } while (cursor.moveToNext() && alive);
+                        } while (cursor.moveToNext() && alive);
+                    }
+                    cursor.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                cursor.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                sqLiteDatabase.close();
             }
-
-            sqLiteDatabase.close();
 
             if (alive) {
                 mainActivityInterface.getMainHandler().post(() -> {

@@ -19,11 +19,14 @@ import com.google.android.material.slider.Slider;
 public class InlineSetFragment extends Fragment {
     // This class gives the settings for displaying an inline set list
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "InlineSetFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsSetsInlineBinding myView;
     private String set_inline_string="", website_inline_set_string="", performance_mode_string="",
             stage_mode_string="", presenter_mode_string="";
     private String webAddress;
+    boolean inlineSet, isInlineSetPresenter;
 
     @Override
     public void onResume() {
@@ -75,64 +78,48 @@ public class InlineSetFragment extends Fragment {
                 " / " + stage_mode_string + ")";
         String text2 = set_inline_string + " (" + presenter_mode_string + ")";
 
-        myView.showInlineSet.post(() -> {
-            myView.showInlineSet.setText(text1);
-            myView.showInlineSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false));
-
-        });
-
-        myView.showInlineSetPresenter.post(() -> {
-            myView.showInlineSetPresenter.setText(text2);
-            myView.showInlineSetPresenter.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter",true));
-        });
-
         int value1 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.20f)*100);
         int value2 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidthPresenter",0.3f)*100);
-        myView.widthSlider.post(() -> {
+        int value3 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetTextSize",12f));
+        int value4 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetTextSizePresenter",12f));
+
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.showInlineSet.setText(text1);
+            myView.showInlineSet.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",false));
+            myView.showInlineSetPresenter.setText(text2);
+            myView.showInlineSetPresenter.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter",true));
             myView.widthSlider.setLabelFormatter(value -> ((int)value)+"%");
             myView.widthSlider.setValue(value1);
             myView.widthSlider.setHint(value1+"%");
-        });
-        myView.widthSliderPresenter.post(() -> {
             myView.widthSliderPresenter.setLabelFormatter(value -> ((int)value)+"%");
             myView.widthSliderPresenter.setValue(value2);
             myView.widthSliderPresenter.setHint(value2+"%");
-        });
-
-        int value3 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetTextSize",12f));
-        int value4 = (int)(mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetTextSizePresenter",12f));
-        myView.textSizeSlider.post(() -> {
             myView.textSizeSlider.setLabelFormatter(value -> ((int)value)+"sp");
             myView.textSizeSlider.setValue(value3);
             myView.textSizeSlider.setHint(value3+"sp");
             myView.textSizeSlider.setHintTextSize(value3);
-
-        });
-        myView.textSizeSliderPresenter.post(() -> {
             myView.textSizeSliderPresenter.setLabelFormatter(value -> ((int)value)+"sp");
             myView.textSizeSliderPresenter.setValue(value4);
             myView.textSizeSliderPresenter.setHint(value4+"sp");
             myView.textSizeSliderPresenter.setHintTextSize(value4);
-
+            checkChanged(null,myView.sliderLayout,myView.showInlineSet.getChecked());
+            checkChanged(null,myView.sliderLayoutPresenter,myView.showInlineSetPresenter.getChecked());
         });
-
-        myView.sliderLayout.post(() -> checkChanged(null,myView.sliderLayout,myView.showInlineSet.getChecked()));
-        myView.sliderLayoutPresenter.post(() -> checkChanged(null,myView.sliderLayoutPresenter,myView.showInlineSetPresenter.getChecked()));
     }
 
     private void setupListeners() {
-        myView.showInlineSet.post(() -> myView.showInlineSet.setOnCheckedChangeListener((buttonView, isChecked) -> checkChanged("inlineSet",myView.sliderLayout,isChecked)));
-        myView.showInlineSetPresenter.post(() -> myView.showInlineSetPresenter.setOnCheckedChangeListener((buttonView, isChecked) -> checkChanged("inlineSetPresenter",myView.sliderLayoutPresenter,isChecked)));
-
-        myView.widthSlider.post(() -> myView.widthSlider.addOnChangeListener(new MyChangeListener("performance")));
-        myView.widthSliderPresenter.post(() -> myView.widthSliderPresenter.addOnChangeListener(new MyChangeListener("presenter")));
-        myView.widthSlider.post(() -> myView.widthSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetWidth")));
-        myView.widthSliderPresenter.post(() -> myView.widthSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetWidthPresenter")));
-
-        myView.textSizeSlider.post(() -> myView.textSizeSlider.addOnChangeListener(new MyChangeListener("inlineSetTextSize")));
-        myView.textSizeSliderPresenter.post(() -> myView.textSizeSliderPresenter.addOnChangeListener(new MyChangeListener("inlineSetTextSizePresenter")));
-        myView.textSizeSlider.post(() -> myView.textSizeSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSize")));
-        myView.textSizeSliderPresenter.post(() -> myView.textSizeSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSizePresenter")));
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.showInlineSet.setOnCheckedChangeListener((buttonView, isChecked) -> checkChanged("inlineSet",myView.sliderLayout,isChecked));
+            myView.showInlineSetPresenter.setOnCheckedChangeListener((buttonView, isChecked) -> checkChanged("inlineSetPresenter",myView.sliderLayoutPresenter,isChecked));
+            myView.widthSlider.addOnChangeListener(new MyChangeListener("performance"));
+            myView.widthSliderPresenter.addOnChangeListener(new MyChangeListener("presenter"));
+            myView.widthSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetWidth"));
+            myView.widthSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetWidthPresenter"));
+            myView.textSizeSlider.addOnChangeListener(new MyChangeListener("inlineSetTextSize"));
+            myView.textSizeSliderPresenter.addOnChangeListener(new MyChangeListener("inlineSetTextSizePresenter"));
+            myView.textSizeSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSize"));
+            myView.textSizeSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSizePresenter"));
+        });
     }
 
     private void checkChanged(String pref, LinearLayout linearLayout, boolean isChecked) {

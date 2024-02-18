@@ -122,7 +122,8 @@ public class PerformanceFragment extends Fragment {
         prepareStrings();
         updateInlineSetSortTitles();
         displayInterface.checkDisplays();
-        if (myView!=null) {
+        if (myView!=null && getContext()!=null) {
+            myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
             updateInlineSetVisibility();
         }
     }
@@ -295,9 +296,6 @@ public class PerformanceFragment extends Fragment {
             myView.waterMark.setVisibility(View.GONE);
         }
         mainActivityInterface.updateOnScreenInfo("setpreferences");
-        if (getContext()!=null) {
-            myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
-        }
         boolean allowPinchToZoom = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowPinchToZoom",true);
         myView.zoomLayout.setAllowPinchToZoom(allowPinchToZoom);
         myView.recyclerView.setAllowPinchToZoom(allowPinchToZoom);

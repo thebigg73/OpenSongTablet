@@ -388,10 +388,10 @@ public class Autoscroll {
                 (mainActivityInterface.getSong().getFiletype().equals("XML") ||
         mainActivityInterface.getSong().getFiletype().equals("IMG"));
 
-        if (usingZoomLayout) {
+        if (myZoomLayout!=null && usingZoomLayout) {
             myZoomLayout.setIsUserTouching(false);
             myZoomLayout.scrollTo(0,0);
-        } else {
+        } else if (!usingZoomLayout && myRecyclerView!=null) {
             myRecyclerView.setUserTouching(false);
             myRecyclerView.scrollToTop();
         }
