@@ -45,7 +45,7 @@ public class PerformanceGestures {
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView recyclerView;
     private RecyclerView presenterRecyclerView;
-    private String not_allowed_string="";
+    private final String not_allowed_string;
     private final Handler scrollPosCheckHandler = new Handler(Looper.getMainLooper());
     private final Runnable scrollPosRunnable = new Runnable() {
         @Override
@@ -79,9 +79,11 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
+        Log.d(TAG,"action:"+action+"  longpress:"+isLongPress);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":
+            case "?":
                 editPageButtons();
                 break;
 
@@ -584,7 +586,7 @@ public class PerformanceGestures {
         if (mainActivityInterface!=null && mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
-            int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+            Log.d(TAG,"checkPositionInSet:"+mainActivityInterface.getCurrentSet().getIndexSongInSet());
             if (mainActivityInterface.getSetActions().getIsNormalVariation(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
                 mainActivityInterface.setWhattodo("editActualVariation");
             } else if (mainActivityInterface.getSetActions().getIsKeyVariation(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
@@ -943,11 +945,6 @@ public class PerformanceGestures {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayChords", !displayChords);
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.navHome();
-    }
-
-    // Show the chord settings
-    public void chordSettings() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
     }
 
     // Custom chords
