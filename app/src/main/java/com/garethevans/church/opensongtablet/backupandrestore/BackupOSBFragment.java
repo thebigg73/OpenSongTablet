@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -20,6 +21,8 @@ import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -363,13 +366,29 @@ public class BackupOSBFragment extends Fragment {
     }
 
     private void exportBackup() {
-        // Make sure we have an available backup folder
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
+        if (getContext()!=null) {
+            try {
+                // Make sure we have an available backup folder
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Backups", "", backupFilename);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
 
-        mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup",0);
+                // Copy the backup file into the local app files/backups folder (for sharing permission)
+                File backupFolder = mainActivityInterface.getStorageAccess().getAppSpecificFile("files", "backups", null);
+                File file = new File(backupFolder, backupFilename);
+                OutputStream outputStream = new FileOutputStream(file);
+                Log.d(TAG, "Copy:" + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
 
-        Intent intent = mainActivityInterface.getExportActions().exportBackup(uri,backupFilename);
-        startActivity(Intent.createChooser(intent,string_backup_info));
+                mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", 0);
+
+                // For safe sharing
+                Uri newUri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
+
+                Intent intent = mainActivityInterface.getExportActions().exportBackup(newUri, backupFilename);
+                startActivity(Intent.createChooser(intent, string_backup_info));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
