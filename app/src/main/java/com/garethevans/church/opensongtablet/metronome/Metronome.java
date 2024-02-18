@@ -116,6 +116,8 @@ public class Metronome {
         // If the metronome is valid and not running, start. If not stop
         if (metronomeValid() && !getIsRunning()){
             // Get the tick and tock sounds ready
+            setVisualMetronome();
+            setAudioMetronome();
             newSongLoaded();
             checkPlayersReady();
         } else {
@@ -155,7 +157,7 @@ public class Metronome {
         // Reset the beats
         beatsRunningTotal = 1;
         beat = 1;
-        beatVisual = 1;
+        beatVisual = 0;
 
         // Get the song tempo and time signatures
         setSongValues();
@@ -244,6 +246,8 @@ public class Metronome {
 
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
         metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
+        Log.d(TAG,"metronomeFlashOnColor:"+metronomeFlashOnColor);
+        Log.d(TAG,"metronomeFlashOnColorDarker:"+metronomeFlashOnColorDarker);
     }
     public void setAudioMetronome() {
         audioMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAudio",true);
@@ -273,6 +277,9 @@ public class Metronome {
         int tempo;
         validTempo = false;
         String t = mainActivityInterface.getSong().getTempo();
+        if (t==null || t.isEmpty()) {
+            t = "";
+        }
         try {
             // Check for text version from desktop app
             t = t.replace("Very Fast", "140").
@@ -313,7 +320,11 @@ public class Metronome {
     public ArrayList<String> processTimeSignature() {
         ArrayList<String> timeSignature = new ArrayList<>();
         String ts = mainActivityInterface.getSong().getTimesig();
-        if (ts != null && ts.contains("/")) {
+        // Always assume we want 4/4 if there is no value set
+        if (ts==null || ts.isEmpty()) {
+            ts = "4/4";
+        }
+        if (ts.contains("/")) {
             validTimeSig = true;
             try {
                 String[] splits = ts.split("/");
@@ -434,6 +445,7 @@ public class Metronome {
                     // Latency is always positive as the sysTime will always be on or after the audioTime
                     long latency = sysTime - (audioTime - buffer);
                     final long bufferFix = buffer - latency;
+                    Log.d(TAG,"buffer:"+buffer+"  latency:"+latency+"  bufferFix:"+bufferFix);
 
                     if (beat > beats) {
                         beat = 1;
@@ -448,7 +460,7 @@ public class Metronome {
                     beat++;
                     beatsRunningTotal++;
 
-                    if (beatsRequired > 0 && beatsRunningTotal > beatsRequired) {
+                    if (beatsRequired > 0 && beatsRunningTotal > beatsRequired+2) {
                         // Stop the metronome (beats and visual)
                         stopMetronome();
                     }
@@ -611,7 +623,7 @@ public class Metronome {
         // If it ends in /8, then half it
         // If it isn't set, set it to default as 4/4
         String timeSig = mainActivityInterface.getSong().getTimesig();
-        if (timeSig.isEmpty()) {
+        if (timeSig==null || timeSig.isEmpty()) {
             if (beatsView!=null && divisionsView!=null) {
                 beatsView.setText("4");
                 divisionsView.setText("4");

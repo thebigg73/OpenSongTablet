@@ -40,7 +40,8 @@ public class MetronomeFragment extends Fragment {
     private String metronome_string="", website_metronome_string="", sound_low_string="",
             sound_high_string="", sound_bass_drum_string="", sound_bell_string, sound_click_string="",
             sound_digital_string="", sound_hihat_string="", sound_stick_string="", tap_tempo_string="",
-            sound_wood_string="", tempo_string="", bpm_string="", on_string="", reset_string="";
+            sound_wood_string="", tempo_string="", bpm_string="", on_string="", reset_string="",
+            not_set_string="";
     private String webAddress;
 
     @Override
@@ -95,6 +96,7 @@ public class MetronomeFragment extends Fragment {
             on_string = getString(R.string.on);
             reset_string = getString(R.string.reset);
             tap_tempo_string = getString(R.string.tap_tempo);
+            not_set_string = getString(R.string.is_not_set) + " - " + getString(R.string.use_default);
         }
     }
 
@@ -170,6 +172,23 @@ public class MetronomeFragment extends Fragment {
 
     private void setupPreferences() {
         // Get the song values
+        // If we don't have a tempo or time signature, make it 100bpm and 4/4 by default and update the song
+        boolean updateSong = false;
+        if (mainActivityInterface.getSong().getTempo()==null || mainActivityInterface.getSong().getTempo().isEmpty()) {
+            mainActivityInterface.getSong().setTempo("100");
+            updateSong = true;
+        }
+        if (mainActivityInterface.getSong().getTimesig()==null || mainActivityInterface.getSong().getTimesig().isEmpty()) {
+            mainActivityInterface.getSong().setTimesig("4/4");
+            updateSong = true;
+        }
+        if (updateSong) {
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+            mainActivityInterface.getMetronome().initialiseMetronome();
+            mainActivityInterface.getShowToast().doIt(not_set_string);
+            mainActivityInterface.getMetronome().stopMetronome();
+            setStartStopIcon(false);
+        }
         myView.songTempo.setText(mainActivityInterface.getSong().getTempo());
         ArrayList<String> timeSignature = mainActivityInterface.getMetronome().processTimeSignature();
         myView.signatureBeats.setText(timeSignature.get(0));
@@ -567,4 +586,21 @@ public class MetronomeFragment extends Fragment {
             tapTempoHandlerReset = null;
         }
     }
+
+    // Returned values from the textinput
+    public void updateTempo(String tempo) {
+        if (tempo==null) {
+            tempo = "";
+        }
+        tempo = tempo.replaceAll("\\D","");
+        if (!tempo.isEmpty()) {
+            int tempoVal = Integer.parseInt(tempo);
+            if (tempoVal>=40 && tempoVal<300) {
+                mainActivityInterface.getSong().setTempo(tempo);
+                mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                myView.songTempo.setText(tempo);
+            }
+        }
+    }
+
 }
