@@ -169,6 +169,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.pagebuttonButton.setColor(mainActivityInterface.getMyThemeColors().getPageButtonsColor());
         myView.stickytextButton.setColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
         myView.stickybackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+        myView.hotZoneButton.setColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
         myView.extratextButton.setColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
         myView.extrabackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getExtraInfoBgColor());
     }
@@ -195,6 +196,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.pagebuttonButton.setOnClickListener(v-> chooseColor("pageButtonsColor"));
         myView.stickytextButton.setOnClickListener(v-> chooseColor("stickyTextColor"));
         myView.stickybackgroundButton.setOnClickListener(v-> chooseColor("stickyBackgroundColor"));
+        myView.hotZoneButton.setOnClickListener(v-> chooseColor("hotZoneColor"));
         myView.extratextButton.setOnClickListener(v-> chooseColor("extraInfoTextColor"));
         myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));

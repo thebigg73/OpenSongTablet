@@ -46,6 +46,7 @@ public class ThemeColors {
     private int extraInfoTextColor;
     private int highlightChordColor;
     private int highlightHeadingColor;
+    private int hotZoneColor;
     private int pdfTextColor, pdfCapoColor, pdfBackgroundColor, pdfVerseColor, pdfChorusColor,
             pdfBridgeColor, pdfCommentColor, pdfPreChorusColor, pdfTagColor, pdfChordsColor,
             pdfCustomColor, pdfHighlightChordColor, pdfHighlightHeadingColor;
@@ -138,6 +139,9 @@ public class ThemeColors {
     }
     public void setHighlightHeadingColor(int i) {
         this.highlightHeadingColor = i;
+    }
+    public void setHotZoneColor(int i) {
+        this.hotZoneColor = i;
     }
     
     // Get the values
@@ -240,6 +244,9 @@ public class ThemeColors {
     public int getHighlightHeadingColor() {
         return highlightHeadingColor;
     }
+    public int getHotZoneColor() {
+        return hotZoneColor;
+    }
 
     public void getDefaultColors() {
         themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
@@ -308,6 +315,7 @@ public class ThemeColors {
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoFontColor",             white);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoChordColor",            yellow);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoInfoFontColor",         white);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"hotZoneColor",               transparent);
 
         // Others are theme specific
         switch(theme) {
@@ -401,6 +409,7 @@ public class ThemeColors {
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoShadowColor",           translucentDark));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightHeadingColor", transparent));
+        setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_hotZoneColor",                   transparent));
     }
     private void setThemeLight() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("light_invertPDF",             false));
@@ -429,6 +438,7 @@ public class ThemeColors {
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoShadowColor",           translucentLight));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightHeadingColor", transparent));
+        setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_hotZoneColor",                   transparent));
     }
     private void setThemeCustom1() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom1_invertPDF",           true));
@@ -457,6 +467,7 @@ public class ThemeColors {
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoShadowColor",         translucentDark));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightChordColor",   transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightHeadingColor",transparent));
+        setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_hotZoneColor",                 transparent));
 
     }
     private void setThemeCustom2() {
@@ -486,6 +497,7 @@ public class ThemeColors {
         setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoShadowColor",         translucentLight));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightChordColor",   transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightHeadingColor",transparent));
+        setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_hotZoneColor",                 transparent));
     }
 
 
@@ -705,6 +717,8 @@ public class ThemeColors {
                 return getHighlightChordColor();
             case "highlightHeadingColor":
                 return getHighlightHeadingColor();
+            case "hotZoneColor":
+                return getHotZoneColor();
         }
     }
     private String which;

@@ -85,6 +85,10 @@ public class HotZones {
             boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",true);
             float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.2f);
 
+            hotZoneTopLeftView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+            hotZoneTopCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+            hotZoneBottomCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+
             hotZoneTopLeftView.setVisibility(
                     hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && !inlineSet &&
                             (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?

@@ -36,7 +36,8 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             prechorus_background_string="", bridge_background_string="", tag_background_string="",
             custom_background_string="", comment_background_string="", info_text_string="",
             text_string="", chords_string="", metronome_string="", page_buttons_string="",
-            alert_string="", block_text_shadow_string="", highlight_string="", title_string="";
+            alert_string="", block_text_shadow_string="", highlight_string="", title_string="",
+            hot_zone_string="";
     private final String whichColor, fragName;
     private int newColorInt;
     private boolean sliding = false, typing = false;
@@ -48,7 +49,11 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         callingFragment = null;
         fragName = "";
         whichColor = "";
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public ChooseColorBottomSheet(Fragment callingFragment, String fragName, String whichColor) {
@@ -115,6 +120,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             chords_string = getString(R.string.chords);
             metronome_string = getString(R.string.metronome);
             page_buttons_string = getString(R.string.page_buttons);
+            hot_zone_string = getString(R.string.hot_zones);
             alert_string = getString(R.string.alert);
             block_text_shadow_string = getString(R.string.block_text_shadow);
             highlight_string = getString(R.string.highlight);
@@ -431,6 +437,9 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 break;
             case "highlightHeadingColor":
                 title = title_string + " ("+highlight_string+")";
+                break;
+            case "hotZoneColor":
+                title = hot_zone_string;
                 break;
         }
         return title;
