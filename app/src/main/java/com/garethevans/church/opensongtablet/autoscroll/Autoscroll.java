@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -15,6 +16,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -30,7 +32,7 @@ public class Autoscroll {
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
             onscreenAutoscrollHide, usingZoomLayout;
     private int songDelay, songDuration, displayWidth, displayHeight, songWidth, songHeight, scrollTime, flashCount,
-            autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn;
+            autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn, inlinePauseTotal;
     private final int flashTime = 600, updateTime = 60;
     private float scrollIncrement, scrollPosition, scrollCount, scrollIncrementScale;
     private final LinearLayout autoscrollView;
@@ -41,6 +43,8 @@ public class Autoscroll {
     private Runnable scrollRunnable;
     private ScheduledFuture<?> task;
     private String currentTimeString, totalTimeString;
+    private ArrayList<InlinePause> inlinePauses;
+    private int inlinePauseStartTime, inlinePauseEndTime;
 
     // Initialise the autoscroll class from MainActivity and receive the time box vierws
     public Autoscroll(Context c, MaterialTextView autoscrollTimeText,
@@ -198,6 +202,7 @@ public class Autoscroll {
         alreadyFiguredOut = false;
         songDelay = stringToInt(mainActivityInterface.getSong().getAutoscrolldelay());
         songDuration = stringToInt(mainActivityInterface.getSong().getAutoscrolllength());
+        inlinePauses = null;
     }
     private void figureOutTimes() {
         if (songDuration==0 && autoscrollUseDefaultTime) {
@@ -209,6 +214,7 @@ public class Autoscroll {
             // We have valid times, so good to go.  Calculate the autoscroll values
             calculateAutoscroll();
             resetTimers();
+
             totalTimeString = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(songDuration);
             autoscrollTotalTimeText.post(() -> autoscrollTotalTimeText.setText(totalTimeString));
             setupTimer();
@@ -247,7 +253,48 @@ public class Autoscroll {
                             }
                         }
                     });
+                } else if (inlinePauseStartTime!=0 && inlinePauseEndTime!=0 &&
+                        scrollTime >= inlinePauseStartTime && scrollTime < inlinePauseEndTime) {
+                    Log.d(TAG,"Inline delay period (scrollTime)");
+                    // We are in an inline delay period
+                    // This is predelay, so set the alpha down
+                    autoscrollTimeText.post(() -> {
+                        autoscrollTimeText.setAlpha(0.6f);
+                        autoscrollTimeText.setText(currentTimeString);
+                        // Listen out for scroll changes
+                        if (usingZoomLayout) {
+                            if (scrollPosition != myZoomLayout.getScrollPos() ||
+                                    scrollCount != myZoomLayout.getScrollPos()) {
+                                scrollPosition = myZoomLayout.getScrollPos();
+                                scrollCount = scrollPosition;
+                            }
+                        } else {
+                            if (scrollPosition != myRecyclerView.getScrollY() ||
+                                    scrollCount != myRecyclerView.getScrollY()) {
+                                scrollPosition = myRecyclerView.getScrollY();
+                                scrollCount = scrollPosition;
+                            }
+                        }
+                    });
                 } else {
+                    Log.d(TAG,"scrollTime:"+scrollTime+"  inlinePauseStartTime:"+inlinePauseStartTime+"  inlinePauseEndTime:"+inlinePauseEndTime);
+                    if (inlinePauseStartTime!=0 && inlinePauseEndTime!=0 &&
+                            inlinePauses.size()>0 &&
+                            scrollTime > inlinePauseStartTime && scrollTime > inlinePauseEndTime) {
+                        // Get the next delay time ready if required
+                        // Delete the first entry
+                        Log.d(TAG,"removing 0");
+                        inlinePauses.remove(0);
+                        if (inlinePauses.size()>0) {
+                            inlinePauseStartTime = inlinePauses.get(0).pauseStartTime;
+                            inlinePauseEndTime = inlinePauses.get(0).pauseEndTime;
+                        } else {
+                            inlinePauseStartTime = 0;
+                            inlinePauseEndTime = 0;
+                        }
+                        Log.d(TAG,"moving to next inlinePauseTimes:"+inlinePauseStartTime+" to " +inlinePauseEndTime);
+                    }
+
                     // Fix the alpha back and set the text
                     autoscrollTimeText.post(() -> {
                         autoscrollTimeText.setAlpha(1.0f);
@@ -336,13 +383,17 @@ public class Autoscroll {
             scrollHeight = songHeight - displayHeight;
             myRecyclerView.setMaxScrollY(songHeight-displayHeight);
         }
+        if (inlinePauses == null) {
+            Log.d(TAG,"buildInlinePauseArrays");
+            buildInlinePauseArrays();
+        }
 
         if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
             // Horizontal scrolling
             if (scrollWidth > 0) {
                 // The scroll happens every 60ms (updateTime).
                 // The number of times this will happen is calculated as follows
-                float numberScrolls = ((songDuration - songDelay) * 1000f) / updateTime;
+                float numberScrolls = ((songDuration - songDelay - inlinePauseTotal) * 1000f) / updateTime;
                 // The scroll distance for each scroll is calculated as follows
                 scrollIncrement = (float) scrollWidth / numberScrolls;
             } else {
@@ -353,7 +404,7 @@ public class Autoscroll {
             if (scrollHeight > 0) {
                 // The scroll happens every 60ms (updateTime).
                 // The number of times this will happen is calculated as follows
-                float numberScrolls = ((songDuration - songDelay) * 1000f) / updateTime;
+                float numberScrolls = ((songDuration - songDelay - inlinePauseTotal) * 1000f) / updateTime;
                 // The scroll distance for each scroll is calculated as follows
                 scrollIncrement = (float) scrollHeight / numberScrolls;
             } else {
@@ -451,6 +502,66 @@ public class Autoscroll {
     }
 
 
+    public void buildInlinePauseArrays() {
+        inlinePauses = new ArrayList<>();
+        inlinePauseTotal = 0;
+        int scrollRequired = 0;
+        int prevScrollPos = 0;
+        // Get the total number of lines in the song lyrics
+        String[] lyricLines = mainActivityInterface.getSong().getLyrics().split("\n");
+        for (int x=0; x<lyricLines.length; x++) {
+            String lyricLine = lyricLines[x];
+            if (lyricLine.startsWith(";D:")) {
+                lyricLine = lyricLine.replace(";D:","").replaceAll("\\D","").trim();
+                if (!lyricLine.isEmpty()) {
+                    InlinePause inlinePause = new InlinePause();
+                    //inlinePause.lineNumber = x;
+                    //inlinePause.totalLineNumbers = lyricLines.length;
+                    int thisTime = Integer.parseInt(lyricLine);
+                    //inlinePause.pauseTime = thisTime;
+                    // Calculate the scroll position that this pause gets activated at
+                    float percentageOfLines = (float)x/(float)lyricLines.length;
+                    int howFarDownSongHeight = Math.round(percentageOfLines*songHeight);
+                    //Log.d(TAG,"songDuration:"+songDuration);
+                    Log.d(TAG,"howFarDownSongHeight:"+howFarDownSongHeight);
+                    //Log.d(TAG,"displayHeight:"+displayHeight);
+                    if (howFarDownSongHeight<displayHeight) {
+                        // If the item is likely on screen, pause happens immediately
+                        inlinePause.pauseStartTime = (songDelay*1000) + (inlinePauseTotal*1000);
+                        inlinePause.pauseEndTime = (songDelay*1000) + (thisTime*1000) + (inlinePauseTotal*1000);
+                    } else {
+                        // How long does it take to scroll this amount
+                        scrollRequired = howFarDownSongHeight - displayHeight - prevScrollPos;
+                        Log.d(TAG,"scrollRequired:"+scrollRequired);
+                        prevScrollPos = scrollRequired;
+                        float numScrollActions = (float)scrollRequired/(float)scrollIncrement;
+                        int scrollTimeStart = Math.round((float)updateTime*numScrollActions);
+                        Log.d(TAG,"scrollTimeStart:"+scrollTimeStart);
+                        inlinePause.pauseStartTime =  (songDelay*1000) + scrollTimeStart + (inlinePauseTotal*1000);
+                        inlinePause.pauseEndTime = inlinePause.pauseStartTime + (thisTime*1000);
+                    }
+                    Log.d(TAG,"scrollRequired:"+scrollRequired);
+                    // Add this item
+                    Log.d(TAG,"Adding inlinePause - lineNumber:"+inlinePause.lineNumber+
+                            "  totalLineNumbers:"+inlinePause.totalLineNumbers+
+                            "  pauseTime(s):"+inlinePause.pauseTime+
+                            "  pauseStartTime(s):"+inlinePause.pauseStartTime+
+                            "  pauseEndTime(s):"+inlinePause.pauseEndTime);
+                    inlinePauses.add(inlinePause);
+                    inlinePauseTotal = inlinePauseTotal + thisTime;
+                }
+            }
+        }
+        if (inlinePauses.size()>0) {
+            inlinePauseStartTime = inlinePauses.get(0).pauseStartTime;
+            inlinePauseEndTime = inlinePauses.get(0).pauseEndTime;
+            songDuration = songDuration + inlinePauseTotal;
+        } else {
+            inlinePauseStartTime = 0;
+            inlinePauseEndTime = 0;
+        }
+        Log.d(TAG,"first time to check:"+inlinePauseStartTime+" to "+inlinePauseEndTime+"s");
+    }
 
     private int stringToInt(String string) {
         if (string==null || string.isEmpty()) {

@@ -59,6 +59,7 @@
     <string name="autoscroll_delay">Delay</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Adjust the autoscroll settings</string>
+    <string name="autoscroll_inline_pause">Inline pause</string>
     <string name="autoscroll_link_audio">Use duration of link audio file</string>
     <string name="autoscroll_pause">Autoscroll Pause</string>
     <string name="autoscroll_time">Autoscroll delay time</string>

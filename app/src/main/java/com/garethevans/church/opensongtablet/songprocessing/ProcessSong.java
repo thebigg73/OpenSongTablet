@@ -884,6 +884,7 @@ public class ProcessSong {
                     // IV - Support a useful quirk of v5 that renders a comment line immediately following a chord line as a lyric line
                     // IV - For example a line may have a chords version for repeat. The repeat variant lyrics can be changed to comment, it will not be projected
                     if (lines[i].startsWith(";")) {
+                        lines[i] = lines[i].replace(";D:",";"+c.getString(R.string.autoscroll_inline_pause)+": ");
                         lines[i] = lines[i].replaceFirst(";"," ");
                     }
                     if (lines[i].startsWith(" ")) {
@@ -1022,6 +1023,7 @@ public class ProcessSong {
                 lines[t] = beautifyHeading(lines[t]);
             }
             if (linetype.equals("comment") & lines[t].startsWith(";")) {
+                lines[t] = lines[t].replace(";D:",";"+c.getString(R.string.autoscroll_inline_pause)+": ");
                 lines[t] = trimOutLineIdentifiers(thisSong, linetype, lines[t]);
             }
 
@@ -1200,6 +1202,7 @@ public class ProcessSong {
                 lines[t] = beautifyHeading(lines[t]);
             }
             if (linetype.equals("comment") & lines[t].startsWith(";")) {
+                lines[t] = lines[t].replace(";D:",";"+c.getString(R.string.autoscroll_inline_pause)+": ");
                 lines[t] = trimOutLineIdentifiers(thisSong, linetype, lines[t]);
             }
 
@@ -1644,6 +1647,7 @@ public class ProcessSong {
                 string = '\u00A0' + string + " ";
             }
         }
+        string = string.replace(";D:",";"+c.getString(R.string.autoscroll_inline_pause)+":  ");
         String str = trimOutLineIdentifiers(thisSong, linetype, string);
         if (linetype.equals("heading") && highlightHeadingColor != 0x00000000) {
             Spannable span = new SpannableString(str);

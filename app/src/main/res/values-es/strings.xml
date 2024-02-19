@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Demora</string>
     <string name="autoscroll_hide">Ocultar desplazamiento automático</string>
     <string name="autoscroll_info">Ajustar la configuración de desplazamiento automático</string>
+    <string name="autoscroll_inline_pause">Pausa en línea</string>
     <string name="autoscroll_link_audio">Usar la duración del archivo de audio del enlace</string>
     <string name="autoscroll_pause">"Alternar pausa de desplazamiento automático"</string>
     <string name="autoscroll_time">"Auto-scroll tiempo de retardo"</string>

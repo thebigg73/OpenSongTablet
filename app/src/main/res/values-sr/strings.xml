@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Kašnjenje</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Podesite podešavanja automatskog pomeranja</string>
+    <string name="autoscroll_inline_pause">Umetnuta pauza</string>
     <string name="autoscroll_link_audio">Koristite trajanje audio datoteke veze</string>
     <string name="autoscroll_pause">Pauziranje automatskog pomeranja</string>
     <string name="autoscroll_time">Odloženi početak automatskog skrola</string>

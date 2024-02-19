@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Verzögerung</string>
     <string name="autoscroll_hide">Autoscroll automatisch ausblenden</string>
     <string name="autoscroll_info">Passen Sie die Autoscroll-Einstellungen an</string>
+    <string name="autoscroll_inline_pause">Inline-Pause</string>
     <string name="autoscroll_link_audio">Verwenden Sie die Dauer der verknüpften Audiodatei</string>
     <string name="autoscroll_pause">"Autoscroll-Pause umschalten (toggle)"</string>
     <string name="autoscroll_time">"Autoscroll Verzögerungszeit"</string>

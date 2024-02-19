@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Vertraag</string>
     <string name="autoscroll_hide">Versteek outoscroll outomaties</string>
     <string name="autoscroll_info">Pas die outoscroll-instellings aan</string>
+    <string name="autoscroll_inline_pause">Inlyn pouse</string>
     <string name="autoscroll_link_audio">Gebruik duur van skakel oudiolêer</string>
     <string name="autoscroll_pause">"Skakel Autoscroll Pause"</string>
     <string name="autoscroll_time">"Auto-scroll vertraging tyd"</string>

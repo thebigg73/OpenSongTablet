@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Задержка</string>
     <string name="autoscroll_hide">Автоскрытие автопрокрутки</string>
     <string name="autoscroll_info">Настройка параметров автопрокрутки</string>
+    <string name="autoscroll_inline_pause">Встроенная пауза</string>
     <string name="autoscroll_link_audio">Использовать продолжительность связанного аудиофайла</string>
     <string name="autoscroll_pause">"Пауза автопрокрутки"</string>
     <string name="autoscroll_time">"Время автопрокрутки"</string>

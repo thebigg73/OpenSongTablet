@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Ritardo</string>
     <string name="autoscroll_hide">Nascondi automaticamente lo scorrimento automatico</string>
     <string name="autoscroll_info">Regola le impostazioni di scorrimento automatico</string>
+    <string name="autoscroll_inline_pause">Pausa in linea</string>
     <string name="autoscroll_link_audio">Usa la durata del file audio del collegamento</string>
     <string name="autoscroll_pause">"Attiva / disattiva pausa di scorrimento automatico"</string>
     <string name="autoscroll_time">"Auto-scroll ritardo"</string>

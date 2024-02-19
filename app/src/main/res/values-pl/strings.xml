@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Opóźnienie</string>
     <string name="autoscroll_hide">Automatyczne ukrywanie automatycznego przewijania</string>
     <string name="autoscroll_info">Dostosuj ustawienia automatycznego przewijania</string>
+    <string name="autoscroll_inline_pause">Pauza w tekście</string>
     <string name="autoscroll_link_audio">Użyj czasu trwania linku do pliku audio</string>
     <string name="autoscroll_pause">Wstrzymaj autoprzewijanie</string>
     <string name="autoscroll_time">Czas opóźnienia autoprzewijania</string>

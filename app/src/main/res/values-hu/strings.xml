@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Késleltetés</string>
     <string name="autoscroll_hide">Automatikus görgetés automatikus elrejtése</string>
     <string name="autoscroll_info">Módosítsa az automatikus görgetés beállításait</string>
+    <string name="autoscroll_inline_pause">Szövegközi szünet</string>
     <string name="autoscroll_link_audio">A hivatkozás hangfájljának időtartama</string>
     <string name="autoscroll_pause">"Kapcsolja be az Autoscroll szünetet"</string>
     <string name="autoscroll_time">"Auto-scroll késleltetési idő"</string>

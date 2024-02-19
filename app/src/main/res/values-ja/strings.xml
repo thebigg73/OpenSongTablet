@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">遅れ</string>
     <string name="autoscroll_hide">自動スクロールを自動非表示</string>
     <string name="autoscroll_info">自動スクロール設定を調整します</string>
+    <string name="autoscroll_inline_pause">インライン一時停止</string>
     <string name="autoscroll_link_audio">リンクオーディオファイルの期間を使用する</string>
     <string name="autoscroll_pause">"自動スクロールの一時停止を切り替える"</string>
     <string name="autoscroll_time">"自動スクロール遅延時間"</string>

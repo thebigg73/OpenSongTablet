@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Zpoždění</string>
     <string name="autoscroll_hide">Automaticky skrýt automatické posouvání</string>
     <string name="autoscroll_info">Upravte nastavení automatického posouvání</string>
+    <string name="autoscroll_inline_pause">Vložená pauza</string>
     <string name="autoscroll_link_audio">Použít dobu trvání odkazového zvukového souboru</string>
     <string name="autoscroll_pause">"Přepnout automatické přerušení"</string>
     <string name="autoscroll_time">"Auto-scroll zpoždění"</string>

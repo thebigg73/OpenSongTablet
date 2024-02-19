@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">延迟</string>
     <string name="autoscroll_hide">自动隐藏自动滚动</string>
     <string name="autoscroll_info">调整自动滚动设置</string>
+    <string name="autoscroll_inline_pause">内联暂停</string>
     <string name="autoscroll_link_audio">链接音频文件的使用时长</string>
     <string name="autoscroll_pause">"切换自动滚动暂停"</string>
     <string name="autoscroll_time">"自动滚动延迟时间"</string>

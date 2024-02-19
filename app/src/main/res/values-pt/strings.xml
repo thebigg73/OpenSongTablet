@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Atraso</string>
     <string name="autoscroll_hide">Ocultar rolagem automática</string>
     <string name="autoscroll_info">Ajuste as configurações de rolagem automática</string>
+    <string name="autoscroll_inline_pause">Pausa em linha</string>
     <string name="autoscroll_link_audio">Use a duração do arquivo de áudio do link</string>
     <string name="autoscroll_pause">"Alternar Pausa Autoscroll"</string>
     <string name="autoscroll_time">"Auto-scroll tempo de atraso"</string>

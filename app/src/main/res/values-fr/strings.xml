@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Retard</string>
     <string name="autoscroll_hide">Masquer automatiquement le défilement automatique</string>
     <string name="autoscroll_info">Ajuster les paramètres de défilement automatique</string>
+    <string name="autoscroll_inline_pause">Pause en ligne</string>
     <string name="autoscroll_link_audio">Utiliser la durée du fichier audio du lien</string>
     <string name="autoscroll_pause">"Activer la permutation automatique"</string>
     <string name="autoscroll_time">"Retard au démmarage"</string>

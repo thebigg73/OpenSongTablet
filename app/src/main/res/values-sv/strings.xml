@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Dröjsmål</string>
     <string name="autoscroll_hide">Autodölj autoscroll</string>
     <string name="autoscroll_info">Justera inställningarna för autoscroll</string>
+    <string name="autoscroll_inline_pause">Infogad paus</string>
     <string name="autoscroll_link_audio">Använd varaktighet för länkljudfil</string>
     <string name="autoscroll_pause">"Växla Autoscroll paus"</string>
     <string name="autoscroll_time">"Autoscroll fördröjningstid"</string>

@@ -53,6 +53,7 @@
     <string name="autoscroll_delay">Καθυστέρηση</string>
     <string name="autoscroll_hide">Αυτόματη απόκρυψη αυτόματης κύλισης</string>
     <string name="autoscroll_info">Προσαρμόστε τις ρυθμίσεις αυτόματης κύλισης</string>
+    <string name="autoscroll_inline_pause">Ενσωματωμένη παύση</string>
     <string name="autoscroll_link_audio">Χρησιμοποιήστε τη διάρκεια του αρχείου ήχου συνδέσμου</string>
     <string name="autoscroll_pause">"Εναλλαγή της παύσης αυτόματης κύλισης"</string>
     <string name="autoscroll_time">"Autoscroll delay time"</string>
