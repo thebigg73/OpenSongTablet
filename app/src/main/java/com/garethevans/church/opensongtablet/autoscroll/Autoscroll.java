@@ -277,13 +277,11 @@ public class Autoscroll {
                         }
                     });
                 } else {
-                    Log.d(TAG,"scrollTime:"+scrollTime+"  inlinePauseStartTime:"+inlinePauseStartTime+"  inlinePauseEndTime:"+inlinePauseEndTime);
                     if (inlinePauseStartTime!=0 && inlinePauseEndTime!=0 &&
                             inlinePauses.size()>0 &&
                             scrollTime > inlinePauseStartTime && scrollTime > inlinePauseEndTime) {
                         // Get the next delay time ready if required
                         // Delete the first entry
-                        Log.d(TAG,"removing 0");
                         inlinePauses.remove(0);
                         if (inlinePauses.size()>0) {
                             inlinePauseStartTime = inlinePauses.get(0).pauseStartTime;
@@ -292,7 +290,6 @@ public class Autoscroll {
                             inlinePauseStartTime = 0;
                             inlinePauseEndTime = 0;
                         }
-                        Log.d(TAG,"moving to next inlinePauseTimes:"+inlinePauseStartTime+" to " +inlinePauseEndTime);
                     }
 
                     // Fix the alpha back and set the text
@@ -505,7 +502,7 @@ public class Autoscroll {
     public void buildInlinePauseArrays() {
         inlinePauses = new ArrayList<>();
         inlinePauseTotal = 0;
-        int scrollRequired = 0;
+        int scrollRequired;
         int prevScrollPos = 0;
         // Get the total number of lines in the song lyrics
         String[] lyricLines = mainActivityInterface.getSong().getLyrics().split("\n");
@@ -515,16 +512,10 @@ public class Autoscroll {
                 lyricLine = lyricLine.replace(";D:","").replaceAll("\\D","").trim();
                 if (!lyricLine.isEmpty()) {
                     InlinePause inlinePause = new InlinePause();
-                    //inlinePause.lineNumber = x;
-                    //inlinePause.totalLineNumbers = lyricLines.length;
                     int thisTime = Integer.parseInt(lyricLine);
-                    //inlinePause.pauseTime = thisTime;
                     // Calculate the scroll position that this pause gets activated at
                     float percentageOfLines = (float)x/(float)lyricLines.length;
                     int howFarDownSongHeight = Math.round(percentageOfLines*songHeight);
-                    //Log.d(TAG,"songDuration:"+songDuration);
-                    Log.d(TAG,"howFarDownSongHeight:"+howFarDownSongHeight);
-                    //Log.d(TAG,"displayHeight:"+displayHeight);
                     if (howFarDownSongHeight<displayHeight) {
                         // If the item is likely on screen, pause happens immediately
                         inlinePause.pauseStartTime = (songDelay*1000) + (inlinePauseTotal*1000);
@@ -532,21 +523,13 @@ public class Autoscroll {
                     } else {
                         // How long does it take to scroll this amount
                         scrollRequired = howFarDownSongHeight - displayHeight - prevScrollPos;
-                        Log.d(TAG,"scrollRequired:"+scrollRequired);
                         prevScrollPos = scrollRequired;
                         float numScrollActions = (float)scrollRequired/(float)scrollIncrement;
                         int scrollTimeStart = Math.round((float)updateTime*numScrollActions);
-                        Log.d(TAG,"scrollTimeStart:"+scrollTimeStart);
                         inlinePause.pauseStartTime =  (songDelay*1000) + scrollTimeStart + (inlinePauseTotal*1000);
                         inlinePause.pauseEndTime = inlinePause.pauseStartTime + (thisTime*1000);
                     }
-                    Log.d(TAG,"scrollRequired:"+scrollRequired);
                     // Add this item
-                    Log.d(TAG,"Adding inlinePause - lineNumber:"+inlinePause.lineNumber+
-                            "  totalLineNumbers:"+inlinePause.totalLineNumbers+
-                            "  pauseTime(s):"+inlinePause.pauseTime+
-                            "  pauseStartTime(s):"+inlinePause.pauseStartTime+
-                            "  pauseEndTime(s):"+inlinePause.pauseEndTime);
                     inlinePauses.add(inlinePause);
                     inlinePauseTotal = inlinePauseTotal + thisTime;
                 }
