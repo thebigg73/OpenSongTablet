@@ -159,6 +159,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -396,6 +398,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Initialise the activity
                 initialiseActivity();
 
+                // Set up crash collector
+                setUpCrashCollector();
             });
         });
     }
@@ -412,6 +416,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Generate new IDs
         }
     }*/
+
+    private void setUpCrashCollector() {
+        // Set up a default crash capture
+        Thread.setDefaultUncaughtExceptionHandler((thread, e) -> {
+            // Get the stack trace.
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            // Write a crash log file
+            storageAccess.doStringWriteToFile("Settings","","CrashLog.txt",sw.toString());
+
+            System.exit(1);
+        });
+    }
 
     @Override
     public Handler getMainHandler() {
