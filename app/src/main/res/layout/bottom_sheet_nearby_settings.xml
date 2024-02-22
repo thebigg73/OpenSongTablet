@@ -143,6 +143,12 @@
                     android:hint="@string/connection_scroll_info"
                     android:text="@string/scroll" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/matchToPDFSong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connection_match_to_pdf_song_info"
+                    android:text="@string/connection_match_to_pdf_song"/>
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 

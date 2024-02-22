@@ -187,6 +187,8 @@
     <string name="connected_display">Povezani displej</string>
     <string name="connected_display_description">Postavke specifične za Chromecast / HDMI izlaz</string>
     <string name="connection_autoscroll_info">Slušajte komande za zaustavljanje i pokretanje automatskog pomeranja</string>
+    <string name="connection_match_to_pdf_song">Preferiraj podudaranje PDF datoteke</string>
+    <string name="connection_match_to_pdf_song_info">Umesto da pokušate da učitate odgovarajuće OpenSong datoteke, pokušajte da učitate PDF datoteke sa istim imenom (ali se završavaju .pdf)</string>
     <string name="connection_scroll_info">Slušajte komande za pomeranje nagore i nadole</string>
     <string name="connections_accept">Povezivanje sa</string>
     <string name="connections_accept_code">Potvrdite podudaranje koda na oba uređaja:</string>

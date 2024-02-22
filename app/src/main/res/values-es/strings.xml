@@ -187,6 +187,8 @@
     <string name="connected_display">"Pantalla conectada"</string>
     <string name="connected_display_description">Configuración específica para la salida Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Escuche los comandos de inicio y parada de desplazamiento automático</string>
+    <string name="connection_match_to_pdf_song">Preferir un archivo PDF coincidente</string>
+    <string name="connection_match_to_pdf_song_info">En lugar de intentar cargar archivos OpenSong coincidentes, intente cargar archivos PDF con el mismo nombre (pero que terminen con .pdf)</string>
     <string name="connection_scroll_info">Escuche los comandos de desplazamiento hacia arriba y hacia abajo</string>
     <string name="connections_accept">Conectar con</string>
     <string name="connections_accept_code">Confirme que el código coincida en ambos dispositivos:</string>

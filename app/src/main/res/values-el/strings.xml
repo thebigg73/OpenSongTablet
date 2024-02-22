@@ -187,6 +187,8 @@
     <string name="connected_display">"Συνδεδεμένη οθόνη"</string>
     <string name="connected_display_description">Ρυθμίσεις ειδικά για έξοδο Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Ακούστε τις εντολές διακοπής και έναρξης αυτόματης κύλισης</string>
+    <string name="connection_match_to_pdf_song">Προτιμήστε το αντίστοιχο αρχείο PDF</string>
+    <string name="connection_match_to_pdf_song_info">Αντί να προσπαθήσετε να φορτώσετε αρχεία OpenSong που ταιριάζουν, δοκιμάστε να φορτώσετε αρχεία PDF με το ίδιο όνομα (αλλά με .pdf)</string>
     <string name="connection_scroll_info">Ακούστε τις εντολές κύλισης προς τα πάνω και προς τα κάτω</string>
     <string name="connections_accept">Συνδέω με</string>
     <string name="connections_accept_code">Επιβεβαιώστε ότι ο κωδικός ταιριάζει και στις δύο συσκευές:</string>

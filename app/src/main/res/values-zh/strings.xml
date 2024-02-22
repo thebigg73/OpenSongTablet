@@ -187,6 +187,8 @@
     <string name="connected_display">"连接显示"</string>
     <string name="connected_display_description">特定于Chromecast / HDMI输出的设置</string>
     <string name="connection_autoscroll_info">监听自动滚动停止和启动命令</string>
+    <string name="connection_match_to_pdf_song">首选匹配的 PDF 文件</string>
+    <string name="connection_match_to_pdf_song_info">与其尝试加载匹配的 OpenSong 文件，不如尝试加载同名（但以 .pdf 结尾）的 PDF 文件</string>
     <string name="connection_scroll_info">监听向上和向下滚动命令</string>
     <string name="connections_accept">与连接</string>
     <string name="connections_accept_code">确认两个设备上的代码匹配：</string>

@@ -187,6 +187,8 @@
     <string name="connected_display">"Affichage connecté"</string>
     <string name="connected_display_description">Paramètres spécifiques à la sortie Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Écoutez les commandes d\'arrêt et de démarrage du défilement automatique</string>
+    <string name="connection_match_to_pdf_song">Préférez le fichier PDF correspondant</string>
+    <string name="connection_match_to_pdf_song_info">Plutôt que d’essayer de charger les fichiers OpenSong correspondants, essayez de charger des fichiers PDF portant le même nom (mais se terminant par .pdf)</string>
     <string name="connection_scroll_info">Écoutez les commandes de défilement vers le haut et vers le bas</string>
     <string name="connections_accept">Se connecter avec</string>
     <string name="connections_accept_code">Confirmez que le code correspond sur les deux appareils:</string>

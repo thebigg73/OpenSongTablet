@@ -225,6 +225,8 @@
     <string name="connected_display">Connected display</string>
     <string name="connected_display_description">Settings specific to Chromecast/HDMI output</string>
     <string name="connection_autoscroll_info">Listen for autoscroll stop and start commands</string>
+    <string name="connection_match_to_pdf_song">Prefer matching PDF file</string>
+    <string name="connection_match_to_pdf_song_info">Rather than try to load matching OpenSong files, try to load PDF files with the same name (but ending with .pdf)</string>
     <string name="connection_scroll_info">Listen for scroll up and down commands</string>
     <string name="connections_accept">Connect with</string>
     <string name="connections_accept_code">Confirm the code matches on both devices:</string>

@@ -187,6 +187,8 @@
     <string name="connected_display">"csatlakoztatott megjelenítő"</string>
     <string name="connected_display_description">A Chromecast / HDMI kimenetre vonatkozó beállítások</string>
     <string name="connection_autoscroll_info">Hallgassa meg az automatikus görgetés leállítási és indítási parancsait</string>
+    <string name="connection_match_to_pdf_song">Egyező PDF-fájl előnyben részesítése</string>
+    <string name="connection_match_to_pdf_song_info">Ahelyett, hogy megpróbálná betölteni a megfelelő OpenSong fájlokat, próbálja meg betölteni az azonos nevű (de .pdf-vel végződő) PDF-fájlokat</string>
     <string name="connection_scroll_info">Figyelje a görgető fel és le parancsokat</string>
     <string name="connections_accept">Kapcsolódik valamivel</string>
     <string name="connections_accept_code">Ellenőrizze, hogy a kód megfelel-e mindkét eszközön:</string>

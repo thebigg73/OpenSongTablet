@@ -187,6 +187,8 @@
     <string name="connected_display">"Připojený displej"</string>
     <string name="connected_display_description">Nastavení specifická pro výstup Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Poslouchejte příkazy zastavení a spuštění automatického posunu</string>
+    <string name="connection_match_to_pdf_song">Preferovat odpovídající soubor PDF</string>
+    <string name="connection_match_to_pdf_song_info">Místo toho, abyste se pokoušeli načíst odpovídající soubory OpenSong, zkuste načíst soubory PDF se stejným názvem (ale končící na .pdf)</string>
     <string name="connection_scroll_info">Poslouchejte příkazy pro posun nahoru a dolů</string>
     <string name="connections_accept">Spojit s</string>
     <string name="connections_accept_code">Potvrďte shodu kódu na obou zařízeních:</string>

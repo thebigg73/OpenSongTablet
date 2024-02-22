@@ -187,6 +187,8 @@
     <string name="connected_display">"Gekoppelde skerm"</string>
     <string name="connected_display_description">Instellings spesifiek vir Chromecast / HDMI-uitvoer</string>
     <string name="connection_autoscroll_info">Luister vir stop- en begin-opdragte met outomatiese blaai</string>
+    <string name="connection_match_to_pdf_song">Verkies om die PDF-lêer te pas</string>
+    <string name="connection_match_to_pdf_song_info">Eerder as om bypassende OpenSong-lêers te probeer laai, probeer om PDF-lêers met dieselfde naam te laai (maar eindig met .pdf)</string>
     <string name="connection_scroll_info">Luister vir blaai op en af opdragte</string>
     <string name="connections_accept">Konnekteer met</string>
     <string name="connections_accept_code">Bevestig dat die kode ooreenstem op albei toestelle:</string>

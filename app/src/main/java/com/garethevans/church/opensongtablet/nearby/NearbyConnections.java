@@ -75,7 +75,7 @@ public class NearbyConnections implements NearbyInterface {
     private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby, temporaryAdvertise,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true, receiveHostSongSections = true, connectionsOpen,
-            nearbyHostPassthrough, receiveHostScroll;
+            nearbyHostPassthrough, receiveHostScroll, matchToPDFSong;
     private AdvertisingOptions advertisingOptions;
     private DiscoveryOptions discoveryOptions;
     // The stuff used for Google Nearby for connecting devices
@@ -117,6 +117,7 @@ public class NearbyConnections implements NearbyInterface {
                         break;
                 }
                 setNearbyStrategy(nearbyStrategy);
+                matchToPDFSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("matchToPDFSong",false);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -211,6 +212,13 @@ public class NearbyConnections implements NearbyInterface {
     }
     public void setTemporaryAdvertise(boolean temporaryAdvertise) {
         this.temporaryAdvertise = temporaryAdvertise;
+    }
+    public boolean getMatchToPDFSong() {
+        return matchToPDFSong;
+    }
+    public void setMatchToPDFSong(boolean matchToPDFSong) {
+        this.matchToPDFSong = matchToPDFSong;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("matchToPDFSong",matchToPDFSong);
     }
 
     // Set the strategy as either cluster (many to many) or star (one to many).
@@ -1067,6 +1075,15 @@ public class NearbyConnections implements NearbyInterface {
                     mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                     mainActivityInterface.getSong().setFilename(receivedBits.get(1));
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
+
+                    // If we want to use PDF versions of songs instead, change the filename
+                    if (matchToPDFSong && !receivedBits.get(1).endsWith(".pdf") && !receivedBits.get(1).endsWith(".PDF")) {
+                        String newPDFFilename = receivedBits.get(1)+".pdf";
+                        Uri newPDFUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",receivedBits.get(0),newPDFFilename);
+                        if (mainActivityInterface.getStorageAccess().uriExists(newPDFUri)) {
+                            mainActivityInterface.getSong().setFilename(receivedBits.get(1) + ".pdf");
+                        }
+                    }
 
                     // Now load the song if we are displaying the performance/stage/presenter fragment
                     if (nearbyReturnActionsInterface != null) {

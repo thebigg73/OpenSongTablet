@@ -187,6 +187,8 @@
     <string name="connected_display">"接続されたディスプレイ"</string>
     <string name="connected_display_description">Chromecast / HDMI出力に固有の設定</string>
     <string name="connection_autoscroll_info">自動スクロールの停止および開始コマンドをリッスンします</string>
+    <string name="connection_match_to_pdf_song">一致するPDFファイルを優先する</string>
+    <string name="connection_match_to_pdf_song_info">一致するOpenSongファイルを読み込もうとするのではなく、同じ名前(ただし.pdfで終わる)のPDFファイルを読み込んでみてください</string>
     <string name="connection_scroll_info">上下にスクロールするコマンドを聞く</string>
     <string name="connections_accept">と接続する</string>
     <string name="connections_accept_code">両方のデバイスでコードが一致することを確認します。</string>

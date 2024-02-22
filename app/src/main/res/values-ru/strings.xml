@@ -187,6 +187,8 @@
     <string name="connected_display">"Подключенный дисплей"</string>
     <string name="connected_display_description">Настройки Chromecast/выхода HDMI</string>
     <string name="connection_autoscroll_info">Ожидание команды остановки и запуска автопрокрутки</string>
+    <string name="connection_match_to_pdf_song">Предпочитать совпадающий PDF-файл</string>
+    <string name="connection_match_to_pdf_song_info">Вместо того, чтобы пытаться загрузить совпадающие файлы OpenSong, попробуйте загрузить PDF-файлы с тем же именем (но оканчивающимися на .pdf)</string>
     <string name="connection_scroll_info">Ожидание команды прокрутки вверх и вниз</string>
     <string name="connections_accept">Соединить с</string>
     <string name="connections_accept_code">Подтвердите совпадение кода на обоих устройствах:</string>

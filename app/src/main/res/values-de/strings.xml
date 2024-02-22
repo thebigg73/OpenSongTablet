@@ -187,6 +187,8 @@
     <string name="connected_display">"Verbundene Anzeige"</string>
     <string name="connected_display_description">Spezifische Einstellungen für den Chromecast / HDMI-Ausgang</string>
     <string name="connection_autoscroll_info">Warten Sie auf Autoscroll-Stopp- und Startbefehle</string>
+    <string name="connection_match_to_pdf_song">Passende PDF-Datei bevorzugen</string>
+    <string name="connection_match_to_pdf_song_info">Anstatt zu versuchen, passende OpenSong-Dateien zu laden, versuchen Sie, PDF-Dateien mit demselben Namen zu laden (aber mit .pdf zu enden)</string>
     <string name="connection_scroll_info">Hören Sie auf Befehle zum Hoch- und Herunterscrollen</string>
     <string name="connections_accept">Verbinden mit</string>
     <string name="connections_accept_code">Bestätigen Sie, dass der Code auf beiden Geräten übereinstimmt:</string>

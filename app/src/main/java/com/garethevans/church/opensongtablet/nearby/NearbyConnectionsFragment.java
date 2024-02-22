@@ -139,6 +139,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostAutoscroll());
         myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostSongSections());
         myView.bottomSheet.receiveScroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostScroll());
+        myView.bottomSheet.matchToPDFSong.setChecked(mainActivityInterface.getNearbyConnections().getMatchToPDFSong());
         // Show any connection log
         updateConnectionsLog();
     }
@@ -357,6 +358,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(isChecked));
         myView.bottomSheet.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(isChecked));
         myView.bottomSheet.receiveScroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostScroll(isChecked));
+        myView.bottomSheet.matchToPDFSong.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setMatchToPDFSong(isChecked));
         // Changing the nearby connection
         myView.off.setOnClickListener(v -> {
             updateOffHostClient(false, false);
