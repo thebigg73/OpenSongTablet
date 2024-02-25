@@ -61,7 +61,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private String longClickFilename = "";
 
 
-    private MainActivityInterface mainActivityInterface;
+    private static MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {

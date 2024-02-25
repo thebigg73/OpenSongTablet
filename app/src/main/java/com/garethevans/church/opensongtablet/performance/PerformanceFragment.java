@@ -412,13 +412,16 @@ public class PerformanceFragment extends Fragment {
         if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
                 myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
-                myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetUpdated());
+                myView.inlineSetList.post(() -> {
+                    if (myView!=null) {
+                        myView.inlineSetList.notifyInlineSetUpdated();
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
 
 
 
