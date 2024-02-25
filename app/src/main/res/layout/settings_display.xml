@@ -95,6 +95,14 @@
                 app:size="large"/>
             <TableRow style="@style/DividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/hardwareAcceleration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hardware_acceleration"
+                android:hint="@string/hardware_acceleration_info"/>
+            <TableRow style="@style/DividerLine"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

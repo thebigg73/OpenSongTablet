@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -317,6 +318,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set the hardware acceleration
+        setHardwareAcceleration();
+
         //this.savedInstanceState = savedInstanceState;
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
@@ -430,6 +435,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             System.exit(1);
         });
+    }
+
+    private void setHardwareAcceleration() {
+        if (getPreferences().getMyPreferenceBoolean("hardwareAcceleration",false)) {
+            try {
+                if (getWindow()!=null) {
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void recreateActivity() {
+        navHome();
+        try {
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                Log.d(TAG, "fragment:" + fragment);
+                if (fragment != null) {
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.recreate();
     }
 
     @Override
@@ -1152,6 +1186,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
+        super.onPostResume();
+        Log.d(TAG,"navigateToFragment("+deepLink+","+id);
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
@@ -1355,6 +1391,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navHome() {
         lockDrawer(false);
+        if (navController==null) {
+            try {
+                setupActionbar();
+                setupNavigation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (navController!=null && myView!=null) {
             whichMode = preferences.getMyPreferenceString("whichMode", performance);
             if (navController.getCurrentDestination() != null) {
@@ -3967,6 +4011,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onResume() {
+        super.onResume();
         if (myView == null) {
             // Something is wrong - restart the app
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -4002,7 +4047,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             metronome.initialiseMetronome();
         }
 
-        super.onResume();
     }
 
     @Override

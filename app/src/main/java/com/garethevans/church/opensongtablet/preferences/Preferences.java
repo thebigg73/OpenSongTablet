@@ -368,6 +368,7 @@ public class Preferences extends Activity {
     // gestureLongPress                 String      The action for long pressing on the song screen (def:addtoset)
     // gestureNavigation                boolean     Should the gesture bar be overlaid on top of the display (def:false)
     // graceTime                        boolean     Should the default 2 second grace time after song load be respected (def:true)
+    // hardwareAcceleration             boolean     Use hardware acceleration for graphics normally on by default, but can cause glitches (def:false)
     // hideActionBar                    boolean     Should the action bar auto hide (def:false)
     // hideActionBarTime                int         How long should the action bar be visible for before hiding (def:1200)
     // hideInfoBar                      boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)

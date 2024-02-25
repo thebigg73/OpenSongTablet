@@ -89,7 +89,8 @@
         tools:ignore="UnusedAttribute"
         android:requestLegacyExternalStorage="false"
         android:usesCleartextTraffic="true"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="true"
+        android:hardwareAccelerated="false">
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
@@ -117,7 +118,8 @@
             android:screenOrientation="user"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:hardwareAccelerated="false">
 
             <nav-graph android:value="@navigation/navigation" />
 

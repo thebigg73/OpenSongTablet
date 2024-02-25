@@ -94,6 +94,7 @@ public interface MainActivityInterface {
     boolean getFirstRun();
     int getOrientation();
     WebServer getWebServer();
+    void recreateActivity();
 
     // Preferences and settings
     Preferences getPreferences();

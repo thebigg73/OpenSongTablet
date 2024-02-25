@@ -79,6 +79,7 @@ public class DisplayMenuFragment extends Fragment {
                 break;
         }
         myView.themeButton.setHint(themeName);
+        myView.hardwareAcceleration.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hardwareAcceleration",false));
     }
 
     private void setListeners() {
@@ -91,6 +92,12 @@ public class DisplayMenuFragment extends Fragment {
         myView.scalingButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.displayScalingFragment));
         myView.inlineSet.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_inlineset_string,0));
         myView.margins.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_margins_string,0));
+        myView.hardwareAcceleration.setOnCheckedChangeListener((compoundButton, b) -> {
+            // Save the preference
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("hardwareAcceleration",b);
+            // Update the setting in the main activity
+            mainActivityInterface.recreateActivity();
+        });
     }
 
     @Override
