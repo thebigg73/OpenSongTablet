@@ -157,7 +157,7 @@ public class Metronome {
         // Reset the beats
         beatsRunningTotal = 1;
         beat = 1;
-        beatVisual = 0;
+        beatVisual = 1;
 
         // Get the song tempo and time signatures
         setSongValues();
