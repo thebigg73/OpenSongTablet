@@ -245,6 +245,19 @@ public class StorageAccess {
             }
         }
 
+        // Clear any key variations from the Variations/_cache folder
+        try {
+            File[] varsCache = new File(rootFolder, "Variations/_cache").listFiles();
+            if (varsCache!=null) {
+                for (File varCacheFile : varsCache) {
+                    if (varCacheFile.getName().contains("_K-")) {
+                        Log.d(TAG, "removed " + varCacheFile.getName() + ": " + varCacheFile.delete());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         uriTreeDF = DocumentFile.fromFile(rootFolder);
         songsDF = DocumentFile.fromFile(new File(rootFolder, "Songs"));
         copyAssets();
@@ -342,6 +355,19 @@ public class StorageAccess {
                 } catch (Exception e2) {
                     Log.d(TAG, "Error creating cache: " + folder);
                     stringBuilder.append("\nError creating cache:").append(folder);
+                }
+
+                // Clear any key variations from the Variations/_cache folder
+                try {
+                    ArrayList<String> cacheFiles = listFilesInFolder("Variations","_cache");
+                    for (String cacheFile:cacheFiles) {
+                        if (cacheFile.contains("_K-")) {
+                            Uri uriToRemove = getUriForItem("Variations","_cache",cacheFile);
+                            Log.d(TAG,"removed "+cacheFile+": "+deleteFile(uriToRemove));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -451,7 +477,7 @@ public class StorageAccess {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                storageDetails[1] = "" + uri;
+                storageDetails[1] = String.valueOf(uri);
             }
 
 
@@ -2193,7 +2219,6 @@ public class StorageAccess {
         if (subfolder.equals(mainActivityInterface.getMainfoldername())) {
             subfolder = "";
         }
-        Log.d(TAG,"folder:"+folder+"  subfolder:"+subfolder);
 
         if (lollipopOrLater()) {
             return listFilesInFolder_SAF(folder, subfolder);

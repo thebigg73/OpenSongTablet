@@ -250,20 +250,13 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                         mainActivityInterface.getSetActions().getKeyStart() +
                                         mainActivityInterface.getSetActions().getKeyEnd() +
                                         mainActivityInterface.getSetActions().getItemEnd();
-                                Log.d(TAG,"setItemString:"+setItemString);
-                                Log.d(TAG,"setItemStringLessWithoutKey:" + setItemStringLessWithoutKey);
-                                Log.d(TAG,"setentry:"+setentry);
-                                Log.d(TAG,"setentryalt1:"+setentryalt1);
-                                Log.d(TAG,"setentryalt2:"+setentryalt2);
                                 if (setItemString.equals(setentry) ||
                                         setItemString.equals(setentryalt1) ||
                                         setItemString.equals(setentryalt2) ||
                                         setItemStringLessWithoutKey.equals(setentryalt2)) {
                                     int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(finalFolderNamePair);
-                                    Log.d(TAG,"positionInSet:"+positionInSet);
                                     // Notify the set menu fragment which removes the entry and updates the set and inline adapters
                                     int prevSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
-                                    Log.d(TAG,"about to notifySetFramgent that item removed:"+positionInSet);
                                     if (positionInSet>-1) {
                                         mainActivityInterface.notifySetFragment("setItemRemoved", positionInSet);
                                         // If the set is now empty, hide the inline set

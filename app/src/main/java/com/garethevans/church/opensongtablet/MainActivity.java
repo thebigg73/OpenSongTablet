@@ -441,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void setHardwareAcceleration() {
-        if (getPreferences().getMyPreferenceBoolean("hardwareAcceleration",false)) {
+        if (getPreferences().getMyPreferenceBoolean("hardwareAcceleration",true)) {
             try {
                 if (getWindow()!=null) {
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
@@ -458,7 +458,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         navHome();
         try {
             for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                Log.d(TAG, "fragment:" + fragment);
                 if (fragment != null) {
                     getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 }
@@ -488,7 +487,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             }
         }
-        Log.d(TAG,"dispatchTouchEvent()");
         return super.dispatchTouchEvent(event);
     }
 
@@ -1213,7 +1211,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navigateToFragment(String deepLink, int id) {
         super.onPostResume();
-        Log.d(TAG,"navigateToFragment("+deepLink+","+id);
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
@@ -2831,6 +2828,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 boolean isKeyVariation = setKey!=null && originalKey!=null && !setKey.isEmpty() &&
                                 !originalKey.isEmpty() && !setKey.equals(originalKey);
+
+                Log.d(TAG,"originalKey:"+originalKey+"  setKey:"+setKey+"  isKeyVariation:"+isKeyVariation);
 
                 if (isKeyVariation) {
                     // Could be just a key variation, or a standard variation needing adjusted
