@@ -125,7 +125,11 @@ public class ExportActions {
     public ArrayList<Uri> addOpenSongSetsToUris(ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
-            extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setName));
+            extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(
+                    "Sets", "", setName,
+                    "Export", "", setName));
+            Log.d(TAG,"added:"+extraUris.get(extraUris.size()-1));
+            //    extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setName));
         }
         return extraUris;
     }

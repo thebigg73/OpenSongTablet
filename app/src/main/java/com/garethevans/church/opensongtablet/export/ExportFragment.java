@@ -518,7 +518,11 @@ public class ExportFragment extends Fragment {
                             if (song.getFolder()!=null && song.getFolder().equals("../Export")) {
                                 location[0] = "../Export";
                             }
-                            uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs", fixSubfolder(location[0]), location[1]));
+                            uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
+                                    "Songs", fixSubfolder(location[0]), location[1],
+                                    "Export", "", location[1]));
+
+                            //uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs", fixSubfolder(location[0]), location[1]));
                             if (openSong && !mimeTypes.contains("text/xml")) {
                                 mimeTypes.add("text/xml");
                             } else if (pdf && !mimeTypes.contains("application/pdf")) {
@@ -702,8 +706,13 @@ public class ExportFragment extends Fragment {
 
             if (pdf && isPDF || openSong && isXML || image && isIMG) {
                 // Just add the xml or pdf song
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                        fixSubfolder(folder), filename));
+
+                uris.add(mainActivityInterface.getStorageAccess().copyFromTo(
+                        "Songs", fixSubfolder(folder), filename,
+                        "Export", "", filename));
+
+                /*uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs",
+                        fixSubfolder(folder), filename));*/
                 if (pdf && !mimeTypes.contains("application/pdf")) {
                     mimeTypes.add("application/pdf");
                 } else if (openSong && !mimeTypes.contains("text/plain")) {
