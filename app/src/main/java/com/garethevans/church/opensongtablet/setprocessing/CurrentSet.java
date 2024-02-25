@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // All actions related to building/processing are in the SetActions class
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -286,23 +287,24 @@ public class CurrentSet {
     }
 
     public int getMatchingSetItem(String songForSetWork) {
-        int pos = -1;
-        for (SetItemInfo setItemInfo:setItemInfos) {
+        for (int x=0; x<setItemInfos.size(); x++) {
+            SetItemInfo setItemInfo = setItemInfos.get(x);
             if (setItemInfo.songforsetwork.equals(songForSetWork)) {
-                return pos;
+                return x;
             }
         }
-        return pos;
+        return -1;
     }
 
     public int getMatchingSetItemBeforeKey(String partialSongForSetWork) {
-        int pos = -1;
-        for (SetItemInfo setItemInfo:setItemInfos) {
+        for (int x=0; x<setItemInfos.size(); x++) {
+            SetItemInfo setItemInfo = setItemInfos.get(x);
+            Log.d(TAG,"setItemInfo.songforsetwork:"+setItemInfo.songforsetwork);
             if (setItemInfo.songforsetwork.startsWith(partialSongForSetWork)) {
-                return pos;
+                return x;
             }
         }
-        return pos;
+        return -1;
     }
 
     public boolean getIsMatchingSetItem(int position, String songForSetWork) {

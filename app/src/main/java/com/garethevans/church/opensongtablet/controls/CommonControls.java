@@ -81,6 +81,7 @@ public class CommonControls {
         addString("transposesettings",c.getString(R.string.chord_settings));
         addString("chordfingerings",c.getString(R.string.chord_fingering)+showhide);
         addString("customchords",c.getString(R.string.custom_chords));
+        addString("chordsettings",c.getString(R.string.chord_settings));
 
         addString("","");
 

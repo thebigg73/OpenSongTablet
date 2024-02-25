@@ -248,6 +248,9 @@ public class PerformanceGestures {
             case "customchords":
                 customChords();
                 break;
+            case "chordsettings":
+                chordSettings();
+                break;
 
 
             // Song information
@@ -950,6 +953,11 @@ public class PerformanceGestures {
     // Custom chords
     public void customChords() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
+    }
+
+    // Chord settings
+    public void chordSettings() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
     }
 
     // Toggle the show logo on the secondary screen

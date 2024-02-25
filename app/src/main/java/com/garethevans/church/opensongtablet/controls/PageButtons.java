@@ -250,7 +250,8 @@ public class PageButtons {
 
         // Chords
         prepareOption("transpose",c.getString(R.string.transpose),c.getString(R.string.open),c.getString(R.string.settings),R.drawable.transpose);
-        prepareOption("chordfingerings",c.getString(R.string.chord_fingering),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.guitar);
+        prepareOption("chordfingerings",c.getString(R.string.chord_fingering),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.guitar_fingering);
+        prepareOption("chordsettings",c.getString(R.string.chord_settings),c.getString(R.string.open),"",R.drawable.guitar_settings);
 
         prepareOption("","","","",R.drawable.help);
 
