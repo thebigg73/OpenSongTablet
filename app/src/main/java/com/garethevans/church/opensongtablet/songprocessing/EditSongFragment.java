@@ -169,28 +169,30 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                             }
                         };
 
-                        myView.viewpager.post(() -> {
-                            myView.viewpager.setAdapter(adapter);
-                            myView.viewpager.setOffscreenPageLimit(1);
-                            myView.viewpager.registerOnPageChangeCallback(callback);
+                        mainActivityInterface.getMainHandler().post(() -> {
+                            if (myView!=null) {
+                                myView.viewpager.setAdapter(adapter);
+                                myView.viewpager.setOffscreenPageLimit(1);
+                                myView.viewpager.registerOnPageChangeCallback(callback);
 
-                            new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
-                                switch (position) {
-                                    case 0:
-                                    default:
-                                        tab.setText(lyrics_string);
-                                        break;
-                                    case 1:
-                                        tab.setText(mainfoldername_string);
-                                        break;
-                                    case 2:
-                                        tab.setText(song_features_string);
-                                        break;
-                                    case 3:
-                                        tab.setText(tag_string);
-                                        break;
-                                }
-                            }).attach();
+                                new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
+                                    switch (position) {
+                                        case 0:
+                                        default:
+                                            tab.setText(lyrics_string);
+                                            break;
+                                        case 1:
+                                            tab.setText(mainfoldername_string);
+                                            break;
+                                        case 2:
+                                            tab.setText(song_features_string);
+                                            break;
+                                        case 3:
+                                            tab.setText(tag_string);
+                                            break;
+                                    }
+                                }).attach();
+                            }
                         });
                     }
                 }

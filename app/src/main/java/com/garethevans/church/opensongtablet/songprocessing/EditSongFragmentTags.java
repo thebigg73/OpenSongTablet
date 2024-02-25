@@ -84,28 +84,29 @@ public class EditSongFragmentTags extends Fragment {
         if (mainActivityInterface.getTempSong()!=null) {
             tagsBottomSheet = new TagsBottomSheet(this, "EditSongFragmentTags");
             presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
-            myView.tags.post(() -> {
-                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
-                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags, 2);
-                myView.tags.setText(themesSplitByLine());
-                myView.tags.setFocusable(false);
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView!=null) {
+                    mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
+                    mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags, 2);
+                    myView.tags.setText(themesSplitByLine());
+                    myView.tags.setFocusable(false);
+
+                    myView.aka.setText(mainActivityInterface.getTempSong().getAka());
+                    myView.ccli.setText(mainActivityInterface.getTempSong().getCcli());
+                    myView.user1.setText(mainActivityInterface.getTempSong().getUser1());
+                    myView.user2.setText(mainActivityInterface.getTempSong().getUser2());
+                    myView.user3.setText(mainActivityInterface.getTempSong().getUser3());
+                    myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum());
+                    myView.presorder.setFocusable(false);
+                    myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
+                    myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
+                    myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());
+                    myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
+                    // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
+                    mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface, myView.resizeForKeyboardLayout);
+                }
             });
 
-            myView.aka.post(() -> myView.aka.setText(mainActivityInterface.getTempSong().getAka()));
-            myView.ccli.post(() -> myView.ccli.setText(mainActivityInterface.getTempSong().getCcli()));
-            myView.user1.post(() -> myView.user1.setText(mainActivityInterface.getTempSong().getUser1()));
-            myView.user2.post(() -> myView.user2.setText(mainActivityInterface.getTempSong().getUser2()));
-            myView.user3.post(() -> myView.user3.setText(mainActivityInterface.getTempSong().getUser3()));
-            myView.hymnnum.post(() -> myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum()));
-            myView.presorder.post(() -> {
-                myView.presorder.setFocusable(false);
-                myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
-            });
-            myView.useImported.post(() -> myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()));
-            myView.beatBuddySong.post(() -> myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong()));
-            myView.beatBuddyKit.post(() -> myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit()));
-            // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
-            myView.resizeForKeyboardLayout.post(() -> mainActivityInterface.getWindowFlags().adjustViewPadding(mainActivityInterface, myView.resizeForKeyboardLayout));
             checkBeatBuddyValues();
         }
     }
@@ -168,24 +169,26 @@ public class EditSongFragmentTags extends Fragment {
                     ArrayList<String> songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
                     ArrayList<String> kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
                     mainActivityInterface.getMainHandler().post(() -> {
-                        ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
-                        ExposedDropDownArrayAdapter kitsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddyKit, R.layout.view_exposed_dropdown_item, kits);
-                        myView.beatBuddySong.setAdapter(songsAdapter);
-                        myView.beatBuddyKit.setAdapter(kitsAdapter);
-                        // If we don't have a value, look for one and auto add it
-                        if (mainActivityInterface.getTempSong().getFilename()!=null && songs.contains(mainActivityInterface.getTempSong().getFilename().replace(",",""))) {
-                            mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getFilename().replace(",",""));
-                        } else if (mainActivityInterface.getTempSong().getTitle()!=null && songs.contains(mainActivityInterface.getTempSong().getTitle().replace(",",""))) {
-                            mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getTitle().replace(",",""));
+                        if (myView != null) {
+                            ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
+                            ExposedDropDownArrayAdapter kitsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddyKit, R.layout.view_exposed_dropdown_item, kits);
+                            myView.beatBuddySong.setAdapter(songsAdapter);
+                            myView.beatBuddyKit.setAdapter(kitsAdapter);
+                            // If we don't have a value, look for one and auto add it
+                            if (mainActivityInterface.getTempSong().getFilename() != null && songs.contains(mainActivityInterface.getTempSong().getFilename().replace(",", ""))) {
+                                mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getFilename().replace(",", ""));
+                            } else if (mainActivityInterface.getTempSong().getTitle() != null && songs.contains(mainActivityInterface.getTempSong().getTitle().replace(",", ""))) {
+                                mainActivityInterface.getTempSong().setBeatbuddysong(mainActivityInterface.getTempSong().getTitle().replace(",", ""));
+                            }
+                            if (mainActivityInterface.getTempSong().getBeatbuddysong() == null) {
+                                mainActivityInterface.getTempSong().setBeatbuddysong("");
+                            }
+                            if (mainActivityInterface.getTempSong().getBeatbuddykit() == null) {
+                                mainActivityInterface.getTempSong().setBeatbuddykit("");
+                            }
+                            myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());
+                            myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
                         }
-                        if (mainActivityInterface.getTempSong().getBeatbuddysong()==null) {
-                            mainActivityInterface.getTempSong().setBeatbuddysong("");
-                        }
-                        if (mainActivityInterface.getTempSong().getBeatbuddykit()==null) {
-                            mainActivityInterface.getTempSong().setBeatbuddykit("");
-                        }
-                        myView.beatBuddySong.setText(mainActivityInterface.getTempSong().getBeatbuddysong());
-                        myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
                     });
                 }
             }

@@ -20,9 +20,11 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -76,6 +78,7 @@ import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
@@ -464,6 +467,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
         this.recreate();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        View v = getCurrentFocus();
+        if (v instanceof EditText || v instanceof ExposedDropDown) {
+            int[] scrcoords = new int[2];
+            v.getLocationOnScreen(scrcoords);
+            // calculate the relative position of the clicking position against the position of the view
+            float x = event.getRawX() - scrcoords[0];
+            float y = event.getRawY() - scrcoords[1];
+
+            // check whether action is up and the clicking position is outside of the view
+            if (event.getAction() == MotionEvent.ACTION_UP
+                    && (x < 0 || x > v.getRight() - v.getLeft()
+                    || y < 0 || y > v.getBottom() - v.getTop())) {
+                if (v.getOnFocusChangeListener() != null) {
+                    v.getOnFocusChangeListener().onFocusChange(v, false);
+                }
+            }
+        }
+        Log.d(TAG,"dispatchTouchEvent()");
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

@@ -16,7 +16,9 @@
             android:id="@+id/resizeForKeyboardLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/searchOnline"

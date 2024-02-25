@@ -76,23 +76,27 @@ public class EditSongFragmentMain extends Fragment  {
         }
         if (mainActivityInterface.getTempSong()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                myView.title.setText(mainActivityInterface.getTempSong().getTitle());
-                myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
-                myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
-                myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
-                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
-                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
-                myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
+                if (myView!=null) {
+                    myView.title.setText(mainActivityInterface.getTempSong().getTitle());
+                    myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
+                    myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
+                    myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
+                    mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
+                    mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
+                    myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
+                }
             });
 
             getFoldersFromStorage();
             newFolder = "+ " + new_folder_add_string;
             folders.add(newFolder);
             if (getContext() != null) {
-                myView.folder.post(() -> {
-                    arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-                    myView.folder.setAdapter(arrayAdapter);
-                    myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+                mainActivityInterface.getMainHandler().post(() -> {
+                    if (myView != null) {
+                        arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                        myView.folder.setAdapter(arrayAdapter);
+                        myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+                    }
                 });
             }
             textInputBottomSheet = new TextInputBottomSheet(this, "EditSongFragmentMain", new_folder_string, new_folder_name_string, null, "", "", true);
@@ -104,15 +108,19 @@ public class EditSongFragmentMain extends Fragment  {
 
     // Sor the view visibility, listeners, etc.
     private void setUpListeners() {
-        myView.title.post(() -> myView.title.addTextChangedListener(new MyTextWatcher("title")));
-        myView.folder.post(() -> myView.folder.addTextChangedListener(new MyTextWatcher("folder")));
-        myView.filename.post(() -> myView.filename.addTextChangedListener(new MyTextWatcher("filename")));
-        myView.author.post(() -> myView.author.addTextChangedListener(new MyTextWatcher("author")));
-        myView.copyright.post(() -> myView.copyright.addTextChangedListener(new MyTextWatcher("copyright")));
-        myView.songNotes.post(() -> myView.songNotes.addTextChangedListener(new MyTextWatcher("notes")));
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                myView.title.addTextChangedListener(new MyTextWatcher("title"));
+                myView.folder.addTextChangedListener(new MyTextWatcher("folder"));
+                myView.filename.addTextChangedListener(new MyTextWatcher("filename"));
+                myView.author.addTextChangedListener(new MyTextWatcher("author"));
+                myView.copyright.addTextChangedListener(new MyTextWatcher("copyright"));
+                myView.songNotes.addTextChangedListener(new MyTextWatcher("notes"));
 
-        // Scroll listener
-        myView.mainScrollView.post(() -> myView.mainScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton()));
+                // Scroll listener
+                myView.mainScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+            }
+        });
     }
 
     private class MyTextWatcher implements TextWatcher {

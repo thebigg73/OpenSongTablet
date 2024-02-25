@@ -59,10 +59,12 @@ public class EditSongFragmentLyrics extends Fragment {
 
                 // The stuff that needs to be on the UI
                 mainActivityInterface.getMainHandler().post(() -> {
-                    // Add listeners
-                    setupListeners();
+                    if (myView!=null) {
+                        // Add listeners
+                        setupListeners();
 
-                    myView.lyrics.clearFocus();
+                        myView.lyrics.clearFocus();
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -125,18 +127,28 @@ public class EditSongFragmentLyrics extends Fragment {
                 (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG"))) {
             // Show the OCR button
-            myView.ocr.post(() -> myView.ocr.setVisibility(View.VISIBLE));
-            myView.imageEdit.post(() -> myView.imageEdit.setVisibility(View.VISIBLE));
+            mainActivityInterface.getMainHandler().post(() -> {
+               if (myView!=null) {
+                   myView.ocr.setVisibility(View.VISIBLE);
+                   myView.imageEdit.setVisibility(View.VISIBLE);
+               }
+            });
         } else {
-            myView.ocr.post(() -> myView.ocr.setVisibility(View.GONE));
-            myView.imageEdit.post(() -> myView.imageEdit.setVisibility(View.GONE));
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView != null) {
+                    myView.ocr.setVisibility(View.GONE);
+                    myView.imageEdit.setVisibility(View.GONE);
+                }
+            });
         }
 
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
-        myView.lyrics.post(() -> {
-            myView.lyrics.setTextSize(editTextSize);
-            myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                myView.lyrics.setTextSize(editTextSize);
+                myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+            }
         });
 
         validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
@@ -151,9 +163,11 @@ public class EditSongFragmentLyrics extends Fragment {
                         mainActivityInterface.getTempSong().getFolder(),
                         mainActivityInterface.getTempSong().getFilename(),
                         1, 200, 200, "N", true);
-                myView.previewImage.post(() -> {
-                    myView.previewImage.setVisibility(View.VISIBLE);
-                    Glide.with(getContext()).load(bmp).into(myView.previewImage);
+                mainActivityInterface.getMainHandler().post(() -> {
+                    if (myView!=null) {
+                        myView.previewImage.setVisibility(View.VISIBLE);
+                        Glide.with(getContext()).load(bmp).into(myView.previewImage);
+                    }
                 });
 
             } else if (mainActivityInterface.getTempSong().getFiletype().equals("IMG")) {
@@ -189,22 +203,30 @@ public class EditSongFragmentLyrics extends Fragment {
                     }
                 }
                 int finalRotation = rotation;
-                myView.previewImage.post(()-> {
-                    myView.previewImage.setVisibility(View.VISIBLE);
-                    myView.previewImage.setRotationX(0.5f);
-                    myView.previewImage.setRotationY(0.5f);
-                    Glide.with(getContext()).load(uri).signature(new ObjectKey(String.valueOf(System.currentTimeMillis()))).into(myView.previewImage);
-                    // Rotate in opposite direction
-                    myView.previewImage.setRotation(-finalRotation);
+                mainActivityInterface.getMainHandler().post(() -> {
+                   if (myView!=null) {
+                       myView.previewImage.setVisibility(View.VISIBLE);
+                       myView.previewImage.setRotationX(0.5f);
+                       myView.previewImage.setRotationY(0.5f);
+                       Glide.with(getContext()).load(uri).signature(new ObjectKey(String.valueOf(System.currentTimeMillis()))).into(myView.previewImage);
+                       // Rotate in opposite direction
+                       myView.previewImage.setRotation(-finalRotation);
+                   }
                 });
             } else {
-                myView.previewImage.setVisibility(View.GONE);
+                mainActivityInterface.getMainHandler().post(() -> {
+                   if (myView!=null) {
+                       myView.previewImage.setVisibility(View.GONE);
+                   }
+                });
             }
         } else {
-            myView.previewImage.setVisibility(View.GONE);
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView!=null) {
+                    myView.previewImage.setVisibility(View.GONE);
+                }
+            });
         }
-
-
     }
 
     private void setupListeners() {myView.lyrics.addTextChangedListener(new TextWatcher() {
@@ -301,23 +323,27 @@ public class EditSongFragmentLyrics extends Fragment {
     }
     private void validUndoRedo(int currentPosition) {
         // Enable/disable the undo button
-        boolean undoValid = currentPosition>0;
-        myView.undoButton.post(() -> myView.undoButton.setEnabled(undoValid));
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                boolean undoValid = currentPosition>0;
+                myView.undoButton.setEnabled(undoValid);
 
-        if (undoValid) {
-            myView.undoButton.post(() -> myView.undoButton.setVisibility(View.VISIBLE));
-        } else {
-            myView.undoButton.post(() -> myView.undoButton.setVisibility(View.INVISIBLE));
-        }
+                if (undoValid) {
+                    myView.undoButton.setVisibility(View.VISIBLE);
+                } else {
+                    myView.undoButton.setVisibility(View.INVISIBLE);
+                }
 
-        // Enable/disable the redo button
-        boolean redoValid = currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1;
-        myView.redoButton.post(() ->myView.redoButton.setEnabled(redoValid));
-        if (redoValid) {
-            myView.redoButton.post(() -> myView.redoButton.setVisibility(View.VISIBLE));
-        } else {
-            myView.redoButton.post(() -> myView.redoButton.setVisibility(View.INVISIBLE));
-        }
+                // Enable/disable the redo button
+                boolean redoValid = currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1;
+                myView.redoButton.setEnabled(redoValid);
+                if (redoValid) {
+                    myView.redoButton.setVisibility(View.VISIBLE);
+                } else {
+                    myView.redoButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     // The stuff below is called from the LyricsOptionsBottomSheet
@@ -341,7 +367,11 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.lyrics.requestFocus();
             myView.lyrics.setSelection(cursorPos + moveCursorBy);
             // Also do this in 1 second time to allow for keyboard opening
-            myView.lyrics.postDelayed(() -> myView.lyrics.setSelection(cursorPos + moveCursorBy), 1000);
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                if (myView!=null) {
+                    myView.lyrics.setSelection(cursorPos + moveCursorBy);
+                }
+            }, 1000);
 
             mainActivityInterface.getWindowFlags().showKeyboard();
             //manualScrollTo();

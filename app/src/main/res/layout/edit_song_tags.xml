@@ -11,13 +11,17 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:contentDescription="@string/tag_song">
+        android:contentDescription="@string/tag_song"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:id="@+id/resizeForKeyboardLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/tags"
