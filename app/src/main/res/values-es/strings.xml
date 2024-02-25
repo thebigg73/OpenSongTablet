@@ -371,6 +371,8 @@
     <string name="green">Verde</string>
     <string name="guitar">Guitarra</string>
     <string name="half_time">Medio tiempo</string>
+    <string name="hardware_acceleration">Uso de la aceleración de hardware</string>
+    <string name="hardware_acceleration_info">Activar la aceleración de hardware puede hacer que el desplazamiento sea más fluido, sin embargo, puede causar errores de visualización y bloqueos en ciertos dispositivos.</string>
     <string name="heading_scale">"Escalar el texto del título"</string>
     <string name="help">"Ayuda (Online)"</string>
     <string name="hex_color_code">Código hexadecimal de colores</string>

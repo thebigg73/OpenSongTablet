@@ -371,6 +371,8 @@
     <string name="green">Zelená</string>
     <string name="guitar">Kytara</string>
     <string name="half_time">Poločas</string>
+    <string name="hardware_acceleration">Použití hardwarové akcelerace</string>
+    <string name="hardware_acceleration_info">Zapnutí hardwarové akcelerace může zajistit plynulejší posouvání, ale na některých zařízeních může způsobit chyby zobrazení a pády.</string>
     <string name="heading_scale">"Měřítko textu záhlaví"</string>
     <string name="help">"Help (online)"</string>
     <string name="hex_color_code">Hexadecimální kód barvy</string>

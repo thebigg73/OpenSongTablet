@@ -371,6 +371,8 @@
     <string name="green">Groen</string>
     <string name="guitar">Guitar</string>
     <string name="half_time">Halftyd</string>
+    <string name="hardware_acceleration">Gebruik hardeware versnelling</string>
+    <string name="hardware_acceleration_info">As u hardewareversnelling aanskakel, kan dit gladder blaai, maar dit kan vertoonfoute en ineenstortings op sekere toestelle veroorsaak.</string>
     <string name="heading_scale">"Skaal die opskrif teks"</string>
     <string name="help">"Help (Online)"</string>
     <string name="hex_color_code">Hekskleurkode</string>

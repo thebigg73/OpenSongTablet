@@ -465,6 +465,8 @@
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
     <string name="half_time">Half time</string>
+    <string name="hardware_acceleration">Use hardware acceleration</string>
+    <string name="hardware_acceleration_info">Turning on hardware acceleration can make scrolling smoother, however, it can cause display bugs and crashes on certain devices.</string>
     <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>

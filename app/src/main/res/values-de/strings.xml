@@ -371,6 +371,8 @@
     <string name="green">Grün</string>
     <string name="guitar">Gitarre</string>
     <string name="half_time">Halbzeit</string>
+    <string name="hardware_acceleration">Verwenden der Hardwarebeschleunigung</string>
+    <string name="hardware_acceleration_info">Das Aktivieren der Hardwarebeschleunigung kann das Scrollen flüssiger machen, kann jedoch auf bestimmten Geräten zu Anzeigefehlern und Abstürzen führen.</string>
     <string name="heading_scale">"Überschrift skalieren"</string>
     <string name="help">"Hilfe (Online)"</string>
     <string name="hex_color_code">Hex-Farbcode</string>

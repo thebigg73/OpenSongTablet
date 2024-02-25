@@ -371,6 +371,8 @@
     <string name="green">Verde</string>
     <string name="guitar">Guitarra</string>
     <string name="half_time">Intervalo</string>
+    <string name="hardware_acceleration">Usar aceleração de hardware</string>
+    <string name="hardware_acceleration_info">Ativar a aceleração de hardware pode tornar a rolagem mais suave, no entanto, pode causar bugs de exibição e falhas em determinados dispositivos.</string>
     <string name="heading_scale">"Dimensionar o texto do título"</string>
     <string name="help">"Ajuda (Online)"</string>
     <string name="hex_color_code">Código de cor hexadecimal</string>

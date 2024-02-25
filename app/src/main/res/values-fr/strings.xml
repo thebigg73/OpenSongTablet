@@ -371,6 +371,8 @@
     <string name="green">Vert</string>
     <string name="guitar">Guitare</string>
     <string name="half_time">Mi-temps</string>
+    <string name="hardware_acceleration">Utiliser l’accélération matérielle</string>
+    <string name="hardware_acceleration_info">L’activation de l’accélération matérielle peut rendre le défilement plus fluide, mais elle peut provoquer des bogues d’affichage et des plantages sur certains appareils.</string>
     <string name="heading_scale">"Taille du texte de titre"</string>
     <string name="help">"Aide (en ligne)"</string>
     <string name="hex_color_code">Code couleur hexadécimal</string>

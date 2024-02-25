@@ -371,6 +371,8 @@
     <string name="green">Zielony</string>
     <string name="guitar">Gitara</string>
     <string name="half_time">Połowa czasu</string>
+    <string name="hardware_acceleration">Korzystanie z akceleracji sprzętowej</string>
+    <string name="hardware_acceleration_info">Włączenie akceleracji sprzętowej może sprawić, że przewijanie będzie płynniejsze, jednak może powodować błędy wyświetlania i awarie na niektórych urządzeniach.</string>
     <string name="heading_scale">Skaluj tekst nagłówka</string>
     <string name="help">"Pomoc (online)"</string>
     <string name="hex_color_code">Kod szesnastkowy (hex) koloru</string>

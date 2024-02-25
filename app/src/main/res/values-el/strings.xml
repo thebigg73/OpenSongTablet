@@ -371,6 +371,8 @@
     <string name="green">Πράσινος</string>
     <string name="guitar">"Κιθάρα"</string>
     <string name="half_time">Ημίχρονο</string>
+    <string name="hardware_acceleration">Χρήση επιτάχυνσης υλικού</string>
+    <string name="hardware_acceleration_info">Η ενεργοποίηση της επιτάχυνσης υλικού μπορεί να κάνει την κύλιση πιο ομαλή, ωστόσο, μπορεί να προκαλέσει σφάλματα οθόνης και σφάλματα σε ορισμένες συσκευές.</string>
     <string name="heading_scale">"Κείμενο τίτλου κλίμακας"</string>
     <string name="help">"Βοήθεια (Online)"</string>
     <string name="hex_color_code">Hex χρωματικός κωδικός</string>

@@ -371,6 +371,8 @@
     <string name="green">Grön</string>
     <string name="guitar">"Gitarr"</string>
     <string name="half_time">Halvtid</string>
+    <string name="hardware_acceleration">Använda maskinvaruacceleration</string>
+    <string name="hardware_acceleration_info">Att aktivera hårdvaruacceleration kan göra rullningen smidigare, men det kan orsaka visningsbuggar och krascher på vissa enheter.</string>
     <string name="heading_scale">"Skala rubrik text"</string>
     <string name="help">"Hjälp (Online)"</string>
     <string name="hex_color_code">Hex färgkod</string>

@@ -371,6 +371,8 @@
     <string name="green">Зеленый</string>
     <string name="guitar">Гитара</string>
     <string name="half_time">Перерыв</string>
+    <string name="hardware_acceleration">Использование аппаратного ускорения</string>
+    <string name="hardware_acceleration_info">Включение аппаратного ускорения может сделать прокрутку более плавной, однако это может привести к ошибкам отображения и сбоям на некоторых устройствах.</string>
     <string name="heading_scale">Размер текста заголовка</string>
     <string name="help">Помощь (онлайн)</string>
     <string name="hex_color_code">Hex код цвета</string>
