@@ -41,13 +41,15 @@ public class Metronome {
     private int metronomeFlashOnColorDarker;
     private int tickClip;
     private int tockClip;
+    private int barsRequired;
     private long audioTime, visualTime;
     private final long buffer = 100;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
-            volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
+            volumeTockRight = 1.0f, meterTimeDivision = 1.0f, metronomeTickVol = 1f,
+            metronomeTockVol = 1f;
     private boolean audioMetronome = true, visualMetronome = false, isRunningVisual = false, isRunningAudio, validTimeSig = false,
             validTempo = false, tickPlayerReady, tockPlayerReady, metronomeAutoStart;
-    private String tickSound, tockSound;
+    private String tickSound, tockSound, metronomePan;
     private SoundPool soundPool;
     private Timer metronomeTimer, visualTimer;
     private TimerTask metronomeTimerTask, visualTimerTask;
@@ -206,7 +208,12 @@ public class Metronome {
         tickSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTickSound","digital_high");
         tockSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTockSound", "digital_low");
     }
-
+    public String getTickSound() {
+        return tickSound;
+    }
+    public String getTockSound() {
+        return tockSound;
+    }
     public void updateTickSound(String tickSound) {
         this.tickSound = tickSound;
         mainActivityInterface.getPreferences().setMyPreferenceString("metronomeTickSound",tickSound);
@@ -214,6 +221,22 @@ public class Metronome {
     public void updateTockSound(String tockSound) {
         this.tockSound = tockSound;
         mainActivityInterface.getPreferences().setMyPreferenceString("metronomeTockSound",tockSound);
+    }
+    public void setTickVol(float metronomeTickVol) {
+        this.metronomeTickVol = metronomeTickVol;
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("metronomeTickVol",metronomeTickVol);
+        setVolumes();
+    }
+    public float getTickVolume() {
+        return metronomeTickVol;
+    }
+    public float getTockVolume() {
+        return metronomeTockVol;
+    }
+    public void setTockVol(float metronomeTickVol) {
+        this.metronomeTickVol = metronomeTickVol;
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("metronomeTickVol",metronomeTickVol);
+        setVolumes();
     }
 
     private void setupSoundPool() {
@@ -243,25 +266,50 @@ public class Metronome {
     public void setVisualMetronome() {
         visualMetronome = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("metronomeShowVisual", false);
-
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
         metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
         Log.d(TAG,"metronomeFlashOnColor:"+metronomeFlashOnColor);
         Log.d(TAG,"metronomeFlashOnColorDarker:"+metronomeFlashOnColorDarker);
     }
+    public void setVisualMetronome(boolean visualMetronome) {
+        this.visualMetronome = visualMetronome;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeShowVisual",visualMetronome);
+        metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
+        metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
+        Log.d(TAG,"metronomeFlashOnColor:"+metronomeFlashOnColor);
+        Log.d(TAG,"metronomeFlashOnColorDarker:"+metronomeFlashOnColorDarker);
+    }
+    public boolean getVisualMetronome() {
+        return visualMetronome;
+    }
     public void setAudioMetronome() {
         audioMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAudio",true);
     }
+    public void setAudioMetronome(boolean audioMetronome) {
+        this.audioMetronome = audioMetronome;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeAudio",audioMetronome);
+    }
+    public boolean getAudioMetronome() {
+        return audioMetronome;
+    }
+    public void setMetronomePan(String metronomePan) {
+        this.metronomePan = metronomePan;
+        mainActivityInterface.getPreferences().setMyPreferenceString("metronomePan",metronomePan);
+        setVolumes();
+    }
+    public String getMetronomePan() {
+        return metronomePan;
+    }
 
     public void setVolumes() {
-        String pan = mainActivityInterface.getPreferences().getMyPreferenceString("metronomePan","C");
-        float tickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTickVol",0.8f);
-        float tockVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTockVol",0.6f);
-        volumeTickLeft = tickVol;
-        volumeTickRight = tickVol;
-        volumeTockLeft = tockVol;
-        volumeTockRight = tockVol;
-        switch (pan) {
+        metronomePan = mainActivityInterface.getPreferences().getMyPreferenceString("metronomePan","C");
+        metronomeTickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTickVol",0.8f);
+        metronomeTockVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTockVol",0.6f);
+        volumeTickLeft = metronomeTickVol;
+        volumeTickRight = metronomeTickVol;
+        volumeTockLeft = metronomeTockVol;
+        volumeTockRight = metronomeTockVol;
+        switch (metronomePan) {
             case "L":
                 volumeTickRight = 0.0f;
                 volumeTockRight = 0.0f;
@@ -272,6 +320,7 @@ public class Metronome {
                 break;
         }
     }
+
     public void setSongValues() {
         // First up the tempo
         int tempo;
@@ -401,8 +450,19 @@ public class Metronome {
         }
     }
     public void setBarsAndBeats() {
-        int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength", 0);
+        barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength", 0);
         beatsRequired = barsRequired * beats;  // If 0, that's fine
+    }
+    public void setBarsRequired(int barsRequired) {
+        this.barsRequired = barsRequired;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("metronomeLength",barsRequired);
+        beatsRequired = barsRequired * beats;  // If 0, that's fine
+    }
+    public int getBarsRequired() {
+        if (barsRequired==-1) {
+            setBarsAndBeats();
+        }
+        return barsRequired;
     }
 
     // Checks to the metronome

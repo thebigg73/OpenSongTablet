@@ -403,6 +403,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 transposeTimes = 12 + transposeTimes;
             }
 
+            Log.d(TAG,"transposeTimes before simplify:"+transposeTimes);
             if (transposeTimes >= 0) {
                 transposeDirection = "+1";
             } else {
@@ -410,6 +411,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
 
             transposeTimes = Math.abs(transposeTimes);
+
+            Log.d(TAG,"transposeTimes after simplify:"+transposeTimes + " direction:"+transposeDirection);
 
             Log.d(TAG,"songFolder:"+songFolder+"   setFolder:"+setFolder);
             if (songFolder==null) {
