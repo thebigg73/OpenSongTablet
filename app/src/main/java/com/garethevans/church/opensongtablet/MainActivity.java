@@ -105,6 +105,7 @@ import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
+import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.pads.Pad;
@@ -1210,7 +1211,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
-        super.onPostResume();
+        try {
+            if (Thread.currentThread() != getMainHandler().getLooper().getThread()) {
+                getMainHandler().post(super::onPostResume);
+            } else {
+                super.onPostResume();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
@@ -1567,8 +1577,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void doSendPayloadBytes(String infoPayload) {
-        nearbyConnections.doSendPayloadBytes(infoPayload);
+    public void doSendPayloadBytes(String infoPayload, boolean clientSend) {
+        nearbyConnections.doSendPayloadBytes(infoPayload, clientSend);
+    }
+    @Override
+    public void showNearbyAlertPopUp(String message) {
+        if (performanceValid()) {
+            performanceFragment.showNearbyAlertPopUp(message);
+        }
     }
 
 
@@ -2237,6 +2253,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void toggleInlineSet() {
         if (performanceValid()) {
+            Log.d(TAG,"performanceFragment.toggleInlineSet()");
             performanceFragment.toggleInlineSet();
         } else if (presenterValid()) {
             presenterFragment.toggleInlineSet();
@@ -3941,6 +3958,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
                     case "BulkTagAssignFragmentRename":
                         ((BulkTagAssignFragment) fragment).renameTag(value);
+                        break;
+                    case "NearbyMessages":
+                        ((NearbyConnectionsFragment) fragment).updateMessage(value);
+                        break;
+                    case "MidiActionBS":
+                        ((MidiActionBottomSheet) fragment).updateMessage(value);
                         break;
                 }
             } catch (Exception e) {

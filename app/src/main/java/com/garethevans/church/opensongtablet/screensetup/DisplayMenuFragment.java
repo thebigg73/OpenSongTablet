@@ -79,7 +79,7 @@ public class DisplayMenuFragment extends Fragment {
                 break;
         }
         myView.themeButton.setHint(themeName);
-        myView.hardwareAcceleration.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hardwareAcceleration",false));
+        myView.hardwareAcceleration.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hardwareAcceleration",true));
     }
 
     private void setListeners() {

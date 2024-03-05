@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,11 +77,11 @@ public class InlineSetList extends RecyclerView {
     // Change the preference to use the inlineSet
     public void setInlineSet(boolean showInline) {
         this.showInline = showInline;
+        Log.d(TAG,"showInline (now):"+showInline);
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet", showInline);
-        mainActivityInterface.getMainHandler().post(() -> {
-            setVisibility(showInline ? View.VISIBLE:View.GONE);
-        });
-        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
+        mainActivityInterface.getMainHandler().post(() -> setVisibility(showInline ? View.VISIBLE:View.GONE));
+        Log.d(TAG,"currentSetSize:"+mainActivityInterface.getCurrentSet().getCurrentSetSize());
+        if (showInline && mainActivityInterface.getCurrentSet().getCurrentSetSize()<=0) {
             mainActivityInterface.getShowToast().doIt(no_set_string);
         }
     }
@@ -154,6 +155,8 @@ public class InlineSetList extends RecyclerView {
     // From the page button (show or hide)
     public void toggleInlineSet() {
         // Change the current value and save
+        Log.d(TAG,"toggleInlineSet()");
+        Log.d(TAG,"showInline (current):"+showInline);
         setInlineSet(!showInline);
         checkVisibility();
     }
@@ -170,6 +173,8 @@ public class InlineSetList extends RecyclerView {
 
             boolean wrongSize = songWidth!=0 && screenWidth-songWidth-width!=0;
 
+            Log.d(TAG,"reloadSong:"+reloadSong);
+            Log.d(TAG,"wrongSize:"+wrongSize);
             if (reloadSong && wrongSize) {
                 if (mainActivityInterface.getCurrentSet().getIndexSongInSet() == -1) {
                     // Load the song
@@ -181,7 +186,7 @@ public class InlineSetList extends RecyclerView {
                 }
             }
             reloadSong = false;
-        },0);
+        },100);
     }
 
     // Will reload be required?
