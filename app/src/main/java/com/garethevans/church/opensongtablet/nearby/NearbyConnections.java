@@ -61,6 +61,7 @@ public class NearbyConnections implements NearbyInterface {
             autoscrollPause = "___autoscrollpause___", autoscrollincrease = "___autoscrollincrease___",
             autoscrolldecrease = "___autoscrolldecrease___",
             songTag = "_xx____xx_", endpointSplit = "__",
+            messageTag = "___message___",
             serviceId = "com.garethevans.church.opensongtablet";
     private int countDiscovery = 0, countAdvertise = 0;
     private ArrayList<String> connectedEndpoints;  // CODE_DeviceName - currently connected
@@ -75,7 +76,11 @@ public class NearbyConnections implements NearbyInterface {
     private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby, temporaryAdvertise,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true, receiveHostSongSections = true, connectionsOpen,
-            nearbyHostPassthrough, receiveHostScroll, matchToPDFSong;
+            nearbyHostPassthrough, receiveHostScroll, matchToPDFSong, nearbyMessageSticky,
+            nearbyMessageMIDIAction;
+    private String nearbyMessage1, nearbyMessage2, nearbyMessage3, nearbyMessage4, nearbyMessage5,
+            nearbyMessage6, nearbyMessage7, nearbyMessage8;
+
     private AdvertisingOptions advertisingOptions;
     private DiscoveryOptions discoveryOptions;
     // The stuff used for Google Nearby for connecting devices
@@ -118,7 +123,16 @@ public class NearbyConnections implements NearbyInterface {
                 }
                 setNearbyStrategy(nearbyStrategy);
                 matchToPDFSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("matchToPDFSong",false);
-
+                nearbyMessageSticky = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageSticky",false);
+                nearbyMessage1 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage1","");
+                nearbyMessage2 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage2","");
+                nearbyMessage3 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage3","");
+                nearbyMessage4 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage4","");
+                nearbyMessage5 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage5","");
+                nearbyMessage6 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage6","");
+                nearbyMessage7 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage7","");
+                nearbyMessage8 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage8","");
+                nearbyMessageMIDIAction = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageMIDIAction",true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -649,12 +663,16 @@ public class NearbyConnections implements NearbyInterface {
                                     payloadScrollBy(incoming);
                                 }
                             } else if (incoming!=null && incoming.contains(scrollToTag)) {
-                                // We have receive a scroll to instruction.  Check we want this
+                                // We have received a scroll to instruction.  Check we want this
                                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                                        receiveHostScroll) {
                                     Log.d(TAG,"call payloadScrollTo");
                                     payloadScrollTo(incoming);
                                 }
+                            } else if (incoming!=null && incoming.startsWith(messageTag)) {
+                                // We have received an alert message
+                                Log.d(TAG,"call payloadMessage");
+                                payloadMessage(incoming);
                             }
                         }
                         // not dealing with files as it is complex with scoped storage access
@@ -816,8 +834,10 @@ public class NearbyConnections implements NearbyInterface {
 
     // Deal with sending payloads as a host for clients to listen for
     @Override
-    public void doSendPayloadBytes(String infoPayload) {
-        if (sendAsHost()) {
+    public void doSendPayloadBytes(String infoPayload, boolean clientSend) {
+        Log.d(TAG,"infoPayload:"+infoPayload);
+
+        if (sendAsHost() || clientSend) {
             for (String endpointString : connectedEndpoints) {
                 String endpointId = getEndpointSplit(endpointString)[0];
                 Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
@@ -926,14 +946,14 @@ public class NearbyConnections implements NearbyInterface {
                 } else {
                     infoPayload = sectionTag + (mainActivityInterface.getSong().getCurrentSection());
                 }
-                doSendPayloadBytes(infoPayload);
+                doSendPayloadBytes(infoPayload, false);
                 Log.d(TAG, "sendSongSectionPayLoad " + infoPayload);
             }
         }
     }
 
     public void sendAutoscrollPayload(String message) {
-        doSendPayloadBytes(message);
+        doSendPayloadBytes(message, false);
     }
 
     public void sendScrollByPayload(boolean scrollDown, float scrollProportion) {
@@ -944,28 +964,28 @@ public class NearbyConnections implements NearbyInterface {
             } else {
                 infoPayload += -scrollProportion;
             }
-            doSendPayloadBytes(infoPayload);
+            doSendPayloadBytes(infoPayload, false);
         }
     }
     public void sendScrollToPayload(float scrollProportion) {
         if (sendAsHost()) {
             String infoPayload = scrollToTag + scrollProportion;
-            doSendPayloadBytes(infoPayload);
+            doSendPayloadBytes(infoPayload, false);
         }
     }
     public void sendAutoscrollPausePayload() {
         if (sendAsHost()) {
-            doSendPayloadBytes(autoscrollPause);
+            doSendPayloadBytes(autoscrollPause, false);
         }
     }
     public void increaseAutoscrollPayload() {
         if (sendAsHost()) {
-            doSendPayloadBytes(autoscrollincrease);
+            doSendPayloadBytes(autoscrollincrease, false);
         }
     }
     public void decreaseAutoscrollPayload() {
         if (sendAsHost()) {
-            doSendPayloadBytes(autoscrolldecrease);
+            doSendPayloadBytes(autoscrolldecrease, false);
         }
     }
 
@@ -1322,7 +1342,19 @@ public class NearbyConnections implements NearbyInterface {
     public boolean getReceiveHostScroll() {
         return receiveHostScroll;
     }
+    public void payloadMessage(String incoming) {
+        incoming = incoming.replace(messageTag,"");
 
+        // Show an alert to the client
+        if (!mainActivityInterface.getMode().equals("Presenter") && nearbyMessageSticky) {
+            // Show a sticky note alert
+            Log.d(TAG,"showAlertStickyNote()");
+            mainActivityInterface.showNearbyAlertPopUp(incoming);
+        } else {
+            // Show a toast message
+            mainActivityInterface.getShowToast().doIt(incoming);
+        }
+    }
 
     // Deal with turning off Nearby and cleaning up transferIds
     @Override
@@ -1468,5 +1500,81 @@ public class NearbyConnections implements NearbyInterface {
                 doTempDiscover();
             }
         },10000);
+    }
+
+    public String getNearbyMessage(int which) {
+        switch (which) {
+            case 1:
+                return nearbyMessage1;
+            case 2:
+                return nearbyMessage2;
+            case 3:
+                return nearbyMessage3;
+            case 4:
+                return nearbyMessage4;
+            case 5:
+                return nearbyMessage5;
+            case 6:
+                return nearbyMessage6;
+            case 7:
+                return nearbyMessage7;
+            case 8:
+                return nearbyMessage8;
+        }
+        return "";
+    }
+    public void setNearbyMessage(int which, String nearbyMessage) {
+        switch (which) {
+            case 1:
+                nearbyMessage1 = nearbyMessage;
+                break;
+            case 2:
+                nearbyMessage2 = nearbyMessage;
+                break;
+            case 3:
+                nearbyMessage3 = nearbyMessage;
+                break;
+            case 4:
+                nearbyMessage4 = nearbyMessage;
+                break;
+            case 5:
+                nearbyMessage5 = nearbyMessage;
+                break;
+            case 6:
+                nearbyMessage6 = nearbyMessage;
+                break;
+            case 7:
+                nearbyMessage7 = nearbyMessage;
+                break;
+            case 8:
+                nearbyMessage8 = nearbyMessage;
+                break;
+        }
+        if (which>0 && which<9) {
+            mainActivityInterface.getPreferences().setMyPreferenceString("nearbyMessage"+which,nearbyMessage);
+        }
+    }
+    public void sendMessage(int which) {
+        String message = getNearbyMessage(which);
+
+        // Show the message on this screen
+        if (nearbyMessageSticky) {
+            mainActivityInterface.showNearbyAlertPopUp(message);
+        } else {
+            mainActivityInterface.getShowToast().doIt(message);
+        }
+
+        // Send as a payload
+        String payload = messageTag + message;
+        doSendPayloadBytes(payload, false);
+    }
+
+    public void setNearbyMessageMIDIAction(boolean nearbyMessageMIDIAction) {
+        this.nearbyMessageMIDIAction = nearbyMessageMIDIAction;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyMessageMIDIAction",nearbyMessageMIDIAction);
+    }
+
+    public boolean getNearbyMessageMIDIAction() {
+        return nearbyMessageMIDIAction;
     }
 }

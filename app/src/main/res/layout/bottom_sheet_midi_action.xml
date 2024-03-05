@@ -77,6 +77,19 @@
 
             <TableRow style="@style/DividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/nearbyMessageMIDIAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nearby_messages_include"
+                android:hint="@string/nearby_messages_include_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nearby_message"
+                android:layout_marginBottom="8dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

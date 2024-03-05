@@ -236,6 +236,7 @@ public interface MainActivityInterface {
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     NearbyConnections getNearbyConnections();
     void updateConnectionsLog();
+    void showNearbyAlertPopUp(String message);
 
     // Midi
     Midi getMidi();

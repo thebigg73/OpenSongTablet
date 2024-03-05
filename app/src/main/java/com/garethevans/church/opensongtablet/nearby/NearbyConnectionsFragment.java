@@ -38,8 +38,10 @@ public class NearbyConnectionsFragment extends Fragment {
             connections_advanced_string="", connections_connected_devices_info_string="",
             connections_advertise_info_string="", connections_discover_info_string="",
             connections_discover_string="", connections_advertise_string="",
-            connections_advertising_string="", connections_searching_string="";
+            connections_advertising_string="", connections_searching_string="",
+            nearby_message_string="";
     private String webAddress;
+    private int editMessageNum = -1;
 
     @Override
     public void onResume() {
@@ -103,6 +105,7 @@ public class NearbyConnectionsFragment extends Fragment {
             connections_advertise_string = getString(R.string.connections_advertise);
             connections_advertising_string = getString(R.string.connections_advertising);
             connections_searching_string = getString(R.string.connections_searching);
+            nearby_message_string = getString(R.string.nearby_message);
         }
     }
     private void setHelpers() {
@@ -140,6 +143,25 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostSongSections());
         myView.bottomSheet.receiveScroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostScroll());
         myView.bottomSheet.matchToPDFSong.setChecked(mainActivityInterface.getNearbyConnections().getMatchToPDFSong());
+
+        myView.bottomSheet.nearbyMessage1.setText(nearby_message_string+" 1");
+        myView.bottomSheet.nearbyMessage2.setText(nearby_message_string+" 2");
+        myView.bottomSheet.nearbyMessage3.setText(nearby_message_string+" 3");
+        myView.bottomSheet.nearbyMessage4.setText(nearby_message_string+" 4");
+        myView.bottomSheet.nearbyMessage5.setText(nearby_message_string+" 5");
+        myView.bottomSheet.nearbyMessage6.setText(nearby_message_string+" 6");
+        myView.bottomSheet.nearbyMessage7.setText(nearby_message_string+" 7");
+        myView.bottomSheet.nearbyMessage8.setText(nearby_message_string+" 8");
+
+        myView.bottomSheet.nearbyMessage1.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(1));
+        myView.bottomSheet.nearbyMessage2.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(2));
+        myView.bottomSheet.nearbyMessage3.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(3));
+        myView.bottomSheet.nearbyMessage4.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(4));
+        myView.bottomSheet.nearbyMessage5.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(5));
+        myView.bottomSheet.nearbyMessage6.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(6));
+        myView.bottomSheet.nearbyMessage7.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(7));
+        myView.bottomSheet.nearbyMessage8.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(8));
+
         // Show any connection log
         updateConnectionsLog();
     }
@@ -402,6 +424,61 @@ public class NearbyConnectionsFragment extends Fragment {
             mainActivityInterface.getNearbyConnections().setConnectionLog("");
             updateConnectionsLog();
         });
+
+        // The nearby messages
+        myView.bottomSheet.nearbyMessage1.setOnClickListener(view -> editMessage(1));
+        myView.bottomSheet.nearbyMessage2.setOnClickListener(view -> editMessage(2));
+        myView.bottomSheet.nearbyMessage3.setOnClickListener(view -> editMessage(3));
+        myView.bottomSheet.nearbyMessage4.setOnClickListener(view -> editMessage(4));
+        myView.bottomSheet.nearbyMessage5.setOnClickListener(view -> editMessage(5));
+        myView.bottomSheet.nearbyMessage6.setOnClickListener(view -> editMessage(6));
+        myView.bottomSheet.nearbyMessage7.setOnClickListener(view -> editMessage(7));
+        myView.bottomSheet.nearbyMessage8.setOnClickListener(view -> editMessage(8));
+    }
+
+    private void editMessage(int editMessageNum) {
+        this.editMessageNum = editMessageNum;
+        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+                "NearbyMessages",nearby_message_string + " " + editMessageNum,
+                nearby_message_string+" " + editMessageNum,null,null,null,true);
+        textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"TextInputBottomSheet");
+    }
+    public void updateMessage(String message) {
+        // Received from the TextInputBottomSheet via the MainActivity
+        if (message!=null && editMessageNum!=-1) {
+            // Update the preference
+            mainActivityInterface.getNearbyConnections().setNearbyMessage(editMessageNum,message);
+
+            switch (editMessageNum) {
+                case 1:
+                    myView.bottomSheet.nearbyMessage1.setHint(message);
+                    break;
+                case 2:
+                    myView.bottomSheet.nearbyMessage2.setHint(message);
+                    break;
+                case 3:
+                    myView.bottomSheet.nearbyMessage3.setHint(message);
+                    break;
+                case 4:
+                    myView.bottomSheet.nearbyMessage4.setHint(message);
+                    break;
+                case 5:
+                    myView.bottomSheet.nearbyMessage5.setHint(message);
+                    break;
+                case 6:
+                    myView.bottomSheet.nearbyMessage6.setHint(message);
+                    break;
+                case 7:
+                    myView.bottomSheet.nearbyMessage7.setHint(message);
+                    break;
+                case 8:
+                    myView.bottomSheet.nearbyMessage8.setHint(message);
+                    break;
+            }
+
+            // Reset the edit message number
+            editMessageNum = -1;
+        }
     }
 
     private void doAdvertiseAction() {

@@ -6,5 +6,5 @@ public interface NearbyInterface {
     void stopDiscovery();
     void stopAdvertising();
     void turnOffNearby();
-    void doSendPayloadBytes(String infoPayload);
+    void doSendPayloadBytes(String infoPayload, boolean clientSend);
 }

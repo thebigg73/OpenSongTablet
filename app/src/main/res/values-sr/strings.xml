@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Slušajte nove klijente samo kada je ova stranica vidljiva</string>
     <string name="nearby_host_menu_only_info">Zahtevi za povezivanje neće biti prikazani osim ako niste na ovoj stranici</string>
     <string name="nearby_large_file">Ova velika datoteka pesme se deli</string>
+    <string name="nearby_message">Poruka upozorenja u blizini</string>
+    <string name="nearby_messages">Poruke upozorenja u blizini</string>
+    <string name="nearby_messages_include">Uključi prilagođene poruke upozorenja u blizini</string>
+    <string name="nearby_messages_include_info">Slanje odgovarajuće poruke upozorenja povezanim uređajima</string>
+    <string name="nearby_messages_info">Poruke se mogu dodeliti kontrolama radnji (npr. dugmad stranice) ali i dodati prilagođenim MIDI radnjama tako da povezani uređaji budu obavešteni o MIDI radnji koja se šalje</string>
+    <string name="nearby_messages_sticky">Lepljive obližnje poruke</string>
+    <string name="nearby_messages_sticky_info">Prikažite sve tekstualne poruke primljene od obližnjeg domaćina kao lepljivu poruku.  Ako su isključene, poruke se prikazuju kao okviri za obaveštenje koji se prikazuju nekoliko sekundi</string>
     <string name="network_error">Pogreška mreže</string>
     <string name="new_category">Nova kategorija</string>
     <string name="new_folder">Napraviti novu fasciklu pesama</string>

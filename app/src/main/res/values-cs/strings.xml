@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Poslouchat nové klienty, pouze když je tato stránka viditelná</string>
     <string name="nearby_host_menu_only_info">Požadavky na připojení nebudou zobrazeny, dokud nebudete na této stránce</string>
     <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
+    <string name="nearby_message">Výstražná zpráva v okolí</string>
+    <string name="nearby_messages">Výstražné zprávy v okolí</string>
+    <string name="nearby_messages_include">Zahrnutí vlastních výstražných zpráv v okolí</string>
+    <string name="nearby_messages_include_info">Odeslání odpovídající výstražné zprávy na připojená zařízení</string>
+    <string name="nearby_messages_info">Zprávy lze přiřadit k ovládacím prvkům akcí (např. tlačítkům stránky), ale také je přidat k vlastním akcím MIDI, takže připojená zařízení jsou upozorněna na odeslání akce MIDI</string>
+    <string name="nearby_messages_sticky">Přilepené zprávy v okolí</string>
+    <string name="nearby_messages_sticky_info">Zobrazit všechny textové zprávy přijaté od hostitele v okolí jako lístek s poznámkou.  Pokud je tato možnost vypnutá, zprávy se zobrazují jako výstražná pole, která se zobrazí na několik sekund</string>
     <string name="network_error">"Chyba sítě"</string>
     <string name="new_category">"Nová kategorie"</string>
     <string name="new_folder">"Vytvořit novou složku písně"</string>

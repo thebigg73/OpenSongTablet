@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Ascolta i nuovi clienti solo quando questa pagina è visibile</string>
     <string name="nearby_host_menu_only_info">Le richieste di connessione non verranno mostrate a meno che tu non sia in questa pagina</string>
     <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
+    <string name="nearby_message">Messaggio di avviso nelle vicinanze</string>
+    <string name="nearby_messages">Messaggi di avviso nelle vicinanze</string>
+    <string name="nearby_messages_include">Includi messaggi di avviso personalizzati nelle vicinanze</string>
+    <string name="nearby_messages_include_info">Inviare il messaggio di avviso corrispondente ai dispositivi connessi</string>
+    <string name="nearby_messages_info">I messaggi possono essere assegnati ai controlli delle azioni (ad esempio i pulsanti delle pagine), ma anche aggiunti alle azioni MIDI personalizzate in modo che i dispositivi collegati ricevano una notifica dell\'invio di un\'azione MIDI</string>
+    <string name="nearby_messages_sticky">Messaggi appiccicosi nelle vicinanze</string>
+    <string name="nearby_messages_sticky_info">Mostra tutti i messaggi di testo ricevuti dall\'host nelle vicinanze come una nota adesiva.  Se disattivato, i messaggi vengono visualizzati come finestre di avviso che vengono visualizzate per alcuni secondi</string>
     <string name="network_error">"Errore di rete"</string>
     <string name="new_category">"Nuova categoria"</string>
     <string name="new_folder">"Crea nuova cartella canzone"</string>

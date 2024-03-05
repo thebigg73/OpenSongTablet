@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheet"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
@@ -98,8 +99,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/connections_host_passthrough_info"
                     android:text="@string/connections_host_passthrough" />
+                <TableRow style="@style/DividerLine"/>
 
-                <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
             <LinearLayout
@@ -144,6 +145,13 @@
                     android:text="@string/scroll" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/messageAlertSticky"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nearby_messages_sticky"
+                    android:text="@string/nearby_messages_sticky_info"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/matchToPDFSong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,6 +159,78 @@
                     android:text="@string/connection_match_to_pdf_song"/>
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nearby_messages"
+                android:hint="@string/nearby_messages_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/nearbyMessage8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1"
+                android:layout_marginBottom="8dp"
+                tools:ignore="HardcodedText" />
+
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/connectionsLog"

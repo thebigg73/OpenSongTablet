@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
     <string name="nearby_host_menu_only_info">Żądania połączenia nie będą wyświetlane, jeśli nie będziesz na tej stronie</string>
     <string name="nearby_large_file">Udostępniam ten duży plik piosenki</string>
+    <string name="nearby_message">Komunikat ostrzegawczy w pobliżu</string>
+    <string name="nearby_messages">Komunikaty ostrzegawcze w pobliżu</string>
+    <string name="nearby_messages_include">Dołączanie niestandardowych alertów w pobliżu</string>
+    <string name="nearby_messages_include_info">Wyślij pasujący komunikat alertu do podłączonych urządzeń</string>
+    <string name="nearby_messages_info">Wiadomości mogą być przypisywane do narzędzi czynności (np. przycisków stron), ale także dodawane do własnych czynności MIDI, dzięki czemu podłączone urządzenia są powiadamiane o wysyłanej czynności MIDI</string>
+    <string name="nearby_messages_sticky">Przyklejone wiadomości w pobliżu</string>
+    <string name="nearby_messages_sticky_info">Pokaż wszystkie wiadomości tekstowe odebrane od hosta w pobliżu jako karteczkę samoprzylepną.  Jeśli ta opcja jest wyłączona, komunikaty są wyświetlane jako okna alertów, które są wyświetlane przez kilka sekund</string>
     <string name="network_error">Błąd sieci</string>
     <string name="new_category">Nowa kategoria</string>
     <string name="new_folder">Utwórz nowy katalog piosenek</string>

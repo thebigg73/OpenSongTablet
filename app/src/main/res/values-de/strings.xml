@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
     <string name="nearby_host_menu_only_info">Verbindungsanfragen werden nur angezeigt, wenn Sie sich auf dieser Seite befinden</string>
     <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
+    <string name="nearby_message">Warnmeldung in der Nähe</string>
+    <string name="nearby_messages">Warnmeldungen in der Nähe</string>
+    <string name="nearby_messages_include">Benutzerdefinierte Warnmeldungen in der Nähe einschließen</string>
+    <string name="nearby_messages_include_info">Senden Sie die passende Warnmeldung an verbundene Geräte</string>
+    <string name="nearby_messages_info">Die Befehle können Aktionssteuerelementen (z. B. Seitenschaltflächen) zugewiesen werden, aber auch benutzerdefinierten MIDI-Aktionen hinzugefügt werden, so dass angeschlossene Geräte über das Senden einer MIDI-Aktion benachrichtigt werden</string>
+    <string name="nearby_messages_sticky">Sticky Nachrichten in der Nähe</string>
+    <string name="nearby_messages_sticky_info">Zeigen Sie alle Textnachrichten, die Sie vom Gastgeber in der Nähe erhalten haben, als Haftnotiz an.  Im ausgeschalteten Zustand werden Meldungen als Warnfelder angezeigt, die einige Sekunden lang angezeigt werden</string>
     <string name="network_error">"Netzwerkfehler"</string>
     <string name="new_category">"Neue Kategorie"</string>
     <string name="new_folder">"Neuen Song-Ordner erstellen"</string>

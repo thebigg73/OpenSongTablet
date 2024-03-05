@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMidiActionBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -27,7 +28,7 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetMidiActionBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MidiActionBottomSheet";
-    private String website_midi_actions="", currentCode;
+    private String website_midi_actions="", nearby_message_string="",currentCode;
     private int on, off, which;
 
     @Override
@@ -67,6 +68,7 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
 
         myView.currentCode.setHint(mainActivityInterface.getMidi().getMidiAction(1));
 
+        setViews();
         setListeners();
 
         return myView.getRoot();
@@ -75,14 +77,32 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             website_midi_actions = getString(R.string.website_midi_actions);
-
+            nearby_message_string = getString(R.string.nearby_message);
             // Also set the colours
             on = getResources().getColor(R.color.colorSecondary);
             off = getResources().getColor(R.color.colorAltPrimary);
         }
     }
 
+    private void setViews() {
+        myView.nearbyMessageMIDIAction.setChecked(mainActivityInterface.getNearbyConnections().getNearbyMessageMIDIAction());
+        myView.nearbyMessage.setText(nearby_message_string+" "+which);
+        myView.nearbyMessage.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(which));
+        myView.nearbyMessage.setVisibility(mainActivityInterface.getNearbyConnections().getNearbyMessageMIDIAction() ? View.VISIBLE:View.GONE);
+    }
     private void setListeners() {
+        myView.nearbyMessageMIDIAction.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getNearbyConnections().setNearbyMessageMIDIAction(b);
+            myView.nearbyMessage.setText(mainActivityInterface.getNearbyConnections().getNearbyMessage(which));
+            myView.nearbyMessage.setVisibility(b ? View.VISIBLE:View.GONE);
+        });
+        myView.nearbyMessage.setOnClickListener(view -> {
+            TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(
+                    MidiActionBottomSheet.this,"MidiActionBS",
+                    nearby_message_string + " " + which, nearby_message_string + " " + which,
+                    null,null,null,true);
+            textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"TextInputBottomSheet");
+        });
         myView.action1.setOnClickListener(new MyOnClick(1));
         myView.action2.setOnClickListener(new MyOnClick(2));
         myView.action3.setOnClickListener(new MyOnClick(3));
@@ -127,6 +147,8 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
             view.post(MidiActionBottomSheet.this::changeHighlight);
             currentCode = mainActivityInterface.getMidi().getMidiAction(whichButton);
             myView.currentCode.setHint(currentCode);
+            myView.nearbyMessage.setText(nearby_message_string+" "+whichButton);
+            myView.nearbyMessage.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(whichButton));
         }
     }
 
@@ -138,4 +160,12 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
         myView.currentCode.setHint(mainActivityInterface.getMidi().getMidiAction(which));
     }
 
+    public void updateMessage(String message) {
+        // Received from the TextInputBottomSheet via the MainActivity
+        if (message!=null && which!=-1) {
+            // Update the preference
+            mainActivityInterface.getNearbyConnections().setNearbyMessage(which,message);
+            myView.nearbyMessage.setHint(message);
+        }
+    }
 }

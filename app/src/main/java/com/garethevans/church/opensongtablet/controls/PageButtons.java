@@ -322,6 +322,18 @@ public class PageButtons {
 
         prepareOption("","","","",R.drawable.help);
 
+        // Nearby messages
+        prepareOption("nearbymessage1",c.getString(R.string.nearby_message)+" "+1,c.getString(R.string.select),"",R.drawable.message1);
+        prepareOption("nearbymessage2",c.getString(R.string.nearby_message)+" "+2,c.getString(R.string.select),"",R.drawable.message2);
+        prepareOption("nearbymessage3",c.getString(R.string.nearby_message)+" "+3,c.getString(R.string.select),"",R.drawable.message3);
+        prepareOption("nearbymessage4",c.getString(R.string.nearby_message)+" "+4,c.getString(R.string.select),"",R.drawable.message4);
+        prepareOption("nearbymessage5",c.getString(R.string.nearby_message)+" "+5,c.getString(R.string.select),"",R.drawable.message5);
+        prepareOption("nearbymessage6",c.getString(R.string.nearby_message)+" "+6,c.getString(R.string.select),"",R.drawable.message6);
+        prepareOption("nearbymessage7",c.getString(R.string.nearby_message)+" "+7,c.getString(R.string.select),"",R.drawable.message7);
+        prepareOption("nearbymessage8",c.getString(R.string.nearby_message)+" "+8,c.getString(R.string.select),"",R.drawable.message8);
+
+        prepareOption("","","","",R.drawable.help);
+
         // Utilities
         prepareOption("soundlevel",c.getString(R.string.sound_level_meter),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.sound_level);
         prepareOption("tuner",c.getString(R.string.tuner),c.getString(R.string.select),"",R.drawable.tuner);

@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
     <string name="nearby_host_menu_only_info">除非您在此页面上，否则不会显示连接请求</string>
     <string name="nearby_large_file">正在共享此大歌曲文件</string>
+    <string name="nearby_message">附近警报消息</string>
+    <string name="nearby_messages">附近的警报消息</string>
+    <string name="nearby_messages_include">包括自定义“附近”警报消息</string>
+    <string name="nearby_messages_include_info">向连接的设备发送匹配的警报消息</string>
+    <string name="nearby_messages_info">这些消息可以分配给操作控件（例如页面按钮），也可以添加到自定义 MIDI 操作中，以便连接的设备收到正在发送的 MIDI 操作的通知</string>
+    <string name="nearby_messages_sticky">粘性附近消息</string>
+    <string name="nearby_messages_sticky_info">将从附近房东收到的任何短信显示为便签。 如果关闭，消息将显示为显示几秒钟的警告框</string>
     <string name="network_error">"网络错误"</string>
     <string name="new_category">"新类别"</string>
     <string name="new_folder">"创建新文件夹的歌曲"</string>

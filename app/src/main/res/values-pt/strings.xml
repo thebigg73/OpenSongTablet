@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Escute novos clientes apenas quando esta página estiver visível</string>
     <string name="nearby_host_menu_only_info">As solicitações de conexão não serão mostradas a menos que você esteja nesta página</string>
     <string name="nearby_large_file">Este grande arquivo de música está sendo compartilhado</string>
+    <string name="nearby_message">Mensagem de alerta próxima</string>
+    <string name="nearby_messages">Mensagens de alerta próximas</string>
+    <string name="nearby_messages_include">Incluir mensagens de alerta personalizadas nas proximidades</string>
+    <string name="nearby_messages_include_info">Enviar a mensagem de alerta correspondente para dispositivos conectados</string>
+    <string name="nearby_messages_info">As mensagens podem ser atribuídas a controles de ação (por exemplo, botões de página), mas também adicionadas a ações MIDI personalizadas para que os dispositivos conectados sejam notificados de uma ação MIDI sendo enviada</string>
+    <string name="nearby_messages_sticky">Mensagens adesivas nas proximidades</string>
+    <string name="nearby_messages_sticky_info">Mostre todas as mensagens de texto recebidas do anfitrião próximo como uma nota adesiva.  Se desligadas, as mensagens são exibidas como caixas de alerta que são exibidas por alguns segundos</string>
     <string name="network_error">"Erro de rede"</string>
     <string name="new_category">"Nova categoria"</string>
     <string name="new_folder">"Criar uma pasta nova canção"</string>

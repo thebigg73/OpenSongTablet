@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
     <string name="nearby_host_menu_only_info">A csatlakozási kérelmek csak akkor jelennek meg, ha ezen az oldalon tartózkodik</string>
     <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
+    <string name="nearby_message">Közeli figyelmeztető üzenet</string>
+    <string name="nearby_messages">Közeli figyelmeztető üzenetek</string>
+    <string name="nearby_messages_include">Egyéni közeli riasztási üzenetek belefoglalása</string>
+    <string name="nearby_messages_include_info">A megfelelő riasztási üzenet elküldése a csatlakoztatott eszközökre</string>
+    <string name="nearby_messages_info">Az üzenetek műveletvezérlőkhöz (pl. oldalgombokhoz) rendelhetők, de egyéni MIDI-műveletekhez is hozzáadhatók, így a csatlakoztatott eszközök értesítést kapnak a MIDI-műveletek küldéséről</string>
+    <string name="nearby_messages_sticky">Öntapadó üzenetek a közelben</string>
+    <string name="nearby_messages_sticky_info">A közeli gazdagéptől kapott szöveges üzenetek megjelenítése cetliként.  Ha ki van kapcsolva, az üzenetek figyelmeztető mezőkként jelennek meg, amelyek néhány másodpercig jelennek meg</string>
     <string name="network_error">"Hálózati hiba"</string>
     <string name="new_category">Új kategória</string>
     <string name="new_folder">"Hozzon létre új dalt mappa"</string>

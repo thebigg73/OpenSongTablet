@@ -161,6 +161,18 @@ public class CommonControls {
 
         addString("","");
 
+        // Nearby messages
+        addString("nearbymessage1",c.getString(R.string.nearby_message)+" "+1);
+        addString("nearbymessage2",c.getString(R.string.nearby_message)+" "+2);
+        addString("nearbymessage3",c.getString(R.string.nearby_message)+" "+3);
+        addString("nearbymessage4",c.getString(R.string.nearby_message)+" "+4);
+        addString("nearbymessage5",c.getString(R.string.nearby_message)+" "+5);
+        addString("nearbymessage6",c.getString(R.string.nearby_message)+" "+6);
+        addString("nearbymessage7",c.getString(R.string.nearby_message)+" "+7);
+        addString("nearbymessage8",c.getString(R.string.nearby_message)+" "+8);
+
+        addString("","");
+
         // Utilities
         addString("soundlevel",c.getString(R.string.sound_level_meter));
         addString("tuner",c.getString(R.string.tuner));

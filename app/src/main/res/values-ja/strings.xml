@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
     <string name="nearby_host_menu_only_info">このページを表示していない限り、接続要求は表示されません</string>
     <string name="nearby_large_file">この大きな曲ファイルは共有されています</string>
+    <string name="nearby_message">付近のアラート メッセージ</string>
+    <string name="nearby_messages">付近のアラート メッセージ</string>
+    <string name="nearby_messages_include">カスタムのNearbyアラートメッセージを含める</string>
+    <string name="nearby_messages_include_info">接続されたデバイスに一致するアラートメッセージを送信する</string>
+    <string name="nearby_messages_info">メッセージはアクションコントロール(ページボタンなど)に割り当てることができるだけでなく、カスタムMIDIアクションに追加して、接続されたデバイスにMIDIアクションが送信されたことを通知することもできます</string>
+    <string name="nearby_messages_sticky">近くで付箋メッセージ</string>
+    <string name="nearby_messages_sticky_info">近くのホストから受信したテキストメッセージを付箋として表示します。 オフにすると、メッセージは警告ボックスとして表示され、数秒間表示されます</string>
     <string name="network_error">"ネットワークエラー"</string>
     <string name="new_category">"新しいカテゴリ"</string>
     <string name="new_folder">"新曲のフォルダを作成します"</string>

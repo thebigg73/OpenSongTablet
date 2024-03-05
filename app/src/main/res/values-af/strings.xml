@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
     <string name="nearby_host_menu_only_info">Verbindingsversoeke sal nie gewys word nie, tensy jy op hierdie bladsy is</string>
     <string name="nearby_large_file">Hierdie groot liedlêer word gedeel</string>
+    <string name="nearby_message">Waarskuwingsboodskap in die omgewing</string>
+    <string name="nearby_messages">Waarskuwingsboodskappe in die omgewing</string>
+    <string name="nearby_messages_include">Sluit persoonlike waarskuwingsboodskappe in die omgewing in</string>
+    <string name="nearby_messages_include_info">Stuur die ooreenstemmende waarskuwingsboodskap na gekoppelde toestelle</string>
+    <string name="nearby_messages_info">Die boodskappe kan aan aksiekontroles toegeken word (bv. bladsyknoppies), maar ook by pasgemaakte MIDI-aksies gevoeg word, sodat gekoppelde toestelle in kennis gestel word van \'n MIDI-aksie wat gestuur word</string>
+    <string name="nearby_messages_sticky">Klewerige boodskappe in die omgewing</string>
+    <string name="nearby_messages_sticky_info">Wys enige sms-boodskappe wat van die nabygeleë gasheer ontvang is as \'n taai noot.  As dit afgeskakel is, word boodskappe vertoon as waarskuwingskassies wat vir \'n paar sekondes vertoon word</string>
     <string name="network_error">"Netwerk fout"</string>
     <string name="new_category">"Nuwe kategorie"</string>
     <string name="new_folder">"Skep nuwe lied gids"</string>

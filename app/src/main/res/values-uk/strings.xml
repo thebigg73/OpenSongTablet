@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Слухайте тільки нових клієнтів, коли ця сторінка видно</string>
     <string name="nearby_host_menu_only_info">Запити на підключення не відображатимуться, якщо ви не перебуваєте на цій сторінці</string>
     <string name="nearby_large_file">Цей великий файл пісні ділиться</string>
+    <string name="nearby_message">Оповіщення поблизу</string>
+    <string name="nearby_messages">Оповіщення поблизу</string>
+    <string name="nearby_messages_include">Як додати власні сповіщення «Поблизу»</string>
+    <string name="nearby_messages_include_info">Надішліть відповідне сповіщення підключеним пристроям</string>
+    <string name="nearby_messages_info">Повідомлення можна призначити елементам керування діями (наприклад, кнопкам сторінки), а також додати до користувацьких дій MIDI, щоб підключені пристрої отримували сповіщення про надсилання MIDI-дії</string>
+    <string name="nearby_messages_sticky">Наліпки поблизу</string>
+    <string name="nearby_messages_sticky_info">Відображати текстові повідомлення, отримані від організатора поблизу, як наліпку.  Якщо цей параметр вимкнено, повідомлення відображатимуться у вигляді вікон попереджень, які відображатимуться протягом кількох секунд</string>
     <string name="network_error">Помилка мережі</string>
     <string name="new_category">Нова категорія</string>
     <string name="new_folder">Створення нової папки</string>

@@ -708,6 +708,13 @@
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="nearby_host_menu_only_info">Connection requests will not be shown unless you are on this page</string>
     <string name="nearby_large_file">This large song file is being shared</string>
+    <string name="nearby_message">Nearby alert message</string>
+    <string name="nearby_messages">Nearby alert messages</string>
+    <string name="nearby_messages_include">Include custom Nearby alert messages</string>
+    <string name="nearby_messages_include_info">Send the matching alert message to connected devices</string>
+    <string name="nearby_messages_info">The messages can be assigned to action controls (e.g. page buttons) but also added to custom MIDI actions so connected devices are notified of a MIDI action being sent</string>
+    <string name="nearby_messages_sticky">Sticky nearby messages</string>
+    <string name="nearby_messages_sticky_info">Show any text messages received from Nearby host as a sticky note.  If switched off, messages are displayed as alert boxes that display for a few seconds</string>
     <string name="network_error">Network error</string>
     <string name="new_category">New category</string>
     <string name="new_folder">Create new song folder</string>

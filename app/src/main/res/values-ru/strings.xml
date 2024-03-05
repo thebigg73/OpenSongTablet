@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Ожидание только новых клиентов, когда эта страница видна</string>
     <string name="nearby_host_menu_only_info">Запросы на подключение не будут отображаться, если вы не находитесь на этой странице</string>
     <string name="nearby_large_file">К этому большому файлу с песней открыт доступ</string>
+    <string name="nearby_message">Предупреждающее сообщение поблизости</string>
+    <string name="nearby_messages">Предупреждающие сообщения поблизости</string>
+    <string name="nearby_messages_include">Включение пользовательских предупреждающих сообщений «Поблизости»</string>
+    <string name="nearby_messages_include_info">Отправка соответствующего предупреждающего сообщения на подключенные устройства</string>
+    <string name="nearby_messages_info">Сообщения могут быть назначены элементам управления действиями (например, кнопкам страницы), а также добавлены к пользовательским MIDI-действиям, чтобы подключенные устройства были уведомлены об отправке MIDI-действия</string>
+    <string name="nearby_messages_sticky">Прикрепленные сообщения поблизости</string>
+    <string name="nearby_messages_sticky_info">Отображать все текстовые сообщения, полученные от соседнего хоста, в виде стикера.  Если этот параметр отключен, сообщения отображаются в виде предупреждений, которые отображаются в течение нескольких секунд</string>
     <string name="network_error">Ошибка сети</string>
     <string name="new_category">Новая категория</string>
     <string name="new_folder">Создать новую папку</string>

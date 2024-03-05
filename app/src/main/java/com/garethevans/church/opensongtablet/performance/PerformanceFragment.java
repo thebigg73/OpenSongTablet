@@ -37,6 +37,7 @@ import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.nearby.NearbyAlertPopUp;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
@@ -46,6 +47,7 @@ public class PerformanceFragment extends Fragment {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "PerformanceFragment";
     private StickyPopUp stickyPopUp;
+    private NearbyAlertPopUp nearbyAlertPopUp;
     private ABCPopup abcPopup;
     private Bitmap.Config bmpFormat = Bitmap.Config.ARGB_8888;
     private MainActivityInterface mainActivityInterface;
@@ -145,9 +147,20 @@ public class PerformanceFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        stickyPopUp.destroyPopup();
+        try {
+            nearbyAlertPopUp.closeSticky();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            stickyPopUp.destroyPopup();
+            nearbyAlertPopUp.destroyPopup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         myView = null;
         stickyPopUp = null;
+        nearbyAlertPopUp = null;
         super.onDestroyView();
     }
 
@@ -269,6 +282,7 @@ public class PerformanceFragment extends Fragment {
     private void initialiseHelpers() {
         if (getContext() != null) {
             stickyPopUp = new StickyPopUp(getContext());
+            nearbyAlertPopUp = new NearbyAlertPopUp(getContext());
             abcPopup = new ABCPopup(getContext());
             mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
             mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
@@ -328,6 +342,7 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.orientationChanged(orientation);
     }
     public void toggleInlineSet() {
+        Log.d(TAG,"toggleInlineSet()");
         myView.inlineSetList.toggleInlineSet();
     }
     public void updateInlineSetVisibility() {
@@ -1422,6 +1437,15 @@ public class PerformanceFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public void showNearbyAlertPopUp(String message) {
+        Log.d(TAG,"showAlertStickyNote("+message+")");
+        // Clear any existing popup
+        nearbyAlertPopUp.destroyPopup();
+
+        // Show the new one
+        nearbyAlertPopUp.floatSticky(myView.pageHolder,message);
     }
 
     // The scale and gesture bits of the code

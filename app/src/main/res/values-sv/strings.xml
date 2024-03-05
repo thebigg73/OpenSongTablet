@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
     <string name="nearby_host_menu_only_info">Anslutningsförfrågningar kommer inte att visas om du inte är på den här sidan</string>
     <string name="nearby_large_file">Denna stora låtfil delas</string>
+    <string name="nearby_message">Varningsmeddelande i närheten</string>
+    <string name="nearby_messages">Varningsmeddelanden i närheten</string>
+    <string name="nearby_messages_include">Inkludera anpassade varningsmeddelanden i närheten</string>
+    <string name="nearby_messages_include_info">Skicka det matchande varningsmeddelandet till anslutna enheter</string>
+    <string name="nearby_messages_info">Meddelandena kan tilldelas till åtgärdskontroller (t.ex. sidknappar) men också läggas till i anpassade MIDI-åtgärder så att anslutna enheter meddelas om att en MIDI-åtgärd skickas</string>
+    <string name="nearby_messages_sticky">Klibbiga meddelanden i närheten</string>
+    <string name="nearby_messages_sticky_info">Visa alla textmeddelanden som tas emot från värden i närheten som en klisterlapp.  Om den är avstängd visas meddelanden som varningsrutor som visas i några sekunder</string>
     <string name="network_error">"Nätverksfel"</string>
     <string name="new_category">"Ny kategori"</string>
     <string name="new_folder">"Skapa ny låtmapp"</string>

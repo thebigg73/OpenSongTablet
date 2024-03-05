@@ -454,6 +454,9 @@ public class Preferences extends Activity {
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)
     // nearbyHostMenuOnly               boolean     Should the host only listen for clients when the nearby menu is open (def:false)
     // nearbyHostPassthrough            boolean     Allows a host to pass on messages received from other hosts rather than blocking (def:true);
+    // nearbyMessage1...8               String      Message that can be assigned to an action to send to connected clients (def:"")
+    // nearbyMessageMIDIAction          boolean     Should the matching nearbyMessage{1-8} be sent to connected devices along with midiAction{1-8} (def:true)
+    // nearbyMessageSticky              boolean     If a message is sent to connected (nearby) devices, should it use a sticky note (if not, it is an alert) (def:false)
     // nearbyStrategy                   String      Which strategy to use for Nearby connections: cluster, star, single (def:cluster)
     // nextInSet                        boolean     Should the next song in the set be shown (def:true)
     // onscreenAutoscrollHide           boolean     Performance/Stage autoscroll info text at the top - should it autohide after a delay (def:true)

@@ -551,6 +551,13 @@
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
     <string name="nearby_host_menu_only_info">Τα αιτήματα σύνδεσης δεν θα εμφανίζονται εκτός εάν βρίσκεστε σε αυτήν τη σελίδα</string>
     <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
+    <string name="nearby_message">Κοντινό προειδοποιητικό μήνυμα</string>
+    <string name="nearby_messages">Κοντινά προειδοποιητικά μηνύματα</string>
+    <string name="nearby_messages_include">Συμπερίληψη προσαρμοσμένων μηνυμάτων ειδοποίησης Nearby</string>
+    <string name="nearby_messages_include_info">Αποστολή του αντίστοιχου μηνύματος ειδοποίησης σε συνδεδεμένες συσκευές</string>
+    <string name="nearby_messages_info">Τα μηνύματα μπορούν να αντιστοιχιστούν σε στοιχεία ελέγχου ενεργειών (π.χ. κουμπιά σελίδας), αλλά και να προστεθούν σε προσαρμοσμένες ενέργειες MIDI, ώστε οι συνδεδεμένες συσκευές να ειδοποιούνται για την αποστολή μιας ενέργειας MIDI</string>
+    <string name="nearby_messages_sticky">Κολλώδη κοντινά μηνύματα</string>
+    <string name="nearby_messages_sticky_info">Εμφανίστε τυχόν μηνύματα κειμένου που λάβατε από τον οικοδεσπότη του Nearby ως αυτοκόλλητη σημείωση.  Εάν είναι απενεργοποιημένη, τα μηνύματα εμφανίζονται ως πλαίσια ειδοποίησης που εμφανίζονται για λίγα δευτερόλεπτα</string>
     <string name="network_error">"Σφάλμα δικτύου"</string>
     <string name="new_category">"Νέα κατηγορία"</string>
     <string name="new_folder">"Δημιουργία νέου φακέλου τραγουδιού"</string>

@@ -540,6 +540,32 @@ public class PerformanceGestures {
                 sysexStop();
                 break;
 
+            // Nearby messages
+            case "nearbymessage1":
+                nearbyMessage(1);
+                break;
+            case "nearbymessage2":
+                nearbyMessage(2);
+                break;
+            case "nearbymessage3":
+                nearbyMessage(3);
+                break;
+            case "nearbymessage4":
+                nearbyMessage(4);
+                break;
+            case "nearbymessage5":
+                nearbyMessage(5);
+                break;
+            case "nearbymessage6":
+                nearbyMessage(6);
+                break;
+            case "nearbymessage7":
+                nearbyMessage(7);
+                break;
+            case "nearbymessage8":
+                nearbyMessage(8);
+                break;
+
             // Utilities
             case "soundlevel":
                 soundLevel();
@@ -1278,12 +1304,21 @@ public class PerformanceGestures {
     }
     public void midiAction(int which) {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));
+        if (mainActivityInterface.getNearbyConnections().getNearbyMessageMIDIAction()) {
+            mainActivityInterface.getNearbyConnections().sendMessage(which);
+        }
     }
     public void sysexStart() {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStartCode());
     }
     public void sysexStop() {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStopCode());
+    }
+
+    // Nearby messages
+    public void nearbyMessage(int which) {
+        Log.d(TAG,"nearbyMessage("+which+")");
+        mainActivityInterface.getNearbyConnections().sendMessage(which);
     }
 
 
