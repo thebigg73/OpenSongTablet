@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class InlineSetList extends RecyclerView {
     private MainActivityInterface mainActivityInterface;
     private final LinearLayoutManager llm;
     private float textSize = 12;
-    private boolean useTitle = true, reloadSong = false;
+    private boolean useTitle = true, reloadSong = false, toggling = false;
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
     private String no_set_string;
     public InlineSetList(@NonNull Context context) {
@@ -77,10 +76,8 @@ public class InlineSetList extends RecyclerView {
     // Change the preference to use the inlineSet
     public void setInlineSet(boolean showInline) {
         this.showInline = showInline;
-        Log.d(TAG,"showInline (now):"+showInline);
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet", showInline);
         mainActivityInterface.getMainHandler().post(() -> setVisibility(showInline ? View.VISIBLE:View.GONE));
-        Log.d(TAG,"currentSetSize:"+mainActivityInterface.getCurrentSet().getCurrentSetSize());
         if (showInline && mainActivityInterface.getCurrentSet().getCurrentSetSize()<=0) {
             mainActivityInterface.getShowToast().doIt(no_set_string);
         }
@@ -155,9 +152,8 @@ public class InlineSetList extends RecyclerView {
     // From the page button (show or hide)
     public void toggleInlineSet() {
         // Change the current value and save
-        Log.d(TAG,"toggleInlineSet()");
-        Log.d(TAG,"showInline (current):"+showInline);
         setInlineSet(!showInline);
+        toggling = true;
         checkVisibility();
     }
 
@@ -167,14 +163,17 @@ public class InlineSetList extends RecyclerView {
         // Do this check after a delay (allow the view to be drawn)
         mainActivityInterface.getMainHandler().postDelayed(() -> {
             checkReload();
+            if (toggling) {
+                reloadSong = true;
+                toggling = false;
+            }
+
             // Load the song if the song view is wider or narrower than it should be
             int screenWidth = mainActivityInterface.getDisplayMetrics()[0];
             int songWidth = mainActivityInterface.getSongWidth();
 
             boolean wrongSize = songWidth!=0 && screenWidth-songWidth-width!=0;
 
-            Log.d(TAG,"reloadSong:"+reloadSong);
-            Log.d(TAG,"wrongSize:"+wrongSize);
             if (reloadSong && wrongSize) {
                 if (mainActivityInterface.getCurrentSet().getIndexSongInSet() == -1) {
                     // Load the song

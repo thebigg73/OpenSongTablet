@@ -162,6 +162,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.nearbyMessage7.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(7));
         myView.bottomSheet.nearbyMessage8.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(8));
 
+        myView.bottomSheet.nearbyMessageSticky.setChecked(mainActivityInterface.getNearbyConnections().getNearbyMessageSticky());
         // Show any connection log
         updateConnectionsLog();
     }
@@ -426,6 +427,8 @@ public class NearbyConnectionsFragment extends Fragment {
         });
 
         // The nearby messages
+        myView.bottomSheet.nearbyMessageSticky.setOnCheckedChangeListener((compoundButton, b) ->
+                mainActivityInterface.getNearbyConnections().setNearbyMessageSticky(b));
         myView.bottomSheet.nearbyMessage1.setOnClickListener(view -> editMessage(1));
         myView.bottomSheet.nearbyMessage2.setOnClickListener(view -> editMessage(2));
         myView.bottomSheet.nearbyMessage3.setOnClickListener(view -> editMessage(3));

@@ -149,7 +149,14 @@ public class NearbyConnections implements NearbyInterface {
         // A user could have saved their default id in which case use it
         // If not, use Bluetooth or model in that order
         String bluetoothName = "";
-        String model = android.os.Build.MODEL.trim();
+        String model;
+        try {
+            model = android.os.Build.MODEL;
+            model = model.trim();
+        } catch (Exception e) {
+            model = c.getString(R.string.unknown);
+        }
+
         try {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (bluetoothAdapter != null && mainActivityInterface.getAppPermissions().checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
@@ -1479,7 +1486,7 @@ public class NearbyConnections implements NearbyInterface {
         stopDiscovery();
 
         // After a short delay, discover
-        new Handler().postDelayed(() -> {
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
             try {
                 startDiscovery();
             } catch (Exception e) {
@@ -1488,7 +1495,7 @@ public class NearbyConnections implements NearbyInterface {
         },200);
 
         // After 10 seconds, stop discovering
-        new Handler().postDelayed(() -> {
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
             try {
                 stopDiscovery();
             } catch (Exception e) {
@@ -1576,5 +1583,14 @@ public class NearbyConnections implements NearbyInterface {
 
     public boolean getNearbyMessageMIDIAction() {
         return nearbyMessageMIDIAction;
+    }
+
+    public boolean getNearbyMessageSticky() {
+        return nearbyMessageSticky;
+    }
+
+    public void setNearbyMessageSticky(boolean nearbyMessageSticky) {
+        this.nearbyMessageSticky = nearbyMessageSticky;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyMessageSticky",nearbyMessageSticky);
     }
 }

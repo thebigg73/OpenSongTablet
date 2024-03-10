@@ -145,13 +145,6 @@
                     android:text="@string/scroll" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-                    android:id="@+id/messageAlertSticky"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/nearby_messages_sticky"
-                    android:text="@string/nearby_messages_sticky_info"/>
-
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/matchToPDFSong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,6 +158,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nearby_messages"
                 android:hint="@string/nearby_messages_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/nearbyMessageSticky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/nearby_messages_sticky"
+                android:text="@string/nearby_messages_sticky_info"
+                android:layout_marginBottom="8dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/nearbyMessage1"
