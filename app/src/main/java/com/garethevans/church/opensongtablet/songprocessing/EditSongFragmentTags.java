@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -65,13 +63,11 @@ public class EditSongFragmentTags extends Fragment {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             prepareStrings();
 
-            Log.d(TAG,"song.getTheme:"+mainActivityInterface.getSong().getTheme());
-            Log.d(TAG,"tempSong.getTheme:"+mainActivityInterface.getTempSong().getTheme());
             // Set up the current values
             setupValues();
 
             // Set up the listeners
-            new Handler(Looper.getMainLooper()).post(this::setupListeners);
+            mainActivityInterface.getMainHandler().post(this::setupListeners);
         });
     }
     private void prepareStrings() {

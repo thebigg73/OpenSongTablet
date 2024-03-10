@@ -263,8 +263,10 @@ public class ExportFragment extends Fragment {
             myView.setExportInfo.setVisibility(View.GONE);
             myView.currentFormat.setVisibility(View.GONE);
 
-            if (mainActivityInterface.getSong().getFiletype().equals("IMG") ||
-            mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            if (mainActivityInterface.getSong()!=null &&
+                    mainActivityInterface.getSong().getFiletype()!=null &&
+                    (mainActivityInterface.getSong().getFiletype().equals("IMG") ||
+            mainActivityInterface.getSong().getFiletype().equals("PDF"))) {
                 myView.chordPro.setVisibility(View.GONE);
                 myView.text.setVisibility(View.GONE);
                 myView.onSong.setVisibility(View.GONE);
@@ -274,19 +276,22 @@ public class ExportFragment extends Fragment {
                 myView.screenShot.setVisibility(View.GONE);
             }
 
-            switch (mainActivityInterface.getSong().getFiletype()) {
-                case "PDF":
-                    myView.image.setVisibility(View.GONE);
-                    myView.pdf.setChecked(true);
-                    break;
-                case "IMG":
-                    myView.image.setChecked(true);
-                    break;
-                case "XML":
-                    // Must be a song!
-                    myView.openSongApp.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongApp", false));
-                    myView.openSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportDesktop", false));
-                    break;
+            if (mainActivityInterface.getSong()!=null &&
+                    mainActivityInterface.getSong().getFiletype()!=null) {
+                switch (mainActivityInterface.getSong().getFiletype()) {
+                    case "PDF":
+                        myView.image.setVisibility(View.GONE);
+                        myView.pdf.setChecked(true);
+                        break;
+                    case "IMG":
+                        myView.image.setChecked(true);
+                        break;
+                    case "XML":
+                        // Must be a song!
+                        myView.openSongApp.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOpenSongApp", false));
+                        myView.openSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportDesktop", false));
+                        break;
+                }
             }
 
             // Now show the song options
