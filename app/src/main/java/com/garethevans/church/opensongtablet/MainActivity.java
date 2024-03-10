@@ -2253,7 +2253,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void toggleInlineSet() {
         if (performanceValid()) {
-            Log.d(TAG,"performanceFragment.toggleInlineSet()");
             performanceFragment.toggleInlineSet();
         } else if (presenterValid()) {
             presenterFragment.toggleInlineSet();

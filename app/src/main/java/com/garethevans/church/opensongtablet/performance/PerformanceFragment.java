@@ -342,7 +342,6 @@ public class PerformanceFragment extends Fragment {
         myView.inlineSetList.orientationChanged(orientation);
     }
     public void toggleInlineSet() {
-        Log.d(TAG,"toggleInlineSet()");
         myView.inlineSetList.toggleInlineSet();
     }
     public void updateInlineSetVisibility() {

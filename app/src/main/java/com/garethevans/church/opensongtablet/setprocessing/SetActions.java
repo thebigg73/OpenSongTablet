@@ -271,15 +271,11 @@ public class SetActions {
         int position = mainActivityInterface.getCurrentSet().getMatchingSetItem(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getMatchingSetItem(searchTextNoKeySpecified);
         int positionVariation = -1;
-        Log.d(TAG,"positionNoKey:"+positionNoKey);
         if (position==-1 && positionNoKey==-1) {
             // Might be a different key, so search without that part
-            Log.d(TAG,"searchTextNoKeySpecified:"+searchTextNoKeySpecified);
             searchTextNoKeySpecified = searchTextNoKeySpecified.replace(keyStart,"").replace(keyEnd,"").replace(itemEnd,"")+"_";
-            Log.d(TAG,"searchTextNoKeySpecified after stripping:"+searchTextNoKeySpecified);
             positionNoKey = mainActivityInterface.getCurrentSet().getMatchingSetItemBeforeKey(
                     searchTextNoKeySpecified);
-            Log.d(TAG,"positionNoKey after keybit removed:"+positionNoKey);
         }
         if (positionNoKey==-1 && position==-1) {
             // One last chance to find the song in the set (key changed variation)

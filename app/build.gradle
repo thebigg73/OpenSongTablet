@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 379
-        versionName '6.0.7'
+        versionCode 380
+        versionName '6.0.8'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -103,7 +103,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.7.1'                               // Allows annotations in code
     annotationProcessor 'androidx.annotation:annotation:1.7.1'                          // Allows annotations in code
-    implementation 'org.apache.commons:commons-compress:1.26.0'                         // For creating and editing compressed files (osb, backup)
+    implementation 'org.apache.commons:commons-compress:1.26.1'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
     implementation 'com.github.bumptech.glide:glide:4.16.0'                             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'                     // For better setting of images
