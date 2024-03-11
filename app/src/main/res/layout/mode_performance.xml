@@ -100,7 +100,7 @@
                 android:id="@+id/songView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/songSheetTitle" />
+                android:layout_below="@id/songSheetTitle" />
 
             <!-- This is where images go -->
             <ImageView

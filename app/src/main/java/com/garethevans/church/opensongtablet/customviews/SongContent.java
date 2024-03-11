@@ -12,13 +12,20 @@ import com.garethevans.church.opensongtablet.R;
 
 public class SongContent extends LinearLayout {
 
-    private final LinearLayout songContent, songContent_col1, songContent_col2, songContent_col3;
-    private final ImageView songContent_img;
+    private LinearLayout songContent, songContent_col1, songContent_col2, songContent_col3;
+    private ImageView songContent_img;
     private boolean isDisplaying = false;
 
+    public SongContent(Context context) {
+        super(context);
+        initialise(context);
+    }
     public SongContent(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initialise(context);
+    }
 
+    private void initialise(Context context) {
         inflate(context, R.layout.view_song_content,this);
 
         songContent = findViewById(R.id.songContent);
@@ -33,7 +40,6 @@ public class SongContent extends LinearLayout {
         songContent_col3.setId(View.generateViewId());
         songContent_img.setId(View.generateViewId());
     }
-
     public void clearViews() {
         songContent_col1.removeAllViews();
         songContent_col2.removeAllViews();
@@ -64,7 +70,28 @@ public class SongContent extends LinearLayout {
     }
 
     public int getVisibility() {
-        return songContent.getVisibility();
+        if (songContent!=null) {
+            return songContent.getVisibility();
+        } else {
+            try {
+                return getVisibility();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return View.GONE;
+            }
+        }
+    }
+
+    public void setVisibility(int visibility) {
+        if (songContent!=null) {
+            songContent.setVisibility(visibility);
+        } else {
+            try {
+                setVisibility(visibility);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public int getVisibilityCol1() {
