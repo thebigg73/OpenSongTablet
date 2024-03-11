@@ -936,6 +936,8 @@
     <string name="web_server_info">Nicht-OpenSongApp-Benutzer sollten sich im selben Netzwerk wie dieses Gerät befinden (Sie können auch einen Hotspot verwenden).  Sie sollten dann diese Webadresse öffnen, um den Song anzuzeigen.</string>
     <string name="web_server_navigation">Manuelle Navigation</string>
     <string name="web_server_navigation_info">Wenn diese Option eingeschaltet ist, können Benutzer manuell jeden Song auswählen, der in Ihrer Songliste oder Ihrem aktuellen Set angezeigt wird.  Wenn diese Option ausgeschaltet ist, können Benutzer nur Ihren aktuell geladenen Song anzeigen</string>
+    <string name="web_view_desktop">Desktop-Site anfordern</string>
+    <string name="web_view_desktop_info">Dies sollte das Layout der Songs verbessern und verhindern, dass die Website versucht, Sie zur Installation ihrer mobilen App zu zwingen</string>
     <string name="website">Webseite</string>
     <string name="welcome">Willkommen bei OpenSongApp</string>
     <string name="width">Breite</string>

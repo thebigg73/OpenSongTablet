@@ -936,6 +936,8 @@
     <string name="web_server_info">Uživatelé bez OpenSongApp by měli být ve stejné síti jako toto zařízení (můžete také použít hotspot).  Poté by měli otevřít tuto webovou adresu a zobrazit skladbu.</string>
     <string name="web_server_navigation">Ruční navigace</string>
     <string name="web_server_navigation_info">Po zapnutí mohou uživatelé ručně vybrat libovolnou skladbu zobrazenou v seznamu skladeb nebo v aktuální sadě.  Když je vypnutý, uživatelé mohou zobrazit pouze aktuálně načtenou skladbu</string>
+    <string name="web_view_desktop">Vyžádejte si web pro počítače</string>
+    <string name="web_view_desktop_info">To by mělo zlepšit rozložení skladeb a zabránit tomu, aby se vás web snažil donutit k instalaci jejich mobilní aplikace</string>
     <string name="website">Webová stránka</string>
     <string name="welcome">Vítejte v OpenSongApp</string>
     <string name="width">Šířka</string>

@@ -936,6 +936,8 @@
     <string name="web_server_info">OpenSongApp以外のユーザーは、このデバイスと同じネットワーク上にいる必要があります(ホットスポットを使用することもできます)。 次に、このWebアドレスを開いて曲を表示する必要があります。</string>
     <string name="web_server_navigation">手動ナビゲーション</string>
     <string name="web_server_navigation_info">オンにすると、ユーザーは曲リストまたは現在のセットに表示されている曲を手動で選択できます。 オフにすると、ユーザーは現在ロードされている曲のみを表示できます</string>
+    <string name="web_view_desktop">デスクトップサイトをリクエストする</string>
+    <string name="web_view_desktop_info">これにより、曲のレイアウトが改善され、Webサイトがモバイルアプリのインストールを強制しようとするのを回避できます</string>
     <string name="website">Webサイト</string>
     <string name="welcome">OpenSongAppへようこそ</string>
     <string name="width">幅</string>

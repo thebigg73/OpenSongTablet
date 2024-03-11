@@ -49,6 +49,19 @@ public class UltimateGuitar {
                     "<div class=\"js-page js-global-wrapper","<span class=\"y68er\">","<div class=\"LJhrL\">",s);
         }
 
+        if (lyricsText.isEmpty()) {
+            lyricsText = mainActivityInterface.getProcessSong().getSubstring(
+                    "<div class=\"js-tab-content-wrapper\">","<pre class=\"extra\">","</span></pre>",s);
+        }
+
+        // Get rid of inline ads
+        String bitToRemove = mainActivityInterface.getProcessSong().getSubstring(
+                "<bidding-wrapper",null,"</bidding-wrapper>",lyricsText);
+        Log.d(TAG,"bitToRemove:"+bitToRemove);
+        if (bitToRemove != null && !bitToRemove.isEmpty()) {
+            lyricsText = lyricsText.replace(bitToRemove,"");
+        }
+
         StringBuilder trimmedLyrics = new StringBuilder();
         for (String lyr:lyricsText.split("\n")) {
             if (!lyr.trim().isEmpty()) {

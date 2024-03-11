@@ -58,6 +58,14 @@
             android:text="@string/clipboard_info"/>
         </LinearLayout>
 
+        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            android:id="@+id/webViewDesktop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/web_view_desktop"
+            android:hint="@string/web_view_desktop_info"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
             android:layout_width="match_parent"

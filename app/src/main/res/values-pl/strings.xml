@@ -936,6 +936,8 @@
     <string name="web_server_info">Użytkownicy spoza OpenSongApp powinni znajdować się w tej samej sieci co to urządzenie (można również użyć hotspotu). Następnie powinni otworzyć ten adres internetowy, aby wyświetlić piosenkę.</string>
     <string name="web_server_navigation">Nawigacja ręczna</string>
     <string name="web_server_navigation_info">Po włączeniu użytkownicy mogą ręcznie wybrać dowolną piosenkę z listy piosenek lub z bieżącego zestawu. Gdy ta opcja jest wyłączona, użytkownicy mogą wyświetlać tylko aktualnie załadowaną piosenkę</string>
+    <string name="web_view_desktop">Poproś o witrynę na komputery</string>
+    <string name="web_view_desktop_info">Powinno to poprawić układ utworów i uniknąć sytuacji, w której witryna próbuje zmusić Cię do zainstalowania aplikacji mobilnej</string>
     <string name="website">Strona internetowa</string>
     <string name="welcome">Witaj w OpenSongApp</string>
     <string name="width">Szerokość</string>

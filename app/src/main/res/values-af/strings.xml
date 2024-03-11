@@ -936,6 +936,8 @@
     <string name="web_server_info">Nie-OpenSongApp-gebruikers moet op dieselfde netwerk as hierdie toestel wees (u kan ook \'n hotspot gebruik).  Hulle moet dan hierdie webadres oopmaak om die liedjie te sien.</string>
     <string name="web_server_navigation">Handmatige navigasie</string>
     <string name="web_server_navigation_info">Wanneer dit aangeskakel is, kan gebruikers handmatig enige liedjie kies wat in jou liedjielys of huidige stel gewys word.  As dit afgeskakel is, kan gebruikers slegs u liedjie wat tans gelaai is, sien</string>
+    <string name="web_view_desktop">Versoek lessenaarwebwerf</string>
+    <string name="web_view_desktop_info">Dit moet die uitleg van liedjies verbeter en vermy dat die webwerf u probeer dwing om hul mobiele app te installeer</string>
     <string name="website">Webwerf</string>
     <string name="welcome">Welkom by OpenSongApp</string>
     <string name="width">Breedte</string>

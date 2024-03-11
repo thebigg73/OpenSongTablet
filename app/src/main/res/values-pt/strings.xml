@@ -936,6 +936,8 @@
     <string name="web_server_info">Os usuários que não são do OpenSongApp devem estar na mesma rede que este dispositivo (você também pode usar um hotspot).  Eles devem então abrir este endereço web para ver a música.</string>
     <string name="web_server_navigation">Navegação manual</string>
     <string name="web_server_navigation_info">Quando ligados, os utilizadores podem escolher manualmente qualquer música apresentada na sua lista de músicas ou conjunto atual.  Quando desligado, os utilizadores só podem ver a música carregada no momento</string>
+    <string name="web_view_desktop">Solicitar site para desktop</string>
+    <string name="web_view_desktop_info">Isso deve melhorar o layout das músicas e evitar que o site tente forçá-lo a instalar seu aplicativo móvel</string>
     <string name="website">Local na rede Internet</string>
     <string name="welcome">Bem-vindo ao OpenSongApp</string>
     <string name="width">Largura</string>

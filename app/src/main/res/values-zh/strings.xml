@@ -936,6 +936,8 @@
     <string name="web_server_info">非OpenSongApp用户应与此设备位于同一网络上（您也可以使用热点）。 然后，他们应该打开此网址以查看歌曲。</string>
     <string name="web_server_navigation">手动导航</string>
     <string name="web_server_navigation_info">打开后，用户可以手动选择歌曲列表或当前设置中显示的任何歌曲。 关闭后，用户只能查看您当前加载的歌曲</string>
+    <string name="web_view_desktop">请求桌面站点</string>
+    <string name="web_view_desktop_info">这应该可以改善歌曲的布局，并避免网站试图强迫您安装他们的移动应用程序</string>
     <string name="website">网站</string>
     <string name="welcome">欢迎来到 OpenSongApp</string>
     <string name="width">宽度</string>

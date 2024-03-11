@@ -936,6 +936,8 @@
     <string name="web_server_info">Користувачі, які не є OpenSongApp, повинні бути в тій же мережі, що і цей пристрій (ви також можете використовувати точку доступу).  Потім вони повинні відкрити цю веб-адресу, щоб переглянути пісню.</string>
     <string name="web_server_navigation">Ручна навігація</string>
     <string name="web_server_navigation_info">Коли ввімкнено, користувачі можуть вручну вибрати будь-яку пісню, яка відображається у вашому списку пісень або поточному наборі.  Коли вимкнено, користувачі зможуть переглядати лише вашу поточну завантажену пісню</string>
+    <string name="web_view_desktop">Запит на десктопний сайт</string>
+    <string name="web_view_desktop_info">Це має покращити макет пісень і уникнути спроб веб-сайту змусити вас встановити їхній мобільний додаток</string>
     <string name="website">веб-сайт</string>
     <string name="welcome">Ласкаво просимо до OpenSongApp</string>
     <string name="width">Ширина</string>

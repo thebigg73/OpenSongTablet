@@ -936,6 +936,8 @@
     <string name="web_server_info">Gli utenti non OpenSongApp devono trovarsi sulla stessa rete di questo dispositivo (è anche possibile utilizzare un hotspot).  Dovrebbero quindi aprire questo indirizzo web per visualizzare la canzone.</string>
     <string name="web_server_navigation">Navigazione manuale</string>
     <string name="web_server_navigation_info">Quando è attivata, gli utenti possono scegliere manualmente qualsiasi brano visualizzato nell\'elenco dei brani o nel set corrente.  Quando è disattivato, gli utenti possono visualizzare solo il brano attualmente caricato</string>
+    <string name="web_view_desktop">Richiedi il sito desktop</string>
+    <string name="web_view_desktop_info">Ciò dovrebbe migliorare il layout delle canzoni ed evitare che il sito Web cerchi di costringerti a installare la loro app mobile</string>
     <string name="website">Sito web</string>
     <string name="welcome">Benvenuto in OpenSongApp</string>
     <string name="width">Larghezza</string>

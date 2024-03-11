@@ -936,6 +936,8 @@
     <string name="web_server_info">Användare som inte använder OpenSongApp bör vara i samma nätverk som den här enheten (du kan också använda en hotspot).  De bör sedan öppna den här webbadressen för att se låten.</string>
     <string name="web_server_navigation">Manuell navigering</string>
     <string name="web_server_navigation_info">När den är påslagen kan användarna manuellt välja vilken låt som helst som ska visas i låtlistan eller den aktuella uppsättningen.  När den är avstängd kan användarna bara se din inlästa låt</string>
+    <string name="web_view_desktop">Begär skrivbordswebbplats</string>
+    <string name="web_view_desktop_info">Detta bör förbättra layouten på låtar och undvika att webbplatsen försöker tvinga dig att installera deras mobilapp</string>
     <string name="website">Hemsida</string>
     <string name="welcome">Välkommen till OpenSongApp</string>
     <string name="width">Bredd</string>

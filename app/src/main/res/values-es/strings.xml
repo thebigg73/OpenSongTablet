@@ -936,6 +936,8 @@
     <string name="web_server_info">Los usuarios que no son de OpenSongApp deben estar en la misma red que este dispositivo (también puede usar un punto de acceso).  Luego deben abrir esta dirección web para ver la canción.</string>
     <string name="web_server_navigation">Navegación manual</string>
     <string name="web_server_navigation_info">Cuando está activado, los usuarios pueden elegir manualmente cualquier canción que se muestre en su lista de canciones o conjunto actual.  Cuando está apagado, los usuarios solo pueden ver la canción cargada actualmente</string>
+    <string name="web_view_desktop">Solicitar sitio de escritorio</string>
+    <string name="web_view_desktop_info">Esto debería mejorar el diseño de las canciones y evitar que el sitio web intente obligarlo a instalar su aplicación móvil</string>
     <string name="website">Sitio web</string>
     <string name="welcome">Bienvenido a OpenSongApp</string>
     <string name="width">Ancho</string>

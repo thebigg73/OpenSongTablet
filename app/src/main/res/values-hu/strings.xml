@@ -936,6 +936,8 @@
     <string name="web_server_info">A nem OpenSongApp felhasználóknak ugyanazon a hálózaton kell lenniük, mint ez az eszköz (hotspotot is használhat).  Ezután meg kell nyitniuk ezt a webcímet a dal megtekintéséhez.</string>
     <string name="web_server_navigation">Kézi navigáció</string>
     <string name="web_server_navigation_info">Ha be van kapcsolva, a felhasználók manuálisan kiválaszthatják a dallistában vagy az aktuális készletben megjelenő dalokat.  Ha ki van kapcsolva, a felhasználók csak az aktuálisan betöltött dalt tekinthetik meg</string>
+    <string name="web_view_desktop">Asztali webhely kérése</string>
+    <string name="web_view_desktop_info">Ennek javítania kell a dalok elrendezését, és el kell kerülnie, hogy a webhely megpróbálja kényszeríteni a mobilalkalmazás telepítésére</string>
     <string name="website">Weboldal</string>
     <string name="welcome">Üdvözli az OpenSongApp</string>
     <string name="width">Szélesség</string>

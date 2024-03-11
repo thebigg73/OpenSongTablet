@@ -936,6 +936,8 @@
     <string name="web_server_info">Non OpenSongApp korisnici bi trebalo da budu na istoj mreži kao i ovaj uređaj (možete koristiti i hotspot).  Zatim bi trebalo da otvore ovu Web adresu da bi prikazali pesmu.</string>
     <string name="web_server_navigation">Ručna navigacija</string>
     <string name="web_server_navigation_info">Kada se uključi, korisnici mogu ručno da odaberu bilo koju pesmu prikazanu na vašoj listi pesama ili trenutnom skupu.  Kada su isključeni, korisnici mogu da vide samo vašu trenutno učitanu pesmu</string>
+    <string name="web_view_desktop">Zahtevaj lokaciju radne površine</string>
+    <string name="web_view_desktop_info">Ovo bi trebalo da poboljša raspored pesama i izbegne veb lokaciju koja pokušava da vas primora da instalirate njihovu mobilnu aplikaciju</string>
     <string name="website">Veb sajt</string>
     <string name="welcome">Dobrodošli u OpenSongApp</string>
     <string name="width">Širina</string>

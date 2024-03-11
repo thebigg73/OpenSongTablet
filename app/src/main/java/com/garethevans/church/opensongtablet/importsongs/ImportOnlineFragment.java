@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -62,7 +61,7 @@ public class ImportOnlineFragment extends Fragment {
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
             "https://www.e-chords.com/search-all/","https://www.google.com/search?q=",
             "https://duckduckgo.com/?va=n&t=hv&q="};
-    private String webSearchFull, webAddressFinal, source, webString, userAgentDefault,
+    private String webSearchFull, webAddressFinal, source, webString, userAgentDefault, userAgentDesktop,
             import_basic_string="", online_string="", website_song_online_string="", unknown_string="",
             text_extract_check_string="", text_extract_website_string="", mainfoldername_string="",
             success_string="", error_string="", overwrite_string="", song_name_already_taken_string="",
@@ -82,6 +81,7 @@ public class ImportOnlineFragment extends Fragment {
     private String songSelectAutoDownload;
     private Uri downloadUri;
     private String downloadFilename;
+    private boolean webViewDesktop;
 
     @Override
     public void onResume() {
@@ -131,6 +131,7 @@ public class ImportOnlineFragment extends Fragment {
             song_name_already_taken_string = getString(R.string.song_name_already_taken);
             unknown_string = getString(R.string.unknown);
             not_connected_string = getString(R.string.requires_internet);
+            webViewDesktop = mainActivityInterface.getPreferences().getMyPreferenceBoolean("webViewDesktop",false);
         }
     }
 
@@ -155,6 +156,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.webLayout.setVisibility(View.GONE);
         myView.saveLayout.setVisibility(View.GONE);
         myView.grabText.setVisibility(View.GONE);
+        myView.webViewDesktop.setChecked(webViewDesktop);
 
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
@@ -179,6 +181,9 @@ public class ImportOnlineFragment extends Fragment {
                         myView.onlineSource.getText().toString().equals("Google") ||
                                 myView.onlineSource.getText().toString().equals("DuckDuckGo")
                                 ? View.VISIBLE:View.GONE);
+                myView.webViewDesktop.setVisibility(
+                                myView.onlineSource.getText().toString().equals("UltimateGuitar")
+                                ? View.VISIBLE:View.GONE);
                 mainActivityInterface.getCheckInternet().setSearchSite(myView.onlineSource.getText().toString());
             }
         });
@@ -188,6 +193,16 @@ public class ImportOnlineFragment extends Fragment {
         }
 
         setupWebView();
+    }
+
+    private void changeUserAgent() {
+        // If we are about to use UG and have switch on request desktop option, set that agent
+        // If not, set the device default user agent
+        if (webViewDesktop && myView.onlineSource.getText().toString().equals("UltimateGuitar")) {
+            webView.post(() -> myView.webView.getSettings().setUserAgentString(userAgentDesktop));
+        } else {
+            webView.post(() -> myView.webView.getSettings().setUserAgentString(userAgentDefault));
+        }
     }
 
     private void changeLayouts(boolean search, boolean web, boolean save) {
@@ -217,6 +232,11 @@ public class ImportOnlineFragment extends Fragment {
         myView.backButton.setOnClickListener(v -> goBackBrowser());
         myView.grabText.setOnClickListener(v -> extractContent());
         myView.saveButton.setOnClickListener(v -> processContent());
+        myView.webViewDesktop.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("webViewDesktop",b);
+            webViewDesktop = b;
+            changeUserAgent();
+        });
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -245,7 +265,10 @@ public class ImportOnlineFragment extends Fragment {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     super.onPageStarted(view, url, favicon);
-                    webView.post(() -> webAddressFinal = webView.getUrl());
+                    webView.post(() -> {
+                        webAddressFinal = webView.getUrl();
+                        Log.d(TAG,"webAddressFinal:"+webAddressFinal);
+                    });
                 }
 
                 @Override
@@ -269,12 +292,14 @@ public class ImportOnlineFragment extends Fragment {
                     return true; // The app continues executing.
                 }
             });
-            // Set fake user agent
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                userAgentDefault = "Mozilla/5.0 (Linux Android 7.0 ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.105 Mobile Safari/537.36";
-            } else {
-                userAgentDefault = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67";
-            }
+
+            // This spoofs a desktop browser required for UG if we have set that option
+            userAgentDefault = myView.webView.getSettings().getUserAgentString();
+            userAgentDesktop = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0";
+            changeUserAgent();
+
+            Log.d(TAG,"default:"+userAgentDefault);
+            Log.d(TAG,"desktop:"+userAgentDesktop);
 
             webView.getSettings().getJavaScriptEnabled();
             webView.getSettings().setJavaScriptEnabled(true);
@@ -288,7 +313,6 @@ public class ImportOnlineFragment extends Fragment {
             webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
             webView.setScrollbarFadingEnabled(false);
             webView.addJavascriptInterface(new MyJSInterface(getContext(), this), "HTMLOUT");
-
             webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
                 // Show the progressBar
                 showDownloadProgress(true);
@@ -359,18 +383,17 @@ public class ImportOnlineFragment extends Fragment {
             String extra = "";
             mainActivityInterface.getCheckInternet().
                         setSearchPhrase(myView.searchPhrase.getText().toString());
+
             if (myView.onlineSource.getText() != null) {
                 mainActivityInterface.getCheckInternet().
                             setSearchSite(myView.onlineSource.getText().toString());
                 source = myView.onlineSource.getText().toString();
-                webView.post(() -> webView.getSettings().setUserAgentString(userAgentDefault));
                 switch (source) {
                     case "Chordie":
                         extra = "&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
                         break;
                     case "UltimateGuitar":
-                        String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
-                        webView.post(() -> webView.getSettings().setUserAgentString(newUA));
+                        //String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
                         break;
                     case "Google":
                     case "DuckDuckGo":
@@ -468,6 +491,10 @@ public class ImportOnlineFragment extends Fragment {
             webString = webString.replace("\r","\n");
             webString = webString.replace("</div></div>","</div>\n</div>");
 
+            String[] lines = webString.split("\n");
+            for (String line:lines) {
+                Log.d(TAG,"line:"+line);
+            }
             showSaveButton();
         }
     };
@@ -486,6 +513,7 @@ public class ImportOnlineFragment extends Fragment {
         switch (source) {
             case "UltimateGuitar":
                 if ((webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">") ||
+                        webString.contains("<div class=\"js-tab-content-wrapper\">") ||
                         (webString.contains("<div class=\"js-page js-global-wrapper ug-page") ||
                                 webString.contains("<pre class=\"tK8GG")) &&
                                 webString.contains("<span class=\"y68er"))) {
