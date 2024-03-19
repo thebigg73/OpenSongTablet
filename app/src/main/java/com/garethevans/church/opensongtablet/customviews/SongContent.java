@@ -12,6 +12,9 @@ import com.garethevans.church.opensongtablet.R;
 
 public class SongContent extends LinearLayout {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SongContent";
+    @SuppressWarnings("FieldCanBeLocal")
     private LinearLayout songContent, songContent_col1, songContent_col2, songContent_col3;
     private ImageView songContent_img;
     private boolean isDisplaying = false;
@@ -69,40 +72,4 @@ public class SongContent extends LinearLayout {
         return isDisplaying;
     }
 
-    public int getVisibility() {
-        if (songContent!=null) {
-            return songContent.getVisibility();
-        } else {
-            try {
-                return getVisibility();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return View.GONE;
-            }
-        }
-    }
-
-    public void setVisibility(int visibility) {
-        if (songContent!=null) {
-            songContent.setVisibility(visibility);
-        } else {
-            try {
-                setVisibility(visibility);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public int getVisibilityCol1() {
-        return songContent_col1.getVisibility();
-    }
-
-    public int getVisibilityCol2() {
-        return songContent_col2.getVisibility();
-    }
-
-    public int getVisibilityCol3() {
-        return songContent_col3.getVisibility();
-    }
 }
