@@ -371,7 +371,7 @@ public class Preferences extends Activity {
     // hardwareAcceleration             boolean     Use hardware acceleration for graphics normally on by default, but can cause glitches (def:true)
     // hideActionBar                    boolean     Should the action bar auto hide (def:false)
     // hideActionBarTime                int         How long should the action bar be visible for before hiding (def:1200)
-    // hideInfoBar                      boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
+    // hideInfoBar                      boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: false)
     // hideLyricsBox                    boolean     Should we hide the box around the lyrics (def:false)
     // hotZoneBottomCenterShort         String      The action for short pressing on this hot zone (def:scrolldown)
     // hotZoneBottomCenterLong          String      The action for short pressing on this hot zone (def:"")

@@ -346,7 +346,7 @@ public class PresenterSettings {
     }
     public void getInfoPreferences() {
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoInfoBarAlpha",0.5f));
-        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInfoBar",true));
+        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInfoBar",false));
         setPresoTitleTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoTitleTextSize",14f));
         setPresoAuthorTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAuthorTextSize",12f));
         setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoCopyrightTextSize",12f));
