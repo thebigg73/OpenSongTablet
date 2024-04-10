@@ -560,4 +560,5 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         // From default implementation we have removed the Runtime Exception thrown
     }
 
+
 }

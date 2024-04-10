@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.songmenu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -121,6 +122,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
         if (getContext()!=null) {
@@ -147,12 +149,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songListAdapter = new SongListAdapter(getContext(),
                         SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
+                songListAdapter.notifyDataSetChanged();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateSongMenu(Song song) {
         if (getContext()!=null) {
             // Set values
@@ -180,7 +184,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                     mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow", true) ?
                                             View.VISIBLE : View.GONE);
 
-                            songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
+                            songListAdapter.notifyDataSetChanged();
+                            //songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -190,12 +195,17 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateSongList() {
         if (getContext()!=null) {
             try {
                 myView.songListRecyclerView.removeAllViews();
                 myView.songmenualpha.sideIndex.removeAllViews();
                 myView.songListRecyclerView.setOnClickListener(null);
+                myView.songListRecyclerView.getRecycledViewPool().clear();
+                if (songListAdapter!=null) {
+                    songListAdapter.notifyDataSetChanged();
+                }
                 songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
                 displayIndex();
