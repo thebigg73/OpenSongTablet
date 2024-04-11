@@ -36,8 +36,8 @@ android {
         targetSdkVersion 34
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 381
-        versionName '6.0.9'
+        versionCode 382
+        versionName '6.1.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"

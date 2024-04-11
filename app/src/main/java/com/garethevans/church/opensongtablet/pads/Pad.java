@@ -118,7 +118,7 @@ public class Pad {
     private String keyToFlat(String key) {
         return key.replace("A#","Bb").replace("C#","Db")
                 .replace("D#","Eb").replace("F#","Gb")
-                .replace("G#","Ab");
+                .replace("G#","Ab").replace("H","B");
     }
 
     public boolean isAutoPad() {
@@ -419,6 +419,7 @@ public class Pad {
         key = key.replace("Eb","D#");
         key = key.replace("Gb","F#");
         key = key.replace("#","sharp");
+        key = key.replace("H","B");
         key = key.toLowerCase(Locale.ROOT);
 
         int path = c.getResources().getIdentifier(key.toLowerCase(Locale.ROOT), "raw", c.getPackageName());
