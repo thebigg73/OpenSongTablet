@@ -233,9 +233,7 @@ public class SetMenuFragment extends Fragment {
     // Called when clicking on clear set/create new set or sorting/shuffling
     public void notifyItemRangeRemoved(int from, int count) {
         if (setAdapter!=null && mainActivityInterface!=null) {
-            mainActivityInterface.getMainHandler().post(() -> {
-                setAdapter.notifyItemRangeRemoved(from, count);
-            });
+            mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyItemRangeRemoved(from, count));
         }
     }
 
@@ -280,6 +278,7 @@ public class SetMenuFragment extends Fragment {
 
     public void updateHighlight() {
         if (setAdapter!=null) {
+            mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
             setAdapter.updateHighlight();
         }
     }

@@ -39,7 +39,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     // The helper classes used
     private MenuSongsBinding myView;
     private boolean songButtonActive = true;
-    private boolean hasShownMenuShowcase = false;
+    private boolean hasShownMenuShowcase = false, adapterReady = false;
     private String folderSearchVal = "", artistSearchVal = "", keySearchVal = "", tagSearchVal = "",
             filterSearchVal = "", titleSearchVal = "";
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
@@ -80,7 +80,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void onResume() {
         super.onResume();
         prepareStrings();
-        initialiseRecyclerView();
+        //initialiseRecyclerView();
+        try {
+            moveToSongInMenu(mainActivityInterface.getSong());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -97,6 +102,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         // Update the song menu
         try {
             updateSongMenu(mainActivityInterface.getSong());
+            moveToSongInMenu(mainActivityInterface.getSong());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,41 +130,52 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     @SuppressLint("NotifyDataSetChanged")
     private void initialiseRecyclerView() {
-        myView.songListRecyclerView.removeAllViews();
+        // Some of this needs to run on the UI
+        adapterReady = false;
         if (getContext()!=null) {
-            try {
-                songListLayoutManager = new LinearLayoutManager(getContext()){
-                    @Override
-                    public boolean supportsPredictiveItemAnimations() {
-                        return false;
-                    }
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // UI
+                mainActivityInterface.getMainHandler().post(() -> myView.songListRecyclerView.removeAllViews());
 
-                    @Override
-                    public void scrollToPosition(int position) {
-                        try {
-                            super.scrollToPosition(position);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                // Non UI
+                try {
+                    songListLayoutManager = new LinearLayoutManager(getContext()) {
+                        @Override
+                        public boolean supportsPredictiveItemAnimations() {
+                            return false;
                         }
-                    }
-                };
-                songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
-                myView.songListRecyclerView.setHasFixedSize(false);
-                myView.songListRecyclerView.setOnClickListener(null);
-                songListAdapter = new SongListAdapter(getContext(),
-                        SongMenuFragment.this);
-                myView.songListRecyclerView.setAdapter(songListAdapter);
-                songListAdapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+                        @Override
+                        public void scrollToPosition(int position) {
+                            try {
+                                super.scrollToPosition(position);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                    songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this);
+
+                    // Back on the UI
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
+                        myView.songListRecyclerView.setHasFixedSize(false);
+                        myView.songListRecyclerView.setOnClickListener(null);
+                        myView.songListRecyclerView.setAdapter(songListAdapter);
+                        adapterReady = true;
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateSongMenu(Song song) {
-        if (getContext()!=null) {
+        if (getContext() != null) {
+
             // Set values
             setValues(song);
 
@@ -175,9 +192,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             fixButtons();
         }
 
-        if (songListAdapter != null) {
+        if (songListAdapter != null && adapterReady) {
+            adapterReady = false;
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                if (mainActivityInterface!=null && myView!=null) {
+                if (mainActivityInterface != null && myView != null) {
                     mainActivityInterface.getMainHandler().post(() -> {
                         try {
                             myView.menuSongs.findViewById(R.id.setCheckTitle).setVisibility(
@@ -185,36 +203,41 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                             View.VISIBLE : View.GONE);
 
                             songListAdapter.notifyDataSetChanged();
-                            //songListAdapter.notifyItemRangeChanged(0, songListAdapter.getItemCount());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     });
                 }
             });
+            adapterReady = true;
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateSongList() {
-        if (getContext()!=null) {
-            try {
-                myView.songListRecyclerView.removeAllViews();
-                myView.songmenualpha.sideIndex.removeAllViews();
-                myView.songListRecyclerView.setOnClickListener(null);
-                myView.songListRecyclerView.getRecycledViewPool().clear();
-                if (songListAdapter!=null) {
-                    songListAdapter.notifyDataSetChanged();
+        if (adapterReady) {
+            adapterReady = false;
+            if (getContext() != null) {
+                try {
+                    myView.songListRecyclerView.removeAllViews();
+                    myView.songmenualpha.sideIndex.removeAllViews();
+                    myView.songListRecyclerView.setOnClickListener(null);
+                    //myView.songListRecyclerView.getRecycledViewPool().clear();
+                    if (songListAdapter != null) {
+                        songListAdapter.notifyDataSetChanged();
+                    }
+                    songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this);
+                    myView.songListRecyclerView.setAdapter(songListAdapter);
+                    displayIndex();
+                    myView.progressBar.setVisibility(View.GONE);
+                    buttonsEnabled(true);
+                    updateSongCount();
+                    moveToSongInMenu(mainActivityInterface.getSong());
+                } catch (Exception e) {
+                    Log.d(TAG, "The app closed before the menu was finished");
                 }
-                songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this);
-                myView.songListRecyclerView.setAdapter(songListAdapter);
-                displayIndex();
-                myView.progressBar.setVisibility(View.GONE);
-                buttonsEnabled(true);
-                updateSongCount();
-            } catch (Exception e) {
-                Log.d(TAG, "The app closed before the menu was finished");
             }
+            adapterReady = true;
         }
     }
 
@@ -322,6 +345,52 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
     }
 
+    public void removeFiltersFromLoadSong() {
+        // If we load a song from the set or received, we can hide the filters (may not be appropriate)
+        boolean needToUpdateSearch = songListSearchByArtist || songListSearchByKey ||
+                songListSearchByTag || songListSearchByTitle || songListSearchByFilter;
+
+        if (songListSearchByArtist) {
+            songListSearchByArtist = false;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByArtist", false);
+            showHideRows(myView.filters.artistSearch, songListSearchByArtist);
+        }
+
+        if (songListSearchByKey) {
+            songListSearchByKey = false;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByKey", false);
+            showHideRows(myView.filters.keySearch, songListSearchByKey);
+        }
+
+        if (songListSearchByTag) {
+            songListSearchByTag = false;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", false);
+            showHideRows(myView.filters.tagSearch, songListSearchByTag);
+        }
+
+        if (songListSearchByTitle) {
+            songListSearchByTitle = false;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTitle",false);
+            showHideRows(myView.filters.titleSearch, songListSearchByTitle);
+        }
+
+        if (songListSearchByFilter) {
+            songListSearchByFilter = false;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFilter", false);
+            showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+        }
+
+        if (needToUpdateSearch) {
+            fixButtons();
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                try {
+                    moveToSongInMenu(mainActivityInterface.getSong());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            },1000);
+        }
+    }
     private void fixButtons() {
         fixColor(myView.filterButtons.folderButton, songListSearchByFolder);
         fixColor(myView.filterButtons.artistButton, songListSearchByArtist);
@@ -479,23 +548,27 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     public void prepareSearch() {
         if (mainActivityInterface!=null) {
-            songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
-            getSearchVals();
-            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                mainActivityInterface.getMainHandler().post(() -> buttonsEnabled(false));
-                try {
-                    songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
-                            songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
-                            songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
-                            folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
-                            filterSearchVal, titleSearchVal, songMenuSortTitles);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (mainActivityInterface!=null) {
-                    mainActivityInterface.getMainHandler().post(this::updateSongList);
-                }
-            });
+            if (adapterReady) {
+                adapterReady = false;
+                songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
+                getSearchVals();
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    mainActivityInterface.getMainHandler().post(() -> buttonsEnabled(false));
+                    try {
+                        songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
+                                songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
+                                songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
+                                folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
+                                filterSearchVal, titleSearchVal, songMenuSortTitles);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (mainActivityInterface != null) {
+                        mainActivityInterface.getMainHandler().post(this::updateSongList);
+                    }
+                    adapterReady = true;
+                });
+            }
         }
 
     }
@@ -689,8 +762,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 if (mainActivityInterface!=null && songListLayoutManager!=null) {
                     mainActivityInterface.getMainHandler().post(() -> {
-                        if (songListAdapter.getItemCount()>songListAdapter.getPositionOfSong(song)) {
-                            try {
+                        try {
+                            if (songListAdapter.getItemCount() > songListAdapter.getPositionOfSong(song)) {
                                 int position = songListAdapter.getPositionOfSong(song);
                                 if (position == -1) {
                                     position = 0;
@@ -699,9 +772,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                                 // IV - Reset to a 1 char alphabetic index
                                 alphalistposition = -1;
                                 displayIndex();
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     });
                 }

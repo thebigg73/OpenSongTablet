@@ -787,6 +787,7 @@ public class PerformanceGestures {
                     currentPos = mainActivityInterface.getSong().getCurrentSection();
                     finalPos = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
                 }
+                Log.d(TAG,"currentPos:"+currentPos+"  finalPos:"+finalPos);
                 if (scrollDown && currentPos <= finalPos && displayInterface.getIsSecondaryDisplaying()) {
                     return true;
                 } else if (scrollDown && currentPos<finalPos) {

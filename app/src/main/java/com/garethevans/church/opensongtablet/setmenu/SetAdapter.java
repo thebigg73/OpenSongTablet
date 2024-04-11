@@ -354,9 +354,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
 
         // Notify we changed the item
-        mainActivityInterface.getMainHandler().post(() -> {
-            notifyItemChanged(position);
-        });
+        mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(position));
 
         // Update the checked item
         updateCheckedItem(setItemInfo);

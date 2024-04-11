@@ -283,6 +283,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             return scrolledToEnd;
         } else {
             // Scrolling vertically
+            scrolledToBottom = (maxScrollY - computeVerticalScrollOffset() - (4f * mainActivityInterface.getDisplayDensity())) <= 1;
             return scrolledToBottom;
         }
     }

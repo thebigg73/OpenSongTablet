@@ -1094,7 +1094,7 @@ public class NearbyConnections implements NearbyInterface {
                             mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
                         }
                         mainActivityInterface.getSong().setCurrentSection(getHostPendingSection());
-                        nearbyReturnActionsInterface.loadSong();
+                        nearbyReturnActionsInterface.loadSong(true);
                     }
                 } else if (!isHost && hasValidConnections()) {
                     // We just want to trigger loading the song on our device (if we have it).
@@ -1115,7 +1115,7 @@ public class NearbyConnections implements NearbyInterface {
                     // Now load the song if we are displaying the performance/stage/presenter fragment
                     if (nearbyReturnActionsInterface != null) {
                         mainActivityInterface.getSong().setCurrentSection(getHostPendingSection());
-                        nearbyReturnActionsInterface.loadSong();
+                        nearbyReturnActionsInterface.loadSong(true);
                     }
                 }
             }
@@ -1219,7 +1219,7 @@ public class NearbyConnections implements NearbyInterface {
                             mainActivityInterface.updateSongList();
                         }
                         mainActivityInterface.getSong().setCurrentSection(getHostPendingSection());
-                        nearbyReturnActionsInterface.loadSong();
+                        nearbyReturnActionsInterface.loadSong(true);
                     }
                 }
                 parcelFileDescriptor.close();
@@ -1237,7 +1237,7 @@ public class NearbyConnections implements NearbyInterface {
                 if (nearbyReturnActionsInterface != null && filename!=null && !filename.isEmpty()) {
                     Log.d(TAG,"No song copied as already have it");
                     mainActivityInterface.getSong().setCurrentSection(getHostPendingSection());
-                    nearbyReturnActionsInterface.loadSong();
+                    nearbyReturnActionsInterface.loadSong(true);
                 }
             }
         } catch (Exception e) {

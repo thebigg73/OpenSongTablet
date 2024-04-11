@@ -7,7 +7,7 @@ public interface NearbyReturnActionsInterface {
     void selectSection(int i);
     void doScrollByProportion(float scrollProportion);
     void doScrollToProportion(float scrollProportion);
-    void loadSong();
+    void loadSong(boolean updateSongMenu);
     void goToPreviousPage();
     void goToNextPage();
     void nearbyEnableConnectionButtons();

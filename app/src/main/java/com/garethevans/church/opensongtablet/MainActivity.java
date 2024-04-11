@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Locale locale;
     private Bitmap screenShot;
     private Runnable hideActionButtonRunnable;
+    private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
 
     private Intent fileOpenIntent;
     private int availableWidth=-1, availableHeight=-1;
@@ -339,6 +340,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         if (myView == null) {
             myView = ActivityBinding.inflate(getLayoutInflater());
+            try {
+                setContentView(myView.getRoot());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // Get the user locale and prepare the strings
@@ -411,6 +417,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 setUpCrashCollector();
             });
         });
+
     }
 
     /**
@@ -427,7 +434,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }*/
 
     private void setUpCrashCollector() {
-        // Set up a default crash capture
+        // Set up a default crash capture, but keep a reference to the original handler
+        uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler((thread, e) -> {
             // Get the stack trace.
             StringWriter sw = new StringWriter();
@@ -437,7 +445,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crash log file
             storageAccess.doStringWriteToFile("Settings","","CrashLog.txt",sw.toString());
 
-            System.exit(1);
+            // Switch off hardware acceleration if crash happens to try to alleviate the issue
+            getPreferences().setMyPreferenceBoolean("hardwareAcceleration",false);
+
+            // Reset the unhandled exception handler
+            Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
+
+            // Now turn off the app
+            try {
+                Log.d(TAG,"Got here");
+                throw e;
+            } catch (Throwable ex) {
+                Log.d(TAG,"Ended up catching");
+                System.exit(1);
+            }
         });
     }
 
@@ -1175,7 +1196,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     myView.myToolbar.hideSongDetails(true);
                 }
                 myView.myToolbar.batteryholderVisibility(false, false);
-                batteryStatus.showBatteryStuff(false);
+                if (batteryStatus!=null) {
+                    batteryStatus.showBatteryStuff(false);
+                }
                 updateToolbarHelp(null);
                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
 
@@ -1982,14 +2005,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
         }
         viewPager = myView.viewpager;
-        /*
-        int newId = ViewCompat.generateViewId();
-        if (savedInstanceState != null && savedInstanceState.getInt(KEY_PAGER_ID, 0) != 0) {
-            // Restore state by using the same ID as before. ID collisions are prevented in MainActivity.
-            newId = savedInstanceState.getInt(KEY_PAGER_ID, 0);
-        }
-        viewPager.setId(newId);
-        */
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(1);
         // Disable the swiping gesture
@@ -2257,7 +2272,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (presenterValid()) {
             presenterFragment.toggleInlineSet();
         }
-        loadSong();
+        loadSong(false);
     }
     @Override
     public void updateInlineSetVisibility() {
@@ -2955,6 +2970,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         setItemInfo.songfilename = originalFilename;
                         setItemInfo.songfoldernice = originalFolder;
                     }
+                }
+
+                // Now update the song menu filters (remove all but folder)
+                if (songMenuFragment!=null) {
+                    songMenuFragment.removeFiltersFromLoadSong();
                 }
 
                 Log.d(TAG,"finished processing, now load from:"+setFolder+"/"+setFilename);
@@ -3881,11 +3901,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void loadSong() {
+    public void loadSong(boolean updateSongMenu) {
         // If we are not in a settings window, load the song
         // Otherwise it will happen when the user closes the settings fragments
         if (!settingsOpen) {
             doSongLoad(song.getFolder(), song.getFilename(), true);
+            // Update the song menu filters to match the incoming song if required
+            if (songMenuFragment!=null && updateSongMenu) {
+                songMenuFragment.removeFiltersFromLoadSong();
+            }
+            if (setMenuFragment!=null && updateSongMenu) {
+                setMenuFragment.updateHighlight();
+            }
         }
     }
 
