@@ -96,7 +96,7 @@ public class CustomPadsFragment extends Fragment {
                 text = pad_auto_string;
             }
             mainActivityInterface.getPreferences().setMyPreferenceString(prefName, prefValue);
-            myMaterialEditText.setText(text);
+            myMaterialEditText.setText(text.replace("../OpenSong/Pads/",""));
         });
     }
 
@@ -132,7 +132,7 @@ public class CustomPadsFragment extends Fragment {
         if (pref == null || pref.isEmpty() || pref.equals("auto")) {
             pref = pad_auto_string;
         }
-        myMaterialEditText.setText(pref);
+        myMaterialEditText.setText(pref.replace("../OpenSong/Pads/",""));
         myMaterialEditText.setFocusable(false);
         final String prefVal = pref;
         myMaterialEditText.setOnClickListener(view -> selectFile(myMaterialEditText, prefName, prefVal));

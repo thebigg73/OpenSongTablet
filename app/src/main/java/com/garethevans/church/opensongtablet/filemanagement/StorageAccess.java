@@ -679,6 +679,13 @@ public class StorageAccess {
             uriString = "../OpenSong/Backgrounds/" + uriString;
         }
 
+        // If uri has no localised folder location (i.e. just the filename as for v5 pads) add it
+        // If it is an audio file, it could be from the Media folder if a link audio file or the Pads folder
+        // (bad choice for v5 to not include some path logic)
+        // Assume a pad for now!
+        if (!uriString.contains("/") && isSpecificFileExtension("audio",uriString)) {
+            uriString = "../OpenSong/Pads/" + uriString;
+        }
         // Basically replace ../OpenSong/ with the root app home folder
         if (uriString.startsWith("../OpenSong/")) {
             uriString = uriString.replace("../OpenSong/", "");
@@ -1047,6 +1054,9 @@ public class StorageAccess {
                 break;
             case "text":
                 toCheck = ".txt";
+                break;
+            case "audio":
+                toCheck = ".mp3.wav.ogg.flac";
                 break;
         }
         // This is a simple check for file extensions that tell the app which database to use
