@@ -80,6 +80,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public interface MainActivityInterface {
 
     // Initialising the activity and settings
+    boolean getWaitingOnBootUpFragment();
     void initialiseActivity();
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();

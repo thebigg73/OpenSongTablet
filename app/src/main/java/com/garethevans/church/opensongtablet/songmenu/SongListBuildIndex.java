@@ -81,11 +81,12 @@ public class SongListBuildIndex {
     // This creates a basic database from the song files.
     // This is only called when we are full indexing
     public void buildBasicFromFiles() {
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+        mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
         if (fullIndexRequired) {
-            Log.d(TAG, "buildBasicFromFiles()");
-            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
-            mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
             mainActivityInterface.getSQLiteHelper().resetDatabase();
+            mainActivityInterface.getSQLiteHelper().insertFast();
+        } else {
             mainActivityInterface.getSQLiteHelper().insertFast();
         }
     }
@@ -94,6 +95,7 @@ public class SongListBuildIndex {
     // This scans the files (quick and full).
     // Quick scan only updates newer files than the database
     public String fullIndex(MaterialTextView progressText) {
+
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
         Log.d(TAG,"starting full index   indexRequired:"+indexRequired+"  fullIndexRequired:"+fullIndexRequired);
@@ -194,7 +196,7 @@ public class SongListBuildIndex {
                     }
                     int position = cursor.getPosition();
                     progressText.post(() -> {
-                        String progValue = (Math.round(((float)position/(float)totalSongs)*100)) + "%  ("+position+"/"+totalSongs+")";
+                        String progValue = (Math.round(Math.floor(((float)position/(float)totalSongs)*100))) + "%  ("+position+"/"+totalSongs+")";
                         progressText.setText(progValue);
                     });
 

@@ -194,7 +194,7 @@ public class SetMenuFragment extends Fragment {
 
     // Scroll to the item in the set list menu
     public void scrollToItem() {
-        if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
+        if (mainActivityInterface!=null && mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
             myView.myRecyclerView.postDelayed(() -> {
                 if (llm!=null) {

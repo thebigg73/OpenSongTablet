@@ -57,6 +57,8 @@ public class BootUpFragment extends Fragment {
         prepareStrings();
 
         myView = BootupLogoBinding.inflate(inflater, container, false);
+        mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
+
         mainActivityInterface.registerFragment(this,"BootUpFragment");
 
         mainActivityInterface.setSettingsOpen(false);
@@ -66,7 +68,12 @@ public class BootUpFragment extends Fragment {
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 
-        startOrSetUp();
+        Log.d(TAG,"bootup fragment ready");
+
+        if (mainActivityInterface.getWaitingOnBootUpFragment()) {
+            startOrSetUp();
+        }
+
         return myView.getRoot();
     }
 
@@ -91,28 +98,30 @@ public class BootUpFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mainActivityInterface.registerFragment(null,"BootUpFragment");
         myView = null;
     }
 
     // Checks made before starting the app
     public void startOrSetUp() {
+        Log.d(TAG,"startOrSetup()");
         if (storageIsCorrectlySet()) {
             if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
                     mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
-                    try {
-                        BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
-                        bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }));
+                try {
+                    BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+                    bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 startBootProcess(true,true);
             }
         } else {
             requireStorageCheck();
         }
+        Log.d(TAG,"startOrSetup() ended");
+
     }
     private boolean storageIsCorrectlySet() {
         // Check that storage permission is granted and that it has been set and that it exists
@@ -140,6 +149,7 @@ public class BootUpFragment extends Fragment {
     }
 
     public void startBootProcess(boolean needIndex, boolean fullIndexRequired) {
+        Log.d(TAG,"startBootProcess");
         mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
         mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(fullIndexRequired);
         mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);
@@ -172,6 +182,7 @@ public class BootUpFragment extends Fragment {
                     }
                     updateMessage();
 
+                    Log.d(TAG,"indexing decision");
                     if (needIndex) {
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
                         mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
@@ -180,6 +191,7 @@ public class BootUpFragment extends Fragment {
                     } else {
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
                     }
+                    Log.d(TAG,"indexing decision complete");
 
                     // Finished indexing
                     if (getContext() != null) {
@@ -191,8 +203,6 @@ public class BootUpFragment extends Fragment {
                         updateMessage();
                     }
 
-                    mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
-
                     // Increase the boot times for prompting a user to backup their songs
                     int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0);
                     int runssincebackupdismissed = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackupdismissed", 0);
@@ -202,12 +212,17 @@ public class BootUpFragment extends Fragment {
                     // Load in the setCurrent
                     message = set_string;
                     updateMessage();
-                    mainActivityInterface.getSetActions().parseCurrentSet();
 
+                    Log.d(TAG,"parse current set");
+                    mainActivityInterface.getSetActions().parseCurrentSet();
+                    Log.d(TAG,"parse current set complete");
+
+                    message = success;
+                    updateMessage();
 
                     // Set up the rest of the main activity
                     mainActivityInterface.getMainHandler().post(() -> {
-                        mainActivityInterface.initialiseActivity();
+                        Log.d(TAG,"ready to start app");
                         mainActivityInterface.navHome();
                         mainActivityInterface.showActionBar();
                         mainActivityInterface.updateMargins();
@@ -226,7 +241,7 @@ public class BootUpFragment extends Fragment {
     private void updateMessage() {
         if (getActivity()!=null && getContext()!=null) {
             try {
-                myView.currentAction.post(() -> {
+                mainActivityInterface.getMainHandler().post(() -> {
                     if (myView!=null) {
                         myView.currentAction.setText(message);
                     }

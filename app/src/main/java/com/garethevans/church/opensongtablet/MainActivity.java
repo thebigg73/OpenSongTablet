@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -53,6 +54,7 @@ import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
+import com.garethevans.church.opensongtablet.appdata.BootUpFragment;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.MyFonts;
@@ -150,6 +152,7 @@ import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
+import com.garethevans.church.opensongtablet.utilities.ForumFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.material.button.MaterialButton;
@@ -184,13 +187,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Initialise the Executors and main handlers for async tasks
     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-            Runtime.getRuntime().availableProcessors(),     // Initial pool size
-            Runtime.getRuntime().availableProcessors(),     // Max pool size
-            1,                                              // Time
-            TimeUnit.SECONDS,                               // Unit
-            new LinkedBlockingQueue<>()                     // Blocking queue
+            Runtime.getRuntime().availableProcessors() + 1,// Initial pool size
+            (Runtime.getRuntime().availableProcessors()*12),            // Max pool size (including queued)
+            1000,                                                       // Time for idle thread to remain
+            TimeUnit.MILLISECONDS,                                      // Unit
+            new LinkedBlockingQueue<>()                                 // Blocking queue
     );
-
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
@@ -268,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private EditSongFragment editSongFragment;
     private NearbyConnectionsFragment nearbyConnectionsFragment;
     private PedalsFragment pedalsFragment;
+    private BootUpFragment bootUpFragment;
+    private boolean waitingOnBootUpFragment = false;
     private ViewPager2 viewPager;
     private AppBarConfiguration appBarConfiguration;
     private SecondaryDisplay[] secondaryDisplays;
@@ -324,8 +328,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set the hardware acceleration
-        setHardwareAcceleration();
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
 
         //this.savedInstanceState = savedInstanceState;
 
@@ -352,6 +359,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Attempt stuff using the threadPooleExecutor
         getThreadPoolExecutor().execute(() -> {
+
+            // Set the hardware acceleration
+            setHardwareAcceleration();
+
+            // Set up crash collector
+            setUpCrashCollector();
 
             mainLooper.post(() -> {
                 // TODO can remove once we track down TransactionTooLarge crash
@@ -398,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             mainLooper.post(() -> {
                 setContentView(myView.getRoot());
 
+                Log.d(TAG,"setupHelpers() start");
                 // Set up the helpers
                 setupHelpers();
 
@@ -407,17 +421,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Set up views
                 setupViews();
 
-                // Set up the navigation controller
-                setupNavigation();
-
                 // Initialise the activity
                 initialiseActivity();
 
-                // Set up crash collector
-                setUpCrashCollector();
+                Log.d(TAG,"initialisation complete");
+
+                Log.d(TAG,"bootUpFragment:"+bootUpFragment);
+                // Now if we are showing the bootup fragment, proceed with that
+                if (bootUpFragment!=null) {
+                    try {
+                        hideActionBar();
+                        bootUpFragment.startOrSetUp();
+                    } catch (Exception e) {
+                        waitingOnBootUpFragment = true;
+                        e.printStackTrace();
+                    }
+                } else {
+                    waitingOnBootUpFragment = true;
+                }
             });
         });
+    }
 
+    @Override
+    public boolean getWaitingOnBootUpFragment() {
+        return waitingOnBootUpFragment;
     }
 
     /**
@@ -472,6 +500,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        } else {
+            Log.d(TAG,"issue HW");
+            if (getWindow()!=null) {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
             }
         }
     }
@@ -699,18 +733,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // The song stuff may have been initialised in savedInstanceState
         songListBuildIndex = getSongListBuildIndex();
 
-
         // The screen display stuff
         customAnimation = getCustomAnimation();
         showCase = getShowCase();
         getShowToast();
 
-
         // The app setup
         versionNumber = getVersionNumber();
 
-        //locale = getFixLocale().getLocale();
-
+        // Connections and alerts
         checkInternet = getCheckInternet();
         getNearbyConnections();
         webDownload = getWebDownload();
@@ -1176,61 +1207,63 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Navigation logic
     private void setupNavigation() {
-        navHostFragment =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        if (navHostFragment != null) {
-            navController = navHostFragment.getNavController();
-        }
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = new AppBarConfiguration.Builder(R.id.bootUpFragment,
-                R.id.performanceFragment, R.id.presenterFragment)
-                .setOpenableLayout(myView.drawerLayout)
-                .build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
-        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            // IV - We are changing so adjust option menu elements
-            if (globalMenuItem != null) {
-                // IV - To smooth teardown, we clear performance mode song detail elements left to right
-                if (!settingsOpen && whichMode.equals(mode_performance)) {
-                    myView.myToolbar.hideSongDetails(true);
-                }
-                myView.myToolbar.batteryholderVisibility(false, false);
-                if (batteryStatus!=null) {
-                    batteryStatus.showBatteryStuff(false);
-                }
-                updateToolbarHelp(null);
-                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
-
-                // IV - We set settingsOpen based on the new navDestination
-                settingsOpen = !((navDestination.getId() == R.id.performanceFragment ||
-                        navDestination.getId() == R.id.presenterFragment));
-
-                // IV - To smooth build, we add elements right to left
-                if (settingsOpen) {
-                    globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
-                    // IV - Other elements are added by the called fragment
-                } else {
-                    // IV - Top level of menu - song details are added by song load
-                    globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.settings_outline);
-                    updateCastIcon();
-                    if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
-                            getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
-                            getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
-                        myView.myToolbar.batteryholderVisibility(true, true);
-                        batteryStatus.showBatteryStuff(true);
-                    }
-                    // IV - Song details are added by song load
-                    // GE onResuming (open cast and return), not called, so quick check is worthwhile
-                    if (!whichMode.equals(getString(R.string.mode_presenter))) {
-                        updateToolbar(null);
-                    }
-                }
-                myView.myToolbar.requestLayout();
-                myView.myToolbar.setContentInsetStartWithNavigation(0);
+        if (navHostFragment==null || navController==null) {
+            navHostFragment =
+                    (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            if (navHostFragment != null) {
+                navController = navHostFragment.getNavController();
             }
-        });
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            appBarConfiguration = new AppBarConfiguration.Builder(R.id.bootUpFragment,
+                    R.id.performanceFragment, R.id.presenterFragment)
+                    .setOpenableLayout(myView.drawerLayout)
+                    .build();
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
+            navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+                // IV - We are changing so adjust option menu elements
+                if (globalMenuItem != null) {
+                    // IV - To smooth teardown, we clear performance mode song detail elements left to right
+                    if (!settingsOpen && whichMode.equals(mode_performance)) {
+                        myView.myToolbar.hideSongDetails(true);
+                    }
+                    myView.myToolbar.batteryholderVisibility(false, false);
+                    if (batteryStatus != null) {
+                        batteryStatus.showBatteryStuff(false);
+                    }
+                    updateToolbarHelp(null);
+                    globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+
+                    // IV - We set settingsOpen based on the new navDestination
+                    settingsOpen = !((navDestination.getId() == R.id.performanceFragment ||
+                            navDestination.getId() == R.id.presenterFragment));
+
+                    // IV - To smooth build, we add elements right to left
+                    if (settingsOpen) {
+                        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
+                        // IV - Other elements are added by the called fragment
+                    } else {
+                        // IV - Top level of menu - song details are added by song load
+                        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.settings_outline);
+                        updateCastIcon();
+                        if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
+                                getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
+                                getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
+                            myView.myToolbar.batteryholderVisibility(true, true);
+                            batteryStatus.showBatteryStuff(true);
+                        }
+                        // IV - Song details are added by song load
+                        // GE onResuming (open cast and return), not called, so quick check is worthwhile
+                        if (!whichMode.equals(getString(R.string.mode_presenter))) {
+                            updateToolbar(null);
+                        }
+                    }
+                    myView.myToolbar.requestLayout();
+                    myView.myToolbar.setContentInsetStartWithNavigation(0);
+                }
+            });
+        }
     }
 
     @Override
@@ -1995,42 +2028,44 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // The song and set menu
     private void setUpSongMenuTabs() {
-        if (viewPagerAdapter == null) {
-            viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this.getLifecycle());
-            viewPagerAdapter.createFragment(0);
-        }
-        if (songMenuFragment == null) {
-            songMenuFragment = (SongMenuFragment) viewPagerAdapter.menuFragments[0];
-        }
-        if (setMenuFragment == null) {
-            setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
-        }
-        viewPager = myView.viewpager;
-        viewPager.setAdapter(viewPagerAdapter);
-        viewPager.setOffscreenPageLimit(1);
-        // Disable the swiping gesture
-        viewPager.setUserInputEnabled(false);
-        TabLayout tabLayout = myView.menuTop.tabs;
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position) {
-                case 0:
-                    tab.setText(song_string);
-                    tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
-                    break;
-                case 1:
-                    tab.setText(set_string);
-                    tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
-                    break;
+        getMainHandler().post(() -> {
+            if (viewPagerAdapter == null) {
+                viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this.getLifecycle());
+                viewPagerAdapter.createFragment(0);
             }
-        }).attach();
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                showSetMenu = position != 0;
-                super.onPageSelected(position);
+            if (songMenuFragment == null) {
+                songMenuFragment = (SongMenuFragment) viewPagerAdapter.menuFragments[0];
             }
+            if (setMenuFragment == null) {
+                setMenuFragment = (SetMenuFragment) viewPagerAdapter.createFragment(1);
+            }
+            viewPager = myView.viewpager;
+            viewPager.setAdapter(viewPagerAdapter);
+            viewPager.setOffscreenPageLimit(1);
+            // Disable the swiping gesture
+            viewPager.setUserInputEnabled(false);
+            TabLayout tabLayout = myView.menuTop.tabs;
+            new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+                switch (position) {
+                    case 0:
+                        tab.setText(song_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
+                        break;
+                    case 1:
+                        tab.setText(set_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
+                        break;
+                }
+            }).attach();
+            viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    showSetMenu = position != 0;
+                    super.onPageSelected(position);
+                }
+            });
+            myView.menuTop.backButton.setOnClickListener(v -> closeDrawer(true));
         });
-        myView.menuTop.backButton.setOnClickListener(v -> closeDrawer(true));
     }
 
     @Override
@@ -3026,7 +3061,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "SetMenuFragment":
                     setMenuFragment = (SetMenuFragment) frag;
                     break;
+                case "BootUpFragment":
+                    bootUpFragment = (BootUpFragment) frag;
+                    break;
             }
+        } else if (what.equals("BootUpFragment")) {
+            bootUpFragment = (BootUpFragment) frag;
         }
     }
 
@@ -3687,6 +3727,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((ImportOnlineFragment) fragment).isConnected(isConnected);
                 } else if (fragId == R.id.importOSBFragment) {
                     ((ImportOptionsFragment) fragment).isConnected(isConnected);
+                } else if (fragId == R.id.forumFragment) {
+                    ((ForumFragment) fragment).isConnected(isConnected);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4104,6 +4146,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Check displays
             checkDisplays();
 
+            // Prepare the themes
+            getMyThemeColors();
+
+            // Prepapre the metronome
+            getMetronome();
+
+            if (metronome!=null) {
+                metronome.initialiseMetronome();
+            }
         }
         try {
             // If the user changed language, the strings need updated
@@ -4112,15 +4163,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
 
-        // Prepare the themes
-        getMyThemeColors();
 
-        // Prepapre the metronome
-        getMetronome();
-
-        if (metronome!=null) {
-            metronome.initialiseMetronome();
-        }
 
     }
 

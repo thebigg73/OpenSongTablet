@@ -552,8 +552,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 adapterReady = false;
                 songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
                 getSearchVals();
+                buttonsEnabled(false);
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    mainActivityInterface.getMainHandler().post(() -> buttonsEnabled(false));
                     try {
                         songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                                 songListSearchByFolder, songListSearchByArtist, songListSearchByKey,

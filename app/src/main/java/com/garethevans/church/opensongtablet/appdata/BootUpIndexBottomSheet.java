@@ -63,8 +63,8 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
             // We were in progress of counting down, so resume
             Log.d(TAG,"Try to resume");
             countdownNumber = 10;
-            setTimer();
         }
+        setTimer();
         myView.dialogHeading.setText(indexing_string);
         myView.dialogHeading.setWebHelp(mainActivityInterface, indexing_web);
     }
@@ -104,8 +104,6 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         myView.quickIndexButton.setText(text);
         text = indexing_string + " (" + full_string + ")";
         myView.fullIndexButton.setText(text);
-
-        setTimer();
 
         return myView.getRoot();
     }
@@ -164,32 +162,34 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                try {
-                    String message = skip_string + " (" + countdownNumber + ")";
-                    if (myView != null) {
-                        myView.skipButton.post(() -> myView.skipButton.setText(message));
-                    }
-
-                    if (countdownNumber == 0) {
-                        this.cancel();
-                        if (timer != null) {
-                            timer.purge();
-                        }
-                        timer = null;
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    try {
+                        String message = skip_string + " (" + countdownNumber + ")";
                         if (myView != null) {
-                            myView.skipButton.post(() -> myView.skipButton.performClick());
+                            mainActivityInterface.getMainHandler().post(() -> myView.skipButton.setText(message));
                         }
-                    } else {
-                        countdownNumber--;
+
+                        if (countdownNumber == 0) {
+                            this.cancel();
+                            if (timer != null) {
+                                timer.purge();
+                            }
+                            timer = null;
+                            if (myView != null) {
+                                mainActivityInterface.getMainHandler().post(() -> myView.skipButton.performClick());
+                            }
+                        } else {
+                            countdownNumber--;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "The view was lost!");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d(TAG,"The view was lost!");
-                }
+                });
             }
         };
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask,1000,1000);
+        timer.scheduleAtFixedRate(timerTask,0,1000);
     }
 
     @Override
