@@ -424,20 +424,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Initialise the activity
                 initialiseActivity();
 
-                Log.d(TAG,"initialisation complete");
-
-                Log.d(TAG,"bootUpFragment:"+bootUpFragment);
                 // Now if we are showing the bootup fragment, proceed with that
+                waitingOnBootUpFragment = true;
+
                 if (bootUpFragment!=null) {
                     try {
                         hideActionBar();
                         bootUpFragment.startOrSetUp();
                     } catch (Exception e) {
-                        waitingOnBootUpFragment = true;
                         e.printStackTrace();
                     }
-                } else {
-                    waitingOnBootUpFragment = true;
                 }
             });
         });
@@ -446,6 +442,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean getWaitingOnBootUpFragment() {
         return waitingOnBootUpFragment;
+    }
+    @Override
+    public void setWaitingOnBootUpFragment(boolean waitingOnBootUpFragment) {
+        this.waitingOnBootUpFragment = waitingOnBootUpFragment;
     }
 
     /**

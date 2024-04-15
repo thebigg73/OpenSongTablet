@@ -81,6 +81,7 @@ public interface MainActivityInterface {
 
     // Initialising the activity and settings
     boolean getWaitingOnBootUpFragment();
+    void setWaitingOnBootUpFragment(boolean waitingOnBootUpFragment);
     void initialiseActivity();
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();

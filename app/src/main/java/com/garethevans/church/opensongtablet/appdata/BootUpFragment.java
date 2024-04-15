@@ -70,11 +70,19 @@ public class BootUpFragment extends Fragment {
 
         Log.d(TAG,"bootup fragment ready");
 
+        Log.d(TAG,"waitingOnBootUpFragment:"+mainActivityInterface.getWaitingOnBootUpFragment());
+        return myView.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume()");
+        Log.d(TAG,"waitingOnBootUpFragment:"+mainActivityInterface.getWaitingOnBootUpFragment());
+        mainActivityInterface.registerFragment(this,"BootUpFragment");
         if (mainActivityInterface.getWaitingOnBootUpFragment()) {
             startOrSetUp();
         }
-
-        return myView.getRoot();
     }
 
     private void prepareStrings() {

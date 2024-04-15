@@ -617,7 +617,9 @@ public class PerformanceFragment extends Fragment {
             // - XML        OpenSong song.  Views need to be drawn and measured. Stage mode uses recyclerView, Performance, the pageHolder
 
             // Reset the recycler view to vertical by default
-            recyclerLayoutManager.setOrientation(RecyclerLayoutManager.VERTICAL);
+            if (recyclerLayoutManager!=null) {
+                recyclerLayoutManager.setOrientation(RecyclerLayoutManager.VERTICAL);
+            }
 
             // Set as not using pdfLandscape by default
             mainActivityInterface.getGestures().setPdfLandscapeView(false);
