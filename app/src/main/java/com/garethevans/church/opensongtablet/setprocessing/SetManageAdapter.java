@@ -115,7 +115,7 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
 
             // Decide if this value is selected (only available/visible when loading set)
             holder.checkBox.setChecked(foundSet.getChecked());
-            if (whatView.equals("loadset")) {
+            if (whatView.equals("loadset") || whatView.equals("deleteset")) {
                 holder.checkBox.setVisibility(View.VISIBLE);
             } else {
                 holder.checkBox.setVisibility(View.GONE);
@@ -127,7 +127,7 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
             // Set the listener for this item
             int finalPosition = position;
             holder.itemLayout.setOnClickListener(view -> {
-                if (whatView.equals("loadset")) {
+                if (whatView.equals("loadset") || whatView.equals("deleteset")) {
                     // Set the item checked value as the opposite to what it currently was
                     foundSets.get(finalPosition).setChecked(!foundSets.get(finalPosition).getChecked());
                     notifyItemChanged(finalPosition);
