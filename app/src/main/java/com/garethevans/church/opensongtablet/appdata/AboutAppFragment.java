@@ -21,8 +21,8 @@ public class AboutAppFragment extends Fragment {
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String about="", website="", user_guide="", website_address="", website_latest="",
-            website_forum="", website_rate="", packageName="", website_paypal="", website_github="",
-            deeplink_logs="";
+            website_forum="", deeplink_forum="", website_rate="", packageName="", website_paypal="",
+            website_github="", deeplink_logs="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -64,6 +64,7 @@ public class AboutAppFragment extends Fragment {
             website_paypal = getString(R.string.website_paypal);
             website_github =  getString(R.string.website_github);
             deeplink_logs = getString(R.string.deeplink_logs);
+            deeplink_forum = getString(R.string.deeplink_forum);
         }
         if (getActivity()!=null) {
             packageName = getActivity().getPackageName();
@@ -81,6 +82,8 @@ public class AboutAppFragment extends Fragment {
     private void setListeners() {
         myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openDocument(website_address));
         myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openDocument(website_latest));
+        // Was going to use a webView to force desktop site, but unsupported!!
+        //myView.forumButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_forum,0));
         myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_forum));
         myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_rate+packageName));
         myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_paypal));

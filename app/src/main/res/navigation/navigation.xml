@@ -481,6 +481,9 @@
                 <action
                     android:id="@+id/action_aboutAppFragment_to_shareLogsFragment"
                     app:destination="@id/shareLogsFragment" />
+                <action
+                    android:id="@+id/action_aboutAppFragment_to_forumFragment"
+                    app:destination="@id/forumFragment" />
             </fragment>
 
             <!-- Language -->
@@ -489,6 +492,9 @@
                 android:name="com.garethevans.church.opensongtablet.appdata.LanguageFragment"
                 android:label="settings_language"
                 tools:layout="@layout/settings_language" />
+
+
+            <!-- Share logs -->
             <fragment
                 android:id="@+id/shareLogsFragment"
                 android:name="com.garethevans.church.opensongtablet.appdata.ShareLogsFragment"
@@ -497,6 +503,17 @@
                 <deepLink
                     android:id="@+id/deepLinkShareLogs"
                     app:uri="@string/deeplink_logs" />
+            </fragment>
+
+            <!-- Forum -->
+            <fragment
+                android:id="@+id/forumFragment"
+                android:name="com.garethevans.church.opensongtablet.utilities.ForumFragment"
+                android:label="ForumFragment"
+                tools:layout="@layout/settings_forum_webview">
+                <deepLink
+                    android:id="@+id/deepLinkForum"
+                    app:uri="@string/deeplink_forum" />
             </fragment>
 
         </navigation>
