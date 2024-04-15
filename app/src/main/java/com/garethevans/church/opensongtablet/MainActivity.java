@@ -446,7 +446,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             storageAccess.doStringWriteToFile("Settings","","CrashLog.txt",sw.toString());
 
             // Switch off hardware acceleration if crash happens to try to alleviate the issue
-            getPreferences().setMyPreferenceBoolean("hardwareAcceleration",false);
+            // Decided for now to leave this off
+            //getPreferences().setMyPreferenceBoolean("hardwareAcceleration",false);
 
             // Reset the unhandled exception handler
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
