@@ -171,7 +171,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -187,10 +187,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Initialise the Executors and main handlers for async tasks
     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
             Runtime.getRuntime().availableProcessors() + 1,// Initial pool size
-            (Runtime.getRuntime().availableProcessors() * 12),          // Max pool size (including queued)
-            100,                                                        // Time for idle thread to remain
+            (Runtime.getRuntime().availableProcessors() * 8),          // Max pool size (including queued)
+            1000,                                                        // Time for idle thread to remain
             TimeUnit.MILLISECONDS,                                      // Unit
-            new LinkedBlockingQueue<>()                                 // Blocking queue
+            new ArrayBlockingQueue<>(10)                      // Blocking queue
     );
 
     // The helpers sorted alphabetically

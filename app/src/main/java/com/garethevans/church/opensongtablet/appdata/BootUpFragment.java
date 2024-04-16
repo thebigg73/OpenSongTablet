@@ -170,7 +170,6 @@ public class BootUpFragment extends Fragment {
                     message = "Initialising";
                 }
                 updateMessage();
-                // Initialise the activity
                 mainActivityInterface.initialiseActivity();
 
                 // Tell the user we're initialising the storage
@@ -236,7 +235,7 @@ public class BootUpFragment extends Fragment {
                     message = success;
                     updateMessage();
 
-                    // Set up the rest of the main activity
+                    // Set up the rest of the main activity (on the main thread)
                     mainActivityInterface.getMainHandler().post(() -> {
                         Log.d(TAG,"ready to start app");
                         mainActivityInterface.navHome();
