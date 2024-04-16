@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -188,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Initialise the Executors and main handlers for async tasks
     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
             Runtime.getRuntime().availableProcessors() + 1,// Initial pool size
-            (Runtime.getRuntime().availableProcessors()*12),            // Max pool size (including queued)
-            1000,                                                       // Time for idle thread to remain
+            (Runtime.getRuntime().availableProcessors() * 12),          // Max pool size (including queued)
+            100,                                                        // Time for idle thread to remain
             TimeUnit.MILLISECONDS,                                      // Unit
             new LinkedBlockingQueue<>()                                 // Blocking queue
     );
@@ -328,14 +327,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectAll()
-                .penaltyLog()
-                .penaltyDeath()
-                .build());
-
-        //this.savedInstanceState = savedInstanceState;
-
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
@@ -420,9 +411,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 // Set up views
                 setupViews();
-
-                // Initialise the activity
-                initialiseActivity();
 
                 // Now if we are showing the bootup fragment, proceed with that
                 waitingOnBootUpFragment = true;
@@ -1030,16 +1018,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song.setFilename(getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
             song.setFolder(getPreferences().getMyPreferenceString("songFolder", mainfoldername));
 
-            // Set the locale
-            //getFixLocale().setLocale(this, this);
-            //locale = fixLocale.getLocale();
-
             // ThemeColors
             getMyThemeColors().getDefaultColors();
 
             // Typefaces
-            getMyFonts().setUpAppFonts(new Handler(), new Handler(), new Handler(), new Handler(), new Handler());
-
+            getMyFonts().setUpAppFonts(mainLooper,mainLooper,mainLooper,mainLooper,mainLooper);
     }
 
     private void setListeners() {

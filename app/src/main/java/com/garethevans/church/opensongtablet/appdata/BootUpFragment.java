@@ -41,7 +41,7 @@ public class BootUpFragment extends Fragment {
     private BootupLogoBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String deeplink_set_storage="", processing="", storage="", wait="", success="",
-            mode_performance="", mainfoldername="", welcome="", set_string="";
+            mode_performance="", mainfoldername="", welcome="", set_string="", initialising="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -68,9 +68,6 @@ public class BootUpFragment extends Fragment {
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 
-        Log.d(TAG,"bootup fragment ready");
-
-        Log.d(TAG,"waitingOnBootUpFragment:"+mainActivityInterface.getWaitingOnBootUpFragment());
         return myView.getRoot();
     }
 
@@ -96,6 +93,7 @@ public class BootUpFragment extends Fragment {
             mode_performance = getString(R.string.mode_performance);
             mainfoldername = getString(R.string.mainfoldername);
             welcome = getString(R.string.welcome);
+            initialising = getString(R.string.initialising);
         }
     }
     private void hideMenus() {
@@ -165,6 +163,16 @@ public class BootUpFragment extends Fragment {
         // Start the boot process
         if (getContext() != null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // Tell the user we're initialising app
+                if (getContext() != null) {
+                    message = initialising;
+                } else {
+                    message = "Initialising";
+                }
+                updateMessage();
+                // Initialise the activity
+                mainActivityInterface.initialiseActivity();
+
                 // Tell the user we're initialising the storage
                 if (getContext() != null) {
                     message = processing + ": " + storage;

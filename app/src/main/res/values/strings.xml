@@ -520,6 +520,7 @@
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
     <string name="info_text_background">Background for information bar</string>
     <string name="information">Information</string>
+    <string name="initialising">Initialising</string>
     <string name="inline_midi">Inline MIDI commands</string>
     <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
     <string name="instrument">Instrument</string>

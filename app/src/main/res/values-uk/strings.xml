@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Приховати, коли інформація відобразиться і мине мінімальний час</string>
     <string name="info_text_background">Фон для інформаційної панелі</string>
     <string name="information">Інформація</string>
+    <string name="initialising">Ініціалізація</string>
     <string name="inline_midi">Вбудовані команди MIDI</string>
     <string name="inline_midi_info">MIDI-команди, які можна запустити, натиснувши на розділ пісні</string>
     <string name="instrument">інструмент</string>

@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Ausblenden, sobald die Informationen angezeigt wurden und eine Mindestzeit verstrichen ist</string>
     <string name="info_text_background">Hintergrund für die Informationsleiste</string>
     <string name="information">Information</string>
+    <string name="initialising">Initialisierung</string>
     <string name="inline_midi">Inline-MIDI-Befehle</string>
     <string name="inline_midi_info">MIDI-Befehle, die durch Klicken auf einen Songabschnitt ausgelöst werden können</string>
     <string name="instrument">Instrument</string>

@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Elrejtés, ha az információ megjelent, és egy minimális idő letelt</string>
     <string name="info_text_background">Az információs sáv háttere</string>
     <string name="information">Információ</string>
+    <string name="initialising">Inicializálás</string>
     <string name="inline_midi">Beágyazott MIDI-parancsok</string>
     <string name="inline_midi_info">MIDI-parancsok, amelyek egy dalszakaszra kattintva indíthatók el</string>
     <string name="instrument">Eszköz</string>

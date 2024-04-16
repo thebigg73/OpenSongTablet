@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">情報が表示され、最小時間が経過したら非表示にします</string>
     <string name="info_text_background">情報バーの背景</string>
     <string name="information">情報</string>
+    <string name="initialising">初期化中</string>
     <string name="inline_midi">インライン MIDI コマンド</string>
     <string name="inline_midi_info">曲のセクションをクリックするとトリガーできるMIDIコマンド</string>
     <string name="instrument">楽器</string>

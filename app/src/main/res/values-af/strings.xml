@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Versteek sodra die inligting vertoon is en \'n minimum tyd verloop het</string>
     <string name="info_text_background">Agtergrond vir inligtingbalk</string>
     <string name="information">Inligting</string>
+    <string name="initialising">Inisialisering</string>
     <string name="inline_midi">Inlyn MIDI opdragte</string>
     <string name="inline_midi_info">MIDI-opdragte wat geaktiveer kan word deur op \'n liedjie-afdeling te klik</string>
     <string name="instrument">Instrument</string>

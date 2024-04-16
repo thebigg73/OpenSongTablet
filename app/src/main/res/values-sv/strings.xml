@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Göm när informationen har visats och en minsta tid har förflutit</string>
     <string name="info_text_background">Bakgrund för informationsfältet</string>
     <string name="information">Information</string>
+    <string name="initialising">Initiering</string>
     <string name="inline_midi">Textbundna MIDI-kommandon</string>
     <string name="inline_midi_info">MIDI-kommandon som kan utlösas genom att klicka på en låtsektion</string>
     <string name="instrument">"Instrument"</string>

@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Sakrijte kada se informacije prikažu i kada protekne minimalno vreme</string>
     <string name="info_text_background">Pozadina za traku sa informacijama</string>
     <string name="information">Информације</string>
+    <string name="initialising">Pokretanje</string>
     <string name="inline_midi">Umetnute MIDI komande</string>
     <string name="inline_midi_info">MIDI komande koje se mogu aktivirati klikom na odeljak pesme</string>
     <string name="instrument">Instrument</string>

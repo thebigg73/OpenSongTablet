@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">显示信息并经过最短时间后隐藏</string>
     <string name="info_text_background">信息栏背景</string>
     <string name="information">信息</string>
+    <string name="initialising">初始化</string>
     <string name="inline_midi">内联 MIDI 命令</string>
     <string name="inline_midi_info">可以通过单击歌曲部分触发的 MIDI 命令</string>
     <string name="instrument">仪器</string>

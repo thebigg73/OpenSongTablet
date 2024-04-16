@@ -424,6 +424,7 @@
     <string name="info_text_autohide_info">Ocultar uma vez que as informações foram exibidas e um tempo mínimo decorrido</string>
     <string name="info_text_background">Plano de fundo para a barra de informações</string>
     <string name="information">Em formação</string>
+    <string name="initialising">Inicialização</string>
     <string name="inline_midi">Comandos MIDI embutidos</string>
     <string name="inline_midi_info">Comandos MIDI que podem ser acionados clicando em uma seção de música</string>
     <string name="instrument">Instrumento</string>

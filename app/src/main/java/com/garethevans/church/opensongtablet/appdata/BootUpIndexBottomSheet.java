@@ -162,9 +162,9 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    try {
+                try {
                         String message = skip_string + " (" + countdownNumber + ")";
+                        Log.d(TAG,"message:"+message);
                         if (myView != null) {
                             mainActivityInterface.getMainHandler().post(() -> myView.skipButton.setText(message));
                         }
@@ -185,7 +185,6 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
                         e.printStackTrace();
                         Log.d(TAG, "The view was lost!");
                     }
-                });
             }
         };
         timer = new Timer();
