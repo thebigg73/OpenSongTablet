@@ -2305,6 +2305,8 @@ public class ProcessSong {
             return new int[]{mainActivityInterface.getMyThemeColors().getLyricsTagColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.custom))) {
             return new int[]{mainActivityInterface.getMyThemeColors().getLyricsCustomColor(),0};
+        } else if (line.contains("[ ]") || line.contains("[]")) {
+            return new int[]{mainActivityInterface.getMyThemeColors().getLyricsVerseColor(),0};
         } else if (line.contains("[") && line.contains("]")) {
             return new int[]{mainActivityInterface.getMyThemeColors().getLyricsCustomColor(),0};
         } else {

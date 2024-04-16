@@ -54,6 +54,9 @@ public class ConvertTextSong {
         // Remove any blank headings if they are redundant
         compiledtext = fixBlankHeadings(compiledtext);
 
+        // Replace double line spaces with blank sections
+        compiledtext = addInAutoSections(compiledtext);
+
         return compiledtext;
     }
 
@@ -221,10 +224,27 @@ public class ConvertTextSong {
             compiledtext = compiledtext.replace("]\n\n","]\n");
             compiledtext = compiledtext.replace("\n\n\n","\n\n");
 
+            // Add spaces to blank sections so they are seen as valid sections
+            compiledtext = compiledtext.replace("[]","[ ]");
+
             return compiledtext;
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
             return "";
         }
+    }
+
+    private String addInAutoSections(String compiledtext) {
+        // Replace multiple line breaks with blank section
+        compiledtext = compiledtext.replace("\n\n\n","\n\n\n[ ]\n");
+        compiledtext = compiledtext.replace("\n \n \n","\n\n\n[ ]\n");
+        compiledtext = compiledtext.replace("\n\n","\n\n[ ]\n");
+        compiledtext = compiledtext.replace("\n \n","\n\n[ ]\n");
+
+        // Now replace blank sections that aren't needed (followed by section already)
+        compiledtext = compiledtext.replace("\n\n\n[ ]\n[","\n\n\n[");
+        compiledtext = compiledtext.replace("\n\n[ ]\n[","\n\n[");
+
+        return compiledtext;
     }
 }
