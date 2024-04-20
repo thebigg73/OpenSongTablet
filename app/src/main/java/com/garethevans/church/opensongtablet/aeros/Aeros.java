@@ -13,7 +13,7 @@ public class Aeros {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     final private String TAG = "Aeros";
 
-    private int aerosChannel = 1;
+    private int aerosChannel;
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private byte[] commandSave, commandNewSong2x2, commandNewSong6x6, commandScrollUp,

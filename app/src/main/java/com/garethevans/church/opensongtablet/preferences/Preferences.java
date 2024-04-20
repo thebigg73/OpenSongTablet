@@ -157,6 +157,7 @@ public class Preferences extends Activity {
     // abcZoom                          int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)
     // addSectionBox   *NOTYET*         boolean     Draw a box around sections when in Performance mode (def:false)
     // addSectionSpace                  boolean     Should a spacing line be added between sections to improve readability (def:true)
+    // aerosChannel                     int         The MIDI channel for the Aeros loop pedal (def:1);
     // airTurnLongPressTime             int         If using airTurnMode, how long should an action_down be held for to simulate longPress (def:1000)
     // airTurnMode                      boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     // allowPinchToZoom                 boolean     Can the song be pinch zoomed in Performance mode? (def:true)

@@ -33,6 +33,15 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/aeros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/aeros"
+                android:hint="@string/aeros_mode"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/beatBuddy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
