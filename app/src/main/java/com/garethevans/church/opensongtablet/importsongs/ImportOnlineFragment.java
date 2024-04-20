@@ -515,8 +515,9 @@ public class ImportOnlineFragment extends Fragment {
                 if ((webString.contains("<div class=\"ugm-b-tab--content js-tab-content\">") ||
                         webString.contains("<div class=\"js-tab-content-wrapper\">") ||
                         (webString.contains("<div class=\"js-page js-global-wrapper ug-page") ||
-                                webString.contains("<pre class=\"tK8GG")) &&
-                                webString.contains("<span class=\"y68er"))) {
+                                (webString.contains("<pre class=\"tK8GG")) &&
+                                (webString.contains("<span class=\"y68er") ||
+                                        webString.contains("<span class=\"fsG7q"))))) {
                     show = true;
                 }
                 break;

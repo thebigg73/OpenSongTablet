@@ -45,8 +45,13 @@ public class UltimateGuitar {
 
         // Alternative (newer method)
         if (lyricsText.isEmpty()) {
-            lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                    "<div class=\"js-page js-global-wrapper","<span class=\"y68er\">","<div class=\"LJhrL\">",s);
+            if (s.contains("<span class=\"fsG7q\"")) {
+                lyricsText = (mainActivityInterface.getProcessSong().getSubstring(
+                        "<div class=\"js-page js-global-wrapper","<span class=\"fsG7q\"","<div class=\"LJhrL\">",s));
+            } else {
+                lyricsText = mainActivityInterface.getProcessSong().getSubstring(
+                        "<div class=\"js-page js-global-wrapper", "<span class=\"y68er\">", "<div class=\"LJhrL\">", s);
+            }
         }
 
         if (lyricsText.isEmpty()) {
