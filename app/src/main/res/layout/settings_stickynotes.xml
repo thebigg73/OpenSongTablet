@@ -84,6 +84,17 @@
                 android:valueTo="32"
                 android:value="14"/>
 
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/stickyWidth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/width"
+                android:valueFrom="100"
+                android:valueTo="1200"
+                android:value="400"
+                app:stepSize="100"/>
+
         </LinearLayout>
 </LinearLayout>
 </ScrollView>

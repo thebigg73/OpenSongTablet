@@ -125,6 +125,10 @@ public class StickyPopUp {
         int h = c.getResources().getDisplayMetrics().heightPixels;
         stickyWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyWidth", 400);
 
+        if (stickyWidth>w) {
+            stickyWidth = w;
+        }
+
         // Fix the sizes
         if (posX == -1 || posX > w) {
             posX = w - stickyWidth - 32;

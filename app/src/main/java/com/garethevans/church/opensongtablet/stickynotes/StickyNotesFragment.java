@@ -86,6 +86,11 @@ public class StickyNotesFragment extends Fragment {
         myView.stickyTextSize.setValue(stickyTextSize);
         myView.stickyTextSize.setHintTextSize(stickyTextSize);
         myView.stickyTextSize.setHint((int)stickyTextSize+"sp");
+
+        int stickyWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyWidth",400);
+        myView.stickyWidth.setLabelFormatter(value -> ((int)value)+"px");
+        myView.stickyWidth.setValue(stickyWidth);
+        myView.stickyWidth.setHint((int)stickyWidth+"px");
     }
 
     private void setTimeHint(int time) {
@@ -162,6 +167,20 @@ public class StickyNotesFragment extends Fragment {
             myView.stickyTextSize.setHintTextSize(value);
             myView.stickyTextSize.setHint(((int)value)+"sp");
         });
+
+        myView.stickyWidth.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceInt("stickyWidth",(int)myView.stickyWidth.getValue());
+            }
+        });
+        myView.stickyWidth.addOnChangeListener((slider, value, fromUser) -> {
+            myView.stickyWidth.setHint(((int)value)+"px");
+        });
+
 
     }
 
