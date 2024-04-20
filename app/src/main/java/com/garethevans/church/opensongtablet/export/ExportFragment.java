@@ -912,7 +912,13 @@ public class ExportFragment extends Fragment {
 
     public void createOnTheFlySections(Song thisSong, String pdfName) {
         // If we don't have any sections in the song, change the double line breaks into sections
-        if (!thisSong.getLyrics().contains("\n[")) {
+        if (thisSong==null) {
+            thisSong =  new Song();
+        }
+        if (thisSong.getLyrics()==null) {
+            thisSong.setLyrics("");
+        }
+        if (thisSong.getLyrics().contains("\n[")) {
             String[] lines = thisSong.getLyrics().split("\n");
             StringBuilder stringBuilder = new StringBuilder();
             for (String line:lines) {
@@ -932,6 +938,7 @@ public class ExportFragment extends Fragment {
 
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.hiddenSections.getViewTreeObserver();
+        Song finalThisSong = thisSong;
         sectionsVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -1037,7 +1044,7 @@ public class ExportFragment extends Fragment {
                         }
                     }
                     if (screenShot) {
-                        createOnTheFlySectionsScreenshot(thisSong,pdfName);
+                        createOnTheFlySectionsScreenshot(finalThisSong,pdfName);
                     } else if (isPrint) {
                         // We have exported a song as a print layout
                         doPrint(false);
