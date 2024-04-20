@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongMenuFragment";
+    private SongMenuSongs songMenuSongs;
     // The helper classes used
     private MenuSongsBinding myView;
     private boolean songButtonActive = true;
@@ -44,7 +46,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             filterSearchVal = "", titleSearchVal = "";
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
             songListSearchByTag, songListSearchByFilter, songListSearchByTitle;
-    private ArrayList<Song> songsFound;
     private ExposedDropDownArrayAdapter folderArrayAdapter, keyArrayAdapter;
     private SongListAdapter songListAdapter;
     private LinearLayoutManager songListLayoutManager;
@@ -92,6 +93,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = MenuSongsBinding.inflate(inflater, container, false);
+
+        songMenuSongs = new ViewModelProvider(this).get(SongMenuSongs.class);
 
         prepareStrings();
 
@@ -155,7 +158,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         }
                     };
                     songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                    songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this);
+                    songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this, songMenuSongs);
 
                     // Back on the UI
                     mainActivityInterface.getMainHandler().post(() -> {
@@ -226,7 +229,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     if (songListAdapter != null) {
                         songListAdapter.notifyDataSetChanged();
                     }
-                    songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this);
+                    songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this, songMenuSongs);
                     myView.songListRecyclerView.setAdapter(songListAdapter);
                     displayIndex();
                     myView.progressBar.setVisibility(View.GONE);
@@ -555,11 +558,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 buttonsEnabled(false);
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                     try {
-                        songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
+                        ArrayList<Song> tempSongsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                                 songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
                                 songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
                                 folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
                                 filterSearchVal, titleSearchVal, songMenuSortTitles);
+                        songMenuSongs.updateSongs(tempSongsFound);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -576,11 +581,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void updateCheckForThisSong(Song thisSong) {
         // Call to update something about a specific song
         getSongsFound();
-        if (songsFound!=null) {
+        if (songMenuSongs.getFoundSongs()!=null) {
             int pos = -1;
-            for (int i = 0; i < songsFound.size(); i++) {
-                if (songsFound.get(i).getFilename().equals(thisSong.getFilename()) &&
-                        songsFound.get(i).getFolder().equals(thisSong.getFolder())) {
+            for (int i = 0; i < songMenuSongs.getCount(); i++) {
+                if (songMenuSongs.getFoundSongs().get(i).getFilename().equals(thisSong.getFilename()) &&
+                        songMenuSongs.getFoundSongs().get(i).getFolder().equals(thisSong.getFolder())) {
                     pos = i;
                     break;
                 }
@@ -602,7 +607,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             try {
                 myView.songmenualpha.sideIndex.removeAllViews();
                 TextView textView;
-                final Map<String, Integer> map = songListAdapter.getAlphaIndex(songsFound);
+                final Map<String, Integer> map = songListAdapter.getAlphaIndex(songMenuSongs.getFoundSongs());
                 Set<String> setString = map.keySet();
                 List<String> indexList = new ArrayList<>(setString);
                 int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
@@ -793,24 +798,27 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public ArrayList<Song> getSongsFound() {
-        if (songsFound==null) {
+        if (songMenuSongs.getFoundSongs()==null) {
             try {
-                songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
+                ArrayList<Song> tempSongsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
                         songListSearchByTag, songListSearchByFilter, songListSearchByTitle,
                         folderSearchVal, artistSearchVal, keySearchVal, tagSearchVal,
                         filterSearchVal, titleSearchVal, songMenuSortTitles);
+                songMenuSongs.updateSongs(tempSongsFound);
+
             } catch (Exception e) {
-                songsFound = new ArrayList<>();
+                ArrayList<Song> tempSongsFound = new ArrayList<>();
+                songMenuSongs.updateSongs(tempSongsFound);
                 e.printStackTrace();
             }
         }
         updateSongCount();
 
-        return songsFound;
+        return songMenuSongs.getFoundSongs();
     }
     public ArrayList<Song> getSongs() {
-        return songsFound;
+        return songMenuSongs.getFoundSongs();
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -899,9 +907,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             myView.songTitleStuff.songCount.post(() -> {
                 if (myView!=null) {
                     myView.songTitleStuff.songCount.setVisibility(View.GONE);
-                    if (songsFound != null) {
+                    if (songMenuSongs.getFoundSongs() != null) {
                         myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);
-                        String count = String.valueOf(songsFound.size());
+                        String count = String.valueOf(songMenuSongs.getCount());
                         myView.songTitleStuff.songCount.setText(count);
                     }
                 }

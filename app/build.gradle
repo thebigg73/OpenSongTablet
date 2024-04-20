@@ -80,7 +80,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.8.2'                                   // Required for activity and permission requests
+    implementation 'androidx.activity:activity:1.9.0'                                   // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.6.2'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.12.0-rc01'                   // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat

@@ -29,18 +29,18 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     private boolean songMenuSortTitles;
     private final float titleSize;
     private final float subtitleSizeAuthor, subtitleSizeFile;
+    private final SongMenuSongs songMenuSongs;
 
     LinkedHashMap<String, Integer> linkedHashMap, linkedHashMap2;
 
     AdapterCallback callback;
 
-    public SongListAdapter(Context c,
-                           AdapterCallback callback) {
+    public SongListAdapter(Context c, AdapterCallback callback, SongMenuSongs songMenuSongs) {
         mainActivityInterface = (MainActivityInterface) c;
         this.callback = callback;
         this.showChecked = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow", true);
-
+        this.songMenuSongs = songMenuSongs;
         songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         // Make the title text the same as the alphaIndex size
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
@@ -55,9 +55,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     @Override
     public int getItemCount() {
-        if (mainActivityInterface.getSongMenuFragment()!=null &&
-                mainActivityInterface.getSongMenuFragment().getSongsFound() != null) {
-            return mainActivityInterface.getSongMenuFragment().getSongsFound().size();
+        if (songMenuSongs!=null && songMenuSongs.getFoundSongs()!=null) {
+            return songMenuSongs.getCount();
         } else {
             return 0;
         }
@@ -100,12 +99,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int z) {
-        if (mainActivityInterface.getSongMenuFragment()!=null &&
-                mainActivityInterface.getSongMenuFragment().getSongsFound()!=null) {
+        if (songMenuSongs!=null &&
+                songMenuSongs.getFoundSongs()!=null) {
             try {
                 int position = songItemViewHolder.getAbsoluteAdapterPosition();
-                if (position!=-1 && position < mainActivityInterface.getSongMenuFragment().getSongsFound().size()) {
-                    Song song = mainActivityInterface.getSongMenuFragment().getSongsFound().get(position);
+                if (position!=-1 && position < songMenuSongs.getCount()) {
+                    Song song = songMenuSongs.getFoundSongs().get(position);
                     String filename = song.getFilename();
                     String title = song.getTitle();
                     String displayname;
@@ -314,12 +313,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public int getPositionOfSong(Song song) {
-        if (mainActivityInterface.getSongMenuFragment()!=null && mainActivityInterface.getSongMenuFragment().getSongsFound()!=null &&
-                mainActivityInterface.getSongMenuFragment().getSongsFound().size()>0) {
+        if (songMenuSongs!=null && songMenuSongs.getFoundSongs()!=null &&
+                songMenuSongs.getCount()>0) {
             try {
-                for (int x = 0; x < mainActivityInterface.getSongMenuFragment().getSongsFound().size(); x++) {
-                    if (mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFilename().equals(song.getFilename()) &&
-                            mainActivityInterface.getSongMenuFragment().getSongsFound().get(x).getFolder().equals(song.getFolder())) {
+                for (int x = 0; x < songMenuSongs.getCount(); x++) {
+                    if (songMenuSongs.getFoundSongs().get(x).getFilename().equals(song.getFilename()) &&
+                            songMenuSongs.getFoundSongs().get(x).getFolder().equals(song.getFolder())) {
                         return x;
                     }
                 }
@@ -389,9 +388,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public void changeCheckBox(int pos) {
-        if (mainActivityInterface.getSongMenuFragment()!=null &&
-                mainActivityInterface.getSongMenuFragment().getSongsFound()!=null &&
-                mainActivityInterface.getSongMenuFragment().getSongsFound().size()>pos) {
+        if (songMenuSongs!=null &&
+                songMenuSongs.getFoundSongs()!=null &&
+                songMenuSongs.getCount()>pos) {
             // Get the current value and change it
             mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(pos,"checkOn"));
         }
