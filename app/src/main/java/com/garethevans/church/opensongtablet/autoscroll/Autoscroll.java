@@ -524,7 +524,7 @@ public class Autoscroll {
                         // How long does it take to scroll this amount
                         scrollRequired = howFarDownSongHeight - displayHeight - prevScrollPos;
                         prevScrollPos = scrollRequired;
-                        float numScrollActions = (float)scrollRequired/(float)scrollIncrement;
+                        float numScrollActions = (float)scrollRequired/scrollIncrement;
                         int scrollTimeStart = Math.round((float)updateTime*numScrollActions);
                         inlinePause.pauseStartTime =  (songDelay*1000) + scrollTimeStart + (inlinePauseTotal*1000);
                         inlinePause.pauseEndTime = inlinePause.pauseStartTime + (thisTime*1000);

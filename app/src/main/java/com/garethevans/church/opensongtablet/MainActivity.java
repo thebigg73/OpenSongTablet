@@ -327,6 +327,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Set up crash collector
+        setUpCrashCollector();
+
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
@@ -353,9 +356,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             // Set the hardware acceleration
             setHardwareAcceleration();
-
-            // Set up crash collector
-            setUpCrashCollector();
 
             mainLooper.post(() -> {
                 // TODO can remove once we track down TransactionTooLarge crash
@@ -459,7 +459,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace(pw);
 
             // Write a crash log file
-            storageAccess.doStringWriteToFile("Settings","","CrashLog.txt",sw.toString());
+            Log.d(TAG,"sw:"+sw);
+            storageAccess.updateCrashLog(sw.toString());
 
             // Switch off hardware acceleration if crash happens to try to alleviate the issue
             // Decided for now to leave this off
@@ -603,7 +604,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         fileOpenIntent = intent;
         // Send the action to be called from the opening fragment to fix backstack!
         if (presenterValid()) {
@@ -1002,7 +1003,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Tell the second screen we are ready
         bootUpCompleted = true;
-        myView.myAppBarLayout.setVisibility(View.VISIBLE);
+
+        mainLooper.post(() -> myView.myAppBarLayout.setVisibility(View.VISIBLE));
 
     }
 

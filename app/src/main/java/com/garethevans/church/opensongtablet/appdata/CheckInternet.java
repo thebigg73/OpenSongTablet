@@ -49,32 +49,20 @@ public class CheckInternet {
     public void checkConnection(Context c, Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             boolean connected = false;
-            if (c!=null) {
-                ConnectivityManager connectivityManager =
-                        (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-                if (connectivityManager != null) {
-                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                    connected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+            try {
+                if (c != null) {
+                    ConnectivityManager connectivityManager =
+                            (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    if (connectivityManager != null) {
+                        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                        connected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                connected = true;
             }
             mainActivityInterface.isWebConnected(fragment, fragId, connected);
-
-
-            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                try {
-                    Socket sock = new Socket();
-                    sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
-                    sock.close();
-                    connected = true;
-                } catch (IOException e) {
-                    connected = false;
-                }
-                Log.d(TAG, "connected=" + connected);
-                mainActivityInterface.isWebConnected(fragment, fragId, connected);
-            } else {
-                // Return true for older devices
-                mainActivityInterface.isWebConnected(fragment, fragId, true);
-            }*/
         });
     }
 
