@@ -8,6 +8,7 @@ import android.net.Uri;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -140,7 +141,11 @@ public class PrepareFormats {
                 uri, "application/pdf","Export","",newFilename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport writeImage Export/"+newFilename);
-        mainActivityInterface.getStorageAccess().writeImage(outputStream,mainActivityInterface.getScreenshot());
+        try (FileInputStream fileInputStream = new FileInputStream(mainActivityInterface.getScreenshotFile())) {
+            mainActivityInterface.getStorageAccess().copyFile(fileInputStream,outputStream);
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
         return uri;
     }
 

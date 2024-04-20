@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.highlighter;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -178,16 +179,14 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     private void getScreenshot() {
-        // If we are using a normal XML song and in performance mode, we have a screenshot of the song view
-        int w = mainActivityInterface.getScreenshot().getWidth();
-        int h = mainActivityInterface.getScreenshot().getHeight();
+        // Screenshot file
+        screenShotBitmap = BitmapFactory.decodeFile(mainActivityInterface.getScreenshotFile().getAbsoluteFile().getAbsolutePath());
+        int w = screenShotBitmap.getWidth();
+        int h = screenShotBitmap.getHeight();
 
         Log.d(TAG, "screenshot: " + w + "x" + h);
         // Get the scale
         setScale(w, h);
-
-        // Set the bitmap as a reference to the screenshot
-        screenShotBitmap = mainActivityInterface.getScreenshot();
     }
 
     private void getImageFile() {

@@ -501,6 +501,9 @@ public class PerformanceFragment extends Fragment {
                                 }
                             });
 
+                            // Clear any screenshot files
+                            mainActivityInterface.setScreenshotFile(null);
+
                             // IV - Reset current values to 0
                             if (mainActivityInterface.getSong()!=null &&
                                     mainActivityInterface.getSong().getFiletype()!=null &&
@@ -1397,15 +1400,18 @@ public class PerformanceFragment extends Fragment {
                     myView.songView.draw(canvas);
                     Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, topPadding, w, h);
                     bitmap.recycle();
-                    mainActivityInterface.setScreenshot(croppedBitmap);
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                        mainActivityInterface.setScreenshotFile(croppedBitmap);
+                        croppedBitmap.recycle();
+                    });
                 }
             } catch (OutOfMemoryError e) {
                 // Change the resolution of the bitmap to a lower option
                 bmpFormat = Bitmap.Config.RGB_565;
-                mainActivityInterface.setScreenshot(null);
+                mainActivityInterface.setScreenshotFile(null);
             } catch (Exception e) {
                 e.printStackTrace();
-                mainActivityInterface.setScreenshot(null);
+                mainActivityInterface.setScreenshotFile(null);
             }
         }
     }
@@ -1565,4 +1571,9 @@ public class PerformanceFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.clear();
+        super.onSaveInstanceState(outState);
+    }
 }

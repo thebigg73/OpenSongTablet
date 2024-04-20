@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
+import com.garethevans.church.opensongtablet.aeros.Aeros;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
@@ -73,6 +74,7 @@ import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -245,6 +247,7 @@ public interface MainActivityInterface {
     void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
     Drummer getDrummer();
     BeatBuddy getBeatBuddy();
+    Aeros getAeros();
 
     // Database
     SQLiteHelper getSQLiteHelper();
@@ -283,8 +286,9 @@ public interface MainActivityInterface {
     // Highlighter notes
     DrawNotes getDrawNotes();
     void setDrawNotes(DrawNotes view);
-    void setScreenshot(Bitmap bitmap);
-    Bitmap getScreenshot();
+    File getScreenshotFile();
+    boolean validScreenShotFile();
+    void setScreenshotFile(Bitmap bitmap);
 
     // Custom slides
     Bible getBible();

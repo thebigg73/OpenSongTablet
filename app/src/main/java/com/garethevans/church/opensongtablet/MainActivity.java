@@ -50,6 +50,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
+import com.garethevans.church.opensongtablet.aeros.Aeros;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
@@ -186,15 +187,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Initialise the Executors and main handlers for async tasks
     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-            Runtime.getRuntime().availableProcessors() + 1,// Initial pool size
+            Runtime.getRuntime().availableProcessors() ,               // Initial pool size
             (Runtime.getRuntime().availableProcessors() * 8),          // Max pool size (including queued)
-            1000,                                                        // Time for idle thread to remain
-            TimeUnit.MILLISECONDS,                                      // Unit
-            new ArrayBlockingQueue<>(10)                      // Blocking queue
+            1000,                                                      // Time for idle thread to remain
+            TimeUnit.MILLISECONDS,                                     // Unit
+            new ArrayBlockingQueue<>(10)                     // Blocking queue
     );
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
+    private Aeros aeros;
     private AlertChecks alertChecks;
     //private CustomToolBar customToolBar;
     private Autoscroll autoscroll;
@@ -294,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private final String TAG = "MainActivity";
     private Menu globalMenuItem;
     private Locale locale;
-    private Bitmap screenShot;
+    private File screenshotFile;
     private Runnable hideActionButtonRunnable;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
 
@@ -360,12 +362,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             mainLooper.post(() -> {
                 // TODO can remove once we track down TransactionTooLarge crash
                 TooLargeTool.startLogging(this.getApplication());
-
                 WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
             });
 
             if (savedInstanceState != null) {
                 //ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
+                Log.d(TAG,"TooLargeTool is logging:"+TooLargeTool.bundleBreakdown(savedInstanceState));
                 bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
                 rebooted = true;
                 getSongListBuildIndex();
@@ -777,6 +779,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = getPerformanceGestures();
         pageButtons = getPageButtons();
         midi = getMidi();
+        aeros = getAeros();
         beatBuddy = getBeatBuddy();
         drummer = getDrummer();
         pedalActions = getPedalActions();
@@ -2487,6 +2490,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public Aeros getAeros() {
+        if (aeros == null) {
+            aeros = new Aeros(this);
+        }
+        return aeros;
+    }
+
+    @Override
     public BeatBuddy getBeatBuddy() {
         if (beatBuddy == null) {
             beatBuddy = new BeatBuddy(this);
@@ -3645,18 +3656,39 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void setScreenshot(Bitmap bitmap) {
-        if (bitmap!=null) {
-            screenShot = Bitmap.createBitmap(bitmap);
-            bitmap.recycle();
+    public void setScreenshotFile(Bitmap bitmap) {
+        if (screenshotFile==null) {
+            getScreenshotFile();
+        }
+        if (bitmap==null) {
+            Log.d(TAG,"Deleting old screenshot:"+screenshotFile.delete());
         } else {
-            screenShot = null;
+            try {
+                FileOutputStream out = new FileOutputStream(screenshotFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public Bitmap getScreenshot() {
-        return screenShot;
+    public File getScreenshotFile() {
+        if (screenshotFile==null) {
+            screenshotFile = getStorageAccess().getAppSpecificFile("", "", "screenshot.png");
+        }
+        return screenshotFile;
+    }
+
+    @Override
+    public boolean validScreenShotFile() {
+        if (screenshotFile==null) {
+            getScreenshotFile();
+        }
+        Log.d(TAG,"screenshotFile:"+screenshotFile+"  length:"+screenshotFile.length());
+        return screenshotFile.exists() && screenshotFile.length()>0;
     }
 
     @Override
