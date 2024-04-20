@@ -18,7 +18,7 @@ public class UtilitiesMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsUtilitiesBinding myView;
-    private String beatBuddy_string = "", utilities_string="";
+    private String beatBuddy_string = "", utilities_string="", aeros_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,6 +50,7 @@ public class UtilitiesMenuFragment extends Fragment {
         if (getContext()!=null) {
             utilities_string = getString(R.string.utilities);
             beatBuddy_string = getString(R.string.deeplink_beatbuddy_options);
+            aeros_string = getString(R.string.deeplink_aeros);
         }
     }
     private void setupListeners() {
@@ -62,6 +63,7 @@ public class UtilitiesMenuFragment extends Fragment {
             tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"tunerBottomSheet");
         });
         myView.beatBuddy.setOnClickListener(v -> mainActivityInterface.navigateToFragment(beatBuddy_string,0));
+        myView.aeros.setOnClickListener(v -> mainActivityInterface.navigateToFragment(aeros_string,0));
     }
 
 }

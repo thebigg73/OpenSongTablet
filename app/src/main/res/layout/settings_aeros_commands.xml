@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
+        android:id="@+id/aerosNestedScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/aerosChannel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_channel"
+                android:value="1"
+                android:valueFrom="1"
+                android:valueTo="16"
+                app:adjustable="true"
+                app:stepSize="1" />
+            <TableRow style="@style/DividerLine" />
+
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/midiDelay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_delay"
+                android:value="100"
+                android:valueFrom="0"
+                android:valueTo="1000"
+                app:adjustable="true"
+                app:stepSize="100" />
+            <TableRow style="@style/DividerLine" />
+
+        </LinearLayout>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

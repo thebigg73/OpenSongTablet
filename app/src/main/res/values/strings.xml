@@ -26,6 +26,8 @@
     <string name="add_song_to_set">Add current song to set</string>
     <string name="add_songs">Add songs</string>
     <string name="added_to_set">has been added to the end of your current set.</string>
+    <string name="aeros" translatable="false">Aeros</string>
+    <string name="aeros_info">Settings specific to Aeros loop pedal</string>
     <string name="aeros_mode">Aeros mode</string>
     <string name="aeros_mode_info">This restricts the number of folders to 128 in total.  The first 111 are designated as folders and the remaining 17 are designated as playlists</string>
     <string name="after">After</string>
@@ -304,6 +306,7 @@
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="deeplink_abc" translatable="false">https://www.opensongapp.com/?p=settings/actions/abcnotation</string>
     <string name="deeplink_actionbar" translatable="false">https://www.opensongapp.com/?p=settings/display/actionbar</string>
+    <string name="deeplink_aeros" translatable="false">https://www.opensongapp.com/?p=settings/utilities/aeros</string>
     <string name="deeplink_alert" translatable="false">https://www.opensongapp.com/?p=alert</string>
     <string name="deeplink_autoscroll_settings" translatable="false">https://www.opensongapp.com/?p=settings/autoscroll</string>
     <string name="deeplink_backup" translatable="false">https://www.opensongapp.com/?p=settings/storage/backup</string>
@@ -1198,6 +1201,7 @@
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
+    <string name="website_aeros" translatable="false">https://www.opensongapp.com/user-manual/utilities/aeros</string>
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
     <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>

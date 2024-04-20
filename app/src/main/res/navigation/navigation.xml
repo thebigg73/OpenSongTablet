@@ -890,6 +890,18 @@
                 <action
                     android:id="@+id/action_utilitiesMenuFragment_to_BBOptionsFragment"
                     app:destination="@id/BeatBuddy" />
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_AerosFragment"
+                    app:destination="@id/aerosCommands" />
+            </fragment>
+            <fragment
+                android:id="@+id/aerosCommands"
+                android:name="com.garethevans.church.opensongtablet.aeros.AerosFragment"
+                android:label="AerosFragment"
+                tools:layout="@layout/settings_aeros_commands">
+                <deepLink
+                    android:id="@+id/deepLinkAeros"
+                    app:uri="@string/deeplink_aeros" />
             </fragment>
             <dialog
                 android:id="@+id/tunerBottomSheet"
