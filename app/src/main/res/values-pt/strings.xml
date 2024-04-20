@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Use a estrutura de acordes nesta seção</string>
     <string name="copy_of">Cópia de</string>
     <string name="copyright">"Info Copyright"</string>
+    <string name="crash_log">Registo de falhas</string>
+    <string name="crash_log_hint">O registro de falhas está sempre ativo e pode ajudar o desenvolvedor a corrigir problemas com o aplicativo para você e outras pessoas. Por favor, envie-o por e-mail para crashlog@opensongapp.com. Depois de enviar um log de falhas, você deve redefinir esse arquivo.  Se o arquivo não existir, ou você não tiver experimentado uma falha, os botões abaixo serão desativados</string>
     <string name="create_folder_error">"Houve um erro ao criar a nova pasta !"</string>
     <string name="create_new_song">"Criar uma nova canção"</string>
     <string name="crossfade_time">Tempo crossfade</string>

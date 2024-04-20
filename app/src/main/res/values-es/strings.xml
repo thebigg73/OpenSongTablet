@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Usa la estructura de acordes en esta sección</string>
     <string name="copy_of">Copiar</string>
     <string name="copyright">"Información Legal"</string>
+    <string name="crash_log">Registro de bloqueos</string>
+    <string name="crash_log_hint">El registro de bloqueos siempre está activo y puede ayudar al desarrollador a solucionar problemas con la aplicación para usted y otros. Por favor, envíelo por correo electrónico a crashlog@opensongapp.com. Una vez que envíe un registro de bloqueo, debe restablecer este archivo.  Si el archivo no existe, o no ha experimentado un bloqueo, los botones a continuación se desactivarán</string>
     <string name="create_folder_error">"Hubo un error al crear la nueva carpeta !"</string>
     <string name="create_new_song">"Crear nueva canción"</string>
     <string name="crossfade_time">Tiempo crossfade</string>

@@ -21,7 +21,7 @@ public class AboutAppFragment extends Fragment {
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String about="", website="", user_guide="", website_address="", website_latest="",
-            website_forum="", deeplink_forum="", website_rate="", packageName="", website_paypal="",
+            website_forum="", website_rate="", packageName="", website_paypal="",
             website_github="", deeplink_logs="";
 
     @Override
@@ -64,7 +64,6 @@ public class AboutAppFragment extends Fragment {
             website_paypal = getString(R.string.website_paypal);
             website_github =  getString(R.string.website_github);
             deeplink_logs = getString(R.string.deeplink_logs);
-            deeplink_forum = getString(R.string.deeplink_forum);
         }
         if (getActivity()!=null) {
             packageName = getActivity().getPackageName();

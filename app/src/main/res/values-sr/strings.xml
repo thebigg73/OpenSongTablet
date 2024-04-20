@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Koristite strukturu akorda u ovom odeljku</string>
     <string name="copy_of">Kopiraj</string>
     <string name="copyright">Copyright info</string>
+    <string name="crash_log">Evidencija pada</string>
+    <string name="crash_log_hint">Vođenje evidencije o padu je uvek aktivno i može pomoći projektantu da reši probleme sa aplikacijom u za vas i drugima. Pošaljite je e-poštom crashlog@opensongapp.com. Kada pošaljete evidenciju pada sistema, trebalo bi da uspostavite početne vrednosti ove datoteke.  Ako datoteka ne postoji ili niste iskusili pad, dugmad ispod će biti onemogućena</string>
     <string name="create_folder_error">Nastala je greška tokom pravljenja nove fascikle!</string>
     <string name="create_new_song">Napraviti novu pesmu</string>
     <string name="crossfade_time">Vreme cross-fade</string>

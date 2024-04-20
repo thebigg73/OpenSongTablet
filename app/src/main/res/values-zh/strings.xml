@@ -241,6 +241,8 @@
     <string name="copy_chord_section">使用本节中的和弦结构</string>
     <string name="copy_of">复制</string>
     <string name="copyright">"版权信息"</string>
+    <string name="crash_log">崩溃日志</string>
+    <string name="crash_log_hint">崩溃日志记录始终处于活动状态，可以帮助开发人员为您和其他人解决应用问题。请通过电子邮件将其发送给 crashlog@opensongapp.com。发送崩溃日志后，应重置此文件。 如果文件不存在，或者您没有遇到崩溃，则下面的按钮将被禁用</string>
     <string name="create_folder_error">"在建立新的文件夹的错误！"</string>
     <string name="create_new_song">"创建新曲"</string>
     <string name="crossfade_time">交叉淡入淡出的时间</string>

@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Χρησιμοποιήστε τη δομή της χορδής σε αυτήν την ενότητα</string>
     <string name="copy_of">Αντίγραφο</string>
     <string name="copyright">"Copyright info"</string>
+    <string name="crash_log">Αρχείο καταγραφής σφαλμάτων</string>
+    <string name="crash_log_hint">Η καταγραφή σφαλμάτων είναι πάντα ενεργή και μπορεί να βοηθήσει τον προγραμματιστή να διορθώσει προβλήματα με την εφαρμογή για εσάς και άλλους. Στείλτε το με email στο crashlog@opensongapp.com. Μόλις στείλετε ένα αρχείο καταγραφής σφαλμάτων, θα πρέπει να επαναφέρετε αυτό το αρχείο.  Εάν το αρχείο δεν υπάρχει ή δεν έχετε αντιμετωπίσει σφάλμα, τα παρακάτω κουμπιά θα απενεργοποιηθούν</string>
     <string name="create_folder_error">"Υπήρξε πρόβλημα στην δημιουργία νέου φακέλου!"</string>
     <string name="create_new_song">"Δημιουργία νέου τραγουδιού"</string>
     <string name="crossfade_time">"Cross-fade time"</string>

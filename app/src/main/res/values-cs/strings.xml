@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Použijte strukturu akordu v této části</string>
     <string name="copy_of">Kopírovat</string>
     <string name="copyright">"Copyright info"</string>
+    <string name="crash_log">Protokol selhání</string>
+    <string name="crash_log_hint">Protokolování chyb je vždy aktivní a může vývojářům pomoct vyřešit problémy s aplikací pro vás i ostatní. Zašlete jej prosím e-mailem na adresu crashlog@opensongapp.com. Jakmile odešlete protokol selhání, měli byste tento soubor resetovat.  Pokud soubor neexistuje nebo jste nezaznamenali pád, níže uvedená tlačítka budou deaktivována</string>
     <string name="create_folder_error">"Došlo k chybě při vytváření nové složky !"</string>
     <string name="create_new_song">"Vytvořit nový song"</string>
     <string name="crossfade_time">Crossfade čas</string>

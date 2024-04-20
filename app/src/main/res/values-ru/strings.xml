@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Использовать структуру аккордов в этом разделе</string>
     <string name="copy_of">Копия</string>
     <string name="copyright">Информация об авторском праве</string>
+    <string name="crash_log">Журнал сбоев</string>
+    <string name="crash_log_hint">Ведение журнала сбоев всегда активно и может помочь разработчику устранить проблемы с приложением для вас и других пользователей. Пожалуйста, отправьте его по электронной почте crashlog@opensongapp.com. После того, как вы отправите журнал сбоев, вы должны сбросить этот файл.  Если файл не существует, или у вас не было сбоя, кнопки ниже будут отключены</string>
     <string name="create_folder_error">Ошибка при создании папки!</string>
     <string name="create_new_song">Создать новую песню</string>
     <string name="crossfade_time">Время плавного перехода</string>

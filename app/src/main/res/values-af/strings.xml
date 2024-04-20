@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Gebruik die akkoordstruktuur in hierdie afdeling</string>
     <string name="copy_of">Kopieer</string>
     <string name="copyright">"Kopiereg inligting"</string>
+    <string name="crash_log">Crash log</string>
+    <string name="crash_log_hint">Crash logging is altyd aktief en kan die ontwikkelaar help om probleme met die toepassing vir jou en ander op te los. E-pos dit asseblief aan crashlog@opensongapp.com. Sodra u \'n ongelukslogboek gestuur het, moet u hierdie lêer terugstel.  As die lêer nie bestaan nie, of as u nie \'n ongeluk ondervind het nie, sal die knoppies hieronder gedeaktiveer word</string>
     <string name="create_folder_error">"Daar was 'n fout met die skep van die nuwe gids !"</string>
     <string name="create_new_song">"Skep nuwe lied"</string>
     <string name="crossfade_time">Cross tyd</string>

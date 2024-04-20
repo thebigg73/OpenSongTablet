@@ -21,7 +21,8 @@ public class ShareLogsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsShareLogsBinding myView;
     private String log_string="", website_string="";
-    private final String writeLog_string="fileWriteActivity.txt", viewLog_string="fileHistory.csv", settings_string="Settings";
+    private final String writeLog_string="fileWriteActivity.txt", viewLog_string="fileHistory.csv",
+            crashLog_string="CrashLog.txt", settings_string="Settings";
     private Uri writeLog, viewLog;
 
     @Override
@@ -71,6 +72,7 @@ public class ShareLogsFragment extends Fragment {
     private void changeVisibilities() {
         myView.fileWriteLogLayout.setVisibility(mainActivityInterface.getStorageAccess().getFileWriteLog() ? View.VISIBLE:View.GONE);
         myView.fileViewLayout.setVisibility(mainActivityInterface.getStorageAccess().getFileViewLog() ? View.VISIBLE:View.GONE);
+        checkCrashLogExists();
     }
 
     private void setupListeners() {
@@ -86,12 +88,28 @@ public class ShareLogsFragment extends Fragment {
         myView.fileViewReset.setOnClickListener(view -> mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,viewLog,null,settings_string,"",viewLog_string));
         myView.fileWriteShare.setOnClickListener(view -> shareFile(writeLog_string,"text/plain", writeLog));
         myView.fileViewShare.setOnClickListener(view -> shareFile(viewLog_string,"text/csv", viewLog));
+        myView.crashLogReset.setOnClickListener(view -> {
+            mainActivityInterface.getStorageAccess().deleteFile(mainActivityInterface.getStorageAccess().getCrashLogUri());
+            checkCrashLogExists();
+        });
+        myView.crashLogShare.setOnClickListener(view -> {
+            shareFile(crashLog_string,"text/plain",mainActivityInterface.getStorageAccess().getCrashLogUri());
+        });
+    }
+
+    private void checkCrashLogExists() {
+        boolean crashLogExists = mainActivityInterface.getStorageAccess().crashLogExists();
+        myView.crashLogReset.setEnabled(crashLogExists);
+        myView.crashLogShare.setEnabled(crashLogExists);
     }
 
     private void shareFile(String whichName, String type, Uri whichFile) {
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(whichName,type,whichFile,null);
         intent.putExtra(Intent.EXTRA_SUBJECT, whichName);
         intent.putExtra(Intent.EXTRA_TITLE, whichName);
+        if (whichName.equals(crashLog_string)) {
+            intent.putExtra(Intent.ACTION_SENDTO,"crashlog@opensongapp.com");
+        }
         startActivity(Intent.createChooser(intent, whichName));
     }
 }

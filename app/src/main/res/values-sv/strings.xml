@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Använd ackordstrukturen i det här avsnittet</string>
     <string name="copy_of">Kopiera</string>
     <string name="copyright">"Upphovsrättsinformation"</string>
+    <string name="crash_log">Krasch logg</string>
+    <string name="crash_log_hint">Kraschloggning är alltid aktiv och kan hjälpa utvecklaren att åtgärda problem med appen för dig och andra. Skicka den via e-post till crashlog@opensongapp.com. När du har skickat en kraschlogg bör du återställa den här filen.  Om filen inte finns, eller om du inte har upplevt en krasch, kommer knapparna nedan att inaktiveras</string>
     <string name="create_folder_error">"Det uppstod ett fel vid skapandet av den nya mappen!"</string>
     <string name="create_new_song">"Skapa ny låt"</string>
     <string name="crossfade_time">"Cross-blekna tid"</string>

@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Használja ebben a részben az akkordszerkezetet</string>
     <string name="copy_of">Másolat</string>
     <string name="copyright">"Szerzői jogi információk"</string>
+    <string name="crash_log">Összeomlási napló</string>
+    <string name="crash_log_hint">Az összeomlás-naplózás mindig aktív, és segíthet a fejlesztőnek az alkalmazással kapcsolatos problémák megoldásában Ön és mások számára. Kérjük, küldje el e-mailben a crashlog@opensongapp.com. Miután elküldte az összeomlási naplót, állítsa vissza ezt a fájlt.  Ha a fájl nem létezik, vagy nem tapasztalt összeomlást, az alábbi gombok le lesznek tiltva</string>
     <string name="create_folder_error">"Hiba történt létrehozása az új mappa !"</string>
     <string name="create_new_song">"Új dal"</string>
     <string name="crossfade_time">Crossfade idő</string>

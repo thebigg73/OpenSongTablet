@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Usa la struttura degli accordi in questa sezione</string>
     <string name="copy_of">Copia</string>
     <string name="copyright">"Info Copyright"</string>
+    <string name="crash_log">Registro degli arresti anomali</string>
+    <string name="crash_log_hint">La registrazione degli arresti anomali è sempre attiva e può aiutare lo sviluppatore a risolvere i problemi con l\'app per te e per gli altri. Si prega di inviarlo via e-mail a crashlog@opensongapp.com. Dopo aver inviato un registro degli arresti anomali, è necessario reimpostare questo file.  Se il file non esiste o non si è verificato un arresto anomalo, i pulsanti sottostanti saranno disabilitati</string>
     <string name="create_folder_error">"Si è verificato un errore durante la creazione della nuova cartella !"</string>
     <string name="create_new_song">"Crea una nuova canzone"</string>
     <string name="crossfade_time">Tempo crossfade</string>

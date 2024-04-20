@@ -241,6 +241,8 @@
     <string name="copy_chord_section">このセクションのコード構造を使用する</string>
     <string name="copy_of">コピー</string>
     <string name="copyright">"著作権情報"</string>
+    <string name="crash_log">クラッシュログ</string>
+    <string name="crash_log_hint">クラッシュ ログは常にアクティブであり、開発者があなたや他の人のためにアプリの問題を修正するのに役立ちます。crashlog@opensongapp.com までメールでお送りください。クラッシュログを送信したら、このファイルをリセットする必要があります。 ファイルが存在しない場合、またはクラッシュが発生していない場合、以下のボタンは無効になります</string>
     <string name="create_folder_error">"新しいフォルダの作成中にエラーが発生しました！"</string>
     <string name="create_new_song">"新規ソングを作成し"</string>
     <string name="crossfade_time">クロスフェード時間</string>

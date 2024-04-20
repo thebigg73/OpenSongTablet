@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Utilisez la structure d\'accords dans cette section</string>
     <string name="copy_of">Copie</string>
     <string name="copyright">"Infos Copyright"</string>
+    <string name="crash_log">Journal des plantages</string>
+    <string name="crash_log_hint">La journalisation des plantages est toujours active et peut aider le développeur à résoudre les problèmes liés à l’application pour vous et les autres. Veuillez l’envoyer par e-mail à crashlog@opensongapp.com. Une fois que vous avez envoyé un journal de plantage, vous devez réinitialiser ce fichier.  Si le fichier n’existe pas ou si vous n’avez pas rencontré de plantage, les boutons ci-dessous seront désactivés</string>
     <string name="create_folder_error">"Erreur lors de la création du nouveau dossier !"</string>
     <string name="create_new_song">"Créer un nouveau morceau"</string>
     <string name="crossfade_time">Durée du fondu</string>

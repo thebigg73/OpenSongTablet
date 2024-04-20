@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Użyj struktury akordów w tej sekcji</string>
     <string name="copy_of">Kopiuj</string>
     <string name="copyright">Prawa autorskie</string>
+    <string name="crash_log">Dziennik awarii</string>
+    <string name="crash_log_hint">Rejestrowanie awarii jest zawsze aktywne i może pomóc programiście rozwiązać problemy z aplikacją dla Ciebie i innych osób. Wyślij go e-mailem na adres crashlog@opensongapp.com. Po wysłaniu dziennika awarii należy zresetować ten plik.  Jeśli plik nie istnieje lub nie wystąpiła awaria, poniższe przyciski zostaną wyłączone</string>
     <string name="create_folder_error">Wystąpił błąd podczas tworzenia nowego folderu!</string>
     <string name="create_new_song">Stwórz nową piosenkę</string>
     <string name="crossfade_time">Czas zanikania krzyżowego</string>

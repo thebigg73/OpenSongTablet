@@ -279,6 +279,8 @@
     <string name="copy_chord_section">Use the chord structure in this section</string>
     <string name="copy_of">Copy</string>
     <string name="copyright">Copyright</string>
+    <string name="crash_log">Crash log</string>
+    <string name="crash_log_hint">Crash logging is always active and can help the developer fix issues with the app for you and others. Please email it to crashlog@opensongapp.com. Once you send a crash log, you should reset this file.  If the file does not exist, or you have not experienced a crash, the buttons below will be disabled</string>
     <string name="create_folder_error">There was an error creating the new folder!</string>
     <string name="create_new_song">Create new song</string>
     <string name="crossfade_time">Cross-fade time</string>

@@ -241,6 +241,8 @@
     <string name="copy_chord_section">Verwenden Sie die Akkordstruktur in diesem Abschnitt</string>
     <string name="copy_of">Kopieren</string>
     <string name="copyright">"Copyright-Informationen"</string>
+    <string name="crash_log">Absturz-Protokoll</string>
+    <string name="crash_log_hint">Die Absturzprotokollierung ist immer aktiv und kann dem Entwickler helfen, Probleme mit der App für Sie und andere zu beheben. Bitte senden Sie es per E-Mail an crashlog@opensongapp.com. Nachdem Sie ein Absturzprotokoll gesendet haben, sollten Sie diese Datei zurücksetzen.  Wenn die Datei nicht existiert oder Sie keinen Absturz erlebt haben, werden die Schaltflächen unten deaktiviert</string>
     <string name="create_folder_error">"Es gab einen Fehler beim Erstellen des neuen Ordners!"</string>
     <string name="create_new_song">"Neuer Song"</string>
     <string name="crossfade_time">Überblendzeit</string>

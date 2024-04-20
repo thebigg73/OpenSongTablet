@@ -45,6 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -2494,4 +2495,30 @@ public class StorageAccess {
         return null;
     }
 
+    public void updateCrashLog(String crash) {
+        // Get details about the user's device - they can delete this before sending
+        int sdkInt = Build.VERSION.SDK_INT;
+        String appVersion = mainActivityInterface.getVersionNumber().getFullVersionInfo();
+        String deviceCode = Build.DEVICE;
+        String crashDate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        String crashContent = "Please share this with crashlog@opensongapp.com\n" +
+                "=============================\n"+
+                "OpenSongApp version: "+appVersion + "\n" +
+                "Android API: "+sdkInt+"\n" +
+                "Device: " + deviceCode + "\n" +
+                "Crash time: " + crashDate + "\n" +
+                "=============================\n"+
+                "If possible, please give a brief description of what you were doing when the app crashed:\n\n\n\n\n\n" +
+                "=============================\n" +
+                crash;
+        // Write a crash log file
+        doStringWriteToFile("Settings","","CrashLog.txt",crashContent);
+    }
+
+    public Uri getCrashLogUri() {
+        return getUriForItem("Settings","","CrashLog.txt");
+    }
+    public boolean crashLogExists() {
+        return uriExists(getCrashLogUri());
+    }
 }
