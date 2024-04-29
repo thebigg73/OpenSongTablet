@@ -86,8 +86,10 @@ public class BeatBuddy {
     public BeatBuddy(Context c) {
         this.mainActivityInterface = (MainActivityInterface) c;
         setPrefs();
-        buildCommands();
-        checkDatabase(c);
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            buildCommands();
+            checkDatabase(c);
+        });
     }
 
     private void checkDatabase(Context c) {

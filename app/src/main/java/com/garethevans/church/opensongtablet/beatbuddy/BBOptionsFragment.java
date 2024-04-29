@@ -77,9 +77,11 @@ public class BBOptionsFragment extends Fragment {
         // If the database file does not exist, create it
         if (getContext()!=null) {
             try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
-                bbsqLite.checkDefaultDatabase();
-                Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
-                Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    bbsqLite.checkDefaultDatabase();
+                    Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
+                    Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
+                });
             }
         }
     }
@@ -116,11 +118,13 @@ public class BBOptionsFragment extends Fragment {
     public void resetDatabase() {
         if (getContext()!=null) {
             try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
-                bbsqLite.resetDatabase();
-                bbsqLite.checkDefaultDatabase();
-                Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
-                Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
-                mainActivityInterface.getShowToast().doIt(success_string);
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    bbsqLite.resetDatabase();
+                    bbsqLite.checkDefaultDatabase();
+                    Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
+                    Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
+                    mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(success_string));
+                });
             } catch (Exception e) {
                 mainActivityInterface.getShowToast().doIt(error_string);
             }

@@ -622,8 +622,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (storageAccess == null) {
             storageAccess = new StorageAccess(this);
         }
-
-        if (!preferences.getMyPreferenceBoolean("intentAlreadyDealtWith",false) &&
+        getThreadPoolExecutor().execute(() -> {
+            if (!preferences.getMyPreferenceBoolean("intentAlreadyDealtWith",false) &&
                 fileOpenIntent != null && fileOpenIntent.getData() != null && storageAccess.getFileSizeFromUri(fileOpenIntent.getData())>0) {
             preferences.setMyPreferenceBoolean("intentAlreadyDealtWith",true);
             importUri = fileOpenIntent.getData();
@@ -698,7 +698,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                     if (dealingWithIntent != null && !dealingWithIntent.isEmpty()) {
-                        navigateToFragment(dealingWithIntent, 0);
+                        getMainHandler().post(() -> navigateToFragment(dealingWithIntent, 0));
                         // Reset the flag to allow dealing with a new intent as we have handled this one
                         preferences.setMyPreferenceBoolean("intentAlreadyDealtWith",false);
                     }
@@ -714,6 +714,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        });
     }
 
     private void setupHelpers() {
