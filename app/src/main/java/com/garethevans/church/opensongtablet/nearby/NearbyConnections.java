@@ -684,6 +684,10 @@ public class NearbyConnections implements NearbyInterface {
                         }
                         // not dealing with files as it is complex with scoped storage access
                         // also don't want user's download folder getting clogged!
+                    } else {
+                        // If we are the host, we could have been asked to synchronise storage
+                        // TODO
+                        Log.d(TAG,"Running as a host");
                     }
                 }
             }

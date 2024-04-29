@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -119,9 +120,10 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/save"
-                    app:srcCompat="@drawable/download"
                     app:fabSize="mini"
-                    app:useCompatPadding="false" />
+                    app:srcCompat="@drawable/download"
+                    app:useCompatPadding="false"
+                    tools:ignore="DuplicateClickableBoundsCheck" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/grabText"
@@ -130,9 +132,10 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/text_extract_check"
-                    app:srcCompat="@drawable/search"
                     app:fabSize="mini"
-                    app:useCompatPadding="false"/>
+                    app:srcCompat="@drawable/search"
+                    app:useCompatPadding="false"
+                    tools:ignore="RedundantDescriptionCheck" />
             </FrameLayout>
 
             <FrameLayout
