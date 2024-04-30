@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -26,6 +27,9 @@ public class WebServer extends NanoHTTPD {
     private Context c;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "WebServer";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String nochords = "nochords/", songmenu = "songmenu/", songitem = "songitem/",
+            setmenu = "setmenu/", setitem = "setitem/", hostsong = "hostsong/";
     private String ip;
     private boolean runWebServer, allowWebNavigation;
     private final String localFileSplit = ":____:";
@@ -72,10 +76,17 @@ public class WebServer extends NanoHTTPD {
     // Deal with the server request for a webpage
     @Override
     public Response serve(IHTTPSession session) {
+        // Session is what is sent by the client requesting a page from here
+        // I've added the option of chords as a post parameter
         String pagerequest = session.getUri();
         String mimeType = MIME_HTML;
         String localFile = null;
         String webpage = "";
+        boolean showchords = !pagerequest.contains(nochords);
+
+        Log.d(TAG,"showchords:"+showchords);
+        Log.d(TAG,"pagerequest:"+pagerequest);
+
         if (pagerequest.contains("_PDF/")) {
             // Serve a pdf image
             localFile = pagerequest.substring(pagerequest.indexOf("_PDF/")).replace("_PDF/","");
@@ -98,27 +109,26 @@ public class WebServer extends NanoHTTPD {
             mimeType = "image/bmp";
         }
 
-
-            if (localFile==null && allowWebNavigation) {
-             if (pagerequest.contains("/setmenu/")) {
+        if (localFile==null && allowWebNavigation) {
+            if (pagerequest.contains(setmenu)) {
                 // Get the current browsed song
-                String currSong = getCurrSong("songitem/", pagerequest);
+                String currSong = getCurrSong(songitem, pagerequest);
                 if (currSong.isEmpty()) {
-                    currSong = getCurrSong("setitem/", pagerequest);
+                    currSong = getCurrSong(setitem, pagerequest);
                 }
-                webpage = createSetSongListHTML(true, currSong);
+                webpage = createSetSongListHTML(true, currSong, showchords);
 
-            } else if (pagerequest.contains("/songmenu/")) {
+            } else if (pagerequest.contains(songmenu)) {
                 // Get the current browsed song
-                String currSong = getCurrSong("songitem/", pagerequest);
+                String currSong = getCurrSong(songitem, pagerequest);
                 if (currSong.isEmpty()) {
-                    currSong = getCurrSong("setitem/", pagerequest);
+                    currSong = getCurrSong(setitem, pagerequest);
                 }
-                webpage = createSetSongListHTML(false, currSong);
+                webpage = createSetSongListHTML(false, currSong, showchords);
 
-            } else if (pagerequest.contains("/setitem/")) {
+            } else if (pagerequest.contains(setitem)) {
                 // We want to load a song in the set at the position afterwards
-                pagerequest = pagerequest.replace("/setitem/", "");
+                pagerequest = pagerequest.replace(setitem, "");
                 pagerequest = pagerequest.replaceAll("\\D", "");
                 if (!pagerequest.isEmpty()) {
                     // Get the song to load
@@ -128,12 +138,12 @@ public class WebServer extends NanoHTTPD {
                     songForHTML.setFolder(setItemInfo.songfolder);
                     songForHTML.setFilename(setItemInfo.songfilename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1, "setitem/" + setItemNum);
+                    webpage = getProcessedSongHTML(songForHTML, true, setItemNum, mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1, setitem + setItemNum, showchords, false);
                 }
 
-            } else if (pagerequest.contains("/songitem/")) {
+            } else if (pagerequest.contains(songitem)) {
                 // We want to load a song in the song menu at the position afterwards
-                pagerequest = pagerequest.replace("/songmenu/", "");
+                pagerequest = pagerequest.replace(songitem, "");
                 pagerequest = pagerequest.replaceAll("\\D", "");
                 if (!pagerequest.isEmpty()) {
                     // Get the song to load
@@ -144,19 +154,23 @@ public class WebServer extends NanoHTTPD {
                     songForHTML.setFolder(folder);
                     songForHTML.setFilename(filename);
                     songForHTML = mainActivityInterface.getLoadSong().doLoadSong(songForHTML, false);
-                    webpage = getProcessedSongHTML(songForHTML, false, songItemNum, mainActivityInterface.getSongsInMenu().size(), "songitem/" + songItemNum);
+                    webpage = getProcessedSongHTML(songForHTML, false, songItemNum, mainActivityInterface.getSongsInMenu().size(), songitem + songItemNum, showchords, false);
                 }
 
             } else {
                 // This is for /hostsong/ or the default splash screen for navigation mode
                 int songItemNumber = mainActivityInterface.getPositionOfSongInMenu();
-                webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, songItemNumber, mainActivityInterface.getSongsInMenu().size(), "songitem/" + songItemNumber);
+                webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, songItemNumber, mainActivityInterface.getSongsInMenu().size(), songitem + songItemNumber, showchords, true);
 
             }
         } else if (localFile == null) {
             // Just show the current song with no menu
-            webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, 0, 0, "songitem/0");
+            webpage = getProcessedSongHTML(mainActivityInterface.getSong(), false, 0, 0, songitem + "0", showchords, false);
         }
+
+        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","web.html", webpage);
+
+        Log.d(TAG,"webpage:"+webpage);
 
         if (localFile==null) {
             return newFixedLengthResponse(webpage);
@@ -195,6 +209,7 @@ public class WebServer extends NanoHTTPD {
         if (!text.isEmpty() && !text.startsWith("/")) {
             text = "/" + text;
         }
+        Log.d(TAG,"text:"+text);
         return text;
     }
 
@@ -225,7 +240,7 @@ public class WebServer extends NanoHTTPD {
                 e.printStackTrace();
             }
         }
-        return "http://" + ip + ":8080";
+        return "http://" + ip + ":8080/";
     }
     public Bitmap getIPQRCode() {
         QRCodeWriter writer = new QRCodeWriter();
@@ -272,17 +287,15 @@ public class WebServer extends NanoHTTPD {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("allowWebNavigation",allowWebNavigation);
     }
 
-
-
     // The web page creation
-    private String createSetSongListHTML(boolean setlist, String currSong) {
+    private String createSetSongListHTML(boolean setlist, String currSong, boolean showchords) {
         // Get the name of the current song
         int currSongIndex = getCurrSongIndex(currSong);
         int songMenuIndex = 0;
         int setMenuIndex = 0;
-        if (!setlist && currSong.contains("songitem/")) {
+        if (!setlist && currSong.contains(songitem)) {
             songMenuIndex = currSongIndex;
-        } else if (setlist && currSong.contains("setitem/")) {
+        } else if (setlist && currSong.contains(setitem)) {
             setMenuIndex = currSongIndex;
         }
 
@@ -304,28 +317,18 @@ public class WebServer extends NanoHTTPD {
                 .append(";}\n")
                 .append(".item {font-family:")
                 .append(mainActivityInterface.getMyFonts().getLyricFontName())
-                .append("; color:")
+                .append(", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:")
                 .append(String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())))
                 .append("; padding:6px; font-size:10.0pt;}\n")
                 .append(getMenuBarCSS())
-                .append("body {width:100%;}\n")
+                .append("body {width:100%; font-family:")
+                .append(mainActivityInterface.getMyFonts().getLyricFontName())
+                .append(", -apple-system, BlinkMacSystemFont, Lato, Arial, sans-serif;}\n")
                 .append("</style>\n")
                 .append("<script>\n")
-                .append("var index=").append(currSongIndex).append(";\n")
-                .append("var currSong=\"").append(currSong).append("\";\n")
-                .append("var minSize=true;\n")
-                .append("var maxSize=true;\n")
-                .append("var splash=false;\n")
-                .append("var allowWebNavigation=")
-                .append(allowWebNavigation)
-                .append(";\n")
-                .append("var inset=")
-                .append(setlist)
-                .append(";\n")
+                .append(getGlobalJSVariables(showchords,allowWebNavigation,currSongIndex,setlist,0,currSong,true, false))
+                .append(getChordFunctionsJS())
                 .append(getResizeJS())
-                .append("var serverAddress = \"")
-                .append(getIP())
-                .append("\";\n")
                 .append(getGoToSongJS())
                 .append(getNavigateJS())
                 .append("</script>\n")
@@ -344,7 +347,7 @@ public class WebServer extends NanoHTTPD {
                 if (x == setMenuIndex) {
                     curritemId = " id =\"currentItem\"";
                 }
-                setSongListHTML.append("<div").append(curritemId).append(" class=\"item\" onclick=\"javascript:getSong('set','")
+                setSongListHTML.append("<div").append(curritemId).append(" class=\"item\" onclick=\"javascript:getSpecificSong('set','")
                         .append(x).append("')\">").append(x+1).append(". ").append(title).append("</div>\n");
                 setSongListHTML.append("<hr width=\"100%\"/>\n");
             }
@@ -356,7 +359,7 @@ public class WebServer extends NanoHTTPD {
                 if (x == songMenuIndex) {
                     curritemId = " id =\"currentItem\"";
                 }
-                setSongListHTML.append("<div").append(curritemId).append(" class=\"item\" onclick=\"javascript:getSong('song','")
+                setSongListHTML.append("<div").append(curritemId).append(" class=\"item\" onclick=\"javascript:getSpecificSong('song','")
                         .append(x).append("')\">").append(title).append("</div>\n");
                 setSongListHTML.append("<hr width=\"100%\"/>\n");
             }
@@ -366,7 +369,7 @@ public class WebServer extends NanoHTTPD {
 
         return setSongListHTML.toString();
     }
-    private String getProcessedSongHTML(Song songForHTML, boolean inset, int index, int max, String currSong) {
+    private String getProcessedSongHTML(Song songForHTML, boolean inset, int index, int max, String currSong, boolean showchords, boolean showhostsong) {
         mainActivityInterface.getProcessSong().processSongIntoSections(songForHTML,false);
         // IV - Initialise transpose capo key  - might be needed
         mainActivityInterface.getTranspose().capoKeyTranspose(songForHTML);
@@ -387,7 +390,7 @@ public class WebServer extends NanoHTTPD {
         } else if (songForHTML.getFiletype().equals("PDF")) {
             imgPDFSong = "<object type=\"application/pdf\" data=\"_PDF/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\" width=\"600px\" height=\"600px\">" +
                     "<p>" + c.getString(R.string.pdf_preview_not_allowed) + "</p>\n" +
-                     "<a href=\"_PDF/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\"/>" + c.getString(R.string.download) + " " + songForHTML.getFilename() + "</a></object>";
+                    "<a href=\"_PDF/" + songForHTML.getFolder() + localFileSplit + songForHTML.getFilename() + "\"/>" + c.getString(R.string.download) + " " + songForHTML.getFilename() + "</a></object>";
         }
 
         // Check to see if the song is in the users set even if clicked on from web song menu
@@ -396,7 +399,7 @@ public class WebServer extends NanoHTTPD {
             if (findindex>-1) {
                 index = findindex;
                 inset = true;
-                max = mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1;
+                max = Math.max(mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1,0);
             }
         }
         String songContent = "";
@@ -430,9 +433,9 @@ public class WebServer extends NanoHTTPD {
                     }
                 }
             }
-        songContent = mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(songForHTML) +
-                mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(songForHTML) +
-                stringBuilder;
+            songContent = mainActivityInterface.getSongSheetHeaders().getSongSheetTitleMainHTML(songForHTML) +
+                    mainActivityInterface.getSongSheetHeaders().getSongSheetTitleExtrasHTML(songForHTML) +
+                    stringBuilder;
         }
 
         return  "<!DOCTYPE html>\n" +
@@ -447,18 +450,9 @@ public class WebServer extends NanoHTTPD {
                 "body        {width:100%;}\n" +
                 "</style>\n" +
                 "<script>\n" +
-                "  var allowWebNavigation="+allowWebNavigation+";\n" +
-                "  var minSize=false;\n" +
-                "  var maxSize=true;\n" +
-                "  var splash=false;\n" +
+                getGlobalJSVariables(showchords,allowWebNavigation,index,inset,max,currSong,false,showhostsong) +
+                getChordFunctionsJS() +
                 getResizeJS() +
-                "  var serverAddress = \"" +
-                getIP() +
-                "\";\n" +
-                "  var index="+index+";\n" +
-                "  var inset="+inset+";\n" +
-                "  var maxitems="+max+";\n" +
-                "  var currSong=\"" + currSong + "\";\n" +
                 getGoToSongJS() +
                 getNavigateJS() +
                 "</script>\n" +
@@ -469,8 +463,6 @@ public class WebServer extends NanoHTTPD {
                 "<div id=\"content\" style=\"width:fit-content; transform-origin: top left;\">\n" +
                 imgPDFSong +
                 songContent +
-                //"<img src=\"_JPEG/Alex" + localFileSplit + "set.jpg\" width=\"100%\">\n" +
-                //"<object type=\"application/pdf\" data=\"_PDF/Drums" + localFileSplit + "35-flam.pdf\" width=\"250\" height=\"200\"></object>" +
                 "</div>\n</body>\n" +
                 "</html>";
     }
@@ -484,41 +476,77 @@ public class WebServer extends NanoHTTPD {
         String base2 = "&swap=true');\n";
         String importString = base1+mainActivityInterface.getMyFonts().getLyricFontName()+base2;
         importString += base1+mainActivityInterface.getMyFonts().getChordFontName()+base2;
-        importString += ".menu {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:white; " +
+        importString += ".menu {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:white; " +
                 "font-size:14.0pt;}\n";
-        importString += ".lyric {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+"; color:" +
+        importString += ".lyric {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:14.0pt; white-space:nowrap; width: fit-content;}\n";
-        importString += ".chord {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", Tahoma, Verdana, sans-serif; color:" +
+        importString += ".chord {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsChordsColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".capo {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", Tahoma, Verdana, sans-serif; color:" +
+        importString += ".capo {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsCapoColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".titlemain {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:" +
+        importString += ".titlemain {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*1.1f)+"pt; " +
                 "text-decoration:underline;}\n";
-        importString += ".titleextras {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:" +
+        importString += ".titleextras {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*0.6f)+"pt; " +
                 "text-decoration:none;}\n";
-        importString += ".heading {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", Tahoma, Verdana, sans-serif; color:" +
+        importString += ".heading {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleHeadings)+"pt; " +
                 "text-decoration:underline;}\n";
         //importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+", 'Courier New', Courier, monospace; color:" +
-        importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+"; color:" +
+        importString += ".mono {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+", 'Courier New', monospace; color:" +
                 String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
                 "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleTabs)+"pt; " +
                 "text-decoration:none;}\n";
-         return importString;
+        return importString;
     }
-    private String getResizeJS() {
+
+    private String getGlobalJSVariables(boolean showchords, boolean allowWebNavigation,
+                                        int index, boolean inset, int maxitems, String currSong,
+                                        boolean minSize, boolean showhostsong) {
+        String showchordsline = "  var chords = true;\n";
+        if (!showchords) {
+            showchordsline = "  var chords = false;\n";
+        }
         return  "  var contentWidth;\n" +
                 "  var menuWidth;\n" +
                 "  var menuscaleratio = 1;\n" +
-                "  function measure() {\n" +
+                "  var showhostsong = " + showhostsong + ";\n" +
+                showchordsline +
+                "  var menusized = false;\n" +
+                "  var allowWebNavigation="+allowWebNavigation+";\n" +
+                "  var minSize=" + minSize + ";\n" +
+                "  var maxSize=true;\n" +
+                "  var splash=false;\n" +
+                "  var serverAddress = \"" + getIP() + "\";\n" +
+                "  var index="+index+";\n" +
+                "  var inset="+inset+";\n" +
+                "  var maxitems="+maxitems+";\n" +
+                "  var currSong=\"" + currSong + "\";\n";
+    }
+
+    private String getChordFunctionsJS() {
+        return "  function addNoChords() {" +
+                "    var chordbit = \"\";\n" +
+                "    if (!chords) {\n" +
+                "      chordbit = \"" + nochords + "\";\n" +
+                "    }\n" +
+                "    return chordbit;\n" +
+                "  }\n" +
+                "  function toggleChords() {\n" +
+                "    chords = !chords;\n" +
+                "    getSong();\n" +
+                "  }\n";
+    }
+
+    private String getResizeJS() {
+        return "  function measure() {\n" +
                 "    if (splash) {\n" +
                 "      contentWidth = 512;\n" +
                 "      menuWidth = 512;\n" +
@@ -535,14 +563,34 @@ public class WebServer extends NanoHTTPD {
                 "        document.getElementById('set').style.backgroundColor = \"#232333\";\n" +
                 "      }\n" +
                 "    }\n" +
+                "    var chordlines = document.getElementsByClassName('chord');\n" +
+                "    for (var i = 0; i < chordlines.length; i ++) {\n" +
+                "       if (chords==false) {\n" +
+                "           chordlines[i].style.display = 'none';\n" +
+                "       } else {\n" +
+                "           chordlines[i].style.display = 'table-cell';\n" +
+                "       }\n" +
+                "    }\n" +
+                "    var capolines = document.getElementsByClassName('capo');\n" +
+                "    for (var i = 0; i < capolines.length; i ++) {\n" +
+                "       if (chords==false) {\n" +
+                "           capolines[i].style.display = 'none';\n" +
+                "       } else {\n" +
+                "           capolines[i].style.display = 'table-cell';\n" +
+                "       }\n" +
+                "    }\n" +
                 "    resize();\n" +
-                "    location.href=\"#currentItem\";\n" +
+                "    window.location.href = \"#currentItem\";\n" +
                 "  }\n" +
                 "  function resize() {\n" +
                 "    var viewportWidth = document.body.clientWidth - 24;\n" +
                 "    var padding = document.body.style.padding;\n" +
-                "    var scaleratio = viewportWidth/contentWidth;\n" +
-                "    menuscaleratio = viewportWidth/menuWidth;\n" +
+                "    var scaleratio = 1;\n" +
+                "    if (!menusized) {\n" +
+                "       menuscaleratio = viewportWidth/menuWidth;\n" +
+                "       scaleratio = viewportWidth/contentWidth;\n" +
+                "       menusized = true;\n" +
+                "    }\n" +
                 "    if (menuscaleratio>2) {\n" +
                 "        menuscaleratio = 2;\n" +
                 "    }\n" +
@@ -573,57 +621,72 @@ public class WebServer extends NanoHTTPD {
                 "    if (location.hash.length !== 0) {\n" +
                 "       window.scrollTo(window.scrollX, window.scrollY - (document.getElementById('menu').clientHeight) * menuscaleratio);\n" +
                 "    }\n" +
+                "    if (chords) {\n" +
+                "      document.getElementById('chordbutton').style.textDecoration = \"none\";\n" +
+                "    } else {\n" +
+                "      document.getElementById('chordbutton').style.textDecoration = \"line-through\";\n" +
+                "    }\n" +
                 "  }\n" +
                 "  window.addEventListener(\"hashchange\", offsetAnchor);\n" +
                 "  window.setTimeout(offsetAnchor, 1); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).\n\n";
     }
 
+
+
     private String getGoToSongJS() {
-        return  "  function getSong(how,index) {\n" +
-                "      if (how==\"currSong\") {\n " +
-                "        window.location.href = serverAddress + currSong;\n" +
-                "      } else if (how==\"set\") {\n" +
-                "        window.location.href = serverAddress + \"/setitem/\" + index;\n" +
+        return  "  function getSong() {\n" +
+                "      if (showhostsong) {\n " +
+                "        window.location.href = serverAddress + addNoChords() + currSong;\n" +
+                "      } else if (inset) {\n" +
+                "        window.location.href = serverAddress + addNoChords() + \"" + setitem + "\" + index;\n" +
                 "      } else {\n" +
-                "        window.location.href = serverAddress + \"/songitem/\" + index;\n" +
+                "        window.location.href = serverAddress + addNoChords() + \"" + songitem + "\" + index;\n" +
                 "      }\n" +
+                "      showhostsong = false;\n" +
+                "  }\n" +
+                "  function getSpecificSong(how,newindex) {\n" +
+                "      index = newindex;\n" +
+                "      if (how==\"currSong\") {\n " +
+                "        showhostsong = true;\n" +
+                "      } else if (how==\"set\") {\n" +
+                "        inset = true;\n" +
+                "      } else {\n" +
+                "        inset = false;\n" +
+                "      }\n" +
+                "      getSong();\n" +
                 "  }\n";
     }
     private String getNavigateJS() {
         return  "  function songMenu() {\n" +
-                "    if (inset) {\n" +
-                "      window.location.href = serverAddress + \"/songmenu/\" + currSong;\n" +
-                "    } else {\n" +
-                "      window.location.href = serverAddress + \"/songmenu/\" + currSong;\n" +
-                "    }\n" +
+                "    window.location.href = serverAddress + addNoChords() + \"" + songmenu + "\" + currSong;\n" +
                 "  }\n" +
                 "  function setMenu() {\n" +
-                "    if (inset) {\n" +
-                "      window.location.href = serverAddress + \"/setmenu/\" + currSong;\n" +
-                "    } else {\n" +
-                "      window.location.href = serverAddress + \"/setmenu/\" + currSong;\n" +
-                "    }\n" +
+                "    window.location.href = serverAddress + addNoChords() + \"" + setmenu + "\" + currSong;\n" +
                 "  }\n" +
                 "  function back() {\n" +
                 "    if (index>0) {\n" +
                 "      if (inset) {\n" +
-                "        getSong('set',index-1);\n" +
+                "        getSpecificSong('set',index-1);\n" +
                 "      } else {\n" +
-                "        getSong('song',index-1);\n" +
+                "        getSpecificSong('song',index-1);\n" +
                 "      }\n" +
                 "    }\n" +
                 "  }\n" +
                 "  function forward() {\n" +
                 "    if (index<maxitems) {\n" +
                 "      if (inset) {\n" +
-                "        getSong('set',index+1);\n" +
+                "        getSpecificSong('set',index+1);\n" +
                 "      } else {\n" +
-                "        getSong('song',index+1);\n" +
+                "        getSpecificSong('song',index+1);\n" +
                 "      }\n" +
                 "    }\n" +
                 "  }\n" +
                 "  function hostSong() {\n" +
-                "    window.location.href = serverAddress + \"/hostsong/\";\n" +
+                "    var chordbit = \"\";\n" +
+                "    if (chords) {\n" +
+                "        chordbit = \"" + nochords + "\";\n" +
+                "    }\n" +
+                "    window.location.href = serverAddress + addNoChords() + \"" + hostsong + "\";\n" +
                 "  }\n";
     }
     private String getMenuBarCSS() {
@@ -631,7 +694,7 @@ public class WebServer extends NanoHTTPD {
             return "#menu {position:fixed; padding: 0; top:0; overflow-x: scroll; white-space: nowrap; display:inline-block; transform-origin: top left; " +
                     "color:white; position:fixed; z-index:1; " +
                     "background-color:" + String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) + "; " +
-                    "font-family:" + mainActivityInterface.getMyFonts().getLyricFontName() + ", Tahoma, Verdana, sans-serif; " +
+                    "font-family:" + mainActivityInterface.getMyFonts().getLyricFontName() + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; " +
                     "font-size:8pt;}\n" +
                     "a {margin-right:8px; padding:8px; float:left; display:inline-block; padding:8px; color:white; background-color:#294959; font-size:16pt;}\n" +
                     "a:link {color:white; text-decoration:none; font-size:8pt;}\n" +
@@ -648,10 +711,10 @@ public class WebServer extends NanoHTTPD {
             String songmenuJS = "songMenu()";
             String setmenuJS = "setMenu()";
             if (songmenu) {
-                songmenuJS = "javascript:getSong('currSong',0)";
+                songmenuJS = "javascript:getSpecificSong('currSong',0)";
             }
             if (setmenu) {
-                setmenuJS = "javascript:getSong('currSong',0)";
+                setmenuJS = "javascript:getSpecificSong('currSong',0)";
             }
             text = "<span id=\"menu\">\n<a id=\"songs\" href=\"javascript:" + songmenuJS + "\">&nbsp; " + c.getString(R.string.songs) + "&nbsp; </a>\n" +
                     "<a id=\"set\" href=\"javascript:" + setmenuJS + "\">&nbsp; " + c.getString(R.string.set) + "&nbsp; </a>\n";
@@ -659,6 +722,7 @@ public class WebServer extends NanoHTTPD {
                 text += "</span>\n";
             } else {
                 text += "<a href=\"javascript:hostSong()\">&nbsp; " + c.getString(R.string.web_server_host_song) + "&nbsp; </a>\n" +
+                        "<a href=\"javascript:toggleChords()\">&nbsp; <span id=\"chordbutton\">" + c.getString(R.string.chords) + "</span>&nbsp; </a>\n" +
                         "<a href=\"javascript:back()\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a>\n" +
                         "<a href=\"javascript:forward()\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a>\n</span>\n";
             }
