@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -884,8 +883,6 @@ public class Transpose {
 
     private String swapToPrefChords(String flatOption, String sharpOption, String chord,
                                     boolean defaultFlatMinor) {
-        Log.d(TAG,"swapToPrefChords before:"+chord);
-
         if (chord.startsWith(flatOption+"m") || chord.startsWith(sharpOption+"m")) {
             // Check the minor chord first
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKey_"+flatOption+"m",defaultFlatMinor)) {
@@ -901,7 +898,6 @@ public class Transpose {
                 chord = chord.replace(flatOption,sharpOption);
             }
         }
-        Log.d(TAG,"swapToPrefChords after:"+chord);
 
         return chord;
     }
@@ -984,7 +980,6 @@ public class Transpose {
     }
 
     public String getFixedKey(String selectedKey) {
-        Log.d(TAG,"song key:"+selectedKey);
         String original = selectedKey;
         int format = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
         if (format == 3) {
@@ -995,18 +990,25 @@ public class Transpose {
         }
 
         if (format == 2 || format == 3) {
-            if (selectedKey.equals("Aism")) {
-                selectedKey = "b (A#m)";
-            } else if (selectedKey.equals("Besm")) {
-                selectedKey = "b (Bbm)";
-            } else if (selectedKey.equals("Ais")) {
-                selectedKey = "B (A#)";
-            } else if (selectedKey.equals("Bes")) {
-                selectedKey = "B (Bb)";
-            } else if (selectedKey.equals("Bm")) {
-                selectedKey = "h (Bm)";
-            } else if (selectedKey.equals("B")) {
-                selectedKey = "H (B)";
+            switch (selectedKey) {
+                case "Aism":
+                    selectedKey = "b (A#m)";
+                    break;
+                case "Besm":
+                    selectedKey = "b (Bbm)";
+                    break;
+                case "Ais":
+                    selectedKey = "B (A#)";
+                    break;
+                case "Bes":
+                    selectedKey = "B (Bb)";
+                    break;
+                case "Bm":
+                    selectedKey = "h (Bm)";
+                    break;
+                case "B":
+                    selectedKey = "H (B)";
+                    break;
             }
 
             if (selectedKey.endsWith("m")) {
@@ -1018,12 +1020,10 @@ public class Transpose {
             }
         }
 
-        Log.d(TAG,"fixed key based on chordFormat:"+format+" :"+selectedKey);
         return selectedKey;
     }
 
     public String getOriginalFixedKey(String selectedKey) {
-        Log.d(TAG,"chosen key:"+selectedKey);
         if (selectedKey.contains("(")) {
             // Get the bit in brackets as the actual key
             selectedKey = selectedKey.substring(selectedKey.indexOf("("));
@@ -1054,7 +1054,6 @@ public class Transpose {
                 selectedKey = selectedKey.replace(")", "");
             }
         }
-        Log.d(TAG, "actual key:" + selectedKey);
         return selectedKey;
     }
 
@@ -1095,14 +1094,5 @@ public class Transpose {
             key_choice_string[21] = "h (Bm)";
         }
         return key_choice_string;
-    }
-
-    public String getOnlyFixedNoBrackets(String selectedKey) {
-        selectedKey = getFixedKey(selectedKey);
-        if (selectedKey.contains(" (")) {
-            selectedKey = selectedKey.substring(0,selectedKey.indexOf(" "));
-            selectedKey = selectedKey.trim();
-        }
-        return selectedKey;
     }
 }
