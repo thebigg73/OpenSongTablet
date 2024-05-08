@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -883,6 +884,7 @@ public class Transpose {
 
     private String swapToPrefChords(String flatOption, String sharpOption, String chord,
                                     boolean defaultFlatMinor) {
+        Log.d(TAG,"swapToPrefChords before:"+chord);
 
         if (chord.startsWith(flatOption+"m") || chord.startsWith(sharpOption+"m")) {
             // Check the minor chord first
@@ -899,6 +901,8 @@ public class Transpose {
                 chord = chord.replace(flatOption,sharpOption);
             }
         }
+        Log.d(TAG,"swapToPrefChords after:"+chord);
+
         return chord;
     }
 
@@ -977,5 +981,128 @@ public class Transpose {
 
     public void setConvertToSharps(boolean convertToSharps) {
         this.convertToSharps = convertToSharps;
+    }
+
+    public String getFixedKey(String selectedKey) {
+        Log.d(TAG,"song key:"+selectedKey);
+        String original = selectedKey;
+        int format = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
+        if (format == 3) {
+            selectedKey = selectedKey.replace("b", "es");
+            selectedKey = selectedKey.replace("#", "is");
+            selectedKey = selectedKey.replace("Ees", "Es");
+            selectedKey = selectedKey.replace("Aes", "As");
+        }
+
+        if (format == 2 || format == 3) {
+            if (selectedKey.equals("Aism")) {
+                selectedKey = "b (A#m)";
+            } else if (selectedKey.equals("Besm")) {
+                selectedKey = "b (Bbm)";
+            } else if (selectedKey.equals("Ais")) {
+                selectedKey = "B (A#)";
+            } else if (selectedKey.equals("Bes")) {
+                selectedKey = "B (Bb)";
+            } else if (selectedKey.equals("Bm")) {
+                selectedKey = "h (Bm)";
+            } else if (selectedKey.equals("B")) {
+                selectedKey = "H (B)";
+            }
+
+            if (selectedKey.endsWith("m")) {
+                // Convert to lowercase and remove the m
+                selectedKey = selectedKey.toLowerCase(Locale.ROOT).replace("m","") + " ("+original+")";
+            } else if (selectedKey.endsWith("s")) {
+                // Add the original
+                selectedKey = selectedKey + " ("+original+")";
+            }
+        }
+
+        Log.d(TAG,"fixed key based on chordFormat:"+format+" :"+selectedKey);
+        return selectedKey;
+    }
+
+    public String getOriginalFixedKey(String selectedKey) {
+        Log.d(TAG,"chosen key:"+selectedKey);
+        if (selectedKey.contains("(")) {
+            // Get the bit in brackets as the actual key
+            selectedKey = selectedKey.substring(selectedKey.indexOf("("));
+            selectedKey = selectedKey.replace("(","");
+            selectedKey = selectedKey.replace(")","");
+
+        } else {
+            // Figure it out if we are in format 2 or 3
+            int format = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat", 1);
+            if ((format == 2 || format == 3) && selectedKey.equals(selectedKey.toLowerCase(Locale.ROOT))) {
+                // Minor key add m to the end
+                selectedKey = selectedKey + "m";
+                // Change the first character to uppercase
+                String firstChar = selectedKey.substring(0, 1);
+                selectedKey = selectedKey.replaceFirst(firstChar, firstChar.toUpperCase(Locale.ROOT));
+            }
+
+            if (format == 3) {
+                selectedKey = selectedKey.replace("is", "#");
+                selectedKey = selectedKey.replace("Es", "Eb");
+                selectedKey = selectedKey.replace("As", "Ab");
+                selectedKey = selectedKey.replace("es", "b");
+            }
+
+            if ((format == 2 || format == 3) && selectedKey.contains("(")) {
+                selectedKey = selectedKey.substring(selectedKey.lastIndexOf("("));
+                selectedKey = selectedKey.replace("(", "");
+                selectedKey = selectedKey.replace(")", "");
+            }
+        }
+        Log.d(TAG, "actual key:" + selectedKey);
+        return selectedKey;
+    }
+
+    public String[] fixTempKeys(String[] key_choice_string) {
+        // Because users may have set preferred chord formats, we might need to change some of the key choices
+        // This is temp and only shown on screen.  The actual key is saved back as the standard format
+        // This keeps it inline with the desktop app
+        // def:1=normal, 2=Bb->B and B->H, 3=same as 2, but with is/es/as. 4=doremi, 5=nashvillenumber 6=nashvillenumeral
+        // 0>'' 1>A  2>A#  3>Bb  4>
+        String[] originals = new String[key_choice_string.length];
+        System.arraycopy(key_choice_string, 0, originals, 0, originals.length);
+        int format = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
+        if (format == 3) {
+            for (int x=1; x<=34; x++) {
+                key_choice_string[x] = key_choice_string[x].replace("b", "es");
+                key_choice_string[x] = key_choice_string[x].replace("Ees", "Es");
+                key_choice_string[x] = key_choice_string[x].replace("Aes", "As");
+                key_choice_string[x] = key_choice_string[x].replace("#", "is");
+            }
+        }
+
+        if (format == 2 || format ==3 ) {
+            for (int x=1; x<=34; x++) {
+                if (key_choice_string[x].endsWith("m")) {
+                    key_choice_string[x] = key_choice_string[x].toLowerCase(Locale.ROOT).replace("m","") + " ("+originals[x]+")";
+                } else if (key_choice_string[x].contains("s")) {
+                    key_choice_string[x] = key_choice_string[x] + " (" + originals[x] + ")";
+                }
+            }
+        }
+
+        if (format == 2 || format == 3) {
+            key_choice_string[2] = "B (A#)";
+            key_choice_string[3] = "B (Bb)";
+            key_choice_string[4] = "H (B)";
+            key_choice_string[19] = "b (A#m)";
+            key_choice_string[20] = "b (Bbm)";
+            key_choice_string[21] = "h (Bm)";
+        }
+        return key_choice_string;
+    }
+
+    public String getOnlyFixedNoBrackets(String selectedKey) {
+        selectedKey = getFixedKey(selectedKey);
+        if (selectedKey.contains(" (")) {
+            selectedKey = selectedKey.substring(0,selectedKey.indexOf(" "));
+            selectedKey = selectedKey.trim();
+        }
+        return selectedKey;
     }
 }

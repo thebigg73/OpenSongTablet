@@ -74,6 +74,9 @@ public class EditSongFragmentFeatures extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             key_choice_string = getResources().getStringArray(R.array.key_choice);
+            // Fix the default keys to the user preferred chord format B>H, #>is, b>es, etc.
+            key_choice_string = mainActivityInterface.getTranspose().fixTempKeys(key_choice_string);
+
             pad_auto_string = getString(R.string.pad_auto);
             link_audio_string = getString(R.string.link_audio);
             off_string = getString(R.string.off);
@@ -101,11 +104,11 @@ public class EditSongFragmentFeatures extends Fragment {
                 ExposedDropDownArrayAdapter keyArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
                         myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
                 myView.key.setAdapter(keyArrayAdapter1);
-                myView.key.setText(mainActivityInterface.getTempSong().getKey());
+                myView.key.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKey()));
                 ExposedDropDownArrayAdapter keyArrayAdapter2 = new ExposedDropDownArrayAdapter(getContext(),
                         myView.originalkey, R.layout.view_exposed_dropdown_item, key_choice_string);
                 myView.originalkey.setAdapter(keyArrayAdapter2);
-                myView.originalkey.setText(mainActivityInterface.getTempSong().getKeyOriginal());
+                myView.originalkey.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKeyOriginal()));
             });
         }
         mainActivityInterface.getMainHandler().post(() -> myView.searchOnline.setText(online_search_string));
@@ -244,7 +247,7 @@ public class EditSongFragmentFeatures extends Fragment {
                 origkey = songkey;
                 mainActivityInterface.getTempSong().setKeyOriginal(songkey);
                 String finalSongkey = songkey;
-                mainActivityInterface.getMainHandler().post(() -> myView.originalkey.setText(finalSongkey));
+                mainActivityInterface.getMainHandler().post(() -> myView.originalkey.setText(mainActivityInterface.getTranspose().getFixedKey(finalSongkey)));
             }
 
             for (int x = 1; x < 12; x++) {
@@ -391,11 +394,11 @@ public class EditSongFragmentFeatures extends Fragment {
         public void afterTextChanged(Editable editable) {
             switch (what) {
                 case "key":
-                    mainActivityInterface.getTempSong().setKey(editable.toString());
+                    mainActivityInterface.getTempSong().setKey(mainActivityInterface.getTranspose().getOriginalFixedKey(editable.toString()));
                     setupCapo();
                     break;
                 case "originalkey":
-                    mainActivityInterface.getTempSong().setKeyOriginal(editable.toString());
+                    mainActivityInterface.getTempSong().setKeyOriginal(mainActivityInterface.getTranspose().getOriginalFixedKey(editable.toString()));
                     break;
                 case "capo":
                     // Get rid of any new key text (e.g. convert '1 (D)' to '1')
@@ -493,6 +496,7 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.durationMins.setText(String.valueOf(mins));
         myView.durationSecs.setText(String.valueOf(secs));
     }
+
 
     @Override
     public void onDestroyView() {

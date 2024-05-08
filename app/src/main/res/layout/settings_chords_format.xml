@@ -48,6 +48,37 @@
 
             <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chordformat_preferred"/>
+
+            <LinearLayout
+                android:id="@+id/chooseFormatLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/choosePreferredFormat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="@string/chord_format" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/chosenPreferredFormat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:hint="@string/chordformat_1"
+                    android:text="@null" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/prefSliders"
                 android:layout_width="match_parent"
@@ -145,6 +176,7 @@
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/assumePreferred"
                 android:layout_width="match_parent"
@@ -153,30 +185,6 @@
                 android:hint="@string/chordformat_default_info"
                 android:text="@string/chordformat_default" />
 
-            <LinearLayout
-                android:id="@+id/chooseFormatLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                    android:id="@+id/choosePreferredFormat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:hint="@string/chord_format" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/chosenPreferredFormat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="1"
-                    android:hint="@string/chordformat_1"
-                    android:text="@null" />
-            </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/autoChange"

@@ -231,8 +231,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         if (startKey==null || startKey.isEmpty() || startKey.equals("0")) {
             return newKey;
         } else {
-            return string_Key + ": " + startKey + "\n" +
-                    string_Transpose + ": " + mainActivityInterface.getTranspose().convertToPreferredChord(newKey);
+            return string_Key + ": " + mainActivityInterface.getTranspose().getFixedKey(startKey) + "\n" +
+                    string_Transpose + ": " + mainActivityInterface.getTranspose().getFixedKey(newKey);
         }
     }
     private void setListeners() {
@@ -259,6 +259,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                     newKey = startKey;
                 }
                 newKey = mainActivityInterface.getTranspose().numberToKey(newKey);
+                Log.d(TAG,"startKey:"+startKey+"  newKey:"+newKey);
                 myView.keyChangeTextView.setText(getTransposeKey(newKey));
                 checkTransposeOriginal();
             }

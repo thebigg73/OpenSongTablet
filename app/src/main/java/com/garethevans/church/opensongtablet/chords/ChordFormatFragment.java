@@ -98,7 +98,6 @@ public class ChordFormatFragment extends Fragment {
         usepreferred = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "chordFormatUsePreferred",false);
         myView.assumePreferred.setChecked(usepreferred);
-        showHideView(myView.chooseFormatLinearLayout,myView.assumePreferred.getSwitch().isChecked());
         showHideView(myView.autoChange,myView.assumePreferred.getSwitch().isChecked());
         formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
         if (formattouse<1) {
@@ -126,11 +125,11 @@ public class ChordFormatFragment extends Fragment {
 
     private void fixChordPrefText() {
         if (formattouse==2) {
-            setChordPrefText(new String[] {"Ab", "G#", "B", "A#", "Db", "C#", "Eb", "D#", "Gb", "F#",
-                    "ab", "g#", "b", "a#", "db", "c#", "eb", "d#", "gb", "f#"});
+            setChordPrefText(new String[] {"Ab", "G#", "B", "B", "Db", "C#", "Eb", "D#", "Gb", "F#",
+                    "ab", "g#", "b", "b", "db", "c#", "eb", "d#", "gb", "f#"});
         } else if (formattouse==3) {
-            setChordPrefText(new String[]{"As", "Gis", "B", "Ais", "Des", "Cis", "Es", "Dis", "Ges", "Fis",
-                    "as", "gis", "b", "ais", "des", "cis", "es", "dis", "ges", "fis"});
+            setChordPrefText(new String[]{"As", "Gis", "B", "B", "Des", "Cis", "Es", "Dis", "Ges", "Fis",
+                    "as", "gis", "b", "b", "des", "cis", "es", "dis", "ges", "fis"});
         } else if (formattouse==4) {
             setChordPrefText(new String[] {"LAb","SOL#","SIb","LA#","REb", "DO#", "MIb", "RE#", "SOLb","FA#",
                     "LAbm","SOL#m","SIbm","LA#m","REbm","DO#m","MIbm","RE#m","SOLbm","FA#m"});
@@ -146,6 +145,8 @@ public class ChordFormatFragment extends Fragment {
         } else {
             myView.prefSliders.setVisibility(View.VISIBLE);
         }
+        myView.sliderBb.setVisibility((formattouse == 2 || formattouse == 3) ? View.GONE:View.VISIBLE);
+        myView.sliderBbm.setVisibility((formattouse == 2 || formattouse == 3) ? View.GONE:View.VISIBLE);
     }
 
     private void setChordPrefText(String[] newText) {
@@ -218,7 +219,6 @@ public class ChordFormatFragment extends Fragment {
             usepreferred = b;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "chordFormatUsePreferred", b);
-            showHideView(myView.chooseFormatLinearLayout,b);
             showHideView(myView.autoChange,b);
         });
         myView.autoChange.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
