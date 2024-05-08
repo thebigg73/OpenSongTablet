@@ -1128,7 +1128,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pedalsFragment.backgroundKeyDown(keyCode, keyEvent);
             return true;
         } else {
-            pedalActions.commonEventDown(keyCode, null);
+            getPedalActions().commonEventDown(keyCode, null);
             if (pedalActions.getButtonNumber(keyCode, null) > 0) {
                 return true;
             } else {

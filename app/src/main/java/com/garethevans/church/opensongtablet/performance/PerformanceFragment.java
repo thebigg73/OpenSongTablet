@@ -535,7 +535,7 @@ public class PerformanceFragment extends Fragment {
                                             myView.recyclerView.startAnimation(animSlideOut);
                                         }
                                     } catch (Exception e) {
-                                        // Continue
+                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                     }
                                 });
                                 myView.pageHolder.post(() -> {
@@ -544,7 +544,7 @@ public class PerformanceFragment extends Fragment {
                                             myView.pageHolder.startAnimation(animSlideOut);
                                         }
                                     } catch (Exception e) {
-                                        // Continue
+                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                     }
                                 });
                             }
@@ -559,7 +559,7 @@ public class PerformanceFragment extends Fragment {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
         }
     }
     private void setupSlideOut() {
@@ -875,6 +875,7 @@ public class PerformanceFragment extends Fragment {
                             setUpTestViewListener();
                         } catch (Exception e) {
                             e.printStackTrace();
+                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                         }
                     }
                 });
@@ -884,6 +885,7 @@ public class PerformanceFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                     setUpTestViewListener();
                 }
 
@@ -893,6 +895,7 @@ public class PerformanceFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             // Error, so skip
             setUpTestViewListener();
         }
@@ -1010,6 +1013,7 @@ public class PerformanceFragment extends Fragment {
                         try {
                             myView.recyclerView.setAdapter(stageSectionAdapter);
                         } catch (Exception e) {
+                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                             e.printStackTrace();
                         }
                     });
@@ -1126,12 +1130,14 @@ public class PerformanceFragment extends Fragment {
                                 getScreenshot(myView.pageHolder.getWidth(), myView.pageHolder.getHeight() - myView.songSheetTitle.getHeight(), topPadding);
                             }
                         } catch (Exception e) {
+                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                             e.printStackTrace();
                         }
                     }, Math.max(0, QOSAdjustment));
                 }
 
             } catch (Exception e) {
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                 e.printStackTrace();
             }
         }
@@ -1219,12 +1225,14 @@ public class PerformanceFragment extends Fragment {
                                                 myView.inlineSetList.getChildAt(0), null,
                                                 inline_set_string, true, "inline_set");
                                     } catch (Exception e) {
+                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                         e.printStackTrace();
                                     }
                                 }
                             },800);
                         }
                     } catch (Exception e) {
+                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                         e.printStackTrace();
                     }
                 }
@@ -1356,6 +1364,7 @@ public class PerformanceFragment extends Fragment {
                                                 try {
                                                     myView.highlighterView.setVisibility(View.GONE);
                                                 } catch (Exception e) {
+                                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                                     e.printStackTrace();
                                                 }
                                             }
@@ -1363,6 +1372,7 @@ public class PerformanceFragment extends Fragment {
                                     }
                                 }
                             } catch (Exception e) {
+                                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                 e.printStackTrace();
                             }
                         }
@@ -1371,6 +1381,7 @@ public class PerformanceFragment extends Fragment {
                         try {
                             myView.highlighterView.requestLayout();
                         } catch (Exception e) {
+                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                             e.printStackTrace();
                         }
                     });
@@ -1379,12 +1390,14 @@ public class PerformanceFragment extends Fragment {
                         try {
                             myView.highlighterView.setVisibility(View.GONE);
                         } catch (Exception e) {
+                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                             e.printStackTrace();
                         }
                     });
                 }
             }
         } catch (Exception e) {
+            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             e.printStackTrace();
         }
     }
@@ -1409,9 +1422,13 @@ public class PerformanceFragment extends Fragment {
                 // Change the resolution of the bitmap to a lower option
                 bmpFormat = Bitmap.Config.RGB_565;
                 mainActivityInterface.setScreenshotFile(null);
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.setScreenshotFile(null);
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+
             }
         }
     }
