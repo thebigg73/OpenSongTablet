@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Song zum aktuellen Set zufügen"</string>
     <string name="add_songs">Lieder hinzufügen</string>
     <string name="added_to_set">"wurde an das aktuelle Set angefügt."</string>
+    <string name="aeros_info">Spezifische Einstellungen für das Aeros-Loop-Pedal</string>
     <string name="aeros_mode">Aeros-Modus</string>
     <string name="aeros_mode_info">Dadurch wird die Anzahl der Ordner auf insgesamt 128 begrenzt, um dem Aeros Loop Studio-Pedal zu entsprechen.  Die ersten 111 werden als Ordner und die restlichen 17 als Wiedergabelisten bezeichnet</string>
     <string name="after">Nach</string>

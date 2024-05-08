@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Πρόσθεσε το τρέχων τραγουδι σε λιστα"</string>
     <string name="add_songs">Προσθήκη τραγουδιών</string>
     <string name="added_to_set">"προστέθηκε στο τέλος της σειράς."</string>
+    <string name="aeros_info">Ρυθμίσεις ειδικά για το πεντάλ βρόχου Aeros</string>
     <string name="aeros_mode">Λειτουργία Aeros</string>
     <string name="aeros_mode_info">Αυτό περιορίζει τον αριθμό των φακέλων σε 128 συνολικά για να ταιριάζει με το πεντάλ του Aeros Loop Studio.  Οι πρώτοι 111 ορίζονται ως φάκελοι και οι υπόλοιποι 17 ορίζονται ως λίστες αναπαραγωγής</string>
     <string name="after">Μετά</string>

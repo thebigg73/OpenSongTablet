@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Adicionar música atual para definir"</string>
     <string name="add_songs">Adicionar músicas</string>
     <string name="added_to_set">"foi adicionado ao final do seu conjunto atual."</string>
+    <string name="aeros_info">Configurações específicas para o pedal de loop Aeros</string>
     <string name="aeros_mode">Modo Aeros</string>
     <string name="aeros_mode_info">Isso restringe o número de pastas a 128 no total para corresponder ao pedal do Aeros Loop Studio.  Os primeiros 111 são designados como pastas e os restantes 17 são designados como listas de reprodução</string>
     <string name="after">Depois</string>

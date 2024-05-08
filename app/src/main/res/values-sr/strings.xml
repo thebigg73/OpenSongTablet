@@ -22,6 +22,7 @@
     <string name="add_song_to_set">Dodati trenutnu pesmu na set listu</string>
     <string name="add_songs">Dodajte pesme</string>
     <string name="added_to_set">je dodata na kraj trenutne set liste.</string>
+    <string name="aeros_info">Postavke specifične za Aeros pedalu petlje</string>
     <string name="aeros_mode">Aeros režim</string>
     <string name="aeros_mode_info">Ovo ograničava broj fascikli na ukupno 128 da bi se podudarale sa pedalom Aeros Loop Studija.  Prvih 111 su označeni kao fascikle , a preostalih 17 su označeni kao spiskovi numera</string>
     <string name="after">Posle</string>

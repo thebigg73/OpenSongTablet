@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Lägg till aktuell sång för att ställa in"</string>
     <string name="add_songs">Lägg till låtar</string>
     <string name="added_to_set">"Har lagts till i slutet av din nuvarande uppsättning."</string>
+    <string name="aeros_info">Inställningar som är specifika för Aeros looppedal</string>
     <string name="aeros_mode">Aeros-läge</string>
     <string name="aeros_mode_info">Detta begränsar antalet mappar till totalt 128 för att matcha Aeros Loop Studio-pedalen.  De första 111 betecknas som mappar och de återstående 17 betecknas som spellistor</string>
     <string name="after">Efter</string>

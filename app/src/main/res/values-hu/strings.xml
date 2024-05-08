@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Add jelenlegi dal beállítani"</string>
     <string name="add_songs">Dalok hozzáadása</string>
     <string name="added_to_set">"került, hogy a végén a jelenlegi készlet."</string>
+    <string name="aeros_info">Az Aeros hurokpedálra jellemző beállítások</string>
     <string name="aeros_mode">Aeros mód</string>
     <string name="aeros_mode_info">Ez összesen 128-ra korlátozza a mappák számát, hogy megfeleljen az Aeros Loop Studio pedálnak.  Az első 111 mappaként, a fennmaradó 17 pedig lejátszási listaként van kijelölve</string>
     <string name="after">Után</string>

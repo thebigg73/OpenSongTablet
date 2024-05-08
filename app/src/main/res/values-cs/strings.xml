@@ -22,6 +22,7 @@
     <string name="add_song_to_set">Každému z nich lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.</string>
     <string name="add_songs">Přidejte písně</string>
     <string name="added_to_set">"byla přidána na konec aktuálního souboru."</string>
+    <string name="aeros_info">Nastavení specifická pro smyčkový pedál Aeros</string>
     <string name="aeros_mode">Režim Aeros</string>
     <string name="aeros_mode_info">Tím se počet složek omezí na celkem 128, aby odpovídal pedálu Aeros Loop Studio.  Prvních 111 je označeno jako složky a zbývajících 17 je označeno jako seznamy skladeb</string>
     <string name="after">Po</string>

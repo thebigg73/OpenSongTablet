@@ -22,6 +22,7 @@
     <string name="add_song_to_set">Dodaj bieżącą piosenkę do zestawu</string>
     <string name="add_songs">Dodaj piosenki</string>
     <string name="added_to_set">został dodany na końcu bieżącego zestawu.</string>
+    <string name="aeros_info">Ustawienia specyficzne dla pedału pętli Aeros</string>
     <string name="aeros_mode">Tryb Aeros</string>
     <string name="aeros_mode_info">Ogranicza liczbę folderów do 128. Pierwsze 111 jest oznaczone jako foldery, a pozostałe 17 jako listy odtwarzania</string>
     <string name="after">Po</string>

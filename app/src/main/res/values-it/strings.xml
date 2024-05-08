@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Aggiungi brano corrente per impostare"</string>
     <string name="add_songs">Aggiungi canzoni</string>
     <string name="added_to_set">"è stato aggiunto alla fine del set corrente."</string>
+    <string name="aeros_info">Impostazioni specifiche per il pedale Aeros loop</string>
     <string name="aeros_mode">Modalità Aeros</string>
     <string name="aeros_mode_info">Questo limita il numero di cartelle a 128 in totale per abbinare il pedale Aeros Loop Studio.  I primi 111 sono designati come cartelle e i restanti 17 sono designati come playlist</string>
     <string name="after">Dopo</string>

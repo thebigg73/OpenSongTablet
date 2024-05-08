@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"設定するには現在の曲を追加"</string>
     <string name="add_songs">曲を追加する</string>
     <string name="added_to_set">"あなたの現在のセットの最後に追加されました。"</string>
+    <string name="aeros_info">Aerosループペダル固有の設定</string>
     <string name="aeros_mode">Aeros モード</string>
     <string name="aeros_mode_info">これにより、Aeros Loop Studioペダルに合わせてフォルダの数が合計128に制限されます。 最初の111個はフォルダとして指定され、残りの17個はプレイリストとして指定されます</string>
     <string name="after">後</string>

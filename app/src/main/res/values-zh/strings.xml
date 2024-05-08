@@ -22,6 +22,7 @@
     <string name="add_song_to_set">可以为每个歌曲分配节拍，移调，打击垫等歌曲操作。</string>
     <string name="add_songs">添加歌曲</string>
     <string name="added_to_set">"已被添加到您的当前集的末尾。"</string>
+    <string name="aeros_info">特定于 Aeros 循环踏板的设置</string>
     <string name="aeros_mode">Aeros 模式</string>
     <string name="aeros_mode_info">这将文件夹的数量限制为总共 128 个，以匹配 Aeros Loop Studio 踏板。 前 111 个被指定为文件夹，其余 17 个被指定为播放列表</string>
     <string name="after">后</string>

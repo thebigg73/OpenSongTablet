@@ -22,6 +22,7 @@
     <string name="add_song_to_set">Додати пісню в список</string>
     <string name="add_songs">Додайте пісні</string>
     <string name="added_to_set">додана в кінець поточного списку.</string>
+    <string name="aeros_info">Налаштування, специфічні для петлевої педалі Aeros</string>
     <string name="aeros_mode">Режим Aeros</string>
     <string name="aeros_mode_info">Це обмежує кількість папок до 128, щоб відповідати педалі Aeros Loop Studio.  Перші 111 позначаються як папки, а решта 17 позначаються як списки відтворення</string>
     <string name="after">після</string>

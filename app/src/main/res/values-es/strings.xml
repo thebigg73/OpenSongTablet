@@ -22,6 +22,7 @@
     <string name="add_song_to_set">"Añadir canción actual para establecer"</string>
     <string name="add_songs">Agregar canciones</string>
     <string name="added_to_set">"se ha añadido al final de su conjunto actual."</string>
+    <string name="aeros_info">Ajustes específicos del pedal de bucle Aeros</string>
     <string name="aeros_mode">Modo Aeros</string>
     <string name="aeros_mode_info">Esto restringe el número de carpetas a 128 en total para que coincida con el pedal Aeros Loop Studio.  Los primeros 111 se designan como carpetas y los 17 restantes se designan como listas de reproducción.</string>
     <string name="after">Después</string>

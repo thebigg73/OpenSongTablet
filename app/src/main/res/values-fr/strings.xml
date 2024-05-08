@@ -22,6 +22,7 @@
     <string name="add_song_to_set">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
     <string name="add_songs">Ajouter des chansons</string>
     <string name="added_to_set">"a été ajoutée à la fin de votre liste actuelle."</string>
+    <string name="aeros_info">Paramètres spécifiques à la pédale de boucle Aeros</string>
     <string name="aeros_mode">Mode Aeros</string>
     <string name="aeros_mode_info">Cela limite le nombre de dossiers à 128 au total pour correspondre à la pédale Aeros Loop Studio.  Les 111 premiers sont désignés comme dossiers et les 17 autres sont désignés comme listes de lecture</string>
     <string name="after">Après</string>
