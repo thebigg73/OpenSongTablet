@@ -1293,4 +1293,5 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="forum_desktop">When opening the forum on a mobile device you will only be able to browse the forum.  If you want to post or respond to posts, you will need to switch your browser to request desktop site.  You can normally select this from the browser settings.  First time posters on the forum will require manual moderation before their post is displayed, so please be patient!</string>
 </resources>

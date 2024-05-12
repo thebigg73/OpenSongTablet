@@ -947,4 +947,5 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="forum_desktop">Quando apri il forum su un dispositivo mobile, sarai in grado di navigare solo nel forum. Se vuoi pubblicare o rispondere ai post, dovrai cambiare il tuo browser per richiedere il sito desktop. Normalmente è possibile selezionarlo dalle impostazioni del browser. Chi pubblica per la prima volta sul forum richiederà una moderazione manuale prima che il loro post venga visualizzato, quindi sii paziente!</string>
 </resources>

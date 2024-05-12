@@ -947,4 +947,5 @@
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="forum_desktop">Lorsque vous ouvrez le forum sur un appareil mobile, vous ne pourrez que naviguer sur le forum. Si vous souhaitez publier ou répondre à des messages, vous devrez changer votre navigateur pour demander un site de bureau. Vous pouvez normalement le sélectionner dans les paramètres du navigateur. Les nouveaux contributeurs sur le forum nécessiteront une modération manuelle avant que leur message ne soit affiché, alors soyez patient !</string>
 </resources>

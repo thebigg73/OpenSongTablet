@@ -947,4 +947,5 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="forum_desktop">När du öppnar forumet på en mobil enhet kommer du bara att kunna surfa på forumet. Om du vill göra inlägg eller svara på inlägg måste du byta webbläsare för att begära skrivbordswebbplats. Du kan normalt välja detta i webbläsarens inställningar. Förstagångspostare på forumet kommer att kräva manuell moderering innan deras inlägg visas, så ha tålamod!</string>
 </resources>

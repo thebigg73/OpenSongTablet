@@ -947,4 +947,5 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="forum_desktop">在移动设备上打开论坛时，您将只能浏览论坛。如果您想发布或回复帖子，则需要切换浏览器以请求桌面站点。您通常可以从浏览器设置中选择此选项。首次在论坛上发帖的发帖者在展示帖子之前需要人工审核，敬请耐心等待！</string>
 </resources>

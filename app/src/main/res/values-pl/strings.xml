@@ -947,4 +947,5 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="forum_desktop">Otwierając forum na urządzeniu mobilnym, będziesz mógł tylko przeglądać forum. Jeśli chcesz publikować posty lub odpowiadać na posty, musisz przełączyć przeglądarkę, aby żądać witryny na komputery. Zwykle można to wybrać w ustawieniach przeglądarki. Osoby, które po raz pierwszy pojawiają się na forum, będą wymagały ręcznej moderacji przed wyświetleniem ich posta, więc prosimy o cierpliwość!</string>
 </resources>

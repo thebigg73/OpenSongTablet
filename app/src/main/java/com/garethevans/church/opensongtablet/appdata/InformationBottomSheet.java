@@ -119,7 +119,11 @@ public class InformationBottomSheet extends BottomSheetDialogFragment {
                     break;
                 default:
                     myView.actionButton.setOnClickListener((view) -> {
-                        mainActivityInterface.navigateToFragment(deepLink, -1);
+                        if (deepLink.contains("groups.google.com")) {
+                            mainActivityInterface.openDocument(deepLink);
+                        } else {
+                            mainActivityInterface.navigateToFragment(deepLink, -1);
+                        }
                         dismiss();
                     });
                     break;

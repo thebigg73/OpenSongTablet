@@ -947,4 +947,5 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="forum_desktop">モバイルデバイスでフォーラムを開くと、フォーラムの閲覧のみが可能です。投稿や投稿への返信をご希望の場合は、ブラウザをデスクトップサイトのリクエストに切り替える必要があります。通常、ブラウザの設定から選択できます。フォーラムに初めて投稿する投稿者は、投稿が表示される前に手動でモデレーションする必要がありますので、しばらくお待ちください。</string>
 </resources>

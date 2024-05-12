@@ -947,4 +947,5 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="forum_desktop">Při otevření fóra na mobilním zařízení budete moci fórum pouze procházet. Pokud chcete zveřejňovat příspěvky nebo na ně odpovídat, budete muset přepnout prohlížeč tak, aby vyžadoval web pro počítače. Normálně to můžete vybrat v nastavení prohlížeče. První příspěvky na fóru budou vyžadovat ruční moderování před zobrazením jejich příspěvku, takže buďte trpěliví!</string>
 </resources>

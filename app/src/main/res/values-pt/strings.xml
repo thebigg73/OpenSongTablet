@@ -947,4 +947,5 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="forum_desktop">Ao abrir o fórum em um dispositivo móvel, você só poderá navegar no fórum. Se você quiser postar ou responder a postagens, você precisará mudar seu navegador para solicitar site para desktop. Normalmente, você pode selecionar isso nas configurações do navegador. Os pôsteres pela primeira vez no fórum exigirão moderação manual antes de sua postagem ser exibida, então seja paciente!</string>
 </resources>

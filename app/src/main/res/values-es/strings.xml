@@ -947,4 +947,5 @@
     <string name="width">Ancho</string>
     <string name="words_and_music_by">Palabras y música de</string>
     <string name="zoom_level">Nivel de zoom</string>
+    <string name="forum_desktop">Al abrir el foro en un dispositivo móvil, solo podrá navegar por el foro. Si desea publicar o responder a publicaciones, deberá cambiar su navegador para solicitar un sitio de escritorio. Normalmente, puede seleccionarlo desde la configuración del navegador. Las personas que publiquen por primera vez en el foro requerirán moderación manual antes de que se muestre su mensaje, ¡así que ten paciencia!</string>
 </resources>

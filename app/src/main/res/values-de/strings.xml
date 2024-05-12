@@ -947,4 +947,5 @@
     <string name="width">Breite</string>
     <string name="words_and_music_by">Worte und Musik von</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="forum_desktop">Wenn Sie das Forum auf einem mobilen Gerät öffnen, können Sie nur das Forum durchsuchen. Wenn Sie Beiträge posten oder beantworten möchten, müssen Sie Ihren Browser umstellen, um eine Desktop-Site anzufordern. Normalerweise können Sie dies in den Browsereinstellungen auswählen. Erstmalige Poster im Forum müssen manuell moderiert werden, bevor ihr Beitrag angezeigt wird, also haben Sie bitte etwas Geduld!</string>
 </resources>

@@ -21,8 +21,8 @@ public class AboutAppFragment extends Fragment {
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String about="", website="", user_guide="", website_address="", website_latest="",
-            website_forum="", website_rate="", packageName="", website_paypal="",
-            website_github="", deeplink_logs="";
+            website_forum="", website_rate="", packageName="", website_paypal="", continue_string="",
+            website_github="", deeplink_logs="", forum_string="", forum_desktop_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -64,6 +64,9 @@ public class AboutAppFragment extends Fragment {
             website_paypal = getString(R.string.website_paypal);
             website_github =  getString(R.string.website_github);
             deeplink_logs = getString(R.string.deeplink_logs);
+            continue_string = getString(R.string.continue_text);
+            forum_string = getString(R.string.forum);
+            forum_desktop_string = getString(R.string.forum_desktop);
         }
         if (getActivity()!=null) {
             packageName = getActivity().getPackageName();
@@ -83,7 +86,10 @@ public class AboutAppFragment extends Fragment {
         myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openDocument(website_latest));
         // Was going to use a webView to force desktop site, but unsupported!!
         //myView.forumButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_forum,0));
-        myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_forum));
+        myView.forumButton.setOnClickListener(v -> {
+            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(forum_string, forum_desktop_string,continue_string,website_forum);
+            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"Forum");
+        });
         myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_rate+packageName));
         myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_paypal));
         myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_github));

@@ -947,4 +947,5 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="forum_desktop">Ha mobileszközön nyitja meg a fórumot, csak böngészhet a fórumban. Ha bejegyzéseket szeretne közzétenni vagy válaszolni rájuk, át kell kapcsolnia a böngészőt az asztali webhely kéréséhez. Ezt általában a böngésző beállításaiból választhatja ki. A fórum első hozzászólásai manuális moderálást igényelnek, mielőtt a hozzászólásuk megjelenik, ezért kérjük, legyen türelemmel!</string>
 </resources>
