@@ -734,7 +734,7 @@ public class Transpose {
                 !thisSong.getKey().isEmpty() &&
                 !thisSong.getCapo().isEmpty()) {
             capoKey = numberToKey(transposeNumber(keyToNumber(thisSong.getKey()),
-                    "-1", Integer.parseInt("0" + thisSong.getCapo())));
+                    "-1", Integer.parseInt("0" + thisSong.getCapo().replaceAll("\\D",""))));
             return capoKey;
         } else {
             return "";

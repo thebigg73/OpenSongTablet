@@ -480,7 +480,7 @@ public class LoadSong {
                                         if (xpp.getAttributeCount() > 0) {
                                             thisSong.setCapoprint(xpp.getAttributeValue(0));
                                         }
-                                        thisSong.setCapo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        thisSong.setCapo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()).replaceAll("\\D",""));
                                         break;
                                     case "tempo":
                                         thisSong.setTempo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));

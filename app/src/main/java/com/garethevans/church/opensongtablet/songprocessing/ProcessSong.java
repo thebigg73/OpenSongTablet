@@ -170,7 +170,7 @@ public class ProcessSong {
         myNEWXML += "  <presentation>" + parseToHTMLEntities(thisSong.getPresentationorder()).trim() + "</presentation>\n";
         myNEWXML += "  <hymn_number>" + parseToHTMLEntities(thisSong.getHymnnum()).trim() + "</hymn_number>\n";
         myNEWXML += "  <capo print=\"" + parseToHTMLEntities(thisSong.getCapoprint()).trim() + "\">" +
-                parseToHTMLEntities(thisSong.getCapo()).trim() + "</capo>\n";
+                parseToHTMLEntities(thisSong.getCapo().replaceAll("\\D","")).trim() + "</capo>\n";
         myNEWXML += "  <tempo>" + parseToHTMLEntities(thisSong.getTempo()).trim() + "</tempo>\n";
         myNEWXML += "  <time_sig>" + parseToHTMLEntities(thisSong.getTimesig()).trim() + "</time_sig>\n";
         myNEWXML += "  <duration>" + parseToHTMLEntities(thisSong.getAutoscrolllength()).trim() + "</duration>\n";
