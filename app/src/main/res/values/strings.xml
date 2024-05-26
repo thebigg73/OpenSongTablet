@@ -1307,4 +1307,5 @@
     <string name="import_bulk_showcase_choose">Click here to select multiple files using the Android file picker</string>
     <string name="import_bulk_showcase_found">These are the files that you have chosen to import</string>
     <string name="import_bulk_showcase_import">Click here to attempt to import these files</string>
+    <string name="word">Word (.docx)</string>
 </resources>

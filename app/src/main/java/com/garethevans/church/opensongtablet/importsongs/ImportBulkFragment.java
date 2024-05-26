@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class ImportBulkFragment extends Fragment {
 
-    // This allows users to specify a folder containing songs in various formats
+    // This allows users to specify multiple song files in supported formats (unsupported are ignored)
     // Each text based song (txt, chopro, onsong) song will be converted to OpenSong
     // Songs with xml extension or no extension will be checked for OpenSong formatting
     // PDF files will stay as they are
@@ -39,8 +39,9 @@ public class ImportBulkFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsImportBulkBinding myView;
     private String imported_string="", success_string="", error_string="", unknown_string="",
-            text_string="", chordpro_string="", onsong_string="", image_or_pdf_string="", web_string="",
-            import_bulk_string="", showcase_choose="", showcase_found="", showcase_import="", ok_string="";
+            text_string="", chordpro_string="", onsong_string="", image_or_pdf_string="",
+            web_string="", import_bulk_string="", showcase_choose="", showcase_found="",
+            showcase_import="", ok_string="", word_string="";
     private ArrayList<Uri> uris;
     private ArrayList<String> foundItems;
     private ActivityResultLauncher<Intent> multiSelect;
@@ -84,6 +85,7 @@ public class ImportBulkFragment extends Fragment {
             showcase_found = getString(R.string.import_bulk_showcase_found);
             showcase_import = getString(R.string.import_bulk_showcase_import);
             ok_string = getString(R.string.okay);
+            word_string = getString(R.string.word);
         }
     }
 
@@ -198,6 +200,8 @@ public class ImportBulkFragment extends Fragment {
                 boolean chordpro = mainActivityInterface.getStorageAccess().isSpecificFileExtension("chordpro",filename);
                 boolean imageorpdf = mainActivityInterface.getStorageAccess().isSpecificFileExtension("imageorpdf",filename);
                 boolean onsong = mainActivityInterface.getStorageAccess().isSpecificFileExtension("onsong",filename);
+                boolean word = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx",filename);
+
                 boolean goodsong = true;
                 String newFilename = null;
                 if (filename.contains(".")) {
@@ -223,7 +227,7 @@ public class ImportBulkFragment extends Fragment {
                     newSong = mainActivityInterface.getConvertOnSong().convertOnSongToOpenSong(newSong,content);
                     newSong.setFilename(newFilename);
                 } else if (imageorpdf) {
-                    updateProgress(x,total,filename, image_or_pdf_string);
+                    updateProgress(x, total, filename, image_or_pdf_string);
                     newFilename = filename;
                     newSong.setFilename(filename);
                     if (filename.toLowerCase().endsWith(".pdf")) {
@@ -231,6 +235,15 @@ public class ImportBulkFragment extends Fragment {
                     } else {
                         newSong.setFiletype("IMG");
                     }
+                } else if (word) {
+                    updateProgress(x, total, filename, word_string);
+                    newFilename = filename.substring(0,filename.lastIndexOf("."));
+                    newSong.setFilename(newFilename);
+                    newSong.setFiletype("XML");
+                    content = mainActivityInterface.getConvertWord().convertDocxToText(fileUri,filename);
+                    newSong.setLyrics(content);
+                    newSong.setTitle(newFilename);
+
                 } else {
                     updateProgress(x,total,filename, unknown_string);
                     goodsong = false;
@@ -262,7 +275,7 @@ public class ImportBulkFragment extends Fragment {
                             mainActivityInterface.getSQLiteHelper().updateSong(newSong);
                             mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(newSong);
                         }
-                    } else if (text || chordpro || onsong) {
+                    } else if (text || chordpro || onsong || word) {
                         String songXML = mainActivityInterface.getProcessSong().getXML(newSong);
                         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
                         success = mainActivityInterface.getStorageAccess().writeFileFromString(songXML,outputStream);
@@ -279,7 +292,6 @@ public class ImportBulkFragment extends Fragment {
                         // For the firt good song, we will use this song as the song to display
                         if (!gotFirstCorrectSong) {
                             gotFirstCorrectSong = true;
-                            Log.d(TAG,"setting song: "+newSong.getFolder()+"/"+newSong.getFilename());
                             mainActivityInterface.setSong(newSong);
                             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",newSong.getFilename());
                             mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",newSong.getFolder());

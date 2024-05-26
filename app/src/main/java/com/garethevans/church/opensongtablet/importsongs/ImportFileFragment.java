@@ -229,6 +229,8 @@ public class ImportFileFragment extends Fragment {
             boolean isText = mainActivityInterface.getStorageAccess().isSpecificFileExtension("text",mainActivityInterface.getImportFilename());
             boolean isChoPro = mainActivityInterface.getStorageAccess().isSpecificFileExtension("chordpro",mainActivityInterface.getImportFilename());
             boolean isOnSong = mainActivityInterface.getStorageAccess().isSpecificFileExtension("onsong",mainActivityInterface.getImportFilename());
+            boolean isWord = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx",mainActivityInterface.getImportFilename());
+
             String content = "";
             if (isText || isChoPro || isOnSong) {
                 content = mainActivityInterface.getStorageAccess().readTextFileToString(mainActivityInterface.getStorageAccess().getInputStream(tempFile));
@@ -239,7 +241,9 @@ public class ImportFileFragment extends Fragment {
             } else if (isChoPro) {
                 newSong = mainActivityInterface.getConvertChoPro().convertTextToTags(tempFile,newSong);
             } else if (isOnSong) {
-                newSong = mainActivityInterface.getConvertOnSong().convertTextToTags(tempFile,newSong);
+                newSong = mainActivityInterface.getConvertOnSong().convertTextToTags(tempFile, newSong);
+            } else if (isWord) {
+                newSong.setLyrics(mainActivityInterface.getConvertWord().convertDocxToText(mainActivityInterface.getImportUri(),mainActivityInterface.getImportFilename()));
             } else {
                 mainActivityInterface.getLoadSong().setImportingFile(true);
                 try {
@@ -400,6 +404,7 @@ public class ImportFileFragment extends Fragment {
         }
     }
 
+    @SuppressWarnings("all")
     public void finishImportSet() {
         if (getActivity()!=null) {
             try {

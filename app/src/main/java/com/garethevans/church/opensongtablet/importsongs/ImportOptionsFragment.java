@@ -38,7 +38,7 @@ public class ImportOptionsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private final String TAG = "ImportOptionsFragment";
     private SettingsImportBinding myView;
-    private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream"};
+    private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream","application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
     private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityResultLauncher<String> cameraPermission;

@@ -1062,6 +1062,9 @@ public class StorageAccess {
             case "audio":
                 toCheck = ".mp3.wav.ogg.flac";
                 break;
+            case "docx":
+                toCheck = ".docx";
+                break;
         }
         // This is a simple check for file extensions that tell the app which database to use
         filename = filename.toLowerCase(Locale.ROOT);
