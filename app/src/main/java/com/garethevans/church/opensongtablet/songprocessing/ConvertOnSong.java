@@ -43,13 +43,14 @@ public class ConvertOnSong {
         string_chorus = c.getString(R.string.chorus);
     }
 
-    public Song convertTextToTags(Uri uri, Song thisSong) {
+    public Song convertOnSongToOpenSong(Song thisSong, String filecontent) {
+        lyrics = parseLyrics(filecontent);
+        return setValues(thisSong);
+    }
 
+    private String parseLyrics(String lyrics) {
         initialiseTheVariables();
 
-        lyrics = thisSong.getLyrics();
-
-        //
         // Fix line breaks and slashes
         lyrics = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(lyrics);
 
@@ -72,6 +73,26 @@ public class ConvertOnSong {
 
         // Add spaces to beginnings of lines that aren't comments, chords or tags
         lyrics = mainActivityInterface.getConvertChoPro().addSpacesToLines(lyrics);
+
+        return lyrics;
+    }
+
+    private Song setValues(Song thisSong) {
+        thisSong.setFilename(newSongFileName);
+        thisSong.setTitle(title);
+        thisSong.setAuthor(author);
+        thisSong.setCopyright(copyright);
+        thisSong.setKey(key);
+        thisSong.setTimesig(time_sig);
+        thisSong.setCcli(ccli);
+        thisSong.setLyrics(lyrics);
+        return thisSong;
+    }
+
+    public Song convertTextToTags(Uri uri, Song thisSong) {
+
+        // Parse the lyrics
+        lyrics = parseLyrics(thisSong.getLyrics());
 
         // If the uri isn't null, we don't need to write here
         if (uri!=null) {
@@ -112,16 +133,7 @@ public class ConvertOnSong {
         }
 
         // Add it to the database
-        thisSong.setFilename(newSongFileName);
-        thisSong.setTitle(title);
-        thisSong.setAuthor(author);
-        thisSong.setCopyright(copyright);
-        thisSong.setKey(key);
-        thisSong.setTimesig(time_sig);
-        thisSong.setCcli(ccli);
-        thisSong.setLyrics(lyrics);
-
-        return thisSong;
+        return setValues(thisSong);
     }
 
     private void initialiseTheVariables() {

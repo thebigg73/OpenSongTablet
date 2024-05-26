@@ -40,10 +40,13 @@ public class ConvertChoPro {
         mainActivityInterface = (MainActivityInterface) c;
     }
 
-    public Song convertTextToTags(Uri uri, Song thisSong) {
-        initialiseTheVariables();
+    public Song convertChoProToOpenSong(Song thisSong, String filecontent) {
+        lyrics = parseLyrics(filecontent);
+        return setValues(thisSong);
+    }
 
-        lyrics = thisSong.getLyrics();
+    private String parseLyrics(String lyrics) {
+        initialiseTheVariables();
 
         // Fix line breaks and slashes
         lyrics = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(lyrics);
@@ -64,6 +67,26 @@ public class ConvertChoPro {
 
         // Add spaces to beginnings of lines that aren't comments, chords or tags
         lyrics = addSpacesToLines(lyrics);
+
+        return lyrics;
+    }
+
+    private Song setValues(Song thisSong) {
+        thisSong.setFilename(newSongFileName);
+        thisSong.setTitle(title);
+        thisSong.setAuthor(author);
+        thisSong.setCopyright(copyright);
+        thisSong.setKey(key);
+        thisSong.setTimesig(time_sig);
+        thisSong.setCcli(ccli);
+        thisSong.setLyrics(lyrics);
+        return thisSong;
+    }
+
+    public Song convertTextToTags(Uri uri, Song thisSong) {
+        initialiseTheVariables();
+
+        lyrics = parseLyrics(thisSong.getLyrics());
 
         // If we received a null uri, we just want the content processed, so ignore some stuff
         if (uri==null) {
@@ -93,17 +116,7 @@ public class ConvertChoPro {
                 writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName, songSubFolder, newUri, uri, newXML);
             }
         }
-
-        thisSong.setFilename(newSongFileName);
-        thisSong.setTitle(title);
-        thisSong.setAuthor(author);
-        thisSong.setCopyright(copyright);
-        thisSong.setKey(key);
-        thisSong.setTimesig(time_sig);
-        thisSong.setCcli(ccli);
-        thisSong.setLyrics(lyrics);
-
-        return thisSong;
+        return setValues(thisSong);
     }
 
     private void initialiseTheVariables() {
