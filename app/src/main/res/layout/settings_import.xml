@@ -43,6 +43,15 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/importBulk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/import_bulk"
+                android:hint="@string/import_bulk_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/importCamera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

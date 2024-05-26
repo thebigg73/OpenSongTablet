@@ -329,6 +329,7 @@
     <string name="deeplink_gestures" translatable="false">https://www.opensongapp.com/?p=settings/controls/gestures</string>
     <string name="deeplink_highlighter" translatable="false">https://www.opensongapp.com/?p=songactions/highlighter/edit</string>
     <string name="deeplink_import" translatable="false">https://www.opensongapp.com/?p=settings/import</string>
+    <string name="deeplink_import_bulk" translatable="false">https://www.opensongapp.com/?p=settings/import/bulk</string>
     <string name="deeplink_import_file" translatable="false">https://www.opensongapp.com/?p=settings/import/file</string>
     <string name="deeplink_import_online" translatable="false">https://www.opensongapp.com/?p=settings/import/online</string>
     <string name="deeplink_import_osb" translatable="false">https://www.opensongapp.com/?p=settings/import/osb</string>
@@ -508,6 +509,7 @@
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
     <string name="imported_values">Imported values</string>
+    <string name="imported">Imported</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
     <string name="index_songs">Index songs</string>
     <string name="index_songs_end">Song index completed</string>
@@ -1234,6 +1236,7 @@
     <string name="website_highlighter" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/highlighter</string>
     <string name="website_hot_zones" translatable="false">https://www.opensongapp.com/user-manual/controls/hot-zones</string>
     <string name="website_image_adjust" translatable="false">https://www.opensongapp.com/user-manual/songs/image-adjust</string>
+    <string name="website_import_bulk" translatable="false">https://www.opensongapp.com/user-manual/songs/import-multiple-files</string>
     <string name="website_import_onsongbackup" translatable="false">https://www.opensongapp.com/user-manual/songs/ios-onsong</string>
     <string name="website_indexing_songs" translatable="false">https://https://www.opensongapp.com/user-manual/songs/song-indexing</string>
     <string name="website_inline_midi" translatable="false">https://www.opensongapp.com/user-manual/midi/inline-midi-commands</string>
@@ -1294,4 +1297,14 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
     <string name="forum_desktop">When opening the forum on a mobile device you will only be able to browse the forum.  If you want to post or respond to posts, you will need to switch your browser to request desktop site.  You can normally select this from the browser settings.  First time posters on the forum will require manual moderation before their post is displayed, so please be patient!</string>
+    <string name="connections_browse_host">Browse host files</string>
+    <string name="connections_browse_host_info">Select files from a connected host device (running as the host) to import</string>
+    <string name="website_browse_host_files_set" translatable="false">https://www.opensongapp.com/user-manual/sets/browse-host-sets</string>
+    <string name="deeplink_browse_host_files_set" translatable="false">https://www.opensongapp.com/?p=settings/sets/host</string>
+    <string name="import_bulk">Multiple files</string>
+    <string name="import_bulk_info">Batch import multiple song files</string>
+    <string name="import_bulk_details">The app will attempt to import song files in readable formats into a \'Imported\' song folder.  You can then choose to move songs into other folders if required.</string>
+    <string name="import_bulk_showcase_choose">Click here to select multiple files using the Android file picker</string>
+    <string name="import_bulk_showcase_found">These are the files that you have chosen to import</string>
+    <string name="import_bulk_showcase_import">Click here to attempt to import these files</string>
 </resources>

@@ -88,7 +88,7 @@ public class ImportFileFragment extends Fragment {
             // If this is a desktop OpenSong file, it wont have an extension
             // Try to import the file as text (if no extension)
             String content = null;
-            if (!mainActivityInterface.getImportFilename().contains(".")) {
+            if (mainActivityInterface.getImportFilename()!=null && !mainActivityInterface.getImportFilename().contains(".")) {
                 InputStream readAsTextStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
                 content = mainActivityInterface.getStorageAccess().readTextFileToString(readAsTextStream);
                 Log.d(TAG,"content:"+content);
