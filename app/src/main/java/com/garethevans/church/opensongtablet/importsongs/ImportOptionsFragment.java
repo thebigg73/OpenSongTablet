@@ -5,7 +5,6 @@ import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportBinding;
@@ -42,14 +42,12 @@ public class ImportOptionsFragment extends Fragment {
     private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityResultLauncher<String> cameraPermission;
-    private ActivityResultLauncher<Intent> grabPhoto;
     private ActivityResultLauncher<Uri> takePhoto;
     private int whichFileType;
     private Uri uri;
     private File file;
-    private String cameraFilename, import_main_string="", deeplink_edit_string="",
+    private String cameraFilename, import_main_string="",
             deeplink_import_osb_string="", network_error_string="";
-    private String currentPhotoPath;
 
     @Override
     public void onResume() {
@@ -81,7 +79,6 @@ public class ImportOptionsFragment extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             import_main_string = getString(R.string.import_main);
-            deeplink_edit_string = getString(R.string.deeplink_edit);
             deeplink_import_osb_string = getString(R.string.deeplink_import_osb);
             network_error_string = getString(R.string.network_error);
         }
@@ -147,26 +144,6 @@ public class ImportOptionsFragment extends Fragment {
             }
         });
 
-        grabPhoto = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    Log.d(TAG,"result.getResultCode():"+result.getResultCode());
-                    if (result.getResultCode() == Activity.RESULT_OK || result.getResultCode()==0) {
-                        // There are no request codes
-                        Intent data = result.getData();
-                        if (data!=null) {
-                            try {
-                                Log.d(TAG, "data:" + data);
-                                Log.d(TAG, "data.getExtras().get(\"uri\"):" + data.getExtras().get("uri"));
-                                Log.d(TAG, "data.getData():" + data.getData());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-
-
         takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),
                 result -> {
                     if (result) {
@@ -224,6 +201,7 @@ public class ImportOptionsFragment extends Fragment {
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
         myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"),validBackups));
+        myView.importBulk.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importBulkFragment));
         myView.importCamera.setOnClickListener(v -> getCamera());
         myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importOnlineFragment));
         myView.importChurch.setOnClickListener(v -> {

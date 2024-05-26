@@ -733,6 +733,9 @@
                         android:id="@+id/action_importOptionsFragment_to_importFileFragment"
                         app:destination="@id/importFileFragment" />
                     <action
+                        android:id="@+id/action_importOptionsFragment_to_importBulkFragment"
+                        app:destination="@id/importBulkFragment" />
+                    <action
                         android:id="@+id/action_importOptionsFragment_to_importIOSFragment"
                         app:destination="@id/importIOSFragment" />
                 </fragment>
@@ -765,6 +768,16 @@
                     <deepLink
                         android:id="@+id/deeplink_import_file"
                         app:uri="@string/deeplink_import_file"/>
+
+                </fragment>
+                <fragment
+                    android:id="@+id/importBulkFragment"
+                    android:name="com.garethevans.church.opensongtablet.importsongs.ImportBulkFragment"
+                    android:label="ImportBulkFragment"
+                    tools:layout="@layout/settings_import_bulk">
+                    <deepLink
+                        android:id="@+id/deeplink_import_bulk"
+                        app:uri="@string/deeplink_import_bulk"/>
 
                 </fragment>
                 <fragment

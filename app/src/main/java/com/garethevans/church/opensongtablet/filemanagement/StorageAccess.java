@@ -36,7 +36,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -849,6 +848,7 @@ public class StorageAccess {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public boolean checkModifiedDate_SAF(Uri uri) {
         if (uri != null && uri.getPath() != null) {
             try {
@@ -863,10 +863,13 @@ public class StorageAccess {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public long getLastModifiedDate(Uri uri) {
         if (uri!=null && uriExists(uri)) {
             if (lollipopOrLater()) {
-                return DocumentFile.fromSingleUri(c, uri).lastModified();
+                if (DocumentFile.fromSingleUri(c, uri) != null) {
+                    return DocumentFile.fromSingleUri(c, uri).lastModified();
+                }
             }
         }
         return 0;
@@ -1341,20 +1344,6 @@ public class StorageAccess {
         }
     }
 
-    public boolean copyUriToFile(Uri inputUri, File outputFile) {
-        boolean success = true;
-        try {
-            InputStream inputStream = getInputStream(inputUri);
-            Log.d(TAG, "uriExists:" + uriExists(inputUri));
-            Log.d(TAG, "inputStream:" + inputStream);
-            OutputStream outputStream = new FileOutputStream(outputFile);
-            copyFile(inputStream, outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return success;
-    }
-
     public boolean copyUriToUri(Uri sourceUri, Uri targetUri) {
         InputStream inputStream = getInputStream(sourceUri);
         OutputStream outputStream = getOutputStream(targetUri);
@@ -1627,11 +1616,10 @@ public class StorageAccess {
                                     .append("  completefilename:").append(completefilename);
                             updateFileActivityLog(stringBuilder.toString());
                             docContractCreate(parentUri, mimeType, completefilename);
-                            return;
                         } else {
                             updateFileActivityLog(stringBuilder.toString());
-                            return;
                         }
+                        return;
                     }
                 }
             }
@@ -2220,34 +2208,25 @@ public class StorageAccess {
         Collections.addAll(songIDs, lines);
         return songIDs;
     }
-    @SuppressLint("NewApi")
-    public ArrayList<String> listFilesInFolder(String folder, String subfolder) {
-        if (subfolder.startsWith("../") || subfolder.startsWith("**")) {
-            folder = subfolder.replace("../","");
-            folder = folder.replace("**","");
-            subfolder = "";
-        }
-        if (subfolder.equals(mainActivityInterface.getMainfoldername())) {
-            subfolder = "";
-        }
-
-        if (lollipopOrLater()) {
-            return listFilesInFolder_SAF(folder, subfolder);
+    public ArrayList<String> listFilesAtUri(Uri uri) {
+        if (uri!=null) {
+            if (lollipopOrLater()) {
+                return listFilesAtUri_SAF(uri);
+            } else {
+                return listFilesAtUri_File(uri);
+            }
         } else {
-            return listFilesInFolder_File(folder, subfolder);
+            return new ArrayList<>();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listFilesInFolder_SAF(String folder, String subfolder) {
+    private ArrayList<String> listFilesAtUri_SAF(Uri uri) {
         ArrayList<String> al = new ArrayList<>();
-
-        Uri locationtoindex = getUriForItem(folder, subfolder, "");
-
         // Now get a documents contract at this location
-        String id = getDocumentsContractId(locationtoindex);
+        String id = getDocumentsContractId(uri);
 
         // Get the children
-        Uri children = getChildren(locationtoindex, id);
+        Uri children = getChildren(uri, id);
         ContentResolver contentResolver = c.getContentResolver();
 
         // Keep track of our directory hierarchy
@@ -2284,6 +2263,41 @@ public class StorageAccess {
         };
         Collections.sort(al, comparator);
         return al;
+    }
+    private ArrayList<String> listFilesAtUri_File(Uri uri) {
+        ArrayList<String> al = new ArrayList<>();
+        File f = new File(uri.getPath());
+        if (f.length()>0) {
+            File[] files = f.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    al.add(file.getName());
+                }
+            }
+        }
+        return al;
+    }
+
+    public ArrayList<String> listFilesInFolder(String folder, String subfolder) {
+        if (subfolder.startsWith("../") || subfolder.startsWith("**")) {
+            folder = subfolder.replace("../","");
+            folder = folder.replace("**","");
+            subfolder = "";
+        }
+        if (subfolder.equals(mainActivityInterface.getMainfoldername())) {
+            subfolder = "";
+        }
+
+        if (lollipopOrLater()) {
+            return listFilesInFolder_SAF(folder, subfolder);
+        } else {
+            return listFilesInFolder_File(folder, subfolder);
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private ArrayList<String> listFilesInFolder_SAF(String folder, String subfolder) {
+        Uri locationtoindex = getUriForItem(folder, subfolder, "");
+        return listFilesAtUri(locationtoindex);
     }
     private ArrayList<String> listFilesInFolder_File(String folder, String subfolder) {
         ArrayList<String> al = new ArrayList<>();
