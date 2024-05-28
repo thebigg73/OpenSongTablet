@@ -162,7 +162,7 @@ public class StorageManagementFragment extends Fragment {
 
     private ArrayList<String> getFoldersFromFile() {
         // Scan the storage
-        ArrayList<String> songIDs = mainActivityInterface.getStorageAccess().listSongs();
+        ArrayList<String> songIDs = mainActivityInterface.getStorageAccess().listSongs(false);
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIDs);
         // Each subdir ends with /
         return mainActivityInterface.getStorageAccess().getSongFolders(songIDs,false,null);

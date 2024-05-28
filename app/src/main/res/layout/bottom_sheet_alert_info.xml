@@ -104,6 +104,27 @@
 
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/badSongsMoved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/bad_songs_found"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/importMultiple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/import_bulk" />
+        </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -69,7 +69,7 @@ public class StorageAccess {
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
-            "Sets", "Settings", "Slides", "Songs", "Variations", "Backups"};
+            "Sets", "Settings", "Slides", "Songs", "Variations", "Backups", "Import"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache", "Variations/_cache"};
     private Uri uriTreeHome = null; // This is the home folder.  Set as required from preferences.
@@ -483,7 +483,7 @@ public class StorageAccess {
 
             // If we have a path try to give extra info of a 'songs' count
             try {
-                ArrayList<String> songIds = listSongs();
+                ArrayList<String> songIds = listSongs(false);
 
                 // Only items that don't end with / are songs!
                 int count = 0;
@@ -1063,6 +1063,7 @@ public class StorageAccess {
                 toCheck = ".mp3.wav.ogg.flac";
                 break;
             case "docx":
+            case "word":
                 toCheck = ".docx";
                 break;
         }
@@ -2026,7 +2027,7 @@ public class StorageAccess {
 
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
-    public ArrayList<String> listSongs() {
+    public ArrayList<String> listSongs(boolean showAllIncludingBad) {
         ArrayList<String> noSongs = new ArrayList<>();
         // We need to make sure the locale version of MAIN is correct (change language during run)
         Configuration configuration = new Configuration(c.getResources().getConfiguration());
@@ -2035,9 +2036,9 @@ public class StorageAccess {
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
-                return listSongs_SAF(mainfolder);
+                return listSongs_SAF(mainfolder, showAllIncludingBad);
             } else {
-                return listSongs_File(mainfolder);
+                return listSongs_File(mainfolder, showAllIncludingBad);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2045,7 +2046,7 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listSongs_SAF(String mainfolder) {
+    private ArrayList<String> listSongs_SAF(String mainfolder, boolean showAll) {
         // This gets all songs (including any subfolders)
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem("Songs", "", "");
@@ -2088,16 +2089,22 @@ public class StorageAccess {
                 e.printStackTrace();
             }
         }
-        // Check we only have valid songIds
-        ArrayList<String> checkedSongIds = new ArrayList<>();
-        for (String songId:songIds) {
-            if (!badFileExtension(songId)) {
-                checkedSongIds.add(songId);
+
+        if (showAll) {
+            return songIds;
+        } else {
+            // Check we only have valid songIds
+            ArrayList<String> checkedSongIds = new ArrayList<>();
+            // We will remove and warn about bad file extensions
+            for (String songId : songIds) {
+                if (!badFileExtension(songId)) {
+                    checkedSongIds.add(songId);
+                }
             }
+            return checkedSongIds;
         }
-        return checkedSongIds;
     }
-    private ArrayList<String> listSongs_File(String mainfolder) {
+    private ArrayList<String> listSongs_File(String mainfolder, boolean showAll) {
         // We must be using an older version of Android, so stick with File access
         ArrayList<String> songIds = new ArrayList<>();  // These will be the file locations
 
@@ -2124,14 +2131,19 @@ public class StorageAccess {
                 }
             }
         }
-        // Check we only have valid songIds
-        ArrayList<String> checkedSongIds = new ArrayList<>();
-        for (String songId:songIds) {
-            if (!badFileExtension(songId)) {
-                checkedSongIds.add(songId);
+
+        if (showAll) {
+            return songIds;
+        } else {
+            // Check we only have valid songIds
+            ArrayList<String> checkedSongIds = new ArrayList<>();
+            for (String songId : songIds) {
+                if (!badFileExtension(songId)) {
+                    checkedSongIds.add(songId);
+                }
             }
+            return checkedSongIds;
         }
-        return checkedSongIds;
     }
 
     public boolean badFileExtension(String filename) {
@@ -2142,7 +2154,7 @@ public class StorageAccess {
                 (filename.lastIndexOf(".")==filename.length()-4 ||
                         filename.lastIndexOf(".")==filename.length()-5) &&
                 !filenameIsImage(filename) && !filename.endsWith(".pdf") &&
-                !filename.endsWith(".txt") && !filename.endsWith(".xml")) {
+                !filename.endsWith(".xml")) {
             updateFileActivityLog("BAD file:"+filename+" should not be in an OpenSong song folder - please move it as soon as possible!");
             return true;
         }
@@ -2510,6 +2522,44 @@ public class StorageAccess {
             return c.getExternalFilesDir("folder");
         }
         return null;
+    }
+
+    public void fixBadSongs() {
+        // This will move bad song files out of the OpenSong/Songs folder and place them into the
+        // OpenSong/NonOpenSongSongs folder
+        // It will then try to convert them and will update the song menu accordingly
+        ArrayList<String> songIds = listSongs(true);
+        mainActivityInterface.getAlertChecks().setBadSongMoved(false);
+        for (int x=0; x<songIds.size(); x++) {
+            String songId = songIds.get(x);
+            Log.d(TAG,"songId:"+songId);
+            if (songId.contains(".")) {
+                boolean onsong = isSpecificFileExtension("onsong", songId);
+                boolean chordpro = isSpecificFileExtension("chordpro", songId);
+                boolean text = isSpecificFileExtension("text", songId);
+                boolean word = isSpecificFileExtension("word", songId);
+                if (onsong || chordpro || text || word) {
+                    Log.d(TAG,"Bad song found:"+songId);
+                    String oldsubfolder = "";
+                    String oldfilename = songId;
+                    if (songId.contains("/")) {
+                        oldsubfolder = songId.substring(0,songId.lastIndexOf("/"));
+                        oldfilename = songId.replace(oldsubfolder+"/","");
+                    }
+                    Uri uriBad = getUriForItem("Songs",oldsubfolder,oldfilename);
+                    Uri moveUri = getUriForItem("Import","",oldfilename);
+                    Log.d(TAG,"uriBad:"+uriBad);
+                    Log.d(TAG,"uriMove:"+moveUri);
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,moveUri,null,"Import","",oldfilename);
+                    if (copyUriToUri(uriBad,moveUri)) {
+                        // Because we successfully copied/moved a bad song, remove the original one
+                        deleteFile(uriBad);
+                        // Note that we did this
+                        mainActivityInterface.getAlertChecks().setBadSongMoved(true);
+                    }
+                }
+            }
+        }
     }
 
     public void updateCrashLog(String crash) {

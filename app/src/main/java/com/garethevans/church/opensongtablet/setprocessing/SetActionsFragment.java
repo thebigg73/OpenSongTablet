@@ -23,10 +23,11 @@ public class SetActionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private SettingsSetsBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetActionsFragment";
     private String set_manage_string="", set_new_string="", deeplink_sets_manage_string="",
-            file_type_string="", unknown_string="";
+            file_type_string="", unknown_string="", deeplink_browse_host_files_set="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,56 +39,20 @@ public class SetActionsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(set_manage_string);
+        prepareStrings();
+        setupViews();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        SettingsSetsBinding myView = SettingsSetsBinding.inflate(inflater, container, false);
+        myView = SettingsSetsBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
         initialiseLauncher();
+        setupViews();
+        setupListeners();
 
-        myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",set_new_string,null,"SetActionsFragment",this,null));
-        myView.loadSet.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("loadset");
-            mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
-        });
-        myView.saveSet.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("saveset");
-            mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
-        });
-        myView.renameSet.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("renameset");
-            mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
-        });
-        myView.deleteSet.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("deleteset");
-            mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
-        });
-        myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.bible_graph));
-        myView.slideButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.customSlideFragment));
-        myView.exportSet.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("exportset");
-            mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
-        });
-        myView.backupSets.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("backupsets");
-            mainActivityInterface.navigateToFragment(null,R.id.backupRestoreSetsFragment);
-        });
-        myView.restoreSets.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("restoresets");
-            mainActivityInterface.navigateToFragment(null,R.id.backupRestoreSetsFragment);
-        });
-        myView.importSet.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("*/*");
-            String[] mimetypes = {"text/xml","application/octet-stream"};
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-            intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
-            activityResultLauncher.launch(intent);
-        });
         return myView.getRoot();
     }
 
@@ -96,6 +61,7 @@ public class SetActionsFragment extends Fragment {
             set_manage_string = getString(R.string.set_manage);
             set_new_string = getString(R.string.set_new);
             deeplink_sets_manage_string = getString(R.string.deeplink_sets_manage);
+            deeplink_browse_host_files_set = getString(R.string.deeplink_browse_host_files_set);
             file_type_string = getString(R.string.file_type);
             unknown_string = getString(R.string.unknown);
         }
@@ -130,4 +96,58 @@ public class SetActionsFragment extends Fragment {
         });
     }
 
+    private void setupViews() {
+        if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
+            myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
+                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
+        }
+    }
+
+    private void setupListeners() {
+        if (getContext()!=null && myView!=null && mainActivityInterface!=null) {
+            myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet", set_new_string, null, "SetActionsFragment", this, null));
+            myView.loadSet.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("loadset");
+                mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
+            });
+            myView.saveSet.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("saveset");
+                mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
+            });
+            myView.renameSet.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("renameset");
+                mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
+            });
+            myView.deleteSet.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("deleteset");
+                mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
+            });
+            myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.bible_graph));
+            myView.slideButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customSlideFragment));
+            myView.exportSet.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("exportset");
+                mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
+            });
+            myView.backupSets.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("backupsets");
+                mainActivityInterface.navigateToFragment(null, R.id.backupRestoreSetsFragment);
+            });
+            myView.restoreSets.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("restoresets");
+                mainActivityInterface.navigateToFragment(null, R.id.backupRestoreSetsFragment);
+            });
+            myView.importSet.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setType("*/*");
+                String[] mimetypes = {"text/xml", "application/octet-stream"};
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+                intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
+                activityResultLauncher.launch(intent);
+            });
+            myView.browseHost.setOnClickListener(v -> {
+                mainActivityInterface.setWhattodo("browsesets");
+                mainActivityInterface.navigateToFragment(deeplink_browse_host_files_set,0);
+            });
+        }
+    }
 }

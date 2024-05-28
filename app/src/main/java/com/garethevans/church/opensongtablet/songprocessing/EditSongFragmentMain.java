@@ -207,7 +207,7 @@ public class EditSongFragmentMain extends Fragment  {
     }
 
     private void getFoldersFromStorage() {
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(false);
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
         folders = mainActivityInterface.getStorageAccess().getSongFolders(songIds,true,null);
     }

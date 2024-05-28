@@ -197,8 +197,11 @@ public class BootUpFragment extends Fragment {
                     }
                     updateMessage();
 
+                    mainActivityInterface.getStorageAccess().fixBadSongs();
+
                     Log.d(TAG,"indexing decision");
                     if (needIndex) {
+                        // Check for bad files
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
                         mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
                         mainActivityInterface.quickSongMenuBuild();

@@ -715,7 +715,7 @@ public class ImportOnlineFragment extends Fragment {
             myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getFilename()));
             // Get the folders available
             ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
-                    mainActivityInterface.getStorageAccess().listSongs(), true, null);
+                    mainActivityInterface.getStorageAccess().listSongs(false), true, null);
             if (getContext() != null) {
                 ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.folderChoice, R.layout.view_exposed_dropdown_item, availableFolders);

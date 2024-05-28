@@ -65,6 +65,7 @@ import com.garethevans.church.opensongtablet.songmenu.SongMenuFragment;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertWord;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
@@ -321,6 +322,7 @@ public interface MainActivityInterface {
     ConvertChoPro getConvertChoPro();
     ConvertOnSong getConvertOnSong();
     ConvertTextSong getConvertTextSong();
+    ConvertWord getConvertWord();
     ProcessSong getProcessSong();
     ChordDisplayProcessing getChordDisplayProcessing();
     ChordDirectory getChordDirectory();

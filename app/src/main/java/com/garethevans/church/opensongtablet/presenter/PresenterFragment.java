@@ -150,7 +150,9 @@ public class PresenterFragment extends Fragment {
 
         // Check if we need to show an alert
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
-                mainActivityInterface.getAlertChecks().showBackup() || mainActivityInterface.getAlertChecks().showUpdateInfo()) {
+                mainActivityInterface.getAlertChecks().showBackup() ||
+                mainActivityInterface.getAlertChecks().showUpdateInfo() ||
+                mainActivityInterface.getAlertChecks().showBadSongMoved()) {
             AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
             alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
         }

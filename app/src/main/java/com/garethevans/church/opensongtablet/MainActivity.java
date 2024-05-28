@@ -141,6 +141,7 @@ import com.garethevans.church.opensongtablet.songmenu.ViewPagerAdapter;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertWord;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragment;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentTags;
@@ -211,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
     private ConvertTextSong convertTextSong;
+    private ConvertWord convertWord;
     private CurrentSet currentSet;
     private CustomAnimation customAnimation;
     private CustomSlide customSlide;
@@ -2190,7 +2192,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
             // Get all of the files as an array list
-            ArrayList<String> songIds = storageAccess.listSongs();
+            ArrayList<String> songIds = storageAccess.listSongs(false);
             // Write this to text file
             storageAccess.writeSongIDFile(songIds);
             // Try to create the basic databases
@@ -2708,6 +2710,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             convertOnSong = new ConvertOnSong(this);
         }
         return convertOnSong;
+    }
+    @Override
+    public ConvertWord getConvertWord() {
+        if (convertWord == null) {
+            convertWord = new ConvertWord(this);
+        }
+        return convertWord;
     }
 
     @Override
@@ -3340,7 +3349,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (storageAccess!=null && sqLiteHelper!=null && nonOpenSongSQLiteHelper!=null) {
             ArrayList<String> songIds = new ArrayList<>();
             try {
-                songIds = storageAccess.listSongs();
+                songIds = storageAccess.listSongs(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

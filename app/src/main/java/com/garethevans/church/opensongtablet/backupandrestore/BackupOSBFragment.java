@@ -183,7 +183,7 @@ public class BackupOSBFragment extends Fragment {
             });
 
             // Check the file list is up to date
-            ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs();
+            ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs(false);
 
             // Prepare the uris, inputStreams and outputStreams
             Uri fileUriToCopy;

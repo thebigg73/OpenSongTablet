@@ -120,7 +120,7 @@ public class MoveContentFragment extends Fragment {
         // Do this in another thread
         new Thread(() -> {
             ArrayList<String> availableFromFolders = mainActivityInterface.getStorageAccess().getSongFolders(
-                    mainActivityInterface.getStorageAccess().listSongs(), true, null);
+                    mainActivityInterface.getStorageAccess().listSongs(false), true, null);
             if (getActivity()!=null) {
                 getActivity().runOnUiThread(() -> {
                     if (availableFromFolders.size() != 0 && getContext()!=null) {
@@ -154,7 +154,7 @@ public class MoveContentFragment extends Fragment {
         new Thread(() -> {
             // This lists the folders available (minus the current one)
             ArrayList<String> availableMoveFolders = mainActivityInterface.getStorageAccess().getSongFolders(
-                    mainActivityInterface.getStorageAccess().listSongs(), true, subfolder);
+                    mainActivityInterface.getStorageAccess().listSongs(false), true, subfolder);
 
             if (getActivity()!=null) {
                 getActivity().runOnUiThread(() -> {
@@ -279,7 +279,7 @@ public class MoveContentFragment extends Fragment {
 
                     // Update everything needed for indexing and song menus
                     try {
-                        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+                        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(false);
                         // Write a crude text file (line separated) with the song Ids (folder/file)
                         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
                     } catch (Exception e) {

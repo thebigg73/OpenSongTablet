@@ -35,7 +35,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetAlertInfoBinding myView;
     private final String TAG = "AlertInfoBottomSheet";
     private String website_latest="", promptbackup="", deeplink_backup="",
-            website_play_services_help="";
+            website_play_services_help="", deeplink_import_multiple="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,13 +79,15 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             promptbackup = getString(R.string.promptbackup);
             deeplink_backup = getString(R.string.deeplink_backup);
             website_play_services_help = getString(R.string.website_play_services_help);
+            deeplink_import_multiple = getString(R.string.deeplink_import_bulk);
         }
     }
 
     private void alertsRequired() {
-        boolean required = mainActivityInterface.getAlertChecks().showBackup() &&
-                mainActivityInterface.getAlertChecks().showPlayServicesAlert() &&
-                mainActivityInterface.getAlertChecks().showUpdateInfo();
+        boolean required = mainActivityInterface.getAlertChecks().showBackup() ||
+                mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
+                mainActivityInterface.getAlertChecks().showUpdateInfo() ||
+                mainActivityInterface.getAlertChecks().showBadSongMoved();
         if (!required) {
             try {
                 dismiss();
@@ -139,6 +141,15 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.playServices.setVisibility(View.GONE);
         }
+
+        // Check for bad song files moved to OpenSong/Import
+        myView.badSongsMoved.setVisibility(mainActivityInterface.getAlertChecks().showBadSongMoved() ?
+                    View.VISIBLE : View.GONE);
+        myView.importMultiple.setOnClickListener(b -> {
+            mainActivityInterface.navigateToFragment(deeplink_import_multiple,0);
+            dismiss();
+        });
+
         mainActivityInterface.getAlertChecks().setAlreadySeen(true);
     }
 

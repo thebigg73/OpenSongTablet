@@ -14,7 +14,7 @@ public class AlertChecks {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean alreadySeen = false, ignorePlayServicesWarning, firstcheck = true,
-            hasPlayServices = false, isShowing = true;
+            hasPlayServices = false, isShowing = true, badSongMoved = false;
     public AlertChecks(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
@@ -82,4 +82,12 @@ public class AlertChecks {
     public boolean getIsShowing() {
         return isShowing;
     }
+
+    public void setBadSongMoved(boolean badSongMoved) {
+        this.badSongMoved = badSongMoved;
+    }
+    public boolean showBadSongMoved() {
+        return badSongMoved;
+    }
+
 }

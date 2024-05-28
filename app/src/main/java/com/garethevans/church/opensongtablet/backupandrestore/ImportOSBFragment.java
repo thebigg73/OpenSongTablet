@@ -566,7 +566,7 @@ public class ImportOSBFragment extends Fragment {
                         mainActivityInterface.closeDrawer(true);
 
                         // Update the songid file
-                        ArrayList<String> songids = mainActivityInterface.getStorageAccess().listSongs();
+                        ArrayList<String> songids = mainActivityInterface.getStorageAccess().listSongs(false);
                         mainActivityInterface.getStorageAccess().writeSongIDFile(songids);
 
                         // Update the song index

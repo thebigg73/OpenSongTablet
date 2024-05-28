@@ -507,7 +507,7 @@
     <string name="import_from_file">Import from a saved file</string>
     <string name="import_main">Import or create songs</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
-    <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
+    <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro, Word</string>
     <string name="imported_values">Imported values</string>
     <string name="imported">Imported</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
@@ -1307,5 +1307,6 @@
     <string name="import_bulk_showcase_choose">Click here to select multiple files using the Android file picker</string>
     <string name="import_bulk_showcase_found">These are the files that you have chosen to import</string>
     <string name="import_bulk_showcase_import">Click here to attempt to import these files</string>
-    <string name="word">Word (.docx)</string>
+    <string name="word" translatable="false">Word (.docx)</string>
+    <string name="bad_songs_found">Some unexpected song files have been found in your OpenSong/Songs/ folders that are not supported directly.  They have been moved to your OpenSong/Import folder, but you can use the option to import multiple files to attempt to convert them to OpenSong format and add them back to your OpenSong/Songs/ folder</string>
 </resources>
