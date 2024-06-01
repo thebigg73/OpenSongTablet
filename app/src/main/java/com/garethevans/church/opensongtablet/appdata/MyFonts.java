@@ -108,7 +108,7 @@ public class MyFonts {
         changeFont("fontPreso",fontPreso,presoFontHandler);
         changeFont("fontPresoInfo",fontPresoInfo,presoInfoFontHandler);
         changeFont("fontSticky",fontSticky,stickyFontHandler);
-        setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/RobotoMono.ttf"));
+        setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/robotomono.ttf"));
     }
 
     public void changeFont(String which, String fontName, Handler handler) {
