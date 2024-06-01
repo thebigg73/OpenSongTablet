@@ -13,15 +13,12 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.sql.Array;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -277,27 +274,25 @@ public class CommonSQL {
             sqlMatch += SQLite.COLUMN_KEY + "= ? AND ";
             args.add(keyVal);
         }
-        if (searchByTag && tagVal != null && tagVal.length() > 0 && tagVal.matches("[^; ]")) {
-            List<String> tagList = Arrays.asList(tagVal.split("(;)"));
-            for (int i = tagList.size(); i > 0; i--) {
+        if (searchByTag && tagVal != null && tagVal.length() > 0) {
+            List<String> tagList = new ArrayList<>(Arrays.asList(tagVal.split(";")));
+            for (int i = (tagList.size() - 1); i >= 0; i--) {
                 if (StringUtils.isBlank(tagList.get(i))) {
                     tagList.remove(i);
                 }
             }
-            sqlMatch += "(";
-            for (int i = 0, max = tagList.size(); i < max; i++) {
-                String tag = tagList.get(i);
-                if (!StringUtils.isBlank(tag)) {
-                    sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR ";
-                    sqlMatch += SQLite.COLUMN_ALTTHEME + " LIKE ? ";
+            if (!tagList.isEmpty()) {
+                sqlMatch += "(";
+                for (int i = 0, max = tagList.size(); i < max; i++) {
+                    sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR " + SQLite.COLUMN_ALTTHEME + " LIKE ?";
                     if (i < max - 1) {
-                        sqlMatch += "OR ";
+                        sqlMatch += " OR ";
                     }
-                    args.add("%"+tag+"%");
-                    args.add("%"+tag+"%");
+                    args.add("%"+tagList.get(i)+"%");
+                    args.add("%"+tagList.get(i)+"%");
                 }
+                sqlMatch += ") AND ";
             }
-            sqlMatch += ") AND ";
         }
         if (searchByTitle && titleVal != null && titleVal.length() > 0) {
             sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
