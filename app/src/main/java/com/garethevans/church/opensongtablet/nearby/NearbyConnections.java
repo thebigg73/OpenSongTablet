@@ -59,15 +59,17 @@ public class NearbyConnections implements NearbyInterface {
     private final String TAG = "NearbyConnections", sectionTag = "___section___",
             scrollByTag = "___scrollby___", scrollToTag = "___scrollto___",
             autoscrollPause = "___autoscrollpause___", autoscrollincrease = "___autoscrollincrease___",
-            autoscrolldecrease = "___autoscrolldecrease___",
-            songTag = "_xx____xx_", endpointSplit = "__",
-            messageTag = "___message___",
+            autoscrolldecrease = "___autoscrolldecrease___", profiles = "___profiles___",
+            songTag = "_xx____xx_", endpointSplit = "__", sets = "___sets___",
+            hostRequest = "___hostRequest___", hostItems = "___hostItems___",
+            messageTag = "___message___", songs = "___songs___",
             serviceId = "com.garethevans.church.opensongtablet";
     private int countDiscovery = 0, countAdvertise = 0;
     private ArrayList<String> connectedEndpoints;  // CODE_DeviceName - currently connected
     private ArrayList<String> discoveredEndpoints; // CODE__DeviceName - permission already given
     private final NearbyReturnActionsInterface nearbyReturnActionsInterface;
     private final MainActivityInterface mainActivityInterface;
+    private BrowseHostFragment browseHostFragment;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -680,6 +682,10 @@ public class NearbyConnections implements NearbyInterface {
                                 // We have received an alert message
                                 Log.d(TAG,"call payloadMessage");
                                 payloadMessage(incoming);
+                            } else if (incoming!=null && incoming.startsWith(hostItems+deviceId)) {
+                                // This is a list of host items returned for this device
+                                Log.d(TAG,"call payloadHostItems");
+                                payloadHostItems(incoming);
                             }
                         }
                         // not dealing with files as it is complex with scoped storage access
@@ -688,6 +694,43 @@ public class NearbyConnections implements NearbyInterface {
                         // If we are the host, we could have been asked to synchronise storage
                         // TODO
                         Log.d(TAG,"Running as a host");
+                        String incoming = null;
+                        if (payload.getType() == Payload.Type.BYTES) {
+                            // We're dealing with bytes
+                            Log.d(TAG, "Payload.Type: BYTES");
+                            if (payload.asBytes() != null) {
+                                byte[] bytes = payload.asBytes();
+                                if (bytes != null) {
+                                    incoming = new String(bytes);
+                                }
+                            }
+                        }
+                        if (incoming!=null && incoming.startsWith(hostRequest)) {
+                            incoming = incoming.replaceFirst(hostRequest,"");
+                            String message = null;
+                            if (incoming.startsWith(sets)) {
+                                // Get the requesting deviceID
+                                incoming = incoming.replaceFirst(sets,"");
+                                // Get this device's items
+                                message = hostItems + incoming + "\n" + getHostItems("browsesets");
+                            } else if (incoming.startsWith(profiles)) {
+                                // Get the requesting deviceID
+                                incoming = incoming.replaceFirst(profiles,"");
+                                // Get this device's items
+                                message = hostItems + incoming + "\n" + getHostItems("browseprofiles");
+                            } else if (incoming.startsWith(songs)) {
+                                // Get the requesting deviceID
+                                incoming = incoming.replaceFirst(songs,"");
+                                // Get this device's items
+                                message = hostItems + incoming + "\n" + getHostItems("browsesongs");
+                            }
+                            if (message!=null) {
+                                // Send the message to the listening clients
+                                // Only the one with this deviceID will act on it though
+                                doSendPayloadBytes(message,false);
+                            }
+
+                        }
                     }
                 }
             }
@@ -1596,5 +1639,56 @@ public class NearbyConnections implements NearbyInterface {
     public void setNearbyMessageSticky(boolean nearbyMessageSticky) {
         this.nearbyMessageSticky = nearbyMessageSticky;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyMessageSticky",nearbyMessageSticky);
+    }
+
+
+    public void setBrowseHostFragment(BrowseHostFragment browseHostFragment) {
+        this.browseHostFragment = browseHostFragment;
+    }
+    // If we are a host, we might be asked to return an list of items
+    // This list will be built from the arraylists but passed as a string split by lines
+    public String getHostItems(String what) {
+        ArrayList<String> hostItems;
+        switch (what) {
+            case "browsesets":
+                hostItems = mainActivityInterface.getStorageAccess().listFilesInFolder("Sets","");
+                break;
+            case "browsesongs":
+            default:
+                hostItems = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
+                break;
+            case "browseprofiles":
+                hostItems = mainActivityInterface.getStorageAccess().listFilesInFolder("Profiles","");
+                break;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String item:hostItems) {
+            stringBuilder.append(item).append("\n");
+        }
+        return stringBuilder.toString().trim();
+    }
+    // This is where the client deals with the list of items it has received back from the host
+    public void payloadHostItems(String incoming) {
+        // Remove the header and device id
+        incoming = incoming.replaceFirst(hostItems,"").replaceFirst(deviceId,"").trim();
+        String[] hostItems = incoming.split("\n");
+        if (browseHostFragment!=null) {
+            browseHostFragment.displayHostItems(hostItems);
+        }
+    }
+    // This is the client sending a request to connected hosts
+    // This is called from the browseHostFragment
+    public void sendRequestHostItems() {
+        switch (mainActivityInterface.getWhattodo()) {
+            case "browsesets":
+                doSendPayloadBytes(hostRequest+sets+deviceId,true);
+                break;
+            case "browseprofiles":
+                doSendPayloadBytes(hostRequest+profiles+deviceId,true);
+                break;
+            case "browsesongs":
+                doSendPayloadBytes(hostRequest+songs+deviceId,true);
+                break;
+        }
     }
 }
