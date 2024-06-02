@@ -15,10 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -275,21 +273,16 @@ public class CommonSQL {
             args.add(keyVal);
         }
         if (searchByTag && tagVal != null && tagVal.length() > 0) {
-            List<String> tagList = new ArrayList<>(Arrays.asList(tagVal.split(";")));
-            for (int i = (tagList.size() - 1); i >= 0; i--) {
-                if (StringUtils.isBlank(tagList.get(i))) {
-                    tagList.remove(i);
-                }
-            }
-            if (!tagList.isEmpty()) {
+            String[] tagArray = StringUtils.splitPreserveAllTokens(tagVal, ";");
+            if (tagArray.length > 0) {
                 sqlMatch += "(";
-                for (int i = 0, max = tagList.size(); i < max; i++) {
+                for (int i = 0, max = tagArray.length; i < max; i++) {
                     sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR " + SQLite.COLUMN_ALTTHEME + " LIKE ?";
                     if (i < max - 1) {
                         sqlMatch += " OR ";
                     }
-                    args.add("%"+tagList.get(i)+"%");
-                    args.add("%"+tagList.get(i)+"%");
+                    args.add("%"+tagArray[i]+"%");
+                    args.add("%"+tagArray[i]+"%");
                 }
                 sqlMatch += ") AND ";
             }
