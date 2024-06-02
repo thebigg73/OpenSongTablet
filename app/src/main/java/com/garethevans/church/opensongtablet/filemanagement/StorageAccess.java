@@ -2532,14 +2532,12 @@ public class StorageAccess {
         mainActivityInterface.getAlertChecks().setBadSongMoved(false);
         for (int x=0; x<songIds.size(); x++) {
             String songId = songIds.get(x);
-            Log.d(TAG,"songId:"+songId);
             if (songId.contains(".")) {
                 boolean onsong = isSpecificFileExtension("onsong", songId);
                 boolean chordpro = isSpecificFileExtension("chordpro", songId);
                 boolean text = isSpecificFileExtension("text", songId);
                 boolean word = isSpecificFileExtension("word", songId);
                 if (onsong || chordpro || text || word) {
-                    Log.d(TAG,"Bad song found:"+songId);
                     String oldsubfolder = "";
                     String oldfilename = songId;
                     if (songId.contains("/")) {
@@ -2548,14 +2546,13 @@ public class StorageAccess {
                     }
                     Uri uriBad = getUriForItem("Songs",oldsubfolder,oldfilename);
                     Uri moveUri = getUriForItem("Import","",oldfilename);
-                    Log.d(TAG,"uriBad:"+uriBad);
-                    Log.d(TAG,"uriMove:"+moveUri);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,moveUri,null,"Import","",oldfilename);
                     if (copyUriToUri(uriBad,moveUri)) {
                         // Because we successfully copied/moved a bad song, remove the original one
                         deleteFile(uriBad);
                         // Note that we did this
                         mainActivityInterface.getAlertChecks().setBadSongMoved(true);
+                        updateFileActivityLog("Moved bad file '"+songId+"' into Import folder.  This needs imported to convert to OpenSong format.");
                     }
                 }
             }
