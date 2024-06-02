@@ -39,24 +39,32 @@ public class UltimateGuitar {
         newSong.setKey(getKey(s));
         newSong.setCapo(getCapo(s));
 
-        // Trim out everything around the lyrics/content
-        String lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                "<div class=\"ugm-b-tab--content js-tab-content\">","<pre","</pre>",s);
+        // Each method return blank if there was an error (bit not found)
+        // Keep going until we get content
+        // Trim out lyrics from mobile site
+        String lyricsText = mainActivityInterface.getProcessSong().getSubstring("<pre class=\"extra\"",">","</pre",s);
 
-        // Alternative (newer method)
-        if (lyricsText.isEmpty()) {
-            if (s.contains("<span class=\"fsG7q\"")) {
-                lyricsText = (mainActivityInterface.getProcessSong().getSubstring(
-                        "<div class=\"js-page js-global-wrapper","<span class=\"fsG7q\"","<div class=\"LJhrL\">",s));
-            } else {
-                lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                        "<div class=\"js-page js-global-wrapper", "<span class=\"y68er\">", "<div class=\"LJhrL\">", s);
-            }
-        }
-
+        // Next method
         if (lyricsText.isEmpty()) {
             lyricsText = mainActivityInterface.getProcessSong().getSubstring(
-                    "<div class=\"js-tab-content-wrapper\">","<pre class=\"extra\">","</span></pre>",s);
+                    "<pre",">","</pre",s);
+        }
+
+        // Another method
+        if (lyricsText.isEmpty()) {
+            lyricsText = (mainActivityInterface.getProcessSong().getSubstring(
+                    "<div class=\"js-page js-global-wrapper", "<span class=\"fsG7q\"", "<div class=\"LJhrL\">", s));
+        }
+
+        // Yet another method
+        if (lyricsText.isEmpty()) {
+            lyricsText = mainActivityInterface.getProcessSong().getSubstring(
+                    "<div class=\"ugm-b-tab--content js-tab-content\">","<pre","</pre>",s);
+        }
+
+        // Final worst case
+        if (lyricsText.isEmpty()) {
+            lyricsText = s;
         }
 
         // Get rid of inline ads
@@ -68,6 +76,7 @@ public class UltimateGuitar {
         }
 
         StringBuilder trimmedLyrics = new StringBuilder();
+
         for (String lyr:lyricsText.split("\n")) {
             if (!lyr.trim().isEmpty()) {
                 trimmedLyrics.append(lyr).append("\n");
@@ -82,8 +91,14 @@ public class UltimateGuitar {
             String chordIdentifier2 = "<span class=\"_2jIGi\">";
             String chordIdentifier3 = "<span class=\"fciXY";
             String chordIdentifier4 = "data-name=\"";
+            String chordIdentifier5 = "<div class=\"chord";
+            String chordIdentifier6 = "<header class=\"chord";
+            String chordIdentifier7 = "<span class=\"tabContent-chord";
+            String chordIdentifier8 =  "js-chord";
             if (line.contains(chordIdentifier1) || line.contains(chordIdentifier2) ||
-            line.contains(chordIdentifier3) || line.contains(chordIdentifier4)) {
+                    line.contains(chordIdentifier3) || line.contains(chordIdentifier4) ||
+                    line.contains(chordIdentifier5) || line.contains(chordIdentifier6) ||
+                    line.contains(chordIdentifier7) || line.contains(chordIdentifier8)) {
                 // Make it a chord line
                 line = "." + line;
                 line = line.trim();

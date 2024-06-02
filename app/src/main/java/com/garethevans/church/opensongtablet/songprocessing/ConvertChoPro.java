@@ -917,6 +917,38 @@ public class ConvertChoPro {
                     }
                     break;
 
+                // If this is a chord line followed by a comment line.
+                case "chord_then_comment":
+                    // IV - We have a next line - make lines the same length.
+                    nextLine = lines[y + 1].replaceAll("\\s+$", "");
+                    if (thisLine.length() < nextLine.length()) {
+                        thisLine = mainActivityInterface.getProcessSong().fixLineLength(thisLine, nextLine.length());
+                    } else {
+                        nextLine = mainActivityInterface.getProcessSong().fixLineLength(nextLine, thisLine.length());
+                    }
+                    thisLine = thisLine.replaceFirst(".","");
+                    nextLine = nextLine.replaceFirst(";","#");
+                    positions_returned = mainActivityInterface.getProcessSong().getChordPositions(thisLine, nextLine);
+                    chords_returned = mainActivityInterface.getProcessSong().getSections(thisLine, positions_returned);
+                    lyrics_returned = mainActivityInterface.getProcessSong().getSections(nextLine, positions_returned);
+
+                    // Mark the beginning of the line
+                    newlyrics.append("¬");
+                    for (int w = 0; w < lyrics_returned.length; w++) {
+                        String chord_to_add = "";
+                        if (w<chords_returned.length) {
+                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
+                                    chord_to_add = chords_returned[w];
+                                } else {
+                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
+                                }
+                            }
+                        }
+                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
+                    }
+                    break;
+
                 case "chord_only":
                     // Use same logic as chord_then_lyric to guarantee consistency
                     String tempString = mainActivityInterface.getProcessSong().fixLineLength("", thisLine.length());
