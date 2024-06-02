@@ -477,7 +477,7 @@ public class LoadSong {
                                         thisSong.setAka(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                         break;
                                     case "capo":
-                                        if (xpp.getAttributeCount() > 0) {
+                                        if (xpp.getAttributeCount() > 0 && xpp.getAttributeValue(0)!=null) {
                                             thisSong.setCapoprint(xpp.getAttributeValue(0));
                                         }
                                         thisSong.setCapo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()).replaceAll("\\D",""));
