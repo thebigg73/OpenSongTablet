@@ -108,7 +108,7 @@ public class MyFonts {
         changeFont("fontPreso",fontPreso,presoFontHandler);
         changeFont("fontPresoInfo",fontPresoInfo,presoInfoFontHandler);
         changeFont("fontSticky",fontSticky,stickyFontHandler);
-        setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/robotomono.ttf"));
+        setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/RobotoMono.ttf"));
     }
 
     public void changeFont(String which, String fontName, Handler handler) {
@@ -132,7 +132,7 @@ public class MyFonts {
             }
         } else if (!mainActivityInterface.getAlertChecks().getHasPlayServices()) {
             // Use the bundled lato font
-            Typeface typeface = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+            Typeface typeface = Typeface.createFromAsset(c.getAssets(),"font/Lato.ttf");
             doSetDesiredFont(which, typeface, fontName, null);
 
         } else {
@@ -165,7 +165,7 @@ public class MyFonts {
             @Override
             public void onTypefaceRequestFailed(int reason) {
                 // Default to Lato
-                Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+                Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/Lato.ttf");
                 setDesiredFont(typeface,"Lato");
             }
 
@@ -216,7 +216,7 @@ public class MyFonts {
     }
 
     public Typeface getAppDefault() {
-        return Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+        return Typeface.createFromAsset(c.getAssets(), "font/Lato.ttf");
     }
     @SuppressWarnings("Redundant")
     public ArrayList<String> getFontsFromGoogle() {
