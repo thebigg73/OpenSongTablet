@@ -468,8 +468,10 @@ public class ProcessSong {
         String what = "null";
         switch (thislinetype) {
             case "chord":
-                if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
+                if (linenum < totallines - 1 && nextlinetype.equals("lyric")) {
                     what = "chord_then_lyric";
+                } else if (linenum < totallines - 1 && nextlinetype.equals("comment")) {
+                    what = "chord_then_comment";
                 } else if (totallines == 1 || nextlinetype.equals("") || nextlinetype.equals("chord") || nextlinetype.equals("heading")) {
                     what = "chord_only";
                 }
@@ -885,7 +887,8 @@ public class ProcessSong {
                     // IV - For example a line may have a chords version for repeat. The repeat variant lyrics can be changed to comment, it will not be projected
                     if (lines[i].startsWith(";")) {
                         lines[i] = lines[i].replace(";D:",";"+c.getString(R.string.autoscroll_inline_pause)+": ");
-                        lines[i] = lines[i].replaceFirst(";"," ");
+                        //lines[i] = lines[i].replaceFirst(";"," ");
+                        lines[i] = lines[i].replaceFirst(";","; ");
                     }
                     if (lines[i].startsWith(" ")) {
                         if (displayLyrics) {
@@ -1097,6 +1100,31 @@ public class ProcessSong {
                                 }
                                 textView.setText(spannableString);
                                 htmlLyrics.append("<td class=\"lyric\">").append(str).append("</td>");
+                            } else {
+                                textView = null;
+                            }
+                            break;
+                        case "comment":
+                            if (displayLyrics) {
+                                str = str.replace("_","");
+                                str = str.replaceAll("[|]"," ");
+                                if (!showChords) {
+                                    // IV - Remove typical word splits, white space and beautify!
+                                    str = fixLyricsOnlySpace(str);
+                                } else {
+                                    if (applyFixExcessSpaces) {
+                                        str = fixExcessSpaces(str);
+                                    }
+                                }
+                                SpannableStringBuilder spannableString = getSpannableBracketString(str);
+                                if (boldText) {
+                                    textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                                    textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
+                                }
+                                textView.setText(spannableString);
+                                // Comment line with chords above still needs comment background
+                                textView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsCommentColor());
+                                htmlLyrics.append("<td class=\"comment\">").append(str).append("</td>");
                             } else {
                                 textView = null;
                             }
