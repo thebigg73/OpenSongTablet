@@ -11,6 +11,8 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -271,10 +273,19 @@ public class CommonSQL {
             args.add(keyVal);
         }
         if (searchByTag && tagVal != null && tagVal.length() > 0) {
-            sqlMatch += "(" + SQLite.COLUMN_THEME + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_ALTTHEME + " LIKE ? ) AND ";
-            args.add("%"+tagVal+"%");
-            args.add("%"+tagVal+"%");
+            String[] tagArray = StringUtils.splitPreserveAllTokens(tagVal, ";");
+            if (tagArray.length > 0) {
+                sqlMatch += "(";
+                for (int i = 0, max = tagArray.length; i < max; i++) {
+                    sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR " + SQLite.COLUMN_ALTTHEME + " LIKE ?";
+                    if (i < max - 1) {
+                        sqlMatch += " OR ";
+                    }
+                    args.add("%"+tagArray[i]+"%");
+                    args.add("%"+tagArray[i]+"%");
+                }
+                sqlMatch += ") AND ";
+            }
         }
         if (searchByTitle && titleVal != null && titleVal.length() > 0) {
             sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
