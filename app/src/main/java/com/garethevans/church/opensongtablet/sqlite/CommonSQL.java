@@ -196,7 +196,7 @@ public class CommonSQL {
             }
         }
         inQuery.append(")");
-        db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " NOT IN " + inQuery.toString(), null);
+        db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " NOT IN " + inQuery, null);
     }
 
     void insertFast(SQLiteDatabase db) {
@@ -276,15 +276,18 @@ public class CommonSQL {
             String[] tagArray = StringUtils.splitPreserveAllTokens(tagVal, ";");
             if (tagArray.length > 0) {
                 sqlMatch += "(";
+                StringBuilder tempSqlMatch = new StringBuilder();
                 for (int i = 0, max = tagArray.length; i < max; i++) {
-                    sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR " + SQLite.COLUMN_ALTTHEME + " LIKE ?";
+                    //sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR " + SQLite.COLUMN_ALTTHEME + " LIKE ?";
+                    tempSqlMatch.append(SQLite.COLUMN_THEME).append(" LIKE ? OR ").append(SQLite.COLUMN_ALTTHEME).append(" LIKE ?");
                     if (i < max - 1) {
-                        sqlMatch += " OR ";
+                        tempSqlMatch.append(" OR ");
+                        //sqlMatch += " OR ";
                     }
                     args.add("%"+tagArray[i]+"%");
                     args.add("%"+tagArray[i]+"%");
                 }
-                sqlMatch += ") AND ";
+                sqlMatch += tempSqlMatch + ") AND ";
             }
         }
         if (searchByTitle && titleVal != null && titleVal.length() > 0) {
@@ -722,7 +725,7 @@ public class CommonSQL {
         // First remove ''
         while (text.contains("''")) {
             text = text.replace("''","'");
-        };
+        }
         // Now escape by doubling
         text = text.replace("'","''");
         return text;
