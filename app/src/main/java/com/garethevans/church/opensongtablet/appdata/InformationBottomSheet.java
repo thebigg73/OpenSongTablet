@@ -37,7 +37,11 @@ public class InformationBottomSheet extends BottomSheetDialogFragment {
         information = null;
         buttonText = null;
         deepLink = null;
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public InformationBottomSheet(String title, String information, String buttonText,
