@@ -35,6 +35,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     // Also left
     private boolean scrolledToBottom=false;
     private boolean scrolledToEnd=false;
+    private boolean scrollEnabled = true;
     private int maxScrollY;
     private GestureDetector gestureDetector;
     private final ScaleGestureDetector mScaleDetector;
@@ -561,5 +562,9 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         // From default implementation we have removed the Runtime Exception thrown
     }
 
+    public void doStopScroll() {
+        stopScroll();
+        stopNestedScroll();
+    }
 
 }

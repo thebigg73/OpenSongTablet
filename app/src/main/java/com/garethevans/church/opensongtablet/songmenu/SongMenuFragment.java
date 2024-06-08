@@ -421,6 +421,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void setListeners() {
         myView.actionFAB.setOnClickListener(v -> {
             if (songButtonActive) {
+                myView.songListRecyclerView.stopScroll();
                 songButtonActive = false;
                 mainActivityInterface.getMainHandler().postDelayed(() -> songButtonActive = true, 600);
                 longClickFilename = mainActivityInterface.getSong().getFilename();
@@ -439,6 +440,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         });
         myView.filterButtons.folderButton.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
             songListSearchByFolder = !songListSearchByFolder;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder", songListSearchByFolder);
             fixButtons();
@@ -452,6 +454,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         });
         myView.filterButtons.artistButton.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
             songListSearchByArtist = !songListSearchByArtist;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByArtist", songListSearchByArtist);
             fixButtons();
@@ -464,6 +467,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         });
         myView.filterButtons.keyButton.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
             songListSearchByKey = !songListSearchByKey;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByKey", songListSearchByKey);
             fixButtons();
@@ -476,6 +480,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         });
         myView.filterButtons.tagButton.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
             songListSearchByTag = !songListSearchByTag;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", songListSearchByTag);
             fixButtons();
@@ -488,6 +493,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         });
         myView.filterButtons.filterButton.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
             songListSearchByFilter = !songListSearchByFilter;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFilter", songListSearchByFilter);
             fixButtons();
@@ -500,6 +506,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
         });
         myView.filterButtons.titleButton.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
             songListSearchByTitle = !songListSearchByTitle;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTitle",songListSearchByTitle);
             fixButtons();
@@ -511,8 +518,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         new Boolean[] {true, true}, "myView.filters.titleSearch");
             }
         });
-        myView.filters.manageFolders.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_manage_storage_string,0));
-        myView.filters.manageTags.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_tags_string,0));
+        myView.filters.manageFolders.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
+            mainActivityInterface.navigateToFragment(deeplink_manage_storage_string,0);
+        });
+        myView.filters.manageTags.setOnClickListener(v -> {
+            myView.songListRecyclerView.stopScroll();
+            mainActivityInterface.navigateToFragment(deeplink_tags_string,0);
+        });
     }
 
     private void showActionDialog() {
@@ -737,6 +750,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     @Override
     public void onItemClicked(int position, String folder, String filename, String key) {
+        myView.songListRecyclerView.stopScroll();
         mainActivityInterface.getWindowFlags().hideKeyboard();
         // Default the slide animations to be next (R2L)
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
@@ -745,6 +759,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     @Override
     public void onItemLongClicked(int position, String folder, String filename, String key) {
+        myView.songListRecyclerView.stopScroll();
         longClickFilename = filename;
         mainActivityInterface.getWindowFlags().hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename,false);
