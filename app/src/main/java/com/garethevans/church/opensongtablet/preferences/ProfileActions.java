@@ -28,7 +28,7 @@ public class ProfileActions {
     // Deal with loading and saving the profiles
     public boolean loadProfile(Uri uri) {
         // This is uses to copy the external file on top of the application preferences
-
+        Log.d(TAG,"loadProfile()");
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
 
         try {
@@ -47,7 +47,8 @@ public class ProfileActions {
                     String type = xpp.getName();
                     String key = "";
                     String value = "";
-                    if (type.equals("boolean") || type.equals("string") || type.equals("int") || type.equals("float")) {
+                    if (type.equals("boolean") || type.equals("string") || type.equals("int") ||
+                            type.equals("float") || type.equals("long")) {
                         // This is an new preference file which has entries like <int name="key" value="1" />
                         if (xpp.getAttributeCount()>0) {
                             key = xpp.getAttributeValue(0);
@@ -91,14 +92,24 @@ public class ProfileActions {
                                 type = "int";
                             } catch (Exception e) {
                                 Log.d(TAG, key+" isn't a int!");
+                                // Could be a long
+                                try {
+                                    long l = Long.parseLong(value);
+                                    type = "long";
+                                    Log.d(TAG,"Is long+"+l);
+                                } catch (Exception e2) {
+                                    e2.printStackTrace();
+                                }
                             }
                         }
                     }
 
+                    Log.d(TAG,"key:"+key);
                     if (key!=null && !key.isEmpty()) {
                         switch (type) {
                             case "boolean":
                                 try {
+                                    Log.d(TAG,"boolean:"+key+"="+value.equals("true"));
                                     mainActivityInterface.getPreferences().setMyPreferenceBoolean(key, value.equals("true"));
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -108,6 +119,7 @@ public class ProfileActions {
                                 try {
                                     if (!key.equals("uriTree") && !key.equals("uriTreeHome")) {
                                         // Don't overwrite our storage location reference!!
+                                        Log.d(TAG,"string:"+key+"="+value);
                                         mainActivityInterface.getPreferences().setMyPreferenceString(key, value);
                                     }
                                 } catch (Exception e) {
@@ -116,6 +128,7 @@ public class ProfileActions {
                                 break;
                             case "int":
                                 try {
+                                    Log.d(TAG,"int:"+key+"="+value);
                                     mainActivityInterface.getPreferences().setMyPreferenceInt(key, Integer.parseInt(value));
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -123,11 +136,19 @@ public class ProfileActions {
                                 break;
                             case "float":
                                 try {
+                                    Log.d(TAG,"float:"+key+"="+value);
                                     mainActivityInterface.getPreferences().setMyPreferenceFloat(key, Float.parseFloat(value));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 break;
+                            case "long":
+                                try {
+                                    Log.d(TAG,"long:"+key+"="+value);
+                                    mainActivityInterface.getPreferences().setMyPreferenceLong(key, Long.parseLong(value));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                         }
                     }
                 }

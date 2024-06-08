@@ -127,6 +127,9 @@ public class ProfileBottomSheet extends BottomSheetDialogFragment {
                 // Load this profile
                 Uri loadUri = mainActivityInterface.getStorageAccess().getUriForItem("Profiles","",profile);
                 boolean success = mainActivityInterface.getProfileActions().loadProfile(loadUri);
+                mainActivityInterface.getPageButtons().setPreferences();
+                mainActivityInterface.initialisePageButtons();
+                mainActivityInterface.updatePageButtonLayout();
                 mainActivityInterface.getShowToast().doIt(success ? success_string:error_string);
                 dismiss();
             }

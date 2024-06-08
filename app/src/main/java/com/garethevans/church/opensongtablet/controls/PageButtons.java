@@ -6,12 +6,12 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -62,9 +62,6 @@ public class PageButtons {
 
         // Now get our button preferences
         setPreferences();
-
-        pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false);
-        pageButtonHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonHide",false);
     }
 
 
@@ -175,20 +172,14 @@ public class PageButtons {
     public void animatePageButton(boolean open) {
         if (open) {
             if (actionButton.getRotation()==0) {
-                ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(animationTime).
+                actionButton.animate().rotation(45f).withLayer().setDuration(animationTime).
                         setInterpolator(interpolator).start();
-                /*
-                If we decide to go back to a red tint
-                int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
-                actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
-                */
             }
         } else {
             if (actionButton.getRotation()!=0) {
-                ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(animationTime).
+                actionButton.animate().rotation(0f).withLayer().setDuration(animationTime).
                         setInterpolator(interpolator).start();
             }
-            //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
         for (int x=0; x<pageButtonNum; x++) {
             if (pageButtonVisibility.get(x) && open) {
@@ -361,7 +352,12 @@ public class PageButtons {
     }
 
     // Build the arrays describing the buttons (action, short description, long description, drawable, etc) based on user preferences
-    private void setPreferences() {
+    public void setPreferences() {
+        Log.d(TAG,"setPreferences()");
+
+        pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false);
+        pageButtonHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonHide",false);
+
         // Initialise the arrays
         pageButtonAction = new ArrayList<>();
         pageButtonDrawable = new ArrayList<>();
