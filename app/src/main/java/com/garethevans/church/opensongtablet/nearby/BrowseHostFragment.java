@@ -24,6 +24,7 @@ public class BrowseHostFragment extends Fragment {
     private final String TAG = "BrowseHostFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsNearbyBrowseBinding myView;
+    @SuppressWarnings("FieldCanBeLocal")
     private String browse_host_files_string="", set_string="", profile_string="", song_string="";
 
     @Override
@@ -64,7 +65,7 @@ public class BrowseHostFragment extends Fragment {
             set_string = getString(R.string.set);
             profile_string = getString(R.string.profile);
             song_string = getString(R.string.song);
-            String title_string = "";
+            String title_string;
             String web_help = "";
             switch (mainActivityInterface.getWhattodo()) {
                 case "browsesets":

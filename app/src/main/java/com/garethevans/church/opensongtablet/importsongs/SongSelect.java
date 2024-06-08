@@ -195,7 +195,7 @@ public class SongSelect {
     }
 
     private String getCCLI(String s) {
-        String ccli = "";
+        String ccli;
         // IV - Try chordpro style
         if (s.contains("<p class=\"songnumber\">")) {
             ccli = stripOutTags(getSubstring(s, "<p class=\"songnumber\">", "</p>"));

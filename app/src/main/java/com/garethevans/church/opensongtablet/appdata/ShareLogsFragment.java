@@ -92,9 +92,7 @@ public class ShareLogsFragment extends Fragment {
             mainActivityInterface.getStorageAccess().deleteFile(mainActivityInterface.getStorageAccess().getCrashLogUri());
             checkCrashLogExists();
         });
-        myView.crashLogShare.setOnClickListener(view -> {
-            shareFile(crashLog_string,"text/plain",mainActivityInterface.getStorageAccess().getCrashLogUri());
-        });
+        myView.crashLogShare.setOnClickListener(view -> shareFile(crashLog_string,"text/plain",mainActivityInterface.getStorageAccess().getCrashLogUri()));
     }
 
     private void checkCrashLogExists() {

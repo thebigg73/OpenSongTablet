@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
-    private boolean settingsOpen = false, showSetMenu, actionButtonWasExpanded = false,
+    private boolean settingsOpen = false, showSetMenu,
             pageButtonActive = true, menuOpen, firstRun = true;
     private final String TAG = "MainActivity";
     private Menu globalMenuItem;
@@ -435,10 +435,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean getWaitingOnBootUpFragment() {
         return waitingOnBootUpFragment;
     }
-    @Override
-    public void setWaitingOnBootUpFragment(boolean waitingOnBootUpFragment) {
-        this.waitingOnBootUpFragment = waitingOnBootUpFragment;
-    }
+
 
     /**
      * ViewCompat.generateViewId stores the current ID in a static variable.
@@ -813,6 +810,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public BatteryStatus getBatteryStatus() {
+        if (batteryStatus == null && myView!=null) {
+            batteryStatus = new BatteryStatus(this, myView.myToolbar.getBatteryimage(),
+                    myView.myToolbar.getBatterycharge(), myView.myToolbar.getActionBarHeight(true));
+        }
         return batteryStatus;
     }
 
@@ -967,6 +968,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
 
         myView.myToolbar.initialiseToolbar(this, getSupportActionBar());
+        initialisePageButtons();
+    }
+
+    @Override
+    public void initialisePageButtons() {
         pageButtons.setMainFABS(
                 myView.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button, myView.pageButtonRight.custom3Button,
@@ -975,7 +981,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.pageButtonRight.custom8Button, myView.pageButtonRight.bottomButtons);
         pageButtons.animatePageButton(false);
     }
-
     @Override
     public void setFirstRun(boolean firstRun) {
         this.firstRun = firstRun;
@@ -1221,7 +1226,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         myView.myToolbar.hideSongDetails(true);
                     }
                     myView.myToolbar.batteryholderVisibility(false, false);
-                    if (batteryStatus != null) {
+                    if (getBatteryStatus() != null) {
                         batteryStatus.showBatteryStuff(false);
                     }
                     updateToolbarHelp(null);
@@ -1242,8 +1247,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
-                            myView.myToolbar.batteryholderVisibility(true, true);
-                            batteryStatus.showBatteryStuff(true);
+                            if (myView!=null) {
+                                myView.myToolbar.batteryholderVisibility(true, true);
+                            }
+                            if (getBatteryStatus()!=null) {
+                                batteryStatus.showBatteryStuff(true);
+                            }
                         }
                         // IV - Song details are added by song load
                         // GE onResuming (open cast and return), not called, so quick check is worthwhile
@@ -1273,7 +1282,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
-        actionButtonWasExpanded = myView.actionFAB.getRotation() != 0;
         hideActionButton(true);
         // Stop the autoscroll if running
         if (autoscroll!=null) {
@@ -1691,13 +1699,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void expandActionButton() {
-        if (actionButtonWasExpanded && myView.actionFAB.getRotation() == 0) {
-            myView.actionFAB.performClick();
-        }
-    }
-
-    @Override
     public void miniPageButton(boolean mini) {
         if (mini) {
             myView.actionFAB.setSize(FloatingActionButton.SIZE_MINI);
@@ -1711,17 +1712,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-    }
-
-    @Override
-    public void removeActionBar(boolean remove) {
-        myView.myToolbar.showActionBar(!remove);
-        if (remove) {
-            myView.myAppBarLayout.setVisibility(View.GONE);
-        } else {
-            myView.myAppBarLayout.setVisibility(View.VISIBLE);
-        }
-        updateMargins();
     }
 
     @Override

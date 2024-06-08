@@ -84,7 +84,6 @@ public interface MainActivityInterface {
 
     // Initialising the activity and settings
     boolean getWaitingOnBootUpFragment();
-    void setWaitingOnBootUpFragment(boolean waitingOnBootUpFragment);
     void initialiseActivity();
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
@@ -187,7 +186,6 @@ public interface MainActivityInterface {
     BatteryStatus getBatteryStatus();
     void hideActionBar();
     void showActionBar();
-    void removeActionBar(boolean remove);
     ImageView disableActionBarStuff(boolean disable);
     void updateToolbar(String what);
     void updateToolbarHelp(String webAddress);
@@ -200,7 +198,7 @@ public interface MainActivityInterface {
     void hideActionButton(boolean hide);
     void updatePageButtonLayout();
     void miniPageButton(boolean mini);
-    void expandActionButton();
+    void initialisePageButtons();
 
     // Controls
     CommonControls getCommonControls();
@@ -219,7 +217,6 @@ public interface MainActivityInterface {
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     FragmentManager getMyFragmentManager();
     void dealWithIntent(int fragmentId);
-    void onBackPressed();
 
     // Showcase
     ShowCase getShowCase();

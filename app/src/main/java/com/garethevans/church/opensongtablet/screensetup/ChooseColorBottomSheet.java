@@ -377,6 +377,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 title = chord_color_string;
                 break;
             case "lyricsCapoColor":
+            case "presoCapoColor":
                 title = capo_chords_string;
                 break;
             case "lyricsBackgroundColor":
@@ -425,9 +426,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 break;
             case "presoAlertColor":
                 title = alert_string;
-                break;
-            case "presoCapoColor":
-                title = capo_chords_string;
                 break;
             case "presoShadowColor":
                 title = block_text_shadow_string;

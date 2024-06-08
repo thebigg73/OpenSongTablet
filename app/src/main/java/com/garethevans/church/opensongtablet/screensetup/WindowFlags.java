@@ -58,7 +58,7 @@ public class WindowFlags {
     private int customMarginLeft, customMarginRight, customMarginBottom, customMarginTop,
             statusHeight = 0, navHeight = 0,
             roundedLeft = 0, roundedRight = 0, roundedBottom = 0, roundedTop = 0,
-            marginToolbarLeft = 0, marginToolbarRight = 0,
+            marginToolbarLeft, marginToolbarRight,
             navLeft, navRight,
             currentRotation, firstBootRotation, cutoutTop, cutoutBottom, currentRoundedTop = 0,
             cutoutLeft, cutoutRight, softKeyboardHeight = 0, currentTopCutoutHeight = 0;

@@ -837,6 +837,10 @@
                 <action
                     android:id="@+id/action_setActionsFragment_to_backupRestoreSetsFragment"
                     app:destination="@id/backupRestoreSetsFragment" />
+                <action
+                    android:id="@+id/action_setActionsFragment_to_browseHostFilesFragment"
+                    app:destination="@id/browseHostFilesFragment" />
+
             </fragment>
             <fragment
                 android:id="@+id/setManageFragment"
@@ -847,6 +851,16 @@
                     android:id="@+id/deepLinkSetsManage"
                     app:uri="@string/deeplink_sets_manage" />
                 </fragment>
+
+            <fragment
+                android:id="@+id/browseHostFilesFragment"
+                android:name="com.garethevans.church.opensongtablet.nearby.BrowseHostFragment"
+                android:label="BrowseHostFiles"
+                tools:layout="@layout/settings_nearby_browse">
+                <deepLink
+                    android:id="@+id/deepLinkBrowseHost"
+                    app:uri="@string/deeplink_browse_host_files_set" />
+            </fragment>
 
             <navigation android:id="@+id/bible_graph"
                 app:startDestination="@id/bibleSettingsFragment">

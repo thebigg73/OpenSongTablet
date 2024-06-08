@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +38,7 @@ public class PedalsFragment extends Fragment {
 
     private boolean longPressCapable = false;
     private long downTime, upTime;
+    @SuppressWarnings("FieldCanBeLocal")
     private String currentMidiCode, pedal_string="", website_foot_pedal_string="", midi_pedal_string="",
             pedal_midi_warning_string="", is_not_set_string="", pedal_waiting_string="",
             pedal_up_string="", pedal_down_string="", short_press_string="", long_press_string="",
@@ -647,7 +647,7 @@ public class PedalsFragment extends Fragment {
     private void updateKeyEvents(int keyCode, long millis, String which) {
         String timeCode = mainActivityInterface.getTimeTools().getTimeStampFromMills(
                 mainActivityInterface.getLocale(), millis);
-        String eventString = "";
+        String eventString;
         if (keyCode == -1 || KeyEvent.keyCodeToString(keyCode) == null) {
             eventString = unknown_string;
         } else {
