@@ -564,7 +564,6 @@ public class ProcessSong {
                 // Add the end position of a chord if it ends over a lyric space
             } else if (thischordcharempty && !prevchordcharempty && prevlyriccharempty) {
                 if (lyric.startsWith(";;")) {
-                    Log.d(TAG,"getting here position:"+(x-2));
                     chordpositions.add(String.valueOf(x-2));
                 } else {
                     chordpositions.add(String.valueOf(x));
@@ -749,10 +748,6 @@ public class ProcessSong {
             case "heading":
                 string = beautifyHeading(string);
                 thisSong.getSongSectionHeadings().add(string);
-                // This was causing a drift in numbers of headings/sections
-                /* if (!thisSong.getSongSectionHeadings().contains(string)) {
-                    thisSong.getSongSectionHeadings().add(string);
-                } */
                 break;
             case "chord":
             case "capoline":
@@ -965,7 +960,6 @@ public class ProcessSong {
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
 
-        Log.d(TAG,"string:"+string);
         // Split the group into lines
         String[] lines = string.split(groupline_string);
 
@@ -1031,7 +1025,6 @@ public class ProcessSong {
 
             // Headings with just a comment missed this out
             // Also comments followed by headings
-            Log.d(TAG,"lines["+t+"]:"+lines[t]+"\nlinetype:"+linetype);
             if (linetype.equals("heading") & lines[t].startsWith("[")) {
                 lines[t] = beautifyHeading(lines[t]);
             }
@@ -1062,7 +1055,6 @@ public class ProcessSong {
                     }
                     // If this is a chord line that either has highlighting, or needs to to include capo chords
                     // We process separately, otherwise it is handled in the last default 'else'
-                    Log.d(TAG,"linetype:"+linetype+"  str:"+str);
                     switch (linetype) {
                         case "chord":
                             // Only show this if we want chords and if there is a capo, we want both capo and native
@@ -1116,7 +1108,6 @@ public class ProcessSong {
                             }
                             break;
                         case "comment":
-                            Log.d(TAG,"getting here comment:"+str);
                             if (displayLyrics) {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
@@ -1143,8 +1134,6 @@ public class ProcessSong {
                             break;
                         default:
                             // Just set the text
-                            Log.d(TAG,"getting here default:"+str);
-
                             if (applyFixExcessSpaces) {
                                 str = fixExcessSpaces(str);
                             }
@@ -1474,7 +1463,6 @@ public class ProcessSong {
             // If a section isn't multiline then we need to trim extra spaces in front of the chord line
             lines = fixedLines.toString().split("\n");
             fixedLines = new StringBuilder();
-            boolean trimBadChordSpacing = false;
             for (int x=0; x<lines.length-1; x++) {
                 if (lines[x].startsWith(".   ") && lines[x+1].startsWith(" ")) {
                     lines[x] = lines[x].replace(".   ",".");

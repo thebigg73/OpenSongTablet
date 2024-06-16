@@ -70,13 +70,14 @@ public class WebServerFragment extends Fragment {
 
     private void setListeners() {
         // The web server stuff
-        myView.webServer.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getWebServer().stopWebServer();
-            mainActivityInterface.getWebServer().setRunWebServer(b);
-            // Update tge IP address and QR code
-            updateViews();
-            myView.webServerInfo.setVisibility(b ? View.VISIBLE:View.GONE);
-        });
+        myView.webServer.setOnCheckedChangeListener((compoundButton, b) ->
+                mainActivityInterface.getMainHandler().post(() -> {
+                    mainActivityInterface.getWebServer().stopWebServer();
+                    mainActivityInterface.getWebServer().getIP();
+                    mainActivityInterface.getWebServer().setRunWebServer(b);
+                    updateViews();
+                    myView.webServerInfo.setVisibility(b ? View.VISIBLE : View.GONE);
+                }));
         myView.allowWebNavigation.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getWebServer().setAllowWebNavigation(b));
         myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getWebServer().getIP()));
     }

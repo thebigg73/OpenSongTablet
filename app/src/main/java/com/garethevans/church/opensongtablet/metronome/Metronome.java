@@ -268,16 +268,12 @@ public class Metronome {
                 getMyPreferenceBoolean("metronomeShowVisual", false);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
         metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
-        Log.d(TAG,"metronomeFlashOnColor:"+metronomeFlashOnColor);
-        Log.d(TAG,"metronomeFlashOnColorDarker:"+metronomeFlashOnColorDarker);
     }
     public void setVisualMetronome(boolean visualMetronome) {
         this.visualMetronome = visualMetronome;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeShowVisual",visualMetronome);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
         metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
-        Log.d(TAG,"metronomeFlashOnColor:"+metronomeFlashOnColor);
-        Log.d(TAG,"metronomeFlashOnColorDarker:"+metronomeFlashOnColorDarker);
     }
     public boolean getVisualMetronome() {
         return visualMetronome;
@@ -505,7 +501,6 @@ public class Metronome {
                     // Latency is always positive as the sysTime will always be on or after the audioTime
                     long latency = sysTime - (audioTime - buffer);
                     final long bufferFix = buffer - latency;
-                    Log.d(TAG,"buffer:"+buffer+"  latency:"+latency+"  bufferFix:"+bufferFix);
 
                     if (beat > beats) {
                         beat = 1;

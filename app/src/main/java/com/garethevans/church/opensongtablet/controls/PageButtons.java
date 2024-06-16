@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -353,8 +352,6 @@ public class PageButtons {
 
     // Build the arrays describing the buttons (action, short description, long description, drawable, etc) based on user preferences
     public void setPreferences() {
-        Log.d(TAG,"setPreferences()");
-
         pageButtonMini = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonMini",false);
         pageButtonHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pageButtonHide",false);
 

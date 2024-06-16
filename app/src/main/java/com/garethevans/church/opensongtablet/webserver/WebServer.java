@@ -52,6 +52,7 @@ public class WebServer extends NanoHTTPD {
     }
     @SuppressLint("DefaultLocale")
     public void callRunWebServer() {
+        getIP();
         try {
             if (runWebServer) {
                 this.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
@@ -65,8 +66,8 @@ public class WebServer extends NanoHTTPD {
 
     public void stopWebServer() {
         try {
-            this.stop();
             ip = null;
+            this.stop();
         } catch (Exception e) {
             e.printStackTrace();
         }

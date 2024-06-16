@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ the Performance/Presenter fragment.
 
 public class BootUpFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BootUpFragment";
     private String message, uriTreeString;
     private Uri uriTree;
@@ -74,8 +74,6 @@ public class BootUpFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume()");
-        Log.d(TAG,"waitingOnBootUpFragment:"+mainActivityInterface.getWaitingOnBootUpFragment());
         mainActivityInterface.registerFragment(this,"BootUpFragment");
         if (mainActivityInterface.getWaitingOnBootUpFragment()) {
             startOrSetUp();
@@ -110,7 +108,6 @@ public class BootUpFragment extends Fragment {
 
     // Checks made before starting the app
     public void startOrSetUp() {
-        Log.d(TAG,"startOrSetup()");
         if (storageIsCorrectlySet()) {
             if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
                     mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
@@ -126,8 +123,6 @@ public class BootUpFragment extends Fragment {
         } else {
             requireStorageCheck();
         }
-        Log.d(TAG,"startOrSetup() ended");
-
     }
     private boolean storageIsCorrectlySet() {
         // Check that storage permission is granted and that it has been set and that it exists
@@ -155,7 +150,6 @@ public class BootUpFragment extends Fragment {
     }
 
     public void startBootProcess(boolean needIndex, boolean fullIndexRequired) {
-        Log.d(TAG,"startBootProcess");
         mainActivityInterface.getSongListBuildIndex().setIndexRequired(needIndex);
         mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(fullIndexRequired);
         mainActivityInterface.getSongListBuildIndex().setCurrentlyIndexing(false);
@@ -199,7 +193,6 @@ public class BootUpFragment extends Fragment {
 
                     mainActivityInterface.getStorageAccess().fixBadSongs();
 
-                    Log.d(TAG,"indexing decision");
                     if (needIndex) {
                         // Check for bad files
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
@@ -209,7 +202,6 @@ public class BootUpFragment extends Fragment {
                     } else {
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
                     }
-                    Log.d(TAG,"indexing decision complete");
 
                     // Finished indexing
                     if (getContext() != null) {
@@ -231,16 +223,13 @@ public class BootUpFragment extends Fragment {
                     message = set_string;
                     updateMessage();
 
-                    Log.d(TAG,"parse current set");
                     mainActivityInterface.getSetActions().parseCurrentSet();
-                    Log.d(TAG,"parse current set complete");
 
                     message = success;
                     updateMessage();
 
                     // Set up the rest of the main activity (on the main thread)
                     mainActivityInterface.getMainHandler().post(() -> {
-                        Log.d(TAG,"ready to start app");
                         mainActivityInterface.navHome();
                         mainActivityInterface.showActionBar();
                         mainActivityInterface.updateMargins();
@@ -248,7 +237,6 @@ public class BootUpFragment extends Fragment {
 
                 } else {
                     // There was a problem with the folders, so restart the app!
-                    Log.d(TAG, "Problem with app folders - restarting");
                     requireActivity().recreate();
                 }
             });

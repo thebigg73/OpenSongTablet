@@ -21,7 +21,8 @@ public class ProfileFragment extends Fragment {
 
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private String profile_string="", website_profiles_string="";
+    private String profile_string="", website_profiles_string="",
+            deeplink_browse_host_files="";
     private String webAddress;
 
     @Override
@@ -50,16 +51,27 @@ public class ProfileFragment extends Fragment {
         // Setup helpers
         setupHelpers();
 
+        // Set up views
+        setupViews();
+
         // Setup listeners
         setupListeners();
 
         return myView.getRoot();
     }
 
+    private void setupViews() {
+        if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
+            myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
+                    mainActivityInterface.getNearbyConnections().getConnectedEndpoints().size()>0 &&
+                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
+        }
+    }
     private void prepareStrings() {
         if (getContext()!=null) {
             profile_string = getString(R.string.profile);
             website_profiles_string = getString(R.string.website_profiles);
+            deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
         }
     }
 
@@ -71,6 +83,10 @@ public class ProfileFragment extends Fragment {
         myView.loadButton.setOnClickListener(v -> loadProfile());
         myView.saveButton.setOnClickListener(v -> saveProfile());
         myView.resetButton.setOnClickListener(v -> resetPreferences());
+        myView.browseHost.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("browseprofiles");
+            mainActivityInterface.navigateToFragment(deeplink_browse_host_files,0);
+        });
     }
 
     private void loadProfile() {

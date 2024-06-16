@@ -406,7 +406,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             mainLooper.post(() -> {
                 setContentView(myView.getRoot());
 
-                Log.d(TAG,"setupHelpers() start");
                 // Set up the helpers
                 setupHelpers();
 
@@ -460,7 +459,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace(pw);
 
             // Write a crash log file
-            Log.d(TAG,"sw:"+sw);
             storageAccess.updateCrashLog(sw.toString());
 
             // Switch off hardware acceleration if crash happens to try to alleviate the issue
@@ -472,10 +470,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             // Now turn off the app
             try {
-                Log.d(TAG,"Got here");
                 throw e;
             } catch (Throwable ex) {
-                Log.d(TAG,"Ended up catching");
                 System.exit(1);
             }
         });
@@ -492,7 +488,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         } else {
-            Log.d(TAG,"issue HW");
             if (getWindow()!=null) {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                         WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
@@ -2893,8 +2888,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 boolean isKeyVariation = setKey!=null && originalKey!=null && !setKey.isEmpty() &&
                                 !originalKey.isEmpty() && !setKey.equals(originalKey);
 
-                Log.d(TAG,"originalKey:"+originalKey+"  setKey:"+setKey+"  isKeyVariation:"+isKeyVariation);
-
                 if (isKeyVariation) {
                     // Could be just a key variation, or a standard variation needing adjusted
 
@@ -2968,8 +2961,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                         transposeTimes = Math.abs(transposeTimes);
 
-                        Log.d(TAG, "transposeTimes:" + transposeTimes + "  transposeDirection:" + transposeDirection);
-
                         quickSong.setKey(originalKey); // This will be transposed in the following...
                         quickSong.setLyrics(transpose.doTranspose(quickSong,
                                 transposeDirection, transposeTimes, quickSong.getDetectedChordFormat(),
@@ -2977,13 +2968,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         // Get the song XML
                         String songXML = processSong.getXML(quickSong);
 
-                        Log.d(TAG, "transposed songXML:\n" + songXML);
-
                         // Now we need to write the transposed file
                         // If this is a standard variation (not a key variation)
                         if (!getStorageAccess().uriExists(targetUri)) {
                             // We need to create the new key variation file for writing to
-                            Log.d(TAG, "Key variation file creation");
                             getStorageAccess().lollipopCreateFileForOutputStream(false,
                                     targetUri, null, targetFolder,
                                     targetSubfolder, targetFilename);
@@ -2996,7 +2984,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     } else if (!getSetActions().getIsNormalOrKeyVariation(setFolder,setFilename)) {
                         // Load the song in the original key
-                        Log.d(TAG, "Load the original file as no key varation required");
                         setFolder = originalFolder;
                         setFilename = originalFilename;
                         setItemInfo.songfolder = originalFolder;
@@ -3010,7 +2997,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     songMenuFragment.removeFiltersFromLoadSong();
                 }
 
-                Log.d(TAG,"finished processing, now load from:"+setFolder+"/"+setFilename);
                 doSongLoad(setFolder, setFilename, true);
             }
         });
@@ -3688,7 +3674,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (screenshotFile==null) {
             getScreenshotFile();
         }
-        Log.d(TAG,"screenshotFile:"+screenshotFile+"  length:"+screenshotFile.length());
         return screenshotFile.exists() && screenshotFile.length()>0;
     }
 

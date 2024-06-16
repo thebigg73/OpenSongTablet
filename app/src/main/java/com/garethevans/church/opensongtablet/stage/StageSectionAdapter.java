@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final float alphaoff = 0.4f;
     private int availableWidth;
     private int availableHeight;
-    private int inlineSetWidth;
+    private final int inlineSetWidth;
     private int padding;
     private boolean fakeClick;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -66,7 +65,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         int[] metrics = mainActivityInterface.getDisplayMetrics();
         int[] viewPadding = mainActivityInterface.getViewMargins();
 
-        Log.d(TAG,"displayW:"+metrics[0]+"  lmargin:"+viewPadding[0]+"  rmargin"+viewPadding[1]+"  inlinesetW:"+inlineSetWidth);
         availableWidth = metrics[0] - viewPadding[0] - viewPadding[1] - inlineSetWidth;
         availableHeight = metrics[1] - viewPadding[2] - viewPadding[3];
 
@@ -74,8 +72,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                 16, c.getResources().getDisplayMetrics());
         spacing = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 4, c.getResources().getDisplayMetrics());
-
-        Log.d(TAG,"padding:"+padding);
     }
 
     private void setSongInfo() {
@@ -113,10 +109,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             floatHeight += itemHeight;
             floatVSizes.add(itemHeight);
 
-            Log.d(TAG,"inlineSetWidth:"+inlineSetWidth);
-            Log.d(TAG,"Screen:"+availableWidth+"x"+availableHeight);
-            Log.d(TAG,"View:"+sectionWidth+"x"+sectionHeight);
-            Log.d(TAG,"Scaled:"+itemWidth+"x"+itemHeight);
             stageSectionInfo.section = x;
             stageSectionInfo.width = sectionWidth;
             stageSectionInfo.height = sectionHeight;
@@ -216,7 +208,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
                     cardView.setVisibility(View.VISIBLE);
                     cardView.setOnClickListener(view -> {
-                        Log.d(TAG,"pos:"+pos);
                         if (fakeClick) {
                             fakeClick = false;
                         } else {

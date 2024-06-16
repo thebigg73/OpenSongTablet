@@ -61,7 +61,6 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         prepareStrings(getContext());
         if (countdownNumber != 10) {
             // We were in progress of counting down, so resume
-            Log.d(TAG,"Try to resume");
             countdownNumber = 10;
         }
         setTimer();
@@ -164,7 +163,6 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
             public void run() {
                 try {
                         String message = skip_string + " (" + countdownNumber + ")";
-                        Log.d(TAG,"message:"+message);
                         if (myView != null) {
                             mainActivityInterface.getMainHandler().post(() -> myView.skipButton.setText(message));
                         }
