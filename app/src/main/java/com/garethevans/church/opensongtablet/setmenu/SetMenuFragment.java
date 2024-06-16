@@ -197,9 +197,13 @@ public class SetMenuFragment extends Fragment {
         if (mainActivityInterface!=null && mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
                 mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
             myView.myRecyclerView.postDelayed(() -> {
-                if (llm!=null) {
+                int position = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+                if (position<0 && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                    position = 0;
+                }
+                if (llm!=null && position>=0) {
                     try {
-                        llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0);
+                        llm.scrollToPositionWithOffset(position, 0);
                         mainActivityInterface.notifyInlineSetScrollToItem();
                     } catch (Exception e) {
                         e.printStackTrace();

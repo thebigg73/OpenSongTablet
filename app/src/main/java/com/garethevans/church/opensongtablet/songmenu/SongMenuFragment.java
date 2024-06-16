@@ -150,6 +150,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
                         @Override
                         public void scrollToPosition(int position) {
+                            if (position<0 && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                                position = 0;
+                            }
                             try {
                                 super.scrollToPosition(position);
                             } catch (Exception e) {
