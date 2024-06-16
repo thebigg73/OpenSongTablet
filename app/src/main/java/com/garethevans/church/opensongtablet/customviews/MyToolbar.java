@@ -205,10 +205,15 @@ public class MyToolbar extends MaterialToolbar {
                             mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename())[1];
                 }
                 title.setText(text);
+                mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getIndexSongInSet());
                 int positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
                 // If we are in a set, show the icon
                 if (positionInSet<0) {
-                    positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                    try {
+                        positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (positionInSet>-1) {
                     // Check the set menu fragment to see if we need to highlight

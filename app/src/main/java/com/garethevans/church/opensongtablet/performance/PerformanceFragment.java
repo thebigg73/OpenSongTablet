@@ -451,6 +451,8 @@ public class PerformanceFragment extends Fragment {
         try {
             doSongLoadStartTime = System.currentTimeMillis();
             mainActivityInterface.closeDrawer(true);
+            mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
+
 
             // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
             if (!processingTestView) {
@@ -1281,6 +1283,13 @@ public class PerformanceFragment extends Fragment {
                     }, delay);
                 }
             }
+
+            // Check the set index
+            mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+            mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+            mainActivityInterface.notifySetFragment("scrollTo",mainActivityInterface.getCurrentSet().getIndexSongInSet());
+            mainActivityInterface.getDisplayPrevNext().setPrevNext();
+
 
             // Update the view log usage
             mainActivityInterface.getStorageAccess().updateFileUsageLog(mainActivityInterface.getSong());

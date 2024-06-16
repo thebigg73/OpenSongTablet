@@ -277,9 +277,10 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateHighlight() {
-        if (setAdapter!=null) {
+        if (setAdapter!=null && mainActivityInterface.getSong()!=null) {
             mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-            setAdapter.updateHighlight();
+            setAdapter.updateHighlight(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
+            setAdapter.updateHighlight(mainActivityInterface.getCurrentSet().getIndexSongInSet());
         }
     }
 

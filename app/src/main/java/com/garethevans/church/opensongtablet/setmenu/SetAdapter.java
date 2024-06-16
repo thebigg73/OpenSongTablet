@@ -208,12 +208,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     }
 
     // Called when loading a song from the set
-    public void updateHighlight() {
+    public void updateHighlight(int position) {
         if (recyclerView!=null && !recyclerView.isComputingLayout()) {
             mainActivityInterface.getMainHandler().post(() -> {
                 try {
                     notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), highlightItem);
-                    notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(), highlightItem);
+                    mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
+                    notifyItemChanged(position, highlightItem);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

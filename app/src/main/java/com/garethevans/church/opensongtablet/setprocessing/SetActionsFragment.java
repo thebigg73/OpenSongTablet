@@ -27,7 +27,7 @@ public class SetActionsFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetActionsFragment";
     private String set_manage_string="", set_new_string="", deeplink_sets_manage_string="",
-            file_type_string="", unknown_string="", deeplink_browse_host_files_set="";
+            file_type_string="", unknown_string="", deeplink_browse_host_files="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,7 +61,7 @@ public class SetActionsFragment extends Fragment {
             set_manage_string = getString(R.string.set_manage);
             set_new_string = getString(R.string.set_new);
             deeplink_sets_manage_string = getString(R.string.deeplink_sets_manage);
-            deeplink_browse_host_files_set = getString(R.string.deeplink_browse_host_files_set);
+            deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
             file_type_string = getString(R.string.file_type);
             unknown_string = getString(R.string.unknown);
         }
@@ -99,6 +99,7 @@ public class SetActionsFragment extends Fragment {
     private void setupViews() {
         if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
             myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
+                    mainActivityInterface.getNearbyConnections().getConnectedEndpoints().size()>0 &&
                     mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
         }
     }
@@ -146,7 +147,7 @@ public class SetActionsFragment extends Fragment {
             });
             myView.browseHost.setOnClickListener(v -> {
                 mainActivityInterface.setWhattodo("browsesets");
-                mainActivityInterface.navigateToFragment(deeplink_browse_host_files_set,0);
+                mainActivityInterface.navigateToFragment(deeplink_browse_host_files,0);
             });
         }
     }

@@ -262,6 +262,7 @@ public class SetActions {
     }
     public int indexSongInSet(Song thisSong) {
         // Because set items can be stored with or without a specified key, we search for both
+        int returnValue;
         String searchText = getSongForSetWork(thisSong);
         Song noKeySong = new Song();
         noKeySong.setFolder(thisSong.getFolder());
@@ -336,15 +337,19 @@ public class SetActions {
 
         if (position>-1) {
             // If a key was specified in the set and it matches this song, go to that position in the set
-            return position;
+            returnValue = position;
         } else {
             // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
 
             // If a key was specified in the set, but the song clicked on in the song menu is different,
             // stay out of the set view by returning -1 for the found position.
             // Or simply, the song just isn't in the set
-            return positionNoKey;
+            returnValue = positionNoKey;
         }
+
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(returnValue);
+
+        return returnValue;
     }
 
     public void shuffleSet() {

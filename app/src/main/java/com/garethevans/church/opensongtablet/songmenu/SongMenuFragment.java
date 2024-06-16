@@ -225,7 +225,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     myView.songListRecyclerView.removeAllViews();
                     myView.songmenualpha.sideIndex.removeAllViews();
                     myView.songListRecyclerView.setOnClickListener(null);
-                    //myView.songListRecyclerView.getRecycledViewPool().clear();
                     if (songListAdapter != null) {
                         songListAdapter.notifyDataSetChanged();
                     }

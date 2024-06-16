@@ -251,6 +251,9 @@ public class PresenterFragment extends Fragment {
     }
 
     public void doSongLoad(String folder, String filename) {
+        // Check to highlighting in the set
+        mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
+
         mainActivityInterface.closeDrawer(true);
         myView.viewPager.setCurrentItem(0);
         mainActivityInterface.getSong().setFolder(folder);
@@ -331,8 +334,12 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getMidi().sendSongMessages();
         }
 
-        // Scroll to the item in the set menus
+        // Check the set index
+        mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+        mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getIndexSongInSet());
         mainActivityInterface.notifySetFragment("scrollTo",mainActivityInterface.getCurrentSet().getIndexSongInSet());
+        mainActivityInterface.getDisplayPrevNext().setPrevNext();
+
     }
 
     private void getPreferences() {
@@ -489,9 +496,7 @@ public class PresenterFragment extends Fragment {
     }
     public void notifyInlineSetChanged(int position) {
         if (myView!=null) {
-            mainActivityInterface.getMainHandler().post(() -> {
-                myView.inlineSetList.notifyInlineSetChanged(position);
-            });
+            mainActivityInterface.getMainHandler().post(() -> myView.inlineSetList.notifyInlineSetChanged(position));
         }
     }
     public void notifyInlineSetRangeChanged(int from, int count) {
