@@ -113,6 +113,7 @@ public class PresenterSettings {
     }
     public void setPresoShowChords(boolean presoShowChords) {
         this.presoShowChords = presoShowChords;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowChords",presoShowChords);
     }
     public void setUsePresentationOrder(boolean usePresentationOrder) {
         this.usePresentationOrder = usePresentationOrder;
@@ -339,7 +340,7 @@ public class PresenterSettings {
         setPresoInfoAlign(mainActivityInterface.getPreferences().getMyPreferenceInt("presoInfoAlign", Gravity.END));
         setPresoLyricsAlign(mainActivityInterface.getPreferences().getMyPreferenceInt("presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
         setPresoLyricsVAlign(mainActivityInterface.getPreferences().getMyPreferenceInt("presoLyricsVAlign", Gravity.CENTER_VERTICAL));
-        setPresoShowChords(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", false));
+        presoShowChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", false);
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizePresoMax", 40f));
         setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean("usePresentationOrder", false));
         setPresoLyricsBold(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold",false));
