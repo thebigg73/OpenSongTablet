@@ -70,6 +70,7 @@
     <string name="backup_now">"Skep nou 'n rugsteun"</string>
     <string name="backup_osb">Skep \'n rugsteun van OpenSongApp-liedjies (*.osb)</string>
     <string name="backup_sets">Rugsteunstelle</string>
+    <string name="bad_songs_found">\'N Paar onverwagte liedjielêers is gevind in u OpenSong/Songs/ -gidse wat nie direk ondersteun word nie.  Hulle is na u OpenSong/Import-lêergids verskuif, maar u kan die opsie gebruik om verskeie lêers in te voer om dit na OpenSong-formaat te probeer omskakel en dit weer by u OpenSong/Songs/ -lêergids te voeg</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Battery"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Beperk adverteer</string>
     <string name="connections_advertise_temporary_info">Adverteer slegs vir 10 sekondes nadat u op die adverteer-knoppie geklik het</string>
     <string name="connections_advertising">Adverteer tans …</string>
+    <string name="connections_browse_host">Blaai deur gasheerlêers</string>
+    <string name="connections_browse_host_info">Kies lêers vanaf \'n gekoppelde gasheertoestel (hardloop as gasheer) om in te voer</string>
     <string name="connections_change">Sodra jy \'n verbinding gemaak het, kan jy tussen gasheer en kliënt verander soos vereis</string>
     <string name="connections_connect">"Koppel toestelle"</string>
     <string name="connections_connected">"Gekoppel aan"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normaal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Rapporteer foute, kry hulp en versoek kenmerke</string>
+    <string name="forum_desktop">Wanneer u die forum op \'n mobiele toestel oopmaak, kan u slegs deur die forum blaai. As jy plasings wil plaas of daarop reageer, sal jy jou blaaier moet oorskakel om lessenaarwerf aan te vra. U kan dit normaalweg uit die blaaierinstellings kies. Eerste keer plakkate op die forum sal handmatige moderering benodig voordat hul pos vertoon word, so wees asseblief geduldig!</string>
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>
     <string name="grace_time">Laat lied grasietyd toe</string>
     <string name="grace_time_info">Hiermee kan u vinnig deur liedjies blaai en slegs inligting na ander gekoppelde toestelle stuur na \'n grasietydperk van 2\'s.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Immersiewe modus</string>
     <string name="immersive_mode_info">Versteek navigasie- en statusbalke om meer van jou skerm te gebruik</string>
     <string name="import_basic">Invoer</string>
+    <string name="import_bulk">Verskeie lêers</string>
+    <string name="import_bulk_details">Die app sal probeer om liedjielêers in leesbare formate in \'n \'Ingevoerde\' liedjiemap in te voer.  U kan dan kies om liedjies na ander dopgehou te skuif indien nodig.</string>
+    <string name="import_bulk_info">Batch voer verskeie liedjielêers in</string>
+    <string name="import_bulk_showcase_choose">Klik hier om verskeie lêers te kies met behulp van die Android-lêerkieser</string>
+    <string name="import_bulk_showcase_found">Dit is die lêers wat u gekies het om in te voer</string>
+    <string name="import_bulk_showcase_import">Klik hier om te probeer om hierdie lêers in te voer</string>
     <string name="import_from_file">Voer in vanaf \'n gestoorde lêer</string>
     <string name="import_main">Voer liedjies in of skep dit</string>
     <string name="import_osb">Herstel liedjies vanaf OpenSongApp-rugsteunlêer (*.osb)</string>
+    <string name="imported">Ingevoer</string>
     <string name="imported_values">Ingevoerde waardes</string>
     <string name="inc_autoscroll_speed">"Verhoog Autoscroll Spoed"</string>
     <string name="index_songs">Indeks liedjies</string>
@@ -947,5 +958,4 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
-    <string name="forum_desktop">Wanneer u die forum op \'n mobiele toestel oopmaak, kan u slegs deur die forum blaai. As jy plasings wil plaas of daarop reageer, sal jy jou blaaier moet oorskakel om lessenaarwerf aan te vra. U kan dit normaalweg uit die blaaierinstellings kies. Eerste keer plakkate op die forum sal handmatige moderering benodig voordat hul pos vertoon word, so wees asseblief geduldig!</string>
 </resources>

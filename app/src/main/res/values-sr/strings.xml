@@ -70,6 +70,7 @@
     <string name="backup_now">Odmah izradite sigurnosnu kopiju</string>
     <string name="backup_osb">Napravite rezervnu kopiju OpenSongApp pesama (*.osb)</string>
     <string name="backup_sets">Rezervni setovi</string>
+    <string name="bad_songs_found">Neke neočekivane datoteke pesama su pronađene u OpenSong/Songs/ fasciklama koje nisu direktno podržane.  One su premeštene u fasciklu OpenSong/Import, ali možete da koristite opciju za uvoz više datoteka da biste pokušali da ih konvertujete u OpenSong format i ponovo ih dodate u fasciklu OpenSong/Songs/</string>
     <string name="banjo4">Bendžo (4)</string>
     <string name="banjo5">Bendžo (5)</string>
     <string name="battery">Baterija</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Ograničeno oglašavanje</string>
     <string name="connections_advertise_temporary_info">Oglašavajte se samo 10 sekundi nakon što kliknete na dugme za oglašavanje</string>
     <string name="connections_advertising">Oglašavanje…</string>
+    <string name="connections_browse_host">Pregledaj glavne datoteke</string>
+    <string name="connections_browse_host_info">Izaberite datoteke sa povezanog glavnog uređaja (pokrenutog kao domaćin) za uvoz</string>
     <string name="connections_change">Kada uspostavite vezu, možete da prelazite između hosta i klijenta po potrebi</string>
     <string name="connections_connect">Povezivanje uređaja</string>
     <string name="connections_connected">Povezan sa</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normalno</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Prijavite greške, potražite pomoć i zatražite funkcije</string>
+    <string name="forum_desktop">Prilikom otvaranja foruma na mobilnom uređaju moći ćete samo da pregledate forum. Ako želite da objavljujete ili odgovarate na objave, moraćete da promenite pregledač da biste zatražili lokaciju na radnoj površini. Obično možete da izaberete ovo iz postavki pregledača. Prvi put će plakati na forumu zahtevati manuelnu umerenost pre prikazivanja njihovog posta, zato vas molimo da budete strpljivi!</string>
     <string name="github_description">Doprineti razvoju aplikacija</string>
     <string name="grace_time">Dozvoli vreme za molitvu pesme</string>
     <string name="grace_time_info">Ovo vam omogućava da brzo pregledate pesme i šaljete informacije samo drugim povezanim uređajima nakon grejs vremenskog perioda od 2s.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Imerzivni režim</string>
     <string name="immersive_mode_info">Skrivanje trake za navigaciju i statusa da biste koristili veći deo ekrana</string>
     <string name="import_basic">Uvoz</string>
+    <string name="import_bulk">Više datoteka</string>
+    <string name="import_bulk_details">Aplikacija će pokušati da uveze datoteke pesama u čitljivim formatima u fasciklu pesme \"Uvezeno\".  Zatim možete odabrati da premestite pesme u druge fascikle ako je to potrebno.</string>
+    <string name="import_bulk_info">Grupni uvoz više datoteka pesama</string>
+    <string name="import_bulk_showcase_choose">Kliknite ovde da biste izabrali više datoteka pomoću Android odabirača datoteka</string>
+    <string name="import_bulk_showcase_found">Ovo su datoteke koje ste odabrali da uvezete</string>
+    <string name="import_bulk_showcase_import">Kliknite ovde da biste pokušali da uvezete ove datoteke</string>
     <string name="import_from_file">Uvezi iz sačuvane datoteke</string>
     <string name="import_main">Uvezite ili kreirajte pesme</string>
     <string name="import_osb">Vratite pesme iz rezervne kopije OpenSongApp datoteke (*.osb)</string>
+    <string name="imported">Uvezene</string>
     <string name="imported_values">Uvezene vrednosti</string>
     <string name="inc_autoscroll_speed">Uvećati brzinu automatskog pomeranja</string>
     <string name="index_songs">Indeksiranje pesama</string>
@@ -947,5 +958,4 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="forum_desktop">Prilikom otvaranja foruma na mobilnom uređaju moći ćete samo da pregledate forum. Ako želite da objavljujete ili odgovarate na objave, moraćete da promenite pregledač da biste zatražili lokaciju na radnoj površini. Obično možete da izaberete ovo iz postavki pregledača. Prvi put će plakati na forumu zahtevati manuelnu umerenost pre prikazivanja njihovog posta, zato vas molimo da budete strpljivi!</string>
 </resources>

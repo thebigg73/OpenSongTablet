@@ -70,6 +70,7 @@
     <string name="backup_now">"立即创建备份"</string>
     <string name="backup_osb">创建 OpenSongApp 歌曲的备份 (*.osb)</string>
     <string name="backup_sets">备份集</string>
+    <string name="bad_songs_found">在您的 OpenSong/Songs/ 文件夹中发现了一些不直接支持的意外歌曲文件。 它们已移至您的 OpenSong/Import 文件夹，但您可以使用导入多个文件的选项来尝试将它们转换为 OpenSong 格式并将它们添加回您的 OpenSong/Songs/ 文件夹</string>
     <string name="banjo4">"班卓琴 (4)"</string>
     <string name="banjo5">"班卓琴 (5)"</string>
     <string name="battery">"电池"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">有限的广告</string>
     <string name="connections_advertise_temporary_info">点击广告按钮后仅广告 10 秒</string>
     <string name="connections_advertising">广告…</string>
+    <string name="connections_browse_host">浏览主机文件</string>
+    <string name="connections_browse_host_info">从连接的主机设备（作为主机运行）中选择要导入的文件</string>
     <string name="connections_change">建立连接后，您可以根据需要在主机和客户端之间进行切换</string>
     <string name="connections_connect">"连接设备"</string>
     <string name="connections_connected">"连接到"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">普通的</string>
     <string name="forum">论坛</string>
     <string name="forum_description">报告错误、获取帮助和请求功能</string>
+    <string name="forum_desktop">在移动设备上打开论坛时，您将只能浏览论坛。如果您想发布或回复帖子，则需要切换浏览器以请求桌面站点。您通常可以从浏览器设置中选择此选项。首次在论坛上发帖的发帖者在展示帖子之前需要人工审核，敬请耐心等待！</string>
     <string name="github_description">为应用程序开发做出贡献</string>
     <string name="grace_time">允许歌曲宽限时间</string>
     <string name="grace_time_info">这使您可以快速浏览歌曲，并且仅在宽限期为 2 秒后将信息发送到其他连接的设备。</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">沉浸式模式</string>
     <string name="immersive_mode_info">隐藏导航栏和状态栏以使用更多显示</string>
     <string name="import_basic">进口</string>
+    <string name="import_bulk">多个文件</string>
+    <string name="import_bulk_details">该应用程序将尝试将可读格式的歌曲文件导入到“导入”歌曲文件夹中。 然后，如果需要，您可以选择将歌曲移动到其他文件夹中。</string>
+    <string name="import_bulk_info">批量导入多个歌曲文件</string>
+    <string name="import_bulk_showcase_choose">单击此处使用 Android 文件选择器选择多个文件</string>
+    <string name="import_bulk_showcase_found">这些是您选择导入的文件</string>
+    <string name="import_bulk_showcase_import">单击此处尝试导入这些文件</string>
     <string name="import_from_file">从保存的文件导入</string>
     <string name="import_main">导入或创建歌曲</string>
     <string name="import_osb">从 OpenSongApp 备份文件 (*.osb) 恢复歌曲</string>
+    <string name="imported">洋</string>
     <string name="imported_values">导入的值</string>
     <string name="inc_autoscroll_speed">"增加自动滚动速度"</string>
     <string name="index_songs">索引歌曲</string>
@@ -947,5 +958,4 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="forum_desktop">在移动设备上打开论坛时，您将只能浏览论坛。如果您想发布或回复帖子，则需要切换浏览器以请求桌面站点。您通常可以从浏览器设置中选择此选项。首次在论坛上发帖的发帖者在展示帖子之前需要人工审核，敬请耐心等待！</string>
 </resources>

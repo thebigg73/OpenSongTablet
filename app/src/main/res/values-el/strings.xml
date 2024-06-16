@@ -70,6 +70,7 @@
     <string name="backup_now">"Δημιουργήστε ένα αντίγραφο ασφαλείας τώρα"</string>
     <string name="backup_osb">Δημιουργήστε ένα αντίγραφο ασφαλείας των τραγουδιών του OpenSongApp (*.osb)</string>
     <string name="backup_sets">Σύνολα αντιγράφων ασφαλείας</string>
+    <string name="bad_songs_found">Ορισμένα απροσδόκητα αρχεία τραγουδιών έχουν βρεθεί στους φακέλους OpenSong/Songs/που δεν υποστηρίζονται άμεσα.  Έχουν μετακινηθεί στο φάκελο OpenSong/Import, αλλά μπορείτε να χρησιμοποιήσετε την επιλογή εισαγωγής πολλών αρχείων για να προσπαθήσετε να τα μετατρέψετε σε μορφή OpenSong και να τα προσθέσετε ξανά στο φάκελο OpenSong/Songs/</string>
     <string name="banjo4">"Μπάντζο (4)"</string>
     <string name="banjo5">"Μπάντζο (5)"</string>
     <string name="battery">"μπαταρία"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Περιορισμένη διαφήμιση</string>
     <string name="connections_advertise_temporary_info">Διαφημιστείτε μόνο για 10 δευτερόλεπτα αφού κάνετε κλικ στο κουμπί διαφήμιση</string>
     <string name="connections_advertising">Διαφήμιση…</string>
+    <string name="connections_browse_host">Αναζήτηση αρχείων κεντρικού υπολογιστή</string>
+    <string name="connections_browse_host_info">Επιλέξτε αρχεία από μια συνδεδεμένη κεντρική συσκευή (που εκτελείται ως κεντρικός υπολογιστής) για εισαγωγή</string>
     <string name="connections_change">Αφού πραγματοποιήσετε μια σύνδεση, μπορείτε να αλλάξετε μεταξύ κεντρικού υπολογιστή και πελάτη, όπως απαιτείται</string>
     <string name="connections_connect">"Σύνδεση συσκευών"</string>
     <string name="connections_connected">"Συνδεδεμένος με"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Κανονικός</string>
     <string name="forum">Δικαστήριο</string>
     <string name="forum_description">Αναφέρετε σφάλματα, λάβετε βοήθεια και ζητήστε λειτουργίες</string>
+    <string name="forum_desktop">Όταν ανοίγετε το φόρουμ σε μια κινητή συσκευή, θα μπορείτε μόνο να περιηγηθείτε στο φόρουμ. Εάν θέλετε να δημοσιεύσετε ή να απαντήσετε σε αναρτήσεις, θα πρέπει να αλλάξετε το πρόγραμμα περιήγησής σας για να ζητήσετε ιστότοπο για υπολογιστές. Μπορείτε κανονικά να το επιλέξετε από τις ρυθμίσεις του προγράμματος περιήγησης. Οι αφίσες για πρώτη φορά στο φόρουμ θα απαιτούν χειροκίνητη εποπτεία πριν εμφανιστεί η ανάρτησή τους, οπότε παρακαλώ να είστε υπομονετικοί!</string>
     <string name="github_description">Συνεισφέρετε στην ανάπτυξη εφαρμογών</string>
     <string name="grace_time">Επιτρέψτε χρόνο χάριτος τραγουδιού</string>
     <string name="grace_time_info">Αυτό σας επιτρέπει να περιηγείστε γρήγορα στα τραγούδια και να στέλνετε πληροφορίες μόνο σε άλλες συνδεδεμένες συσκευές μετά από μια χρονική περίοδο χάριτος 2 δευτερολέπτων.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Καθηλωτική λειτουργία</string>
     <string name="immersive_mode_info">Απόκρυψη γραμμών πλοήγησης και κατάστασης για να χρησιμοποιήσετε περισσότερο την οθόνη σας</string>
     <string name="import_basic">Εισαγωγή</string>
+    <string name="import_bulk">Πολλαπλά αρχεία</string>
+    <string name="import_bulk_details">Η εφαρμογή θα προσπαθήσει να εισαγάγει αρχεία τραγουδιών σε αναγνώσιμες μορφές σε ένα φάκελο τραγουδιών \"Εισαγωγή\".  Στη συνέχεια, μπορείτε να επιλέξετε να μετακινήσετε τραγούδια σε άλλους φακέλους, εάν απαιτείται.</string>
+    <string name="import_bulk_info">Μαζική εισαγωγή πολλών αρχείων τραγουδιών</string>
+    <string name="import_bulk_showcase_choose">Κάντε κλικ εδώ για να επιλέξετε πολλά αρχεία χρησιμοποιώντας τον επιλογέα αρχείων Android</string>
+    <string name="import_bulk_showcase_found">Αυτά είναι τα αρχεία που έχετε επιλέξει να εισαγάγετε</string>
+    <string name="import_bulk_showcase_import">Κάντε κλικ εδώ για να προσπαθήσετε να εισαγάγετε αυτά τα αρχεία</string>
     <string name="import_from_file">Εισαγωγή από ένα αποθηκευμένο αρχείο</string>
     <string name="import_main">Εισαγωγή ή δημιουργία τραγουδιών</string>
     <string name="import_osb">Επαναφορά τραγουδιών από το αντίγραφο ασφαλείας του OpenSongApp (*.osb)</string>
+    <string name="imported">Εισαγόμενος</string>
     <string name="imported_values">Εισαγόμενες τιμές</string>
     <string name="inc_autoscroll_speed">"Αυξήστε την ταχύτητα αυτόματης κύλισης"</string>
     <string name="index_songs">Τραγούδια ευρετηρίου</string>
@@ -947,5 +958,4 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
-    <string name="forum_desktop">Όταν ανοίγετε το φόρουμ σε μια κινητή συσκευή, θα μπορείτε μόνο να περιηγηθείτε στο φόρουμ. Εάν θέλετε να δημοσιεύσετε ή να απαντήσετε σε αναρτήσεις, θα πρέπει να αλλάξετε το πρόγραμμα περιήγησής σας για να ζητήσετε ιστότοπο για υπολογιστές. Μπορείτε κανονικά να το επιλέξετε από τις ρυθμίσεις του προγράμματος περιήγησης. Οι αφίσες για πρώτη φορά στο φόρουμ θα απαιτούν χειροκίνητη εποπτεία πριν εμφανιστεί η ανάρτησή τους, οπότε παρακαλώ να είστε υπομονετικοί!</string>
 </resources>

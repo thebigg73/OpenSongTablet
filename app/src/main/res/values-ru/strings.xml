@@ -70,6 +70,7 @@
     <string name="backup_now">"Создать резервную копию"</string>
     <string name="backup_osb">Создать резервную копию песен OpenSongApp (*.osb)</string>
     <string name="backup_sets">Резервная копия списков</string>
+    <string name="bad_songs_found">В папках OpenSong/Songs/ были обнаружены некоторые неожиданные файлы песен, которые не поддерживаются напрямую.  Они были перемещены в папку OpenSong/Import, но вы можете использовать опцию импорта нескольких файлов, чтобы попытаться конвертировать их в формат OpenSong и добавить обратно в папку OpenSong/Songs/</string>
     <string name="banjo4">"Банджо (4)"</string>
     <string name="banjo5">"Банджо (5)"</string>
     <string name="battery">"Заряд"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Ограничение на приглашение</string>
     <string name="connections_advertise_temporary_info">Приглашение отображается в течение 10 секунд после нажатия кнопки Приглашение</string>
     <string name="connections_advertising">Приглашение…</string>
+    <string name="connections_browse_host">Просмотр файлов хоста</string>
+    <string name="connections_browse_host_info">Выберите файлы с подключенного хост-устройства (работающего в качестве хоста) для импорта</string>
     <string name="connections_change">После того, как соединение установлено, вы можете переключаться между хостом и клиентом по мере необходимости.</string>
     <string name="connections_connect">Подключение устройств</string>
     <string name="connections_connected">Подключен к</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Обычный</string>
     <string name="forum">Форум</string>
     <string name="forum_description">Сообщайте об ошибках, получайте помощь и делайте запрос на новые функции</string>
+    <string name="forum_desktop">При открытии форума на мобильном устройстве вы сможете просматривать только форум. Если вы хотите публиковать сообщения или отвечать на них, вам нужно переключить браузер на запрос настольного сайта. Обычно вы можете выбрать это в настройках браузера. Новые посты на форуме потребуют ручной модерации, прежде чем их сообщение будет отображено, поэтому, пожалуйста, наберитесь терпения!</string>
     <string name="github_description">Участвуйте в разработке приложения</string>
     <string name="grace_time">Отсрочка</string>
     <string name="grace_time_info">С помощью отсрочки можно быстро просматривать песни и отправлять информацию на другие подключенные устройства только по истечении отсрочки в 2 секунды.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Иммерсивный режим</string>
     <string name="immersive_mode_info">Скрывает навигацию и строки состояния, чтобы использовать большее пространство экрана</string>
     <string name="import_basic">Импорт</string>
+    <string name="import_bulk">Несколько файлов</string>
+    <string name="import_bulk_details">Приложение попытается импортировать файлы песен в читаемых форматах в папку «Импортированные».  При необходимости можно переместить песни в другие папки.</string>
+    <string name="import_bulk_info">Пакетный импорт нескольких файлов песен</string>
+    <string name="import_bulk_showcase_choose">Нажмите здесь, чтобы выбрать несколько файлов с помощью средства выбора файлов Android</string>
+    <string name="import_bulk_showcase_found">Это файлы, которые вы выбрали для импорта</string>
+    <string name="import_bulk_showcase_import">Нажмите здесь, чтобы попытаться импортировать эти файлы</string>
     <string name="import_from_file">Импорт из сохраненного файла</string>
     <string name="import_main">Импорт или создание песни</string>
     <string name="import_osb">Восстановление песен из файла резервной копии OpenSongApp (*.osb)</string>
+    <string name="imported">Импортный</string>
     <string name="imported_values">Импортируемые значения</string>
     <string name="inc_autoscroll_speed">Увеличить скорость автопрокрутки</string>
     <string name="index_songs">Обновление каталога песен</string>
@@ -947,5 +958,4 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="forum_desktop">При открытии форума на мобильном устройстве вы сможете просматривать только форум. Если вы хотите публиковать сообщения или отвечать на них, вам нужно переключить браузер на запрос настольного сайта. Обычно вы можете выбрать это в настройках браузера. Новые посты на форуме потребуют ручной модерации, прежде чем их сообщение будет отображено, поэтому, пожалуйста, наберитесь терпения!</string>
 </resources>

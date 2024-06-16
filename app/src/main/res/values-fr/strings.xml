@@ -70,6 +70,7 @@
     <string name="backup_now">"Créer une sauvegarde maintenant"</string>
     <string name="backup_osb">Créer une sauvegarde des chansons OpenSongApp (*.osb)</string>
     <string name="backup_sets">Jeux de sauvegarde</string>
+    <string name="bad_songs_found">Des fichiers de morceaux inattendus ont été trouvés dans vos dossiers OpenSong/Songs/ qui ne sont pas pris en charge directement.  Ils ont été déplacés vers votre dossier OpenSong/Import, mais vous pouvez utiliser l’option d’importation de plusieurs fichiers pour tenter de les convertir au format OpenSong et les rajouter à votre dossier OpenSong/Songs/</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Batterie"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Publicité limitée</string>
     <string name="connections_advertise_temporary_info">Ne faites de la publicité que pendant 10 secondes après avoir cliqué sur le bouton de publicité</string>
     <string name="connections_advertising">Publicité…</string>
+    <string name="connections_browse_host">Parcourir les fichiers hôtes</string>
+    <string name="connections_browse_host_info">Sélectionner les fichiers d’un périphérique hôte connecté (exécuté en tant qu’hôte) à importer</string>
     <string name="connections_change">Une fois que vous avez établi une connexion, vous pouvez basculer entre l\'hôte et le client selon vos besoins</string>
     <string name="connections_connect">"Connecter les périphériques"</string>
     <string name="connections_connected">"Connecté à"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Signaler des bugs, obtenir de l\'aide et demander des fonctionnalités</string>
+    <string name="forum_desktop">Lorsque vous ouvrez le forum sur un appareil mobile, vous ne pourrez que naviguer sur le forum. Si vous souhaitez publier ou répondre à des messages, vous devrez changer votre navigateur pour demander un site de bureau. Vous pouvez normalement le sélectionner dans les paramètres du navigateur. Les nouveaux contributeurs sur le forum nécessiteront une modération manuelle avant que leur message ne soit affiché, alors soyez patient !</string>
     <string name="github_description">Contribuer au développement de l\'application</string>
     <string name="grace_time">Autoriser le temps de grâce de la chanson</string>
     <string name="grace_time_info">Cela vous permet de parcourir rapidement les chansons et n’envoie des informations à d’autres appareils connectés qu’après une période de grâce de 2s.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Mode immersif</string>
     <string name="immersive_mode_info">Masquez les barres de navigation et d\'état pour utiliser davantage votre écran</string>
     <string name="import_basic">Importer</string>
+    <string name="import_bulk">Fichiers multiples</string>
+    <string name="import_bulk_details">L’application tentera d’importer des fichiers de chansons dans des formats lisibles dans un dossier de chansons « importées ».  Vous pouvez ensuite choisir de déplacer les chansons dans d’autres dossiers si nécessaire.</string>
+    <string name="import_bulk_info">Importation par lots de plusieurs fichiers de morceaux</string>
+    <string name="import_bulk_showcase_choose">Cliquez ici pour sélectionner plusieurs fichiers à l’aide du sélecteur de fichiers Android</string>
+    <string name="import_bulk_showcase_found">Ce sont les fichiers que vous avez choisi d’importer</string>
+    <string name="import_bulk_showcase_import">Cliquez ici pour tenter d’importer ces fichiers</string>
     <string name="import_from_file">Importer à partir d\'un fichier enregistré</string>
     <string name="import_main">Importer ou créer des chansons</string>
     <string name="import_osb">Restaurer les chansons à partir du fichier de sauvegarde OpenSongApp (*.osb)</string>
+    <string name="imported">Dovezený</string>
     <string name="imported_values">Valeurs importées</string>
     <string name="inc_autoscroll_speed">"Augmenter la vitesse de défilement automatique"</string>
     <string name="index_songs">Chansons d’index</string>
@@ -947,5 +958,4 @@
     <string name="width">Largeur</string>
     <string name="words_and_music_by">Paroles et musique de</string>
     <string name="zoom_level">Le niveau de zoom</string>
-    <string name="forum_desktop">Lorsque vous ouvrez le forum sur un appareil mobile, vous ne pourrez que naviguer sur le forum. Si vous souhaitez publier ou répondre à des messages, vous devrez changer votre navigateur pour demander un site de bureau. Vous pouvez normalement le sélectionner dans les paramètres du navigateur. Les nouveaux contributeurs sur le forum nécessiteront une modération manuelle avant que leur message ne soit affiché, alors soyez patient !</string>
 </resources>

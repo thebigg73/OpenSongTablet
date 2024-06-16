@@ -70,6 +70,7 @@
     <string name="backup_now">"Crea un backup ora"</string>
     <string name="backup_osb">Crea un backup dei brani di OpenSongApp (*.osb)</string>
     <string name="backup_sets">Set di backup</string>
+    <string name="bad_songs_found">Nelle cartelle OpenSong/Songs/ sono stati trovati alcuni file di brani inaspettati che non sono supportati direttamente.  Sono stati spostati nella cartella OpenSong/Import, ma è possibile utilizzare l\'opzione per importare più file per tentare di convertirli in formato OpenSong e aggiungerli nuovamente alla cartella OpenSong/Songs/</string>
     <string name="banjo4">"Banjio (4)"</string>
     <string name="banjo5">"Banjio (5)</string>
     <string name="battery">"Batteria"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Pubblicità limitata</string>
     <string name="connections_advertise_temporary_info">Fai pubblicità solo per 10 secondi dopo aver fatto clic sul pulsante Pubblicizza</string>
     <string name="connections_advertising">Pubblicità…</string>
+    <string name="connections_browse_host">Sfoglia i file host</string>
+    <string name="connections_browse_host_info">Selezionare i file da un dispositivo host connesso (in esecuzione come host) da importare</string>
     <string name="connections_change">Dopo aver stabilito una connessione, è possibile passare da host a client come richiesto</string>
     <string name="connections_connect">"Collegare i dispositivi"</string>
     <string name="connections_connected">"Collegato a"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normale</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Segnala bug, ottieni aiuto e richiedi funzionalità</string>
+    <string name="forum_desktop">Quando apri il forum su un dispositivo mobile, sarai in grado di navigare solo nel forum. Se vuoi pubblicare o rispondere ai post, dovrai cambiare il tuo browser per richiedere il sito desktop. Normalmente è possibile selezionarlo dalle impostazioni del browser. Chi pubblica per la prima volta sul forum richiederà una moderazione manuale prima che il loro post venga visualizzato, quindi sii paziente!</string>
     <string name="github_description">Contribuisci allo sviluppo di app</string>
     <string name="grace_time">Consenti tempo di grazia del brano</string>
     <string name="grace_time_info">Ciò consente di sfogliare rapidamente i brani e invia informazioni solo ad altri dispositivi collegati dopo un periodo di tolleranza di 2 secondi.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Modalità immersiva</string>
     <string name="immersive_mode_info">Nascondi le barre di navigazione e di stato per utilizzare una parte maggiore del display</string>
     <string name="import_basic">Importare</string>
+    <string name="import_bulk">File multipli</string>
+    <string name="import_bulk_details">L\'app tenterà di importare i file dei brani in formati leggibili in una cartella di brani \"Importati\".  Se necessario, è possibile scegliere di spostare i brani in altre cartelle.</string>
+    <string name="import_bulk_info">Importazione in batch di più file di brani</string>
+    <string name="import_bulk_showcase_choose">Fare clic qui per selezionare più file utilizzando il selettore di file Android</string>
+    <string name="import_bulk_showcase_found">Questi sono i file che hai scelto di importare</string>
+    <string name="import_bulk_showcase_import">Fare clic qui per tentare di importare questi file</string>
     <string name="import_from_file">Importa da un file salvato</string>
     <string name="import_main">Importa o crea brani</string>
     <string name="import_osb">Ripristina brani dal file di backup di OpenSongApp (*.osb)</string>
+    <string name="imported">Importati</string>
     <string name="imported_values">Valori importati</string>
     <string name="inc_autoscroll_speed">"Aumenta la velocità di scorrimento automatico"</string>
     <string name="index_songs">Indice canzoni</string>
@@ -947,5 +958,4 @@
     <string name="width">Larghezza</string>
     <string name="words_and_music_by">Parole e musica di</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="forum_desktop">Quando apri il forum su un dispositivo mobile, sarai in grado di navigare solo nel forum. Se vuoi pubblicare o rispondere ai post, dovrai cambiare il tuo browser per richiedere il sito desktop. Normalmente è possibile selezionarlo dalle impostazioni del browser. Chi pubblica per la prima volta sul forum richiederà una moderazione manuale prima che il loro post venga visualizzato, quindi sii paziente!</string>
 </resources>

@@ -70,6 +70,7 @@
     <string name="backup_now">"Vytvořte nyní zálohu"</string>
     <string name="backup_osb">Vytvořte zálohu skladeb OpenSongApp (*.osb)</string>
     <string name="backup_sets">备份集</string>
+    <string name="bad_songs_found">Ve vašich složkách OpenSong/Songs/ byly nalezeny některé neočekávané soubory skladeb, které nejsou přímo podporovány.  Byly přesunuty do složky OpenSong/Import, ale můžete použít možnost importovat více souborů a pokusit se je převést do formátu OpenSong a přidat je zpět do složky OpenSong/Songs/</string>
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
     <string name="battery">"Baterie"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Omezená reklama</string>
     <string name="connections_advertise_temporary_info">Inzerujte pouze 10 sekund po kliknutí na tlačítko inzerovat</string>
     <string name="connections_advertising">Reklamní…</string>
+    <string name="connections_browse_host">Procházení hostitelských souborů</string>
+    <string name="connections_browse_host_info">Vyberte soubory z připojeného hostitelského zařízení (běžícího jako hostitel), které chcete importovat</string>
     <string name="connections_change">Jakmile vytvoříte připojení, můžete podle potřeby přepínat mezi hostitelem a klientem</string>
     <string name="connections_connect">"Připojte zařízení"</string>
     <string name="connections_connected">"Připojen k"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normální</string>
     <string name="forum">Fórum</string>
     <string name="forum_description">Nahlašte chyby, získejte nápovědu a vyžádejte si funkce</string>
+    <string name="forum_desktop">Při otevření fóra na mobilním zařízení budete moci fórum pouze procházet. Pokud chcete zveřejňovat příspěvky nebo na ně odpovídat, budete muset přepnout prohlížeč tak, aby vyžadoval web pro počítače. Normálně to můžete vybrat v nastavení prohlížeče. První příspěvky na fóru budou vyžadovat ruční moderování před zobrazením jejich příspěvku, takže buďte trpěliví!</string>
     <string name="github_description">Přispějte k vývoji aplikací</string>
     <string name="grace_time">Povolit dobu odkladu skladby</string>
     <string name="grace_time_info">To vám umožní rychle procházet skladby a odesílat informace do jiných připojených zařízení pouze po uplynutí doby odkladu 2 s.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Imerzivní režim</string>
     <string name="immersive_mode_info">Skryjte navigační a stavové řádky, abyste mohli více využívat svůj displej</string>
     <string name="import_basic">Import</string>
+    <string name="import_bulk">Více souborů</string>
+    <string name="import_bulk_details">Aplikace se pokusí importovat soubory skladeb v čitelných formátech do složky \"Importované\" skladby.  V případě potřeby se pak můžete rozhodnout přesunout skladby do jiných složek.</string>
+    <string name="import_bulk_info">Dávkový import více souborů skladeb</string>
+    <string name="import_bulk_showcase_choose">Kliknutím sem vyberete více souborů pomocí nástroje pro výběr souborů Android</string>
+    <string name="import_bulk_showcase_found">Toto jsou soubory, které jste se rozhodli importovat</string>
+    <string name="import_bulk_showcase_import">Ve vašem byly nalezeny některé neočekávané soubory skladeb Kliknutím sem se pokusíte tyto soubory importovat.</string>
     <string name="import_from_file">Import z uloženého souboru</string>
     <string name="import_main">Importujte nebo vytvářejte skladby</string>
     <string name="import_osb">Obnovení skladeb ze záložního souboru OpenSongApp (*.osb)</string>
+    <string name="imported">Dovezený</string>
     <string name="imported_values">Importované hodnoty</string>
     <string name="inc_autoscroll_speed">"Zvyšte rychlost Autoscroll Speed"</string>
     <string name="index_songs">Rejstřík skladeb</string>
@@ -947,5 +958,4 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
-    <string name="forum_desktop">Při otevření fóra na mobilním zařízení budete moci fórum pouze procházet. Pokud chcete zveřejňovat příspěvky nebo na ně odpovídat, budete muset přepnout prohlížeč tak, aby vyžadoval web pro počítače. Normálně to můžete vybrat v nastavení prohlížeče. První příspěvky na fóru budou vyžadovat ruční moderování před zobrazením jejich příspěvku, takže buďte trpěliví!</string>
 </resources>

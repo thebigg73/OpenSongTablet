@@ -70,6 +70,7 @@
     <string name="backup_now">"今すぐバックアップを作成する"</string>
     <string name="backup_osb">OpenSongAppの曲のバックアップを作成する（* .osb）</string>
     <string name="backup_sets">バックアップセット</string>
+    <string name="bad_songs_found">直接サポートされていないOpenSong / Songs /フォルダに予期しない曲ファイルが見つかりました。 それらはOpenSong / Importフォルダーに移動されましたが、複数のファイルをインポートしてOpenSong形式に変換し、OpenSong / Songs /フォルダーに追加し直すオプションを使用できます</string>
     <string name="banjo4">"バンジョー (4)"</string>
     <string name="banjo5">"バンジョー (5)"</string>
     <string name="battery">"バッテリー"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">限定広告</string>
     <string name="connections_advertise_temporary_info">広告ボタンをクリックしてから 10 秒間だけ広告を掲載する</string>
     <string name="connections_advertising">広告…</string>
+    <string name="connections_browse_host">ホストファイルの参照</string>
+    <string name="connections_browse_host_info">接続されているホストデバイス(ホストとして実行)からインポートするファイルを選択します</string>
     <string name="connections_change">接続が完了すると、必要に応じてホストとクライアントを切り替えることができます</string>
     <string name="connections_connect">"デバイスを接続する"</string>
     <string name="connections_connected">"に接続されています"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">普通</string>
     <string name="forum">フォーラム</string>
     <string name="forum_description">バグを報告し、ヘルプを入手し、機能をリクエストする</string>
+    <string name="forum_desktop">モバイルデバイスでフォーラムを開くと、フォーラムの閲覧のみが可能です。投稿や投稿への返信をご希望の場合は、ブラウザをデスクトップサイトのリクエストに切り替える必要があります。通常、ブラウザの設定から選択できます。フォーラムに初めて投稿する投稿者は、投稿が表示される前に手動でモデレーションする必要がありますので、しばらくお待ちください。</string>
     <string name="github_description">アプリ開発に貢献する</string>
     <string name="grace_time">曲の猶予時間を許可する</string>
     <string name="grace_time_info">これにより、曲をすばやく閲覧でき、2秒の猶予期間後にのみ、接続されている他のデバイスに情報を送信できます。</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">没入型モード</string>
     <string name="immersive_mode_info">ナビゲーションとステータス バーを非表示にして、ディスプレイをより有効に活用する</string>
     <string name="import_basic">輸入</string>
+    <string name="import_bulk">複数のファイル</string>
+    <string name="import_bulk_details">アプリは、読み取り可能な形式の曲ファイルを「インポート済み」の曲フォルダにインポートしようとします。 その後、必要に応じて曲を他のフォルダに移動することを選択できます。</string>
+    <string name="import_bulk_info">複数の曲ファイルを一括インポートする</string>
+    <string name="import_bulk_showcase_choose">Android のファイル ピッカーを使用して複数のファイルを選択するには、ここをクリックしてください</string>
+    <string name="import_bulk_showcase_found">これらは、インポートすることを選択したファイルです</string>
+    <string name="import_bulk_showcase_import">ここをクリックして、これらのファイルのインポートを試みます</string>
     <string name="import_from_file">保存したファイルからインポートする</string>
     <string name="import_main">曲をインポートまたは作成する</string>
     <string name="import_osb">OpenSongAppバックアップファイル（* .osb）から曲を復元する</string>
+    <string name="imported">インポート</string>
     <string name="imported_values">インポートされた値</string>
     <string name="inc_autoscroll_speed">"オートスクロールスピードを上げる"</string>
     <string name="index_songs">インデックス曲</string>
@@ -947,5 +958,4 @@
     <string name="width">幅</string>
     <string name="words_and_music_by">言葉と音楽</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="forum_desktop">モバイルデバイスでフォーラムを開くと、フォーラムの閲覧のみが可能です。投稿や投稿への返信をご希望の場合は、ブラウザをデスクトップサイトのリクエストに切り替える必要があります。通常、ブラウザの設定から選択できます。フォーラムに初めて投稿する投稿者は、投稿が表示される前に手動でモデレーションする必要がありますので、しばらくお待ちください。</string>
 </resources>

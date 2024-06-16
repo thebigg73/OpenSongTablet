@@ -77,6 +77,7 @@
     <string name="backup_now">Create a backup now</string>
     <string name="backup_osb">Create a backup of OpenSongApp songs (*.osb)</string>
     <string name="backup_sets">Backup sets</string>
+    <string name="bad_songs_found">Some unexpected song files have been found in your OpenSong/Songs/ folders that are not supported directly.  They have been moved to your OpenSong/Import folder, but you can use the option to import multiple files to attempt to convert them to OpenSong format and add them back to your OpenSong/Songs/ folder</string>
     <string name="banjo4">Banjo (4)</string>
     <string name="banjo5">Banjo (5)</string>
     <string name="battery">Battery</string>
@@ -243,6 +244,8 @@
     <string name="connections_advertise_temporary">Limited advertise</string>
     <string name="connections_advertise_temporary_info">Only advertise for 10 seconds after clicking the advertise button</string>
     <string name="connections_advertising">Advertising…</string>
+    <string name="connections_browse_host">Browse host files</string>
+    <string name="connections_browse_host_info">Select files from a connected host device (running as the host) to import</string>
     <string name="connections_change">Once you have made a connection, you can change between host and client as required</string>
     <string name="connections_connect">Connect devices</string>
     <string name="connections_connected">Connected to</string>
@@ -316,6 +319,7 @@
     <string name="deeplink_beatbuddy_options" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/options</string>
     <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
     <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>
+    <string name="deeplink_browse_host_files" translatable="false">https://www.opensongapp.com/?p=settings/host/browse</string>
     <string name="deeplink_chords" translatable="false">https://www.opensongapp.com/?p=settings/actions/chords</string>
     <string name="deeplink_chords_custom" translatable="false">https://www.opensongapp.com/?p=settings/chords/custom</string>
     <string name="deeplink_chords_settings" translatable="false">https://www.opensongapp.com/?p=settings/chords/settings</string>
@@ -465,6 +469,7 @@
     <string name="format_text_normal">Normal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Report bugs, get help and request features</string>
+    <string name="forum_desktop">When opening the forum on a mobile device you will only be able to browse the forum.  If you want to post or respond to posts, you will need to switch your browser to request desktop site.  You can normally select this from the browser settings.  First time posters on the forum will require manual moderation before their post is displayed, so please be patient!</string>
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
     <string name="grace_time">Allow song grace time</string>
@@ -504,12 +509,18 @@
     <string name="immersive_mode">Immersive mode</string>
     <string name="immersive_mode_info">Hide navigation and status bars to use more of your display</string>
     <string name="import_basic">Import</string>
+    <string name="import_bulk">Multiple files</string>
+    <string name="import_bulk_details">The app will attempt to import song files in readable formats into a \'Imported\' song folder.  You can then choose to move songs into other folders if required.</string>
+    <string name="import_bulk_info">Batch import multiple song files</string>
+    <string name="import_bulk_showcase_choose">Click here to select multiple files using the Android file picker</string>
+    <string name="import_bulk_showcase_found">These are the files that you have chosen to import</string>
+    <string name="import_bulk_showcase_import">Click here to attempt to import these files</string>
     <string name="import_from_file">Import from a saved file</string>
     <string name="import_main">Import or create songs</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro, Word</string>
-    <string name="imported_values">Imported values</string>
     <string name="imported">Imported</string>
+    <string name="imported_values">Imported values</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
     <string name="index_songs">Index songs</string>
     <string name="index_songs_end">Song index completed</string>
@@ -1213,6 +1224,8 @@
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
     <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>
     <string name="website_bible_online" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-online</string>
+    <string name="website_browse_host_files_set" translatable="false">https://www.opensongapp.com/user-manual/sets/browse-host-sets</string>
+    <string name="website_browse_host_files_songs" translatable="false">https://www.opensongapp.com/user-manual/songs/browse-host-songs</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_chords" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chords</string>
     <string name="website_chords_custom" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/custom-chords</string>
@@ -1292,21 +1305,9 @@
     <string name="website_web_server" translatable="false">https://www.opensongapp.com/user-manual/web-server</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="width">Width</string>
+    <string name="word" translatable="false">Word (.docx)</string>
     <string name="words_and_music_by">Words and music by</string>
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="forum_desktop">When opening the forum on a mobile device you will only be able to browse the forum.  If you want to post or respond to posts, you will need to switch your browser to request desktop site.  You can normally select this from the browser settings.  First time posters on the forum will require manual moderation before their post is displayed, so please be patient!</string>
-    <string name="connections_browse_host">Browse host files</string>
-    <string name="connections_browse_host_info">Select files from a connected host device (running as the host) to import</string>
-    <string name="website_browse_host_files_set" translatable="false">https://www.opensongapp.com/user-manual/sets/browse-host-sets</string>
-    <string name="deeplink_browse_host_files_set" translatable="false">https://www.opensongapp.com/?p=settings/sets/host</string>
-    <string name="import_bulk">Multiple files</string>
-    <string name="import_bulk_info">Batch import multiple song files</string>
-    <string name="import_bulk_details">The app will attempt to import song files in readable formats into a \'Imported\' song folder.  You can then choose to move songs into other folders if required.</string>
-    <string name="import_bulk_showcase_choose">Click here to select multiple files using the Android file picker</string>
-    <string name="import_bulk_showcase_found">These are the files that you have chosen to import</string>
-    <string name="import_bulk_showcase_import">Click here to attempt to import these files</string>
-    <string name="word" translatable="false">Word (.docx)</string>
-    <string name="bad_songs_found">Some unexpected song files have been found in your OpenSong/Songs/ folders that are not supported directly.  They have been moved to your OpenSong/Import folder, but you can use the option to import multiple files to attempt to convert them to OpenSong format and add them back to your OpenSong/Songs/ folder</string>
 </resources>

@@ -70,6 +70,7 @@
     <string name="backup_now">"Crie um backup agora"</string>
     <string name="backup_osb">Crie um backup das músicas do OpenSongApp (*.osb)</string>
     <string name="backup_sets">Conjuntos de backup</string>
+    <string name="bad_songs_found">Alguns arquivos de música inesperados foram encontrados em suas pastas OpenSong/Songs/ que não são suportadas diretamente.  Eles foram movidos para sua pasta OpenSong/Import, mas você pode usar a opção de importar vários arquivos para tentar convertê-los para o formato OpenSong e adicioná-los de volta à sua pasta OpenSong/Songs/</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Bateria"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Anúncio limitado</string>
     <string name="connections_advertise_temporary_info">Anuncie apenas por 10 segundos depois de clicar no botão anunciar</string>
     <string name="connections_advertising">Anúncio…</string>
+    <string name="connections_browse_host">Procurar arquivos host</string>
+    <string name="connections_browse_host_info">Selecione arquivos de um dispositivo host conectado (em execução como o host) para importar</string>
     <string name="connections_change">Depois de fazer uma conexão, você pode alternar entre host e cliente conforme necessário</string>
     <string name="connections_connect">"Ligar dispositivos"</string>
     <string name="connections_connected">"Conectado a"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normal</string>
     <string name="forum">Fórum</string>
     <string name="forum_description">Relate bugs, obtenha ajuda e solicite recursos</string>
+    <string name="forum_desktop">Ao abrir o fórum em um dispositivo móvel, você só poderá navegar no fórum. Se você quiser postar ou responder a postagens, você precisará mudar seu navegador para solicitar site para desktop. Normalmente, você pode selecionar isso nas configurações do navegador. Os pôsteres pela primeira vez no fórum exigirão moderação manual antes de sua postagem ser exibida, então seja paciente!</string>
     <string name="github_description">Contribuir para o desenvolvimento de aplicativos</string>
     <string name="grace_time">Permitir tempo de graça da música</string>
     <string name="grace_time_info">Isso permite que você navegue por músicas rapidamente e só envia informações para outros dispositivos conectados após um período de carência de 2s.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Modo imersivo</string>
     <string name="immersive_mode_info">Oculte as barras de navegação e status para usar mais a tela</string>
     <string name="import_basic">Importar</string>
+    <string name="import_bulk">Vários arquivos</string>
+    <string name="import_bulk_details">O aplicativo tentará importar arquivos de música em formatos legíveis para uma pasta de músicas \'Importadas\'.  Você pode então optar por mover músicas para outras pastas, se necessário.</string>
+    <string name="import_bulk_info">Importação em lote de vários arquivos de música</string>
+    <string name="import_bulk_showcase_choose">Clique aqui para selecionar vários arquivos usando o seletor de arquivos do Android</string>
+    <string name="import_bulk_showcase_found">Estes são os ficheiros que escolheu importar</string>
+    <string name="import_bulk_showcase_import">Clique aqui para tentar importar esses arquivos</string>
     <string name="import_from_file">Importar de um arquivo salvo</string>
     <string name="import_main">Importar ou criar músicas</string>
     <string name="import_osb">Restaurar músicas do arquivo de backup do OpenSongApp (*.osb)</string>
+    <string name="imported">Importados</string>
     <string name="imported_values">Valores importados</string>
     <string name="inc_autoscroll_speed">"Aumentar a velocidade de Autoscroll"</string>
     <string name="index_songs">Indexar músicas</string>
@@ -947,5 +958,4 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
-    <string name="forum_desktop">Ao abrir o fórum em um dispositivo móvel, você só poderá navegar no fórum. Se você quiser postar ou responder a postagens, você precisará mudar seu navegador para solicitar site para desktop. Normalmente, você pode selecionar isso nas configurações do navegador. Os pôsteres pela primeira vez no fórum exigirão moderação manual antes de sua postagem ser exibida, então seja paciente!</string>
 </resources>

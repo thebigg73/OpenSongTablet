@@ -70,6 +70,7 @@
     <string name="backup_now">Utwórz kopię zapasową teraz</string>
     <string name="backup_osb">Utwórz kopię zapasową piosenek OpenSongApp (*.osb)</string>
     <string name="backup_sets">Utwórz kopię zapasową zestawów</string>
+    <string name="bad_songs_found">W folderach OpenSong/Songs/, które nie są obsługiwane bezpośrednio, znaleziono nieoczekiwane pliki utworów.  Zostały one przeniesione do folderu OpenSong/Import, ale możesz użyć opcji importowania wielu plików, aby spróbować przekonwertować je do formatu OpenSong i dodać je z powrotem do folderu OpenSong/Songs/</string>
     <string name="banjo4">Banjo (4)</string>
     <string name="banjo5">Banjo (5)</string>
     <string name="battery">Bateria</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Ograniczone rozgłaszanie</string>
     <string name="connections_advertise_temporary_info">Rozgłaszaj tylko przez 10 sekund po kliknięciu przycisku rozgłaszania</string>
     <string name="connections_advertising">Rozgłaszanie…</string>
+    <string name="connections_browse_host">Przeglądaj pliki hosta</string>
+    <string name="connections_browse_host_info">Wybierz pliki z podłączonego urządzenia hosta (działającego jako host) do zaimportowania</string>
     <string name="connections_change">Po nawiązaniu połączenia możesz zmieniać tryb hosta i klienta według potrzeby</string>
     <string name="connections_connect">Połącz urządzenia</string>
     <string name="connections_connected">Połączony z</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normalny</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Zgłaszaj błędy, uzyskaj pomoc i poproś o funkcje</string>
+    <string name="forum_desktop">Otwierając forum na urządzeniu mobilnym, będziesz mógł tylko przeglądać forum. Jeśli chcesz publikować posty lub odpowiadać na posty, musisz przełączyć przeglądarkę, aby żądać witryny na komputery. Zwykle można to wybrać w ustawieniach przeglądarki. Osoby, które po raz pierwszy pojawiają się na forum, będą wymagały ręcznej moderacji przed wyświetleniem ich posta, więc prosimy o cierpliwość!</string>
     <string name="github_description">Przyczyń się do rozwoju aplikacji</string>
     <string name="grace_time">Pozwól na czas opóźnienia piosenki</string>
     <string name="grace_time_info">Pozwala na szybkie przeglądanie piosenek i wysyłanie informacji do innych podłączonych urządzeń dopiero po czasie opóźnienia wynoszącym 2 sekundy.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Tryb wciągający</string>
     <string name="immersive_mode_info">Ukryj paski nawigacji i stanu, aby wykorzystać większą część ekranu</string>
     <string name="import_basic">Importuj</string>
+    <string name="import_bulk">Wiele plików</string>
+    <string name="import_bulk_details">Aplikacja spróbuje zaimportować pliki utworów w czytelnych formatach do folderu \"Zaimportowane\" utwory.  W razie potrzeby możesz przenieść utwory do innych folderów.</string>
+    <string name="import_bulk_info">Importowanie wsadowe wielu plików utworów</string>
+    <string name="import_bulk_showcase_choose">Kliknij tutaj, aby wybrać wiele plików za pomocą selektora plików Androida</string>
+    <string name="import_bulk_showcase_found">Są to pliki, które wybrałeś do zaimportowania</string>
+    <string name="import_bulk_showcase_import">Kliknij tutaj, aby spróbować zaimportować te pliki</string>
     <string name="import_from_file">Importuj z zapisanego pliku</string>
     <string name="import_main">Importuj lub twórz piosenki</string>
     <string name="import_osb">Przywróć piosenki z pliku kopii zapasowej OpenSongApp (*.osb)</string>
+    <string name="imported">Importowane</string>
     <string name="imported_values">Zaimportowane wartości</string>
     <string name="inc_autoscroll_speed">Zwiększ prędkość autoprzewijania</string>
     <string name="index_songs">Indeks piosenek</string>
@@ -947,5 +958,4 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
-    <string name="forum_desktop">Otwierając forum na urządzeniu mobilnym, będziesz mógł tylko przeglądać forum. Jeśli chcesz publikować posty lub odpowiadać na posty, musisz przełączyć przeglądarkę, aby żądać witryny na komputery. Zwykle można to wybrać w ustawieniach przeglądarki. Osoby, które po raz pierwszy pojawiają się na forum, będą wymagały ręcznej moderacji przed wyświetleniem ich posta, więc prosimy o cierpliwość!</string>
 </resources>

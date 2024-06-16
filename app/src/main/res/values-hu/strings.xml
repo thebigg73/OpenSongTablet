@@ -70,6 +70,7 @@
     <string name="backup_now">"Készítsen biztonsági másolatot most"</string>
     <string name="backup_osb">Készítsen biztonsági másolatot az OpenSongApp dalokról (*.osb)</string>
     <string name="backup_sets">Biztonsági készletek</string>
+    <string name="bad_songs_found">Néhány váratlan dalfájl található az OpenSong / Songs / mappákban, amelyek közvetlenül nem támogatottak.  Ezek átkerültek az OpenSong/Import mappába, de több fájl importálásával is megpróbálhatja OpenSong formátumba konvertálni őket, majd visszahelyezni őket az OpenSong/Songs/ mappába</string>
     <string name="banjo4">"Bendzsó (4)"</string>
     <string name="banjo5">"Bendzsó (5)"</string>
     <string name="battery">"Akkumulátor"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Korlátozottan hirdet</string>
     <string name="connections_advertise_temporary_info">Csak a hirdetés gombra kattintás után 10 másodpercig hirdessen</string>
     <string name="connections_advertising">Hirdető…</string>
+    <string name="connections_browse_host">Gazdafájlok tallózása</string>
+    <string name="connections_browse_host_info">Válassza ki az importálni kívánt fájlokat egy csatlakoztatott gazdaeszközről (gazdagépként fut)</string>
     <string name="connections_change">Miután létrejött a kapcsolat, szükség szerint válthat a gazdagép és az ügyfél között</string>
     <string name="connections_connect">Eszközök csatlakoztatása</string>
     <string name="connections_connected">"Csatlakozva valamihez"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Normál</string>
     <string name="forum">Fórum</string>
     <string name="forum_description">Jelentse be a hibákat, kérjen segítséget és kérjen funkciókat</string>
+    <string name="forum_desktop">Ha mobileszközön nyitja meg a fórumot, csak böngészhet a fórumban. Ha bejegyzéseket szeretne közzétenni vagy válaszolni rájuk, át kell kapcsolnia a böngészőt az asztali webhely kéréséhez. Ezt általában a böngésző beállításaiból választhatja ki. A fórum első hozzászólásai manuális moderálást igényelnek, mielőtt a hozzászólásuk megjelenik, ezért kérjük, legyen türelemmel!</string>
     <string name="github_description">Hozzájáruljon az alkalmazások fejlesztéséhez</string>
     <string name="grace_time">Hagyjon türelmi időt a daloknak</string>
     <string name="grace_time_info">Ez lehetővé teszi a dalok gyors böngészését, és csak 2 másodperces türelmi idő után küld információkat más csatlakoztatott eszközökre.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Magával ragadó mód</string>
     <string name="immersive_mode_info">A navigáció és az állapotsorok elrejtése, hogy többet használhasson a kijelzőből</string>
     <string name="import_basic">Importálás</string>
+    <string name="import_bulk">Több fájl</string>
+    <string name="import_bulk_details">Az alkalmazás megpróbálja importálni az olvasható formátumú dalfájlokat egy \"Importált\" dalmappába.  Ezután szükség esetén áthelyezheti a dalokat más mappákba.</string>
+    <string name="import_bulk_info">Több dalfájl kötegelt importálása</string>
+    <string name="import_bulk_showcase_choose">Kattintson ide több fájl kiválasztásához az Android fájlválasztóval</string>
+    <string name="import_bulk_showcase_found">Ezeket a fájlokat választotta importálni</string>
+    <string name="import_bulk_showcase_import">Kattintson ide a fájlok importálásához</string>
     <string name="import_from_file">Importálás mentett fájlból</string>
     <string name="import_main">Dalok importálása vagy létrehozása</string>
     <string name="import_osb">Zeneszámok visszaállítása az OpenSongApp biztonsági mentési fájlból (*.osb)</string>
+    <string name="imported">Importált</string>
     <string name="imported_values">Importált értékek</string>
     <string name="inc_autoscroll_speed">"Növelje az Autoscroll sebességet"</string>
     <string name="index_songs">Dalok indexelése</string>
@@ -947,5 +958,4 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="forum_desktop">Ha mobileszközön nyitja meg a fórumot, csak böngészhet a fórumban. Ha bejegyzéseket szeretne közzétenni vagy válaszolni rájuk, át kell kapcsolnia a böngészőt az asztali webhely kéréséhez. Ezt általában a böngésző beállításaiból választhatja ki. A fórum első hozzászólásai manuális moderálást igényelnek, mielőtt a hozzászólásuk megjelenik, ezért kérjük, legyen türelemmel!</string>
 </resources>

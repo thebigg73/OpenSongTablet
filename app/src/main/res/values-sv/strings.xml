@@ -70,6 +70,7 @@
     <string name="backup_now">"Skapa en säkerhetskopia nu"</string>
     <string name="backup_osb">Skapa en säkerhetskopia av OpenSongApp-låtar (*.osb)</string>
     <string name="backup_sets">Backup set</string>
+    <string name="bad_songs_found">Några oväntade låtfiler har hittats i dina OpenSong/Songs/-mappar som inte stöds direkt.  De har flyttats till din OpenSong/Import-mapp, men du kan använda alternativet att importera flera filer för att försöka konvertera dem till OpenSong-format och lägga till dem tillbaka i din OpenSong/Songs/-mapp</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Batteri"</string>
@@ -204,6 +205,8 @@
     <string name="connections_advertise_temporary">Begränsad annonsera</string>
     <string name="connections_advertise_temporary_info">Annonsera endast i 10 sekunder efter att du klickat på annonsknappen</string>
     <string name="connections_advertising">Reklam…</string>
+    <string name="connections_browse_host">Bläddra bland värdfiler</string>
+    <string name="connections_browse_host_info">Välj filer från en ansluten värdenhet (som körs som värd) för att importera</string>
     <string name="connections_change">När du har upprättat en anslutning kan du byta mellan värd och klient efter behov</string>
     <string name="connections_connect">"Anslut enheter"</string>
     <string name="connections_connected">"Ansluten till"</string>
@@ -368,6 +371,7 @@
     <string name="format_text_normal">Vanligt</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Rapportera fel, få hjälp och begär funktioner</string>
+    <string name="forum_desktop">När du öppnar forumet på en mobil enhet kommer du bara att kunna surfa på forumet. Om du vill göra inlägg eller svara på inlägg måste du byta webbläsare för att begära skrivbordswebbplats. Du kan normalt välja detta i webbläsarens inställningar. Förstagångspostare på forumet kommer att kräva manuell moderering innan deras inlägg visas, så ha tålamod!</string>
     <string name="github_description">Bidra till apputveckling</string>
     <string name="grace_time">Tillåt låtens nådetid</string>
     <string name="grace_time_info">Detta gör att du kan bläddra bland låtar snabbt och skickar bara information till andra anslutna enheter efter en respitperiod på 2 sekunder.</string>
@@ -406,9 +410,16 @@
     <string name="immersive_mode">Uppslukande läge</string>
     <string name="immersive_mode_info">Dölj navigerings- och statusfält för att använda mer av din skärm</string>
     <string name="import_basic">Importera</string>
+    <string name="import_bulk">Flera filer</string>
+    <string name="import_bulk_details">Appen kommer att försöka importera låtfiler i läsbara format till en \"Importerad\" låtmapp.  Du kan sedan välja att flytta låtar till andra mappar om det behövs.</string>
+    <string name="import_bulk_info">Batchimportera flera låtfiler</string>
+    <string name="import_bulk_showcase_choose">Klicka här för att välja flera filer med hjälp av Android-filväljaren</string>
+    <string name="import_bulk_showcase_found">Det här är de filer som du har valt att importera</string>
+    <string name="import_bulk_showcase_import">Klicka här för att försöka importera dessa filer</string>
     <string name="import_from_file">Importera från en sparad fil</string>
     <string name="import_main">Importera eller skapa låtar</string>
     <string name="import_osb">Återställ låtar från OpenSongApp backup-fil (*.osb)</string>
+    <string name="imported">Importerade</string>
     <string name="imported_values">Importerade värden</string>
     <string name="inc_autoscroll_speed">"Öka Autoscroll Speed"</string>
     <string name="index_songs">Indexera låtar</string>
@@ -947,5 +958,4 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="forum_desktop">När du öppnar forumet på en mobil enhet kommer du bara att kunna surfa på forumet. Om du vill göra inlägg eller svara på inlägg måste du byta webbläsare för att begära skrivbordswebbplats. Du kan normalt välja detta i webbläsarens inställningar. Förstagångspostare på forumet kommer att kräva manuell moderering innan deras inlägg visas, så ha tålamod!</string>
 </resources>
