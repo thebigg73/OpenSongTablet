@@ -859,7 +859,7 @@
                 tools:layout="@layout/settings_nearby_browse">
                 <deepLink
                     android:id="@+id/deepLinkBrowseHost"
-                    app:uri="@string/deeplink_browse_host_files_set" />
+                    app:uri="@string/deeplink_browse_host_files" />
             </fragment>
 
             <navigation android:id="@+id/bible_graph"

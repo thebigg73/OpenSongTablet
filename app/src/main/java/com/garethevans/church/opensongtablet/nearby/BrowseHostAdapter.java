@@ -15,6 +15,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class BrowseHostAdapter extends RecyclerView.Adapter<HostViewHolder> {
 
@@ -22,66 +23,81 @@ public class BrowseHostAdapter extends RecyclerView.Adapter<HostViewHolder> {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BrowseHostAdapter";
     private ArrayList<HostItem> hostItems = new ArrayList<>();
-    private final ArrayList<String> checkedItems = new ArrayList<>();
-    private final String whatView;
 
-    BrowseHostAdapter(Context c, String whatView) {
+    BrowseHostAdapter(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
-        this.whatView = whatView;
         setHasStableIds(false);
-        Log.d(TAG,"whatView:"+whatView);
     }
 
-    public void prepareItems(String[] items) {
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            // Get a count of the original items (if any)
-            int oldSize = getItemCount();
-            hostItems = new ArrayList<>();
+    public void prepareItems(String[] items, String folder) {
+        // Get a count of the original items (if any)
+        int oldSize = getItemCount();
+        hostItems = new ArrayList<>();
 
-            for (String item : items) {
-                HostItem hostItem = new HostItem();
+        for (String item : items) {
+            HostItem hostItem = new HostItem();
 
-                // Add the filename as it is
-                hostItem.setFilename(item);
+            if (!item.endsWith("/")) {
 
-                // Get the category and name
-                String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(item);
-                hostItem.setCategory(bits[0]);
-                hostItem.setTitle(bits[1]);
+                // Add the folder
+                hostItem.setFolder(folder);
 
-                // Add the folder as "Sets"
-                hostItem.setFolder("Sets");
+                switch (folder) {
+                    case "Sets":
+                        // No subfolder in Sets
+                        hostItem.setSubfolder("");
+                        // Add the filename as it is
+                        hostItem.setFilename(item);
+                        // Get the category and name
+                        String[] bits = mainActivityInterface.getSetActions().getSetCategoryAndName(item);
+                        hostItem.setCategory(bits[0]);
+                        hostItem.setTitle(bits[1]);
+                        // Add the tag as Category/Title
+                        hostItem.setTag(hostItem.getCategory() + "/" + hostItem.getTitle());
+                        break;
 
-                // Add the subfolder as ""
-                hostItem.setSubfolder("");
+                    case "Profiles":
+                        // No subfolder in Profiles
+                        hostItem.setSubfolder("");
+                        // Add the filename as it is
+                        hostItem.setFilename(item);
+                        hostItem.setCategory("");
+                        hostItem.setTitle(item);
+                        hostItem.setTag(item);
+                        break;
 
-                // Add the tag as Category/Title
-                hostItem.setTag(hostItem.getCategory() + "/" + hostItem.getTitle());
+                    case "Songs":
+                        // Make sure we have a subfolder
+                        String subfolder = item.substring(0, item.lastIndexOf("/"));
+                        String filename = item.replace(subfolder + "/", "");
+                        Log.d(TAG, "item:"+item+" subfolder:" + subfolder + " filename:" + filename);
+                        hostItem.setSubfolder(subfolder);
+                        hostItem.setFilename(filename);
+                        hostItem.setTitle(filename);
+                        hostItem.setCategory("");
+                        hostItem.setTag(item);
+                        break;
+                }
 
                 // Check if we already have this file
-                Uri itemUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",item);
+                Uri itemUri = mainActivityInterface.getStorageAccess().getUriForItem(folder, hostItem.getSubfolder(), item);
                 hostItem.setExists(mainActivityInterface.getStorageAccess().uriExists(itemUri));
 
-                // Set the set identifier
-                hostItem.setIdentifier(mainActivityInterface.getSetActions().getItemStart() +
-                        item + mainActivityInterface.getSetActions().getItemEnd());
 
-                // Set the values as checked based on if it is in the checkedItems array
-                hostItem.setChecked(checkedItems.contains(hostItem.getIdentifier()));
-
+                Log.d(TAG, "hostItem:" + hostItem.getFolder() + " " + hostItem.getFilename());
                 // Add this set item to the array
                 hostItems.add(hostItem);
             }
+        }
 
-            changeSortOrder();
+        changeSortOrder();
 
-            // Notify the adapter of the changes
-            mainActivityInterface.getMainHandler().post(() -> {
-                if (oldSize > 0) {
-                    notifyItemRangeRemoved(0, oldSize);
-                }
-                notifyItemRangeInserted(0, getItemCount());
-            });
+        // Notify the adapter of the changes
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (oldSize > 0) {
+                notifyItemRangeRemoved(0, oldSize);
+            }
+            notifyItemRangeInserted(0, getItemCount());
         });
     }
     @NonNull
@@ -91,6 +107,19 @@ public class BrowseHostAdapter extends RecyclerView.Adapter<HostViewHolder> {
                 from(parent.getContext()).
                 inflate(R.layout.view_checkbox_list_item, parent, false);
         return new HostViewHolder(itemView);
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull HostViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+        if (payloads.toString().equals("checked")) {
+            position = holder.getAbsoluteAdapterPosition();
+
+            HostItem hostItem = hostItems.get(position);
+            // Decide if this value is selected
+            holder.checkBox.setChecked(hostItem.getChecked());
+        }
     }
 
     @Override
@@ -113,15 +142,6 @@ public class BrowseHostAdapter extends RecyclerView.Adapter<HostViewHolder> {
                 // Set the item checked value as the opposite to what it currently was
                 hostItems.get(finalPosition).setChecked(!hostItems.get(finalPosition).getChecked());
                 notifyItemChanged(finalPosition);
-                if (hostItems.get(finalPosition).getChecked()) {
-                    // Add the item if it isn't already there
-                    if (!checkedItems.contains(hostItems.get(finalPosition).getIdentifier())) {
-                        checkedItems.add(hostItems.get(finalPosition).getIdentifier());
-                    }
-                } else {
-                    // Remove the item if it isn't already there
-                    checkedItems.remove(hostItems.get(finalPosition).getIdentifier());
-                }
             });
             holder.itemName.setText(hostItem.getTag());
         }
@@ -146,8 +166,22 @@ public class BrowseHostAdapter extends RecyclerView.Adapter<HostViewHolder> {
         mainActivityInterface.getMainHandler().post(() -> notifyItemRangeChanged(0,getItemCount()));
     }
 
-    public ArrayList<String> getCheckedItems() {
+    public ArrayList<HostItem> getCheckedItems() {
+        ArrayList<HostItem> checkedItems = new ArrayList<>();
+        for (HostItem hostItem:hostItems) {
+            if (hostItem.getChecked()) {
+                checkedItems.add(hostItem);
+            }
+        }
         return checkedItems;
+    }
+
+    public void selectAll(boolean select) {
+        // Changed all values to checked
+        for (HostItem hostItem:hostItems) {
+            hostItem.setChecked(select);
+        }
+        notifyItemRangeChanged(0, hostItems.size(),"checked");
     }
 
 }

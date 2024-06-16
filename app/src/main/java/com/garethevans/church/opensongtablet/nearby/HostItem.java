@@ -7,7 +7,6 @@ public class HostItem {
     private String folder;
     private String subfolder;
     private String category;
-    private String identifier;
     private String tag;
     private boolean exists;
     private boolean checked;
@@ -29,9 +28,6 @@ public class HostItem {
     }
     public void setTag(String tag) {
         this.tag = tag;
-    }
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
     }
     public void setExists(boolean exists) {
         this.exists = exists;
@@ -56,9 +52,6 @@ public class HostItem {
     }
     public String getTag() {
         return tag;
-    }
-    public String getIdentifier() {
-        return identifier;
     }
     public boolean getExists() {
         return exists;

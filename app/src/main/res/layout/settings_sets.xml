@@ -100,7 +100,8 @@
                 android:id="@+id/browseHostLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/browseHost"
                 android:layout_width="match_parent"
