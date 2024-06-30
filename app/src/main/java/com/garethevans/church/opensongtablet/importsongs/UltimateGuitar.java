@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -21,7 +20,7 @@ public class UltimateGuitar {
         mainActivityInterface = (MainActivityInterface) c;
     }
 
-    private final String[] bitsToClear = new String[] {"</span>", "(Chords)"};
+    private final String[] bitsToClear = new String[] {"<div class=\"LJhrL\">X</div>","</span>", "(Chords)"};
 
     // New lines are identified as new lines
 
@@ -67,10 +66,11 @@ public class UltimateGuitar {
             lyricsText = s;
         }
 
+        lyricsText = lyricsText.replace("<div class=\"LJhrL\">X</div>","");
+
         // Get rid of inline ads
         String bitToRemove = mainActivityInterface.getProcessSong().getSubstring(
                 "<bidding-wrapper",null,"</bidding-wrapper>",lyricsText);
-        Log.d(TAG,"bitToRemove:"+bitToRemove);
         if (bitToRemove != null && !bitToRemove.isEmpty()) {
             lyricsText = lyricsText.replace(bitToRemove,"");
         }
@@ -125,9 +125,6 @@ public class UltimateGuitar {
         finalLyrics = finalLyrics.replace("]]","]");
 
         newSong.setLyrics(finalLyrics);
-        for (String lyr:finalLyrics.split("\n")) {
-            Log.d(TAG,"lyr: "+lyr);
-        }
 
         // If we have a capo (which means the key and the chords won't match in UG)
         // We will need to transpose the lyrics to match
@@ -184,14 +181,11 @@ public class UltimateGuitar {
         String key = getMetaData(s, "<div class=\"label\">Key</div>");
         String key2 = "";
         String key3 = "";
-        Log.d(TAG,"key:"+key);
         // Try new method looking for line: "musicalKey": "XX"
         String bit = "\"musicalKey\":";
         if (key.isEmpty() && s.contains(bit)) {
-            Log.d(TAG,"key is empty and contains musicalKey:");
             int startpos = s.indexOf(bit);
             int endpos = s.indexOf("\n",startpos);
-            Log.d(TAG,"startpos:"+startpos+"  endpos:"+endpos);
 
             if (endpos>startpos && endpos-startpos<8) {
                 key2 = s.substring(startpos,endpos);
@@ -200,20 +194,15 @@ public class UltimateGuitar {
             if (!key2.isEmpty()) {
                 key = key2;
             }
-            Log.d(TAG,"key2:"+key2);
         }
 
         // Try final method
         String bit2 = "Key: </th><td class=\"";
         if (key.isEmpty() && s.contains(bit2)) {
-            Log.d(TAG,"key is empty and contains Key: </th><td class=\"");
-
             int startpos = s.indexOf(bit2);
             startpos = s.indexOf("<span>",startpos);
             if (startpos>-1) {
                 int endpos = s.indexOf("</span>", startpos);
-                Log.d(TAG,"startpos:"+startpos+"  endpos:"+endpos);
-
                 if (endpos > startpos && endpos - startpos < 15) {
                     key3 = s.substring(startpos, endpos);
                     key3 = stripOutTags(key3).trim();
@@ -221,7 +210,6 @@ public class UltimateGuitar {
                 if (!key3.isEmpty()) {
                     key = key3;
                 }
-                Log.d(TAG,"key3:"+key3);
             }
         }
         return key;
