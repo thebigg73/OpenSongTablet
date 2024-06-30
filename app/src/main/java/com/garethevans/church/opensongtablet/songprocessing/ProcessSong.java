@@ -157,7 +157,7 @@ public class ProcessSong {
 
     // This deals with creating the song XML file
     public String getXML(Song thisSong) {
-        if (thisSong.getEncoding() == null || thisSong.getEncoding().equals("")) {
+        if (thisSong.getEncoding() == null || thisSong.getEncoding().isEmpty()) {
             thisSong.setEncoding("UTF-8");
         }
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + thisSong.getEncoding() + "\"?>\n";
@@ -379,7 +379,7 @@ public class ProcessSong {
         String[] lines = lyrics.split("\n");
 
         for (String line : lines) {
-            if (line.length() == 0 || !("[;. 123456789-".contains(line.substring(0, 1)))) {
+            if (line.isEmpty() || !("[;. 123456789-".contains(line.substring(0, 1)))) {
                 line = " " + line;
                 //} else if (line.matches("^[0-9].*$") && line.length() > 1 && !line.startsWith(".", 1)) {
                 // Multiline verse
@@ -470,7 +470,7 @@ public class ProcessSong {
                     what = "chord_then_lyric";
                 /*} else if (linenum < totallines - 1 && nextlinetype.equals("comment")) {
                     what = "chord_then_comment";*/
-                } else if (totallines == 1 || nextlinetype.equals("") || nextlinetype.equals("chord") || nextlinetype.equals("heading")) {
+                } else if (totallines == 1 || nextlinetype.isEmpty() || nextlinetype.equals("chord") || nextlinetype.equals("heading")) {
                     what = "chord_only";
                 }
                 break;
@@ -560,6 +560,7 @@ public class ProcessSong {
                 if ((prevlyricempty && lyric.startsWith(" ", x))) {
                     chordpositions.remove(chordpositions.size() - 1);
                 }
+                chordpositions.add(String.valueOf(x));
                 prevlyricempty = true;
                 // Add the end position of a chord if it ends over a lyric space
             } else if (thischordcharempty && !prevchordcharempty && prevlyriccharempty) {
@@ -753,7 +754,7 @@ public class ProcessSong {
             case "capoline":
             case "comment":
             case "tab":
-                if (string.length() > 0) {
+                if (!string.isEmpty()) {
                     string = string.substring(1);
                 }
                 break;
@@ -770,7 +771,7 @@ public class ProcessSong {
     public String beautifyHeading(String line) {
         boolean annotated = line.contains("-]");
 
-        if (line.equals("")) {
+        if (line.isEmpty()) {
             return "";
         }
 
@@ -1407,7 +1408,7 @@ public class ProcessSong {
                         lines[z] = "__REMOVED__";
                     } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
                         int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
-                        if (verse[vnum].equals("")) {
+                        if (verse[vnum].isEmpty()) {
                             verse[vnum] = "[V" + vnum + "]\n";
                         }
                         verse[vnum] += " " + lines[z].substring(1) + "\n";
@@ -1419,7 +1420,7 @@ public class ProcessSong {
                         lines[z] = "__REMOVED__";
                     } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
                         int cnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
-                        if (chorus[cnum].equals("")) {
+                        if (chorus[cnum].isEmpty()) {
                             chorus[cnum] = "[C" + cnum + "]\n";
                         }
                         chorus[cnum] += lines[z].substring(1) + "\n";
@@ -1454,7 +1455,7 @@ public class ProcessSong {
             for (String line:lines) {
                 if (line.startsWith(".")) {
                     line = line.replaceFirst(".",".   ");
-                } else if (line.length()>0 && "123456789".contains(line.substring(0,1))) {
+                } else if (!line.isEmpty() && "123456789".contains(line.substring(0,1))) {
                     line = line.charAt(0) + ")  " + line.substring(1);
                 }
                 fixedLines.append(line).append("\n");
@@ -1535,7 +1536,7 @@ public class ProcessSong {
 
                 // Go through each tag in the song
                 for (String tag : song.getSongSectionHeadings()) {
-                    if (tag.equals("") || tag.equals(" ")) {
+                    if (tag.isEmpty() || tag.equals(" ")) {
                         Log.d(TAG, "Empty search");
                     } else if (tempPresentationOrder.toString().contains(tag)) {
                         tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().
@@ -1558,7 +1559,7 @@ public class ProcessSong {
                 // Also, anything after __> isn't in the song
                 for (int d = 0; d < tempPresOrderArray.length; d++) {
                     if (!tempPresOrderArray[d].contains("__>")) {
-                        if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
+                        if (!tempPresOrderArray[d].isEmpty() && !tempPresOrderArray[d].equals(" ")) {
                             if (errors.length() > 0) {
                                 errors.append(("\n"));
                             }
@@ -1570,7 +1571,7 @@ public class ProcessSong {
                         String goodbit = tempPresOrderArray[d].substring(0, tempPresOrderArray[d].indexOf("__>"));
                         String badbit = tempPresOrderArray[d].replace(goodbit + "__>", "");
                         tempPresOrderArray[d] = goodbit;
-                        if (!badbit.equals("") && !badbit.equals(" ")) {
+                        if (!badbit.isEmpty() && !badbit.equals(" ")) {
                             if (errors.length() > 0) {
                                 errors.append(("\n"));
                             }
@@ -1582,7 +1583,7 @@ public class ProcessSong {
 
                 // Go through the tempPresOrderArray and add the sections back together
                 for (String aTempPresOrderArray : tempPresOrderArray) {
-                    if (!aTempPresOrderArray.equals("")) {
+                    if (!aTempPresOrderArray.isEmpty()) {
                         for (int a = 0; a < song.getSongSectionHeadings().size(); a++) {
                             if (song.getSongSectionHeadings().get(a).trim().equals(aTempPresOrderArray.trim())) {
                                 newSections.add(song.getGroupedSections().get(a));
@@ -1603,7 +1604,7 @@ public class ProcessSong {
         }
 
         // If a non empty presentation order then set, otherwise return normal order
-        if (newSections.size() > 0) {
+        if (!newSections.isEmpty()) {
             song.setPresoOrderSongSections(newSections);
             song.setPresoOrderSongHeadings(newHeaders);
         } else {
@@ -1983,7 +1984,7 @@ public class ProcessSong {
         // The grouped sections are used for alignments
 
         // IV - If empty, process as an empty section
-        if (lyrics.equals("")) {
+        if (lyrics.isEmpty()) {
             lyrics = "\n\n§[]";
         }
 
