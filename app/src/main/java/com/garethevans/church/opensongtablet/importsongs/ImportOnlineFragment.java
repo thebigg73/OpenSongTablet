@@ -298,9 +298,6 @@ public class ImportOnlineFragment extends Fragment {
             userAgentDesktop = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0";
             changeUserAgent();
 
-            Log.d(TAG,"default:"+userAgentDefault);
-            Log.d(TAG,"desktop:"+userAgentDesktop);
-
             webView.getSettings().getJavaScriptEnabled();
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setDomStorageEnabled(true);
@@ -321,10 +318,8 @@ public class ImportOnlineFragment extends Fragment {
                 String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
                 if (url != null) {
                     if (url.startsWith("blob")) {
-                        Log.d(TAG,"blob download");
                         webView.loadUrl(MyJSInterface.getBase64StringFromBlobUrl(url));
                     } else {
-                        Log.d(TAG,"normal download");
                         MyJSInterface.setDownload(url,filename);
                     }
                 }
@@ -348,7 +343,6 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void isConnected(boolean connected) {
-        Log.d(TAG, "connected=" + connected);
         // Received back from the MainActivity after being told if we have a valid internet connection or not
         if (connected) {
             // This listener is to grab text saved to the clipboard manager
@@ -437,8 +431,6 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     private void extractContent() {
-        Log.d(TAG, "Extract content");
-
         try {
             showDownloadProgress(true);
         } catch (Exception e) {
@@ -491,10 +483,6 @@ public class ImportOnlineFragment extends Fragment {
             webString = webString.replace("\r","\n");
             webString = webString.replace("</div></div>","</div>\n</div>");
 
-            String[] lines = webString.split("\n");
-            for (String line:lines) {
-                Log.d(TAG,"line:"+line);
-            }
             showSaveButton();
         }
     };
@@ -507,8 +495,6 @@ public class ImportOnlineFragment extends Fragment {
         if (webString==null) {
             webString = "";
         }
-
-        Log.d(TAG,"source:"+source);
 
         switch (source) {
             case "UltimateGuitar":
@@ -679,12 +665,8 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setTempo(newSong.getTempo().trim());
         newSong.setTimesig(newSong.getTimesig().trim());
         newSong.setCcli(newSong.getCcli().trim());
-        Log.d(TAG,"title:"+newSong.getTitle());
-        Log.d(TAG,"author:"+newSong.getAuthor());
-        Log.d(TAG,"key:"+newSong.getKey());
-        Log.d(TAG,"lyrics:"+newSong.getLyrics());
 
-        if (songSelectAutoDownload.equals("")) {
+        if (songSelectAutoDownload.isEmpty()) {
             setupSaveLayout();
         } else {
             try {
@@ -823,7 +805,7 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void continueSaving() {
-        if (newSong.getLyrics().equals("")) {
+        if (newSong.getLyrics().isEmpty()) {
             // IV - If we do not have an extracted song, save any SongSelect PDF download
             if (source.equals("SongSelect") && downloadFilename.toLowerCase().endsWith(".pdf")) {
                 copyPDF(downloadUri, downloadFilename);

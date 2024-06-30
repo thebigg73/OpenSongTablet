@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,6 +175,7 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             }
         }
     }

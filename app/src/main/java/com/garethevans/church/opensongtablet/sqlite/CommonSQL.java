@@ -177,7 +177,7 @@ public class CommonSQL {
             try {
                 db.insert(SQLite.TABLE_NAME, null, values);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG,"error:"+e);
             }
         }
     }
@@ -252,27 +252,26 @@ public class CommonSQL {
         // To avoid SQL injections, we need to build the args
         ArrayList<String> args = new ArrayList<>();
         String sqlMatch = "";
-        if (searchByFolder && folderVal != null && folderVal.length() > 0) {
+        if (searchByFolder && folderVal != null && !folderVal.isEmpty()) {
             if (folderVal.equals(mainActivityInterface.getMainfoldername()) ||
             folderVal.equals("MAIN")) {
                 sqlMatch += SQLite.COLUMN_FOLDER + "= ? AND ";
                 args.add(folderVal);
             } else {
-                Log.d(TAG,"folderVal="+folderVal);
                 // Allows the inclusion of subfolders contents
                 sqlMatch += SQLite.COLUMN_FOLDER + " LIKE ? AND ";
                 args.add(folderVal + "%");
             }
         }
-        if (searchByArtist && artistVal != null && artistVal.length() > 0) {
+        if (searchByArtist && artistVal != null && !artistVal.isEmpty()) {
             sqlMatch += SQLite.COLUMN_AUTHOR + " LIKE ? AND ";
             args.add("%"+artistVal+"%");
         }
-        if (searchByKey && keyVal != null && keyVal.length() > 0) {
+        if (searchByKey && keyVal != null && !keyVal.isEmpty()) {
             sqlMatch += SQLite.COLUMN_KEY + "= ? AND ";
             args.add(keyVal);
         }
-        if (searchByTag && tagVal != null && tagVal.length() > 0) {
+        if (searchByTag && tagVal != null && !tagVal.isEmpty()) {
             String[] tagArray = StringUtils.splitPreserveAllTokens(tagVal, ";");
             if (tagArray.length > 0) {
                 sqlMatch += "(";
@@ -290,13 +289,13 @@ public class CommonSQL {
                 sqlMatch += tempSqlMatch + ") AND ";
             }
         }
-        if (searchByTitle && titleVal != null && titleVal.length() > 0) {
+        if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
             sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? ) AND ";
             args.add("%"+titleVal+"%");
             args.add("%"+titleVal+"%");
         }
-        if (searchByFilter && filterVal != null && filterVal.length() > 0) {
+        if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
             sqlMatch += "(" + SQLite.COLUMN_LYRICS + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_TITLE + " LIKE ? OR ";
@@ -328,8 +327,11 @@ public class CommonSQL {
         }
         sqlMatch += SQLite.COLUMN_FILENAME + " !=''";
 
-        // Select matching folder Query
-        // Common strings for searching.  Don't need to grab everything here - we can get the rest later
+        /*
+            Select matching folder Query
+            Common strings for searching.  Don't need to grab everything here - we can get the rest later
+        */
+
         String listname = SQLite.COLUMN_FILENAME;
         if (songMenuSortTitles) {
             listname = SQLite.COLUMN_TITLE;
@@ -480,7 +482,7 @@ public class CommonSQL {
 
             closeCursor(cursor);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG,"error:"+e);
         }
 
         return thisSong;
@@ -520,7 +522,7 @@ public class CommonSQL {
             }
         }
         closeCursor(cursor);
-        if (folders.size()==0) {
+        if (folders.isEmpty()) {
             folders.add(c.getString(R.string.mainfoldername));
         }
         Comparator<String> comparator = (o1, o2) -> {
@@ -576,7 +578,7 @@ public class CommonSQL {
             try {
                 cursor.close();
             } catch (OutOfMemoryError | Exception e) {
-                e.printStackTrace();
+                Log.e(TAG,"error:"+e);
             }
         }
     }

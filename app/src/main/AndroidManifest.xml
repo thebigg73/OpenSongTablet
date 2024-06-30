@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
-    <uses-sdk tools:overrideLibrary="com.google.oboe|com.canhub.cropper|com.google.android.gms.cast.framework|androidx.appcompat.resources|com.google.android.gms|com.google.android.gms.nearby|com.google.android.gms.flags|com.google.android.gms.base|com.google.android.gms.tasks|com.google.android.gms.common|androidx.fragment.ktx"/>
+    <uses-sdk tools:overrideLibrary="androidx.appcompat,androidx.appcompat.resources,com.google.android.gms.cast,com.google.android.gms.cast.framework,com.google.android.gms.nearby,com.google.android.gms.flags,com.google.android.gms.base,com.google.android.gms.tasks,com.google.android.gms.common,androidx.fragment.ktx,androidx.fragment,com.canhub.cropper" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -119,7 +119,8 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
-            android:hardwareAccelerated="false">
+            android:hardwareAccelerated="false"
+            tools:ignore="DiscouragedApi">
 
             <nav-graph android:value="@navigation/navigation" />
 
