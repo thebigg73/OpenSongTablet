@@ -78,6 +78,9 @@ public class SetStorageLocationFragment extends Fragment {
         mainActivityInterface.updateToolbarHelp(webAddress);
         mainActivityInterface.updateToolbar(storage_change_string);
         checkToolbarView();
+
+        // Showcase
+        storageShowcase();
     }
 
     @Override
@@ -111,22 +114,20 @@ public class SetStorageLocationFragment extends Fragment {
         // Check we have the required storage permission
         // If we have it, this will update the text, if not it will ask for permission
         checkStatus();
-        checkToolbarView();
-
-        // Showcase
-        storageShowcase();
 
         return myView.getRoot();
     }
 
     private void checkToolbarView() {
-        mainActivityInterface.setSettingsOpen(true);
-        screenHelp = mainActivityInterface.disableActionBarStuff(!mainActivityInterface.getWhattodo().equals("storageOk"));
+        screenHelp = mainActivityInterface.disableActionBarStuff(mainActivityInterface.getWhattodo().equals("storageBad"));
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             mainActivityInterface.updateToolbarHelp(webAddress);
             mainActivityInterface.updateToolbar(storage_change_string);
-            screenHelp = mainActivityInterface.disableActionBarStuff(!mainActivityInterface.getWhattodo().equals("storageOk"));
+            screenHelp = mainActivityInterface.disableActionBarStuff(mainActivityInterface.getWhattodo().equals("storageBad"));
         },100);
+        if (mainActivityInterface.getWhattodo().equals("storageBad")) {
+            mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.hideActionBar(),200);
+        }
     }
 
     private void prepareStrings() {

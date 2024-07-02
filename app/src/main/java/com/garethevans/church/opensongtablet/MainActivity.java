@@ -819,6 +819,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public ImageView disableActionBarStuff(boolean disable) {
         // Called from storage selection
+        if (getSupportActionBar()==null) {
+            setupActionbar();
+        }
         if (getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(!disable);
         }
@@ -1358,16 +1361,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "sortSet":
                 case "shuffleSet":
+                case "rebuildSet":
                     getThreadPoolExecutor().execute(() -> {
                         if (setMenuFragment!=null) {
                             // Firstly hide the set
                             setMenuFragment.changeVisibility(false);
 
-                            // Sort the set as required
+                            // Sort or shuffle the set as required
                             if (fragName.equals("sortSet")) {
                                 getSetActions().sortSet();
-                            } else {
+                            } else if (fragName.equals("shuffleSet")){
                                 getSetActions().shuffleSet();
+                            } else {
+                                Log.d(TAG,"just updating");
                             }
 
                             // Update the set items
@@ -1714,6 +1720,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void hideActionBar() {
+        if (getSupportActionBar()==null) {
+            setupActionbar();
+        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -1726,7 +1735,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (myView != null) {
             mainLooper.post(() -> {
                 myView.myToolbar.setActionBar(this, what);
-                myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+                if (whattodo.equals("storageBad")) {
+                    myView.fragmentView.setTop(0);
+                } else {
+                    myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+                }
             });
         }
     }
