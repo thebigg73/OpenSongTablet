@@ -72,12 +72,12 @@ public class HighlighterFragment extends Fragment {
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
         hideView(myView.edit,mainActivityInterface.getMode().equals(mode_performance_string));
-        if (!mainActivityInterface.validScreenShotFile()) {
+        if (!mainActivityInterface.validScreenShotFile() && mainActivityInterface.getSong().getFiletype().equals("XML")) {
             myView.edit.hide();
         } else {
             myView.edit.show();
         }
-        myView.warning.setVisibility(!mainActivityInterface.validScreenShotFile() ? View.VISIBLE:View.GONE);
+        myView.warning.setVisibility((!mainActivityInterface.validScreenShotFile() && mainActivityInterface.getSong().getFiletype().equals("XML")) ? View.VISIBLE:View.GONE);
     }
 
     private void hideView(View view, boolean drawingAutoDisplay) {
@@ -116,7 +116,7 @@ public class HighlighterFragment extends Fragment {
         myView.nestedScrollView.setFabToAnimate(myView.edit);
         
         myView.edit.setOnClickListener(v -> {
-            if (mainActivityInterface.validScreenShotFile()) {
+            if (mainActivityInterface.validScreenShotFile() || !mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 mainActivityInterface.navigateToFragment(null, R.id.highlighterEditFragment);
             }
         });

@@ -397,11 +397,11 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     public void checkUndos() {
-        myView.draggableToolbox.setUndoFABEnabled(mainActivityInterface.getDrawNotes().getAllPaths().size() > 0);
+        myView.draggableToolbox.setUndoFABEnabled(!mainActivityInterface.getDrawNotes().getAllPaths().isEmpty());
     }
 
     public void checkRedos() {
-        myView.draggableToolbox.setRedoFABEnabled(mainActivityInterface.getDrawNotes().getUndoPaths().size() > 0);
+        myView.draggableToolbox.setRedoFABEnabled(!mainActivityInterface.getDrawNotes().getUndoPaths().isEmpty());
     }
 
     private void delete() {
