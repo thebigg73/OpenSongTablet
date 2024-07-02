@@ -183,6 +183,10 @@ public class ProcessSong {
         myNEWXML += "  <beatbuddykit>" + parseToHTMLEntities(thisSong.getBeatbuddykit()).trim() + "</beatbuddykit>\n";
         myNEWXML += "  <key>" + parseToHTMLEntities(thisSong.getKey()).trim() + "</key>\n";
         myNEWXML += "  <keyoriginal>" + parseToHTMLEntities(thisSong.getKeyOriginal()).trim() + "</keyoriginal>\n";
+        // If we have set a preferred instrument for chord diagrams, add this to the xml file (no point if empty)
+        if (thisSong.getPreferredInstrument()!=null && !thisSong.getPreferredInstrument().isEmpty()) {
+            myNEWXML += "  <preferred_instrument>" + parseToHTMLEntities(thisSong.getPreferredInstrument().trim()) + "</preferred_instrument>\n";
+        }
         myNEWXML += "  <aka>" + parseToHTMLEntities(thisSong.getAka()).trim() + "</aka>\n";
         myNEWXML += "  <midi>" + parseToHTMLEntities(thisSong.getMidi()).trim() + "</midi>\n";
         myNEWXML += "  <midi_index>" + parseToHTMLEntities(thisSong.getMidiindex()).trim() + "</midi_index>\n";
@@ -2397,20 +2401,7 @@ public class ProcessSong {
     }
 
     private TextView newTextView(boolean presentation, String linetype, Typeface typeface, float size, int color) {
-        TextView textView = new TextView(c);
-        if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            int trimval;
-            if (linetype.equals("chord") || linetype.equals("capoline")) {
-                trimval = (int) (size * scaleChords * lineSpacing);
-            } else if (linetype.equals("heading")) {
-                trimval = (int) (size * scaleHeadings * lineSpacing);
-            } else {
-                trimval = (int) (size * lineSpacing);
-            }
-            textView.setPadding(0, -trimval, 0, -trimval);
-        } else {
-            textView.setPadding(0, 0, 0, 0);
-        }
+        TextView textView = getTextView(linetype, size);
         textView.setGravity(Gravity.CENTER_VERTICAL);
         textView.setTextSize(size);
         textView.setTypeface(typeface);
@@ -2430,6 +2421,24 @@ public class ProcessSong {
             // IV - Fake bold will be applied if the font does not support bold
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        }
+        return textView;
+    }
+
+    private TextView getTextView(String linetype, float size) {
+        TextView textView = new TextView(c);
+        if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            int trimval;
+            if (linetype.equals("chord") || linetype.equals("capoline")) {
+                trimval = (int) (size * scaleChords * lineSpacing);
+            } else if (linetype.equals("heading")) {
+                trimval = (int) (size * scaleHeadings * lineSpacing);
+            } else {
+                trimval = (int) (size * lineSpacing);
+            }
+            textView.setPadding(0, -trimval, 0, -trimval);
+        } else {
+            textView.setPadding(0, 0, 0, 0);
         }
         return textView;
     }

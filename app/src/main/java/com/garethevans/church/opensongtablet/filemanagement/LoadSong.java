@@ -424,7 +424,7 @@ public class LoadSong {
                                         String testthetitle = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
                                         if (testthetitle != null && !testthetitle.isEmpty()) {
                                             thisSong.setTitle(mainActivityInterface.getProcessSong().parseHTML(testthetitle));
-                                        } else if (testthetitle != null && testthetitle.equals("")) {
+                                        } else if (testthetitle != null) {
                                             thisSong.setTitle(thisSong.getFilename());
                                         }
                                         break;
@@ -472,6 +472,9 @@ public class LoadSong {
                                         break;
                                     case "keyoriginal":
                                         thisSong.setKeyOriginal(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "preferred_instrument":
+                                        thisSong.setPreferredInstrument(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                         break;
                                     case "aka":
                                         thisSong.setAka(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
@@ -583,7 +586,7 @@ public class LoadSong {
 
     public void resetSongsToFix() {
         if (songsToFix!=null) {
-            if (songsToFix.size()>0) {
+            if (!songsToFix.isEmpty()) {
                 // We need to rebuild the song index as we fixed stuff!
                 mainActivityInterface.indexSongs();
             }
@@ -594,7 +597,7 @@ public class LoadSong {
     }
 
     public void fixSongs() {
-        if (songsToFix!=null && songsToFix.size()>0) {
+        if (songsToFix!=null && !songsToFix.isEmpty()) {
             for (Song thisSong:songsToFix) {
                 if (thisSong.getFiletype()!=null &&
                         (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) &&
@@ -821,7 +824,7 @@ public class LoadSong {
 
     public String getTempFileLocation(String folder, String file) {
         String where = folder + "/" + file;
-        if (folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN") || folder.equals("")) {
+        if (folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN") || folder.isEmpty()) {
             where = file;
         } else if (folder.contains("**" + c.getResources().getString(R.string.note)) || folder.contains("**Note")) {
             where = "../Notes/_cache/" + file;
@@ -870,7 +873,7 @@ public class LoadSong {
         }
 
         try {
-            if (nextisxml && nextutf != null && !nextutf.equals("")) {
+            if (nextisxml && nextutf != null && !nextutf.isEmpty()) {
                 // Extract all of the key bits of the song
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);

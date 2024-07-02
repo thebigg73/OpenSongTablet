@@ -38,9 +38,11 @@ public class EditSongFragmentFeatures extends Fragment {
     private String custom_string="";
     private String link_string="";
     private String online_search_string="";
+    private String use_default_string = "";
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
+    private ArrayList<String> instruments = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -90,6 +92,8 @@ public class EditSongFragmentFeatures extends Fragment {
             String search_string = getString(R.string.search);
             String online_string = getString(R.string.online);
             online_search_string = search_string +" ("+ online_string +")";
+            use_default_string = getString(R.string.use_default);
+            instruments = mainActivityInterface.getChordDisplayProcessing().getSongInstruments();
         }
     }
     private void setupValues() {
@@ -176,6 +180,20 @@ public class EditSongFragmentFeatures extends Fragment {
             });
         }
 
+        // The preferred instrument for the song
+        if (getContext()!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                // Add the default text temporarily
+                instruments.add(0, use_default_string);
+                ExposedDropDownArrayAdapter instrumentsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.preferredInstrument, R.layout.view_exposed_dropdown_item, instruments);
+                myView.preferredInstrument.setAdapter(instrumentsAdapter);
+                String chosen = mainActivityInterface.getChordDisplayProcessing().getSongInstrumentNice(mainActivityInterface.getTempSong().getPreferredInstrument());
+                myView.preferredInstrument.setText(chosen);
+                // Now take the default out of the arraylist
+                instruments.remove(0);
+            });
+        }
+
         // Duration and delay
         if (mainActivityInterface.getTempSong().getAutoscrolllength()==null ||
                 mainActivityInterface.getTempSong().getAutoscrolllength().isEmpty()) {
@@ -245,7 +263,7 @@ public class EditSongFragmentFeatures extends Fragment {
             }
             if ((origkey == null || origkey.isEmpty()) && songkey != null && !songkey.isEmpty()) {
                 origkey = songkey;
-                mainActivityInterface.getTempSong().setKeyOriginal(songkey);
+                mainActivityInterface.getTempSong().setKeyOriginal(origkey);
                 String finalSongkey = songkey;
                 mainActivityInterface.getMainHandler().post(() -> myView.originalkey.setText(mainActivityInterface.getTranspose().getFixedKey(finalSongkey)));
             }
@@ -359,6 +377,8 @@ public class EditSongFragmentFeatures extends Fragment {
             myView.linkValue.addTextChangedListener(new MyTextWatcher("linkvalue"));
 
             myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getMetronome().tapTempo());
+
+            myView.preferredInstrument.addTextChangedListener(new MyTextWatcher("preferredinstrument"));
             // Scroll listener
             myView.featuresScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
         });
@@ -446,6 +466,9 @@ public class EditSongFragmentFeatures extends Fragment {
                 case "linkvalue":
                     editLink(editable.toString());
                     break;
+                case "preferredinstrument":
+                    updatePreferredInstrument(editable.toString());
+                    break;
             }
         }
     }
@@ -495,6 +518,17 @@ public class EditSongFragmentFeatures extends Fragment {
     public void updateDuration(int mins, int secs) {
         myView.durationMins.setText(String.valueOf(mins));
         myView.durationSecs.setText(String.valueOf(secs));
+    }
+
+    private void updatePreferredInstrument(String option) {
+        String preferredInstrument;
+        if (option.equals(use_default_string)) {
+            // Set to blank as it isn't required to be written into the xml
+            preferredInstrument = "";
+        } else {
+            preferredInstrument = mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(option);
+        }
+        mainActivityInterface.getTempSong().setPreferredInstrument(preferredInstrument);
     }
 
 

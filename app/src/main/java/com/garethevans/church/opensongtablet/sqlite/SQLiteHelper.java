@@ -83,8 +83,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void removeOldSongs(ArrayList<String> songIds) {
         try (SQLiteDatabase db = getDB()) {
             mainActivityInterface.getCommonSQL().removeOldSongs(db, songIds);
-            //db.setTransactionSuccessful();
-            //db.endTransaction();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,12 +124,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-    public boolean renameSong(String oldFolder, String newFolder, String oldName, String newName) {
+    public void renameSong(String oldFolder, String newFolder, String oldName, String newName) {
         try (SQLiteDatabase db = getDB()) {
-            return mainActivityInterface.getCommonSQL().renameSong(db, oldFolder,newFolder,oldName,newName);
+            mainActivityInterface.getCommonSQL().renameSong(db, oldFolder, newFolder, oldName, newName);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 
