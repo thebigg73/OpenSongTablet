@@ -773,6 +773,8 @@
     <string name="set_name">Nome do conjunto</string>
     <string name="set_new">"Esvaziar"</string>
     <string name="set_new_info">Remova todas as músicas do conjunto atual</string>
+    <string name="set_rebuild">Conjunto de reconstrução</string>
+    <string name="set_rebuild_info">Reconstrua o conjunto a partir da última alteração bem-sucedida (use se suspeitar que há um problema com o conjunto)</string>
     <string name="set_save_info">Salve o conjunto atual para uso futuro</string>
     <string name="set_saved_not_current">Selecione um conjunto salvo. Os conjuntos atuais devem ser salvos antes da exportação.</string>
     <string name="set_selected">Definir item / itens selecionados</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Seções da canção</string>
     <string name="song_sections_info">As seções encontradas nas letras da sua música são mostradas abaixo. Clique nos botões para adicioná-los à ordem de apresentação.</string>
     <string name="song_sections_project">Clique em uma seção de música para enviá-la aos monitores conectados</string>
+    <string name="song_select_warning">Este site requer uma conta válida.  Você deve usar o botão de download dentro da página da Web SongSelect para acionar o download necessário.  O ficheiro será importado para a sua pasta OpenSong/Songs/ depois de ter sido transferido.</string>
     <string name="song_swipe_toggle">"Furto Alternar para mover entre as músicas ligar / desligar"</string>
     <string name="song_title">"Título da música"</string>
     <string name="songs">Músicas</string>

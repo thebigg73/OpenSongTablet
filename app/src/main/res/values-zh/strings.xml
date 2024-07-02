@@ -773,6 +773,8 @@
     <string name="set_name">设置名称</string>
     <string name="set_new">"明确"</string>
     <string name="set_new_info">从当前集合中删除所有歌曲</string>
+    <string name="set_rebuild">重建集</string>
+    <string name="set_rebuild_info">从上次成功更改中重建集合（如果您怀疑集合有问题，请使用）</string>
     <string name="set_save_info">保存当前集以备将来使用</string>
     <string name="set_saved_not_current">选择一个已保存的集。 当前集应在导出前保存。</string>
     <string name="set_selected">设置项目/所选项目</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">歌节</string>
     <string name="song_sections_info">在您的歌词中找到的部分如下所示。 单击按钮将它们添加到演示顺序。</string>
     <string name="song_sections_project">单击歌曲部分以将其发送到连接的显示器</string>
+    <string name="song_select_warning">此网站需要有效的帐户。 您必须使用 SongSelect 网页中的下载按钮来触发所需的下载。 下载后，该文件将被导入到您的 OpenSong/Songs/ 文件夹中。</string>
     <string name="song_swipe_toggle">"切换轻扫上的歌曲之间移动/关闭"</string>
     <string name="song_title">"歌名"</string>
     <string name="songs">歌曲</string>

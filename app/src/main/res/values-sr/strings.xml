@@ -773,6 +773,8 @@
     <string name="set_name">Podesite ime</string>
     <string name="set_new">Očistiti</string>
     <string name="set_new_info">Ukloni sve pesme iz trenutnog skupa</string>
+    <string name="set_rebuild">Ponovo napravi skup</string>
+    <string name="set_rebuild_info">Ponovo napravite skup od poslednje uspešne promene (koristite ako sumnjate da postoji problem sa vašim setom)</string>
     <string name="set_save_info">Sačuvajte trenutni set za buduću upotrebu</string>
     <string name="set_saved_not_current">Izaberite sačuvani skup. Trenutne skupove treba sačuvati pre izvoza.</string>
     <string name="set_selected">Postavi izabrane stavke / stavke</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Delovi pesme</string>
     <string name="song_sections_info">Delovi koji se nalaze u tekstovima vaših pesama su prikazani ispod. Kliknite na dugmad da biste ih dodali u redosled prezentacije.</string>
     <string name="song_sections_project">Kliknite na deo pesme da biste je poslali na povezane ekrane</string>
+    <string name="song_select_warning">Ova lokacija zahteva važeći nalog.  Morate da koristite dugme za preuzimanje unutar Web stranice SongSelect da biste pokrenuli potrebno preuzimanje.  Datoteka će biti uvezena u fasciklu OpenSong/Songs/ nakon preuzimanja.</string>
     <string name="song_swipe_toggle">Uklj/isklj. swipe za pomeranje između pesama</string>
     <string name="song_title">Ime pesme</string>
     <string name="songs">Pesme</string>

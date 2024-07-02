@@ -773,6 +773,8 @@
     <string name="set_name">Название сета</string>
     <string name="set_new">Создать новый сет</string>
     <string name="set_new_info">Удалить все песни из текущего сета</string>
+    <string name="set_rebuild">Набор для перестроения</string>
+    <string name="set_rebuild_info">Перестройте набор с момента последнего успешного изменения (используйте, если вы подозреваете, что с вашим набором возникла проблема)</string>
     <string name="set_save_info">Сохранить текущий сет для последующего использования</string>
     <string name="set_saved_not_current">Выбрать и отобразить сохраненный сет. Текущие сеты должны быть сохранены, прежде чем их можно будет экспортировать</string>
     <string name="set_selected">Набор элементов / выбранных элементов</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Разделы песни</string>
     <string name="song_sections_info">Разделы, записанные в тексте вашей песни, показаны ниже. Нажмите на кнопки, чтобы добавить их в порядок презентации</string>
     <string name="song_sections_project">Нажать на раздел песни, чтобы отправить его на подключенные дисплеи</string>
+    <string name="song_select_warning">Для работы с этим сайтом требуется действующая учетная запись.  Вы должны использовать кнопку загрузки на веб-странице SongSelect, чтобы запустить необходимую загрузку.  Файл будет импортирован в папку OpenSong/Songs/ после того, как он будет загружен.</string>
     <string name="song_swipe_toggle">Вкл/выкл перелистывание между песнями</string>
     <string name="song_title">Название песни</string>
     <string name="songs">Песни</string>

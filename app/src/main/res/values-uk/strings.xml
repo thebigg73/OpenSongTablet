@@ -773,6 +773,8 @@
     <string name="set_name">Перейменування</string>
     <string name="set_new">Новий / Очищення поточного</string>
     <string name="set_new_info">Видалити всі пісні з поточного набору</string>
+    <string name="set_rebuild">Набір для перебудови</string>
+    <string name="set_rebuild_info">Перебудуйте набір з останньої успішної зміни (використовуйте, якщо підозрюєте, що з набором виникла проблема)</string>
     <string name="set_save_info">Збережіть поточний набір для подальшого використання</string>
     <string name="set_saved_not_current">Виберіть збережений набір. Поточні набори слід зберегти перед експортом.</string>
     <string name="set_selected">Встановити вибраний елемент / елементи</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Частини пісні</string>
     <string name="song_sections_info">Розділи, знайдені в текстах ваших пісень, показані нижче. Натисніть на кнопки, щоб додати їх до порядку презентації.</string>
     <string name="song_sections_project">Натисніть розділ пісні, щоб надіслати його на підключені дисплеї</string>
+    <string name="song_select_warning">Для цього сайту потрібен дійсний обліковий запис.  Ви повинні скористатися кнопкою завантаження на веб-сторінці SongSelect, щоб ініціювати необхідне завантаження.  Файл буде імпортовано до вашої теки OpenSong/Songs/ після його звантаження.</string>
     <string name="song_swipe_toggle">Вкл./Викл. Перегортання для зміни пісень</string>
     <string name="song_title">Назва пісні</string>
     <string name="songs">пісні</string>

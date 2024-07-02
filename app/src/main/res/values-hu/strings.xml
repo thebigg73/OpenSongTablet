@@ -773,6 +773,8 @@
     <string name="set_name">Állítsa be a nevet</string>
     <string name="set_new">"Vámkezeltet"</string>
     <string name="set_new_info">Az összes dal eltávolítása az aktuális készletből</string>
+    <string name="set_rebuild">Átépítési készlet</string>
+    <string name="set_rebuild_info">Építsd újra a készletet a legutóbbi sikeres módosításból (akkor használd, ha azt gyanítod, hogy probléma van a készlettel)</string>
     <string name="set_save_info">Mentse el az aktuális készletet későbbi használatra</string>
     <string name="set_saved_not_current">Válasszon ki egy mentett készletet. Az aktuális készleteket exportálás előtt el kell menteni.</string>
     <string name="set_selected">Kiválasztott elem/elemek beállítása</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Song szakaszok</string>
     <string name="song_sections_info">A dalszövegekben található részek az alábbiakban láthatók. Kattintson a gombokra, hogy hozzáadja őket a prezentációs sorrendhez.</string>
     <string name="song_sections_project">Kattintson egy dalszakaszra, hogy elküldje a csatlakoztatott kijelzőkre</string>
+    <string name="song_select_warning">Ehhez a webhelyhez érvényes fiók szükséges.  A szükséges letöltés elindításához a SongSelect weboldalon található letöltés gombot kell használnia.  A fájl importálásra kerül az OpenSong/Songs/ mappába a letöltés után.</string>
     <string name="song_swipe_toggle">"Váltás ellop lépni a dalok között be / ki"</string>
     <string name="song_title">"Dal címe"</string>
     <string name="songs">Dalok</string>

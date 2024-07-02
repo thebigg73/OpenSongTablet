@@ -773,6 +773,8 @@
     <string name="set_name">Stel naam</string>
     <string name="set_new">"Opruim"</string>
     <string name="set_new_info">Verwyder alle liedjies uit die huidige stel</string>
+    <string name="set_rebuild">Herbou stel</string>
+    <string name="set_rebuild_info">Herbou die stel vanaf die laaste suksesvolle verandering (gebruik as u vermoed dat daar \'n probleem met u stel is)</string>
     <string name="set_save_info">Stoor die huidige stel vir toekomstige gebruik</string>
     <string name="set_saved_not_current">Kies \'n gestoorde stel. Huidige stelle moet gestoor word voor uitvoer.</string>
     <string name="set_selected">Stel item / items gekies</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Song artikels</string>
     <string name="song_sections_info">Die afdelings wat in jou liedjie se lirieke gevind word, word hieronder getoon. Klik op die knoppies om dit by die aanbiedingsbestelling te voeg.</string>
     <string name="song_sections_project">Klik op \'n liedjie-afdeling om dit na die gekoppelde skerms te stuur</string>
+    <string name="song_select_warning">Hierdie webwerf benodig \'n geldige rekening.  U moet die aflaai-knoppie op die SongSelect-webblad gebruik om die nodige aflaai te aktiveer.  Die lêer sal in u OpenSong/Songs/ -lêergids ingevoer word nadat dit afgelaai is.</string>
     <string name="song_swipe_toggle">"Toggle krap tussen liedjies op / af te beweeg"</string>
     <string name="song_title">"Song title"</string>
     <string name="songs">Liedjies</string>

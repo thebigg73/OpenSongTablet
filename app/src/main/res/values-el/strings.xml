@@ -773,6 +773,8 @@
     <string name="set_name">Όνομα ορισμού</string>
     <string name="set_new">"Νέα σειρά"</string>
     <string name="set_new_info">Καταργήστε όλα τα τραγούδια από το τρέχον σετ</string>
+    <string name="set_rebuild">Σετ ανακατασκευής</string>
+    <string name="set_rebuild_info">Δημιουργήστε ξανά το σύνολο από την τελευταία επιτυχημένη αλλαγή (χρησιμοποιήστε το αν υποψιάζεστε ότι υπάρχει πρόβλημα με το σύνολο σας)</string>
     <string name="set_save_info">Αποθηκεύστε το τρέχον σύνολο για μελλοντική χρήση</string>
     <string name="set_saved_not_current">Επιλέξτε ένα αποθηκευμένο σύνολο. Τα τρέχοντα σύνολα θα πρέπει να αποθηκευτούν πριν από την εξαγωγή.</string>
     <string name="set_selected">Ορισμός επιλεγμένου στοιχείου / στοιχείων</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">"Song sections"</string>
     <string name="song_sections_info">Οι ενότητες που βρέθηκαν στους στίχους του τραγουδιού σας φαίνονται παρακάτω. Κάντε κλικ στα κουμπιά για να τα προσθέσετε στη σειρά παρουσίασης.</string>
     <string name="song_sections_project">Κάντε κλικ σε μια ενότητα τραγουδιού για να το στείλετε στις συνδεδεμένες οθόνες</string>
+    <string name="song_select_warning">Αυτός ο ιστότοπος απαιτεί έγκυρο λογαριασμό.  Πρέπει να χρησιμοποιήσετε το κουμπί λήψης στην ιστοσελίδα SongSelect για να ενεργοποιήσετε την απαιτούμενη λήψη.  Το αρχείο θα εισαχθεί στο φάκελο OpenSong/Songs/ μετά τη λήψη του.</string>
     <string name="song_swipe_toggle">"Toggle swipe to move between songs on/off"</string>
     <string name="song_title">"Song title"</string>
     <string name="songs">ΜΟΥΣΙΚΑ ΚΟΜΜΑΤΙΑ</string>

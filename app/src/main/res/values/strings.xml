@@ -947,6 +947,8 @@
     <string name="set_name">Set name</string>
     <string name="set_new">Create a new set</string>
     <string name="set_new_info">Remove all songs from the current set</string>
+    <string name="set_rebuild">Rebuild set</string>
+    <string name="set_rebuild_info">Rebuild the set from the last successful change (use if you suspect there is an issue with your set)</string>
     <string name="set_save_info">Save the current set for future use</string>
     <string name="set_saved_not_current">Select a saved set.  Current sets should be saved before exporting.</string>
     <string name="set_selected">Set item / items selected</string>
@@ -998,6 +1000,7 @@
     <string name="song_sections">Song sections</string>
     <string name="song_sections_info">The sections found in your song lyrics are shown below.  Click on the buttons to add them to the presentation order.</string>
     <string name="song_sections_project">Click on a song section to send it to the connected displays</string>
+    <string name="song_select_warning">This site requires a valid account.  You must use the download button within the SongSelect web page to trigger the download required.  The file will be imported into your OpenSong/Songs/ folder after it has been downloaded.</string>
     <string name="song_swipe_toggle">Allow swiping between songs</string>
     <string name="song_title">Song title</string>
     <string name="songs">Songs</string>

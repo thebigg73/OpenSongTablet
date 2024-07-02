@@ -773,6 +773,8 @@
     <string name="set_name">Name einsetzen</string>
     <string name="set_new">"Zurücksetzen"</string>
     <string name="set_new_info">Entfernen Sie alle Songs aus dem aktuellen Set</string>
+    <string name="set_rebuild">Umbau-Set</string>
+    <string name="set_rebuild_info">Erstellen Sie das Set nach der letzten erfolgreichen Änderung neu (verwenden Sie es, wenn Sie vermuten, dass es ein Problem mit Ihrem Set gibt)</string>
     <string name="set_save_info">Speichern Sie den aktuellen Satz für die zukünftige Verwendung</string>
     <string name="set_saved_not_current">Wählen Sie einen gespeicherten Satz aus. Aktuelle Sätze sollten vor dem Export gespeichert werden.</string>
     <string name="set_selected">Set-Element / ausgewählte Elemente</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Song Abschnitte</string>
     <string name="song_sections_info">Die in Ihren Liedtexten gefundenen Abschnitte werden unten angezeigt. Klicken Sie auf die Schaltflächen, um sie der Präsentationsreihenfolge hinzuzufügen.</string>
     <string name="song_sections_project">Klicken Sie auf einen Liedabschnitt, um ihn an die angeschlossenen Displays zu senden</string>
+    <string name="song_select_warning">Für diese Website ist ein gültiges Konto erforderlich.  Sie müssen die Download-Schaltfläche auf der SongSelect-Webseite verwenden, um den erforderlichen Download auszulösen.  Die Datei wird nach dem Herunterladen in Ihren OpenSong/Songs/-Ordner importiert.</string>
     <string name="song_swipe_toggle">"Wischen zwischen Songs ein / aus"</string>
     <string name="song_title">"Songtitel"</string>
     <string name="songs">Lieder</string>

@@ -773,6 +773,8 @@
     <string name="set_name">Ustaw nazwę</string>
     <string name="set_new">Utwórz nowy zestaw</string>
     <string name="set_new_info">Usuń wszystkie piosenki z bieżącego zestawu</string>
+    <string name="set_rebuild">Zestaw do przebudowy</string>
+    <string name="set_rebuild_info">Odbuduj zestaw z ostatniej udanej zmiany (użyj, jeśli podejrzewasz, że wystąpił problem z zestawem)</string>
     <string name="set_save_info">Zapisz bieżący zestaw do wykorzystania w przyszłości</string>
     <string name="set_saved_not_current">Wybierz zapisany zestaw. Aktualny zestaw należy zapisać przed eksportem.</string>
     <string name="set_selected">Zestaw elementów wybranych</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Sekcje piosenki</string>
     <string name="song_sections_info">Sekcje znalezione w tekście są pokazane poniżej. Kliknij przyciski, aby dodać je do kolejności prezentacji.</string>
     <string name="song_sections_project">Kliknij sekcję piosenki, aby wysłać ją do połączonych wyświetlaczy</string>
+    <string name="song_select_warning">Ta strona wymaga ważnego konta.  Musisz użyć przycisku pobierania na stronie internetowej SongSelect, aby uruchomić wymagane pobieranie.  Plik zostanie zaimportowany do folderu OpenSong/Songs/ po pobraniu.</string>
     <string name="song_swipe_toggle">Pozwól na przełączanie piosenek przez przeciągnięcie</string>
     <string name="song_title">Tytuł piosenki</string>
     <string name="songs">Piosenki</string>

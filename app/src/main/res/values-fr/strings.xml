@@ -773,6 +773,8 @@
     <string name="set_name">Définir le nom</string>
     <string name="set_new">"Vider"</string>
     <string name="set_new_info">Supprimer toutes les chansons de l\'ensemble actuel</string>
+    <string name="set_rebuild">Ensemble de reconstruction</string>
+    <string name="set_rebuild_info">Reconstruisez l’ensemble à partir de la dernière modification réussie (à utiliser si vous pensez qu’il y a un problème avec votre ensemble)</string>
     <string name="set_save_info">Enregistrer l\'ensemble actuel pour une utilisation future</string>
     <string name="set_saved_not_current">Sélectionnez un ensemble enregistré. Les ensembles actuels doivent être enregistrés avant l\'exportation.</string>
     <string name="set_selected">Définir l’élément ou les éléments sélectionnés</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Sections de chansons</string>
     <string name="song_sections_info">Les sections trouvées dans les paroles de votre chanson sont présentées ci-dessous. Cliquez sur les boutons pour les ajouter à l\'ordre de présentation.</string>
     <string name="song_sections_project">Cliquez sur une section de chanson pour l\'envoyer aux écrans connectés</string>
+    <string name="song_select_warning">Ce site nécessite un compte valide.  Vous devez utiliser le bouton de téléchargement dans la page Web de SongSelect pour déclencher le téléchargement requis.  Le fichier sera importé dans votre dossier OpenSong/Songs/ après avoir été téléchargé.</string>
     <string name="song_swipe_toggle">"Activer / desactiver la navigation entre les de chansons par balayage"</string>
     <string name="song_title">"Titre de la chanson"</string>
     <string name="songs">Chansons</string>

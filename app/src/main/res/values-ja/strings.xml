@@ -773,6 +773,8 @@
     <string name="set_name">セット名</string>
     <string name="set_new">"引き払う"</string>
     <string name="set_new_info">現在のセットからすべての曲を削除します</string>
+    <string name="set_rebuild">セットの再構築</string>
+    <string name="set_rebuild_info">最後に成功した変更からセットを再構築します(セットに問題があると思われる場合に使用します)</string>
     <string name="set_save_info">将来の使用のために現在のセットを保存します</string>
     <string name="set_saved_not_current">保存したセットを選択します。 エクスポートする前に、現在のセットを保存する必要があります。</string>
     <string name="set_selected">設定項目/選択項目</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">曲のセクション</string>
     <string name="song_sections_info">あなたの曲の歌詞にあるセクションを以下に示します。 ボタンをクリックして、プレゼンテーションの順序に追加します。</string>
     <string name="song_sections_project">曲のセクションをクリックして、接続されているディスプレイに送信します</string>
+    <string name="song_select_warning">このサイトには有効なアカウントが必要です。 SongSelect Webページ内のダウンロードボタンを使用して、必要なダウンロードをトリガーする必要があります。 ファイルは、ダウンロード後、OpenSong / Songs /フォルダーにインポートされます。</string>
     <string name="song_swipe_toggle">"トグルスワイプオフ/上の曲間を移動するには"</string>
     <string name="song_title">"曲のタイトル"</string>
     <string name="songs">曲</string>

@@ -773,6 +773,8 @@
     <string name="set_name">Imposta nome</string>
     <string name="set_new">"Pulisci"</string>
     <string name="set_new_info">Rimuovi tutti i brani dal set corrente</string>
+    <string name="set_rebuild">Ricostruisci set</string>
+    <string name="set_rebuild_info">Ricostruisci l\'insieme dall\'ultima modifica riuscita (usalo se sospetti che ci sia un problema con l\'insieme)</string>
     <string name="set_save_info">Salva il set corrente per un uso futuro</string>
     <string name="set_saved_not_current">Seleziona un set salvato. I set correnti devono essere salvati prima dell\'esportazione.</string>
     <string name="set_selected">Impostare l\'elemento o gli elementi selezionati</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">Sezioni canzone</string>
     <string name="song_sections_info">Le sezioni trovate nei testi delle tue canzoni sono mostrate di seguito. Fare clic sui pulsanti per aggiungerli all\'ordine di presentazione.</string>
     <string name="song_sections_project">Fare clic su una sezione di un brano per inviarlo ai display collegati</string>
+    <string name="song_select_warning">Questo sito richiede un account valido.  È necessario utilizzare il pulsante di download all\'interno della pagina Web di SongSelect per attivare il download richiesto.  Il file verrà importato nella cartella OpenSong/Songs/ dopo essere stato scaricato.</string>
     <string name="song_swipe_toggle">"Colpo Toggle per spostarsi tra i brani accendere / spegnere"</string>
     <string name="song_title">"Titolo del brano"</string>
     <string name="songs">Canzoni</string>

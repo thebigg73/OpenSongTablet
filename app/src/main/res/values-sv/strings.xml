@@ -773,6 +773,8 @@
     <string name="set_name">Ange namn</string>
     <string name="set_new">"Skapa en ny uppsättning"</string>
     <string name="set_new_info">Ta bort alla låtar från den aktuella uppsättningen</string>
+    <string name="set_rebuild">Bygg om uppsättning</string>
+    <string name="set_rebuild_info">Återskapa uppsättningen från den senaste ändringen (använd om du misstänker att det finns ett problem med uppsättningen)</string>
     <string name="set_save_info">Spara den aktuella uppsättningen för framtida bruk</string>
     <string name="set_saved_not_current">Välj en sparad uppsättning. Aktuella uppsättningar bör sparas innan export.</string>
     <string name="set_selected">Ställ in post/valda objekt</string>
@@ -824,6 +826,7 @@
     <string name="song_sections">"Song sektioner"</string>
     <string name="song_sections_info">De avsnitt som finns i din sångtext visas nedan. Klicka på knapparna för att lägga till dem i presentationsordningen.</string>
     <string name="song_sections_project">Klicka på en låtsektion för att skicka den till de anslutna displayerna</string>
+    <string name="song_select_warning">Den här webbplatsen kräver ett giltigt konto.  Du måste använda nedladdningsknappen på SongSelect web sida för att utlösa den nedladdning som krävs.  Filen kommer att importeras till din OpenSong/Songs/-mapp efter att den har laddats ner.</string>
     <string name="song_swipe_toggle">"Byt svep för att flytta mellan låtar på / av"</string>
     <string name="song_title">"Sång titel"</string>
     <string name="songs">Låtar</string>
