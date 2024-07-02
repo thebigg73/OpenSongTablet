@@ -120,6 +120,11 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         });
         myView.setRefresh.setOnClickListener(v -> {
             mainActivityInterface.getCurrentSet().loadCurrentSet();
+            try {
+                mainActivityInterface.updateFragment("rebuildSet", null, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             dismiss();
         });
     }
