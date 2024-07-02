@@ -82,6 +82,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         if (mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
             myView.shuffleSet.setVisibility(View.GONE);
             myView.randomSong.setVisibility(View.GONE);
+            myView.setRefresh.setVisibility(View.GONE);
         }
     }
 
@@ -115,6 +116,10 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         });
         myView.sortSet.setOnClickListener(v -> {
             mainActivityInterface.updateFragment("sortSet",null,null);
+            dismiss();
+        });
+        myView.setRefresh.setOnClickListener(v -> {
+            mainActivityInterface.getCurrentSet().loadCurrentSet();
             dismiss();
         });
     }

@@ -699,7 +699,7 @@ public class SetActions {
 
         sb.append("    <slides>\n");
         for (String mySlide : mySlides) {
-            if (mySlide != null && mySlide.length() > 0) {
+            if (mySlide != null && !mySlide.isEmpty()) {
                 String text = mySlide.trim();
                 text = text.replace(" \n","\n");
                 text = text.replace("\n ","\n");
@@ -737,7 +737,7 @@ public class SetActions {
         ArrayList<String> newslides = new ArrayList<>();
 
         for (String thisline:lyrics_lines) {
-            if (!thisline.equals("") && !thisline.startsWith(".") && !thisline.startsWith("[") && !thisline.startsWith(";")) {
+            if (!thisline.isEmpty() && !thisline.startsWith(".") && !thisline.startsWith("[") && !thisline.startsWith(";")) {
                 // Add the current line into the new slide
                 // Replace any new line codes | with \n
                 thisline = thisline.replace("||","\n");
@@ -760,7 +760,7 @@ public class SetActions {
         // Now go back through the currentslides and write the slide text
         StringBuilder slidetexttowrite = new StringBuilder();
         for (int z=0; z<newslides.size();z++) {
-            if (!newslides.get(z).equals("")) {
+            if (!newslides.get(z).isEmpty()) {
                 slidetexttowrite.append("      <slide>\n")
                         .append("        ")
                         .append(emptyTagCheck("body",newslides.get(z).trim()))
@@ -818,7 +818,7 @@ public class SetActions {
                 .append("\n    <notes/>\n    <slides>\n");
 
         for (String mySlide : mySlides) {
-            if (mySlide != null && mySlide.length() > 0) {
+            if (mySlide != null && !mySlide.isEmpty()) {
                 sb.append("      <slide>\n        ")
                         .append(emptyTagCheck("body",mySlide.trim()))
                         .append("\n      </slide>\n");
@@ -1080,36 +1080,14 @@ public class SetActions {
         scripture_text = new StringBuilder(scripture_text.toString().replace(" ", "\n"));
         scripture_text = new StringBuilder(scripture_text.toString().replace("---", "[]"));
         //Split the verses up into an array by new lines - array of words
-        String[] temp_text = scripture_text.toString().split("\n");
-
-        // Add all the array back together and make sure no line goes above 50 characters
-        // This means it won't appear tiny as the app tries to scale the lyrics
-        ArrayList<String> vlines = new ArrayList<>();
-        StringBuilder currline = new StringBuilder();
-        for (String words : temp_text) {
-            int check = currline.length();
-            if (check > 50 || words.contains("[]")) {
-                if (words.contains("[]")) {
-                    // This is a new section
-                    vlines.add(currline.toString());
-                    vlines.add("[]\n");
-                    currline = new StringBuilder();
-                } else {
-                    vlines.add(currline.toString());
-                    currline = new StringBuilder(" " + words);
-                }
-            } else {
-                currline.append(" ").append(words);
-            }
-        }
-        vlines.add(currline.toString());
+        ArrayList<String> vlines = getVlines(scripture_text);
 
         scripture_text = new StringBuilder();
 
         // Ok go back through the array and add the non-empty lines back up
         for (int i = 0; i < vlines.size(); i++) {
             String s = vlines.get(i);
-            if (s != null && !s.equals("")) {
+            if (s != null && !s.isEmpty()) {
                 scripture_text.append("\n").append(s);
             }
         }
@@ -1143,6 +1121,33 @@ public class SetActions {
             writeTempSlide(folderScripture, cache, tempSong);
         }
         xpp.nextTag();
+    }
+
+    private ArrayList<String> getVlines(StringBuilder scripture_text) {
+        String[] temp_text = scripture_text.toString().split("\n");
+
+        // Add all the array back together and make sure no line goes above 50 characters
+        // This means it won't appear tiny as the app tries to scale the lyrics
+        ArrayList<String> vlines = new ArrayList<>();
+        StringBuilder currline = new StringBuilder();
+        for (String words : temp_text) {
+            int check = currline.length();
+            if (check > 50 || words.contains("[]")) {
+                if (words.contains("[]")) {
+                    // This is a new section
+                    vlines.add(currline.toString());
+                    vlines.add("[]\n");
+                    currline = new StringBuilder();
+                } else {
+                    vlines.add(currline.toString());
+                    currline = new StringBuilder(" " + words);
+                }
+            } else {
+                currline.append(" ").append(words);
+            }
+        }
+        vlines.add(currline.toString());
+        return vlines;
     }
 
     private void getCustom(XmlPullParser xpp, boolean asExport) throws XmlPullParserException {
@@ -1379,7 +1384,7 @@ public class SetActions {
                         if (!asExport && encodedimage) {
                             // Save this image content
                             // Need to see if the image already exists
-                            if (image_title.toString().equals("")) {
+                            if (image_title.toString().isEmpty()) {
                                 image_title = new StringBuilder(c.getResources().getString(R.string.image));
                             }
 
@@ -1411,7 +1416,7 @@ public class SetActions {
             eventType = xpp.next();
         }
 
-        if (image_title.toString().equals("")) {
+        if (image_title.toString().isEmpty()) {
             image_title = new StringBuilder(c.getResources().getString(R.string.image));
         }
 

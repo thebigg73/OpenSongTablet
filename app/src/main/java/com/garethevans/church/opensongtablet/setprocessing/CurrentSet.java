@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // All actions related to building/processing are in the SetActions class
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -76,14 +77,22 @@ public class CurrentSet {
     }
 
     public void setSetCurrent(String setCurrent) {
-        // Keep a reference
-        this.setCurrent = setCurrent;
+        // Try to stop multiple calls getting in the way of each other.
+        // Each update delays 100ms, giving time for previous calls to complete
 
-        // Save the user preference
-        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setCurrent);
+        Handler handler = mainActivityInterface.getMainHandler();
+        handler.postDelayed(() -> {
+            // Keep a reference
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                this.setCurrent = setCurrent;
 
-        // Check if we need to update the set menu title
-        updateSetTitleView();
+                // Save the user preference
+                mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setCurrent);
+                // Check if we need to update the set menu title
+                mainActivityInterface.getMainHandler().post(this::updateSetTitleView);
+            });
+        },100);
+
     }
 
     public String getSetCurrent() {

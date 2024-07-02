@@ -87,6 +87,15 @@
                     custom:mydrawable="@drawable/sort"
                     android:padding="12dp"
                     android:text="@string/set_sort" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/setRefresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/set_rebuild_info"
+                    custom:mydrawable="@drawable/set_refresh"
+                    android:padding="12dp"
+                    android:text="@string/set_rebuild" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
