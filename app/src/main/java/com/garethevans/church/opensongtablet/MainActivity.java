@@ -621,7 +621,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 fileOpenIntent != null && fileOpenIntent.getData() != null && storageAccess.getFileSizeFromUri(fileOpenIntent.getData())>0) {
             preferences.setMyPreferenceBoolean("intentAlreadyDealtWith",true);
             importUri = fileOpenIntent.getData();
-            navController.popBackStack(navigationId, false);
+            getMainHandler().post(() -> navController.popBackStack(navigationId, false));
 
             // We need to copy this file to our temp storage for now to have later permission
             InputStream inputStream;
@@ -850,24 +850,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 int[] margins = windowFlags.getMargins();
 
                 // Work out top padding for status bar if shown
-                int additionalTop = 0;
-                if (!windowFlags.getImmersiveMode()) {
-                    additionalTop += Math.max(windowFlags.getCurrentTopCutoutHeight(), windowFlags.getStatusHeight());
-                } else if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
-                    int topCutout = windowFlags.getCurrentTopCutoutHeight();
-                    int status = windowFlags.getStatusHeight();
-                    if (topCutout > 0) {
-                        topCutout = Math.max(topCutout, status);
-                    }
-                    additionalTop += topCutout;
-                } else if (windowFlags.getShowStatus()) {
-                    additionalTop += windowFlags.getStatusHeight();
-                }
-
-                // Now work out any rounded corner inserts
-                if (windowFlags.getHasRoundedCorners() && !windowFlags.getIgnoreRoundedCorners()) {
-                    additionalTop += windowFlags.getCurrentRoundedTop();
-                }
+                int additionalTop = getAdditionalTop();
 
                 // Set the toolbar paddings
                 if (myView != null) {
@@ -900,16 +883,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     topPadding += statusPadding + margins[1];
                 }
 
-                int bottomOfToolbar = myView.myAppBarLayout.getBottom() + 1;
-                if (myView.myToolbar.getHideActionBar()) {
-                    if (windowFlags.getShowStatus()) {
-                        bottomOfToolbar = windowFlags.getStatusHeight();
-                    } else if (windowFlags.getShowStatusInCutout()) {
-                        bottomOfToolbar = windowFlags.getCurrentTopCutoutHeight();
-                    } else {
-                        bottomOfToolbar = 0;
-                    }
-                }
+                int bottomOfToolbar = getBottomOfToolbar();
 
                 if (myView != null) {
                     myView.fragmentView.setPadding(margins[0], Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)), margins[2], margins[3]);
@@ -918,6 +892,42 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             });
         }
+    }
+
+    private int getBottomOfToolbar() {
+        int bottomOfToolbar = myView.myAppBarLayout.getBottom() + 1;
+        if (myView.myToolbar.getHideActionBar()) {
+            if (windowFlags.getShowStatus()) {
+                bottomOfToolbar = windowFlags.getStatusHeight();
+            } else if (windowFlags.getShowStatusInCutout()) {
+                bottomOfToolbar = windowFlags.getCurrentTopCutoutHeight();
+            } else {
+                bottomOfToolbar = 0;
+            }
+        }
+        return bottomOfToolbar;
+    }
+
+    private int getAdditionalTop() {
+        int additionalTop = 0;
+        if (!windowFlags.getImmersiveMode()) {
+            additionalTop += Math.max(windowFlags.getCurrentTopCutoutHeight(), windowFlags.getStatusHeight());
+        } else if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
+            int topCutout = windowFlags.getCurrentTopCutoutHeight();
+            int status = windowFlags.getStatusHeight();
+            if (topCutout > 0) {
+                topCutout = Math.max(topCutout, status);
+            }
+            additionalTop += topCutout;
+        } else if (windowFlags.getShowStatus()) {
+            additionalTop += windowFlags.getStatusHeight();
+        }
+
+        // Now work out any rounded corner inserts
+        if (windowFlags.getHasRoundedCorners() && !windowFlags.getIgnoreRoundedCorners()) {
+            additionalTop += windowFlags.getCurrentRoundedTop();
+        }
+        return additionalTop;
     }
 
     public int[] getViewMargins() {
@@ -1332,7 +1342,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "createNewSong":
                     // User was in song menu dialog, clicked on create, then entered a new file name
                     // Check this was successful (saved as arguments)
-                    if (arguments != null && arguments.size() > 0 && arguments.get(0).equals("success")) {
+                    if (arguments != null && !arguments.isEmpty() && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
                         song = processSong.initialiseSong(song.getFolder(), "NEWSONGFILENAME");
                         String newSongText = processSong.getXML(song);
@@ -1378,7 +1388,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             getCurrentSet().updateSetTitleView();
                         } else if (fragName.equals("set_updateKeys")) {
                             setMenuFragment.updateKeys();
-                        } else if (arguments != null && arguments.size() > 0) {
+                        } else if (arguments != null && !arguments.isEmpty()) {
                             setMenuFragment.updateItem(Integer.parseInt(arguments.get(0)));
                         }
                     }

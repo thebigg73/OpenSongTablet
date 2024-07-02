@@ -140,7 +140,7 @@ public class ExposedDropDown extends TextInputLayout {
     }
 
     private void keepPosition() {
-        if (arrayList!=null && arrayList.size()>0) {
+        if (arrayList!=null && !arrayList.isEmpty()) {
             autoCompleteTextView.setListSelection(arrayList.indexOf(getText().toString()));
         }
     }

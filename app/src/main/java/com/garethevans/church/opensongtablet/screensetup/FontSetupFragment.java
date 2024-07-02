@@ -66,7 +66,7 @@ public class FontSetupFragment extends Fragment {
 
             try {
                 mainActivityInterface.getMainHandler().post(() -> {
-                    if (fontNames!=null && fontNames.size()>0) {
+                    if (fontNames!=null && !fontNames.isEmpty()) {
                         // Set up the previews
                         initialisePreviews();
                         updatePreviews();

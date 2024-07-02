@@ -35,7 +35,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     // Also left
     private boolean scrolledToBottom=false;
     private boolean scrolledToEnd=false;
-    private boolean scrollEnabled = true;
+    private final boolean scrollEnabled = true;
     private int maxScrollY;
     private GestureDetector gestureDetector;
     private final ScaleGestureDetector mScaleDetector;
@@ -224,7 +224,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             // Get the current scroll position, the position we need to get to and how far this is
             int currXScroll = computeHorizontalScrollOffset();
             int currYScroll = computeVerticalScrollOffset();
-            if (yPositions.size()>0 && yPositions.size()>position) {
+            if (!yPositions.isEmpty() && yPositions.size()>position) {
                 int scrollToX = xPositions.get(position);
                 int scrollToY = yPositions.get(position);
                 int scrollXAmount = scrollToX - currXScroll - spaceRight;

@@ -641,10 +641,11 @@ public class SecondaryDisplay extends Presentation {
             }
             String copyright = mainActivityInterface.getSong().getCopyright();
             if (copyright != null && !copyright.isEmpty()) {
+                if (!copyright.contains(c.getString(R.string.copyright))) {
+                    copyright = c.getString(R.string.copyright) + " " + copyright;
+                }
                 if (!copyright.contains("©")) {
-                    if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
-                        copyright = "© " + copyright;
-                    }
+                    copyright = "© " + copyright;
                 }
             } else {
                 copyright = "";

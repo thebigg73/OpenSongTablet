@@ -132,8 +132,12 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
     }
 
     private String instrumentPrefToText() {
-        String pref = mainActivityInterface.getPreferences().getMyPreferenceString(
-                "chordInstrument", "g");
+        // If this song has a preferred instrument stored, use that
+        String pref = mainActivityInterface.getSong().getPreferredInstrument();
+        if (pref==null || pref.isEmpty()) {
+            pref = mainActivityInterface.getPreferences().getMyPreferenceString(
+                    "chordInstrument", "g");
+        }
         mainActivityInterface.getMidi().setMidiInstrument(pref);
         return mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(pref);
     }

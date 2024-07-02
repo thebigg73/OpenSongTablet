@@ -92,7 +92,7 @@ public class MoveContentFragment extends Fragment {
         myView.folderContentsLayout.removeAllViews();
         new Thread(() -> {
             files = mainActivityInterface.getStorageAccess().listFilesInFolder("Songs", subfolder);
-            if (files.size() != 0) {
+            if (!files.isEmpty()) {
                 Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
                 coll.setStrength(Collator.SECONDARY);
                 Collections.sort(files, coll);
@@ -123,7 +123,7 @@ public class MoveContentFragment extends Fragment {
                     mainActivityInterface.getStorageAccess().listSongs(false), true, null);
             if (getActivity()!=null) {
                 getActivity().runOnUiThread(() -> {
-                    if (availableFromFolders.size() != 0 && getContext()!=null) {
+                    if (!availableFromFolders.isEmpty() && getContext()!=null) {
                         ExposedDropDownArrayAdapter folderFromArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                                 myView.currentFolderChoice, R.layout.view_exposed_dropdown_item, availableFromFolders);
                         myView.currentFolderChoice.setAdapter(folderFromArrayAdapter);
@@ -158,7 +158,7 @@ public class MoveContentFragment extends Fragment {
 
             if (getActivity()!=null) {
                 getActivity().runOnUiThread(() -> {
-                    if (availableMoveFolders.size() != 0 && getContext()!=null) {
+                    if (!availableMoveFolders.isEmpty() && getContext()!=null) {
                         ExposedDropDownArrayAdapter folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                                 myView.folderChoice, R.layout.view_exposed_dropdown_item, availableMoveFolders);
                         myView.folderChoice.setAdapter(folderArrayAdapter);
@@ -357,9 +357,9 @@ public class MoveContentFragment extends Fragment {
         // Check we haven't got the same location and end destination folders and they aren't empty
         String loc = myView.currentFolderChoice.getText().toString();
         String dest = myView.folderChoice.getText().toString();
-        if (!loc.equals(dest) && !dest.isEmpty() && filesChosen.size() > 0) {
+        if (!loc.equals(dest) && !dest.isEmpty() && !filesChosen.isEmpty()) {
             return true;
-        } else if (filesChosen.size() == 0) {
+        } else if (filesChosen.isEmpty()) {
             Snackbar.make(myView.getRoot(), R.string.nothing_selected, Snackbar.LENGTH_LONG).show();
             return false;
         } else {

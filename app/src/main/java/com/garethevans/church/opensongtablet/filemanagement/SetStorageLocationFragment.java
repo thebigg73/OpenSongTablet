@@ -258,7 +258,7 @@ public class SetStorageLocationFragment extends Fragment {
 
         String uriTree_String = mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", "");
 
-        if (uriTree_String!=null && !uriTree_String.equals("")) {
+        if (uriTree_String!=null && !uriTree_String.isEmpty()) {
             if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
                 uriTree = Uri.parse(uriTree_String);
             } else {
@@ -334,7 +334,7 @@ public class SetStorageLocationFragment extends Fragment {
                     // Hide the  and reenable stuff
                     setEnabledOrDisabled(true);
 
-                    if (locations.size() < 1) {
+                    if (locations.isEmpty()) {
                         // No previous installations found
                         myView.previousStorageHeading.setVisibility(View.VISIBLE);
                         myView.previousStorageTextView.setVisibility(View.GONE);

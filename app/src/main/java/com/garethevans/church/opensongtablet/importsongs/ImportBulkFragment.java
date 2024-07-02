@@ -148,7 +148,7 @@ public class ImportBulkFragment extends Fragment {
     private void displaySongList() {
         myView.filesFound.setText("");
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            if (foundItems.size() > 0) {
+            if (!foundItems.isEmpty()) {
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String item : foundItems) {
                     stringBuilder.append(item).append("\n");

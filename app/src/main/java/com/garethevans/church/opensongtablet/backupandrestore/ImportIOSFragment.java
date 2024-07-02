@@ -185,7 +185,6 @@ public class ImportIOSFragment extends Fragment {
                     }
                 }
                 if (ze.getName().equals("OnSong.sqlite3") || ze.getName().equals("OnSong.Backup.sqlite3")) {
-                    File loc;
                     if (getContext()!=null) {
                         setOnSongDBFile();
                         OutputStream outputStream = new FileOutputStream(onsongdbfile);
@@ -374,8 +373,7 @@ public class ImportIOSFragment extends Fragment {
 
                                     // Write the new song as OpenSong xml
                                     if (newSong.getFilename() != null && !newSong.getFilename().isEmpty()
-                                            && newSong.getFilename() != null &&
-                                            !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+                                            && !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                                         // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
                                         String xml = mainActivityInterface.getProcessSong().getXML(newSong);
                                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " updateFragment doStringWriteToFile Songs/" + folder + "/" + newSong.getFilename() + " with: " + xml);

@@ -119,7 +119,7 @@ public class StorageManagementFragment extends Fragment {
                 textView.setOnClickListener(v -> showActionDialog(false, false, folder));
                 myView.folderList.addView(textView);
             }
-            if (availableFolders.size() > 0) {
+            if (!availableFolders.isEmpty()) {
                 myView.subFolderArrow.setVisibility(View.VISIBLE);
                 myView.folderList.setVisibility(View.VISIBLE);
 

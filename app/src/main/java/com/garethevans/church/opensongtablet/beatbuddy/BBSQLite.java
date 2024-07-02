@@ -855,7 +855,7 @@ public class BBSQLite extends SQLiteOpenHelper {
                 if (thisSong.getTimesig() != null && thisSong.getTimesig().contains("/") &&
                         !thisSong.getTimesig().replace("/","").isEmpty()) {
                     String[] timeSigBits = thisSong.getTimesig().split("/");
-                    if (timeSigBits.length == 2 && timeSigBits[0].length() > 0 && timeSigBits[1].length() > 0) {
+                    if (timeSigBits.length == 2 && !timeSigBits[0].isEmpty() && !timeSigBits[1].isEmpty()) {
                         String numerator = timeSigBits[0].replaceAll("\\D", "");
                         String denominator = timeSigBits[1].replaceAll("\\D", "");
                         if (!numerator.isEmpty() && !denominator.isEmpty()) {

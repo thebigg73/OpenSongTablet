@@ -220,7 +220,7 @@ public class MyToolbar extends MaterialToolbar {
                     // This happens if we just loaded a song (not clicking on the set item in the menu)
                     mainActivityInterface.checkSetMenuItemHighlighted(positionInSet);
                     mainActivityInterface.getCurrentSet().setIndexSongInSet(positionInSet);
-                    hideView(setIcon,text.equals(""));
+                    hideView(setIcon, text.isEmpty());
                 } else {
                     mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                     hideView(setIcon,true);

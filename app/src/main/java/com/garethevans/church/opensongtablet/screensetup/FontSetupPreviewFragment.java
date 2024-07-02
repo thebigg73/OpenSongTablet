@@ -114,7 +114,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
         // Go through the list and get the unique alphabetical index
         alphaList = new ArrayList<>();
         for (String fontName:fontNames) {
-            if (fontName!=null && fontName.length()>0 &&
+            if (fontName!=null && !fontName.isEmpty() &&
                     !alphaList.contains(fontName.substring(0,1).toUpperCase(mainActivityInterface.getLocale()))) {
                 alphaList.add(fontName.substring(0,1).toUpperCase(mainActivityInterface.getLocale()));
             }
@@ -125,19 +125,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     private String preparePageContent(String ab) {
 
         StringBuilder links = new StringBuilder();
-        StringBuilder rows = new StringBuilder();
-
-
-        for (String fontName:fontNames) {
-            if (fontName.toLowerCase(mainActivityInterface.getLocale()).startsWith(ab.toLowerCase(mainActivityInterface.getLocale()))) {
-                links.append("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=")
-                        .append(fontName.replaceAll("\\s", "+")).append("\">\n");
-                rows.append("<tr onclick=\"getMyFont('").append(fontName.replaceAll("\\s", "+"))
-                        .append("')\"><td>").append(fontName).append("</td><td style=\"font-family:'")
-                        .append(fontName).append("';\">")
-                        .append(sampleText).append("</td></tr>\n");
-            }
-        }
+        StringBuilder rows = getStringBuilder(ab, links);
 
         return "<html>\n<head>\n" +
                 "<script>\nfunction getMyFont(fnt) {\n" +
@@ -149,6 +137,22 @@ public class FontSetupPreviewFragment extends DialogFragment {
                 "</style>" +
                 "</head>\n<body>\n" +
                 "<table>" + rows + "</table></body></html>";
+    }
+
+    private StringBuilder getStringBuilder(String ab, StringBuilder links) {
+        StringBuilder rows = new StringBuilder();
+
+        for (String fontName:fontNames) {
+            if (fontName.toLowerCase(mainActivityInterface.getLocale()).startsWith(ab.toLowerCase(mainActivityInterface.getLocale()))) {
+                links.append("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=")
+                        .append(fontName.replaceAll("\\s", "+")).append("\">\n");
+                rows.append("<tr onclick=\"getMyFont('").append(fontName.replaceAll("\\s", "+"))
+                        .append("')\"><td>").append(fontName).append("</td><td style=\"font-family:'")
+                        .append(fontName).append("';\">")
+                        .append(sampleText).append("</td></tr>\n");
+            }
+        }
+        return rows;
     }
 
     private void doSave(String fontName) {

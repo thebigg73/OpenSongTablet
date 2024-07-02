@@ -90,7 +90,7 @@ public class StickyNotesFragment extends Fragment {
         int stickyWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyWidth",400);
         myView.stickyWidth.setLabelFormatter(value -> ((int)value)+"px");
         myView.stickyWidth.setValue(stickyWidth);
-        myView.stickyWidth.setHint((int)stickyWidth+"px");
+        myView.stickyWidth.setHint(stickyWidth +"px");
     }
 
     private void setTimeHint(int time) {
@@ -177,9 +177,7 @@ public class StickyNotesFragment extends Fragment {
                 mainActivityInterface.getPreferences().setMyPreferenceInt("stickyWidth",(int)myView.stickyWidth.getValue());
             }
         });
-        myView.stickyWidth.addOnChangeListener((slider, value, fromUser) -> {
-            myView.stickyWidth.setHint(((int)value)+"px");
-        });
+        myView.stickyWidth.addOnChangeListener((slider, value, fromUser) -> myView.stickyWidth.setHint(((int)value)+"px"));
 
 
     }

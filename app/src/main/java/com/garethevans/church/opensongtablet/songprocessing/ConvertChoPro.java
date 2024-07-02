@@ -219,10 +219,10 @@ public class ConvertChoPro {
             } else if (line.contains("{subtitle:")) {
                 // Extract the subtitles.  Add it back as a comment line
                 String subtitle = removeTags(line, "{subtitle:");
-                if (author.equals("")) {
+                if (author.isEmpty()) {
                     author = subtitle;
                 }
-                if (copyright.equals("")) {
+                if (copyright.isEmpty()) {
                     copyright = subtitle;
                 }
                 line = ";" + subtitle;
@@ -447,10 +447,10 @@ public class ConvertChoPro {
             }
 
             // IV - Return lines end trimmed which keeps any intended leading spaces
-            if (tempchordline.toString().trim().equals("")) {
+            if (tempchordline.toString().trim().isEmpty()) {
                 return (" " + templyricline).replaceAll("\\s+$", "");
             } else {
-                if (templyricline.toString().trim().equals("")) {
+                if (templyricline.toString().trim().isEmpty()) {
                     return ("." + tempchordline).replaceAll("\\s+$", "");
                 } else {
                     return ("." + tempchordline).replaceAll("\\s+$", "") + "\n" + (" " + templyricline).replaceAll("\\s+$", "");
@@ -473,7 +473,7 @@ public class ConvertChoPro {
             }
 
             // Try to guess tags used
-            if (!line.equals("")) {
+            if (!line.isEmpty()) {
                 line = guessTags(line);
             }
 
@@ -536,7 +536,7 @@ public class ConvertChoPro {
 
         for (String line : lines) {
             line = line.trim();
-            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !s.equals("")) {
+            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !s.isEmpty()) {
                 // Must be a lyric line, so add a space
                 line = " " + line;
             }
@@ -591,7 +591,7 @@ public class ConvertChoPro {
         if (fn.contains("/")) {
             fn = fn.substring(fn.lastIndexOf("/") + 1);
         }
-        if (title != null && !title.equals("")) {
+        if (title != null && !title.isEmpty()) {
             fn = title;
         } else {
             // No title found, so use the filename and get rid of extensions
@@ -642,7 +642,7 @@ public class ConvertChoPro {
 
         newSongFileName = nsf;
         // Only do this for songs that exist!
-        if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
+        if (oldSongFileName != null && !oldSongFileName.isEmpty() && newSongFileName != null && !newSongFileName.isEmpty()
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong Create Songs/"+songSubFolder+"/"+newSongFileName+" deleteOld=true");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", songSubFolder, newSongFileName);
@@ -905,7 +905,7 @@ public class ConvertChoPro {
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                            if (chords_returned[w] != null && !chords_returned[w].trim().isEmpty()) {
                                 if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
                                     chord_to_add = chords_returned[w];
                                 } else {
@@ -937,7 +937,7 @@ public class ConvertChoPro {
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
-                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                            if (chords_returned[w] != null && !chords_returned[w].trim().isEmpty()) {
                                 if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
                                     chord_to_add = chords_returned[w];
                                 } else {
@@ -963,7 +963,7 @@ public class ConvertChoPro {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
                             Log.d(TAG,"chords_returned["+w+"]:"+chords_returned[w]);
-                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("") ) {
+                            if (chords_returned[w] != null && !chords_returned[w].trim().isEmpty()) {
                                 if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
                                     chord_to_add = "[" + chords_returned[w].trim().replace(".","").replace(":","")+"]";
 
@@ -978,7 +978,7 @@ public class ConvertChoPro {
 
                 case "lyric_no_chord":
                     // Another place to end a Chorus
-                    if (thisLine.replace(" ","").equals("")) {
+                    if (thisLine.replace(" ", "").isEmpty()) {
                         if (dealingwithchorus) {
                             // We've finished with the chorus,
                             dealingwithchorus = false;
@@ -1023,7 +1023,7 @@ public class ConvertChoPro {
 
                 default:
                     // If a line is blank we need to add it and consider an end of a Chorus
-                    if (thisLine.trim().equals("")) {
+                    if (thisLine.trim().isEmpty()) {
                         // Add just a line beginning (trim the line)
                         newlyrics.append("¬");
                         if (dealingwithchorus) {
@@ -1113,7 +1113,7 @@ public class ConvertChoPro {
 
         for (int x = 0; x < numlines; x++) {
             // Get rid of any extra whitespace and fix the lines
-            if (line[x].trim().equals("")) {
+            if (line[x].trim().isEmpty()) {
                 newlyrics.append("\n");
             } else {
                 line[x] = makeTagsCommon(line[x]);
@@ -1128,14 +1128,14 @@ public class ConvertChoPro {
                 line[x] = line[x].replace("{soc}",";Chorus");
 
                 // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
-                if (line[x].length() > 0) {
+                if (!line[x].isEmpty()) {
                     String test = ";. {";
                     if (!(test.contains(line[x].substring(0, 1)) || (line[x].contains("[")))) {
                         line[x] = " " + line[x];
                     }
                 }
                 // Join the individual lines back up (unless they are end of chorus or empty
-                if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}") && !line[x].equals("")) {
+                if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}") && !line[x].isEmpty()) {
                     newlyrics.append(line[x]).append("\n");
                 }
             }

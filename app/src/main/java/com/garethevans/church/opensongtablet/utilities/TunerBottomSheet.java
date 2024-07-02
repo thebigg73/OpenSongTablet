@@ -454,6 +454,14 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         int OVERLAP = 1024 * 2;
         AudioDispatcher audioDispatcher = AudioDispatcherFactory.fromDefaultMicrophone(SAMPLE_RATE, BUFFER_SIZE, OVERLAP);
 
+        AudioProcessor audioProcessor = getAudioProcessor(SAMPLE_RATE, BUFFER_SIZE);
+        audioDispatcher.addAudioProcessor(audioProcessor);
+
+        Thread audioThread = new Thread(audioDispatcher, "Audio Thread");
+        audioThread.start();
+    }
+
+    private AudioProcessor getAudioProcessor(int SAMPLE_RATE, int BUFFER_SIZE) {
         PitchDetectionHandler pitchDetectionHandler = (pitchDetectionResult, audioEvent) -> {
             float pitchHz = pitchDetectionResult.getPitch();
             float probability = pitchDetectionResult.getProbability();
@@ -464,12 +472,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                 }
             });
         };
-
-        AudioProcessor audioProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, SAMPLE_RATE, BUFFER_SIZE, pitchDetectionHandler);
-        audioDispatcher.addAudioProcessor(audioProcessor);
-
-        Thread audioThread = new Thread(audioDispatcher, "Audio Thread");
-        audioThread.start();
+        return new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, SAMPLE_RATE, BUFFER_SIZE, pitchDetectionHandler);
     }
 
     private void checkTheTuning(float pitchHz) {

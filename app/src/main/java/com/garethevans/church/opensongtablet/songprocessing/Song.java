@@ -36,6 +36,7 @@ public class Song implements Serializable {
     private String beatbuddykit="";
     private String key="";
     private String keyoriginal="";
+    private String preferredInstrument = "";
     private String timesig="";
     private String tempo="";
     private String aka="";
@@ -137,6 +138,9 @@ public class Song implements Serializable {
     }
     public String getKeyOriginal() {
         return keyoriginal;
+    }
+    public String getPreferredInstrument() {
+        return preferredInstrument;
     }
     public String getTimesig() {return timesig;}
     public String getTempo() {
@@ -296,6 +300,9 @@ public class Song implements Serializable {
     public void setKeyOriginal(String keyoriginal) {
         this.keyoriginal = keyoriginal;
     }
+    public void setPreferredInstrument(String preferredInstrument) {
+        this.preferredInstrument = preferredInstrument;
+    }
     public void setTimesig(String timesig) {
         this.timesig = timesig;
     }
@@ -422,6 +429,7 @@ public class Song implements Serializable {
         this.beatbuddykit = toCopy.beatbuddykit;
         this.key = toCopy.key;
         this.keyoriginal = toCopy.keyoriginal;
+        this.preferredInstrument = toCopy.preferredInstrument;
         this.timesig = toCopy.timesig;
         this.tempo = toCopy.tempo;
         this.aka = toCopy.aka;

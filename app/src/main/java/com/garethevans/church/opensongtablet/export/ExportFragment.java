@@ -138,7 +138,7 @@ public class ExportFragment extends Fragment {
             if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
                 doPrint(true);
             } else {
-                if (sectionViewsPDF == null || sectionViewsPDF.size() == 0) {
+                if (sectionViewsPDF == null || sectionViewsPDF.isEmpty()) {
                     createOnTheFly(mainActivityInterface.getSong(), mainActivityInterface.getSong().getFilename() + ".pdf");
                 } else {
                     doPrint(false);

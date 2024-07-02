@@ -137,7 +137,7 @@ public class ConvertTextSong {
             int numnonempties = 0;
             int totalsize = 0;
             for (String ch : possiblechordline) {
-                if (ch.trim().length() > 0) {
+                if (!ch.trim().isEmpty()) {
                     numnonempties += 1;
                     totalsize += ch.trim().length();
                 }

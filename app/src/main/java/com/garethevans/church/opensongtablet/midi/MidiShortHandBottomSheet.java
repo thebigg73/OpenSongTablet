@@ -514,7 +514,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
     private void updateMIDIString() {
         // Build the MIDI code using the dropdowns if we are ready
         midiCode = "";
-        if (midiCommandDescription!=null && midiCommandDescription.size()>0) {
+        if (midiCommandDescription!=null && !midiCommandDescription.isEmpty()) {
             if (usingSysEx) {
                 midiCode = "MIDI:";
             } else {

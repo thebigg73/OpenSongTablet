@@ -123,17 +123,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         myView.editKey.setText(setItemInfo.songkey);
         myView.editKey.setUserEditing(true);
 
-        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
-        // Remove custom folders and then re-add to put them at the bottom
-        folders.remove("**" + note_string);
-        folders.remove("**" + variation_string);
-        folders.remove("**" + scripture_string);
-        folders.remove("**" + slide_string);
-
-        folders.add("**" + note_string);
-        folders.add("**" + variation_string);
-        folders.add("**" + scripture_string);
-        folders.add("**" + slide_string);
+        ArrayList<String> folders = getFolders();
 
         if (getContext()!=null) {
             folderAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFolder, R.layout.view_exposed_dropdown_item, folders);
@@ -162,6 +152,21 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         updateFilesInFolder(originalFolderFilename);
 
         checkAllowEdit();
+    }
+
+    private ArrayList<String> getFolders() {
+        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
+        // Remove custom folders and then re-add to put them at the bottom
+        folders.remove("**" + note_string);
+        folders.remove("**" + variation_string);
+        folders.remove("**" + scripture_string);
+        folders.remove("**" + slide_string);
+
+        folders.add("**" + note_string);
+        folders.add("**" + variation_string);
+        folders.add("**" + scripture_string);
+        folders.add("**" + slide_string);
+        return folders;
     }
 
     private void setupListeners() {

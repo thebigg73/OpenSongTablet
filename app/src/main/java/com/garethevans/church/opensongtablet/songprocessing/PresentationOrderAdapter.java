@@ -87,7 +87,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         View cardView = inflater.inflate(R.layout.view_order_item, parent, false);
 
         // Return a new holder instance
-        return new PresentationOrderAdapter.ViewHolder(cardView);
+        return new ViewHolder(cardView);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         return currentOrder.size();
     }
 
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public MyMaterialTextView sectionName;
         public CardView cardView;

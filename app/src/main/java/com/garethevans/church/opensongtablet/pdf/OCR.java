@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
@@ -138,94 +137,91 @@ public class OCR {
         InputImage image = InputImage.fromBitmap(bmp, 0);
         TextRecognizer textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         Task<Text> task = textRecognizer.process(image);
-        task.addOnSuccessListener(new OnSuccessListener<Text>() {
-            @Override
-            public void onSuccess(Text text) {
-                // Use an array where the index is the top position
-                SparseArray<String> stringSparseArray = new SparseArray<>();
+        task.addOnSuccessListener(text -> {
+            // Use an array where the index is the top position
+            SparseArray<String> stringSparseArray = new SparseArray<>();
 
-                for (Text.TextBlock block : text.getTextBlocks()) {
-                    for (Text.Line line : block.getLines()) {
-                        String lineText = line.getText();
-                        Rect lineFrame = line.getBoundingBox();
-                        int top = pageHeightToAdd;
-                        int left = 0;
-                        if (lineFrame!=null) {
-                            top = lineFrame.top + pageHeightToAdd;
-                            left = lineFrame.left;
-                            totalLineCount++;
-                            totalLineHeight += lineFrame.bottom - lineFrame.top;
-                        }
+            for (Text.TextBlock block : text.getTextBlocks()) {
+                for (Text.Line line : block.getLines()) {
+                    String lineText = line.getText();
+                    Rect lineFrame = line.getBoundingBox();
+                    int top = pageHeightToAdd;
+                    int left = 0;
+                    if (lineFrame!=null) {
+                        top = lineFrame.top + pageHeightToAdd;
+                        left = lineFrame.left;
+                        totalLineCount++;
+                        totalLineHeight += lineFrame.bottom - lineFrame.top;
+                    }
 
-                        String currLine = stringSparseArray.get(top,"");
-                        String newLine = (currLine+blockSplitStart+left+blockSplitEnd+lineText).trim();
-                        stringSparseArray.put(top,newLine);
-                        maxTop = Math.max(maxTop,top);
+                    String currLine = stringSparseArray.get(top,"");
+                    String newLine = (currLine+blockSplitStart+left+blockSplitEnd+lineText).trim();
+                    stringSparseArray.put(top,newLine);
+                    maxTop = Math.max(maxTop,top);
+                }
+            }
+
+            // Now we have the lines in the correct order (by top position)
+            // Try to merge lines that have similar tops (within fudge)
+            int lastTop = 0;
+            // Work out the fudge factor based on average line height
+            int fudge = 10;
+            if (totalLineCount!=0) {
+                float avHeight = (float)totalLineHeight/(float)totalLineCount;
+                fudge = Math.round((0.5f*avHeight));
+            }
+
+
+            SparseArray<String> tidiedLines = new SparseArray<>();
+            for (int x=0; x<maxTop+1; x++) {
+                if (stringSparseArray.get(x,null)!=null) {
+                    if (x<lastTop+fudge) {
+                        // Merge to lastTop
+                        String prevVal = tidiedLines.get(lastTop,"");
+                        tidiedLines.put(lastTop,(prevVal+" "+stringSparseArray.get(x)).trim());
+                    } else {
+                        // New line
+                        tidiedLines.put(x,stringSparseArray.get(x));
+                        lastTop = x;
                     }
                 }
+            }
 
-                // Now we have the lines in the correct order (by top position)
-                // Try to merge lines that have similar tops (within fudge)
-                int lastTop = 0;
-                // Work out the fudge factor based on average line height
-                int fudge = 10;
-                if (totalLineCount!=0) {
-                    float avHeight = (float)totalLineHeight/(float)totalLineCount;
-                    fudge = Math.round((0.5f*avHeight));
-                }
-
-
-                SparseArray<String> tidiedLines = new SparseArray<>();
-                for (int x=0; x<maxTop+1; x++) {
-                    if (stringSparseArray.get(x,null)!=null) {
-                        if (x<lastTop+fudge) {
-                            // Merge to lastTop
-                            String prevVal = tidiedLines.get(lastTop,"");
-                            tidiedLines.put(lastTop,(prevVal+" "+stringSparseArray.get(x)).trim());
-                        } else {
-                            // New line
-                            tidiedLines.put(x,stringSparseArray.get(x));
-                            lastTop = x;
+            StringBuilder textFromLinesArray = new StringBuilder();
+            for (int x=0; x<maxTop; x++) {
+                StringBuilder thisLine = new StringBuilder();
+                if (tidiedLines.get(x,null)!=null) {
+                    // This line has each section with the left position inside
+                    // We need to do this to add them back in the correct order
+                    String[] blocks = tidiedLines.get(x).split(blockSplitStart);
+                    SparseArray<String> horizontalArray = new SparseArray<>();
+                    int maxHPos = 0;
+                    for (String block : blocks) {
+                        // Get the horizontal pos
+                        if (block.contains(blockSplitEnd)) {
+                            int hpos = Integer.parseInt(block.substring(0, block.indexOf(blockSplitEnd)).replaceAll("\\D", ""));
+                            String blockText = block.substring(block.indexOf(blockSplitEnd) + blockSplitEnd.length());
+                            horizontalArray.put(hpos, blockText);
+                            maxHPos = Math.max(hpos, maxHPos);
                         }
                     }
-                }
-
-                StringBuilder textFromLinesArray = new StringBuilder();
-                for (int x=0; x<maxTop; x++) {
-                    StringBuilder thisLine = new StringBuilder();
-                    if (tidiedLines.get(x,null)!=null) {
-                        // This line has each section with the left position inside
-                        // We need to do this to add them back in the correct order
-                        String[] blocks = tidiedLines.get(x).split(blockSplitStart);
-                        SparseArray<String> horizontalArray = new SparseArray<>();
-                        int maxHPos = 0;
-                        for (int y = 0; y < blocks.length; y++) {
-                            // Get the horizontal pos
-                            if (blocks[y].contains(blockSplitEnd)) {
-                                int hpos = Integer.parseInt(blocks[y].substring(0, blocks[y].indexOf(blockSplitEnd)).replaceAll("\\D", ""));
-                                String blockText = blocks[y].substring(blocks[y].indexOf(blockSplitEnd) + blockSplitEnd.length());
-                                horizontalArray.put(hpos, blockText);
-                                maxHPos = Math.max(hpos, maxHPos);
-                            }
+                    for (int z = 0; z < maxHPos+1; z++) {
+                        if (horizontalArray.get(z, null) != null) {
+                            thisLine.append(horizontalArray.get(z)).append(" ");
                         }
-                        for (int z = 0; z < maxHPos+1; z++) {
-                            if (horizontalArray.get(z, null) != null) {
-                                thisLine.append(horizontalArray.get(z)).append(" ");
-                            }
-                        }
-                        textFromLinesArray.append(thisLine).append("\n");
                     }
+                    textFromLinesArray.append(thisLine).append("\n");
                 }
-                try {
-                    pdfPages.add(currpage, textFromLinesArray.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                pageHeightRunning = maxTop;
-                if (pdfPages.size()==pageCount) {
-                    // We're done
-                    runCompleteTask();
-                }
+            }
+            try {
+                pdfPages.add(currpage, textFromLinesArray.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            pageHeightRunning = maxTop;
+            if (pdfPages.size()==pageCount) {
+                // We're done
+                runCompleteTask();
             }
         });
         task.addOnFailureListener(new OnFailureListener() {

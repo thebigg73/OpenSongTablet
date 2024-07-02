@@ -829,25 +829,7 @@ public class PerformanceGestures {
     public void scroll(boolean scrollDown) {
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 presenterRecyclerView!=null) {
-            int currentPosition = mainActivityInterface.getSong().getCurrentSection();
-            int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
-
-            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
-                finalPosition = mainActivityInterface.getSong().getPdfPageCount() - 1;
-            }
-
-            int newPosition = currentPosition;
-
-            if (scrollDown) {
-                if (currentPosition < finalPosition) {
-                    newPosition++;
-                }
-            } else {
-                if (currentPosition > 0) {
-                    newPosition--;
-                }
-            }
+            int newPosition = getPosition(scrollDown);
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
@@ -865,28 +847,7 @@ public class PerformanceGestures {
 
         } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
-            int currentPosition = mainActivityInterface.getSong().getCurrentSection();
-            int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
-
-            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
-                finalPosition = mainActivityInterface.getSong().getPdfPageCount() - 1;
-            }
-            int newPosition = currentPosition;
-
-            if (scrollDown) {
-                // GE only need to allow extra blank fake section if presenting
-                if (displayInterface.getIsSecondaryDisplaying() &&
-                            currentPosition <= finalPosition) {
-                    newPosition++;
-                } else if (currentPosition < finalPosition) {
-                    newPosition++;
-                }
-            } else {
-                if (currentPosition > 0) {
-                    newPosition--;
-                }
-            }
+            int newPosition = getPosition(scrollDown);
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
@@ -944,6 +905,36 @@ public class PerformanceGestures {
         scrollPosCheckHandler.removeCallbacks(scrollPosRunnable);
         scrollPosCheckHandler.postDelayed(scrollPosRunnable,800);
 
+    }
+
+    private int getPosition(boolean scrollDown) {
+        int currentPosition = mainActivityInterface.getSong().getCurrentSection();
+        int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
+
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
+            finalPosition = mainActivityInterface.getSong().getPdfPageCount() - 1;
+        }
+        return getNewPosition(scrollDown, currentPosition, finalPosition);
+    }
+
+    private int getNewPosition(boolean scrollDown, int currentPosition, int finalPosition) {
+        int newPosition = currentPosition;
+
+        if (scrollDown) {
+            // GE only need to allow extra blank fake section if presenting
+            if (displayInterface.getIsSecondaryDisplaying() &&
+                        currentPosition <= finalPosition) {
+                newPosition++;
+            } else if (currentPosition < finalPosition) {
+                newPosition++;
+            }
+        } else {
+            if (currentPosition > 0) {
+                newPosition--;
+            }
+        }
+        return newPosition;
     }
 
     // Find a random song

@@ -299,7 +299,7 @@ public class CCLILog {
                 if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().startsWith("Entry")) {
                         // If the song isn't blank (first time), extract them
-                        if (!curr_title.equals("")) {
+                        if (!curr_title.isEmpty()) {
                             songfile.add(curr_file);
                             title.add(curr_title);
                             author.add(curr_author);
@@ -346,7 +346,7 @@ public class CCLILog {
             }
 
             // Add the last item
-            if (!curr_title.equals("")) {
+            if (!curr_title.isEmpty()) {
                 songfile.add(curr_file);
                 title.add(curr_title);
                 author.add(curr_author);
@@ -368,7 +368,7 @@ public class CCLILog {
         tableLayout.setLayoutParams(layoutParams);
 
         // If there are no entries, sort that, otherwise add the correct data
-        if (songfile.size() != 0) {
+        if (!songfile.isEmpty()) {
             // Add the headers
             String[] headers = new String[]{c.getString(R.string.item), c.getString(R.string.title),
                     c.getString(R.string.author), c.getString(R.string.copyright),

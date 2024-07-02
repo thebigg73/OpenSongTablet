@@ -207,8 +207,12 @@ public class CustomChordsFragment extends Fragment {
                     mainActivityInterface.getChordDisplayProcessing().getInstruments());
             myView.instrument.setAdapter(exposedDropDownArrayAdapter);
         }
-        String instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(
-                "chordInstrument", "g");
+        // If this song has a preferred instrument stored, use that
+        String instrumentPref = mainActivityInterface.getSong().getPreferredInstrument();
+        if (instrumentPref==null || instrumentPref.isEmpty()) {
+            instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(
+                    "chordInstrument", "g");
+        }
         myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentPref));
     }
     private void updateCustomChordDropDown() {
@@ -238,7 +242,7 @@ public class CustomChordsFragment extends Fragment {
             myView.chordName.setText(chordsNameForInstrument.get(selectedIndex));
             currentCode = chordsCodeForInstrument.get(selectedIndex);
 
-        } else if (chordsNameForInstrument.size()>0) {
+        } else if (!chordsNameForInstrument.isEmpty()) {
             // Nothing previously chosen, but chords exist
             myView.chordName.setText(chordsNameForInstrument.get(0));
             currentCode = chordsCodeForInstrument.get(0);
@@ -324,7 +328,7 @@ public class CustomChordsFragment extends Fragment {
         });
         myView.save.setOnClickListener(v -> doSave());
         myView.deleteChord.setOnClickListener(v -> {
-            if (customChordsName.size()>0 && !myView.chordName.getText().toString().isEmpty()) {
+            if (!customChordsName.isEmpty() && !myView.chordName.getText().toString().isEmpty()) {
                 // Simply set this chord code to empty, then trigger the save which replaces it with nothing!
                 myView.customCode.setHint("");
                 delete = true;
@@ -713,7 +717,7 @@ public class CustomChordsFragment extends Fragment {
     }
 
     private void resetPianoNotes() {
-        if (pianoKeysOn==null || pianoKeysOn.size()==0) {
+        if (pianoKeysOn==null || pianoKeysOn.isEmpty()) {
             pianoKeysOn = new ArrayList<>(mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().size());
         }
         for (int x=0; x<mainActivityInterface.getChordDisplayProcessing().getPianoKeysArray().size(); x++) {
@@ -753,30 +757,34 @@ public class CustomChordsFragment extends Fragment {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // Measure the layout
-                try {
-                    int childWidth = myView.pianoChordLayout.piano.getMeasuredWidth();
-                    int childHeight = myView.pianoChordLayout.piano.getMeasuredHeight();
-                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                    requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    int width = displayMetrics.widthPixels;
-                    double padding = Math.ceil(16 * getResources().getDisplayMetrics().density);
-                    if (childWidth>0) {
-                        float scale = ((float) (width - 2 * padding)) / (float) childWidth;
-                        myView.pianoChordLayout.piano.setGravity(Gravity.CENTER | Gravity.TOP);
-                        ViewGroup.LayoutParams layoutParams = myView.pianoChordLayout.piano.getLayoutParams();
-                        layoutParams.height = (int) (childHeight * scale);
-                        myView.pianoChordLayout.piano.setPivotX(childWidth / 2f);
-                        myView.pianoChordLayout.piano.setPivotY(0);
-                        myView.pianoChordLayout.piano.setScaleX(scale);
-                        myView.pianoChordLayout.piano.setScaleY(scale);
-                        myView.pianoChordLayout.piano.setLayoutParams(layoutParams);
-                        myView.pianoChordLayout.piano.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        myView.layout.invalidate();
-                        myView.pianoChordLayout.piano.setVisibility(View.VISIBLE);
+                if (myView!=null && mainActivityInterface!=null) {
+                    // Measure the layout
+                    try {
+                        int childWidth = myView.pianoChordLayout.piano.getMeasuredWidth();
+                        int childHeight = myView.pianoChordLayout.piano.getMeasuredHeight();
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        int width = displayMetrics.widthPixels;
+                        double padding = Math.ceil(16 * getResources().getDisplayMetrics().density);
+                        if (childWidth > 0) {
+                            float scale = ((float) (width - 2 * padding)) / (float) childWidth;
+                            myView.pianoChordLayout.piano.setGravity(Gravity.CENTER | Gravity.TOP);
+                            ViewGroup.LayoutParams layoutParams = myView.pianoChordLayout.piano.getLayoutParams();
+                            layoutParams.height = (int) (childHeight * scale);
+                            myView.pianoChordLayout.piano.setPivotX(childWidth / 2f);
+                            myView.pianoChordLayout.piano.setPivotY(0);
+                            myView.pianoChordLayout.piano.setScaleX(scale);
+                            myView.pianoChordLayout.piano.setScaleY(scale);
+                            myView.pianoChordLayout.piano.setLayoutParams(layoutParams);
+                            myView.pianoChordLayout.piano.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            myView.layout.invalidate();
+                            myView.pianoChordLayout.piano.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception e) {
+                        if (mainActivityInterface != null) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -885,4 +893,10 @@ public class CustomChordsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        myView = null;
+        mainActivityInterface = null;
+        super.onDestroy();
+    }
 }

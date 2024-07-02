@@ -309,7 +309,7 @@ public class ImportOSBFragment extends Fragment {
         // This matches how many songs are in the chosen folders
         zipContents = 0;
         getCheckedFolders();
-        if (checkedFolders.size()>0) {
+        if (!checkedFolders.isEmpty()) {
             for (String item:allZipItems) {
                 if (item.contains("/")) {
                     item = item.substring(0,item.lastIndexOf("/"));
@@ -658,7 +658,7 @@ public class ImportOSBFragment extends Fragment {
     }
 
     private void okToLoad() {
-        if (myView.importTitle.getText()!=null && foundFolders!=null && foundFolders.size()>0 &&
+        if (myView.importTitle.getText()!=null && foundFolders!=null && !foundFolders.isEmpty() &&
                 !myView.importTitle.getText().toString().isEmpty() && importUri!=null) {
             // Udpate as post to keep on UI thread
             myView.createBackupFAB.post(() -> myView.createBackupFAB.setVisibility(View.VISIBLE));

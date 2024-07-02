@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 
-class SongItemViewHolder extends RecyclerView.ViewHolder {
+public class SongItemViewHolder extends RecyclerView.ViewHolder {
 
     final TextView itemTitle;
     final TextView itemAuthor;

@@ -129,7 +129,7 @@ public class SwipeFragment extends Fragment {
         }
         slider.setValue(myval);
         slider.setLabelFormatter(value -> ((int)value)+unit);
-        slider.setHint((int)(myval)+unit);
+        slider.setHint(myval +unit);
 
         // Create listeners
         if (createListener) {

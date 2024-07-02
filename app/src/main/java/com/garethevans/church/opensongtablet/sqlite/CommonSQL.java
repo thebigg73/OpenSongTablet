@@ -45,6 +45,7 @@ public class CommonSQL {
                 SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1,
                 SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_BEATBUDDY_SONG,
                 SQLite.COLUMN_BEATBUDDY_KIT, SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
+                SQLite.COLUMN_PREFERRED_INSTRUMENT,
                 SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA, SQLite.COLUMN_AUTOSCROLL_DELAY,
                 SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
                 SQLite.COLUMN_PAD_LOOP, SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
@@ -149,6 +150,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_BEATBUDDY_KIT, thisSong.getBeatbuddykit());
         values.put(SQLite.COLUMN_KEY, thisSong.getKey());
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
+        values.put(SQLite.COLUMN_PREFERRED_INSTRUMENT, thisSong.getPreferredInstrument());
         values.put(SQLite.COLUMN_TIMESIG, thisSong.getTimesig());
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
@@ -332,19 +334,7 @@ public class CommonSQL {
             Common strings for searching.  Don't need to grab everything here - we can get the rest later
         */
 
-        String listname = SQLite.COLUMN_FILENAME;
-        if (songMenuSortTitles) {
-            listname = SQLite.COLUMN_TITLE;
-        }
-
-        String getOrderBySQL = " ORDER BY " + listname + " COLLATE NOCASE ASC";
-        String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR +
-                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE+ ",'')," +  SQLite.COLUMN_FILENAME + ") AS " + SQLite.COLUMN_TITLE + ", " +
-                SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
-                SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
-                SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
-                " FROM " + SQLite.TABLE_NAME + " ";
-        String selectQuery = getBasicSQLQueryStart + sqlMatch + " " + getOrderBySQL;
+        String selectQuery = getSelectQuery(songMenuSortTitles, sqlMatch);
 
         String[] selectionArgs = new String[args.size()];
         selectionArgs = args.toArray(selectionArgs);
@@ -400,6 +390,22 @@ public class CommonSQL {
         return songs;
     }
 
+    private String getSelectQuery(boolean songMenuSortTitles, String sqlMatch) {
+        String listname = SQLite.COLUMN_FILENAME;
+        if (songMenuSortTitles) {
+            listname = SQLite.COLUMN_TITLE;
+        }
+
+        String getOrderBySQL = " ORDER BY " + listname + " COLLATE NOCASE ASC";
+        String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR +
+                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE+ ",'')," +  SQLite.COLUMN_FILENAME + ") AS " + SQLite.COLUMN_TITLE + ", " +
+                SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
+                SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
+                SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
+                " FROM " + SQLite.TABLE_NAME + " ";
+        return getBasicSQLQueryStart + sqlMatch + " " + getOrderBySQL;
+    }
+
     public String getKey(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         String[] selectionArgs = new String[]{songId};
@@ -451,6 +457,7 @@ public class CommonSQL {
                 thisSong.setBeatbuddykit(getValue(cursor, SQLite.COLUMN_BEATBUDDY_KIT));
                 thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
                 thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
+                thisSong.setPreferredInstrument(getValue(cursor, SQLite.COLUMN_PREFERRED_INSTRUMENT));
                 thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
                 thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
                 thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));

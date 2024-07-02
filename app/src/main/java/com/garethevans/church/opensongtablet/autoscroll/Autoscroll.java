@@ -278,12 +278,12 @@ public class Autoscroll {
                     });
                 } else {
                     if (inlinePauseStartTime!=0 && inlinePauseEndTime!=0 &&
-                            inlinePauses.size()>0 &&
+                            !inlinePauses.isEmpty() &&
                             scrollTime > inlinePauseStartTime && scrollTime > inlinePauseEndTime) {
                         // Get the next delay time ready if required
                         // Delete the first entry
                         inlinePauses.remove(0);
-                        if (inlinePauses.size()>0) {
+                        if (!inlinePauses.isEmpty()) {
                             inlinePauseStartTime = inlinePauses.get(0).pauseStartTime;
                             inlinePauseEndTime = inlinePauses.get(0).pauseEndTime;
                         } else {
@@ -457,7 +457,7 @@ public class Autoscroll {
             setIsAutoscrolling(true);
             autoscrollView.post(() -> mainActivityInterface.updateOnScreenInfo("showhide"));
             try {
-                task = scheduledExecutorService.scheduleAtFixedRate(scrollRunnable,0,updateTime, TimeUnit.MILLISECONDS);
+                task = scheduledExecutorService.scheduleWithFixedDelay(scrollRunnable,0,updateTime, TimeUnit.MILLISECONDS);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -535,7 +535,7 @@ public class Autoscroll {
                 }
             }
         }
-        if (inlinePauses.size()>0) {
+        if (!inlinePauses.isEmpty()) {
             inlinePauseStartTime = inlinePauses.get(0).pauseStartTime;
             inlinePauseEndTime = inlinePauses.get(0).pauseEndTime;
             songDuration = songDuration + inlinePauseTotal;

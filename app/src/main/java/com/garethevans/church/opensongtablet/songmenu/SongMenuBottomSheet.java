@@ -108,7 +108,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
             myView.songTitle.setHint(file_string+": "+songTitle);
         }
         // Check we have songs in the menu
-        if (mainActivityInterface.getSongsFound("song").size()>0) {
+        if (!mainActivityInterface.getSongsFound("song").isEmpty()) {
             myView.randomSong.setVisibility(View.VISIBLE);
         } else {
             myView.randomSong.setVisibility(View.GONE);

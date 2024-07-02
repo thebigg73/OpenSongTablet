@@ -204,28 +204,35 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_ABC_TRANSPOSE + " TEXT");
             }
             cursor.close();
-        };
+        }
         try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
             Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
             if (cursor.getColumnIndex(SQLite.COLUMN_KEY_ORIGINAL) == -1) {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_KEY_ORIGINAL + " TEXT");
             }
             cursor.close();
-        };
+        }
         try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
             Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
             if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_SONG) == -1) {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_SONG + " TEXT");
             }
             cursor.close();
-        };
+        }
         try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
             Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
             if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_KIT) == -1) {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_KIT + " TEXT");
             }
             cursor.close();
-        };
+        }
+        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+            if (cursor.getColumnIndex(SQLite.COLUMN_PREFERRED_INSTRUMENT) == -1) {
+                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_PREFERRED_INSTRUMENT + " TEXT");
+            }
+            cursor.close();
+        }
     }
 
     // TODO Flush entries that aren't in the filesystem, or alert the user to issues (perhaps asking to update the entry?

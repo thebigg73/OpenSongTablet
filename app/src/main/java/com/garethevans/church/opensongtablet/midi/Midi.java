@@ -390,7 +390,7 @@ public class Midi {
 
     public void sendSongMessages() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                songMidiMessages!=null && songMidiMessages.size()>0) {
+                songMidiMessages!=null && !songMidiMessages.isEmpty()) {
             for (int position = 0; position < songMidiMessages.size(); position++) {
                 int finalPosition = position;
                 new Handler().postDelayed(() -> {

@@ -243,7 +243,7 @@ public class UltimateGuitar {
         String capo = newSong.getCapo();
         if (!capo.isEmpty()) {
             // Try to get a number
-            capo = capo.replaceAll("[^\\d]", "");
+            capo = capo.replaceAll("\\D", "");
             if (!capo.isEmpty()) {
                 String key = newSong.getKey();
                 String lyrics = newSong.getLyrics();

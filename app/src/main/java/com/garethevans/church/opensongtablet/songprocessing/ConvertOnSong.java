@@ -238,10 +238,10 @@ public class ConvertOnSong {
             } else if (line.contains("{subtitle:")) {
                 // Extract the subtitles.  Add it back as a comment line
                 String subtitle = mainActivityInterface.getConvertChoPro().removeTags(line, "{subtitle:");
-                if (author.equals("")) {
+                if (author.isEmpty()) {
                     author = subtitle;
                 }
-                if (copyright.equals("")) {
+                if (copyright.isEmpty()) {
                     copyright = subtitle;
                 }
                 line = ";" + subtitle;

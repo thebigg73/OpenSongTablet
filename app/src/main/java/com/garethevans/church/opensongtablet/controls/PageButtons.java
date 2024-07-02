@@ -366,20 +366,7 @@ public class PageButtons {
         // Go through each button and build references to the actions, drawables, etc.
         for (int x=0;x<pageButtonNum;x++) {
             // If the preference isn't set, use the default.  Button 1 and 2 are set as follows
-            String fallback = "";
-            if (x==0) {
-                fallback = "set";
-            } else if (x==1) {
-                fallback = "transpose";
-            } else if (x==2) {
-                fallback = "editsong";
-            } else if (x==3) {
-                fallback = "autoscroll";
-            } else if (x==4) {
-                fallback = "metronome";
-            } else if (x==5) {
-                fallback = "tuner";
-            }
+            String fallback = getFallback(x);
             String action = actionInterface.getPreferences().getMyPreferenceString("pageButton"+(x+1),fallback);
             pageButtonAction.add(action);
             int pos = getButtonInArray(action);
@@ -402,6 +389,24 @@ public class PageButtons {
                 pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow" + (x + 1), false));
             }
         }
+    }
+
+    private String getFallback(int x) {
+        String fallback = "";
+        if (x ==0) {
+            fallback = "set";
+        } else if (x ==1) {
+            fallback = "transpose";
+        } else if (x ==2) {
+            fallback = "editsong";
+        } else if (x ==3) {
+            fallback = "autoscroll";
+        } else if (x ==4) {
+            fallback = "metronome";
+        } else if (x ==5) {
+            fallback = "tuner";
+        }
+        return fallback;
     }
 
     // This will redesign the button for the page

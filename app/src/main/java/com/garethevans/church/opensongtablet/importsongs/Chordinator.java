@@ -287,7 +287,7 @@ public class Chordinator {
         // that are not chords then its probably not a chord line.
         int chordCount = 0;
         for (int y = 0; chordCount > -2 && chordCount < 5 && y < item.length; y++) {
-            if (item[y].length() == 0) {
+            if (item[y].isEmpty()) {
                 // Ignore
                 Log.d(TAG,"ignore this line");
             } else if (isChord(item[y])) {
@@ -366,11 +366,9 @@ public class Chordinator {
         // Log.d(TAG, "HELLO - tagvalue ["+text+"]["+tag1+"]["+tag2+"]");
         // Try get tag1. If not found try tag2, if this isn't found return default
         String ret=tagValue(text, tag1);
-        if(ret.equals(""))
-        {
+        if(ret.isEmpty()) {
             ret=tagValue(text, tag2);
-            if(ret.equals(""))
-            {
+            if(ret.isEmpty()) {
                 ret = defaultRet;
             }
         }

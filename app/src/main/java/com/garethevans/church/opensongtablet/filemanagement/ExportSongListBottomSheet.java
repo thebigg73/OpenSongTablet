@@ -97,18 +97,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         if (getContext()!=null) {
             for (String folder : folders) {
-                MaterialCheckBox checkBox = new MaterialCheckBox(getContext());
-                checkBox.setText(folder);
-                checkBox.setChecked(false);
-                checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-                    if (b) {
-                        if (!selectedFolders.contains("\n" + compoundButton.getText() + "\n")) {
-                            selectedFolders = selectedFolders + "\n" + compoundButton.getText() + "\n";
-                        }
-                    } else {
-                        selectedFolders = selectedFolders.replace("\n" + compoundButton.getText() + "\n", "");
-                    }
-                });
+                MaterialCheckBox checkBox = getMaterialCheckBox(folder,getContext());
                 myView.songFolders.addView(checkBox);
             }
         }
@@ -130,6 +119,22 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getShowToast().doItBottomSheet(nothing_selected_string, myView.getRoot());
             }
         });
+    }
+
+    private MaterialCheckBox getMaterialCheckBox(String folder, Context c) {
+        MaterialCheckBox checkBox = new MaterialCheckBox(c);
+        checkBox.setText(folder);
+        checkBox.setChecked(false);
+        checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                if (!selectedFolders.contains("\n" + compoundButton.getText() + "\n")) {
+                    selectedFolders = selectedFolders + "\n" + compoundButton.getText() + "\n";
+                }
+            } else {
+                selectedFolders = selectedFolders.replace("\n" + compoundButton.getText() + "\n", "");
+            }
+        });
+        return checkBox;
     }
 
     private void initiateShare() {

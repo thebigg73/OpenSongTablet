@@ -493,7 +493,7 @@ public class StorageAccess {
                     }
                 }
 
-                if (storageDetails[0].length() > 0) {
+                if (!storageDetails[0].isEmpty()) {
                     storageDetails[0] = storageDetails[0] + ", ";
                 }
                 storageDetails[0] = "(" + storageDetails[0] + count + " " + c.getString(R.string.songs) + ")";

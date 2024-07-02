@@ -215,7 +215,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void buildChordFormatOptions() {
-        if (getContext()!=null && mainActivityInterface.getTranspose().getChordFormatNames().size()>0) {
+        if (getContext()!=null && !mainActivityInterface.getTranspose().getChordFormatNames().isEmpty()) {
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapterFrom = new ExposedDropDownArrayAdapter(getContext(),
                     myView.chordFormatFrom, R.layout.view_exposed_dropdown_item,
                     mainActivityInterface.getTranspose().getChordFormatNames());

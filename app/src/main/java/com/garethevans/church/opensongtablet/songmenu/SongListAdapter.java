@@ -334,7 +334,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     Map<String, Integer> getAlphaIndex(List<Song> songlist) {
         linkedHashMap = new LinkedHashMap<>();
         linkedHashMap2 = new LinkedHashMap<>();
-        if (songlist != null && songlist.size()>0) {
+        if (songlist != null && !songlist.isEmpty()) {
             for (int i = 0; i < songlist.size(); i++) {
                 String index = "";  // First letter
                 String index2 = ""; // First 2 letters

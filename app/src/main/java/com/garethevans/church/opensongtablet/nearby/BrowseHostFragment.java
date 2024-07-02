@@ -136,7 +136,7 @@ public class BrowseHostFragment extends Fragment {
         currentFile = 0;
         waitingForFiles = true;
         // Get the first file if chosen
-        if (checkedItems.size()>0) {
+        if (!checkedItems.isEmpty()) {
             getFile();
         }
     }

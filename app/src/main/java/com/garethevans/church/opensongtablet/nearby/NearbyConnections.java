@@ -316,7 +316,7 @@ public class NearbyConnections implements NearbyInterface {
             }
         };
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        timer.schedule(timerTask, 0, 1000);
     }
 
     public void clearTimer() {
@@ -552,7 +552,7 @@ public class NearbyConnections implements NearbyInterface {
                                             updateConnectionLog(c.getString(R.string.connections_connected) + " " + discoveredEndpointInfo.getEndpointName());
 
                                             // IV - Already connected so replay last incoming song
-                                            if (incomingPrevious != null && !incomingPrevious.equals("")) {
+                                            if (incomingPrevious != null && !incomingPrevious.isEmpty()) {
                                                 String incoming = incomingPrevious;
                                                 incomingPrevious = null;
                                                 payloadOpenSong(incoming);
@@ -906,7 +906,7 @@ public class NearbyConnections implements NearbyInterface {
         if (usingNearby) {
             try {
                 StringBuilder stringBuilder = new StringBuilder();
-                if (connectedEndpoints.size() >= 1) {
+                if (!connectedEndpoints.isEmpty()) {
                     for (String s : connectedEndpoints) {
                         if (s != null && !s.isEmpty()) {
                             stringBuilder.append(s);

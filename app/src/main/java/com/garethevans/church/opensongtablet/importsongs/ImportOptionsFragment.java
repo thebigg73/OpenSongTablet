@@ -82,7 +82,7 @@ public class ImportOptionsFragment extends Fragment {
     private void setupViews() {
         if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
             myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    mainActivityInterface.getNearbyConnections().getConnectedEndpoints().size()>0 &&
+                    !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
                     mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
         }
     }

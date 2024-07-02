@@ -324,7 +324,7 @@ public class Bible {
         if (attributetosearch_book.equals("bnumber")) { //Zefania with no book names in the xml
             bibleBook = getBookNumberFromName(bibleBook);
         }
-        if (bibleFileSafe() && document!=null && documentElement!=null &&!bibleBook.equals("") && !bibleChapter.isEmpty()) {
+        if (bibleFileSafe() && document!=null && documentElement!=null && !bibleBook.isEmpty() && !bibleChapter.isEmpty()) {
             try {
                 NodeList nl = documentElement.getElementsByTagName(tagtosearch_book);
                 for (int i=0; i<nl.getLength();i++) {

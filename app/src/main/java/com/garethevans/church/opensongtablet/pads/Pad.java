@@ -351,7 +351,7 @@ public class Pad {
             pad1VolDrop = Math.max(pad1VolL,pad1VolR) / 20;
 
             pad1FadeTimer = new Timer();
-            pad1FadeTimer.scheduleAtFixedRate(pad1FadeTimerTask, 0,
+            pad1FadeTimer.schedule(pad1FadeTimerTask, 0,
                     mainActivityInterface.getPreferences().getMyPreferenceInt("padCrossFadeTime", 8000) / 20);
         }
 
@@ -405,7 +405,7 @@ public class Pad {
             pad2VolDrop = Math.max(pad2VolL,pad2VolR) / 20;
 
             pad2FadeTimer = new Timer();
-            pad2FadeTimer.scheduleAtFixedRate(pad2FadeTimerTask, 0,
+            pad2FadeTimer.schedule(pad2FadeTimerTask, 0,
             mainActivityInterface.getPreferences().getMyPreferenceInt("padCrossFadeTime", 8000) / 20);
         }
 
@@ -562,7 +562,7 @@ public class Pad {
                 }
             };
             padPlayTimer = new Timer();
-            padPlayTimer.scheduleAtFixedRate(padPlayTimerTask, 1000, 1000);
+            padPlayTimer.schedule(padPlayTimerTask, 1000, 1000);
         }
         mainActivityInterface.updateOnScreenInfo("showhide");
     }
