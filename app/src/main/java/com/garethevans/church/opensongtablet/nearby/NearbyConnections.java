@@ -1738,6 +1738,10 @@ public class NearbyConnections implements NearbyInterface {
         switch (what) {
             case "browsesets":
                 hostItems = mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
+                // Add the current set to the list if it isn't empty
+                if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                    hostItems.add(0, "["+c.getString(R.string.set_current)+"]");
+                }
                 break;
             case "browsesongs":
             default:
@@ -1800,7 +1804,15 @@ public class NearbyConnections implements NearbyInterface {
             String[] bits = requestPayload.split(requestFileSeparator);
             // There should be 4 bits: calling deviceID, folder, subfolder, filename
             if (bits.length == 4) {
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(
+                Uri uri;
+                if (bits[1].equals("Sets") && bits[2].equals("["+c.getString(R.string.set_current)+"]")) {
+                    String currentSetXML = mainActivityInterface.getSetActions().createSetXML();
+                    uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","","currentSet.xml");
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","","currentSet.xml");
+                    OutputStream currentSetOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                    mainActivityInterface.getStorageAccess().writeFileFromString(currentSetXML,currentSetOutputStream);
+                }
+                uri = mainActivityInterface.getStorageAccess().getUriForItem(
                         bits[1], bits[2], bits[3]);
                 Payload payloadFile = null;
                 String payloadInfo = "";
@@ -1842,6 +1854,13 @@ public class NearbyConnections implements NearbyInterface {
             String filename = browseHostFragment.getRequestedFilename();
 
             if (folder != null && subfolder != null && filename != null && !filename.isEmpty()) {
+                boolean receivedCurrentSet = false;
+                if (folder.equals("Sets") && filename.equals("["+c.getString(R.string.set_current)+"]")) {
+                    folder = "Received";
+                    subfolder = "";
+                    filename = "currentSet.xml";
+                    receivedCurrentSet = true;
+                }
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, filename);
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, folder, subfolder, filename);
 
@@ -1869,6 +1888,22 @@ public class NearbyConnections implements NearbyInterface {
                                         // Refresh the song menu
                                         mainActivityInterface.updateSongList();
                                     }
+                                } else if (receivedCurrentSet) {
+                                    ArrayList<Uri> uris = new ArrayList<>();
+                                    uris.add(uri);
+                                    // Get a note of how many items were in the currently loaded set
+                                    int oldSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
+
+                                    // Initialise the current set
+                                    mainActivityInterface.getCurrentSet().initialiseTheSet();
+                                    mainActivityInterface.getCurrentSet().setSetCurrent("");
+                                    mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
+
+                                    // Notify the set menu to update to an empty set
+                                    mainActivityInterface.notifySetFragment("clear",oldSize);
+
+                                    // Set this as our current set
+                                    mainActivityInterface.getSetActions().loadSets(uris,null);
                                 }
                             }
                         }
