@@ -73,6 +73,7 @@ import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
+import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 
 import java.io.File;
@@ -98,6 +99,7 @@ public interface MainActivityInterface {
     boolean getFirstRun();
     int getOrientation();
     WebServer getWebServer();
+    LocalWiFiHost getLocalWiFiHost();
     void recreateActivity();
 
     // Preferences and settings

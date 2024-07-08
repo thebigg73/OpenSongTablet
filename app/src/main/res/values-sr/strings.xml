@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Gore levo</string>
     <string name="hot_zones">Vruće zone</string>
     <string name="hot_zones_info">Dodeljivanje prilagođenih radnji oblastima ekrana</string>
+    <string name="hotspot">Podešavanje Wi-Fi hotspota</string>
+    <string name="hotspot_info">Ako WiFi mreža nije dostupna, OpenSongApp može da kreira lokalnu Wi-Fi hotspot (bez pristupa internetu) sa kojom drugi uređaji mogu da se povežu i pristupe veb serveru.</string>
     <string name="hymn_number">Broj himne</string>
     <string name="ignore_cutouts">Zanemari isečeće</string>
     <string name="ignore_cutouts_info">Ako uređaj ima rezače (isečci ekrana), možete da naterate aplikaciju da i dalje prevlači preko ovog prostora.  Uverite se da i dalje možete da vidite dugmad menija pre nego što napustite ovu stranicu, jer u suprotnom možda nećete moći da pristupite postavkama aplikacije!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Panika</string>
     <string name="panic_stop">Sav izlaz je zaustavljen</string>
     <string name="part">Deo</string>
+    <string name="password">Lozinku</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošaljite mi donaciju ako smatrate da je aplikacija korisna</string>
     <string name="pdf_horizontal">Horizontalno prikazivanje PDF stranica</string>

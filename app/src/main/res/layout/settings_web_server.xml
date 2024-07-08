@@ -42,6 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
+                        android:textSize="@dimen/text_medium"
                         android:layout_weight="1" />
                 </LinearLayout>
 

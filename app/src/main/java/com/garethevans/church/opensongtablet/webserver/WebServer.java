@@ -316,7 +316,7 @@ public class WebServer extends NanoHTTPD {
                 .append(getMenuBarCSS())
                 .append("body {width:100%; font-family:")
                 .append(mainActivityInterface.getMyFonts().getLyricFontName())
-                .append(", -apple-system, BlinkMacSystemFont, Lato, Arial, sans-serif;}\n")
+                .append(", -apple-system, BlinkMacSystemFont, Lato, Arial, sans-serif; cursor: pointer; user-select: none;}\n")
                 .append("</style>\n")
                 .append("<script>\n")
                 .append(getGlobalJSVariables(showchords,allowWebNavigation,currSongIndex,setlist,0,currSong,true, false))

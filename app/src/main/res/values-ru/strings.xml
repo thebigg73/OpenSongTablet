@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Слева вверху</string>
     <string name="hot_zones">Горячие зоны</string>
     <string name="hot_zones_info">Назначение пользовательских действий областям экрана</string>
+    <string name="hotspot">Настройка точки доступа Wi-Fi</string>
+    <string name="hotspot_info">Если сеть Wi-Fi недоступна, OpenSongApp может создать локальную точку доступа Wi-Fi (без доступа в Интернет), к которой другие устройства смогут подключаться и получать доступ к веб-серверу.</string>
     <string name="hymn_number">Номер гимна</string>
     <string name="ignore_cutouts">Игнорировать вырезы дисплея</string>
     <string name="ignore_cutouts_info">Если на вашем устройстве есть выемки (вырезы дисплея), вы можете заставить приложение по-прежнему рисовать в этом месте. Прежде чем покинуть эту страницу, убедитесь, что вы все еще видите кнопки меню, иначе вы не сможете получить доступ к настройкам приложения!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Аварийный стоп</string>
     <string name="panic_stop">Аварийное выключение вывода звука</string>
     <string name="part">Часть</string>
+    <string name="password">Пароль</string>
     <string name="pause">Пауза</string>
     <string name="paypal_description">Пожалуйста, сделайте пожертвование автору, если приложение оказалось для Вас полезным</string>
     <string name="pdf_horizontal">Горизонтальное отображение PDF-страниц</string>

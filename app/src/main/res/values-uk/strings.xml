@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Угорі ліворуч</string>
     <string name="hot_zones">Гарячі зони</string>
     <string name="hot_zones_info">Призначення додаткових дій областям екрана</string>
+    <string name="hotspot">Налаштування точки доступу Wi-Fi</string>
+    <string name="hotspot_info">Якщо мережа WiFi недоступна, OpenSongApp може створити локальну точку доступу WiFi (без доступу до Інтернету), до якої інші пристрої можуть підключитися та отримати доступ до веб-сервера.</string>
     <string name="hymn_number">Номер Гімну</string>
     <string name="ignore_cutouts">Ігнорувати вирізи</string>
     <string name="ignore_cutouts_info">Якщо на вашому пристрої є насічки (вирізи дисплея), ви можете змусити програму все ще малювати цей простір.  Переконайтеся, що ви все ще можете бачити кнопки меню, перш ніж покинути цю сторінку, інакше ви не зможете отримати доступ до налаштувань програми!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Паніка</string>
     <string name="panic_stop">Весь вихід зупинено</string>
     <string name="part">Частина</string>
+    <string name="password">Пароль</string>
     <string name="pause">Пауза</string>
     <string name="paypal_description">Надішліть мені пожертву, якщо ви вважаєте додаток корисним</string>
     <string name="pdf_horizontal">Горизонтальне відображення PDF-сторінок</string>

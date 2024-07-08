@@ -25,7 +25,7 @@ public class WebServerFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "WebServerFragment";
     private String webAddress="", website_web_server_string="", web_server_string="",
-            ssid_string="",password_string="", security_string="";
+            ssid_string="",password_string="";
 
     @Override
     public void onResume() {
@@ -80,7 +80,6 @@ public class WebServerFragment extends Fragment {
             website_web_server_string = getString(R.string.website_web_server);
             ssid_string = getString(R.string.ssid);
             password_string = getString(R.string.password);
-            security_string = getString(R.string.security);
         }
     }
 
@@ -132,11 +131,10 @@ public class WebServerFragment extends Fragment {
         });
     }
 
-    public void setQRWebServer(Bitmap bitmap, String ssid, String password) {
+    public void setQRHotspot(Bitmap bitmap, String ssid, String password) {
         Glide.with(this).load(bitmap).into(myView.hotspotQR);
         String networkInfo = ssid_string + ": " + ssid + "\n" +
-                password_string + ": " + password + "\n" +
-                security_string + ": WPA";
+                password_string + ": " + password;
         myView.hotspotInfo.setText(networkInfo);
         Log.d(TAG,"newtowrkInfo:"+networkInfo);
         myView.localHotspot.setVisibility(View.VISIBLE);

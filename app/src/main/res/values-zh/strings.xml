@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">左上角</string>
     <string name="hot_zones">热区</string>
     <string name="hot_zones_info">将自定义操作分配给屏幕区域</string>
+    <string name="hotspot">设置 WiFi 热点</string>
+    <string name="hotspot_info">如果没有可用的 WiFi 网络，OpenSongApp 可以创建一个本地 WiFi 热点（无法访问互联网），其他设备可以连接到并访问 Web 服务器。</string>
     <string name="hymn_number">"圣诗"</string>
     <string name="ignore_cutouts">忽略切口</string>
     <string name="ignore_cutouts_info">如果您的设备有凹口（显示切口），您可以强制应用程序仍然绘制此空间。离开此页面之前，请确保您仍然可以看到菜单按钮，否则您可能无法访问应用程序设置！</string>
@@ -631,6 +633,7 @@
     <string name="panic">恐慌</string>
     <string name="panic_stop">所有输出停止</string>
     <string name="part">部分</string>
+    <string name="password">密码</string>
     <string name="pause">暂停</string>
     <string name="paypal_description">如果您觉得该应用有用，请给我捐款</string>
     <string name="pdf_horizontal">水平显示 PDF 页面</string>

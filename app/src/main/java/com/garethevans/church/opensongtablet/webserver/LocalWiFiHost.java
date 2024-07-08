@@ -108,11 +108,9 @@ public class LocalWiFiHost {
                 bitmap = null;
             }
         }
-        Log.d(TAG,"bitmap:"+bitmap);
-        Log.d(TAG,"webserverFragment:"+webServerFragment);
         if (webServerFragment!=null) {
             // Show local WiFi QR code;
-            webServerFragment.setQRWebServer(bitmap,ssid,password);
+            webServerFragment.setQRHotspot(bitmap,ssid,password);
         }
     }
 

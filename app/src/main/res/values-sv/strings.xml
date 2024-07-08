@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Överst till vänster</string>
     <string name="hot_zones">Heta zoner</string>
     <string name="hot_zones_info">Tilldela anpassade åtgärder till områden på skärmen</string>
+    <string name="hotspot">Konfigurera en WiFi-hotspot</string>
+    <string name="hotspot_info">Om inget WiFi-nätverk är tillgängligt kan OpenSongApp skapa en lokal WiFi-hotspot (ingen internetåtkomst) som andra enheter kan ansluta till och komma åt webbservern.</string>
     <string name="hymn_number">"Sångnummer"</string>
     <string name="ignore_cutouts">Ignorera utklipp</string>
     <string name="ignore_cutouts_info">Om din enhet har skåror (skärmutskärningar) kan du tvinga appen att fortfarande dra över detta utrymme.  Se till att du fortfarande kan se menyknapparna innan du lämnar den här sidan, annars kanske du inte kan komma åt appinställningarna!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Panik</string>
     <string name="panic_stop">All utmatning stoppades</string>
     <string name="part">Del</string>
+    <string name="password">Lösenord</string>
     <string name="pause">Paus</string>
     <string name="paypal_description">Skicka mig en donation om du tycker att appen är användbar</string>
     <string name="pdf_horizontal">Visa PDF-sidor horisontellt</string>

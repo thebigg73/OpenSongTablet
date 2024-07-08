@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Vlevo nahoře</string>
     <string name="hot_zones">Horké zóny</string>
     <string name="hot_zones_info">Přiřazení vlastních akcí k oblastem obrazovky</string>
+    <string name="hotspot">Nastavení Wi-Fi hotspotu</string>
+    <string name="hotspot_info">Pokud není k dispozici žádná WiFi síť, OpenSongApp může vytvořit místní WiFi hotspot (bez přístupu k internetu), ke kterému se mohou připojit ostatní zařízení a přistupovat k webovému serveru.</string>
     <string name="hymn_number">"Číslo Hymn"</string>
     <string name="ignore_cutouts">Ignorujte výřezy</string>
     <string name="ignore_cutouts_info">Pokud má vaše zařízení zářezy (výřezy na displeji), můžete aplikaci vynutit, aby přes tento prostor stále kreslila. Než opustíte tuto stránku, ujistěte se, že stále vidíte tlačítka nabídky, jinak se může stát, že nebudete mít přístup k nastavení aplikace!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Panika</string>
     <string name="panic_stop">Veškerý výstup se zastavil</string>
     <string name="part">Část</string>
+    <string name="password">Heslo</string>
     <string name="pause">Pauza</string>
     <string name="paypal_description">Pošlete mi dar, pokud shledáte aplikaci užitečnou</string>
     <string name="pdf_horizontal">Zobrazení stránek PDF vodorovně</string>

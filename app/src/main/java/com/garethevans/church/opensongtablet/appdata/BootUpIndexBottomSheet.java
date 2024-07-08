@@ -164,7 +164,11 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
                 try {
                         String message = skip_string + " (" + countdownNumber + ")";
                         if (myView != null) {
-                            mainActivityInterface.getMainHandler().post(() -> myView.skipButton.setText(message));
+                            mainActivityInterface.getMainHandler().post(() -> {
+                            if (myView!=null) {
+                                myView.skipButton.setText(message);
+                            }
+                            });
                         }
 
                         if (countdownNumber == 0) {

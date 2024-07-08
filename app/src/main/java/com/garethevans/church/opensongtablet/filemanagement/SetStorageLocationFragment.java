@@ -74,6 +74,7 @@ public class SetStorageLocationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        prepareStrings();
         mainActivityInterface.setSettingsOpen(true);
         mainActivityInterface.updateToolbarHelp(webAddress);
         mainActivityInterface.updateToolbar(storage_change_string);
@@ -159,10 +160,15 @@ public class SetStorageLocationFragment extends Fragment {
 
                     @Override
                     public void onShowcaseDismissed(MaterialShowcaseView showcaseView) {
-                        // Try to show the help showcase
+                        // Try to show the help showcase if we have a vaild location already set
                         try {
-                            if (screenHelp != null && mainActivityInterface!=null && getActivity()!=null) {
+                            if (uriTree!=null && uriTreeHome!=null && screenHelp != null && mainActivityInterface!=null && getActivity()!=null) {
                                 mainActivityInterface.getShowCase().singleShowCase(getActivity(), screenHelp, null, getString(R.string.help), false, "webHelp");
+                            } else if (mainActivityInterface!=null && getActivity()!=null) {
+                                // Show the alternative webhelp
+                                myView.firstRunWebHelp.setVisibility(View.VISIBLE);
+                                myView.firstRunWebHelp.setOnClickListener(v -> mainActivityInterface.openDocument(webAddress));
+                                mainActivityInterface.getShowCase().singleShowCase(getActivity(), myView.firstRunWebHelp, null, getString(R.string.help), false, "webHelp");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

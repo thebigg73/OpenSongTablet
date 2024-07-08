@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">左上</string>
     <string name="hot_zones">ホットゾーン</string>
     <string name="hot_zones_info">画面の領域にカスタムアクションを割り当てる</string>
+    <string name="hotspot">WiFiホットスポットをセットアップする</string>
+    <string name="hotspot_info">WiFiネットワークが利用できない場合、OpenSongAppは、他のデバイスが接続してWebサーバーにアクセスできるローカルWiFiホットスポット(インターネットアクセスなし)を作成できます。</string>
     <string name="hymn_number">"賛美歌番号"</string>
     <string name="ignore_cutouts">カットアウトを無視</string>
     <string name="ignore_cutouts_info">デバイスにノッチ (ディスプレイ カットアウト) がある場合は、アプリにこのスペースを強制的に描画させることができます。このページを離れる前に、メニュー ボタンが表示されていることを確認してください。そうしないと、アプリの設定にアクセスできなくなる可能性があります。</string>
@@ -631,6 +633,7 @@
     <string name="panic">パニック</string>
     <string name="panic_stop">すべての出力が停止しました</string>
     <string name="part">部分</string>
+    <string name="password">パスワード</string>
     <string name="pause">一時停止</string>
     <string name="paypal_description">アプリが便利だと思ったら寄付を送ってください</string>
     <string name="pdf_horizontal">PDF ページを水平方向に表示</string>

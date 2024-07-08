@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Links bo</string>
     <string name="hot_zones">Warm sones</string>
     <string name="hot_zones_info">Ken pasgemaakte aksies toe aan dele van die skerm</string>
+    <string name="hotspot">Stel \'n WiFi-hotspot op</string>
+    <string name="hotspot_info">As daar geen WiFi-netwerk beskikbaar is nie, kan OpenSongApp \'n plaaslike WiFi-hotspot skep (geen internettoegang nie) waaraan ander toestelle kan koppel en toegang tot die webbediener het.</string>
     <string name="hymn_number">"Hymn aantal"</string>
     <string name="ignore_cutouts">Ignoreer kerwe</string>
     <string name="ignore_cutouts_info">As jou toestel kepe het (vertoonuitknipsels), kan jy die toepassing dwing om steeds oor hierdie spasie te teken. Maak seker dat jy steeds die kieslysknoppies kan sien voordat jy hierdie bladsy verlaat, anders sal jy dalk nie toegang tot die programinstellings kry nie!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Paniek</string>
     <string name="panic_stop">Alle uitset het gestop</string>
     <string name="part">Deel</string>
+    <string name="password">Wagwoord</string>
     <string name="pause">Pouse</string>
     <string name="paypal_description">Stuur vir my \'n skenking as jy die toepassing nuttig vind</string>
     <string name="pdf_horizontal">Vertoon PDF-bladsye horisontaal</string>

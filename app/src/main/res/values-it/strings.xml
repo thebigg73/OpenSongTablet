@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">In alto a sinistra</string>
     <string name="hot_zones">Zone calde</string>
     <string name="hot_zones_info">Assegnare azioni personalizzate alle aree dello schermo</string>
+    <string name="hotspot">Configurare un hotspot Wi-Fi</string>
+    <string name="hotspot_info">Se non è disponibile alcuna rete WiFi, OpenSongApp può creare un hotspot WiFi locale (nessun accesso a Internet) a cui altri dispositivi possono connettersi e accedere al server web.</string>
     <string name="hymn_number">"Numero Hymn"</string>
     <string name="ignore_cutouts">Ignora i ritagli</string>
     <string name="ignore_cutouts_info">Se il tuo dispositivo ha delle tacche (ritagli del display), puoi forzare l\'app a disegnare ancora su questo spazio. Assicurati di poter ancora vedere i pulsanti del menu prima di lasciare questa pagina, altrimenti potresti non essere in grado di accedere alle impostazioni dell\'app!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Panico</string>
     <string name="panic_stop">Tutta l\'uscita è stata interrotta</string>
     <string name="part">Parte</string>
+    <string name="password">Parola d’ordine</string>
     <string name="pause">Pausa</string>
     <string name="paypal_description">Inviami una donazione se trovi utile l\'app</string>
     <string name="pdf_horizontal">Visualizzare le pagine PDF orizzontalmente</string>

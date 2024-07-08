@@ -155,6 +155,7 @@ import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
+import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -257,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private VersionNumber versionNumber;
     private WebDownload webDownload;
     private WebServer webServer;
+    private LocalWiFiHost localWiFiHost;
 
     // The navigation controls
     private NavHostFragment navHostFragment;
@@ -796,6 +798,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Webserver (for displaying song over html server)
         webServer = getWebServer();
+        localWiFiHost = getLocalWiFiHost();
     }
 
     @Override
@@ -3783,6 +3786,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public LocalWiFiHost getLocalWiFiHost() {
+        if (localWiFiHost == null) {
+            localWiFiHost = new LocalWiFiHost(this);
+        }
+        return localWiFiHost;
+    }
+
+    @Override
     public void openDocument(String location) {
         // Most locations are passed in from the string.xml file.  They are listed under website_xxx
         // Otherwise they are created on the fly (for link files, importing songs, etc).
@@ -4243,9 +4254,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onDestroy() {
+        // If we were running a local WiFi host, turn it off
+        if (localWiFiHost!=null) {
+            localWiFiHost.stopLocalWifi();
+        }
+
+        // If we were running a local webServer, turn it off
         if (webServer!=null) {
             webServer.stop();
         }
+
+        // Clear any toasts
         if (showToast != null) {
             showToast.kill();
         }
@@ -4255,6 +4274,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             nearbyConnections.turnOffNearby();
         }
 
+        // Stop and clear the metronome
         if (metronome!=null) {
             metronome.releaseSoundPool();
         }

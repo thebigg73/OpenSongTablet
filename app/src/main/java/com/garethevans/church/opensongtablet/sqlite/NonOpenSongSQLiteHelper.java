@@ -37,7 +37,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     public SQLiteDatabase getDB() {
         // The version we use has to be in local app storage unfortunately.  We can copy this though

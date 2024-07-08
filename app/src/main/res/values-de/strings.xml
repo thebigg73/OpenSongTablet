@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Oben links</string>
     <string name="hot_zones">Heiße Zonen</string>
     <string name="hot_zones_info">Zuweisen von benutzerdefinierten Aktionen zu Bereichen des Bildschirms</string>
+    <string name="hotspot">WLAN-Hotspot einrichten</string>
+    <string name="hotspot_info">Wenn kein WLAN-Netzwerk verfügbar ist, kann OpenSongApp einen lokalen WLAN-Hotspot (kein Internetzugang) erstellen, mit dem sich andere Geräte verbinden und auf den Webserver zugreifen können.</string>
     <string name="hymn_number">"Liederbuch Nummer"</string>
     <string name="ignore_cutouts">Ausschnitte ignorieren</string>
     <string name="ignore_cutouts_info">Wenn Ihr Gerät Kerben (Displayausschnitte) hat, können Sie die App zwingen, trotzdem über diesen Bereich zu zeichnen. Stellen Sie sicher, dass Sie die Menüschaltflächen noch sehen können, bevor Sie diese Seite verlassen, da Sie sonst möglicherweise nicht auf die App-Einstellungen zugreifen können!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Panik</string>
     <string name="panic_stop">Alle Ausgaben wurden gestoppt</string>
     <string name="part">Teil</string>
+    <string name="password">Passwort</string>
     <string name="pause">Pause</string>
     <string name="paypal_description">Senden Sie mir eine Spende, wenn Sie die App nützlich finden</string>
     <string name="pdf_horizontal">PDF-Seiten horizontal anzeigen</string>

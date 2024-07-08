@@ -397,6 +397,8 @@
     <string name="hot_zone_top_left">Bal felső sarokban</string>
     <string name="hot_zones">Forró zónák</string>
     <string name="hot_zones_info">Egyéni műveletek hozzárendelése a képernyő területeihez</string>
+    <string name="hotspot">WiFi hotspot beállítása</string>
+    <string name="hotspot_info">Ha nincs elérhető WiFi hálózat, az OpenSongApp létrehozhat egy helyi WiFi hotspotot (nincs internet-hozzáférés), amelyhez más eszközök csatlakozhatnak és hozzáférhetnek a webszerverhez.</string>
     <string name="hymn_number">"Hymn szám"</string>
     <string name="ignore_cutouts">A kivágások figyelmen kívül hagyása</string>
     <string name="ignore_cutouts_info">Ha az eszközén vannak bevágások (kivágások a kijelzőn), akkor kényszerítheti az alkalmazást, hogy továbbra is rajzoljon ezen a területen. Mielőtt elhagyja ezt az oldalt, győződjön meg róla, hogy továbbra is látja a menügombokat, ellenkező esetben előfordulhat, hogy nem tudja elérni az alkalmazás beállításait!</string>
@@ -631,6 +633,7 @@
     <string name="panic">Pánik</string>
     <string name="panic_stop">Minden kimenet leállt</string>
     <string name="part">Rész</string>
+    <string name="password">Jelszó</string>
     <string name="pause">Szünet</string>
     <string name="paypal_description">Ha hasznosnak találja az alkalmazást, küldjön adományt</string>
     <string name="pdf_horizontal">PDF-oldalak vízszintes megjelenítése</string>

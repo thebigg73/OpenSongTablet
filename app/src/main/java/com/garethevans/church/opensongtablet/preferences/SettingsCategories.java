@@ -179,7 +179,14 @@ public class SettingsCategories extends Fragment {
             // Check we have the required permission to get the IP address
             mainActivityInterface.setWhattodo("webserver");
             webserverPermission.launch(mainActivityInterface.getAppPermissions().getWebServerPermission());
-            mainActivityInterface.navigateToFragment(null, R.id.webServerFragment);
+            if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
+                mainActivityInterface.navigateToFragment(null, R.id.webServerFragment);
+            } else {
+                // notify user
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(location_string,
+                        permissions_refused_string, settings_string, "appPrefs");
+                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
+            }
         });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {
