@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -34,8 +33,6 @@ public class WebServer extends NanoHTTPD {
     private boolean runWebServer, allowWebNavigation;
     private final String localFileSplit = ":____:";
 
-
-
     // Web server instantiation and closure
     public WebServer() {
         super(8080);
@@ -49,7 +46,9 @@ public class WebServer extends NanoHTTPD {
         if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
             callRunWebServer();
         }
+
     }
+
     @SuppressLint("DefaultLocale")
     public void callRunWebServer() {
         getIP();
@@ -73,7 +72,6 @@ public class WebServer extends NanoHTTPD {
         }
     }
 
-
     // Deal with the server request for a webpage
     @Override
     public Response serve(IHTTPSession session) {
@@ -84,9 +82,6 @@ public class WebServer extends NanoHTTPD {
         String localFile = null;
         String webpage = "";
         boolean showchords = !pagerequest.contains(nochords);
-
-        Log.d(TAG,"showchords:"+showchords);
-        Log.d(TAG,"pagerequest:"+pagerequest);
 
         if (pagerequest.contains("_PDF/")) {
             // Serve a pdf image
@@ -171,8 +166,6 @@ public class WebServer extends NanoHTTPD {
 
         mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","web.html", webpage);
 
-        Log.d(TAG,"webpage:"+webpage);
-
         if (localFile==null) {
             return newFixedLengthResponse(webpage);
         } else {
@@ -210,7 +203,6 @@ public class WebServer extends NanoHTTPD {
         if (!text.isEmpty() && !text.startsWith("/")) {
             text = "/" + text;
         }
-        Log.d(TAG,"text:"+text);
         return text;
     }
 
@@ -246,7 +238,7 @@ public class WebServer extends NanoHTTPD {
     public Bitmap getIPQRCode() {
         QRCodeWriter writer = new QRCodeWriter();
         try {
-            BitMatrix bitMatrix = writer.encode(getIP(), BarcodeFormat.QR_CODE, 200, 200);
+            BitMatrix bitMatrix = writer.encode(getIP(), BarcodeFormat.QR_CODE, 800, 800);
 
             int w = bitMatrix.getWidth();
             int h = bitMatrix.getHeight();
@@ -631,7 +623,6 @@ public class WebServer extends NanoHTTPD {
                 "  window.addEventListener(\"hashchange\", offsetAnchor);\n" +
                 "  window.setTimeout(offsetAnchor, 1); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).\n\n";
     }
-
 
 
     private String getGoToSongJS() {

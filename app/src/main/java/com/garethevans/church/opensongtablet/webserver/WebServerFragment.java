@@ -1,7 +1,10 @@
 package com.garethevans.church.opensongtablet.webserver;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +24,18 @@ public class WebServerFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "WebServerFragment";
-    private String webAddress="", website_web_server_string="", web_server_string="";
+    private String webAddress="", website_web_server_string="", web_server_string="",
+            ssid_string="",password_string="", security_string="";
 
     @Override
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(web_server_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
+        WebServerFragment webServerFragment = this;
+        // Let the localWiFiHost know we can update the QR code
+        mainActivityInterface.getLocalWiFiHost().setWebServerFragment(webServerFragment);
+
     }
 
     @Override
@@ -43,6 +51,20 @@ public class WebServerFragment extends Fragment {
 
         webAddress = website_web_server_string;
 
+        WebServerFragment webServerFragment = this;
+        // Let the localWiFiHost know we can update the QR code
+        mainActivityInterface.getLocalWiFiHost().setWebServerFragment(webServerFragment);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            myView.runHotspot.setVisibility(View.VISIBLE);
+            if (mainActivityInterface.getLocalWiFiHost()!=null) {
+                myView.runHotspot.setChecked(mainActivityInterface.getLocalWiFiHost().getRunning());
+                myView.localHotspot.setVisibility(mainActivityInterface.getLocalWiFiHost().getRunning() ? View.VISIBLE : View.GONE);
+            } else {
+                myView.localHotspot.setVisibility(View.GONE);
+            }
+        }
+
         // Update the views
         updateViews();
 
@@ -56,6 +78,9 @@ public class WebServerFragment extends Fragment {
         if (getContext() != null) {
             web_server_string = getString(R.string.web_server);
             website_web_server_string = getString(R.string.website_web_server);
+            ssid_string = getString(R.string.ssid);
+            password_string = getString(R.string.password);
+            security_string = getString(R.string.security);
         }
     }
 
@@ -66,6 +91,12 @@ public class WebServerFragment extends Fragment {
         myView.ipAddress.setText(mainActivityInterface.getWebServer().getIP());
         myView.webServer.setChecked(mainActivityInterface.getWebServer().getRunWebServer());
         myView.webServerInfo.setVisibility(mainActivityInterface.getWebServer().getRunWebServer() ? View.VISIBLE:View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            myView.runHotspot.setChecked(mainActivityInterface.getLocalWiFiHost().getRunning());
+            myView.runHotspot.setVisibility(View.VISIBLE);
+        } else {
+            myView.runHotspot.setVisibility(View.GONE);
+        }
     }
 
     private void setListeners() {
@@ -80,5 +111,40 @@ public class WebServerFragment extends Fragment {
                 }));
         myView.allowWebNavigation.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getWebServer().setAllowWebNavigation(b));
         myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getWebServer().getIP()));
+        myView.runHotspot.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (mainActivityInterface.getLocalWiFiHost()!=null) {
+                    mainActivityInterface.getLocalWiFiHost().setRunning(b);
+                    myView.localHotspot.setVisibility(b ? View.VISIBLE : View.GONE);
+                    // Update the webserver address
+                    if (myView.webServer.getChecked()) {
+                        mainActivityInterface.getWebServer().stopWebServer();
+                        mainActivityInterface.getWebServer().getIP();
+                        mainActivityInterface.getWebServer().setRunWebServer(true);
+                        updateViews();
+                    }
+
+                } else {
+                    myView.localHotspot.setVisibility(View.GONE);
+                    myView.runHotspot.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    public void setQRWebServer(Bitmap bitmap, String ssid, String password) {
+        Glide.with(this).load(bitmap).into(myView.hotspotQR);
+        String networkInfo = ssid_string + ": " + ssid + "\n" +
+                password_string + ": " + password + "\n" +
+                security_string + ": WPA";
+        myView.hotspotInfo.setText(networkInfo);
+        Log.d(TAG,"newtowrkInfo:"+networkInfo);
+        myView.localHotspot.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mainActivityInterface.getLocalWiFiHost().setWebServerFragment(null);
     }
 }
