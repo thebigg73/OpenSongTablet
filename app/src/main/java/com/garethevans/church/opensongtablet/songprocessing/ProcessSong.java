@@ -940,7 +940,7 @@ public class ProcessSong {
     }
 
     private TableLayout groupTable(Song thisSong, String string, int lyricColor, int chordColor, int capoColor,
-                                   int highlightChordColor, boolean presentation, boolean boldText) {
+                                   int highlightChordColor, boolean presentation, boolean boldText, boolean asPDF) {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -1131,7 +1131,11 @@ public class ProcessSong {
                                 }
                                 textView.setText(spannableString);
                                 // Comment line with chords above still needs comment background
-                                textView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsCommentColor());
+                                if (asPDF) {
+                                    textView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPdfBackgroundColor());
+                                } else {
+                                    textView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsCommentColor());
+                                }
                                 htmlLyrics.append("<td class=\"comment\">").append(str).append("</td>");
                             } else {
                                 textView = null;
@@ -2181,21 +2185,21 @@ public class ProcessSong {
                                             mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfHighlightChordColor(),
-                                            false, isChorusBold));
+                                            false, isChorusBold,true));
                                 } else if (presentation && !performancePresentation) {
                                     linearLayout.addView(groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoChordColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
-                                            true, isChorusBold));
+                                            true, isChorusBold,false));
                                 } else {
                                     TableLayout tl = groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
-                                            presentation,isChorusBold);
+                                            presentation,isChorusBold,false);
                                     tl.setBackgroundColor(backgroundColor);
                                     linearLayout.addView(tl);
                                 }
@@ -2351,7 +2355,7 @@ public class ProcessSong {
 
     private int[] getPdfBGColor(String line) {
         if (line.startsWith(";")) {
-            return new int[]{mainActivityInterface.getMyThemeColors().getPdfCommentColor(), 0};
+            return new int[]{mainActivityInterface.getMyThemeColors().getPdfCommentColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.verse))) {
             return new int[]{mainActivityInterface.getMyThemeColors().getPdfVerseColor(),0};
         } else if (beautifyHeading(line).contains(c.getString(R.string.prechorus))) {

@@ -228,7 +228,6 @@ public class MakePDF {
 
         // If we are adding section spaces, add this on to the heights for each section except the last
         sectionSpace = 0;
-        Log.d(TAG,"addSectionSpace:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true));
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true) &&
                 sectionHeights.size()>1) {
             sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
@@ -252,8 +251,6 @@ public class MakePDF {
         // If it is bigger than maxScaling, it will look silly, so set this as max
         sectionScaling = Math.min(sectionScaling,maxScaling);
 
-        Log.d(TAG,"sectionScaling:"+sectionScaling);
-
         // Now check how this affects the height of the views
         // We only reduce the scaling if the section heights are too big
         if ((maxHeight*sectionScaling) > availableHeight) {
@@ -261,12 +258,9 @@ public class MakePDF {
         }
 
         // Check for min scaling of 0.75f if exporting song list
-        Log.d(TAG,"exportingSongList:"+exportingSongList);
         if (exportingSongList) {
             sectionScaling = Math.max(sectionScaling, 0.75f);
         }
-
-        Log.d(TAG,"sectionScaling:"+sectionScaling);
 
         // Now plan out how many pages we will need
         // We need to do this before being able to write the footer
@@ -353,7 +347,6 @@ public class MakePDF {
             pageCanvas.restore();
 
             // Set the position to draw the next view
-            Log.d(TAG,"sectionSpace:"+sectionSpace);
             ypos = ypos + newHeight + sectionSpace;
         }
 
@@ -373,7 +366,6 @@ public class MakePDF {
             view.setPivotY(0.0f);
             view.setScaleX(scaleValue);
             view.setScaleY(scaleValue);
-            Log.d(TAG,"original width:"+width);
             view.layout(0, 0, (int)((docWidth - (cmToPx(margin_cm) * 2))/scaleValue), (int)(height/scaleValue));
 
         } else {
