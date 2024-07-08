@@ -138,6 +138,7 @@ public class BrowseHostAdapter extends RecyclerView.Adapter<HostViewHolder> {
 
             // Set the listener for this item
             int finalPosition = position;
+            holder.modifiedDate.setVisibility(View.GONE);
             holder.itemLayout.setOnClickListener(view -> {
                 // Set the item checked value as the opposite to what it currently was
                 hostItems.get(finalPosition).setChecked(!hostItems.get(finalPosition).getChecked());

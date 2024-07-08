@@ -39,6 +39,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
@@ -1787,17 +1788,19 @@ public class NearbyConnections implements NearbyInterface {
     // This is where the client requests a file from the host
     public void requestHostFile(String folder, String subfolder, String filename) {
         for (String endpointString : connectedEndpoints) {
+            Log.d(TAG,"requestHostFile:"+folder+"  / " + subfolder + " / "+ filename);
             String endpointId = getEndpointSplit(endpointString)[0];
             // Send the file request
             String requestPayload = requestFileTag + deviceId + requestFileSeparator +
                     folder + requestFileSeparator + subfolder + requestFileSeparator + filename;
-
+            Log.d(TAG,"requestPayload:"+requestPayload);
             Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(requestPayload.getBytes()));
         }
     }
 
     // This is for the host to send the requested file to the calling device
     public void hostSendFile(String requestPayload) {
+        Log.d(TAG,"HOST requestPayload:"+requestPayload);
         if (isHost) {
             // Break apart the requestPayload
             requestPayload = requestPayload.replace(requestFileTag, "");
@@ -1828,13 +1831,17 @@ public class NearbyConnections implements NearbyInterface {
                 } catch (Exception e) {
                     Log.d(TAG, "Error trying to send file: " + e);
                 }
+                Log.d(TAG,"payloadFile:"+payloadFile+"\nuri:"+uri);
                 if (payloadFile != null) {
                     // Send the info lead then file to the requesting device
                     for (String endpointString : connectedEndpoints) {
-                        String endpointId = getEndpointSplit(endpointString)[0];
+                        String endpointId = getEndpointSplit(endpointString)[1];
                         Log.d(TAG, "endpointId:" + endpointId + "  requestingId:" + bits[0]);
                         if (endpointId.equals(bits[0])) {
-                            Nearby.getConnectionsClient(c).sendPayload(endpointId,
+                            // Get the endpointCode not the name
+                            String endpointCode = getEndpointSplit(endpointString)[0];
+                            Log.d(TAG,"try sending bytes:"+ Arrays.toString(payloadInfo.getBytes()));
+                            Nearby.getConnectionsClient(c).sendPayload(endpointCode,
                                     Payload.fromBytes(payloadInfo.getBytes()));
                             Nearby.getConnectionsClient(c).sendPayload(endpointId, payloadFile);
                         }
@@ -1847,6 +1854,7 @@ public class NearbyConnections implements NearbyInterface {
 
     // This is where the client saves the payload requested file
     public void dealWithRequestedFile() {
+        Log.d(TAG,"Client receiving dealWithRequestedFile()\nrequestedFilePayload:"+requestedFilePayload+"\nbrowseHostFragment:"+browseHostFragment);
         if (requestedFilePayload != null && browseHostFragment != null) {
             // Get the file folder, subfolder and filename from the BrowseHostFragment
             String folder = browseHostFragment.getRequestedFolder();

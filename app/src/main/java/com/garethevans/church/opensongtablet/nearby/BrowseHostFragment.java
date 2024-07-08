@@ -107,13 +107,22 @@ public class BrowseHostFragment extends Fragment {
     }
 
     private void setupListeners() {
-
+        myView.nearbyBrowseSelectAll.setOnClickListener(view -> {
+            browseHostAdapter.selectAll(myView.nearbyBrowseSelectAll.isChecked());
+        });
+        myView.importNearbyFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startGetFiles();
+            }
+        });
     }
 
     public void displayHostItems(String[] hostItems) {
         // We can now update the arrayAdapter
         myView.hostFilesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         myView.hostFilesRecycler.setAdapter(browseHostAdapter);
+        myView.nearbyBrowseSelectAll.setVisibility(View.GONE);
 
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             for (String hostItem:hostItems) {
@@ -124,7 +133,10 @@ public class BrowseHostFragment extends Fragment {
                 myView.dimBackground.setVisibility(View.GONE);
                 myView.hostProgressBar.setVisibility(View.GONE);
                 myView.hostFilesRecycler.setVisibility(View.VISIBLE);
+                browseHostAdapter.notifyItemRangeChanged(0,browseHostAdapter.getItemCount());
+                myView.nearbyBrowseSelectAll.setVisibility(View.VISIBLE);
                 Log.d(TAG,"adapterSize:"+browseHostAdapter.getItemCount());
+                myView.hostFilesRecycler.invalidate();
             });
         });
 
@@ -132,7 +144,9 @@ public class BrowseHostFragment extends Fragment {
 
     private void startGetFiles() {
         // Get the checked items from the array
+        Log.d(TAG,"startGetFiles()");
         checkedItems = browseHostAdapter.getCheckedItems();
+        Log.d(TAG,"checkedItems.size():"+checkedItems.size());
         currentFile = 0;
         waitingForFiles = true;
         // Get the first file if chosen
@@ -143,6 +157,7 @@ public class BrowseHostFragment extends Fragment {
 
     private void getFile() {
         if (currentFile<checkedItems.size()) {
+            Log.d(TAG,"currentFile:"+currentFile);
             requestedFolder = checkedItems.get(currentFile).getFolder();
             requestedSubfolder = checkedItems.get(currentFile).getSubfolder();
             requestedFilename = checkedItems.get(currentFile).getFilename();

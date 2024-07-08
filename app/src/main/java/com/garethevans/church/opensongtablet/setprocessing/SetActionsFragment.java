@@ -97,11 +97,13 @@ public class SetActionsFragment extends Fragment {
     }
 
     private void setupViews() {
+        /* Not got this working yet, so leave hidden
         if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
             myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
                     !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
                     mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
-        }
+        //}*/
+        myView.browseHostLayout.setVisibility(View.GONE);
     }
 
     private void setupListeners() {
