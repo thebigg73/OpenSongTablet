@@ -326,38 +326,41 @@ public class DisplayPrevNext {
         // If in using song menu, don't proceed unless user has switched on this preference
         // If in a set, only show if showNext/showPrev is selected
         if (moveNextInSet || movePrevInSet || prevNextSongMenu) {
-            if (showNext && !next.getText().toString().isEmpty() && !nextVisible) {
-                nextVisible = true;
-                if (prevNextTextButtons) {
-                    next.removeCallbacks(hideNextRunnable);
-                    next.show();
-                    if (prevNextHide) {
-                        next.postDelayed(hideNextRunnable, 3000);
-                    }
-                } else {
-                    nextFAB.removeCallbacks(hideNextFABRunnable);
-                    nextFAB.show();
-                    if (prevNextHide) {
-                        nextFAB.postDelayed(hideNextFABRunnable, 3000);
-                    }
-                }
-            }
-            if (showPrev && !prev.getText().toString().isEmpty() && !prevVisible) {
-                prevVisible = true;
-                if (prevNextTextButtons) {
-                    prev.removeCallbacks(hidePrevRunnable);
-                    prev.show();
-                    if (prevNextHide) {
-                        prev.postDelayed(hidePrevRunnable, 3000);
-                    }
-                } else {
-                    prevFAB.removeCallbacks(hidePrevFABRunnable);
-                    prevFAB.show();
-                    if (prevNextHide) {
-                        prevFAB.postDelayed(hidePrevFABRunnable, 3000);
+            // Make sure we are in the main looper
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (showNext && !next.getText().toString().isEmpty() && !nextVisible) {
+                    nextVisible = true;
+                    if (prevNextTextButtons) {
+                        next.removeCallbacks(hideNextRunnable);
+                        next.show();
+                        if (prevNextHide) {
+                            next.postDelayed(hideNextRunnable, 3000);
+                        }
+                    } else {
+                        nextFAB.removeCallbacks(hideNextFABRunnable);
+                        nextFAB.show();
+                        if (prevNextHide) {
+                            nextFAB.postDelayed(hideNextFABRunnable, 3000);
+                        }
                     }
                 }
-            }
+                if (showPrev && !prev.getText().toString().isEmpty() && !prevVisible) {
+                    prevVisible = true;
+                    if (prevNextTextButtons) {
+                        prev.removeCallbacks(hidePrevRunnable);
+                        prev.show();
+                        if (prevNextHide) {
+                            prev.postDelayed(hidePrevRunnable, 3000);
+                        }
+                    } else {
+                        prevFAB.removeCallbacks(hidePrevFABRunnable);
+                        prevFAB.show();
+                        if (prevNextHide) {
+                            prevFAB.postDelayed(hidePrevFABRunnable, 3000);
+                        }
+                    }
+                }
+            });
         }
     }
 
