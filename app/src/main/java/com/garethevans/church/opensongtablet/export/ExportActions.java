@@ -209,7 +209,7 @@ public class ExportActions {
 
                                         if (filename.contains("# " + c.getString(R.string.variation) + " # - ")) {
                                             filename = filename.replace("# " + c.getString(R.string.variation) + " # - ", "");
-                                            id = "../Variations/" + filename;
+                                            id = mainActivityInterface.getVariations().getVariationsFolder() + filename;
                                             custom = c.getString(R.string.variation);
                                             key = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue("", "prefKey"));
 

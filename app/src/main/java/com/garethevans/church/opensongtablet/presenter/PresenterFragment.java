@@ -32,6 +32,7 @@ public class PresenterFragment extends Fragment {
     private PageAdapter pageAdapter;
     private SongSectionsFragment songSectionsFragment;
     private AdvancedFragment advancedFragment;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PresenterFragment";
     private boolean landscape;
     private String presenter_mode_string="", mainfoldername_string="", song_string="",
@@ -254,6 +255,9 @@ public class PresenterFragment extends Fragment {
         // Check to highlighting in the set
         mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
 
+        // Stop any pointless calls to update set highlighting while processing
+        mainActivityInterface.setHighlightChangeAllowed(false);
+
         mainActivityInterface.closeDrawer(true);
         myView.viewPager.setCurrentItem(0);
         mainActivityInterface.getSong().setFolder(folder);
@@ -334,8 +338,10 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getMidi().sendSongMessages();
         }
 
+        // Stop any pointless calls to update set highlighting while processing
+        mainActivityInterface.setHighlightChangeAllowed(true);
+
         // Check the set index
-        mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
         mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getIndexSongInSet());
         mainActivityInterface.notifySetFragment("scrollTo",mainActivityInterface.getCurrentSet().getIndexSongInSet());
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
@@ -399,12 +405,6 @@ public class PresenterFragment extends Fragment {
         }
     }
 
-    public void setAllowPager(boolean allowPager) {
-        //pageAdapter.setAllowPager(allowPager);
-        Log.d(TAG,"swipe enable="+allowPager);
-        myView.viewPager.setUserInputEnabled(allowPager);
-    }
-
     private class MyCheckChangeListener implements CompoundButton.OnCheckedChangeListener {
 
         @Override
@@ -462,13 +462,7 @@ public class PresenterFragment extends Fragment {
             myView.inlineSetList.post(() -> myView.inlineSetList.notifyToInsertAllInlineSet());
         }
     }
-    public void notifyInlineSetUpdated() {
-        if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetUpdated();
-        }
-    }
     public void notifyInlineSetInserted() {
-        Log.d(TAG,"notifyInlineSetInserted");
         if (myView!=null) {
             myView.inlineSetList.notifyInlineSetInserted();
         }
@@ -483,13 +477,11 @@ public class PresenterFragment extends Fragment {
         }
     }
     public void notifyInlineSetRemoved(int position) {
-        Log.d(TAG,"notifyInlineSetRemoved("+position+")");
         if (myView!=null) {
             myView.inlineSetList.notifyInlineSetRemoved(position);
         }
     }
     public void notifyInlineSetMove(int from, int to) {
-        Log.d(TAG,"notifyInlineSetMoved(from:"+from+", to:"+to+")");
         if (myView!=null) {
             myView.inlineSetList.notifyInlineSetMove(from,to);
         }
@@ -511,7 +503,6 @@ public class PresenterFragment extends Fragment {
     }
     @SuppressWarnings("ConstantConditions")
     public void updateInlineSetSortTitles() {
-        Log.d(TAG,"updateInlineSetSet()");
         if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
                 myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));

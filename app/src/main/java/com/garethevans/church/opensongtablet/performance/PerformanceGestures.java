@@ -616,12 +616,11 @@ public class PerformanceGestures {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
             Log.d(TAG,"checkPositionInSet:"+mainActivityInterface.getCurrentSet().getIndexSongInSet());
-            if (mainActivityInterface.getSetActions().getIsNormalVariation(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
+            if (mainActivityInterface.getVariations().getIsNormalVariation(mainActivityInterface.getSong())) {
                 mainActivityInterface.setWhattodo("editActualVariation");
-            } else if (mainActivityInterface.getSetActions().getIsKeyVariation(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
+            } else if (mainActivityInterface.getVariations().getIsKeyVariation(mainActivityInterface.getSong())) {
                 mainActivityInterface.setWhattodo("editTempVariation");
-                String[] getOriginal = mainActivityInterface.getSetActions().getPreVariationFolderFilename(mainActivityInterface.getSong().getFolder() +
-                        "/" + mainActivityInterface.getSong().getFilename());
+                String[] getOriginal = mainActivityInterface.getVariations().getPreVariationInfo(mainActivityInterface.getSong());
                 mainActivityInterface.getSong().setFolder(getOriginal[0]);
                 mainActivityInterface.getSong().setFilename(getOriginal[1]);
                 mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false);

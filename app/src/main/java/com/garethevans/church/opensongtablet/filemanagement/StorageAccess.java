@@ -2250,7 +2250,6 @@ public class StorageAccess {
 
         while (!dirNodes.isEmpty()) {
             try {
-
                 children = dirNodes.remove(0); // get the item from top
                 Cursor cursor = contentResolver.query(children, new String[]{
                         DocumentsContract.Document.COLUMN_DOCUMENT_ID,
@@ -2266,9 +2265,10 @@ public class StorageAccess {
                         }
                     }
                     cursor.close();
+
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d(TAG,"Temporary issue - couldn't get access to dir:"+children);
             }
         }
         Comparator<String> comparator = (o1, o2) -> {

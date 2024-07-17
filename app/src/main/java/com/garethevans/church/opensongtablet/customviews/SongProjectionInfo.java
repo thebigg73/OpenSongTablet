@@ -124,12 +124,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     }
 
     private void showMiniLogo(boolean show) {
-        Log.d(TAG,"showMiniLogo("+show+")");
-        if (show) {
-            miniLogo.setVisibility(View.VISIBLE);
-        } else {
-            miniLogo.setVisibility(View.GONE);
-        }
+        miniLogo.setVisibility(show ? View.VISIBLE : View.GONE);
     }
     public void setupFonts(MainActivityInterface mainActivityInterface) {
         if (!presenterPrimaryScreen) {
@@ -146,7 +141,6 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             } else {
                 color = mainActivityInterface.getMyThemeColors().getPresoInfoFontColor();
             }
-            Log.d(TAG,"compare color: black:"+Color.BLACK+"  white:"+Color.WHITE+"  color:"+color);
             colorList = ColorStateList.valueOf(color);
             capoIcon.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
             TextViewCompat.setCompoundDrawableTintList(capoIcon, colorList);

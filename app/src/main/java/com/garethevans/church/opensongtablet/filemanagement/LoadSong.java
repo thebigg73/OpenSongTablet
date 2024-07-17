@@ -40,6 +40,9 @@ public class LoadSong {
         // If not, we load up from the xml file
         // We also load from the file if it is a custom file (pdf and images are dealt with separately)
 
+        // Stop any pointless calls to update set highlighting while processing
+        mainActivityInterface.setHighlightChangeAllowed(false);
+
         // Get the song folder/filename from the sent song object
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
@@ -92,6 +95,9 @@ public class LoadSong {
 
     public Song doLoadSongFile(Song thisSong, boolean indexing) {
 
+        // Stop any pointless calls to update set highlighting while processing
+        mainActivityInterface.setHighlightChangeAllowed(false);
+
         ArrayList<String> fileExtensionsToRemove = new ArrayList<>();
 
         // This extracts what it can from the song, and returning an updated song object.
@@ -139,13 +145,11 @@ public class LoadSong {
                     // Don't update the songLoadSuccess as this isn't what the user really wants
 
                 } else if (thisSong.getFiletype().equals("XML")) {
-                    Log.d(TAG,"loading xml");
                     // 2. We have an XML file (likely)
                     utf = getUTF(thisSong.getFolder(),
                             thisSong.getFilename(), thisSong.getFiletype());
                     thisSong = readFileAsXML(thisSong, where, uri, utf);
                 }
-
 
                 // If the file wasn't read as an xml file and might be text based, we need to deal with it in another way
                 // This isn't added as an else statement to the above as one of those methods might have been tried
@@ -182,7 +186,6 @@ public class LoadSong {
                     }
                 } else if (thisSong.getFiletype().equals("TXT")) {
                     // 5.  Run the text convert script
-                    Log.d(TAG,"Loading a text file");
                     thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(thisSong.getLyrics()));
 
                     // Identify the potential file extensions to remove
@@ -249,7 +252,6 @@ public class LoadSong {
         thisSong.setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
         if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Songs",thisSong.getFolder(),newname,thisSong.getSongXML())) {
-            Log.d(TAG,"success writing:"+thisSong.getSongXML());
             mainActivityInterface.getStorageAccess().deleteFile(olduri);
             // Remove the old item from the database
             Log.d(TAG,"remove from database:" + mainActivityInterface.getSQLiteHelper().deleteSong(thisSong.getFolder(),oldname));
@@ -389,7 +391,6 @@ public class LoadSong {
             if (mainActivityInterface.getStorageAccess().uriIsFile(uri)) {
                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("text", thisSong.getFilename())) {
                     // This is a text file, make sure it is identified as this
-                    Log.d(TAG,"Text file");
                     thisSong.setFiletype("TXT");
                     // Don't fix here as this happens when it is opened
                 } else {
@@ -547,7 +548,6 @@ public class LoadSong {
                                 thisSong.setFiletype("XML");
 
                             } catch (Exception e) {
-                                Log.d(TAG, "Not a straightforward xml file: " + thisSong.getFolder() + "/" + thisSong.getFilename() + "  filetype:" + thisSong.getFilename());
                                 e.printStackTrace();
                                 if (thisSong.getFiletype().equals("XML") &&
                                         thisSong.getFilename() != null &&
@@ -603,7 +603,6 @@ public class LoadSong {
                         (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) &&
                         thisSong.getFilename()!=null &&
                         !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-                    Log.d(TAG, "songToFix:" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  " + thisSong.getFiletype());
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Fix Songs/" + thisSong.getFolder() + "/" + thisSong.getFilename() + "  deleteOld=true");
                     Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisSong.getFolder(), thisSong.getFilename());
                     InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
@@ -634,23 +633,16 @@ public class LoadSong {
                         Log.d(TAG, "fixSong: " + success);
 
                     } else if (thisSong.getFiletype().equals("TXT")) {
-                        Log.d(TAG,"old content:"+content);
                         content = mainActivityInterface.getConvertTextSong().convertText(content);
-                        Log.d(TAG,"new content:"+content);
                         thisSong.setLyrics(content);
                         String oldname = thisSong.getFilename();
-                        Log.d(TAG,"oldname:"+oldname);
                         Uri oldUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisSong.getFolder(), thisSong.getFilename());
-                        Log.d(TAG,"oldUri:"+oldUri);
                         String newname = oldname.replace(".txt", "").replace(".TXT","");
-                        Log.d(TAG,"newname:"+newname);
                         thisSong.setFilename(newname);
                         thisSong.setTitle(newname);
                         String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
-                        Log.d(TAG,"xml:"+xml);
                         success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
                                 "Songs", thisSong.getFolder(), newname, xml);
-                        Log.d(TAG,"oldname:"+oldname+"  newname:"+newname+"  success:"+success);
                         if (success && !newname.equals(oldname)) {
                             // Remove the obsolete text file
                             mainActivityInterface.getStorageAccess().deleteFile(oldUri);
@@ -658,7 +650,6 @@ public class LoadSong {
                             Log.d(TAG,"remove from database:" + mainActivityInterface.getSQLiteHelper().deleteSong(thisSong.getFolder(),oldname));
                         }
                     }
-                    Log.d(TAG, "fixSong: " + success);
                     if (success) {
                         mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
                     }
@@ -761,11 +752,9 @@ public class LoadSong {
         // Try to get this section
         toFix = getSongAsText(where,thisSong.getFolder(),thisSong.getFilename());
 
-        Log.d(TAG,"toFix:"+toFix);
         if (!section.isEmpty() && toFix.contains("<"+section+">") && toFix.contains("</"+section+">")) {
             int start = toFix.indexOf("<"  + section + ">") + section.length() + 2;
             int end   = toFix.indexOf("</" + section + ">");
-            Log.d(TAG,"start:"+start+"  end:"+end);
             if (start>-1 && end>start) {
                 String origExtracted = toFix.substring(start,end);
                 String newExtracted  = origExtracted.replace("<","&lt;");

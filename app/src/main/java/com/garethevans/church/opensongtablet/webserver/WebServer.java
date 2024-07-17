@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -388,9 +389,9 @@ public class WebServer extends NanoHTTPD {
 
         // Check to see if the song is in the users set even if clicked on from web song menu
         if (!inset) {
-            int findindex = mainActivityInterface.getSetActions().indexSongInSet(songForHTML);
-            if (findindex>-1) {
-                index = findindex;
+            Log.d(TAG,"WebServer looking for:"+songForHTML.getFolder()+"/"+songForHTML.getFilename());
+            if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
+                index = mainActivityInterface.getCurrentSet().getIndexSongInSet();
                 inset = true;
                 max = Math.max(mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1,0);
             }

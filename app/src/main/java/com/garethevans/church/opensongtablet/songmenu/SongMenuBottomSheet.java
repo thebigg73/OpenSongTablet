@@ -216,7 +216,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         // Now change it to a variation
         int position = mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1;
         if (position>=0) {
-            mainActivityInterface.getSetActions().makeVariation(position);
+            mainActivityInterface.getVariations().makeVariation(position);
         }
 
         // Let the user know and close

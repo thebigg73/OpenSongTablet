@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.LinkedHashMap;
@@ -49,7 +50,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public interface AdapterCallback {
-        void onItemClicked(int position, String folder, String filename, String key);
+        void onItemClicked(int position, String folder, String filename, String key, boolean inSet);
         void onItemLongClicked(int position, String folder, String filename, String key);
     }
 
@@ -183,13 +184,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                         songItemViewHolder.itemCheckedFrame.setVisibility(View.GONE);
                     }
 
-                    // Look for the song index based on the folder, filename and key of the song
-                    mainActivityInterface.getSetActions().indexSongInSet(song);
-
                     // Set the listeners
-                    final String itemFilename = filename;
+                    String itemFilename = filename;
                     final String itemTitle = title;
-                    final String itemFolder = folder;
+                    String itemFolder = folder;
                     final String itemKey = key;
                     final String setentryalt1 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, null);
                     final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
@@ -200,14 +198,30 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                             mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                         } else {
                             // Look for the song index based on the folder, filename and key of the song
+                            Log.d(TAG,"songListAdapter item clicked looking for:"+song.getFolder()+"/"+song.getFilename());
                             mainActivityInterface.getSetActions().indexSongInSet(song);
+                            Log.d(TAG,"indexSongInSet():"+mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                            if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
+                                // Use the variation if required
+                                SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                                song.setFilename(setItemInfo.songfilename);
+                                song.setFolder(setItemInfo.songfolder);
+                                song.setKey(setItemInfo.songkey);
+                                if (callback != null) {
+                                    callback.onItemClicked(position, setItemInfo.songfolder, setItemInfo.songfilename, setItemInfo.songkey, true);
+                                }
+                            } else {
+                                if (callback != null) {
+                                    callback.onItemClicked(position, itemFolder, itemFilename, itemKey, false);
+                                }
+                            }
                         }
                         mainActivityInterface.notifySetFragment("highlight",-1);
                         song.setFilename(itemFilename);
                         song.setFolder(itemFolder);
                         song.setKey(itemKey);
                         if (callback != null) {
-                            callback.onItemClicked(position, itemFolder, itemFilename, itemKey);
+                            callback.onItemClicked(position, itemFolder, itemFilename, itemKey,false);
                         }
                     });
 
@@ -237,6 +251,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     });
 
                     String finalFolderNamePair = folderNamePair;
+
                     songItemViewHolder.itemChecked.setOnClickListener(v -> {
                         if (mainActivityInterface.getSetActions().isSongInSet(finalFolderNamePair)) {
                             // This was in the set, so remove it
@@ -245,15 +260,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                 String setItemString = mainActivityInterface.getSetActions().
                                         getSongForSetWork(mainActivityInterface.getCurrentSet().getSetItemInfo(x));
                                 String setItemStringLessWithoutKey = setItemString.substring(0,
-                                        setItemString.indexOf(mainActivityInterface.getSetActions().getKeyStart())) +
-                                        mainActivityInterface.getSetActions().getKeyStart() +
-                                        mainActivityInterface.getSetActions().getKeyEnd() +
+                                        setItemString.indexOf(mainActivityInterface.getVariations().getKeyStart())) +
+                                        mainActivityInterface.getVariations().getKeyStart() +
+                                        mainActivityInterface.getVariations().getKeyEnd() +
                                         mainActivityInterface.getSetActions().getItemEnd();
                                 if (setItemString.equals(setentry) ||
                                         setItemString.equals(setentryalt1) ||
                                         setItemString.equals(setentryalt2) ||
                                         setItemStringLessWithoutKey.equals(setentryalt2)) {
-                                    int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(finalFolderNamePair);
+                                        // Because we clicked on a song item, we need to manually check the set index
+                                    int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getCurrentSet().getSetItemInfo(x));
                                     // Notify the set menu fragment which removes the entry and updates the set and inline adapters
                                     int prevSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
                                     if (positionInSet>-1) {

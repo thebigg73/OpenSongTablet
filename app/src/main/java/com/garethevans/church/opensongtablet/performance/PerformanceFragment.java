@@ -39,6 +39,7 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.NearbyAlertPopUp;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
@@ -66,6 +67,7 @@ public class PerformanceFragment extends Fragment {
     private int heightAfterScale;
     private boolean processingTestView;
     private boolean songChange;
+    private boolean firstSongLoad = true;
     private boolean metronomeWasRunning;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
@@ -168,7 +170,6 @@ public class PerformanceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d(TAG,"onCreateView()");
         myView = ModePerformanceBinding.inflate(inflater, container, false);
         prepareStrings();
 
@@ -236,19 +237,16 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(0);
                 mainActivityInterface.loadSongFromSet(0);
             } else {
-                int position = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-                // Check if the current song is in the set, if not, load the first item
-                if (position<0) {
-                    position = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-                    mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
-                }
                 processingTestView = false;
-                mainActivityInterface.loadSongFromSet(Math.max(position, 0));
+                mainActivityInterface.loadSongFromSet(Math.max(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0));
+
             }
         } else {
             processingTestView = false;
-            doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername),
-                    mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp"));
+            String songFolder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername);
+            String songFilename = mainActivityInterface.getPreferences().getMyPreferenceString("songFilename", "Welcome to OpenSongApp");
+            mainActivityInterface.getSetActions().indexSongInSet(songFolder,songFilename,null);
+            doSongLoad(songFolder, songFilename);
         }
 
         // Check if we need to show an alert
@@ -361,11 +359,6 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.post(() -> myView.inlineSetList.notifyToInsertAllInlineSet());
         }
     }
-    public void notifyInlineSetUpdated() {
-        if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetUpdated();
-        }
-    }
     public void notifyInlineSetInserted() {
         if (myView!=null) {
             myView.inlineSetList.notifyInlineSetInserted();
@@ -443,127 +436,215 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
-        if (processingTestView) {
-            // Switch this off in 1 sec as there might have been a problem
-            mainActivityInterface.getMainHandler().postDelayed(() -> processingTestView=false,1000);
+        // IV - Set a boolean indicating song change
+        songChange = !mainActivityInterface.getSong().getFilename().equals(filename) ||
+                !mainActivityInterface.getSong().getFolder().equals(folder) ||
+                firstSongLoad;
+        mainActivityInterface.setHighlightChangeAllowed(true);
+
+        boolean needToTryAgain = false;
+        boolean needToPauseTryAgain = false;
+        String keyInFilename;
+
+        // If this is a key variation and it doesn't exist, we need to load the original
+        if (mainActivityInterface.getVariations().getIsKeyVariation(folder,filename) &&
+                !mainActivityInterface.getStorageAccess().uriExists(mainActivityInterface.getVariations().getKeyVariationUri(filename))) {
+            String loadKey = mainActivityInterface.getSong().getKey();
+            String[] newSongInfo = mainActivityInterface.getVariations().getPreVariationInfo(folder,filename,loadKey);
+            folder = newSongInfo[0];
+            filename = newSongInfo[1];
+            keyInFilename = newSongInfo[2];
+            mainActivityInterface.getSong().setKey(keyInFilename);
+            // Try again and exit this first run
+            needToTryAgain = true;
         }
 
-        try {
-            doSongLoadStartTime = System.currentTimeMillis();
-            mainActivityInterface.closeDrawer(true);
-            mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
+        // If there is a delay processing the song, try again with a delay
+        if (processingTestView && !needToTryAgain) {
+            // Switch this off in 1 sec as there might have been a problem
+            needToTryAgain = true;
+            needToPauseTryAgain = true;
+        }
+
+        if (needToTryAgain) {
+            String tryagainfolder = folder;
+            String tryagainfilename = filename;
+            firstSongLoad = true;
+            if (needToPauseTryAgain) {
+                mainActivityInterface.getMainHandler().postDelayed(() -> {
+                    processingTestView = false;
+                    doSongLoad(tryagainfolder, tryagainfilename);
+                },1000);
+            } else {
+                mainActivityInterface.getMainHandler().post(() -> doSongLoad(tryagainfolder,tryagainfilename));
+            }
+            // End this run now
+            return;
+        }
+
+        if (songChange) {
+            mainActivityInterface.setHighlightChangeAllowed(false);
+            firstSongLoad = false;
+            try {
+                doSongLoadStartTime = System.currentTimeMillis();
+                mainActivityInterface.closeDrawer(true);
+                mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
+
+                // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
+                if (!processingTestView) {
+                    processingTestView = true;
+                    // Loading the song is dealt with in this fragment as specific actions are required
+
+                    // Remove capo
+                    mainActivityInterface.updateOnScreenInfo("capoHide");
+
+                    // IV - Deal with stop of metronome if we have changed song
+                    metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
+                    if (songChange && metronomeWasRunning) {
+                        mainActivityInterface.getMetronome().stopMetronome();
+                    }
+
+                    // Stop any autoscroll if required, but not if it was activated
+                    boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
+                    mainActivityInterface.getAutoscroll().stopAutoscroll();
+                    mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
+
+                    // Stop the highlighter autohide if required
+                    autoHideHighlighterHandler.removeCallbacks(autoHideHighlighterRunnable);
 
 
-            // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
-            if (!processingTestView) {
-                processingTestView = true;
-                // Loading the song is dealt with in this fragment as specific actions are required
 
-                // IV - Set a boolean indicating song change
-                songChange = !mainActivityInterface.getSong().getFilename().equals(filename) || !mainActivityInterface.getSong().getFolder().equals(folder);
+                    String keyInSet = null;
+                    boolean stillToCreateVariation;
 
-                // Remove capo
-                mainActivityInterface.updateOnScreenInfo("capoHide");
+                    if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
+                        keyInSet = mainActivityInterface.getCurrentSet().getSetItemInfo(mainActivityInterface.getCurrentSet().getIndexSongInSet()).songkey;
+                        // Compare with the indexed value
+                        String keyInSong = mainActivityInterface.getSQLiteHelper().getKey(folder,filename);
+                        if (keyInSong!=null && !keyInSong.isEmpty() && !keyInSong.equals(keyInSet)) {
+                            // This is a key variation!
+                            folder = mainActivityInterface.getVariations().getKeyVariationsFolder();
+                            filename = mainActivityInterface.getVariations().getKeyVariationFilename(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),keyInSet);
+                            // Check if the file needs to be created
+                            Uri uriToCheck = mainActivityInterface.getVariations().getKeyVariationUri(filename);
+                            stillToCreateVariation = !mainActivityInterface.getStorageAccess().uriExists(uriToCheck);
+                        } else {
+                            stillToCreateVariation = false;
+                        }
+                    } else {
+                        stillToCreateVariation = false;
+                    }
 
-                // IV - Deal with stop of metronome if we have changed song
-                metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
-                if (songChange && metronomeWasRunning) {
-                    mainActivityInterface.getMetronome().stopMetronome();
-                }
+                    // During the load song call, the song is cleared
+                    // However it first extracts the folder and filename we've just set
+                    mainActivityInterface.getSong().setFolder(folder);
+                    mainActivityInterface.getSong().setFilename(filename);
 
-                // Stop any autoscroll if required, but not if it was activated
-                boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
-                mainActivityInterface.getAutoscroll().stopAutoscroll();
-                mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
+                    final boolean stillToCreateVariationFinal = stillToCreateVariation;
+                    final String keyInSetFinal = keyInSet;
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                        // Prepare the slide out and in animations based on swipe direction
+                        setupSlideOut();
+                        setupSlideIn();
 
-                // Stop the highlighter autohide if required
-                autoHideHighlighterHandler.removeCallbacks(autoHideHighlighterRunnable);
+                        // Remove any sticky notes
+                        actionInterface.showSticky(false, true);
 
-                // During the load song call, the song is cleared
-                // However it first extracts the folder and filename we've just set
-                mainActivityInterface.getSong().setFolder(folder);
-                mainActivityInterface.getSong().setFilename(filename);
+                        // Now reset the song object (doesn't change what's already drawn on the screen)
+                        Song songToUse;
+                        if (stillToCreateVariationFinal) {
+                            // If we are pointing to variation file check the file exists and if not, create it
+                            boolean useExisting = true;
+                            if (mainActivityInterface.getSong().getFolder().contains(mainActivityInterface.getVariations().getKeyVariationsFolder())) {
+                                Uri uri = mainActivityInterface.getVariations().getKeyVariationUri(mainActivityInterface.getSong().getFilename());
+                                if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
+                                    String[] folderfilename = mainActivityInterface.getVariations().getPreVariationInfo(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),keyInSetFinal);
+                                    mainActivityInterface.getSong().setFolder(folderfilename[0]);
+                                    mainActivityInterface.getSong().setFilename(folderfilename[1]);
+                                    useExisting = false;
+                                }
+                            }
+                            if (useExisting) {
+                                songToUse = mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false);
+                            } else {
+                                songToUse = mainActivityInterface.getVariations().makeKeyVariation(mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false), keyInSetFinal, true, true);
+                            }
+                        } else {
+                            songToUse = mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(),false);
+                        }
 
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                            // Prepare the slide out and in animations based on swipe direction
-                            setupSlideOut();
-                            setupSlideIn();
+                        // Set the main song with the loaded song, or the key variation song
+                        mainActivityInterface.setSong(songToUse);
 
-                            // Remove any sticky notes
-                            actionInterface.showSticky(false, true);
+                        mainActivityInterface.getMainHandler().post(() -> {
+                            if (myView != null) {
+                                // Set the default color
+                                myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+                                // Update the toolbar with the song detail (null).
+                                mainActivityInterface.updateToolbar(null);
+                            }
+                        });
 
-                            // Now reset the song object (doesn't change what's already drawn on the screen)
-                            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
-                                    mainActivityInterface.getSong(), false));
+                        // Clear any screenshot files
+                        mainActivityInterface.setScreenshotFile(null);
 
-                            mainActivityInterface.getMainHandler().post(() -> {
-                                if (myView != null) {
-                                    // Set the default color
-                                    myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
-                                    // Update the toolbar with the song detail (null).
-                                    mainActivityInterface.updateToolbar(null);
+                        // IV - Reset current values to 0
+                        if (mainActivityInterface.getSong() != null &&
+                                mainActivityInterface.getSong().getFiletype() != null &&
+                                mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                            mainActivityInterface.getSong().setPdfPageCurrent(0);
+                        } else if (mainActivityInterface.getSong() != null) {
+                            mainActivityInterface.getSong().setCurrentSection(0);
+                            mainActivityInterface.getPresenterSettings().setCurrentSection(0);
+                        }
+
+                        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                                mainActivityInterface.getNearbyConnections().getIsHost()) {
+                            // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+                            // sendSongDelay will be 0 for the first song
+                            // IV - Always empty then add to queue (known state)
+                            mainActivityInterface.getNearbyConnections().setSendSongDelayActive(sendSongDelay != 0);
+                            sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                            sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+                            // IV - Always empty then add to queue (known state)
+                            resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                            resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                        }
+
+                        // Now slide out the song and after a delay start the next bit of the processing
+                        if (myView != null) {
+                            myView.recyclerView.post(() -> {
+                                try {
+                                    if (myView.recyclerView.getVisibility() == View.VISIBLE) {
+                                        myView.recyclerView.startAnimation(animSlideOut);
+                                    }
+                                } catch (Exception e) {
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                 }
                             });
-
-                            // Clear any screenshot files
-                            mainActivityInterface.setScreenshotFile(null);
-
-                            // IV - Reset current values to 0
-                            if (mainActivityInterface.getSong()!=null &&
-                                    mainActivityInterface.getSong().getFiletype()!=null &&
-                                    mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                                mainActivityInterface.getSong().setPdfPageCurrent(0);
-                            } else if (mainActivityInterface.getSong()!=null){
-                                mainActivityInterface.getSong().setCurrentSection(0);
-                                mainActivityInterface.getPresenterSettings().setCurrentSection(0);
-                            }
-
-                            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                                mainActivityInterface.getNearbyConnections().getIsHost()) {
-                                // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
-                                // sendSongDelay will be 0 for the first song
-                                // IV - Always empty then add to queue (known state)
-                                mainActivityInterface.getNearbyConnections().setSendSongDelayActive(sendSongDelay != 0);
-                                sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
-                                sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
-                                // IV - Always empty then add to queue (known state)
-                                resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
-                                resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
-                            }
-
-                            // Now slide out the song and after a delay start the next bit of the processing
-                            if (myView != null) {
-                                myView.recyclerView.post(() -> {
-                                    try {
-                                        if (myView.recyclerView.getVisibility() == View.VISIBLE) {
-                                            myView.recyclerView.startAnimation(animSlideOut);
-                                        }
-                                    } catch (Exception e) {
-                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                            myView.pageHolder.post(() -> {
+                                try {
+                                    if (myView.pageHolder.getVisibility() == View.VISIBLE) {
+                                        myView.pageHolder.startAnimation(animSlideOut);
                                     }
-                                });
-                                myView.pageHolder.post(() -> {
-                                    try {
-                                        if (myView.pageHolder.getVisibility() == View.VISIBLE) {
-                                            myView.pageHolder.startAnimation(animSlideOut);
-                                        }
-                                    } catch (Exception e) {
-                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                                    }
-                                });
-                            }
-                            if (getContext()!=null) {
-                                // Scroll to the item in the set menus
-                                mainActivityInterface.notifySetFragment("scrollTo",mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                                } catch (Exception e) {
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                }
+                            });
+                        }
+                        if (getContext() != null) {
+                            // Scroll to the item in the set menus
+                            mainActivityInterface.notifySetFragment("scrollTo", mainActivityInterface.getCurrentSet().getIndexSongInSet());
 
-                                // Now continue with the song prep
-                                mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
-                            }
-                });
+                            // Now continue with the song prep
+                            mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
+                        }
+                    });
+                }
+
+            } catch (Exception e) {
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             }
-
-        } catch (Exception e) {
-            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
         }
     }
     private void setupSlideOut() {
@@ -1176,6 +1257,8 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getNearbyConnections().resetHostPendingSection();
         }
 
+        mainActivityInterface.setHighlightChangeAllowed(true);
+
         // Update the secondary display (if present)
         displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongInfo");
@@ -1285,7 +1368,6 @@ public class PerformanceFragment extends Fragment {
             }
 
             // Check the set index
-            mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
             mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getIndexSongInSet());
             mainActivityInterface.notifySetFragment("scrollTo",mainActivityInterface.getCurrentSet().getIndexSongInSet());
             mainActivityInterface.getDisplayPrevNext().setPrevNext();
@@ -1475,7 +1557,6 @@ public class PerformanceFragment extends Fragment {
     }
 
     public void showNearbyAlertPopUp(String message) {
-        Log.d(TAG,"showAlertStickyNote("+message+")");
         // Clear any existing popup
         nearbyAlertPopUp.destroyPopup();
 

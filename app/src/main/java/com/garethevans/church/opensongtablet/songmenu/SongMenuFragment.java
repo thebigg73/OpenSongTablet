@@ -46,6 +46,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             filterSearchVal = "", titleSearchVal = "";
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
             songListSearchByTag, songListSearchByFilter, songListSearchByTitle;
+    private String songListSearchByFolderValue;
     private ExposedDropDownArrayAdapter folderArrayAdapter, keyArrayAdapter;
     private SongListAdapter songListAdapter;
     private LinearLayoutManager songListLayoutManager;
@@ -61,7 +62,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private final Handler waitBeforeSearchHandler = new Handler();
     private final Runnable waitBeforeSearchRunnable = this::prepareSearch;
     private String longClickFilename = "";
-
 
     private static MainActivityInterface mainActivityInterface;
 
@@ -81,6 +81,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void onResume() {
         super.onResume();
         prepareStrings();
+        getSongListSearchByFolder();
+        getSongListSearchByFolderValue();
+
         //initialiseRecyclerView();
         try {
             moveToSongInMenu(mainActivityInterface.getSong());
@@ -99,12 +102,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         prepareStrings();
 
         mainActivityInterface.registerFragment(this,"SongMenuFragment");
+
         // Initialise views
+        adapterReady = false;
         initialiseRecyclerView();
 
         // Update the song menu
         try {
-            updateSongMenu(mainActivityInterface.getSong());
+            updateSongMenu();
             moveToSongInMenu(mainActivityInterface.getSong());
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,7 +139,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     @SuppressLint("NotifyDataSetChanged")
     private void initialiseRecyclerView() {
         // Some of this needs to run on the UI
-        adapterReady = false;
         if (getContext()!=null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 // UI
@@ -179,11 +183,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateSongMenu(Song song) {
+    public void updateSongMenu() {
         if (getContext() != null) {
 
             // Set values
-            setValues(song);
+            setValues();
 
             // Get folders
             setFolders();
@@ -246,21 +250,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
-    private void setValues(Song song) {
-        songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder", false);
-        if (songListSearchByFolder && folderSearchVal.isEmpty()) {
-            // Likely the first run
-            // Do on the UI thread - force a folder change when the song menu is opened
-            if (song.getFolder().contains("**")) {
-                // This is a variation or custom slide.
-                // If it is a variation, look for the original folder
-                if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(song.getFolder(),song.getFilename())) {
-                    myView.filters.folderSearch.setText(mainActivityInterface.getSetActions().getPreVariationFolderFilename(song.getFolder()+"/"+song.getFilename())[0]);
-                }
-            } else {
-                myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(song.getFolder()));
-            }
-        }
+    private void setValues() {
+        getSongListSearchByFolder();
+        getSongListSearchByFolderValue();
         songListSearchByArtist = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByArtist", false);
         songListSearchByKey = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByKey", false);
         songListSearchByTag = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByTag", false);
@@ -311,38 +303,18 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, foundFolders);
                         myView.filters.folderSearch.setAdapter(folderArrayAdapter);
                         myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
-                        int pos;
-                        if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
-                                mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename())) {
-                           pos = foundFolders.indexOf(mainActivityInterface.getSetActions().getPreVariationFolderFilename(
-                                   mainActivityInterface.getSong().getFolder()+"/"+mainActivityInterface.getSong().getFilename())[0]);
-                        } else {
-                            pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
-                        }
 
-                        if (pos >= 0) {
-                            if (mainActivityInterface.getSong().getFolder().contains("**")) {
-                                // This is a variation or custom slide.
-                                // If it is a variation, look for the original folder
-                                if (myView!=null) {
-                                    if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
-                                            mainActivityInterface.getSong().getFolder(),
-                                            mainActivityInterface.getSong().getFilename())) {
-                                        myView.filters.folderSearch.setText(
-                                                mainActivityInterface.getSetActions().getPreVariationFolderFilename(
-                                                        mainActivityInterface.getSong().getFolder() + "/" +
-                                                                mainActivityInterface.getSong().getFilename())[0]);
-                                    }
-                                }
-                            } else {
-                                if (myView!=null) {
-                                    myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(
-                                            mainActivityInterface.getSong().getFolder()));
-                                }
-                            }
-                            if (myView!=null) {
-                                myView.filters.folderSearch.setText(foundFolders.get(pos));
-                            }
+                        // If we are filtering folders, then set that position
+                        if (songListSearchByFolder && !songListSearchByFolderValue.isEmpty() &&
+                                foundFolders.contains(songListSearchByFolderValue) && myView!=null) {
+                            myView.filters.folderSearch.setText(songListSearchByFolderValue);
+
+                        } else if (songListSearchByFolder && myView!=null) {
+                            // Clear the saved search folder and hide the filter as the folder doesn't exist
+                            setSongListSearchByFolderValue("");
+                            setSongListSearchByFolder(false);
+                            showHideRows(myView.filters.folderSearch,false);
+                            myView.filters.folderSearch.setText("");
                         }
                     }
                 });
@@ -444,7 +416,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.filterButtons.folderButton.setOnClickListener(v -> {
             myView.songListRecyclerView.stopScroll();
             songListSearchByFolder = !songListSearchByFolder;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder", songListSearchByFolder);
+            setSongListSearchByFolder(songListSearchByFolder);
             fixButtons();
             showHideRows(myView.filters.folderLayout, songListSearchByFolder);
             if (songListSearchByFolder) {
@@ -546,19 +518,21 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void buttonsEnabled(boolean enabled) {
-        if (myView!=null) {
-            try {
-                myView.filterButtons.folderButton.setEnabled(enabled);
-                myView.filterButtons.artistButton.setEnabled(enabled);
-                myView.filterButtons.keyButton.setEnabled(enabled);
-                myView.filterButtons.tagButton.setEnabled(enabled);
-                myView.filterButtons.filterButton.setEnabled(enabled);
-                myView.filterButtons.titleButton.setEnabled(enabled);
-                myView.actionFAB.setEnabled(enabled);
-            } catch (Exception e) {
-                e.printStackTrace();
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null) {
+                try {
+                    myView.filterButtons.folderButton.setEnabled(enabled);
+                    myView.filterButtons.artistButton.setEnabled(enabled);
+                    myView.filterButtons.keyButton.setEnabled(enabled);
+                    myView.filterButtons.tagButton.setEnabled(enabled);
+                    myView.filterButtons.filterButton.setEnabled(enabled);
+                    myView.filterButtons.titleButton.setEnabled(enabled);
+                    myView.actionFAB.setEnabled(enabled);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
     }
 
     public void refreshSongList() {
@@ -566,7 +540,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     public void prepareSearch() {
         if (mainActivityInterface!=null) {
-            if (adapterReady) {
+            if (!adapterReady) {
+                //Try again soon
+                mainActivityInterface.getMainHandler().postDelayed(this::prepareSearch, 1000);
+            } else {
                 adapterReady = false;
                 songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
                 getSearchVals();
@@ -751,12 +728,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songmenualpha.sideIndex.setVisibility(isVisible ? View.VISIBLE:View.GONE);
     }
     @Override
-    public void onItemClicked(int position, String folder, String filename, String key) {
+    public void onItemClicked(int position, String folder, String filename, String key, boolean inSet) {
         myView.songListRecyclerView.stopScroll();
         mainActivityInterface.getWindowFlags().hideKeyboard();
         // Default the slide animations to be next (R2L)
         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
-        mainActivityInterface.doSongLoad(folder, filename,true);
+        if (inSet) {
+            mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+        } else {
+            mainActivityInterface.doSongLoad(folder, filename, true);
+        }
     }
 
     @Override
@@ -867,6 +848,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             switch (what) {
                 case "folder":
                     folderSearchVal = value;
+                    setSongListSearchByFolderValue(folderSearchVal);
                     break;
                 case "artist":
                     artistSearchVal = value;
@@ -932,6 +914,23 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 }
             });
         }
+    }
+
+    private void setSongListSearchByFolder(boolean songListSearchByFolder) {
+        this.songListSearchByFolder = songListSearchByFolder;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder",songListSearchByFolder);
+    }
+    private void getSongListSearchByFolder() {
+        songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder",false);
+    }
+
+    private void setSongListSearchByFolderValue(String songListSearchByFolderValue) {
+        this.songListSearchByFolderValue =  songListSearchByFolderValue;
+        mainActivityInterface.getPreferences().setMyPreferenceString("songListSearchByFolderValue",songListSearchByFolderValue);
+    }
+
+    private void getSongListSearchByFolderValue() {
+        songListSearchByFolderValue = mainActivityInterface.getPreferences().getMyPreferenceString("songListSearchByFolderValue","");
     }
 
     @Override

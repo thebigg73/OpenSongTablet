@@ -3520,8 +3520,18 @@ public class ProcessSong {
         // p: Single column - use portrait suffix (works for any scale mode or orientation)
         // c: Columns - use when in portrait, but more than one column due to autoscale // NEW
         // l: Landscape when in landscape mode more than one column is used
-        String filename = song.getFolder().replace("/", "_") + "_" +
-                song.getFilename();
+        String songfolder = song.getFolder();
+        String songfilename = song.getFilename();
+
+        // If we are a key variation, we need to use the original folder/filename
+        if (songfolder.equals(mainActivityInterface.getVariations().getKeyVariationsFolder()) &&
+                songfilename.contains(mainActivityInterface.getVariations().getKeyStart())) {
+            String[] original = mainActivityInterface.getVariations().getPreVariationInfo(songfolder,songfilename,null);
+            songfolder = original[0];
+            songfilename = original[1];
+        }
+
+        String filename = songfolder.replace("/", "_") + "_" + songfilename;
 
         if ((song.getFiletype()!=null && song.getFiletype().equals("PDF")) ||
                 (song.getFilename()!=null && song.getFilename().toLowerCase().endsWith(".pdf"))) {
@@ -3540,15 +3550,6 @@ public class ProcessSong {
             }
         }
         filename += ".png";
-
-        // Ignore any **Variation prefixes (as these aren't included in the highlighter filename)
-        // Only done if the variation is a key change
-        if ((filename.contains("**Variation") || filename.contains("**"+c.getString(R.string.variation))) && filename.contains("_"+song.getKey()+"_")) {
-            filename = filename.replace("**Variation_", "");
-            filename = filename.replace("**"+c.getString(R.string.variation),"");
-            // Remove any key from the variation, as these aren't included
-            filename = filename.replace("_" + song.getKey() + "_", "_");
-        }
 
         return filename;
     }

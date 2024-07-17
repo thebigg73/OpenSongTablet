@@ -337,7 +337,7 @@ public class InlineSetList extends RecyclerView {
                         String textfn = si.songfilename;
 
                         // If this is a variation, we can prettify the output (remove the reference to the original folder)
-                        if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
+                        if (mainActivityInterface.getVariations().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
                             textfn = "*" + textfn.substring(textfn.lastIndexOf("_")).replace("_","");
                             textsn = textfn;
                         }
@@ -389,7 +389,7 @@ public class InlineSetList extends RecyclerView {
             String textfn = si.songfilename;
 
             // If this is a variation, we can prettify the output (remove the reference to the original folder)
-            if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
+            if (mainActivityInterface.getVariations().getIsNormalOrKeyVariation(si.songfolder,si.songfilename)) {
                 textfn = "*" + textfn.substring(textfn.lastIndexOf("_")).replace("_","");
                 textsn = textfn;
             }

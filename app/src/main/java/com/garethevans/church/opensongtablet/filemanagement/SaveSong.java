@@ -86,6 +86,10 @@ public class SaveSong {
             // Now save the new song
             boolean saveSuccessful = updateSong(newSong,true);
 
+            // TODO FIX THIS!!!
+            Log.d(TAG,"saveSuccessful:"+saveSuccessful+"  folderChange:"+folderChange+"  filenameChange:"+filenameChange);
+            Log.d(TAG,"oldFilename:"+oldFilename+"  oldLocation[0]:"+oldLocation[0]+"  oldLocation[1]:"+oldLocation[1]);
+
             // Now, if the save was successful and the folder/filename changes, delete the old stuff
             if ((folderChange || filenameChange) && saveSuccessful) {
                 // If there wasn't an old song, don't try to delete it otherwise we delete the Songs folder!

@@ -155,6 +155,7 @@ import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
+import com.garethevans.church.opensongtablet.variations.Variations;
 import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.material.button.MaterialButton;
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ABCNotation abcNotation;
     private Aeros aeros;
     private AlertChecks alertChecks;
-    //private CustomToolBar customToolBar;
+    private AppPermissions appPermissions;
     private Autoscroll autoscroll;
     private BeatBuddy beatBuddy;
     private Bible bible;
@@ -217,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CurrentSet currentSet;
     private CustomAnimation customAnimation;
     private CustomSlide customSlide;
+    //private CustomToolBar customToolBar;
     private DisplayPrevNext displayPrevNext;
     private DrawNotes drawNotes;
     private Drummer drummer;
@@ -225,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Gestures gestures;
     private HotZones hotZones;
     private LoadSong loadSong;
+    private LocalWiFiHost localWiFiHost;
     private MakePDF makePDF;
     private Metronome metronome;
     private Midi midi;
@@ -235,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private PageButtons pageButtons;
     private PedalActions pedalActions;
     private PerformanceGestures performanceGestures;
-    private AppPermissions appPermissions;
     private Preferences preferences;
     private PrepareFormats prepareFormats;
     private PresenterSettings presenterSettings;
@@ -255,10 +257,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ThemeColors themeColors;
     private TimeTools timeTools;
     private Transpose transpose;
+    private Variations variations;
     private VersionNumber versionNumber;
     private WebDownload webDownload;
     private WebServer webServer;
-    private LocalWiFiHost localWiFiHost;
 
     // The navigation controls
     private NavHostFragment navHostFragment;
@@ -599,6 +601,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             cast_info_string = getString(R.string.cast_info_string);
             menu_showcase_info = getString(R.string.menu_showcase_info);
         }
+        getVariations().updateStrings(this);
     }
 
     @Override
@@ -762,6 +765,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         transpose = getTranspose();
         abcNotation = getAbcNotation();
         song = getSong();
+        variations = getVariations();
 
         // Loading up songs and the indexing
         loadSong = getLoadSong();
@@ -1373,17 +1377,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             // Sort or shuffle the set as required
                             if (fragName.equals("sortSet")) {
                                 getSetActions().sortSet();
-                            } else if (fragName.equals("shuffleSet")){
+                            } else if (fragName.equals("shuffleSet")) {
                                 getSetActions().shuffleSet();
                             } else {
                                 Log.d(TAG,"just updating");
+                                getCurrentSet().loadCurrentSet();
                             }
-
-                            // Update the set items
-                            setMenuFragment.notifyItemRangeChanged(0,getCurrentSet().getCurrentSetSize());
 
                             // Show the set
                             setMenuFragment.changeVisibility(true);
+
                         }
                     });
                     break;
@@ -2159,6 +2162,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void refreshSong() {
         // Only called after indexing is completed
+        getSetActions().indexSongInSet(song);
         if (performanceValid()) {
             performanceFragment.doSongLoad(song.getFolder(), song.getFilename());
         } else if (presenterValid()) {
@@ -2233,7 +2237,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             songListBuildIndex.setIndexRequired(false);
         }
         if (setSongMenuFragment() && songMenuFragment != null) {
-            songMenuFragment.updateSongMenu(song);
+            songMenuFragment.updateSongMenu();
         }
     }
 
@@ -2293,6 +2297,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     setMenuFragment.scrollToItem();
                     break;
                 case "highlight":
+                    Log.d(TAG,"highlight called");
                     setMenuFragment.updateHighlight();
                     break;
                 case "clear":
@@ -2403,6 +2408,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             performanceFragment.notifyInlineSetScrollToItem();
         } else if (presenterValid()) {
             presenterFragment.notifyInlineSetScrollToItem();
+        }
+    }
+
+    @Override
+    public void setHighlightChangeAllowed(boolean highlightChangeAllowed) {
+        if (setMenuFragment!=null) {
+            setMenuFragment.setHighlightChangeAllowed(highlightChangeAllowed);
         }
     }
 
@@ -2739,6 +2751,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public Variations getVariations() {
+        if (variations==null) {
+            variations = new Variations(this);
+        }
+        return variations;
+    }
+
+    @Override
     public ProcessSong getProcessSong() {
         if (processSong == null) {
             processSong = new ProcessSong(this);
@@ -2827,6 +2847,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             closeDrawer(true);
             delay = 100;
         }
+
+        // Check if the song is in the set
+        //getSetActions().indexSongInSet(songinfo[0],songinfo[1],songinfo[2]);
         mainLooper.postDelayed(() -> {
             if (whichMode.equals(presenter)) {
                 if (presenterValid()) {
@@ -2858,7 +2881,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Remove highlighting from the old position
                 currentSet.setIndexSongInSet(position);
                 if (setMenuFragment!=null) {
-                    setMenuFragment.updateHighlight();
+                    setMenuFragment.removeHighlight();
                 }
 
                 // Get the set item
@@ -2869,14 +2892,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Uri setUri = getStorageAccess().getUriForItem("Songs",setFolder,setFilename);
 
                 // If we are viewing a set item with a temp key change, we will need these variables
-                String[] bits = getSetActions().getPreVariationFolderFilename(setItemInfo);
+                String[] bits = getVariations().getPreVariationInfo(setItemInfo);
                 String originalFolder = bits[0];
                 String originalFilename = bits[1];
-                String originalKey = null;
+                String originalKey = bits[2];
                 Uri originalUri = getStorageAccess().getUriForItem("Songs",originalFolder,originalFilename);
 
                 // Determine if this is a variation file based on the filename
-                boolean isNormalVariation = getSetActions().getIsNormalVariation(setFolder, setFilename);
+                boolean isNormalVariation = getVariations().getIsNormalVariation(setFolder, setFilename);
 
                 // Create a null/empty song object in case we need to load it to get the key or transpose
                 Song quickSong = null;
@@ -2889,14 +2912,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (storageAccess.uriExists(setUri)) {
                         // We are a variation and the file already exists.
                         // We can get the key from the variation file
-                        Log.d(TAG,"Variation file already exists, so load that at:"+setFolder+" / "+setFilename);
                         quickSong = new Song();
                         quickSong.setFolder(setFolder);
                         quickSong.setFilename(setFilename);
                     } else if (storageAccess.uriExists(originalUri)) {
                         // The variation file doesn't exist yet
                         // We can get the original file
-                        Log.d(TAG,"variation file doesn't exist, so load the original:"+setFolder+" / "+setFilename);
                         quickSong = new Song();
                         quickSong.setFolder(originalFolder);
                         quickSong.setFilename(originalFilename);
@@ -2907,7 +2928,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         originalKey = quickSong.getKey();
                     }
                 } else {
-                    Log.d(TAG,"Just a normal song (or a key variation), get from the database");
                     originalKey = sqLiteHelper.getKey(setFolder, setFilename);
                 }
 
@@ -2919,23 +2939,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                     boolean needToTranspose = false;
                     Uri targetUri;
-                    String targetFolder = "Variations";
-                    String targetSubfolder = "";
                     String targetFilename;
 
                     if (isNormalVariation) {
                         // We must already have the variation file, so we can edit directly
-                        Log.d(TAG, "Normal variation that needs to be transposed (file already exists)");
                         needToTranspose = true;
-                        targetFilename = setFilename;
-                        targetUri = getStorageAccess().getUriForItem("Variations", "", setFilename);
 
                     } else {
                         // Look for an already created key Variation file so we don't need to do it again
-                        targetFilename = originalFolder + "/" + originalFilename + getSetActions().getKeyTextInFilename() + setKey;
-                        targetFilename = targetFilename.replace("//", "/").replace("/", "_");
-                        targetUri = getStorageAccess().getUriForItem("Variations", "_cache", targetFilename);
-                        targetSubfolder = "_cache";
+                        targetFilename = getVariations().getKeyVariationFilename(originalFolder,originalFilename,setKey);
+                        targetUri = getVariations().getKeyVariationUri(targetFilename);
 
                         if (!getStorageAccess().uriExists(targetUri)) {
                             needToTranspose = true;
@@ -2943,14 +2956,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                         // We adjust the folder and filename on a temporary basis
                         // This isn't used in the set, just in the loading process
-                        setFolder = "../Variations/_cache";
+                        setFolder = getVariations().getKeyVariationsFolder();
                         setFilename = targetFilename;
                     }
 
                     if (needToTranspose) {
                         // The set has specified a key that is different from our song
-                        Log.d(TAG, "Need to transpose...");
-
                         if (quickSong == null) {
                             // This was a straightforward song (i.e. not a standard variation)
                             // Get the song object from the database
@@ -2960,55 +2971,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 quickSong = sqLiteHelper.getSpecificSong(originalFolder, originalFilename);
                             }
                         } else if (quickSong.getLyrics() == null || quickSong.getLyrics().isEmpty()) {
-                            Log.d(TAG, "Likely a variation file or empty lyrics, import it");
                             quickSong = getLoadSong().doLoadSong(quickSong, false);
                         }
+                        getVariations().makeKeyVariation(quickSong,setKey,false, !isNormalVariation);
 
-                        // Transpose the lyrics in the song file
-                        // Get the number of transpose times
-                        int transposeTimes = transpose.getTransposeTimes(originalKey, setKey);
-
-                        // Why transpose up 11 times, when you can just transpose down once.
-                        // Giving the option as it makes it easier for the user to select new key
-                        if (transposeTimes > 6) {
-                            // 7>-5  8>-4 9>-3 10>-2 11>-1 12>0
-                            transposeTimes = transposeTimes - 12;
-                        } else if (transposeTimes < -6) {
-                            // -7>5 -8>4 -9>3 -10>2 -11>1 -12>0
-                            transposeTimes = 12 + transposeTimes;
-                        }
-
-                        String transposeDirection;
-                        if (transposeTimes >= 0) {
-                            transposeDirection = "+1";
-                        } else {
-                            transposeDirection = "-1";
-                        }
-
-                        transposeTimes = Math.abs(transposeTimes);
-
-                        quickSong.setKey(originalKey); // This will be transposed in the following...
-                        quickSong.setLyrics(transpose.doTranspose(quickSong,
-                                transposeDirection, transposeTimes, quickSong.getDetectedChordFormat(),
-                                quickSong.getDesiredChordFormat()).getLyrics());
-                        // Get the song XML
-                        String songXML = processSong.getXML(quickSong);
-
-                        // Now we need to write the transposed file
-                        // If this is a standard variation (not a key variation)
-                        if (!getStorageAccess().uriExists(targetUri)) {
-                            // We need to create the new key variation file for writing to
-                            getStorageAccess().lollipopCreateFileForOutputStream(false,
-                                    targetUri, null, targetFolder,
-                                    targetSubfolder, targetFilename);
-                        }
-
-                        if (targetUri != null) {
-                            // Write the transposed file
-                            OutputStream outputStream = getStorageAccess().getOutputStream(targetUri);
-                            storageAccess.writeFileFromString(songXML, outputStream);
-                        }
-                    } else if (!getSetActions().getIsNormalOrKeyVariation(setFolder,setFilename)) {
+                    } else if (!getVariations().getIsNormalOrKeyVariation(setFolder,setFilename)) {
                         // Load the song in the original key
                         setFolder = originalFolder;
                         setFilename = originalFilename;
@@ -3035,6 +3002,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Will only do something if the set item isn't already highlighted - normally on boot
         if (setPosition > -1 && setMenuFragment!=null) {
             setMenuFragment.updateHighlight();
+            setMenuFragment.updateItem(setPosition);
         }
     }
 
@@ -3331,7 +3299,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
                 if (songMenuFragment != null && !songMenuFragment.isDetached()) {
                     try {
-                        songMenuFragment.updateSongMenu(song);
+                        songMenuFragment.updateSongMenu();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

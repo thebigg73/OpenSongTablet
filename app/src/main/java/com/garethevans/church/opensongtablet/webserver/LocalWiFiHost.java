@@ -16,6 +16,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class LocalWiFiHost {
 
+    // Localhost is only available on API 26+
+    // Getting the SSID and passphrase is easiest on API 30+
+    // Older versions use deprecated methods
+
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "LocalWiFiHost";
     private final Handler localWifiHandler = new Handler();
@@ -27,7 +31,6 @@ public class LocalWiFiHost {
     private final Context context;
     private final MainActivityInterface mainActivityInterface;
     private boolean running;
-
 
     public LocalWiFiHost(Context context) {
         this.context = context;
@@ -45,7 +48,7 @@ public class LocalWiFiHost {
             // If this already ran, we need to close it
             stopLocalWifi();
             // Start the local WiFi
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // API 26
                 wifiManager.startLocalOnlyHotspot(new WifiManager.LocalOnlyHotspotCallback() {
                     @Override
                     public void onStarted(WifiManager.LocalOnlyHotspotReservation receivedreservation) {
@@ -60,20 +63,21 @@ public class LocalWiFiHost {
         }
     }
 
+    // Newer versions of Android get the SSID and password easily
+    // Older versions must use deprecated method
+    @SuppressWarnings("deprecation")
     public void setLocalWifiInfos() {
-        if (reservation!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (reservation!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // API 26
             configuration = reservation.getWifiConfiguration();
 
             if (configuration != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { // API 30
                     ssid = reservation.getSoftApConfiguration().getSsid();
                     password = reservation.getSoftApConfiguration().getPassphrase();
-                } else {
+                } else { // Deprecated since API 26
                     ssid = configuration.SSID;
                     password = configuration.preSharedKey;
                 }
-                Log.d(TAG, "ssid:" + ssid);
-                Log.d(TAG, "password:" + password);
                 setQRWebServer();
             }
         }
@@ -87,9 +91,8 @@ public class LocalWiFiHost {
         Log.d(TAG,"ip:"+ip);
         if (configuration != null) {
             try {
-                //String qrCodeContent = "WIFI:S:$ssid;T:$encryption;P:$password;;"
+                // The format of a WiFi network QRCode is WIFI:S:MySSID;T:WPA;P:MyPassW0rd;
                 String qrCodeContent = "WIFI:S:"+ssid+";T:WPA;P:"+password+";;";
-                //WIFI:S:MySSID;T:WPA;P:MyPassW0rd;
                 BitMatrix bitMatrix = writer.encode(qrCodeContent, BarcodeFormat.QR_CODE, 200, 200);
 
                 int w = bitMatrix.getWidth();
@@ -129,7 +132,8 @@ public class LocalWiFiHost {
     void setRunning(boolean running) {
         this.running = running;
         stopLocalWifi();
-        if (running && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        // Only start it if we are running API 26+
+        if (running && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // API 26
             startLocalWifi();
         }
     }

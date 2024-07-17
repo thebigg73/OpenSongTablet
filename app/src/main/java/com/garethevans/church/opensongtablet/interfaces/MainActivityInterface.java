@@ -73,6 +73,7 @@ import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
+import com.garethevans.church.opensongtablet.variations.Variations;
 import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 
@@ -155,6 +156,7 @@ public interface MainActivityInterface {
     void notifySetFragment(String what, int position);
     void notifyInlineSetScrollToItem();
     int getSongWidth();
+    Variations getVariations();
 
 
     // Menus
@@ -182,6 +184,7 @@ public interface MainActivityInterface {
     void setSettingsOpen(boolean settingsOpen);
     void updateCheckForThisSong(Song thisSong);
     SongMenuFragment getSongMenuFragment();
+    void setHighlightChangeAllowed(boolean highlightChangeAllowed);
 
     // Action bar
     MyToolbar getToolbar();

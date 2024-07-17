@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,7 +148,9 @@ public class SetMenuFragment extends Fragment {
             } else {
                 // Prompt the user to confirm overwriting the original
                 String message = save_changes_string + ": " + currentSetName + "\n\n" + overwrite_string;
-                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("saveset",message,null,"SetMenuFragment",SetMenuFragment.this,null);
+                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("saveset",
+                        message,null,"SetMenuFragment",
+                        SetMenuFragment.this,null);
                 areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"areYouSure");
             }
         }));
@@ -281,11 +284,33 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateHighlight() {
-        if (setAdapter!=null && mainActivityInterface.getSong()!=null) {
-            mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-            setAdapter.updateHighlight(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
-            setAdapter.updateHighlight(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+        // Highlight the current set item after checking the positions
+        // Only do this if we aren't in the middle of doing it already
+        if (setAdapter!=null && mainActivityInterface.getSong()!=null &&
+                !setAdapter.getUpdatingHighlight() && setAdapter.getHighlightChangeAllowed()) {
+            int selectedPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+            int previousPosition = mainActivityInterface.getCurrentSet().getPrevIndexSongInSet();
+
+            if (previousPosition>-1) {
+                setAdapter.removeHighlight(previousPosition);
+            }
+            if (selectedPosition>-1) {
+                setAdapter.updateHighlight(selectedPosition);
+            }
         }
     }
 
+    public void removeHighlight() {
+        if (setAdapter!=null && mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()>-1 &&
+                !setAdapter.getRemovingHighlight() && setAdapter.getHighlightChangeAllowed()) {
+            // Remove the highlight from the last selected item
+            setAdapter.removeHighlight(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
+        }
+    }
+
+    public void setHighlightChangeAllowed(boolean highlightChangeAllowed) {
+        if (setAdapter!=null) {
+            setAdapter.setHighlightChangeAllowed(highlightChangeAllowed);
+        }
+    }
 }

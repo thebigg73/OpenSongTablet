@@ -303,23 +303,14 @@ public class CurrentSet {
         }
         return -1;
     }
-
-    public int getMatchingSetItemBeforeKey(String partialSongForSetWork) {
+    public int getPartialMatchingSetItem(String songForSetWork) {
         for (int x=0; x<setItemInfos.size(); x++) {
             SetItemInfo setItemInfo = setItemInfos.get(x);
-            if (setItemInfo.songforsetwork.startsWith(partialSongForSetWork)) {
+            if (setItemInfo.songforsetwork.startsWith(songForSetWork)) {
                 return x;
             }
         }
         return -1;
-    }
-
-    public boolean getIsMatchingSetItem(int position, String songForSetWork) {
-        if (setItemInfos!=null && getCurrentSetSize()>position) {
-            return setItemInfos.get(position).songforsetwork.equals(songForSetWork);
-        } else {
-            return false;
-        }
     }
 
     // Called when items are dragged around in the set

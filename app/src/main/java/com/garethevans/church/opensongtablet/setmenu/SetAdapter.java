@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +24,21 @@ import java.util.List;
 public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> implements SetItemTouchInterface {
 
     // Rather than use an array list stored here, use the currentSet object array
+    // Only the set adapter should change the indexSongInSet
+
     private final MainActivityInterface mainActivityInterface;
-     private final int onColor, offColor;
+    private final int onColor, offColor;
     private final float titleSize, subtitleSizeFile;
     private final boolean useTitle;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetAdapter";
     private ItemTouchHelper itemTouchHelper;
     private final RecyclerView recyclerView;
-    private final String highlightItem="highlightItem", updateNumber="updateNumber";
+    private final String highlightItem="highlightItem", unhighlightitem="unhighlightitem",
+            updateNumber="updateNumber";
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
-
+    private boolean updatingHighlight = false, removingHighlight = false;
+    private boolean highlightChangeAllowed =true;
     //Initialise the class
     public SetAdapter(Context c, RecyclerView recyclerView) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -82,7 +85,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         String newfoldername = si.songfoldernice;
 
         // If this is a variation, we can prettify the output (remove the reference to the original folder)
-        if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(foldername,filename)) {
+        if (mainActivityInterface.getVariations().getIsNormalOrKeyVariation(foldername,filename)) {
             filename = filename.substring(filename.lastIndexOf("_")).replace("_","");
             titlesongname = filename;
         }
@@ -94,14 +97,33 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         }
 
         // If we don't have a indexSongInSet, but this song should be it, do it
+        String songfilename = mainActivityInterface.getSong().getFilename();
+        String songfolder = mainActivityInterface.getSong().getFolder();
+        if (songfolder.equals("../Variations/_cache") && songfilename.contains("_K-")) {
+            // Remove the key part from the filename
+            songfilename = songfilename.substring(0,songfilename.lastIndexOf("_K-"));
+            // Now get the folder part
+            if (songfilename.contains("_")) {
+                songfolder = songfilename.substring(0,songfilename.lastIndexOf("_"));
+                songfilename = songfilename.substring(songfilename.lastIndexOf("_")+1);
+            } else {
+                songfolder = mainActivityInterface.getMainfoldername();
+            }
+        }
+
+        // Keep a reference if this is the current set item
+        boolean currentSetItem = position == mainActivityInterface.getCurrentSet().getIndexSongInSet();
+
+        // Incase we have a key variation, get the shorter bits
         if (mainActivityInterface.getCurrentSet().getIndexSongInSet()==-1 &&
-                mainActivityInterface.getSong().getFilename().equals(filename) &&
-                mainActivityInterface.getSong().getFolder().equals(foldername)) {
+                songfilename.equals(filename) &&
+                songfolder.equals(foldername)) {
+                currentSetItem = true;
             mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
         }
 
         // If this is the current set item, highlight it
-        if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+        if (currentSetItem) {
             setColor(holder,onColor);
             setFABColor(holder.cardEdit,offColor);
         } else {
@@ -153,7 +175,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                     holder.cardItem.setText(text);
                 }
 
-                if (payload.equals(highlightItem)||payload.equals(updateNumber)) {
+                if (payload.equals(highlightItem) || payload.equals(unhighlightitem) || payload.equals(updateNumber)) {
                     // We want to update the highlight colour to on/off
                     if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                         setColor(holder, onColor);
@@ -207,20 +229,51 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         mainActivityInterface.notifyInlineSetRangeChanged(0, mainActivityInterface.getCurrentSet().getCurrentSetSize());
     }
 
+    public boolean getUpdatingHighlight() {
+        return updatingHighlight;
+    }
+
+    public boolean getRemovingHighlight() {
+        return removingHighlight;
+    }
+
     // Called when loading a song from the set
     public void updateHighlight(int position) {
-        if (recyclerView!=null && !recyclerView.isComputingLayout()) {
-            mainActivityInterface.getMainHandler().post(() -> {
-                try {
-                    notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), highlightItem);
-                    mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
-                    notifyItemChanged(position, highlightItem);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            // Now send the instruction to the inline set
-            mainActivityInterface.notifyInlineSetHighlight();
+        if (!updatingHighlight && highlightChangeAllowed) {
+            updatingHighlight = true;
+            if (recyclerView != null && !recyclerView.isComputingLayout()) {
+                mainActivityInterface.getMainHandler().post(() -> {
+                    try {
+                        notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), highlightItem);
+                        mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
+                        notifyItemChanged(position, highlightItem);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                // Now send the instruction to the inline set
+                mainActivityInterface.notifyInlineSetHighlight();
+            }
+            updatingHighlight = false;
+        }
+    }
+
+    public void removeHighlight(int position) {
+        if (!removingHighlight && highlightChangeAllowed) {
+            removingHighlight = true;
+            if (recyclerView != null && !recyclerView.isComputingLayout()) {
+                mainActivityInterface.getMainHandler().post(() -> {
+                    try {
+                        notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), unhighlightitem);
+                        notifyItemChanged(position, unhighlightitem);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                // Now send the instruction to the inline set
+                mainActivityInterface.notifyInlineSetHighlight();
+            }
+            removingHighlight = false;
         }
     }
 
@@ -366,8 +419,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
-        SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
-        Log.d(TAG,"onItemClicked()  folder:"+setItemInfo.songfolder+"  filename:"+setItemInfo.songfilename);
         mainActivityInterface.loadSongFromSet(position);
     }
 
@@ -382,6 +433,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
             notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
         });
+    }
+
+    // When we load a song, we stop any highlight changes until loading is completed
+    public void setHighlightChangeAllowed(boolean highlightChangeAllowed) {
+        this.highlightChangeAllowed = highlightChangeAllowed;
+        // If we are allowed to change the highlight, do it
+        if (highlightChangeAllowed) {
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),unhighlightitem);
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
+        }
+    }
+
+    public boolean getHighlightChangeAllowed() {
+        return highlightChangeAllowed;
     }
 
 }

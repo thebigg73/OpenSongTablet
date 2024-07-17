@@ -446,7 +446,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
                     } else if ((setFolder!=null && !setFolder.contains("**Variation") && !setFolder.contains(string_variation)) && transposeVariation) {
                         // If this is a normal song, but want to convert to a variation
-                        mainActivityInterface.getSetActions().makeVariation(position);
+                        mainActivityInterface.getVariations().makeVariation(position);
 
                     } else if ((setFolder!=null && setFolder.contains("Variation")) || (setFolder!=null && setFolder.contains(string_variation.replace("**","")))) {
                         // This song was already a variation (no option to transposeSet or transposeVariation)

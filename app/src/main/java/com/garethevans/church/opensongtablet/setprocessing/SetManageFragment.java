@@ -621,6 +621,8 @@ public class SetManageFragment extends Fragment {
 
             // Notify the set menu to update to an empty set
             mainActivityInterface.notifySetFragment("clear",oldSize);
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+            mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(-1);
 
             // Because we can import multiple sets, we need to get them into an array
             ArrayList<Uri> setUris = new ArrayList<>();

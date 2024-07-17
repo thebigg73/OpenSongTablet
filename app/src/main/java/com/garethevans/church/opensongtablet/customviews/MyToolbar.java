@@ -198,11 +198,10 @@ public class MyToolbar extends MaterialToolbar {
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
                 String text = mainActivityInterface.getSong().getTitle();
-                if (mainActivityInterface.getSetActions().getIsNormalOrKeyVariation(
-                        mainActivityInterface.getSong().getFolder(),
-                        mainActivityInterface.getSong().getFilename())) {
-                    text = "*" + mainActivityInterface.getSetActions().getPreVariationFolderFilename(
-                            mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename())[1];
+                if (mainActivityInterface.getVariations().getIsNormalOrKeyVariation(
+                        mainActivityInterface.getSong())) {
+                    text = "*" + mainActivityInterface.getVariations().getPreVariationInfo(
+                            mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),mainActivityInterface.getSong().getKey())[1];
                 }
                 title.setText(text);
                 mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getIndexSongInSet());
@@ -210,7 +209,7 @@ public class MyToolbar extends MaterialToolbar {
                 // If we are in a set, show the icon
                 if (positionInSet<0) {
                     try {
-                        positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                        positionInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

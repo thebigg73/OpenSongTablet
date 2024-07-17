@@ -112,6 +112,7 @@ public class WebServerFragment extends Fragment {
         myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getWebServer().getIP()));
         myView.runHotspot.setOnCheckedChangeListener((compoundButton, b) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.d(TAG,"mainActivityInterface.getLocalWiFiHost():"+mainActivityInterface.getLocalWiFiHost());
                 if (mainActivityInterface.getLocalWiFiHost()!=null) {
                     mainActivityInterface.getLocalWiFiHost().setRunning(b);
                     myView.localHotspot.setVisibility(b ? View.VISIBLE : View.GONE);

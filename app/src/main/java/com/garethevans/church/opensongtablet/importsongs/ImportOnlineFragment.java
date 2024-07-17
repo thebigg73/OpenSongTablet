@@ -716,7 +716,8 @@ public class ImportOnlineFragment extends Fragment {
                 myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
             }
             String folder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder", mainfoldername_string);
-            if (folder.isEmpty()) {
+            if (folder.isEmpty() || folder.contains("../")) {
+                // Don't allow saving to blank or Variations folders
                 folder = mainfoldername_string;
             }
             myView.folderChoice.setText(folder);
@@ -854,6 +855,16 @@ public class ImportOnlineFragment extends Fragment {
             newSong.setTitle(oldtitle);
         }
 
+        // Update the main song to match
+        // This stops the old song getting wiped
+        mainActivityInterface.getSong().setFilename(newSong.getFilename());
+        mainActivityInterface.getSong().setFolder(newSong.getFolder());
+        mainActivityInterface.getSong().setTitle(newSong.getTitle());
+
+        // Clear the current index song in set too (so this song gets loaded)
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+        mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(-1);
+
         // If the song lyrics aren't empty, save the OpenSong formatted song
         if (!newSong.getLyrics().isEmpty()) {
             if (mainActivityInterface.getSaveSong().doSave(newSong)) {
@@ -883,7 +894,6 @@ public class ImportOnlineFragment extends Fragment {
         // Let the user know and show the song
         mainActivityInterface.navHome();
         mainActivityInterface.getShowToast().doIt(success_string);
-
 
         /*if (newSong.getLyrics().isEmpty()) {
 

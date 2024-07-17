@@ -611,7 +611,9 @@ public class ExportFragment extends Fragment {
             subfolder = subfolder.replace("../Notes","../Notes/_cache");
             subfolder = subfolder.replace("../Scripture","../Scripture/_cache");
             subfolder = subfolder.replace("../Slides","../Slides/_cache");
-            subfolder = subfolder.replace("../Variations","../Variations/_cache");
+            if (subfolder.contains("Variation")) {
+                subfolder = mainActivityInterface.getVariations().getKeyVariationsFolder();
+            }
             subfolder = subfolder.replace("/_cache/_cache","/_cache");
         }
         return subfolder;
