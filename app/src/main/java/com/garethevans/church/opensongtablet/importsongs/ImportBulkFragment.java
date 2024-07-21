@@ -183,135 +183,140 @@ public class ImportBulkFragment extends Fragment {
         // Do the rest in a new thread
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Create the Import songs folder if it doesn't exist
-            mainActivityInterface.getStorageAccess().createFolder("Songs", "", imported_string, false);
+            try {
+                mainActivityInterface.getStorageAccess().createFolder("Songs", "", imported_string, false);
 
-            int total = uris.size();
-            // Go through each song at a time, check the type and act accordingly
-            boolean gotFirstCorrectSong = false;
-            for (int x=0; x<total; x++) {
-                String filename = foundItems.get(x);
-                Uri fileUri = uris.get(x);
-                updateProgress(x,total,filename, "");
-                String content = "";
-                InputStream inputStream;
-                Song newSong = new Song();
-                newSong.setFolder(imported_string);
+                int total = uris.size();
+                // Go through each song at a time, check the type and act accordingly
+                boolean gotFirstCorrectSong = false;
+                for (int x = 0; x < total; x++) {
+                    String filename = foundItems.get(x);
+                    Uri fileUri = uris.get(x);
+                    updateProgress(x, total, filename, "");
+                    String content = "";
+                    InputStream inputStream;
+                    Song newSong = new Song();
+                    newSong.setFolder(imported_string);
 
-                boolean text = mainActivityInterface.getStorageAccess().isSpecificFileExtension("text",filename);
-                boolean chordpro = mainActivityInterface.getStorageAccess().isSpecificFileExtension("chordpro",filename);
-                boolean imageorpdf = mainActivityInterface.getStorageAccess().isSpecificFileExtension("imageorpdf",filename);
-                boolean onsong = mainActivityInterface.getStorageAccess().isSpecificFileExtension("onsong",filename);
-                boolean word = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx",filename);
+                    boolean text = mainActivityInterface.getStorageAccess().isSpecificFileExtension("text", filename);
+                    boolean chordpro = mainActivityInterface.getStorageAccess().isSpecificFileExtension("chordpro", filename);
+                    boolean imageorpdf = mainActivityInterface.getStorageAccess().isSpecificFileExtension("imageorpdf", filename);
+                    boolean onsong = mainActivityInterface.getStorageAccess().isSpecificFileExtension("onsong", filename);
+                    boolean word = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx", filename);
 
-                boolean goodsong = true;
-                String newFilename = null;
-                if (filename.contains(".")) {
-                    newFilename = filename.substring(0,filename.lastIndexOf("."));
-                }
+                    boolean goodsong = true;
+                    String newFilename = null;
+                    if (filename.contains(".")) {
+                        newFilename = filename.substring(0, filename.lastIndexOf("."));
+                    }
 
-                if (text || chordpro || onsong) {
-                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUri);
-                    content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
-                    newSong.setFiletype("XML");
-                }
+                    if (text || chordpro || onsong) {
+                        inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUri);
+                        content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                        newSong.setFiletype("XML");
+                    }
 
-                if (text) {
-                    updateProgress(x,total,filename, text_string);
-                    newSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(content));
-                    newSong.setFilename(newFilename);
-                } else if (chordpro) {
-                    updateProgress(x,total,filename, chordpro_string);
-                    newSong = mainActivityInterface.getConvertChoPro().convertChoProToOpenSong(newSong,content);
-                    newSong.setFilename(newFilename);
-                } else if (onsong) {
-                    updateProgress(x,total,filename, onsong_string);
-                    newSong = mainActivityInterface.getConvertOnSong().convertOnSongToOpenSong(newSong,content);
-                    newSong.setFilename(newFilename);
-                } else if (imageorpdf) {
-                    updateProgress(x, total, filename, image_or_pdf_string);
-                    newFilename = filename;
-                    newSong.setFilename(filename);
-                    if (filename.toLowerCase().endsWith(".pdf")) {
-                        newSong.setFiletype("PDF");
+                    if (text) {
+                        updateProgress(x, total, filename, text_string);
+                        newSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(content));
+                        newSong.setFilename(newFilename);
+                    } else if (chordpro) {
+                        updateProgress(x, total, filename, chordpro_string);
+                        newSong = mainActivityInterface.getConvertChoPro().convertChoProToOpenSong(newSong, content);
+                        newSong.setFilename(newFilename);
+                    } else if (onsong) {
+                        updateProgress(x, total, filename, onsong_string);
+                        newSong = mainActivityInterface.getConvertOnSong().convertOnSongToOpenSong(newSong, content);
+                        newSong.setFilename(newFilename);
+                    } else if (imageorpdf) {
+                        updateProgress(x, total, filename, image_or_pdf_string);
+                        newFilename = filename;
+                        newSong.setFilename(filename);
+                        if (filename.toLowerCase().endsWith(".pdf")) {
+                            newSong.setFiletype("PDF");
+                        } else {
+                            newSong.setFiletype("IMG");
+                        }
+                    } else if (word) {
+                        updateProgress(x, total, filename, word_string);
+                        newFilename = filename.substring(0, filename.lastIndexOf("."));
+                        newSong.setFilename(newFilename);
+                        newSong.setFiletype("XML");
+                        content = mainActivityInterface.getConvertWord().convertDocxToText(fileUri, filename);
+                        newSong.setLyrics(content);
+                        newSong.setTitle(newFilename);
+
                     } else {
-                        newSong.setFiletype("IMG");
-                    }
-                } else if (word) {
-                    updateProgress(x, total, filename, word_string);
-                    newFilename = filename.substring(0,filename.lastIndexOf("."));
-                    newSong.setFilename(newFilename);
-                    newSong.setFiletype("XML");
-                    content = mainActivityInterface.getConvertWord().convertDocxToText(fileUri,filename);
-                    newSong.setLyrics(content);
-                    newSong.setTitle(newFilename);
-
-                } else {
-                    updateProgress(x,total,filename, unknown_string);
-                    goodsong = false;
-                }
-
-                if (newFilename==null) {
-                    newFilename = filename;
-                }
-
-                if (goodsong) {
-                    if (content != null) {
-                        if (newSong.getTitle() == null || newSong.getTitle().isEmpty()) {
-                            newSong.setTitle(newFilename);
-                        }
+                        updateProgress(x, total, filename, unknown_string);
+                        goodsong = false;
                     }
 
-                    // Create the new uri/file for writing
-                    Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", imported_string, newFilename);
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", imported_string, newFilename);
+                    if (newFilename == null) {
+                        newFilename = filename;
+                    }
 
-                    boolean success = false;
-                    if (imageorpdf) {
-                        // Copy the original file
-                        success = mainActivityInterface.getStorageAccess().copyUriToUri(fileUri, newUri);
-                        // Add the song to the database
-                        if (success) {
-                            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(imported_string, newFilename);
-                            //mainActivityInterface.getSQLiteHelper().createSong(imported_string, newFilename);
-                            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
-                            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(newSong);
+                    if (goodsong) {
+                        if (content != null) {
+                            if (newSong.getTitle() == null || newSong.getTitle().isEmpty()) {
+                                newSong.setTitle(newFilename);
+                            }
                         }
-                    } else if (text || chordpro || onsong || word) {
-                        String songXML = mainActivityInterface.getProcessSong().getXML(newSong);
-                        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
-                        success = mainActivityInterface.getStorageAccess().writeFileFromString(songXML,outputStream);
-                        if (success) {
+
+                        // Create the new uri/file for writing
+                        Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", imported_string, newFilename);
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", imported_string, newFilename);
+
+                        boolean success = false;
+                        if (imageorpdf) {
+                            // Copy the original file
+                            success = mainActivityInterface.getStorageAccess().copyUriToUri(fileUri, newUri);
                             // Add the song to the database
-                            mainActivityInterface.getSQLiteHelper().createSong(imported_string, newFilename);
-                            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+                            if (success) {
+                                mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(imported_string, newFilename);
+                                //mainActivityInterface.getSQLiteHelper().createSong(imported_string, newFilename);
+                                mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+                                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(newSong);
+                            }
+                        } else if (text || chordpro || onsong || word) {
+                            String songXML = mainActivityInterface.getProcessSong().getXML(newSong);
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
+                            success = mainActivityInterface.getStorageAccess().writeFileFromString(songXML, outputStream);
+                            if (success) {
+                                // Add the song to the database
+                                mainActivityInterface.getSQLiteHelper().createSong(imported_string, newFilename);
+                                mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+                            }
                         }
-                    }
 
-                    // If successful, say so!
-                    if (success) {
-                        updateProgress(x+1, total, filename, success_string);
-                        // For the firt good song, we will use this song as the song to display
-                        if (!gotFirstCorrectSong) {
-                            gotFirstCorrectSong = true;
-                            mainActivityInterface.setSong(newSong);
-                            mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",newSong.getFilename());
-                            mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",newSong.getFolder());
+                        // If successful, say so!
+                        if (success) {
+                            updateProgress(x + 1, total, filename, success_string);
+                            // For the firt good song, we will use this song as the song to display
+                            if (!gotFirstCorrectSong) {
+                                gotFirstCorrectSong = true;
+                                mainActivityInterface.setSong(newSong);
+                                mainActivityInterface.getPreferences().setMyPreferenceString("songFilename", newSong.getFilename());
+                                mainActivityInterface.getPreferences().setMyPreferenceString("songFolder", newSong.getFolder());
+                            }
+                        } else {
+                            updateProgress(x + 1, total, filename, error_string);
                         }
-                    } else {
-                        updateProgress(x+1, total, filename, error_string);
                     }
                 }
+
+                mainActivityInterface.getMainHandler().post(() -> {
+                    if (myView != null) {
+                        myView.progressLayout.setVisibility(View.GONE);
+                        myView.filesFound.setVisibility(View.GONE);
+                        mainActivityInterface.updateSongList();
+                        mainActivityInterface.getShowToast().doIt(success_string);
+                        mainActivityInterface.navHome();
+                    }
+                });
+            } catch (Exception e) {
+                mainActivityInterface.getShowToast().doIt(error_string);
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             }
-
-            mainActivityInterface.getMainHandler().post(() -> {
-                if (myView!=null) {
-                    myView.progressLayout.setVisibility(View.GONE);
-                    myView.filesFound.setVisibility(View.GONE);
-                    mainActivityInterface.updateSongList();
-                    mainActivityInterface.getShowToast().doIt(success_string);
-                    mainActivityInterface.navHome();
-                }
-            });
         });
     }
 

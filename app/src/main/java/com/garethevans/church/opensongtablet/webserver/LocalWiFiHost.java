@@ -114,6 +114,7 @@ public class LocalWiFiHost {
         if (webServerFragment!=null) {
             // Show local WiFi QR code;
             webServerFragment.setQRHotspot(bitmap,ssid,password);
+            webServerFragment.updateWebServerIP();
         }
     }
 

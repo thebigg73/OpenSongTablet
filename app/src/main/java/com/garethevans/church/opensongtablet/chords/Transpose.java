@@ -28,7 +28,7 @@ public class Transpose {
     private final Song miniTransposeSong = new Song();
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private boolean convertToFlats = false, convertToSharps = false;
+    private boolean convertToFlats = false, convertToSharps = false, forceReload = false;
 
     public Transpose(Context c) {
         this.c = c;
@@ -1094,5 +1094,13 @@ public class Transpose {
             key_choice_string[21] = "h (Bm)";
         }
         return key_choice_string;
+    }
+
+    public void setForceReload(boolean forceReload) {
+        this.forceReload = forceReload;
+    }
+
+    public boolean getForceReload() {
+        return forceReload;
     }
 }

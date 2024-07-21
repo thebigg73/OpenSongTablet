@@ -686,6 +686,7 @@
     <string name="profile">"Profile"</string>
     <string name="profile_backup">Δημιουργία αντιγράφων ασφαλείας του τρέχοντος προφίλ</string>
     <string name="profile_explanation">"Profiles are used to store your display preferences."</string>
+    <string name="profile_restart">Μετά τη φόρτωση σε ένα προφίλ, θα πρέπει να επανεκκινήσετε την εφαρμογή για να δείτε όλες τις αλλαγές.</string>
     <string name="profile_restore">Επαναφέρετε ένα αποθηκευμένο προφίλ</string>
     <string name="profiles_found">Τα ακόλουθα προφίλ έχουν βρεθεί στο φάκελο OpenSong/Profiles. Κάντε κλικ σε ένα στοιχείο για να το επιλέξετε.</string>
     <string name="project">"Έργο"</string>

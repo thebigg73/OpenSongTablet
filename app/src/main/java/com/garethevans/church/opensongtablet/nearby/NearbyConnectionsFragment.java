@@ -393,6 +393,7 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.connectedToLayout.setVisibility(View.GONE);
             resetClientOptions();
             enableConnectionButtons();
+            mainActivityInterface.getNearbyConnections().clearEndpoints();
             myView.connectInitiateButtons.setVisibility(View.GONE);
         });
         myView.host.setOnClickListener(v -> {

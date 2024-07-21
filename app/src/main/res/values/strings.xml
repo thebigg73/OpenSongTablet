@@ -857,6 +857,7 @@
     <string name="profile">Profile</string>
     <string name="profile_backup">Backup current profile</string>
     <string name="profile_explanation">Profiles are used to store your display preferences.</string>
+    <string name="profile_restart">After loading in a profile, you should restart the app to see all of the changes.</string>
     <string name="profile_restore">Restore a saved profile</string>
     <string name="profiles_found">The following profiles have been found in the OpenSong/Profiles folder.  Click on an item to select it.</string>
     <string name="project">Project</string>

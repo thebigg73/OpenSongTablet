@@ -686,6 +686,7 @@
     <string name="profile">Профіль</string>
     <string name="profile_backup">Резервне копіювання поточного профілю</string>
     <string name="profile_explanation">Профілі використовуються для зберігання медійних переваг.</string>
+    <string name="profile_restart">Після завантаження профілю вам слід перезапустити програму, щоб побачити всі зміни.</string>
     <string name="profile_restore">Відновити збережений профіль</string>
     <string name="profiles_found">Наступні профілі було знайдено у теці OpenSong/Profiles. Натисніть на елемент, щоб вибрати його.</string>
     <string name="project">Показ</string>

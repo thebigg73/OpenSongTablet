@@ -686,6 +686,7 @@
     <string name="profile">"轮廓"</string>
     <string name="profile_backup">备份当前配置文件</string>
     <string name="profile_explanation">"配置文件用于存储您的显示首选项。"</string>
+    <string name="profile_restart">加载配置文件后，您应该重新启动应用程序以查看所有更改。</string>
     <string name="profile_restore">恢复已保存的配置文件</string>
     <string name="profiles_found">在 OpenSong/Profiles 文件夹中可以找到以下配置文件。单击一个项目以将其选中。</string>
     <string name="project">"投射"</string>

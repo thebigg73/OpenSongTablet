@@ -686,6 +686,7 @@
     <string name="profile">"Profil"</string>
     <string name="profile_backup">Aktuelles Profil sichern</string>
     <string name="profile_explanation">"Die Profile werden verwendet, um Ihre Anzeigeeinstellungen zu speichern."</string>
+    <string name="profile_restart">Nach dem Laden eines Profils sollten Sie die App neu starten, um alle Änderungen zu sehen.</string>
     <string name="profile_restore">Ein gespeichertes Profil wiederherstellen</string>
     <string name="profiles_found">Die folgenden Profile wurden im Ordner OpenSong/Profiles gefunden. Klicken Sie auf ein Element, um es auszuwählen.</string>
     <string name="project">"Projizieren"</string>

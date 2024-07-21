@@ -31,7 +31,7 @@ public class InlineSetList extends RecyclerView {
     // The inline set pulls all its values from the currentSet object
 
     private int width = 0;
-    private boolean showInline, showInlinePresenter;
+    private boolean showInline, showInlinePresenter, forceReload;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "InlineSetList";
     private String mode_presenter_string="";
@@ -77,10 +77,16 @@ public class InlineSetList extends RecyclerView {
     public void setInlineSet(boolean showInline) {
         this.showInline = showInline;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("inlineSet", showInline);
-        mainActivityInterface.getMainHandler().post(() -> setVisibility(showInline ? View.VISIBLE:View.GONE));
         if (showInline && mainActivityInterface.getCurrentSet().getCurrentSetSize()<=0) {
             mainActivityInterface.getShowToast().doIt(no_set_string);
         }
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            toggling = true;
+            reloadSong = false;
+            forceReload = false;
+            checkVisibility();
+            mainActivityInterface.getMainHandler().post(() -> setVisibility(showInline ? View.VISIBLE:View.GONE));
+        },1000);
     }
 
     // Adjust the inline text size
@@ -152,9 +158,14 @@ public class InlineSetList extends RecyclerView {
     // From the page button (show or hide)
     public void toggleInlineSet() {
         // Change the current value and save
-        setInlineSet(!showInline);
         toggling = true;
-        checkVisibility();
+        setInlineSet(!showInline);
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            toggling = true;
+            reloadSong = true;
+            forceReload = true;
+            checkVisibility();
+        },500);
     }
 
     // Check if the inline set is required (Visible) or not (Gone)
@@ -174,7 +185,7 @@ public class InlineSetList extends RecyclerView {
 
             boolean wrongSize = songWidth!=0 && screenWidth-songWidth-width!=0;
 
-            if (reloadSong && wrongSize) {
+            if ((reloadSong && wrongSize) || forceReload) {
                 if (mainActivityInterface.getCurrentSet().getIndexSongInSet() == -1) {
                     // Load the song
                     mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
@@ -183,9 +194,24 @@ public class InlineSetList extends RecyclerView {
                     // Load from the set
                     mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet());
                 }
+                mainActivityInterface.getMainHandler().postDelayed(() -> forceReload = false,1000);
             }
             reloadSong = false;
         },100);
+    }
+
+    // Check if we are forcing reload, otherwise the same song won't load again
+    public boolean getForceReload() {
+        if (forceReload) {
+            // Now we have checked, remove it
+            forceReload = false;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void setForceReload(boolean forceReload) {
+        this.forceReload = forceReload;
     }
 
     // Will reload be required?
