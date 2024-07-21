@@ -686,6 +686,7 @@
     <string name="profile">"Profil"</string>
     <string name="profile_backup">Az aktuális profil biztonsági mentése</string>
     <string name="profile_explanation">"A profilok tárolására használt megjelenítési beállításait."</string>
+    <string name="profile_restart">A profilba való betöltés után indítsa újra az alkalmazást az összes módosítás megtekintéséhez.</string>
     <string name="profile_restore">Mentett profil visszaállítása</string>
     <string name="profiles_found">A következő profilok találhatók az OpenSong/Profiles mappában. Kattintson egy elemre a kiválasztásához.</string>
     <string name="project">"Vetít"</string>

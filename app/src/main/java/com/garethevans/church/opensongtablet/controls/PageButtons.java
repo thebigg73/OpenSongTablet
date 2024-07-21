@@ -209,7 +209,7 @@ public class PageButtons {
         prepareOption("addtoset",c.getString(R.string.add_song_to_set),c.getString(R.string.set_add),c.getString(R.string.variation_make),R.drawable.set_add);
         prepareOption("exportset",c.getString(R.string.export_current_set),c.getString(R.string.select),c.getString(R.string.set_manage),R.drawable.share_all);
 
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Song actions
         prepareOption("pad",c.getString(R.string.pad),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.amplifier);
@@ -226,7 +226,7 @@ public class PageButtons {
         prepareOption("share_song",c.getString(R.string.export)+" "+c.getString(R.string.song),c.getString(R.string.select),"",R.drawable.share);
         prepareOption("import",c.getString(R.string.import_basic),c.getString(R.string.online_services),c.getString(R.string.import_main),R.drawable.database_import);
 
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Song navigation
         prepareOption("songmenu",c.getString(R.string.show_songs),c.getString(R.string.open) + " / " + c.getString(R.string.close),"",R.drawable.search);
@@ -236,14 +236,14 @@ public class PageButtons {
         prepareOption("prev",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
         prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),"",R.drawable.shuffle);
 
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Chords
         prepareOption("transpose",c.getString(R.string.transpose),c.getString(R.string.open),c.getString(R.string.settings),R.drawable.transpose);
         prepareOption("chordfingerings",c.getString(R.string.chord_fingering),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.guitar_fingering);
         prepareOption("chordsettings",c.getString(R.string.chord_settings),c.getString(R.string.open),"",R.drawable.guitar_settings);
 
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Song information
         prepareOption("link",c.getString(R.string.link),c.getString(R.string.open),"",R.drawable.link);
@@ -251,7 +251,7 @@ public class PageButtons {
         prepareOption("highlight",c.getString(R.string.highlight),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.highlighter);
         prepareOption("abc",c.getString(R.string.music_score),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.clef);
 
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Display
         prepareOption("profiles",c.getString(R.string.profile),c.getString(R.string.settings),"",R.drawable.account);
@@ -392,7 +392,7 @@ public class PageButtons {
     }
 
     private String getFallback(int x) {
-        String fallback = "";
+        String fallback = "?";
         if (x ==0) {
             fallback = "set";
         } else if (x ==1) {

@@ -686,6 +686,7 @@
     <string name="profile">Профиль</string>
     <string name="profile_backup">Резервное копирование текущего профиля</string>
     <string name="profile_explanation">Профили используются для хранения настроек показа</string>
+    <string name="profile_restart">После загрузки профиля необходимо перезапустить приложение, чтобы увидеть все изменения.</string>
     <string name="profile_restore">Восстановить сохраненный профиль</string>
     <string name="profiles_found">Следующие профили были найдены в папке OpenSong/Profiles. Нажмите на элемент, чтобы выбрать его.</string>
     <string name="project">Показ</string>

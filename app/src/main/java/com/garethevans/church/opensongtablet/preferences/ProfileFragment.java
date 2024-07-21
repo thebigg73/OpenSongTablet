@@ -22,7 +22,7 @@ public class ProfileFragment extends Fragment {
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String profile_string="", website_profiles_string="",
-            deeplink_browse_host_files="";
+            deeplink_browse_host_files="", profile_restart_string="", profile_restore_string="";
     private String webAddress;
 
     @Override
@@ -67,6 +67,9 @@ public class ProfileFragment extends Fragment {
                     !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
                     mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
         //}*/
+        String textForLoad = profile_restore_string+".\n"+profile_restart_string;
+        myView.loadButton.setHint(textForLoad);
+
         myView.browseHostLayout.setVisibility(View.GONE);
     }
     private void prepareStrings() {
@@ -74,6 +77,8 @@ public class ProfileFragment extends Fragment {
             profile_string = getString(R.string.profile);
             website_profiles_string = getString(R.string.website_profiles);
             deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
+            profile_restart_string = getString(R.string.profile_restart);
+            profile_restore_string = getString(R.string.profile_restore);
         }
     }
 

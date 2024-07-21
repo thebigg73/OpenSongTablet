@@ -214,7 +214,9 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             int spaceAbove = (int)((1.0f - mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f)) * getHeight());
 
             // Work out the space to try to leave above/to the right the view
-            if (recyclerLayoutManager.getChildVSizes().size()>position) {
+            if (recyclerLayoutManager.getChildVSizes().size()>position &&
+                    recyclerLayoutManager.getChildHSizes().size()>position &&
+                position!=-1) {
                 viewWidth = recyclerLayoutManager.getChildHSizes().get(position);
                 viewHeight = recyclerLayoutManager.getChildVSizes().get(position);
                 spaceRight = (getWidth() - viewWidth)/2;
@@ -224,7 +226,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
             // Get the current scroll position, the position we need to get to and how far this is
             int currXScroll = computeHorizontalScrollOffset();
             int currYScroll = computeVerticalScrollOffset();
-            if (!yPositions.isEmpty() && yPositions.size()>position) {
+            if (!yPositions.isEmpty() && yPositions.size()>position && position!=-1) {
                 int scrollToX = xPositions.get(position);
                 int scrollToY = yPositions.get(position);
                 int scrollXAmount = scrollToX - currXScroll - spaceRight;
@@ -260,8 +262,6 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void setMaxScrollY(int maxScrollY) {

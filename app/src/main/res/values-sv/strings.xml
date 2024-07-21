@@ -686,6 +686,7 @@
     <string name="profile">"Profil"</string>
     <string name="profile_backup">Säkerhetskopiera aktuell profil</string>
     <string name="profile_explanation">"Profiler används för att lagra dina visningsinställningar."</string>
+    <string name="profile_restart">När du har laddat in en profil bör du starta om appen för att se alla ändringar.</string>
     <string name="profile_restore">Återställ en sparad profil</string>
     <string name="profiles_found">Följande profiler har hittats i mappen OpenSong/Profiles. Klicka på ett objekt för att välja det.</string>
     <string name="project">"Projekt"</string>

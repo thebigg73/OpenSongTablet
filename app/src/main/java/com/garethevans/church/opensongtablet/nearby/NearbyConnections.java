@@ -73,6 +73,7 @@ public class NearbyConnections implements NearbyInterface {
     private final NearbyReturnActionsInterface nearbyReturnActionsInterface;
     private final MainActivityInterface mainActivityInterface;
     private BrowseHostFragment browseHostFragment;
+    private boolean forceReload = false;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -148,6 +149,11 @@ public class NearbyConnections implements NearbyInterface {
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
     }
 
+
+    public void clearEndpoints() {
+        connectedEndpoints.clear();
+        discoveredEndpoints.clear();
+    }
 
     // Our preferences for using Nearby
     public String getUserNickname() {
@@ -1159,9 +1165,15 @@ public class NearbyConnections implements NearbyInterface {
 
             Log.d(TAG, "isHost=" + isHost + "  hasValidConnections()=" + hasValidConnections() + "  receiveHostFiles=" + receiveHostFiles + "  keepHostFiles=" + keepHostFiles);
             if (songReceived) {
+                // Set the reload flag
+                forceReload = true;
+
                 if (!isHost && hasValidConnections() && receiveHostFiles) {
                     // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
+
+                    // Set the reload flag
+                    forceReload = true;
 
                     // If the user wants to keep the host file, we will save it to our storage.
                     // If we already have it, it will overwrite it, if not, we add it
@@ -1931,5 +1943,12 @@ public class NearbyConnections implements NearbyInterface {
                 }
             }
         }
+    }
+
+    public void setForceReload(boolean forceReload) {
+        this.forceReload = forceReload;
+    }
+    public boolean getForceReload() {
+        return forceReload;
     }
 }

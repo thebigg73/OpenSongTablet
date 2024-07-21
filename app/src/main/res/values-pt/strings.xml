@@ -686,6 +686,7 @@
     <string name="profile">"Perfil"</string>
     <string name="profile_backup">Fazer backup do perfil atual</string>
     <string name="profile_explanation">"Os perfis são usados para armazenar suas preferências de visualização."</string>
+    <string name="profile_restart">Depois de carregar em um perfil, você deve reiniciar o aplicativo para ver todas as alterações.</string>
     <string name="profile_restore">Restaurar um perfil salvo</string>
     <string name="profiles_found">Os seguintes perfis foram encontrados na pasta OpenSong/Profiles. Clique em um item para selecioná-lo.</string>
     <string name="project">"Projetar"</string>

@@ -686,6 +686,7 @@
     <string name="profile">"Profiel"</string>
     <string name="profile_backup">Rugsteun huidige profiel</string>
     <string name="profile_explanation">"Profiele word gebruik om jou vertoning voorkeure te stoor."</string>
+    <string name="profile_restart">Nadat u \'n profiel gelaai het, moet u die app weer begin om al die veranderinge te sien.</string>
     <string name="profile_restore">Herstel \'n gestoorde profiel</string>
     <string name="profiles_found">Die volgende profiele is in die OpenSong/Profiles-lêergids gevind. Klik op \'n item om dit te kies.</string>
     <string name="project">"Projek"</string>

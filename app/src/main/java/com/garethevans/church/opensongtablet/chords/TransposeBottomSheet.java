@@ -391,6 +391,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         // Need to decide what file gets transposed
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Set the force reload flag
+            mainActivityInterface.getTranspose().setForceReload(true);
+
             String transposeDirection;
 
             // Simplify slider to minimum number of transpose steps

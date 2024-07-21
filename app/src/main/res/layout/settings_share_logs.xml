@@ -18,8 +18,7 @@
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/fileWriteLog"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:hint="@string/file_log_info"
                 android:text="@string/file_log" />
 
@@ -55,8 +54,7 @@
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/fileViewLog"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:hint="@string/file_view_log_info"
                 android:text="@string/file_view_log" />
 
@@ -91,8 +89,7 @@
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/crashView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:hint="@string/crash_log_hint"
                 android:text="@string/crash_log" />
 

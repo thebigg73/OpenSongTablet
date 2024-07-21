@@ -686,6 +686,7 @@
     <string name="profile">"Profil"</string>
     <string name="profile_backup">Zálohujte aktuální profil</string>
     <string name="profile_explanation">"Profily se používají k ukládání vašich preferencí zobrazení."</string>
+    <string name="profile_restart">Po načtení do profilu byste měli aplikaci restartovat, abyste viděli všechny změny.</string>
     <string name="profile_restore">Obnovte uložený profil</string>
     <string name="profiles_found">Ve složce OpenSong/Profiles byly nalezeny následující profily. Kliknutím na položku ji vyberte.</string>
     <string name="project">"Vrhat"</string>

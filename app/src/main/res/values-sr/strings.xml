@@ -686,6 +686,7 @@
     <string name="profile">Profil</string>
     <string name="profile_backup">Napravite rezervnu kopiju trenutnog profila</string>
     <string name="profile_explanation">Profili se koriste da sačuvate postavke prikaza</string>
+    <string name="profile_restart">Nakon učitavanja u profilu, trebalo bi da ponovo pokrenete aplikaciju da biste videli sve promene.</string>
     <string name="profile_restore">Vratite sačuvani profil</string>
     <string name="profiles_found">Sledeći profili su pronađeni u fascikli OpenSong/Profiles. Kliknite na stavku da biste je izabrali.</string>
     <string name="project">Projektovati</string>
