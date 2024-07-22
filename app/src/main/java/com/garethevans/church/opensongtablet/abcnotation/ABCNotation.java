@@ -27,6 +27,11 @@ public class ABCNotation {
 
     public ABCNotation(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         abcAutoTranspose = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true);
         abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
         abcZoom = mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2);

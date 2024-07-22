@@ -141,6 +141,9 @@ public class Metronome {
     // Set up the metronome values (tempo, time signature, user preferences, etc)
     // Called from MainActivity#onResume initialisation of metronome and if changing sound values
     public void initialiseMetronome() {
+        // Autostart?
+        metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
+
         // Does the user want an audio metronome?
         setAudioMetronome();
 

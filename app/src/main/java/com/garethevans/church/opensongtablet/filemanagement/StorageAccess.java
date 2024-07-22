@@ -57,6 +57,10 @@ public class StorageAccess {
     public StorageAccess(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        updatePreferences();
+    }
+
+    public void updatePreferences() {
         fileWriteLog = mainActivityInterface.getPreferences().getMyPreferenceBoolean("fileWriteLog", true);
         fileViewLog = mainActivityInterface.getPreferences().getMyPreferenceBoolean("fileViewLog", true);
         databaseLastUpdate = mainActivityInterface.getPreferences().getMyPreferenceLong("databaseLastUpdate", 0);

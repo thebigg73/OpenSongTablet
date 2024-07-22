@@ -117,8 +117,10 @@ public class ProfileActions {
                                 break;
                             case "string":
                                 try {
-                                    if (!key.equals("uriTree") && !key.equals("uriTreeHome")) {
-                                        // Don't overwrite our storage location reference!!
+                                    if (!key.equals("uriTree") && !key.equals("uriTreeHome") &&
+                                            !key.equals("setCurrent") && !key.equals("setCurrentBeforeEdits") &&
+                                            !key.equals("setCurrentLastName")) {
+                                        // Don't overwrite our storage location reference or our current set!!
                                         Log.d(TAG,"string:"+key+"="+value);
                                         mainActivityInterface.getPreferences().setMyPreferenceString(key, value);
                                     }
@@ -164,8 +166,59 @@ public class ProfileActions {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
         }
 
+        getUpdatedPreferences();
         return true;
     }
+
+    // When loading a profile, we need to update the preferences in the helper classes
+    // Some we don't change such as Google Play warnings, etc.
+    // Only classes that store references to the preferences in variables are updated
+    private void getUpdatedPreferences() {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Some variables are initialised in the mainActivity (fonts and themes)
+            mainActivityInterface.initialiseStartVariables();
+
+            mainActivityInterface.getAbcNotation().getUpdatedPreferences();
+            mainActivityInterface.getAeros().getUpdatedPreferences();
+            mainActivityInterface.getFixLocale().getUpdatedPreferences();
+            mainActivityInterface.getAutoscroll().setupAutoscrollPreferences();
+            mainActivityInterface.getBeatBuddy().setPrefs();
+            mainActivityInterface.getGestures().getPreferences();
+            mainActivityInterface.getHotZones().getPreferences();
+            mainActivityInterface.getPageButtons().setPreferences();
+            mainActivityInterface.getPedalActions().setPrefs();
+            mainActivityInterface.getSwipes().loadPreferences();
+            mainActivityInterface.getStorageAccess().updatePreferences();
+            mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getMetronome().initialiseMetronome());
+            mainActivityInterface.getMidi().getUpdatedPreferences();
+            mainActivityInterface.getNearbyConnections().getUpdatedPreferences();
+            mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getDisplayPrevNext().updateShow());
+            mainActivityInterface.getDisplayPrevNext().updateColors();
+            mainActivityInterface.getBatteryStatus().updateBatteryPrefs();
+            mainActivityInterface.getWindowFlags().getUpdatedPreferences();
+            mainActivityInterface.getPresenterSettings().getAllPreferences();
+            if (mainActivityInterface.getSetMenuFragment()!=null) {
+                mainActivityInterface.getSetMenuFragment().updateAdapterPrefs();
+            }
+            if (mainActivityInterface.getSongMenuFragment()!=null) {
+                mainActivityInterface.getSongMenuFragment().updateSongMenu();
+            }
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+
+
+
+            // Finally update the strings in the mainActivity (performance and stage fragments sort their own)
+            mainActivityInterface.prepareStrings();
+        });
+    }
+
+    /*
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
+    }
+
+    */
+
 
     public boolean saveProfile(Uri uri, String profileName) {
         boolean result = true;  // Returns true on success.  Catches throw to false

@@ -258,7 +258,7 @@ public class PedalActions {
         actionCodes.add(id);
         actions.add(val);
     }
-    private void setPrefs() {
+    public void setPrefs() {
         for (int w=1; w<=8; w++) {
             pedalCode[w] = mainActivityInterface.getPreferences().getMyPreferenceInt("pedal"+w+"Code", defPedalCodes[w]);
             pedalMidi[w] = mainActivityInterface.getPreferences().getMyPreferenceString("pedal"+w+"Midi",defPedalMidis[w]);

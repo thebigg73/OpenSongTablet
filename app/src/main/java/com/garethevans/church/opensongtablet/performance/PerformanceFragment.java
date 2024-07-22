@@ -390,8 +390,10 @@ public class PerformanceFragment extends Fragment {
     public void notifyInlineSetChanged(int position) {
         if (myView!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                myView.inlineSetList.notifyInlineSetChanged(position);
-                myView.inlineSetList.scrollToPosition(position);
+                if (myView!=null) {
+                    myView.inlineSetList.notifyInlineSetChanged(position);
+                    myView.inlineSetList.scrollToPosition(position);
+                }
             });
         }
     }
@@ -485,9 +487,11 @@ public class PerformanceFragment extends Fragment {
         Log.d(TAG,"mainActivityInterface.getSong().getFilename():"+mainActivityInterface.getSong().getFilename());
 
         // We only load a song if there is a change of song file, or we manually force it, or receive from the host
-        if (songChange || myView.inlineSetList.getForceReload()
+        if (!processingTestView && myView!=null && (songChange || myView.inlineSetList.getForceReload()
                 || mainActivityInterface.getTranspose().getForceReload() ||
-            mainActivityInterface.getNearbyConnections().getForceReload()) {
+            mainActivityInterface.getNearbyConnections().getForceReload())) {
+
+            Log.d(TAG,"loading song");
 
             // Clear any force reload flags
             myView.inlineSetList.setForceReload(false);
@@ -503,6 +507,7 @@ public class PerformanceFragment extends Fragment {
 
                 // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
                 if (!processingTestView) {
+                    Log.d(TAG,"doing the processing");
                     processingTestView = true;
                     // Loading the song is dealt with in this fragment as specific actions are required
 
@@ -1491,11 +1496,13 @@ public class PerformanceFragment extends Fragment {
                     });
                 } else if (myView!=null) {
                     myView.highlighterView.post(() -> {
-                        try {
-                            myView.highlighterView.setVisibility(View.GONE);
-                        } catch (Exception e) {
-                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                            e.printStackTrace();
+                        if (myView!=null) {
+                            try {
+                                myView.highlighterView.setVisibility(View.GONE);
+                            } catch (Exception e) {
+                                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

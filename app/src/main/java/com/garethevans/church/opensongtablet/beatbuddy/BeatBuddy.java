@@ -12,6 +12,7 @@ public class BeatBuddy {
     // This holds the settings for the BeatBuddy MIDI companion
     // These are edited by the BeatBuddyFragment
 
+    final private Context c;
     final private MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     final private String TAG = "BeatBuddy";
@@ -84,15 +85,12 @@ public class BeatBuddy {
     }
     // Initialise this helper class
     public BeatBuddy(Context c) {
+        this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
         setPrefs();
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            buildCommands();
-            checkDatabase(c);
-        });
     }
 
-    private void checkDatabase(Context c) {
+    private void checkDatabase() {
         // If the database file does not exist, create it
         if (c!=null) {
             try (BBSQLite bbsqLite = new BBSQLite(c)) {
@@ -116,6 +114,11 @@ public class BeatBuddy {
         metronomeSyncWithBeatBuddy = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeSyncWithBeatBuddy",false);
         beatBuddyVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyVolume",100);
         beatBuddyHPVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyHPVolume",100);
+
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            buildCommands();
+            checkDatabase();
+        });
     }
 
     // Commands received from gestures and sent via MIDI to connected BeatBuddy

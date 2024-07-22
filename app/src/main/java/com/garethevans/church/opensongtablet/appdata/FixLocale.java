@@ -16,21 +16,37 @@ public class FixLocale {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "FixLocale";
     private Locale userLocale;
+    private String language;
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+
 
     public Locale getLocale() {
         return userLocale;
     }
 
-    public void setLocale(Context c, MainActivityInterface mainActivityInterface) {
+    public FixLocale(Context c) {
+        this.c = c;
+        this.mainActivityInterface = (MainActivityInterface) c;
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
+        language = mainActivityInterface.getPreferences().getMyPreferenceString("language",null);
+        setLocale();
+    }
+
+    public void setLocale() {
         // Locale
         boolean wasset = false;
         try {
             // Get the user's preference
-            String val = mainActivityInterface.getPreferences().getMyPreferenceString("language",null);
+            language = mainActivityInterface.getPreferences().getMyPreferenceString("language",null);
 
             // If this is already set, that's what we will use
-            if (val!=null) {
-                userLocale = new Locale(val);
+            if (language!=null) {
+                userLocale = new Locale(language);
 
             } else {
                 // No locale is set, so let's see if the user's language is supported
@@ -45,8 +61,6 @@ public class FixLocale {
 
                 userLocale = new Locale(deviceval);
 
-                // Save our preference
-                //mainActivityInterface.getPreferences().setMyPreferenceString("language",deviceval);
             }
 
             // Load the appropriate translations

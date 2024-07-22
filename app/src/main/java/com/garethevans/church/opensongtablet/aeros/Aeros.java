@@ -54,6 +54,11 @@ public class Aeros {
 
     public Aeros(Context c) {
         this.mainActivityInterface = (MainActivityInterface) c;
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         aerosChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("aerosChannel",1);
         buildCommands();
     }

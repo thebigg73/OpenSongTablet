@@ -110,45 +110,48 @@ public class NearbyConnections implements NearbyInterface {
         discoveredEndpoints = new ArrayList<>();
         connectionLog = "";
 
-        if (mainActivityInterface != null) {
-            try {
-                nearbyHostPassthrough = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostPassthrough", true);
-                nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
-                temporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise", false);
-                String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy", "cluster");
-                switch (preference) {
-                    case "cluster":
-                    default:
-                        nearbyStrategy = Strategy.P2P_CLUSTER;
-                        break;
-                    case "star":
-                        nearbyStrategy = Strategy.P2P_STAR;
-                        break;
-                    case "single":
-                        nearbyStrategy = Strategy.P2P_POINT_TO_POINT;
-                        break;
-                }
-                setNearbyStrategy(nearbyStrategy);
-                matchToPDFSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("matchToPDFSong", false);
-                nearbyMessageSticky = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageSticky", false);
-                nearbyMessage1 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage1", "");
-                nearbyMessage2 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage2", "");
-                nearbyMessage3 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage3", "");
-                nearbyMessage4 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage4", "");
-                nearbyMessage5 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage5", "");
-                nearbyMessage6 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage6", "");
-                nearbyMessage7 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage7", "");
-                nearbyMessage8 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage8", "");
-                nearbyMessageMIDIAction = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageMIDIAction", true);
-            } catch (Exception e) {
-                e.printStackTrace();
+        // Get user preferences
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
+        try {
+            nearbyHostPassthrough = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostPassthrough", true);
+            nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
+            temporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise", false);
+            String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy", "cluster");
+            switch (preference) {
+                case "cluster":
+                default:
+                    nearbyStrategy = Strategy.P2P_CLUSTER;
+                    break;
+                case "star":
+                    nearbyStrategy = Strategy.P2P_STAR;
+                    break;
+                case "single":
+                    nearbyStrategy = Strategy.P2P_POINT_TO_POINT;
+                    break;
             }
+            setNearbyStrategy(nearbyStrategy);
+            matchToPDFSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("matchToPDFSong", false);
+            nearbyMessageSticky = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageSticky", false);
+            nearbyMessage1 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage1", "");
+            nearbyMessage2 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage2", "");
+            nearbyMessage3 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage3", "");
+            nearbyMessage4 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage4", "");
+            nearbyMessage5 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage5", "");
+            nearbyMessage6 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage6", "");
+            nearbyMessage7 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage7", "");
+            nearbyMessage8 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage8", "");
+            nearbyMessageMIDIAction = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageMIDIAction", true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
     }
-
 
     public void clearEndpoints() {
         connectedEndpoints.clear();

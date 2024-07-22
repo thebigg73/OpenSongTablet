@@ -28,8 +28,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     private final MainActivityInterface mainActivityInterface;
     private final boolean showChecked;
     private boolean songMenuSortTitles;
-    private final float titleSize;
-    private final float subtitleSizeAuthor, subtitleSizeFile;
+    private float titleSize, subtitleSizeAuthor, subtitleSizeFile;
     private final SongMenuSongs songMenuSongs;
 
     LinkedHashMap<String, Integer> linkedHashMap, linkedHashMap2;
@@ -42,12 +41,18 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         this.showChecked = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("songMenuSetTicksShow", true);
         this.songMenuSongs = songMenuSongs;
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         songMenuSortTitles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true);
         // Make the title text the same as the alphaIndex size
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
         subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
         subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
     }
+
 
     public interface AdapterCallback {
         void onItemClicked(int position, String folder, String filename, String key, boolean inSet);

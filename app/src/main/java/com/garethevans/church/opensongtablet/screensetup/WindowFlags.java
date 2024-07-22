@@ -89,19 +89,11 @@ public class WindowFlags {
         smallestScreenWidthDp = c.getResources().getConfiguration().smallestScreenWidthDp;
 
         // Get the preferences
-        /*boolean defaultKeepNavSpace = false;
-        try {
-            @SuppressLint("DiscouragedApi") int resourceId = c.getResources().getIdentifier("config_navBarInteractionMode", "integer", "android");
-            if (resourceId > 0) {
-                // Tries to detect gesture navigation, but doesn't always work
-                if (c.getResources().getInteger(resourceId) == 2) {
-                    gestureNavigation = false;
-                    defaultKeepNavSpace = false;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         navBarKeepSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean("navBarKeepSpace", false);
         customMarginLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginLeft", 0);
         customMarginRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginRight", 0);

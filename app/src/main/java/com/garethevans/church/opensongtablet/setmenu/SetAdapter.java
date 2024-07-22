@@ -28,8 +28,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     private final MainActivityInterface mainActivityInterface;
     private final int onColor, offColor;
-    private final float titleSize, subtitleSizeFile;
-    private final boolean useTitle;
+    private float titleSize, subtitleSizeFile;
+    private boolean useTitle;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetAdapter";
     private ItemTouchHelper itemTouchHelper;
@@ -45,11 +45,16 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         this.recyclerView = recyclerView;
         //setItemTouchInterface = (SetItemTouchInterface) c;
         // Get the size of the text to use
+        getUpdatedPreferences();
+        onColor = c.getResources().getColor(R.color.colorSecondary);
+        offColor = c.getResources().getColor(R.color.colorAltPrimary);
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
         subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
         useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
-        onColor = c.getResources().getColor(R.color.colorSecondary);
-        offColor = c.getResources().getColor(R.color.colorAltPrimary);
     }
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {

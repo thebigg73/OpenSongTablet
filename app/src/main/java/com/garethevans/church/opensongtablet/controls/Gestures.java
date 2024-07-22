@@ -27,7 +27,7 @@ public class Gestures {
         getPreferences();
     }
 
-    private void getPreferences() {
+    public void getPreferences() {
         doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString("gestureDoubleTap","editsong");
         longPress = mainActivityInterface.getPreferences().getMyPreferenceString("gestureLongPress","");
         swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean("swipeForSongs",true);

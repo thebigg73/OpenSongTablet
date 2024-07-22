@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
+import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.MyFonts;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
@@ -58,6 +59,7 @@ import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
+import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
@@ -87,11 +89,13 @@ public interface MainActivityInterface {
     // Initialising the activity and settings
     boolean getWaitingOnBootUpFragment();
     void initialiseActivity();
+    void initialiseStartVariables();
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
     float getDisplayDensity();
     Handler getMainHandler();
     ThreadPoolExecutor getThreadPoolExecutor();
+    FixLocale getFixLocale();
     Locale getLocale();
     VersionNumber getVersionNumber();
     String getMode();
@@ -110,6 +114,7 @@ public interface MainActivityInterface {
     MyFonts getMyFonts();
     ThemeColors getMyThemeColors();
     AppPermissions getAppPermissions();
+    void prepareStrings();
 
     // Song stuff
     Song getSong();
@@ -157,6 +162,7 @@ public interface MainActivityInterface {
     void notifyInlineSetScrollToItem();
     int getSongWidth();
     Variations getVariations();
+    SetMenuFragment getSetMenuFragment();
 
 
     // Menus

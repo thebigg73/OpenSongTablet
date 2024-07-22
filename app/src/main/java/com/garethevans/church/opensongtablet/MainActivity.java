@@ -546,12 +546,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return threadPoolExecutor;
     }
 
-    private void prepareStrings() {
+    @Override
+    public void prepareStrings() {
         // To avoid null context for long tasks throwing error when getting strings
         if (getApplicationContext() != null) {
 
             // Fix the user locale preference
-            getFixLocale().setLocale(this, this);
+            fixLocale = getFixLocale();
+            fixLocale.setLocale();
+            locale = fixLocale.getLocale();
             locale = fixLocale.getLocale();
 
             deeplink_import_osb = getString(R.string.deeplink_import_osb);
@@ -1035,7 +1038,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     }
 
-    private void initialiseStartVariables() {
+    @Override
+    public void initialiseStartVariables() {
             getMyThemeColors().setThemeName(getPreferences().getMyPreferenceString("appTheme", "dark"));
             whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
             // Fix old mode from old profile
@@ -2309,6 +2313,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
     }
+
+    @Override
+    public SetMenuFragment getSetMenuFragment() {
+        return setMenuFragment;
+    }
+
     @Override
     public void toggleInlineSet() {
         if (performanceValid()) {
@@ -3469,10 +3479,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.whichMode = whichMode;
     }
 
-
+    @Override
     public FixLocale getFixLocale() {
         if (fixLocale == null) {
-            fixLocale = new FixLocale();
+            fixLocale = new FixLocale(this);
         }
         return fixLocale;
     }
@@ -3480,7 +3490,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Locale getLocale() {
         if (locale == null && fixLocale!=null) {
-            fixLocale.setLocale(this, this);
+            fixLocale.setLocale();
             locale = fixLocale.getLocale();
         }
         if (locale == null) {
@@ -4063,7 +4073,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (bootUpCompleted) {
             try {
                 // Get the language
-                fixLocale.setLocale(this, this);
+                getFixLocale().setLocale();
 
                 // Save a variable that we have rotated the screen.
                 // The media player will look for this.  If found, it won't restart when the song loads

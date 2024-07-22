@@ -42,6 +42,12 @@ public class Midi {
     public Midi(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        getUpdatedPreferences();
+        shortHandMidi = new ShortHandMidi(c);
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         midiDelay = mainActivityInterface.getPreferences().getMyPreferenceInt("midiDelay", 100);
         midiAction1 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction1", "MIDI10:NO36:100");
         midiAction2 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction2", "MIDI10:NO38:100");
@@ -52,7 +58,6 @@ public class Midi {
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "MIDI10:NO43:100");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "MIDI10:NO55:100");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
-        shortHandMidi = new ShortHandMidi(c);
     }
 
     public String getMidiAction(int which) {

@@ -46,14 +46,19 @@ public class WebServer extends NanoHTTPD {
     public void initialiseVariables(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        getUpdatedPreferences();
+    }
+
+    // If we change load in a profile, this is called
+    public void getUpdatedPreferences() {
         runWebServer = mainActivityInterface.getPreferences().getMyPreferenceBoolean("runWebServer",false);
         allowWebNavigation = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowWebNavigation",false);
         // If we have WIFI permissions, we can go ahead and get the required info and start the server if needed automatically
         if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
             callRunWebServer();
         }
-
     }
+
     public void setWebServerFragment(WebServerFragment webServerFragment) {
         this.webServerFragment = webServerFragment;
     }

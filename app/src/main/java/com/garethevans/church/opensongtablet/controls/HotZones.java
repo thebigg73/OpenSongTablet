@@ -35,7 +35,7 @@ public class HotZones {
         getPreferences();
     }
 
-    private void getPreferences() {
+    public void getPreferences() {
         // Get our initial preferences
         hotZoneTopLeftShort = mainActivityInterface.getPreferences().getMyPreferenceString("hotZoneTopLeftShort","");
         hotZoneTopCenterShort = mainActivityInterface.getPreferences().getMyPreferenceString("hotZoneTopCenterShort","scrollup");
