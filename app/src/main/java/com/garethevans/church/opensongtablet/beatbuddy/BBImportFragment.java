@@ -325,6 +325,9 @@ public class BBImportFragment extends Fragment {
                         Uri csvFileUri = newCSV.getUri();
                         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(csvFileUri);
                         mainActivityInterface.getStorageAccess().writeFileFromString(newCSVText.toString(), outputStream);
+
+                        // Also add it to our OpenSong/Settings/ folder
+                        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","MyBeatBuddyProject.csv",newCSVText.toString());
                     }
                 }
             }
