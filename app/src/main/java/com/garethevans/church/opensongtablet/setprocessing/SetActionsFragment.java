@@ -98,11 +98,21 @@ public class SetActionsFragment extends Fragment {
 
     private void setupViews() {
         /* Not got this working yet, so leave hidden
-        if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
+
+        if (getContext() != null && mainActivityInterface != null && myView != null) {
             myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
                     !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
-                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
-        //}*/
+                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE : View.GONE);
+        }
+        if (getContext() != null && mainActivityInterface != null && myView != null) {
+            myView.hostCurrentSet.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
+                    !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
+                    mainActivityInterface.getNearbyConnections().getUsingNearby() &&
+                    !mainActivityInterface.getNearbyConnections().getIsHost()) ? View.VISIBLE : View.GONE);
+        }
+
+        */
+
         myView.browseHostLayout.setVisibility(View.GONE);
     }
 
@@ -150,6 +160,9 @@ public class SetActionsFragment extends Fragment {
             myView.browseHost.setOnClickListener(v -> {
                 mainActivityInterface.setWhattodo("browsesets");
                 mainActivityInterface.navigateToFragment(deeplink_browse_host_files,0);
+            });
+            myView.hostCurrentSet.setOnClickListener(v -> {
+                mainActivityInterface.getNearbyConnections().requestHostCurrentSet();
             });
         }
     }

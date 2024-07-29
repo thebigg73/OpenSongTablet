@@ -199,7 +199,10 @@ public class SetActions {
 
     public boolean isSongInSet(String folderNamePair) {
         boolean inSet = false;
-        for (SetItemInfo setItemInfo : mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+        // To avoid concurrent modification, don't use enhanced for loop
+        //for (SetItemInfo setItemInfo : mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+        for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItemInfos().size(); x++) {
+            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
             if (folderNamePair.equals(setItemInfo.songfolder + "/" + setItemInfo.songfilename)) {
                 inSet = true;
                 break;
