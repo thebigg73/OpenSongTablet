@@ -543,32 +543,37 @@ public class ChordDisplayProcessing {
     public String getSongInstrumentNice(String pref) {
         String instrument;
         Log.d(TAG,"getSongInstrumentNice("+pref+")");
-        // If no preferred instrument is saved with the song, it will show as 'Use default'
-        switch (pref) {
-            default:
-                instrument = c.getString(R.string.use_default);
-                break;
-            case "g":
-                instrument = c.getString(R.string.guitar);
-                break;
-            case "u":
-                instrument = c.getString(R.string.ukulele);
-                break;
-            case "m":
-                instrument = c.getString(R.string.mandolin);
-                break;
-            case "b":
-                instrument = c.getString(R.string.banjo4);
-                break;
-            case "B":
-                instrument = c.getString(R.string.banjo5);
-                break;
-            case "c":
-                instrument = c.getString(R.string.cavaquinho);
-                break;
-            case "p":
-                instrument = c.getString(R.string.piano);
-                break;
+        if (pref!=null) {
+            // If no preferred instrument is saved with the song, it will show as 'Use default'
+            switch (pref) {
+                default:
+                    instrument = c.getString(R.string.use_default);
+                    break;
+                case "g":
+                    instrument = c.getString(R.string.guitar);
+                    break;
+                case "u":
+                    instrument = c.getString(R.string.ukulele);
+                    break;
+                case "m":
+                    instrument = c.getString(R.string.mandolin);
+                    break;
+                case "b":
+                    instrument = c.getString(R.string.banjo4);
+                    break;
+                case "B":
+                    instrument = c.getString(R.string.banjo5);
+                    break;
+                case "c":
+                    instrument = c.getString(R.string.cavaquinho);
+                    break;
+                case "p":
+                    instrument = c.getString(R.string.piano);
+                    break;
+            }
+        } else {
+            // If it wasn't set, or null, use this value
+            instrument = c.getString(R.string.use_default);
         }
         Log.d(TAG,"matching:"+instrument);
         return instrument;
