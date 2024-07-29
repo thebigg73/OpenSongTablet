@@ -49,6 +49,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
             FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
             if (bottomSheet != null) {
                 BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
             }
         });
         return dialog;

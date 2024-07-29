@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -101,11 +102,12 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
             FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
             if (bottomSheet != null) {
                 BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(true);
+                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
             }
-            mainActivityInterface.getMainHandler().postDelayed(() -> dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN),2000);
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.FullscreenBottomSheet);
+            mainActivityInterface.getMainHandler().postDelayed(() -> dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE),2000);
         });
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return dialog;
     }
 

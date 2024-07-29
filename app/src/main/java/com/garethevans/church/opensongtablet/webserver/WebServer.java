@@ -20,7 +20,6 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.Arrays;
 import java.util.Enumeration;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -259,20 +258,9 @@ public class WebServer extends NanoHTTPD {
                 while (enumInetAddress.hasMoreElements()) {
                     InetAddress inetAddress = enumInetAddress.nextElement();
 
-                    if (inetAddress.getHostAddress()!=null) {
-                        Log.d(TAG,"inetAddress.getHostAddress():"+inetAddress.getHostAddress());
-                        Log.d(TAG,"inetAddress.getAddress():"+ Arrays.toString(inetAddress.getAddress()));
-                    }
                     if (inetAddress.getHostAddress()!=null &&
                             !inetAddress.getHostAddress().contains(":")) {
-                        /*if (mainActivityInterface.getLocalWiFiHost().getRunning()) {
-                            // Local expects to be 192.168.43.*
-                            if (inetAddress.getHostAddress().contains("192.168.43")) {
-                                Log.d(TAG,"found local host hotspot");
-                                ip = "http://" + inetAddress.getHostAddress() + ":8080/";
-                                break;
-                            }
-                        } else*/
+
                         if (!inetAddress.getHostAddress().contains("127.0")){
                             Log.d(TAG,"found network");
                             ip = "http://" + inetAddress.getHostAddress() + ":8080/";
@@ -285,13 +273,11 @@ public class WebServer extends NanoHTTPD {
         } catch (Exception e) {
             e.printStackTrace();
             mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-            Log.d(TAG,"error, back to default");
             ip = "http://0.0.0.0:8080/";
         }
 
         // Last chance method of getting the IP address!
         if (ip.equals("http://0.0.0.0:8080/")) {
-            Log.d(TAG, "trying again");
             try {
                 WifiManager wifiMan = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 WifiInfo wifiInf = wifiMan.getConnectionInfo();
@@ -300,7 +286,6 @@ public class WebServer extends NanoHTTPD {
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                Log.d(TAG,"error again");
                 ip = "http://0.0.0.0:8080/";
             }
         }

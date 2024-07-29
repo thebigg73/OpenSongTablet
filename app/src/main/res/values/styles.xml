@@ -199,7 +199,6 @@
         <!-- The text position thumb and trailing icon colours -->
         <item name="colorPrimary">@color/colorSecondary</item>
         <item name="colorOnSurface">@color/colorSecondary</item>
-
     </style>
     <style name="TextInputOverlay" parent="">
         <item name="android:background">@color/transparent</item>
@@ -322,7 +321,7 @@
         <!-- If this isn't overridden, the navigation bar at the bottom is ugly-->
         <!-- However, we have to manually set the scrim colour and touch cancel in the fragment-->
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="expanded">true</item>
         <item name="android:windowBackground">@color/transparent</item>
@@ -490,4 +489,8 @@
         <item name="castClosedCaptionsButtonDrawable">@drawable/cast_ic_mini_controller_closed_caption</item>
     </style>
 
+    <style name="ScrollViewWithFAB" parent="">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+    </style>
 </resources>

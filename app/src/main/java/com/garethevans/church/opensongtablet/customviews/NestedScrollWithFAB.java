@@ -24,12 +24,12 @@ public class NestedScrollWithFAB extends NestedScrollView {
     public NestedScrollWithFAB(@NonNull Context context) {
         super(context);
         new NestedScrollView(context);
+
     }
 
     public NestedScrollWithFAB(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {

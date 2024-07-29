@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/FullscreenBottomSheet"
     android:layout_marginBottom="100dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        style="@style/BottomSheetDialogTheme">
 
         <com.garethevans.church.opensongtablet.customviews.DialogHeader
             android:id="@+id/dialogHeading"
@@ -34,7 +34,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:minHeight="500dp"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/prefEditText"
