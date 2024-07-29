@@ -38,9 +38,12 @@ public class ShowToast {
             }
         }
     };
+    private final String success, error;
 
     public ShowToast(Context c, View anchor) {
         this.anchor = anchor;
+        success = c.getString(R.string.success);
+        error = c.getString(R.string.error);
         popupWindow = new PopupWindow(c);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             popupWindow.setElevation(32);
@@ -52,7 +55,6 @@ public class ShowToast {
         popupWindow.setBackgroundDrawable(null);
         textToast = view.findViewById(R.id.textToast);
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
-
     }
 
     public void doIt(final String message) {
@@ -93,6 +95,14 @@ public class ShowToast {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void success() {
+        doIt(success);
+    }
+
+    public void error() {
+        doIt(error);
     }
 
     public void doItBottomSheet(final String message, View bsAnchor) {
