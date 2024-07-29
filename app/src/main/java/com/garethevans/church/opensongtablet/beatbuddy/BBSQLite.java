@@ -781,6 +781,28 @@ public class BBSQLite extends SQLiteOpenHelper {
             }
 
             // Get the search options
+            // Just in case the reference to thisSong is the same song as loaded, but it hadn't finished loading, get the details missing
+            if (thisSong.getFilename().equals(mainActivityInterface.getSong().getFilename()) &&
+                    thisSong.getFolder().equals(mainActivityInterface.getSong().getFolder())) {
+                // Same as the main song
+                Log.d(TAG,"thisSong==mainActivityInterface.getSong()");
+                if ((thisSong.getTitle()==null || thisSong.getTitle().isEmpty()) &&
+                        mainActivityInterface.getSong().getTitle()!=null &&
+                        !mainActivityInterface.getSong().getTitle().isEmpty()) {
+                    thisSong.setTitle(mainActivityInterface.getSong().getTitle());
+                }
+                if ((thisSong.getAka()==null || thisSong.getAka().isEmpty()) &&
+                        mainActivityInterface.getSong().getAka()!=null &&
+                        !mainActivityInterface.getSong().getAka().isEmpty()) {
+                    thisSong.setAka(mainActivityInterface.getSong().getAka());
+                }
+                if ((thisSong.getBeatbuddysong()==null || thisSong.getBeatbuddysong().isEmpty()) &&
+                        mainActivityInterface.getSong().getBeatbuddysong()!=null &&
+                        !mainActivityInterface.getSong().getBeatbuddysong().isEmpty()) {
+                    thisSong.setBeatbuddysong(mainActivityInterface.getSong().getBeatbuddysong());
+                }
+            }
+
             // Remove commas as they aren't allowed in the BeatBuddy naming system
             String option1 = thisSong.getFilename();
             if (option1 != null) {
