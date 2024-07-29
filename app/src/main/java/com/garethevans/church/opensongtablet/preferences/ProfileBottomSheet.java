@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetProfileBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -31,6 +32,8 @@ public class ProfileBottomSheet extends BottomSheetDialogFragment {
     private String dialog_title_string="";
     private String success_string="";
     private String error_string="";
+    private String restart_string="";
+    private String restart_required_string="";
     private final String whattodo = "saveprofile", TAG = "ProfileBottomSheet";
 
     @Override
@@ -88,6 +91,8 @@ public class ProfileBottomSheet extends BottomSheetDialogFragment {
             } else {
                 dialog_title_string = dialog_title_string + ": " + load_string;
             }
+            restart_string = getString(R.string.restart);
+            restart_required_string = getString(R.string.restart_required);
         }
     }
 
@@ -131,6 +136,9 @@ public class ProfileBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.initialisePageButtons();
                 mainActivityInterface.updatePageButtonLayout();
                 mainActivityInterface.getShowToast().doIt(success ? success_string:error_string);
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(restart_string,
+                        restart_required_string, restart_string, "restart");
+                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "restart");
                 dismiss();
             }
         }
