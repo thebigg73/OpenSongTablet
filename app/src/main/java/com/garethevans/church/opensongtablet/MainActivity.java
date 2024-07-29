@@ -153,6 +153,7 @@ import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
+import com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment;
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.variations.Variations;
@@ -1577,7 +1578,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface) {
         // Return a reference to nearbyConnections
         if (nearbyConnections == null) {
-            nearbyConnections = new NearbyConnections(this);
+            nearbyConnections = new NearbyConnections(this,this);
         }
         return nearbyConnections;
     }
@@ -1585,7 +1586,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public NearbyConnections getNearbyConnections() {
         if (nearbyConnections == null) {
-            nearbyConnections = new NearbyConnections(this);
+            nearbyConnections = new NearbyConnections(this,this);
         }
         return nearbyConnections;
     }
@@ -2280,11 +2281,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private boolean performanceValid() {
-        return performanceFragment != null && !whichMode.equals(presenter);
+        return performanceFragment != null && !whichMode.equals(presenter) && !settingsOpen;
     }
 
     private boolean presenterValid() {
-        return presenterFragment != null && whichMode.equals(presenter);
+        return presenterFragment != null && whichMode.equals(presenter) && !settingsOpen;
     }
 
     @Override
@@ -3209,6 +3210,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         getStorageAccess().deleteFile(tempUri);
                         result = true;
                         navHome();
+                    }
+                    break;
+
+                case "restorePersistentDatabase":
+                    if (callingFragment!=null) {
+                        try {
+                            ((DatabaseUtilitiesFragment) callingFragment).doImportDatabaseBackup();
+                            result = true;
+                            allowToast = false;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     break;
             }

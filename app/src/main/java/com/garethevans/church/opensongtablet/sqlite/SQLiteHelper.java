@@ -223,6 +223,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return c.getString(R.string.mainfoldername);
         }
     }
+
+    public void exportDatabase() {
+        // Export a csv version of the temporary database
+        mainActivityInterface.getCommonSQL().exportDatabase(getDB(),"SongDatabase.csv");
+        getDB().close();
+    }
 }
 
 

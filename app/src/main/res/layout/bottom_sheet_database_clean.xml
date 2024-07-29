@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/persistent_database_clean" />
+
+    <ScrollView
+        android:id="@+id/cleanDBScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/uselessSongInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/persistent_database_clean_useless" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uselessSongDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/delete"/>
+            <TableRow
+                android:id="@+id/uselessSongSeparator"
+                style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/usefulSongInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/persistent_database_clean_useful" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/usefulSongDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/delete"/>
+            <TableRow android:id="@+id/usefulSongSeparator"
+                style="@style/DividerLine"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/congratulations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/persistent_database_clean_perfect"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

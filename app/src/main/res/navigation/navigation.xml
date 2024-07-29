@@ -920,6 +920,9 @@
                 <action
                     android:id="@+id/action_utilitiesMenuFragment_to_AerosFragment"
                     app:destination="@id/aerosCommands" />
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_databaseOptions"
+                    app:destination="@id/databaseOptions" />
             </fragment>
             <fragment
                 android:id="@+id/aerosCommands"
@@ -976,6 +979,15 @@
                         app:uri="@string/deeplink_beatbuddy_import" />
                 </fragment>
             </navigation>
+            <fragment
+                android:id="@+id/databaseOptions"
+                android:name="com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment"
+                android:label="DatabaseOptionsFragment"
+                tools:layout="@layout/settings_database_options">
+                <deepLink
+                    android:id="@+id/deepLinkDatabase"
+                    app:uri="@string/deeplink_database_utilities" />
+            </fragment>
         </navigation>
         <fragment
             android:id="@+id/webServerFragment"

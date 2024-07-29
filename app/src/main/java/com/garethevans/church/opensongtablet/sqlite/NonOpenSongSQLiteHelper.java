@@ -1,41 +1,56 @@
 package com.garethevans.church.opensongtablet.sqlite;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.utilities.CleanDatabaseBottomSheet;
+import com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
-    private final Uri appDB, userDB;
-    private final File appDBFile;
+    private Uri appDB, userDB;
+    private File appDBFile;
     private final String TAG = "NonOSSQLHelper";
     private final MainActivityInterface mainActivityInterface;
+    private final Context c;
 
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-        appDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",SQLite.NON_OS_DATABASE_NAME);
-        //appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
-        appDB = Uri.fromFile(appDBFile);
-        userDB = mainActivityInterface.getStorageAccess().getUriForItem(
-                "Settings", "", SQLite.NON_OS_DATABASE_NAME);
+
+        // Get a reference to the database files/uris (app and user)
+        getDatabaseUris();
 
         // Check for a previous version in user storage
         // If it exists and isn't empty, copy it in to the appDB
-        // If if doesn't exist, or is empty copy our appDB to the userDb
+        // If if doesn't exist, or is empty copy our appDB to the userDB
         importDatabase();
     }
 
+    private void getDatabaseUris() {
+        appDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",SQLite.NON_OS_DATABASE_NAME);
+
+        appDB = Uri.fromFile(appDBFile);
+        userDB = mainActivityInterface.getStorageAccess().getUriForItem(
+                "Settings", "", SQLite.NON_OS_DATABASE_NAME);
+    }
     // Database Version
     private static final int DATABASE_VERSION = 6;
 
@@ -52,28 +67,53 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     private void importDatabase() {
         // This copies in the version in the settings folder if it exists and isn't empty
+        boolean copied;
         if (mainActivityInterface.getStorageAccess().uriExists(userDB) &&
-        mainActivityInterface.getStorageAccess().getFileSizeFromUri(userDB)>0) {
+            mainActivityInterface.getStorageAccess().getFileSizeFromUri(userDB)>0) {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(userDB);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabase copyFile from "+userDB+" to "+appDB);
-            Log.d(TAG,"Initialise database: User database copied in from "+userDB+" to "+ appDB + " to appCache: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
+            copied = mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabase copyFile from "+userDB+" to "+appDB+": "+copied);
         } else {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabse Create Settings/"+SQLite.NON_OS_DATABASE_NAME+" deleteOld=false");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
-            Log.d(TAG,"Create new "+SQLite.NON_OS_DATABASE_NAME+" at OpenSong/Settings/ and copy to appCache - success: "+copyUserDatabase());
+            copied = copyUserDatabase();
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+": Create new "+SQLite.NON_OS_DATABASE_NAME+" at OpenSong/Settings/ and copy to appCache - success: "+copied);
         }
     }
 
     public boolean copyUserDatabase() {
         // This copies the app persistent database (app cache) into the user's OpenSong/Settings folder
         // GE It should only need done at app close, since it is never used directly
+
+        // In case there was an issue and the Uris are null, get them again
+        if (appDB==null || userDB==null) {
+            getDatabaseUris();
+        }
+
+        // Get an input stream for the app database so we can copy it
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+
+        // Make sure the userDB file exists if it isn't there - may not have been used before
+        if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                    false,userDB,null,"Settings","",
+                    SQLite.NON_OS_DATABASE_NAME);
+        }
+
+        // Get an output stream for the userDB to copy into
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
-        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" copyNonOpenSongAppDB copyFile from "+appDB+" to "+userDB);
-        boolean copied = mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
-        Log.d(TAG,"Copy user database "+SQLite.NON_OS_DATABASE_NAME+" from "+appDB+" to "+userDB+" - success:"+copied);
+
+        // If all is well, attempt the copy
+        boolean copied;
+        if (inputStream!=null && outputStream!=null) {
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " copyNonOpenSongAppDB copyFile from " + appDB + " to " + userDB);
+            copied = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+            Log.d(TAG, "Copy user database " + SQLite.NON_OS_DATABASE_NAME + " from " + appDB + " to " + userDB + " - success:" + copied);
+        } else {
+            copied = false;
+        }
         return copied;
     }
 
@@ -232,6 +272,212 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_PREFERRED_INSTRUMENT + " TEXT");
             }
             cursor.close();
+        }
+    }
+
+    public void exportDatabase() {
+        // Export a csv version of the persistent database
+        mainActivityInterface.getCommonSQL().exportDatabase(getDB(),"NonOpenSongSongs.csv");
+        getDB().close();
+    }
+
+    public void backupPersistentDatabase() {
+        // This copies the appDB file to a backup file
+        if (appDB==null) {
+            getDatabaseUris();
+        }
+        // Get the date to append to the backup file
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String backupFileName = SQLite.NON_OS_DATABASE_NAME.replace(".db","_backup_"+date+".db");
+        Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFileName);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,backupUri,null,"Backups","",backupFileName);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(backupUri);
+        if (inputStream!=null && outputStream!=null) {
+            if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
+                c.startActivity(Intent.createChooser(mainActivityInterface.getExportActions().setShareIntent(backupFileName, "application/vnd.sqlite3", backupUri, null), backupFileName));
+            } else {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.error));
+            }
+        } else {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.error));
+        }
+    }
+
+    public void importDatabaseBackup() {
+        String returnlog;
+        String temp_backup_filename = "persistent_temp_backup.db";
+        // The app has already copied the appDB to the userDB before this step - our backup plan in case of issue!
+        // Copy this file into the Settings folder
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+        Uri tempFileUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",temp_backup_filename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,tempFileUri,null,"Backups","",temp_backup_filename);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(tempFileUri);
+
+        // Only proceed if this step works
+        if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
+            // Now we have some confidence that we can continue as we have a backup
+            // Overwrite the userDB with the imported uri
+            inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
+            outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
+
+            // Only proceed if this step works
+            if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
+                // Now we overwrite the appDB file
+                inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
+                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
+
+                // Only proceed if this step works
+                if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
+                    // It has worked, so now we can delete the temporary file
+                    mainActivityInterface.getStorageAccess().deleteFile(tempFileUri);
+                    // Now rebuild the song index
+                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                    mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
+                    mainActivityInterface.updateSongMenu(null,null,null);
+                    returnlog = "success";
+
+                } else {
+                    returnlog = "overwriteappDBerror";
+                }
+            } else {
+                returnlog = "overwriteuserDBerror";
+            }
+        } else {
+            returnlog = "backuperror";
+        }
+        if (returnlog.equals("success")) {
+            mainActivityInterface.getShowToast().success();
+        } else {
+            mainActivityInterface.getShowToast().error();
+        }
+    }
+
+    public void cleanDatabase(DatabaseUtilitiesFragment databaseUtilitiesFragment) {
+        // This goes through the persistent database looking for references to files that don't exist
+        // If the file has no useful information, it will just delete the entry
+        ArrayList<Song> nonExistingSongs = mainActivityInterface.getCommonSQL().getNonExistingSongsInDB(getDB());
+
+        // Now we remove the songs that have no information in them
+        // Keep a note of the useful ones
+        ArrayList<Song> uselessSongs = new ArrayList<>();
+        ArrayList<Song> usefulSongs = new ArrayList<>();
+        for (Song song:nonExistingSongs) {
+            // Get the full information from the song
+            SQLiteDatabase database = getDB();
+            song = mainActivityInterface.getCommonSQL().getSpecificSong(database, song.getFolder(), song.getFilename());
+            database.close();
+            // Check if values exist (don't worry about some less important ones)
+            boolean valuesExist = valueNotEmpty(song.getAuthor()) ||
+                    valueNotEmpty(song.getCopyright()) ||
+                    valueNotEmpty(song.getLyrics()) ||
+                    valueNotEmpty(song.getHymnnum()) ||
+                    valueNotEmpty(song.getCcli()) ||
+                    valueNotEmpty(song.getTheme()) ||
+                    valueNotEmpty(song.getAlttheme()) ||
+                    valueNotEmpty(song.getUser1()) ||
+                    valueNotEmpty(song.getUser2()) ||
+                    valueNotEmpty(song.getUser3()) ||
+                    valueNotEmpty(song.getBeatbuddysong()) ||
+                    valueNotEmpty(song.getBeatbuddykit()) ||
+                    valueNotEmpty(song.getKey()) ||
+                    valueNotEmpty(song.getKeyOriginal()) ||
+                    valueNotEmpty(song.getPreferredInstrument()) ||
+                    valueNotEmpty(song.getTimesig()) ||
+                    valueNotEmpty(song.getAka()) ||
+                    valueNotEmpty(song.getAutoscrolldelay()) ||
+                    valueNotEmpty(song.getAutoscrolllength()) ||
+                    valueNotEmpty(song.getTempo()) ||
+                    valueNotEmpty(song.getPadfile()) ||
+                    valueNotEmpty(song.getPadloop()) ||
+                    valueNotEmpty(song.getMidi()) ||
+                    valueNotEmpty(song.getMidiindex()) ||
+                    valueNotEmpty(song.getCapo()) ||
+                    //valueNotEmpty(song.getCapoprint()) ||
+                    valueNotEmpty(song.getCustomchords()) ||
+                    valueNotEmpty(song.getNotes()) ||
+                    valueNotEmpty(song.getAbc()) ||
+                    //valueNotEmpty(song.getAbcTranspose()) ||
+                    valueNotEmpty(song.getLinkyoutube()) ||
+                    valueNotEmpty(song.getLinkweb()) ||
+                    valueNotEmpty(song.getLinkaudio()) ||
+                    valueNotEmpty(song.getLinkother()) ||
+                    valueNotEmpty(song.getPresentationorder());
+                    //valueNotEmpty(song.getFiletype());
+            if (valuesExist) {
+                usefulSongs.add(song);
+            } else {
+                uselessSongs.add(song);
+            }
+        }
+
+        // Clear the original song list
+        nonExistingSongs.clear();
+
+        // Send the results back to the calling fragment
+        if (databaseUtilitiesFragment!=null) {
+            try {
+                databaseUtilitiesFragment.showCleanDatabaseResults(uselessSongs,usefulSongs);
+            } catch (Exception e) {
+                mainActivityInterface.getShowToast().error();
+            }
+        }
+    }
+
+    private boolean valueNotEmpty(String value) {
+        return value!=null && !value.isEmpty();
+    }
+
+    public void removeUselessEntries(ArrayList<Song> uselessSongs, boolean safeToDelete, CleanDatabaseBottomSheet cleanDatabaseBottomSheet) {
+        // We will remove the entries from the database as they aren't used.
+        // If this isn't safe, we will add a row to the removedNonOpenSongSongs.csv file
+
+        if (uselessSongs!=null) {
+            Uri removedFilesUri = null;
+            if (!safeToDelete) {
+                // Check the removedNonOpenSongSongs.csv file exists
+                removedFilesUri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","","removedNonOpenSongSongs.csv");
+                if (!mainActivityInterface.getStorageAccess().uriExists(removedFilesUri)) {
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,removedFilesUri,null,"Settings","",
+                            "removedNonOpenSongSongs.csv");
+                    // Write the table headings to the newly created file
+                    StringBuilder headings = new StringBuilder();
+                    mainActivityInterface.getCommonSQL().addCSVTableHeadings(headings);
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(removedFilesUri);
+                    mainActivityInterface.getStorageAccess().writeFileFromString(headings.toString(),outputStream);
+                }
+            }
+
+            StringBuilder lineForRemovedFile = new StringBuilder();
+            for (Song uselessSong:uselessSongs) {
+                deleteSong(uselessSong.getFolder(),uselessSong.getFilename());
+                if (!safeToDelete) {
+                    // Add the table headings - CODE MUST BE UPDATED IF COLUMNS CHANGE - USE SQLite file
+                    // Don't worry about ID or SONG_ID as they are created automatically based on entry / filenames / folders
+                    mainActivityInterface.getCommonSQL().addCSVTableValue(lineForRemovedFile,uselessSong,null);
+                }
+            }
+
+            if (!safeToDelete) {
+                // Add the info to the table
+                mainActivityInterface.getStorageAccess().updateRemoveDBFile(lineForRemovedFile.toString());
+            }
+
+            // Update the fragement
+            if (cleanDatabaseBottomSheet!=null) {
+                try {
+                    if (safeToDelete) {
+                        cleanDatabaseBottomSheet.clearUseless();
+                    } else {
+                        cleanDatabaseBottomSheet.clearUseful();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            mainActivityInterface.getShowToast().error();
         }
     }
 

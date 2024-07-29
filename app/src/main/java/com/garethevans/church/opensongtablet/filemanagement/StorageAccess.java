@@ -2393,6 +2393,25 @@ public class StorageAccess {
         }
     }
 
+    public void updateRemoveDBFile(String songValue) {
+        // Append songs that have been removed to the removedNonOpenSongSongs.csv file
+        if (songValue!=null && !songValue.isEmpty()) {
+            try {
+                songValue = songValue.trim();
+                Uri removedUri = getUriForItem("Settings", "", "removedNonOpenSongSongs.csv");
+                if (removedUri != null) {
+                    OutputStream outputStream;
+                    outputStream = c.getContentResolver().openOutputStream(removedUri, "wa");
+                    mainActivityInterface.getStorageAccess().writeFileFromString(songValue + "\n", outputStream);
+                } else {
+                    Log.d(TAG, "removedUri was null");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void updateFileUsageLog(Song thisSong) {
         // List the song being viewed
         if (fileViewLog && thisSong != null) {
