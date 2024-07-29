@@ -48,17 +48,16 @@
                 android:text="@string/beat_buddy"
                 android:hint="@string/beat_buddy_info"
                 app:size="large"/>
-
             <TableRow style="@style/DividerLine" />
 
-            <!--<com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/googleDriveSync"
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/databaseOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Google Drive Sync"
-                android:hint="Synchronise your OpenSong folder with Google Drive" />
+                android:text="@string/database_management"
+                android:hint="@string/database_management_info"
+                app:size="large"/>
             <TableRow style="@style/DividerLine" />
--->
 
         </LinearLayout>
     </ScrollView>
