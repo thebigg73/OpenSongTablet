@@ -178,7 +178,11 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
                             }
                             timer = null;
                             if (myView != null) {
-                                mainActivityInterface.getMainHandler().post(() -> myView.skipButton.performClick());
+                                mainActivityInterface.getMainHandler().post(() -> {
+                                    if (myView!=null) {
+                                        myView.skipButton.performClick();
+                                    }
+                                });
                             }
                         } else {
                             countdownNumber--;
