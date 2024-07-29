@@ -484,22 +484,19 @@ public class PerformanceFragment extends Fragment {
             return;
         }
 
-        Log.d(TAG,"mainActivityInterface.getSong().getFilename():"+mainActivityInterface.getSong().getFilename());
-
         // We only load a song if there is a change of song file, or we manually force it, or receive from the host
         if (!processingTestView && myView!=null && (songChange || myView.inlineSetList.getForceReload()
                 || mainActivityInterface.getTranspose().getForceReload() ||
             mainActivityInterface.getNearbyConnections().getForceReload())) {
 
-            Log.d(TAG,"loading song");
-
             // Clear any force reload flags
+            firstSongLoad = false;
             myView.inlineSetList.setForceReload(false);
             mainActivityInterface.getTranspose().setForceReload(false);
             mainActivityInterface.getNearbyConnections().setForceReload(false);
 
             mainActivityInterface.setHighlightChangeAllowed(false);
-            firstSongLoad = false;
+
             try {
                 doSongLoadStartTime = System.currentTimeMillis();
                 mainActivityInterface.closeDrawer(true);
@@ -1366,6 +1363,9 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPad().autoStartPad();
 
             // Update any midi commands (if any)
+            Log.d(TAG,"About to send MIDI");
+            Log.d(TAG,"getBeatBuddyAutoLookup():"+mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup());
+            Log.d(TAG, "getMidiSendAuto():"+mainActivityInterface.getMidi().getMidiSendAuto());
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() || mainActivityInterface.getMidi().getMidiSendAuto()) {
 
                 int delay = 0;
