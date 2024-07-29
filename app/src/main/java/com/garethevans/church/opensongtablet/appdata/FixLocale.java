@@ -54,7 +54,7 @@ public class FixLocale {
                 String deviceval = Locale.getDefault().getLanguage();
 
                 // If this is supported, set the user preference, otherwise use English
-                String translations = "af cs de el es fr hu it ja pl pt ru sr sv uk zh";
+                String translations = "af cs de el es fr hu it ja pl pt ru si sr sv uk zh";
                 if (!translations.contains(deviceval)) {
                     deviceval = "en";
                 }

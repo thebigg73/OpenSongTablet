@@ -21,7 +21,7 @@ public class LanguageFragment extends Fragment {
     private final String TAG = "LanguageFragment";
     private SettingsLanguageBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
+    private final String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","si","sr","sv","uk","zh"};
     private String language="", restart="", restart_required="";
     private String[] languages = new String[]{};
 
