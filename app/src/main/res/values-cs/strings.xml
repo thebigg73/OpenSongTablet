@@ -127,6 +127,7 @@
     <string name="button">Knoflík</string>
     <string name="camera">"Fotoaparát"</string>
     <string name="camera_info">Vyfoťte písničku</string>
+    <string name="can_be_found_at">Najdete je na adrese</string>
     <string name="cancel">Zrušení</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Capo akordy</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Hledejte další zařízení, která aktuálně inzerují</string>
     <string name="connections_discover_stop">"Zastavte objev"</string>
     <string name="connections_failure">"Selhání připojení"</string>
+    <string name="connections_host_current_set">Získat aktuální sadu hostitele</string>
+    <string name="connections_host_current_set_info">Nahraďte aktuální sadu verzí, kterou používá připojený hostitel</string>
     <string name="connections_host_passthrough">Hostitelský průchod</string>
     <string name="connections_host_passthrough_info">Umožněte zprávám přijatým od jiných hostitelů procházet připojeným klientům</string>
     <string name="connections_keephostsongs">Udržujte hostitelské písně</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Vlastní slide (s obsahem)"</string>
     <string name="customchords_code">Vlastní kód</string>
     <string name="customchords_name">Název Chord</string>
+    <string name="database_backup_info">Ruční zálohování databázového souboru</string>
+    <string name="database_export_info">Exportujte databázi jako soubor CSV, který lze otevřít a zobrazit pomocí tabulkového procesoru</string>
+    <string name="database_management">Správa databází</string>
+    <string name="database_management_info">Možnosti, které vám pomohou spravovat trvalou databázi aplikací (pro soubory PDF / obrázkové soubory) a exportovat informace z databází skladeb do tabulek</string>
     <string name="date">Datum</string>
     <string name="dec_autoscroll_speed">"Snížit rychlost Autoscroll Speed"</string>
     <string name="default_autoscroll">"Krát Výchozí AutoScroll"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Použijte své zařízení jako zpěvník</string>
     <string name="permissions_refused">Oprávnění byla odmítnuta a možná bude nutné je udělit ručně z nastavení systému Android, pokud se tato možnost znovu nezobrazí</string>
     <string name="persistent_database">Trvalá databáze</string>
+    <string name="persistent_database_clean">Vyčištění databáze</string>
+    <string name="persistent_database_clean_info">Zkontrolujte, zda databáze neobsahuje položky, které odkazují na soubory, které již neexistují.  To může být způsobeno ručním odstraněním nebo přejmenováním souborů PDF/obrázků.  Pokud záznamy neobsahují užitečné informace, budou odstraněny.</string>
+    <string name="persistent_database_clean_perfect">Gratulujeme, vaše databáze PDF/obrázků je čistá a neobsahuje žádné zbytečné záznamy!</string>
+    <string name="persistent_database_clean_useful">Databáze obsahuje odkazy na následující soubory PDF/obrázky, které již neexistují.  Databázové záznamy však obsahují některé potenciálně užitečné informace (jako jsou texty, poznámky, informace o MIDI atd.).  Tyto položky můžete bez obav odstranit, ale aplikace vytvoří soubor CSV s tímto obsahem, abyste mohli v případě potřeby data ručně obnovit.  Soubor bude vytvořen v OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Ve vaší databázi se odkazuje na následující soubory PDF/obrázky, ale tyto soubory již neexistují.  Databázové položky pro tyto soubory neobsahují žádné užitečné informace, a proto je bezpečné položky databáze smazat.</string>
     <string name="persistent_database_info">Zde se ukládají další informace (klávesa, poznámky, automatické posouvání, midi atd.) pro skladby bez OpenSong, jako jsou soubory PDF</string>
+    <string name="persistent_database_invalid_file">Tento soubor je neplatný a nelze jej použít</string>
+    <string name="persistent_database_restore_info">Import záložní databáze a nahrazení aktuální verze</string>
+    <string name="persistent_database_restore_warning">Pokračujte pouze v případě, že jste vytvořili zálohu trvalého databázového souboru.  Tím se přepíše vaše aktuální trvalá databáze a nelze to vrátit zpět</string>
     <string name="piano">Klavir</string>
     <string name="pinch_to_zoom">Přiblížení stažením prstů</string>
     <string name="pinch_to_zoom_info">Povolení přiblížení a oddálení skladby v režimu Výkon pomocí gesta přiblížení stažením prstů</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Krátkým stisknutím / klepnutím"</string>
     <string name="tap_tempo">"Klepnutím nastavte tempo"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Dočasná databáze</string>
+    <string name="temporary_database_info">Tato databáze se vytvoří při spuštění aplikace a při indexování skladeb.  To je sestaveno z vašich souborů skladeb OpenSong a odpovídajících informací v trvalé databázi o souborech PDF/obrázků, které se nacházejí ve složce vašich skladeb</string>
     <string name="text">"Text"</string>
     <string name="text_as_message">Text jako obsah zprávy</string>
     <string name="text_as_message_info">Při exportu více souborů do některých aplikací (např. WhatsApp) se aplikace někdy zastaví poté, co obdrží textovou zprávu a soubory nejsou zahrnuty.  Můžete to vypnout a vynutit, aby se přijímající aplikace zabývala soubory namísto pouze zprávy.</string>

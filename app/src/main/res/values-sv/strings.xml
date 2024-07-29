@@ -127,6 +127,7 @@
     <string name="button">Knapp</string>
     <string name="camera">"Kamera"</string>
     <string name="camera_info">Ta ett foto av ett sångblad</string>
+    <string name="can_be_found_at">Finns på</string>
     <string name="cancel">Annullera</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Capo ackord</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Leta efter andra enheter som för närvarande annonserar</string>
     <string name="connections_discover_stop">"Sluta upptäckt"</string>
     <string name="connections_failure">"Anslutningsfel"</string>
+    <string name="connections_host_current_set">Hämta aktuell värduppsättning</string>
+    <string name="connections_host_current_set_info">Reemplace su conjunto actual por la versión que está usando el host conectado</string>
     <string name="connections_host_passthrough">Värdgenomföring</string>
     <string name="connections_host_passthrough_info">Tillåt meddelanden som tas emot från andra värdar att passera till anslutna klienter</string>
     <string name="connections_keephostsongs">Håll värdlåtar</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Anpassad bild (med innehåll)"</string>
     <string name="customchords_code">"Anpassad kod"</string>
     <string name="customchords_name">"Ackordnamn"</string>
+    <string name="database_backup_info">Säkerhetskopiera databasfilen manuellt</string>
+    <string name="database_export_info">Exportera databasen som en CSV-fil som kan öppnas och visas med hjälp av kalkylprogram</string>
+    <string name="database_management">Hantering av databaser</string>
+    <string name="database_management_info">Alternativ som hjälper dig att hantera din beständiga appdatabas (för PDF-/bildfiler) och exportera informationen i dina låtdatabaser till kalkylblad</string>
     <string name="date">"Datum"</string>
     <string name="dec_autoscroll_speed">"Minska Autoscroll Speed"</string>
     <string name="default_autoscroll">"Standard autoscroll gånger"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Använd din enhet som en sångbok</string>
     <string name="permissions_refused">Behörigheter nekades och kan behöva beviljas manuellt från Android-inställningarna om du inte ser alternativet igen</string>
     <string name="persistent_database">Beständig databas</string>
+    <string name="persistent_database_clean">Rensa databasen</string>
+    <string name="persistent_database_clean_info">Kontrollera om det finns poster i databasen som refererar till filer som inte längre finns.  Detta kan bero på att PDF/bildfiler manuellt tas bort eller döps om.  Om posterna inte innehåller användbar information kommer de att tas bort.</string>
+    <string name="persistent_database_clean_perfect">Grattis, din PDF/bilddatabas är ren och har inga meningslösa poster!</string>
+    <string name="persistent_database_clean_useful">Databasen innehåller referenser till följande PDF-/bildfiler som inte längre finns.  Databasposterna innehåller dock en del information som kan vara användbar (t.ex. låttexter, noter, MIDI-information osv.).  Du kan ta bort dessa poster på ett säkert sätt, men appen skapar en CSV-fil med det här innehållet så att du kan återställa data manuellt om det behövs.  Filen kommer att skapas i OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Följande PDF-/bildfiler refereras till i databasen, men filerna finns inte längre.  Databasposterna för dessa filer har ingen användbar information och det är därför säkert att ta bort databasposterna.</string>
     <string name="persistent_database_info">Detta lagrar extra information (tangenter, noter, autoscroll, midi, etc.) för låtar som inte är OpenSong, såsom PDF-filer</string>
+    <string name="persistent_database_invalid_file">Den här filen är ogiltig och kan inte användas</string>
+    <string name="persistent_database_restore_info">Importera en säkerhetskopia av databasen och ersätt den aktuella versionen</string>
+    <string name="persistent_database_restore_warning">Fortsätt bara om du har skapat en säkerhetskopia av den beständiga databasfilen.  Detta skriver över den aktuella beständiga databasen och kan inte ångras</string>
     <string name="piano">"Piano"</string>
     <string name="pinch_to_zoom">Nyp för att zooma</string>
     <string name="pinch_to_zoom_info">Tillåt zoomning in och ut ur en låt i prestandaläge med hjälp av nyp för att zooma gesten</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Kort tryck / tryck"</string>
     <string name="tap_tempo">"Tryck för att ställa in tempo"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Temporär databas</string>
+    <string name="temporary_database_info">Den här databasen skapas när appen startar och när låtarna indexeras.  Detta är byggt från dina OpenSong-låtfiler och matchande information i den beständiga databasen om PDF-/bildfiler som finns i din låtmapp</string>
     <string name="text">"Text"</string>
     <string name="text_as_message">Text som meddelandeinnehåll</string>
     <string name="text_as_message_info">När du exporterar flera filer till vissa appar (t.ex. WhatsApp) stannar appen ibland efter att den har fått ett textmeddelande och filerna inte ingår.  Du kan stänga av detta och tvinga den mottagande appen att hantera filerna istället för bara meddelandet.</string>

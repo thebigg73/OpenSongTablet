@@ -127,6 +127,7 @@
     <string name="button">Pulsante</string>
     <string name="camera">Macchina fotografica</string>
     <string name="camera_info">Scatta una fotografia di uno spartito</string>
+    <string name="can_be_found_at">Può essere trovato all\'indirizzo</string>
     <string name="cancel">Annulla</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Accordi di Capo</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Cerca altri dispositivi che stanno attualmente facendo pubblicità</string>
     <string name="connections_discover_stop">"Arresti la scoperta"</string>
     <string name="connections_failure">"Errore di connessione"</string>
+    <string name="connections_host_current_set">Ottenere l\'host current set</string>
+    <string name="connections_host_current_set_info">Sostituire il set corrente con la versione utilizzata dall\'host connesso</string>
     <string name="connections_host_passthrough">Passaggio dell\'ospite</string>
     <string name="connections_host_passthrough_info">Consenti ai messaggi ricevuti da altri host di passare ai client connessi</string>
     <string name="connections_keephostsongs">Mantieni le canzoni host</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Scivolo personalizzato (con contenuto)"</string>
     <string name="customchords_code">Codice personalizzato</string>
     <string name="customchords_name">"Nome dell'accordo"</string>
+    <string name="database_backup_info">Backup manuale del file di database</string>
+    <string name="database_export_info">Esporta il database come file CSV che può essere aperto e visualizzato utilizzando il software per fogli di calcolo</string>
+    <string name="database_management">Gestione database</string>
+    <string name="database_management_info">Opzioni per gestire il database persistente dell\'app (per file PDF/immagine) ed esportare le informazioni nei database dei brani in fogli di calcolo</string>
     <string name="date">"Data"</string>
     <string name="dec_autoscroll_speed">"Diminuire la velocità di scorrimento automatico"</string>
     <string name="default_autoscroll">"Tempi Autoscroll Predefinito"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Usa il tuo dispositivo come un libro di canzoni</string>
     <string name="permissions_refused">Le autorizzazioni sono state rifiutate e potrebbe essere necessario concederle manualmente dalle impostazioni di Android se non vedi più l\'opzione</string>
     <string name="persistent_database">Banca dati persistente</string>
+    <string name="persistent_database_clean">Pulizia del database</string>
+    <string name="persistent_database_clean_info">Verificare la presenza di voci nel database che fanno riferimento a file che non esistono più.  Ciò potrebbe essere dovuto all\'eliminazione o alla ridenominazione manuale di file PDF/immagine.  Se le voci non contengono informazioni utili, verranno rimosse.</string>
+    <string name="persistent_database_clean_perfect">Congratulazioni, il tuo database PDF/immagini è pulito e non ha voci inutili!</string>
+    <string name="persistent_database_clean_useful">Il database contiene riferimenti ai seguenti file PDF/immagine che non esistono più.  Le voci del database, tuttavia, contengono alcune informazioni potenzialmente utili (come testi, note, informazioni MIDI, ecc.).  È possibile eliminare queste voci in modo sicuro, ma l\'app creerà un file CSV con questo contenuto in modo da poter recuperare manualmente i dati, se necessario.  Il file verrà creato in OpenSong/Impostazioni/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Nel database viene fatto riferimento ai seguenti file PDF/immagine, ma i file non esistono più.  Le voci del database per questi file non contengono informazioni utili ed è quindi sicuro eliminare le voci del database.</string>
     <string name="persistent_database_info">Memorizza informazioni aggiuntive (tasto, note, scorrimento automatico, midi, ecc.) per brani non OpenSong come file PDF</string>
+    <string name="persistent_database_invalid_file">Questo file non è valido e non può essere utilizzato</string>
+    <string name="persistent_database_restore_info">Importare un database di backup e sostituire la versione corrente</string>
+    <string name="persistent_database_restore_warning">Procedere solo se è stato creato un backup del file di database persistente.  Questa operazione sovrascriverà il database persistente corrente e non potrà essere annullata</string>
     <string name="piano">Pianoforte</string>
     <string name="pinch_to_zoom">Pizzica per ingrandire</string>
     <string name="pinch_to_zoom_info">Consentire lo zoom avanti e indietro di un brano in modalità Performance utilizzando il gesto di avvicinamento delle dita per ingrandire</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Pressione breve / tocco"</string>
     <string name="tap_tempo">"Toccare per impostare il tempo"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Banca dati temporanea</string>
+    <string name="temporary_database_info">Questo database viene creato all\'avvio dell\'app e quando i brani vengono indicizzati.  Questo è costruito dai file dei brani OpenSong e dalle informazioni corrispondenti nel database persistente sui file PDF/immagine trovati nella cartella dei brani</string>
     <string name="text">"Testo"</string>
     <string name="text_as_message">Testo come contenuto del messaggio</string>
     <string name="text_as_message_info">Quando si esportano più file in alcune app (ad esempio WhatsApp), l\'app a volte si interrompe dopo aver ricevuto un messaggio di testo e i file non sono inclusi.  Puoi disattivare questa opzione e forzare l\'app ricevente a gestire i file anziché solo il messaggio.</string>

@@ -127,6 +127,7 @@
     <string name="button">Dugme</string>
     <string name="camera">Kamera</string>
     <string name="camera_info">Snimite fotografiju lista sa pesmama</string>
+    <string name="can_be_found_at">Može se naći na</string>
     <string name="cancel">Poništiti</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Capo akordi</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Potražite druge uređaje koji se trenutno oglašavaju</string>
     <string name="connections_discover_stop">Zaustavljanje pronalaženja</string>
     <string name="connections_failure">Greška kod povezivanja</string>
+    <string name="connections_host_current_set">Nabavite trenutni skup domaćina</string>
+    <string name="connections_host_current_set_info">将当前设置替换为连接的主机正在使用的版本</string>
     <string name="connections_host_passthrough">Host passthrough</string>
     <string name="connections_host_passthrough_info">Dozvolite da poruke primljene od drugih hostova prolaze do povezanih klijenata</string>
     <string name="connections_keephostsongs">Zadržite domaćinske pesme</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">Prilagođeni slajd (sa sadržajem)</string>
     <string name="customchords_code">Prilagođeni kod</string>
     <string name="customchords_name">Ime akorda</string>
+    <string name="database_backup_info">Ručno napravite rezervnu kopiju datoteke baze podataka</string>
+    <string name="database_export_info">Izvozite bazu podataka kao CSV datoteku koja se može otvoriti i pregledati pomoću softvera za tabelarne tabele</string>
+    <string name="database_management">Upravljanje bazama podataka</string>
+    <string name="database_management_info">Opcije koje će vam pomoći da upravljate svojom trajnom bazom podataka aplikacija (za PDF / slikovne datoteke) i izvozite informacije u bazama podataka pesama u tabele</string>
     <string name="date">Datum</string>
     <string name="dec_autoscroll_speed">Smanjiti brzinu automatskog pomeranja</string>
     <string name="default_autoscroll">Unapred postavljena vremena za autoskrol</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Koristite svoj uređaj kao pesmaru</string>
     <string name="permissions_refused">Dozvole su odbijene i možda će biti potrebno da ih dodelite ručno iz podešavanja Android-a ako ponovo ne vidite opciju</string>
     <string name="persistent_database">Perzistentna baza podataka</string>
+    <string name="persistent_database_clean">Očistite bazu podataka</string>
+    <string name="persistent_database_clean_info">Proverite svoju bazu podataka za unose koji se odnose na fajlove koji više ne postoje.  To bi moglo biti zbog ručnog brisanja ili preimenovanja PDF / slikovnih datoteka.  Ako unosi ne sadrže korisne informacije, oni će biti uklonjeni.</string>
+    <string name="persistent_database_clean_perfect">Čestitam, vaš PDF / slika baza podataka je čista i nema besmislenih unosa!</string>
+    <string name="persistent_database_clean_useful">Baza podataka sadrži reference na sledeće PDF/slikovne datoteke koje više ne postoje.  Stavke u bazi podataka, međutim, sadrže neke potencijalno korisne informacije (kao što su tekstovi, beleške, MIDI informacije, itd.).  Možete bezbedno izbrisati ove unose, ali aplikacija će kreirati CSV datoteku sa ovim sadržajem, tako da možete ručno oporaviti podatke ako je potrebno.  Fajl će biti kreiran u OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Sledeći PDF / slikovni fajlovi se pominju u vašoj bazi podataka, ali datoteke više ne postoje.  Stavke baze podataka za ove fajlove nemaju korisne informacije i stoga je bezbedno obrisati unose baze podataka.</string>
     <string name="persistent_database_info">Ovo čuva dodatne informacije (taster, beleške, automatsko pomeranje, midi, itd.) za pesme koje nisu OpenSong kao što su PDF datoteke</string>
+    <string name="persistent_database_invalid_file">Ovaj fajl je nevažeći i ne može se koristiti</string>
+    <string name="persistent_database_restore_info">Uvezite rezervnu bazu podataka i zamenite trenutnu verziju</string>
+    <string name="persistent_database_restore_warning">Nastavite samo ako ste kreirali rezervnu kopiju vaše trajne datoteke baze podataka.  Ovo će prepisati vašu trenutnu trajnu bazu podataka i ne može se poništiti</string>
     <string name="piano">Klavir</string>
     <string name="pinch_to_zoom">Štipaljka za zumiranje</string>
     <string name="pinch_to_zoom_info">Dozvoljavanje uvećavanja i umanjivanja pesme u režimu performansi pomoću štipaljke za zumiranje pokreta</string>
@@ -885,6 +900,8 @@
     <string name="tap">Kratak pritisak/Tap</string>
     <string name="tap_tempo">Tapnuti za određivanje tempa</string>
     <string name="tempo">Tempo</string>
+    <string name="temporary_database">Privremena baza podataka</string>
+    <string name="temporary_database_info">Ova baza podataka se kreira kada se aplikacija pokrene i kada su pesme indeksirane.  Ovo je napravljen od vaših OpenSong pesama fajlova i odgovarajućih informacija u trajnoj bazi podataka o PDF / slikovnim datotekama koje se nalaze u folderu pesama</string>
     <string name="text">Tekst</string>
     <string name="text_as_message">Tekst kao sadržaj poruke</string>
     <string name="text_as_message_info">Prilikom izvoza više fajlova u neke aplikacije (npr. WhatsApp) aplikacija se ponekad zaustavi nakon što primi tekstualnu poruku, a datoteke nisu uključene.  Ovo možete da isključite i naterate aplikaciju za prijem da se bavi datotekama umesto samo porukom.</string>

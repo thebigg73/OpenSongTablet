@@ -127,6 +127,7 @@
     <string name="button">Кнопка</string>
     <string name="camera">Камера</string>
     <string name="camera_info">Сфотографуйте аркуш з піснею</string>
+    <string name="can_be_found_at">Можна знайти за адресою</string>
     <string name="cancel">Скасувати</string>
     <string name="capo">Каподастр</string>
     <string name="capo_chords">Капо акорди</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Шукайте інші пристрої, які зараз рекламуються</string>
     <string name="connections_discover_stop">Припинити пошук</string>
     <string name="connections_failure">Не вдається підключити</string>
+    <string name="connections_host_current_set">Отримати поточний набір хоста</string>
+    <string name="connections_host_current_set_info">Замініть поточний набір на версію, яку використовує підключений хост</string>
     <string name="connections_host_passthrough">Перехід хоста</string>
     <string name="connections_host_passthrough_info">Дозволити повідомленням, отриманим від інших хостів, передавати підключеним клієнтам</string>
     <string name="connections_keephostsongs">Зберігати пісні сервера</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">Спеціальне слайд</string>
     <string name="customchords_code">Призначений для користувача код</string>
     <string name="customchords_name">Hазвание акорду</string>
+    <string name="database_backup_info">Резервна копія файлу бази даних вручну</string>
+    <string name="database_export_info">Експортуйте базу даних у форматі CSV, який можна відкривати та переглядати за допомогою програмного забезпечення для роботи з електронними таблицями</string>
+    <string name="database_management">Управління базами даних</string>
+    <string name="database_management_info">Параметри, які допоможуть вам керувати постійною базою даних програм (для PDF/файлів зображень) та експортувати інформацію з ваших баз даних пісень в електронні таблиці</string>
     <string name="date">Дата</string>
     <string name="dec_autoscroll_speed">Зменшити швидкість автопрокрутки</string>
     <string name="default_autoscroll">Автопрокрутка за замовчуванням</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Використовуйте свій пристрій як збірник пісень</string>
     <string name="permissions_refused">У дозволах було відмовлено. Можливо, їх потрібно буде надати вручну з налаштувань Android, якщо ви знову не бачите цю опцію</string>
     <string name="persistent_database">Постійна база даних</string>
+    <string name="persistent_database_clean">Очищення бази даних</string>
+    <string name="persistent_database_clean_info">Перевірте базу даних на наявність записів, які посилаються на файли, які більше не існують.  Це може бути пов\'язано з ручним видаленням або перейменуванням файлів PDF/зображень.  Якщо записи не містять корисної інформації, вони будуть видалені.</string>
+    <string name="persistent_database_clean_perfect">Вітаємо, ваша база даних PDF/зображень чиста і не містить безглуздих записів!</string>
+    <string name="persistent_database_clean_useful">База даних містить посилання на наступні PDF/графічні файли, які більше не існують.  Однак записи бази даних містять деяку потенційно корисну інформацію (таку як тексти пісень, ноти, інформація MIDI тощо).  Ви можете безпечно видалити ці записи, але програма створить файл CSV з цим вмістом, щоб ви могли вручну відновити дані, якщо це потрібно.  Файл буде створено в OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Наступні файли PDF/зображень є посиланнями у вашій базі даних, але ці файли більше не існують.  Записи бази даних для цих файлів не містять корисних відомостей, тому їх можна безпечно видалити.</string>
     <string name="persistent_database_info">Тут зберігається додаткова інформація (клавіша, нотатки, автопрокрутка, міді тощо) для пісень, які не є OpenSong, таких як файли PDF</string>
+    <string name="persistent_database_invalid_file">Цей файл недійсний і не може бути використаний</string>
+    <string name="persistent_database_restore_info">Імпортуйте базу даних резервної копії та замініть поточну версію</string>
+    <string name="persistent_database_restore_warning">Продовжуйте лише в тому випадку, якщо ви створили резервну копію постійного файлу бази даних.  Це призведе до перезапису вашої поточної постійної бази даних, і її не можна буде скасувати</string>
     <string name="piano">Піаніно</string>
     <string name="pinch_to_zoom">Зведення для масштабування</string>
     <string name="pinch_to_zoom_info">Дозволити збільшення та зменшення масштабу пісні в режимі \"Виконання\" за допомогою жесту зведення для масштабування</string>
@@ -885,6 +900,8 @@
     <string name="tap">Коротке натискання/тап</string>
     <string name="tap_tempo">Натисніть, щоб встановити темп</string>
     <string name="tempo">Темп</string>
+    <string name="temporary_database">Тимчасова база даних</string>
+    <string name="temporary_database_info">Ця база даних створюється під час запуску програми та під час індексації пісень.  Цей файл створено на основі ваших файлів пісень OpenSong та відповідної інформації у постійній базі даних про PDF/файли зображень, які можна знайти у вашій папці з піснями</string>
     <string name="text">Текст</string>
     <string name="text_as_message">Текст як вміст повідомлення</string>
     <string name="text_as_message_info">Під час експорту кількох файлів у деякі додатки (наприклад, WhatsApp) додаток іноді зупиняється після того, як отримує текстове повідомлення, а файли не включаються.  Ви можете вимкнути це та змусити програму-одержувача працювати з файлами, а не лише з повідомленнями.</string>

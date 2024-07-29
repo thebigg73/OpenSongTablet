@@ -127,6 +127,7 @@
     <string name="button">Przycisk</string>
     <string name="camera">Aparat</string>
     <string name="camera_info">Zrób zdjęcie śpiewnika</string>
+    <string name="can_be_found_at">Można znaleźć pod adresem</string>
     <string name="cancel">Anuluj</string>
     <string name="capo">Kapo</string>
     <string name="capo_chords">Akordy kapo</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Szukaj innych urządzeń, które obecnie się rozgłaszają</string>
     <string name="connections_discover_stop">Przerwij wyszukiwanie</string>
     <string name="connections_failure">Błąd połączenia</string>
+    <string name="connections_host_current_set">Pobierz bieżący zestaw hosta</string>
+    <string name="connections_host_current_set_info">Zastąp bieżący zestaw wersją używaną przez podłączonego hosta</string>
     <string name="connections_host_passthrough">Przekazywanie przez hosta</string>
     <string name="connections_host_passthrough_info">Zezwalaj na przekazywanie wiadomości otrzymanych od innych hostów do połączonych klientów</string>
     <string name="connections_keephostsongs">Zachowaj piosenki gospodarza</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">Niestandardowy slajd (z zawartością)"</string>
     <string name="customchords_code">Własny kod</string>
     <string name="customchords_name">Nazwa akordu</string>
+    <string name="database_backup_info">Ręczna kopia zapasowa pliku bazy danych</string>
+    <string name="database_export_info">Eksportuj bazę danych jako plik CSV, który można otwierać i przeglądać za pomocą oprogramowania do obsługi arkuszy kalkulacyjnych</string>
+    <string name="database_management">Zarządzanie bazami danych</string>
+    <string name="database_management_info">Opcje ułatwiające zarządzanie trwałą bazą danych aplikacji (dla plików PDF/obrazów) i eksportowanie informacji z baz danych utworów do arkuszy kalkulacyjnych</string>
     <string name="date">Data</string>
     <string name="dec_autoscroll_speed">Zmniejsz prędkość autoprzewijania</string>
     <string name="default_autoscroll">Domyślne czasu autoprzewijania</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Użyj swojego urządzenia jako śpiewnika</string>
     <string name="permissions_refused">Uprawnienia zostały odrzucone i może być konieczne przyznanie ich ręcznie w ustawieniach Androida, jeśli nie widzisz tej opcji ponownie</string>
     <string name="persistent_database">Trwała baza danych</string>
+    <string name="persistent_database_clean">Czyszczenie bazy danych</string>
+    <string name="persistent_database_clean_info">Sprawdź bazę danych pod kątem wpisów, które odwołują się do plików, które już nie istnieją.  Może to być spowodowane ręcznym usuwaniem lub zmianą nazw plików PDF/obrazów.  Jeśli wpisy nie zawierają przydatnych informacji, zostaną usunięte.</string>
+    <string name="persistent_database_clean_perfect">Gratulacje, Twoja baza danych PDF/obrazów jest czysta i nie ma w niej bezsensownych wpisów!</string>
+    <string name="persistent_database_clean_useful">Baza danych zawiera odwołania do następujących plików PDF/obrazów, które już nie istnieją.  Wpisy w bazie danych zawierają jednak pewne potencjalnie przydatne informacje (takie jak teksty, nuty, informacje MIDI itp.).  Możesz bezpiecznie usunąć te wpisy, ale aplikacja utworzy plik CSV z tą zawartością, dzięki czemu w razie potrzeby będzie można ręcznie odzyskać dane.  Plik zostanie utworzony w OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">W bazie danych znajdują się odwołania do następujących plików PDF/obrazów, ale te pliki już nie istnieją.  Wpisy bazy danych dla tych plików nie zawierają żadnych przydatnych informacji i dlatego można je bezpiecznie usunąć.</string>
     <string name="persistent_database_info">Przechowuje dodatkowe informacje (tonacja, notatki, automatyczne przewijanie, midi itp.) dla piosenek innych niż OpenSong, takich jak pliki PDF</string>
+    <string name="persistent_database_invalid_file">Ten plik jest nieprawidłowy i nie można go używać</string>
+    <string name="persistent_database_restore_info">Zaimportuj kopię zapasową bazy danych i zastąp bieżącą wersję</string>
+    <string name="persistent_database_restore_warning">Kontynuuj tylko wtedy, gdy utworzyłeś kopię zapasową trwałego pliku bazy danych.  Spowoduje to zastąpienie bieżącej trwałej bazy danych i nie będzie można jej cofnąć</string>
     <string name="piano">Pianino</string>
     <string name="pinch_to_zoom">Uszczypnij, aby powiększyć</string>
     <string name="pinch_to_zoom_info">Zezwala na powiększanie i pomniejszanie piosenki w trybie Wykonania za pomocą gestu uszczypnięcia</string>
@@ -885,6 +900,8 @@
     <string name="tap">Krótkie naciśnięcie/dotknięcie</string>
     <string name="tap_tempo">Dotknij, aby ustawić tempo</string>
     <string name="tempo">Tempo</string>
+    <string name="temporary_database">Tymczasowa baza danych</string>
+    <string name="temporary_database_info">Ta baza danych jest tworzona podczas uruchamiania aplikacji i indeksowania utworów.  Jest on tworzony na podstawie plików utworów OpenSong i pasujących informacji w trwałej bazie danych o plikach PDF/graficznych znalezionych w folderze utworów</string>
     <string name="text">Tekst</string>
     <string name="text_as_message">Tekst jako treść wiadomości</string>
     <string name="text_as_message_info">Podczas eksportowania wielu plików do niektórych aplikacji (np. WhatsApp) aplikacja czasami zatrzymuje się po otrzymaniu wiadomości tekstowej, a pliki nie są dołączane. Możesz wyłączyć tę funkcję i zmusić aplikację odbierającą do zajmowania się plikami, a nie tylko wiadomością.</string>

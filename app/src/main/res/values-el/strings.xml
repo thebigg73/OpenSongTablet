@@ -127,6 +127,7 @@
     <string name="button">Κουμπί</string>
     <string name="camera">"ΦΩΤΟΓΡΑΦΙΚΗ ΜΗΧΑΝΗ"</string>
     <string name="camera_info">Τραβήξτε μια φωτογραφία ενός φύλλου τραγουδιού</string>
+    <string name="can_be_found_at">Μπορείτε να το βρείτε στη διεύθυνση</string>
     <string name="cancel">Ματαίωση</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Χορδές Capo</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Αναζητήστε άλλες συσκευές που διαφημίζονται αυτήν τη στιγμή</string>
     <string name="connections_discover_stop">"Σταματήστε την ανακάλυψη"</string>
     <string name="connections_failure">"Αποτυχία σύνδεσης"</string>
+    <string name="connections_host_current_set">Λήψη τρέχοντος συνόλου κεντρικού υπολογιστή</string>
+    <string name="connections_host_current_set_info">Αντικαταστήστε το τρέχον σύνολο με την έκδοση που χρησιμοποιεί ο συνδεδεμένος κεντρικός υπολογιστής</string>
     <string name="connections_host_passthrough">Διέλευση κεντρικού υπολογιστή</string>
     <string name="connections_host_passthrough_info">Επιτρέψτε στα μηνύματα που λαμβάνονται από άλλους κεντρικούς υπολογιστές να περάσουν σε συνδεδεμένους πελάτες</string>
     <string name="connections_keephostsongs">Κρατήστε τα κεντρικά τραγούδια</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Custom slide (with content)"</string>
     <string name="customchords_code">"Custom code"</string>
     <string name="customchords_name">"Όνομα συγχορδίας"</string>
+    <string name="database_backup_info">Μη αυτόματη δημιουργία αντιγράφων ασφαλείας του αρχείου βάσης δεδομένων</string>
+    <string name="database_export_info">Εξαγάγετε τη βάση δεδομένων ως αρχείο CSV που μπορεί να ανοίξει και να προβληθεί χρησιμοποιώντας λογισμικό υπολογιστικών φύλλων</string>
+    <string name="database_management">Διαχείριση βάσεων δεδομένων</string>
+    <string name="database_management_info">Επιλογές που θα σας βοηθήσουν να διαχειριστείτε τη μόνιμη βάση δεδομένων εφαρμογών (για αρχεία PDF/εικόνας) και να εξαγάγετε τις πληροφορίες στις βάσεις δεδομένων τραγουδιών σας σε υπολογιστικά φύλλα</string>
     <string name="date">"Ημερομηνία"</string>
     <string name="dec_autoscroll_speed">"Μειώστε την ταχύτητα αυτόματης κύλισης"</string>
     <string name="default_autoscroll">"Προεπιλεγμένοι χρόνοι αυτοματης κύλισης"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Χρησιμοποιήστε τη συσκευή σας ως βιβλίο τραγουδιών</string>
     <string name="permissions_refused">Τα δικαιώματα απορρίφθηκαν και ενδέχεται να χρειαστεί να παραχωρηθούν με μη αυτόματο τρόπο από τις ρυθμίσεις Android, εάν δεν δείτε ξανά την επιλογή</string>
     <string name="persistent_database">Μόνιμη βάση δεδομένων</string>
+    <string name="persistent_database_clean">Εκκαθάριση βάσης δεδομένων</string>
+    <string name="persistent_database_clean_info">Ελέγξτε τη βάση δεδομένων σας για καταχωρήσεις που αναφέρονται σε αρχεία που δεν υπάρχουν πλέον.  Αυτό μπορεί να οφείλεται στη μη αυτόματη διαγραφή ή μετονομασία αρχείων PDF/εικόνας.  Εάν οι καταχωρήσεις δεν περιέχουν χρήσιμες πληροφορίες, θα αφαιρεθούν.</string>
+    <string name="persistent_database_clean_perfect">Συγχαρητήρια, η βάση δεδομένων PDF / εικόνας σας είναι καθαρή και δεν έχει άσκοπες καταχωρήσεις!</string>
+    <string name="persistent_database_clean_useful">Η βάση δεδομένων περιέχει αναφορές στα ακόλουθα αρχεία PDF/εικόνας που δεν υπάρχουν πλέον.  Ωστόσο, οι καταχωρίσεις της βάσης δεδομένων περιέχουν ορισμένες δυνητικά χρήσιμες πληροφορίες (όπως στίχους, σημειώσεις, πληροφορίες MIDI κ.λπ.).  Μπορείτε να διαγράψετε με ασφάλεια αυτές τις καταχωρίσεις, αλλά η εφαρμογή θα δημιουργήσει ένα αρχείο CSV με αυτό το περιεχόμενο, ώστε να μπορείτε να ανακτήσετε μη αυτόματα τα δεδομένα, εάν απαιτείται.  Το αρχείο θα δημιουργηθεί στο OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Τα ακόλουθα αρχεία PDF/εικόνας αναφέρονται στη βάση δεδομένων σας, αλλά τα αρχεία δεν υπάρχουν πλέον.  Οι καταχωρήσεις βάσης δεδομένων για αυτά τα αρχεία δεν έχουν χρήσιμες πληροφορίες και, επομένως, είναι ασφαλές να διαγράψετε τις καταχωρήσεις της βάσης δεδομένων.</string>
     <string name="persistent_database_info">Αυτό αποθηκεύει επιπλέον πληροφορίες (κλειδί, σημειώσεις, αυτόματη κύλιση, midi, κ.λπ.) για τραγούδια που δεν είναι OpenSong, όπως αρχεία PDF</string>
+    <string name="persistent_database_invalid_file">Αυτό το αρχείο δεν είναι έγκυρο και δεν μπορεί να χρησιμοποιηθεί</string>
+    <string name="persistent_database_restore_info">Εισαγωγή βάσης δεδομένων αντιγράφων ασφαλείας και αντικατάσταση της τρέχουσας έκδοσης</string>
+    <string name="persistent_database_restore_warning">Συνεχίστε μόνο εάν έχετε δημιουργήσει αντίγραφο ασφαλείας του μόνιμου αρχείου βάσης δεδομένων.  Αυτό θα αντικαταστήσει την τρέχουσα μόνιμη βάση δεδομένων και δεν μπορεί να αναιρεθεί</string>
     <string name="piano">"Πιάνο"</string>
     <string name="pinch_to_zoom">Τσίμπημα για ζουμ</string>
     <string name="pinch_to_zoom_info">Να επιτρέπεται η μεγέθυνση και σμίκρυνση ενός τραγουδιού στη λειτουργία απόδοσης με χρήση της χειρονομίας τσιμπήματος για ζουμ</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Πατήστε σύντομα / πατήστε"</string>
     <string name="tap_tempo">"Ακούμπα (Tap) για να εισαχθεί ο ρυθμός"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Προσωρινή βάση δεδομένων</string>
+    <string name="temporary_database_info">Αυτή η βάση δεδομένων δημιουργείται κατά την εκκίνηση της εφαρμογής και κατά την ευρετηρίαση των τραγουδιών.  Αυτό δημιουργείται από τα αρχεία τραγουδιών OpenSong και τις αντίστοιχες πληροφορίες στη μόνιμη βάση δεδομένων σχετικά με τα αρχεία PDF/εικόνας που βρίσκονται στο φάκελο τραγουδιών σας</string>
     <string name="text">"Κείμενο"</string>
     <string name="text_as_message">Κείμενο ως περιεχόμενο μηνύματος</string>
     <string name="text_as_message_info">Κατά την εξαγωγή πολλών αρχείων σε ορισμένες εφαρμογές (π.χ. WhatsApp), η εφαρμογή μερικές φορές σταματά αφού λάβει ένα μήνυμα κειμένου και τα αρχεία δεν περιλαμβάνονται.  Μπορείτε να το απενεργοποιήσετε και να αναγκάσετε την εφαρμογή λήψης να ασχοληθεί με τα αρχεία αντί μόνο με το μήνυμα.</string>

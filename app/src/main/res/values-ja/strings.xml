@@ -127,6 +127,7 @@
     <string name="button">ボタン</string>
     <string name="camera">"カメラ"</string>
     <string name="camera_info">ソングシートの写真を撮る</string>
+    <string name="can_be_found_at">で見つけることができます</string>
     <string name="cancel">キャンセル</string>
     <string name="capo">カポ</string>
     <string name="capo_chords">カポコード</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">現在宣伝している他のデバイスを探す</string>
     <string name="connections_discover_stop">"発見を止める"</string>
     <string name="connections_failure">"接続障害"</string>
+    <string name="connections_host_current_set">ホストの現在のセットを取得する</string>
+    <string name="connections_host_current_set_info">現在のセットを、接続されているホストが使用しているバージョンに置き換えます</string>
     <string name="connections_host_passthrough">ホストパススルー</string>
     <string name="connections_host_passthrough_info">他のホストから受信したメッセージが接続されたクライアントに通過できるようにする</string>
     <string name="connections_keephostsongs">ホストの曲を保持する</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"カスタムスライド（コンテンツを含みます）"</string>
     <string name="customchords_code">カスタムコード</string>
     <string name="customchords_name">コードネーム</string>
+    <string name="database_backup_info">データベース・ファイルを手動でバックアップする</string>
+    <string name="database_export_info">データベースをCSVファイルとしてエクスポートし、スプレッドシートソフトウェアを使用して開いて表示できるようにします</string>
+    <string name="database_management">データベース管理</string>
+    <string name="database_management_info">永続的なアプリデータベース(PDF /画像ファイル用)を管理し、曲データベースの情報をスプレッドシートにエクスポートするのに役立つオプション</string>
     <string name="date">"日付"</string>
     <string name="dec_autoscroll_speed">"オートスクロール速度を下げる"</string>
     <string name="default_autoscroll">"デフォルトの自動スクロール時間"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">デバイスを歌集として使用する</string>
     <string name="permissions_refused">アクセス許可が拒否されました。オプションが再び表示されない場合は、Android の設定から手動で許可する必要がある可能性があります</string>
     <string name="persistent_database">永続データベース</string>
+    <string name="persistent_database_clean">データベースをクリーンアップする</string>
+    <string name="persistent_database_clean_info">データベースで、存在しなくなったファイルを参照しているエントリがないか確認してください。 これは、PDF /画像ファイルを手動で削除または名前変更したことが原因である可能性があります。 エントリに有用な情報が含まれていない場合、それらは削除されます。</string>
+    <string name="persistent_database_clean_perfect">おめでとうございます、あなたのPDF /画像データベースはきれいで、無意味なエントリはありません!</string>
+    <string name="persistent_database_clean_useful">データベースには、存在しなくなった次の PDF/画像ファイルへの参照が含まれています。 ただし、データベースエントリには、潜在的に有用な情報(歌詞、音符、MIDI情報など)が含まれています。 これらのエントリは安全に削除できますが、アプリはこのコンテンツを使用してCSVファイルを作成するため、必要に応じてデータを手動で回復できます。 ファイルはOpenSong/Settings/removedNonOpenSongSongs.csvに作成されます</string>
+    <string name="persistent_database_clean_useless">次の PDF/画像ファイルはデータベースで参照されていますが、ファイルは存在しません。 これらのファイルのデータベースエントリには有用な情報がないため、データベースエントリを削除しても安全です。</string>
     <string name="persistent_database_info">これにより、PDFファイルなどのOpenSong以外の曲の追加情報（キー、ノート、自動スクロール、midiなど）が保存されます。</string>
+    <string name="persistent_database_invalid_file">このファイルは無効であるため、使用できません</string>
+    <string name="persistent_database_restore_info">バックアップ・データベースをインポートし、現在のバージョンを置き換える</string>
+    <string name="persistent_database_restore_warning">永続データベース・ファイルのバックアップを作成した場合にのみ、続行してください。 これにより、現在の永続データベースが上書きされ、元に戻すことはできません</string>
     <string name="piano">ピアノ</string>
     <string name="pinch_to_zoom">ピンチしてズーム</string>
     <string name="pinch_to_zoom_info">ピンチツーズームジェスチャを使用してパフォーマンスモードで曲のズームインとズームアウトを許可する</string>
@@ -885,6 +900,8 @@
     <string name="tap">"ショートプレス/タップ"</string>
     <string name="tap_tempo">"テンポを設定するタップ"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">一時データベース</string>
+    <string name="temporary_database_info">このデータベースは、アプリの起動時と曲のインデックス作成時に作成されます。 これは、OpenSongの曲ファイルと、曲フォルダにあるPDF /画像ファイルに関する永続データベース内の一致する情報から構築されます</string>
     <string name="text">"テキスト"</string>
     <string name="text_as_message">メッセージの内容としてのテキスト</string>
     <string name="text_as_message_info">複数のファイルを一部のアプリ(WhatsAppなど)にエクスポートすると、テキストメッセージを受信した後にアプリが停止し、ファイルが含まれていないことがあります。 これをオフにして、受信アプリにメッセージだけでなくファイルを処理させることができます。</string>

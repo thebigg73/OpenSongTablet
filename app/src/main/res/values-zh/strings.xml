@@ -127,6 +127,7 @@
     <string name="button">纽扣</string>
     <string name="camera">"相机"</string>
     <string name="camera_info">拍一张歌单的照片</string>
+    <string name="can_be_found_at">可以在以下位置找到</string>
     <string name="cancel">取消</string>
     <string name="capo">变调夹</string>
     <string name="capo_chords">变调夹和弦</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">查找当前正在投放广告的其他设备</string>
     <string name="connections_discover_stop">"停止发现"</string>
     <string name="connections_failure">"连接失败"</string>
+    <string name="connections_host_current_set">获取主机当前设置</string>
+    <string name="connections_host_current_set_info">将当前设置替换为连接的主机正在使用的版本</string>
     <string name="connections_host_passthrough">主机直通</string>
     <string name="connections_host_passthrough_info">允许从其他主机收到的消息传递到连接的客户端</string>
     <string name="connections_keephostsongs">保留主持人的歌曲</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"自定义幻灯片（有内容）"</string>
     <string name="customchords_code">自定义代码</string>
     <string name="customchords_name">和弦名称</string>
+    <string name="database_backup_info">手动备份数据库文件</string>
+    <string name="database_export_info">将数据库导出为CSV文件，可以使用Spreadsheet软件打开和查看</string>
+    <string name="database_management">数据库管理</string>
+    <string name="database_management_info">帮助您管理持久性应用程序数据库（用于 PDF/图像文件）并将歌曲数据库中的信息导出到电子表格的选项</string>
     <string name="date">"日期"</string>
     <string name="dec_autoscroll_speed">"降低自动滚动速度"</string>
     <string name="default_autoscroll">"默认自动滚屏次"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">将您的设备用作歌本</string>
     <string name="permissions_refused">权限被拒绝，如果您没有再次看到该选项，可能需要从 Android 设置中手动授予</string>
     <string name="persistent_database">持久数据库</string>
+    <string name="persistent_database_clean">清理数据库</string>
+    <string name="persistent_database_clean_info">检查数据库中是否有引用不再存在的文件的条目。 这可能是由于手动删除或重命名 PDF/图像文件造成的。 如果条目不包含有用信息，它们将被删除。</string>
+    <string name="persistent_database_clean_perfect">恭喜，您的 PDF/图像数据库干净，没有毫无意义的条目！</string>
+    <string name="persistent_database_clean_useful">该数据库包含对以下不再存在的 PDF/图像文件的引用。 但是，数据库条目确实包含一些可能有用的信息（例如歌词、音符、MIDI 信息等）。 您可以安全地删除这些条目，但该应用程序将创建包含此内容的 CSV 文件，以便您可以在需要时手动恢复数据。 该文件将在 OpenSong/Settings/removedNonOpenSongSongs.csv 中创建。</string>
+    <string name="persistent_database_clean_useless">以下 PDF/图像文件在您的数据库中被引用，但这些文件已不存在。 这些文件的数据库条目没有有用的信息，因此删除数据库条目是安全的。</string>
     <string name="persistent_database_info">这会存储非 OpenSong 歌曲（如 PDF 文件）的额外信息（键、音符、自动滚动、midi 等）</string>
+    <string name="persistent_database_invalid_file">此文件无效，无法使用</string>
+    <string name="persistent_database_restore_info">导入备份数据库并替换当前版本</string>
+    <string name="persistent_database_restore_warning">仅当已创建持久性数据库文件的备份时，才继续操作。 这将覆盖您当前的持久性数据库，并且无法撤消</string>
     <string name="piano">钢琴</string>
     <string name="pinch_to_zoom">捏合缩放</string>
     <string name="pinch_to_zoom_info">允许在“表演”模式下使用捏合缩放手势放大和缩小歌曲</string>
@@ -885,6 +900,8 @@
     <string name="tap">"短按/轻按"</string>
     <string name="tap_tempo">"轻按以设定的速度"</string>
     <string name="tempo">"拍子"</string>
+    <string name="temporary_database">临时数据库</string>
+    <string name="temporary_database_info">此数据库是在应用程序启动和歌曲索引时创建的。 这是根据您的 OpenSong 歌曲文件和持久数据库中有关在您的歌曲文件夹中找到的 PDF/图像文件的匹配信息构建的</string>
     <string name="text">"正文"</string>
     <string name="text_as_message">文本作为消息内容</string>
     <string name="text_as_message_info">将多个文件导出到某些应用程序（例如WhatsApp）时，应用程序有时会在收到短信后停止，并且不包含文件。 您可以关闭此功能并强制接收应用程序处理文件而不仅仅是消息。</string>

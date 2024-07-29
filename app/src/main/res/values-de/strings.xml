@@ -127,6 +127,7 @@
     <string name="button">Taste</string>
     <string name="camera">"Kamera"</string>
     <string name="camera_info">Machen Sie ein Foto von einem Songsheet</string>
+    <string name="can_be_found_at">Zu finden unter</string>
     <string name="cancel">Abbrechen</string>
     <string name="capo">Kapodaster</string>
     <string name="capo_chords">Capo-Akkorde</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Suchen Sie nach anderen Geräten, die derzeit Werbung schalten</string>
     <string name="connections_discover_stop">"Suche beenden"</string>
     <string name="connections_failure">"Verbindungsfehler"</string>
+    <string name="connections_host_current_set">Abrufen des aktuellen Host-Sets</string>
+    <string name="connections_host_current_set_info">Ersetzen Sie den aktuellen Satz durch die Version, die der verbundene Host verwendet.</string>
     <string name="connections_host_passthrough">Host-Passthrough</string>
     <string name="connections_host_passthrough_info">Zulassen, dass von anderen Hosts empfangene Nachrichten an verbundene Clients weitergeleitet werden</string>
     <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Benutzerdefinierte Folien (mit Inhalt)"</string>
     <string name="customchords_code">Benutzerdefinierter Code</string>
     <string name="customchords_name">Akkordname</string>
+    <string name="database_backup_info">Manuelles Sichern der Datenbankdatei</string>
+    <string name="database_export_info">Exportieren Sie die Datenbank als CSV-Datei, die mit der Tabellenkalkulationssoftware geöffnet und angezeigt werden kann</string>
+    <string name="database_management">Datenbankverwaltung</string>
+    <string name="database_management_info">Optionen, die Ihnen helfen, Ihre persistente App-Datenbank (für PDF-/Bilddateien) zu verwalten und die Informationen in Ihren Songdatenbanken in Tabellenkalkulationen zu exportieren</string>
     <string name="date">"Datum"</string>
     <string name="dec_autoscroll_speed">"Autoscroll-Geschwindigkeit verringern"</string>
     <string name="default_autoscroll">"Standard Autoscroll-Zeiten"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Verwenden Sie Ihr Gerät als Liederbuch</string>
     <string name="permissions_refused">Berechtigungen wurden verweigert und müssen möglicherweise manuell über die Android-Einstellungen gewährt werden, wenn Sie die Option nicht erneut sehen</string>
     <string name="persistent_database">Persistente Datenbank</string>
+    <string name="persistent_database_clean">Datenbank bereinigen</string>
+    <string name="persistent_database_clean_info">Überprüfen Sie Ihre Datenbank auf Einträge, die sich auf Dateien beziehen, die nicht mehr vorhanden sind.  Dies kann daran liegen, dass PDF-/Bilddateien manuell gelöscht oder umbenannt werden.  Wenn die Einträge keine nützlichen Informationen enthalten, werden sie entfernt.</string>
+    <string name="persistent_database_clean_perfect">Herzlichen Glückwunsch, Ihre PDF-/Bilddatenbank ist sauber und hat keine sinnlosen Einträge!</string>
+    <string name="persistent_database_clean_useful">Die Datenbank enthält Verweise auf die folgenden PDF-/Bilddateien, die nicht mehr existieren.  Die Datenbankeinträge enthalten jedoch einige potenziell nützliche Informationen (wie z.B. Liedtexte, Noten, MIDI-Informationen usw.).  Sie können diese Einträge sicher löschen, aber die App erstellt eine CSV-Datei mit diesem Inhalt, damit Sie die Daten bei Bedarf manuell wiederherstellen können.  Die Datei wird in OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Die folgenden PDF-/Bilddateien werden in Ihrer Datenbank referenziert, sind aber nicht mehr vorhanden.  Die Datenbankeinträge für diese Dateien enthalten keine nützlichen Informationen, so dass es sicher ist, die Datenbankeinträge zu löschen.</string>
     <string name="persistent_database_info">Dies speichert zusätzliche Informationen (Tonart, Noten, Autoscroll, Midi usw.) für Nicht-OpenSong-Songs wie PDF-Dateien</string>
+    <string name="persistent_database_invalid_file">Diese Datei ist ungültig und kann nicht verwendet werden</string>
+    <string name="persistent_database_restore_info">Importieren einer Sicherungsdatenbank und Ersetzen der aktuellen Version</string>
+    <string name="persistent_database_restore_warning">Fahren Sie nur fort, wenn Sie eine Sicherung Ihrer persistenten Datenbankdatei erstellt haben.  Dadurch wird Ihre aktuelle persistente Datenbank überschrieben und kann nicht rückgängig gemacht werden</string>
     <string name="piano">Klavier</string>
     <string name="pinch_to_zoom">Zusammendrücken zum Zoomen</string>
     <string name="pinch_to_zoom_info">Vergrößern und Verkleinern eines Musiktitels im Performance-Modus mit der Geste \"Zusammendrücken zum Zoomen\" zulassen</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Kurz drücken/tippen"</string>
     <string name="tap_tempo">"Tappen, um Tempo einzustellen"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Temporäre Datenbank</string>
+    <string name="temporary_database_info">Diese Datenbank wird erstellt, wenn die App gestartet wird und wenn die Songs indiziert werden.  Dies wird aus Ihren OpenSong-Songdateien und übereinstimmenden Informationen in der persistenten Datenbank über PDF-/Bilddateien erstellt, die in Ihrem Songordner gefunden wurden</string>
     <string name="text">"Text"</string>
     <string name="text_as_message">Text als Nachrichteninhalt</string>
     <string name="text_as_message_info">Beim Exportieren mehrerer Dateien in einige Apps (z. B. WhatsApp) stoppt die App manchmal, nachdem sie eine Textnachricht erhalten hat, und die Dateien sind nicht enthalten.  Sie können dies ausschalten und die empfangende App zwingen, sich mit den Dateien und nicht nur mit der Nachricht zu befassen.</string>

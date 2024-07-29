@@ -8,10 +8,7 @@
     <string name="accent">Accent</string>
     <string name="accuracy">Accuracy</string>
     <string name="action">Action</string>
-    <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
-        to song actions such as metronome, transpose, pads, etc.\nLong pressing on the main button
-        lets you change the settings of each button.\nLong pressing on some page buttons performs
-        quick actions such as start/stop/edit</string>
+    <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned to song actions such as metronome, transpose, pads, etc.\nLong pressing on the main button lets you change the settings of each button.\nLong pressing on some page buttons performs quick actions such as start/stop/edit</string>
     <string name="action_long_press">Additional long press action</string>
     <string name="action_short_press">Short press/click action</string>
     <string name="actionbar_autohide">Automatically hide action bar</string>
@@ -136,6 +133,7 @@
     <string name="button">Button</string>
     <string name="camera">Camera</string>
     <string name="camera_info">Take a photograph of a songsheet</string>
+    <string name="can_be_found_at">Can be found at</string>
     <string name="cancel">Cancel</string>
     <string name="capo">Capo</string>
     <string-array name="capo" translatable="false">
@@ -257,6 +255,8 @@
     <string name="connections_discover_info">Look for other devices that are currently advertising</string>
     <string name="connections_discover_stop">Stop discovery</string>
     <string name="connections_failure">Unable to connect</string>
+    <string name="connections_host_current_set">Get host current set</string>
+    <string name="connections_host_current_set_info">Replace your current set with the version that the connected host is using</string>
     <string name="connections_host_passthrough">Host passthrough</string>
     <string name="connections_host_passthrough_info">Allow messages received from other hosts to pass through to connected clients</string>
     <string name="connections_keephostsongs">Keep host songs</string>
@@ -264,7 +264,7 @@
     <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your Wi-Fi and restart the app.</string>
     <string name="connections_mode">Connection mode</string>
     <string name="connections_mode_cluster">Cluster</string>
-    <string name="connections_mode_info">If you have issues connecting devices, try changing the connection mode.  Cluster mode (default) is the most versatile and allows multiple devices to connect to each other allowing switching between host and clients.   Star mode only allows one device to connect to many.  Single mode is to establish a connection between only two devices, but with the best bandwith.   All connecting devices need to be set to the same mode and changing mode will end all current connections.</string>
+    <string name="connections_mode_info">If you have issues connecting devices, try changing the connection mode.  Cluster mode (default) is the most versatile and allows multiple devices to connect to each other allowing switching between host and clients.   Star mode only allows one device to connect to many.  Single mode is to establish a connection between only two devices, but with the best bandwidth.   All connecting devices need to be set to the same mode and changing mode will end all current connections.</string>
     <string name="connections_mode_single">Single</string>
     <string name="connections_mode_star">Star</string>
     <string name="connections_no_devices">No devices connected</string>
@@ -305,6 +305,10 @@
     <string name="custom_slide">Custom slide (with content)</string>
     <string name="customchords_code">Custom code</string>
     <string name="customchords_name">Chord name</string>
+    <string name="database_backup_info">Manually backup the database file</string>
+    <string name="database_export_info">Export the database as a CSV file that can be opened and viewed using Spreadsheet software</string>
+    <string name="database_management">Database management</string>
+    <string name="database_management_info">Options to help you manage your persistent app database (for PDF/image files) and export the information in your song databases to spreadsheets</string>
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="deeplink_abc" translatable="false">https://www.opensongapp.com/?p=settings/actions/abcnotation</string>
@@ -326,6 +330,7 @@
     <string name="deeplink_connected_display" translatable="false">https://www.opensongapp.com/?p=settings/display/connected</string>
     <string name="deeplink_controls" translatable="false">https://www.opensongapp.com/?p=settings/controls</string>
     <string name="deeplink_custom_slide" translatable="false">https://www.opensongapp.com/?p=settings/sets/customslide</string>
+    <string name="deeplink_database_utilities" translatable="false">https://www.opensongapp.com/?p=settings/utilities/database</string>
     <string name="deeplink_edit" translatable="false">https://www.opensongapp.com/?p=settings/edit</string>
     <string name="deeplink_export" translatable="false">https://www.opensongapp.com/?p=settings/actions/export</string>
     <string name="deeplink_fonts" translatable="false">https://www.opensongapp.com/?p=settings/display/fonts</string>
@@ -554,7 +559,7 @@
     <string name="keep_multiline">Keep multiline compact</string>
     <string name="keep_multiline_info">Display songs containing combined verses as they appear in the song edit window.</string>
     <string name="key">Key</string>
-    <array name="key_choice">
+    <array name="key_choice" translatable="false">
         <item/>
         <item>A</item>
         <item>A#</item>
@@ -609,6 +614,7 @@
         <item>(pl) język polski</item>
         <item>(pt) português</item>
         <item>(ru) Русский</item>
+        <item>(si) සිංහල</item>
         <item>(sr) Srpski</item>
         <item>(sv) Sweeds</item>
         <item>(zh) 中文</item>
@@ -829,7 +835,18 @@
     <string name="performance_mode_info">Use your device as a songbook</string>
     <string name="permissions_refused">Permissions were refused and may need to be granted manually from Android settings if you do not see the option again</string>
     <string name="persistent_database">Persistent database</string>
+    <string name="persistent_database_backup_file" translatable="false">OpenSong/Backups/</string>
+    <string name="persistent_database_clean">Clean up database</string>
+    <string name="persistent_database_clean_info">Check your database for entries that refer to files that no longer exist.  This could be due to manually deleting or renaming PDF/image files.  If the entries do not contain useful information they will be removed.</string>
+    <string name="persistent_database_clean_perfect">Congratulations, your PDF/image database is clean and has no pointless entries!</string>
+    <string name="persistent_database_clean_useful">The database contains references to the following PDF/image files that no longer exist.  The database entries do, however, contain some potentially useful information (such as lyrics, notes, MIDI information, etc.).  You can safely delete these entries, but the app will create a CSV file with this content so you can manually recover the data if required.  The file will be created in OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">The following PDF/image files are referenced in your database, but the files no longer exist.  The database entries for these files have no useful information and it is therefore safe to delete the database entries.</string>
+    <string name="persistent_database_export_file" translatable="false">OpenSong/Export/NonOpenSongSongs.csv</string>
+    <string name="persistent_database_file" translatable="false">OpenSong/Settings/NonOpenSongSongs.db</string>
     <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
+    <string name="persistent_database_invalid_file">This file is invalid and cannot be used</string>
+    <string name="persistent_database_restore_info">Import a backup database and replace the current version</string>
+    <string name="persistent_database_restore_warning">Only proceed if you have created a backup of your persistent database file.  This will overwrite your current persistent database and cannot be undone</string>
     <string name="piano">Piano</string>
     <string name="pinch_to_zoom">Pinch to zoom</string>
     <string name="pinch_to_zoom_info">Allow zooming in and out of a song in Performance mode using the pinch to zoom gesture</string>
@@ -862,9 +879,7 @@
     <string name="profiles_found">The following profiles have been found in the OpenSong/Profiles folder.  Click on an item to select it.</string>
     <string name="project">Project</string>
     <string name="project_panic">Click here to reset any connected displays</string>
-    <string name="promptbackup">You haven\'t backed up your song library in the last 10 times you have used this app.
-        This is highly recommended as you can recover your songs if anything goes wrong.
-        Ideally you should keep a copy of your backup file on the cloud (e.g. Google Drive) or email it to yourself.</string>
+    <string name="promptbackup">You haven\'t backed up your song library in the last 10 times you have used this app.  This is highly recommended as you can recover your songs if anything goes wrong.  Ideally you should keep a copy of your backup file on the cloud (e.g. Google Drive) or email it to yourself.</string>
     <string name="quicklaunch_button1">Button 1</string>
     <string name="quicklaunch_button2">Button 2</string>
     <string name="quicklaunch_button3">Button 3</string>
@@ -1061,6 +1076,9 @@
     <string name="tap">Short press/tap</string>
     <string name="tap_tempo">Tap to set tempo</string>
     <string name="tempo">Tempo</string>
+    <string name="temporary_database">Temporary database</string>
+    <string name="temporary_database_export_file" translatable="false">OpenSong/Export/SongDatabase.csv</string>
+    <string name="temporary_database_info">This database is created when the app starts and when the songs are indexed.  This is built from your OpenSong song files and matching information in the persistent database about PDF/image files found in your songs folder</string>
     <string name="text">Text</string>
     <string name="text_as_message">Text as message content</string>
     <string name="text_as_message_info">When exporting multiple files to some apps (e.g. WhatsApp) the app sometimes stops after it receives a text message and the files aren\'t included.  You can switch this off and force the receiving app to deal with the files instead of just the message.</string>
@@ -1243,6 +1261,7 @@
     <string name="website_connected_display" translatable="false">https://www.opensongapp.com/user-manual/display/casting</string>
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
     <string name="website_custom_slide" translatable="false">https://www.opensongapp.com/user-manual/sets/custom-slides</string>
+    <string name="website_database_utilities" translatable="false">https://www.opensongapp.com/user-manual/utilities/database-utilities</string>
     <string name="website_edit_song" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song</string>
     <string name="website_edit_song_features" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.kntse37simcb</string>
     <string name="website_edit_song_main" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.dqecqr6jwgf6</string>

@@ -127,6 +127,7 @@
     <string name="button">Knoppie</string>
     <string name="camera">Kamera</string>
     <string name="camera_info">Neem \'n foto van \'n liedjieblad</string>
+    <string name="can_be_found_at">Kan gevind word by</string>
     <string name="cancel">Kanselleer</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Capo-akkoorde</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Soek ander toestelle wat tans adverteer</string>
     <string name="connections_discover_stop">"Stop ontdekking"</string>
     <string name="connections_failure">"Konneksie mislukking"</string>
+    <string name="connections_host_current_set">Kry gasheer huidige stel</string>
+    <string name="connections_host_current_set_info">Vervang u huidige stel met die weergawe wat die gekoppelde gasheer gebruik</string>
     <string name="connections_host_passthrough">Gasheer deurloop</string>
     <string name="connections_host_passthrough_info">Laat toe dat boodskappe wat van ander gashere ontvang is, na gekoppelde kliënte deurgaan</string>
     <string name="connections_keephostsongs">Hou gasheerliedjies</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Custom slide (met inhoud)"</string>
     <string name="customchords_code">Custom kode</string>
     <string name="customchords_name">Chord naam</string>
+    <string name="database_backup_info">Rugsteun die databasislêer handmatig</string>
+    <string name="database_export_info">Voer die databasis uit as \'n CSV-lêer wat oopgemaak en bekyk kan word met behulp van Spreadsheet-sagteware</string>
+    <string name="database_management">Databasis bestuur</string>
+    <string name="database_management_info">Opsies om jou te help om jou aanhoudende programdatabasis (vir PDF/beeldlêers) te bestuur en die inligting in jou liedjiedatabasisse na sigblaaie uit te voer</string>
     <string name="date">Datum</string>
     <string name="dec_autoscroll_speed">"Verminder Autoscroll Spoed"</string>
     <string name="default_autoscroll">"Default autoscroll keer"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Gebruik jou toestel as \'n liedboek</string>
     <string name="permissions_refused">Toestemmings is geweier en moet dalk handmatig vanaf Android-instellings verleen word as jy nie weer die opsie sien nie</string>
     <string name="persistent_database">Aanhoudende databasis</string>
+    <string name="persistent_database_clean">Maak databasis skoon</string>
+    <string name="persistent_database_clean_info">Gaan jou databasis na vir inskrywings wat verwys na lêers wat nie meer bestaan nie.  Dit kan wees as gevolg van die handmatige verwydering of hernoeming van PDF / beeldlêers.  As die inskrywings nie nuttige inligting bevat nie, sal dit verwyder word.</string>
+    <string name="persistent_database_clean_perfect">Die databasis bevat verwysings na die volgende PDF/beeldlêers wat nie meer gelukwensing nie, jou PDF/beelddatabasis is skoon en het geen nuttelose inskrywings nie!</string>
+    <string name="persistent_database_clean_useful">Die databasis bevat verwysings na die volgende PDF/beeldlêers wat nie meer bestaan nie.  Die databasisinskrywings bevat egter potensieel nuttige inligting (soos lirieke, notas, MIDI-inligting, ens.).  U kan hierdie inskrywings veilig uitvee, maar die app sal \'n CSV-lêer met hierdie inhoud skep, sodat u die data handmatig kan herstel indien nodig.  Die lêer sal in OpenSong/Settings/removedNonOpenSongSongs.csv geskep word</string>
+    <string name="persistent_database_clean_useless">Daar word na die volgende PDF/beeldlêers in u databasis verwys, maar die lêers bestaan nie meer nie.  Die databasisinskrywings vir hierdie lêers bevat geen nuttige inligting nie en dit is dus veilig om die databasisinskrywings uit te vee.</string>
     <string name="persistent_database_info">Dit stoor ekstra inligting (sleutel, notas, outoscroll, midi, ens.) vir nie OpenSong-liedjies soos PDF-lêers</string>
+    <string name="persistent_database_invalid_file">Hierdie lêer is ongeldig en kan nie gebruik word nie</string>
+    <string name="persistent_database_restore_info">Voer \'n rugsteundatabasis in en vervang die huidige weergawe</string>
+    <string name="persistent_database_restore_warning">Gaan slegs voort as u \'n rugsteun van u aanhoudende databasislêer gemaak het.  Dit sal u huidige aanhoudende databasis oorskryf en kan nie ongedaan gemaak word nie</string>
     <string name="piano">Klavier</string>
     <string name="pinch_to_zoom">Knyp om te zoem</string>
     <string name="pinch_to_zoom_info">Laat zoem in en uit \'n liedjie in Performance-modus met behulp van die knippie om gebaar in te zoem</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Kort druk / tik"</string>
     <string name="tap_tempo">"Tik tempo stel"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Tydelike databasis</string>
+    <string name="temporary_database_info">Hierdie databasis word geskep wanneer die app begin en wanneer die liedjies geïndekseer word.  Dit is gebou uit u OpenSong -liedjielêers en ooreenstemmende inligting in die aanhoudende databasis oor PDF / beeldlêers wat in u songs -lêergids gevind word</string>
     <string name="text">"Teks"</string>
     <string name="text_as_message">Teks as boodskapinhoud</string>
     <string name="text_as_message_info">Wanneer verskeie lêers na sommige programme (byvoorbeeld WhatsApp) uitgevoer word, stop die app soms nadat dit \'n sms ontvang het en die lêers nie ingesluit is nie.  U kan dit afskakel en die ontvangsprogram dwing om die lêers te hanteer in plaas van net die boodskap.</string>

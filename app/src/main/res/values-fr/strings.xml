@@ -127,6 +127,7 @@
     <string name="button">Bouton</string>
     <string name="camera">"Caméra"</string>
     <string name="camera_info">Prendre une photo d\'une feuille de chanson</string>
+    <string name="can_be_found_at">Vous pouvez le trouver à l’adresse suivante :</string>
     <string name="cancel">Annuler</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Accords Capo</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Recherchez d\'autres appareils qui font actuellement de la publicité</string>
     <string name="connections_discover_stop">"Arrêtez la découverte"</string>
     <string name="connections_failure">"Échec de connexion"</string>
+    <string name="connections_host_current_set">Obtenir l’ensemble actuel de l’hôte</string>
+    <string name="connections_host_current_set_info">Remplacez votre ensemble actuel par la version utilisée par l’hôte connecté</string>
     <string name="connections_host_passthrough">Intercommunication de l\'hôte</string>
     <string name="connections_host_passthrough_info">Autoriser les messages reçus d\'autres hôtes à être transmis aux clients connectés</string>
     <string name="connections_keephostsongs">Conserver les chansons des hôtes</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Diaporamas personnalisés (avec contenu)"</string>
     <string name="customchords_code">Accord personnalisé</string>
     <string name="customchords_name">"Nom de l\'accord"</string>
+    <string name="database_backup_info">Sauvegarde manuelle du fichier de base de données</string>
+    <string name="database_export_info">Exportez la base de données sous forme de fichier CSV qui peut être ouvert et visualisé à l’aide d’un tableur</string>
+    <string name="database_management">Gestion de bases de données</string>
+    <string name="database_management_info">Options pour vous aider à gérer votre base de données d’applications persistante (pour les fichiers PDF/image) et à exporter les informations de vos bases de données de morceaux vers des feuilles de calcul</string>
     <string name="date">"Rendez-vous amoureux"</string>
     <string name="dec_autoscroll_speed">"Diminuer la vitesse de l'auto-défilement"</string>
     <string name="default_autoscroll">"Durée du défilement automatique"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Utilisez votre appareil comme recueil de chansons</string>
     <string name="permissions_refused">Les autorisations ont été refusées et peuvent devoir être accordées manuellement à partir des paramètres Android si vous ne voyez plus l\'option</string>
     <string name="persistent_database">Base de données persistante</string>
+    <string name="persistent_database_clean">Nettoyage de la base de données</string>
+    <string name="persistent_database_clean_info">Vérifiez dans votre base de données si vous recherchez des entrées qui font référence à des fichiers qui n’existent plus.  Cela peut être dû à la suppression ou au renommage manuel des fichiers PDF/image.  Si les entrées ne contiennent pas d’informations utiles, elles seront supprimées.</string>
+    <string name="persistent_database_clean_perfect">Félicitations, votre base de données PDF/images est propre et ne contient aucune entrée inutile !</string>
+    <string name="persistent_database_clean_useful">La base de données contient des références aux fichiers PDF/images suivants qui n’existent plus.  Les entrées de la base de données contiennent toutefois des informations potentiellement utiles (telles que des paroles, des notes, des informations MIDI, etc.).  Vous pouvez supprimer ces entrées en toute sécurité, mais l’application créera un fichier CSV avec ce contenu afin que vous puissiez récupérer manuellement les données si nécessaire.  Le fichier sera créé dans OpenSong/Settings/removedNonOpenSongSongs.csv</string>
+    <string name="persistent_database_clean_useless">Les fichiers PDF/image suivants sont référencés dans votre base de données, mais ils n’existent plus.  Les entrées de base de données de ces fichiers ne contiennent aucune information utile et il est donc prudent de supprimer les entrées de la base de données.</string>
     <string name="persistent_database_info">Cela stocke des informations supplémentaires (clé, notes, défilement automatique, midi, etc.) pour les chansons non OpenSong telles que les fichiers PDF</string>
+    <string name="persistent_database_invalid_file">Ce fichier n’est pas valide et ne peut pas être utilisé</string>
+    <string name="persistent_database_restore_info">Importer une base de données de sauvegarde et remplacer la version actuelle</string>
+    <string name="persistent_database_restore_warning">Ne poursuivez que si vous avez créé une sauvegarde de votre fichier de base de données persistant.  Cela écrasera votre base de données persistante actuelle et ne pourra pas être annulé</string>
     <string name="piano">Piano</string>
     <string name="pinch_to_zoom">Pincer pour zoomer</string>
     <string name="pinch_to_zoom_info">Autoriser le zoom avant et arrière d’un morceau en mode Performance à l’aide du geste de pincement pour zoomer</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Appui court / tap"</string>
     <string name="tap_tempo">"Tapez pour régler le tempo"</string>
     <string name="tempo">"Tempo"</string>
+    <string name="temporary_database">Base de données temporaire</string>
+    <string name="temporary_database_info">Cette base de données est créée au démarrage de l’application et lors de l’indexation des chansons.  Il est construit à partir de vos fichiers de chansons OpenSong et des informations correspondantes dans la base de données persistante sur les fichiers PDF/image trouvés dans votre dossier de chansons</string>
     <string name="text">"Texte"</string>
     <string name="text_as_message">Texte en tant que contenu de message</string>
     <string name="text_as_message_info">Lors de l’exportation de plusieurs fichiers vers certaines applications (par exemple, WhatsApp), l’application s’arrête parfois après avoir reçu un message texte et que les fichiers ne sont pas inclus.  Vous pouvez désactiver cette option et forcer l’application réceptrice à traiter les fichiers au lieu de simplement le message.</string>

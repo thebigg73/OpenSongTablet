@@ -127,6 +127,7 @@
     <string name="button">Gomb</string>
     <string name="camera">"Kamera"</string>
     <string name="camera_info">Fényképezzen le egy dallapot</string>
+    <string name="can_be_found_at">Megtalálható a következő címen:</string>
     <string name="cancel">Megszünteti</string>
     <string name="capo">Capo</string>
     <string name="capo_chords">Capo akkordok</string>
@@ -218,6 +219,8 @@
     <string name="connections_discover_info">Keressen más, jelenleg hirdetett eszközöket</string>
     <string name="connections_discover_stop">"A stop felfedezés"</string>
     <string name="connections_failure">"Csatlakozási hiba"</string>
+    <string name="connections_host_current_set">Gazdagép aktuális készletének lekérte</string>
+    <string name="connections_host_current_set_info">Cserélje le az aktuális készletet a csatlakoztatott gazdagép által használt verzióra</string>
     <string name="connections_host_passthrough">Gazda áthaladása</string>
     <string name="connections_host_passthrough_info">Engedélyezze a más gazdagépektől kapott üzenetek eljutását a csatlakoztatott ügyfelekhez</string>
     <string name="connections_keephostsongs">Tartsa be a fogadó dalokat</string>
@@ -265,6 +268,10 @@
     <string name="custom_slide">"Egyedi slide (tartalommal)"</string>
     <string name="customchords_code">Egyedi kódot</string>
     <string name="customchords_name">Akkordnevek</string>
+    <string name="database_backup_info">Az adatbázisfájl manuális biztonsági mentése</string>
+    <string name="database_export_info">Exportálja az adatbázist CSV-fájlként, amely megnyitható és megtekinthető a táblázatkezelő szoftverrel</string>
+    <string name="database_management">Adatbázis-kezelés</string>
+    <string name="database_management_info">Lehetőségek az állandó alkalmazás-adatbázis kezeléséhez (PDF-/képfájlokhoz) és a daladatbázisokban lévő információk táblázatokba exportálásához</string>
     <string name="date">"Dátum"</string>
     <string name="dec_autoscroll_speed">"Csökkentse az Autoscroll sebességet"</string>
     <string name="default_autoscroll">"Alapértelmezett Auto.görgetés alkalommal"</string>
@@ -659,7 +666,15 @@
     <string name="performance_mode_info">Használja készülékét énekeskönyvként</string>
     <string name="permissions_refused">Az engedélyeket elutasították, és előfordulhat, hogy manuálisan kell megadni az Android beállításaiból, ha nem látja újra a lehetőséget</string>
     <string name="persistent_database">Állandó adatbázis</string>
+    <string name="persistent_database_clean">Az adatbázis eltávolítása</string>
+    <string name="persistent_database_clean_info">Ellenőrizze, hogy vannak-e olyan bejegyzések az adatbázisban, amelyek már nem létező fájlokra hivatkoznak.  Ennek oka lehet a PDF/képfájlok manuális törlése vagy átnevezése.  Ha a bejegyzések nem tartalmaznak hasznos információkat, akkor eltávolításra kerülnek.</string>
+    <string name="persistent_database_clean_perfect">Gratulálunk, a PDF/kép adatbázisod tiszta és nincsenek értelmetlen bejegyzések!</string>
+    <string name="persistent_database_clean_useful">Az adatbázis a következő, már nem létező PDF/képfájlokra mutató hivatkozásokat tartalmaz.  Az adatbázis-bejegyzések azonban tartalmaznak néhány potenciálisan hasznos információt (például dalszövegeket, jegyzeteket, MIDI-információkat stb.).  Ezeket a bejegyzéseket biztonságosan törölheti, de az alkalmazás létrehoz egy CSV-fájlt ezzel a tartalommal, így szükség esetén manuálisan helyreállíthatja az adatokat.  A fájl az OpenSong/Settings/removedNonOpenSongSongs.csv mappában jön létre</string>
+    <string name="persistent_database_clean_useless">A következő PDF-/képfájlokra hivatkozik az adatbázis, de a fájlok már nem léteznek.  Ezeknek a fájloknak az adatbázis-bejegyzései nem tartalmaznak hasznos információkat, ezért biztonságosan törölhetők az adatbázis-bejegyzések.</string>
     <string name="persistent_database_info">Ez extra információkat tárol (kulcs, hangjegyek, automatikus görgetés, midi stb.) a nem OpenSong dalokhoz, például PDF-fájlokhoz</string>
+    <string name="persistent_database_invalid_file">Ez a fájl érvénytelen és nem használható</string>
+    <string name="persistent_database_restore_info">Biztonsági mentési adatbázis importálása és az aktuális verzió cseréje</string>
+    <string name="persistent_database_restore_warning">Csak akkor folytassa, ha biztonsági másolatot készített az állandó adatbázisfájlról.  Ez felülírja az aktuális állandó adatbázist, és nem vonható vissza</string>
     <string name="piano">Zongora</string>
     <string name="pinch_to_zoom">Csippentés a nagyításhoz</string>
     <string name="pinch_to_zoom_info">Dal nagyításának és kicsinyítésének engedélyezése Teljesítmény módban a csippentés a nagyításhoz kézmozdulattal</string>
@@ -885,6 +900,8 @@
     <string name="tap">"Rövid megnyomás / érintés"</string>
     <string name="tap_tempo">"Érintse meg, hogy a tempó"</string>
     <string name="tempo">"Tempó"</string>
+    <string name="temporary_database">Ideiglenes adatbázis</string>
+    <string name="temporary_database_info">Ez az adatbázis az alkalmazás indításakor és a dalok indexelésekor jön létre.  Ez az OpenSong dalfájlokból és a dalok mappájában található PDF/képfájlok állandó adatbázisában található egyező információkból épül fel</string>
     <string name="text">"Szöveg"</string>
     <string name="text_as_message">Szöveg mint üzenettartalom</string>
     <string name="text_as_message_info">Ha több fájlt exportálsz bizonyos alkalmazásokba (pl. WhatsApp), az alkalmazás néha leáll, miután szöveges üzenetet kap, és a fájlok nem kerülnek bele.  Ezt kikapcsolhatja, és kényszerítheti a fogadó alkalmazást, hogy ne csak az üzenettel foglalkozzon.</string>

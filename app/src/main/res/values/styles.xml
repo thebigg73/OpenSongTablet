@@ -338,7 +338,7 @@
         <item name="enableEdgeToEdge">true</item>
         <item name="backgroundTint">@color/transparent</item>
         <item name="android:maxWidth">1600dp</item>
-
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
@@ -351,6 +351,7 @@
         <item name="behavior_hideable">true</item>
         <item name="enableEdgeToEdge">true</item>
         <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="popupWindow" parent="">
