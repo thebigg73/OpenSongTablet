@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        style="@style/DefaultView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/persistentDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/persistent_database"
+                android:textSize="@dimen/text_xxlarge"
+                app:drawableEndCompat="@drawable/help_outline"
+                android:drawablePadding="8dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/exportPersistentDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export"
+                android:hint="@string/database_export_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/backupDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/backup"
+                android:hint="@string/database_backup_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/restoreDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/restore"
+                android:hint="@string/persistent_database_restore_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/cleanDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/persistent_database_clean"
+                android:hint="@string/persistent_database_clean_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/temporaryDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/temporary_database"
+                android:textSize="@dimen/text_xxlarge"
+                app:drawableEndCompat="@drawable/help_outline"
+                android:drawablePadding="8dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/exportTemporaryDB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export"
+                android:hint="@string/database_export_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+        </LinearLayout>
+    </ScrollView>
+    <FrameLayout
+        android:id="@+id/scrimOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/scrim"
+        android:visibility="gone"/>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+</RelativeLayout>
