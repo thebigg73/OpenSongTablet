@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.nearby;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,6 +58,7 @@ import java.util.TimerTask;
 
 public class NearbyConnections implements NearbyInterface {
 
+    private final Activity activity;
     private final Context c;
     private final String TAG = "NearbyConnections", sectionTag = "___section___",
             scrollByTag = "___scrollby___", scrollToTag = "___scrollto___",
@@ -64,7 +66,7 @@ public class NearbyConnections implements NearbyInterface {
             autoscrolldecrease = "___autoscrolldecrease___", profiles = "___profiles___",
             songTag = "_xx____xx_", endpointSplit = "__", sets = "___sets___",
             hostRequest = "___hostRequest___", hostItems = "___hostItems___",
-            messageTag = "___message___", songs = "___songs___",
+            messageTag = "___message___", songs = "___songs___", currentset = "___currentset___",
             requestFileTag = "___requestFile___", requestFileSeparator = "___rFS___",
             serviceId = "com.garethevans.church.opensongtablet";
     private int countDiscovery = 0, countAdvertise = 0;
@@ -100,7 +102,8 @@ public class NearbyConnections implements NearbyInterface {
 
 
     // Initialise the class, preferences and interfaces
-    public NearbyConnections(Context c) {
+    public NearbyConnections(Activity activity, Context c) {
+        this.activity = activity;
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         nearbyReturnActionsInterface = (NearbyReturnActionsInterface) c;
@@ -163,27 +166,41 @@ public class NearbyConnections implements NearbyInterface {
         // To get this far, we have the required permissions
         // A user could have saved their default id in which case use it
         // If not, use Bluetooth or model in that order
+        // Get the saved user nickname - the preferred value
+        deviceId = mainActivityInterface.getPreferences().getMyPreferenceString("deviceId", "");
         String bluetoothName = "";
         String model;
-        try {
-            model = android.os.Build.MODEL;
-            model = model.trim();
-        } catch (Exception e) {
-            model = c.getString(R.string.unknown);
+        // If the deviceId is empty, look for an alternative as a backup
+        if (deviceId==null || deviceId.isEmpty()) {
+            try {
+                model = android.os.Build.MODEL;
+                model = model.trim();
+            } catch (Exception e) {
+                model = c.getString(R.string.unknown);
+            }
+
+            try {
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (bluetoothAdapter != null && mainActivityInterface.getAppPermissions().checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                    bluetoothName = bluetoothAdapter.getName();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                bluetoothName = "";
+            }
+
+            // By default, use the Bluetooth name, but if not, use the model name
+            if (bluetoothName!=null && !bluetoothName.isEmpty()) {
+                mainActivityInterface.getPreferences().setMyPreferenceString("deviceId",bluetoothName);
+                deviceId = bluetoothName;
+            } else {
+                mainActivityInterface.getPreferences().setMyPreferenceString("deviceId",model);
+                deviceId = model;
+            }
         }
 
-        try {
-            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (bluetoothAdapter != null && mainActivityInterface.getAppPermissions().checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
-                bluetoothName = bluetoothAdapter.getName();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        deviceId = mainActivityInterface.getPreferences().getMyPreferenceString("deviceId", bluetoothName);
-        if (deviceId.isEmpty()) {
-            deviceId = model;
-        }
+        Log.d(TAG,"deviceId: " + deviceId);
+
         // Don't need to save the device name unless the user edits it to make it custom
         return deviceId;
     }
@@ -351,7 +368,7 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void startAdvertising() {
         if (!isAdvertising) {
-            Nearby.getConnectionsClient(c)
+            Nearby.getConnectionsClient(activity)
                     .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
                             (Void unused) -> {
@@ -374,7 +391,7 @@ public class NearbyConnections implements NearbyInterface {
         // The connections fragment turns this off using a system timer
         if (usingNearby) {
             if (!isDiscovering) {
-                Nearby.getConnectionsClient(c)
+                Nearby.getConnectionsClient(activity)
                         .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
                         .addOnSuccessListener(
                                 (Void unused) -> {
@@ -397,7 +414,7 @@ public class NearbyConnections implements NearbyInterface {
         if (isAdvertising) {
             isAdvertising = false;
             try {
-                Nearby.getConnectionsClient(c).stopAdvertising();
+                Nearby.getConnectionsClient(activity).stopAdvertising();
                 updateConnectionLog(c.getString(R.string.connections_service_stop));
             } catch (Exception e) {
                 Log.d(TAG, "stopAdvertising() - failure: " + e);
@@ -409,7 +426,7 @@ public class NearbyConnections implements NearbyInterface {
     public void stopDiscovery() {
         if (isDiscovering) {
             try {
-                Nearby.getConnectionsClient(c).stopDiscovery();
+                Nearby.getConnectionsClient(activity).stopDiscovery();
                 updateConnectionLog(c.getString(R.string.connections_discover_stop));
             } catch (Exception e) {
                 Log.d(TAG, "stopDiscovery() - failure: " + e);
@@ -448,13 +465,13 @@ public class NearbyConnections implements NearbyInterface {
                                         c.getString(R.string.cancel),
                                         (DialogInterface dialog, int which) ->
                                                 // The user canceled, so we should reject the connection.
-                                                Nearby.getConnectionsClient(c).rejectConnection(endpointString))
+                                                Nearby.getConnectionsClient(activity).rejectConnection(endpointString))
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
                     } else {
                         // The user is not accepting new connections, so we should reject the connection.
                         Log.d(TAG, "reject connection to " + endpointString);
-                        Nearby.getConnectionsClient(c).rejectConnection(endpointString);
+                        Nearby.getConnectionsClient(activity).rejectConnection(endpointString);
                     }
                 }
             }
@@ -540,7 +557,7 @@ public class NearbyConnections implements NearbyInterface {
                 if (!recognisedDevice(endpointString)) {
                     Log.d(TAG, endpointString + "is not found a recognised device, so attempt connection with permission");
                     // Only attempt a connection if we aren't already connected
-                    Nearby.getConnectionsClient(c)
+                    Nearby.getConnectionsClient(activity)
                             .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
                             .addOnSuccessListener(
                                     (Void unused) -> {
@@ -615,7 +632,7 @@ public class NearbyConnections implements NearbyInterface {
             updateDiscoveredEndpoints(endpointString, true);
 
             // The user confirmed, so we can accept the connection.
-            Nearby.getConnectionsClient(c)
+            Nearby.getConnectionsClient(activity)
                     .acceptConnection(getEndpointSplit(endpointString)[0], payloadCallback());
         }, 200);
     }
@@ -680,7 +697,10 @@ public class NearbyConnections implements NearbyInterface {
                                         incoming = new String(bytes);
                                     }
                                 }
-                                if (incoming != null && incoming.startsWith("FILE:")) {
+                                if (incoming != null && incoming.startsWith(currentset)) {
+                                    dealWithHostCurrentSet(incoming);
+
+                                } else if (incoming != null && incoming.startsWith("FILE:")) {
                                     // Add the file location to the arraymap
                                     incoming = incoming.replaceFirst("FILE:", "");
                                     String id = incoming.substring(0, incoming.indexOf(":"));
@@ -771,6 +791,11 @@ public class NearbyConnections implements NearbyInterface {
                                     incoming = incoming.replaceFirst(sets, "");
                                     // Get this device's items
                                     message = hostItems + incoming + "\n" + getHostItems("browsesets");
+                                } else if (incoming.startsWith(currentset)) {
+                                    // Get the requesting deviceID
+                                    incoming = incoming.replaceFirst(currentset, "");
+                                    // Get this device's items
+                                    message = currentset + incoming + "\n" + mainActivityInterface.getCurrentSet().getSetCurrent();
                                 } else if (incoming.startsWith(profiles)) {
                                     // Get the requesting deviceID
                                     incoming = incoming.replaceFirst(profiles, "");
@@ -805,7 +830,7 @@ public class NearbyConnections implements NearbyInterface {
                     if (!isHost && !receiveHostFiles) {
                         if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
                             Log.d(TAG, "Cancelled Id " + payloadTransferUpdate.getPayloadId());
-                            Nearby.getConnectionsClient(c).cancelPayload(payloadTransferUpdate.getPayloadId());
+                            Nearby.getConnectionsClient(activity).cancelPayload(payloadTransferUpdate.getPayloadId());
                         }
                     } else {
                         if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
@@ -965,7 +990,7 @@ public class NearbyConnections implements NearbyInterface {
         if (sendAsHost() || clientSend) {
             for (String endpointString : connectedEndpoints) {
                 String endpointId = getEndpointSplit(endpointString)[0];
-                Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+                Nearby.getConnectionsClient(activity).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
             }
         }
     }
@@ -974,7 +999,7 @@ public class NearbyConnections implements NearbyInterface {
     private void repeatPayload(Payload payload) {
         if (nearbyStrategy == Strategy.P2P_CLUSTER) {
             for (String connectedEndpoint : connectedEndpoints) {
-                Nearby.getConnectionsClient(c).sendPayload(connectedEndpoint, payload);
+                Nearby.getConnectionsClient(activity).sendPayload(connectedEndpoint, payload);
             }
         }
     }
@@ -998,7 +1023,7 @@ public class NearbyConnections implements NearbyInterface {
             } else {
                 infoPayload = sectionTag + "-" + (1 + mainActivityInterface.getSong().getCurrentSection());
             }
-            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+            Nearby.getConnectionsClient(activity).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
             Log.d(TAG, "sendSongPayload =" + infoPayload);
 
             infoPayload = null;
@@ -1023,7 +1048,7 @@ public class NearbyConnections implements NearbyInterface {
                     infoPayload = null;
                 } else {
                     // Just send the bytes
-                    Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+                    Nearby.getConnectionsClient(activity).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
                 }
             }
 
@@ -1050,8 +1075,8 @@ public class NearbyConnections implements NearbyInterface {
                 Log.d(TAG, "payloadFile=" + payloadFile);
                 if (payloadFile != null) {
                     // Send the file descriptor as bytes, then the file
-                    Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
-                    Nearby.getConnectionsClient(c).sendPayload(endpointId, payloadFile);
+                    Nearby.getConnectionsClient(activity).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
+                    Nearby.getConnectionsClient(activity).sendPayload(endpointId, payloadFile);
                     // IV - Check the size.  If it is large then indicate to inform user
                     if (Objects.requireNonNull(payloadFile.asFile()).getSize() > 30000) {
                         largePayLoad = true;
@@ -1148,6 +1173,8 @@ public class NearbyConnections implements NearbyInterface {
 
         // New method sends OpenSong songs in the format of
         //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
+        // For v6.1.6 the key is also included:
+        //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>_xx____xx_KEY
 
         ArrayList<String> receivedBits = getNearbyIncoming(incoming);
         //Log.d(TAG,"incoming: "+incoming+"\nprevious: "+incomingPrevious);
@@ -1168,6 +1195,18 @@ public class NearbyConnections implements NearbyInterface {
 
             Log.d(TAG, "isHost=" + isHost + "  hasValidConnections()=" + hasValidConnections() + "  receiveHostFiles=" + receiveHostFiles + "  keepHostFiles=" + keepHostFiles);
             if (songReceived) {
+                // Remove the current set position otherwise the client can be confused
+                Log.d(TAG,"removing song index");
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+                Log.d(TAG,"getting updated set index");
+                mainActivityInterface.getSetActions().indexSongInSet(receivedBits.get(0), receivedBits.get(1),"");
+                Log.d(TAG,"index now:"+mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                Log.d(TAG,"received, now update highlights");
+                mainActivityInterface.getSetMenuFragment().setHighlightChangeAllowed(true);
+                mainActivityInterface.getSetMenuFragment().updateHighlight();
+                mainActivityInterface.getSetMenuFragment().removeHighlight();
+                mainActivityInterface.getSetMenuFragment().setHighlightChangeAllowed(false);
+
                 // Set the reload flag
                 forceReload = true;
 
@@ -1193,7 +1232,7 @@ public class NearbyConnections implements NearbyInterface {
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                         mainActivityInterface.getSong().setFilename(receivedBits.get(1));
-                        // Add to the sqldatabase
+                        // Add to the sql database
                         mainActivityInterface.getSQLiteHelper().createSong(mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
                         Log.d(TAG, "keepFile: " + newLocation);
                     } else {
@@ -1258,11 +1297,14 @@ public class NearbyConnections implements NearbyInterface {
     private ArrayList<String> getNearbyIncoming(String incoming) {
         // New method sends OpenSong songs in the format of
         // FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
+        // V6.1.6 also has the key
+        // FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>_xx____xx_KEY
         // songTag = "_xx____xx_";
         // Four distict parts
         ArrayList<String> arrayList = new ArrayList<>();
         String[] bits = incoming.split(songTag);
-        for (int i = 0; i < 4; i++) {
+
+        for (int i = 0; i < 5; i++) {
             if (bits.length > i) {
                 arrayList.add(i, bits[i]);
                 if (bits[i].contains("<title>")) {
@@ -1276,6 +1318,11 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
 
+        // bits[0] = foldername
+        // bits[1] = filename
+        // bits[2] = swipe direction
+        // bits[3] = song XML
+        // bits[4] = key to use (v6.1.6+)
         return arrayList;
     }
 
@@ -1508,7 +1555,7 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void turnOffNearby() {
         try {
-            Nearby.getConnectionsClient(c).stopAllEndpoints();
+            Nearby.getConnectionsClient(activity).stopAllEndpoints();
         } catch (Exception e) {
             Log.d(TAG, "Can't turn off nearby");
         }
@@ -1528,7 +1575,7 @@ public class NearbyConnections implements NearbyInterface {
             String[] ids = payloadTransferIds.trim().split(" ");
             payloadTransferIds = "";
             for (String Id : ids) {
-                Nearby.getConnectionsClient(c).cancelPayload(Long.parseLong((Id.trim())));
+                Nearby.getConnectionsClient(activity).cancelPayload(Long.parseLong((Id.trim())));
             }
             incomingFilePayloads = new SimpleArrayMap<>();
             fileNewLocation = new SimpleArrayMap<>();
@@ -1800,6 +1847,38 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
 
+    // This is where the client requests the host's current set
+    // Called for the set manage page
+    public void requestHostCurrentSet() {
+        for (String endpointString : connectedEndpoints) {
+            Log.d(TAG,"requestCurrentSet");
+            String endpointId = getEndpointSplit(endpointString)[0];
+            // Send the request
+            String requestPayload = hostRequest + currentset + deviceId;
+            Log.d(TAG,"requestPayload:"+requestPayload);
+            Nearby.getConnectionsClient(activity).sendPayload(endpointId, Payload.fromBytes(requestPayload.getBytes()));
+        }
+    }
+
+    public void dealWithHostCurrentSet(String requestPayload) {
+        if (!isHost && requestPayload.contains(deviceId)) {
+            // This is for us!  Remove the unnecessary stuff
+            requestPayload = requestPayload.replace(hostItems,"").
+                    replace(currentset,"").replace(deviceId,"");
+            // What is left is the current set
+            Log.d(TAG,"setCurrent:"+requestPayload);
+            // Initialise the current set
+            //mainActivityInterface.getCurrentSet().initialiseTheSet();
+            //mainActivityInterface.getCurrentSet().setSetCurrent("");
+            //mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
+            //mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",requestPayload);
+            //mainActivityInterface.getCurrentSet().loadCurrentSet();
+        }
+    }
+
+    private void initialiseCurrentSet() {
+
+    }
     // This is where the client requests a file from the host
     public void requestHostFile(String folder, String subfolder, String filename) {
         for (String endpointString : connectedEndpoints) {
@@ -1809,7 +1888,7 @@ public class NearbyConnections implements NearbyInterface {
             String requestPayload = requestFileTag + deviceId + requestFileSeparator +
                     folder + requestFileSeparator + subfolder + requestFileSeparator + filename;
             Log.d(TAG,"requestPayload:"+requestPayload);
-            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(requestPayload.getBytes()));
+            Nearby.getConnectionsClient(activity).sendPayload(endpointId, Payload.fromBytes(requestPayload.getBytes()));
         }
     }
 
@@ -1856,9 +1935,9 @@ public class NearbyConnections implements NearbyInterface {
                             // Get the endpointCode not the name
                             String endpointCode = getEndpointSplit(endpointString)[0];
                             Log.d(TAG,"try sending bytes:"+ Arrays.toString(payloadInfo.getBytes()));
-                            Nearby.getConnectionsClient(c).sendPayload(endpointCode,
+                            Nearby.getConnectionsClient(activity).sendPayload(endpointCode,
                                     Payload.fromBytes(payloadInfo.getBytes()));
-                            Nearby.getConnectionsClient(c).sendPayload(endpointId, payloadFile);
+                            Nearby.getConnectionsClient(activity).sendPayload(endpointId, payloadFile);
                         }
                     }
                 }
