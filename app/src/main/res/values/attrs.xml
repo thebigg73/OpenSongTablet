@@ -50,6 +50,7 @@
         <attr name="thumbColor" format="color"/>
         <attr name="thumbRadius" format="dimension"/>
         <attr name="size" />
+        <attr name="infoText" format="string"/>"
     </declare-styleable>
 
     <declare-styleable name="MaterialSwitch">

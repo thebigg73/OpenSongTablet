@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -19,14 +21,24 @@ import com.google.android.material.slider.Slider;
 public class MaterialSlider extends LinearLayout {
 
     private final Slider slider;
-    private final TextView titleTextView, valueTextView, bottomHintView;
+    private final TextView titleTextView, infoTextView;
+    private final TextView valueTextView, bottomHintView;
     private final FloatingActionButton minusFAB, plusFAB;
     private final FrameLayout minusHolder, plusHolder;
     private final float stepSize;
     private boolean adjustButtons;
+    private final float xxlarge, xlarge, large, medium, small, xsmall;
+
     public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_slider, this);
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         int[] set = new int[]{android.R.attr.text,  // 0
                 android.R.attr.hint,                // 1
@@ -38,7 +50,8 @@ public class MaterialSlider extends LinearLayout {
                 R.attr.trackHeight,                 // 7
                 R.attr.thumbRadius,                 // 8
                 R.attr.thumbColor,                  // 9
-                R.attr.adjustable                   // 10
+                R.attr.adjustable,                  // 10
+                R.attr.infoText                     // 11
         };
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
@@ -53,8 +66,13 @@ public class MaterialSlider extends LinearLayout {
         int thumb = a.getColor(9,0);
         adjustButtons = a.getBoolean(10,false);
 
+        TypedArray b = context.obtainStyledAttributes(attrs, R.styleable.MaterialSlider, -1,-1);
+        String infoText = b.getString(R.styleable.MaterialSlider_infoText);
+        b.recycle();
+
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
+        infoTextView = findViewById(R.id.infoText);
         valueTextView = findViewById(R.id.valueText);
         bottomHintView = findViewById(R.id.bottomHint);
         minusHolder = findViewById(R.id.minusHolder);
@@ -64,6 +82,7 @@ public class MaterialSlider extends LinearLayout {
 
         slider.setId(View.generateViewId());
         titleTextView.setId(View.generateViewId());
+        infoTextView.setId(View.generateViewId());
         valueTextView.setId(View.generateViewId());
         bottomHintView.setId(View.generateViewId());
         minusHolder.setId(View.generateViewId());
@@ -72,11 +91,14 @@ public class MaterialSlider extends LinearLayout {
         plusFAB.setId(View.generateViewId());
 
         setAdjustableButtons(adjustButtons);
+        setSize("medium");
 
         if (text==null) {
             text = "";
         }
         setText(text.toString());
+
+        setInfoText(infoText);
 
         if (hint==null) {
             hint = "";
@@ -175,6 +197,15 @@ public class MaterialSlider extends LinearLayout {
             titleTextView.setVisibility(View.VISIBLE);
         }
     }
+    public void setInfoText(String text) {
+        Log.d("MaterialSlider", "text:" + text);
+        infoTextView.setText(text);
+        if (text == null || text.isEmpty()) {
+            infoTextView.setVisibility(View.GONE);
+        } else {
+            infoTextView.setVisibility(View.VISIBLE);
+        }
+    }
     public void setHintTextSize(float textSize) {
         valueTextView.setTextSize(textSize);
     }
@@ -207,6 +238,38 @@ public class MaterialSlider extends LinearLayout {
         }
     }
 
+    public void setSize(String size) {
+        float textSize, hintSize;
+        switch(size) {
+            case "xxlarge":
+                textSize = xxlarge;
+                hintSize = xlarge;
+                break;
+            case "xlarge":
+                textSize = xlarge;
+                hintSize = large;
+                break;
+            case "large":
+                textSize = large;
+                hintSize = medium;
+                break;
+            case "medium":
+            default:
+                textSize = medium;
+                hintSize = small;
+                break;
+            case "small":
+                textSize = small;
+                hintSize = xsmall;
+                break;
+            case "xsmall":
+                textSize = xsmall;
+                hintSize = xsmall-1;
+                break;
+        }
+        titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+        infoTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,hintSize);
+    }
     public void setAdjustableButtons(boolean adjustButtons) {
         this.adjustButtons = adjustButtons;
         minusHolder.setVisibility(adjustButtons ? View.VISIBLE:View.GONE);

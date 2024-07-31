@@ -24,7 +24,9 @@ public class MakePDF {
     private final float margin_cm = 1.5f;           // 1.5cm
     private final float footerHeight_cm = 0.6f;     // 0.
     private final int linePos = 12;
-    private final float maxScaling = 1f; // 14sp
+    private float maxScaling = 0.75f; // 14sp
+    private float maxVerticalScaling;
+    private boolean forceSinglePage;
     private int headerHeight, headerWidth, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
     private Paint linePaint, footerPaint;
     private PdfDocument pdfDocument;
@@ -42,6 +44,26 @@ public class MakePDF {
     public MakePDF(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        maxScaling = mainActivityInterface.getPreferences().getMyPreferenceFloat("maxPDFScaling",0.75f);
+        forceSinglePage = mainActivityInterface.getPreferences().getMyPreferenceBoolean("forcePDFSinglePage",false);
+    }
+
+    public float getMaxPDFScaling() {
+        return maxScaling;
+    }
+
+    public void setMaxPDFScaling(float maxScaling) {
+        this.maxScaling = maxScaling;
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("maxPDFScaling",maxScaling);
+    }
+
+    public boolean getForceSinglePage() {
+        return forceSinglePage;
+    }
+
+    public void setForceSinglePage(boolean forceSinglePage) {
+        this.forceSinglePage = forceSinglePage;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("forcePDFSinglePage",forceSinglePage);
     }
 
     public void createBlankPDFDoc(String exportFilename, PrintAttributes printAttributes){
@@ -225,14 +247,16 @@ public class MakePDF {
         // Decide on our scaling
         int maxWidth = mainActivityInterface.getProcessSong().getMaxValue(sectionWidths,0,sectionWidths.size());
         int maxHeight = mainActivityInterface.getProcessSong().getMaxValue(sectionHeights,0,sectionHeights.size());
+        int totalHeight = mainActivityInterface.getProcessSong().getTotal(sectionHeights,0,sectionHeights.size());
 
         // If we are adding section spaces, add this on to the heights for each section except the last
         sectionSpace = 0;
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace",true) &&
                 sectionHeights.size()>1) {
-            sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+            sectionSpace = (int) (0.75 * maxScaling * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                     mainActivityInterface.getProcessSong().getDefFontSize(), c.getResources().getDisplayMetrics()));
             maxHeight += sectionSpace*(sectionWidths.size()-1);
+            totalHeight += sectionSpace*(sectionWidths.size()-1);
         }
 
         // Determine the size we have available based on the document sizes
@@ -259,7 +283,14 @@ public class MakePDF {
 
         // Check for min scaling of 0.75f if exporting song list
         if (exportingSongList) {
-            sectionScaling = Math.max(sectionScaling, 0.75f);
+            sectionScaling = Math.max(sectionScaling, maxScaling);
+        }
+
+        // If we are forcing single page PDF, scale to the height
+        maxVerticalScaling = (float)((availableHeight-headerHeight)/(float)totalHeight);
+        maxVerticalScaling = Math.min(sectionScaling,maxVerticalScaling);
+        if (forceSinglePage) {
+            sectionScaling = maxVerticalScaling;
         }
 
         // Now plan out how many pages we will need
@@ -273,6 +304,7 @@ public class MakePDF {
                 spaceStillAvailable = spaceStillAvailable - (int)(sectionHeight*sectionScaling);
             }
         }
+
         exportingSongList = false;
     }
 

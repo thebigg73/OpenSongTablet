@@ -81,8 +81,8 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.9.0'                                   // Required for activity and permission requests
-    implementation 'androidx.fragment:fragment:1.8.1'                                   // Using fragments and navigation
+    implementation 'androidx.activity:activity:1.9.1'                                   // Required for activity and permission requests
+    implementation 'androidx.fragment:fragment:1.8.2'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.12.0'                        // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
     implementation 'com.google.android.gms:play-services-cast:21.5.0'                   // For casting obviously!
@@ -110,9 +110,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.7.7'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
-    implementation 'androidx.annotation:annotation:1.8.0'                               // Allows annotations in code
+    implementation 'androidx.annotation:annotation:1.8.1'                               // Allows annotations in code
+    annotationProcessor 'androidx.annotation:annotation:1.8.1'                          // Allows annotations in code
     implementation 'androidx.core:core:1.13.1'
-    annotationProcessor 'androidx.annotation:annotation:1.8.0'                          // Allows annotations in code
     implementation 'org.apache.commons:commons-compress:1.26.2'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
     implementation 'com.github.bumptech.glide:glide:4.16.0'                             // For better setting of images

@@ -104,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="64dp"
+            android:paddingBottom="64dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -239,6 +240,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/export_text" />
 
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/merged"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/merged_text_file" />
+
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -248,6 +255,27 @@
                 android:layout_marginTop="16dp"
                 android:hint="@string/theme"
                 android:text="@string/use_default" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/maxPDFScaling"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/max_pdf_scale"
+                app:infoText="@string/max_pdf_scale_info"
+                android:layout_marginTop="16dp"
+                android:valueFrom="20"
+                android:valueTo="150"
+                app:stepSize="5"
+                android:value="75" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/forceSinglePage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/force_single_page_pdf"
+                android:hint="@string/force_single_page_pdf_info"/>
+
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 

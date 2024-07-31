@@ -30,6 +30,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.slider.LabelFormatter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,10 +54,11 @@ public class ExportFragment extends Fragment {
     private String setToExport = null, exportType, shareTitle, textContent, setContent, pngName,
             export_string="", website_export_set_string="", website_export_song_string="",
             set_string="", song_string="", app_name_string="", screenshot_string="", toolBarTitle="",
-            mode_performance_string="";
-    private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false, image = false,
-            png = false, chordPro = false, onsong = false, text = false, setPDF = false, openSongSet = false,
-            setPNG = false, openSongAppSet = false, includeSongs = false, textSet = false, isPrint,
+            mode_performance_string="", merged_text_file_string="";
+    private boolean openSong = false, currentFormat = false, openSongApp = false, pdf = false,
+            image = false, png = false, chordPro = false, onsong = false, text = false,
+            merged = false, setPDF = false, openSongSet = false, setPNG = false,
+            openSongAppSet = false, includeSongs = false, textSet = false, isPrint,
             setPDFDone = false, setPNGDone = false, screenShot = false;
     private String[] location, setData, ids, setKeys;
     private StringBuilder songsAlreadyAdded;
@@ -65,6 +67,7 @@ public class ExportFragment extends Fragment {
     private String webAddress;
     private String default_string="", dark_string="", light_string="",
             custom1_string="", custom2_string="", pdf_print_string="";
+    private StringBuilder combinedSetText;
 
     @Override
     public void onResume() {
@@ -145,6 +148,9 @@ public class ExportFragment extends Fragment {
                 }
             }
         }));
+        myView.maxPDFScaling.addOnChangeListener((slider, value, fromUser) -> {
+            updatePDFMaxScaling((int)value);
+        });
 
         myView.exportTextAsMessage.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportTextAsMessage",b));
         myView.nestedScrollView.setExtendedFabToAnimate(myView.shareButton);
@@ -177,6 +183,7 @@ public class ExportFragment extends Fragment {
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),myView.pdfTheme,R.layout.view_exposed_dropdown_item, pdfThemes);
             myView.pdfTheme.setAdapter(exposedDropDownArrayAdapter);
             pdf_print_string = getString(R.string.theme)+ ": " + getString(R.string.pdf) + "/" + getString(R.string.print);
+            merged_text_file_string = getString(R.string.merged_text_file);
         }
     }
 
@@ -199,9 +206,20 @@ public class ExportFragment extends Fragment {
         myView.onSong.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportOnSong",false));
         myView.chordPro.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportChordPro",false));
         myView.text.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportText",false));
+        myView.merged.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportMergedText",false));
         myView.screenShot.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportScreenshot",false));
 
         // Set the pdf/print theme
+        myView.maxPDFScaling.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return (int)value+"%";
+            }
+        });
+        setMaxPDFScaling();
+        myView.forceSinglePage.setChecked(mainActivityInterface.getMakePDF().getForceSinglePage());
+        myView.forceSinglePage.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMakePDF().setForceSinglePage(b));
         myView.pdfTheme.setHint(pdf_print_string);
         myView.pdfTheme.setText(getPDFThemeText());
         myView.pdfTheme.addTextChangedListener(new TextWatcher() {
@@ -231,6 +249,7 @@ public class ExportFragment extends Fragment {
         myView.onSong.setOnCheckedChangeListener(new MyCheckChanged("exportOnSong"));
         myView.chordPro.setOnCheckedChangeListener(new MyCheckChanged("exportChordPro"));
         myView.text.setOnCheckedChangeListener(new MyCheckChanged("exportText"));
+        myView.merged.setOnCheckedChangeListener(new MyCheckChanged("exportMergedText"));
         myView.screenShot.setOnCheckedChangeListener(new MyCheckChanged("exportScreenshot"));
 
         // Make sure the progress info is hidden to start with
@@ -297,6 +316,19 @@ public class ExportFragment extends Fragment {
             // Now show the song options
             myView.songOptionsLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setMaxPDFScaling() {
+        // Get the user preference and convert to an int 10-200
+        int maxScaling = Math.round(100f * mainActivityInterface.getMakePDF().getMaxPDFScaling());
+        myView.maxPDFScaling.setValue(maxScaling);
+        myView.maxPDFScaling.setHint(maxScaling + "%");
+    }
+
+    private void updatePDFMaxScaling(int value) {
+        // Convert to an int and sent it to the MakePDF (where it is saved)
+        mainActivityInterface.getMakePDF().setMaxPDFScaling((float)value/100f);
+        myView.maxPDFScaling.setHint(value+"%");
     }
 
     private class MyCheckChanged implements CompoundButton.OnCheckedChangeListener {
@@ -388,6 +420,7 @@ public class ExportFragment extends Fragment {
         onsong = myView.onSong.isChecked();
         chordPro = myView.chordPro.isChecked();
         text = myView.text.isChecked();
+        merged = myView.merged.isChecked();
         currentFormat = myView.currentFormat.isChecked();
         screenShot = myView.screenShot.isChecked();
 
@@ -414,6 +447,9 @@ public class ExportFragment extends Fragment {
     private void doExportSet() {
         // Do this in a new Thread
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Keep all songs in a combined string for additional export
+            combinedSetText = new StringBuilder();
+
             // Load in the sets
             // First up add the simple set files that don't require drawing pdfs
             // Add the .osts file
@@ -579,18 +615,22 @@ public class ExportFragment extends Fragment {
                         }
 
                         // Add text songs
-                        if (!id.equals("ignore") && text && likelyXML) {
+                        if (!id.equals("ignore") && (text||merged) && likelyXML) {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsText(song);
-                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".txt with: "+content);
-                            if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".txt", content)) {
-                                uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".txt"));
-                                if (!mimeTypes.contains("text/plain")) {
-                                    mimeTypes.add("text/plain");
+                            if (merged) {
+                                combinedSetText.append(content).append("\n\n");
+                            }
+                            if (text) {
+                                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doExportSet doStringWriteToFile Export/" + location[1] + ".txt with: " + content);
+                                if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".txt", content)) {
+                                    uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".txt"));
+                                    if (!mimeTypes.contains("text/plain")) {
+                                        mimeTypes.add("text/plain");
+                                    }
                                 }
                             }
                         }
-
                     }
                 }
             }
@@ -604,6 +644,17 @@ public class ExportFragment extends Fragment {
             }
 
         });
+    }
+
+    private Uri createMergedTextFile() {
+        // If exporting songs in text format, they will also be merged
+        Uri uri = null;
+        if (merged && !combinedSetText.toString().isEmpty()) {
+            uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",merged_text_file_string+".txt");
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",merged_text_file_string+".txt");
+            mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",merged_text_file_string+".txt",combinedSetText.toString());
+        }
+        return uri;
     }
 
     private String fixSubfolder(String subfolder) {
@@ -795,6 +846,13 @@ public class ExportFragment extends Fragment {
         File exportFolder = mainActivityInterface.getStorageAccess().getAppSpecificFile("files","export",null);
         Log.d(TAG,"makedirs:"+exportFolder.mkdirs());
         ArrayList<Uri> newUris = new ArrayList<>();
+
+        // If we are exporting songs in text format, also add the merged one
+        Uri mergedTextFile = createMergedTextFile();
+        if (mergedTextFile!=null) {
+            uris.add(mergedTextFile);
+        }
+
         if (getContext()!=null) {
             for (Uri uri : uris) {
                 if (uri != null) {

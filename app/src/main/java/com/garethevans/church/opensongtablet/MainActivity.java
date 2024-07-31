@@ -3224,6 +3224,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                     break;
+
+                case "NearbyAdvertise":
+                    // We have accepted our advertise settings, so continue
+                    getNearbyConnections().setUsingNearby(true);
+                    if (getNearbyConnections().getNearbyTemporaryAdvertise()) {
+                        getNearbyConnections().doTempAdvertise();
+                    } else {
+                        getNearbyConnections().startAdvertising();
+                    }
+                    allowToast = false;
+                    break;
+
+                case "NearbyDiscover":
+                    // We have accepted our discover settings, so continue
+                    getNearbyConnections().setUsingNearby(true);
+                    getNearbyConnections().doTempDiscover();
+                    allowToast = false;
+                    break;
+
+
             }
             if (allowToast && result && showToast != null && getResources() != null) {
                 // Don't show toast for exit, but other successful actions
