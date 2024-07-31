@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,13 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
+// Because the options are now user preferences
+// The app will display a message to the user reminding them of their chosen preferences
+// This is done through the 'Are you sure prompt' the first time advertise/discover is called
+
+// User preferences are stored in the NearbyConnections class
+// They can be spotted below as getNearbyConnections.getNearby...() or ...setNearby(...)
+// Other temp values are just the other get...() or set...() methods in the class
 public class NearbyConnectionsFragment extends Fragment {
 
     private SettingsNearbyconnectionsBinding myView;
@@ -75,6 +83,9 @@ public class NearbyConnectionsFragment extends Fragment {
         // Update the views
         updateViews();
 
+        // Stop discovery when this page opens
+        mainActivityInterface.getNearbyConnections().stopDiscovery();
+
         // Set up the bottom sheet
         bottomSheetBar();
 
@@ -123,6 +134,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.advertiseButton.setBackgroundTintList(offColor);
         myView.discoverButton.setBackgroundTintList(offColor);
 
+        // TODO fix this for auto start options
         // Set the default values for off/host/client
         updateOffHostClient(mainActivityInterface.getNearbyConnections().getIsHost(),
                 mainActivityInterface.getNearbyConnections().getUsingNearby());
@@ -134,15 +146,16 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.bottomSheet.receiveAutoscroll.setEnabled(false);
         }
 
-        // Set the host/client switches
+        // Set the host/client switches based on user preferences
+        myView.nearbyStartOnBoot.setChecked(mainActivityInterface.getNearbyConnections().getNearbyStartOnBoot());
         myView.bottomSheet.nearbyHostMenuOnly.setChecked(mainActivityInterface.getNearbyConnections().getNearbyHostMenuOnly());
         myView.bottomSheet.hostPassthrough.setChecked(mainActivityInterface.getNearbyConnections().getNearbyHostPassthrough());
-        myView.bottomSheet.receiveHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostFiles());
-        myView.bottomSheet.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getKeepHostFiles());
-        myView.bottomSheet.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostAutoscroll());
-        myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostSongSections());
-        myView.bottomSheet.receiveScroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostScroll());
-        myView.bottomSheet.matchToPDFSong.setChecked(mainActivityInterface.getNearbyConnections().getMatchToPDFSong());
+        myView.bottomSheet.receiveHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostFiles());
+        myView.bottomSheet.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getNearbyKeepHostFiles());
+        myView.bottomSheet.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostAutoscroll());
+        myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostSongSections());
+        myView.bottomSheet.receiveScroll.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostScroll());
+        myView.bottomSheet.matchToPDFSong.setChecked(mainActivityInterface.getNearbyConnections().getNearbyMatchToPDFSong());
 
         myView.bottomSheet.nearbyMessage1.setText(nearby_message_string+" 1");
         myView.bottomSheet.nearbyMessage2.setText(nearby_message_string+" 2");
@@ -285,6 +298,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     private void updateOffHostClient(boolean isHost, boolean isClient) {
         // Turn all off
+        Log.d(TAG,"updateOffHostClient(isHost:"+isHost+",usingNearby:"+isClient);
         myView.off.setBackgroundTintList(offColor);
         myView.host.setBackgroundTintList(offColor);
         myView.client.setBackgroundTintList(offColor);
@@ -292,8 +306,10 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.clientOptions.setVisibility(View.GONE);
         myView.connectedToLayout.setVisibility(View.GONE);
         myView.connectInitiateButtons.setVisibility(View.GONE);
-        myView.temporaryAdvertise.setChecked(mainActivityInterface.getNearbyConnections().getTemporaryAdvertise());
+        myView.temporaryAdvertise.setChecked(mainActivityInterface.getNearbyConnections().getNearbyTemporaryAdvertise());
         mainActivityInterface.getNearbyConnections().clearTimer();
+        myView.advertiseButton.setBackgroundTintList(offColor);
+        myView.discoverButton.setBackgroundTintList(offColor);
 
         if (isHost) {
             myView.host.setBackgroundTintList(onColor);
@@ -302,6 +318,9 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.connectedToLayout.setVisibility(View.VISIBLE);
             myView.connectInitiateButtons.setVisibility(View.VISIBLE);
             myView.temporaryAdvertise.setVisibility(View.VISIBLE);
+            if (mainActivityInterface.getNearbyConnections().getIsAdvertising()) {
+                myView.advertiseButton.setBackgroundTintList(onColor);
+            }
             showcase2();
 
         } else if (isClient) {
@@ -358,33 +377,30 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.off.performClick();
         });
 
-        myView.temporaryAdvertise.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise",isChecked);
-            mainActivityInterface.getNearbyConnections().setTemporaryAdvertise(isChecked);
-        });
+        myView.temporaryAdvertise.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyTemporaryAdvertise(isChecked));
+        myView.nearbyStartOnBoot.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyStartOnBoot(isChecked));
 
         // The client/host options
-        myView.bottomSheet.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setKeepHostFiles(isChecked));
-        myView.bottomSheet.hostPassthrough.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyHostPassthrough",isChecked);
-            mainActivityInterface.getNearbyConnections().setNearbyHostPassthrough(isChecked);
-        });
+        myView.bottomSheet.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyKeepHostFiles(isChecked));
+        myView.bottomSheet.hostPassthrough.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostPassthrough(isChecked));
         myView.bottomSheet.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getNearbyConnections().setReceiveHostFiles(isChecked);
+            mainActivityInterface.getNearbyConnections().setNearbyReceiveHostFiles(isChecked);
             // IV - When off turn keep off - user must make an active choice to 'keep' as it may overwrite local songs
             if (!isChecked) {
                 myView.bottomSheet.keepHostFiles.setChecked(false);
-                mainActivityInterface.getNearbyConnections().setKeepHostFiles(false);
+                mainActivityInterface.getNearbyConnections().setNearbyKeepHostFiles(false);
             }
         });
         myView.bottomSheet.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(isChecked));
-        myView.bottomSheet.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(isChecked));
-        myView.bottomSheet.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(isChecked));
-        myView.bottomSheet.receiveScroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostScroll(isChecked));
-        myView.bottomSheet.matchToPDFSong.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setMatchToPDFSong(isChecked));
+        myView.bottomSheet.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyReceiveHostAutoscroll(isChecked));
+        myView.bottomSheet.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyReceiveHostSongSections(isChecked));
+        myView.bottomSheet.receiveScroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyReceiveHostScroll(isChecked));
+        myView.bottomSheet.matchToPDFSong.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyMatchToPDFSong(isChecked));
+
         // Changing the nearby connection
         myView.off.setOnClickListener(v -> {
             updateOffHostClient(false, false);
+            // This also resets our preferred connection to client (not host)
             mainActivityInterface.getNearbyConnections().setIsHost(false);
             mainActivityInterface.getNearbyConnections().setUsingNearby(false);
             mainActivityInterface.getNearbyConnections().stopDiscovery();
@@ -398,6 +414,7 @@ public class NearbyConnectionsFragment extends Fragment {
         });
         myView.host.setOnClickListener(v -> {
             updateOffHostClient(true, false);
+            // This also sets our preferred connection method to host
             mainActivityInterface.getNearbyConnections().setIsHost(true);
             mainActivityInterface.getNearbyConnections().setUsingNearby(true);
             myView.connectInitiateButtons.setVisibility(View.VISIBLE);
@@ -407,6 +424,7 @@ public class NearbyConnectionsFragment extends Fragment {
         });
         myView.client.setOnClickListener(v -> {
             updateOffHostClient(false, true);
+            // This also sets our preferred connection method to client
             mainActivityInterface.getNearbyConnections().setIsHost(false);
             mainActivityInterface.getNearbyConnections().setUsingNearby(true);
             myView.connectInitiateButtons.setVisibility(View.VISIBLE);
@@ -491,7 +509,7 @@ public class NearbyConnectionsFragment extends Fragment {
         mainActivityInterface.getNearbyConnections().stopDiscovery();
 
         // If we are temporarily advertising, initialise the countdown
-        if (mainActivityInterface.getNearbyConnections().getTemporaryAdvertise()) {
+        if (mainActivityInterface.getNearbyConnections().getNearbyTemporaryAdvertise()) {
             mainActivityInterface.getNearbyConnections().initialiseCountdown();
         }
 
@@ -504,7 +522,7 @@ public class NearbyConnectionsFragment extends Fragment {
             try {
                 mainActivityInterface.getNearbyConnections().startAdvertising();
                 myView.advertiseButton.setOnClickListener(view -> enableConnectionButtons());
-                if (mainActivityInterface.getNearbyConnections().getTemporaryAdvertise()) {
+                if (mainActivityInterface.getNearbyConnections().getNearbyTemporaryAdvertise()) {
                     mainActivityInterface.getNearbyConnections().setTimer(true, myView.advertiseButton);
                 }
             } catch (Exception e) {
@@ -539,14 +557,11 @@ public class NearbyConnectionsFragment extends Fragment {
     }
     private void resetClientOptions() {
         // IV - Reset the client options when leaving client mode
-        mainActivityInterface.getNearbyConnections().setReceiveHostFiles(false);
-        mainActivityInterface.getNearbyConnections().setKeepHostFiles(false);
-        mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(true);
-        mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(true);
-        myView.bottomSheet.receiveHostFiles.setChecked(false);
-        myView.bottomSheet.keepHostFiles.setChecked(false);
-        myView.bottomSheet.receiveHostSections.setChecked(true);
-        myView.bottomSheet.receiveAutoscroll.setChecked(true);
+        // GE - These are now a preference
+        myView.bottomSheet.receiveHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostFiles());
+        myView.bottomSheet.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getNearbyKeepHostFiles());
+        myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostSongSections());
+        myView.bottomSheet.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyConnections().getNearbyReceiveHostAutoscroll());
     }
     private void textInputDialog() {
         if (getActivity()!=null) {

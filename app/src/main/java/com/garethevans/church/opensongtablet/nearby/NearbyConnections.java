@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.collection.SimpleArrayMap;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
@@ -55,6 +56,12 @@ import java.util.TimerTask;
 // Changing the mode doesn't automatically advertise/discover.
 // Once connection has been established, the host/client button is an internal check (not affected by mode)
 
+// Because the options are now user preferences
+// The app will display a message to the user reminding them of their chosen preferences
+// This is done through the 'Are you sure prompt' the first time advertise/discover is called
+
+// Autostart will work if user has nearbyStartOnBoot = true and if they are a client
+// If they are a host, it won't work unless they have set neqrbyHostMenuOnly = false
 
 public class NearbyConnections implements NearbyInterface {
 
@@ -76,16 +83,21 @@ public class NearbyConnections implements NearbyInterface {
     private final MainActivityInterface mainActivityInterface;
     private BrowseHostFragment browseHostFragment;
     private boolean forceReload = false;
+    private boolean nearbyPreferredHost, nearbyStartOnBoot;
+    private boolean firstBoot = true;
+    private boolean advertiseInfoRequired = true, discoverInfoRequired = true,
+        tempAdvertiseShowStart=true, tempAdvertiseShowStop=false,
+    tempDiscoverShowStart=true, tempDiscoverShowStop=false;
 
     private Timer timer;
     private TimerTask timerTask;
     private SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
     private SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
     private Payload requestedFilePayload;
-    private boolean isHost, receiveHostFiles, keepHostFiles, usingNearby, temporaryAdvertise,
+    private boolean isHost, nearbyReceiveHostFiles, nearbyKeepHostFiles, usingNearby, nearbyTemporaryAdvertise,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
-            receiveHostAutoscroll = true, receiveHostSongSections = true, connectionsOpen,
-            nearbyHostPassthrough, receiveHostScroll, matchToPDFSong, nearbyMessageSticky,
+            nearbyReceiveHostAutoscroll, nearbyReceiveHostSongSections = true, connectionsOpen,
+            nearbyHostPassthrough, nearbyReceiveHostScroll, nearbyMatchToPDFSong, nearbyMessageSticky,
             nearbyMessageMIDIAction;
     private String nearbyMessage1, nearbyMessage2, nearbyMessage3, nearbyMessage4, nearbyMessage5,
             nearbyMessage6, nearbyMessage7, nearbyMessage8;
@@ -99,7 +111,6 @@ public class NearbyConnections implements NearbyInterface {
     private int pendingSection = 0, countdown;
     private boolean sendSongDelayActive;
     private Strategy nearbyStrategy = Strategy.P2P_CLUSTER;
-
 
     // Initialise the class, preferences and interfaces
     public NearbyConnections(Activity activity, Context c) {
@@ -115,6 +126,8 @@ public class NearbyConnections implements NearbyInterface {
 
         // Get user preferences
         getUpdatedPreferences();
+
+        firstBoot = false;
     }
 
     // If we change load in a profile, this is called
@@ -122,7 +135,6 @@ public class NearbyConnections implements NearbyInterface {
         try {
             nearbyHostPassthrough = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostPassthrough", true);
             nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
-            temporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("temporaryAdvertise", false);
             String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy", "cluster");
             switch (preference) {
                 case "cluster":
@@ -137,7 +149,23 @@ public class NearbyConnections implements NearbyInterface {
                     break;
             }
             setNearbyStrategy(nearbyStrategy);
-            matchToPDFSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("matchToPDFSong", false);
+            nearbyPreferredHost = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyPreferredHost",false);
+            Log.d(TAG,"prefs  nearbyPreferredHost:"+nearbyPreferredHost);
+            if (nearbyPreferredHost && firstBoot) {
+                isHost = true;
+                usingNearby = true;
+            }
+            Log.d(TAG,"isHost:"+isHost+"  usingNearby:"+usingNearby);
+            nearbyStartOnBoot = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyStartOnBoot",false);
+            if (nearbyStartOnBoot) {
+                usingNearby = true;
+            }
+            nearbyReceiveHostAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("receiveHostAutoscroll", true);
+            nearbyReceiveHostFiles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyReceiveHostFiles", true);
+            nearbyReceiveHostScroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyReceiveHostScroll", true);
+            nearbyKeepHostFiles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyKeepHostFiles", false);
+            nearbyMatchToPDFSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMatchToPDFSong", false);
+            nearbyTemporaryAdvertise = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyTemporaryAdvertise", false);
             nearbyMessageSticky = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageSticky", false);
             nearbyMessage1 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage1", "");
             nearbyMessage2 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage2", "");
@@ -154,6 +182,19 @@ public class NearbyConnections implements NearbyInterface {
 
         advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
+
+        // If we have chosen to, start the default advertise/discover action
+        if (firstBoot && nearbyStartOnBoot && nearbyPreferredHost) {
+            // We want to be the host (based on previous choice)
+            if (nearbyTemporaryAdvertise) {
+                doTempAdvertise();
+            } else {
+                startAdvertising();
+            }
+        } else if (firstBoot && nearbyStartOnBoot) {
+            // We want to be a client
+            doTempDiscover();
+        }
     }
 
     public void clearEndpoints() {
@@ -213,28 +254,30 @@ public class NearbyConnections implements NearbyInterface {
         this.deviceId = deviceId;
     }
 
-    public void setReceiveHostFiles(boolean receiveHostFiles) {
-        this.receiveHostFiles = receiveHostFiles;
+    public void setNearbyReceiveHostFiles(boolean nearbyReceiveHostFiles) {
+        this.nearbyReceiveHostFiles = nearbyReceiveHostFiles;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyReceiveHostFiles", nearbyReceiveHostFiles);
     }
 
-    public boolean getReceiveHostFiles() {
-        return receiveHostFiles;
+    public boolean getNearbyReceiveHostFiles() {
+        return nearbyReceiveHostFiles;
     }
 
-    public void setKeepHostFiles(boolean keepHostFiles) {
-        this.keepHostFiles = keepHostFiles;
+    public void setNearbyKeepHostFiles(boolean nearbyKeepHostFiles) {
+        this.nearbyKeepHostFiles = nearbyKeepHostFiles;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyKeepHostFiles", nearbyKeepHostFiles);
     }
 
-    public boolean getKeepHostFiles() {
-        return keepHostFiles;
+    public boolean getNearbyKeepHostFiles() {
+        return nearbyKeepHostFiles;
     }
 
-    public void setReceiveHostSongSections(boolean receiveHostSongSections) {
-        this.receiveHostSongSections = receiveHostSongSections;
+    public void setNearbyReceiveHostSongSections(boolean nearbyReceiveHostSongSections) {
+        this.nearbyReceiveHostSongSections = nearbyReceiveHostSongSections;
     }
 
-    public boolean getReceiveHostSongSections() {
-        return receiveHostSongSections;
+    public boolean getNearbyReceiveHostSongSections() {
+        return nearbyReceiveHostSongSections;
     }
 
     public void setConnectionsOpen(boolean connectionsOpen) {
@@ -259,7 +302,9 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     public void setIsHost(boolean isHost) {
+
         this.isHost = isHost;
+        setNearbyPreferredHost(isHost);
     }
 
     public boolean getUsingNearby() {
@@ -276,23 +321,43 @@ public class NearbyConnections implements NearbyInterface {
 
     public void setNearbyHostPassthrough(boolean nearbyHostPassthrough) {
         this.nearbyHostPassthrough = nearbyHostPassthrough;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyHostPassthrough",nearbyHostPassthrough);
     }
 
-    public boolean getTemporaryAdvertise() {
-        return temporaryAdvertise;
+    public boolean getNearbyTemporaryAdvertise() {
+        return nearbyTemporaryAdvertise;
     }
 
-    public void setTemporaryAdvertise(boolean temporaryAdvertise) {
-        this.temporaryAdvertise = temporaryAdvertise;
+    public void setNearbyTemporaryAdvertise(boolean nearbyTemporaryAdvertise) {
+        this.nearbyTemporaryAdvertise = nearbyTemporaryAdvertise;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyTemporaryAdvertise",nearbyTemporaryAdvertise);
     }
 
-    public boolean getMatchToPDFSong() {
-        return matchToPDFSong;
+    public boolean getNearbyMatchToPDFSong() {
+        return nearbyMatchToPDFSong;
     }
 
-    public void setMatchToPDFSong(boolean matchToPDFSong) {
-        this.matchToPDFSong = matchToPDFSong;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean("matchToPDFSong", matchToPDFSong);
+    public void setNearbyMatchToPDFSong(boolean nearbyMatchToPDFSong) {
+        this.nearbyMatchToPDFSong = nearbyMatchToPDFSong;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyMatchToPDFSong", nearbyMatchToPDFSong);
+    }
+
+    public boolean getNearbyStartOnBoot() {
+        return nearbyStartOnBoot;
+    }
+
+    public void setNearbyStartOnBoot(boolean nearbyStartOnBoot) {
+        this.nearbyStartOnBoot = nearbyStartOnBoot;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyStartOnBoot",nearbyStartOnBoot);
+    }
+
+    public boolean getNearbyPreferredHost() {
+        return nearbyPreferredHost;
+    }
+
+    public void setNearbyPreferredHost(boolean nearbyPreferredHost) {
+        this.nearbyPreferredHost = nearbyPreferredHost;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyPreferredHost",nearbyPreferredHost);
     }
 
     // Set the strategy as either cluster (many to many) or star (one to many).
@@ -319,6 +384,15 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
 
+    public String getNearbyStrategyStringForMessage() {
+        if (nearbyStrategy == Strategy.P2P_STAR) {
+            return c.getString(R.string.connections_mode_star);
+        } else if (nearbyStrategy == Strategy.P2P_POINT_TO_POINT) {
+            return c.getString(R.string.connections_mode_single);
+        } else {
+            return c.getString(R.string.connections_mode_cluster);
+        }
+    }
 
     // The timer to stop advertising/discovery
     public void initialiseCountdown() {
@@ -363,11 +437,47 @@ public class NearbyConnections implements NearbyInterface {
         countdown--;
     }
 
+    private String getSettingsForToast() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(c.getString(R.string.connections_description)).append("\n\n");
+        String on_string = c.getString(R.string.on);
+        String off_string = c.getString(R.string.off);
+        // Show the user's preferences
+        if (isHost || (nearbyStartOnBoot && nearbyPreferredHost)) {
+            isHost = true;
+            stringBuilder.append(c.getString(R.string.connections_actashost)).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_mode)).append(": ").append(getNearbyStrategyStringForMessage()).append("\n");
+            stringBuilder.append(c.getString(R.string.nearby_host_menu_only_info_warning)).append(": ").append(nearbyHostMenuOnly ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_host_passthrough)).append(": ").append(nearbyHostPassthrough ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_advertise_temporary)).append(": ").append(nearbyTemporaryAdvertise ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_start_on_boot)).append(": ").append(nearbyStartOnBoot ? on_string : off_string);
+        } else {
+            stringBuilder.append(c.getString(R.string.connections_actasclient)).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_mode)).append(": ").append(getNearbyStrategyStringForMessage()).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_receive_host)).append(": ").append(nearbyReceiveHostFiles ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_keephostsongs)).append(": ").append(nearbyKeepHostFiles ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connection_scroll_info)).append(": ").append(nearbyReceiveHostScroll ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connection_autoscroll_info)).append(": ").append(nearbyReceiveHostAutoscroll ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connections_song_sections_info)).append(": ").append(nearbyReceiveHostSongSections ? on_string : off_string).append("\n");
+            stringBuilder.append(c.getString(R.string.connection_match_to_pdf_song)).append(": ").append(nearbyMatchToPDFSong ? on_string : off_string);
+        }
 
-    // Start or stop the advertising/discovery of devices to initiate connections
+        return stringBuilder.toString();
+    }
+
     @Override
     public void startAdvertising() {
-        if (!isAdvertising) {
+        Log.d(TAG,"startAdvertising() called");
+        String message = getSettingsForToast();
+        if (advertiseInfoRequired) {
+            advertiseInfoRequired = false;
+            AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("NearbyAdvertise",message,null,"NearbyConnections",null,null);
+            areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
+        } else if (!isAdvertising) {
+            if (!nearbyTemporaryAdvertise || tempAdvertiseShowStart) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_advertising));
+                tempAdvertiseShowStart = false;
+            }
             Nearby.getConnectionsClient(activity)
                     .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
@@ -387,10 +497,19 @@ public class NearbyConnections implements NearbyInterface {
 
     @Override
     public void startDiscovery() {
-        // IV - Only if still in use
-        // The connections fragment turns this off using a system timer
-        if (usingNearby) {
+        String message = getSettingsForToast();
+        Log.d(TAG,"startDisovery() called discoverInfoRequired:"+discoverInfoRequired+"  usingNearby:"+usingNearby);
+        if (discoverInfoRequired) {
+            discoverInfoRequired = false;
+            AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("NearbyDiscover",message,null,"NearbyConnections",null,null);
+            areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
+        } else if (usingNearby) {
+            // The connections fragment turns this off using a system timer
             if (!isDiscovering) {
+                if (tempDiscoverShowStart) {
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_discover));
+                    tempDiscoverShowStart = false;
+                }
                 Nearby.getConnectionsClient(activity)
                         .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
                         .addOnSuccessListener(
@@ -411,7 +530,12 @@ public class NearbyConnections implements NearbyInterface {
 
     @Override
     public void stopAdvertising() {
+        Log.d(TAG,"stopAdvertising() isAdvertising:"+isAdvertising);
         if (isAdvertising) {
+            if (!nearbyTemporaryAdvertise || tempAdvertiseShowStop) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_advertise) + ": " + c.getString(R.string.stop));
+                tempAdvertiseShowStop = false;
+            }
             isAdvertising = false;
             try {
                 Nearby.getConnectionsClient(activity).stopAdvertising();
@@ -420,11 +544,25 @@ public class NearbyConnections implements NearbyInterface {
                 Log.d(TAG, "stopAdvertising() - failure: " + e);
             }
         }
+        tempAdvertiseShowStart = true;
+        tempAdvertiseShowStop = false;
+    }
+
+    public boolean getIsAdvertising() {
+        return isAdvertising;
+    }
+
+    public boolean getIsDiscovering() {
+        return isDiscovering;
     }
 
     @Override
     public void stopDiscovery() {
         if (isDiscovering) {
+            if (tempDiscoverShowStop) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_discover) + ": " + c.getString(R.string.stop));
+                tempDiscoverShowStop = false;
+            }
             try {
                 Nearby.getConnectionsClient(activity).stopDiscovery();
                 updateConnectionLog(c.getString(R.string.connections_discover_stop));
@@ -433,6 +571,8 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
         isDiscovering = false;
+        tempDiscoverShowStart = true;
+        tempDiscoverShowStop = false;
     }
 
 
@@ -711,24 +851,24 @@ public class NearbyConnections implements NearbyInterface {
 
                                 } else if (incoming != null && incoming.contains("autoscroll_")) {
                                     // IV - Autoscroll only in Performance mode when user option is selected
-                                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && receiveHostAutoscroll) {
+                                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && nearbyReceiveHostAutoscroll) {
                                         payloadAutoscroll(incoming);
                                     }
                                 } else if (incoming != null && incoming.equals(autoscrollPause)) {
                                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                                            receiveHostAutoscroll) {
+                                            nearbyReceiveHostAutoscroll) {
                                         mainActivityInterface.getAutoscroll().pauseAutoscroll();
                                     }
 
                                 } else if (incoming != null && incoming.equals(autoscrollincrease)) {
                                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                                            receiveHostAutoscroll) {
+                                            nearbyReceiveHostAutoscroll) {
                                         mainActivityInterface.getAutoscroll().speedUpAutoscroll();
                                     }
 
                                 } else if (incoming != null && incoming.equals(autoscrolldecrease)) {
                                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                                            receiveHostAutoscroll) {
+                                            nearbyReceiveHostAutoscroll) {
                                         mainActivityInterface.getAutoscroll().slowDownAutoscroll();
                                     }
 
@@ -736,7 +876,7 @@ public class NearbyConnections implements NearbyInterface {
                                     // IV - Section change only in Stage and Presentation mode (Song or PDF) when user option is selected
                                     if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
                                             mainActivityInterface.getSong().getFiletype().equals("PDF")) &&
-                                            receiveHostSongSections) {
+                                            nearbyReceiveHostSongSections) {
                                         Log.d(TAG, "call payloadSection " + incoming);
                                         payloadSection(incoming);
                                     }
@@ -745,14 +885,14 @@ public class NearbyConnections implements NearbyInterface {
                                 } else if (incoming != null && incoming.contains(scrollByTag)) {
                                     // We have received a scroll by amount command.  Check we want this
                                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                                            receiveHostScroll) {
+                                            nearbyReceiveHostScroll) {
                                         Log.d(TAG, "call payloadScrollBy");
                                         payloadScrollBy(incoming);
                                     }
                                 } else if (incoming != null && incoming.contains(scrollToTag)) {
                                     // We have received a scroll to instruction.  Check we want this
                                     if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
-                                            receiveHostScroll) {
+                                            nearbyReceiveHostScroll) {
                                         Log.d(TAG, "call payloadScrollTo");
                                         payloadScrollTo(incoming);
                                     }
@@ -827,7 +967,7 @@ public class NearbyConnections implements NearbyInterface {
                     dealWithRequestedFile();
                 } else {
                     // IV - If we are a client and not 'receiving host files' then cancel these uneeded FILE transfers
-                    if (!isHost && !receiveHostFiles) {
+                    if (!isHost && !nearbyReceiveHostFiles) {
                         if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
                             Log.d(TAG, "Cancelled Id " + payloadTransferUpdate.getPayloadId());
                             Nearby.getConnectionsClient(activity).cancelPayload(payloadTransferUpdate.getPayloadId());
@@ -1193,7 +1333,7 @@ public class NearbyConnections implements NearbyInterface {
             Log.d(TAG, "songReceived=" + songReceived);
             Log.d(TAG, "receivedBits.size()=" + receivedBits.size());
 
-            Log.d(TAG, "isHost=" + isHost + "  hasValidConnections()=" + hasValidConnections() + "  receiveHostFiles=" + receiveHostFiles + "  keepHostFiles=" + keepHostFiles);
+            Log.d(TAG, "isHost=" + isHost + "  hasValidConnections()=" + hasValidConnections() + "  nearbyReceiveHostFiles=" + nearbyReceiveHostFiles + "  nearbyKeepHostFiles=" + nearbyKeepHostFiles);
             if (songReceived) {
                 // Remove the current set position otherwise the client can be confused
                 Log.d(TAG,"removing song index");
@@ -1210,7 +1350,7 @@ public class NearbyConnections implements NearbyInterface {
                 // Set the reload flag
                 forceReload = true;
 
-                if (!isHost && hasValidConnections() && receiveHostFiles) {
+                if (!isHost && hasValidConnections() && nearbyReceiveHostFiles) {
                     // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
 
@@ -1220,14 +1360,14 @@ public class NearbyConnections implements NearbyInterface {
                     // If the user wants to keep the host file, we will save it to our storage.
                     // If we already have it, it will overwrite it, if not, we add it
                     Uri newLocation;
-                    if (keepHostFiles) {
+                    if (nearbyKeepHostFiles) {
                         // Prepare the output stream in the client Songs folder
                         // Check the folder exists, if not, create it
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " payloadOpenSong createFile Songs/" + receivedBits.get(0));
                         mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", receivedBits.get(0), receivedBits.get(1));
                         // Create the file if it doesn't exist
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " payLoadOpenSong() keepHostFiles Create Songs/" + receivedBits.get(0) + "/" + receivedBits.get(1) + "  deleteOld=true");
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " payLoadOpenSong() nearbyKeepHostFiles Create Songs/" + receivedBits.get(0) + "/" + receivedBits.get(1) + "  deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder(receivedBits.get(0));
@@ -1238,7 +1378,7 @@ public class NearbyConnections implements NearbyInterface {
                     } else {
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "ReceivedSong");
                         // Prepare the output stream in the Received folder - just keep a temporary version
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " payLoadOpenSong !keepHostFiles Create Songs/" + receivedBits.get(0) + "/" + receivedBits.get(1) + " deleteOld=true");
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " payLoadOpenSong !nearbyKeepHostFiles Create Songs/" + receivedBits.get(0) + "/" + receivedBits.get(1) + " deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Received", "", "ReceivedSong");
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder("../Received");
@@ -1257,7 +1397,7 @@ public class NearbyConnections implements NearbyInterface {
                         Log.d(TAG, "write the file: " + mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream));
 
                         // If we are keeping the song, update the database song first
-                        if (receiveHostFiles && keepHostFiles) {
+                        if (nearbyReceiveHostFiles && nearbyKeepHostFiles) {
                             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(), false));
                             mainActivityInterface.getSQLiteHelper().updateSong(mainActivityInterface.getSong());
                             mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
@@ -1273,7 +1413,7 @@ public class NearbyConnections implements NearbyInterface {
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
 
                     // If we want to use PDF versions of songs instead, change the filename
-                    if (matchToPDFSong && !receivedBits.get(1).endsWith(".pdf") && !receivedBits.get(1).endsWith(".PDF")) {
+                    if (nearbyMatchToPDFSong && !receivedBits.get(1).endsWith(".pdf") && !receivedBits.get(1).endsWith(".PDF")) {
                         String newPDFFilename = receivedBits.get(1) + ".pdf";
                         Uri newPDFUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", receivedBits.get(0), newPDFFilename);
                         if (mainActivityInterface.getStorageAccess().uriExists(newPDFUri)) {
@@ -1345,7 +1485,7 @@ public class NearbyConnections implements NearbyInterface {
             Log.d(TAG, "folder:" + bits[0] + "  filename:" + bits[1]);
             mainActivityInterface.getDisplayPrevNext().setSwipeDirection(bits[2]);
             Uri newLocation = null;
-            if (!isHost && hasValidConnections() && receiveHostFiles && keepHostFiles && filename != null && !filename.isEmpty()) {
+            if (!isHost && hasValidConnections() && nearbyReceiveHostFiles && nearbyKeepHostFiles && filename != null && !filename.isEmpty()) {
                 // The new file goes into our main Songs folder if we don't already have it
                 newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
                 if (!mainActivityInterface.getStorageAccess().uriExists(newLocation)) {
@@ -1364,7 +1504,7 @@ public class NearbyConnections implements NearbyInterface {
                         newLocation = null;
                     }
                 }
-            } else if (!isHost && hasValidConnections() && receiveHostFiles && filename != null && !filename.isEmpty()) {
+            } else if (!isHost && hasValidConnections() && nearbyReceiveHostFiles && filename != null && !filename.isEmpty()) {
                 // The new file goes into our Received folder
                 folder = "../Received";
                 // IV - Store the received song filename in case the user wants to duplicate the received song
@@ -1494,12 +1634,13 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
 
-    public void setReceiveHostAutoscroll(boolean receiveHostAutoscroll) {
-        this.receiveHostAutoscroll = receiveHostAutoscroll;
+    public void setNearbyReceiveHostAutoscroll(boolean nearbyReceiveHostAutoscroll) {
+        this.nearbyReceiveHostAutoscroll = nearbyReceiveHostAutoscroll;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyReceiveHostAutoscroll", nearbyReceiveHostAutoscroll);
     }
 
-    public boolean getReceiveHostAutoscroll() {
-        return receiveHostAutoscroll;
+    public boolean getNearbyReceiveHostAutoscroll() {
+        return nearbyReceiveHostAutoscroll;
     }
 
     private void payloadScrollBy(String incoming) {
@@ -1530,12 +1671,13 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
 
-    public void setReceiveHostScroll(boolean receiveHostScroll) {
-        this.receiveHostScroll = receiveHostScroll;
+    public void setNearbyReceiveHostScroll(boolean nearbyReceiveHostScroll) {
+        this.nearbyReceiveHostScroll = nearbyReceiveHostScroll;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyReceiveHostScroll", nearbyReceiveHostScroll);
     }
 
-    public boolean getReceiveHostScroll() {
-        return receiveHostScroll;
+    public boolean getNearbyReceiveHostScroll() {
+        return nearbyReceiveHostScroll;
     }
 
     public void payloadMessage(String incoming) {
@@ -1645,32 +1787,50 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     public void doTempAdvertise() {
+        Log.d(TAG,"doTempAdvertise() called");
         // Stop advertising/discovering if we were already doing that
         stopAdvertising();
         stopDiscovery();
 
-        // After a short delay, advertise
-        new Handler().postDelayed(() -> {
-            try {
-                startAdvertising();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, 200);
+        // If we haven't accepted the info, do that by calling advertise (it checks)
+        if (advertiseInfoRequired) {
+            startAdvertising();
+        } else {
+            // After a short delay, advertise
+            new Handler().postDelayed(() -> {
+                try {
+                    startAdvertising();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, 200);
 
-        // After 10 seconds, stop advertising
-        new Handler().postDelayed(() -> {
-            try {
-                stopAdvertising();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            countAdvertise++;
-            if (countAdvertise < 3 && !hasValidConnections()) {
-                // Repeat the process again
-                doTempAdvertise();
-            }
-        }, 10000);
+            // After 10 seconds, stop advertising
+            new Handler().postDelayed(() -> {
+                Log.d(TAG,"countAdvertise");
+                try {
+                    if (countAdvertise<2) {
+                        tempAdvertiseShowStop = false;
+                    } else {
+                        tempAdvertiseShowStop = true;
+                    }
+                    if (hasValidConnections()) {
+                        tempAdvertiseShowStop = true;
+                    }
+
+                    Log.d(TAG,"stop and start again advertising()");
+                    stopAdvertising();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                countAdvertise++;
+                if (countAdvertise < 3 && !hasValidConnections()) {
+                    // Repeat the process again
+                    Log.d(TAG,"repeat advertise");
+                    doTempAdvertise();
+                }
+            }, 10000);
+        }
     }
 
     public void doTempDiscover() {
@@ -1678,28 +1838,41 @@ public class NearbyConnections implements NearbyInterface {
         stopAdvertising();
         stopDiscovery();
 
-        // After a short delay, discover
-        mainActivityInterface.getMainHandler().postDelayed(() -> {
-            try {
-                startDiscovery();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, 200);
+        // If we haven't accepted the info, do that by calling discover (it checks)
+        if (discoverInfoRequired) {
+            startDiscovery();
+        } else {
+            // After a short delay, discover
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                try {
+                    startDiscovery();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, 200);
 
-        // After 10 seconds, stop discovering
-        mainActivityInterface.getMainHandler().postDelayed(() -> {
-            try {
-                stopDiscovery();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            countDiscovery++;
-            if (countDiscovery < 3 && !hasValidConnections()) {
-                // Repeat the process again
-                doTempDiscover();
-            }
-        }, 10000);
+            // After 10 seconds, stop discovering
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                if (countDiscovery<2) {
+                    tempDiscoverShowStop = false;
+                } else {
+                    tempDiscoverShowStop = true;
+                }
+                if (hasValidConnections()) {
+                    tempDiscoverShowStop = true;
+                }
+                try {
+                    stopDiscovery();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                countDiscovery++;
+                if (countDiscovery < 3 && !hasValidConnections()) {
+                    // Repeat the process again
+                    doTempDiscover();
+                }
+            }, 10000);
+        }
     }
 
     public String getNearbyMessage(int which) {

@@ -114,7 +114,7 @@ public class CommonControls {
         addString("","");
 
         // Controls
-        addString("nearby",c.getString(R.string.connections_discover));
+        addString("nearby",c.getString(R.string.connections_advertise)+"/"+c.getString(R.string.connections_discover));
         addString("nearbysettings",c.getString(R.string.connections_connect)+settings);
         addString("gestures",c.getString(R.string.custom_gestures));
         addString("pedals",c.getString(R.string.pedal)+settings);

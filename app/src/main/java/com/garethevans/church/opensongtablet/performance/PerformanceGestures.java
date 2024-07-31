@@ -30,7 +30,6 @@ import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 import com.garethevans.church.opensongtablet.utilities.TunerBottomSheet;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.Locale;
 
@@ -343,7 +342,23 @@ public class PerformanceGestures {
                 if (isLongPress) {
                     nearbySettings();
                 } else {
-                    nearbyDiscover();
+                    // If we are already set up to be a host from preferences and allowing connections when not in the settings
+                    if (!mainActivityInterface.getNearbyConnections().getNearbyHostMenuOnly() &&
+                            (mainActivityInterface.getNearbyConnections().getIsHost() ||
+                            mainActivityInterface.getNearbyConnections().getNearbyPreferredHost())) {
+                        nearbyAdvertise();
+                    } else if (mainActivityInterface.getNearbyConnections().getNearbyHostMenuOnly() &&
+                            (mainActivityInterface.getNearbyConnections().getIsHost() ||
+                                    mainActivityInterface.getNearbyConnections().getNearbyPreferredHost())) {
+                        // We want to act as the host, but because we need to be on the settings page, do that
+                        nearbySettings();
+                        String text = c.getString(R.string.nearby_host_menu_only) + ": " + c.getString(R.string.on);
+                        mainActivityInterface.getShowToast().doIt(text);
+
+                    } else {
+                        // We default to being the client
+                        nearbyDiscover();
+                    }
                 }
                 break;
             case "nearbysettings":
@@ -1089,25 +1104,28 @@ public class PerformanceGestures {
     public void nearbySettings() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_nearby),0);
     }
+    public void nearbyAdvertise() {
+        // Advertise device to others
+        // Stop advertising/discovering if we were already doing that
+        mainActivityInterface.getNearbyConnections().stopAdvertising();
+        mainActivityInterface.getNearbyConnections().stopDiscovery();
+
+        mainActivityInterface.getNearbyConnections().setUsingNearby(true);
+
+        // Advertise device
+        // The advertise will check the user's settings and display a warning popup first time
+        mainActivityInterface.getNearbyConnections().startAdvertising();
+    }
     public void nearbyDiscover() {
         // Run a 10 second discovery attempt
         // Stop advertising/discovering if we were already doing that
         mainActivityInterface.getNearbyConnections().stopAdvertising();
         mainActivityInterface.getNearbyConnections().stopDiscovery();
 
-        // Initialise the countdown
-        mainActivityInterface.getNearbyConnections().initialiseCountdown();
+        mainActivityInterface.getNearbyConnections().setUsingNearby(true);
 
-        // After a short delay, discover
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            try {
-                mainActivityInterface.getNearbyConnections().startDiscovery();
-                mainActivityInterface.getNearbyConnections().setTimer(false, new MaterialButton(c));
-            } catch (Exception e) {
-                e.printStackTrace();
-                mainActivityInterface.getNearbyConnections().clearTimer();
-            }
-        }, 200);
+        // Temp discovery will run for 10 secs after showing a warning/popup the first time
+        mainActivityInterface.getNearbyConnections().doTempDiscover();
     }
 
     // PDF page chooser
