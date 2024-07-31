@@ -238,6 +238,8 @@
     <string name="connections_searching">"Ricerca in corso …"</string>
     <string name="connections_service_stop">"Servizio di arresto"</string>
     <string name="connections_song_sections_info">Ascolta le modifiche alla sezione dei brani</string>
+    <string name="connections_start_on_boot">Avvia connessioni vicine all\'avvio</string>
+    <string name="connections_start_on_boot_info">Utilizza le tue attuali preferenze di connessione al prossimo avvio (include tutte le impostazioni host/client selezionate qui).  Per impostazione predefinita, gli host faranno pubblicità e i clienti lo scopriranno, ma puoi scegliere manualmente qualsiasi opzione nella pagina delle impostazioni</string>
     <string name="content">"Contenuto"</string>
     <string name="continue_text">Continuare</string>
     <string name="controls">Controlli</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Font di presentazione"</string>
     <string name="font_presentation_bold">Visualizzare i testi presentati utilizzando il grassetto</string>
     <string name="font_presentation_info">"Font di informazioni di presentazione"</string>
+    <string name="force_single_page_pdf">Forza brani a pagina singola per PDF/stampa</string>
+    <string name="force_single_page_pdf_info">Ridimensiona i brani per adattarli a una singola pagina durante la stampa o l\'esportazione in PDF</string>
     <string name="format_text_bold">Grassetto</string>
     <string name="format_text_bolditalic">Grassetto Corsivo</string>
     <string name="format_text_brackets">Formatta il testo tra parentesi (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Margini di sistema</string>
     <string name="margins_system_info">Lascia spazio per i controlli dei dispositivi rilevati (barra di navigazione inferiore e menu laterali)</string>
     <string name="max_font_size">Autoscale massima font size</string>
+    <string name="max_pdf_scale">Dimensioni massime in scala del PDF/stampa</string>
+    <string name="max_pdf_scale_info">Il ridimensionamento massimo da utilizzare.  Scegli valori più bassi per testo più piccolo.  La dimensione del testo non verrà ridimensionata oltre la larghezza della pagina.  Il 75% è un buon punto di partenza per la maggior parte.</string>
     <string name="max_vol_range">"Gamma indicatore del volume grafica"</string>
     <string name="maximise_columns">Ridimensionare le colonne in modo indipendente.</string>
     <string name="maximise_columns_info">Se un brano viene mostrato in più colonne (ad esempio quando viene ruotato in orizzontale), ciò consente a ciascuna colonna di eseguire lo zoom per riempire la parte dello schermo a cui è assegnata.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Apri il menu per visualizzare e gestire i tuoi brani e set</string>
     <string name="menu_song_info">Usa questo pulsante per visualizzare e gestire le tue canzoni</string>
     <string name="menu_song_order">Come dovrebbero essere elencate le canzoni nel menu?</string>
+    <string name="merged_text_file">File di testo unito</string>
     <string name="metronome">"Metronomo"</string>
     <string name="metronome_autostart">Metronomo di avvio automatico</string>
     <string name="metronome_autostart_info">Mantieni attivo il metronomo quando cambi brano</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Importare canzoni di esempio Church"</string>
     <string name="nearby_host_menu_only">Ascolta i nuovi clienti solo quando questa pagina è visibile</string>
     <string name="nearby_host_menu_only_info">Le richieste di connessione non verranno mostrate a meno che tu non sia in questa pagina</string>
+    <string name="nearby_host_menu_only_info_warning">L\'host deve avere le impostazioni Nelle vicinanze aperte per accettare connessioni</string>
     <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
     <string name="nearby_message">Messaggio di avviso nelle vicinanze</string>
     <string name="nearby_messages">Messaggi di avviso nelle vicinanze</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Imposta nome</string>
     <string name="set_new">"Pulisci"</string>
     <string name="set_new_info">Rimuovi tutti i brani dal set corrente</string>
+    <string name="set_packaged_opensongapp">File di set OpenSongApp compresso</string>
+    <string name="set_packaged_opensongapp_info">Questo crea un file zip personalizzato che contiene il file del set e tutti i file OpenSong, PDF o immagine a cui si fa riferimento nel set.  Questo può essere condiviso con altri utenti OpenSongApp</string>
     <string name="set_rebuild">Ricostruisci set</string>
     <string name="set_rebuild_info">Ricostruisci l\'insieme dall\'ultima modifica riuscita (usalo se sospetti che ci sia un problema con l\'insieme)</string>
     <string name="set_save_info">Salva il set corrente per un uso futuro</string>

@@ -238,6 +238,8 @@
     <string name="connections_searching">"Ερευνητικός…"</string>
     <string name="connections_service_stop">"Σταματήστε την υπηρεσία"</string>
     <string name="connections_song_sections_info">Ακούστε για αλλαγές στην ενότητα τραγουδιών</string>
+    <string name="connections_start_on_boot">Ξεκινήστε τις κοντινές συνδέσεις κατά την εκκίνηση</string>
+    <string name="connections_start_on_boot_info">Χρησιμοποιήστε τις τρέχουσες προτιμήσεις σύνδεσης την επόμενη φορά που θα κάνετε εκκίνηση (περιλαμβάνει όλες τις ρυθμίσεις κεντρικού υπολογιστή/πελάτη που έχουν επιλεγεί εδώ).  Από προεπιλογή, οι κεντρικοί υπολογιστές θα διαφημίζονται και οι πελάτες θα το ανακαλύψουν, αλλά μπορείτε να επιλέξετε μη αυτόματα οποιαδήποτε επιλογή στη σελίδα ρυθμίσεων</string>
     <string name="content">"Περιεχόμενο"</string>
     <string name="continue_text">Συνεχίζω</string>
     <string name="controls">Ελεγχος</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Παρουσίαση γραμματοσειράς"</string>
     <string name="font_presentation_bold">Άλλες περιοχές της οθόνης προορίζονται για κουμπιά σελίδας, πληροφορίες τραγουδιού και δεν είναι διαθέσιμες.  Οι θερμές ζώνες θα εμποδίσουν άλλες ενέργειες σε αυτές τις περιοχές</string>
     <string name="font_presentation_info">"Γραμματοσειρά πληροφοριών παρουσίασης"</string>
+    <string name="force_single_page_pdf">Επιβολή μονοσέλιδων τραγουδιών για PDF/Εκτύπωση</string>
+    <string name="force_single_page_pdf_info">Κλιμακώνει τα τραγούδια ώστε να χωρούν σε μία σελίδα κατά την εκτύπωση ή την εξαγωγή σε PDF</string>
     <string name="format_text_bold">Τολμηρός</string>
     <string name="format_text_bolditalic">Τολμηρός Πλάγια</string>
     <string name="format_text_brackets">Μορφοποίηση κειμένου παρένθεσης (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Περιθώρια συστήματος</string>
     <string name="margins_system_info">Αφήστε χώρο για τα στοιχεία ελέγχου συσκευής που εντοπίστηκαν (κάτω γραμμή πλοήγησης και πλευρικά μενού)</string>
     <string name="max_font_size">"Maximum autoscale font size"</string>
+    <string name="max_pdf_scale">Μέγιστο μέγεθος κλίμακας PDF/Εκτύπωσης</string>
+    <string name="max_pdf_scale_info">Η μέγιστη κλιμάκωση προς χρήση.  Επιλέξτε χαμηλότερες τιμές για μικρότερο κείμενο.  Το μέγεθος του κειμένου δεν θα υπερβαίνει το πλάτος της σελίδας.  Το 75% είναι ένα καλό σημείο εκκίνησης για τους περισσότερους.</string>
     <string name="max_vol_range">"Graphical volume indicator range"</string>
     <string name="maximise_columns">Κλίμακα στήλες ανεξάρτητα.</string>
     <string name="maximise_columns_info">Εάν ένα τραγούδι εμφανίζεται σε πολλές στήλες (π.χ. όταν περιστρέφεται σε οριζόντιο προσανατολισμό), αυτό επιτρέπει σε κάθε στήλη να μεγεθύνει για να γεμίσει το τμήμα της οθόνης που της έχει εκχωρηθεί.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Ανοίξτε το μενού για να προβάλετε και να διαχειριστείτε τα τραγούδια και τα σύνολα σας</string>
     <string name="menu_song_info">Χρησιμοποιήστε αυτό το κουμπί προβολή και διαχείριση των τραγουδιών σας</string>
     <string name="menu_song_order">Πώς πρέπει να εμφανίζονται τα τραγούδια στο μενού;</string>
+    <string name="merged_text_file">Συγχωνευμένο αρχείο κειμένου</string>
     <string name="metronome">"Metronome"</string>
     <string name="metronome_autostart">Μετρονόμος αυτόματης εκκίνησης</string>
     <string name="metronome_autostart_info">Διατηρήστε τον μετρονόμο σε λειτουργία όταν αλλάζετε τραγούδια</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Εισάγετε δείγματα τραγουδιών της Εκκλησίας"</string>
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
     <string name="nearby_host_menu_only_info">Τα αιτήματα σύνδεσης δεν θα εμφανίζονται εκτός εάν βρίσκεστε σε αυτήν τη σελίδα</string>
+    <string name="nearby_host_menu_only_info_warning">Ο κεντρικός υπολογιστής πρέπει να έχει ανοιχτές τις ρυθμίσεις Nearby για αποδοχή συνδέσεων</string>
     <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
     <string name="nearby_message">Κοντινό προειδοποιητικό μήνυμα</string>
     <string name="nearby_messages">Κοντινά προειδοποιητικά μηνύματα</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Όνομα ορισμού</string>
     <string name="set_new">"Νέα σειρά"</string>
     <string name="set_new_info">Καταργήστε όλα τα τραγούδια από το τρέχον σετ</string>
+    <string name="set_packaged_opensongapp">Συσκευασμένο αρχείο συνόλου OpenSongApp</string>
+    <string name="set_packaged_opensongapp_info">Αυτό δημιουργεί ένα προσαρμοσμένο αρχείο zip που περιέχει το σύνολο αρχείου και όλα τα αρχεία OpenSong, PDF ή εικόνας που αναφέρονται στο σετ.  Αυτό μπορεί να κοινοποιηθεί με άλλους χρήστες του OpenSongApp</string>
     <string name="set_rebuild">Σετ ανακατασκευής</string>
     <string name="set_rebuild_info">Δημιουργήστε ξανά το σύνολο από την τελευταία επιτυχημένη αλλαγή (χρησιμοποιήστε το αν υποψιάζεστε ότι υπάρχει πρόβλημα με το σύνολο σας)</string>
     <string name="set_save_info">Αποθηκεύστε το τρέχον σύνολο για μελλοντική χρήση</string>

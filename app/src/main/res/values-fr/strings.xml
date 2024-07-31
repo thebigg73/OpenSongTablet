@@ -238,6 +238,8 @@
     <string name="connections_searching">"Recherche…"</string>
     <string name="connections_service_stop">"Service d'arrêt"</string>
     <string name="connections_song_sections_info">Écoutez les changements de section de chanson</string>
+    <string name="connections_start_on_boot">Démarrez les connexions à proximité au démarrage</string>
+    <string name="connections_start_on_boot_info">Utilisez vos préférences de connexion actuelles au prochain démarrage (inclut tous les paramètres hôte/client sélectionnés ici).  Par défaut, les hôtes feront de la publicité et les clients le découvriront, mais vous pouvez choisir manuellement n\'importe quelle option sur la page des paramètres.</string>
     <string name="content">"Contenu"</string>
     <string name="continue_text">Continuer</string>
     <string name="controls">Contrôle</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Police de présentation"</string>
     <string name="font_presentation_bold">Afficher les paroles présentées en gras</string>
     <string name="font_presentation_info">"Police d'informations de présentation"</string>
+    <string name="force_single_page_pdf">Forcer les chansons d\'une seule page pour PDF/Imprimer</string>
+    <string name="force_single_page_pdf_info">Adapte les chansons pour qu\'elles tiennent sur une seule page lors de l\'impression ou de l\'exportation au format PDF</string>
     <string name="format_text_bold">Audacieux</string>
     <string name="format_text_bolditalic">Audacieux Italique</string>
     <string name="format_text_brackets">Mettre en forme le texte entre parenthèses (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Marges du système</string>
     <string name="margins_system_info">Laissez de l\'espace pour les commandes de l\'appareil détecté (barre de navigation inférieure et menus latéraux)</string>
     <string name="max_font_size">Taille maximale de la police pour la mise ne page automatique</string>
+    <string name="max_pdf_scale">Taille d\'échelle maximale du PDF/Impression</string>
+    <string name="max_pdf_scale_info">La mise à l’échelle maximale à utiliser.  Choisissez des valeurs inférieures pour un texte plus petit.  La taille du texte ne dépassera pas la largeur de la page.  75% est un bon point de départ pour la plupart.</string>
     <string name="max_vol_range">"Plage de l\'indicateur de volume graphique"</string>
     <string name="maximise_columns">Échelle des colonnes indépendamment.</string>
     <string name="maximise_columns_info">Si une chanson est affichée dans plusieurs colonnes (par exemple lorsqu\'elle est tournée en paysage), cela permet à chaque colonne de zoomer pour remplir la partie de l\'écran qui lui est attribuée.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Ouvrez le menu pour afficher et gérer vos morceaux et vos sets</string>
     <string name="menu_song_info">Utilisez ce bouton pour afficher et gérer vos chansons</string>
     <string name="menu_song_order">Comment les chansons doivent-elles être répertoriées dans le menu ?</string>
+    <string name="merged_text_file">Fichier texte fusionné</string>
     <string name="metronome">"Métronome"</string>
     <string name="metronome_autostart">Métronome à démarrage automatique</string>
     <string name="metronome_autostart_info">Gardez le métronome en marche lorsque vous changez de chanson</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Import Church exemple de chansons"</string>
     <string name="nearby_host_menu_only">N\'écoutez les nouveaux clients que lorsque cette page est visible</string>
     <string name="nearby_host_menu_only_info">Les demandes de connexion ne seront pas affichées sauf si vous êtes sur cette page</string>
+    <string name="nearby_host_menu_only_info_warning">L\'hôte doit avoir les paramètres à proximité ouverts pour accepter les connexions</string>
     <string name="nearby_large_file">Ce gros fichier de chanson est en cours de partage</string>
     <string name="nearby_message">Message d’alerte à proximité</string>
     <string name="nearby_messages">Messages d’alerte à proximité</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Définir le nom</string>
     <string name="set_new">"Vider"</string>
     <string name="set_new_info">Supprimer toutes les chansons de l\'ensemble actuel</string>
+    <string name="set_packaged_opensongapp">Fichier d\'ensemble OpenSongApp packagé</string>
+    <string name="set_packaged_opensongapp_info">Cela crée un fichier zip personnalisé contenant le fichier de l\'ensemble et tous les fichiers OpenSong, PDF ou image référencés dans l\'ensemble.  Cela peut être partagé avec d\'autres utilisateurs d\'OpenSongApp</string>
     <string name="set_rebuild">Ensemble de reconstruction</string>
     <string name="set_rebuild_info">Reconstruisez l’ensemble à partir de la dernière modification réussie (à utiliser si vous pensez qu’il y a un problème avec votre ensemble)</string>
     <string name="set_save_info">Enregistrer l\'ensemble actuel pour une utilisation future</string>

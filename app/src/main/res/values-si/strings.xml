@@ -205,7 +205,7 @@
     <string name="connections_advertise_name">ප්‍රචාරණය කෙරෙන උපාංගය: </string>
     <string name="connections_advertise_temporary">සීමිත ප්‍රචාරණය</string>
     <string name="connections_advertise_temporary_info">දැන්වීම් බොත්තම ක්ලික් කිරීමෙන් පසු තත්පර 10ක් පමණක් ප්‍රචාරණය කරන්න</string>
-    <string name="connections_advertising">ප්‍රචාරණය...</string>
+    <string name="connections_advertising">ප්‍රචාරණය…</string>
     <string name="connections_browse_host">ධාරක ගොනු බ්‍රවුස් කරන්න</string>
     <string name="connections_browse_host_info">ආයාත කිරීමට සම්බන්ධිත ධාරක උපාංගයකින් (ධාරකය ලෙස ධාවනය වන) ගොනු තෝරන්න</string>
     <string name="connections_change">ඔබ සම්බන්ධතාවයක් ඇති කර ගත් පසු, ඔබට අවශ්‍ය පරිදි සත්කාරක සහ සේවාදායකයා අතර වෙනස් කළ හැකිය</string>
@@ -235,9 +235,11 @@
     <string name="connections_off">ඕනෑම සම්බන්ධතාවක් වසා දමා ප්‍රචාරණය සහ සොයාගැනීම නවත්වන්න</string>
     <string name="connections_receive_host">සත්කාරක ගීත ලබා ගන්න</string>
     <string name="connections_receive_host_info">ඔබේම ගීතය වෙනුවට ගීතයේ සත්කාරක අනුවාදය බලන්න</string>
-    <string name="connections_searching">සොයමින්...</string>
+    <string name="connections_searching">සොයමින්…</string>
     <string name="connections_service_stop">සේවාව නවත්වන්න</string>
     <string name="connections_song_sections_info">ගීත අංශයේ වෙනස්කම් සඳහා සවන් දෙන්න</string>
+    <string name="connections_start_on_boot">ආරම්භයේදී ආසන්න සම්බන්ධතා ආරම්භ කරන්න</string>
+    <string name="connections_start_on_boot_info">ඔබ මීළඟ වාරය ආරම්භ කරන විට ඔබගේ වත්මන් සම්බන්ධතා මනාප භාවිතා කරන්න (මෙහි තෝරාගත් සියලුම සත්කාරක/සේවාදායක සැකසුම් ඇතුළත්).  පෙරනිමියෙන් ධාරක ප්‍රචාරණය කරනු ඇති අතර සේවාදායකයින් සොයා ගනු ඇත, නමුත් ඔබට සැකසීම් පිටුවේ ඕනෑම විකල්පයක් අතින් තෝරා ගත හැක</string>
     <string name="content">අන්තර්ගතය</string>
     <string name="continue_text">දිගටම කරගෙන යන්න</string>
     <string name="controls">පාලනයන්</string>
@@ -371,9 +373,11 @@
     <string name="font_presentation">ඉදිරිපත් කිරීමේ අකුරු</string>
     <string name="font_presentation_bold">තද පෙළ භාවිතයෙන් ඉදිරිපත් කරන ලද ගීත සංදර්ශන කරන්න</string>
     <string name="font_presentation_info">ඉදිරිපත් කිරීමේ තොරතුරු අකුරු</string>
+    <string name="force_single_page_pdf">PDF/Print සඳහා තනි පිටු ගීත බල කරන්න</string>
+    <string name="force_single_page_pdf_info">PDF වෙත මුද්‍රණය කිරීමේදී හෝ අපනයනය කිරීමේදී තනි පිටුවකට ගැළපෙන පරිදි ගීත පරිමාණය කරයි</string>
     <string name="format_text_bold">නිර්භීත</string>
     <string name="format_text_bolditalic">තද ඇල අකුරු</string>
-    <string name="format_text_brackets">වරහන් පෙළ ආකෘතිකරණය කරන්න (...)</string>
+    <string name="format_text_brackets">වරහන් පෙළ ආකෘතිකරණය කරන්න (…)</string>
     <string name="format_text_italic">ඇල අකුරු</string>
     <string name="format_text_normal">සාමාන්යයි</string>
     <string name="forum">මණ්ඩපය</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">පද්ධති මායිම්</string>
     <string name="margins_system_info">හඳුනාගත් උපාංග පාලන සඳහා ඉඩ තබන්න (පහළ සංචාලන තීරුව සහ පැති මෙනු)</string>
     <string name="max_font_size">උපරිම ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය</string>
+    <string name="max_pdf_scale">PDF/Print හි උපරිම පරිමාණ ප්‍රමාණය</string>
+    <string name="max_pdf_scale_info">භාවිතා කිරීමට උපරිම පරිමාණය.  කුඩා පෙළ සඳහා අඩු අගයන් තෝරන්න.  පෙළ ප්‍රමාණය පිටු පළල ඉක්මවා නොයනු ඇත.  75% බොහෝ දෙනෙකුට හොඳ ආරම්භක ලක්ෂ්‍යයකි.</string>
     <string name="max_vol_range">චිත්රක පරිමාව දර්ශක පරාසය</string>
     <string name="maximise_columns">තීරු ස්වාධීනව පරිමාණය කරන්න.</string>
     <string name="maximise_columns_info">ගීතයක් තීරු කිහිපයකින් පෙන්වන්නේ නම් (උදා: භූ දර්ශනයට කරකවන විට), මෙය එක් එක් තීරුවට වෙන් කර ඇති තිරයේ කොටස පිරවීමට විශාලනය කිරීමට ඉඩ සලසයි.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">ඔබගේ ගීත සහ කට්ටල බැලීමට සහ කළමනාකරණය කිරීමට මෙනුව විවෘත කරන්න</string>
     <string name="menu_song_info">මෙම බොත්තම බැලීම භාවිතා කර ඔබගේ ගීත කළමනාකරණය කරන්න</string>
     <string name="menu_song_order">මෙනුවේ ගීත ලැයිස්තුගත කළ යුත්තේ කෙසේද?</string>
+    <string name="merged_text_file">පෙළ ගොනුව ඒකාබද්ධ කරන ලදී</string>
     <string name="metronome">මෙට්රොනෝමය</string>
     <string name="metronome_autostart">ස්වයංක්‍රීය ආරම්භක මෙට්‍රොනෝමය</string>
     <string name="metronome_autostart_info">ගීත වෙනස් කිරීමේදී මෙට්‍රොනොම් ක්‍රියාත්මකව තබා ගන්න</string>
@@ -574,6 +581,7 @@
     <string name="my_church">පල්ලියේ ආදර්ශ ගීත ආනයනය කරන්න</string>
     <string name="nearby_host_menu_only">මෙම පිටුව පෙනෙන විට පමණක් නව සේවාලාභීන්ට සවන් දෙන්න</string>
     <string name="nearby_host_menu_only_info">ඔබ මෙම පිටුවේ සිටින්නේ නම් මිස සම්බන්ධතා ඉල්ලීම් නොපෙන්වයි</string>
+    <string name="nearby_host_menu_only_info_warning">සම්බන්ධතා පිළිගැනීමට ධාරකයට ආසන්න සැකසුම් විවෘතව තිබිය යුතුය</string>
     <string name="nearby_large_file">මෙම විශාල ගීත ගොනුව හුවමාරු වෙමින් පවතී</string>
     <string name="nearby_message">ආසන්න අනතුරු ඇඟවීමේ පණිවිඩය</string>
     <string name="nearby_messages">ආසන්න අනතුරු ඇඟවීමේ පණිවිඩ</string>
@@ -659,7 +667,7 @@
     <string name="pedal_test">සම්බන්ධිත පැඩලය පරීක්ෂා කරන්න</string>
     <string name="pedal_test_info">ඔබගේ පැඩලය මත ඇති බොත්තම එබීමෙන් සම්බන්ධිත පැඩලය පරීක්ෂා කරන්න.  යවන කේතය පෙන්වනු ඇත.  (තිබේ නම්) භාවිතා කිරීමට නිර්දේශිත දිගු මාධ්‍ය ප්‍රකාරය හඳුනා ගැනීමට යෙදුමට ඉඩ දීමට pedals මත බොත්තමක් දිගු ඔබන්න.</string>
     <string name="pedal_up">පැඩල් ඉහළට (මුදා හැරීම)</string>
-    <string name="pedal_waiting">බොත්තම සඳහා රැඳී සිටිමින්...</string>
+    <string name="pedal_waiting">බොත්තම සඳහා රැඳී සිටිමින්…</string>
     <string name="pedal_waiting_ended">pedal press එකක් අනාවරණය කර ගෙන නොමැත</string>
     <string name="pedal_warning">මෙම අනතුරු ඇඟවීම වැසීමෙන් පසු නැවත පැඩලය එබීමෙන් ගීතය වෙනස් කිරීම තහවුරු කරන්න</string>
     <string name="performance_mode">කාර්ය සාධන මාදිලිය</string>
@@ -792,6 +800,8 @@
     <string name="set_name">නම සකසන්න</string>
     <string name="set_new">නව කට්ටලයක් සාදන්න</string>
     <string name="set_new_info">වත්මන් කට්ටලයෙන් සියලුම ගීත ඉවත් කරන්න</string>
+    <string name="set_packaged_opensongapp">ඇසුරුම් කළ OpenSongApp ගොනුව</string>
+    <string name="set_packaged_opensongapp_info">මෙය සකසා ඇති ගොනුව සහ කට්ටලයේ සඳහන් සියලුම OpenSong, PDF හෝ රූප ගොනු අඩංගු අභිරුචි zip ගොනුවක් නිර්මාණය කරයි.  මෙය අනෙකුත් OpenSongApp භාවිතා කරන්නන් සමඟ බෙදා ගත හැක</string>
     <string name="set_rebuild">කට්ටලය නැවත ගොඩනඟන්න</string>
     <string name="set_rebuild_info">අවසාන සාර්ථක වෙනසෙන් කට්ටලය නැවත ගොඩනඟන්න (ඔබේ කට්ටලයේ ගැටලුවක් ඇතැයි ඔබ සැක කරන්නේ නම් භාවිතා කරන්න)</string>
     <string name="set_save_info">අනාගත භාවිතය සඳහා වත්මන් කට්ටලය සුරකින්න</string>
@@ -869,7 +879,7 @@
     <string name="start">ආරම්භ කරන්න</string>
     <string name="start_stop_pad">ආරම්භක/නැවතුම් පෑඩ්</string>
     <string name="stop">නවත්වන්න</string>
-    <string name="stopping">නවතිනවා...</string>
+    <string name="stopping">නවතිනවා…</string>
     <string name="storage">ගබඞා</string>
     <string name="storage_change">ගබඩා ස්ථානය තෝරන්න</string>
     <string name="storage_ext">බාහිර ගබඩා</string>

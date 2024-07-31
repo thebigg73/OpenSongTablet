@@ -238,6 +238,8 @@
     <string name="connections_searching">"検索中…"</string>
     <string name="connections_service_stop">"サービスを停止する"</string>
     <string name="connections_song_sections_info">曲のセクションの変更を聞く</string>
+    <string name="connections_start_on_boot">起動時に近くの接続を開始する</string>
+    <string name="connections_start_on_boot_info">次回起動時に現在の接続設定を使用します (ここで選択したすべてのホスト/クライアント設定が含まれます)。  デフォルトでは、ホストがアドバタイズし、クライアントが検出しますが、設定ページで任意のオプションを手動で選択できます。</string>
     <string name="content">"コンテンツ"</string>
     <string name="continue_text">続ける</string>
     <string name="controls">コントロール</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"プレゼンテーションフォント"</string>
     <string name="font_presentation_bold">画面の他の領域は、ページボタン、曲情報用に予約されており、利用できません。 ホットゾーンは、これらの領域での他のアクションをブロックします</string>
     <string name="font_presentation_info">"プレゼンテーション情報フォント"</string>
+    <string name="force_single_page_pdf">PDF/印刷用に単一ページの曲を強制する</string>
+    <string name="force_single_page_pdf_info">印刷または PDF にエクスポートするときに、1 ページに収まるように曲を拡大縮小します。</string>
     <string name="format_text_bold">大胆な</string>
     <string name="format_text_bolditalic">大胆な イタリック</string>
     <string name="format_text_brackets">括弧テキストの書式設定 (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">システムマージン</string>
     <string name="margins_system_info">検出されたデバイス コントロール (下部のナビゲーション バーとサイド メニュー) 用のスペースを残す</string>
     <string name="max_font_size">最大オートスケールフォントサイズ</string>
+    <string name="max_pdf_scale">PDF/印刷の最大縮尺サイズ</string>
+    <string name="max_pdf_scale_info">使用する最大スケーリング。  テキストを小さくするには、より低い値を選択します。  テキスト サイズはページ幅を超えて拡大縮小されません。  ほとんどの場合、75% が適切な開始点です。</string>
     <string name="max_vol_range">"グラフィカル音量インジケータ範囲"</string>
     <string name="maximise_columns">列を個別にスケーリングします。</string>
     <string name="maximise_columns_info">曲が複数の列に表示されている場合（たとえば、横向きに回転した場合）、これにより、各列をズームして、割り当てられた画面の一部を埋めることができます。</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">メニューを開いて、曲とセットを表示および管理します</string>
     <string name="menu_song_info">このボタンを使用して、曲を表示および管理します</string>
     <string name="menu_song_order">メニューに曲をどのように表示する必要がありますか？</string>
+    <string name="merged_text_file">結合されたテキストファイル</string>
     <string name="metronome">"メトロノーム"</string>
     <string name="metronome_autostart">自動起動メトロノーム</string>
     <string name="metronome_autostart_info">曲を変えるときにメトロノームを鳴らし続ける</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"教会のサンプル曲をインポートする"</string>
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
     <string name="nearby_host_menu_only_info">このページを表示していない限り、接続要求は表示されません</string>
+    <string name="nearby_host_menu_only_info_warning">接続を受け入れるにはホストの近くの設定が開いている必要があります</string>
     <string name="nearby_large_file">この大きな曲ファイルは共有されています</string>
     <string name="nearby_message">付近のアラート メッセージ</string>
     <string name="nearby_messages">付近のアラート メッセージ</string>
@@ -792,6 +800,8 @@
     <string name="set_name">セット名</string>
     <string name="set_new">"引き払う"</string>
     <string name="set_new_info">現在のセットからすべての曲を削除します</string>
+    <string name="set_packaged_opensongapp">パッケージ化された OpenSongApp セット ファイル</string>
+    <string name="set_packaged_opensongapp_info">これにより、セット ファイルと、セット内で参照されるすべての OpenSong、PDF、または画像ファイルを含むカスタム zip ファイルが作成されます。  これは他の OpenSongApp ユーザーと共有できます</string>
     <string name="set_rebuild">セットの再構築</string>
     <string name="set_rebuild_info">最後に成功した変更からセットを再構築します(セットに問題があると思われる場合に使用します)</string>
     <string name="set_save_info">将来の使用のために現在のセットを保存します</string>

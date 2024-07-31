@@ -238,6 +238,8 @@
     <string name="connections_searching">"Soek …"</string>
     <string name="connections_service_stop">"Stop diens"</string>
     <string name="connections_song_sections_info">Luister vir veranderinge in die liedjie-afdeling</string>
+    <string name="connections_start_on_boot">Begin nabygeleë verbindings tydens oplaai</string>
+    <string name="connections_start_on_boot_info">Gebruik jou huidige verbindingsvoorkeure volgende keer as jy oplaai (sluit alle gasheer-/kliënt-instellings in wat hier gekies is).  By verstek sal gashere adverteer en kliënte sal ontdek, maar jy kan enige opsie op die instellingsbladsy met die hand kies</string>
     <string name="content">"Inhoud"</string>
     <string name="continue_text">Voortgaan</string>
     <string name="controls">Beheer</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Aanbiedings font"</string>
     <string name="font_presentation_bold">Vertoon aangebied lirieke met vetgedrukte teks</string>
     <string name="font_presentation_info">"Aanbiedingsinligtingskrif"</string>
+    <string name="force_single_page_pdf">Forseer enkelbladsy-liedjies vir PDF/Druk</string>
+    <string name="force_single_page_pdf_info">Skaal liedjies om op \'n enkele bladsy te pas wanneer dit gedruk word of na PDF uitgevoer word</string>
     <string name="format_text_bold">Vet</string>
     <string name="format_text_bolditalic">Vet Kursief</string>
     <string name="format_text_brackets">Formateer hakie teks (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Los spasie vir bespeurde toestelkontroles (onderste navigasiebalk en sykieslyste)</string>
     <string name="max_font_size">Maksimum autoscale lettergrootte</string>
+    <string name="max_pdf_scale">Maksimum skaalgrootte van PDF/Druk</string>
+    <string name="max_pdf_scale_info">Die maksimum skaal om te gebruik.  Kies laer waardes vir kleiner teks.  Teksgrootte sal nie verder as bladsywydte skaal nie.  75% is \'n goeie beginpunt vir die meeste.</string>
     <string name="max_vol_range">"Grafiese volume aanwyser reeks"</string>
     <string name="maximise_columns">Skaal kolomme onafhanklik af.</string>
     <string name="maximise_columns_info">As \'n liedjie in veelvuldige kolomme gewys word (bv. wanneer dit na landskap gedraai word), laat dit elke kolom toe om in te zoem om die gedeelte van die skerm wat dit toegeken is, te vul.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Maak die spyskaart oop om u liedjies en stelle te sien en te bestuur</string>
     <string name="menu_song_info">Gebruik hierdie knoppie sien en bestuur jou liedjies</string>
     <string name="menu_song_order">Hoe moet liedjies in die spyskaart gelys word?</string>
+    <string name="merged_text_file">Saamgevoegde tekslêer</string>
     <string name="metronome">"Metronoom"</string>
     <string name="metronome_autostart">Outostart metronoom</string>
     <string name="metronome_autostart_info">Hou metronoom aan die gang wanneer jy van liedjies verander</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Voer kerkmonsterliedjies in"</string>
     <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
     <string name="nearby_host_menu_only_info">Verbindingsversoeke sal nie gewys word nie, tensy jy op hierdie bladsy is</string>
+    <string name="nearby_host_menu_only_info_warning">Gasheer moet Naby-instellings oop hê om verbindings te aanvaar</string>
     <string name="nearby_large_file">Hierdie groot liedlêer word gedeel</string>
     <string name="nearby_message">Waarskuwingsboodskap in die omgewing</string>
     <string name="nearby_messages">Waarskuwingsboodskappe in die omgewing</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Stel naam</string>
     <string name="set_new">"Opruim"</string>
     <string name="set_new_info">Verwyder alle liedjies uit die huidige stel</string>
+    <string name="set_packaged_opensongapp">Verpakte OpenSongApp-stellêer</string>
+    <string name="set_packaged_opensongapp_info">Dit skep \'n pasgemaakte zip-lêer wat die stellêer en alle OpenSong-, PDF- of beeldlêers bevat waarna in die stel verwys word.  Dit kan met ander OpenSongApp-gebruikers gedeel word</string>
     <string name="set_rebuild">Herbou stel</string>
     <string name="set_rebuild_info">Herbou die stel vanaf die laaste suksesvolle verandering (gebruik as u vermoed dat daar \'n probleem met u stel is)</string>
     <string name="set_save_info">Stoor die huidige stel vir toekomstige gebruik</string>

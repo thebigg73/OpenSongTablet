@@ -238,6 +238,8 @@
     <string name="connections_searching">"搜索…"</string>
     <string name="connections_service_stop">"停止服务"</string>
     <string name="connections_song_sections_info">聆听歌曲部分的变化</string>
+    <string name="connections_start_on_boot">启动时启动附近的连接</string>
+    <string name="connections_start_on_boot_info">下次启动时使用您当前的连接首选项（包括此处选择的所有主机/客户端设置）。  默认情况下，主机将进行广告，客户端将发现，但您可以在设置页面上手动选择任何选项</string>
     <string name="content">"内容"</string>
     <string name="continue_text">继续</string>
     <string name="controls">控制</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"演示字体"</string>
     <string name="font_presentation_bold">使用粗体文本显示呈现的歌词</string>
     <string name="font_presentation_info">"演示信息字体"</string>
+    <string name="force_single_page_pdf">强制将单页歌曲用于 PDF/打印</string>
+    <string name="force_single_page_pdf_info">打印或导出为 PDF 时缩放歌曲以适合单页</string>
     <string name="format_text_bold">大胆的</string>
     <string name="format_text_bolditalic">大胆的 斜体</string>
     <string name="format_text_brackets">格式括号文本 (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">系统边距</string>
     <string name="margins_system_info">为检测到的设备控件留出空间（底部导航栏和侧边菜单）</string>
     <string name="max_font_size">最大的自动缩放字体大小</string>
+    <string name="max_pdf_scale">PDF/打印的最大缩放尺寸</string>
+    <string name="max_pdf_scale_info">要使用的最大缩放比例。  为较小的文本选择较低的值。  文本大小不会超出页面宽度。  对于大多数人来说，75% 是一个很好的起点。</string>
     <string name="max_vol_range">"图形成交量指标范围"</string>
     <string name="maximise_columns">独立缩放列。</string>
     <string name="maximise_columns_info">如果一首歌曲显示在多列中（例如，当旋转到横向时），这允许每列缩放以填充它分配的屏幕部分。</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">打开菜单以查看和管理您的歌曲和曲目</string>
     <string name="menu_song_info">使用此按钮查看和管理您的歌曲</string>
     <string name="menu_song_order">歌曲应该如何在菜单中列出？</string>
+    <string name="merged_text_file">合并的文本文件</string>
     <string name="metronome">"节拍器"</string>
     <string name="metronome_autostart">自动启动节拍器</string>
     <string name="metronome_autostart_info">改变歌曲时保持节拍器运行</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"进口教会样品歌曲"</string>
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
     <string name="nearby_host_menu_only_info">除非您在此页面上，否则不会显示连接请求</string>
+    <string name="nearby_host_menu_only_info_warning">主机必须打开“附近”设置才能接受连接</string>
     <string name="nearby_large_file">正在共享此大歌曲文件</string>
     <string name="nearby_message">附近警报消息</string>
     <string name="nearby_messages">附近的警报消息</string>
@@ -792,6 +800,8 @@
     <string name="set_name">设置名称</string>
     <string name="set_new">"明确"</string>
     <string name="set_new_info">从当前集合中删除所有歌曲</string>
+    <string name="set_packaged_opensongapp">打包的OpenSongApp设置文件</string>
+    <string name="set_packaged_opensongapp_info">这将创建一个自定义 zip 文件，其中包含集合文件以及集合中引用的所有 OpenSong、PDF 或图像文件。  这可以与其他 OpenSongApp 用户共享</string>
     <string name="set_rebuild">重建集</string>
     <string name="set_rebuild_info">从上次成功更改中重建集合（如果您怀疑集合有问题，请使用）</string>
     <string name="set_save_info">保存当前集以备将来使用</string>

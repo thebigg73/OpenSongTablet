@@ -238,6 +238,8 @@
     <string name="connections_searching">"Buscando…"</string>
     <string name="connections_service_stop">"Parada de servicio"</string>
     <string name="connections_song_sections_info">Escuche los cambios de sección de la canción</string>
+    <string name="connections_start_on_boot">Iniciar conexiones cercanas al arrancar</string>
+    <string name="connections_start_on_boot_info">Utilice sus preferencias de conexión actuales la próxima vez que inicie (incluye todas las configuraciones de host/cliente seleccionadas aquí).  De forma predeterminada, los hosts anunciarán y los clientes descubrirán, pero usted puede elegir manualmente cualquier opción en la página de configuración.</string>
     <string name="content">"Contenido"</string>
     <string name="continue_text">Continuar</string>
     <string name="controls">Controlar</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Fuente de presentación"</string>
     <string name="font_presentation_bold">Mostrar letras presentadas usando texto en negrita</string>
     <string name="font_presentation_info">"Fuente de información de presentación"</string>
+    <string name="force_single_page_pdf">Forzar canciones de una sola página para PDF/Imprimir</string>
+    <string name="force_single_page_pdf_info">Escala las canciones para que quepan en una sola página al imprimir o exportar a PDF</string>
     <string name="format_text_bold">Audaz</string>
     <string name="format_text_bolditalic">Audaz Itálico</string>
     <string name="format_text_brackets">Dar formato al texto entre paréntesis (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Márgenes del sistema</string>
     <string name="margins_system_info">Deje espacio para los controles del dispositivo detectado (barra de navegación inferior y menús laterales)</string>
     <string name="max_font_size">Autoescala Máximo tamaño de la fuente</string>
+    <string name="max_pdf_scale">Tamaño de escala máximo de PDF/Imprimir</string>
+    <string name="max_pdf_scale_info">La escala máxima a utilizar.  Elija valores más bajos para texto más pequeño.  El tamaño del texto no se ampliará más allá del ancho de la página.  El 75% es un buen punto de partida para la mayoría.</string>
     <string name="max_vol_range">"Rango indicador de volumen gráfica"</string>
     <string name="maximise_columns">Escala columnas de forma independiente.</string>
     <string name="maximise_columns_info">Si una canción se muestra en varias columnas (por ejemplo, cuando se gira a la posición horizontal), esto permite que cada columna se amplíe para llenar la parte de la pantalla que se le asigna.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Abra el menú para ver y administrar sus canciones y conjuntos</string>
     <string name="menu_song_info">Usa este botón para ver y administrar tus canciones</string>
     <string name="menu_song_order">¿Cómo deben aparecer las canciones en el menú?</string>
+    <string name="merged_text_file">Archivo de texto fusionado</string>
     <string name="metronome">"Metrónomo"</string>
     <string name="metronome_autostart">Metrónomo de inicio automático</string>
     <string name="metronome_autostart_info">Mantenga el metrónomo funcionando al cambiar de canción</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Canciones de la muestra de la iglesia de la importación"</string>
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
     <string name="nearby_host_menu_only_info">Las solicitudes de conexión no se mostrarán a menos que esté en esta página</string>
+    <string name="nearby_host_menu_only_info_warning">El anfitrión debe tener la configuración cercana abierta para aceptar conexiones</string>
     <string name="nearby_large_file">Este archivo de canción grande se está compartiendo</string>
     <string name="nearby_message">Mensaje de alerta cercano</string>
     <string name="nearby_messages">Mensajes de alerta cercanos</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Escoger un nombre</string>
     <string name="set_new">"Despejar"</string>
     <string name="set_new_info">Eliminar todas las canciones del conjunto actual</string>
+    <string name="set_packaged_opensongapp">Archivo de conjunto de OpenSongApp empaquetado</string>
+    <string name="set_packaged_opensongapp_info">Esto crea un archivo zip personalizado que contiene el archivo del conjunto y todos los archivos OpenSong, PDF o de imagen a los que se hace referencia en el conjunto.  Esto se puede compartir con otros usuarios de OpenSongApp.</string>
     <string name="set_rebuild">Conjunto de reconstrucción</string>
     <string name="set_rebuild_info">Reconstruya el conjunto a partir del último cambio correcto (úselo si sospecha que hay un problema con su conjunto)</string>
     <string name="set_save_info">Guardar el conjunto actual para uso futuro</string>

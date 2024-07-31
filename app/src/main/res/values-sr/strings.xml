@@ -238,6 +238,8 @@
     <string name="connections_searching">Pretraga…</string>
     <string name="connections_service_stop">Zaustavljanje servisa</string>
     <string name="connections_song_sections_info">Slušajte promene odeljka pesama</string>
+    <string name="connections_start_on_boot">Pokrenite obližnje veze na boot up</string>
+    <string name="connections_start_on_boot_info">Koristite trenutne postavke veze sledeći put kada pokrenete (uključuje sva podešavanja host/klijenta izabrana ovde).  Po defaultu domaćini će se oglašavati i klijenti će otkriti, ali možete ručno odabrati bilo koju opciju na stranici podešavanja</string>
     <string name="content">Sadržaj</string>
     <string name="continue_text">Nastavite</string>
     <string name="controls">Kontrole</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">Font prikaza</string>
     <string name="font_presentation_bold">Prikazivanje predstavljenih tekstova pesama pomoću podebljanog teksta</string>
     <string name="font_presentation_info">Font informacija kod prikaza</string>
+    <string name="force_single_page_pdf">Prisiliti pesme na jednoj stranici za PDF / Print</string>
+    <string name="force_single_page_pdf_info">Vage pesme da stane na jednoj stranici prilikom štampanja ili izvoza u PDF</string>
     <string name="format_text_bold">Odvažan</string>
     <string name="format_text_bolditalic">Odvažan Kurziv</string>
     <string name="format_text_brackets">Oblikujte tekst zagrade (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Sistemske margine</string>
     <string name="margins_system_info">Ostavite prostor za detektovane kontrole uređaja (donja traka za navigaciju i bočni meniji)</string>
     <string name="max_font_size">Najveća moguća veličina fonta za automatsku promenu veličine</string>
+    <string name="max_pdf_scale">Maksimalna veličina skala PDF / Print</string>
+    <string name="max_pdf_scale_info">Maksimalno skaliranje za korišćenje.  Izaberite niže vrednosti za manji tekst.  Veličina teksta neće biti veća od širine stranice.  75% je dobra polazna tačka za većinu.</string>
     <string name="max_vol_range">Grafički indikator nivoa zvuka</string>
     <string name="maximise_columns">Skala kolona nezavisno.</string>
     <string name="maximise_columns_info">Ako je pesma prikazana u više kolona (npr. kada je rotirana u pejzaž), to omogućava svakoj koloni da zumira kako bi ispunila deo ekrana koji joj je dodeljen.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Otvaranje menija za prikazivanje i upravljanje pesmama i skupovima</string>
     <string name="menu_song_info">Koristite ovo dugme za pregled i upravljanje svojim pesmama</string>
     <string name="menu_song_order">Kako pesme treba da budu navedene u meniju?</string>
+    <string name="merged_text_file">Spojena tekstualna datoteka</string>
     <string name="metronome">Metronom</string>
     <string name="metronome_autostart">Autostart metronom</string>
     <string name="metronome_autostart_info">Neka metronom radi kada menjate pesme</string>
@@ -574,6 +581,7 @@
     <string name="my_church">Uvoz primera crkvenih pesama</string>
     <string name="nearby_host_menu_only">Slušajte nove klijente samo kada je ova stranica vidljiva</string>
     <string name="nearby_host_menu_only_info">Zahtevi za povezivanje neće biti prikazani osim ako niste na ovoj stranici</string>
+    <string name="nearby_host_menu_only_info_warning">Domaćin mora imati otvorene postavke u blizini da bi prihvatio veze</string>
     <string name="nearby_large_file">Ova velika datoteka pesme se deli</string>
     <string name="nearby_message">Poruka upozorenja u blizini</string>
     <string name="nearby_messages">Poruke upozorenja u blizini</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Podesite ime</string>
     <string name="set_new">Očistiti</string>
     <string name="set_new_info">Ukloni sve pesme iz trenutnog skupa</string>
+    <string name="set_packaged_opensongapp">Upakovana OpenSongApp set fajl</string>
+    <string name="set_packaged_opensongapp_info">Ovo stvara prilagođenu zip datoteku koja sadrži set fajl i sve OpenSong, PDF ili slikovne datoteke koje se pozivaju u setu.  Ovo se može deliti sa drugim korisnicima OpenSongApp-a</string>
     <string name="set_rebuild">Ponovo napravi skup</string>
     <string name="set_rebuild_info">Ponovo napravite skup od poslednje uspešne promene (koristite ako sumnjate da postoji problem sa vašim setom)</string>
     <string name="set_save_info">Sačuvajte trenutni set za buduću upotrebu</string>

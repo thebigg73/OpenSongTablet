@@ -238,6 +238,8 @@
     <string name="connections_searching">"Sökande…"</string>
     <string name="connections_service_stop">"Stoppa tjänsten"</string>
     <string name="connections_song_sections_info">Lyssna efter ändringar i sångsektionen</string>
+    <string name="connections_start_on_boot">Starta närliggande anslutningar vid uppstart</string>
+    <string name="connections_start_on_boot_info">Använd dina nuvarande anslutningsinställningar nästa gång du startar upp (inkluderar alla värd-/klientinställningar som väljs här).  Som standard kommer värdar att annonsera och kunder kommer att upptäcka, men du kan manuellt välja valfritt alternativ på inställningssidan</string>
     <string name="content">"Innehåll"</string>
     <string name="continue_text">Fortsätta</string>
     <string name="controls">Kontrollera</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Presentation typsnitt"</string>
     <string name="font_presentation_bold">Visa presenterade texter med fet text</string>
     <string name="font_presentation_info">"Presentation information typsnitt"</string>
+    <string name="force_single_page_pdf">Forcera ensidiga låtar för PDF/Skriv ut</string>
+    <string name="force_single_page_pdf_info">Skalar låtar så att de får plats på en enda sida vid utskrift eller export till PDF</string>
     <string name="format_text_bold">Djärv</string>
     <string name="format_text_bolditalic">Djärv Kursiv</string>
     <string name="format_text_brackets">Formatera parentestext (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Systemmarginaler</string>
     <string name="margins_system_info">Lämna utrymme för upptäckta enhetskontroller (nedre navigeringsfältet och sidomenyer)</string>
     <string name="max_font_size">"Maximal skriftstorlek för autoskala"</string>
+    <string name="max_pdf_scale">Maximal skalstorlek för PDF/Skriv ut</string>
+    <string name="max_pdf_scale_info">Den maximala skalningen att använda.  Välj lägre värden för mindre text.  Textstorleken skalas inte längre än sidbredden.  75 % är en bra utgångspunkt för de flesta.</string>
     <string name="max_vol_range">"Indikatorområde för grafiskt volym"</string>
     <string name="maximise_columns">Skala kolumner oberoende av varandra.</string>
     <string name="maximise_columns_info">Om en låt visas i flera kolumner (t.ex. när den roteras till liggande), tillåter detta att varje kolumn zoomar för att fylla den del av skärmen som den är tilldelad.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Öppna menyn för att visa och hantera dina låtar och set</string>
     <string name="menu_song_info">Använd den här knappen visa och hantera dina låtar</string>
     <string name="menu_song_order">Hur ska låtar listas i menyn?</string>
+    <string name="merged_text_file">Sammanslagen textfil</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronome_autostart">Autostart metronom</string>
     <string name="metronome_autostart_info">Håll metronomen igång när du byter låt</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Importera kyrkans provlåtar"</string>
     <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
     <string name="nearby_host_menu_only_info">Anslutningsförfrågningar kommer inte att visas om du inte är på den här sidan</string>
+    <string name="nearby_host_menu_only_info_warning">Värden måste ha inställningarna Nära öppna för att acceptera anslutningar</string>
     <string name="nearby_large_file">Denna stora låtfil delas</string>
     <string name="nearby_message">Varningsmeddelande i närheten</string>
     <string name="nearby_messages">Varningsmeddelanden i närheten</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Ange namn</string>
     <string name="set_new">"Skapa en ny uppsättning"</string>
     <string name="set_new_info">Ta bort alla låtar från den aktuella uppsättningen</string>
+    <string name="set_packaged_opensongapp">Förpackad OpenSongApp-uppsättningsfil</string>
+    <string name="set_packaged_opensongapp_info">Detta skapar en anpassad zip-fil som innehåller uppsättningsfilen och alla OpenSong-, PDF- eller bildfiler som refereras till i uppsättningen.  Detta kan delas med andra OpenSongApp-användare</string>
     <string name="set_rebuild">Bygg om uppsättning</string>
     <string name="set_rebuild_info">Återskapa uppsättningen från den senaste ändringen (använd om du misstänker att det finns ett problem med uppsättningen)</string>
     <string name="set_save_info">Spara den aktuella uppsättningen för framtida bruk</string>

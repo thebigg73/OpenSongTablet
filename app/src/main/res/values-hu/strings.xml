@@ -238,6 +238,8 @@
     <string name="connections_searching">"Keresés …"</string>
     <string name="connections_service_stop">"stop szolgáltatás"</string>
     <string name="connections_song_sections_info">Hallgassa meg a dalszakasz változásait</string>
+    <string name="connections_start_on_boot">Indítsa el a közeli kapcsolatokat rendszerindításkor</string>
+    <string name="connections_start_on_boot_info">Következő rendszerindításkor használja jelenlegi kapcsolati beállításait (beleértve az itt kiválasztott összes gazdagép/kliens beállítást).  Alapértelmezés szerint a gazdagépek hirdetnek, és az ügyfelek felfedezik, de manuálisan kiválaszthatja bármelyik lehetőséget a beállítások oldalon</string>
     <string name="content">"Tartalom"</string>
     <string name="continue_text">Folytatódik</string>
     <string name="controls">Vezérlők</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Bemutató font"</string>
     <string name="font_presentation_bold">Bemutatott dalszövegek megjelenítése félkövér szöveggel</string>
     <string name="font_presentation_info">"Bemutató információ font"</string>
+    <string name="force_single_page_pdf">Egyoldalas zeneszámok kényszerítése PDF/nyomtatáshoz</string>
+    <string name="force_single_page_pdf_info">A dalokat úgy méretezi, hogy azok egyetlen oldalon elférjenek nyomtatáskor vagy PDF-be exportáláskor</string>
     <string name="format_text_bold">Bátor</string>
     <string name="format_text_bolditalic">Bátor Dőlt</string>
     <string name="format_text_brackets">A zárójeles szöveg formázása (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Rendszer margók</string>
     <string name="margins_system_info">Hagyjon helyet az észlelt eszközvezérlőknek (alsó navigációs sáv és oldalsó menük)</string>
     <string name="max_font_size">Maximális automatikus átméretezés betűméret</string>
+    <string name="max_pdf_scale">A PDF/nyomtatás maximális méretaránya</string>
+    <string name="max_pdf_scale_info">A maximálisan használható méretezés.  Kisebb szövegekhez válasszon alacsonyabb értékeket.  A szöveg mérete nem lépi túl az oldal szélességét.  A 75% jó kiindulópont a legtöbb számára.</string>
     <string name="max_vol_range">"Grafikus mennyiségi mutató tartományban"</string>
     <string name="maximise_columns">Oszlopok méretezése függetlenül.</string>
     <string name="maximise_columns_info">Ha egy dal több oszlopban jelenik meg (például fekvő helyzetbe forgatva), ez lehetővé teszi az egyes oszlopok nagyítását, hogy kitöltsék a képernyő rájuk eső részét.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Nyissa meg a menüt a dalok és készletek megtekintéséhez és kezeléséhez</string>
     <string name="menu_song_info">Ezzel a gombbal megtekintheti és kezelheti dalait</string>
     <string name="menu_song_order">Hogyan kell a dalokat felsorolni a menüben?</string>
+    <string name="merged_text_file">Egyesített szövegfájl</string>
     <string name="metronome">"Metronóm"</string>
     <string name="metronome_autostart">Metronóm automatikus indítása</string>
     <string name="metronome_autostart_info">A metronóm folyamatosan fut, amikor dalokat vált</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Import Church minta dalok"</string>
     <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
     <string name="nearby_host_menu_only_info">A csatlakozási kérelmek csak akkor jelennek meg, ha ezen az oldalon tartózkodik</string>
+    <string name="nearby_host_menu_only_info_warning">A kapcsolatok fogadásához a gazdagépnek nyitva kell lennie a Nearby beállításoknak</string>
     <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
     <string name="nearby_message">Közeli figyelmeztető üzenet</string>
     <string name="nearby_messages">Közeli figyelmeztető üzenetek</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Állítsa be a nevet</string>
     <string name="set_new">"Vámkezeltet"</string>
     <string name="set_new_info">Az összes dal eltávolítása az aktuális készletből</string>
+    <string name="set_packaged_opensongapp">Csomagolt OpenSongApp készletfájl</string>
+    <string name="set_packaged_opensongapp_info">Ezzel létrehoz egy egyéni zip fájlt, amely tartalmazza a készletfájlt és a készletben hivatkozott összes OpenSong-, PDF- vagy képfájlt.  Ez megosztható más OpenSongApp-felhasználókkal</string>
     <string name="set_rebuild">Átépítési készlet</string>
     <string name="set_rebuild_info">Építsd újra a készletet a legutóbbi sikeres módosításból (akkor használd, ha azt gyanítod, hogy probléma van a készlettel)</string>
     <string name="set_save_info">Mentse el az aktuális készletet későbbi használatra</string>

@@ -238,6 +238,8 @@
     <string name="connections_searching">"Hledání …"</string>
     <string name="connections_service_stop">"Zastavte službu"</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
+    <string name="connections_start_on_boot">Spusťte blízká připojení při spuštění</string>
+    <string name="connections_start_on_boot_info">Při příštím spuštění použijte své aktuální předvolby připojení (zahrnuje všechna zde vybraná nastavení hostitele/klienta).  Ve výchozím nastavení budou hostitelé inzerovat a klienti je objeví, ale na stránce nastavení můžete ručně vybrat libovolnou možnost</string>
     <string name="content">"Obsah"</string>
     <string name="continue_text">Pokračovat</string>
     <string name="controls">Řízení</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Prezentační font"</string>
     <string name="font_presentation_bold">Zobrazení prezentovaných textů pomocí tučného textu</string>
     <string name="font_presentation_info">"Písmo informací o prezentaci"</string>
+    <string name="force_single_page_pdf">Vynutit jednostránkové skladby pro PDF/Tisk</string>
+    <string name="force_single_page_pdf_info">Při tisku nebo exportu do PDF upraví velikost skladeb tak, aby se vešly na jednu stránku</string>
     <string name="format_text_bold">Tučně</string>
     <string name="format_text_bolditalic">Tučně kurzíva</string>
     <string name="format_text_brackets">Formátovat text hranatých závorek (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Systémové marže</string>
     <string name="margins_system_info">Ponechat místo pro ovládací prvky detekovaného zařízení (spodní navigační lišta a boční nabídky)</string>
     <string name="max_font_size">Maximální autoscale velikost písma</string>
+    <string name="max_pdf_scale">Maximální velikost měřítka PDF/Tisk</string>
+    <string name="max_pdf_scale_info">Maximální použité měřítko.  Pro menší text zvolte nižší hodnoty.  Velikost textu nepřesáhne šířku stránky.  75 % je pro většinu dobrým výchozím bodem.</string>
     <string name="max_vol_range">"Rozsah Grafické objem indikátor"</string>
     <string name="maximise_columns">Měřítko sloupců samostatně.</string>
     <string name="maximise_columns_info">Pokud je skladba zobrazena ve více sloupcích (např. při otočení na šířku), umožňuje to každému sloupci přiblížit tak, aby vyplnil část obrazovky, které je přidělen.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Otevřete nabídku view a spravujte své skladby a sady</string>
     <string name="menu_song_info">Použijte toto tlačítko pro zobrazení a správu skladeb</string>
     <string name="menu_song_order">Jak by měly být skladby uvedeny v nabídce?</string>
+    <string name="merged_text_file">Sloučený textový soubor</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronome_autostart">Automatické spuštění metronomu</string>
     <string name="metronome_autostart_info">Při změně skladeb mějte spuštěný metronom</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Importovat církevní vzorové písně"</string>
     <string name="nearby_host_menu_only">Poslouchat nové klienty, pouze když je tato stránka viditelná</string>
     <string name="nearby_host_menu_only_info">Požadavky na připojení nebudou zobrazeny, dokud nebudete na této stránce</string>
+    <string name="nearby_host_menu_only_info_warning">Aby hostitel mohl přijímat připojení, musí mít otevřené nastavení Nablízku</string>
     <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
     <string name="nearby_message">Výstražná zpráva v okolí</string>
     <string name="nearby_messages">Výstražné zprávy v okolí</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Nastavit název</string>
     <string name="set_new">"Vymazat"</string>
     <string name="set_new_info">Odebrat všechny skladby z aktuální sady</string>
+    <string name="set_packaged_opensongapp">Zabalený soubor sady OpenSongApp</string>
+    <string name="set_packaged_opensongapp_info">Tím se vytvoří vlastní soubor zip, který obsahuje soubor sady a všechny soubory OpenSong, PDF nebo obrázky uvedené v sadě.  To lze sdílet s ostatními uživateli OpenSongApp</string>
     <string name="set_rebuild">Přestavovat sadu</string>
     <string name="set_rebuild_info">Znovu sestavte sadu z poslední úspěšné změny (použijte, pokud máte podezření, že je s vaší sadou problém)</string>
     <string name="set_save_info">Uložte aktuální sadu pro budoucí použití</string>

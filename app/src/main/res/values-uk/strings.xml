@@ -238,6 +238,8 @@
     <string name="connections_searching">Пошук…</string>
     <string name="connections_service_stop">Зупинити службу</string>
     <string name="connections_song_sections_info">Слухайте зміни розділу пісні</string>
+    <string name="connections_start_on_boot">Запустіть підключення поблизу під час завантаження</string>
+    <string name="connections_start_on_boot_info">Використовуйте свої поточні параметри підключення під час наступного завантаження (включає всі налаштування хоста/клієнта, вибрані тут).  За умовчанням хости рекламуватимуть, а клієнти дізнаватимуться, але ви можете вручну вибрати будь-який параметр на сторінці налаштувань</string>
     <string name="content">Зміст</string>
     <string name="continue_text">Продовжити</string>
     <string name="controls">Елементи керування</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">Шрифт презентації</string>
     <string name="font_presentation_bold">Відображення представлених текстів пісень жирним шрифтом</string>
     <string name="font_presentation_info">Шрифт інформації про презентацію</string>
+    <string name="force_single_page_pdf">Примусово використовувати односторінкові пісні для PDF/друку</string>
+    <string name="force_single_page_pdf_info">Масштабує пісні для розміщення на одній сторінці під час друку або експорту в PDF</string>
     <string name="format_text_bold">жирний</string>
     <string name="format_text_bolditalic">жирний Курсив</string>
     <string name="format_text_brackets">Форматувати текст у дужках (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Системні поля</string>
     <string name="margins_system_info">Залиште місце для виявлених елементів керування пристроєм (нижня панель навігації та бічні меню)</string>
     <string name="max_font_size">Максимальний розмір шрифту автомасштабирование</string>
+    <string name="max_pdf_scale">Максимальний масштабний розмір PDF/Друк</string>
+    <string name="max_pdf_scale_info">Максимальне масштабування для використання.  Виберіть менші значення для меншого тексту.  Розмір тексту не буде перевищувати ширину сторінки.  75% — хороша відправна точка для більшості.</string>
     <string name="max_vol_range">Розмір індикатора гучності</string>
     <string name="maximise_columns">Змінити масштаб стовпці незалежно.</string>
     <string name="maximise_columns_info">Якщо пісня відображається в кількох стовпцях (наприклад, при повороті в альбомну орієнтацію), це дає змогу кожному стовпцю збільшити масштаб, щоб заповнити виділену йому частину екрана.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Відкрийте меню, щоб переглядати та керувати своїми піснями та сетами</string>
     <string name="menu_song_info">Використовуйте цю кнопку для перегляду та керування своїми піснями</string>
     <string name="menu_song_order">Як пісні мають бути перераховані в меню?</string>
+    <string name="merged_text_file">Об’єднаний текстовий файл</string>
     <string name="metronome">Метроном</string>
     <string name="metronome_autostart">Автозапуск метронома</string>
     <string name="metronome_autostart_info">Увімкніть метроном під час зміни пісень</string>
@@ -574,6 +581,7 @@
     <string name="my_church">Імпорт пісень з файлу церкви</string>
     <string name="nearby_host_menu_only">Слухайте тільки нових клієнтів, коли ця сторінка видно</string>
     <string name="nearby_host_menu_only_info">Запити на підключення не відображатимуться, якщо ви не перебуваєте на цій сторінці</string>
+    <string name="nearby_host_menu_only_info_warning">Щоб приймати підключення, у хоста повинні бути відкриті налаштування функції «Поруч».</string>
     <string name="nearby_large_file">Цей великий файл пісні ділиться</string>
     <string name="nearby_message">Оповіщення поблизу</string>
     <string name="nearby_messages">Оповіщення поблизу</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Перейменування</string>
     <string name="set_new">Новий / Очищення поточного</string>
     <string name="set_new_info">Видалити всі пісні з поточного набору</string>
+    <string name="set_packaged_opensongapp">Запакований файл набору OpenSongApp</string>
+    <string name="set_packaged_opensongapp_info">Це створює спеціальний zip-файл, який містить файл набору та всі файли OpenSong, PDF або зображення, на які посилаються в наборі.  Цим можна поділитися з іншими користувачами OpenSongApp</string>
     <string name="set_rebuild">Набір для перебудови</string>
     <string name="set_rebuild_info">Перебудуйте набір з останньої успішної зміни (використовуйте, якщо підозрюєте, що з набором виникла проблема)</string>
     <string name="set_save_info">Збережіть поточний набір для подальшого використання</string>

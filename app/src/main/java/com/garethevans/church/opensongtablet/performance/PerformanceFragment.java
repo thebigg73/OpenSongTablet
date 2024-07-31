@@ -124,6 +124,7 @@ public class PerformanceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         prepareStrings();
+        firstSongLoad = true;
         updateInlineSetSortTitles();
         displayInterface.checkDisplays();
         if (myView!=null && getContext()!=null) {

@@ -238,6 +238,8 @@
     <string name="connections_searching">"Suchen …"</string>
     <string name="connections_service_stop">"Dienst anhalten"</string>
     <string name="connections_song_sections_info">Achten Sie auf Änderungen in Songabschnitten</string>
+    <string name="connections_start_on_boot">Starten Sie beim Hochfahren Verbindungen in der Nähe</string>
+    <string name="connections_start_on_boot_info">Verwenden Sie beim nächsten Start Ihre aktuellen Verbindungseinstellungen (einschließlich aller hier ausgewählten Host-/Client-Einstellungen).  Standardmäßig machen Hosts Werbung und Clients entdecken sie, aber Sie können jede Option auf der Einstellungsseite manuell auswählen</string>
     <string name="content">"Inhalt"</string>
     <string name="continue_text">Fortsetzen</string>
     <string name="controls">Steuerung</string>
@@ -371,6 +373,8 @@
     <string name="font_presentation">"Schriftart für Präsentation"</string>
     <string name="font_presentation_bold">Zeigen Sie präsentierte Liedtexte mit fettem Text an</string>
     <string name="font_presentation_info">"Schriftart für Informationen während der Präsentation"</string>
+    <string name="force_single_page_pdf">Erzwingen Sie einseitige Lieder für PDF/Druck</string>
+    <string name="force_single_page_pdf_info">Skaliert Songs beim Drucken oder Exportieren als PDF so, dass sie auf eine einzelne Seite passen</string>
     <string name="format_text_bold">Fett gedruckt</string>
     <string name="format_text_bolditalic">Fett gedruckt Kursiv</string>
     <string name="format_text_brackets">Klammertext formatieren (…)</string>
@@ -510,6 +514,8 @@
     <string name="margins_system">Systemgrenzen</string>
     <string name="margins_system_info">Lassen Sie Platz für erkannte Gerätesteuerungen (untere Navigationsleiste und Seitenmenüs)</string>
     <string name="max_font_size">Maximale Schriftgröße bei automatischer Skalierung</string>
+    <string name="max_pdf_scale">Maximale Skalierungsgröße von PDF/Print</string>
+    <string name="max_pdf_scale_info">Die maximal zu verwendende Skalierung.  Wählen Sie niedrigere Werte für kleineren Text.  Die Textgröße wird nicht über die Seitenbreite hinaus skaliert.  75 % sind für die meisten ein guter Ausgangspunkt.</string>
     <string name="max_vol_range">"Bereich der Lautstärkeanzeige"</string>
     <string name="maximise_columns">Spalten unabhängig skalieren.</string>
     <string name="maximise_columns_info">Wenn ein Lied in mehreren Spalten angezeigt wird (z. B. wenn es ins Querformat gedreht wird), ermöglicht dies, dass jede Spalte gezoomt wird, um den Teil des Bildschirms auszufüllen, der ihr zugewiesen ist.</string>
@@ -521,6 +527,7 @@
     <string name="menu_showcase_info">Öffne das Menü, um deine Songs und Sets anzuzeigen und zu verwalten</string>
     <string name="menu_song_info">Verwenden Sie diese Schaltflächenansicht und verwalten Sie Ihre Songs</string>
     <string name="menu_song_order">Wie sollten Songs im Menü aufgelistet werden?</string>
+    <string name="merged_text_file">Zusammengeführte Textdatei</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronome_autostart">Autostart-Metronom</string>
     <string name="metronome_autostart_info">Lassen Sie das Metronom laufen, wenn Sie Songs wechseln</string>
@@ -574,6 +581,7 @@
     <string name="my_church">"Kirchen Beispielsongs importieren"</string>
     <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
     <string name="nearby_host_menu_only_info">Verbindungsanfragen werden nur angezeigt, wenn Sie sich auf dieser Seite befinden</string>
+    <string name="nearby_host_menu_only_info_warning">Beim Host müssen die Nearby-Einstellungen geöffnet sein, um Verbindungen zu akzeptieren</string>
     <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
     <string name="nearby_message">Warnmeldung in der Nähe</string>
     <string name="nearby_messages">Warnmeldungen in der Nähe</string>
@@ -792,6 +800,8 @@
     <string name="set_name">Name einsetzen</string>
     <string name="set_new">"Zurücksetzen"</string>
     <string name="set_new_info">Entfernen Sie alle Songs aus dem aktuellen Set</string>
+    <string name="set_packaged_opensongapp">Verpackte OpenSongApp-Set-Datei</string>
+    <string name="set_packaged_opensongapp_info">Dadurch wird eine benutzerdefinierte ZIP-Datei erstellt, die die Set-Datei und alle im Set referenzierten OpenSong-, PDF- oder Bilddateien enthält.  Dies kann mit anderen OpenSongApp-Benutzern geteilt werden</string>
     <string name="set_rebuild">Umbau-Set</string>
     <string name="set_rebuild_info">Erstellen Sie das Set nach der letzten erfolgreichen Änderung neu (verwenden Sie es, wenn Sie vermuten, dass es ein Problem mit Ihrem Set gibt)</string>
     <string name="set_save_info">Speichern Sie den aktuellen Satz für die zukünftige Verwendung</string>

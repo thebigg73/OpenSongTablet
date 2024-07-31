@@ -1337,4 +1337,14 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="connections_start_on_boot">Start nearby connections on boot up</string>
+    <string name="connections_start_on_boot_info">Use your current connection preferences next time you boot up (includes all host/client settings selected here).  By default hosts will advertise and clients will discover, but you can manually choose any option on the settings page</string>
+    <string name="nearby_host_menu_only_info_warning">Host must have Nearby settings open to accept connections</string>
+    <string name="max_pdf_scale">Maximum scale size of PDF/Print</string>
+    <string name="max_pdf_scale_info">The maximum scaling to use.  Choose lower values for smaller text.  Text size will not scale beyond page width.  75% is a good starting point for most.</string>
+    <string name="force_single_page_pdf">Force single page songs for PDF/Print</string>
+    <string name="force_single_page_pdf_info">Scales songs to fit on a single page when printing or exporting to PDF</string>
+    <string name="merged_text_file">Merged text file</string>
+    <string name="set_packaged_opensongapp">Packaged OpenSongApp set file</string>
+    <string name="set_packaged_opensongapp_info">This creates a custom zip file that contains the set file and all OpenSong, PDF or image files referenced in the set.  This can be shared with other OpenSongApp users</string>
 </resources>
