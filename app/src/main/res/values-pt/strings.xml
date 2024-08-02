@@ -579,6 +579,12 @@
     <string name="music_score_info">Editar notas de partitura</string>
     <string name="my_band">"Importar músicas de amostra da banda"</string>
     <string name="my_church">"Importar músicas de amostra da Igreja"</string>
+    <string name="nearby_files_copied">Arquivos copiados:</string>
+    <string name="nearby_files_failed">Falha nos arquivos:</string>
+    <string name="nearby_files_skipped">Arquivos ignorados:</string>
+    <string name="nearby_found_files">Os seguintes arquivos foram encontrados no dispositivo host.  Escolha os arquivos para baixar.  Se o progresso do download parar ou travar, você pode tentar novamente</string>
+    <string name="nearby_get_setlist">Obter setlist</string>
+    <string name="nearby_get_songs">Obter músicas</string>
     <string name="nearby_host_menu_only">Escute novos clientes apenas quando esta página estiver visível</string>
     <string name="nearby_host_menu_only_info">As solicitações de conexão não serão mostradas a menos que você esteja nesta página</string>
     <string name="nearby_host_menu_only_info_warning">O anfitrião deve ter as configurações do Próximo abertas para aceitar conexões</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Se o tamanho da fonte autoscale é menor do que o tamanho da fonte mínimo desejado, você quer o aplicativo para substituir a um método de escalonamento diferente? Utilizando estas opções pode forçá-lo a rolar horizontalmente e verticalmente em uma canção."</string>
     <string name="override_widthautoscale">"Width override única escala para não autoscale"</string>
     <string name="overwrite">"Substituir item existente"</string>
+    <string name="overwrite_info">Todos os arquivos correspondentes que você já possui serão substituídos pelos arquivos host</string>
     <string name="pad">"Música de fundo"</string>
     <string name="pad_auto">"Automático"</string>
     <string name="pad_cross_fade">Pads de crossfade</string>

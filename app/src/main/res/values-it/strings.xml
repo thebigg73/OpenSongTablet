@@ -579,6 +579,12 @@
     <string name="music_score_info">Modifica le note sulla partitura</string>
     <string name="my_band">"Importa canzoni di brano di band"</string>
     <string name="my_church">"Importare canzoni di esempio Church"</string>
+    <string name="nearby_files_copied">File copiati:</string>
+    <string name="nearby_files_failed">File non riusciti:</string>
+    <string name="nearby_files_skipped">File saltati:</string>
+    <string name="nearby_found_files">Sul dispositivo host sono stati trovati i seguenti file.  Scegli i file da scaricare.  Se l\'avanzamento del download si blocca o si blocca, puoi riprovare</string>
+    <string name="nearby_get_setlist">Ottieni la scaletta</string>
+    <string name="nearby_get_songs">Ottieni canzoni</string>
     <string name="nearby_host_menu_only">Ascolta i nuovi clienti solo quando questa pagina è visibile</string>
     <string name="nearby_host_menu_only_info">Le richieste di connessione non verranno mostrate a meno che tu non sia in questa pagina</string>
     <string name="nearby_host_menu_only_info_warning">L\'host deve avere le impostazioni Nelle vicinanze aperte per accettare connessioni</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Se la dimensione del carattere autoscale è inferiore alla dimensione del carattere minimo desiderato, vuoi l\'applicazione di ignorare per un metodo di scala diversa? L\'utilizzo di queste opzioni può costringere a scorrere orizzontalmente e verticalmente in una canzone."</string>
     <string name="override_widthautoscale">"Larghezza override solo il ridimensionamento a nessuno autoscale"</string>
     <string name="overwrite">"Sovrascrivi elemento esistente"</string>
+    <string name="overwrite_info">Tutti i file corrispondenti già presenti verranno sovrascritti dai file host</string>
     <string name="pad">"Musica di sottofondo"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Pad a dissolvenza incrociata</string>

@@ -579,6 +579,12 @@
     <string name="music_score_info">Uredite beleške o rezultatu</string>
     <string name="my_band">Uvoz primera pesama bendova</string>
     <string name="my_church">Uvoz primera crkvenih pesama</string>
+    <string name="nearby_files_copied">Fajlovi kopirani:</string>
+    <string name="nearby_files_failed">Fajlovi nisu uspeli:</string>
+    <string name="nearby_files_skipped">Fajlovi preskočeni:</string>
+    <string name="nearby_found_files">Sledeći fajlovi su pronađeni na uređaju domaćina.  Izaberite datoteke za preuzimanje.  Ako se napredak preuzimanja zaustavi ili zaglavi, možete pokušati ponovo</string>
+    <string name="nearby_get_setlist">Nabavite setlistu</string>
+    <string name="nearby_get_songs">Nabavite pesme</string>
     <string name="nearby_host_menu_only">Slušajte nove klijente samo kada je ova stranica vidljiva</string>
     <string name="nearby_host_menu_only_info">Zahtevi za povezivanje neće biti prikazani osim ako niste na ovoj stranici</string>
     <string name="nearby_host_menu_only_info_warning">Domaćin mora imati otvorene postavke u blizini da bi prihvatio veze</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">Ako je veličina fonta manja od minimalne željene veličine, da li želite da aplikacij koristi drugu metodu skaliranja? Korišćenje ove opcije Vas može primorati na skrolovanje pesme horizontalno i vertikalno</string>
     <string name="override_widthautoscale">Prebacivanje autozumiranja sa širine na mod bez autozumiranja</string>
     <string name="overwrite">Prepisati preko postojeće stavke</string>
+    <string name="overwrite_info">Sve odgovarajuće datoteke koje već imate će biti prepisane od strane host fajlova</string>
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_cross_fade">Cross-fade jastučići</string>

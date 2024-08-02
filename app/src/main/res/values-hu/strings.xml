@@ -579,6 +579,12 @@
     <string name="music_score_info">Pontszámjegyzetek szerkesztése</string>
     <string name="my_band">"Import sáv minta dalok"</string>
     <string name="my_church">"Import Church minta dalok"</string>
+    <string name="nearby_files_copied">Másolt fájlok:</string>
+    <string name="nearby_files_failed">Sikertelen fájlok:</string>
+    <string name="nearby_files_skipped">Kihagyott fájlok:</string>
+    <string name="nearby_found_files">A következő fájlok találhatók a gazdagépen.  Válassza ki a letölteni kívánt fájlokat.  Ha a letöltés elakad vagy elakad, próbálkozzon újra</string>
+    <string name="nearby_get_setlist">Get setlist</string>
+    <string name="nearby_get_songs">Szerezz dalokat</string>
     <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
     <string name="nearby_host_menu_only_info">A csatlakozási kérelmek csak akkor jelennek meg, ha ezen az oldalon tartózkodik</string>
     <string name="nearby_host_menu_only_info_warning">A kapcsolatok fogadásához a gazdagépnek nyitva kell lennie a Nearby beállításoknak</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Ha az automatikus átméretezés betűméret kisebb, mint a kívánt minimális betűméret, akarsz az alkalmazást, hogy felülbírálja a különböző méretezési módszer? Ezen opciók lehet kényszeríteni, hogy görgetni függőlegesen és vízszintesen egy dalt."</string>
     <string name="override_widthautoscale">"Felülírása szélessége csak skálázott nem autoscale"</string>
     <string name="overwrite">"Felülírja a meglévő elem"</string>
+    <string name="overwrite_info">A már meglévő egyező fájlokat felülírják a gazdagép fájlok</string>
     <string name="pad">"Háttérzene"</string>
     <string name="pad_auto">"Kocsi"</string>
     <string name="pad_cross_fade">Kereszthalványuló párnák</string>

@@ -579,6 +579,12 @@
     <string name="music_score_info">スコアノートを編集する</string>
     <string name="my_band">"バンドのサンプル曲をインポートする"</string>
     <string name="my_church">"教会のサンプル曲をインポートする"</string>
+    <string name="nearby_files_copied">コピーされたファイル:</string>
+    <string name="nearby_files_failed">ファイルが失敗しました:</string>
+    <string name="nearby_files_skipped">スキップされたファイル:</string>
+    <string name="nearby_found_files">次のファイルがホスト デバイス上で見つかりました。  ダウンロードするファイルを選択します。  ダウンロードの進行が停止または停止した場合は、もう一度試してください。</string>
+    <string name="nearby_get_setlist">セットリストを取得する</string>
+    <string name="nearby_get_songs">曲を入手する</string>
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
     <string name="nearby_host_menu_only_info">このページを表示していない限り、接続要求は表示されません</string>
     <string name="nearby_host_menu_only_info_warning">接続を受け入れるにはホストの近くの設定が開いている必要があります</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。"</string>
     <string name="override_widthautoscale">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。""オーバーライド幅のみなしオートスケールへのスケーリング"</string>
     <string name="overwrite">"既存のアイテムを上書き"</string>
+    <string name="overwrite_info">すでに存在する一致するファイルはホスト ファイルによって上書きされます</string>
     <string name="pad">"バックグラウンドミュージック"</string>
     <string name="pad_auto">"オート"</string>
     <string name="pad_cross_fade">クロスフェードパッド</string>

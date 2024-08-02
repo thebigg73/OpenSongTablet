@@ -579,6 +579,12 @@
     <string name="music_score_info">Επεξεργασία σημειώσεων βαθμολογίας</string>
     <string name="my_band">"Εισαγωγή τραγουδιών δείγματος μπάντας"</string>
     <string name="my_church">"Εισάγετε δείγματα τραγουδιών της Εκκλησίας"</string>
+    <string name="nearby_files_copied">Αρχεία που αντιγράφηκαν:</string>
+    <string name="nearby_files_failed">Τα αρχεία απέτυχαν:</string>
+    <string name="nearby_files_skipped">Αρχεία που παραβλέφθηκαν:</string>
+    <string name="nearby_found_files">Τα ακόλουθα αρχεία έχουν βρεθεί στη συσκευή υποδοχής.  Επιλέξτε τα αρχεία για λήψη.  Εάν η πρόοδος λήψης σταματήσει ή κολλήσει, μπορείτε να δοκιμάσετε ξανά</string>
+    <string name="nearby_get_setlist">Λήψη setlist</string>
+    <string name="nearby_get_songs">Λάβετε τραγούδια</string>
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
     <string name="nearby_host_menu_only_info">Τα αιτήματα σύνδεσης δεν θα εμφανίζονται εκτός εάν βρίσκεστε σε αυτήν τη σελίδα</string>
     <string name="nearby_host_menu_only_info_warning">Ο κεντρικός υπολογιστής πρέπει να έχει ανοιχτές τις ρυθμίσεις Nearby για αποδοχή συνδέσεων</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song"</string>
     <string name="override_widthautoscale">"Override width only scaling to no autoscale"</string>
     <string name="overwrite">"Αντικατάσταση του υπάρχοντος αντικειμένου"</string>
+    <string name="overwrite_info">Τυχόν αρχεία που ταιριάζουν ήδη θα αντικατασταθούν από τα αρχεία κεντρικού υπολογιστή</string>
     <string name="pad">"Pad"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Διασταυρούμενα μαξιλαράκια</string>

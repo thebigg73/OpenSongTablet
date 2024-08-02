@@ -579,6 +579,12 @@
     <string name="music_score_info">编辑乐谱注释</string>
     <string name="my_band">"导入乐队示例歌曲"</string>
     <string name="my_church">"进口教会样品歌曲"</string>
+    <string name="nearby_files_copied">复制的文件：</string>
+    <string name="nearby_files_failed">文件失败：</string>
+    <string name="nearby_files_skipped">跳过的文件：</string>
+    <string name="nearby_found_files">在主机设备上找到以下文件。  选择要下载的文件。  如果下载进度停滞或卡住，您可以重试</string>
+    <string name="nearby_get_setlist">获取歌单</string>
+    <string name="nearby_get_songs">获取歌曲</string>
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
     <string name="nearby_host_menu_only_info">除非您在此页面上，否则不会显示连接请求</string>
     <string name="nearby_host_menu_only_info_warning">主机必须打开“附近”设置才能接受连接</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"如果自动缩放字体大小小于所需的最小字体大小，你想该应用覆盖到不同的缩放方法？使用这些选项可能会迫使你在一首歌水平和垂直滚动。"</string>
     <string name="override_widthautoscale">"覆盖宽度仅扩展到不自动缩放"</string>
     <string name="overwrite">"覆盖现有项目"</string>
+    <string name="overwrite_info">您已有的任何匹配文件都将被主机文件覆盖</string>
     <string name="pad">"背景音乐"</string>
     <string name="pad_auto">"汽车"</string>
     <string name="pad_cross_fade">交叉渐变垫</string>

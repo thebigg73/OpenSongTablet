@@ -579,6 +579,12 @@
     <string name="music_score_info">Edytuj nuty</string>
     <string name="my_band">Importuj przykładowe piosenki Zespołu</string>
     <string name="my_church">Importuj przykładowe piosenki z Kościoła</string>
+    <string name="nearby_files_copied">Skopiowane pliki:</string>
+    <string name="nearby_files_failed">Pliki nie powiodły się:</string>
+    <string name="nearby_files_skipped">Pominięte pliki:</string>
+    <string name="nearby_found_files">Na urządzeniu hosta znaleziono następujące pliki.  Wybierz pliki do pobrania.  Jeśli postęp pobierania zostanie zatrzymany lub utknie, możesz spróbować ponownie</string>
+    <string name="nearby_get_setlist">Pobierz setlistę</string>
+    <string name="nearby_get_songs">Zdobądź piosenki</string>
     <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
     <string name="nearby_host_menu_only_info">Żądania połączenia nie będą wyświetlane, jeśli nie będziesz na tej stronie</string>
     <string name="nearby_host_menu_only_info_warning">Aby akceptować połączenia, gospodarz musi mieć otwarte ustawienia W pobliżu</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">Jeśli rozmiar czcionki autoskalowania jest mniejszy niż preferowany minimalny rozmiar czcionki, czy chcesz zastosować inną metodę skalowania? Korzystanie z tych opcji może zmusić cię do przewijania piosenki w pionie i w poziomie.</string>
     <string name="override_widthautoscale">Zmień tryb skalowania "tylko szerokość" na brak automatycznego skalowania</string>
     <string name="overwrite">Zastąp istniejący element</string>
+    <string name="overwrite_info">Wszelkie pasujące pliki, które już posiadasz, zostaną zastąpione plikami hosta</string>
     <string name="pad">Podkład muzyczny</string>
     <string name="pad_auto">Automatyczny</string>
     <string name="pad_cross_fade">Płynnie łącz podkłady</string>

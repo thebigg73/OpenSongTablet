@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="nearby_get_setlist">Kry stellys</string>
+    <string name="nearby_get_songs">Kry liedjies</string>
+    <string name="nearby_found_files">Die volgende lêers is op die gasheertoestel gevind.  Kies die lêers om af te laai.  As die aflaaivordering vasstaan ​​of vashaak, kan jy weer probeer</string>
+    <string name="overwrite_info">Enige bypassende lêers wat jy reeds het, sal deur die gasheerlêers oorgeskryf word</string>
+    <string name="nearby_files_copied">Lêers gekopieer:</string>
+    <string name="nearby_files_skipped">Lêers oorgeslaan:</string>
+    <string name="nearby_files_failed">Lêers het misluk:</string>
     <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
     <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="about">Oor</string>

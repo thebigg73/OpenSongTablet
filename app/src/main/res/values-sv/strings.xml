@@ -579,6 +579,12 @@
     <string name="music_score_info">Redigera notanteckningar</string>
     <string name="my_band">"Importera bandprov låtar"</string>
     <string name="my_church">"Importera kyrkans provlåtar"</string>
+    <string name="nearby_files_copied">Filer kopierade:</string>
+    <string name="nearby_files_failed">Filer misslyckades:</string>
+    <string name="nearby_files_skipped">Överhoppade filer:</string>
+    <string name="nearby_found_files">Följande filer har hittats på värdenheten.  Välj filerna att ladda ner.  Om nedladdningsförloppet stannar eller fastnar kan du försöka igen</string>
+    <string name="nearby_get_setlist">Få setlist</string>
+    <string name="nearby_get_songs">Få låtar</string>
     <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
     <string name="nearby_host_menu_only_info">Anslutningsförfrågningar kommer inte att visas om du inte är på den här sidan</string>
     <string name="nearby_host_menu_only_info_warning">Värden måste ha inställningarna Nära öppna för att acceptera anslutningar</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Om autoscale-teckensnittstorleken är mindre än önskad minsta teckensnittstorlek, vill du att appen ska åsidosättas till en annan skaleringsmetod? Användning av dessa alternativ kan tvinga dig att rulla horisontellt och vertikalt i en låt"</string>
     <string name="override_widthautoscale">"Åsidosätt bredd endast skalning utan autoskala"</string>
     <string name="overwrite">"Skriv om befintligt objekt"</string>
+    <string name="overwrite_info">Alla matchande filer du redan har kommer att skrivas över av värdfilerna</string>
     <string name="pad">"Vaddera"</string>
     <string name="pad_auto">"Bil"</string>
     <string name="pad_cross_fade">Cross-fade pads</string>

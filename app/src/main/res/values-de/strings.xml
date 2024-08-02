@@ -579,6 +579,12 @@
     <string name="music_score_info">Partiturnotizen bearbeiten</string>
     <string name="my_band">"Band Beispielsongs importieren"</string>
     <string name="my_church">"Kirchen Beispielsongs importieren"</string>
+    <string name="nearby_files_copied">Kopierte Dateien:</string>
+    <string name="nearby_files_failed">Dateien fehlgeschlagen:</string>
+    <string name="nearby_files_skipped">Übersprungene Dateien:</string>
+    <string name="nearby_found_files">Die folgenden Dateien wurden auf dem Hostgerät gefunden.  Wählen Sie die Dateien zum Herunterladen aus.  Wenn der Download-Fortschritt ins Stocken gerät oder hängen bleibt, können Sie es erneut versuchen</string>
+    <string name="nearby_get_setlist">Holen Sie sich die Setlist</string>
+    <string name="nearby_get_songs">Holen Sie sich Lieder</string>
     <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
     <string name="nearby_host_menu_only_info">Verbindungsanfragen werden nur angezeigt, wenn Sie sich auf dieser Seite befinden</string>
     <string name="nearby_host_menu_only_info_warning">Beim Host müssen die Nearby-Einstellungen geöffnet sein, um Verbindungen zu akzeptieren</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">Wenn die Schriftgröße bei automatischer Skalierung kleiner ist als die gewünschte Mindestschriftgröße, möchten Sie, dass die App dann auf eine andere Skalierungsmethode umschaltet? Diese Option kann dazu führen, dass Sie horizontal und vertikal in einem Song scrollen müssen."</string>
     <string name="override_widthautoscale">"Automatische Skalierung auf Breite ignorieren und nicht automatisch skalieren"</string>
     <string name="overwrite">"Existierendes Element überschreiben"</string>
+    <string name="overwrite_info">Alle übereinstimmenden Dateien, die Sie bereits haben, werden durch die Hostdateien überschrieben</string>
     <string name="pad">"Hintergrundmusik"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Crossfade-Pads</string>

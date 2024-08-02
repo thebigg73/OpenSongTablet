@@ -579,6 +579,12 @@
     <string name="music_score_info">Редагувати нотатки</string>
     <string name="my_band">Імпорт пісень з файлу групи</string>
     <string name="my_church">Імпорт пісень з файлу церкви</string>
+    <string name="nearby_files_copied">Скопійовано файлів:</string>
+    <string name="nearby_files_failed">Помилка файлів:</string>
+    <string name="nearby_files_skipped">Пропущені файли:</string>
+    <string name="nearby_found_files">Наступні файли знайдено на хост-пристрої.  Виберіть файли для завантаження.  Якщо процес завантаження зупиняється або зависає, спробуйте ще раз</string>
+    <string name="nearby_get_setlist">Отримати сет-лист</string>
+    <string name="nearby_get_songs">Отримати пісні</string>
     <string name="nearby_host_menu_only">Слухайте тільки нових клієнтів, коли ця сторінка видно</string>
     <string name="nearby_host_menu_only_info">Запити на підключення не відображатимуться, якщо ви не перебуваєте на цій сторінці</string>
     <string name="nearby_host_menu_only_info_warning">Щоб приймати підключення, у хоста повинні бути відкриті налаштування функції «Поруч».</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">Якщо розмір шрифту Автомасштаб менше необхідного мінімального розміру шрифту, ви хочете, щоб додаток переобумовленої метод масштабування? Це може змусити вас прокручувати пісню по горизонталі і вертикалі.</string>
     <string name="override_widthautoscale">Автомасштабування по ширині</string>
     <string name="overwrite">Переписати існуючий</string>
+    <string name="overwrite_info">Будь-які відповідні файли, які у вас уже є, будуть перезаписані файлами хосту</string>
     <string name="pad">Підкладка</string>
     <string name="pad_auto">Авто</string>
     <string name="pad_cross_fade">Подушечки з перехресним зникненням</string>

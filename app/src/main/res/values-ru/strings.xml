@@ -579,6 +579,12 @@
     <string name="music_score_info">Редактировать партитуру</string>
     <string name="my_band">Импорт семплов группы</string>
     <string name="my_church">"Импорт семплов церкви"</string>
+    <string name="nearby_files_copied">Скопированы файлы:</string>
+    <string name="nearby_files_failed">Файлы не удалось:</string>
+    <string name="nearby_files_skipped">Пропущенные файлы:</string>
+    <string name="nearby_found_files">На главном устройстве были обнаружены следующие файлы.  Выберите файлы для загрузки.  Если процесс загрузки останавливается или зависает, попробуйте еще раз.</string>
+    <string name="nearby_get_setlist">Получить сетлист</string>
+    <string name="nearby_get_songs">Получить песни</string>
     <string name="nearby_host_menu_only">Ожидание только новых клиентов, когда эта страница видна</string>
     <string name="nearby_host_menu_only_info">Запросы на подключение не будут отображаться, если вы не находитесь на этой странице</string>
     <string name="nearby_host_menu_only_info_warning">Чтобы принимать соединения, у хоста должны быть открыты настройки «Рядом».</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">Если размер автомасштабируемго шрифта меньше требуемого минимального размера шрифта, вы хотите, чтобы приложение применяло другой метод масштабирования? Это может заставить вас прокручивать песню по горизонтали и вертикали</string>
     <string name="override_widthautoscale">Принудительное отключение автомасштабирования вместо автомасштабирования по ширине</string>
     <string name="overwrite">Переписать существующую</string>
+    <string name="overwrite_info">Любые соответствующие файлы, которые у вас уже есть, будут перезаписаны файлами хоста.</string>
     <string name="pad">Пэд</string>
     <string name="pad_auto">Авто</string>
     <string name="pad_cross_fade">Пэды с кроссфейдом</string>

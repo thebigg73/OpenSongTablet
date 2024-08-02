@@ -579,6 +579,12 @@
     <string name="music_score_info">Upravte poznámky ke skóre</string>
     <string name="my_band">"Importovat skladby"</string>
     <string name="my_church">"Importovat církevní vzorové písně"</string>
+    <string name="nearby_files_copied">Zkopírované soubory:</string>
+    <string name="nearby_files_failed">Soubory se nezdařily:</string>
+    <string name="nearby_files_skipped">Přeskočené soubory:</string>
+    <string name="nearby_found_files">Na hostitelském zařízení byly nalezeny následující soubory.  Vyberte soubory ke stažení.  Pokud se proces stahování zastaví nebo uvízne, můžete to zkusit znovu</string>
+    <string name="nearby_get_setlist">Získejte setlist</string>
+    <string name="nearby_get_songs">Získejte písně</string>
     <string name="nearby_host_menu_only">Poslouchat nové klienty, pouze když je tato stránka viditelná</string>
     <string name="nearby_host_menu_only_info">Požadavky na připojení nebudou zobrazeny, dokud nebudete na této stránce</string>
     <string name="nearby_host_menu_only_info_warning">Aby hostitel mohl přijímat připojení, musí mít otevřené nastavení Nablízku</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Je-li velikost písma Autoscale je nižší než požadovaná minimální velikosti písma, chcete aplikaci přepsat na jinou metodu škálování? Pomocí těchto voleb vás může nutit posouvat horizontálně i vertikálně v písni."</string>
     <string name="override_widthautoscale">"Šířka Přepis pouze škálování žádné škálování"</string>
     <string name="overwrite">"Přepsat existující položku"</string>
+    <string name="overwrite_info">Všechny odpovídající soubory, které již máte, budou přepsány hostitelskými soubory</string>
     <string name="pad">"Hudba na pozadí"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Cross-fade podložky</string>

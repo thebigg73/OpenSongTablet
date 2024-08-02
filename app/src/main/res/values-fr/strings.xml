@@ -579,6 +579,12 @@
     <string name="music_score_info">Modifier les notes de partition</string>
     <string name="my_band">"Bandes d'échange de bandes d'importation"</string>
     <string name="my_church">"Import Church exemple de chansons"</string>
+    <string name="nearby_files_copied">Fichiers copiés:</string>
+    <string name="nearby_files_failed">Les fichiers ont échoué:</string>
+    <string name="nearby_files_skipped">Fichiers ignorés:</string>
+    <string name="nearby_found_files">Les fichiers suivants ont été trouvés sur le périphérique hôte.  Choisissez les fichiers à télécharger.  Si la progression du téléchargement s\'arrête ou reste bloquée, vous pouvez réessayer</string>
+    <string name="nearby_get_setlist">Obtenir la setlist</string>
+    <string name="nearby_get_songs">Obtenez des chansons</string>
     <string name="nearby_host_menu_only">N\'écoutez les nouveaux clients que lorsque cette page est visible</string>
     <string name="nearby_host_menu_only_info">Les demandes de connexion ne seront pas affichées sauf si vous êtes sur cette page</string>
     <string name="nearby_host_menu_only_info_warning">L\'hôte doit avoir les paramètres à proximité ouverts pour accepter les connexions</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Si la taille de la police de autoscale est inférieure à la taille minimale souhaitée, voulez-vous l\'application pour passer outre à une méthode de mise à l\'échelle différente? L\'utilisation de ces options peuvent vous forcer à faire défiler horizontalement et verticalement dans une chanson."</string>
     <string name="override_widthautoscale">"Largeur remplacer seulement mise à l\'échelle ne autoscale"</string>
     <string name="overwrite">"Ecraser l\'élément existant"</string>
+    <string name="overwrite_info">Tous les fichiers correspondants que vous possédez déjà seront écrasés par les fichiers hôtes</string>
     <string name="pad">"Musique de fond"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Pads de fondu enchaîné</string>

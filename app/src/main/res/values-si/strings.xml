@@ -579,6 +579,12 @@
     <string name="music_score_info">ලකුණු සටහන් සංස්කරණය කරන්න</string>
     <string name="my_band">සංගීත කණ්ඩායම් ආදර්ශ ගීත ආනයනය කරන්න</string>
     <string name="my_church">පල්ලියේ ආදර්ශ ගීත ආනයනය කරන්න</string>
+    <string name="nearby_files_copied">පිටපත් කරන ලද ගොනු:</string>
+    <string name="nearby_files_failed">ගොනු අසාර්ථක විය:</string>
+    <string name="nearby_files_skipped">ගොනු මඟ හරින ලදී:</string>
+    <string name="nearby_found_files">ධාරක උපාංගයේ පහත ගොනු සොයාගෙන ඇත.  බාගත කිරීම සඳහා ගොනු තෝරන්න.  බාගැනීම් ප්‍රගතිය ඇනහිටියේ නම් හෝ සිරවී ඇත්නම්, ඔබට නැවත උත්සාහ කළ හැක</string>
+    <string name="nearby_get_setlist">කට්ටල ලැයිස්තුවක් ලබා ගන්න</string>
+    <string name="nearby_get_songs">ගීත ලබා ගන්න</string>
     <string name="nearby_host_menu_only">මෙම පිටුව පෙනෙන විට පමණක් නව සේවාලාභීන්ට සවන් දෙන්න</string>
     <string name="nearby_host_menu_only_info">ඔබ මෙම පිටුවේ සිටින්නේ නම් මිස සම්බන්ධතා ඉල්ලීම් නොපෙන්වයි</string>
     <string name="nearby_host_menu_only_info_warning">සම්බන්ධතා පිළිගැනීමට ධාරකයට ආසන්න සැකසුම් විවෘතව තිබිය යුතුය</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය අපේක්ෂිත අවම අකුරු ප්‍රමාණයට වඩා අඩු නම්, ඔබට යෙදුම වෙනස් පරිමාණ ක්‍රමයකට ප්‍රතික්‍ෂේප කිරීමට අවශ්‍යද?  මෙම විකල්ප භාවිතා කිරීමෙන් ගීතයක තිරස් අතට සහ සිරස් අතට අනුචලනය කිරීමට ඔබට බල කළ හැක</string>
     <string name="override_widthautoscale">ප්‍රතික්‍ෂේප කරන්න පළල ස්වයංක්‍රීය පරිමාණයකින් තොරව පරිමාණය කිරීම පමණි</string>
     <string name="overwrite">පවතින අයිතමය උඩින් ලියන්න</string>
+    <string name="overwrite_info">ඔබ සතුව දැනටමත් ඇති ඕනෑම ගැළපෙන ගොනු ධාරක ගොනු මගින් නැවත ලියනු ලැබේ</string>
     <string name="pad">පෑඩ්</string>
     <string name="pad_auto">ඔටෝ</string>
     <string name="pad_cross_fade">හරස් ෆේඩ් පෑඩ්</string>

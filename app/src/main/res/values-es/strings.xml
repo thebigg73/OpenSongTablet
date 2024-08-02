@@ -579,6 +579,12 @@
     <string name="music_score_info">Editar notas de partitura</string>
     <string name="my_band">"Canciones de Import Band"</string>
     <string name="my_church">"Canciones de la muestra de la iglesia de la importación"</string>
+    <string name="nearby_files_copied">Archivos copiados:</string>
+    <string name="nearby_files_failed">Los archivos fallaron:</string>
+    <string name="nearby_files_skipped">Archivos omitidos:</string>
+    <string name="nearby_found_files">Se han encontrado los siguientes archivos en el dispositivo host.  Elija los archivos para descargar.  Si el progreso de la descarga se detiene o se atasca, puedes intentarlo de nuevo</string>
+    <string name="nearby_get_setlist">Obtener lista de canciones</string>
+    <string name="nearby_get_songs">Obtener canciones</string>
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
     <string name="nearby_host_menu_only_info">Las solicitudes de conexión no se mostrarán a menos que esté en esta página</string>
     <string name="nearby_host_menu_only_info_warning">El anfitrión debe tener la configuración cercana abierta para aceptar conexiones</string>
@@ -625,6 +631,7 @@
     <string name="override_scale_explanation">"Si el tamaño de la fuente autoescala es menor que el tamaño mínimo de la letra deseada, ¿desea la aplicación para anular a un método de escala diferente? El uso de estas opciones le puede obligar a desplazarse horizontal y verticalmente en una canción."</string>
     <string name="override_widthautoscale">"Ancho de anulación únicamente el escalado a ninguna autoescala"</string>
     <string name="overwrite">"Sobrescribir elemento existente"</string>
+    <string name="overwrite_info">Cualquier archivo coincidente que ya tenga será sobrescrito por los archivos del host.</string>
     <string name="pad">"Música de fondo"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_cross_fade">Pads de fundido cruzado</string>

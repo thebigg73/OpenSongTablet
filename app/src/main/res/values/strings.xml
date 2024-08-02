@@ -274,6 +274,8 @@
     <string name="connections_searching">Searching…</string>
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
+    <string name="connections_start_on_boot">Start nearby connections on boot up</string>
+    <string name="connections_start_on_boot_info">Use your current connection preferences next time you boot up (includes all host/client settings selected here).  By default hosts will advertise and clients will discover, but you can manually choose any option on the settings page</string>
     <string name="content">Content</string>
     <string name="continue_text">Continue</string>
     <string name="controls">Controls</string>
@@ -467,6 +469,8 @@
     <string name="font_presentation">Presentation font</string>
     <string name="font_presentation_bold">Display presented lyrics using bold text</string>
     <string name="font_presentation_info">Presentation information font</string>
+    <string name="force_single_page_pdf">Force single page songs for PDF/Print</string>
+    <string name="force_single_page_pdf_info">Scales songs to fit on a single page when printing or exporting to PDF</string>
     <string name="format_text_bold">Bold</string>
     <string name="format_text_bolditalic">Bold italic</string>
     <string name="format_text_brackets">Format bracket text (…)</string>
@@ -665,6 +669,8 @@
     <string name="margins_system">System margins</string>
     <string name="margins_system_info">Leave space for detected device controls (bottom navigation bar and side menus)</string>
     <string name="max_font_size">Maximum autoscale font size</string>
+    <string name="max_pdf_scale">Maximum scale size of PDF/Print</string>
+    <string name="max_pdf_scale_info">The maximum scaling to use.  Choose lower values for smaller text.  Text size will not scale beyond page width.  75% is a good starting point for most.</string>
     <string name="max_vol_range">Graphical volume indicator range</string>
     <string name="maximise_columns">Scale columns independently.</string>
     <string name="maximise_columns_info">If a song is shown in multiple columns (e.g. when rotated to landscape), this allows each column to zoom to fill the portion of the screen it is allocated.</string>
@@ -676,6 +682,7 @@
     <string name="menu_showcase_info">Open the menu to view and manage your songs and sets</string>
     <string name="menu_song_info">Use this button view and manage your songs</string>
     <string name="menu_song_order">How should songs be listed in the menu?</string>
+    <string name="merged_text_file">Merged text file</string>
     <string name="metronome">Metronome</string>
     <string name="metronome_autostart">Autostart metronome</string>
     <string name="metronome_autostart_info">Keep metronome running when changing songs</string>
@@ -733,8 +740,15 @@
     <string name="music_score_info">Edit score notes</string>
     <string name="my_band">Import Band sample songs</string>
     <string name="my_church">Import Church sample songs</string>
+    <string name="nearby_files_copied">Files copied:</string>
+    <string name="nearby_files_failed">Files failed:</string>
+    <string name="nearby_files_skipped">Files skipped:</string>
+    <string name="nearby_found_files">The following files have been found on the host device.  Choose the files to download.  If the download progress stalls or gets stuck, you can try again</string>
+    <string name="nearby_get_setlist">Get setlist</string>
+    <string name="nearby_get_songs">Get songs</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="nearby_host_menu_only_info">Connection requests will not be shown unless you are on this page</string>
+    <string name="nearby_host_menu_only_info_warning">Host must have Nearby settings open to accept connections</string>
     <string name="nearby_large_file">This large song file is being shared</string>
     <string name="nearby_message">Nearby alert message</string>
     <string name="nearby_messages">Nearby alert messages</string>
@@ -784,6 +798,7 @@
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
+    <string name="overwrite_info">Any matching files you already have will be overwritten by the host files</string>
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
@@ -966,6 +981,8 @@
     <string name="set_name">Set name</string>
     <string name="set_new">Create a new set</string>
     <string name="set_new_info">Remove all songs from the current set</string>
+    <string name="set_packaged_opensongapp">Packaged OpenSongApp set file</string>
+    <string name="set_packaged_opensongapp_info">This creates a custom zip file that contains the set file and all OpenSong, PDF or image files referenced in the set.  This can be shared with other OpenSongApp users</string>
     <string name="set_rebuild">Rebuild set</string>
     <string name="set_rebuild_info">Rebuild the set from the last successful change (use if you suspect there is an issue with your set)</string>
     <string name="set_save_info">Save the current set for future use</string>
@@ -1337,14 +1354,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="connections_start_on_boot">Start nearby connections on boot up</string>
-    <string name="connections_start_on_boot_info">Use your current connection preferences next time you boot up (includes all host/client settings selected here).  By default hosts will advertise and clients will discover, but you can manually choose any option on the settings page</string>
-    <string name="nearby_host_menu_only_info_warning">Host must have Nearby settings open to accept connections</string>
-    <string name="max_pdf_scale">Maximum scale size of PDF/Print</string>
-    <string name="max_pdf_scale_info">The maximum scaling to use.  Choose lower values for smaller text.  Text size will not scale beyond page width.  75% is a good starting point for most.</string>
-    <string name="force_single_page_pdf">Force single page songs for PDF/Print</string>
-    <string name="force_single_page_pdf_info">Scales songs to fit on a single page when printing or exporting to PDF</string>
-    <string name="merged_text_file">Merged text file</string>
-    <string name="set_packaged_opensongapp">Packaged OpenSongApp set file</string>
-    <string name="set_packaged_opensongapp_info">This creates a custom zip file that contains the set file and all OpenSong, PDF or image files referenced in the set.  This can be shared with other OpenSongApp users</string>
 </resources>
