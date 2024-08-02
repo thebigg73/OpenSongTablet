@@ -156,19 +156,26 @@ public class DisplayPrevNext {
             String previousText = Uri.decode(getTextForButton(prevIndex));
             String nextText = Uri.decode(getTextForButton(nextIndex));
 
-            // Set the listeners
-            // Use the text as it is for the filename (might be Uri encoded)
-            prev.setOnClickListener(v -> moveToPrev());
-            prevFAB.setOnClickListener(v -> moveToPrev());
-            next.setOnClickListener(v -> moveToNext());
-            nextFAB.setOnClickListener(v -> moveToNext());
+            // Make sure we are on the UI thread
+            mainActivityInterface.getMainHandler().post(() -> {
+                prev.setText(previousText);
+                next.setText(nextText);
 
-            // Update the text
-            next.setText(nextText);
-            prev.setText(previousText);
 
-            // This shows the ones chosen if not empty, then hides again
-            showAndHide();
+                // Set the listeners
+                // Use the text as it is for the filename (might be Uri encoded)
+                prev.setOnClickListener(v -> moveToPrev());
+                prevFAB.setOnClickListener(v -> moveToPrev());
+                next.setOnClickListener(v -> moveToNext());
+                nextFAB.setOnClickListener(v -> moveToNext());
+
+                // Update the text
+                next.setText(nextText);
+                prev.setText(previousText);
+
+                // This shows the ones chosen if not empty, then hides again
+                showAndHide();
+            });
         }
     }
 

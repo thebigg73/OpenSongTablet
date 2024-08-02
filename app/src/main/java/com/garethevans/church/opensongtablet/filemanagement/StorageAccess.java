@@ -1282,6 +1282,22 @@ public class StorageAccess {
                 // Delete it to avoid overwrite errors that leaves old stuff at the end of the file
                 deleteFile_SAF(uri);
             }
+
+            // Check the folders exist for this received file
+            Uri folderUri = getUriForItem(folder, subfolder, null);
+            if (!uriExists(folderUri)) {
+                // Split the subfolders up if required.
+                String[] subfolders = subfolder.split("/");
+                String previousSubfolder = "";
+                for (String thislevel:subfolders) {
+                    String thisSubfolder = previousSubfolder + thislevel;
+                    Uri thislevelUri = getUriForItem(folder, thisSubfolder, null);
+                    if (!uriExists(thislevelUri)) {
+                        createFolder(folder,previousSubfolder,thislevel,false);
+                    }
+                    previousSubfolder = previousSubfolder + thislevel + "/";
+                }
+            }
             // Create the new file
             if (!uriExists(uri)) {
                 createFile(mimeType, folder, subfolder, filename);

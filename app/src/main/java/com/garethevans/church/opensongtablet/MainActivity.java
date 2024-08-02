@@ -86,7 +86,7 @@ import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
-import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
@@ -1378,7 +1378,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (setMenuFragment!=null) {
                             // Firstly hide the set
                             setMenuFragment.changeVisibility(false);
-
+                            Log.d(TAG,"set size before:"+getCurrentSet().getCurrentSetSize());
                             // Sort or shuffle the set as required
                             if (fragName.equals("sortSet")) {
                                 getSetActions().sortSet();
@@ -1388,9 +1388,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 Log.d(TAG,"just updating");
                                 getCurrentSet().loadCurrentSet();
                             }
+                            Log.d(TAG,"set size after:"+getCurrentSet().getCurrentSetSize());
 
                             // Show the set
                             setMenuFragment.changeVisibility(true);
+                            try {
+                                setMenuFragment.notifyItemRangeChanged(0, getCurrentSet().getCurrentSetSize());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                         }
                     });
