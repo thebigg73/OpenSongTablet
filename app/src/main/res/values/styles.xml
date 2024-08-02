@@ -73,7 +73,7 @@
         <item name="checkboxStyle">@style/MaterialCheckBox</item>
         <item name="floatingActionButtonStyle">@style/FABShaping</item>
         <item name="extendedFloatingActionButtonStyle">@style/ExtendedFABShaping</item>
-        
+
         <!-- New MaterialComponents attributes. -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
@@ -321,8 +321,9 @@
         <!-- If this isn't overridden, the navigation bar at the bottom is ugly-->
         <!-- However, we have to manually set the scrim colour and touch cancel in the fragment-->
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
         <item name="expanded">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
@@ -349,6 +350,7 @@
         <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
         <item name="behavior_hideable">true</item>
         <item name="enableEdgeToEdge">true</item>
+        <item name="android:itemPadding">16dp</item>
         <item name="paddingBottomSystemWindowInsets">true</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>

@@ -214,7 +214,8 @@ public class SongListBuildIndex {
             mainActivityInterface.getSetActions().checkMissingKeys();
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",true);
             returnString.append(c.getString(R.string.index_songs_end)).append("\n");
-            mainActivityInterface.refreshSong();
+            // GE Causing a errpr
+            //mainActivityInterface.refreshSong();
 
         } catch (Exception e) {
             e.printStackTrace();
