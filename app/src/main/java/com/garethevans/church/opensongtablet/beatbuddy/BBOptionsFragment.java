@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyOptionsBinding;
-import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.concurrent.ExecutorService;

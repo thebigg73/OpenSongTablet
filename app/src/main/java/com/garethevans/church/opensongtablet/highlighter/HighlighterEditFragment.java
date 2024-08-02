@@ -24,7 +24,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
-import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
 

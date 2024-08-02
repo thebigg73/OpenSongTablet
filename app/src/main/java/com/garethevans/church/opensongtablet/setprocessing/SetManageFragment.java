@@ -18,7 +18,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBinding;
-import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.material.textview.MaterialTextView;

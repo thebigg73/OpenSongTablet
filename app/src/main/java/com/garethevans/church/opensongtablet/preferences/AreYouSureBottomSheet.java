@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.filemanagement;
+package com.garethevans.church.opensongtablet.preferences;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -84,9 +84,15 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
+        // If we are auto starting Nearby, show that prompt to make sense
+        if (what.equals("NearbyAdvertise") || what.equals("NearbyDiscover")) {
+            myView.dialogHeading.setText(getString(R.string.connections_start_on_boot));
+        }
+
         if (what.equals("newSet") && getContext()!=null) {
             myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_set_create_new));
         }
+
         myView.action.setText(textToShow);
         myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);
