@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyBrowseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -28,12 +28,19 @@ public class BrowseHostFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsNearbyBrowseBinding myView;
     @SuppressWarnings("FieldCanBeLocal")
-    private String browse_host_files_string="", set_string="", profile_string="", song_string="";
+    private String browse_host_files_string="", set_string="", profile_string="", song_string="",
+            set_current_string="", set_is_empty_string="", processing_string="",
+            nearby_files_copied_string="", nearby_files_skipped_string="",
+            nearby_files_failed_string="";
     private int currentFile=0;
     private BrowseHostAdapter browseHostAdapter;
     private ArrayList<HostItem> checkedItems = new ArrayList<>();
-    private boolean waitingForFiles = false;
+    private boolean waitingForFiles = false, overwrite = false;
     private String requestedFolder, requestedSubfolder, requestedFilename, folder;
+    private String nearbyCurrentSet=null;
+    private final ArrayList<String> filesCopied = new ArrayList<>();
+    private final ArrayList<String> filesSkipped = new ArrayList<>();
+    private final ArrayList<String> filesFailed = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,7 +62,6 @@ public class BrowseHostFragment extends Fragment {
         prepareStrings();
         setupViews();
         setupListeners();
-        browseHostAdapter = new BrowseHostAdapter(getContext());
         mainActivityInterface.getNearbyConnections().setBrowseHostFragment(this);
         // Now request the files from the host and wait for a response
         mainActivityInterface.getNearbyConnections().sendRequestHostItems();
@@ -65,6 +71,7 @@ public class BrowseHostFragment extends Fragment {
     @Override
     public void onDestroy() {
         mainActivityInterface.getNearbyConnections().setBrowseHostFragment(null);
+        mainActivityInterface.setWhattodo("");
         super.onDestroy();
     }
 
@@ -74,8 +81,13 @@ public class BrowseHostFragment extends Fragment {
             set_string = getString(R.string.set);
             profile_string = getString(R.string.profile);
             song_string = getString(R.string.song);
+            set_current_string = getString(R.string.set_current);
+            processing_string = getString(R.string.processing);
+            nearby_files_copied_string = getString(R.string.nearby_files_copied);
+            nearby_files_skipped_string = getString(R.string.nearby_files_skipped);
+            nearby_files_failed_string = getString(R.string.nearby_files_failed);
             String title_string;
-            String web_help = "";
+            String web_help;
             switch (mainActivityInterface.getWhattodo()) {
                 case "browsesets":
                 default:
@@ -93,7 +105,12 @@ public class BrowseHostFragment extends Fragment {
                     title_string = browse_host_files_string + ": " + song_string;
                     web_help = getString(R.string.website_browse_host_files_songs);
                     break;
+                case "browsecurrentset":
+                    folder = "CurrentSet";
+                    title_string = browse_host_files_string + ": " + set_current_string;
+                    web_help = getString(R.string.website_browse_host_files_set);
             }
+            set_is_empty_string = getString(R.string.set_is_empty);
             mainActivityInterface.updateToolbar(title_string);
             mainActivityInterface.updateToolbarHelp(web_help);
         }
@@ -103,52 +120,69 @@ public class BrowseHostFragment extends Fragment {
         // When we start up, we need to show the dimmed background and progress bar and hide the rest
         myView.dimBackground.setVisibility(View.VISIBLE);
         myView.hostProgressBar.setVisibility(View.VISIBLE);
-        myView.hostFilesRecycler.setVisibility(View.GONE);
+        myView.hostFilesRecycler.setVisibility(View.VISIBLE);
+        myView.importNearbyCurrentSet.setVisibility(View.GONE);
+        myView.importNearbyCurrentSet.setVisibility(View.GONE);
     }
 
     private void setupListeners() {
-        myView.nearbyBrowseSelectAll.setOnClickListener(view -> {
-            browseHostAdapter.selectAll(myView.nearbyBrowseSelectAll.isChecked());
+        myView.nearbyBrowseSelectAll.setOnClickListener(view -> browseHostAdapter.selectAll(myView.nearbyBrowseSelectAll.isChecked()));
+        myView.importNearbyFiles.setOnClickListener(view -> {
+            myView.hostProgressTextView.setVisibility(View.VISIBLE);
+            startGetFiles();
         });
-        myView.importNearbyFiles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startGetFiles();
-            }
-        });
+        myView.importNearbyCurrentSet.setOnClickListener(view -> doImportCurrentSet());
     }
 
+    public void setNearbyCurrentSet(String nearbyCurrentSet) {
+        this.nearbyCurrentSet = nearbyCurrentSet;
+    }
     public void displayHostItems(String[] hostItems) {
-        // We can now update the arrayAdapter
-        myView.hostFilesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        myView.hostFilesRecycler.setAdapter(browseHostAdapter);
-        myView.nearbyBrowseSelectAll.setVisibility(View.GONE);
+        // We can now update the arrayAdapter on the main UI
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.hostFilesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            browseHostAdapter = new BrowseHostAdapter(getContext(),hostItems,folder);
+            myView.hostFilesRecycler.setAdapter(browseHostAdapter);
+            myView.dimBackground.setVisibility(View.GONE);
+            myView.hostProgressBar.setVisibility(View.GONE);
 
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            for (String hostItem:hostItems) {
-                Log.d(TAG,hostItem);
+            if (nearbyCurrentSet!=null && !nearbyCurrentSet.isEmpty()) {
+                myView.importNearbyCurrentSet.setVisibility(View.VISIBLE);
             }
-            browseHostAdapter.prepareItems(hostItems,folder);
-            mainActivityInterface.getMainHandler().post(() -> {
-                myView.dimBackground.setVisibility(View.GONE);
-                myView.hostProgressBar.setVisibility(View.GONE);
-                myView.hostFilesRecycler.setVisibility(View.VISIBLE);
-                browseHostAdapter.notifyItemRangeChanged(0,browseHostAdapter.getItemCount());
-                myView.nearbyBrowseSelectAll.setVisibility(View.VISIBLE);
-                Log.d(TAG,"adapterSize:"+browseHostAdapter.getItemCount());
-                myView.hostFilesRecycler.invalidate();
-            });
+            if (hostItems.length>0) {
+                myView.importNearbyFiles.setVisibility(View.VISIBLE);
+            }
+            myView.nearbyBrowseSelectAll.setVisibility(View.VISIBLE);
         });
 
+    }
+
+    public boolean getOverwrite() {
+        return overwrite;
+    }
+
+    public void addFilesCopied(String filelocation) {
+        filesCopied.add(filelocation);
+    }
+
+    public void addFilesSkipped(String filelocation) {
+        filesSkipped.add(filelocation);
+    }
+
+    public void addFilesFailed(String filelocation) {
+        filesFailed.add(filelocation);
     }
 
     private void startGetFiles() {
         // Get the checked items from the array
-        Log.d(TAG,"startGetFiles()");
+        filesCopied.clear();
+        filesSkipped.clear();
+        filesFailed.clear();
+
         checkedItems = browseHostAdapter.getCheckedItems();
-        Log.d(TAG,"checkedItems.size():"+checkedItems.size());
         currentFile = 0;
         waitingForFiles = true;
+        overwrite = myView.nearbyOverwrite.getChecked();
         // Get the first file if chosen
         if (!checkedItems.isEmpty()) {
             getFile();
@@ -157,17 +191,61 @@ public class BrowseHostFragment extends Fragment {
 
     private void getFile() {
         if (currentFile<checkedItems.size()) {
-            Log.d(TAG,"currentFile:"+currentFile);
-            requestedFolder = checkedItems.get(currentFile).getFolder();
-            requestedSubfolder = checkedItems.get(currentFile).getSubfolder();
-            requestedFilename = checkedItems.get(currentFile).getFilename();
+            // Tell the user what we are doing
+            requestedFolder = checkedItems.get(currentFile).getFolder().trim();
+            requestedSubfolder = checkedItems.get(currentFile).getSubfolder().trim();
+            requestedFilename = checkedItems.get(currentFile).getFilename().trim();
             currentFile += 1;
-            // Initiated the nearby request
+            updateProgressText(currentFile,checkedItems.size(),requestedFilename);
+            // Initiate the nearby request with a short delay
+            mainActivityInterface.getMainHandler().postDelayed(() ->
             mainActivityInterface.getNearbyConnections().requestHostFile(
-                    requestedFolder, requestedSubfolder, requestedFilename);
+                    requestedFolder, requestedSubfolder, requestedFilename),50);
         } else {
+            // We have finished!
+            myView.hostProgressTextView.setText("");
+            myView.hostProgressTextView.setVisibility(View.GONE);
             waitingForFiles = false;
+
+            StringBuilder stringBuilder = getStringBuilder();
+
+            // Update the song menu
+            mainActivityInterface.updateSongList();
+
+            // Show the results in an info bottom sheet
+            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(browse_host_files_string,stringBuilder.toString(),null,null);
+            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InformationBottomSheet");
         }
+    }
+
+    private StringBuilder getStringBuilder() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(nearby_files_copied_string).append(":\n");
+        for (String copied:filesCopied) {
+            stringBuilder.append(copied).append("\n");
+        }
+        stringBuilder.append("\n");
+        stringBuilder.append(nearby_files_skipped_string).append(":\n");
+        for (String skipped:filesSkipped) {
+            stringBuilder.append(skipped).append("\n");
+        }
+        stringBuilder.append("\n");
+        stringBuilder.append(nearby_files_failed_string).append(":\n");
+        for (String failed:filesFailed) {
+            stringBuilder.append(failed).append("\n");
+        }
+        stringBuilder.append("\n");
+        return stringBuilder;
+    }
+
+    public void updateProgressText(int current, int total, String filename) {
+        // Must do this on the UI
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                String current_string = processing_string + "\n" + current + "/" + total + ": "+filename;
+                myView.hostProgressTextView.setText(current_string);
+            }
+        });
     }
 
     public String getRequestedFolder() {
@@ -188,5 +266,24 @@ public class BrowseHostFragment extends Fragment {
     public void continueGetFiles() {
         // When the payload has been received and dealt with, move on to the next file
         getFile();
+    }
+
+    private void doImportCurrentSet() {
+        if (nearbyCurrentSet!=null && !nearbyCurrentSet.isEmpty()) {
+            // Initialise the current set
+            mainActivityInterface.getCurrentSet().setSetCurrent(nearbyCurrentSet);
+            mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
+            // Wait before continuing (to ensure the current set preference is saved)
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                mainActivityInterface.getSetActions().parseCurrentSet();
+                if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                    mainActivityInterface.getShowToast().success();
+                } else {
+                    mainActivityInterface.getShowToast().error();
+                }
+            },500);
+        } else {
+            mainActivityInterface.getShowToast().doIt(set_is_empty_string);
+        }
     }
 }

@@ -1,55 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
+            android:layout_height="match_parent"
+            style="@style/DefaultView"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/testBox"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/midi_test"
-                android:textAppearance="@style/largeText" />
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/nearby_found_files" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/nearbyOverwrite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overwrite"
+                android:hint="@string/overwrite_info"/>
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/nearbyBrowseSelectAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/select_all"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hostFilesRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingBottom="100dp"
+                android:clipToPadding="false"
+                android:clipChildren="false"/>
 
         </LinearLayout>
-    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
     <FrameLayout
         android:id="@+id/dimBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/scrim"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/hostProgressBar"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
-        android:layout_gravity="center" />
+        android:minHeight="@dimen/progress_bar_size"
+        android:minWidth="@dimen/progress_bar_size"
+        android:layout_gravity="center"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/hostProgressTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/progress_bar_size"
+        android:background="@drawable/rounded_box"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/importNearbyFiles"
@@ -58,7 +76,19 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:padding="16dp"
-        android:text="@string/import_basic"
-        app:icon="@drawable/database_import" />
+        android:text="@string/nearby_get_songs"
+        app:icon="@drawable/download"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/importNearbyCurrentSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:text="@string/nearby_get_setlist"
+        app:icon="@drawable/download"
+        android:visibility="visible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

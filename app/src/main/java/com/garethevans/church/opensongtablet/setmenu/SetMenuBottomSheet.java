@@ -27,7 +27,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private static final String TAG = "SetMenuBottomSheet";
     private String website_menu_set_string="", set_new_string="", deeplink_sets_string="",
-            deeplink_bible_string="", deeplink_custom_slide_string="";
+            deeplink_bible_string="", deeplink_custom_slide_string="", deeplink_browse_host_files_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -76,15 +76,21 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             deeplink_sets_string = getString(R.string.deeplink_sets);
             deeplink_bible_string = getString(R.string.deeplink_bible);
             deeplink_custom_slide_string = getString(R.string.deeplink_custom_slide);
+            deeplink_browse_host_files_string = getString(R.string.deeplink_browse_host_files);
         }
     }
     private void checkViewsAllowed() {
         // Check there are songs!
         if (mainActivityInterface.getCurrentSet().getSetItemInfos()==null || mainActivityInterface.getCurrentSet().getCurrentSetSize()==0) {
+            myView.sortSet.setVisibility(View.GONE);
             myView.shuffleSet.setVisibility(View.GONE);
             myView.randomSong.setVisibility(View.GONE);
             myView.setRefresh.setVisibility(View.GONE);
         }
+        // Check if we can get the host current set
+        myView.hostCurrentSet.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
+                !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
+                mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE : View.GONE);
     }
 
     private void setListeners() {
@@ -126,6 +132,11 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            dismiss();
+        });
+        myView.hostCurrentSet.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("browsecurrentset");
+            mainActivityInterface.navigateToFragment(deeplink_browse_host_files_string,0);
             dismiss();
         });
     }

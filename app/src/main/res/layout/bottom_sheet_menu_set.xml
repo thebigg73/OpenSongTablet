@@ -96,6 +96,16 @@
                     custom:mydrawable="@drawable/set_refresh"
                     android:padding="12dp"
                     android:text="@string/set_rebuild" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/hostCurrentSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connections_host_current_set_info"
+                    custom:mydrawable="@drawable/download_multiple"
+                    android:padding="12dp"
+                    android:text="@string/connections_host_current_set" />
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -10,6 +10,8 @@ public class HostItem {
     private String tag;
     private boolean exists;
     private boolean checked;
+    private String key;
+    private long dateModified;
 
     public void setFilename(String filename) {
         this.filename = filename;
@@ -35,6 +37,13 @@ public class HostItem {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+    public void setKey(String key) {
+        this.key = key;
+    }
+    public void setDateModified(long dateModified) {
+        this.dateModified = dateModified;
+    }
+
     public String getFilename() {
         return filename;
     }
@@ -58,5 +67,11 @@ public class HostItem {
     }
     public boolean getChecked() {
         return checked;
+    }
+    public String getKey() {
+        return key;
+    }
+    public long getDateModified() {
+        return dateModified;
     }
 }
