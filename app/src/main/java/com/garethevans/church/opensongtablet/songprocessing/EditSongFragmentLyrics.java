@@ -293,33 +293,37 @@ public class EditSongFragmentLyrics extends Fragment {
 
     private void undoLyrics() {
         // If we can go back, undo the changes
-        int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
-        if (lyricsUndosPos>0) {
-            lyricsUndosPos = lyricsUndosPos - 1;
-            mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
-            addUndoStep = false;
-            myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
-            int cursorPos = mainActivityInterface.getTempSong().getLyricsUndoCursorPos().get(lyricsUndosPos,0);
-            if (cursorPos>=0 && cursorPos<myView.lyrics.getText().length()) {
-                myView.lyrics.setSelection(cursorPos);
+        if (mainActivityInterface.getTempSong().getLyricsUndoCursorPos()!=null) {
+            int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
+            if (lyricsUndosPos > 0) {
+                lyricsUndosPos = lyricsUndosPos - 1;
+                mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+                addUndoStep = false;
+                myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
+                int cursorPos = mainActivityInterface.getTempSong().getLyricsUndoCursorPos().get(lyricsUndosPos, 0);
+                if (cursorPos >= 0 && cursorPos < myView.lyrics.getText().length()) {
+                    myView.lyrics.setSelection(cursorPos);
+                }
             }
+            validUndoRedo(lyricsUndosPos);
         }
-        validUndoRedo(lyricsUndosPos);
     }
     private void redoLyrics() {
         // If we can go forward, redo the changes
-        int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
-        if (lyricsUndosPos<mainActivityInterface.getTempSong().getLyricsUndos().size()-1) {
-            lyricsUndosPos = lyricsUndosPos + 1;
-            addUndoStep = false;
-            mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
-            myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
-            int cursorPos = mainActivityInterface.getTempSong().getLyricsUndoCursorPos().get(lyricsUndosPos,0);
-            if (cursorPos>=0 && cursorPos<myView.lyrics.getText().length()) {
-                myView.lyrics.setSelection(cursorPos);
+        if (mainActivityInterface.getTempSong().getLyricsUndoCursorPos()!=null) {
+            int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
+            if (lyricsUndosPos < mainActivityInterface.getTempSong().getLyricsUndos().size() - 1) {
+                lyricsUndosPos = lyricsUndosPos + 1;
+                addUndoStep = false;
+                mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+                myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
+                int cursorPos = mainActivityInterface.getTempSong().getLyricsUndoCursorPos().get(lyricsUndosPos, 0);
+                if (cursorPos >= 0 && cursorPos < myView.lyrics.getText().length()) {
+                    myView.lyrics.setSelection(cursorPos);
+                }
             }
+            validUndoRedo(lyricsUndosPos);
         }
-        validUndoRedo(lyricsUndosPos);
     }
     private void validUndoRedo(int currentPosition) {
         // Enable/disable the undo button
