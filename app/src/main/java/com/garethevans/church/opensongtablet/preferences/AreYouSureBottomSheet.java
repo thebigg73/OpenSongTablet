@@ -85,7 +85,8 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         // If we are auto starting Nearby, show that prompt to make sense
-        if (what.equals("NearbyAdvertise") || what.equals("NearbyDiscover")) {
+        if ((what.equals("NearbyAdvertise") || what.equals("NearbyDiscover")) &&
+                mainActivityInterface.getNearbyConnections().getNearbyStartOnBoot()) {
             myView.dialogHeading.setText(getString(R.string.connections_start_on_boot));
         }
 
