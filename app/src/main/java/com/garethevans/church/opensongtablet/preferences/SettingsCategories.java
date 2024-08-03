@@ -29,7 +29,7 @@ public class SettingsCategories extends Fragment {
     private String settings_string="", mode_presenter_string="", presenter_mode_string="",
             mode_stage_string="", stage_mode_string="", performance_mode_string="",
             play_services_error_string="", midi_description_string="", not_available_string="",
-            location_string="", permissions_refused_string="", wait_string="";
+            location_string="", permissions_refused_string="", wait_string="", nearby_string="";
 
     @Override
     public void onResume() {
@@ -79,6 +79,7 @@ public class SettingsCategories extends Fragment {
             midi_description_string = getString(R.string.midi_description);
             not_available_string = getString(R.string.not_available);
             location_string = getString(R.string.location);
+            nearby_string = getString(R.string.nearby_devices);
             permissions_refused_string = getString(R.string.permissions_refused);
             wait_string = getString(R.string.index_songs_wait);
         }
@@ -137,7 +138,13 @@ public class SettingsCategories extends Fragment {
 
             } else {
                 // notify user
-                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(location_string,
+                String permission_needed;
+                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU) {
+                    permission_needed = nearby_string;
+                } else {
+                    permission_needed = location_string;
+                }
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(permission_needed,
                         permissions_refused_string, settings_string, "appPrefs");
                 informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
             }
@@ -176,17 +183,8 @@ public class SettingsCategories extends Fragment {
             mainActivityInterface.getAppPermissions().resetPermissionsLog();
         });
         myView.webServerButton.setOnClickListener(v -> {
-            // Check we have the required permission to get the IP address
-            mainActivityInterface.setWhattodo("webserver");
-            webserverPermission.launch(mainActivityInterface.getAppPermissions().getWebServerPermission());
-            if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
-                mainActivityInterface.navigateToFragment(null, R.id.webServerFragment);
-            } else {
-                // notify user
-                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(location_string,
-                        permissions_refused_string, settings_string, "appPrefs");
-                informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
-            }
+            // Check for permissions once we get to the page
+            mainActivityInterface.navigateToFragment(null, R.id.webServerFragment);
         });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> {

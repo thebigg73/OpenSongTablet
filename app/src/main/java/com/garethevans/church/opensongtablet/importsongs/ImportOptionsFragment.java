@@ -130,7 +130,7 @@ public class ImportOptionsFragment extends Fragment {
             }
         });
         cameraPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (!isGranted) {
+            if (mainActivityInterface.getAppPermissions().hasCameraPermission()) {
                 // Permission hasn't been allowed and we are due to explain why
                 try {
                     Snackbar.make(myView.getRoot(), R.string.camera_info,

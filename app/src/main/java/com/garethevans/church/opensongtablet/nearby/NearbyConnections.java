@@ -155,7 +155,7 @@ public class NearbyConnections implements NearbyInterface {
                 usingNearby = true;
             }
             nearbyStartOnBoot = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyStartOnBoot",false);
-            if (nearbyStartOnBoot) {
+            if (nearbyStartOnBoot && mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
                 usingNearby = true;
             }
             nearbyReceiveHostAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("receiveHostAutoscroll", true);
@@ -182,14 +182,14 @@ public class NearbyConnections implements NearbyInterface {
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
 
         // If we have chosen to, start the default advertise/discover action
-        if (firstBoot && nearbyStartOnBoot && nearbyPreferredHost) {
+        if (firstBoot && nearbyStartOnBoot && nearbyPreferredHost && mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
             // We want to be the host (based on previous choice)
             if (nearbyTemporaryAdvertise) {
                 doTempAdvertise();
             } else {
                 startAdvertising();
             }
-        } else if (firstBoot && nearbyStartOnBoot) {
+        } else if (firstBoot && nearbyStartOnBoot && mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
             // We want to be a client
             doTempDiscover();
         }

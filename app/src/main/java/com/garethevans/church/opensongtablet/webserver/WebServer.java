@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -237,56 +236,47 @@ public class WebServer extends NanoHTTPD {
     @SuppressLint("DefaultLocale")
     public String getIP() {
         ip = "http://0.0.0.0:8080/";
-        /*try {
-            WifiManager wifiMan = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInf = wifiMan.getConnectionInfo();
-            int ipAddress = wifiInf.getIpAddress();
-            ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "http://" + ip + ":8080/";
-        }*/
+        if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
+            try {
+                Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                        .getNetworkInterfaces();
+                while (enumNetworkInterfaces.hasMoreElements()) {
+                    NetworkInterface networkInterface = enumNetworkInterfaces
+                            .nextElement();
+                    Enumeration<InetAddress> enumInetAddress = networkInterface
+                            .getInetAddresses();
+                    while (enumInetAddress.hasMoreElements()) {
+                        InetAddress inetAddress = enumInetAddress.nextElement();
 
-        try {
-            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                    .getNetworkInterfaces();
-            while (enumNetworkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = enumNetworkInterfaces
-                        .nextElement();
-                Enumeration<InetAddress> enumInetAddress = networkInterface
-                        .getInetAddresses();
-                while (enumInetAddress.hasMoreElements()) {
-                    InetAddress inetAddress = enumInetAddress.nextElement();
+                        if (inetAddress.getHostAddress() != null &&
+                                !inetAddress.getHostAddress().contains(":")) {
 
-                    if (inetAddress.getHostAddress()!=null &&
-                            !inetAddress.getHostAddress().contains(":")) {
-
-                        if (!inetAddress.getHostAddress().contains("127.0")){
-                            Log.d(TAG,"found network");
-                            ip = "http://" + inetAddress.getHostAddress() + ":8080/";
-                            break;
+                            if (!inetAddress.getHostAddress().contains("127.0")) {
+                                ip = "http://" + inetAddress.getHostAddress() + ":8080/";
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-            ip = "http://0.0.0.0:8080/";
-        }
-
-        // Last chance method of getting the IP address!
-        if (ip.equals("http://0.0.0.0:8080/")) {
-            try {
-                WifiManager wifiMan = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                WifiInfo wifiInf = wifiMan.getConnectionInfo();
-                int ipAddress = wifiInf.getIpAddress();
-                ip = "http://" + String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff)) + ":8080/";
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                 ip = "http://0.0.0.0:8080/";
+            }
+
+            // Last chance method of getting the IP address!
+            if (ip.equals("http://0.0.0.0:8080/")) {
+                try {
+                    WifiManager wifiMan = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    WifiInfo wifiInf = wifiMan.getConnectionInfo();
+                    int ipAddress = wifiInf.getIpAddress();
+                    ip = "http://" + String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff)) + ":8080/";
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                    ip = "http://0.0.0.0:8080/";
+                }
             }
         }
 
@@ -447,7 +437,6 @@ public class WebServer extends NanoHTTPD {
 
         // Check to see if the song is in the users set even if clicked on from web song menu
         if (!inset) {
-            Log.d(TAG,"WebServer looking for:"+songForHTML.getFolder()+"/"+songForHTML.getFilename());
             if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
                 index = mainActivityInterface.getCurrentSet().getIndexSongInSet();
                 inset = true;

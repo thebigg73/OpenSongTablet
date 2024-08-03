@@ -89,6 +89,12 @@ public class AppPermissions {
     }
 
     public String[] getWebServerPermission() {
+        return new String[]{
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE};
+    }
+
+    public String[] getLocalHostSpotPermission() {
         if (Build.VERSION.SDK_INT >= 33) { //
             return new String[]{Manifest.permission.NEARBY_WIFI_DEVICES,
                     Manifest.permission.ACCESS_WIFI_STATE,
@@ -112,6 +118,10 @@ public class AppPermissions {
 
     public boolean hasWebServerPermission() {
         return checkForPermissions(getWebServerPermission());
+    }
+
+    public boolean hasHotSpotPermission() {
+        return checkForPermissions(getLocalHostSpotPermission());
     }
 
     public boolean hasNearbyPermissions() {
