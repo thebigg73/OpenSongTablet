@@ -68,13 +68,13 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private void importDatabase() {
         // This copies in the version in the settings folder if it exists and isn't empty
         boolean copied;
-        if (mainActivityInterface.getStorageAccess().uriExists(userDB) &&
+        if (mainActivityInterface.getStorageAccess().uriTreeValid(userDB) && mainActivityInterface.getStorageAccess().uriExists(userDB) &&
             mainActivityInterface.getStorageAccess().getFileSizeFromUri(userDB)>0) {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(userDB);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
             copied = mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabase copyFile from "+userDB+" to "+appDB+": "+copied);
-        } else {
+        } else if (mainActivityInterface.getStorageAccess().uriTreeValid(userDB)){
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" importDatabse Create Settings/"+SQLite.NON_OS_DATABASE_NAME+" deleteOld=false");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
@@ -92,29 +92,33 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             getDatabaseUris();
         }
 
-        // Get an input stream for the app database so we can copy it
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+        if (mainActivityInterface.getStorageAccess().uriTreeValid(userDB)) {
 
-        // Make sure the userDB file exists if it isn't there - may not have been used before
-        if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                    false,userDB,null,"Settings","",
-                    SQLite.NON_OS_DATABASE_NAME);
+            // Get an input stream for the app database so we can copy it
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+
+            // Make sure the userDB file exists if it isn't there - may not have been used before
+            if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                        false, userDB, null, "Settings", "",
+                        SQLite.NON_OS_DATABASE_NAME);
+            }
+
+            // Get an output stream for the userDB to copy into
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
+
+            // If all is well, attempt the copy
+            boolean copied;
+            if (inputStream != null && outputStream != null) {
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " copyNonOpenSongAppDB copyFile from " + appDB + " to " + userDB);
+                copied = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+                Log.d(TAG, "Copy user database " + SQLite.NON_OS_DATABASE_NAME + " from " + appDB + " to " + userDB + " - success:" + copied);
+            } else {
+                copied = false;
+            }
+            return copied;
         }
-
-        // Get an output stream for the userDB to copy into
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
-
-        // If all is well, attempt the copy
-        boolean copied;
-        if (inputStream!=null && outputStream!=null) {
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " copyNonOpenSongAppDB copyFile from " + appDB + " to " + userDB);
-            copied = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-            Log.d(TAG, "Copy user database " + SQLite.NON_OS_DATABASE_NAME + " from " + appDB + " to " + userDB + " - success:" + copied);
-        } else {
-            copied = false;
-        }
-        return copied;
+        return false;
     }
 
     @Override
