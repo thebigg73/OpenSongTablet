@@ -183,17 +183,26 @@ public class ChordFormatFragment extends Fragment {
         });
         myView.capoChords.addOnChangeListener((slider, value, fromUser) -> {
             if (value==2) {
+                // Both capo and native chords
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "displayCapoAndNativeChords",true);
-            } else if (value==1) {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "displayCapoChords",true);
+            } else if (value==1) {
+                // Just the capo chords
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(
+                        "displayCapoChords",true);
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(
+                        "displayCapoAndNativeChords",false);
             } else {
+                // Only the native chords (no capo)
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "displayCapoAndNativeChords",false);
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "displayCapoChords",false);
             }
+            // Update the processing preferences so they get used
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.capoStyle.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.
                 getPreferences().setMyPreferenceBoolean(
