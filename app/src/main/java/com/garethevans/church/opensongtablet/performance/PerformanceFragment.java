@@ -488,10 +488,11 @@ public class PerformanceFragment extends Fragment {
         // We only load a song if there is a change of song file, or we manually force it, or receive from the host
         if (!processingTestView && myView!=null && (songChange || myView.inlineSetList.getForceReload()
                 || mainActivityInterface.getTranspose().getForceReload() ||
-            mainActivityInterface.getNearbyConnections().getForceReload())) {
+            mainActivityInterface.getNearbyConnections().getForceReload()) || mainActivityInterface.getForceReload()) {
 
             // Clear any force reload flags
             firstSongLoad = false;
+            mainActivityInterface.setForceReload(false);
             myView.inlineSetList.setForceReload(false);
             mainActivityInterface.getTranspose().setForceReload(false);
             mainActivityInterface.getNearbyConnections().setForceReload(false);

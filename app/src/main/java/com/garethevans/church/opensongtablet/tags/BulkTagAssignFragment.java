@@ -124,7 +124,6 @@ public class BulkTagAssignFragment extends Fragment {
         });
         myView.filterButtons.tagButton.setOnClickListener(v -> {
             songListSearchByTag = !songListSearchByTag;
-            showHideRows(myView.filters.tagLayout,songListSearchByTag);
             fixColor(myView.filterButtons.tagButton,songListSearchByTag);
         });
         myView.filterButtons.keyButton.setOnClickListener(v -> {
@@ -154,7 +153,7 @@ public class BulkTagAssignFragment extends Fragment {
             if (showForThisTag) {
                 myView.searchThisTag.setImageResource(R.drawable.filter_off);
                 songListSearchByTag = true;
-                showHideRows(myView.filters.tagSearch, true);
+                showHideRows(myView.filters.tagLayout, true);
                 fixColor(myView.filterButtons.tagButton, true);
                 myView.filters.tagSearch.setText(myView.thisTag.getText().toString());
             } else {

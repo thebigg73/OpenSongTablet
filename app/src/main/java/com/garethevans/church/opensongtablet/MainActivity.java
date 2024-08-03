@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
-    private boolean settingsOpen = false, showSetMenu,
+    private boolean settingsOpen = false, showSetMenu, forceReload,
             pageButtonActive = true, menuOpen, firstRun = true;
     private final String TAG = "MainActivity";
     private Menu globalMenuItem;
@@ -1287,8 +1287,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    // If we navigate to any fragment, the forceReload (for song display) is set to true
+    // The Performance/Stage/Presenter modes remove this flag after loading
+    @Override
+    public void setForceReload(boolean forceReload) {
+        this.forceReload = forceReload;
+    }
+    @Override
+    public boolean getForceReload() {
+        return forceReload;
+    }
+
     @Override
     public void navigateToFragment(String deepLink, int id) {
+        // Set the force reload flag as we want the song to reload when needed
+        // Set the force reload flag
+        forceReload = true;
         try {
             if (Thread.currentThread() != getMainHandler().getLooper().getThread()) {
                 getMainHandler().post(super::onPostResume);

@@ -228,6 +228,8 @@ public interface MainActivityInterface {
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     FragmentManager getMyFragmentManager();
     void dealWithIntent(int fragmentId);
+    void setForceReload(boolean forceReload);
+    boolean getForceReload();
 
     // Showcase
     ShowCase getShowCase();
