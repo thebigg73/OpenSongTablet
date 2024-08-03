@@ -342,7 +342,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         if (songListSearchByTag) {
             songListSearchByTag = false;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", false);
-            showHideRows(myView.filters.tagSearch, songListSearchByTag);
+            showHideRows(myView.filters.tagLayout, songListSearchByTag);
         }
 
         if (songListSearchByTitle) {
