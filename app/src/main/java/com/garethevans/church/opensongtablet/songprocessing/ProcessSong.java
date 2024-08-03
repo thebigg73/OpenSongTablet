@@ -160,6 +160,42 @@ public class ProcessSong {
         if (thisSong.getEncoding() == null || thisSong.getEncoding().isEmpty()) {
             thisSong.setEncoding("UTF-8");
         }
+
+        // Fix null values
+        thisSong.setTitle(fixNullValues(thisSong.getTitle()));
+        thisSong.setAuthor(fixNullValues(thisSong.getAuthor()));
+        thisSong.setCopyright(fixNullValues(thisSong.getCopyright()));
+        thisSong.setPresentationorder(fixNullValues(thisSong.getPresentationorder()));
+        thisSong.setHymnnum(fixNullValues(thisSong.getHymnnum()));
+        thisSong.setCapoprint(fixNullValues(thisSong.getCapoprint()));
+        thisSong.setCapo(fixNullValues(thisSong.getCapo()));
+        thisSong.setTempo(fixNullValues(thisSong.getTempo()));
+        thisSong.setTimesig(fixNullValues(thisSong.getTimesig()));
+        thisSong.setAutoscrolldelay(fixNullValues(thisSong.getAutoscrolldelay()));
+        thisSong.setAutoscrolllength(fixNullValues(thisSong.getAutoscrolllength()));
+        thisSong.setCcli(fixNullValues(thisSong.getCcli()));
+        thisSong.setTheme(fixNullValues(thisSong.getTheme()));
+        thisSong.setAlttheme(fixNullValues(thisSong.getAlttheme()));
+        thisSong.setUser1(fixNullValues(thisSong.getUser1()));
+        thisSong.setUser2(fixNullValues(thisSong.getUser2()));
+        thisSong.setUser3(fixNullValues(thisSong.getUser3()));
+        thisSong.setBeatbuddysong(fixNullValues(thisSong.getBeatbuddysong()));
+        thisSong.setBeatbuddykit(fixNullValues(thisSong.getBeatbuddykit()));
+        thisSong.setKey(fixNullValues(thisSong.getKey()));
+        thisSong.setKeyOriginal(fixNullValues(thisSong.getKeyOriginal()));
+        thisSong.setPreferredInstrument(fixNullValues(thisSong.getPreferredInstrument()));
+        thisSong.setAka(fixNullValues(thisSong.getAka()));
+        thisSong.setMidi(fixNullValues(thisSong.getMidi()));
+        thisSong.setMidiindex(fixNullValues(thisSong.getMidiindex()));
+        thisSong.setNotes(fixNullValues(thisSong.getNotes()));
+        thisSong.setPadfile(fixNullValues(thisSong.getPadfile()));
+        thisSong.setLinkyoutube(fixNullValues(thisSong.getLinkyoutube()));
+        thisSong.setLinkaudio(fixNullValues(thisSong.getLinkaudio()));
+        thisSong.setLinkweb(fixNullValues(thisSong.getLinkweb()));
+        thisSong.setLinkother(fixNullValues(thisSong.getLinkother()));
+        thisSong.setAbc(fixNullValues(thisSong.getAbc()));
+        thisSong.setAbcTranspose(fixNullValues(thisSong.getAbcTranspose()));
+
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + thisSong.getEncoding() + "\"?>\n";
         myNEWXML += "<song>\n";
         myNEWXML += "  <title>" + parseToHTMLEntities(thisSong.getTitle()).trim() + "</title>\n";
@@ -208,6 +244,13 @@ public class ProcessSong {
         }
         myNEWXML += "</song>";
         return myNEWXML;
+    }
+
+    private String fixNullValues(String currentText) {
+        if (currentText==null) {
+            currentText = "";
+        }
+        return currentText;
     }
 
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
