@@ -740,6 +740,7 @@
     <string name="music_score_info">Edit score notes</string>
     <string name="my_band">Import Band sample songs</string>
     <string name="my_church">Import Church sample songs</string>
+    <string name="nearby_devices">Nearby devices</string>
     <string name="nearby_files_copied">Files copied:</string>
     <string name="nearby_files_failed">Files failed:</string>
     <string name="nearby_files_skipped">Files skipped:</string>

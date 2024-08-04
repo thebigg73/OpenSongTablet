@@ -579,6 +579,7 @@
     <string name="music_score_info">Editar notas de partitura</string>
     <string name="my_band">"Canciones de Import Band"</string>
     <string name="my_church">"Canciones de la muestra de la iglesia de la importación"</string>
+    <string name="nearby_devices">Dispositivos cercanos</string>
     <string name="nearby_files_copied">Archivos copiados:</string>
     <string name="nearby_files_failed">Los archivos fallaron:</string>
     <string name="nearby_files_skipped">Archivos omitidos:</string>

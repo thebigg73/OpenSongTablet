@@ -579,6 +579,7 @@
     <string name="music_score_info">Modifica le note sulla partitura</string>
     <string name="my_band">"Importa canzoni di brano di band"</string>
     <string name="my_church">"Importare canzoni di esempio Church"</string>
+    <string name="nearby_devices">Dispositivi nelle vicinanze</string>
     <string name="nearby_files_copied">File copiati:</string>
     <string name="nearby_files_failed">File non riusciti:</string>
     <string name="nearby_files_skipped">File saltati:</string>

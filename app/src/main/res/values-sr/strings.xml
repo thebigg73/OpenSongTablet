@@ -579,6 +579,7 @@
     <string name="music_score_info">Uredite beleške o rezultatu</string>
     <string name="my_band">Uvoz primera pesama bendova</string>
     <string name="my_church">Uvoz primera crkvenih pesama</string>
+    <string name="nearby_devices">Uređaji u blizini</string>
     <string name="nearby_files_copied">Fajlovi kopirani:</string>
     <string name="nearby_files_failed">Fajlovi nisu uspeli:</string>
     <string name="nearby_files_skipped">Fajlovi preskočeni:</string>

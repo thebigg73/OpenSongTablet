@@ -579,6 +579,7 @@
     <string name="music_score_info">编辑乐谱注释</string>
     <string name="my_band">"导入乐队示例歌曲"</string>
     <string name="my_church">"进口教会样品歌曲"</string>
+    <string name="nearby_devices">附近的设备</string>
     <string name="nearby_files_copied">复制的文件：</string>
     <string name="nearby_files_failed">文件失败：</string>
     <string name="nearby_files_skipped">跳过的文件：</string>

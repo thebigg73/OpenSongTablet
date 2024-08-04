@@ -579,6 +579,7 @@
     <string name="music_score_info">Editar notas de partitura</string>
     <string name="my_band">"Importar músicas de amostra da banda"</string>
     <string name="my_church">"Importar músicas de amostra da Igreja"</string>
+    <string name="nearby_devices">Dispositivos próximos</string>
     <string name="nearby_files_copied">Arquivos copiados:</string>
     <string name="nearby_files_failed">Falha nos arquivos:</string>
     <string name="nearby_files_skipped">Arquivos ignorados:</string>

@@ -579,6 +579,7 @@
     <string name="music_score_info">Redigera notanteckningar</string>
     <string name="my_band">"Importera bandprov låtar"</string>
     <string name="my_church">"Importera kyrkans provlåtar"</string>
+    <string name="nearby_devices">Enheter i närheten</string>
     <string name="nearby_files_copied">Filer kopierade:</string>
     <string name="nearby_files_failed">Filer misslyckades:</string>
     <string name="nearby_files_skipped">Överhoppade filer:</string>
