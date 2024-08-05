@@ -639,4 +639,5 @@ public class WindowFlags {
     public boolean isKeyboardShowing() {
         return insetsCompat.isVisible(WindowInsetsCompat.Type.ime());
     }
+
 }

@@ -120,6 +120,10 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView.transposeCopy.setChecked(false);
         myView.transposeCapo.setChecked(false);
 
+        myView.nestedScrollView.setFabToAnimate(myView.convertToFlats);
+        myView.nestedScrollView.setFab2ToAnimate(myView.convertToSharps);
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.doTransposeButton);
+        
         if (position>-1 && mainActivityInterface.getCurrentSet()!=null &&
                 mainActivityInterface.getCurrentSet().getSetItemInfos()!=null &&
                 position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {

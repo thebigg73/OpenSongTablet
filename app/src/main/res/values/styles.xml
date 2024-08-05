@@ -339,20 +339,28 @@
         <item name="backgroundTint">@color/transparent</item>
         <item name="android:maxWidth">1600dp</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="paddingTopSystemWindowInsets">false</item>
+        <item name="marginTopSystemWindowInsets">false</item>
     </style>
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
     <style name="FullscreenBottomSheet" parent="BottomSheetDialogTheme">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowIsFloating">false</item>
         <item name="behavior_skipCollapsed">true</item>
         <item name="behavior_fitToContents">true</item>
-        <item name="android:layout_gravity">center_horizontal</item>
         <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
+        <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="paddingTopSystemWindowInsets">false</item>
+        <item name="marginTopSystemWindowInsets">false</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="behavior_hideable">true</item>
         <item name="enableEdgeToEdge">true</item>
         <item name="android:itemPadding">16dp</item>
-        <item name="paddingBottomSystemWindowInsets">true</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="popupWindow" parent="">

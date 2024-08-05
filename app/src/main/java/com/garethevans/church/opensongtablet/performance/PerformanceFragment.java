@@ -506,7 +506,6 @@ public class PerformanceFragment extends Fragment {
 
                 // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')
                 if (!processingTestView) {
-                    Log.d(TAG,"doing the processing");
                     processingTestView = true;
                     // Loading the song is dealt with in this fragment as specific actions are required
 
@@ -1365,9 +1364,6 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPad().autoStartPad();
 
             // Update any midi commands (if any)
-            Log.d(TAG,"About to send MIDI");
-            Log.d(TAG,"getBeatBuddyAutoLookup():"+mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup());
-            Log.d(TAG, "getMidiSendAuto():"+mainActivityInterface.getMidi().getMidiSendAuto());
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() || mainActivityInterface.getMidi().getMidiSendAuto()) {
 
                 int delay = 0;

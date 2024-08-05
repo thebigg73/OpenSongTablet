@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    style="@style/FullscreenBottomSheet"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
@@ -16,16 +17,20 @@
     <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:padding="16dp"
-        android:scrollbars="vertical">
+        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/dialogHeading"
+        android:scrollbars="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="32dp">
+            android:paddingBottom="128dp"
+            android:layout_marginBottom="128dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/keyChangeTextView"
@@ -159,7 +164,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/convertToFlats"
@@ -168,7 +177,6 @@
             android:layout_gravity="start|center_vertical"
             android:layout_margin="8dp"
             android:contentDescription="b"
-            android:padding="16dp"
             android:src="@drawable/flat"
             tools:ignore="HardcodedText" />
 
@@ -179,13 +187,13 @@
             android:layout_gravity="start|center_vertical"
             android:layout_margin="8dp"
             android:contentDescription="#"
-            android:padding="16dp"
             android:src="@drawable/sharp"
             tools:ignore="HardcodedText" />
 
         <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:minWidth="280dp">
 
@@ -194,11 +202,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
-                android:layout_margin="16dp"
                 android:padding="16dp"
                 android:text="@string/transpose"
                 app:icon="@drawable/transpose" />
         </FrameLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -29,10 +29,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -86,7 +90,6 @@ import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
-import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
@@ -117,6 +120,7 @@ import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.AppPermissions;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
@@ -335,6 +339,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EdgeToEdge.enable(this);
 
         // Set up crash collector
         setUpCrashCollector();
@@ -3830,11 +3836,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Otherwise they are created on the fly (for link files, importing songs, etc).
         if (location != null) {
             try {
+                CustomTabsIntent customTabsIntent = null;
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 if (location.startsWith("http")) {
                     if (!location.contains("https://www.google.com/search?q=")) {
                         // Not searching, so just display the webpage in the default browser
+                        customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
+                                .setToolbarColor(ContextCompat.getColor(this,R.color.colorPrimary)).build()).build();
                         intent.setData(Uri.parse(location));
+                        customTabsIntent.launchUrl(MainActivity.this, Uri.parse(location));
                     } else {
                         // Searching.  May not be using Google/Chrome, so use default search engine
                         // Replace the location with the search phrase (strip out the google.com/search?q= bit)
@@ -3855,8 +3865,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setDataAndType(uri, mimeType);
                 }
-
-                startActivity(intent);
+                if (customTabsIntent==null) {
+                    startActivity(intent);
+                }
             } catch (ActivityNotFoundException nf) {
                 // No suitable application to open the document
                 showToast.doIt(no_suitable_application);
