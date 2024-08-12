@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,6 +151,10 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Backgrounds","",""));
+        }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
 
         myView.singleColor.setOnLongClickListener(view -> {

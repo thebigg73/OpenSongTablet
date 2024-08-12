@@ -162,7 +162,7 @@ public class EditSongFragmentLyrics extends Fragment {
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                         mainActivityInterface.getTempSong().getFolder(),
                         mainActivityInterface.getTempSong().getFilename(),
-                        1, 200, 200, "N", true);
+                        0, 200, 200, "N", true);
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (myView!=null) {
                         myView.previewImage.setVisibility(View.VISIBLE);
@@ -269,7 +269,7 @@ public class EditSongFragmentLyrics extends Fragment {
             mainActivityInterface.navHome();
         });
         myView.imageEdit.setOnClickListener(v -> {
-            ImageAdjustBottomSheet imageAdjustBottomSheet = new ImageAdjustBottomSheet(mainActivityInterface.getTempSong());
+            ImageAdjustBottomSheet imageAdjustBottomSheet = new ImageAdjustBottomSheet(this,mainActivityInterface.getTempSong());
             imageAdjustBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ImageAdjustBottomSheet");
         });
 

@@ -41,13 +41,19 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
     private Song thisSong;
     private String crop_image_string, crop_website;
     private int originalWidth, originalHeight, exifRotation=0;
+    private EditSongFragmentLyrics editSongFragmentLyrics;
 
     @SuppressWarnings("unused")
     ImageAdjustBottomSheet() {
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    ImageAdjustBottomSheet(Song thisSong) {
+    ImageAdjustBottomSheet(EditSongFragmentLyrics editSongFragmentLyrics, Song thisSong) {
+        this.editSongFragmentLyrics = editSongFragmentLyrics;
         this.thisSong = thisSong;
     }
 
@@ -113,7 +119,7 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                         thisSong.getFolder(), thisSong.getFilename());
 
-                if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                if (thisSong.getFiletype().equals("IMG")) {
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         try {
@@ -206,23 +212,28 @@ public class ImageAdjustBottomSheet extends BottomSheetDialogFragment {
 
                 // Set the crop points to the user3 field - overwrite everything else!
                 thisSong.setUser3(destClip);
-                mainActivityInterface.getSaveSong().updateSong(thisSong, false);
+                mainActivityInterface.getSaveSong().doSave(thisSong);
+                mainActivityInterface.getTempSong().setUser3(destClip);
+                //mainActivityInterface.getSaveSong().updateSong(thisSong, false);
+                if (editSongFragmentLyrics!=null) {
+                    editSongFragmentLyrics.setupPreview();
+                }
 
                 dismiss();
             });
-        } else if (thisSong.getFiletype().equals("IMG") && bmp!=null) {
+        } else if (mainActivityInterface.getTempSong().getFiletype().equals("IMG") && bmp!=null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 // Write a temporary version of this image to the export folder.
                 // After showing the are you sure prompt, we either cancel (delete the temp file)
                 // or we copy the temp file to replace the original one.
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", thisSong.getFilename());
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, "null", "Export", "", thisSong.getFilename());
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", mainActivityInterface.getTempSong().getFilename());
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, "null", "Export", "", mainActivityInterface.getTempSong().getFilename());
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
                 mainActivityInterface.getStorageAccess().writeImage(outputStream, bmp);
                 String oldSize = originalWidth + "x" + originalHeight;
                 String newSize = bmp.getWidth() + "x" + bmp.getHeight();
                 String okString = crop_image_string + ": " + oldSize + " -> " + newSize;
-                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("cropImage", okString, null, null, null, thisSong);
+                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("cropImage", okString, null, null, null, mainActivityInterface.getTempSong());
                 areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AreYouSureBottomSheet");
 
                 dismiss();

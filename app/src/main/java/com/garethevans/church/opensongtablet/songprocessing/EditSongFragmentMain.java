@@ -90,10 +90,11 @@ public class EditSongFragmentMain extends Fragment  {
             getFoldersFromStorage();
             newFolder = "+ " + new_folder_add_string;
             folders.add(newFolder);
+
             if (getContext() != null) {
+                arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (myView != null) {
-                        arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
                         myView.folder.setAdapter(arrayAdapter);
                         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
                     }
