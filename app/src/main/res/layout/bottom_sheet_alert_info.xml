@@ -40,7 +40,8 @@
                     android:padding="16dp"
                     android:text="@string/information" />
 
-                <TableRow style="@style/DividerLine" />
+                <TableRow android:id="@+id/updatedDivider"
+                    style="@style/DividerLine" />
             </LinearLayout>
 
             <LinearLayout
@@ -79,7 +80,8 @@
                         android:text="@string/play_services_how" />
                 </LinearLayout>
 
-                <TableRow style="@style/DividerLine" />
+                <TableRow android:id="@+id/playServicesDivider"
+                    style="@style/DividerLine" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,7 +104,8 @@
                     android:layout_margin="16dp"
                     android:text="@string/backup_now" />
 
-                <TableRow style="@style/DividerLine" />
+                <TableRow android:id="@+id/backupDivider"
+                    style="@style/DividerLine" />
             </LinearLayout>
 
         <LinearLayout

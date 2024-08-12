@@ -109,8 +109,34 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.getPreferences().setMyPreferenceInt("lastUsedVersion",
                     mainActivityInterface.getVersionNumber().getVersionCode());
 
+            // Hide the divider if nothing below is required
+            myView.updatedDivider.setVisibility(
+                    mainActivityInterface.getAlertChecks().getHasPlayServices() ||
+                    mainActivityInterface.getAlertChecks().showBackup() ||
+                    mainActivityInterface.getAlertChecks().showBadSongMoved() ?
+                    View.VISIBLE : View.GONE);
+
         } else {
             myView.appUpdated.setVisibility(View.GONE);
+        }
+
+        // Check for Google Play Service error
+        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
+            Log.d(TAG, "onresume()  Play store isn't installed");
+            myView.playServices.setVisibility(View.VISIBLE);
+            myView.playServicesInfo.setOnClickListener(b -> webLink(website_play_services_help));
+            myView.ignorePlayServices.setOnClickListener(b -> {
+                mainActivityInterface.getAlertChecks().setIgnorePlayServicesWarning(true);
+                myView.playServices.setVisibility(View.GONE);
+                alertsRequired();
+            });
+            // Hide the divider if nothing below is required
+            myView.playServicesDivider.setVisibility(
+                    mainActivityInterface.getAlertChecks().showBackup() ||
+                            mainActivityInterface.getAlertChecks().showBadSongMoved() ?
+                            View.VISIBLE : View.GONE);
+        } else {
+            myView.playServices.setVisibility(View.GONE);
         }
 
         // Check for backup status
@@ -125,23 +151,17 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.navigateToFragment(deeplink_backup,0);
                 dismiss();
             });
+
+            // Hide the divider if nothing below is required
+            myView.backupDivider.setVisibility(
+                    mainActivityInterface.getAlertChecks().showBadSongMoved() ?
+                    View.VISIBLE : View.GONE);
+
         } else {
             myView.timeToBackup.setVisibility(View.GONE);
         }
 
-        // Check for Google Play Service error
-        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
-            Log.d(TAG, "onresume()  Play store isn't installed");
-            myView.playServices.setVisibility(View.VISIBLE);
-            myView.playServicesInfo.setOnClickListener(b -> webLink(website_play_services_help));
-            myView.ignorePlayServices.setOnClickListener(b -> {
-                mainActivityInterface.getAlertChecks().setIgnorePlayServicesWarning(true);
-                myView.playServices.setVisibility(View.GONE);
-                alertsRequired();
-            });
-        } else {
-            myView.playServices.setVisibility(View.GONE);
-        }
+
 
         // Check for bad song files moved to OpenSong/Import
         myView.badSongsMoved.setVisibility(mainActivityInterface.getAlertChecks().showBadSongMoved() ?
