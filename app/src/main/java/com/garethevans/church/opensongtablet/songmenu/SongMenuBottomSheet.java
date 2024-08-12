@@ -142,14 +142,16 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         });
         myView.rebuildIndexFull.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                // Make this a complete rebuild of the database, rather than an update scan
-                mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
-                mainActivityInterface.getSQLiteHelper().resetDatabase();
-                mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
-                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
-                mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
-                mainActivityInterface.indexSongs();
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                            // Make this a complete rebuild of the database, rather than an update scan
+                            mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
+                            mainActivityInterface.getSQLiteHelper().resetDatabase();
+                            mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
+                            mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                            mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
+                            mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
+                            mainActivityInterface.indexSongs();
+                        });
                 dismiss();
             } else {
                 dismiss();
@@ -165,10 +167,12 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         });
         myView.rebuildIndexQuick.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                // Make this a complete rebuild of the database, rather than an update scan
-                mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(false);
-                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
-                mainActivityInterface.indexSongs();
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                            // Make this a complete rebuild of the database, rather than an update scan
+                            mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(false);
+                            mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                            mainActivityInterface.indexSongs();
+                        });
                 dismiss();
             } else {
                 dismiss();

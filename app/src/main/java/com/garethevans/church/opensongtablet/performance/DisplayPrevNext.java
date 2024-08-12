@@ -375,23 +375,25 @@ public class DisplayPrevNext {
         float buttonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
         int buttonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
         int buttonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
-        prev.setIconTint(ColorStateList.valueOf(buttonIconColor));
-        next.setIconTint(ColorStateList.valueOf(buttonIconColor));
-        Drawable leftArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_left,c.getTheme());
-        Drawable rightArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_right,c.getTheme());
-        if (leftArrow!=null) {
-            DrawableCompat.setTint(leftArrow, buttonIconColor);
-            prevFAB.setImageDrawable(leftArrow);
-        }
-        if (rightArrow!=null) {
-            DrawableCompat.setTint(rightArrow, buttonIconColor);
-            nextFAB.setImageDrawable(rightArrow);
-        }
-        prev.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-        next.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-        prevFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-        nextFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-        layout.setAlpha(buttonAlpha);
+        mainActivityInterface.getMainHandler().post(() -> {
+            prev.setIconTint(ColorStateList.valueOf(buttonIconColor));
+            next.setIconTint(ColorStateList.valueOf(buttonIconColor));
+            Drawable leftArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_left, c.getTheme());
+            Drawable rightArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_right, c.getTheme());
+            if (leftArrow != null) {
+                DrawableCompat.setTint(leftArrow, buttonIconColor);
+                prevFAB.setImageDrawable(leftArrow);
+            }
+            if (rightArrow != null) {
+                DrawableCompat.setTint(rightArrow, buttonIconColor);
+                nextFAB.setImageDrawable(rightArrow);
+            }
+            prev.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            next.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            prevFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            nextFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            layout.setAlpha(buttonAlpha);
+        });
     }
 
     public void setSwipeDirection(String swipeDirection) {
