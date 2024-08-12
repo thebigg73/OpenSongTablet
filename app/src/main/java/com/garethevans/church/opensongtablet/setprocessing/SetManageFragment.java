@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,8 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBinding;
-import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -54,7 +55,7 @@ public class SetManageFragment extends Fragment {
             set_saved_not_current_string="", load_string="", website_set_load_string="",
             new_category_string="", file_exists_string="", success_string="", error_string="",
             deeplink_export_string="", search_index_wait_string="", toolBarTitle="", webAddress,
-            import_string="", website_set_import_string="";
+            import_string="", website_set_import_string="", nothing_selected_string="";
 
     // If we try to do something before indexing is complete, we get the progress from the indexing
     private String progressText;
@@ -142,6 +143,7 @@ public class SetManageFragment extends Fragment {
             search_index_wait_string = getString(R.string.index_songs_wait);
             activeColor = getContext().getResources().getColor(R.color.colorSecondary);
             inactiveColor = getContext().getResources().getColor(R.color.colorAltPrimary);
+            nothing_selected_string= getString(R.string.nothing_selected);
         }
     }
 
@@ -578,31 +580,36 @@ public class SetManageFragment extends Fragment {
     }
 
     private void exportSet() {
-        myView.progressBar.setVisibility(View.VISIBLE);
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            // Only allow if indexing is complete
-            if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                // Set the "whattodo" to let the export fragment know we are exporting a set
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String checkedItem:setManageAdapter.getCheckedItems()) {
-                    stringBuilder.append(checkedItem);
-                }
-                mainActivityInterface.setWhattodo("exportset:" + stringBuilder);
-                mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.navigateToFragment(deeplink_export_string, 0));
-            } else {
-                progressText = "";
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (mainActivityInterface.getSongMenuFragment() != null) {
-                        MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
-                        if (progressView != null && progressView.getText() != null) {
-                            progressText = " " + progressView.getText().toString();
-                        }
+        if (whattodo.equals("exportset") && (myView.setItemSelected.getHint()==null ||
+                myView.setItemSelected.getHint().toString().isEmpty())) {
+            mainActivityInterface.getShowToast().doIt(nothing_selected_string);
+        } else {
+            myView.progressBar.setVisibility(View.VISIBLE);
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // Only allow if indexing is complete
+                if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+                    // Set the "whattodo" to let the export fragment know we are exporting a set
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String checkedItem : setManageAdapter.getCheckedItems()) {
+                        stringBuilder.append(checkedItem);
                     }
-                    mainActivityInterface.getShowToast().doIt(search_index_wait_string + progressText);
-                });
-            }
-            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.GONE));
-        });
+                    mainActivityInterface.setWhattodo("exportset:" + stringBuilder);
+                    mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.navigateToFragment(deeplink_export_string, 0));
+                } else {
+                    progressText = "";
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        if (mainActivityInterface.getSongMenuFragment() != null) {
+                            MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                            if (progressView != null && progressView.getText() != null) {
+                                progressText = " " + progressView.getText().toString();
+                            }
+                        }
+                        mainActivityInterface.getShowToast().doIt(search_index_wait_string + progressText);
+                    });
+                }
+                mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.GONE));
+            });
+        }
     }
 
     private void loadSet() {
