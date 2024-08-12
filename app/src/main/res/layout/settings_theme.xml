@@ -25,11 +25,14 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:hint="@string/theme_choose" />
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/resetTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:contentDescription="@string/reset_colours"
                     app:srcCompat="@drawable/quantum_ic_refresh_white_24"/>
             </LinearLayout>
