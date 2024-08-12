@@ -192,8 +192,6 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
     }
 
     private void getSongOrPrintIfDone() {
-        Log.d(TAG,"getSongOrPrintIfDone()  exportSetSongs:"+mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",false)+
-                "    currentSetItem:"+currentSetItem+"    setItemEntries.size():"+setItemEntries.size());
         if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",true) ||
                 currentSetItem>=setItemEntries.size()) {
             callPrint();

@@ -182,6 +182,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     public void doSmoothScrollTo(RecyclerLayoutManager recyclerLayoutManager, int position) {
+        Log.d(TAG,"doSmoothScroll() position:"+position);
         // Cancel any post delayed check
         if (checkPosRunnable!=null) {
             checkScrollPosIsRight1.removeCallbacks(checkPosRunnable);

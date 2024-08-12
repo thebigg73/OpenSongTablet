@@ -497,7 +497,6 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void highlightBeat(int beat, int colorOn, long bufferFix) {
-        Log.d(TAG,"beat:"+beat+"  beats:"+beats+"  colorOn:"+colorOn+"  bufferFix:"+bufferFix);
         // Highlight the beat
 
             mainActivityInterface.getMainHandler().postDelayed(() -> {

@@ -513,8 +513,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     // Get the values from the spinners and edit texts for filtering
     private void getSearchVals() {
-        folderSearchVal = myView.filters.folderSearch.getText().toString();
-        keySearchVal = myView.filters.keySearch.getText().toString();
+        if (myView!=null) {
+            folderSearchVal = myView.filters.folderSearch.getText().toString();
+            keySearchVal = myView.filters.keySearch.getText().toString();
+        } else {
+            folderSearchVal="";
+            keySearchVal="";
+        }
     }
 
     private void buttonsEnabled(boolean enabled) {
