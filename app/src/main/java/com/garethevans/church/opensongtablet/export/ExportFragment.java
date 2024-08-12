@@ -68,6 +68,7 @@ public class ExportFragment extends Fragment {
     private String default_string="", dark_string="", light_string="",
             custom1_string="", custom2_string="", pdf_print_string="";
     private StringBuilder combinedSetText;
+    private String currentSongFolder, currentSongFile;
 
     @Override
     public void onResume() {
@@ -75,6 +76,14 @@ public class ExportFragment extends Fragment {
         mainActivityInterface.updateToolbar(toolBarTitle);
         mainActivityInterface.updateToolbarHelp(webAddress);
         resetSectionViews();
+        if (currentSongFolder!=null && currentSongFile!=null) {
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                mainActivityInterface.getSong().setFolder(currentSongFolder);
+                mainActivityInterface.getSong().setFilename(currentSongFile);
+                mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false);
+            });
+        }
+
     }
 
     @Override
@@ -88,6 +97,10 @@ public class ExportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsExportBinding.inflate(inflater,container,false);
+
+        // Get a note of the currently loaded song so we can force it back onDestroy()
+        currentSongFolder = mainActivityInterface.getSong().getFolder();
+        currentSongFile = mainActivityInterface.getSong().getFilename();
 
         prepareStrings();
 
@@ -1369,40 +1382,44 @@ public class ExportFragment extends Fragment {
     }
 
     private void doPrint(boolean isSet) {
-        // Get a PrintManager instance
-        if (getActivity()!=null) {
-            PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Get a PrintManager instance
+            if (getActivity() != null) {
+                PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
 
-            // Set job name, which will be displayed in the print queue
-            String jobName = app_name_string + " Document";
+                // Set job name, which will be displayed in the print queue
+                String jobName = app_name_string + " Document";
 
-            // Start a print job, passing in a PrintDocumentAdapter implementation
-            // to handle the generation of a print document
+                // Start a print job, passing in a PrintDocumentAdapter implementation
+                // to handle the generation of a print document
 
-            if (isSet) {
-                // Set the variable that will remove gaps from set items on the set list page(s)
-                mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
+                if (isSet) {
+                    // Set the variable that will remove gaps from set items on the set list page(s)
+                    mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
 
-                // Go through the sets and create any custom slides required (variations, slides, etc).
-                ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
-                for (Uri setFile : setFiles) {
-                    mainActivityInterface.getSetActions().extractSetFile(setFile, true);
+                    // Go through the sets and create any custom slides required (variations, slides, etc).
+                    ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
+                    for (Uri setFile : setFiles) {
+                        mainActivityInterface.getSetActions().extractSetFile(setFile, true);
+                    }
+
+                    // This is sent to the MultipagePrinterAdapter class to deal with
+                    MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(getActivity());
+                    multipagePrinterAdapter.updateSetList(this, setToExport, setData[0], setData[1], setData[2]);
+                    mainActivityInterface.getMakePDF().setPreferedAttributes();
+                    printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+
+                } else {
+                    PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
+                    printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
+                            headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, song_string);
+                    mainActivityInterface.getMakePDF().setPreferedAttributes();
+                    printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
                 }
-
-                // This is sent to the MultipagePrinterAdapter class to deal with
-                MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(getActivity());
-                multipagePrinterAdapter.updateSetList(this, setToExport, setData[0], setData[1], setData[2]);
-                mainActivityInterface.getMakePDF().setPreferedAttributes();
-                printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
-
-            } else {
-                PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
-                printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
-                        headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, song_string);
-                mainActivityInterface.getMakePDF().setPreferedAttributes();
-                printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+                mainActivityInterface.getSong().setFolder(currentSongFolder);
+                mainActivityInterface.getSong().setFilename(currentSongFile);
             }
-        }
+        });
     }
 
     // Getters
@@ -1451,6 +1468,10 @@ public class ExportFragment extends Fragment {
     private void tidyOnClose() {
         try {
             if (mainActivityInterface!=null) {
+                mainActivityInterface.getSong().setFolder(currentSongFolder);
+                mainActivityInterface.getSong().setFilename(currentSongFile);
+                mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(),false);
+                mainActivityInterface.setForceReload(true);
                 mainActivityInterface.getStorageAccess().wipeFolder("Export","");
                 mainActivityInterface.getSongSheetHeaders().setForExport(false);
             }
