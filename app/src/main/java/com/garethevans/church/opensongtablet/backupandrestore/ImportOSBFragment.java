@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -343,6 +345,10 @@ public class ImportOSBFragment extends Fragment {
         intent.setType("*/*");
         String[] mimetypes = {"application/zip","application/octet-stream","application/*"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Backups","",""));
+        }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         activityResultLauncher.launch(intent);
 

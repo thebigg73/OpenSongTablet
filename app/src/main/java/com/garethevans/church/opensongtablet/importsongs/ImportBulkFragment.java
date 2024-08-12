@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,12 +113,14 @@ public class ImportBulkFragment extends Fragment {
     private void prepareListeners() {
         myView.doImport.setOnClickListener(view -> importSongs());
         myView.fileChooser.setOnClickListener(view -> {
-            Uri startUri = mainActivityInterface.getStorageAccess().getUriForItem("Import","","");
             Intent intent;
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                        mainActivityInterface.getStorageAccess().getUriForItem("Import","",""));
+            }
             intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-            intent.putExtra("android.provider.extra.INITIAL_URI", startUri);
             intent.setType("*/*");
             multiSelect.launch(intent);
         });

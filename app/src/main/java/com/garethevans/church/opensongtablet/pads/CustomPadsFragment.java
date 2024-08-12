@@ -5,7 +5,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -146,6 +148,10 @@ public class CustomPadsFragment extends Fragment {
         this.myMaterialEditText.setText(pad_auto_string);
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("audio/*");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Pads","",""));
+        }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
         activityResultLauncher.launch(intent);
     }

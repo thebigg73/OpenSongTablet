@@ -567,9 +567,11 @@ public class ImportOnlineFragment extends Fragment {
             case "DuckDuckGo":
                 if ((!webView.getUrl().contains("google") || (!webView.getUrl().contains("duckduckgo"))) &&
                         !webView.getUrl().contains("songselect")) {
-                    chordinator.setTitle(myView.searchPhrase.getText().toString());
-                    chordinator.setArtist(unknown_string);
-                    chordinator.processHTML(this,mainActivityInterface,webString);
+                    if (myView!=null && chordinator!=null) {
+                        chordinator.setTitle(myView.searchPhrase.getText().toString());
+                        chordinator.setArtist(unknown_string);
+                        chordinator.processHTML(this, mainActivityInterface, webString);
+                    }
                 }
                 // show is processed on a separate thread and doSave called later
                 break;

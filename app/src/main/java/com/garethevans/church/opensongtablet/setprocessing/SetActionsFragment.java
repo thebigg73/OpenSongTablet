@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,6 +148,10 @@ public class SetActionsFragment extends Fragment {
                 intent.setType("*/*");
                 String[] mimetypes = {"text/xml", "application/octet-stream"};
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                            mainActivityInterface.getStorageAccess().getUriForItem("Import","",""));
+                }
                 intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
                 activityResultLauncher.launch(intent);
             });

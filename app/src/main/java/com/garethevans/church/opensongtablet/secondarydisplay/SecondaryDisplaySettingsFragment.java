@@ -261,6 +261,10 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                        mainActivityInterface.getStorageAccess().getUriForItem("Backgrounds","",""));
+            }
             intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
 
             // Optionally, specify a URI for the file that should appear in the

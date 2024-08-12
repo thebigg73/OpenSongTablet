@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,6 +174,10 @@ public class BBImportFragment extends Fragment {
     private void selectFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("text/*");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Settings","",""));
+        }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         importCSVLauncher.launch(intent);
     }

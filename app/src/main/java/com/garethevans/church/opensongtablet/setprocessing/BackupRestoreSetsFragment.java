@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,8 +161,11 @@ public class BackupRestoreSetsFragment extends Fragment {
         Uri uri = mainActivityInterface.getStorageAccess().
                 getUriForItem("Backups","",null);
         loadIntent.setDataAndType(uri,"application/*");
-        loadIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         loadIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            loadIntent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Backups","",""));
+        }
         activityResultLauncher.launch(loadIntent);
     }
 
@@ -390,6 +395,7 @@ public class BackupRestoreSetsFragment extends Fragment {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                 success = false;
             }
 

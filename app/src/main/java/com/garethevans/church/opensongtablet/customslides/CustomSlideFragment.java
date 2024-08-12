@@ -11,7 +11,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -123,6 +125,10 @@ public class CustomSlideFragment extends Fragment {
             if (mainActivityInterface.getCustomSlide().getCreateType().equals("image")) {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.setType("image/*");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                            mainActivityInterface.getStorageAccess().getUriForItem("Media","",""));
+                }
                 intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
                 addImagesLauncher.launch(intent);
             } else {
