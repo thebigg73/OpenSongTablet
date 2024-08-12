@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
@@ -38,6 +39,7 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -1273,10 +1275,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryDialOn", true)) {
-                            if (myView!=null) {
+                            if (myView != null) {
                                 myView.myToolbar.batteryholderVisibility(true, true);
                             }
-                            if (getBatteryStatus()!=null) {
+                            if (getBatteryStatus() != null) {
                                 batteryStatus.showBatteryStuff(true);
                             }
                         }
@@ -1286,6 +1288,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             updateToolbar(null);
                         }
                     }
+                    myView.myToolbar.setNavigationOnClickListener(view -> {
+                        if (settingsOpen && navController.getCurrentDestination()!=null &&
+                        navController.getCurrentDestination().getId()==R.id.preferencesFragment) {
+                            navHome();
+                        } else if (navController.getCurrentDestination()!=null &&
+                                (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
+                                        navController.getCurrentDestination().getId()==R.id.presenterFragment)) {
+                            closeDrawer(myView.drawerLayout.isDrawerOpen(GravityCompat.START));
+                        } else {
+                            navController.navigateUp();
+                        }
+                    });
+
                     myView.myToolbar.requestLayout();
                     myView.myToolbar.setContentInsetStartWithNavigation(0);
                 }
@@ -1771,11 +1786,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Otherwise a new title is passed as a string (in a settings menu)
         if (myView != null) {
             mainLooper.post(() -> {
-                myView.myToolbar.setActionBar(this, what);
-                if (whattodo.equals("storageBad")) {
-                    myView.fragmentView.setTop(0);
-                } else {
-                    myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+                if (myView!=null) {
+                    myView.myToolbar.setActionBar(this, what);
+                    if (whattodo!=null && whattodo.equals("storageBad")) {
+                        myView.fragmentView.setTop(0);
+                    } else {
+                        myView.fragmentView.setTop(myView.myToolbar.getActionBarHeight(settingsOpen || menuOpen));
+                    }
                 }
             });
         }
@@ -1939,6 +1956,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // GE had to add onResume string update otherwise this call failed if user changed languages
         if (settings.equals(item.toString())) {
             if (settingsOpen) {
+                if (navController.getCurrentDestination()!=null &&
+                navController.getCurrentDestination().getId()==R.id.preferencesFragment) {
+                    popTheBackStack(R.id.preferencesFragment,true);
+                }
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
@@ -3841,10 +3862,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (location.startsWith("http")) {
                     if (!location.contains("https://www.google.com/search?q=")) {
                         // Not searching, so just display the webpage in the default browser
-                        customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                .setToolbarColor(ContextCompat.getColor(this,R.color.colorPrimary)).build()).build();
-                        intent.setData(Uri.parse(location));
+                        Bitmap myCustomCloseIcon = null;
+                        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.arrow_left);
+                        if (drawable!=null) {
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                                drawable = (DrawableCompat.wrap(drawable)).mutate();
+                            }
+
+                            myCustomCloseIcon = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                                    drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(myCustomCloseIcon);
+                            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                            drawable.draw(canvas);
+                        }
+                        if (myCustomCloseIcon!=null) {
+                            customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
+                                            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary)).build()).setShowTitle(true).
+                                    setCloseButtonIcon(myCustomCloseIcon).setUrlBarHidingEnabled(true).build();
+                        } else {
+                            customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
+                                            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary)).build()).setShowTitle(true).
+                                    setUrlBarHidingEnabled(true).build();
+                        }
                         customTabsIntent.launchUrl(MainActivity.this, Uri.parse(location));
+
                     } else {
                         // Searching.  May not be using Google/Chrome, so use default search engine
                         // Replace the location with the search phrase (strip out the google.com/search?q= bit)
@@ -4138,6 +4179,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             try {
                 // Get the language
                 getFixLocale().setLocale();
+
+                forceReload = true;
 
                 // Save a variable that we have rotated the screen.
                 // The media player will look for this.  If found, it won't restart when the song loads
