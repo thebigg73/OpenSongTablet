@@ -6,7 +6,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -126,6 +128,8 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getSong().getPadfile().equals(pad_auto_string)) {
             mainActivityInterface.getSong().setPadfile("auto");
         }
+        Log.d(TAG,"padFile="+mainActivityInterface.getSong().getLinkaudio());
+        Log.d(TAG,"padFile="+mainActivityInterface.getSong().getPadfile());
         myView.padType.setText(niceTextFromPref(mainActivityInterface.getSong().getPadfile()));
         myView.padLinkAudio.setFocusable(false);
         myView.padLinkAudio.setText(mainActivityInterface.getSong().getLinkaudio());
@@ -229,20 +233,25 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
             updateStartStopButton();
         });
         myView.padLinkAudio.setOnClickListener(v -> {
-            myView.padLinkAudio.setText(""); // Trigger a reset that is saved
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("audio/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                        mainActivityInterface.getStorageAccess().getUriForItem("Pads","",""));
+            }
             intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
             activityResultLauncher.launch(intent);
         });
     }
 
     private void showOrHideLink() {
-        if (myView.padType.getText()!=null && myView.padType.getText().toString().equals(link_audio_string)) {
-            myView.padLinkAudio.setVisibility(View.VISIBLE);
-        } else {
-            myView.padLinkAudio.setVisibility(View.GONE);
-        }
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null && myView.padType.getText() != null && myView.padType.getText().toString().equals(link_audio_string)) {
+                myView.padLinkAudio.setVisibility(View.VISIBLE);
+            } else if (myView != null) {
+                myView.padLinkAudio.setVisibility(View.GONE);
+            }
+        });
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -261,39 +270,40 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            switch (which) {
-                case "padKey":
-                    mainActivityInterface.getSong().setKey(editable.toString());
-                    break;
-                case "padType":
-                    mainActivityInterface.getSong().setPadfile(prefFromNiceText(editable.toString()));
-                    showOrHideLink();
-                    break;
-                case "padLink":
-                    mainActivityInterface.getSong().setLinkaudio(editable.toString());
-                    break;
-            }
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
-            Log.d(TAG,"Song saved");
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                Log.d(TAG,"which:"+which+"   editable:"+editable.toString());
+                switch (which) {
+                    case "padKey":
+                        mainActivityInterface.getSong().setKey(editable.toString());
+                        break;
+                    case "padType":
+                        mainActivityInterface.getSong().setPadfile(prefFromNiceText(editable.toString()));
+                        showOrHideLink();
+                        break;
+                    case "padLink":
+                        mainActivityInterface.getSong().setLinkaudio(editable.toString());
+                        break;
+                }
+                mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                Log.d(TAG, "Song saved");
+            });
         }
     }
 
     private String niceTextFromPref(String padfile) {
-        switch (padfile) {
-            case "auto":
-            default:
-                return pad_auto_string;
-            case "link":
-                return link_audio_string;
-            case "off":
-                return off_string;
+        if (padfile.equals("link") || padfile.equals(link_audio_string)) {
+            return link_audio_string;
+        } else if (padfile.equals("off") || padfile.equals(off_string)) {
+            return off_string;
+        } else {
+            return pad_auto_string;
         }
     }
 
     private String prefFromNiceText(String text) {
-        if (text.equals(link_audio_string)) {
+        if (text.equals(link_audio_string) || text.equals("link")) {
             return "link";
-        } else if (text.equals(off_string)) {
+        } else if (text.equals(off_string) || text.equals("off")) {
             return "off";
         } else {
             return "auto";

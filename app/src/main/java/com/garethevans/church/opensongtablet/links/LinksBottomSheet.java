@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -218,6 +220,10 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType(mimeType);
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentWriteUriFlags());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Media","",""));
+        }
         activityResultLauncher.launch(intent);
     }
 
@@ -301,6 +307,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void startAudio(boolean doPlay) {
+        Log.d(TAG,"startAudio("+doPlay+")");
         if (doPlay) {
             try {
                 mediaPlayer.start();
@@ -354,7 +361,8 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         // Passed all the tests, so set it to the song
         // We want to save as the audio link (which is handled in updateSong)
         // But first we also save the info to the pad link
-        mainActivityInterface.getSong().setPadfile(getString(R.string.link_audio));
+        mainActivityInterface.getSong().setPadfile("link");
+
         // Now update the song as normal with the link location and save it
         updateSong();
     }

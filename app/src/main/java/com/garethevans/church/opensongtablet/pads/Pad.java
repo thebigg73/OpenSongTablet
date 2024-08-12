@@ -151,6 +151,8 @@ public class Pad {
             padFile = "";
         }
         String linkAudio = mainActivityInterface.getSong().getLinkaudio();
+        Log.d(TAG,"padFile="+padFile);
+        Log.d(TAG,"linkAudio="+linkAudio);
         return (padFile.equals("link") || padFile.equals(link_audio)) &&
                 linkAudio!=null && !linkAudio.isEmpty();
     }
