@@ -535,7 +535,7 @@ public class PerformanceFragment extends Fragment {
                         keyInSet = mainActivityInterface.getCurrentSet().getSetItemInfo(mainActivityInterface.getCurrentSet().getIndexSongInSet()).songkey;
                         // Compare with the indexed value
                         String keyInSong = mainActivityInterface.getSQLiteHelper().getKey(folder,filename);
-                        if (keyInSong!=null && !keyInSong.isEmpty() && !keyInSong.equals(keyInSet)) {
+                        if (keyInSong!=null && !keyInSong.isEmpty() && !keyInSet.isEmpty() && !keyInSong.equals(keyInSet)) {
                             // This is a key variation!
                             folder = mainActivityInterface.getVariations().getKeyVariationsFolder();
                             filename = mainActivityInterface.getVariations().getKeyVariationFilename(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),keyInSet);
@@ -543,6 +543,7 @@ public class PerformanceFragment extends Fragment {
                             Uri uriToCheck = mainActivityInterface.getVariations().getKeyVariationUri(filename);
                             stillToCreateVariation = !mainActivityInterface.getStorageAccess().uriExists(uriToCheck);
                         } else {
+                            // Either we are in the same key, or the set didn't have a key!
                             stillToCreateVariation = false;
                         }
                     } else {
