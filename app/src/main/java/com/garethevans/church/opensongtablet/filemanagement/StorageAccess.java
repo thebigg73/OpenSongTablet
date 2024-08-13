@@ -35,7 +35,6 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -1996,9 +1995,10 @@ public class StorageAccess {
                 message = c.getString(R.string.create_folder_error);
                 outcome = false;
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             message = c.getString(R.string.create_folder_error);
+            updateCrashLog(e.toString());
             outcome = false;
         }
         if (showToast) {
