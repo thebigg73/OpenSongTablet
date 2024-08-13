@@ -36,8 +36,8 @@ android {
         targetSdkVersion 35
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 397
-        versionName '6.2.5'
+        versionCode 398
+        versionName '6.2.6'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -89,7 +89,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-cast-framework:21.5.0'         // For casting obviously!
     implementation 'androidx.mediarouter:mediarouter:1.7.0'                             // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:19.3.0'                 // For Google Nearby Connect devices
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0' // For OCR text recognition (PDF/Camera)
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1' // For OCR text recognition (PDF/Camera)
     implementation 'com.google.android.play:feature-delivery:2.1.0'                     // For updated resources
     implementation 'com.google.android.play:feature-delivery-ktx:2.1.0'                 // For updated resources
     //implementation 'com.google.android.play:asset-delivery:2.2.2'                       // For updated resources
@@ -111,8 +111,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.7.7'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
-    implementation 'androidx.annotation:annotation:1.8.1'                               // Allows annotations in code
-    annotationProcessor 'androidx.annotation:annotation:1.8.1'                          // Allows annotations in code
+    implementation 'androidx.annotation:annotation:1.8.2'                               // Allows annotations in code
+    annotationProcessor 'androidx.annotation:annotation:1.8.2'                          // Allows annotations in code
     implementation 'androidx.core:core:1.13.1'
     implementation 'org.apache.commons:commons-compress:1.26.2'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
