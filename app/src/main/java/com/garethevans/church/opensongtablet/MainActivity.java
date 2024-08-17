@@ -1289,13 +1289,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                     myView.myToolbar.setNavigationOnClickListener(view -> {
-                        if (settingsOpen && navController.getCurrentDestination()!=null &&
-                        navController.getCurrentDestination().getId()==R.id.preferencesFragment) {
-                            navHome();
-                        } else if (navController.getCurrentDestination()!=null &&
-                                (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
-                                        navController.getCurrentDestination().getId()==R.id.presenterFragment)) {
+                        Log.d(TAG,"items:"+navHostFragment.getChildFragmentManager().getBackStackEntryCount());
+                        int aboutToGoTo = -1;
+                        if (navController.getPreviousBackStackEntry()!=null) {
+                            aboutToGoTo = navController.getPreviousBackStackEntry().getDestination().getId();
+                        }
+                        if (navController.getCurrentDestination()!=null &&
+                            (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
+                                    navController.getCurrentDestination().getId()==R.id.presenterFragment)) {
                             closeDrawer(myView.drawerLayout.isDrawerOpen(GravityCompat.START));
+
+                        } else if (aboutToGoTo == R.id.presenterFragment || aboutToGoTo == R.id.performanceFragment ||
+                               (settingsOpen && navController.getCurrentDestination()!=null &&
+                                navController.getCurrentDestination().getId()==R.id.preferencesFragment) ||
+                                (navHostFragment.getChildFragmentManager().getBackStackEntryCount()==1 &&
+                                        navController.getCurrentDestination()!=null &&
+                                        navController.getCurrentDestination().getId()!=R.id.performanceFragment &&
+                                        navController.getCurrentDestination().getId()==R.id.presenterFragment)) {
+                            Log.d(TAG,"do navHome()");
+                            navHome();
                         } else {
                             navController.navigateUp();
                         }
@@ -1321,63 +1333,82 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
-        // Set the force reload flag as we want the song to reload when needed
-        // Set the force reload flag
-        forceReload = true;
-        try {
-            if (Thread.currentThread() != getMainHandler().getLooper().getThread()) {
-                getMainHandler().post(super::onPostResume);
-            } else {
-                super.onPostResume();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // If we are currently on the song window (performanceFragment or presenterFragment)
+        // Make sure the backstack is clear as we are at the root page before going elsewhere
+        int aboutToGoTo = -1;
+        Log.d(TAG,"history:"+navHostFragment.getChildFragmentManager().getBackStackEntryCount());
+        if (navController!=null && navController.getPreviousBackStackEntry()!=null) {
+            aboutToGoTo = navController.getPreviousBackStackEntry().getDestination().getId();
         }
-
-        // Either sent a deeplink string, or a fragment id
-        lockDrawer(true);
-        closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
-        hideActionButton(true);
-        // Stop the autoscroll if running
-        if (autoscroll!=null) {
-            autoscroll.stopAutoscroll();
-        }
-
-        if (deepLink != null && deepLink.equals(deeplink_edit) && songListBuildIndex.getCurrentlyIndexing()) {
-            String progressText = "";
-            if (songMenuFragment!=null) {
-                MaterialTextView progressView = songMenuFragment.getProgressText();
-                if (progressView!=null && progressView.getText()!=null) {
-                    progressText = " " + progressView.getText().toString();
-                }
-            }
-            if (showToast!=null) {
-                showToast.doIt(indexing_string + progressText);
-                hideActionButton(false);
-            }
+        Log.d(TAG,"go to performance:"+(id==R.id.performanceFragment));
+        Log.d(TAG,"previous is performance:"+(aboutToGoTo==R.id.performanceFragment));
+        if ((id == R.id.performanceFragment || id == R.id.presenterFragment) &&
+                (aboutToGoTo == R.id.presenterFragment || aboutToGoTo == R.id.performanceFragment)) {
+            Log.d(TAG,"should just navHome()");
+            navHome();
         } else {
-            runOnUiThread(() -> {
-                try {
-                    if (navController==null) {
-                        setupActionbar();
-                        setupNavigation();
-                    }
-                    if (deepLink != null && navController!=null) {
-                        navController.navigate(Uri.parse(deepLink));
-                    } else if (navController!=null) {
-                        navController.navigate(id);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+            // Set the force reload flag as we want the song to reload when needed
+            // Set the force reload flag
+            forceReload = true;
+            try {
+                if (Thread.currentThread() != getMainHandler().getLooper().getThread()) {
+                    getMainHandler().post(super::onPostResume);
+                } else {
+                    super.onPostResume();
                 }
-            });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Either sent a deeplink string, or a fragment id
+            lockDrawer(true);
+            closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
+            hideActionButton(true);
+            // Stop the autoscroll if running
+            if (autoscroll != null) {
+                autoscroll.stopAutoscroll();
+            }
+
+            if (deepLink != null && deepLink.equals(deeplink_edit) && songListBuildIndex.getCurrentlyIndexing()) {
+                String progressText = "";
+                if (songMenuFragment != null) {
+                    MaterialTextView progressView = songMenuFragment.getProgressText();
+                    if (progressView != null && progressView.getText() != null) {
+                        progressText = " " + progressView.getText().toString();
+                    }
+                }
+                if (showToast != null) {
+                    showToast.doIt(indexing_string + progressText);
+                    hideActionButton(false);
+                }
+            } else {
+                runOnUiThread(() -> {
+                    try {
+                        if (navController == null) {
+                            setupActionbar();
+                            setupNavigation();
+                        }
+                        if (deepLink != null && navController != null) {
+                            navController.navigate(Uri.parse(deepLink));
+                        } else if (navController != null) {
+                            navController.navigate(id);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            showActionBar();
         }
-        showActionBar();
     }
 
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
-        navController.popBackStack(id, inclusive);
+        try {
+            navController.popBackStack(id, inclusive);
+        } catch (Exception e) {
+            Log.d(TAG,"FragmentManager busy...");
+        }
     }
 
     @Override

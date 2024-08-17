@@ -644,6 +644,7 @@ public class PerformanceGestures {
             }
 
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
+
         } else {
             if (mainActivityInterface!=null) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
