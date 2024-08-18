@@ -238,7 +238,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     songListAdapter = new SongListAdapter(getContext(), SongMenuFragment.this, songMenuSongs);
                     myView.songListRecyclerView.setAdapter(songListAdapter);
                     displayIndex();
-                    myView.progressBar.setVisibility(View.GONE);
                     buttonsEnabled(true);
                     updateSongCount();
                     moveToSongInMenu(mainActivityInterface.getSong());
@@ -247,6 +246,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 }
             }
             adapterReady = true;
+        }
+
+        if (myView!=null) {
+            myView.progressBar.setVisibility(View.GONE);
         }
     }
 

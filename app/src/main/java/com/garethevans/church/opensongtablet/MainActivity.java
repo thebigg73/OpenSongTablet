@@ -1336,15 +1336,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // If we are currently on the song window (performanceFragment or presenterFragment)
         // Make sure the backstack is clear as we are at the root page before going elsewhere
         int aboutToGoTo = -1;
-        Log.d(TAG,"history:"+navHostFragment.getChildFragmentManager().getBackStackEntryCount());
         if (navController!=null && navController.getPreviousBackStackEntry()!=null) {
             aboutToGoTo = navController.getPreviousBackStackEntry().getDestination().getId();
         }
-        Log.d(TAG,"go to performance:"+(id==R.id.performanceFragment));
-        Log.d(TAG,"previous is performance:"+(aboutToGoTo==R.id.performanceFragment));
         if ((id == R.id.performanceFragment || id == R.id.presenterFragment) &&
                 (aboutToGoTo == R.id.presenterFragment || aboutToGoTo == R.id.performanceFragment)) {
-            Log.d(TAG,"should just navHome()");
             navHome();
         } else {
             // Set the force reload flag as we want the song to reload when needed
