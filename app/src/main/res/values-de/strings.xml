@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Wenn ein Song Capo-Akkorde hat, welche Akkorde sollen angezeigt werden?</string>
     <string name="chord_color">"Schrift Akkorde"</string>
     <string name="chord_fingering">Griffbilder</string>
+    <string name="chord_fingering_inline">Akkordgriffe im Lied anzeigen</string>
+    <string name="chord_fingering_inline_info">Dadurch werden Akkorddiagramme für jeden Akkord im Song mit dem bevorzugten Instrument (oder dem im Song angegebenen Instrument) erstellt.  Dies verlangsamt die Anzeige des Liedes erheblich und sollte nur beim Erlernen von Akkorden verwendet werden.</string>
     <string name="chord_format">Akkordformat</string>
     <string name="chord_settings">Akkordeinstellungen</string>
     <string name="chordformat_1_name">Standard</string>

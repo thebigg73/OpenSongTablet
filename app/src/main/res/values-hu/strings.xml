@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Ha egy dalnak vannak capo akkordjai, melyik akkordokat kell megjeleníteni?</string>
     <string name="chord_color">"Chords font"</string>
     <string name="chord_fingering">Akkordfogás</string>
+    <string name="chord_fingering_inline">Mutasd meg az akkordfogásokat a dalban</string>
+    <string name="chord_fingering_inline_info">Ez akkorddiagramot rajzol a dal minden akkordjához a preferált hangszerrel (vagy a dalhoz megadott hangszerrel).  Ez jelentősen lelassítja a dal megjelenítését, és csak akkordok tanulásához használható.</string>
     <string name="chord_format">Akkord formátum</string>
     <string name="chord_settings">Akkordbeállítások</string>
     <string name="chordformat_1_name">Alapértelmezett</string>

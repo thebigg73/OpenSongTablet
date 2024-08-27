@@ -180,6 +180,8 @@
     <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
     <string name="chord_color">Chords font</string>
     <string name="chord_fingering">Chord fingering</string>
+    <string name="chord_fingering_inline">Show chord fingerings in the song</string>
+    <string name="chord_fingering_inline_info">This will draw chord diagrams for each chord in the song using the preferred instrument (or song specified instrument).  This will significantly slow down the display of the song and should only be used when learning chords.</string>
     <string name="chord_format">Chord format</string>
     <string name="chord_settings">Chord settings</string>
     <string name="chordformat_1" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  A#/Bb  B</string>

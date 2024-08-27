@@ -158,6 +158,8 @@
     <string name="chord_capo_display">如果一首歌有变调夹和弦，应该显示哪些和弦？</string>
     <string name="chord_color">"和弦字体"</string>
     <string name="chord_fingering">和弦指法</string>
+    <string name="chord_fingering_inline">显示歌曲中的和弦指法</string>
+    <string name="chord_fingering_inline_info">这将使用首选乐器（或歌曲指定乐器）为歌曲中的每个和弦绘制和弦图。  这将显着减慢歌曲的显示速度，并且仅应在学习和弦时使用。</string>
     <string name="chord_format">和弦格式</string>
     <string name="chord_settings">和弦设置</string>
     <string name="chordformat_1_name">标准</string>

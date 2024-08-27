@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Se una canzone ha accordi di capotasto, quali accordi dovrebbero essere mostrati?</string>
     <string name="chord_color">"Carattere Chords"</string>
     <string name="chord_fingering">Diteggiatura degli accordi</string>
+    <string name="chord_fingering_inline">Mostra le diteggiature degli accordi nella canzone</string>
+    <string name="chord_fingering_inline_info">Ciò disegnerà diagrammi di accordi per ciascun accordo nella canzone utilizzando lo strumento preferito (o lo strumento specificato nella canzone).  Ciò rallenterà notevolmente la visualizzazione della canzone e dovrebbe essere utilizzato solo quando si imparano gli accordi.</string>
     <string name="chord_format">Formato dell\'accordo</string>
     <string name="chord_settings">Impostazioni degli accordi</string>
     <string name="chordformat_1_name">Standard</string>

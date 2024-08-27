@@ -1000,4 +1000,6 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="chord_fingering_inline">Pokažite akord prstima u pesmi</string>
+    <string name="chord_fingering_inline_info">Ovo će nacrtati dijagrame akorda za svaki akord u pesmi koristeći željeni instrument (ili instrument koji je određen za pesmu).  Ovo će značajno usporiti prikaz pesme i treba ga koristiti samo prilikom učenja akorda.</string>
 </resources>

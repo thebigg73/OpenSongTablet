@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Si une chanson a des accords de capodastre, quels accords doivent être affichés ?</string>
     <string name="chord_color">"Police des accords"</string>
     <string name="chord_fingering">Doigté d\'accord</string>
+    <string name="chord_fingering_inline">Afficher les doigtés d\'accords dans la chanson</string>
+    <string name="chord_fingering_inline_info">Cela dessinera des diagrammes d\'accords pour chaque accord de la chanson en utilisant l\'instrument préféré (ou l\'instrument spécifié par la chanson).  Cela ralentira considérablement l\'affichage de la chanson et ne doit être utilisé que lors de l\'apprentissage des accords.</string>
     <string name="chord_format">Format d\'accord</string>
     <string name="chord_settings">Paramètres d\'accord</string>
     <string name="chordformat_1_name">Standard</string>

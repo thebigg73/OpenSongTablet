@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Pokud má skladba akordy capo, které akordy by se měly zobrazit?</string>
     <string name="chord_color">"Akordy písmo"</string>
     <string name="chord_fingering">Prstění akordů</string>
+    <string name="chord_fingering_inline">Zobrazit akordové prstoklady v písni</string>
+    <string name="chord_fingering_inline_info">Tím se nakreslí akordové diagramy pro každý akord ve skladbě pomocí preferovaného nástroje (nebo nástroje určeného skladbou).  To výrazně zpomalí zobrazení skladby a mělo by se používat pouze při učení akordů.</string>
     <string name="chord_format">Formát akordu</string>
     <string name="chord_settings">Nastavení akordů</string>
     <string name="chordformat_1_name">Standard</string>

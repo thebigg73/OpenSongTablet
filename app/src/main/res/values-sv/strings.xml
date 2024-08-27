@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Om en låt har capo-ackord, vilka ackord ska visas?</string>
     <string name="chord_color">"Ackord typsnitt"</string>
     <string name="chord_fingering">Ackord fingersättning</string>
+    <string name="chord_fingering_inline">Visa ackordsfingersättningar i låten</string>
+    <string name="chord_fingering_inline_info">Detta kommer att rita ackorddiagram för varje ackord i sången med det föredragna instrumentet (eller sångspecifikt instrument).  Detta kommer att avsevärt sakta ner visningen av sången och bör endast användas när du lär dig ackord.</string>
     <string name="chord_format">Ackordformat</string>
     <string name="chord_settings">Ackordinställningar</string>
     <string name="chordformat_1_name">Standard</string>

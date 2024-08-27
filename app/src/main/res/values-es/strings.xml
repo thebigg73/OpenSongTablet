@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Si una canción tiene acordes capo, ¿qué acordes se deben mostrar?</string>
     <string name="chord_color">"Acordes de la fuente"</string>
     <string name="chord_fingering">Digitación de acordes</string>
+    <string name="chord_fingering_inline">Mostrar digitaciones de acordes en la canción.</string>
+    <string name="chord_fingering_inline_info">Esto dibujará diagramas de acordes para cada acorde de la canción utilizando el instrumento preferido (o el instrumento especificado en la canción).  Esto ralentizará significativamente la visualización de la canción y sólo debe usarse al aprender acordes.</string>
     <string name="chord_format">Formato de acorde</string>
     <string name="chord_settings">Ajustes de acordes</string>
     <string name="chordformat_1_name">Estándar</string>

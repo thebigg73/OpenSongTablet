@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Якщо в пісні є капо-акорди, які акорди потрібно показати?</string>
     <string name="chord_color">Акорди</string>
     <string name="chord_fingering">Акордова аплікатура</string>
+    <string name="chord_fingering_inline">Покажіть аплікатуру акордів у пісні</string>
+    <string name="chord_fingering_inline_info">Це намалює діаграми акордів для кожного акорду в пісні з використанням бажаного інструменту (або зазначеного в пісні інструмента).  Це значно сповільнить відображення пісні, і його слід використовувати лише під час вивчення акордів.</string>
     <string name="chord_format">Формат акорду</string>
     <string name="chord_settings">Налаштування акордів</string>
     <string name="chordformat_1_name">Стандартний</string>

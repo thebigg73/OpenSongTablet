@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Jeśli piosenka ma akordy kapo, które akordy powinny być pokazane?</string>
     <string name="chord_color">Czcionka akordów</string>
     <string name="chord_fingering">Palcowanie akordów</string>
+    <string name="chord_fingering_inline">Pokaż palcowanie akordów w utworze</string>
+    <string name="chord_fingering_inline_info">Spowoduje to narysowanie diagramów akordów dla każdego akordu w utworze przy użyciu preferowanego instrumentu (lub instrumentu określonego w utworze).  Spowoduje to znaczne spowolnienie wyświetlania utworu i powinno być używane wyłącznie podczas nauki akordów.</string>
     <string name="chord_format">Format akordów</string>
     <string name="chord_settings">Ustawienia akordów</string>
     <string name="chordformat_1_name">Standard</string>

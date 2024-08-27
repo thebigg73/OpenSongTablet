@@ -158,6 +158,8 @@
     <string name="chord_capo_display">曲にカポコードがある場合、どのコードを表示する必要がありますか？</string>
     <string name="chord_color">"和音フォント"</string>
     <string name="chord_fingering">コード運指</string>
+    <string name="chord_fingering_inline">曲内のコードの運指を表示する</string>
+    <string name="chord_fingering_inline_info">これにより、好みの楽器 (または曲で指定された楽器) を使用して、曲内の各コードのコード ダイアグラムが描画されます。  これにより、曲の表示が大幅に遅くなるため、コードを学習する場合にのみ使用してください。</string>
     <string name="chord_format">コード形式</string>
     <string name="chord_settings">コード設定</string>
     <string name="chordformat_1_name">標準</string>

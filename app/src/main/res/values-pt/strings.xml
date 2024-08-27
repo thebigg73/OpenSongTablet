@@ -158,6 +158,8 @@
     <string name="chord_capo_display">Se uma música tem acordes de capo, quais acordes devem ser mostrados?</string>
     <string name="chord_color">"Fonte Chords"</string>
     <string name="chord_fingering">Dedilhado de acordes</string>
+    <string name="chord_fingering_inline">Mostrar dedilhados de acordes na música</string>
+    <string name="chord_fingering_inline_info">Isso desenhará diagramas de acordes para cada acorde da música usando o instrumento preferido (ou instrumento especificado pela música).  Isso diminuirá significativamente a exibição da música e só deve ser usado ao aprender acordes.</string>
     <string name="chord_format">Formato de acorde</string>
     <string name="chord_settings">Configurações de acordes</string>
     <string name="chordformat_1_name">Padrão</string>

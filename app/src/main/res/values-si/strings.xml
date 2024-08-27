@@ -158,6 +158,8 @@
     <string name="chord_capo_display">ගීතයක Capo chords තිබේ නම්, කුමන chords පෙන්විය යුතුද?</string>
     <string name="chord_color">කෝඩ්ස් අකුරු</string>
     <string name="chord_fingering">Chord fingering</string>
+    <string name="chord_fingering_inline">ගීතයේ ස්වර ඇඟිලි සලකුණු පෙන්වන්න</string>
+    <string name="chord_fingering_inline_info">මෙමගින් ගීතයේ එක් එක් ස්වරය සඳහා වඩාත් කැමති උපකරණය (හෝ ගීත නිශ්චිත උපකරණය) භාවිතයෙන් ස්වර රූප සටහන් අඳිනු ඇත.  මෙය ගීතයේ සංදර්ශකය සැලකිය යුතු ලෙස මන්දගාමී කරනු ඇති අතර එය භාවිතා කළ යුත්තේ කෝඩ් ඉගෙන ගන්නා විට පමණි.</string>
     <string name="chord_format">Chord ආකෘතිය</string>
     <string name="chord_settings">Chord සැකසුම්</string>
     <string name="chordformat_1_name">සම්මත</string>
