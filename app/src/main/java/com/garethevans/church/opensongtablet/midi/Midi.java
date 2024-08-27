@@ -9,7 +9,6 @@ import android.media.midi.MidiOutputPort;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -495,22 +494,6 @@ public class Midi {
         // This was originally done via the MidiDriver / billthefarmer library
         // However this was causing crashes on 64 bit devices, so changed
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            /*for (int i = 0; i < midiNotesOnArray.size(); i++) {
-                String thisOnMessage = midiNotesOnArray.get(i);
-                handler.postDelayed(() -> mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(thisOnMessage)), noteOnDelta);
-                noteOnDelta += timeBetweenNotes;
-            }
-            if (turnOffNoteTime>0) {
-                // Prepare the note off messages after a delay if it is bigger than 0
-                handler.postDelayed(() -> {
-                    for (int i = 0; i < midiNotesOffArray.size(); i++) {
-                        String thisOffMessage = midiNotesOffArray.get(i);
-                        handler.postDelayed(() -> mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(thisOffMessage)), noteOffDelta);
-                        noteOffDelta += 100;
-                    }
-                }, turnOffNoteTime);
-            }*/
-
             // Write the midi file and play it
             mainActivityInterface.getMainHandler().post(this::createMidiFile);
         });
@@ -645,9 +628,6 @@ public class Midi {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener() {
-        Log.d(TAG,"enableMidiListener()");
-        Log.d(TAG,"midiDevice:"+midiDevice+"  midiOutputPort:"+midiOutputPort);
-
         if (midiDevice != null && midiOutputPort != null) {
             pedalMidiReceiver = new PedalMidiReceiver(this, mainActivityInterface);
             try {
@@ -757,7 +737,6 @@ public class Midi {
     public void createMidiFile() {
         // Create a temporary midi file
         File midiFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Midi","","midiFile.mid");
-        //File midiFile = new File(c.getExternalFilesDir("Midi"),"midiFile.mid");
         try (FileOutputStream fileOutputStream = new FileOutputStream(midiFile,false)){
             // Build the hex pair code
             String hexPairCode = "";
@@ -811,6 +790,10 @@ public class Midi {
         }
 
         if (midiMediaPlayer!=null) {
+            if (midiMediaPlayer.isPlaying()) {
+                midiMediaPlayer.stop();
+            }
+            midiMediaPlayer.reset();
             midiMediaPlayer.release();
             midiMediaPlayer = null;
         }
@@ -818,8 +801,14 @@ public class Midi {
         midiMediaPlayer = new MediaPlayer();
 
         midiMediaPlayer.setOnCompletionListener(mp -> {
-            midiMediaPlayer.release();
-            midiMediaPlayer = null;
+            if (midiMediaPlayer!=null) {
+                if (midiMediaPlayer.isPlaying()) {
+                    midiMediaPlayer.stop();
+                }
+                midiMediaPlayer.reset();
+                midiMediaPlayer.release();
+                midiMediaPlayer = null;
+            }
         });
         midiMediaPlayer.setOnPreparedListener(mp -> midiMediaPlayer.start());
         Uri uri = Uri.fromFile(midiFile);
