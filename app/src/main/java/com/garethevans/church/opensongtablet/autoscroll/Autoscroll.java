@@ -1,10 +1,10 @@
 package com.garethevans.church.opensongtablet.autoscroll;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -33,7 +33,7 @@ public class Autoscroll {
             onscreenAutoscrollHide, usingZoomLayout;
     private int songDelay, songDuration, displayWidth, displayHeight, songWidth, songHeight, scrollTime, flashCount,
             autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn, inlinePauseTotal;
-    private final int flashTime = 600, updateTime = 60;
+    private final int flashTime = 600, updateTime = 20;
     private float scrollIncrement, scrollPosition, scrollCount, scrollIncrementScale;
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
@@ -255,7 +255,6 @@ public class Autoscroll {
                     });
                 } else if (inlinePauseStartTime!=0 && inlinePauseEndTime!=0 &&
                         scrollTime >= inlinePauseStartTime && scrollTime < inlinePauseEndTime) {
-                    Log.d(TAG,"Inline delay period (scrollTime)");
                     // We are in an inline delay period
                     // This is predelay, so set the alpha down
                     autoscrollTimeText.post(() -> {
@@ -381,14 +380,13 @@ public class Autoscroll {
             myRecyclerView.setMaxScrollY(songHeight-displayHeight);
         }
         if (inlinePauses == null) {
-            Log.d(TAG,"buildInlinePauseArrays");
             buildInlinePauseArrays();
         }
 
         if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
             // Horizontal scrolling
             if (scrollWidth > 0) {
-                // The scroll happens every 60ms (updateTime).
+                // The scroll happens every 20ms (updateTime).
                 // The number of times this will happen is calculated as follows
                 float numberScrolls = ((songDuration - songDelay - inlinePauseTotal) * 1000f) / updateTime;
                 // The scroll distance for each scroll is calculated as follows
@@ -399,7 +397,7 @@ public class Autoscroll {
         } else {
             // Vertical scrolling
             if (scrollHeight > 0) {
-                // The scroll happens every 60ms (updateTime).
+                // The scroll happens every 20ms (updateTime).
                 // The number of times this will happen is calculated as follows
                 float numberScrolls = ((songDuration - songDelay - inlinePauseTotal) * 1000f) / updateTime;
                 // The scroll distance for each scroll is calculated as follows
@@ -426,6 +424,7 @@ public class Autoscroll {
 
 
     // Control the autoscroll process (stop, start, pause, change speed, etc.)
+    @SuppressLint("DiscouragedApi")
     public void startAutoscroll() {
         // Initialise the scroll positions and time
         initialiseScrollValues();
@@ -457,7 +456,7 @@ public class Autoscroll {
             setIsAutoscrolling(true);
             autoscrollView.post(() -> mainActivityInterface.updateOnScreenInfo("showhide"));
             try {
-                task = scheduledExecutorService.scheduleWithFixedDelay(scrollRunnable,0,updateTime, TimeUnit.MILLISECONDS);
+                task = scheduledExecutorService.scheduleAtFixedRate(scrollRunnable,0,updateTime, TimeUnit.MILLISECONDS);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -543,7 +542,6 @@ public class Autoscroll {
             inlinePauseStartTime = 0;
             inlinePauseEndTime = 0;
         }
-        Log.d(TAG,"first time to check:"+inlinePauseStartTime+" to "+inlinePauseEndTime+"s");
     }
 
     private int stringToInt(String string) {
