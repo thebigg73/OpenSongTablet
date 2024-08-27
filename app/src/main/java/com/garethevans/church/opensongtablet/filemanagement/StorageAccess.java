@@ -693,13 +693,25 @@ public class StorageAccess {
         if (uriString.startsWith("../OpenSong/")) {
             uriString = uriString.replace("../OpenSong/", "");
             String rootFolder = "";
+            String subfolder = "";
             if (uriString.contains("/")) {
                 // Get the first folder as the new root
-                rootFolder = uriString.substring(0, uriString.indexOf("/"));
-                uriString = uriString.replace(rootFolder + "/", "");
+                try {
+                    rootFolder = uriString.substring(0, uriString.indexOf("/"));
+                    uriString = uriString.replaceFirst(rootFolder + "/", "");
+
+                    // We might have a subfolder in there too
+                    if (uriString.contains("/")) {
+                        subfolder = uriString.substring(0, uriString.lastIndexOf("/"));
+                        uriString = uriString.replace(subfolder + "/", "");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
             // Try to get the actual uri
-            return getUriForItem(rootFolder, "", uriString);
+            return getUriForItem(rootFolder, subfolder, uriString);
         } else {
             // Now get the actual uri
             return Uri.parse(uriString);
@@ -2558,7 +2570,7 @@ public class StorageAccess {
         } else if (folder!=null && subfolder!=null) {
             return new File(c.getExternalFilesDir(folder),subfolder);
         } else if (folder!=null) {
-            return c.getExternalFilesDir("folder");
+            return c.getExternalFilesDir(folder);
         }
         return null;
     }
