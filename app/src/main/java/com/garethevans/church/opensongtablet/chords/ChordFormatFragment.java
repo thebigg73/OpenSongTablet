@@ -79,6 +79,18 @@ public class ChordFormatFragment extends Fragment {
                 "displayChords", true));
         showHideView(myView.capoChords,myView.displayChords.isChecked());
         showHideView(myView.capoStyle,myView.displayChords.isChecked());
+        myView.displayChordDiagrams.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                "displayChordDiagrams",false));
+        showHideView(myView.displayChordDiagrams,myView.displayChords.isChecked());
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter instrumentAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.preferredInstrument, R.layout.view_exposed_dropdown_item,
+                    mainActivityInterface.getChordDisplayProcessing().getInstruments());
+            myView.preferredInstrument.setAdapter(instrumentAdapter);
+        }
+        myView.preferredInstrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(
+                mainActivityInterface.getPreferences().getMyPreferenceString("chordInstrument","g")));
+        showHideView(myView.preferredInstrument,myView.displayChords.isChecked() && myView.displayChordDiagrams.getChecked());
         myView.capoStyle.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "capoInfoAsNumerals", false));
         setCapoChordSlider();
@@ -180,7 +192,35 @@ public class ChordFormatFragment extends Fragment {
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
             showHideView(myView.capoChords,b);
             showHideView(myView.capoStyle,b);
+            showHideView(myView.displayChordDiagrams,b);
+            showHideView(myView.preferredInstrument,b && myView.displayChordDiagrams.getChecked());
         });
+
+        myView.displayChordDiagrams.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
+                    "displayChordDiagrams",b);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            showHideView(myView.preferredInstrument,b);
+        });
+
+        myView.preferredInstrument.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (myView!=null) {
+                    mainActivityInterface.getPreferences().setMyPreferenceString(
+                            "chordInstrument",
+                            mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(
+                                    myView.preferredInstrument.getText().toString()));
+                }
+            }
+        });
+
         myView.capoChords.addOnChangeListener((slider, value, fromUser) -> {
             if (value==2) {
                 // Both capo and native chords
@@ -201,6 +241,7 @@ public class ChordFormatFragment extends Fragment {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "displayCapoChords",false);
             }
+
             // Update the processing preferences so they get used
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });

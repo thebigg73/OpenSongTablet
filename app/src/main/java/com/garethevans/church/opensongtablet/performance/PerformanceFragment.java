@@ -43,6 +43,10 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+
 public class PerformanceFragment extends Fragment {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
@@ -650,6 +654,46 @@ public class PerformanceFragment extends Fragment {
                         if (getContext() != null) {
                             // Scroll to the item in the set menus
                             mainActivityInterface.notifySetFragment("scrollTo", mainActivityInterface.getCurrentSet().getIndexSongInSet());
+
+                            // If we want to show chord diagrams, we need to prepare them
+                            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChordDiagrams",false)) {
+                                mainActivityInterface.getChordDisplayProcessing().initialiseArrays();
+
+                                // Get the chords in the song
+                                mainActivityInterface.getChordDisplayProcessing().findChordsInSong();
+
+                                int chordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat", 1);
+                                if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("chordFormatUsePreferred",true)) {
+                                    chordFormat = mainActivityInterface.getSong().getDetectedChordFormat();
+                                }
+
+                                // Get the song specific instrument if it is set.  If not, make sure it is empty
+                                String instrument = mainActivityInterface.getSong().getPreferredInstrument();
+                                if (instrument==null) {
+                                    instrument = "";
+                                }
+                                // If it is empty, use the app wide preference
+                                if (instrument.isEmpty()) {
+                                    instrument = mainActivityInterface.getPreferences().getMyPreferenceString("chordInstrument","g");
+                                }
+
+                                // Set the fingerings for the chords used
+                                mainActivityInterface.getChordDisplayProcessing().setFingerings(mainActivityInterface.getChordDirectory(),
+                                        mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrument),
+                                        mainActivityInterface.getChordDisplayProcessing().getInstruments(), chordFormat);
+
+                                // Empty the chords folder
+                                File chordsFolder = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords","","");
+                                if (chordsFolder!=null) {
+                                    try {
+                                        FileUtils.deleteDirectory(chordsFolder);
+                                        Log.d(TAG,"Deleted chords folder");
+                                    } catch (Exception e) {
+                                        Log.d(TAG, "Error deleting chords folder");
+                                    }
+                                }
+                                mainActivityInterface.getChordDisplayProcessing().createChordImages(instrument.equals("p"),mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords",0.8f));
+                            }
 
                             // Now continue with the song prep
                             mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));

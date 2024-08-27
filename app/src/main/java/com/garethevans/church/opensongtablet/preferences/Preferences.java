@@ -323,6 +323,7 @@ public class Preferences extends Activity {
     // displayCapoChords                boolean     Should capo chords be shown (def:true)
     // displayCapoAndNativeChords       boolean     Should both chords be shown at once (def:false)
     // displayChords                    boolean     Decides if chords should be shown (def:true)
+    // displayChordDiagrams             boolean     Should chords be shown as diagrams showing the fingering in the song window (def:false)
     // displayLyrics                    boolean     Decides if lyrics should be shown (def:true)
     // displayBoldChordsHeadings        boolean     Should the chords and headings be shown in a bold font (def:false)
     // displayBoldChorus    x            boolean     Should the chorus be displayed as bold (def:false)

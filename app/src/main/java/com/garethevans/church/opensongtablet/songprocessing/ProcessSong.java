@@ -32,6 +32,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Space;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,10 +40,13 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -73,6 +77,7 @@ public class ProcessSong {
     private boolean displayLyrics;
     private boolean displayCapoChords;
     private boolean displayCapoAndNativeChords;
+    private boolean displayChordDiagrams;
     private boolean trimWordSpacing;
     private boolean songAutoScaleColumnMaximise;
     private boolean songAutoScaleOverrideFull;
@@ -110,6 +115,7 @@ public class ProcessSong {
         blockShadowAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("blockShadowAlpha", 0.7f);
         displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoChords", true);
         displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoAndNativeChords", false);
+        displayChordDiagrams = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChordDiagrams",false);
         displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
         displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayLyrics", true);
         displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayBoldChordsHeadings", false);
@@ -1088,6 +1094,8 @@ public class ProcessSong {
             for (int endpos : pos) {
                 if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
                     TextView textView = newTextView(presentation, linetype, typeface, size, color);
+                    ImageView chordLayout = null;
+                    LinearLayout chordLineLayout = null;
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(thisSong, linetype, str);
@@ -1112,6 +1120,30 @@ public class ProcessSong {
                                             highlightChordColor)));
                                 } else {
                                     textView.setText(str);
+                                }
+                                if (displayChordDiagrams) {
+                                    // If the chord bit is a line of multiple chords, we need to deal with that
+                                    String after = str.trim().replaceAll(" +", "__CHORDS__");
+                                    if (after.contains("__CHORDS__")) {
+                                        // Multiple chords
+                                        chordLineLayout = new LinearLayout(c);
+                                        chordLineLayout.setPadding(0,0,0,0);
+                                        chordLineLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                        String[] allChordsInStr = after.split("__CHORDS__");
+                                        for (String chordInStr:allChordsInStr) {
+                                            chordLayout = getSingleChordImage(chordInStr);
+                                            if (chordLayout!=null) {
+                                                Space space = new Space(c);
+                                                space.setPadding(16, 0, 16, 0);
+                                                chordLineLayout.addView(chordLayout);
+                                                chordLineLayout.addView(space);
+                                            }
+                                        }
+                                    } else {
+                                        // Just one chord
+                                        // Get the chord file
+                                        chordLayout = getSingleChordImage(str);
+                                    }
                                 }
                                 htmlLyrics.append("<td class=\"chord\">").append(str).append("</td>");
                             } else {
@@ -1194,9 +1226,17 @@ public class ProcessSong {
                             htmlLyrics.append("<td class=\"lyric\">").append(str).append("</td>");
                             break;
                     }
-                    if (textView!=null) {
+
+                    if (chordLineLayout!=null) {
+                        tableRow.addView(chordLineLayout);
+
+                    } else if (chordLayout!=null) {
+                        tableRow.addView(chordLayout);
+
+                    } else if (textView!=null) {
                         tableRow.addView(textView);
                     }
+
                     startpos = endpos;
                 }
             }
@@ -1206,6 +1246,33 @@ public class ProcessSong {
         }
         htmlLyrics.append("</table>");
         return tableLayout;
+    }
+
+    private ImageView getSingleChordImage(String str) {
+        ImageView imageView = null;
+        String filename = str.replace("/", "_").trim().replaceAll("[^a-z0-9#]+/gi", "") + ".png";
+        if (!filename.equals(".png")) {
+            File chordFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords", "", filename);
+
+            if (chordFile != null) {
+                // Get the image dimensions
+                try (FileInputStream fileInputStream = new FileInputStream(chordFile)) {
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    bitmapOptions.inJustDecodeBounds = true;
+                    BitmapFactory.decodeStream(fileInputStream, null, bitmapOptions);
+                    int imageWidth = (int) (bitmapOptions.outWidth / 2.5f);
+                    int imageHeight = (int) (bitmapOptions.outHeight / 2.5f);
+                    fileInputStream.close();
+                    imageView = new ImageView(c);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_START);
+                    imageView.setPadding(0, 0, 16, 0);
+                    Glide.with(c).load(chordFile).override(imageWidth, imageHeight).dontTransform().format(DecodeFormat.PREFER_ARGB_8888).into(imageView);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return imageView;
     }
 
     public String groupTableHTML(Song thisSong, String string) {

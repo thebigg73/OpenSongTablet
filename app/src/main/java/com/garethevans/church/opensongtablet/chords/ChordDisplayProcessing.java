@@ -2,7 +2,10 @@ package com.garethevans.church.opensongtablet.chords;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,11 +18,14 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.graphics.BitmapCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -31,6 +37,7 @@ public class ChordDisplayProcessing {
     private final String TAG = "ChordDisplayProcessing";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final ArrayMap<String, Bitmap> chordBitmaps = new ArrayMap<>();
 
     public ChordDisplayProcessing(Context c) {
         this.c = c;
@@ -226,15 +233,22 @@ public class ChordDisplayProcessing {
                     Integer.parseInt(mainActivityInterface.getSong().getCapo()),chordsInSong.get(i)));
         }
     }
-    public void addCustomChords(String forInstrument) {
+    public void addCustomChordFingering(String forInstrument) {
         // If we have custom chords in the song add them (they are split by a space)
         // Only add this instrument though
         if (!mainActivityInterface.getSong().getCustomchords().isEmpty()) {
             String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
             for (String customChord:customChords) {
-                if (customChord.contains("_"+forInstrument) && !fingerings.contains((customChord))) {
-                    fingerings.add(customChord);
-                    chordsInSong.add(customChord.substring(customChord.lastIndexOf("_")+1));
+                String chordName = "$"+customChord.substring(customChord.lastIndexOf("_")+1)+"$";
+                if (customChord.contains("_"+forInstrument+"_") && !fingerings.contains((chordName))) {
+                    String chordFingering = customChord.substring(0,customChord.indexOf("_"+forInstrument+"_"));
+                    int index = chordsInSong.indexOf(chordName);
+                    if (index>=0) {
+                        fingerings.set(index,chordFingering);
+                    } else {
+                        fingerings.add(chordFingering);
+                        chordsInSong.add(chordName);
+                    }
                 }
             }
         }
@@ -244,6 +258,7 @@ public class ChordDisplayProcessing {
             if (instrument.equals(instruments.get(0))) {
                 // Guitar chords
                 addFingeringOrNull(chordDirectory.guitarChords(chordFormat, chord));
+
             } else if (instrument.equals(instruments.get(1))) {
                 // Ukelele chords
                 addFingeringOrNull(chordDirectory.ukuleleChords(chordFormat, chord));
@@ -264,6 +279,15 @@ public class ChordDisplayProcessing {
                 addFingeringOrNull(chordDirectory.pianoChords(chordFormat, chord));
             }
         }
+        // Add custom chords if they exist
+        String songInstrument = mainActivityInterface.getSong().getPreferredInstrument();
+        if (songInstrument==null || songInstrument.isEmpty()) {
+            songInstrument = "";
+        }
+        if (songInstrument.isEmpty()) {
+            songInstrument = mainActivityInterface.getPreferences().getMyPreferenceString("chordInstrument","g");
+        }
+        addCustomChordFingering(songInstrument);
     }
     private void addFingeringOrNull(String fingering) {
         if (fingering!=null && !fingering.isEmpty() && !fingering.startsWith("_")) {
@@ -299,6 +323,8 @@ public class ChordDisplayProcessing {
         // If it isn't a valid chord, it will be null, in which case, ignore
         TextView chordNameTextView = getChordName(chordName);
         if (chordNameTextView!=null && chordString!=null) {
+            chordNameTextView.setTag("chordNameTextView");
+
             chordLayout.addView(chordNameTextView);
 
             // Get chord table layout
@@ -399,6 +425,70 @@ public class ChordDisplayProcessing {
         }
     }
 
+    public void createChordImages(boolean piano,float scale) {
+        chordBitmaps.clear();
+        for (int i=0; i<chordsInSong.size(); i++) {
+            String chordName = chordsInSong.get(i);
+            LinearLayout v;
+            if (piano) {
+                v = getChordDiagramPiano(LayoutInflater.from(c), chordsInSong.get(i), fingerings.get(i));
+            } else {
+                v = getChordDiagram(LayoutInflater.from(c), chordsInSong.get(i), fingerings.get(i));
+            }
+            if (v!=null) {
+                // Set the chord text colour to match the theme
+                ((TextView)v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+
+                v.setPadding(0,0,0,0);
+                v.getChildAt(0).setPadding(0,0,0,0);
+                // Get the size of the view by adding it to a canvas and measure the specs
+                int specSize = View.MeasureSpec.makeMeasureSpec(0 /* any */, View.MeasureSpec.UNSPECIFIED);
+                v.measure(specSize, specSize);
+                int questionWidth = v.getMeasuredWidth();
+                int questionHeight = v.getMeasuredHeight();
+                v.layout(0, 0, questionWidth, questionHeight);
+                Bitmap b = Bitmap.createBitmap(questionWidth, questionHeight, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(b);
+                v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+                v.draw(canvas);
+
+                // Make a scaled bitmap (reduce memory requirement!)
+                int newWidth = Math.round(questionWidth * scale);
+                int newHeight = Math.round(questionHeight * scale);
+
+                Bitmap scaledBitmap = BitmapCompat.createScaledBitmap(b, newWidth, newHeight, null, false);
+                b.recycle();
+
+                // Get the pixels for recoloring if not piano
+                int[] pixels = null;
+                if (!piano) {
+                    pixels = new int[questionWidth * questionHeight];
+                    //get pixels
+                    scaledBitmap.getPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
+
+                    // Change the pixels
+                    for (int x = 0; x < pixels.length; ++x) {
+                        pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsChordsColor() : pixels[x];
+                    }
+                    scaledBitmap.setPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
+                }
+
+                chordBitmaps.put(chordName, scaledBitmap);
+                chordName = chordName.replace("$","").replace("/","_");
+                File file = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords","",chordName+".png");
+                //Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Backgrounds", "", chordName + ".png");
+                //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Backgrounds", "", chordName + ".png");
+                if (file!=null) {
+                    try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                        mainActivityInterface.getStorageAccess().writeImage(outputStream, scaledBitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     private LinearLayout getChordLayout(int padding) {
         LinearLayout linearLayout = new TableLayout(c);
         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -472,8 +562,6 @@ public class ChordDisplayProcessing {
         return false;
     }
 
-
-
     // The display for piano
     @SuppressLint("InflateParams")
     public LinearLayout getChordDiagramPiano(LayoutInflater inflater, String chordName, String chordString) {
@@ -484,7 +572,9 @@ public class ChordDisplayProcessing {
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
         TextView chordNameTextView = getChordName(chordName);
+        Log.d(TAG,"chordName:"+chordName+"  chordString:"+chordString);
         if (chordNameTextView!=null && chordString!=null) {
+            chordNameTextView.setTag("chordNameTextView");
             chordLayout.addView(chordNameTextView);
 
             // The piano notes will be in the format of A,C#,E_p

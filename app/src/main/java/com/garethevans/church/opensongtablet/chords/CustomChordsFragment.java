@@ -214,6 +214,7 @@ public class CustomChordsFragment extends Fragment {
                     "chordInstrument", "g");
         }
         myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentPref));
+        mainActivityInterface.getMidi().setMidiInstrument(instrumentPref);
     }
     private void updateCustomChordDropDown() {
         chordsCodeForInstrument = new ArrayList<>();
