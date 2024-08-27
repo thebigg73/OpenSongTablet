@@ -204,32 +204,6 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
                 myView.chordsGridLayout.addView(chordLayout);
             }
         }
-
-        // Add the custom chords
-        if (mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
-                mainActivityInterface.getSong().getCustomchords()!=null && !mainActivityInterface.getSong().getCustomchords().isEmpty()) {
-            String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
-
-            for (String chordCode : customChords) {
-                String customChordName = custom_string;
-                if (chordCode.contains("_")) {
-                    customChordName = chordCode.substring(chordCode.lastIndexOf("_"));
-                    customChordName = customChordName.replace("_", "");
-                }
-                LinearLayout customChordLayout = null;
-                if (mainActivityInterface.getChordDisplayProcessing().codeMatchesInstrument(chordCode, myView.instrument.getText().toString()) &&
-                        myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
-                    customChordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagramPiano(getLayoutInflater(),
-                            customChordName, chordCode);
-                } else if (mainActivityInterface.getChordDisplayProcessing().codeMatchesInstrument(chordCode, myView.instrument.getText().toString())) {
-                    customChordLayout = mainActivityInterface.getChordDisplayProcessing().getChordDiagram(getLayoutInflater(),
-                            customChordName, chordCode);
-                }
-                if (customChordLayout != null) {
-                    myView.chordsGridLayout.addView(customChordLayout);
-                }
-            }
-        }
     }
 
 }
