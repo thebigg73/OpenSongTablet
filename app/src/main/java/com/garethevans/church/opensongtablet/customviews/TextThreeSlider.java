@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class TextThreeSlider extends LinearLayout {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "TextThreeSlider";
     private final MaterialTextView label;
     private final MaterialTextView textLeft;
     private final MaterialTextView textRight;
@@ -28,6 +31,8 @@ public class TextThreeSlider extends LinearLayout {
     private final LinearLayout imageLine;
     private final Slider slider;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
+    private final int white = getResources().getColor(R.color.white);
+    private final int lightgrey = getResources().getColor(R.color.lightgrey);
 
     public TextThreeSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -86,27 +91,14 @@ public class TextThreeSlider extends LinearLayout {
             imageCenter.setImageDrawable(centerDrawable);
         }
 
-        textLeft.setOnClickListener(view -> slider.setValue(0));
-        textCenter.setOnClickListener(view -> slider.setValue(1));
-        textRight.setOnClickListener(view -> slider.setValue(2));
-        imageLeft.setOnClickListener(view -> slider.setValue(0));
-        imageCenter.setOnClickListener(view -> slider.setValue(1));
-        imageRight.setOnClickListener(view -> slider.setValue(2));
+        textLeft.setOnClickListener(view -> setSliderPos(0));
+        textCenter.setOnClickListener(view -> setSliderPos(1));
+        textRight.setOnClickListener(view -> setSliderPos(2));
+        imageLeft.setOnClickListener(view -> setSliderPos(0));
+        imageCenter.setOnClickListener(view -> setSliderPos(1));
+        imageRight.setOnClickListener(view -> setSliderPos(2));
 
-        slider.addOnChangeListener((slider, value, fromUser) -> {
-            setTextSelected(textLeft,value==0);
-            setTextSelected(textCenter,value==1);
-            setTextSelected(textRight,value==2);
-
-            setDrawable(imageLeft,value==0);
-            setDrawable(imageCenter,value==1);
-            setDrawable(imageRight,value==2);
-        });
-
-        setTextSelected(textLeft,position==0);
-        setTextSelected(textCenter,position==1);
-        setTextSelected(textRight,position==2);
-
+        slider.addOnChangeListener((slider, value, fromUser) -> updateAlphas());
         slider.setValue(position);
         a.recycle();
 
@@ -128,6 +120,7 @@ public class TextThreeSlider extends LinearLayout {
     }
     public void setSliderPos(int position) {
         slider.setValue(position);
+        updateAlphas();
     }
     public void addOnSliderTouchListener(Slider.OnSliderTouchListener onSliderTouchListener) {
         slider.addOnSliderTouchListener(onSliderTouchListener);
@@ -197,18 +190,14 @@ public class TextThreeSlider extends LinearLayout {
             textLine.setVisibility(View.VISIBLE);
         }
     }
-    public void setDrawable(ImageView imageView, boolean on) {
-        if (on) {
-            imageView.setAlpha(1f);
-        } else {
-            imageView.setAlpha(0.4f);
-        }
-    }
-    private void setTextSelected(MaterialTextView textView, boolean on) {
-        if (on) {
-            textView.setAlpha(1f);
-        } else {
-            textView.setAlpha(0.4f);
-        }
+
+    private void updateAlphas() {
+        Log.d(TAG,"updateAlphas() slider.getValue: "+slider.getValue());
+        textLeft.setTextColor(slider.getValue()==0 ? white:lightgrey);
+        textCenter.setTextColor(slider.getValue()==1 ? white:lightgrey);
+        textRight.setTextColor(slider.getValue()==2 ? white:lightgrey);
+        imageLeft.setAlpha(slider.getValue()==0 ? 1f:0.4f);
+        imageCenter.setAlpha(slider.getValue()==1 ? 1f:0.4f);
+        imageRight.setAlpha(slider.getValue()==2 ? 1f:0.4f);
     }
 }
