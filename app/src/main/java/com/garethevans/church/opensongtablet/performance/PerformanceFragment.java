@@ -692,11 +692,21 @@ public class PerformanceFragment extends Fragment {
                                         Log.d(TAG, "Error deleting chords folder");
                                     }
                                 }
-                                mainActivityInterface.getChordDisplayProcessing().createChordImages(instrument.equals("p"),mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords",0.8f));
+                                // Prepare the standard chord images
+                                mainActivityInterface.getChordDisplayProcessing().createChordImages(instrument,chordFormat,mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords",0.8f),false);
+
+                                // If we have a capo specified in the song, also create the images for the capo chords
+                                if (mainActivityInterface.getSong().getCapo()!=null && !mainActivityInterface.getSong().getCapo().isEmpty()) {
+                                    mainActivityInterface.getTranspose().capoKeyTranspose(mainActivityInterface.getSong());
+                                    mainActivityInterface.getChordDisplayProcessing().createChordImages(instrument, chordFormat, mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f), true);
+                                }
+
                             }
 
                             // Now continue with the song prep
-                            mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
+                            if (getContext()!=null && mainActivityInterface!=null) {
+                                mainActivityInterface.getMainHandler().postDelayed(this::prepareSongViews, 50 + getContext().getResources().getInteger(R.integer.slide_out_time));
+                            }
                         }
                     });
                 }

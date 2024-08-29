@@ -5,8 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.util.ArrayMap;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +35,6 @@ public class ChordDisplayProcessing {
     private final String TAG = "ChordDisplayProcessing";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private final ArrayMap<String, Bitmap> chordBitmaps = new ArrayMap<>();
 
     public ChordDisplayProcessing(Context c) {
         this.c = c;
@@ -258,7 +255,6 @@ public class ChordDisplayProcessing {
             if (instrument.equals(instruments.get(0))) {
                 // Guitar chords
                 addFingeringOrNull(chordDirectory.guitarChords(chordFormat, chord));
-
             } else if (instrument.equals(instruments.get(1))) {
                 // Ukelele chords
                 addFingeringOrNull(chordDirectory.ukuleleChords(chordFormat, chord));
@@ -425,20 +421,63 @@ public class ChordDisplayProcessing {
         }
     }
 
-    public void createChordImages(boolean piano,float scale) {
-        chordBitmaps.clear();
+    public void createChordImages(String instrument, int chordFormat, float scale, boolean capochords) {
+        boolean piano = instrument.equals("p");
         for (int i=0; i<chordsInSong.size(); i++) {
             String chordName = chordsInSong.get(i);
             LinearLayout v;
+            String fingeringToUse = fingerings.get(i);
+            if (capochords) {
+                String capoString = mainActivityInterface.getSong().getCapo().replaceAll("\\D","");
+                if (!capoString.isEmpty()) {
+                    chordName = "." + chordName.replace("$","");
+                    chordName = mainActivityInterface.getTranspose().transposeChordForCapo(Integer.parseInt(capoString), chordName);
+                    chordName = chordName.replace(".","");
+                    switch (instrument) {
+                        case "g":
+                            // Guitar chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().guitarChords(chordFormat, chordName);
+                            break;
+                        case "u":
+                            // Ukelele chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().ukuleleChords(chordFormat, chordName);
+                            break;
+                        case "m":
+                            // Mandolin chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().mandolinChords(chordFormat, chordName);
+                            break;
+                        case "b":
+                            // Banjo 4 chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().banjo4stringChords(chordFormat, chordName);
+                            break;
+                        case "B":
+                            // Banjo 5 chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().banjo5stringChords(chordFormat, chordName);
+                            break;
+                        case "c":
+                            // Cavaqhino chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().cavaquinhoChords(chordFormat, chordName);
+                            break;
+                        case "p":
+                            // Piano chords
+                            fingeringToUse = mainActivityInterface.getChordDirectory().pianoChords(chordFormat, chordName);
+                            break;
+                    }
+                    chordName = "$"+chordName+"$";
+                }
+            }
             if (piano) {
-                v = getChordDiagramPiano(LayoutInflater.from(c), chordsInSong.get(i), fingerings.get(i));
+                v = getChordDiagramPiano(LayoutInflater.from(c), chordName, fingeringToUse);
             } else {
-                v = getChordDiagram(LayoutInflater.from(c), chordsInSong.get(i), fingerings.get(i));
+                v = getChordDiagram(LayoutInflater.from(c), chordName, fingeringToUse);
             }
             if (v!=null) {
                 // Set the chord text colour to match the theme
-                ((TextView)v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
-
+                if (capochords) {
+                    ((TextView) v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
+                } else {
+                    ((TextView) v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+                }
                 v.setPadding(0,0,0,0);
                 v.getChildAt(0).setPadding(0,0,0,0);
                 // Get the size of the view by adding it to a canvas and measure the specs
@@ -460,7 +499,7 @@ public class ChordDisplayProcessing {
                 b.recycle();
 
                 // Get the pixels for recoloring if not piano
-                int[] pixels = null;
+                int[] pixels;
                 if (!piano) {
                     pixels = new int[questionWidth * questionHeight];
                     //get pixels
@@ -468,16 +507,21 @@ public class ChordDisplayProcessing {
 
                     // Change the pixels
                     for (int x = 0; x < pixels.length; ++x) {
-                        pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsChordsColor() : pixels[x];
+                        if (capochords) {
+                            pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsCapoColor() : pixels[x];
+                        } else {
+                            pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsChordsColor() : pixels[x];
+                        }
                     }
                     scaledBitmap.setPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
                 }
 
-                chordBitmaps.put(chordName, scaledBitmap);
                 chordName = chordName.replace("$","").replace("/","_");
-                File file = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords","",chordName+".png");
-                //Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Backgrounds", "", chordName + ".png");
-                //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Backgrounds", "", chordName + ".png");
+                String capobit = "";
+                if (capochords) {
+                    capobit = "capo_";
+                }
+                File file = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords","",capobit + chordName+".png");
                 if (file!=null) {
                     try (FileOutputStream outputStream = new FileOutputStream(file)) {
                         mainActivityInterface.getStorageAccess().writeImage(outputStream, scaledBitmap);
@@ -572,7 +616,6 @@ public class ChordDisplayProcessing {
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
         TextView chordNameTextView = getChordName(chordName);
-        Log.d(TAG,"chordName:"+chordName+"  chordString:"+chordString);
         if (chordNameTextView!=null && chordString!=null) {
             chordNameTextView.setTag("chordNameTextView");
             chordLayout.addView(chordNameTextView);
@@ -628,11 +671,9 @@ public class ChordDisplayProcessing {
         return code.contains("_"+instrumentLetter+"_");
     }
 
-
     // The logic to convert between preferred instrument saved value and nice text
     public String getSongInstrumentNice(String pref) {
         String instrument;
-        Log.d(TAG,"getSongInstrumentNice("+pref+")");
         if (pref!=null) {
             // If no preferred instrument is saved with the song, it will show as 'Use default'
             switch (pref) {
@@ -665,7 +706,6 @@ public class ChordDisplayProcessing {
             // If it wasn't set, or null, use this value
             instrument = c.getString(R.string.use_default);
         }
-        Log.d(TAG,"matching:"+instrument);
         return instrument;
     }
 }

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;

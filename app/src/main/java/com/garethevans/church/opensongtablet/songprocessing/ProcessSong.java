@@ -1131,7 +1131,7 @@ public class ProcessSong {
                                         chordLineLayout.setOrientation(LinearLayout.HORIZONTAL);
                                         String[] allChordsInStr = after.split("__CHORDS__");
                                         for (String chordInStr:allChordsInStr) {
-                                            chordLayout = getSingleChordImage(chordInStr);
+                                            chordLayout = getSingleChordImage(chordInStr,false);
                                             if (chordLayout!=null) {
                                                 Space space = new Space(c);
                                                 space.setPadding(16, 0, 16, 0);
@@ -1142,7 +1142,7 @@ public class ProcessSong {
                                     } else {
                                         // Just one chord
                                         // Get the chord file
-                                        chordLayout = getSingleChordImage(str);
+                                        chordLayout = getSingleChordImage(str,false);
                                     }
                                 }
                                 htmlLyrics.append("<td class=\"chord\">").append(str).append("</td>");
@@ -1158,6 +1158,30 @@ public class ProcessSong {
                                             highlightChordColor)));
                                 } else {
                                     textView.setText(str);
+                                }
+                                if (displayChordDiagrams) {
+                                    // If the chord bit is a line of multiple chords, we need to deal with that
+                                    String after = str.trim().replaceAll(" +", "__CHORDS__");
+                                    if (after.contains("__CHORDS__")) {
+                                        // Multiple chords
+                                        chordLineLayout = new LinearLayout(c);
+                                        chordLineLayout.setPadding(0,0,0,0);
+                                        chordLineLayout.setOrientation(LinearLayout.HORIZONTAL);
+                                        String[] allChordsInStr = after.split("__CHORDS__");
+                                        for (String chordInStr:allChordsInStr) {
+                                            chordLayout = getSingleChordImage(chordInStr,true);
+                                            if (chordLayout!=null) {
+                                                Space space = new Space(c);
+                                                space.setPadding(16, 0, 16, 0);
+                                                chordLineLayout.addView(chordLayout);
+                                                chordLineLayout.addView(space);
+                                            }
+                                        }
+                                    } else {
+                                        // Just one chord
+                                        // Get the chord file
+                                        chordLayout = getSingleChordImage(str,true);
+                                    }
                                 }
                                 htmlLyrics.append("<td class=\"capo\">").append(str).append("</td>");
                             } else {
@@ -1248,10 +1272,14 @@ public class ProcessSong {
         return tableLayout;
     }
 
-    private ImageView getSingleChordImage(String str) {
+    private ImageView getSingleChordImage(String str, boolean capochord) {
         ImageView imageView = null;
-        String filename = str.replace("/", "_").trim().replaceAll("[^a-z0-9#]+/gi", "") + ".png";
-        if (!filename.equals(".png")) {
+        String capobit = "";
+        if (capochord) {
+            capobit = "capo_";
+        }
+        String filename = capobit+ str.replace("/", "_").trim().replaceAll("[^a-z0-9#]+/gi", "") + ".png";
+        if (!filename.equals(".png") && !filename.equals("capo_.png")) {
             File chordFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords", "", filename);
 
             if (chordFile != null) {
