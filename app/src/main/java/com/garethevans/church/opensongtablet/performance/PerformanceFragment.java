@@ -1493,8 +1493,10 @@ public class PerformanceFragment extends Fragment {
                                     Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
                                             getHighlighterFile(0, 0);
 
-                                    if (highlighterBitmap != null &&
-                                            mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
+                                    if (highlighterBitmap==null) {
+                                        // Clear the previous highlighter image
+                                        Glide.with(getContext()).clear(myView.highlighterView);
+                                    } else if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
                                         // If the bitmap doesn't match the view, scale it
                                         float bmpXScale = (float)w/(float)highlighterBitmap.getWidth();
@@ -1551,6 +1553,9 @@ public class PerformanceFragment extends Fragment {
                     myView.highlighterView.post(() -> {
                         if (myView!=null) {
                             try {
+                                // Clear the previous highlighter image
+                                Glide.with(getContext()).clear(myView.highlighterView);
+
                                 myView.highlighterView.setVisibility(View.GONE);
                             } catch (Exception e) {
                                 mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
