@@ -36,7 +36,8 @@
                 android:gravity="bottom"
                 android:orientation="horizontal"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:layout_marginBottom="16dp">
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/defaultMins"
@@ -85,21 +86,29 @@
                 android:id="@+id/defaultOrAsk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:textLeft="@string/use_default"
                 app:textRight="@string/ask"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/autoscrollPreDelayCountdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/autoscroll_delay_countdown"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/autostartAutoscroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@string/autoscroll_autostart" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/onscreenAutoscrollHide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:checked="false"
                 android:text="@string/autoscroll_hide"
                 android:hint="@string/info_text_autohide_info"/>
@@ -115,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginBottom="16dp"
                 android:text="@string/song_duration" />
 
             <LinearLayout
