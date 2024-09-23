@@ -33,6 +33,7 @@ public class OnScreenInfo extends LinearLayout {
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
     // IV - Needs to be longer to be seen after song load
     private final int delayTime = 5000;
+    private boolean finishedAutoscrollPreDelay = false;
 
     // The runnables for hiding and showing
     private final Runnable hideCapoRunnable = new Runnable() {
@@ -60,9 +61,7 @@ public class OnScreenInfo extends LinearLayout {
     private final Runnable hideAutoScrollRunnable = new Runnable() {
         @Override
         public void run() {
-            if (autoHideAutoscroll) {
-                autoscroll.setVisibility(View.GONE);
-            }
+            autoscroll.setVisibility(View.GONE);
         }
     };
     private final Runnable hidePadRunnable = new Runnable() {
@@ -78,7 +77,6 @@ public class OnScreenInfo extends LinearLayout {
     public OnScreenInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_on_screen_info, this);
-
         info = findViewById(R.id.info);
         capo = findViewById(R.id.capo);
         capoIcon = findViewById(R.id.capoIcon);
@@ -149,6 +147,9 @@ public class OnScreenInfo extends LinearLayout {
         }
     }
 
+    public void setFinishedAutoscrollPreDelay(boolean finishedAutoscrollPreDelay) {
+        this.finishedAutoscrollPreDelay = finishedAutoscrollPreDelay;
+    }
 
     public void showHideViews(MainActivityInterface mainActivityInterface) {
         if (capoInfoNeeded && autoHideCapo) {
@@ -166,7 +167,9 @@ public class OnScreenInfo extends LinearLayout {
         if (mainActivityInterface.getAutoscroll().getAutoscrollActivated()) {
             autoscroll.setVisibility(View.VISIBLE);
             autoscroll.removeCallbacks(hideAutoScrollRunnable);
-            autoscroll.postDelayed(hideAutoScrollRunnable, delayTime);
+            if (finishedAutoscrollPreDelay || !mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+                autoscroll.postDelayed(hideAutoScrollRunnable, delayTime);
+            }
         }
     }
     public LinearLayout getInfo() {
@@ -184,6 +187,13 @@ public class OnScreenInfo extends LinearLayout {
     public MaterialTextView getAutoscrollTotalTime() {
         return autoscrollTotalTime;
     }
+
+    public OnScreenInfo getOnScreenInfo() {
+        return this;
+    }
+    /*public void setFirstShowAutoscroll(boolean firstShowAutoscroll) {
+        this.firstShowAutoscroll = firstShowAutoscroll;
+    }*/
 
     public void showCapo(boolean show) {
         if (show && capoInfoNeeded) {
