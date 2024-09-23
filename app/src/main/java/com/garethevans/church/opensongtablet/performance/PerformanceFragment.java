@@ -525,7 +525,11 @@ public class PerformanceFragment extends Fragment {
                     // Stop any autoscroll if required, but not if it was activated
                     boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
                     mainActivityInterface.getAutoscroll().stopAutoscroll();
-                    mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
+                    if (mainActivityInterface.getAutoscroll().getAutoscrollAutoStart()) {
+                        mainActivityInterface.getAutoscroll().setAutoscrollActivated(autoScrollActivated);
+                    } else {
+                        mainActivityInterface.getAutoscroll().setAutoscrollActivated(false);
+                    }
 
                     // Stop the highlighter autohide if required
                     autoHideHighlighterHandler.removeCallbacks(autoHideHighlighterRunnable);

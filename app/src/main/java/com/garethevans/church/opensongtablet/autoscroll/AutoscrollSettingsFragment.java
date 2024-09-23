@@ -78,6 +78,8 @@ public class AutoscrollSettingsFragment extends Fragment {
             myView.defaultOrAsk.setSliderPos(1);
         }
 
+        myView.autoscrollPreDelayCountdown.setChecked(mainActivityInterface.getAutoscroll().getAutoscrollPreDelayCountdown());
+
         myView.autostartAutoscroll.setChecked(mainActivityInterface.
                 getAutoscroll().getAutoscrollAutoStart());
         myView.delay.setText(String.valueOf(getStringToInt(mainActivityInterface.getSong().
@@ -125,7 +127,9 @@ public class AutoscrollSettingsFragment extends Fragment {
             boolean defaultVal = value==0;
             mainActivityInterface.getAutoscroll().setAutoscrollUseDefaultTime(defaultVal);
         });
-
+        myView.autoscrollPreDelayCountdown.setOnCheckedChangeListener((compoundButton, b) ->
+                    mainActivityInterface.getAutoscroll().setAutoscrollPreDelayCountdown(b)
+                );
         // TODO may reinstate these
         // myView.learnAutoscroll.setOnClickListener(v -> learnAutoscroll());
         // myView.nestedScrollView.setFabToAnimate(myView.startStopAutoscroll);

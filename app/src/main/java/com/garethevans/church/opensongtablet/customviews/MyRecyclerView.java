@@ -568,4 +568,13 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
         stopNestedScroll();
     }
 
+    public void checkScrollPosition() {
+        try {
+            Log.d(TAG, "getScrollPos():" + getScrollPos());
+            scrolledToBottom = getScrollPos() >= maxScrollY;
+            scrolledToTop = getScrollPos() == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

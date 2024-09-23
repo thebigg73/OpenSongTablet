@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -12,6 +13,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
+import com.garethevans.church.opensongtablet.customviews.OnScreenInfo;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -30,11 +32,12 @@ public class Autoscroll {
     private final String TAG = "Autoscroll", mode_performance;
     private boolean isAutoscrolling, autoscrollOK, isPaused = false, showOn = true, alreadyFiguredOut,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
-            onscreenAutoscrollHide, usingZoomLayout;
+            onscreenAutoscrollHide, usingZoomLayout, autoscrollPreDelayCountdown, autoHideSent=false;
     private int songDelay, songDuration, displayWidth, displayHeight, songWidth, songHeight, scrollTime, flashCount,
             autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn, inlinePauseTotal;
     private final int flashTime = 600, updateTime = 20;
     private float scrollIncrement, scrollPosition, scrollCount, scrollIncrementScale;
+    private final OnScreenInfo onScreenInfo;
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView myRecyclerView;
@@ -47,10 +50,11 @@ public class Autoscroll {
     private int inlinePauseStartTime, inlinePauseEndTime;
 
     // Initialise the autoscroll class from MainActivity and receive the time box vierws
-    public Autoscroll(Context c, MaterialTextView autoscrollTimeText,
+    public Autoscroll(Context c, OnScreenInfo onScreenInfo, MaterialTextView autoscrollTimeText,
                       MaterialTextView autoscrollTotalTimeText, LinearLayout autoscrollView) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        this.onScreenInfo = onScreenInfo;
         this.autoscrollView = autoscrollView;
         this.autoscrollTimeText = autoscrollTimeText;
         this.autoscrollTotalTimeText = autoscrollTotalTimeText;
@@ -67,6 +71,8 @@ public class Autoscroll {
                 "autoscrollDefaultSongLength", 180);
         onscreenAutoscrollHide = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "onscreenAutoscrollHide",true);
+        autoscrollPreDelayCountdown = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                "autoscrollPreDelayCountdown",false);
     }
 
 
@@ -124,7 +130,10 @@ public class Autoscroll {
     public void setAutoscrollActivated(boolean autoscrollActivated) {
         this.autoscrollActivated = autoscrollActivated;
     }
-
+    public void setAutoscrollPreDelayCountdown(boolean autoscrollPreDelayCountdown) {
+        this.autoscrollPreDelayCountdown = autoscrollPreDelayCountdown;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoscrollPreDelayCountdown",autoscrollPreDelayCountdown);
+    }
 
     // The getters
     public boolean getAutoscrollAutoStart() {
@@ -154,7 +163,12 @@ public class Autoscroll {
     public boolean getAutoscrollActivated() {
         return autoscrollActivated;
     }
-
+    public boolean finishedPreDelay() {
+        return scrollTime >= (songDelay*1000f);
+    }
+    public boolean getAutoscrollPreDelayCountdown() {
+        return autoscrollPreDelayCountdown;
+    }
 
 
     // This is called from both the Autoscroll settings and bottom sheet to activate the link audio button
@@ -217,6 +231,11 @@ public class Autoscroll {
 
             totalTimeString = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(songDuration);
             autoscrollTotalTimeText.post(() -> autoscrollTotalTimeText.setText(totalTimeString));
+
+            onScreenInfo.setFinishedAutoscrollPreDelay(false);
+            //onScreenInfo.setFirstShowAutoscroll(true);
+            autoHideSent = false;
+
             setupTimer();
             setAutoscrollOK(true);
         }
@@ -230,6 +249,14 @@ public class Autoscroll {
                 showOn = !showOn;
                 flashCount = 0;
             }
+
+            if (!autoHideSent && (songDelay==0 || (songDelay>0 && (scrollTime/1000f)>songDelay))) {
+                autoHideSent = true;
+                Log.d(TAG,"sending hide runnable");
+                onScreenInfo.setFinishedAutoscrollPreDelay(true);
+                autoscrollView.post(() -> mainActivityInterface.updateOnScreenInfo("showhide"));
+            }
+
             if (!isPaused) {
                 autoscrollTimeText.setTextColor(colorOn);
                 currentTimeString = mainActivityInterface.getTimeTools().timeFormatFixer((int)((float)scrollTime/1000f));
@@ -237,6 +264,10 @@ public class Autoscroll {
                     // This is predelay, so set the alpha down
                     autoscrollTimeText.post(() -> {
                         autoscrollTimeText.setAlpha(0.6f);
+                        // If user wants a countdown for predelay, show that
+                        if (autoscrollPreDelayCountdown && songDelay>0) {
+                            currentTimeString =  mainActivityInterface.getTimeTools().timeFormatFixer((int)(1+ songDelay - (float)scrollTime/1000f));
+                        }
                         autoscrollTimeText.setText(currentTimeString);
                         // Listen out for scroll changes
                         if (usingZoomLayout) {
@@ -438,9 +469,11 @@ public class Autoscroll {
         if (myZoomLayout!=null && usingZoomLayout) {
             myZoomLayout.setIsUserTouching(false);
             myZoomLayout.scrollTo(0,0);
+            myZoomLayout.checkScrollPosition();
         } else if (!usingZoomLayout && myRecyclerView!=null) {
             myRecyclerView.setUserTouching(false);
             myRecyclerView.scrollToTop();
+            myRecyclerView.checkScrollPosition();
         }
 
         if (!alreadyFiguredOut) {
@@ -454,7 +487,14 @@ public class Autoscroll {
             isPaused = false;
             autoscrollActivated = true;
             setIsAutoscrolling(true);
-            autoscrollView.post(() -> mainActivityInterface.updateOnScreenInfo("showhide"));
+
+
+            autoscrollView.post(() -> {
+                mainActivityInterface.updateOnScreenInfo("showhide");
+                //onScreenInfo.setFirstShowAutoscroll(false);
+            });
+
+
             try {
                 task = scheduledExecutorService.scheduleAtFixedRate(scrollRunnable,0,updateTime, TimeUnit.MILLISECONDS);
             } catch (Exception e) {
@@ -480,6 +520,12 @@ public class Autoscroll {
         }
     }
     private void endAutoscroll() {
+        if (usingZoomLayout && myZoomLayout!=null) {
+            myZoomLayout.checkScrollPosition();
+        } else if (myRecyclerView!=null) {
+            myRecyclerView.checkScrollPosition();
+        }
+
         // Called at normal end.  Doesn't reset activated
         setIsAutoscrolling(false);
         autoscrollView.postDelayed(() -> autoscrollView.setVisibility(View.GONE),1000);
