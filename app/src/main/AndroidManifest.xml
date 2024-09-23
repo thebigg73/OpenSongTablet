@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
-    <uses-sdk tools:overrideLibrary="androidx.appcompat,androidx.appcompat.resources,com.google.android.gms.cast,com.google.android.gms.cast.framework,com.google.android.gms.nearby,com.google.android.gms.flags,com.google.android.gms.base,com.google.android.gms.tasks,com.google.android.gms.common,androidx.fragment.ktx,androidx.fragment,com.canhub.cropper,com.google.android.play.assetdelivery,com.google.android.play.assetdelivery.ktx,com.google.mlkit.vision.text.latin,com.google.mlkit.vision.text,com.google.mlkit.common" />
+    <uses-sdk tools:overrideLibrary="androidx.appcompat,androidx.appcompat.resources,com.google.android.gms.cast,com.google.android.gms.cast.framework,com.google.android.gms.nearby,com.google.android.gms.flags,com.google.android.gms.base,com.google.android.gms.tasks,com.google.android.gms.common,androidx.fragment.ktx,androidx.fragment,com.canhub.cropper,com.google.android.play.assetdelivery,com.google.android.play.assetdelivery.ktx,com.google.mlkit.vision.text.latin,com.google.mlkit.vision.text,com.google.mlkit.common,androidx.navigation.common,androidx.navigation.dynamicfeatures,androidx.navigation,androidx.navigation.dynamicfeatures.fragment,androidx.navigation.fragment,androidx.navigation.ui" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"

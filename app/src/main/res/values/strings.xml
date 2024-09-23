@@ -1357,4 +1357,6 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="autoscroll_delay_countdown">Show the initial delay time as a countdown to 0 before starting autoscroll.</string>
+    <string name="files_restored">Files restored</string>
 </resources>

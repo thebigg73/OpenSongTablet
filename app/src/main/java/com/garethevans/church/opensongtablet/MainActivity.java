@@ -3663,7 +3663,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Autoscroll getAutoscroll() {
         if (autoscroll == null) {
-            autoscroll = new Autoscroll(this, myView.onScreenInfo.getAutoscrollTime(),
+            autoscroll = new Autoscroll(this, myView.onScreenInfo, myView.onScreenInfo.getAutoscrollTime(),
                     myView.onScreenInfo.getAutoscrollTotalTime(), myView.onScreenInfo.getAutoscroll());
         }
         return autoscroll;
