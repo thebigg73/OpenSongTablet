@@ -49,6 +49,12 @@ public class UltimateGuitar {
                     "<pre",">","</pre",s);
         }
 
+        // Empty song method (user seeing success and seeing nothing due to long code lines!)
+        if (lyricsText.isEmpty()) {
+            lyricsText = mainActivityInterface.getProcessSong().getSubstring(
+                    "<div class=\"js-page js-global-wrapper","&quot;content&quot;:&quot;","&quot;,&quot;revision_id&quot;", s);
+        }
+
         // Another method
         if (lyricsText.isEmpty()) {
             lyricsText = (mainActivityInterface.getProcessSong().getSubstring(
@@ -67,6 +73,25 @@ public class UltimateGuitar {
         }
 
         lyricsText = lyricsText.replace("<div class=\"LJhrL\">X</div>","");
+
+        if (lyricsText.contains("[ch]") || lyricsText.contains("[tab]")) {
+            // This is the non-standard method that extracts it from a value that needs decoded
+            // Common on devices that can't get the inline content in the normal way
+            lyricsText = lyricsText.replace("\r\n","\n");
+            lyricsText = lyricsText.replace("&#039;","'");
+            lyricsText = lyricsText.replace("[tab]","");
+            lyricsText = lyricsText.replace("[/tab]","");
+            // Lines that contain [ch] are chord lines
+            StringBuilder tempStringBuilder = new StringBuilder();
+            for (String line:lyricsText.split("\n")) {
+                if (line.contains("[ch]")) {
+                    tempStringBuilder.append(".").append(line).append("\n");
+                } else {
+                    tempStringBuilder.append(line).append("\n");
+                }
+            }
+            lyricsText = tempStringBuilder.toString().replace("[ch]","").replace("[/ch]","");
+        }
 
         // Get rid of inline ads
         String bitToRemove = mainActivityInterface.getProcessSong().getSubstring(
@@ -110,7 +135,7 @@ public class UltimateGuitar {
                 // Looks like it is a heading line
                 line = mainActivityInterface.getProcessSong().fixHeadingLine(line);
                 line = line.trim();
-            } else {
+            } else if (!line.startsWith(".")) {
                 // Assume it is a lyric line
                 line = " " + line;
             }
