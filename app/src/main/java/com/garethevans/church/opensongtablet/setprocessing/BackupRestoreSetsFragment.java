@@ -48,14 +48,14 @@ public class BackupRestoreSetsFragment extends Fragment {
     private String backupFilename;
     private Uri backupUri;
     private ActivityResultLauncher<Intent> activityResultLauncher;
-    private boolean success = false;
     private final String setSeparator = "__";
     private final String TAG = "BackupRestoreSets";
     private String restore_sets_string="", website_set_restore_string="", backup_string="",
             website_set_backup_string="", unknown_string="", backup_sets_string="",
             import_basic_string="", mainfoldername_string="", backup_info_string="",
-            success_string="", error_string="", toolBarTitle="";
-    private String webAddress;
+            toolBarTitle="", files_restored_string="", error_string="";
+    private String webAddress, errorFiles="";
+    private int filesRestored;
 
     @Override
     public void onResume() {
@@ -120,7 +120,7 @@ public class BackupRestoreSetsFragment extends Fragment {
             import_basic_string = getString(R.string.import_basic);
             mainfoldername_string = getString(R.string.mainfoldername);
             backup_info_string = getString(R.string.backup_info);
-            success_string = getString(R.string.success);
+            files_restored_string = getString(R.string.files_restored);
             error_string = getString(R.string.error);
         }
     }
@@ -212,9 +212,6 @@ public class BackupRestoreSetsFragment extends Fragment {
                 } else {
                     if (getActivity()!=null) {
                         File file = mainActivityInterface.getStorageAccess().getAppSpecificFile("Import","",mainActivityInterface.getImportFilename());
-                        //File folder = new File(getActivity().getExternalCacheDir(), "Import");
-                        //Log.d(TAG, "created: " + folder.mkdirs());
-                        //File file = new File(folder, mainActivityInterface.getImportFilename());
                         try {
                             inputStream = new FileInputStream(file);
                         } catch (Exception e) {
@@ -361,7 +358,6 @@ public class BackupRestoreSetsFragment extends Fragment {
         myView.progressBar.setVisibility(View.VISIBLE);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(backupUri);
         ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
-        success = false;
         boolean overwrite = myView.overWrite.isChecked();
 
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
@@ -369,43 +365,57 @@ public class BackupRestoreSetsFragment extends Fragment {
             // Get a note of the chosen sets
             getChosenSets();
 
+            filesRestored = 0;
             ZipEntry ze;
             byte[] buffer = new byte[8192];
 
             try {
                 while ((ze = zipInputStream.getNextEntry()) != null) {
-                    if (chosenSets.contains(ze.getName())) {
+                    if (ze.getName()!=null && chosenSets.contains(ze.getName())) {
                         Uri file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", ze.getName());
-                        boolean exists = mainActivityInterface.getStorageAccess().uriExists(file_uri);
-                        if (!exists || overwrite) {
-                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport Create Sets/"+ze.getName()+" deleteOld=true");
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, file_uri, null, "Sets", "", ze.getName());
-                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
-                            // Write the file
-                            int count;
-                            while ((count = zipInputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, count);
+                        if (file_uri!=null) {
+                            boolean exists = mainActivityInterface.getStorageAccess().uriExists(file_uri);
+                            if (!exists || overwrite) {
+                                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doImport Create Sets/" + ze.getName() + " deleteOld=true");
+                                try {
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, file_uri, null, "Sets", "", ze.getName());
+                                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
+                                    // Write the file
+                                    if (outputStream!=null) {
+                                        int count;
+                                        while ((count = zipInputStream.read(buffer)) != -1) {
+                                            outputStream.write(buffer, 0, count);
+                                        }
+                                        try {
+                                            outputStream.close();
+                                        } catch (Exception e) {
+                                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                        }
+                                    }
+                                    filesRestored ++;
+                                } catch (Exception e) {
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                    errorFiles = ze.getName() + "\n";
+                                }
                             }
-                            outputStream.close();
                         }
                     }
                 }
-                success = true;
                 zipInputStream.closeEntry();
 
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                success = false;
             }
 
+            String anyErrors = errorFiles.trim();
             handler.post(() -> {
                 myView.progressBar.setVisibility(View.GONE);
-                if (success) {
-                    mainActivityInterface.getShowToast().doIt(success_string);
-                } else {
-                    mainActivityInterface.getShowToast().doIt(error_string);
+                String outcome = files_restored_string + ": " + filesRestored + "/" + chosenSets.size();
+                if (!anyErrors.isEmpty()) {
+                    outcome = "\n\n" + error_string + "\n" + anyErrors;
                 }
+                mainActivityInterface.getShowToast().doIt(outcome);
             });
         });
     }
