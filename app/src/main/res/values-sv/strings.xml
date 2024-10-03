@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Håll autoscroll aktiverat när du byter låt</string>
     <string name="autoscroll_default_or_prompt">"Om du inte har angett en låtperiod bör standardvärdena användas eller vill du bli frågad varje gång?"</string>
     <string name="autoscroll_delay">Dröjsmål</string>
+    <string name="autoscroll_delay_countdown">Visa den initiala fördröjningstiden som en nedräkning till 0 innan du startar autoscroll.</string>
     <string name="autoscroll_hide">Autodölj autoscroll</string>
     <string name="autoscroll_info">Justera inställningarna för autoscroll</string>
     <string name="autoscroll_inline_pause">Infogad paus</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Logg för låtvisning</string>
     <string name="file_view_log_info">Håll en logg över de senast visade låtarna</string>
     <string name="filename">Filnamn</string>
+    <string name="files_restored">Filer återställda</string>
     <string name="fill">Fylla</string>
     <string name="filter_by_artist">Den här knappen används för att inkludera ett artistfilter för din sånglista</string>
     <string name="filter_by_dropdown">Förfina din sökning genom att välja ett alternativ i listrutan här</string>

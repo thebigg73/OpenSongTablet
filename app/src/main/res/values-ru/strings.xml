@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Держите автопрокрутку включенной при смене песен</string>
     <string name="autoscroll_default_or_prompt">"Если вы задали продолжительность песни, будут использованы значения по умолчанию, или нужно спрашивать каждый раз?"</string>
     <string name="autoscroll_delay">Задержка</string>
+    <string name="autoscroll_delay_countdown">Перед запуском автопрокрутки отобразите начальное время задержки в виде обратного отсчета до 0.</string>
     <string name="autoscroll_hide">Автоскрытие автопрокрутки</string>
     <string name="autoscroll_info">Настройка параметров автопрокрутки</string>
     <string name="autoscroll_inline_pause">Встроенная пауза</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Журнал просмотра песен</string>
     <string name="file_view_log_info">Ведите журнал последних просмотренных песен</string>
     <string name="filename">Имя файла</string>
+    <string name="files_restored">Файлы восстановлены</string>
     <string name="fill">Заполнить</string>
     <string name="filter_by_artist">Эта кнопка включает фильтр по исполнителю</string>
     <string name="filter_by_dropdown">Уточнить поиск, выбрав вариант из раскрывающегося списка</string>

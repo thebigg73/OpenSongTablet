@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Utrzymaj autoprzewijanie podczas zmiany piosenek</string>
     <string name="autoscroll_default_or_prompt">Jeśli nie ustawiłeś czasu trwania piosenki, użyć domyślnych wartości, czy pytać za każdym razem?</string>
     <string name="autoscroll_delay">Opóźnienie</string>
+    <string name="autoscroll_delay_countdown">Pokaż początkowy czas opóźnienia jako odliczanie do 0 przed rozpoczęciem automatycznego przewijania.</string>
     <string name="autoscroll_hide">Automatyczne ukrywanie automatycznego przewijania</string>
     <string name="autoscroll_info">Dostosuj ustawienia automatycznego przewijania</string>
     <string name="autoscroll_inline_pause">Pauza w tekście</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Dziennik oglądanych piosenek</string>
     <string name="file_view_log_info">Prowadź dziennik ostatnio oglądanych piosenek</string>
     <string name="filename">Nazwa pliku</string>
+    <string name="files_restored">Pliki przywrócone</string>
     <string name="fill">Wypełnij</string>
     <string name="filter_by_artist">Ten przycisk służy do włączenia filtra wykonawcy dla listy piosenek</string>
     <string name="filter_by_dropdown">Zawęź wyszukiwanie, wybierając opcję z rozwijanej listy</string>

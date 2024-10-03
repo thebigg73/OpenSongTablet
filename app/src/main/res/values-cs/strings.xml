@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Při změně skladeb mějte aktivovaný automatický posun</string>
     <string name="autoscroll_default_or_prompt">"Pokud jste nenastavili dobu trvání píseň by měla být použita výchozí hodnoty, nebo chcete být pokaždé zeptat?"</string>
     <string name="autoscroll_delay">Zpoždění</string>
+    <string name="autoscroll_delay_countdown">Zobrazit počáteční čas zpoždění jako odpočítávání do 0 před spuštěním automatického posouvání.</string>
     <string name="autoscroll_hide">Automaticky skrýt automatické posouvání</string>
     <string name="autoscroll_info">Upravte nastavení automatického posouvání</string>
     <string name="autoscroll_inline_pause">Vložená pauza</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Záznam zobrazení skladby</string>
     <string name="file_view_log_info">Uchovávejte si záznam naposledy zobrazených skladeb</string>
     <string name="filename">Název souboru</string>
+    <string name="files_restored">Soubory obnoveny</string>
     <string name="fill">Vyplnit</string>
     <string name="filter_by_artist">Toto tlačítko slouží k zahrnutí filtru umělce pro váš seznam skladeb</string>
     <string name="filter_by_dropdown">Upřesněte vyhledávání výběrem možnosti z rozevíracího seznamu zde</string>

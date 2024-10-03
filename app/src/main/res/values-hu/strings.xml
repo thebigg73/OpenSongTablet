@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Tartsa az automatikus görgetést bekapcsolva, amikor dalokat vált</string>
     <string name="autoscroll_default_or_prompt">"Ha még nem állította be a dalt időtartama legyen az alapértelmezett értékeket lehet használni, vagy szeretne kérni, minden egyes alkalommal?"</string>
     <string name="autoscroll_delay">Késleltetés</string>
+    <string name="autoscroll_delay_countdown">A kezdeti késleltetési idő visszaszámlálása 0-ig az automatikus görgetés megkezdése előtt.</string>
     <string name="autoscroll_hide">Automatikus görgetés automatikus elrejtése</string>
     <string name="autoscroll_info">Módosítsa az automatikus görgetés beállításait</string>
     <string name="autoscroll_inline_pause">Szövegközi szünet</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Dalmegtekintési napló</string>
     <string name="file_view_log_info">Naplózza a legutóbb megtekintett dalokat</string>
     <string name="filename">Fájl név</string>
+    <string name="files_restored">A fájlok visszaállítva</string>
     <string name="fill">Tölt</string>
     <string name="filter_by_artist">Ezzel a gombbal előadói szűrőt helyezhet el a dallistához</string>
     <string name="filter_by_dropdown">Finomítsa a keresést az itt található legördülő lista kiválasztásával</string>

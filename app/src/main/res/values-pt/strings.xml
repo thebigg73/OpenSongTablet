@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Mantenha a rolagem automática ativada ao alterar as músicas</string>
     <string name="autoscroll_default_or_prompt">"Se você não tiver definido uma duração da música deve ser utilizado os valores padrão ou você quer ser solicitado a cada vez?"</string>
     <string name="autoscroll_delay">Atraso</string>
+    <string name="autoscroll_delay_countdown">Mostra o tempo de atraso inicial como uma contagem regressiva até 0 antes de iniciar a rolagem automática.</string>
     <string name="autoscroll_hide">Ocultar rolagem automática</string>
     <string name="autoscroll_info">Ajuste as configurações de rolagem automática</string>
     <string name="autoscroll_inline_pause">Pausa em linha</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Registo de visualização de música</string>
     <string name="file_view_log_info">Mantenha um registo das músicas visualizadas mais recentemente</string>
     <string name="filename">Nome do arquivo</string>
+    <string name="files_restored">Arquivos restaurados</string>
     <string name="fill">Preenchimento</string>
     <string name="filter_by_artist">Este botão é usado para incluir um filtro de artista para sua lista de músicas</string>
     <string name="filter_by_dropdown">Refine sua pesquisa escolhendo uma opção na lista suspensa aqui</string>

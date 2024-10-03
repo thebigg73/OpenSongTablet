@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Gardez le défilement automatique activé lorsque vous changez de chanson</string>
     <string name="autoscroll_default_or_prompt">"Si vous ne l\'avez pas fixée, voulez vous que la durée de la chanson soit la valeur par défaut ou voulez-vous que l\'on vous demande ?"</string>
     <string name="autoscroll_delay">Retard</string>
+    <string name="autoscroll_delay_countdown">Affichez le temps de retard initial sous forme de compte à rebours jusqu\'à 0 avant de démarrer le défilement automatique.</string>
     <string name="autoscroll_hide">Masquer automatiquement le défilement automatique</string>
     <string name="autoscroll_info">Ajuster les paramètres de défilement automatique</string>
     <string name="autoscroll_inline_pause">Pause en ligne</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Journal de vue des chansons</string>
     <string name="file_view_log_info">Tenir un journal des chansons les plus consultées</string>
     <string name="filename">Nom de fichier</string>
+    <string name="files_restored">Fichiers restaurés</string>
     <string name="fill">Remplir</string>
     <string name="filter_by_artist">Ce bouton est utilisé pour inclure un filtre d\'artiste pour votre liste de chansons</string>
     <string name="filter_by_dropdown">Affinez votre recherche en choisissant une option dans la liste déroulante ici</string>

@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Mantieni lo scorrimento automatico attivato quando cambi i brani</string>
     <string name="autoscroll_default_or_prompt">"Se non è stata impostata una durata canzone dovrebbero essere utilizzati i valori predefiniti o vuoi essere chiesto ogni volta?"</string>
     <string name="autoscroll_delay">Ritardo</string>
+    <string name="autoscroll_delay_countdown">Mostra il tempo di ritardo iniziale come conto alla rovescia fino a 0 prima di avviare lo scorrimento automatico.</string>
     <string name="autoscroll_hide">Nascondi automaticamente lo scorrimento automatico</string>
     <string name="autoscroll_info">Regola le impostazioni di scorrimento automatico</string>
     <string name="autoscroll_inline_pause">Pausa in linea</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Registro di visualizzazione dei brani</string>
     <string name="file_view_log_info">Tieni un registro delle canzoni visualizzate più di recente</string>
     <string name="filename">Nome del file</string>
+    <string name="files_restored">File ripristinati</string>
     <string name="fill">Riempire</string>
     <string name="filter_by_artist">Questo pulsante viene utilizzato per includere un filtro artista per l\'elenco dei brani</string>
     <string name="filter_by_dropdown">Perfeziona la tua ricerca scegliendo un\'opzione dall\'elenco a discesa qui</string>

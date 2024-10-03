@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Hou outoscroll geaktiveer wanneer jy van liedjies verander</string>
     <string name="autoscroll_default_or_prompt">"As jy \'n duur lied moet die standaard waardes gebruik word nie gestel het of wil jy elke keer gevra word?"</string>
     <string name="autoscroll_delay">Vertraag</string>
+    <string name="autoscroll_delay_countdown">Wys die aanvanklike vertragingstyd as \'n aftelling na 0 voordat outo-scroll begin word.</string>
     <string name="autoscroll_hide">Versteek outoscroll outomaties</string>
     <string name="autoscroll_info">Pas die outoscroll-instellings aan</string>
     <string name="autoscroll_inline_pause">Inlyn pouse</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Liedjie aansig log</string>
     <string name="file_view_log_info">Hou \'n logboek van die liedjies wat die meeste onlangs gekyk is</string>
     <string name="filename">Lêernaam</string>
+    <string name="files_restored">Lêers is herstel</string>
     <string name="fill">Vul</string>
     <string name="filter_by_artist">Hierdie knoppie word gebruik om \'n kunstenaarfilter vir u liedjieslys in te sluit</string>
     <string name="filter_by_dropdown">Verfyn u soektog deur hier \'n opsie uit die keuselys te kies</string>

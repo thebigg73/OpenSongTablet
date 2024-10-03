@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">ගීත වෙනස් කිරීමේදී ස්වයංක්‍රීය අනුචලනය සක්‍රිය කර තබා ගන්න</string>
     <string name="autoscroll_default_or_prompt">ඔබ ගීත කාලසීමාවක් සකසා නොමැති නම් පෙරනිමි අගයන් භාවිතා කළ යුතුද නැතහොත් සෑම අවස්ථාවකදීම ඔබෙන් ඇසීමට අවශ්‍යද?</string>
     <string name="autoscroll_delay">ප්රමාදය</string>
+    <string name="autoscroll_delay_countdown">ස්වයංක්‍රීය අනුචලනය ආරම්භ කිරීමට පෙර ආරම්භක ප්‍රමාද කාලය 0 දක්වා ගණන් කිරීමක් ලෙස පෙන්වන්න.</string>
     <string name="autoscroll_hide">ස්වයංක්‍රීයව සඟවන්න</string>
     <string name="autoscroll_info">ස්වයංක්‍රීය අනුචලන සැකසුම් සකසන්න</string>
     <string name="autoscroll_inline_pause">පේළිගත විරාමය</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">ගීත නැරඹුම් ලොගය</string>
     <string name="file_view_log_info">මෑතකදී නැරඹූ ගීතවල ලොගයක් තබා ගන්න</string>
     <string name="filename">ගොනු නාමය</string>
+    <string name="files_restored">ගොනු ප්‍රතිසාධනය කරන ලදී</string>
     <string name="fill">පුරවන්න</string>
     <string name="filter_by_artist">මෙම බොත්තම ඔබගේ ගීත ලැයිස්තුව සඳහා කලාකරු පෙරහනක් ඇතුළත් කිරීමට භාවිතා කරයි</string>
     <string name="filter_by_dropdown">මෙහි පතන ලැයිස්තුවෙන් විකල්පයක් තේරීමෙන් ඔබේ සෙවුම පිරිපහදු කරන්න</string>

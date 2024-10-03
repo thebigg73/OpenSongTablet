@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Neka automatsko pomeranje bude aktivirano kada menjate pesme</string>
     <string name="autoscroll_default_or_prompt">Ako niste postavili dužinu pesme, da li da se koristi unapred postavljeno vreme ili da pitamo svaki put?</string>
     <string name="autoscroll_delay">Kašnjenje</string>
+    <string name="autoscroll_delay_countdown">Pokažite početno vreme kašnjenja kao odbrojavanje do 0 pre pokretanja autoscroll.</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Podesite podešavanja automatskog pomeranja</string>
     <string name="autoscroll_inline_pause">Umetnuta pauza</string>
@@ -158,6 +159,8 @@
     <string name="chord_capo_display">Ako pesma ima kapo akorde, koje akorde treba prikazati?</string>
     <string name="chord_color">Font akroda</string>
     <string name="chord_fingering">Ukazivanje akorda</string>
+    <string name="chord_fingering_inline">Pokažite akord prstima u pesmi</string>
+    <string name="chord_fingering_inline_info">Ovo će nacrtati dijagrame akorda za svaki akord u pesmi koristeći željeni instrument (ili instrument koji je određen za pesmu).  Ovo će značajno usporiti prikaz pesme i treba ga koristiti samo prilikom učenja akorda.</string>
     <string name="chord_format">Format akorda</string>
     <string name="chord_settings">Podešavanja akorda</string>
     <string name="chordformat_1_name">Standard</string>
@@ -340,6 +343,7 @@
     <string name="file_view_log">Evidencija prikaza pesme</string>
     <string name="file_view_log_info">Vodi evidenciju najskorije pregledanih pesama</string>
     <string name="filename">Naziv dokumenta</string>
+    <string name="files_restored">Fajlovi vraćeni</string>
     <string name="fill">Popune</string>
     <string name="filter_by_artist">Ovo dugme se koristi za uključivanje filtera izvođača za vašu listu pesama</string>
     <string name="filter_by_dropdown">Precizirajte pretragu izborom opcije sa padajuće liste ovde</string>
@@ -1000,6 +1004,4 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="chord_fingering_inline">Pokažite akord prstima u pesmi</string>
-    <string name="chord_fingering_inline_info">Ovo će nacrtati dijagrame akorda za svaki akord u pesmi koristeći željeni instrument (ili instrument koji je određen za pesmu).  Ovo će značajno usporiti prikaz pesme i treba ga koristiti samo prilikom učenja akorda.</string>
 </resources>

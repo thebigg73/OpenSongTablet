@@ -11,6 +11,8 @@
     <string name="action_long_press">追加の長押しアクション</string>
     <string name="action_short_press">短押し/クリックアクション</string>
     <string name="actionbar_autohide">アクションバーを自動的に非表示</string>
+    <string name="autoscroll_delay_countdown">自動スクロールを開始する前に、初期遅延時間を 0 までのカウントダウンとして表示します。</string>
+    <string name="files_restored">ファイルが復元されました</string>
     <string name="actionbar_display">アクションバー</string>
     <string name="actionbar_info">アクションバーの情報の外観を変更する</string>
     <string name="actionbar_left">アクションバー左</string>

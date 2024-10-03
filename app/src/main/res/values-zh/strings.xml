@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">更改歌曲时保持自动滚动激活</string>
     <string name="autoscroll_default_or_prompt">"如果你还没有设置一首歌的持续时间应使用默认值，或者你想每次都问？"</string>
     <string name="autoscroll_delay">延迟</string>
+    <string name="autoscroll_delay_countdown">在开始自动滚动之前将初始延迟时间显示为倒计时 0。</string>
     <string name="autoscroll_hide">自动隐藏自动滚动</string>
     <string name="autoscroll_info">调整自动滚动设置</string>
     <string name="autoscroll_inline_pause">内联暂停</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">歌曲查看日志</string>
     <string name="file_view_log_info">记录最近查看的歌曲</string>
     <string name="filename">文档名称</string>
+    <string name="files_restored">文件已恢复</string>
     <string name="fill">填补</string>
     <string name="filter_by_artist">此按钮用于为您的歌曲列表添加艺术家过滤器</string>
     <string name="filter_by_dropdown">通过从此处的下拉列表中选择一个选项来优化搜索</string>

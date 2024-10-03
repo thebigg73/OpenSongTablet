@@ -56,6 +56,7 @@
     <string name="autoscroll_autostart">Keep autoscroll activated when changing songs</string>
     <string name="autoscroll_default_or_prompt">If you haven\'t set a song duration should the default values be used or do you want to be asked each time?</string>
     <string name="autoscroll_delay">Delay</string>
+    <string name="autoscroll_delay_countdown">Show the initial delay time as a countdown to 0 before starting autoscroll.</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Adjust the autoscroll settings</string>
     <string name="autoscroll_inline_pause">Inline pause</string>
@@ -438,6 +439,7 @@
     <string name="file_view_log">Song view log</string>
     <string name="file_view_log_info">Keep a log of the most recently viewed songs</string>
     <string name="filename">Filename</string>
+    <string name="files_restored">Files restored</string>
     <string name="fill">Fill</string>
     <string name="filter_by_artist">This button is used to include an artist filter for your song list</string>
     <string name="filter_by_dropdown">Refine your search by choosing an option from the drop down list here</string>
@@ -1357,6 +1359,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="autoscroll_delay_countdown">Show the initial delay time as a countdown to 0 before starting autoscroll.</string>
-    <string name="files_restored">Files restored</string>
 </resources>

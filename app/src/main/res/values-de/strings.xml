@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Lassen Sie Autoscroll aktiviert, wenn Sie Songs wechseln</string>
     <string name="autoscroll_default_or_prompt">"Wenn Sie keine Song Dauer eingestellt haben, die Standardwerte verwenden oder jedes Mal nachfragen?"</string>
     <string name="autoscroll_delay">Verzögerung</string>
+    <string name="autoscroll_delay_countdown">Zeigt die anfängliche Verzögerungszeit als Countdown bis 0 an, bevor der automatische Bildlauf gestartet wird.</string>
     <string name="autoscroll_hide">Autoscroll automatisch ausblenden</string>
     <string name="autoscroll_info">Passen Sie die Autoscroll-Einstellungen an</string>
     <string name="autoscroll_inline_pause">Inline-Pause</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Song-Ansichtsprotokoll</string>
     <string name="file_view_log_info">Führen Sie ein Protokoll über die zuletzt angesehenen Songs</string>
     <string name="filename">Dateinamen</string>
+    <string name="files_restored">Dateien wiederhergestellt</string>
     <string name="fill">Füllen</string>
     <string name="filter_by_artist">Diese Schaltfläche wird verwendet, um einen Künstlerfilter für Ihre Songliste einzufügen</string>
     <string name="filter_by_dropdown">Verfeinern Sie Ihre Suche, indem Sie hier eine Option aus der Dropdown-Liste auswählen</string>

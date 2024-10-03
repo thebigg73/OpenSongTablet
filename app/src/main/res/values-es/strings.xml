@@ -52,6 +52,7 @@
     <string name="autoscroll_autostart">Mantenga el desplazamiento automático activado al cambiar de canción</string>
     <string name="autoscroll_default_or_prompt">"Si no ha configurado una duración canción se deben utilizar los valores por defecto o quieres que se le pregunte cada vez?"</string>
     <string name="autoscroll_delay">Demora</string>
+    <string name="autoscroll_delay_countdown">Muestra el tiempo de retraso inicial como una cuenta regresiva hasta 0 antes de iniciar el desplazamiento automático.</string>
     <string name="autoscroll_hide">Ocultar desplazamiento automático</string>
     <string name="autoscroll_info">Ajustar la configuración de desplazamiento automático</string>
     <string name="autoscroll_inline_pause">Pausa en línea</string>
@@ -342,6 +343,7 @@
     <string name="file_view_log">Registro de vistas de canciones</string>
     <string name="file_view_log_info">Mantenga un registro de las canciones vistas más recientemente</string>
     <string name="filename">Nombre del archivo</string>
+    <string name="files_restored">Archivos restaurados</string>
     <string name="fill">Llenar</string>
     <string name="filter_by_artist">Este botón se usa para incluir un filtro de artista para su lista de canciones</string>
     <string name="filter_by_dropdown">Refina tu búsqueda eligiendo una opción de la lista desplegable aquí</string>
