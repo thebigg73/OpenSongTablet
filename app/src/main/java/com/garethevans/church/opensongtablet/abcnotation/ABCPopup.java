@@ -128,8 +128,8 @@ public class ABCPopup {
     }
 
     private void getPositionAndSize() {
-        posX = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyXPosition", -1);
-        posY = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyYPosition", -1);
+        posX = mainActivityInterface.getPreferences().getMyPreferenceInt("abcXPosition", -1);
+        posY = mainActivityInterface.getPreferences().getMyPreferenceInt("abcYPosition", -1);
 
         // Fix the sizes
         if (posX < 0) {
@@ -159,8 +159,8 @@ public class ABCPopup {
                         popupWindow.update(offsetX, offsetY, -1, -1, true);
                         break;
                     case MotionEvent.ACTION_UP:
-                        mainActivityInterface.getPreferences().setMyPreferenceInt("stickyXPosition", offsetX);
-                        mainActivityInterface.getPreferences().setMyPreferenceInt("stickyYPosition", offsetY);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt("abcXPosition", offsetX);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt("abcYPosition", offsetY);
                 }
                 return true;
             }

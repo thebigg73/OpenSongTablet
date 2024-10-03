@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Kapcsolja be az Autoscroll szünetet"</string>
     <string name="autoscroll_time">"Auto-scroll késleltetési idő"</string>
     <string name="autoshow_highlight">"Autoshow kiemelő jegyzetek"</string>
+    <string name="autoshow_musicscore">Kotta automatikus megjelenítése</string>
+    <string name="autoshow_musicscore_info">A zeneszámok betöltésekor automatikusan jelenítse meg a kotta (abc jelölést).</string>
     <string name="autoshow_stickynotes">Autoshow cetlik</string>
     <string name="average">"Átlagos"</string>
     <string name="back">"Vissza"</string>

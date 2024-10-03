@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"切换自动滚动暂停"</string>
     <string name="autoscroll_time">"自动滚动延迟时间"</string>
     <string name="autoshow_highlight">"自动显示荧光笔记"</string>
+    <string name="autoshow_musicscore">汽车表演乐谱</string>
+    <string name="autoshow_musicscore_info">歌曲加载时自动显示乐谱（abc 乐谱）</string>
     <string name="autoshow_stickynotes">"切换自动显示即时贴"</string>
     <string name="average">"平均"</string>
     <string name="back">"后面返回"</string>

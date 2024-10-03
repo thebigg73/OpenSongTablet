@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Alternar pausa de desplazamiento automático"</string>
     <string name="autoscroll_time">"Auto-scroll tiempo de retardo"</string>
     <string name="autoshow_highlight">"Notas del resaltador de autoshow"</string>
+    <string name="autoshow_musicscore">Partitura musical de exhibición automática</string>
+    <string name="autoshow_musicscore_info">Mostrar automáticamente la partitura musical (notación abc) cuando se cargan las canciones</string>
     <string name="autoshow_stickynotes">"Autoshow Toggle notas adhesivas"</string>
     <string name="average">"Promedio"</string>
     <string name="back">"Atrás"</string>

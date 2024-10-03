@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Εναλλαγή της παύσης αυτόματης κύλισης"</string>
     <string name="autoscroll_time">"Autoscroll delay time"</string>
     <string name="autoshow_highlight">"Αυτόματη εμφάνιση σημειώσεων σήμανσης"</string>
+    <string name="autoshow_musicscore">Αυτόματη εμφάνιση μουσικής παρτιτούρας</string>
+    <string name="autoshow_musicscore_info">Αυτόματη εμφάνιση της μουσικής (σημειογραφία abc) κατά τη φόρτωση των τραγουδιών</string>
     <string name="autoshow_stickynotes">"Toggle autoshow sticky notes"</string>
     <string name="average">"Μέσος όρος"</string>
     <string name="back">"Back"</string>

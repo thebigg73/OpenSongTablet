@@ -1133,6 +1133,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
+
+                // Hide the abc notes if required
+                showAbc(false,true);
+
+                // Hide the sticky notes if required
+                showSticky(false,true);
             }
 
             @Override
@@ -1143,6 +1149,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // Hide the keyboard
                 windowFlags.hideKeyboard();
+
+                // Show the abc notes if required
+                if (performanceValid() && getAbcNotation().getAutoshowMusicScore() &&
+                        getSong().getAbc()!=null && !getSong().getAbc().isEmpty()) {
+                    showAbc(true,false);
+                }
+
+                // Show the sticky notes if required
+                if (performanceValid()) {
+                    showSticky(false, false);
+                }
             }
 
             @Override
@@ -1333,6 +1350,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
+        // Hide the abc notes if required
+        showAbc(false,true);
+
+        // Hide the sticky notes if required
+        showSticky(false,true);
+
         // If we are currently on the song window (performanceFragment or presenterFragment)
         // Make sure the backstack is clear as we are at the root page before going elsewhere
         int aboutToGoTo = -1;

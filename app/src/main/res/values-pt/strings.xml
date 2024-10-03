@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Alternar Pausa Autoscroll"</string>
     <string name="autoscroll_time">"Auto-scroll tempo de atraso"</string>
     <string name="autoshow_highlight">"Autoshow notas de marcadores"</string>
+    <string name="autoshow_musicscore">Partitura de exibição automática</string>
+    <string name="autoshow_musicscore_info">Mostrar automaticamente a partitura musical (notação abc) quando as músicas são carregadas</string>
     <string name="autoshow_stickynotes">"AutoApresentação alternância notas pegajosas"</string>
     <string name="average">"Média"</string>
     <string name="back">"Voltar"</string>

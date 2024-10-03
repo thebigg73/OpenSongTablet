@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Autoscroll-Pause umschalten (toggle)"</string>
     <string name="autoscroll_time">"Autoscroll Verzögerungszeit"</string>
     <string name="autoshow_highlight">"Autoshow Highlighter Notizen"</string>
+    <string name="autoshow_musicscore">Autoshow-Musikpartitur</string>
+    <string name="autoshow_musicscore_info">Musikpartitur (ABC-Notation) automatisch anzeigen, wenn Songs geladen werden</string>
     <string name="autoshow_stickynotes">"Song Notizen automatisch zeigen umschalten"</string>
     <string name="average">"Durchschnittlich"</string>
     <string name="back">"Zurück"</string>

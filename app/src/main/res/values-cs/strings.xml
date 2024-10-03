@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Přepnout automatické přerušení"</string>
     <string name="autoscroll_time">"Auto-scroll zpoždění"</string>
     <string name="autoshow_highlight">"Automatické poznámky zvýrazňovače"</string>
+    <string name="autoshow_musicscore">Automaticky zobrazit hudební skóre</string>
+    <string name="autoshow_musicscore_info">Automaticky zobrazit hudební skóre (abc notace) při načítání skladeb</string>
     <string name="autoshow_stickynotes">"Přepnout Autoshow Sticky Notes"</string>
     <string name="average">"Průměr"</string>
     <string name="back">"Zpět"</string>

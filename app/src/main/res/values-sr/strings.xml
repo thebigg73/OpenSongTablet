@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">Pauziranje automatskog pomeranja</string>
     <string name="autoscroll_time">Odloženi početak automatskog skrola</string>
     <string name="autoshow_highlight">Napomene za automatsko izoštravanje</string>
+    <string name="autoshow_musicscore">Autoshov muzički rezultat</string>
+    <string name="autoshow_musicscore_info">Automatski prikazuje muzički rezultat (ABC notacija) kada se pesme učitavaju</string>
     <string name="autoshow_stickynotes">Uključiti automatsko prikazivanje lepljivih beleški</string>
     <string name="average">Prosečno</string>
     <string name="back">Nazad</string>

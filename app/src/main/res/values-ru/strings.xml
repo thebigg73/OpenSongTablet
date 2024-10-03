@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Пауза автопрокрутки"</string>
     <string name="autoscroll_time">"Время автопрокрутки"</string>
     <string name="autoshow_highlight">"Автопоказ выделений маркером"</string>
+    <string name="autoshow_musicscore">Музыкальное сопровождение автошоу</string>
+    <string name="autoshow_musicscore_info">Автоматически показывать партитуру (обозначение abc) при загрузке песни</string>
     <string name="autoshow_stickynotes">"Автопоказ заметок"</string>
     <string name="average">"Средний"</string>
     <string name="back">"Назад"</string>

@@ -11,8 +11,6 @@
     <string name="action_long_press">追加の長押しアクション</string>
     <string name="action_short_press">短押し/クリックアクション</string>
     <string name="actionbar_autohide">アクションバーを自動的に非表示</string>
-    <string name="autoscroll_delay_countdown">自動スクロールを開始する前に、初期遅延時間を 0 までのカウントダウンとして表示します。</string>
-    <string name="files_restored">ファイルが復元されました</string>
     <string name="actionbar_display">アクションバー</string>
     <string name="actionbar_info">アクションバーの情報の外観を変更する</string>
     <string name="actionbar_left">アクションバー左</string>
@@ -54,6 +52,7 @@
     <string name="autoscroll_autostart">曲を変更するときは、自動スクロールを有効にしてください</string>
     <string name="autoscroll_default_or_prompt">"あなたはデフォルト値が使用されるべき曲の時間を設定したり、それぞれの時間を求められることがしたいですしていない場合は？"</string>
     <string name="autoscroll_delay">遅れ</string>
+    <string name="autoscroll_delay_countdown">自動スクロールを開始する前に、初期遅延時間を 0 までのカウントダウンとして表示します。</string>
     <string name="autoscroll_hide">自動スクロールを自動非表示</string>
     <string name="autoscroll_info">自動スクロール設定を調整します</string>
     <string name="autoscroll_inline_pause">インライン一時停止</string>
@@ -61,6 +60,8 @@
     <string name="autoscroll_pause">"自動スクロールの一時停止を切り替える"</string>
     <string name="autoscroll_time">"自動スクロール遅延時間"</string>
     <string name="autoshow_highlight">"オートショーハイライターノート"</string>
+    <string name="autoshow_musicscore">音楽スコアの自動表示</string>
+    <string name="autoshow_musicscore_info">曲の読み込み時に自動的に楽譜（abc記譜）を表示します</string>
     <string name="autoshow_stickynotes">"トグルautoshow付箋"</string>
     <string name="average">"平均"</string>
     <string name="back">"戻る"</string>
@@ -344,6 +345,7 @@
     <string name="file_view_log">ソングビューログ</string>
     <string name="file_view_log_info">最近視聴した曲のログを保持する</string>
     <string name="filename">ファイル名</string>
+    <string name="files_restored">ファイルが復元されました</string>
     <string name="fill">注ぐ</string>
     <string name="filter_by_artist">このボタンは、曲リストのアーティストフィルターを含めるために使用されます</string>
     <string name="filter_by_dropdown">ここのドロップダウンリストからオプションを選択して、検索を絞り込みます</string>

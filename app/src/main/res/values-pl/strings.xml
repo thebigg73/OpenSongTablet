@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">Wstrzymaj autoprzewijanie</string>
     <string name="autoscroll_time">Czas opóźnienia autoprzewijania</string>
     <string name="autoshow_highlight">Automatycznie pokazuj notatki podkreślające</string>
+    <string name="autoshow_musicscore">Automatyczne wyświetlanie partytury</string>
+    <string name="autoshow_musicscore_info">Automatycznie pokazuj partyturę muzyczną (notacja abc) podczas ładowania utworów</string>
     <string name="autoshow_stickynotes">Automatycznie pokazuj karteczki</string>
     <string name="average">Średni</string>
     <string name="back">Wstecz</string>

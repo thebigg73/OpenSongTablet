@@ -154,6 +154,8 @@ public class Preferences extends Activity {
     // abcAutoTranspose                 boolean     Should the abc notation output be transposed to match the song key (def:true)
     // abcPopupWidth                    float       The percentage of the screen width for the abc score popup (def:0.95f)
     // abcTranspose                     int         The visual transposing of abc notation
+    // abcXPosition                     int         The x position of the popup sticky note (def: -1 which means figure it out first)
+    // abcYPosition                     int         The y position of the popup sticky note (def: -1 which means figure it out first)
     // abcZoom                          int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)
     // addSectionBox   *NOTYET*         boolean     Draw a box around sections when in Performance mode (def:false)
     // addSectionSpace                  boolean     Should a spacing line be added between sections to improve readability (def:true)
@@ -169,6 +171,7 @@ public class Preferences extends Activity {
     // autoscrollLargeFontInfoBar       boolean     The text size of the floating autoscroll info bar (default:true = 20.0f.  false = 14.0f)
     // autoscrollPreDelayCountdown      boolean     Should the autoscroll pre-delay timer countdown rather than count up (def: false)
     // autoscrollUseDefaultTime         boolean     If not time has been set for the song, should we use the default when starting (def:true)
+    // autoshowMusicScore               boolean     If ABC notation should automatically display (when available) on song load (def:false)
     // backgroundImage1                 String      The uri of the background image 1 for presentations (def: bg.png)
     // backgroundImage2                 String      The uri of the background image 2 for presentations (def: bg.png)
     // backgroundVideo1                 String      The uri of the background video 1 for presentations (def:"")

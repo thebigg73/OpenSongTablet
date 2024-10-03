@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Växla Autoscroll paus"</string>
     <string name="autoscroll_time">"Autoscroll fördröjningstid"</string>
     <string name="autoshow_highlight">"Autoshow highlighter anteckningar"</string>
+    <string name="autoshow_musicscore">Autoshow musikpartitur</string>
+    <string name="autoshow_musicscore_info">Visa musikmusik (abc-notation) automatiskt när låtar laddas</string>
     <string name="autoshow_stickynotes">"Autoshow klisterlappar"</string>
     <string name="average">"Genomsnitt"</string>
     <string name="back">"Tillbaka"</string>

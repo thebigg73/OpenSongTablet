@@ -22,7 +22,7 @@ public class ABCNotation {
     private String songTitle, songKey, songAbc, songTimeSig;
     private int songAbcTranspose, abcZoom;
     private float abcPopupWidth;
-    private boolean isPopup, abcAutoTranspose;
+    private boolean isPopup, abcAutoTranspose, autoshowMusicScore;
     private final MainActivityInterface mainActivityInterface;
 
     public ABCNotation(Context c) {
@@ -35,6 +35,7 @@ public class ABCNotation {
         abcAutoTranspose = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true);
         abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
         abcZoom = mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2);
+        autoshowMusicScore = mainActivityInterface.getPreferences().getMyPreferenceBoolean("autoshowMusicScore",false);
     }
 
     // This is set when a song is set for editing or displaying the Abc notation
@@ -319,6 +320,9 @@ public class ABCNotation {
     public int getAbcZoom() {
         return abcZoom;
     }
+    public boolean getAutoshowMusicScore() {
+        return autoshowMusicScore;
+    }
 
     // The setters
     // Update the string value for the songAbc (due to editing it in the MusicScoreFragment)
@@ -340,5 +344,9 @@ public class ABCNotation {
     public void setAbcZoom(int abcZoom) {
         this.abcZoom = abcZoom;
         mainActivityInterface.getPreferences().setMyPreferenceInt("abcZoom",abcZoom);
+    }
+    public void setAutoshowMusicScore(boolean autoshowMusicScore) {
+        this.autoshowMusicScore = autoshowMusicScore;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoshowMusicScore",autoshowMusicScore);
     }
 }

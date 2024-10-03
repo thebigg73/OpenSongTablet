@@ -1357,6 +1357,13 @@ public class PerformanceFragment extends Fragment {
         // Load up the sticky notes if the user wants them
         dealWithStickyNotes(false, false);
 
+        // Load up the abc notation if the user wants them
+        if (mainActivityInterface.getAbcNotation().getAutoshowMusicScore() &&
+            mainActivityInterface.getSong().getAbc()!=null &&
+                !mainActivityInterface.getSong().getAbc().isEmpty()) {
+            dealWithAbc(mainActivityInterface.getAbcNotation().getAutoshowMusicScore(), false);
+        }
+
         mainActivityInterface.moveToSongInSongMenu();
 
         // Run this only when the user has stopped on a song after 2s.

@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Activer la permutation automatique"</string>
     <string name="autoscroll_time">"Retard au démmarage"</string>
     <string name="autoshow_highlight">"Autoshow points surligneur"</string>
+    <string name="autoshow_musicscore">Partition musicale d\'affichage automatique</string>
+    <string name="autoshow_musicscore_info">Afficher automatiquement la partition musicale (notation ABC) lors du chargement des chansons</string>
     <string name="autoshow_stickynotes">"Afficher/masquer les notes du show automatique"</string>
     <string name="average">"Moyen"</string>
     <string name="back">"Precedent"</string>

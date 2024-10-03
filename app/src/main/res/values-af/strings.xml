@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">"Skakel Autoscroll Pause"</string>
     <string name="autoscroll_time">"Auto-scroll vertraging tyd"</string>
     <string name="autoshow_highlight">"Outo-skerm-aantekeninge"</string>
+    <string name="autoshow_musicscore">Autoshow musiek telling</string>
+    <string name="autoshow_musicscore_info">Wys musiektelling (abc-notasie) outomaties wanneer liedjies laai</string>
     <string name="autoshow_stickynotes">Autoshow taai notas</string>
     <string name="average">"Gemiddeld"</string>
     <string name="back">"Terug"</string>

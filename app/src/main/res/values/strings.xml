@@ -64,6 +64,8 @@
     <string name="autoscroll_pause">Autoscroll Pause</string>
     <string name="autoscroll_time">Autoscroll delay time</string>
     <string name="autoshow_highlight">Autoshow highlighter notes</string>
+    <string name="autoshow_musicscore">Autoshow music score</string>
+    <string name="autoshow_musicscore_info">Automatically show music score (abc notation) when songs load</string>
     <string name="autoshow_stickynotes">Autoshow sticky notes</string>
     <string name="average">Average</string>
     <string name="back">Back</string>

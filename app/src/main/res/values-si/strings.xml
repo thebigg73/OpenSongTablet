@@ -60,6 +60,8 @@
     <string name="autoscroll_pause">ස්වයංක්‍රීය අනුචලන විරාමය</string>
     <string name="autoscroll_time">ස්වයංක්‍රීය අනුචලන ප්‍රමාද කාලය</string>
     <string name="autoshow_highlight">උද්දීපන සටහන් ස්වයංක්‍රීයව පෙන්වන්න</string>
+    <string name="autoshow_musicscore">සංගීත ලකුණු ස්වයංක්‍රීයව පෙන්වන්න</string>
+    <string name="autoshow_musicscore_info">ගීත පූරණය වන විට සංගීත ලකුණු (abc අංකනය) ස්වයංක්‍රීයව පෙන්වන්න</string>
     <string name="autoshow_stickynotes">ඇලෙන සුළු සටහන් ස්වයංක්‍රීයව පෙන්වන්න</string>
     <string name="average">සාමාන්යය</string>
     <string name="back">ආපසු</string>

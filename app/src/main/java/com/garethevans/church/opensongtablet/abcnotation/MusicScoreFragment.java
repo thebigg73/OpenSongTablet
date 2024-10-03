@@ -91,6 +91,8 @@ public class MusicScoreFragment extends Fragment {
         myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
         myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
         myView.transposeSlider.setLabelFormatter(value -> showPositiveValue((int)value));
+
+        myView.autoshowMusicScore.setChecked(mainActivityInterface.getAbcNotation().getAutoshowMusicScore());
     }
 
     private void setListeners() {
@@ -129,6 +131,7 @@ public class MusicScoreFragment extends Fragment {
             myView.transposeSlider.setEnabled(!isChecked);
         }));
 
+        myView.autoshowMusicScore.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getAbcNotation().setAutoshowMusicScore(isChecked)));
         myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> myView.sizeSlider.setHint((int)value+"%"));
         myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> myView.zoomSlider.setHint(String.valueOf((int)value)));
 
@@ -191,6 +194,7 @@ public class MusicScoreFragment extends Fragment {
         mainActivityInterface.getAbcNotation().setSongAbc(myView.abcText.getText().toString());
         mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
         mainActivityInterface.getAbcNotation().saveAbcContent(mainActivityInterface,mainActivityInterface.getSong());
+        mainActivityInterface.getShowToast().success();
     }
 
     @Override
