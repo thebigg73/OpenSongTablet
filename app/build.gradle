@@ -36,8 +36,8 @@ android {
         targetSdkVersion 35
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 401
-        versionName '6.2.9'
+        versionCode 402
+        versionName '6.3.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -53,7 +53,7 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.1'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.2'
         }
     }
 
@@ -82,7 +82,7 @@ android {
 
 dependencies {
     implementation 'androidx.activity:activity:1.9.2'                                   // Required for activity and permission requests
-    implementation 'androidx.fragment:fragment:1.8.3'                                   // Using fragments and navigation
+    implementation 'androidx.fragment:fragment:1.8.4'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.12.0'                        // Required for material design goodness
     //implementation "androidx.compose.material:material:1.4.3"                         // Can upgrade theme to Material3 once I remove support for KitKat
     implementation 'com.google.android.gms:play-services-cast:21.5.0'                   // For casting obviously!
@@ -106,9 +106,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.8.1'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.8.1'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.8.1'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment:2.8.2'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui:2.8.2'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.8.2'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.8.2'                               // Allows annotations in code
