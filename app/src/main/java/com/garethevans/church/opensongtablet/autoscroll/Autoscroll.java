@@ -250,7 +250,7 @@ public class Autoscroll {
                 flashCount = 0;
             }
 
-            if (!autoHideSent && (songDelay==0 || (songDelay>0 && (scrollTime/1000f)>songDelay))) {
+            if (!autoHideSent && onscreenAutoscrollHide && (songDelay==0 || (songDelay>0 && (scrollTime/1000f)>songDelay))) {
                 autoHideSent = true;
                 Log.d(TAG,"sending hide runnable");
                 onScreenInfo.setFinishedAutoscrollPreDelay(true);
