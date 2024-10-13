@@ -390,6 +390,7 @@
     <string name="forum_description">Zgłaszaj błędy, uzyskaj pomoc i poproś o funkcje</string>
     <string name="forum_desktop">Otwierając forum na urządzeniu mobilnym, będziesz mógł tylko przeglądać forum. Jeśli chcesz publikować posty lub odpowiadać na posty, musisz przełączyć przeglądarkę, aby żądać witryny na komputery. Zwykle można to wybrać w ustawieniach przeglądarki. Osoby, które po raz pierwszy pojawiają się na forum, będą wymagały ręcznej moderacji przed wyświetleniem ich posta, więc prosimy o cierpliwość!</string>
     <string name="github_description">Przyczyń się do rozwoju aplikacji</string>
+    <string name="global">Światowy</string>
     <string name="grace_time">Pozwól na czas opóźnienia piosenki</string>
     <string name="grace_time_info">Pozwala na szybkie przeglądanie piosenek i wysyłanie informacji do innych podłączonych urządzeń dopiero po czasie opóźnienia wynoszącym 2 sekundy.</string>
     <string name="green">Zielony</string>
@@ -634,8 +635,13 @@
     <string name="other">Inny</string>
     <string name="other_options">Inne opcje</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Zastąp automatyczne wyświetlanie partytury dla tego utworu</string>
     <string name="override_fullautoscale">Zmień pełne autoskalowanie na "tylko szerokość"</string>
+    <string name="override_none">Użyj domyślnej aplikacji</string>
+    <string name="override_off">Wymuś ukrycie</string>
+    <string name="override_on">Siłowe przedstawienie</string>
     <string name="override_scale_explanation">Jeśli rozmiar czcionki autoskalowania jest mniejszy niż preferowany minimalny rozmiar czcionki, czy chcesz zastosować inną metodę skalowania? Korzystanie z tych opcji może zmusić cię do przewijania piosenki w pionie i w poziomie.</string>
+    <string name="override_sticky">Zastąp automatyczne wyświetlanie notatki samoprzylepnej dla tego utworu</string>
     <string name="override_widthautoscale">Zmień tryb skalowania "tylko szerokość" na brak automatycznego skalowania</string>
     <string name="overwrite">Zastąp istniejący element</string>
     <string name="overwrite_info">Wszelkie pasujące pliki, które już posiadasz, zostaną zastąpione plikami hosta</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Sekcje znalezione w tekście są pokazane poniżej. Kliknij przyciski, aby dodać je do kolejności prezentacji.</string>
     <string name="song_sections_project">Kliknij sekcję piosenki, aby wysłać ją do połączonych wyświetlaczy</string>
     <string name="song_select_warning">Ta strona wymaga ważnego konta.  Musisz użyć przycisku pobierania na stronie internetowej SongSelect, aby uruchomić wymagane pobieranie.  Plik zostanie zaimportowany do folderu OpenSong/Songs/ po pobraniu.</string>
+    <string name="song_specific">Konkretny utwór</string>
     <string name="song_swipe_toggle">Pozwól na przełączanie piosenek przez przeciągnięcie</string>
     <string name="song_title">Tytuł piosenki</string>
     <string name="songs">Piosenki</string>

@@ -390,6 +390,7 @@
     <string name="forum_description">Jelentse be a hibákat, kérjen segítséget és kérjen funkciókat</string>
     <string name="forum_desktop">Ha mobileszközön nyitja meg a fórumot, csak böngészhet a fórumban. Ha bejegyzéseket szeretne közzétenni vagy válaszolni rájuk, át kell kapcsolnia a böngészőt az asztali webhely kéréséhez. Ezt általában a böngésző beállításaiból választhatja ki. A fórum első hozzászólásai manuális moderálást igényelnek, mielőtt a hozzászólásuk megjelenik, ezért kérjük, legyen türelemmel!</string>
     <string name="github_description">Hozzájáruljon az alkalmazások fejlesztéséhez</string>
+    <string name="global">Globális</string>
     <string name="grace_time">Hagyjon türelmi időt a daloknak</string>
     <string name="grace_time_info">Ez lehetővé teszi a dalok gyors böngészését, és csak 2 másodperces türelmi idő után küld információkat más csatlakoztatott eszközökre.</string>
     <string name="green">Zöld</string>
@@ -634,8 +635,13 @@
     <string name="other">Más</string>
     <string name="other_options">Egyéb opciók</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Az automatikus kottamegjelenítés felülbírálása ehhez a dalhoz</string>
     <string name="override_fullautoscale">"Felülbírálása teljesen automatikus skála szélesség csak"</string>
+    <string name="override_none">Alkalmazás alapértelmezett használata</string>
+    <string name="override_off">Erőszakos elrejtés</string>
+    <string name="override_on">Erőshow</string>
     <string name="override_scale_explanation">"Ha az automatikus átméretezés betűméret kisebb, mint a kívánt minimális betűméret, akarsz az alkalmazást, hogy felülbírálja a különböző méretezési módszer? Ezen opciók lehet kényszeríteni, hogy görgetni függőlegesen és vízszintesen egy dalt."</string>
+    <string name="override_sticky">Az automatikus cetlik megjelenítés felülbírálása ehhez a dalhoz</string>
     <string name="override_widthautoscale">"Felülírása szélessége csak skálázott nem autoscale"</string>
     <string name="overwrite">"Felülírja a meglévő elem"</string>
     <string name="overwrite_info">A már meglévő egyező fájlokat felülírják a gazdagép fájlok</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">A dalszövegekben található részek az alábbiakban láthatók. Kattintson a gombokra, hogy hozzáadja őket a prezentációs sorrendhez.</string>
     <string name="song_sections_project">Kattintson egy dalszakaszra, hogy elküldje a csatlakoztatott kijelzőkre</string>
     <string name="song_select_warning">Ehhez a webhelyhez érvényes fiók szükséges.  A szükséges letöltés elindításához a SongSelect weboldalon található letöltés gombot kell használnia.  A fájl importálásra kerül az OpenSong/Songs/ mappába a letöltés után.</string>
+    <string name="song_specific">Dalspecifikus</string>
     <string name="song_swipe_toggle">"Váltás ellop lépni a dalok között be / ki"</string>
     <string name="song_title">"Dal címe"</string>
     <string name="songs">Dalok</string>

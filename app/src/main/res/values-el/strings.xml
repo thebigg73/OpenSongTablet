@@ -390,6 +390,7 @@
     <string name="forum_description">Αναφέρετε σφάλματα, λάβετε βοήθεια και ζητήστε λειτουργίες</string>
     <string name="forum_desktop">Όταν ανοίγετε το φόρουμ σε μια κινητή συσκευή, θα μπορείτε μόνο να περιηγηθείτε στο φόρουμ. Εάν θέλετε να δημοσιεύσετε ή να απαντήσετε σε αναρτήσεις, θα πρέπει να αλλάξετε το πρόγραμμα περιήγησής σας για να ζητήσετε ιστότοπο για υπολογιστές. Μπορείτε κανονικά να το επιλέξετε από τις ρυθμίσεις του προγράμματος περιήγησης. Οι αφίσες για πρώτη φορά στο φόρουμ θα απαιτούν χειροκίνητη εποπτεία πριν εμφανιστεί η ανάρτησή τους, οπότε παρακαλώ να είστε υπομονετικοί!</string>
     <string name="github_description">Συνεισφέρετε στην ανάπτυξη εφαρμογών</string>
+    <string name="global">Καθολικός</string>
     <string name="grace_time">Επιτρέψτε χρόνο χάριτος τραγουδιού</string>
     <string name="grace_time_info">Αυτό σας επιτρέπει να περιηγείστε γρήγορα στα τραγούδια και να στέλνετε πληροφορίες μόνο σε άλλες συνδεδεμένες συσκευές μετά από μια χρονική περίοδο χάριτος 2 δευτερολέπτων.</string>
     <string name="green">Πράσινος</string>
@@ -634,8 +635,13 @@
     <string name="other">"Άλλα"</string>
     <string name="other_options">Αλλες επιλογές</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Παράκαμψη της αυτόματης εμφάνισης της μουσικής για αυτό το τραγούδι</string>
     <string name="override_fullautoscale">"Override full autoscale to width only"</string>
+    <string name="override_none">Χρήση προεπιλογής εφαρμογής</string>
+    <string name="override_off">Αναγκαστική απόκρυψη</string>
+    <string name="override_on">Επίδειξη δύναμης</string>
     <string name="override_scale_explanation">"If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song"</string>
+    <string name="override_sticky">Παράκαμψη της αυτόματης εμφάνισης αυτοκόλλητων σημειώσεων για αυτό το τραγούδι</string>
     <string name="override_widthautoscale">"Override width only scaling to no autoscale"</string>
     <string name="overwrite">"Αντικατάσταση του υπάρχοντος αντικειμένου"</string>
     <string name="overwrite_info">Τυχόν αρχεία που ταιριάζουν ήδη θα αντικατασταθούν από τα αρχεία κεντρικού υπολογιστή</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Οι ενότητες που βρέθηκαν στους στίχους του τραγουδιού σας φαίνονται παρακάτω. Κάντε κλικ στα κουμπιά για να τα προσθέσετε στη σειρά παρουσίασης.</string>
     <string name="song_sections_project">Κάντε κλικ σε μια ενότητα τραγουδιού για να το στείλετε στις συνδεδεμένες οθόνες</string>
     <string name="song_select_warning">Αυτός ο ιστότοπος απαιτεί έγκυρο λογαριασμό.  Πρέπει να χρησιμοποιήσετε το κουμπί λήψης στην ιστοσελίδα SongSelect για να ενεργοποιήσετε την απαιτούμενη λήψη.  Το αρχείο θα εισαχθεί στο φάκελο OpenSong/Songs/ μετά τη λήψη του.</string>
+    <string name="song_specific">Το συγκεκριμένο τραγούδι</string>
     <string name="song_swipe_toggle">"Toggle swipe to move between songs on/off"</string>
     <string name="song_title">"Song title"</string>
     <string name="songs">ΜΟΥΣΙΚΑ ΚΟΜΜΑΤΙΑ</string>

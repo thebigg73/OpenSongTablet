@@ -390,6 +390,7 @@
     <string name="forum_description">Rapporteer foute, kry hulp en versoek kenmerke</string>
     <string name="forum_desktop">Wanneer u die forum op \'n mobiele toestel oopmaak, kan u slegs deur die forum blaai. As jy plasings wil plaas of daarop reageer, sal jy jou blaaier moet oorskakel om lessenaarwerf aan te vra. U kan dit normaalweg uit die blaaierinstellings kies. Eerste keer plakkate op die forum sal handmatige moderering benodig voordat hul pos vertoon word, so wees asseblief geduldig!</string>
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>
+    <string name="global">Wêreldwyd</string>
     <string name="grace_time">Laat lied grasietyd toe</string>
     <string name="grace_time_info">Hiermee kan u vinnig deur liedjies blaai en slegs inligting na ander gekoppelde toestelle stuur na \'n grasietydperk van 2\'s.</string>
     <string name="green">Groen</string>
@@ -634,8 +635,13 @@
     <string name="other">Ander</string>
     <string name="other_options">Ander opsies</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Ignoreer outomatiese musiektellingvertoning vir hierdie liedjie</string>
     <string name="override_fullautoscale">"Ignoreer volle autoscale slegs breedte"</string>
+    <string name="override_none">Gebruik app verstek</string>
+    <string name="override_off">Dwing wegsteek</string>
+    <string name="override_on">Force show</string>
     <string name="override_scale_explanation">"As die autoscale lettergrootte is minder as die verlangde minimum lettergrootte, wil jy die jeug om te ignoreer om \'n ander skaal metode? Die gebruik van hierdie opsies kan jou dwing om horisontaal en vertikaal blaai in \'n lied."</string>
+    <string name="override_sticky">Ignoreer outomatiese plaknootvertoning vir hierdie liedjie</string>
     <string name="override_widthautoscale">"Ignoreer breedte net skalering geen autoscale"</string>
     <string name="overwrite">"Oorskryf bestaande item"</string>
     <string name="overwrite_info">Enige bypassende lêers wat jy reeds het, sal deur die gasheerlêers oorgeskryf word</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Die afdelings wat in jou liedjie se lirieke gevind word, word hieronder getoon. Klik op die knoppies om dit by die aanbiedingsbestelling te voeg.</string>
     <string name="song_sections_project">Klik op \'n liedjie-afdeling om dit na die gekoppelde skerms te stuur</string>
     <string name="song_select_warning">Hierdie webwerf benodig \'n geldige rekening.  U moet die aflaai-knoppie op die SongSelect-webblad gebruik om die nodige aflaai te aktiveer.  Die lêer sal in u OpenSong/Songs/ -lêergids ingevoer word nadat dit afgelaai is.</string>
+    <string name="song_specific">Liedjie spesifiek</string>
     <string name="song_swipe_toggle">"Toggle krap tussen liedjies op / af te beweeg"</string>
     <string name="song_title">"Song title"</string>
     <string name="songs">Liedjies</string>

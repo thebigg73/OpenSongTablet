@@ -390,6 +390,7 @@
     <string name="forum_description">报告错误、获取帮助和请求功能</string>
     <string name="forum_desktop">在移动设备上打开论坛时，您将只能浏览论坛。如果您想发布或回复帖子，则需要切换浏览器以请求桌面站点。您通常可以从浏览器设置中选择此选项。首次在论坛上发帖的发帖者在展示帖子之前需要人工审核，敬请耐心等待！</string>
     <string name="github_description">为应用程序开发做出贡献</string>
+    <string name="global">全球的</string>
     <string name="grace_time">允许歌曲宽限时间</string>
     <string name="grace_time_info">这使您可以快速浏览歌曲，并且仅在宽限期为 2 秒后将信息发送到其他连接的设备。</string>
     <string name="green">绿</string>
@@ -634,8 +635,13 @@
     <string name="other">"其他"</string>
     <string name="other_options">其他选项</string>
     <string name="outro">尾声</string>
+    <string name="override_abc">覆盖这首歌曲的自动乐谱显示</string>
     <string name="override_fullautoscale">"覆盖全自动规模只有宽度"</string>
+    <string name="override_none">使用应用程序默认值</string>
+    <string name="override_off">强制隐藏</string>
+    <string name="override_on">力秀</string>
     <string name="override_scale_explanation">"如果自动缩放字体大小小于所需的最小字体大小，你想该应用覆盖到不同的缩放方法？使用这些选项可能会迫使你在一首歌水平和垂直滚动。"</string>
+    <string name="override_sticky">覆盖这首歌曲的自动便签显示</string>
     <string name="override_widthautoscale">"覆盖宽度仅扩展到不自动缩放"</string>
     <string name="overwrite">"覆盖现有项目"</string>
     <string name="overwrite_info">您已有的任何匹配文件都将被主机文件覆盖</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">在您的歌词中找到的部分如下所示。 单击按钮将它们添加到演示顺序。</string>
     <string name="song_sections_project">单击歌曲部分以将其发送到连接的显示器</string>
     <string name="song_select_warning">此网站需要有效的帐户。 您必须使用 SongSelect 网页中的下载按钮来触发所需的下载。 下载后，该文件将被导入到您的 OpenSong/Songs/ 文件夹中。</string>
+    <string name="song_specific">歌曲具体</string>
     <string name="song_swipe_toggle">"切换轻扫上的歌曲之间移动/关闭"</string>
     <string name="song_title">"歌名"</string>
     <string name="songs">歌曲</string>

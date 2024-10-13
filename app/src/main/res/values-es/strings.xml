@@ -390,6 +390,7 @@
     <string name="forum_description">Informar errores, obtener ayuda y solicitar funciones</string>
     <string name="forum_desktop">Al abrir el foro en un dispositivo móvil, solo podrá navegar por el foro. Si desea publicar o responder a publicaciones, deberá cambiar su navegador para solicitar un sitio de escritorio. Normalmente, puede seleccionarlo desde la configuración del navegador. Las personas que publiquen por primera vez en el foro requerirán moderación manual antes de que se muestre su mensaje, ¡así que ten paciencia!</string>
     <string name="github_description">Contribuir al desarrollo de aplicaciones</string>
+    <string name="global">Global</string>
     <string name="grace_time">Permitir tiempo de gracia de la canción</string>
     <string name="grace_time_info">Esto le permite navegar por las canciones rápidamente y solo envía información a otros dispositivos conectados después de un período de gracia de 2s.</string>
     <string name="green">Verde</string>
@@ -634,8 +635,13 @@
     <string name="other">Nu lain</string>
     <string name="other_options">Otras opciones</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Anular la visualización automática de la partitura musical para esta canción</string>
     <string name="override_fullautoscale">"Invalidar la escala de auto completo a su anchura, sólo"</string>
+    <string name="override_none">Usar aplicación predeterminada</string>
+    <string name="override_off">Forzar ocultar</string>
+    <string name="override_on">espectáculo de fuerza</string>
     <string name="override_scale_explanation">"Si el tamaño de la fuente autoescala es menor que el tamaño mínimo de la letra deseada, ¿desea la aplicación para anular a un método de escala diferente? El uso de estas opciones le puede obligar a desplazarse horizontal y verticalmente en una canción."</string>
+    <string name="override_sticky">Anular la visualización automática de notas adhesivas para esta canción</string>
     <string name="override_widthautoscale">"Ancho de anulación únicamente el escalado a ninguna autoescala"</string>
     <string name="overwrite">"Sobrescribir elemento existente"</string>
     <string name="overwrite_info">Cualquier archivo coincidente que ya tenga será sobrescrito por los archivos del host.</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Las secciones que se encuentran en la letra de su canción se muestran a continuación. Haga clic en los botones para agregarlos al orden de presentación.</string>
     <string name="song_sections_project">Haga clic en una sección de canción para enviarla a las pantallas conectadas</string>
     <string name="song_select_warning">Este sitio requiere una cuenta válida.  Debe usar el botón de descarga dentro de la página web de SongSelect para activar la descarga requerida.  El archivo se importará a su carpeta OpenSong/Songs/ después de que se haya descargado.</string>
+    <string name="song_specific">Canción específica</string>
     <string name="song_swipe_toggle">"Golpe de palanca para moverse entre las canciones de encendido / apagado"</string>
     <string name="song_title">"Título de la canción"</string>
     <string name="songs">Canciones</string>

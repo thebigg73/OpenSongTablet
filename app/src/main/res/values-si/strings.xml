@@ -390,6 +390,7 @@
     <string name="forum_description">දෝෂ වාර්තා කරන්න, උදවු ලබාගන්න සහ විශේෂාංග ඉල්ලන්න</string>
     <string name="forum_desktop">ජංගම උපාංගයක සංසදය විවෘත කරන විට ඔබට සංසදය බ්‍රවුස් කිරීමට පමණක් හැකි වනු ඇත.  ඔබට පළ කිරීමට හෝ පළ කිරීම්වලට ප්‍රතිචාර දැක්වීමට අවශ්‍ය නම්, ඔබට ඩෙස්ක්ටොප් අඩවිය ඉල්ලීමට ඔබේ බ්‍රවුසරය මාරු කිරීමට අවශ්‍ය වනු ඇත.  ඔබට සාමාන්‍යයෙන් බ්‍රව්සර් සැකසුම් වලින් මෙය තෝරා ගත හැක.  සංසදයේ පළමු වරට පෝස්ටර් ඔවුන්ගේ පළ කිරීම ප්‍රදර්ශනය කිරීමට පෙර අතින් මධ්‍යස්ථ කිරීම අවශ්‍ය වනු ඇත, එබැවින් කරුණාකර ඉවසන්න!</string>
     <string name="github_description">යෙදුම් සංවර්ධනයට දායක වන්න</string>
+    <string name="global">ගෝලීය</string>
     <string name="grace_time">ගීත ප්‍රසාද කාලයට ඉඩ දෙන්න</string>
     <string name="grace_time_info">මෙය ඔබට ඉක්මනින් ගීත බ්‍රවුස් කිරීමට ඉඩ ලබා දෙන අතර තත්පර 2ක සහන කාල සීමාවකට පසුව පමණක් සම්බන්ධිත අනෙකුත් උපාංග වෙත තොරතුරු යවයි.</string>
     <string name="green">කොළ</string>
@@ -634,8 +635,13 @@
     <string name="other">අනික්</string>
     <string name="other_options">වෙනත් විකල්ප</string>
     <string name="outro">අවුට්රෝ</string>
+    <string name="override_abc">මෙම ගීතය සඳහා ස්වයංක්‍රීය සංගීත ලකුණු සංදර්ශකය අභිබවා යන්න</string>
     <string name="override_fullautoscale">පළලට පමණක් සම්පූර්ණ ස්වයංක්‍රීය පරිමාණය ප්‍රතික්‍ෂේප කරන්න</string>
+    <string name="override_none">යෙදුම් පෙරනිමිය භාවිතා කරන්න</string>
+    <string name="override_off">බලෙන් සඟවන්න</string>
+    <string name="override_on">බල සංදර්ශන</string>
     <string name="override_scale_explanation">ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය අපේක්ෂිත අවම අකුරු ප්‍රමාණයට වඩා අඩු නම්, ඔබට යෙදුම වෙනස් පරිමාණ ක්‍රමයකට ප්‍රතික්‍ෂේප කිරීමට අවශ්‍යද?  මෙම විකල්ප භාවිතා කිරීමෙන් ගීතයක තිරස් අතට සහ සිරස් අතට අනුචලනය කිරීමට ඔබට බල කළ හැක</string>
+    <string name="override_sticky">මෙම ගීතය සඳහා ස්වයංක්‍රීය ඇලෙන සුළු සටහන් සංදර්ශකය අභිබවා යන්න</string>
     <string name="override_widthautoscale">ප්‍රතික්‍ෂේප කරන්න පළල ස්වයංක්‍රීය පරිමාණයකින් තොරව පරිමාණය කිරීම පමණි</string>
     <string name="overwrite">පවතින අයිතමය උඩින් ලියන්න</string>
     <string name="overwrite_info">ඔබ සතුව දැනටමත් ඇති ඕනෑම ගැළපෙන ගොනු ධාරක ගොනු මගින් නැවත ලියනු ලැබේ</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">ඔබගේ ගීතවල ඇති කොටස් පහත දැක්වේ.  ඉදිරිපත් කිරීමේ අනුපිළිවෙලට ඒවා එක් කිරීමට බොත්තම් මත ක්ලික් කරන්න.</string>
     <string name="song_sections_project">සම්බන්ධිත සංදර්ශක වෙත යැවීමට ගීත අංශයක් මත ක්ලික් කරන්න</string>
     <string name="song_select_warning">මෙම අඩවියට වලංගු ගිණුමක් අවශ්‍ය වේ.  අවශ්‍ය බාගැනීම ප්‍රේරණය කිරීමට ඔබ SongSelect වෙබ් පිටුව තුළ ඇති බාගැනීම් බොත්තම භාවිතා කළ යුතුය.  ගොනුව බාගත කිරීමෙන් පසු ඔබේ OpenSong/Songs/ ෆෝල්ඩරයට ආයාත කරනු ලැබේ.</string>
+    <string name="song_specific">ගීතය විශේෂිත</string>
     <string name="song_swipe_toggle">ගීත අතර ස්වයිප් කිරීමට ඉඩ දෙන්න</string>
     <string name="song_title">ගීතයේ තේමාව</string>
     <string name="songs">ගීත</string>

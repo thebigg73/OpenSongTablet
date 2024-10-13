@@ -390,6 +390,7 @@
     <string name="forum_description">Signaler des bugs, obtenir de l\'aide et demander des fonctionnalités</string>
     <string name="forum_desktop">Lorsque vous ouvrez le forum sur un appareil mobile, vous ne pourrez que naviguer sur le forum. Si vous souhaitez publier ou répondre à des messages, vous devrez changer votre navigateur pour demander un site de bureau. Vous pouvez normalement le sélectionner dans les paramètres du navigateur. Les nouveaux contributeurs sur le forum nécessiteront une modération manuelle avant que leur message ne soit affiché, alors soyez patient !</string>
     <string name="github_description">Contribuer au développement de l\'application</string>
+    <string name="global">Mondial</string>
     <string name="grace_time">Autoriser le temps de grâce de la chanson</string>
     <string name="grace_time_info">Cela vous permet de parcourir rapidement les chansons et n’envoie des informations à d’autres appareils connectés qu’après une période de grâce de 2s.</string>
     <string name="green">Vert</string>
@@ -634,8 +635,13 @@
     <string name="other">Autre</string>
     <string name="other_options">Autres options</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Remplacer l\'affichage automatique de la partition musicale pour cette chanson</string>
     <string name="override_fullautoscale">"Remplacer l\'échelle automatique complet largeur seulement"</string>
+    <string name="override_none">Utiliser l\'application par défaut</string>
+    <string name="override_off">Forcer le masquage</string>
+    <string name="override_on">Spectacle de force</string>
     <string name="override_scale_explanation">"Si la taille de la police de autoscale est inférieure à la taille minimale souhaitée, voulez-vous l\'application pour passer outre à une méthode de mise à l\'échelle différente? L\'utilisation de ces options peuvent vous forcer à faire défiler horizontalement et verticalement dans une chanson."</string>
+    <string name="override_sticky">Remplacer l\'affichage automatique des notes autocollantes pour cette chanson</string>
     <string name="override_widthautoscale">"Largeur remplacer seulement mise à l\'échelle ne autoscale"</string>
     <string name="overwrite">"Ecraser l\'élément existant"</string>
     <string name="overwrite_info">Tous les fichiers correspondants que vous possédez déjà seront écrasés par les fichiers hôtes</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Les sections trouvées dans les paroles de votre chanson sont présentées ci-dessous. Cliquez sur les boutons pour les ajouter à l\'ordre de présentation.</string>
     <string name="song_sections_project">Cliquez sur une section de chanson pour l\'envoyer aux écrans connectés</string>
     <string name="song_select_warning">Ce site nécessite un compte valide.  Vous devez utiliser le bouton de téléchargement dans la page Web de SongSelect pour déclencher le téléchargement requis.  Le fichier sera importé dans votre dossier OpenSong/Songs/ après avoir été téléchargé.</string>
+    <string name="song_specific">Spécifique à la chanson</string>
     <string name="song_swipe_toggle">"Activer / desactiver la navigation entre les de chansons par balayage"</string>
     <string name="song_title">"Titre de la chanson"</string>
     <string name="songs">Chansons</string>

@@ -390,6 +390,7 @@
     <string name="forum_description">Повідомляйте про помилки, отримуйте допомогу та запитуйте функції</string>
     <string name="forum_desktop">При відкритті форуму на мобільному пристрої ви зможете лише переглядати форум. Якщо ви хочете публікувати публікації або відповідати на повідомлення, вам потрібно буде переключити браузер на запит десктопного сайту. Зазвичай, ви можете вибрати цей параметр у налаштуваннях браузера. Перші постери на форумі вимагатимуть ручної модерації перед відображенням їхньої публікації, тому, будь ласка, наберіться терпіння!</string>
     <string name="github_description">Допомагайте розробці додатків</string>
+    <string name="global">Глобальний</string>
     <string name="grace_time">Дозвольте пісні благодатний час</string>
     <string name="grace_time_info">Це дозволяє швидко переглядати пісні та надсилати інформацію лише на інші підключені пристрої після пільгового періоду часу 2 секунди.</string>
     <string name="green">Зелений</string>
@@ -634,8 +635,13 @@
     <string name="other">Iнший</string>
     <string name="other_options">Інші варіанти</string>
     <string name="outro">Оутро</string>
+    <string name="override_abc">Замінити автоматичне відображення нот для цієї пісні</string>
     <string name="override_fullautoscale">Повне автомасштабирование</string>
+    <string name="override_none">Використовувати програму за умовчанням</string>
+    <string name="override_off">Примусово сховатися</string>
+    <string name="override_on">Шоу сили</string>
     <string name="override_scale_explanation">Якщо розмір шрифту Автомасштаб менше необхідного мінімального розміру шрифту, ви хочете, щоб додаток переобумовленої метод масштабування? Це може змусити вас прокручувати пісню по горизонталі і вертикалі.</string>
+    <string name="override_sticky">Скасувати автоматичне відображення нотаток для цієї пісні</string>
     <string name="override_widthautoscale">Автомасштабування по ширині</string>
     <string name="overwrite">Переписати існуючий</string>
     <string name="overwrite_info">Будь-які відповідні файли, які у вас уже є, будуть перезаписані файлами хосту</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Розділи, знайдені в текстах ваших пісень, показані нижче. Натисніть на кнопки, щоб додати їх до порядку презентації.</string>
     <string name="song_sections_project">Натисніть розділ пісні, щоб надіслати його на підключені дисплеї</string>
     <string name="song_select_warning">Для цього сайту потрібен дійсний обліковий запис.  Ви повинні скористатися кнопкою завантаження на веб-сторінці SongSelect, щоб ініціювати необхідне завантаження.  Файл буде імпортовано до вашої теки OpenSong/Songs/ після його звантаження.</string>
+    <string name="song_specific">Конкретна пісня</string>
     <string name="song_swipe_toggle">Вкл./Викл. Перегортання для зміни пісень</string>
     <string name="song_title">Назва пісні</string>
     <string name="songs">пісні</string>

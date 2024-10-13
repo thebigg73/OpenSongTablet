@@ -390,6 +390,7 @@
     <string name="forum_description">Nahlašte chyby, získejte nápovědu a vyžádejte si funkce</string>
     <string name="forum_desktop">Při otevření fóra na mobilním zařízení budete moci fórum pouze procházet. Pokud chcete zveřejňovat příspěvky nebo na ně odpovídat, budete muset přepnout prohlížeč tak, aby vyžadoval web pro počítače. Normálně to můžete vybrat v nastavení prohlížeče. První příspěvky na fóru budou vyžadovat ruční moderování před zobrazením jejich příspěvku, takže buďte trpěliví!</string>
     <string name="github_description">Přispějte k vývoji aplikací</string>
+    <string name="global">Globální</string>
     <string name="grace_time">Povolit dobu odkladu skladby</string>
     <string name="grace_time_info">To vám umožní rychle procházet skladby a odesílat informace do jiných připojených zařízení pouze po uplynutí doby odkladu 2 s.</string>
     <string name="green">Zelená</string>
@@ -634,8 +635,13 @@
     <string name="other">Ostatní</string>
     <string name="other_options">Jiné možnosti</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Přepsat automatické zobrazení hudebního skóre pro tuto skladbu</string>
     <string name="override_fullautoscale">"Přepsat plně automatické měřítko na šířce pouze"</string>
+    <string name="override_none">Použít výchozí nastavení aplikace</string>
+    <string name="override_off">Vynutit se schovat</string>
+    <string name="override_on">Silová show</string>
     <string name="override_scale_explanation">"Je-li velikost písma Autoscale je nižší než požadovaná minimální velikosti písma, chcete aplikaci přepsat na jinou metodu škálování? Pomocí těchto voleb vás může nutit posouvat horizontálně i vertikálně v písni."</string>
+    <string name="override_sticky">Přepsat automatické zobrazení poznámek pro tuto skladbu</string>
     <string name="override_widthautoscale">"Šířka Přepis pouze škálování žádné škálování"</string>
     <string name="overwrite">"Přepsat existující položku"</string>
     <string name="overwrite_info">Všechny odpovídající soubory, které již máte, budou přepsány hostitelskými soubory</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Sekce nalezené v textu vaší písně jsou uvedeny níže. Kliknutím na tlačítka je přidáte do objednávky prezentace.</string>
     <string name="song_sections_project">Kliknutím na sekci skladby ji odešlete na připojené displeje</string>
     <string name="song_select_warning">Tato stránka vyžaduje platný účet.  Ke spuštění požadovaného stahování musíte použít tlačítko stahování na webové stránce SongSelect.  Soubor bude po stažení importován do složky OpenSong/Songs/.</string>
+    <string name="song_specific">Skladba specifická</string>
     <string name="song_swipe_toggle">"Přepnout švihnout pro pohyb mezi skladbami zap / vyp"</string>
     <string name="song_title">"Název skladby"</string>
     <string name="songs">Písně</string>

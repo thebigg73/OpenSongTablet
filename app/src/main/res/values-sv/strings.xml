@@ -390,6 +390,7 @@
     <string name="forum_description">Rapportera fel, få hjälp och begär funktioner</string>
     <string name="forum_desktop">När du öppnar forumet på en mobil enhet kommer du bara att kunna surfa på forumet. Om du vill göra inlägg eller svara på inlägg måste du byta webbläsare för att begära skrivbordswebbplats. Du kan normalt välja detta i webbläsarens inställningar. Förstagångspostare på forumet kommer att kräva manuell moderering innan deras inlägg visas, så ha tålamod!</string>
     <string name="github_description">Bidra till apputveckling</string>
+    <string name="global">Global</string>
     <string name="grace_time">Tillåt låtens nådetid</string>
     <string name="grace_time_info">Detta gör att du kan bläddra bland låtar snabbt och skickar bara information till andra anslutna enheter efter en respitperiod på 2 sekunder.</string>
     <string name="green">Grön</string>
@@ -634,8 +635,13 @@
     <string name="other">"Andra"</string>
     <string name="other_options">Andra alternativ</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Åsidosätt automatisk notvisning för den här låten</string>
     <string name="override_fullautoscale">"Åsidosätt fullständig autoskala till bredd bara"</string>
+    <string name="override_none">Använd standardapp</string>
+    <string name="override_off">Tvinga gömma sig</string>
+    <string name="override_on">Force show</string>
     <string name="override_scale_explanation">"Om autoscale-teckensnittstorleken är mindre än önskad minsta teckensnittstorlek, vill du att appen ska åsidosättas till en annan skaleringsmetod? Användning av dessa alternativ kan tvinga dig att rulla horisontellt och vertikalt i en låt"</string>
+    <string name="override_sticky">Åsidosätt automatisk visning av klisterlappar för den här låten</string>
     <string name="override_widthautoscale">"Åsidosätt bredd endast skalning utan autoskala"</string>
     <string name="overwrite">"Skriv om befintligt objekt"</string>
     <string name="overwrite_info">Alla matchande filer du redan har kommer att skrivas över av värdfilerna</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">De avsnitt som finns i din sångtext visas nedan. Klicka på knapparna för att lägga till dem i presentationsordningen.</string>
     <string name="song_sections_project">Klicka på en låtsektion för att skicka den till de anslutna displayerna</string>
     <string name="song_select_warning">Den här webbplatsen kräver ett giltigt konto.  Du måste använda nedladdningsknappen på SongSelect web sida för att utlösa den nedladdning som krävs.  Filen kommer att importeras till din OpenSong/Songs/-mapp efter att den har laddats ner.</string>
+    <string name="song_specific">Låtspecifik</string>
     <string name="song_swipe_toggle">"Byt svep för att flytta mellan låtar på / av"</string>
     <string name="song_title">"Sång titel"</string>
     <string name="songs">Låtar</string>

@@ -390,6 +390,7 @@
     <string name="forum_description">バグを報告し、ヘルプを入手し、機能をリクエストする</string>
     <string name="forum_desktop">モバイルデバイスでフォーラムを開くと、フォーラムの閲覧のみが可能です。投稿や投稿への返信をご希望の場合は、ブラウザをデスクトップサイトのリクエストに切り替える必要があります。通常、ブラウザの設定から選択できます。フォーラムに初めて投稿する投稿者は、投稿が表示される前に手動でモデレーションする必要がありますので、しばらくお待ちください。</string>
     <string name="github_description">アプリ開発に貢献する</string>
+    <string name="global">グローバル</string>
     <string name="grace_time">曲の猶予時間を許可する</string>
     <string name="grace_time_info">これにより、曲をすばやく閲覧でき、2秒の猶予期間後にのみ、接続されている他のデバイスに情報を送信できます。</string>
     <string name="green">緑</string>
@@ -634,8 +635,13 @@
     <string name="other">"その他"</string>
     <string name="other_options">他のオプション</string>
     <string name="outro">アウトロ</string>
+    <string name="override_abc">この曲の自動楽譜表示をオーバーライドします</string>
     <string name="override_fullautoscale">"唯一の幅に対するフルオートスケールをオーバーライドします"</string>
+    <string name="override_none">アプリのデフォルトを使用する</string>
+    <string name="override_off">強制的に非表示にする</string>
+    <string name="override_on">強制ショー</string>
     <string name="override_scale_explanation">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。"</string>
+    <string name="override_sticky">この曲の自動付箋表示をオーバーライドする</string>
     <string name="override_widthautoscale">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。""オーバーライド幅のみなしオートスケールへのスケーリング"</string>
     <string name="overwrite">"既存のアイテムを上書き"</string>
     <string name="overwrite_info">すでに存在する一致するファイルはホスト ファイルによって上書きされます</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">あなたの曲の歌詞にあるセクションを以下に示します。 ボタンをクリックして、プレゼンテーションの順序に追加します。</string>
     <string name="song_sections_project">曲のセクションをクリックして、接続されているディスプレイに送信します</string>
     <string name="song_select_warning">このサイトには有効なアカウントが必要です。 SongSelect Webページ内のダウンロードボタンを使用して、必要なダウンロードをトリガーする必要があります。 ファイルは、ダウンロード後、OpenSong / Songs /フォルダーにインポートされます。</string>
+    <string name="song_specific">曲特有の</string>
     <string name="song_swipe_toggle">"トグルスワイプオフ/上の曲間を移動するには"</string>
     <string name="song_title">"曲のタイトル"</string>
     <string name="songs">曲</string>

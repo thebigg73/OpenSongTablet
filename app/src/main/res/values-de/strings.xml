@@ -390,6 +390,7 @@
     <string name="forum_description">Melden Sie Fehler, erhalten Sie Hilfe und fordern Sie Funktionen an</string>
     <string name="forum_desktop">Wenn Sie das Forum auf einem mobilen Gerät öffnen, können Sie nur das Forum durchsuchen. Wenn Sie Beiträge posten oder beantworten möchten, müssen Sie Ihren Browser umstellen, um eine Desktop-Site anzufordern. Normalerweise können Sie dies in den Browsereinstellungen auswählen. Erstmalige Poster im Forum müssen manuell moderiert werden, bevor ihr Beitrag angezeigt wird, also haben Sie bitte etwas Geduld!</string>
     <string name="github_description">Beteiligen Sie sich an der App-Entwicklung</string>
+    <string name="global">Global</string>
     <string name="grace_time">Song-Kulanzzeit zulassen</string>
     <string name="grace_time_info">Auf diese Weise können Sie Songs schnell durchsuchen und erst nach einer Kulanzzeit von 2 Sekunden Informationen an andere angeschlossene Geräte senden.</string>
     <string name="green">Grün</string>
@@ -634,8 +635,13 @@
     <string name="other">"Sonstiges"</string>
     <string name="other_options">Andere Optionen</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Überschreiben Sie die automatische Musiknotenanzeige für dieses Lied</string>
     <string name="override_fullautoscale">"Automatische Skalierung ignorieren und nur auf Breite anwenden"</string>
+    <string name="override_none">App-Standard verwenden</string>
+    <string name="override_off">Verstecken erzwingen</string>
+    <string name="override_on">Show erzwingen</string>
     <string name="override_scale_explanation">Wenn die Schriftgröße bei automatischer Skalierung kleiner ist als die gewünschte Mindestschriftgröße, möchten Sie, dass die App dann auf eine andere Skalierungsmethode umschaltet? Diese Option kann dazu führen, dass Sie horizontal und vertikal in einem Song scrollen müssen."</string>
+    <string name="override_sticky">Überschreiben Sie die automatische Anzeige von Haftnotizen für dieses Lied</string>
     <string name="override_widthautoscale">"Automatische Skalierung auf Breite ignorieren und nicht automatisch skalieren"</string>
     <string name="overwrite">"Existierendes Element überschreiben"</string>
     <string name="overwrite_info">Alle übereinstimmenden Dateien, die Sie bereits haben, werden durch die Hostdateien überschrieben</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">Die in Ihren Liedtexten gefundenen Abschnitte werden unten angezeigt. Klicken Sie auf die Schaltflächen, um sie der Präsentationsreihenfolge hinzuzufügen.</string>
     <string name="song_sections_project">Klicken Sie auf einen Liedabschnitt, um ihn an die angeschlossenen Displays zu senden</string>
     <string name="song_select_warning">Für diese Website ist ein gültiges Konto erforderlich.  Sie müssen die Download-Schaltfläche auf der SongSelect-Webseite verwenden, um den erforderlichen Download auszulösen.  Die Datei wird nach dem Herunterladen in Ihren OpenSong/Songs/-Ordner importiert.</string>
+    <string name="song_specific">Songspezifisch</string>
     <string name="song_swipe_toggle">"Wischen zwischen Songs ein / aus"</string>
     <string name="song_title">"Songtitel"</string>
     <string name="songs">Lieder</string>

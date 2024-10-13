@@ -487,6 +487,7 @@
     <string name="forum_desktop">When opening the forum on a mobile device you will only be able to browse the forum.  If you want to post or respond to posts, you will need to switch your browser to request desktop site.  You can normally select this from the browser settings.  First time posters on the forum will require manual moderation before their post is displayed, so please be patient!</string>
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
+    <string name="global">Global</string>
     <string name="grace_time">Allow song grace time</string>
     <string name="grace_time_info">This allows you to browse songs quickly and only sends information to other connected devices after a grace time period of 2s.</string>
     <string name="green">Green</string>
@@ -801,8 +802,13 @@
     <string name="other">Other</string>
     <string name="other_options">Other options</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Override automatic music score display for this song</string>
     <string name="override_fullautoscale">Override full autoscale to width only</string>
+    <string name="override_none">Use app default</string>
+    <string name="override_off">Force hide</string>
+    <string name="override_on">Force show</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
+    <string name="override_sticky">Override automatic sticky note display for this song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
     <string name="overwrite_info">Any matching files you already have will be overwritten by the host files</string>
@@ -1044,6 +1050,7 @@
     <string name="song_sections_info">The sections found in your song lyrics are shown below.  Click on the buttons to add them to the presentation order.</string>
     <string name="song_sections_project">Click on a song section to send it to the connected displays</string>
     <string name="song_select_warning">This site requires a valid account.  You must use the download button within the SongSelect web page to trigger the download required.  The file will be imported into your OpenSong/Songs/ folder after it has been downloaded.</string>
+    <string name="song_specific">Song specific</string>
     <string name="song_swipe_toggle">Allow swiping between songs</string>
     <string name="song_title">Song title</string>
     <string name="songs">Songs</string>

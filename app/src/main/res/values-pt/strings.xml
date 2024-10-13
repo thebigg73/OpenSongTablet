@@ -390,6 +390,7 @@
     <string name="forum_description">Relate bugs, obtenha ajuda e solicite recursos</string>
     <string name="forum_desktop">Ao abrir o fórum em um dispositivo móvel, você só poderá navegar no fórum. Se você quiser postar ou responder a postagens, você precisará mudar seu navegador para solicitar site para desktop. Normalmente, você pode selecionar isso nas configurações do navegador. Os pôsteres pela primeira vez no fórum exigirão moderação manual antes de sua postagem ser exibida, então seja paciente!</string>
     <string name="github_description">Contribuir para o desenvolvimento de aplicativos</string>
+    <string name="global">Global</string>
     <string name="grace_time">Permitir tempo de graça da música</string>
     <string name="grace_time_info">Isso permite que você navegue por músicas rapidamente e só envia informações para outros dispositivos conectados após um período de carência de 2s.</string>
     <string name="green">Verde</string>
@@ -634,8 +635,13 @@
     <string name="other">"De outros"</string>
     <string name="other_options">Outras opções</string>
     <string name="outro">Outro</string>
+    <string name="override_abc">Substituir a exibição automática da partitura desta música</string>
     <string name="override_fullautoscale">"Substituir escala plena auto apenas à largura"</string>
+    <string name="override_none">Usar padrão do aplicativo</string>
+    <string name="override_off">Forçar ocultação</string>
+    <string name="override_on">Forçar show</string>
     <string name="override_scale_explanation">"Se o tamanho da fonte autoscale é menor do que o tamanho da fonte mínimo desejado, você quer o aplicativo para substituir a um método de escalonamento diferente? Utilizando estas opções pode forçá-lo a rolar horizontalmente e verticalmente em uma canção."</string>
+    <string name="override_sticky">Substituir a exibição automática de notas adesivas para esta música</string>
     <string name="override_widthautoscale">"Width override única escala para não autoscale"</string>
     <string name="overwrite">"Substituir item existente"</string>
     <string name="overwrite_info">Todos os arquivos correspondentes que você já possui serão substituídos pelos arquivos host</string>
@@ -870,6 +876,7 @@
     <string name="song_sections_info">As seções encontradas nas letras da sua música são mostradas abaixo. Clique nos botões para adicioná-los à ordem de apresentação.</string>
     <string name="song_sections_project">Clique em uma seção de música para enviá-la aos monitores conectados</string>
     <string name="song_select_warning">Este site requer uma conta válida.  Você deve usar o botão de download dentro da página da Web SongSelect para acionar o download necessário.  O ficheiro será importado para a sua pasta OpenSong/Songs/ depois de ter sido transferido.</string>
+    <string name="song_specific">Específico da música</string>
     <string name="song_swipe_toggle">"Furto Alternar para mover entre as músicas ligar / desligar"</string>
     <string name="song_title">"Título da música"</string>
     <string name="songs">Músicas</string>
