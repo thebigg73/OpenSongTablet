@@ -410,9 +410,6 @@ public class Autoscroll {
             scrollHeight = songHeight - displayHeight;
             myRecyclerView.setMaxScrollY(songHeight-displayHeight);
         }
-        if (inlinePauses == null) {
-            buildInlinePauseArrays();
-        }
 
         if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
             // Horizontal scrolling
@@ -439,6 +436,10 @@ public class Autoscroll {
         }
 
         flashCount = 0;
+
+        if (inlinePauses == null) {
+            buildInlinePauseArrays();
+        }
     }
     private void resetTimers() {
         if (task!=null) {
