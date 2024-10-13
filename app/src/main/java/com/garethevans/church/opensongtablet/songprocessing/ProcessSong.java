@@ -2321,7 +2321,7 @@ public class ProcessSong {
                                     linearLayout.addView(groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getPdfTextColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
-                                            mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
+                                            mainActivityInterface.getMyThemeColors().getPdfCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfHighlightChordColor(),
                                             false, isChorusBold,true));
                                 } else if (presentation && !performancePresentation) {
