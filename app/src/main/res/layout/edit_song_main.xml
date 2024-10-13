@@ -94,6 +94,24 @@
                 app:autoSizeStepGranularity="1sp"
                 app:autoSizeTextType="uniform"
                 app:endIconMode="clear_text" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/override_sticky" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/overrideStickySlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:layout_marginTop="0dp"
+                app:textL="@string/override_none"
+                app:textC="@string/override_on"
+                app:textR="@string/override_off"/>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 </LinearLayout>

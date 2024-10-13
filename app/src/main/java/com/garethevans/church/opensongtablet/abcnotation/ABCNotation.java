@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.abcnotation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -17,6 +16,7 @@ import java.util.Locale;
 
 public class ABCNotation {
 
+    @SuppressWarnings("unused")
     private final String TAG = "ABCNotation";
 
     private String songTitle, songKey, songAbc, songTimeSig;
@@ -279,7 +279,6 @@ public class ABCNotation {
         String foundKey = null;
         for (String s : keysToCheck) {
             if (keyline.startsWith(s.toLowerCase())) {
-                Log.d(TAG,"found key:"+s);
                 foundKey = s;
                 break;
             }
@@ -289,12 +288,9 @@ public class ABCNotation {
 
     // Gradually strip out useful bits of the set key
     private String substringUpTo(String string, String lookfor) {
-        Log.d(TAG,"look for '"+lookfor+"' in keyline:"+string);
         if (string.contains(lookfor)) {
             string = string.substring(0,string.indexOf(lookfor));
         }
-        Log.d(TAG,"returning :"+string);
-
         return string;
     }
 

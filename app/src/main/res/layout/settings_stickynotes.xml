@@ -44,6 +44,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/settingsGlobal"
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,6 +96,30 @@
                 android:value="400"
                 app:stepSize="100"/>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/settingsLocal"
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/override_sticky" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/settingsOverrideStickySlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:layout_marginTop="0dp"
+                app:textL="@string/override_none"
+                app:textC="@string/override_on"
+                app:textR="@string/override_off"/>
         </LinearLayout>
 </LinearLayout>
 </ScrollView>

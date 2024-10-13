@@ -120,6 +120,15 @@ public class EditSongFragmentFeatures extends Fragment {
         // The capo
         setupCapo();
 
+        // Check for overrides
+        if (mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getTempSong())) {
+            myView.overrideAbcSlider.setSliderPos(2);
+        } else if (mainActivityInterface.getProcessSong().getHasAbcOnOverride(mainActivityInterface.getTempSong())) {
+            myView.overrideAbcSlider.setSliderPos(1);
+        } else {
+            myView.overrideAbcSlider.setSliderPos(0);
+        }
+
         // The pad file
         ArrayList<String> padfiles = new ArrayList<>();
         padfiles.add(pad_auto_string);
@@ -377,6 +386,26 @@ public class EditSongFragmentFeatures extends Fragment {
             myView.linkValue.addTextChangedListener(new MyTextWatcher("linkvalue"));
 
             myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getMetronome().tapTempo());
+
+            // The sticky notes override
+            myView.overrideAbcSlider.addOnChangeListener((slider, value, fromUser) -> {
+                // All options should clear existing override value
+                mainActivityInterface.getProcessSong().removeAbcOverrides(mainActivityInterface.getTempSong(), true);
+                // Get rid of any existing sticky_off values
+                mainActivityInterface.getProcessSong().removeAbcOverrides(mainActivityInterface.getTempSong(),false);
+
+                if (value==1) {
+                    // Add the abc_on override
+                    mainActivityInterface.getProcessSong().addAbcOverride(
+                            mainActivityInterface.getTempSong(),true);
+
+                } else if (value==2) {
+                    // Add the abc_off override
+                    mainActivityInterface.getProcessSong().addAbcOverride(
+                            mainActivityInterface.getTempSong(), false);
+                }
+                myView.overrideAbcSlider.updateAlphas();
+            });
 
             myView.preferredInstrument.addTextChangedListener(new MyTextWatcher("preferredinstrument"));
             // Scroll listener

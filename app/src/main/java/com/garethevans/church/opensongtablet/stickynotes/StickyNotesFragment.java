@@ -21,7 +21,7 @@ public class StickyNotesFragment extends Fragment {
     SettingsStickynotesBinding myView;
     MainActivityInterface mainActivityInterface;
     private String song_notes_string="", on_string="", success_string="", error_string="",
-            error_song_not_saved_string="";
+            error_song_not_saved_string="", settings_text="", global_text="", song_specific_text="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,6 +58,9 @@ public class StickyNotesFragment extends Fragment {
             success_string = getString(R.string.success);
             error_song_not_saved_string = getString(R.string.error_song_not_saved);
             error_string = getString(R.string.error);
+            settings_text = getString(R.string.settings);
+            global_text = getString(R.string.global);
+            song_specific_text = getString(R.string.song_specific);
         }
     }
 
@@ -91,6 +94,20 @@ public class StickyNotesFragment extends Fragment {
         myView.stickyWidth.setLabelFormatter(value -> ((int)value)+"px");
         myView.stickyWidth.setValue(stickyWidth);
         myView.stickyWidth.setHint(stickyWidth +"px");
+
+        String global = settings_text + " (" + global_text + ")";
+        String local = settings_text + " (" + song_specific_text + ")";
+        myView.settingsGlobal.setText(global);
+        myView.settingsLocal.setText(local);
+
+        // Check for overrides
+        if (mainActivityInterface.getProcessSong().getHasStickyOffOverride(mainActivityInterface.getSong())) {
+            myView.settingsOverrideStickySlider.setSliderPos(2);
+        } else if (mainActivityInterface.getProcessSong().getHasStickyOnOverride(mainActivityInterface.getSong())) {
+            myView.settingsOverrideStickySlider.setSliderPos(1);
+        } else {
+            myView.settingsOverrideStickySlider.setSliderPos(0);
+        }
     }
 
     private void setTimeHint(int time) {
@@ -179,7 +196,26 @@ public class StickyNotesFragment extends Fragment {
         });
         myView.stickyWidth.addOnChangeListener((slider, value, fromUser) -> myView.stickyWidth.setHint(((int)value)+"px"));
 
+        // The sticky notes override
+        myView.settingsOverrideStickySlider.addOnChangeListener((slider, value, fromUser) -> {
+            // All options should clear existing override value
+            mainActivityInterface.getProcessSong().removeStickyOverrides(mainActivityInterface.getSong(), true);
+            // Get rid of any existing sticky_off values
+            mainActivityInterface.getProcessSong().removeStickyOverrides(mainActivityInterface.getSong(),false);
 
+            if (value==1) {
+                // Add the sticky_on override
+                mainActivityInterface.getProcessSong().addStickyOverride(
+                        mainActivityInterface.getSong(),true);
+
+            } else if (value==2) {
+                // Add the sticky_off override
+                mainActivityInterface.getProcessSong().addStickyOverride(
+                        mainActivityInterface.getSong(), false);
+            }
+            myView.settingsOverrideStickySlider.updateAlphas();
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+        });
     }
 
     private void hideTimeVisibility(boolean visible) {

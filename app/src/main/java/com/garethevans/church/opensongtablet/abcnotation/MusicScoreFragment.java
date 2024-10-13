@@ -25,7 +25,8 @@ public class MusicScoreFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsAbcnotationBinding myView;
     private final String TAG = "MusicScoreFragment";
-    private String music_score="", website_music_score="";
+    private String music_score="", website_music_score="", settings_text="",
+        global_text="", song_specific_text="";
     private String webAddress;
 
     @Override
@@ -66,6 +67,9 @@ public class MusicScoreFragment extends Fragment {
         if (getContext()!=null) {
             music_score = getString(R.string.music_score);
             website_music_score = getString(R.string.website_music_score);
+            settings_text = getString(R.string.settings);
+            global_text = getString(R.string.global);
+            song_specific_text = getString(R.string.song_specific);
         }
     }
     private void setViews() {
@@ -91,6 +95,20 @@ public class MusicScoreFragment extends Fragment {
         myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
         myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
         myView.transposeSlider.setLabelFormatter(value -> showPositiveValue((int)value));
+
+        // Check for overrides
+        if (mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getSong())) {
+            myView.overrideSettingsAbcSlider.setSliderPos(2);
+        } else if (mainActivityInterface.getProcessSong().getHasAbcOnOverride(mainActivityInterface.getSong())) {
+            myView.overrideSettingsAbcSlider.setSliderPos(1);
+        } else {
+            myView.overrideSettingsAbcSlider.setSliderPos(0);
+        }
+
+        String global = settings_text + " (" + global_text + ")";
+        String local = settings_text + " (" + song_specific_text + ")";
+        myView.settingsAbcGlobal.setText(global);
+        myView.settingsAbcLocal.setText(local);
 
         myView.autoshowMusicScore.setChecked(mainActivityInterface.getAbcNotation().getAutoshowMusicScore());
     }
@@ -129,16 +147,52 @@ public class MusicScoreFragment extends Fragment {
                 myView.transposeSlider.setHint(String.valueOf(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
             }
             myView.transposeSlider.setEnabled(!isChecked);
+            // Update the webview with the new values
+            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
         }));
 
         myView.autoshowMusicScore.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getAbcNotation().setAutoshowMusicScore(isChecked)));
-        myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> myView.sizeSlider.setHint((int)value+"%"));
-        myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> myView.zoomSlider.setHint(String.valueOf((int)value)));
+        myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> {
+            myView.sizeSlider.setHint((int)value+"%");
+            // Update the webview with the new values
+            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+        });
+        myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> {
+            myView.zoomSlider.setHint(String.valueOf((int)value));
+            // Update the webview with the new values
+            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+        });
 
-        myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> myView.transposeSlider.setHint(showPositiveValue((int)value)));
+        myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
+            myView.transposeSlider.setHint(showPositiveValue((int)value));
+            // Update the webview with the new values
+            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+        });
         myView.sizeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
         myView.zoomSlider.addOnSliderTouchListener(new MySliderTouchListener("abcZoom"));
         myView.transposeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcTranspose"));
+
+        // The music score override
+        myView.overrideSettingsAbcSlider.addOnChangeListener((slider, value, fromUser) -> {
+            // All options should clear existing override value
+            mainActivityInterface.getProcessSong().removeAbcOverrides(mainActivityInterface.getSong(), true);
+            // Get rid of any existing sticky_off values
+            mainActivityInterface.getProcessSong().removeAbcOverrides(mainActivityInterface.getSong(),false);
+
+            if (value==1) {
+                // Add the abc_on override
+                mainActivityInterface.getProcessSong().addAbcOverride(
+                        mainActivityInterface.getSong(),true);
+
+            } else if (value==2) {
+                // Add the abc_off override
+                mainActivityInterface.getProcessSong().addAbcOverride(
+                        mainActivityInterface.getSong(), false);
+            }
+            myView.overrideSettingsAbcSlider.updateAlphas();
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+        });
+
     }
 
     private class MySliderTouchListener implements Slider.OnSliderTouchListener {

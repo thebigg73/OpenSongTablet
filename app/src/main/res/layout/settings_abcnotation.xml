@@ -30,11 +30,20 @@
                 android:inputType="textMultiLine"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/settingsAbcGlobal"
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/display" />
+                android:text="@string/settings" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/autoshowMusicScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/autoshow_musicscore"
+                android:hint="@string/autoshow_musicscore_info" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/sizeSlider"
@@ -72,12 +81,31 @@
                 android:value="0"
                 android:layout_marginBottom="16dp"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-                android:id="@+id/autoshowMusicScore"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/settingsAbcLocal"
+                style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/autoshow_musicscore"
-                android:hint="@string/autoshow_musicscore_info"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/override_abc" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/overrideSettingsAbcSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="32dp"
+                app:textL="@string/override_none"
+                app:textC="@string/override_on"
+                app:textR="@string/override_off"
                 android:paddingBottom="128dp"/>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>

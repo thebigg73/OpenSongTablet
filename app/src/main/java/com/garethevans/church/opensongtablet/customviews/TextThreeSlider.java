@@ -191,8 +191,7 @@ public class TextThreeSlider extends LinearLayout {
         }
     }
 
-    private void updateAlphas() {
-        Log.d(TAG,"updateAlphas() slider.getValue: "+slider.getValue());
+    public void updateAlphas() {
         textLeft.setTextColor(slider.getValue()==0 ? white:lightgrey);
         textCenter.setTextColor(slider.getValue()==1 ? white:lightgrey);
         textRight.setTextColor(slider.getValue()==2 ? white:lightgrey);

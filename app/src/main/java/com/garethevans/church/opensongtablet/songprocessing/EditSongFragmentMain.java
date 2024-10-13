@@ -84,6 +84,15 @@ public class EditSongFragmentMain extends Fragment  {
                     mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
                     mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes, 5);
                     myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
+
+                    // Check for overrides
+                    if (mainActivityInterface.getProcessSong().getHasStickyOffOverride(mainActivityInterface.getTempSong())) {
+                        myView.overrideStickySlider.setSliderPos(2);
+                    } else if (mainActivityInterface.getProcessSong().getHasStickyOnOverride(mainActivityInterface.getTempSong())) {
+                        myView.overrideStickySlider.setSliderPos(1);
+                    } else {
+                        myView.overrideStickySlider.setSliderPos(0);
+                    }
                 }
             });
 
@@ -118,11 +127,32 @@ public class EditSongFragmentMain extends Fragment  {
                 myView.copyright.addTextChangedListener(new MyTextWatcher("copyright"));
                 myView.songNotes.addTextChangedListener(new MyTextWatcher("notes"));
 
+                // The sticky notes override
+                myView.overrideStickySlider.addOnChangeListener((slider, value, fromUser) -> {
+                    // All options should clear existing override value
+                    mainActivityInterface.getProcessSong().removeStickyOverrides(mainActivityInterface.getTempSong(), true);
+                    // Get rid of any existing sticky_off values
+                    mainActivityInterface.getProcessSong().removeStickyOverrides(mainActivityInterface.getTempSong(),false);
+
+                    if (value==1) {
+                        // Add the sticky_on override
+                        mainActivityInterface.getProcessSong().addStickyOverride(
+                                mainActivityInterface.getTempSong(),true);
+
+                    } else if (value==2) {
+                        // Add the sticky_off override
+                        mainActivityInterface.getProcessSong().addStickyOverride(
+                                mainActivityInterface.getTempSong(), false);
+                    }
+                    myView.overrideStickySlider.updateAlphas();
+                });
+
                 // Scroll listener
                 myView.mainScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
             }
         });
     }
+
 
     private class MyTextWatcher implements TextWatcher {
 
