@@ -108,6 +108,27 @@
                         android:padding="16dp"/>
                 </LinearLayout>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/detectedFrequency"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/text_large"
+                    android:layout_height="wrap_content"/>
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="208dp">
+                    <ImageView
+                        android:id="@+id/needle"
+                        android:layout_width="16dp"
+                        android:layout_height="208dp"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="208dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/needle"/>
+                </FrameLayout>
+
                 <LinearLayout
                     android:id="@+id/tuner"
                     android:layout_width="match_parent"
@@ -172,9 +193,18 @@
                             android:id="@+id/tunerNote"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center|top"
                             android:textSize="32sp"
+                            android:layout_marginTop="12dp"
                             tools:text="A"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tunerFreq"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|bottom"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="12dp"
+                            tools:text="440Hz"/>
                     </FrameLayout>
                     <ImageView
                         android:id="@+id/bandSharp1"
@@ -221,6 +251,7 @@
                     android:id="@+id/pianoHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical">
                     <TableRow style="@style/DividerLine"/>
 

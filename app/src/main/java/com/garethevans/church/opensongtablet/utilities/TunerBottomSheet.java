@@ -3,7 +3,11 @@ package com.garethevans.church.opensongtablet.utilities;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -48,7 +53,6 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetTunerBinding myView;
     ActivityResultLauncher<String> activityResultLauncher;
 
-
     @SuppressWarnings("unused,FieldCanBeLocal")
     private final String TAG = "TunerBottomSheet";
     private ArrayList<Double> midiNoteFrequency;
@@ -61,6 +65,9 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             "+/- 2 cent","+/- 3 cent","+/- 4 cent","+/- 5 cent"));
     private String tuner_string="", website_tuner_string="", microphone_string="",
             permissions_refused_string="", settings_string="";
+    private Runnable resetTunerDisplay;
+    private final Handler resetTunerHandler = new Handler(Looper.myLooper());
+    private int needleInTuneColor = Color.GREEN, needleNotInTuneColor = Color.GRAY;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -78,6 +85,22 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         if (w != null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
+        resetTunerDisplay = () -> {
+            setTunerBlocks(myView.bandFlat1, false, false);
+            setTunerBlocks(myView.bandFlat2, false, false);
+            setTunerBlocks(myView.bandFlat3, false, false);
+            setTunerBlocks(myView.bandFlat4, false, false);
+            setTunerBlocks(myView.bandSharp1, false, false);
+            setTunerBlocks(myView.bandSharp2, false, false);
+            setTunerBlocks(myView.bandSharp3, false, false);
+            setTunerBlocks(myView.bandSharp4, false, false);
+            setTunerBlocks(myView.bandInTune, false, false);
+            myView.tunerNote.setText("-");
+            myView.detectedFrequency.setText("");
+            myView.tunerFreq.setText("");
+            myView.needle.setRotation(0);
+            myView.needle.setColorFilter(needleNotInTuneColor, PorterDuff.Mode.SRC_IN);
+        };
     }
 
     @NonNull
@@ -124,6 +147,8 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             microphone_string = getString(R.string.microphone);
             permissions_refused_string = getString(R.string.permissions_refused);
             settings_string = getString(R.string.settings);
+            needleInTuneColor = ContextCompat.getColor(getContext(),R.color.green);
+            needleNotInTuneColor = ContextCompat.getColor(getContext(),R.color.colorSecondary);
         }
     }
     private void setValues() {
@@ -199,6 +224,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         });
 
         setUpTuningButtons();
+        myView.needle.setColorFilter(needleNotInTuneColor, PorterDuff.Mode.SRC_IN);
     }
 
     private void checkMidiButtons() {
@@ -477,50 +503,71 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void checkTheTuning(float pitchHz) {
+        resetTunerHandler.removeCallbacks(resetTunerDisplay);
+        resetTunerHandler.postDelayed(resetTunerDisplay,1000);
+
         int foundNote = -1;
+
+        String freqText = (float)Math.round(pitchHz*10f)/10f + "Hz";
+        myView.detectedFrequency.setText(freqText);
 
         // Get the current note cents.  Less than 50 means we know the closest note
         int currentCents = 100;
+        int foundCents = 0;
         for (int i = 0; i < midiNoteFrequency.size(); i++) {
             currentCents = (int) Math.round(1200 * (Math.log(pitchHz / midiNoteFrequency.get(i))));
-
             if (Math.abs(currentCents) < 50) {
                 // Note detected, so no need to continue the loop
-                foundNote = i;
+                // Decide if this or the next in the array is closer
+                int nextCents = currentCents;
+                if (i<midiNoteFrequency.size()-1) {
+                    nextCents = (int) Math.round(1200 * (Math.log(pitchHz / midiNoteFrequency.get(i + 1))));
+                }
+
+                if (Math.abs(currentCents)<Math.abs(nextCents)) {
+                    foundCents = currentCents;
+                    foundNote = i;
+                } else {
+                    foundCents = nextCents;
+                    foundNote = i+1;
+                }
                 break;
             }
         }
 
-        if (foundNote >= 0 && Math.abs(currentCents) < 50) {
+        if (foundNote >= 0 && Math.abs(foundCents) < 50) {
             // We can now update the display
             boolean isSharp = false, isFlat = false, inTune = false, closeInTune = false;
             int band;
-            if (Math.abs(currentCents) > centsBand4) {
+            if (Math.abs(foundCents) > centsBand4) {
                 band = 4;
-            } else if (Math.abs(currentCents) > centsBand3) {
+            } else if (Math.abs(foundCents) > centsBand3) {
                 band = 3;
-            } else if (Math.abs(currentCents) > centsBand2) {
+            } else if (Math.abs(foundCents) > centsBand2) {
                 band = 2;
-            } else if (Math.abs(currentCents) > centsBand1) {
+            } else if (Math.abs(foundCents) > centsBand1) {
                 band = 1;
-            } else if (Math.abs(currentCents) > centsInTune) {
+            } else if (Math.abs(foundCents) > centsInTune) {
                 band = 1;
                 closeInTune = true;
             } else {
                 band = 0;
             }
 
-            if (currentCents > centsInTune) {
+            if (foundCents > centsInTune) {
                 isSharp = true;
-            } else if (currentCents < -centsInTune) {
+            } else if (foundCents < -centsInTune) {
                 isFlat = true;
             } else {
                 inTune = true;
             }
 
-            //Log.d(TAG, "band:"+band+"  isFlat:" + isFlat + "  inTune:" + inTune + "  isSharp:" + isSharp+"  currentCents:"+currentCents);
-
-            myView.tunerNote.setText(mainActivityInterface.getMidi().getNotes().get(foundNote).replaceAll("[0-9]", ""));
+            myView.needle.setRotation(foundCents*1.2f);
+            myView.needle.setColorFilter(inTune ? needleInTuneColor:needleNotInTuneColor, PorterDuff.Mode.SRC_IN);
+            String noteText = mainActivityInterface.getMidi().getNoteFromInt(foundNote-12).replaceAll("","");
+            String freqReq = ((float)(Math.round((midiNoteFrequency.get(foundNote)*10))/10f))+"Hz";
+            myView.tunerNote.setText(noteText);
+            myView.tunerFreq.setText(freqReq);
             setTunerBlocks(myView.bandFlat4, isFlat && band == 4, false);
             setTunerBlocks(myView.bandFlat3, isFlat && band >= 3, false);
             setTunerBlocks(myView.bandFlat2, isFlat && band >= 2, false);

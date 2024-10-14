@@ -244,7 +244,7 @@ public class Midi {
         }
     }
 
-    String getNoteFromInt(int i) {
+    public String getNoteFromInt(int i) {
         if (i<notes.size()) {
             return notes.get(i);
         } else {
