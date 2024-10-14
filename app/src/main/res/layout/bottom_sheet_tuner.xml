@@ -123,6 +123,7 @@
                         android:layout_width="8dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center|top"
+                        android:contentDescription="@string/tuner_info"
                         app:tint="@color/colorSecondary"
                         android:src="@drawable/rectangle"/>
                     <ImageView

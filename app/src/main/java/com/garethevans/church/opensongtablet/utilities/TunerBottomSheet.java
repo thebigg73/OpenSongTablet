@@ -193,6 +193,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                 int value = Integer.parseInt(s.toString());
                 mainActivityInterface.getPreferences().setMyPreferenceInt("refAHz",value);
                 concertPitch = (float) value;
+                initialiseTuner();
                 checkMidiButtons();
             }
         });
