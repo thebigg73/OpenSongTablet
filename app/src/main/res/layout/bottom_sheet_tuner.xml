@@ -120,12 +120,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="208dp">
                     <ImageView
+                        android:layout_width="8dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center|top"
+                        app:tint="@color/colorSecondary"
+                        android:src="@drawable/rectangle"/>
+                    <ImageView
                         android:id="@+id/needle"
                         android:layout_width="16dp"
                         android:layout_height="208dp"
+                        android:contentDescription="@string/tuner"
                         android:transformPivotX="0dp"
                         android:transformPivotY="208dp"
                         android:layout_gravity="center"
+                        app:tint="@color/colorSecondary"
                         android:src="@drawable/needle"/>
                 </FrameLayout>
 
