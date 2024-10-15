@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,7 +108,11 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                     myView.tunerNote.setText("-");
                     myView.detectedFrequency.setText("");
                     myView.tunerFreq.setText("");
-                    myView.needle.setRotation(0);
+                    myView.needle.animate()
+                            .rotation(0)
+                            .setDuration(500)
+                            .setInterpolator(new DecelerateInterpolator()).start();
+                    //myView.needle.setRotation(0);
                     myView.needle.setColorFilter(needleNotInTuneColor, PorterDuff.Mode.SRC_IN);
                 }
             }
@@ -570,7 +575,11 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                 inTune = true;
             }
 
-            myView.needle.setRotation(foundCents * 1.2f);
+            myView.needle.animate()
+                    .rotation(foundCents * 1.2f)
+                    .setDuration(500)
+                    .setInterpolator(new DecelerateInterpolator()).start();
+
             myView.needle.setColorFilter(inTune ? needleInTuneColor : needleNotInTuneColor, PorterDuff.Mode.SRC_IN);
             String noteText = mainActivityInterface.getMidi().getNoteFromInt(foundNote - 12).replaceAll("", "");
             String freqReq = (Math.round((midiNoteFrequency.get(foundNote) * 10)) / 10f) + "Hz";
