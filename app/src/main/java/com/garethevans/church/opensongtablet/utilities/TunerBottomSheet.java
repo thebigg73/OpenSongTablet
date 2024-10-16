@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,9 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     private ToneGenerator toneGenerator;
     private ArrayList<Double> midiNoteFrequency;
     private float concertPitch = 440f;
-    private int centsInTune = 2, centsBand1 = 5, centsBand2 = 10, centsBand3 = 20, centsBand4 = 30;
+    private int centsInTune = 2;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int centsBand1 = 10, centsBand2 = 20, centsBand3 = 30, centsBand4 = 40;
     private String tuner_string = "", website_tuner_string = "", microphone_string = "",
             permissions_refused_string = "", settings_string = "";
     private Runnable resetTunerDisplay;
@@ -73,6 +76,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     private Runnable turnOffAudioRunnable;
     private AudioDispatcher audioDispatcher;
     private AudioProcessor audioProcessor;
+    @SuppressWarnings("FieldCanBeLocal")
     private Thread audioThread;
 
     @Override
@@ -106,7 +110,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                 setTunerBlocks(myView.bandInTune, false, false);
                 if (myView != null) {
                     myView.tunerNote.setText("-");
-                    myView.detectedFrequency.setText("");
+                    myView.desiredFreq.setText("");
                     myView.tunerFreq.setText("");
                     myView.needle.animate()
                             .rotation(0)
@@ -276,46 +280,22 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         switch (tunerCents) {
             case 0:
                 centsInTune = 0;
-                centsBand1 = 2;
-                centsBand2 = 5;
-                centsBand3 = 10;
-                centsBand4 = 15;
                 break;
             case 1:
                 centsInTune = 1;
-                centsBand1 = 3;
-                centsBand2 = 7;
-                centsBand3 = 15;
-                centsBand4 = 20;
                 break;
             case 2:
             default:
                 centsInTune = 2;
-                centsBand1 = 5;
-                centsBand2 = 10;
-                centsBand3 = 20;
-                centsBand4 = 30;
                 break;
             case 3:
                 centsInTune = 3;
-                centsBand1 = 8;
-                centsBand2 = 15;
-                centsBand3 = 25;
-                centsBand4 = 35;
                 break;
             case 4:
                 centsInTune = 4;
-                centsBand1 = 10;
-                centsBand2 = 20;
-                centsBand3 = 30;
-                centsBand4 = 40;
                 break;
             case 5:
                 centsInTune = 5;
-                centsBand1 = 12;
-                centsBand2 = 20;
-                centsBand3 = 30;
-                centsBand4 = 40;
                 break;
         }
     }
@@ -502,6 +482,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     }
 
     private AudioProcessor getAudioProcessor(int SAMPLE_RATE, int BUFFER_SIZE) {
+        Log.d(TAG,"set pitchDetectionHandler");
         PitchDetectionHandler pitchDetectionHandler = (pitchDetectionResult, audioEvent) -> {
             float pitchHz = pitchDetectionResult.getPitch();
             float probability = pitchDetectionResult.getProbability();
@@ -522,19 +503,18 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         int foundNote = -1;
 
         String freqText = (float) Math.round(pitchHz * 10f) / 10f + "Hz";
-        myView.detectedFrequency.setText(freqText);
 
         // Get the current note cents.  Less than 50 means we know the closest note
         int currentCents;
         int foundCents = 0;
         for (int i = 0; i < midiNoteFrequency.size(); i++) {
-            currentCents = (int) Math.round(1200 * (Math.log(pitchHz / midiNoteFrequency.get(i))));
+            currentCents = (int) Math.round(1200f * (Math.log((double)pitchHz / midiNoteFrequency.get(i))));
             if (Math.abs(currentCents) < 50) {
                 // Note detected, so no need to continue the loop
                 // Decide if this or the next in the array is closer
                 int nextCents = currentCents;
                 if (i < midiNoteFrequency.size() - 1) {
-                    nextCents = (int) Math.round(1200 * (Math.log(pitchHz / midiNoteFrequency.get(i + 1))));
+                    nextCents = (int) Math.round(1200f * (Math.log((double)pitchHz / midiNoteFrequency.get(i + 1))));
                 }
 
                 if (Math.abs(currentCents) < Math.abs(nextCents)) {
@@ -544,6 +524,9 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                     foundCents = nextCents;
                     foundNote = i + 1;
                 }
+                // 50 cents should be possible, but Tarsos gives value of 35 for what should be 50
+                // Multiply by 50/35.  Make sure it is always less than 50 though just in case!
+                foundCents = Math.min(50,Math.round((float)foundCents * (50f/35f)));
                 break;
             }
         }
@@ -552,13 +535,13 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             // We can now update the display
             boolean isSharp = false, isFlat = false, inTune = false, closeInTune = false;
             int band;
-            if (Math.abs(foundCents) > centsBand4) {
+            if (Math.abs(foundCents) >= centsBand4) {
                 band = 4;
-            } else if (Math.abs(foundCents) > centsBand3) {
+            } else if (Math.abs(foundCents) >= centsBand3) {
                 band = 3;
-            } else if (Math.abs(foundCents) > centsBand2) {
+            } else if (Math.abs(foundCents) >= centsBand2) {
                 band = 2;
-            } else if (Math.abs(foundCents) > centsBand1) {
+            } else if (Math.abs(foundCents) >= centsBand1) {
                 band = 1;
             } else if (Math.abs(foundCents) > centsInTune) {
                 band = 1;
@@ -576,6 +559,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             }
 
             myView.needle.animate()
+                    // We want 60 degree rotation for 50 cents on the dial. (60/50) = 1.2
                     .rotation(foundCents * 1.2f)
                     .setDuration(500)
                     .setInterpolator(new DecelerateInterpolator()).start();
@@ -584,7 +568,8 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             String noteText = mainActivityInterface.getMidi().getNoteFromInt(foundNote - 12).replaceAll("", "");
             String freqReq = (Math.round((midiNoteFrequency.get(foundNote) * 10)) / 10f) + "Hz";
             myView.tunerNote.setText(noteText);
-            myView.tunerFreq.setText(freqReq);
+            myView.tunerFreq.setText(freqText);
+            myView.desiredFreq.setText(freqReq);
             setTunerBlocks(myView.bandFlat4, isFlat && band == 4, false);
             setTunerBlocks(myView.bandFlat3, isFlat && band >= 3, false);
             setTunerBlocks(myView.bandFlat2, isFlat && band >= 2, false);
@@ -642,11 +627,6 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             toneGenerator.stopTone();
             toneGenerator.nullAudioTrack();
             toneGenerator = null;
-        }
-        try {
-            audioThread.interrupt();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         if (audioDispatcher != null) {
             try {
