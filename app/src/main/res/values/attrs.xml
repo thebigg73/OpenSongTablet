@@ -1,14 +1,5 @@
 <resources>
 
-    <declare-styleable name="MaterialTextView">
-        <attr name="android:text" format="string"/>
-        <attr name="android:hint" format="string"/>
-        <attr name="mydrawable" format="reference" />
-        <attr name="showCheckMark" format="boolean"/>
-        <attr name="showCheckBox" format="boolean" />
-        <attr name="size" format="string" />
-    </declare-styleable>
-
     <declare-styleable name="MaterialRadioButtonItem">
         <attr name="android:text" format="string"/>
         <attr name="android:hint" format="string"/>
@@ -111,6 +102,20 @@
             <enum name="normal" value="0" />
             <enum name="small" value="1" />
         </attr>
+    </declare-styleable>
+    <declare-styleable name="MyMaterialTextView">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
+        <attr name="mydrawable" format="reference" />
+        <attr name="showCheckMark" format="boolean"/>
+        <attr name="showCheckBox" format="boolean" />
+        <attr name="endFABVisibility" format="enum">
+            <enum name="invisible" value="0" />
+            <enum name="visible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="endFABDrawable" format="reference"/>
+        <attr name="size" format="string" />
     </declare-styleable>
 
 

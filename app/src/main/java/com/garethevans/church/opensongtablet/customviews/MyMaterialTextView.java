@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MyMaterialTextView extends LinearLayout {
 
@@ -28,6 +29,7 @@ public class MyMaterialTextView extends LinearLayout {
     private final ImageView checkMark, imageView;
     private final CheckBox checkBox;
     private final FrameLayout checkBoxHolder;
+    private final FloatingActionButton endActionButton;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MyMaterialTextView(Context context, @Nullable AttributeSet attrs) {
@@ -47,6 +49,7 @@ public class MyMaterialTextView extends LinearLayout {
         checkMark = findViewById(R.id.checkMark);
         checkBox = findViewById(R.id.checkBox);
         checkBoxHolder = findViewById(R.id.checkBoxHolder);
+        endActionButton = findViewById(R.id.endActionButton);
 
         textView.setId(View.generateViewId());
         hintView.setId(View.generateViewId());
@@ -54,15 +57,18 @@ public class MyMaterialTextView extends LinearLayout {
         checkMark.setId(View.generateViewId());
         checkBox.setId(View.generateViewId());
         checkBoxHolder.setId(View.generateViewId());
+        endActionButton.setId(View.generateViewId());
 
         int[] set = new int[] {android.R.attr.text, android.R.attr.hint};
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialTextView);
-        Drawable drawable = a.getDrawable(R.styleable.MaterialTextView_mydrawable);
-        boolean isChecked = a.getBoolean(R.styleable.MaterialTextView_showCheckMark,false);
-        boolean isCheckBox = a.getBoolean(R.styleable.MaterialTextView_showCheckBox, false);
-        String size = a.getString(R.styleable.MaterialTextView_size);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialTextView);
+        Drawable drawable = a.getDrawable(R.styleable.MyMaterialTextView_mydrawable);
+        boolean isChecked = a.getBoolean(R.styleable.MyMaterialTextView_showCheckMark,false);
+        boolean isCheckBox = a.getBoolean(R.styleable.MyMaterialTextView_showCheckBox, false);
+        boolean endFABVisibility = a.getBoolean(R.styleable.MyMaterialTextView_endFABVisibility, false);
+        Drawable endFABDrawable = a.getDrawable(R.styleable.MyMaterialTextView_endFABDrawable);
+        String size = a.getString(R.styleable.MyMaterialTextView_size);
         if (size==null) {
             size = "medium";
         }
@@ -79,6 +85,7 @@ public class MyMaterialTextView extends LinearLayout {
 
         showCheckMark(isChecked);
         showCheckBox(isCheckBox);
+        showEndFAB(endFABVisibility,endFABDrawable);
 
         typedArray.recycle();
         a.recycle();
@@ -96,9 +103,7 @@ public class MyMaterialTextView extends LinearLayout {
     }
 
     public void setHintMonospace() {
-        hintView.post(() -> {
-            hintView.setTypeface(Typeface.MONOSPACE);
-        });
+        hintView.post(() -> hintView.setTypeface(Typeface.MONOSPACE));
     }
 
     public void setSize(String size) {
@@ -167,6 +172,20 @@ public class MyMaterialTextView extends LinearLayout {
             checkBoxHolder.setVisibility(View.VISIBLE);
         } else {
             checkBoxHolder.setVisibility(View.GONE);
+        }
+    }
+
+    public void showEndFAB(boolean endFABVisibility, Drawable endFABDrawable) {
+        endActionButton.setVisibility(endFABVisibility ? View.VISIBLE:View.GONE);
+        endActionButton.setImageDrawable(endFABDrawable);
+    }
+
+    public void setEndFABDrawable(Drawable drawable) {
+        if (drawable!=null) {
+            endActionButton.setImageDrawable(drawable);
+            endActionButton.setVisibility(View.VISIBLE);
+        } else {
+            endActionButton.setVisibility(View.GONE);
         }
     }
 
