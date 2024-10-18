@@ -338,4 +338,9 @@ public interface MainActivityInterface {
     ChordDirectory getChordDirectory();
     void updateOnScreenInfo(String what);
 
+    // Record audio popup
+    void setRequireAudioRecorder();
+    void removeAudioRecorderPopUp();
+    void displayAudioRecorder();
+
 }

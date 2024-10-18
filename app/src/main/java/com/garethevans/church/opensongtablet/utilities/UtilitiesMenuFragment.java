@@ -68,6 +68,13 @@ public class UtilitiesMenuFragment extends Fragment {
         myView.beatBuddy.setOnClickListener(v -> mainActivityInterface.navigateToFragment(beatBuddy_string,0));
         myView.aeros.setOnClickListener(v -> mainActivityInterface.navigateToFragment(aeros_string,0));
         myView.databaseOptions.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_database_utilities,0));
+        myView.audioRecorder.setOnClickListener(v -> {
+            // Show recorder popup window over the home page
+            if (getContext()!=null) {
+                mainActivityInterface.setRequireAudioRecorder();
+                mainActivityInterface.navHome();
+            }
+        });
     }
 
 }

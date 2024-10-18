@@ -923,6 +923,9 @@
                 <action
                     android:id="@+id/action_utilitiesMenuFragment_to_databaseOptions"
                     app:destination="@id/databaseOptions" />
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_databaseOptions2"
+                    app:destination="@id/databaseOptions" />
             </fragment>
             <fragment
                 android:id="@+id/aerosCommands"
@@ -943,6 +946,7 @@
                 android:name="com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet"
                 android:label="SoundLevelBottomSheet"
                 tools:layout="@layout/bottom_sheet_sound_level_meter"/>
+
             <navigation android:id="@+id/BeatBuddy"
                 app:startDestination="@id/BBOptionsFragment">
                 <fragment

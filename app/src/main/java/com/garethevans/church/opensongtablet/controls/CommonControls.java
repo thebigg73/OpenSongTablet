@@ -177,6 +177,7 @@ public class CommonControls {
         addString("soundlevel",c.getString(R.string.sound_level_meter));
         addString("tuner",c.getString(R.string.tuner));
         addString("bible",c.getString(R.string.bible_verse));
+        addString("audiorecorder",c.getString(R.string.audio_recorder));
 
         addString("","");
 

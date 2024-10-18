@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.utilities.AudioRecorderPopUp;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,6 +20,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
     private final TextView textView;
     private final FloatingActionButton webHelp;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
+    private AudioRecorderPopUp audioRecorderPopUp;
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -54,6 +56,10 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         bottomSheetDialogFragment = thisFragment;
     }
 
+    public void setClose(AudioRecorderPopUp audioRecorderPopUp) {
+        this.audioRecorderPopUp = audioRecorderPopUp;
+    }
+
     public void setWebHelp(MainActivityInterface mainActivityInterface, String webAddress) {
         // If we pass in a valid web address, we show the web help page
         if (webAddress!=null && !webAddress.isEmpty()) {
@@ -69,6 +75,8 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         if (bottomSheetDialogFragment != null) {
             bottomSheetDialogFragment.dismiss();
         }
-
+        if (audioRecorderPopUp != null) {
+            audioRecorderPopUp.destroyPopup();
+        }
     }
 }

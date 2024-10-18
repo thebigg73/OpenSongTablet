@@ -1359,6 +1359,9 @@ public class PerformanceFragment extends Fragment {
             dealWithStickyNotes(mainActivityInterface.getProcessSong().getHasStickyOnOverride(mainActivityInterface.getSong()), false);
         }
 
+        // Show the audio recorder if we requested it from the settings menu
+        mainActivityInterface.displayAudioRecorder();
+
         // Load up the abc notation if the user wants them
         if (!mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getSong()) &&
                 (mainActivityInterface.getAbcNotation().getAutoshowMusicScore() ||
@@ -1647,7 +1650,6 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
-
     public void showNearbyAlertPopUp(String message) {
         // Clear any existing popup
         nearbyAlertPopUp.destroyPopup();
@@ -1771,6 +1773,7 @@ public class PerformanceFragment extends Fragment {
             return 0;
         }
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

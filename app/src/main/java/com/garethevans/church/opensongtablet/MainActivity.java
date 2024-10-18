@@ -32,6 +32,8 @@ import android.widget.RelativeLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +65,7 @@ import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.BootUpFragment;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.appdata.MyFonts;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
@@ -159,6 +162,7 @@ import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
+import com.garethevans.church.opensongtablet.utilities.AudioRecorderPopUp;
 import com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment;
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
@@ -269,6 +273,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private WebDownload webDownload;
     private WebServer webServer;
 
+    // The audio recorder permissions
+    private ActivityResultLauncher<String> audioPermissionLauncher;
+    private boolean requireAudioRecorder = false;
+    private AudioRecorderPopUp audioRecorderPopUp;
+
     // The navigation controls
     private NavHostFragment navHostFragment;
     private NavController navController;
@@ -346,6 +355,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Set up crash collector
         setUpCrashCollector();
+
+        // Set up the audioPermission launcher
+        audioPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                requireAudioRecorder = true;
+                // Navigate home (performance/presenter) and then this fragment will attempt to show the popup
+                navHome();
+            } else {
+                // notify user
+                InformationBottomSheet informationBottomSheet = new InformationBottomSheet(getString(R.string.microphone),
+                        getString(R.string.permissions_refused), getString(R.string.settings), "appPrefs");
+                informationBottomSheet.show(getMyFragmentManager(), "InformationBottomSheet");
+            }
+        });
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
@@ -1757,6 +1780,49 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+
+    // For audio recording
+    public void setRequireAudioRecorder() {
+        if (audioRecorderPopUp!=null) {
+            try {
+                audioRecorderPopUp.destroyPopup();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            removeAudioRecorderPopUp();
+        } else {
+            if (getAppPermissions().hasAudioPermissions() && !requireAudioRecorder) {
+                requireAudioRecorder = true;
+            } else {
+                requireAudioRecorder = false;
+                audioPermissionLauncher.launch(getAppPermissions().getAudioPermissions());
+            }
+        }
+    }
+
+    @Override
+    public void removeAudioRecorderPopUp() {
+        audioRecorderPopUp = null;
+        requireAudioRecorder = false;
+    }
+
+    @Override
+    public void displayAudioRecorder() {
+        if (requireAudioRecorder) {
+            requireAudioRecorder = false;
+            if (myView!=null) {
+                if (audioRecorderPopUp!=null) {
+                    try {
+                        audioRecorderPopUp.destroyPopup();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                audioRecorderPopUp = new AudioRecorderPopUp(this);
+                audioRecorderPopUp.floatRecorder(myView.fragmentView);
+            }
+        }
+    }
 
     // Instructions sent from fragments for MainActivity to deal with
     @Override

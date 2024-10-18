@@ -591,7 +591,9 @@ public class PerformanceGestures {
             case "bible":
                 bibleSettings();
                 break;
-
+            case "audiorecorder":
+                audioRecorder();
+                break;
 
             // Exit
             case "exit":
@@ -1024,6 +1026,12 @@ public class PerformanceGestures {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayLyrics", !displayLyrics);
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.navHome();
+    }
+
+    // Show the audio recording popup
+    public void audioRecorder() {
+        mainActivityInterface.setRequireAudioRecorder();
+        mainActivityInterface.displayAudioRecorder();
     }
 
     // Show the abc notation
