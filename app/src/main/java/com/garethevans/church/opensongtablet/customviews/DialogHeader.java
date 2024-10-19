@@ -11,31 +11,29 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.utilities.AudioRecorderPopUp;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     private final TextView textView;
-    private final FloatingActionButton webHelp;
+    private final FloatingActionButton webHelp, closeButtonDialog;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
-    private AudioRecorderPopUp audioRecorderPopUp;
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_dialog_header, this);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        closeButtonDialog = findViewById(R.id.closeButtonDialog);
         textView = findViewById(R.id.textView);
         webHelp = findViewById(R.id.webHelp);
 
         textView.setId(generateViewId());
         webHelp.setId(generateViewId());
-        floatingActionButton.setId(generateViewId());
+        closeButtonDialog.setId(generateViewId());
 
-        floatingActionButton.setClickable(true);
-        floatingActionButton.setOnClickListener(this);
+        closeButtonDialog.setClickable(true);
+        closeButtonDialog.setOnClickListener(this);
 
         int[] set = new int[]{android.R.attr.text};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
@@ -56,10 +54,6 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         bottomSheetDialogFragment = thisFragment;
     }
 
-    public void setClose(AudioRecorderPopUp audioRecorderPopUp) {
-        this.audioRecorderPopUp = audioRecorderPopUp;
-    }
-
     public void setWebHelp(MainActivityInterface mainActivityInterface, String webAddress) {
         // If we pass in a valid web address, we show the web help page
         if (webAddress!=null && !webAddress.isEmpty()) {
@@ -75,8 +69,9 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         if (bottomSheetDialogFragment != null) {
             bottomSheetDialogFragment.dismiss();
         }
-        if (audioRecorderPopUp != null) {
-            audioRecorderPopUp.destroyPopup();
-        }
+    }
+
+    public FloatingActionButton getCloseButton() {
+        return closeButtonDialog;
     }
 }
