@@ -46,6 +46,11 @@ public class AudioRecorderPopUp {
     private boolean isRecording = false, isPlaying = false, mediaPlayerIsPrepared = false;
     private File tempFilename;
     private MyMaterialEditText audioFilename;
+    private final String fileExtension = ".m4a";
+    final int bitDepth = 16;
+    final int samplingRate = 44100;
+    final int encodingBitrate = samplingRate * bitDepth;
+
 
     // Initialise the popup class
     public AudioRecorderPopUp(Context c) {
@@ -187,7 +192,7 @@ public class AudioRecorderPopUp {
     private void stopRecording() {
         stopMediaRecorder();
         recordButton.setIcon(recordStart);
-        recordButton.setText(c.getString(R.string.start));
+        recordButton.setText(c.getString(R.string.record));
         recordButton.setBackgroundTintList(ColorStateList.valueOf(colorInactive));
         floatWindow.setAlpha(pageButtonAlpha);
 
@@ -208,12 +213,14 @@ public class AudioRecorderPopUp {
         isRecording = false;
     }
     private void startMediaRecorder() {
-        tempFilename = mainActivityInterface.getStorageAccess().getAppSpecificFile("Audio", "", "OpenSongAudio.3gp");
+        tempFilename = mainActivityInterface.getStorageAccess().getAppSpecificFile("Audio", "", "OpenSongAudio"+fileExtension);
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mediaRecorder.setAudioEncodingBitRate(encodingBitrate);
+        mediaRecorder.setAudioSamplingRate(samplingRate);
         mediaRecorder.setOutputFile(tempFilename.getAbsolutePath());
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         if (mediaRecorder!=null) {
             if (!isRecording) {
@@ -228,11 +235,11 @@ public class AudioRecorderPopUp {
         }
     }
     private void doSaveRecording() {
-        // Get the filename, but make sure it ends with .3gp
+        // Get the filename, but make sure it ends with .m4a the correct extension
         if (audioFilename != null && audioFilename.getText() != null) {
             String filename = audioFilename.getText().toString();
-            if (!filename.endsWith(".3gp")) {
-                filename = filename + ".3gp";
+            if (!filename.endsWith(fileExtension)) {
+                filename = filename + fileExtension;
             }
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Media", "", filename);
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,

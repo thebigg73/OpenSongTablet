@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:gravity="center"
-            android:text="@string/start"
+            android:text="@string/record"
             app:backgroundTint="@color/colorAltSecondary"
             app:icon="@drawable/record" />
 
@@ -66,7 +66,6 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/preview"
                         android:src="@drawable/play"
-                        android:text="@string/preview"
                         app:fabSize="mini"
                         app:backgroundTint="@color/colorAltSecondary" />
                 </FrameLayout>
@@ -83,7 +82,6 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/delete"
                         android:src="@drawable/delete"
-                        android:text="@string/preview"
                         app:fabSize="mini"
                         app:backgroundTint="@color/colorAltSecondary" />
                 </FrameLayout>
@@ -100,7 +98,6 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/save"
                         android:src="@drawable/save"
-                        android:text="@string/preview"
                         app:fabSize="mini"
                         app:backgroundTint="@color/colorAltSecondary" />
                 </FrameLayout>
