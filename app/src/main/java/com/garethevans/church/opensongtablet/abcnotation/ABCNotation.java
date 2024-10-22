@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.abcnotation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -151,7 +152,7 @@ public class ABCNotation {
         String newContent = songAbc;
         try {
             // Encode the abc text for passing to the webview
-            newContent = Uri.encode(songAbc,"UTF-8");
+            newContent = Uri.encode(songAbc,"UTF-8").replace("'","&apos;");
         } catch  (Exception e) {
             e.printStackTrace();
         }
@@ -167,6 +168,7 @@ public class ABCNotation {
                     mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2)+");");
         }
 
+        Log.d(TAG,"newContent:"+newContent);
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
         webView.loadUrl("javascript:setTranspose(" + songAbcTranspose + ");");
         webView.loadUrl("javascript:initEditor()");
