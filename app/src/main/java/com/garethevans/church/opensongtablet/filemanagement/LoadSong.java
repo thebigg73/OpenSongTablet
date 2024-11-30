@@ -400,12 +400,11 @@ public class LoadSong {
     }
 
     public Song readFileAsXML(Song thisSong, String where, Uri uri, String utf) {
-
         // Don't do this if we have an unrecognised song format
         // Check for the import pass go allowance
         if ((importingFile && thisSong.getFiletype().equals("XML")) || !mainActivityInterface.getStorageAccess().badFileExtension(thisSong.getFilename())) {
             // Extract all of the key bits of the song
-            if (mainActivityInterface.getStorageAccess().uriIsFile(uri)) {
+            if (mainActivityInterface.getStorageAccess().uriIsFile(uri) || mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("text", thisSong.getFilename())) {
                     // This is a text file, make sure it is identified as this
                     thisSong.setFiletype("TXT");

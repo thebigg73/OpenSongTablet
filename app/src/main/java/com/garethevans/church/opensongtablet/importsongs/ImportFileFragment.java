@@ -233,6 +233,7 @@ public class ImportFileFragment extends Fragment {
             boolean isWord = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx",mainActivityInterface.getImportFilename());
             boolean isJustChords = mainActivityInterface.getStorageAccess().isSpecificFileExtension("justchords",mainActivityInterface.getImportFilename());
             String content = "";
+
             if (isText || isChoPro || isOnSong || isJustChords) {
                 content = mainActivityInterface.getStorageAccess().readTextFileToString(mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri()));
                 newSong.setLyrics(content);
@@ -263,7 +264,6 @@ public class ImportFileFragment extends Fragment {
                     }
                     newSong = mainActivityInterface.getLoadSong().doLoadSongFile(newSong, false);
                     newSong.setFilename(newSong.getTitle());
-                    Log.d(TAG, "newSong.getLyrics():" + newSong.getLyrics());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -331,8 +331,6 @@ public class ImportFileFragment extends Fragment {
     }
 
     private void doImport() {
-        Log.d(TAG,"isSetFile:"+isSetFile);
-        Log.d(TAG,"mainActivityInterface.getImportUri():"+mainActivityInterface.getImportUri());
         if (isSetFile) {
             // Import the set if it doesn't already exist and filename isn't empty
             String folderprefix = "";
@@ -436,7 +434,6 @@ public class ImportFileFragment extends Fragment {
     }
 
     public void finishImportSet() {
-        Log.d(TAG,"finishImportSet");
         if (getActivity()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
                 showProgress(true);
@@ -450,12 +447,11 @@ public class ImportFileFragment extends Fragment {
 
                         // Copy the file
                         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
-                        Log.d(TAG, "copyFrom:" + mainActivityInterface.getImportUri() + "  copyTo:" + copyTo);
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
                         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " finishImportSet copyFile from " + mainActivityInterface.getImportUri() + " to Sets/" + newSetName);
-                        Log.d(TAG, "inputStream:" + inputStream + "  outputStream:" + outputStream);
+                        // Don't delete!
                         Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
                         ArrayList<Uri> thisSet = new ArrayList<>();
                         thisSet.add(copyTo);

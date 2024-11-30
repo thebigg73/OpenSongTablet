@@ -984,6 +984,7 @@ public class StorageAccess {
             try {
                 return df.isFile();
             } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
         }
