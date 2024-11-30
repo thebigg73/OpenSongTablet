@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/voiceLiveChannel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_channel_default"
+                android:value="1"
+                android:valueFrom="1"
+                android:valueTo="16"
+                app:adjustable="true"
+                app:stepSize="1" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/voiceLiveOverrideChannel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/voicelive_override_midi"
+                android:hint="@string/voicelive_override_midi_info" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/voiceLiveSendKey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/voicelive_autosend_key"
+                android:hint="@string/voicelive_autosend_key_info" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/voicelive_preferred_major_scale"/>
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/voiceLiveMajorHarmony"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textL="@string/voicelive_maj1"
+                app:textC="@string/voicelive_maj2"
+                app:textR="@string/voicelive_maj3"
+                android:layout_marginBottom="32dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/voicelive_preferred_minor_scale"/>
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/voiceLiveMinorHarmony"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textL="@string/voicelive_min1"
+                app:textC="@string/voicelive_min2"
+                app:textR="@string/voicelive_min3" />
+            <TableRow style="@style/DividerLine" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/preset_number"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/presetNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:valueFrom="1"
+                android:valueTo="500"
+                app:adjustable="true"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

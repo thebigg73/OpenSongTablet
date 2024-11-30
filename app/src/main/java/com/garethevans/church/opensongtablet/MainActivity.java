@@ -172,6 +172,7 @@ import com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.garethevans.church.opensongtablet.variations.Variations;
+import com.garethevans.church.opensongtablet.voicelive.VoiceLive;
 import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.material.button.MaterialButton;
@@ -277,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Transpose transpose;
     private Variations variations;
     private VersionNumber versionNumber;
+    private VoiceLive voiceLive;
     private WebDownload webDownload;
     private WebServer webServer;
 
@@ -792,6 +794,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         midi = getMidi();
         aeros = getAeros();
         beatBuddy = getBeatBuddy();
+        voiceLive = getVoiceLive();
         drummer = getDrummer();
         pedalActions = getPedalActions();
         pad = getPad();
@@ -2653,7 +2656,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Midi getMidi() {
         if (midi == null) {
-            midi = new Midi(this);
+            midi = new Midi(this,this);
         }
         return midi;
     }
@@ -2674,6 +2677,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return beatBuddy;
     }
 
+    @Override
+    public VoiceLive getVoiceLive() {
+        if (voiceLive==null) {
+            voiceLive = new VoiceLive(this);
+        }
+        return voiceLive;
+    }
     @Override
     public Drummer getDrummer() {
         if (drummer == null) {
@@ -2825,6 +2835,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 dealingWithIntent = deeplink_sets_backup_restore;
             } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".ost")) {
                 // OpenSong song
+                Log.d(TAG,"Getting here");
                 setWhattodo("intentlaunch");
                 dealingWithIntent = deeplink_import_file;
             } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osts")) {
@@ -4585,6 +4596,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        // If we had a bluetooth MIDI device, cancel the connection and unpair
+        if (midi!=null) {
+            midi.tryDisconnectBluetoothLE();
         }
 
         // Keep a reference to connections if needed as bundle

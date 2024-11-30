@@ -940,6 +940,9 @@
                 <action
                     android:id="@+id/action_utilitiesMenuFragment_to_databaseOptions2"
                     app:destination="@id/databaseOptions" />
+                <action
+                    android:id="@+id/action_utilitiesMenuFragment_to_VoiceLive"
+                    app:destination="@id/VoiceLive" />
             </fragment>
             <fragment
                 android:id="@+id/aerosCommands"
@@ -961,6 +964,15 @@
                 android:label="SoundLevelBottomSheet"
                 tools:layout="@layout/bottom_sheet_sound_level_meter"/>
 
+            <fragment
+                android:id="@+id/VoiceLive"
+                android:name="com.garethevans.church.opensongtablet.voicelive.VoiceLiveFragment"
+                android:label="VoiceLiveFragment"
+                tools:layout="@layout/settings_voicelive_options">
+                <deepLink
+                    android:id="@+id/deepLinkVoiceLive"
+                    app:uri="@string/deeplink_voicelive" />
+            </fragment>
             <navigation android:id="@+id/BeatBuddy"
                 app:startDestination="@id/BBOptionsFragment">
                 <fragment

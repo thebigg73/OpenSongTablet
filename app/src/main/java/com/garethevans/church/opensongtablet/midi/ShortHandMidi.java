@@ -33,6 +33,60 @@ public class ShortHandMidi {
     // START = Sysex start (MIDI channel is ignored)
     // STOP = Sysex stop (MIDI channel is ignored)
 
+    // Specialised VoiceLive commands
+    // VLGR = VoiceLive guitar rhythmic
+    // VLGRX = Voicelive guitar rhythmic off
+    // VLGD = VoiceLive guitar delay
+    // VLGDX = VoiceLive guitar delay off
+    // VLGC = VoiceLive guitar compressor
+    // VLGCX = VoiceLive guitar compressor off
+    // VLGM = VoiceLive guitar µMod
+    // VLGMX = VoiceLive guitar µMod off
+    // VLGO = VoiceLive guitar octave
+    // VLGOX = VoiceLive guitar octave off
+    // VLGA = VoiceLive guitar amp
+    // VLGAX = VoiceLive guitar amp off
+    // VLGW = VoiceLive guitar wah
+    // VLGWX = VoiceLive guitar wah off
+    // VLGB = VoiceLive guitar boost
+    // VLGBX = VoiceLive guitar boost off
+    // VLGHIT = VoiceLive guitar HIT
+    // VLGHITX = VoiceLive guitar HIT off
+    // VLGRV = VoiceLive guitar reverb
+    // VLGRVX = VoiceLive guitar reverb off
+
+    // VLVH = VoiceLive vocal harmony
+    // VLVHX = VoiceLive vocal harmony off
+    // VLVHVB = VoiceLive vocal harmony vibrato boost
+    // VLVHVBX = VoiceLive vocal harmony boost off
+    // VLVHK{A/A#/B/C/C#/D/D#/E/F/F#/G/G#} = VoiceLive vocal harmony key
+    // VLVHS{MAJ1/MAJ2/MAJ3/MIN1/MIN2/MIN3/CUST} = VoiceLive vocal harmony scale
+    // VLVV = VoiceLive vocal vocoder/synth
+    // VLVVX = VoiceLive vocal vocoder/synth off
+    // VLVR = VoiceLive vocal rhythmic
+    // VLVRX = VoiceLive vocal rhythmic off
+    // VLVHIT = VoiceLive vocal HIT
+    // VLVHITX = VoiceLive vocal HIT off
+    // VLVCH = VoiceLive vocal choir
+    // VLVCHX = VoiceLive vocal choir off
+    // VLVDB = VoiceLive vocal double
+    // VLVDBX = VoiceLive vocal double off
+    // VLVRV = VoiceLive vocal reverb
+    // VLVRVX = VoiceLive vocal reverb off
+    // VLVHT = VoiceLive vocal hard tune
+    // VLVHTX = VoiceLive vocal hard tune off
+    // VLVS{1-127} = VoiceLive vocal step {1-127}
+    // VLVM = VoiceLive vocal µMod
+    // VLVMX = VoiceLive vocal µMod off
+    // VLVD = VoiceLive vocal delay
+    // VLVDX = VoiceLive vocal delay off
+    // VLVT = VoiceLive vocal transducer
+    // VLVTX = VoiceLive vocal transducer off
+    // VLVHH = VoiceLive vocal harmonic hold
+    // VLVHHX = VoiceLive vocal harmonic hold off
+
+    // VLP{1-500} = VoiceLive preset 1-500
+
     // Examples
     // MIDI9:CC106:100      MIDI channel 9, controller change 106, value 100
     // MIDI1:PC100          MIDI channel 1, program change 100
@@ -96,6 +150,16 @@ public class ShortHandMidi {
                             commandPart1 = "0xB";
                             commandPart2 = "0x20";
                             commandPart3 = valueToHex(valueFromString(bit, "LSB"));
+
+                        } else if (bit.startsWith("VL")) {
+                            // We do this differently.  Set commandPart2 = "VoiceLive" so we know
+                            int channel = 1;
+                            if (!midiChannel.replaceAll("\\D","").isEmpty()) {
+                                channel = Integer.parseInt(midiChannel.replaceAll("\\D",""));
+                            }
+                            commandPart1 = mainActivityInterface.getVoiceLive().getMessageFromShortHand(channel,bit);
+                            commandPart2 = "VoiceLive";
+                            commandPart3 = "";
 
                         } else if (bit.contains("BBTX")) {
                             commandPart1 = "0xB";
@@ -247,7 +311,11 @@ public class ShortHandMidi {
 
                     // Now build the message back up (if ok)
                     StringBuilder newCommand = new StringBuilder();
-                    if (!midiChannel.isEmpty() && !commandPart1.isEmpty() &&
+                    if (!midiChannel.isEmpty() && !commandPart1.isEmpty() && commandPart2.equals("VoiceLive")) {
+                    // This is a VoiceLive message
+                    fixedLines.append(commandPart1).append("\n");
+
+                    } else if (!midiChannel.isEmpty() && !commandPart1.isEmpty() &&
                             (!commandPart2.isEmpty() || !commandPart3.isEmpty())) {
 
                         // Add on the MIDI channel to command 1 if not prebuilt
