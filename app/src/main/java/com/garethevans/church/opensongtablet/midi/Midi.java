@@ -1,5 +1,9 @@
 package com.garethevans.church.opensongtablet.midi;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.midi.MidiDevice;
@@ -9,6 +13,8 @@ import android.media.midi.MidiOutputPort;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.ParcelUuid;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -18,6 +24,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,6 +34,7 @@ import java.util.Locale;
 public class Midi {
 
     private final Context c;
+    private final Activity activity;
     private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
     private final ShortHandMidi shortHandMidi;
@@ -38,7 +46,9 @@ public class Midi {
     private final String sysexStopCode = "0xF0 0x7F 0xFC 0xF7";
 
     // Initialise
-    public Midi(Context c) {
+    public Midi(Activity activity,
+                Context c) {
+        this.activity = activity;
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         getUpdatedPreferences();
@@ -114,6 +124,8 @@ public class Midi {
 
     private ArrayList<String> songMidiMessages = new ArrayList<>();
     private MidiDevice midiDevice;
+    private BluetoothDevice bluetoothDevice;
+    private BluetoothManager bluetoothManager;
     private MidiManager midiManager;
     private MidiInputPort midiInputPort;
     private MidiOutputPort midiOutputPort;
@@ -124,6 +136,8 @@ public class Midi {
     private ArrayList<String> midiNotesOnArray, midiNotesOffArray;
     private final String allOff = "7F B0 7B 00 ";
     private long noteOnDelta, noteOffDelta;
+    private final String uuidBle = "03B80E5A-EDE8-4B33-A751-6CE34EC4C700";
+
 
     private final String midiFileHeader = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 ";
     //                                                                            80 = 128 ticks (hex)
@@ -160,6 +174,18 @@ public class Midi {
 
     public void setUsePianoNotes(boolean usePianoNotes) {
         this.usePianoNotes = usePianoNotes;
+    }
+
+    public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
+        this.bluetoothDevice = bluetoothDevice;
+    }
+
+    public BluetoothDevice getBluetoothDevice() {
+        return bluetoothDevice;
+    }
+
+    public String getUuidBle() {
+        return uuidBle;
     }
 
     public MidiDevice getMidiDevice() {
@@ -523,8 +549,6 @@ public class Midi {
                 midiInstrument = 105;
                 break;
         }
-        //String programChange = buildMidiString("PC", 0, midiInstrument, midiInstrument);
-        //mainActivityInterface.sendToMidiDriver(returnBytesFromHexText(programChange));
     }
 
     public String buildMidiString(String action, int channel, int byte2, int byte3) {
@@ -624,7 +648,25 @@ public class Midi {
                 e.printStackTrace();
             }
         }
+        tryDisconnectBluetoothLE();
     }
+
+    public void tryDisconnectBluetoothLE() {
+        // This unbonds so pairing is reinitialised next time
+        if (bluetoothDevice!=null) {
+            try {
+                Method m = bluetoothDevice.getClass()
+                        .getMethod("removeBond", (Class[]) null);
+                m.invoke(bluetoothDevice, (Object[]) null);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+            bluetoothDevice = null;
+        }
+
+    }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener() {
@@ -915,4 +957,42 @@ public class Midi {
         return sysexStopCode;
     }
 
+
+
+    public BluetoothManager getBluetoothManager() {
+        return bluetoothManager;
+    }
+
+    // Scan for already connected Bluetooth MIDI devices
+    public void setupBluetoothManager() {
+        bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
+        // If we haven't paired a device in the app, make sure suitable devices are unpaired now so we can discover them
+        if (bluetoothDevice == null) {
+            List<BluetoothDevice> connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+            for (BluetoothDevice device : connectedDevices) {
+                // If this is a MIDI BLE device, then use it!
+                ParcelUuid[] uuids = device.getUuids();
+                if (uuids != null) {
+                    for (ParcelUuid uuid : uuids) {
+                        if (uuid.toString().equalsIgnoreCase(uuidBle)) {
+                            // This is a MIDI device!
+                            if (midiDevice == null &&
+                                    device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                                // Already connected to device, but not set in the app
+                                // Unpair as the pairing needs to be initiated here
+                                bluetoothDevice = device;
+                                tryDisconnectBluetoothLE();
+
+                            }
+                            if (midiManager == null) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    setMidiManager((MidiManager) c.getSystemService(Context.MIDI_SERVICE));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
