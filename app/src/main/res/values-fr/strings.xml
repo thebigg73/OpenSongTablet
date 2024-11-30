@@ -572,6 +572,7 @@
     <string name="midi_burst">Mode rafale</string>
     <string name="midi_burst_info">Certains appareils s’appuient sur la réception rapide de plusieurs messages de contrôleur.  Lorsqu’elle est activée, toute commande MIDI générée sera annotée par * en tant que commande en rafale (c’est-à-dire envoyée plusieurs fois de suite)</string>
     <string name="midi_channel">"Canal"</string>
+    <string name="midi_channel_default">Lors de l\'envoi de messages automatiques au VoiceLive, le canal MIDI ci-dessous sera utilisé</string>
     <string name="midi_code_current">Code MIDI actuellement affecté à l’action</string>
     <string name="midi_code_new">Nouveau code MIDI</string>
     <string name="midi_commands">"Modifier les commandes de morceau"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Vidéo</string>
     <string name="visible">Visible</string>
     <string name="visual_metronome">"Métronome visuel"</string>
+    <string name="voicelive_autosend_key">Touche VoiceLive automatique</string>
+    <string name="voicelive_autosend_key_info">Envoyez automatiquement la clé de la chanson (si définie) au VoiceLive lors du chargement de la chanson.</string>
+    <string name="voicelive_info">Paramètres par défaut du système pour contrôler une pédale TC Helicon VoiceLive (par exemple VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Remplacer le canal MIDI abrégé</string>
+    <string name="voicelive_override_midi_info">Si des messages MIDI abrégés sont enregistrés avec le morceau et sont spécifiques au VoiceLive, le canal MIDI défini ici doit-il être utilisé par défaut (en ignorant le canal défini dans le message MIDI abrégé)</string>
+    <string name="voicelive_preferred_major_scale">Gamme d\'harmonie majeure préférée</string>
+    <string name="voicelive_preferred_minor_scale">Gamme d\'harmonie mineure préférée</string>
     <string name="volume">"Volume"</string>
     <string name="volume_headphone">Volume du casque</string>
     <string name="volume_value">"Valeur du volume actuel"</string>

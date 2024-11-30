@@ -572,6 +572,7 @@
     <string name="midi_burst">Stoßbetrieb</string>
     <string name="midi_burst_info">Einige Geräte sind darauf angewiesen, schnell mehrere Controller-Nachrichten zu empfangen.  Beim Einschalten wird jeder erzeugte MIDI-Befehl mit * als Burst-Befehl annotiert (d.h. mehrmals hintereinander gesendet)</string>
     <string name="midi_channel">"Kanal"</string>
+    <string name="midi_channel_default">Beim Senden automatischer Nachrichten an das VoiceLive wird der unten stehende MIDI-Kanal verwendet</string>
     <string name="midi_code_current">MIDI-Code, der derzeit der Aktion zugewiesen ist</string>
     <string name="midi_code_new">Neuer MIDI-Code</string>
     <string name="midi_commands">"Song-Befehle bearbeiten"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Sichtbar</string>
     <string name="visual_metronome">"Visuell"</string>
+    <string name="voicelive_autosend_key">Automatische VoiceLive-Taste</string>
+    <string name="voicelive_autosend_key_info">Senden Sie die Tonart des Songs (falls eingestellt) automatisch an das VoiceLive, wenn der Song geladen wird</string>
+    <string name="voicelive_info">Systemvorgaben zur Steuerung eines TC Helicon VoiceLive-Pedals (z. B. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Kurzschrift-MIDI-Kanal überschreiben</string>
+    <string name="voicelive_override_midi_info">Wenn Kurzschrift-MIDI-Nachrichten mit dem Song gespeichert werden, die speziell für das VoiceLive gelten, soll der hier eingestellte MIDI-Kanal standardmäßig verwendet werden (wobei der in der Kurzschrift-MIDI-Nachricht eingestellte Kanal ignoriert wird)?</string>
+    <string name="voicelive_preferred_major_scale">Bevorzugte Dur-Harmonie-Tonleiter</string>
+    <string name="voicelive_preferred_minor_scale">Bevorzugte Moll-Harmonie-Tonleiter</string>
     <string name="volume">"Lautstärke"</string>
     <string name="volume_headphone">Kopfhörer-Lautstärke</string>
     <string name="volume_value">"Aktuelle Lautstärke"</string>

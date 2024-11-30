@@ -572,6 +572,7 @@
     <string name="midi_burst">Sorozatfelvétel mód</string>
     <string name="midi_burst_info">Egyes eszközök több vezérlőüzenet gyors fogadására támaszkodnak.  Bekapcsoláskor minden létrehozott MIDI parancsot * jegyzetel burst parancsként (azaz többször egymás után elküldve)</string>
     <string name="midi_channel">"Csatorna"</string>
+    <string name="midi_channel_default">Amikor automatikus üzeneteket küld a VoiceLive-nek, az alábbi MIDI csatorna kerül felhasználásra</string>
     <string name="midi_code_current">A művelethez jelenleg hozzárendelt MIDI-kód</string>
     <string name="midi_code_new">Új MIDI-kód</string>
     <string name="midi_commands">"Zeneszerzőparancsok szerkesztése"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Videó</string>
     <string name="visible">Látható</string>
     <string name="visual_metronome">"Vizuális"</string>
+    <string name="voicelive_autosend_key">Automatikus VoiceLive gomb</string>
+    <string name="voicelive_autosend_key_info">A dal betöltésekor automatikusan küldje el a dal kulcsát (ha be van állítva) a VoiceLive-nek</string>
+    <string name="voicelive_info">A rendszer alapértelmezett beállításai a TC Helicon VoiceLive pedál vezérléséhez (pl. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Gyorsított MIDI-csatorna felülírása</string>
+    <string name="voicelive_override_midi_info">Ha a rövidített MIDI üzenetek a VoiceLive-ra jellemző dallal vannak mentve, akkor az itt beállított MIDI csatornát kell alapértelmezés szerint használni (figyelmen kívül hagyva a rövidített MIDI üzenetben beállított csatornát)</string>
+    <string name="voicelive_preferred_major_scale">Előnyben részesített dúr harmónia skála</string>
+    <string name="voicelive_preferred_minor_scale">Előnyben részesített moll harmónia skála</string>
     <string name="volume">"Hangerő"</string>
     <string name="volume_headphone">Fejhallgató hangereje</string>
     <string name="volume_value">"Aktuális hangerő értéke"</string>

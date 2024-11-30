@@ -572,6 +572,7 @@
     <string name="midi_burst">පිපිරුම් මාදිලිය</string>
     <string name="midi_burst_info">සමහර උපාංග ඉක්මනින් බහු පාලක පණිවිඩ ලැබීම මත රඳා පවතී.  ස්විචය ක්‍රියාත්මක කළ විට, ජනනය කරන ලද ඕනෑම MIDI විධානයක් * මගින් පිපිරුම් විධානයක් ලෙස සටහන් කරනු ලැබේ (එනම් පේළියකට කිහිප වතාවක් යවනු ලැබේ)</string>
     <string name="midi_channel">නාලිකාව</string>
+    <string name="midi_channel_default">VoiceLive වෙත ස්වයංක්‍රීය පණිවිඩ යැවීමේදී පහත MIDI නාලිකාව භාවිත වේ</string>
     <string name="midi_code_current">MIDI කේතය දැනට ක්‍රියාවට පවරා ඇත</string>
     <string name="midi_code_new">නව MIDI කේතය</string>
     <string name="midi_commands">ගීත විධාන සංස්කරණය කරන්න</string>
@@ -1030,6 +1031,13 @@
     <string name="video">වීඩියෝ</string>
     <string name="visible">දෘශ්‍යමානයි</string>
     <string name="visual_metronome">දෘශ්ය</string>
+    <string name="voicelive_autosend_key">ස්වයංක්‍රීය VoiceLive යතුර</string>
+    <string name="voicelive_autosend_key_info">ගීතය පූරණය වන විට ගීතයේ යතුර (සකසන්නේ නම්) VoiceLive වෙත ස්වයංක්‍රීයව යවන්න</string>
+    <string name="voicelive_info">TC Helicon VoiceLive පැඩලයක් පාලනය කිරීම සඳහා පද්ධති පෙරනිමි (උදා. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">කෙටිකතා MIDI නාලිකාව අභිබවා යන්න</string>
+    <string name="voicelive_override_midi_info">VoiceLive සඳහා විශේෂිත වූ ගීතය සමඟ කෙටි MIDI පණිවිඩ සුරැකෙන්නේ නම්, මෙහි සකසා ඇති MIDI නාලිකාව පෙරනිමියෙන් භාවිත කළ යුතුද (කෙටි MIDI පණිවිඩයේ ඇති නාලිකාව නොසලකා හරිමින්)</string>
+    <string name="voicelive_preferred_major_scale">කැමති ප්‍රධාන එකඟතා පරිමාණය</string>
+    <string name="voicelive_preferred_minor_scale">කැමති සුළු එකඟතා පරිමාණය</string>
     <string name="volume">පරිමාව</string>
     <string name="volume_headphone">හෙඩ්ෆෝන් පරිමාව</string>
     <string name="volume_value">වත්මන් පරිමාව අගය</string>

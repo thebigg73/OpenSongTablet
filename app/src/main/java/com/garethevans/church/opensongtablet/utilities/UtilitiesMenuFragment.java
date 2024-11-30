@@ -24,7 +24,7 @@ public class UtilitiesMenuFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsUtilitiesBinding myView;
     private String beatBuddy_string = "", utilities_string="", aeros_string="",
-            deeplink_database_utilities="";
+            deeplink_database_utilities="", voiceLive_string;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,6 +57,7 @@ public class UtilitiesMenuFragment extends Fragment {
             utilities_string = getString(R.string.utilities);
             beatBuddy_string = getString(R.string.deeplink_beatbuddy_options);
             aeros_string = getString(R.string.deeplink_aeros);
+            voiceLive_string = getString(R.string.deeplink_voicelive);
             deeplink_database_utilities = getString(R.string.deeplink_database_utilities);
         }
     }
@@ -72,6 +73,7 @@ public class UtilitiesMenuFragment extends Fragment {
         });
         myView.beatBuddy.setOnClickListener(v -> mainActivityInterface.navigateToFragment(beatBuddy_string,0));
         myView.aeros.setOnClickListener(v -> mainActivityInterface.navigateToFragment(aeros_string,0));
+        myView.voiceLive.setOnClickListener(v -> mainActivityInterface.navigateToFragment(voiceLive_string,0));
         myView.databaseOptions.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_database_utilities,0));
         myView.audioRecorder.setOnClickListener(v -> {
             // Show recorder popup window over the home page

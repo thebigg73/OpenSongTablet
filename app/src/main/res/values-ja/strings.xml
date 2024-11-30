@@ -572,6 +572,7 @@
     <string name="midi_burst">バーストモード</string>
     <string name="midi_burst_info">一部のデバイスは、複数のコントローラー メッセージをすばやく受信することに依存しています。 オンにすると、生成されたMIDIコマンドには、バーストコマンドとして*で注釈が付けられます(つまり、連続して数回送信されます)。</string>
     <string name="midi_channel">"チャネル"</string>
+    <string name="midi_channel_default">VoiceLive に自動メッセージを送信する場合、以下の MIDI チャンネルが使用されます。</string>
     <string name="midi_code_current">現在アクションに割り当てられているMIDIコード</string>
     <string name="midi_code_new">新しい MIDI コード</string>
     <string name="midi_commands">"曲の編集コマンド"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">ビデオ</string>
     <string name="visible">見える</string>
     <string name="visual_metronome">"ビジュアル"</string>
+    <string name="voicelive_autosend_key">自動 VoiceLive キー</string>
+    <string name="voicelive_autosend_key_info">曲のロード時に曲のキー (設定されている場合) を自動的に VoiceLive に送信します</string>
+    <string name="voicelive_info">TC Helicon VoiceLive ペダルを制御するためのシステムデフォルト (VoiceLive Extreme 3 など)</string>
+    <string name="voicelive_override_midi">短縮MIDIチャンネルをオーバーライドする</string>
+    <string name="voicelive_override_midi_info">VoiceLive に固有の曲とともに短縮 MIDI メッセージが保存されている場合、ここで設定された MIDI チャンネルがデフォルトで使用されるべきですか (短縮 MIDI メッセージに設定されているチャンネルは無視されます)</string>
+    <string name="voicelive_preferred_major_scale">推奨されるメジャーハーモニースケール</string>
+    <string name="voicelive_preferred_minor_scale">推奨されるマイナーハーモニースケール</string>
     <string name="volume">"ボリューム"</string>
     <string name="volume_headphone">ヘッドホンの音量</string>
     <string name="volume_value">"現在のボリューム値"</string>

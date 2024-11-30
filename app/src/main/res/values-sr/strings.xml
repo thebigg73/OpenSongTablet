@@ -572,6 +572,7 @@
     <string name="midi_burst">Režim pucanja</string>
     <string name="midi_burst_info">Neki uređaji se brzo oslanjaju na brzo primanje više poruka kontrolera.  Kada se uključi, svaka generisana MIDI komanda će biti komentarisana od strane * kao komanda za pucanje (i.e. poslata nekoliko puta zaredom)</string>
     <string name="midi_channel">MIDI Kanal</string>
+    <string name="midi_channel_default">Prilikom slanja automatskih poruka na VoiceLive će se koristiti MIDI kanal ispod</string>
     <string name="midi_code_current">MIDI kôd koji je trenutno dodeljen radnji</string>
     <string name="midi_code_new">Novi MIDI kôd</string>
     <string name="midi_commands">Uređivanje MIDI komandi</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Vidljivo</string>
     <string name="visual_metronome">Vidljiv</string>
+    <string name="voicelive_autosend_key">Automatski VoiceLive taster</string>
+    <string name="voicelive_autosend_key_info">Pošaljite ključ pesme (ako je podešen) na VoiceLive automatski kada se pesma učitava</string>
+    <string name="voicelive_info">Podrazumevane sistemske postavke za kontrolu TC Helicon VoiceLive pedale (npr. VoiceLive Ektreme 3)</string>
+    <string name="voicelive_override_midi">Premosti skraćenicu MIDI kanal</string>
+    <string name="voicelive_override_midi_info">Ako se skraćene MIDI poruke čuvaju sa pesmom koja je specifična za VoiceLive, da li bi se MIDI kanal podešen ovde koristio podrazumevano (ignorišući kanal podešen u skraćenoj MIDI poruci)</string>
+    <string name="voicelive_preferred_major_scale">Poželjna glavna skala harmonije</string>
+    <string name="voicelive_preferred_minor_scale">Poželjna mala harmonijska skala</string>
     <string name="volume">Jačina</string>
     <string name="volume_headphone">Jačina zvuka slušalica</string>
     <string name="volume_value">Trenutna jačina zvuka</string>

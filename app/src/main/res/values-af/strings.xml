@@ -572,6 +572,7 @@
     <string name="midi_burst">Burst-modus</string>
     <string name="midi_burst_info">Sommige toestelle maak staat op die ontvangs van verskeie beheerderboodskappe vinnig.  As dit aangeskakel is, sal enige MIDI-opdrag wat gegenereer word, deur * as \'n barsopdrag geannoteer word (d.w.s. verskeie kere agtereenvolgens gestuur)</string>
     <string name="midi_channel">Kanaal</string>
+    <string name="midi_channel_default">Wanneer outomatiese boodskappe na die VoiceLive gestuur word, sal die MIDI-kanaal hieronder gebruik word</string>
     <string name="midi_code_current">MIDI-kode wat tans aan aksie toegewys is</string>
     <string name="midi_code_new">Nuwe MIDI-kode</string>
     <string name="midi_commands">"Wys liedjies opdragte"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Sigbaar</string>
     <string name="visual_metronome">"Visueel"</string>
+    <string name="voicelive_autosend_key">Outomatiese VoiceLive-sleutel</string>
+    <string name="voicelive_autosend_key_info">Stuur die sleutel van die liedjie (indien gestel) outomaties na die VoiceLive wanneer die liedjie laai</string>
+    <string name="voicelive_info">Stelsel verstekke vir die beheer van \'n TC Helicon VoiceLive-pedaal (bv. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Ignoreer snelskrif MIDI-kanaal</string>
+    <string name="voicelive_override_midi_info">Indien snelskrif MIDI-boodskappe gestoor word saam met die liedjie wat spesifiek vir die VoiceLive is, moet die MIDI-kanaal wat hier gestel is by verstek gebruik word (ignoreer die kanaal wat in die snelskrif MIDI-boodskap gestel is)</string>
+    <string name="voicelive_preferred_major_scale">Verkies majeur harmonie toonleer</string>
+    <string name="voicelive_preferred_minor_scale">Voorkeur mineur harmonie toonleer</string>
     <string name="volume">"Deel"</string>
     <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"Huidige volume-waarde"</string>

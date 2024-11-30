@@ -572,6 +572,7 @@
     <string name="midi_burst">Λειτουργία ριπής</string>
     <string name="midi_burst_info">Ορισμένες συσκευές βασίζονται στη γρήγορη λήψη πολλών μηνυμάτων ελεγκτή.  Όταν είναι ενεργοποιημένη, οποιαδήποτε εντολή MIDI δημιουργείται θα σχολιάζεται με * ως εντολή ριπής (δηλ. θα αποστέλλεται αρκετές φορές στη σειρά)</string>
     <string name="midi_channel">"Κανάλι"</string>
+    <string name="midi_channel_default">Κατά την αποστολή αυτόματων μηνυμάτων στο VoiceLive θα χρησιμοποιηθεί το παρακάτω κανάλι MIDI</string>
     <string name="midi_code_current">Κωδικός MIDI που έχει εκχωρηθεί αυτήν τη στιγμή στην ενέργεια</string>
     <string name="midi_code_new">Νέος κωδικός MIDI</string>
     <string name="midi_commands">"Επεξεργασία εντολών τραγουδιού"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">βίντεο</string>
     <string name="visible">Ορατός</string>
     <string name="visual_metronome">"Visual"</string>
+    <string name="voicelive_autosend_key">Αυτόματο πλήκτρο VoiceLive</string>
+    <string name="voicelive_autosend_key_info">Στείλτε αυτόματα το πλήκτρο του τραγουδιού (αν έχει οριστεί) στο VoiceLive όταν φορτώσει το τραγούδι</string>
+    <string name="voicelive_info">Το σύστημα είναι προεπιλεγμένες για τον έλεγχο ενός πεντάλ TC Helicon VoiceLive (π.χ. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Παράκαμψη συντομογραφικού καναλιού MIDI</string>
+    <string name="voicelive_override_midi_info">Εάν τα συντομογραφικά μηνύματα MIDI αποθηκεύονται με το τραγούδι που είναι ειδικά για το VoiceLive, εάν το κανάλι MIDI που έχει οριστεί εδώ χρησιμοποιείται από προεπιλογή (αγνοώντας το σύνολο καναλιών στο σύντομο μήνυμα MIDI)</string>
+    <string name="voicelive_preferred_major_scale">Προτιμώμενη μείζονα κλίμακα αρμονίας</string>
+    <string name="voicelive_preferred_minor_scale">Προτιμώμενη μικρή κλίμακα αρμονίας</string>
     <string name="volume">"Volume"</string>
     <string name="volume_headphone">Ένταση ακουστικών</string>
     <string name="volume_value">"Current volume value"</string>

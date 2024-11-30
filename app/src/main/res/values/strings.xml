@@ -384,6 +384,7 @@
     <string name="deeplink_swipe" translatable="false">https://www.opensongapp.com/?p=settings/controls/swipe</string>
     <string name="deeplink_tags" translatable="false">https://www.opensongapp.com/?p=settings/actions/tags</string>
     <string name="deeplink_theme" translatable="false">https://www.opensongapp.com/?p=settings/display/theme</string>
+    <string name="deeplink_voicelive" translatable="false">https://www.opensongapp.com/?p=settings/utilities/voicelive</string>
     <string name="default_autoscroll">Default autoscroll times</string>
     <string name="default_presentation_text">Include default presentation text</string>
     <string name="delete">Delete</string>
@@ -729,6 +730,7 @@
     <string name="midi_burst">Burst mode</string>
     <string name="midi_burst_info">Some devices rely on receiving multiple controller messages quickly.  When switched on, any MIDI command generated will be annotated by * as a burst command (i.e. sent several times in a row)</string>
     <string name="midi_channel">Channel</string>
+    <string name="midi_channel_default">When sending automatic messages to the VoiceLive the MIDI channel below will be used</string>
     <string name="midi_code_current">MIDI code currently assigned to action</string>
     <string name="midi_code_new">New MIDI code</string>
     <string name="midi_commands">Edit song commands</string>
@@ -1291,6 +1293,20 @@
     <string name="video">Video</string>
     <string name="visible">Visible</string>
     <string name="visual_metronome">Visual</string>
+    <string name="voicelive" translatable="false">TC Helicon VoiceLive</string>
+    <string name="voicelive_autosend_key">Automatic VoiceLive key</string>
+    <string name="voicelive_autosend_key_info">Send the key of the song (if set) to the VoiceLive automatically when the song loads</string>
+    <string name="voicelive_info">System defaults for controlling a TC Helicon VoiceLive pedal (e.g. VoiceLive Extreme 3)</string>
+    <string name="voicelive_maj1" translatable="false">MAJ1</string>
+    <string name="voicelive_maj2" translatable="false">MAJ2</string>
+    <string name="voicelive_maj3" translatable="false">MAJ3</string>
+    <string name="voicelive_min1" translatable="false">MIN1</string>
+    <string name="voicelive_min2" translatable="false">MIN2</string>
+    <string name="voicelive_min3" translatable="false">MIN3</string>
+    <string name="voicelive_override_midi">Override shorthand MIDI channel</string>
+    <string name="voicelive_override_midi_info">If shorthand MIDI messages are saved with the song that are specific to the VoiceLive, should the MIDI channel set here be used by default (ignoring the channel set in the shorthand MIDI message)</string>
+    <string name="voicelive_preferred_major_scale">Preferred major harmony scale</string>
+    <string name="voicelive_preferred_minor_scale">Preferred minor harmony scale</string>
     <string name="volume">Volume</string>
     <string name="volume_headphone">Headphone volume</string>
     <string name="volume_value">Current volume value</string>
@@ -1397,6 +1413,7 @@
     <string name="website_tags" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/tags</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_tuner" translatable="false">https://www.opensongapp.com/user-manual/utilities/tuner</string>
+    <string name="website_voicelive" translatable="false">https://www.opensongapp.com/user-manual/utilities/voicelive</string>
     <string name="website_web_server" translatable="false">https://www.opensongapp.com/user-manual/web-server</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="width">Width</string>
@@ -1405,4 +1422,5 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="preset_number">Preset number</string>
 </resources>

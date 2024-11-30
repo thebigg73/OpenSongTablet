@@ -572,6 +572,7 @@
     <string name="midi_burst">Burst-läge</string>
     <string name="midi_burst_info">Vissa enheter är beroende av att ta emot flera kontrollmeddelanden snabbt.  När den är påslagen kommer alla MIDI-kommandon som genereras att kommenteras av * som ett burst-kommando (dvs. skickas flera gånger i rad)</string>
     <string name="midi_channel">Kanalisera</string>
+    <string name="midi_channel_default">När du skickar automatiska meddelanden till VoiceLive kommer MIDI-kanalen nedan att användas</string>
     <string name="midi_code_current">MIDI-kod som för närvarande är tilldelad till åtgärd</string>
     <string name="midi_code_new">Ny MIDI-kod</string>
     <string name="midi_commands">"Redigera låtkommandon"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Synlig</string>
     <string name="visual_metronome">"Visuell"</string>
+    <string name="voicelive_autosend_key">Automatisk VoiceLive-knapp</string>
+    <string name="voicelive_autosend_key_info">Skicka nyckeln till låten (om inställd) till VoiceLive automatiskt när låten laddas</string>
+    <string name="voicelive_info">Systemstandard för styrning av en TC Helicon VoiceLive-pedal (t.ex. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Åsidosätt stenografi MIDI-kanal</string>
+    <string name="voicelive_override_midi_info">Om förkortade MIDI-meddelanden sparas med låten som är specifik för VoiceLive, ska MIDI-kanalen som ställts in här användas som standard (om man ignorerar kanalen som är inställd i MIDI-stenografin)</string>
+    <string name="voicelive_preferred_major_scale">Föredragen dur harmoniskala</string>
+    <string name="voicelive_preferred_minor_scale">Föredragen moll harmoniskala</string>
     <string name="volume">"Volym"</string>
     <string name="volume_headphone">Hörlursvolym</string>
     <string name="volume_value">"Aktuellt volymvärde"</string>

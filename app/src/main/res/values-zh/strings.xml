@@ -572,6 +572,7 @@
     <string name="midi_burst">突发模式</string>
     <string name="midi_burst_info">某些设备依赖于快速接收多个控制器消息。 打开时，生成的任何 MIDI 命令都将由 * 注释为突发命令（即连续发送几次）</string>
     <string name="midi_channel">"渠道"</string>
+    <string name="midi_channel_default">当向 VoiceLive 发送自动消息时，将使用下面的 MIDI 通道</string>
     <string name="midi_code_current">当前分配给动作的 MIDI 代码</string>
     <string name="midi_code_new">新的 MIDI 代码</string>
     <string name="midi_commands">"编辑歌曲命令"</string>
@@ -1030,6 +1031,14 @@
     <string name="video">视频</string>
     <string name="visible">可见的</string>
     <string name="visual_metronome">"视觉"</string>
+    <string name="voicelive">TC Helicon VoiceLive</string>
+    <string name="voicelive_autosend_key">自动 VoiceLive 键</string>
+    <string name="voicelive_autosend_key_info">歌曲加载时自动将歌曲的调（如果设置）发送到 VoiceLive</string>
+    <string name="voicelive_info">用于控制 TC Helicon VoiceLive 踏板的系统默认设置（例如 VoiceLive Extreme 3）</string>
+    <string name="voicelive_override_midi">覆盖速记 MIDI 通道</string>
+    <string name="voicelive_override_midi_info">如果速记 MIDI 消息与特定于 VoiceLive 的歌曲一起保存，是否默认使用此处设置的 MIDI 通道（忽略速记 MIDI 消息中设置的通道）</string>
+    <string name="voicelive_preferred_major_scale">首选大调和声音阶</string>
+    <string name="voicelive_preferred_minor_scale">首选小调和声音阶</string>
     <string name="volume">"音量"</string>
     <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"当前音量值"</string>

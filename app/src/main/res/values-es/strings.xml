@@ -572,6 +572,7 @@
     <string name="midi_burst">Modo ráfaga</string>
     <string name="midi_burst_info">Algunos dispositivos dependen de recibir mensajes de múltiples controladores rápidamente.  Cuando se enciende, cualquier comando MIDI generado será anotado por * como un comando de ráfaga (es decir, enviado varias veces seguidas)</string>
     <string name="midi_channel">"Canal"</string>
+    <string name="midi_channel_default">Al enviar mensajes automáticos al VoiceLive, se utilizará el canal MIDI siguiente.</string>
     <string name="midi_code_current">Código MIDI actualmente asignado a la acción</string>
     <string name="midi_code_new">Nuevo código MIDI</string>
     <string name="midi_commands">"Editar comandos de canciones"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Visible</string>
     <string name="visual_metronome">"Visual"</string>
+    <string name="voicelive_autosend_key">Tecla VoiceLive automática</string>
+    <string name="voicelive_autosend_key_info">Envía la clave de la canción (si está configurada) al VoiceLive automáticamente cuando se carga la canción.</string>
+    <string name="voicelive_info">Valores predeterminados del sistema para controlar un pedal TC Helicon VoiceLive (por ejemplo, VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Anular el canal MIDI abreviado</string>
+    <string name="voicelive_override_midi_info">Si se guardan mensajes MIDI abreviados con la canción que son específicos del VoiceLive, ¿se debe usar el canal MIDI configurado aquí de manera predeterminada (ignorando el canal configurado en el mensaje MIDI abreviado)?</string>
+    <string name="voicelive_preferred_major_scale">Escala de armonía mayor preferida</string>
+    <string name="voicelive_preferred_minor_scale">Escala de armonía menor preferida</string>
     <string name="volume">"Volumen"</string>
     <string name="volume_headphone">Volumen de los auriculares</string>
     <string name="volume_value">"Valor del volumen actual"</string>

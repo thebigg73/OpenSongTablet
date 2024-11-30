@@ -572,6 +572,7 @@
     <string name="midi_burst">Серийный режим</string>
     <string name="midi_burst_info">Некоторые устройства полагаются на быстрое получение сообщений нескольких контроллеров.  При включении любая сгенерированная MIDI-команда будет помечена * как пакетная команда (т.е. отправлена несколько раз подряд)</string>
     <string name="midi_channel">Kанал</string>
+    <string name="midi_channel_default">При отправке автоматических сообщений на VoiceLive будет использоваться указанный ниже MIDI-канал.</string>
     <string name="midi_code_current">MIDI-код, назначенный в настоящее время действию</string>
     <string name="midi_code_new">Новый MIDI-код</string>
     <string name="midi_commands">Редактирование команд для песни</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Видео</string>
     <string name="visible">Отобразить</string>
     <string name="visual_metronome">Визуальный метроном</string>
+    <string name="voicelive_autosend_key">Автоматическая клавиша VoiceLive</string>
+    <string name="voicelive_autosend_key_info">Автоматически отправлять ключ песни (если установлен) в VoiceLive при загрузке песни.</string>
+    <string name="voicelive_info">Системные настройки по умолчанию для управления педалью TC Helicon VoiceLive (например, VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Переопределить сокращенный MIDI-канал</string>
+    <string name="voicelive_override_midi_info">Если сокращенные MIDI-сообщения сохраняются вместе с песней, специфичной для VoiceLive, следует ли использовать установленный здесь MIDI-канал по умолчанию (игнорируя канал, установленный в сокращенном MIDI-сообщении)</string>
+    <string name="voicelive_preferred_major_scale">Предпочтительная мажорная гамма гармонии</string>
+    <string name="voicelive_preferred_minor_scale">Предпочтительная минорная гамма гармонии</string>
     <string name="volume">Громкость</string>
     <string name="volume_headphone">Громкость наушников</string>
     <string name="volume_value">Громкость</string>

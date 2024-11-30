@@ -572,6 +572,7 @@
     <string name="midi_burst">Modalità burst</string>
     <string name="midi_burst_info">Alcuni dispositivi si basano sulla ricezione rapida di più messaggi del controller.  Quando è acceso, qualsiasi comando MIDI generato verrà annotato da * come comando burst (cioè inviato più volte di seguito)</string>
     <string name="midi_channel">"Canale"</string>
+    <string name="midi_channel_default">Quando si inviano messaggi automatici a VoiceLive verrà utilizzato il canale MIDI riportato di seguito</string>
     <string name="midi_code_current">Codice MIDI attualmente assegnato all\'azione</string>
     <string name="midi_code_new">Nuovo codice MIDI</string>
     <string name="midi_commands">"Modifica i comandi del brano"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Visibile</string>
     <string name="visual_metronome">"Visivo"</string>
+    <string name="voicelive_autosend_key">Tasto VoiceLive automatico</string>
+    <string name="voicelive_autosend_key_info">Invia automaticamente la tonalità della canzone (se impostata) a VoiceLive quando la canzone viene caricata</string>
+    <string name="voicelive_info">Impostazioni predefinite del sistema per il controllo di un pedale TC Helicon VoiceLive (ad esempio VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Ignora il canale MIDI abbreviato</string>
+    <string name="voicelive_override_midi_info">Se con la canzone vengono salvati messaggi MIDI abbreviati specifici di VoiceLive, il canale MIDI impostato qui deve essere utilizzato per impostazione predefinita (ignorando il canale impostato nel messaggio MIDI abbreviato)</string>
+    <string name="voicelive_preferred_major_scale">Scala armonica maggiore preferita</string>
+    <string name="voicelive_preferred_minor_scale">Scala armonica minore preferita</string>
     <string name="volume">"Volume"</string>
     <string name="volume_headphone">Volume delle cuffie</string>
     <string name="volume_value">"Valore di volume corrente"</string>

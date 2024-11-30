@@ -572,6 +572,7 @@
     <string name="midi_burst">Režim shlukování</string>
     <string name="midi_burst_info">Některá zařízení spoléhají na rychlý příjem více zpráv ovladače.  Při zapnutí bude jakýkoliv vygenerovaný MIDI příkaz anotován * jako burst příkaz (tj. odeslán několikrát za sebou)</string>
     <string name="midi_channel">"Kanál"</string>
+    <string name="midi_channel_default">Při odesílání automatických zpráv do VoiceLive bude použit níže uvedený MIDI kanál</string>
     <string name="midi_code_current">MIDI kód aktuálně přiřazený k akci</string>
     <string name="midi_code_new">Nový MIDI kód</string>
     <string name="midi_commands">"Upravit příkazy ke skladbě"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Video</string>
     <string name="visible">Viditelné</string>
     <string name="visual_metronome">"Vizuální"</string>
+    <string name="voicelive_autosend_key">Automatická klávesa VoiceLive</string>
+    <string name="voicelive_autosend_key_info">Odešlete klíč skladby (pokud je nastaven) do VoiceLive automaticky, když se skladba načte</string>
+    <string name="voicelive_info">Výchozí nastavení systému pro ovládání pedálu TC Helicon VoiceLive (např. VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Přepsat zkrácený MIDI kanál</string>
+    <string name="voicelive_override_midi_info">Pokud jsou zkrácené MIDI zprávy uloženy se skladbou, která je specifická pro VoiceLive, měl by být zde nastavený MIDI kanál použit jako výchozí (ignoruje se kanál nastavený ve zkrácené MIDI zprávě)</string>
+    <string name="voicelive_preferred_major_scale">Preferovaná stupnice durové harmonie</string>
+    <string name="voicelive_preferred_minor_scale">Preferovaná stupnice mollové harmonie</string>
     <string name="volume">"Hlasitost"</string>
     <string name="volume_headphone">Hlasitost sluchátek</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>

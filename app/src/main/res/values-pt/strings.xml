@@ -572,6 +572,7 @@
     <string name="midi_burst">Modo de intermitência</string>
     <string name="midi_burst_info">Alguns dispositivos dependem de receber várias mensagens do controlador rapidamente.  Quando ligado, qualquer comando MIDI gerado será anotado por * como um comando burst (ou seja, enviado várias vezes seguidas)</string>
     <string name="midi_channel">"Canal"</string>
+    <string name="midi_channel_default">Ao enviar mensagens automáticas para o VoiceLive será utilizado o canal MIDI abaixo</string>
     <string name="midi_code_current">Código MIDI atualmente atribuído à ação</string>
     <string name="midi_code_new">Novo código MIDI</string>
     <string name="midi_commands">"Editar comandos de música"</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Vídeo</string>
     <string name="visible">Visível</string>
     <string name="visual_metronome">"Visual"</string>
+    <string name="voicelive_autosend_key">Chave VoiceLive automática</string>
+    <string name="voicelive_autosend_key_info">Envie o tom da música (se definido) para o VoiceLive automaticamente quando a música for carregada</string>
+    <string name="voicelive_info">Padrões do sistema para controlar um pedal TC Helicon VoiceLive (por exemplo, VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Substituir canal MIDI abreviado</string>
+    <string name="voicelive_override_midi_info">Se mensagens MIDI abreviadas forem salvas com a música específica do VoiceLive, o canal MIDI definido aqui deve ser usado por padrão (ignorando o canal definido na mensagem MIDI abreviada)</string>
+    <string name="voicelive_preferred_major_scale">Escala de harmonia maior preferida</string>
+    <string name="voicelive_preferred_minor_scale">Escala de harmonia menor preferida</string>
     <string name="volume">"Volume"</string>
     <string name="volume_headphone">Volume dos auscultadores</string>
     <string name="volume_value">"Valor corrente do volume"</string>

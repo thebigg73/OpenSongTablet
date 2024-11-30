@@ -572,6 +572,7 @@
     <string name="midi_burst">Серійна зйомка</string>
     <string name="midi_burst_info">Деякі пристрої покладаються на швидке отримання декількох повідомлень контролера.  При включенні будь-яка згенерована команда MIDI буде анотована * як серійна команда (тобто відправлена кілька разів поспіль)</string>
     <string name="midi_channel">Kанал</string>
+    <string name="midi_channel_default">Під час надсилання автоматичних повідомлень до VoiceLive використовуватиметься вказаний нижче канал MIDI</string>
     <string name="midi_code_current">MIDI-код в даний час призначається дії</string>
     <string name="midi_code_new">Новий MIDI-код</string>
     <string name="midi_commands">Редагування команд пісні</string>
@@ -1030,6 +1031,13 @@
     <string name="video">Відео</string>
     <string name="visible">Видно</string>
     <string name="visual_metronome">Візуальний метроном</string>
+    <string name="voicelive_autosend_key">Автоматичний ключ VoiceLive</string>
+    <string name="voicelive_autosend_key_info">Автоматично надсилайте ключ пісні (якщо встановлено) до VoiceLive, коли пісня завантажується</string>
+    <string name="voicelive_info">Системні параметри за замовчуванням для керування педаллю TC Helicon VoiceLive (наприклад, VoiceLive Extreme 3)</string>
+    <string name="voicelive_override_midi">Перевизначити скорочений канал MIDI</string>
+    <string name="voicelive_override_midi_info">Якщо з піснею зберігаються скорочені MIDI-повідомлення, які є специфічними для VoiceLive, чи потрібно використовувати встановлений тут MIDI-канал за замовчуванням (ігноруючи канал, встановлений у скороченому MIDI-повідомленні)</string>
+    <string name="voicelive_preferred_major_scale">Бажана мажорна гама гармонії</string>
+    <string name="voicelive_preferred_minor_scale">Бажана мінорна гама гармонії</string>
     <string name="volume">Гучність</string>
     <string name="volume_headphone">Гучність навушників</string>
     <string name="volume_value">Поточне значення гучності</string>
