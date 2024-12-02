@@ -48,9 +48,21 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             string_beatbuddy_outro, string_beatbuddy_pause, string_beatbuddy_accent, string_velocity,
             string_beatbuddy_fill, string_volume, string_note, string_value, command, midiCode,
             string_sysex_start, string_sysex_stop;
+    private String guitar_rhythmic_string, guitar_compressor_string, guitar_modulation_string,
+            guitar_octaver_string, guitar_amp_string, guitar_wah_string, guitar_boost_string,
+            guitar_reverb_string, guitar_delay_string, guitar_hit_string,
+            vocal_rhythmic_string, vocal_harmony_string, scale_string,
+            key_string, vocal_harmony_key_string, vocal_harmony_scale_string,
+            vocal_harmony_boost_string, vocal_harmony_hold_string,
+            vocal_vocoder_synth_string, vocal_choir_string, vocal_double_string,
+            vocal_hard_tune_string, vocal_modulation_string, vocal_transducer_string,
+            vocal_reverb_string, vocal_delay_string, vocal_hit_string,
+            step_string, notes_off_string, preset_string, off_string, on_string;
+
     @SuppressWarnings("FieldCanBeLocal")
     private ArrayList<String> midiChannel, midiCommand, midiCommandDescription, midiValue0_100,
-            midiValue0_127, midiValue1_127, midiValue1_128, midiValue40_300, midiNotes;
+            midiValue0_127, midiValue1_127, midiValue1_128, midiValue40_300, midiNotes,
+            midiValue1_32, midiValue1_500, midiValueOff_On, midiValueKeys, midiValueScales;
     private boolean usingVal1=false, usingVal2=false, usingSysEx=false;
     // Calling fragment/dialogfragment
     private final BottomSheetDialogFragment bottomSheetDialogFragment;
@@ -188,6 +200,51 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             string_beatbuddy_accent = beatBuddy + " " + c.getString(R.string.accent);
             string_sysex_start = getString(R.string.midi_sysex) + " " + getString(R.string.start);
             string_sysex_stop = getString(R.string.midi_sysex) + " " + getString(R.string.stop);
+
+            // VoiceLive generic strings
+            String voicelive_string = getString(R.string.voicelive);
+            String guitar_string = "(" + getString(R.string.guitar) + ")";
+            String vocal_string = "(" + getString(R.string.vocal) + ")";
+            String harmony_string = getString(R.string.harmony);
+            String hit_string = getString(R.string.hit);
+            key_string = getString(R.string.key);
+            scale_string = getString(R.string.scale);
+            preset_string = voicelive_string + " " + getString(R.string.preset);
+            off_string = getString(R.string.off);
+            on_string = getString(R.string.on);
+
+            // Guitar effect strings
+            guitar_rhythmic_string = voicelive_string + " " + guitar_string + " " + getString(R.string.rhythmic);
+            guitar_compressor_string = voicelive_string + " " + guitar_string + " " + getString(R.string.compressor);
+            guitar_modulation_string = voicelive_string + " " + guitar_string + " " + getString(R.string.modulation);
+            guitar_octaver_string = voicelive_string + " " + guitar_string + " " + getString(R.string.octaver);
+            guitar_amp_string = voicelive_string + " " + guitar_string + " " + getString(R.string.amp);
+            guitar_wah_string = voicelive_string + " " + guitar_string + " " + getString(R.string.wah);
+            guitar_boost_string = voicelive_string + " " + guitar_string + " " + getString(R.string.boost);
+            guitar_reverb_string = voicelive_string + " " + guitar_string + " " + getString(R.string.reverb);
+            guitar_delay_string = voicelive_string + " " + guitar_string + " " + getString(R.string.delay);
+            guitar_hit_string = voicelive_string + " " + guitar_string + " " + hit_string;
+
+            // Vocal effect combined strings
+            vocal_rhythmic_string = voicelive_string + " " + vocal_string + " " + getString(R.string.rhythmic);
+            vocal_harmony_string = voicelive_string + " " + vocal_string + " " + getString(R.string.harmony);
+            vocal_harmony_key_string = voicelive_string + " " + vocal_string + " " + harmony_string + " " + key_string;
+            vocal_harmony_scale_string = voicelive_string + " " + vocal_string + " " + harmony_string + " " + getString(R.string.scale);
+            vocal_harmony_boost_string = voicelive_string + " " + vocal_string + " " + getString(R.string.harmony_vibrato_boost);
+            vocal_harmony_hold_string = voicelive_string + " " + vocal_string + " " + getString(R.string.harmony_hold);
+            vocal_vocoder_synth_string = voicelive_string + " " + vocal_string + " " + getString(R.string.vocoder_synth);
+            vocal_choir_string = voicelive_string + " " + vocal_string + " " + getString(R.string.choir);
+            vocal_double_string = voicelive_string + " " + vocal_string + " " + getString(R.string.double_string);
+            vocal_hard_tune_string = voicelive_string + " " + vocal_string + " " + getString(R.string.hard_tune);
+            vocal_modulation_string = voicelive_string + " " + vocal_string + " " + getString(R.string.modulation);
+            vocal_transducer_string = voicelive_string + " " + vocal_string + " " + getString(R.string.transducer);
+            vocal_reverb_string = voicelive_string + " " + vocal_string + " " + getString(R.string.reverb);
+            vocal_delay_string = voicelive_string + " " + vocal_string + " " + getString(R.string.delay);
+            vocal_hit_string = voicelive_string + " " + vocal_string + " " + hit_string;
+
+            // Other voicelive settings
+            step_string = voicelive_string + " " + getString(R.string.step);
+            notes_off_string = voicelive_string + " " + getString(R.string.panic_stop);
         }
     }
 
@@ -200,13 +257,22 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         midiValue0_127 = new ArrayList<>();
         midiValue1_127 = new ArrayList<>();
         midiValue1_128 = new ArrayList<>();
+        midiValue1_32 = new ArrayList<>();
+        midiValue1_500 = new ArrayList<>();
+        midiValueOff_On = new ArrayList<>();
+        midiValueKeys = new ArrayList<>();
+        midiValueScales = new ArrayList<>();
         midiValue40_300 = new ArrayList<>();
         midiNotes = new ArrayList<>(mainActivityInterface.getMidi().notes);
 
-        for (int x=0; x<=300; x++) {
+        for (int x=0; x<=500; x++) {
             if (x>=1 && x<=16) {
                 // MIDI channels 1-6
                 midiChannel.add(String.valueOf(x));
+            }
+            if (x>=1 && x<=32) {
+                // Values between 1-32
+                midiValue1_32.add(String.valueOf(x));
             }
             if (x<=127) {
                 // Values between 0-127
@@ -224,11 +290,43 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                 // Values between 0-100
                 midiValue0_100.add(String.valueOf(x));
             }
-            if (x>=40) {
+            if (x>=40 && x<=300) {
                 // Values between 40-300
                 midiValue40_300.add(String.valueOf(x));
             }
+            if (x>=1) {
+                midiValue1_500.add(String.valueOf(x));
+            }
         }
+        midiValueOff_On.add(off_string);
+        midiValueOff_On.add(on_string);
+
+        midiValueKeys.add("A");
+        midiValueKeys.add("A#");
+        midiValueKeys.add("Bb");
+        midiValueKeys.add("B");
+        midiValueKeys.add("C");
+        midiValueKeys.add("C#");
+        midiValueKeys.add("Db");
+        midiValueKeys.add("D");
+        midiValueKeys.add("D#");
+        midiValueKeys.add("Eb");
+        midiValueKeys.add("E");
+        midiValueKeys.add("F");
+        midiValueKeys.add("F#");
+        midiValueKeys.add("Gb");
+        midiValueKeys.add("G");
+        midiValueKeys.add("G#");
+        midiValueKeys.add("Ab");
+
+        midiValueScales.add("MAJ1");
+        midiValueScales.add("MAJ2");
+        midiValueScales.add("MAJ3");
+        midiValueScales.add("MIN1");
+        midiValueScales.add("MIN2");
+        midiValueScales.add("MIN3");
+        midiValueScales.add("CUST");
+
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter channelAdapter = new ExposedDropDownArrayAdapter(getContext(),
                     myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannel);
@@ -266,6 +364,36 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         setMidiCommand(string_beatbuddy_pause,"BBP");
         setMidiCommand(string_beatbuddy_accent,"BBA");
         setMidiCommand(string_beatbuddy_fill,"BBF");
+
+        setMidiCommand(guitar_rhythmic_string,"VLGR");
+        setMidiCommand(guitar_compressor_string,"VLGC");
+        setMidiCommand(guitar_modulation_string,"VLGM");
+        setMidiCommand(guitar_octaver_string,"VLGO");
+        setMidiCommand(guitar_amp_string,"VLGA");
+        setMidiCommand(guitar_wah_string,"VLGW");
+        setMidiCommand(guitar_boost_string,"VLGB");
+        setMidiCommand(guitar_reverb_string,"VLGRV");
+        setMidiCommand(guitar_delay_string,"VLGD");
+        setMidiCommand(guitar_hit_string,"VLGHIT");
+        setMidiCommand(vocal_rhythmic_string,"VLVR");
+        setMidiCommand(vocal_harmony_string,"VLVH");
+        setMidiCommand(vocal_harmony_key_string,"VLVHK");
+        setMidiCommand(vocal_harmony_scale_string,"VLVHS");
+        setMidiCommand(vocal_harmony_boost_string,"VLVHVB");
+        setMidiCommand(vocal_harmony_hold_string,"VLVHH");
+        setMidiCommand(vocal_vocoder_synth_string,"VLVV");
+        setMidiCommand(vocal_choir_string,"VLVCH");
+        setMidiCommand(vocal_double_string,"VLVDB");
+        setMidiCommand(vocal_hard_tune_string,"VLVHT");
+        setMidiCommand(vocal_modulation_string,"VLVM");
+        setMidiCommand(vocal_transducer_string,"VLVT");
+        setMidiCommand(vocal_reverb_string,"VLVRV");
+        setMidiCommand(vocal_delay_string,"VLVD");
+        setMidiCommand(vocal_hit_string,"VLVHIT");
+        setMidiCommand(notes_off_string,"VLNX");
+        setMidiCommand(step_string,"VLS");
+        setMidiCommand(preset_string,"VLP");
+
         setMidiCommand(string_sysex_start,"START");
         setMidiCommand(string_sysex_stop,"STOP");
 
@@ -412,6 +540,33 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                 case "NX":
                 case "MSB":
                 case "LSB":
+                case "VLGR":
+                case "VLGC":
+                case "VLGM":
+                case "VLGO":
+                case "VLGA":
+                case "VLGW":
+                case "VLGB":
+                case "VLGRV":
+                case "VLGD":
+                case "VLGHIT":
+                case "VLVR":
+                case "VLVH":
+                case "VLVHK":
+                case "VLVHS":
+                case "VLVHVB":
+                case "VLVHH":
+                case "VLVV":
+                case "VLVCH":
+                case "VLVDB":
+                case "VLVHT":
+                case "VLVM":
+                case "VLVT":
+                case "VLVRV":
+                case "VLVD":
+                case "VLVHIT":
+                case "VLS":
+                case "VLP":
                     usingVal1 = true;
                     usingVal2 = false;
                     break;
@@ -436,6 +591,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                 case "BBP":
                 case "BBA":
                 case "BBF":
+                case "VLNX":
                     usingVal1 = false;
                     usingVal2 = false;
                     break;
@@ -483,7 +639,50 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                         value1Hint = string_folder;
                         value2Hint = string_song;
                         break;
+                    case "VLGR":
+                    case "VLGC":
+                    case "VLGM":
+                    case "VLGO":
+                    case "VLGA":
+                    case "VLGW":
+                    case "VLGB":
+                    case "VLGRV":
+                    case "VLGD":
+                    case "VLGHIT":
+                    case "VLVR":
+                    case "VLVH":
+                    case "VLVHVB":
+                    case "VLVHH":
+                    case "VLVV":
+                    case "VLVCH":
+                    case "VLVDB":
+                    case "VLVHT":
+                    case "VLVM":
+                    case "VLVT":
+                    case "VLVRV":
+                    case "VLVD":
+                    case "VLVHIT":
+                        addArrayListToDropdown(myView.midiValue1, midiValueOff_On);
+                        value1Hint = on_string + "/" + off_string;
+                        break;
+                    case "VLVHK":
+                        addArrayListToDropdown(myView.midiValue1, midiValueKeys);
+                        value1Hint = key_string;
+                        break;
+                    case "VLVHS":
+                        addArrayListToDropdown(myView.midiValue1, midiValueScales);
+                        value1Hint = scale_string;
+                        break;
+                    case "VLS":
+                        addArrayListToDropdown(myView.midiValue1, midiValue1_32);
+                        value1Hint = step_string;
+                        break;
+                    case "VLP":
+                        addArrayListToDropdown(myView.midiValue1, midiValue1_500);
+                        value1Hint = preset_string;
+                        break;
                 }
+
             }
             if (usingVal2) {
                 if (command.equals("BBS")) {
@@ -532,6 +731,11 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                     // Convert the notes to the position in the array
                     int pos = midiNotes.indexOf(val1);
                     val1 = String.valueOf(pos);
+                }
+                if (val1.equals(off_string)) {
+                    val1 = "X";
+                } else if (val1.equals(on_string)) {
+                    val1 = "";
                 }
                 midiCode += val1;
             }

@@ -35,6 +35,8 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
     private String website_inline_midi_string="";
     private String note_on_string="";
     private String note_off_string="";
+    private String on_string;
+    private String off_string;
     private String beat_buddy_string="";
     private String transition_string="";
     private String transition_next_string="";
@@ -65,9 +67,20 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
     private String part_string="";
     private String sysex_start_string="";
     private String sysex_stop_string="";
+    private String guitar_rhythmic_string, guitar_compressor_string, guitar_modulation_string,
+            guitar_octaver_string, guitar_amp_string, guitar_wah_string, guitar_boost_string,
+            guitar_reverb_string, guitar_delay_string, guitar_hit_string,
+            vocal_rhythmic_string, vocal_harmony_string, scale_string,
+            key_string, vocal_harmony_key_string, vocal_harmony_scale_string,
+            vocal_harmony_boost_string, vocal_harmony_hold_string,
+            vocal_vocoder_synth_string, vocal_choir_string, vocal_double_string,
+            vocal_hard_tune_string, vocal_modulation_string, vocal_transducer_string,
+            vocal_reverb_string, vocal_delay_string, vocal_hit_string,
+            step_string, notes_off_string, on_off_string, preset_string;
+
 
     private ArrayList<String> midiActions, midiChannels, range0_127, range1_127, range0_100,
-            range1_32, range40_300;
+            range1_32, range40_300, range1_500, on_off, keys, scales;
     private SparseArray<String> value1Hints, value2Hints, value1NumRange, value2NumRange;
 
     public InlineMidiBottomSheet() {
@@ -124,8 +137,9 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             inline_midi_string = getString(R.string.inline_midi);
             website_inline_midi_string = getString(R.string.website_inline_midi);
-            String on_string = getString(R.string.on);
-            String off_string = getString(R.string.off);
+            on_string = getString(R.string.on);
+            off_string = getString(R.string.off);
+            on_off_string = on_string + "/" + off_string;
             note_string = getString(R.string.midi_note);
             note_on_string = note_string + " " + on_string;
             note_off_string = note_string + " " + off_string;
@@ -161,6 +175,50 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
             part_string = getString(R.string.part);
             sysex_start_string = getString(R.string.midi_sysex) + " " + getString(R.string.start);
             sysex_stop_string = getString(R.string.midi_sysex) + " " + getString(R.string.stop);
+
+            // VoiceLive generic strings
+            String voicelive_string = getString(R.string.voicelive);
+            String guitar_string = "(" + getString(R.string.guitar) + ")";
+            String vocal_string = "(" + getString(R.string.vocal) + ")";
+            String harmony_string = getString(R.string.harmony);
+            String hit_string = getString(R.string.hit);
+            key_string = getString(R.string.key);
+            scale_string = getString(R.string.scale);
+            preset_string = voicelive_string + " " + getString(R.string.preset);
+
+            // Guitar effect strings
+            guitar_rhythmic_string = voicelive_string + " " + guitar_string + " " + getString(R.string.rhythmic);
+            guitar_compressor_string = voicelive_string + " " + guitar_string + " " + getString(R.string.compressor);
+            guitar_modulation_string = voicelive_string + " " + guitar_string + " " + getString(R.string.modulation);
+            guitar_octaver_string = voicelive_string + " " + guitar_string + " " + getString(R.string.octaver);
+            guitar_amp_string = voicelive_string + " " + guitar_string + " " + getString(R.string.amp);
+            guitar_wah_string = voicelive_string + " " + guitar_string + " " + getString(R.string.wah);
+            guitar_boost_string = voicelive_string + " " + guitar_string + " " + getString(R.string.boost);
+            guitar_reverb_string = voicelive_string + " " + guitar_string + " " + getString(R.string.reverb);
+            guitar_delay_string = voicelive_string + " " + guitar_string + " " + getString(R.string.delay);
+            guitar_hit_string = voicelive_string + " " + guitar_string + " " + hit_string;
+
+            // Vocal effect combined strings
+            vocal_rhythmic_string = voicelive_string + " " + vocal_string + " " + getString(R.string.rhythmic);
+            vocal_harmony_string = voicelive_string + " " + vocal_string + " " + getString(R.string.harmony);
+            vocal_harmony_key_string = voicelive_string + " " + vocal_string + " " + harmony_string + " " + key_string;
+            vocal_harmony_scale_string = voicelive_string + " " + vocal_string + " " + harmony_string + " " + getString(R.string.scale);
+            vocal_harmony_boost_string = voicelive_string + " " + vocal_string + " " + getString(R.string.harmony_vibrato_boost);
+            vocal_harmony_hold_string = voicelive_string + " " + vocal_string + " " + getString(R.string.harmony_hold);
+            vocal_vocoder_synth_string = voicelive_string + " " + vocal_string + " " + getString(R.string.vocoder_synth);
+            vocal_choir_string = voicelive_string + " " + vocal_string + " " + getString(R.string.choir);
+            vocal_double_string = voicelive_string + " " + vocal_string + " " + getString(R.string.double_string);
+            vocal_hard_tune_string = voicelive_string + " " + vocal_string + " " + getString(R.string.hard_tune);
+            vocal_modulation_string = voicelive_string + " " + vocal_string + " " + getString(R.string.modulation);
+            vocal_transducer_string = voicelive_string + " " + vocal_string + " " + getString(R.string.transducer);
+            vocal_reverb_string = voicelive_string + " " + vocal_string + " " + getString(R.string.reverb);
+            vocal_delay_string = voicelive_string + " " + vocal_string + " " + getString(R.string.delay);
+            vocal_hit_string = voicelive_string + " " + vocal_string + " " + hit_string;
+
+            // Other voicelive settings
+            step_string = voicelive_string + " " + getString(R.string.step);
+            notes_off_string = voicelive_string + " " + getString(R.string.panic_stop);
+
         }
     }
 
@@ -185,6 +243,11 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
             range1_127.add(String.valueOf(i));
         }
 
+        range1_500 = new ArrayList<>();
+        for (int i = 1; i <= 500; i++) {
+            range1_500.add(String.valueOf(i));
+        }
+
         range1_32 = new ArrayList<>();
         for (int i = 1; i <= 32; i++) {
             range1_32.add(String.valueOf(i));
@@ -194,6 +257,38 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
         for (int i = 40; i <= 300; i++) {
             range40_300.add(String.valueOf(i));
         }
+
+        on_off = new ArrayList<>();
+        on_off.add(off_string);
+        on_off.add(on_string);
+
+        keys = new ArrayList<>();
+        keys.add("A");
+        keys.add("A#");
+        keys.add("Bb");
+        keys.add("B");
+        keys.add("C");
+        keys.add("C#");
+        keys.add("Db");
+        keys.add("D");
+        keys.add("D#");
+        keys.add("Eb");
+        keys.add("E");
+        keys.add("F");
+        keys.add("F#");
+        keys.add("Gb");
+        keys.add("G");
+        keys.add("G#");
+        keys.add("Ab");
+
+        scales = new ArrayList<>();
+        scales.add("MAJ1");
+        scales.add("MAJ2");
+        scales.add("MAJ3");
+        scales.add("MIN1");
+        scales.add("MIN2");
+        scales.add("MIN3");
+        scales.add("CUST");
 
         midiActions = new ArrayList<>();
         value1Hints = new SparseArray<>();
@@ -307,10 +402,150 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
         // 25
         midiActions.add(accent_string);
 
+
+
         // 26
+        midiActions.add(guitar_rhythmic_string);
+        value1Hints.put(26,on_off_string);
+        value1NumRange.put(26,"off-on");
+
+        // 27
+        midiActions.add(guitar_compressor_string);
+        value1Hints.put(27,on_off_string);
+        value1NumRange.put(27,"off-on");
+
+        // 28
+        midiActions.add(guitar_modulation_string);
+        value1Hints.put(28,on_off_string);
+        value1NumRange.put(28,"off-on");
+
+        // 29
+        midiActions.add(guitar_octaver_string);
+        value1Hints.put(29,on_off_string);
+        value1NumRange.put(29,"off-on");
+
+        // 30
+        midiActions.add(guitar_amp_string);
+        value1Hints.put(30,on_off_string);
+        value1NumRange.put(30,"off-on");
+
+        // 31
+        midiActions.add(guitar_wah_string);
+        value1Hints.put(31,on_off_string);
+        value1NumRange.put(31,"off-on");
+
+        // 32
+        midiActions.add(guitar_boost_string);
+        value1Hints.put(32,on_off_string);
+        value1NumRange.put(32,"off-on");
+
+        // 33
+        midiActions.add(guitar_reverb_string);
+        value1Hints.put(33,on_off_string);
+        value1NumRange.put(33,"off-on");
+
+        // 34
+        midiActions.add(guitar_delay_string);
+        value1Hints.put(34,on_off_string);
+        value1NumRange.put(34,"off-on");
+
+        // 35
+        midiActions.add(guitar_hit_string);
+        value1Hints.put(35,on_off_string);
+        value1NumRange.put(35,"off-on");
+
+        // 36
+        midiActions.add(vocal_rhythmic_string);
+        value1Hints.put(36,on_off_string);
+        value1NumRange.put(36,"off-on");
+
+        // 37
+        midiActions.add(vocal_harmony_string);
+        value1Hints.put(37,on_off_string);
+        value1NumRange.put(37,"off-on");
+
+        // 38
+        midiActions.add(vocal_harmony_key_string);
+        value1Hints.put(38,key_string);
+        value1NumRange.put(38,"keys");
+
+        // 39
+        midiActions.add(vocal_harmony_scale_string);
+        value1NumRange.put(39,scale_string);
+        value1NumRange.put(39,"scales");
+
+        // 40
+        midiActions.add(vocal_harmony_boost_string);
+        value1Hints.put(40,on_off_string);
+        value1NumRange.put(40,"off-on");
+
+        // 41
+        midiActions.add(vocal_harmony_hold_string);
+        value1Hints.put(41,on_off_string);
+        value1NumRange.put(41,"off-on");
+
+        // 42
+        midiActions.add(vocal_vocoder_synth_string);
+        value1Hints.put(42,on_off_string);
+        value1NumRange.put(42,"off-on");
+
+        // 43
+        midiActions.add(vocal_choir_string);
+        value1Hints.put(43,on_off_string);
+        value1NumRange.put(43,"off-on");
+
+        // 44
+        midiActions.add(vocal_double_string);
+        value1Hints.put(44,on_off_string);
+        value1NumRange.put(44,"off-on");
+
+        // 45
+        midiActions.add(vocal_hard_tune_string);
+        value1Hints.put(45,on_off_string);
+        value1NumRange.put(45,"off-on");
+
+        // 46
+        midiActions.add(vocal_modulation_string);
+        value1Hints.put(46,on_off_string);
+        value1NumRange.put(46,"off-on");
+
+        // 47
+        midiActions.add(vocal_transducer_string);
+        value1Hints.put(47,on_off_string);
+        value1NumRange.put(47,"off-on");
+
+        // 48
+        midiActions.add(vocal_reverb_string);
+        value1Hints.put(48,on_off_string);
+        value1NumRange.put(48,"off-on");
+
+        // 49
+        midiActions.add(vocal_delay_string);
+        value1Hints.put(49,on_off_string);
+        value1NumRange.put(49,"off-on");
+
+        // 50
+        midiActions.add(vocal_hit_string);
+        value1Hints.put(50,on_off_string);
+        value1NumRange.put(50,"off-on");
+
+        // 51
+        midiActions.add(step_string);
+        value1Hints.put(51,on_off_string);
+        value1NumRange.put(51,"1-32");
+
+        // 52
+        midiActions.add(preset_string);
+        value1Hints.put(52,preset_string);
+        value1NumRange.put(52,"1-500");
+
+        // 53
+        midiActions.add(notes_off_string);
+
+        // 54
         midiActions.add(sysex_start_string);
 
-        //27
+        // 55
         midiActions.add(sysex_stop_string);
     }
     private void prepareDropdowns() {
@@ -362,12 +597,28 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
                         adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range1_127);
                         break;
 
+                    case "1-500":
+                        adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range1_500);
+                        break;
+
                     case "40-300":
                         adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range40_300);
                         break;
 
                     case "1-32":
                         adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range1_32);
+                        break;
+
+                    case "off-on":
+                        adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, on_off);
+                        break;
+
+                    case "keys":
+                        adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, keys);
+                        break;
+
+                    case "scales":
+                        adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, scales);
                         break;
                 }
                 myView.midiValue1.setAdapter(adapter1);
@@ -619,13 +870,156 @@ public class InlineMidiBottomSheet extends BottomSheetDialogFragment {
                 part2 = "BBA";
                 break;
 
+
             case 26:
+                // Guitar rhythm
+                part2 = "VLGR" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 27:
+                // Guitar compressor
+                part2 = "VLGC" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 28:
+                // Guitar modulation
+                part2 = "VLGM" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 29:
+                // Guitar octaver
+                part2 = "VLGO" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 30:
+                // Guitar amp
+                part2 = "VLGA" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 31:
+                // Guitar wah
+                part2 = "VLGW" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 32:
+                // Guitar boost
+                part2 = "VLGB" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 33:
+                // Guitar reverb
+                part2 = "VLGRV" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 34:
+                // Guitar delay
+                part2 = "VLGD" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 35:
+                // Guitar hit
+                part2 = "VLGHIT" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+
+
+            case 36:
+                // Vocal rhythmic
+                part2 = "VLVR" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 37:
+                // Vocal harmony
+                part2 = "VLVH" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 38:
+                // Vocal harmony key
+                part2 = "VLVHK" + val1;
+                break;
+
+            case 39:
+                // Vocal harmony scale
+                part2 = "VLVHS" + val1;
+                break;
+
+            case 40:
+                // Vocal harmony vibrato boost
+                part2 = "VLVHVB" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 41:
+                // Vocal harmony hold
+                part2 = "VLVHH" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 42:
+                // Vocal vocoder/synth
+                part2 = "VLVV" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 43:
+                // Vocal choir
+                part2 = "VLVCH" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 44:
+                // Vocal double
+                part2 = "VLVDB" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 45:
+                // Vocal hard tune
+                part2 = "VLVHT" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 46:
+                // Vocal modulation
+                part2 = "VLVM" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 47:
+                // Vocal transducer
+                part2 = "VLVTX" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 48:
+                // Vocal reverb
+                part2 = "VLVRV" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 49:
+                // Vocal delay
+                part2 = "VLVD" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 50:
+                // Vocal hit
+                part2 = "VLVHIT" + (val1.equals(off_string) ? "X" : "");
+                break;
+
+            case 51:
+                // Step
+                part2 = "VLS" + val1;
+                break;
+
+            case 52:
+                // Preset
+                part2 = "VLP" + val1;
+                break;
+
+            case 53:
+                // All notes off
+                part2 = "VLNX";
+                break;
+
+            case 54:
                 // Sysex start
                 part1 = ";MIDI";
                 part2 = "START";
                 break;
 
-            case 27:
+            case 55:
                 // Sysex stop
                 part1 = ";MIDI";
                 part2 = "STOP";

@@ -256,7 +256,7 @@ public class VoiceLive {
             shorthand = shorthand.substring(2);
 
             // Get the on/off command
-            boolean on = shorthand.endsWith("X");
+            boolean on = !shorthand.endsWith("X");
             shorthand = shorthand.replace("X","");
 
             // Get any numerical value from the message
@@ -293,7 +293,8 @@ public class VoiceLive {
                 }
             }
 
-            // If it now starts with 'G' it is guitar, if 'V' it is vocal, if it is 'P' it is a preset
+            // If it now starts with 'G' it is guitar, if 'V' it is vocal,
+            // if it is 'P' it is a preset, if it is 'S' it is a step
             switch (shorthand) {
                 case "GR":
                     return getGuitarRhythmicMessage(midiChannelSent,on);
@@ -313,7 +314,7 @@ public class VoiceLive {
                     return getGuitarBoostMessage(midiChannelSent,on);
                 case "GHIT":
                     return getGuitarHITMessage(midiChannelSent,on);
-                case "RV":
+                case "GRV":
                     return getGuitarReverbMessage(midiChannelSent,on);
                 case "VH":
                     return getVocalHarmonyMessage(midiChannelSent,on);
@@ -353,23 +354,22 @@ public class VoiceLive {
                     return getVocalTransducerMessage(midiChannelSent,on);
                 case "VHH":
                     return getHarmonyHoldMessage(midiChannelSent,on);
-
-                case "VLP":
+                case "NX":
+                    return getAllNotesOffMessage(midiChannelSent);
+                case "P":
                     if (num>-1) {
                         return getVoiceLivePresetMessage(midiChannelSent, num);
                     } else {
                         return "";
                     }
-
-                case "VS":
+                case "S":
                     if (num>-1) {
                         return getStepMessage(midiChannelSent, num);
                     } else {
                         return "";
                     }
-
                 default:
-                    return getAllNotesOffMessage(midiChannelSent);
+                    return "";
             }
 
 

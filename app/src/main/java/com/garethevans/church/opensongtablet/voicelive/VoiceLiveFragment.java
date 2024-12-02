@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class VoiceLiveFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "VoiceLiveFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsVoiceliveOptionsBinding myView;
@@ -88,9 +89,6 @@ public class VoiceLiveFragment extends Fragment {
                 myView.voiceLiveMinorHarmony.setSliderPos(2);
                 break;
         }
-        myView.presetNumber.setAdjustableButtons(true);
-        myView.presetNumber.setValue(1);
-        myView.presetNumber.setHint(String.valueOf(1));
     }
 
     public void setupListeners() {
@@ -127,10 +125,6 @@ public class VoiceLiveFragment extends Fragment {
                     mainActivityInterface.getVoiceLive().setVoiceLiveMinorHarmony("MIN3");
                     break;
             }
-        });
-        myView.presetNumber.addOnChangeListener((slider, value, fromUser) -> {
-            String text = "VLP" + ((int) value);
-            mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getVoiceLive().getMessageFromShortHand(mainActivityInterface.getVoiceLive().getVoiceLiveChannel(), text));
         });
     }
 }

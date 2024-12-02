@@ -75,7 +75,7 @@ public class ShortHandMidi {
     // VLVRVX = VoiceLive vocal reverb off
     // VLVHT = VoiceLive vocal hard tune
     // VLVHTX = VoiceLive vocal hard tune off
-    // VLVS{1-127} = VoiceLive vocal step {1-127}
+    // VLS{1-127} = VoiceLive step {1-32}
     // VLVM = VoiceLive vocal µMod
     // VLVMX = VoiceLive vocal µMod off
     // VLVD = VoiceLive vocal delay
@@ -84,6 +84,7 @@ public class ShortHandMidi {
     // VLVTX = VoiceLive vocal transducer off
     // VLVHH = VoiceLive vocal harmonic hold
     // VLVHHX = VoiceLive vocal harmonic hold off
+    // VLNX = VoiceLive note off
 
     // VLP{1-500} = VoiceLive preset 1-500
 

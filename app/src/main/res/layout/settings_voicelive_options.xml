@@ -66,21 +66,7 @@
                 app:textL="@string/voicelive_min1"
                 app:textC="@string/voicelive_min2"
                 app:textR="@string/voicelive_min3" />
-            <TableRow style="@style/DividerLine" />
 
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/preset_number"/>
-
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/presetNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:valueFrom="1"
-                android:valueTo="500"
-                app:adjustable="true"/>
 
         </LinearLayout>
     </ScrollView>
