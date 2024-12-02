@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Αλφαβητικό ευρετήριο δύο χαρακτήρων</string>
     <string name="alphabetical_level2_info">Κάνοντας κλικ σε ένα στοιχείο στο αλφαβητικό ευρετήριο θα γίνει εναλλαγή μεταξύ ενός και δύο χαρακτήρων αλφαβητικού ευρετηρίου</string>
     <string name="alphabetical_sort">Βάλτε τα στοιχεία σε αλφαβητική σειρά</string>
+    <string name="amp">Αμπέραζ</string>
     <string name="app_specific_file">Ένα αρχείο συγκεκριμένο για το OpenSongApp</string>
     <string name="appearance_change">Ρυθμίζει την εμφάνιση</string>
     <string name="apply_changes">Εφαρμόστε αλλαγές</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Εμφάνιση χορδών και κεφαλίδων με έντονη γραφή</string>
     <string name="bold_chorus">Εμφάνιση χορωδίας με έντονους χαρακτήρες</string>
     <string name="book">"Βιβλίο"</string>
+    <string name="boost">Ωθηση</string>
     <string name="both">Και τα δυο</string>
     <string name="bottom">Κάτω μέρος</string>
     <string name="bridge">"Γέφυρα"</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"Επαναφορά του αρχείου καταγραφής CCLI"</string>
     <string name="ccli_view">"Δείτε το αρχείο καταγραφής CCLI"</string>
     <string name="chapter">"Κεφάλαιο"</string>
+    <string name="choir">Χορωδία</string>
     <string name="choose_app_mode">"Επιλέξτε τη λειτουργία εφαρμογής"</string>
     <string name="choose_background">Κάντε κλικ σε ένα φόντο για να το χρησιμοποιήσετε. Πατήστε παρατεταμένα / δεξί κλικ για να το αλλάξετε.</string>
     <string name="choose_folder">"Choose folder to save file in"</string>
@@ -197,6 +200,7 @@
     <string name="comment">Σχόλιο</string>
     <string name="comment_background">"Φόντο σχολίου"</string>
     <string name="commentline_scale">"Κείμενο σχολίου κλίμακας"</string>
+    <string name="compressor">Συμπιεστής</string>
     <string name="confirm">Επιβεβαιώνω</string>
     <string name="connected_display">"Συνδεδεμένη οθόνη"</string>
     <string name="connected_display_description">Ρυθμίσεις ειδικά για έξοδο Chromecast / HDMI</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"Μειώστε την ταχύτητα αυτόματης κύλισης"</string>
     <string name="default_autoscroll">"Προεπιλεγμένοι χρόνοι αυτοματης κύλισης"</string>
     <string name="default_presentation_text">Συμπερίληψη προεπιλεγμένου κειμένου παρουσίασης</string>
+    <string name="delay">Καθυστέρηση</string>
     <string name="delete">"Διαγραφή"</string>
     <string name="delete_folder_info">Διαγραφή υποκαταλόγου τραγουδιών</string>
     <string name="delete_folder_warning">Εάν διαγράψετε αυτόν τον υποκατάλογο, θα διαγραφούν επίσης και τυχόν τραγούδια ή φάκελοι που περιέχει. Δεν μπορείτε να αναιρέσετε αυτήν την αλλαγή! Βεβαιωθείτε ότι έχετε δημιουργήσει και αποθηκεύσει αντίγραφα ασφαλείας ΟΛΩΝ των αρχείων σας πριν συνεχίσετε!!!</string>
@@ -298,6 +303,7 @@
     <string name="display">"Εμφάνιση"</string>
     <string name="display_settings">Αλλαγή ρυθμίσεων εμφάνισης (αυτό που βλέπετε στην οθόνη)</string>
     <string name="divisions">Τμήματα</string>
+    <string name="double_string">Διπλό</string>
     <string name="double_tap">"Select double tap action"</string>
     <string name="double_time">Διπλό χρόνο</string>
     <string name="download">Κατεβάστε</string>
@@ -405,8 +411,12 @@
     <string name="green">Πράσινος</string>
     <string name="guitar">"Κιθάρα"</string>
     <string name="half_time">Ημίχρονο</string>
+    <string name="hard_tune">Σκληρή μελωδία</string>
     <string name="hardware_acceleration">Χρήση επιτάχυνσης υλικού</string>
     <string name="hardware_acceleration_info">Η ενεργοποίηση της επιτάχυνσης υλικού μπορεί να κάνει την κύλιση πιο ομαλή, ωστόσο, μπορεί να προκαλέσει σφάλματα οθόνης και σφάλματα σε ορισμένες συσκευές.</string>
+    <string name="harmony">Αρμονία</string>
+    <string name="harmony_hold">Κράτημα αρμονίας</string>
+    <string name="harmony_vibrato_boost">Ενίσχυση αρμονίας vibrato</string>
     <string name="heading_scale">"Κείμενο τίτλου κλίμακας"</string>
     <string name="help">"Βοήθεια (Online)"</string>
     <string name="hex_color_code">Hex χρωματικός κωδικός</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"Υψηλός φωτισμός"</string>
     <string name="highlight_info">Επεξεργασία σημειώσεων / σχολιασμών επισήμανσης</string>
     <string name="highlighter_low_memory">Η συσκευή σας δεν μπόρεσε να δημιουργήσει ένα στιγμιότυπο οθόνης του τραγουδιού για προεπισκόπηση με το εργαλείο επισήμανσης, καθώς ήταν πολύ μεγάλο.  Δοκιμάστε να αλλάξετε την αυτόματη κλιμάκωση του τραγουδιού σε πλήρη ή να μειώσετε το μέγιστο μέγεθος κλιμάκωσης γραμματοσειράς.</string>
+    <string name="hit">Επιτυχία</string>
     <string name="hot_zone_bottom_center">Κάτω κέντρο</string>
     <string name="hot_zone_center_disabled">Οι επάνω και κάτω κεντρικές θερμές ζώνες θα απενεργοποιηθούν</string>
     <string name="hot_zone_left_disabled">Η επάνω αριστερή θερμή ζώνη θα απενεργοποιηθεί</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"αξία"</string>
     <string name="midi_velocity">"Ταχύτητα"</string>
     <string name="min_font_size">"Preferred minimum autoscale font size"</string>
+    <string name="modulation">Διαμόρφωση</string>
     <string name="move_from">Μετακινούμαι από</string>
     <string name="move_to_folder">Μετακίνησε στο φάκελο</string>
     <string name="music">ΜΟΥΣΙΚΗ</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Επιλέξτε ένα φάκελο για το τραγούδι σας</string>
     <string name="note">"Σημείωση"</string>
     <string name="nothing_selected">Τίποτα επιλεγμένο</string>
+    <string name="octaver">Οκτάβερ</string>
     <string name="off">Off</string>
     <string name="okay">Εντάξει</string>
     <string name="on">On</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">Η σειρά παρουσίασης του τραγουδιού φαίνεται παρακάτω. Μπορείτε να σύρετε στοιχεία για να αναδιατάξετε τη σειρά και να σύρετε για κατάργηση.</string>
     <string name="presentation_order_use">Εάν υπάρχει σειρά παρουσίασης για το τραγούδι, χρησιμοποιήστε το για να δημιουργήσετε την οθόνη</string>
     <string name="presenter_mode">"Λειτουργία προβολής"</string>
+    <string name="preset">Προκαθορισμένη</string>
     <string name="preso_alpha">"Background opacity"</string>
     <string name="prev_next_autohide">Αυτόματη απόκρυψη κουμπιών προηγούμενου / επόμενου</string>
     <string name="prev_next_text">Χρησιμοποιήστε τα κουμπιά κειμένου προηγούμενο / επόμενο</string>
@@ -792,11 +806,14 @@
     <string name="restore">Επαναφέρω</string>
     <string name="restore_sets">Επαναφορά σετ</string>
     <string name="resume">ΒΙΟΓΡΑΦΙΚΟ</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">Ρυθμικός</string>
     <string name="root">ΡΙΖΑ</string>
     <string name="rotate_display">Περιστρέψτε την οθόνη</string>
     <string name="save">"Αποθήκευση"</string>
     <string name="save_changes">"Αποθήκευση αλλαγών"</string>
     <string name="save_text_for_searching">Αποθηκεύστε κείμενο για αναζήτηση</string>
+    <string name="scale">Κλίμακα</string>
     <string name="scale_auto">Εναλλαγή ρυθμίσεων αυτόματης κλίμακας</string>
     <string name="scale_style">"Στυλ κλίμακας"</string>
     <string name="scale_width">Μέγιστο πλάτος (αγνοώντας το ύψος)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"Μέγιστο ύψος διατομής (Λειτουργία σκηνής)"</string>
     <string name="start">"Ξεκίνα"</string>
     <string name="start_stop_pad">"Start/stop pad"</string>
+    <string name="step">Βήμα</string>
     <string name="stop">"Σταμάτα"</string>
     <string name="stopping">Στάθμευση…</string>
     <string name="storage">"Αποθηκευτικός χώρος"</string>
@@ -996,6 +1014,7 @@
     <string name="title">"Τίτλος"</string>
     <string name="tool">Εργαλείο</string>
     <string name="top">Μπλουζα</string>
+    <string name="transducer">Μετατροπέας</string>
     <string name="transition">Μετάβαση</string>
     <string name="transpose">"Αλλαγή τόνου"</string>
     <string name="transpose_capo">Μεταφορά με αλλαγή τάστα capo</string>
@@ -1031,6 +1050,8 @@
     <string name="video">βίντεο</string>
     <string name="visible">Ορατός</string>
     <string name="visual_metronome">"Visual"</string>
+    <string name="vocal">Φωνητικός</string>
+    <string name="vocoder_synth">Vocoder / synth</string>
     <string name="voicelive_autosend_key">Αυτόματο πλήκτρο VoiceLive</string>
     <string name="voicelive_autosend_key_info">Στείλτε αυτόματα το πλήκτρο του τραγουδιού (αν έχει οριστεί) στο VoiceLive όταν φορτώσει το τραγούδι</string>
     <string name="voicelive_info">Το σύστημα είναι προεπιλεγμένες για τον έλεγχο ενός πεντάλ TC Helicon VoiceLive (π.χ. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"Volume"</string>
     <string name="volume_headphone">Ένταση ακουστικών</string>
     <string name="volume_value">"Current volume value"</string>
+    <string name="wah">Ουα</string>
     <string name="wait">"Wait...."</string>
     <string name="web_server">Διακομιστής web</string>
     <string name="web_server_hint">Να επιτρέπεται στους χρήστες χωρίς OpenSongApp να προβάλλουν τα τραγούδια σας χρησιμοποιώντας ένα πρόγραμμα περιήγησης ιστού</string>

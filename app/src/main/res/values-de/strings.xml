@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Alphabetischer Index mit zwei Zeichen</string>
     <string name="alphabetical_level2_info">Durch Klicken auf ein Element im alphabetischen Index wird zwischen einem ein- und zweistelligen alphabetischen Index umgeschaltet</string>
     <string name="alphabetical_sort">Artikel alphabetisch ordnen</string>
+    <string name="amp">Ampere</string>
     <string name="app_specific_file">Eine für OpenSongApp spezifische Datei</string>
     <string name="appearance_change">Passt das Aussehen an</string>
     <string name="apply_changes">Änderungen übernehmen</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Zeigen Sie Akkorde und Überschriften fett an</string>
     <string name="bold_chorus">Chor fett anzeigen</string>
     <string name="book">"Buch"</string>
+    <string name="boost">Schub</string>
     <string name="both">Beide</string>
     <string name="bottom">Unterseite</string>
     <string name="bridge">Zwischenteil</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"CCLI-Protokoll zurücksetzen"</string>
     <string name="ccli_view">"CCLI-Protokoll anzeigen"</string>
     <string name="chapter">"Kapitel"</string>
+    <string name="choir">Chor</string>
     <string name="choose_app_mode">"App-Modus wählen"</string>
     <string name="choose_background">Klicken Sie auf einen Hintergrund, um ihn zu verwenden. Lange drücken / Rechtsklick, um es zu ändern.</string>
     <string name="choose_folder">"Wählen Sie Ordner, um die Datei zu speichern"</string>
@@ -197,6 +200,7 @@
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Hintergrund Kommentar"</string>
     <string name="commentline_scale">"Kommentartext skalieren"</string>
+    <string name="compressor">Kompressor</string>
     <string name="confirm">Bestätigen Sie</string>
     <string name="connected_display">"Verbundene Anzeige"</string>
     <string name="connected_display_description">Spezifische Einstellungen für den Chromecast / HDMI-Ausgang</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"Autoscroll-Geschwindigkeit verringern"</string>
     <string name="default_autoscroll">"Standard Autoscroll-Zeiten"</string>
     <string name="default_presentation_text">Standard-Präsentationstext einschließen</string>
+    <string name="delay">Verzögerung</string>
     <string name="delete">"Löschen"</string>
     <string name="delete_folder_info">Song-Unterverzeichnis löschen</string>
     <string name="delete_folder_warning">Wenn Sie dieses Unterverzeichnis löschen, werden auch alle darin enthaltenen Songs oder Ordner gelöscht. Sie können diese Änderung nicht rückgängig machen! Bitte stellen Sie sicher, dass Sie Sicherungskopien ALLER Ihrer Dateien erstellt und gespeichert haben, bevor Sie fortfahren!!!</string>
@@ -298,6 +303,7 @@
     <string name="display">"Anzeige"</string>
     <string name="display_settings">Anzeigeeinstellungen ändern (was Sie auf dem Bildschirm sehen)</string>
     <string name="divisions">Abteilungen</string>
+    <string name="double_string">Doppelt</string>
     <string name="double_tap">"Doppeltipp-Aktion wählen"</string>
     <string name="double_time">Doppelte Zeit</string>
     <string name="download">Herunterladen</string>
@@ -405,8 +411,12 @@
     <string name="green">Grün</string>
     <string name="guitar">Gitarre</string>
     <string name="half_time">Halbzeit</string>
+    <string name="hard_tune">Harte Melodie</string>
     <string name="hardware_acceleration">Verwenden der Hardwarebeschleunigung</string>
     <string name="hardware_acceleration_info">Das Aktivieren der Hardwarebeschleunigung kann das Scrollen flüssiger machen, kann jedoch auf bestimmten Geräten zu Anzeigefehlern und Abstürzen führen.</string>
+    <string name="harmony">Harmonie</string>
+    <string name="harmony_hold">Harmonie halten</string>
+    <string name="harmony_vibrato_boost">Harmony-Vibrato-Boost</string>
     <string name="heading_scale">"Überschrift skalieren"</string>
     <string name="help">"Hilfe (Online)"</string>
     <string name="hex_color_code">Hex-Farbcode</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"Textmarker"</string>
     <string name="highlight_info">Textmarker-Notizen / Anmerkungen bearbeiten</string>
     <string name="highlighter_low_memory">Ihr Gerät konnte keinen Screenshot des Songs für die Vorschau mit dem Textmarker erstellen, da er zu groß war.  Bitte versuchen Sie, die automatische Skalierung des Songs vollständig zu ändern oder die maximale Schriftgröße zu reduzieren.</string>
+    <string name="hit">Schlag</string>
     <string name="hot_zone_bottom_center">Unten mittig</string>
     <string name="hot_zone_center_disabled">Obere und untere mittlere Hot-Zonen werden deaktiviert</string>
     <string name="hot_zone_left_disabled">Die obere linke Hotspot-Zone wird deaktiviert</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"Wert"</string>
     <string name="midi_velocity">"Anschlagsdynamik"</string>
     <string name="min_font_size">"Minimale Schriftgröße für automatische Skalierung"</string>
+    <string name="modulation">Modulation</string>
     <string name="move_from">Abziehen</string>
     <string name="move_to_folder">In den Ordner verschieben</string>
     <string name="music">Musik</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Bitte wählen Sie einen Ordner für Ihren Song aus</string>
     <string name="note">"Notiz"</string>
     <string name="nothing_selected">Nichts ausgewählt</string>
+    <string name="octaver">Oktaver</string>
     <string name="off">Aus</string>
     <string name="okay">In Ordnung</string>
     <string name="on">Ein</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">Die Song-Präsentationsreihenfolge ist unten gezeigt. Sie können Elemente ziehen, um die Reihenfolge neu anzuordnen, und zum Entfernen wischen.</string>
     <string name="presentation_order_use">Wenn für das Lied eine Präsentationsreihenfolge vorhanden ist, verwenden Sie diese, um die Anzeige zu erstellen</string>
     <string name="presenter_mode">"Präsentationsmodus"</string>
+    <string name="preset">Voreingestellt</string>
     <string name="preso_alpha">Hintergrund Deckkraft</string>
     <string name="prev_next_autohide">Vorherige / Nächste Schaltflächen automatisch ausblenden</string>
     <string name="prev_next_text">Verwenden Sie die Text-Zurück-/Weiter-Schaltflächen</string>
@@ -792,11 +806,14 @@
     <string name="restore">Wiederherstellen</string>
     <string name="restore_sets">Sätze wiederherstellen</string>
     <string name="resume">Fortsetzen</string>
+    <string name="reverb">Hall</string>
+    <string name="rhythmic">Rhythmisch</string>
     <string name="root">WURZEL</string>
     <string name="rotate_display">Anzeige drehen</string>
     <string name="save">"Speichern"</string>
     <string name="save_changes">"Änderungen speichern"</string>
     <string name="save_text_for_searching">Text für die Suche speichern</string>
+    <string name="scale">Skala</string>
     <string name="scale_auto">Autoscale-Einstellungen umschalten</string>
     <string name="scale_style">"Skalierung"</string>
     <string name="scale_width">Maximale Breite (ohne Berücksichtigung der Höhe)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"Maximale Schnitthöhe (Stage Mode)"</string>
     <string name="start">"Start"</string>
     <string name="start_stop_pad">"Hintergrundmusik start/stop"</string>
+    <string name="step">Schritt</string>
     <string name="stop">"Stop"</string>
     <string name="stopping">Anhalten …</string>
     <string name="storage">"Speicherort"</string>
@@ -996,6 +1014,7 @@
     <string name="title">"Titel"</string>
     <string name="tool">Werkzeug</string>
     <string name="top">Oben</string>
+    <string name="transducer">Wandler</string>
     <string name="transition">Übergang</string>
     <string name="transpose">"Transponieren"</string>
     <string name="transpose_capo">Transponieren durch Kapodaster-Bundwechsel</string>
@@ -1031,6 +1050,8 @@
     <string name="video">Video</string>
     <string name="visible">Sichtbar</string>
     <string name="visual_metronome">"Visuell"</string>
+    <string name="vocal">Gesang</string>
+    <string name="vocoder_synth">Vocoder / Synth</string>
     <string name="voicelive_autosend_key">Automatische VoiceLive-Taste</string>
     <string name="voicelive_autosend_key_info">Senden Sie die Tonart des Songs (falls eingestellt) automatisch an das VoiceLive, wenn der Song geladen wird</string>
     <string name="voicelive_info">Systemvorgaben zur Steuerung eines TC Helicon VoiceLive-Pedals (z. B. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"Lautstärke"</string>
     <string name="volume_headphone">Kopfhörer-Lautstärke</string>
     <string name="volume_value">"Aktuelle Lautstärke"</string>
+    <string name="wah">Wah</string>
     <string name="wait">"Warten...."</string>
     <string name="web_server">Webserver</string>
     <string name="web_server_hint">Erlauben Sie Benutzern ohne OpenSongApp, Ihre Songs über einen Webbrowser anzuzeigen</string>

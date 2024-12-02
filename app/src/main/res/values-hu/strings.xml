@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Két karakteres alfabetikus index</string>
     <string name="alphabetical_level2_info">Az alfabetikus index egy elemére kattintva válthat egy és két karakteres alfabetikus index között</string>
     <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
+    <string name="amp">Amp</string>
     <string name="app_specific_file">Az OpenSongApp-ra jellemző fájl</string>
     <string name="appearance_change">Beállítja a megjelenést</string>
     <string name="apply_changes">Módosítások elfogadása</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Az akkordok és a fejlécek vastag betűvel jelennek meg</string>
     <string name="bold_chorus">A kórus félkövér szedése</string>
     <string name="book">"Könyv"</string>
+    <string name="boost">Boost</string>
     <string name="both">Mindkét</string>
     <string name="bottom">Alsó</string>
     <string name="bridge">Híd</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"A CCLI napló visszaállítása"</string>
     <string name="ccli_view">"CCLI napló megtekintése"</string>
     <string name="chapter">"Fejezet"</string>
+    <string name="choir">Kórus</string>
     <string name="choose_app_mode">"Válasszon alkalmazást mód"</string>
     <string name="choose_background">Kattintson egy háttérre a használatához. A módosításhoz nyomja meg hosszan / jobb gombbal.</string>
     <string name="choose_folder">"Válassza ki a mappát, mentse fájlba"</string>
@@ -197,6 +200,7 @@
     <string name="comment">Megjegyzés</string>
     <string name="comment_background">"Megjegyzés háttér"</string>
     <string name="commentline_scale">"Scale a megjegyzés szövegét"</string>
+    <string name="compressor">Kompresszor</string>
     <string name="confirm">Megerősít</string>
     <string name="connected_display">"csatlakoztatott megjelenítő"</string>
     <string name="connected_display_description">A Chromecast / HDMI kimenetre vonatkozó beállítások</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"Csökkentse az Autoscroll sebességet"</string>
     <string name="default_autoscroll">"Alapértelmezett Auto.görgetés alkalommal"</string>
     <string name="default_presentation_text">A bemutató alapértelmezett szövegének belefoglalása</string>
+    <string name="delay">Késleltetés</string>
     <string name="delete">"Töröl"</string>
     <string name="delete_folder_info">Törölje a dal alkönyvtárát</string>
     <string name="delete_folder_warning">Ha törli ezt az alkönyvtárat, akkor a benne lévő dalok és mappák is törlődnek. Ez a módosítás nem vonható vissza! Kérjük, győződjön meg róla, hogy az ÖSSZES fájlról biztonsági másolatot készített és mentett, mielőtt továbblép!!!</string>
@@ -298,6 +303,7 @@
     <string name="display">Képernyő</string>
     <string name="display_settings">Megjelenítési beállítások módosítása (amit a képernyőn lát)</string>
     <string name="divisions">Osztályok</string>
+    <string name="double_string">Kettős</string>
     <string name="double_tap">"Válassza ki dupla csap akció"</string>
     <string name="double_time">Dupla alkalommal</string>
     <string name="download">Letöltés</string>
@@ -405,8 +411,12 @@
     <string name="green">Zöld</string>
     <string name="guitar">Gitár</string>
     <string name="half_time">Félidő</string>
+    <string name="hard_tune">Kemény dallam</string>
     <string name="hardware_acceleration">Hardveres gyorsítás használata</string>
     <string name="hardware_acceleration_info">A hardveres gyorsítás bekapcsolása simábbá teheti a görgetést, azonban megjelenítési hibákat és összeomlásokat okozhat bizonyos eszközökön.</string>
+    <string name="harmony">Összhang</string>
+    <string name="harmony_hold">Harmónia tartás</string>
+    <string name="harmony_vibrato_boost">Harmony vibrato boost</string>
     <string name="heading_scale">"Scale a fejlécszöveget"</string>
     <string name="help">"Segítség (Online)"</string>
     <string name="hex_color_code">Hex színkód</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"Kiemelő"</string>
     <string name="highlight_info">Kiemelő jegyzetek / megjegyzések szerkesztése</string>
     <string name="highlighter_low_memory">Az eszköz nem tudott képernyőképet készíteni a dalról a kiemelővel való előnézethez, mert túl nagy volt.  Kérjük, próbálja meg megváltoztatni a dal automatikus méretezését teljesre, vagy csökkentse a maximális betűméretező méretet.</string>
+    <string name="hit">Találat</string>
     <string name="hot_zone_bottom_center">Alsó közép</string>
     <string name="hot_zone_center_disabled">A felső és alsó középső forró zónák le lesznek tiltva</string>
     <string name="hot_zone_left_disabled">A bal felső forró zóna le lesz tiltva</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"Érték"</string>
     <string name="midi_velocity">"Sebesség"</string>
     <string name="min_font_size">"Előnyös minimális autoscale betűméret"</string>
+    <string name="modulation">Moduláció</string>
     <string name="move_from">Elmenni valahonnan</string>
     <string name="move_to_folder">Áthelyezés mappába</string>
     <string name="music">Zene</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Kérjük, válasszon mappát a dalhoz</string>
     <string name="note">"Hangjegy"</string>
     <string name="nothing_selected">Semmi nincs kiválasztva</string>
+    <string name="octaver">Oktáv</string>
     <string name="off">Ki</string>
     <string name="okay">Rendben</string>
     <string name="on">Be</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">A dal bemutatási sorrendje lent látható. Az elemek húzásával átrendezheti a sorrendet, és húzással távolíthatja el.</string>
     <string name="presentation_order_use">Ha létezik bemutatási sorrend a dalhoz, használja ezt a megjelenítés létrehozásához</string>
     <string name="presenter_mode">"Bemutató üzemmód"</string>
+    <string name="preset">Előre beállított</string>
     <string name="preso_alpha">Háttér homályossága</string>
     <string name="prev_next_autohide">Az előző/következő gombok automatikus elrejtése</string>
     <string name="prev_next_text">Használja a szöveg előző/következő gombjait</string>
@@ -792,11 +806,14 @@
     <string name="restore">Visszaállítás</string>
     <string name="restore_sets">Készletek visszaállítása</string>
     <string name="resume">Önéletrajz</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">Ritmikus</string>
     <string name="root">GYÖKÉR</string>
     <string name="rotate_display">A kijelző forgatása</string>
     <string name="save">"Megtakarit"</string>
     <string name="save_changes">"Változtatások mentése"</string>
     <string name="save_text_for_searching">Mentse el a szöveget a kereséshez</string>
+    <string name="scale">Skála</string>
     <string name="scale_auto">Az automatikus skálázási beállítások átváltása</string>
     <string name="scale_style">"Scale stílus"</string>
     <string name="scale_width">Maximális szélesség (a magasság figyelmen kívül hagyása)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"Maximális magasság (Stage Mode)"</string>
     <string name="start">"Kezdés"</string>
     <string name="start_stop_pad">"Kezdeni / megállni pad"</string>
+    <string name="step">Lépés</string>
     <string name="stop">"Időzítő megállítása"</string>
     <string name="stopping">Leállítás…</string>
     <string name="storage">Tárolás</string>
@@ -996,6 +1014,7 @@
     <string name="title">Cím</string>
     <string name="tool">Eszköz</string>
     <string name="top">Top</string>
+    <string name="transducer">Transzduktor</string>
     <string name="transition">Átmenet</string>
     <string name="transpose">"Át kell ültetni"</string>
     <string name="transpose_capo">Transzponálás capo fret változással</string>
@@ -1031,6 +1050,8 @@
     <string name="video">Videó</string>
     <string name="visible">Látható</string>
     <string name="visual_metronome">"Vizuális"</string>
+    <string name="vocal">Ének</string>
+    <string name="vocoder_synth">Vocoder / szinti</string>
     <string name="voicelive_autosend_key">Automatikus VoiceLive gomb</string>
     <string name="voicelive_autosend_key_info">A dal betöltésekor automatikusan küldje el a dal kulcsát (ha be van állítva) a VoiceLive-nek</string>
     <string name="voicelive_info">A rendszer alapértelmezett beállításai a TC Helicon VoiceLive pedál vezérléséhez (pl. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"Hangerő"</string>
     <string name="volume_headphone">Fejhallgató hangereje</string>
     <string name="volume_value">"Aktuális hangerő értéke"</string>
+    <string name="wah">Wah</string>
     <string name="wait">"Várni ...."</string>
     <string name="web_server">Webkiszolgáló</string>
     <string name="web_server_hint">Lehetővé teszi az OpenSongApp nélküli felhasználók számára, hogy webböngészővel tekintsék meg dalait</string>

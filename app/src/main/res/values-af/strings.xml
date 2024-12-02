@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Två tecken alfabetiskt index</string>
     <string name="alphabetical_level2_info">Deur op \'n item in die alfabetiese indeks te klik, sal tussen een en twee karakters alfabetiese indeks verander</string>
     <string name="alphabetical_sort">Plaas items in alfabetiese volgorde</string>
+    <string name="amp">Amp</string>
     <string name="app_specific_file">\'n Lêer spesifiek vir OpenSongApp</string>
     <string name="appearance_change">Pas voorkoms aan</string>
     <string name="apply_changes">Pas veranderinge toe</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Vertoon akkoorde en opskrifte in vetdruk</string>
     <string name="bold_chorus">Vertoon koor in vetdruk</string>
     <string name="book">"Boek"</string>
+    <string name="boost">Versterk</string>
     <string name="both">Albei</string>
     <string name="bottom">Onderkant</string>
     <string name="bridge">Brug</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"Herstel CCLI log"</string>
     <string name="ccli_view">"Bekyk CCLI log"</string>
     <string name="chapter">"Hoofstuk"</string>
+    <string name="choir">Koor</string>
     <string name="choose_app_mode">"Kies program af"</string>
     <string name="choose_background">Klik op \'n agtergrond om dit te gebruik. Druk lank / regskliek om dit te verander.</string>
     <string name="choose_folder">"Kies gids lêer te stoor in"</string>
@@ -197,6 +200,7 @@
     <string name="comment">Lewer kommentaar</string>
     <string name="comment_background">"Kommentaar agtergrond"</string>
     <string name="commentline_scale">"Skaal die kommentaar teks"</string>
+    <string name="compressor">Kompressor</string>
     <string name="confirm">Bevestig</string>
     <string name="connected_display">"Gekoppelde skerm"</string>
     <string name="connected_display_description">Instellings spesifiek vir Chromecast / HDMI-uitvoer</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"Verminder Autoscroll Spoed"</string>
     <string name="default_autoscroll">"Default autoscroll keer"</string>
     <string name="default_presentation_text">Sluit standaard aanbiedingsteks in</string>
+    <string name="delay">Vertraag</string>
     <string name="delete">"Verwyder"</string>
     <string name="delete_folder_info">Vee liedjie subgids uit</string>
     <string name="delete_folder_warning">As u hierdie subgids verwyder, sal dit ook liedjies of vouers wat daarin is, verwyder. U kan nie hierdie verandering ongedaan maak nie!</string>
@@ -298,6 +303,7 @@
     <string name="display">Vertoon</string>
     <string name="display_settings">Verander die skerminstellings (wat u op die skerm sien)</string>
     <string name="divisions">Afdelings</string>
+    <string name="double_string">Dubbel</string>
     <string name="double_tap">"Kies dubbel tap aksie"</string>
     <string name="double_time">Dubbel tyd</string>
     <string name="download">Aflaai</string>
@@ -405,8 +411,12 @@
     <string name="green">Groen</string>
     <string name="guitar">Guitar</string>
     <string name="half_time">Halftyd</string>
+    <string name="hard_tune">Harde deuntjie</string>
     <string name="hardware_acceleration">Gebruik hardeware versnelling</string>
     <string name="hardware_acceleration_info">As u hardewareversnelling aanskakel, kan dit gladder blaai, maar dit kan vertoonfoute en ineenstortings op sekere toestelle veroorsaak.</string>
+    <string name="harmony">Harmonie</string>
+    <string name="harmony_hold">Harmonie hou</string>
+    <string name="harmony_vibrato_boost">Harmonie vibrato hupstoot</string>
     <string name="heading_scale">"Skaal die opskrif teks"</string>
     <string name="help">"Help (Online)"</string>
     <string name="hex_color_code">Hekskleurkode</string>
@@ -416,6 +426,7 @@
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Wysig highlighter notas / aantekeninge</string>
     <string name="highlighter_low_memory">U toestel kon nie \'n skermkiekie van die liedjie skep om met die highlighter voorskou te word nie, aangesien dit te groot was. Probeer asseblief om die outoskaal van die liedjie na volle te verander of om die maksimum letterskaalgrootte te verminder.</string>
+    <string name="hit">Tref</string>
     <string name="hot_zone_bottom_center">Onderste middel</string>
     <string name="hot_zone_center_disabled">Warm sones in die boonste en onderste middel sal gedeaktiveer word</string>
     <string name="hot_zone_left_disabled">Warm sone links bo sal gedeaktiveer word</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">Waarde</string>
     <string name="midi_velocity">Snelheid</string>
     <string name="min_font_size">"Verkies minimum autoscale lettergrootte"</string>
+    <string name="modulation">Modulasie</string>
     <string name="move_from">Beweeg van</string>
     <string name="move_to_folder">Skuif na vouer</string>
     <string name="music">Musiek</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Kies asseblief \'n vouer vir jou liedjie</string>
     <string name="note">"Nota"</string>
     <string name="nothing_selected">Niks gekies nie</string>
+    <string name="octaver">Oktawer</string>
     <string name="off">Af</string>
     <string name="okay">Goed</string>
     <string name="on">Op</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">Die volgorde van die aanbieding van die liedjie word hieronder getoon. Jy kan items sleep om die volgorde te herrangskik en swiep om te verwyder.</string>
     <string name="presentation_order_use">As aanbiedingsvolgorde vir die liedjie bestaan, gebruik dit om die vertoning te skep</string>
     <string name="presenter_mode">"Aanbieding af"</string>
+    <string name="preset">Vooraf ingesteld</string>
     <string name="preso_alpha">Agtergrond ondeursigtigheid</string>
     <string name="prev_next_autohide">Versteek vorige / volgende knoppies outomaties</string>
     <string name="prev_next_text">Gebruik teks vorige / volgende knoppies</string>
@@ -792,11 +806,14 @@
     <string name="restore">Herstel</string>
     <string name="restore_sets">Herstel stelle</string>
     <string name="resume">Hervat</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">Ritmies</string>
     <string name="root">WORTEL</string>
     <string name="rotate_display">Draai skerm</string>
     <string name="save">"Red"</string>
     <string name="save_changes">"Stoor veranderinge"</string>
     <string name="save_text_for_searching">Stoor teks om te soek</string>
+    <string name="scale">Skaal</string>
     <string name="scale_auto">Wissel outoskaalinstellings</string>
     <string name="scale_style">"Skaal styl"</string>
     <string name="scale_width">Maksimum breedte (ignoreer hoogte)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"Maksimum gedeelte hoogte (stadium modus)"</string>
     <string name="start">"Begin"</string>
     <string name="start_stop_pad">"Begin / stop agtergrond musiek"</string>
+    <string name="step">Stap</string>
     <string name="stop">"Stop"</string>
     <string name="stopping">Stop tans…</string>
     <string name="storage">Stoor</string>
@@ -996,6 +1014,7 @@
     <string name="title">Titel</string>
     <string name="tool">Gereedskap</string>
     <string name="top">Top</string>
+    <string name="transducer">Transducer</string>
     <string name="transition">Oorgang</string>
     <string name="transpose">"Transponeer"</string>
     <string name="transpose_capo">Transponeer deur capo fret verandering</string>
@@ -1031,6 +1050,8 @@
     <string name="video">Video</string>
     <string name="visible">Sigbaar</string>
     <string name="visual_metronome">"Visueel"</string>
+    <string name="vocal">Vokaal</string>
+    <string name="vocoder_synth">Vocoder / synth</string>
     <string name="voicelive_autosend_key">Outomatiese VoiceLive-sleutel</string>
     <string name="voicelive_autosend_key_info">Stuur die sleutel van die liedjie (indien gestel) outomaties na die VoiceLive wanneer die liedjie laai</string>
     <string name="voicelive_info">Stelsel verstekke vir die beheer van \'n TC Helicon VoiceLive-pedaal (bv. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"Deel"</string>
     <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"Huidige volume-waarde"</string>
+    <string name="wah">Wah</string>
     <string name="wait">"Wag ...."</string>
     <string name="web_server">Webbediener</string>
     <string name="web_server_hint">Laat gebruikers sonder OpenSongApp toe om u liedjies met behulp van \'n webblaaier te sien</string>

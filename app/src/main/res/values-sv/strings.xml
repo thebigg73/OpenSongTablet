@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Två tecken alfabetiskt index</string>
     <string name="alphabetical_level2_info">Genom att klicka på ett objekt i det alfabetiska indexet växlas det mellan ett och två teckens alfabetiskt index</string>
     <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
+    <string name="amp">Amp</string>
     <string name="app_specific_file">En fil som är specifik för OpenSongApp</string>
     <string name="appearance_change">Justerar utseendet</string>
     <string name="apply_changes">Applicera förändringar</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Visa ackord och rubriker med fet stil</string>
     <string name="bold_chorus">Visa refräng i fetstil</string>
     <string name="book">Bok</string>
+    <string name="boost">Lyft</string>
     <string name="both">Både</string>
     <string name="bottom">Botten</string>
     <string name="bridge">"Bro"</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"Återställ CCLI-logg"</string>
     <string name="ccli_view">"Visa CCLI-logg"</string>
     <string name="chapter">"Kapitel"</string>
+    <string name="choir">Kör</string>
     <string name="choose_app_mode">"Välj appläge"</string>
     <string name="choose_background">Klicka på en bakgrund för att använda den. Långt tryck / högerklicka för att ändra det.</string>
     <string name="choose_folder">"Välj mapp för att spara fil i"</string>
@@ -197,6 +200,7 @@
     <string name="comment">Kommentar</string>
     <string name="comment_background">"Kommentar bakgrund"</string>
     <string name="commentline_scale">"Skal kommentartext"</string>
+    <string name="compressor">Kompressor</string>
     <string name="confirm">Bekräfta</string>
     <string name="connected_display">"Ansluten display"</string>
     <string name="connected_display_description">Inställningar specifika för Chromecast / HDMI-utgång</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"Minska Autoscroll Speed"</string>
     <string name="default_autoscroll">"Standard autoscroll gånger"</string>
     <string name="default_presentation_text">Inkludera standardpresentationstext</string>
+    <string name="delay">Dröjsmål</string>
     <string name="delete">"Radera"</string>
     <string name="delete_folder_info">Ta bort låtens underkatalog</string>
     <string name="delete_folder_warning">Om du tar bort den här underkatalogen raderas också alla låtar eller mappar som den innehåller. Du kan inte ångra den här ändringen!</string>
@@ -298,6 +303,7 @@
     <string name="display">"Visa"</string>
     <string name="display_settings">Ändra visningsinställningar (vad du ser på skärmen)</string>
     <string name="divisions">Divisioner</string>
+    <string name="double_string">Dubbel</string>
     <string name="double_tap">"Välj dubbelknappsåtgärd"</string>
     <string name="double_time">Dubbel tid</string>
     <string name="download">Ladda ner</string>
@@ -405,8 +411,12 @@
     <string name="green">Grön</string>
     <string name="guitar">"Gitarr"</string>
     <string name="half_time">Halvtid</string>
+    <string name="hard_tune">Hård låt</string>
     <string name="hardware_acceleration">Använda maskinvaruacceleration</string>
     <string name="hardware_acceleration_info">Att aktivera hårdvaruacceleration kan göra rullningen smidigare, men det kan orsaka visningsbuggar och krascher på vissa enheter.</string>
+    <string name="harmony">Harmoni</string>
+    <string name="harmony_hold">Håll i harmoni</string>
+    <string name="harmony_vibrato_boost">Harmony vibrato boost</string>
     <string name="heading_scale">"Skala rubrik text"</string>
     <string name="help">"Hjälp (Online)"</string>
     <string name="hex_color_code">Hex färgkod</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"Highlighter"</string>
     <string name="highlight_info">Redigera anteckningar/kommentarer med överstrykningspenna</string>
     <string name="highlighter_low_memory">Din enhet kunde inte skapa en skärmdump av låten för förhandsgranskning med överstrykningspennan eftersom den var för stor.  Försök att ändra den automatiska skalningen av låten till full eller minska den maximala teckenskalningsstorleken.</string>
+    <string name="hit">Hit</string>
     <string name="hot_zone_bottom_center">Nedre mitten</string>
     <string name="hot_zone_center_disabled">Övre och nedre mittzoner inaktiveras</string>
     <string name="hot_zone_left_disabled">Övre vänstra aktiva zonen inaktiveras</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"Värde"</string>
     <string name="midi_velocity">"Hastighet"</string>
     <string name="min_font_size">"Föredragen autoskala typstorlek"</string>
+    <string name="modulation">Modulation</string>
     <string name="move_from">Flytta från</string>
     <string name="move_to_folder">Flytta till mapp</string>
     <string name="music">Musik</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Välj en mapp för din låt</string>
     <string name="note">"Notera"</string>
     <string name="nothing_selected">Inget valt</string>
+    <string name="octaver">Octaver</string>
     <string name="off">Av</string>
     <string name="okay">Ok</string>
     <string name="on">På</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">Låtpresentationsordningen visas nedan. Du kan dra objekt för att ändra ordningen och svepa för att ta bort.</string>
     <string name="presentation_order_use">Om det finns presentationsordning för låten, använd denna för att skapa displayen</string>
     <string name="presenter_mode">"Presentationsläge"</string>
+    <string name="preset">Förinställa</string>
     <string name="preso_alpha">"Bakgrundsopacitet"</string>
     <string name="prev_next_autohide">Dölj föregående/nästa knappar automatiskt</string>
     <string name="prev_next_text">Använd knapparna text föregående/nästa</string>
@@ -792,11 +806,14 @@
     <string name="restore">Återställ</string>
     <string name="restore_sets">Återställ uppsättningar</string>
     <string name="resume">Återuppta</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">Rytmisk</string>
     <string name="root">ROT</string>
     <string name="rotate_display">Rotera displayen</string>
     <string name="save">"Spara"</string>
     <string name="save_changes">"Spara ändringar"</string>
     <string name="save_text_for_searching">Spara text för sökning</string>
+    <string name="scale">Skala</string>
     <string name="scale_auto">Växla inställningar för automatisk skalning</string>
     <string name="scale_style">"Skala stil"</string>
     <string name="scale_width">Maximal bredd (bortse från höjd)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"Max sektionshöjd (scenläge)"</string>
     <string name="start">"Start"</string>
     <string name="start_stop_pad">"Start / stoppplatta"</string>
+    <string name="step">Steg</string>
     <string name="stop">"Sluta"</string>
     <string name="stopping">Stoppar…</string>
     <string name="storage">"Lagring"</string>
@@ -996,6 +1014,7 @@
     <string name="title">"Titel"</string>
     <string name="tool">Verktyg</string>
     <string name="top">Topp</string>
+    <string name="transducer">Givare</string>
     <string name="transition">Övergång</string>
     <string name="transpose">Införliva</string>
     <string name="transpose_capo">Transponera med capo fret change</string>
@@ -1031,6 +1050,8 @@
     <string name="video">Video</string>
     <string name="visible">Synlig</string>
     <string name="visual_metronome">"Visuell"</string>
+    <string name="vocal">Sång</string>
+    <string name="vocoder_synth">Vocoder / synth</string>
     <string name="voicelive_autosend_key">Automatisk VoiceLive-knapp</string>
     <string name="voicelive_autosend_key_info">Skicka nyckeln till låten (om inställd) till VoiceLive automatiskt när låten laddas</string>
     <string name="voicelive_info">Systemstandard för styrning av en TC Helicon VoiceLive-pedal (t.ex. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"Volym"</string>
     <string name="volume_headphone">Hörlursvolym</string>
     <string name="volume_value">"Aktuellt volymvärde"</string>
+    <string name="wah">Va</string>
     <string name="wait">"Vänta...."</string>
     <string name="web_server">Webbserver</string>
     <string name="web_server_hint">Tillåt användare utan OpenSongApp att visa dina låtar med en webbläsare</string>

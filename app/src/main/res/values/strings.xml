@@ -38,6 +38,7 @@
     <string name="alphabetical_level2">Two character alphabetical index</string>
     <string name="alphabetical_level2_info">Clicking on an item in the alphabetical index will toggle between one and two character alphabetical index</string>
     <string name="alphabetical_sort">Put items in alphabetical order</string>
+    <string name="amp">Amp</string>
     <string name="app_id" translatable="false">4E2B0891</string>
     <string name="app_name" translatable="false">OpenSongApp</string>
     <string name="app_specific_file">A file specific to OpenSongApp</string>
@@ -132,6 +133,7 @@
     <string name="bold_chords_headings">Display chords and headings in bold</string>
     <string name="bold_chorus">Display chorus in bold</string>
     <string name="book">Book</string>
+    <string name="boost">Boost</string>
     <string name="both">Both</string>
     <string name="bottom">Bottom</string>
     <string name="bpm" translatable="false">bpm</string>
@@ -176,6 +178,7 @@
     <string name="ccli_reset">Reset CCLI log</string>
     <string name="ccli_view">View CCLI log</string>
     <string name="chapter">Chapter</string>
+    <string name="choir">Choir</string>
     <string name="choose_app_mode">Choose app mode</string>
     <string name="choose_background">Click on a background to use it. Long press / right click to change it.</string>
     <string name="choose_folder">Choose folder to save file in</string>
@@ -233,6 +236,7 @@
     <string name="comment">Comment</string>
     <string name="comment_background">Comment background</string>
     <string name="commentline_scale">Scale comment text</string>
+    <string name="compressor">Compressor</string>
     <string name="confirm">Confirm</string>
     <string name="connected_display">Connected display</string>
     <string name="connected_display_description">Settings specific to Chromecast/HDMI output</string>
@@ -387,6 +391,7 @@
     <string name="deeplink_voicelive" translatable="false">https://www.opensongapp.com/?p=settings/utilities/voicelive</string>
     <string name="default_autoscroll">Default autoscroll times</string>
     <string name="default_presentation_text">Include default presentation text</string>
+    <string name="delay">Delay</string>
     <string name="delete">Delete</string>
     <string name="delete_folder_info">Delete song subdirectory</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
@@ -396,6 +401,7 @@
     <string name="display">Display</string>
     <string name="display_settings">Change display settings (what you see on screen)</string>
     <string name="divisions">Divisions</string>
+    <string name="double_string">Double</string>
     <string name="double_tap">Select double tap action</string>
     <string name="double_time">Double time</string>
     <string name="download">Download</string>
@@ -504,8 +510,12 @@
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
     <string name="half_time">Half time</string>
+    <string name="hard_tune">Hard tune</string>
     <string name="hardware_acceleration">Use hardware acceleration</string>
     <string name="hardware_acceleration_info">Turning on hardware acceleration can make scrolling smoother, however, it can cause display bugs and crashes on certain devices.</string>
+    <string name="harmony">Harmony</string>
+    <string name="harmony_hold">Harmony hold</string>
+    <string name="harmony_vibrato_boost">Harmony vibrato boost</string>
     <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>
@@ -515,6 +525,7 @@
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
     <string name="highlighter_low_memory">Your device was unable to create a screenshot of the song for previewing with the highlighter as it was too large.  Please try changing the autoscaling of the song to full or reducing the maximum font scaling size.</string>
+    <string name="hit">Hit</string>
     <string name="hot_zone_bottom_center">Bottom center</string>
     <string name="hot_zone_center_disabled">Top and bottom center hot zones will be disabled</string>
     <string name="hot_zone_left_disabled">Top left hot zone will be disabled</string>
@@ -760,6 +771,7 @@
     <string name="mode_performance" translatable="false">Performance</string>
     <string name="mode_presenter" translatable="false">Presenter</string>
     <string name="mode_stage" translatable="false">Stage</string>
+    <string name="modulation">Modulation</string>
     <string name="move_from">Move from</string>
     <string name="move_to_folder">Move to folder</string>
     <string name="music">Music</string>
@@ -805,6 +817,7 @@
     <string name="number_1" translatable="false">1</string>
     <string name="number_2" translatable="false">2</string>
     <string name="number_3" translatable="false">3</string>
+    <string name="octaver">Octaver</string>
     <string name="off">Off</string>
     <string name="okay">OK</string>
     <string name="on">On</string>
@@ -916,6 +929,7 @@
     <string name="presentation_order_info">The song presentation order is shown below.  You can drag items to rearrange the order and swipe to remove.</string>
     <string name="presentation_order_use">If presentation order exists for the song, use this to create the display</string>
     <string name="presenter_mode">Presenter mode</string>
+    <string name="preset">Preset</string>
     <string name="preso_alpha">Background opacity</string>
     <string name="prev_next_autohide">Autohide previous / next buttons</string>
     <string name="prev_next_text">Use text previous / next buttons</string>
@@ -967,11 +981,14 @@
     <string name="restore">Restore</string>
     <string name="restore_sets">Restore sets</string>
     <string name="resume">Resume</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">Rhythmic</string>
     <string name="root">ROOT</string>
     <string name="rotate_display">Rotate display</string>
     <string name="save">Save</string>
     <string name="save_changes">Save changes</string>
     <string name="save_text_for_searching">Save text for searching</string>
+    <string name="scale">Scale</string>
     <string name="scale_auto">Toggle autoscale settings</string>
     <string name="scale_style">Scale style</string>
     <string name="scale_width">Maximum width (ignoring height)</string>
@@ -1110,6 +1127,7 @@
     <string name="stage_section_max">Max section height (Stage Mode)</string>
     <string name="start">Start</string>
     <string name="start_stop_pad">Start/stop pad</string>
+    <string name="step">Step</string>
     <string name="stop">Stop</string>
     <string name="stopping">Stopping…</string>
     <string name="storage">Storage</string>
@@ -1175,6 +1193,7 @@
     <string name="title">Title</string>
     <string name="tool">Tool</string>
     <string name="top">Top</string>
+    <string name="transducer">Transducer</string>
     <string name="transition">Transition</string>
     <string name="transpose">Transpose</string>
     <string name="transpose_capo">Transpose by capo fret change</string>
@@ -1293,7 +1312,9 @@
     <string name="video">Video</string>
     <string name="visible">Visible</string>
     <string name="visual_metronome">Visual</string>
-    <string name="voicelive" translatable="false">TC Helicon VoiceLive</string>
+    <string name="vocal">Vocal</string>
+    <string name="vocoder_synth">Vocoder / synth</string>
+    <string name="voicelive" translatable="false">VoiceLive</string>
     <string name="voicelive_autosend_key">Automatic VoiceLive key</string>
     <string name="voicelive_autosend_key_info">Send the key of the song (if set) to the VoiceLive automatically when the song loads</string>
     <string name="voicelive_info">System defaults for controlling a TC Helicon VoiceLive pedal (e.g. VoiceLive Extreme 3)</string>
@@ -1310,6 +1331,7 @@
     <string name="volume">Volume</string>
     <string name="volume_headphone">Headphone volume</string>
     <string name="volume_value">Current volume value</string>
+    <string name="wah">Wah</string>
     <string name="wait">Wait....</string>
     <string name="web_server">Web server</string>
     <string name="web_server_hint">Allow users without OpenSongApp to view your songs using a web browser</string>
@@ -1422,5 +1444,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="preset_number">Preset number</string>
 </resources>

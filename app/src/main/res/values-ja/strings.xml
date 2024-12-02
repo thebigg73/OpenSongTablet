@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">2 文字のアルファベット索引</string>
     <string name="alphabetical_level2_info">アルファベット順のインデックスの項目をクリックすると、1 文字と 2 文字のアルファベット順のインデックスが切り替わります</string>
     <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
+    <string name="amp">アンプ</string>
     <string name="app_specific_file">OpenSongApp に固有のファイル</string>
     <string name="appearance_change">外観を調整します</string>
     <string name="apply_changes">変更を適用する</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">コードと見出しを太字で表示する</string>
     <string name="bold_chorus">コーラスを太字で表示</string>
     <string name="book">"本"</string>
+    <string name="boost">ブースト</string>
     <string name="both">両方</string>
     <string name="bottom">下</string>
     <string name="bridge">ブリッジ</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"CCLIログをリセットする"</string>
     <string name="ccli_view">"CCLIログを表示する"</string>
     <string name="chapter">"章"</string>
+    <string name="choir">合唱団</string>
     <string name="choose_app_mode">"アプリモードを選択する"</string>
     <string name="choose_background">背景をクリックして使用します。 長押し/右クリックして変更します。</string>
     <string name="choose_folder">"でファイルを保存するフォルダを選択してください"</string>
@@ -197,6 +200,7 @@
     <string name="comment">コメント</string>
     <string name="comment_background">"コメントの背景"</string>
     <string name="commentline_scale">"コメントテキストを拡大縮小"</string>
+    <string name="compressor">コンプレッサー</string>
     <string name="confirm">確認</string>
     <string name="connected_display">"接続されたディスプレイ"</string>
     <string name="connected_display_description">Chromecast / HDMI出力に固有の設定</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"オートスクロール速度を下げる"</string>
     <string name="default_autoscroll">"デフォルトの自動スクロール時間"</string>
     <string name="default_presentation_text">既定のプレゼンテーション テキストを含める</string>
+    <string name="delay">遅れ</string>
     <string name="delete">"デリート"</string>
     <string name="delete_folder_info">曲のサブディレクトリを削除する</string>
     <string name="delete_folder_warning">このサブディレクトリを削除すると、それに含まれるすべての曲またはフォルダも削除されます。 この変更を元に戻すことはできません！ 続行する前に、すべてのファイルのバックアップを作成して保存したことを確認してください!!!</string>
@@ -298,6 +303,7 @@
     <string name="display">"ディスプレイ"</string>
     <string name="display_settings">表示設定（画面に表示されるもの）を変更します</string>
     <string name="divisions">部門</string>
+    <string name="double_string">ダブル</string>
     <string name="double_tap">"ダブルタップアクションを選択します"</string>
     <string name="double_time">ダブルタイム</string>
     <string name="download">ダウンロード</string>
@@ -405,8 +411,12 @@
     <string name="green">緑</string>
     <string name="guitar">ギター</string>
     <string name="half_time">ハーフタイム</string>
+    <string name="hard_tune">ハードチューン</string>
     <string name="hardware_acceleration">ハードウェアアクセラレーションを使用する</string>
     <string name="hardware_acceleration_info">ハードウェアアクセラレーションをオンにすると、スクロールがスムーズになりますが、特定のデバイスで表示のバグやクラッシュが発生する可能性があります。</string>
+    <string name="harmony">調和</string>
+    <string name="harmony_hold">ハーモニーホールド</string>
+    <string name="harmony_vibrato_boost">ハーモニービブラートブースト</string>
     <string name="heading_scale">"見出しのテキストを拡大縮小"</string>
     <string name="help">"ヘルプ（オンライン）"</string>
     <string name="hex_color_code">16進カラーコード</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"蛍光ペン"</string>
     <string name="highlight_info">蛍光ペンのメモ/注釈を編集する</string>
     <string name="highlighter_low_memory">デバイスは、蛍光ペンでプレビューするための曲のスクリーンショットを作成できませんでした。 曲の自動スケーリングをフルに変更するか、最大フォントスケーリングサイズを小さくしてみてください。</string>
+    <string name="hit">打つ</string>
     <string name="hot_zone_bottom_center">中央下</string>
     <string name="hot_zone_center_disabled">上部と下部の中央のホットゾーンは無効になります</string>
     <string name="hot_zone_left_disabled">左上のホットゾーンは無効になります</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"値"</string>
     <string name="midi_velocity">"速度"</string>
     <string name="min_font_size">"好ましい最小オートスケールのフォントサイズ"</string>
+    <string name="modulation">変調</string>
     <string name="move_from">から移動</string>
     <string name="move_to_folder">フォルダへ移動</string>
     <string name="music">音楽</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">曲のフォルダを選択してください</string>
     <string name="note">"注意"</string>
     <string name="nothing_selected">何も選択されていません</string>
+    <string name="octaver">オクターバー</string>
     <string name="off">"オフ"</string>
     <string name="okay">Ok</string>
     <string name="on">"上の"</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">曲の発表順序は以下のとおりです。 アイテムをドラッグして順序を並べ替えたり、スワイプして削除したりできます。</string>
     <string name="presentation_order_use">曲の提示順序が存在する場合は、これを使用してディスプレイを作成します</string>
     <string name="presenter_mode">"プレゼンテーションモード"</string>
+    <string name="preset">プリセット</string>
     <string name="preso_alpha">背景の不透明度</string>
     <string name="prev_next_autohide">前/次のボタンを自動的に隠す</string>
     <string name="prev_next_text">テキストの前/次のボタンを使用する</string>
@@ -792,11 +806,14 @@
     <string name="restore">戻す</string>
     <string name="restore_sets">セットを復元する</string>
     <string name="resume">履歴書</string>
+    <string name="reverb">リバーブ</string>
+    <string name="rhythmic">リズミカルな</string>
     <string name="root">根</string>
     <string name="rotate_display">回転表示</string>
     <string name="save">"保存するには"</string>
     <string name="save_changes">"変更内容を保存"</string>
     <string name="save_text_for_searching">検索用のテキストを保存</string>
+    <string name="scale">規模</string>
     <string name="scale_auto">自動スケール設定を切り替える</string>
     <string name="scale_style">"スケールスタイル"</string>
     <string name="scale_width">最大幅（高さを無視）</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"セクションの最大高さ（ステージモード）"</string>
     <string name="start">"開始"</string>
     <string name="start_stop_pad">"スタート/ストップ·バックグラウンドミュージック"</string>
+    <string name="step">ステップ</string>
     <string name="stop">"停止"</string>
     <string name="stopping">停止しています…</string>
     <string name="storage">"ストレージ"</string>
@@ -996,6 +1014,7 @@
     <string name="title">"タイトル"</string>
     <string name="tool">道具</string>
     <string name="top">上</string>
+    <string name="transducer">トランスデューサー</string>
     <string name="transition">遷移</string>
     <string name="transpose">"トランスポーズ"</string>
     <string name="transpose_capo">カポフレットチェンジで移調</string>
@@ -1031,6 +1050,8 @@
     <string name="video">ビデオ</string>
     <string name="visible">見える</string>
     <string name="visual_metronome">"ビジュアル"</string>
+    <string name="vocal">ボーカル</string>
+    <string name="vocoder_synth">ボコーダー/シンセサイザー</string>
     <string name="voicelive_autosend_key">自動 VoiceLive キー</string>
     <string name="voicelive_autosend_key_info">曲のロード時に曲のキー (設定されている場合) を自動的に VoiceLive に送信します</string>
     <string name="voicelive_info">TC Helicon VoiceLive ペダルを制御するためのシステムデフォルト (VoiceLive Extreme 3 など)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"ボリューム"</string>
     <string name="volume_headphone">ヘッドホンの音量</string>
     <string name="volume_value">"現在のボリューム値"</string>
+    <string name="wah">わあ</string>
     <string name="wait">"待って...."</string>
     <string name="web_server">ウェブサーバー</string>
     <string name="web_server_hint">OpenSongApp を持たないユーザーがウェブブラウザを使用して曲を表示できるようにする</string>

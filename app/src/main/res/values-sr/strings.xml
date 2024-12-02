@@ -1055,4 +1055,26 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="vocal">Vokal</string>
+    <string name="harmony">Harmoniji</string>
+    <string name="hit">Udario</string>
+    <string name="rhythmic">Ritmički</string>
+    <string name="compressor">Kompresor</string>
+    <string name="modulation">Modulaцija</string>
+    <string name="octaver">Oktaver</string>
+    <string name="amp">Amp</string>
+    <string name="wah">Wah</string>
+    <string name="boost">Jačanje</string>
+    <string name="reverb">Reverb</string>
+    <string name="delay">Odlaganja</string>
+    <string name="scale">Skali</string>
+    <string name="harmony_vibrato_boost">Harmonija vibrato podsticaj</string>
+    <string name="harmony_hold">Harmonija drži</string>
+    <string name="vocoder_synth">Vokoder / sintisajzer</string>
+    <string name="choir">Hor</string>
+    <string name="double_string">Duplo</string>
+    <string name="hard_tune">Teška melodija</string>
+    <string name="transducer">Pretvornik</string>
+    <string name="step">Korak</string>
+    <string name="preset">Predložak</string>
 </resources>

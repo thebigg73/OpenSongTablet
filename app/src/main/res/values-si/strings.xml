@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">අක්ෂර දෙකක අකාරාදී දර්ශකය</string>
     <string name="alphabetical_level2_info">අකාරාදී දර්ශකයේ ඇති අයිතමයක් මත ක්ලික් කිරීමෙන් අක්ෂර අකාරාදී දර්ශක එක සහ දෙක අතර මාරු වේ</string>
     <string name="alphabetical_sort">අයිතම අකාරාදී පිළිවෙලට තබන්න</string>
+    <string name="amp">ඇම්ප්</string>
     <string name="app_specific_file">OpenSongApp සඳහා විශේෂිත ගොනුවක්</string>
     <string name="appearance_change">පෙනුම සකස් කරයි</string>
     <string name="apply_changes">වෙනස්කම් යොදන්න</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">යතුරු පුවරුව සහ ශීර්ෂයන් තද අකුරින් පෙන්වන්න</string>
     <string name="bold_chorus">ගායනය තද අකුරින් පෙන්වන්න</string>
     <string name="book">පොත</string>
+    <string name="boost">බූස්ට් කරන්න</string>
     <string name="both">දෙකම</string>
     <string name="bottom">පහළ</string>
     <string name="bridge">පාලම</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">CCLI ලොගය නැවත සකසන්න</string>
     <string name="ccli_view">CCLI ලොගය බලන්න</string>
     <string name="chapter">පරිච්ඡේදය</string>
+    <string name="choir">ගීතිකා කණ්ඩායම</string>
     <string name="choose_app_mode">යෙදුම් මාදිලිය තෝරන්න</string>
     <string name="choose_background">එය භාවිතා කිරීමට පසුබිමක් මත ක්ලික් කරන්න. එය වෙනස් කිරීමට දිගු ඔබන්න / දකුණු ක්ලික් කරන්න.</string>
     <string name="choose_folder">ගොනුව සුරැකීමට ෆෝල්ඩරය තෝරන්න</string>
@@ -197,6 +200,7 @@
     <string name="comment">අදහස් දක්වන්න</string>
     <string name="comment_background">අදහස් පසුබිම</string>
     <string name="commentline_scale">පරිමාණ අදහස් පෙළ</string>
+    <string name="compressor">සම්පීඩකය</string>
     <string name="confirm">තහවුරු කරන්න</string>
     <string name="connected_display">සම්බන්ධිත සංදර්ශකය</string>
     <string name="connected_display_description">Chromecast/HDMI ප්‍රතිදානය සඳහා විශේෂිත වූ සැකසීම්</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">Autoscroll Speed ​​අඩු කරන්න</string>
     <string name="default_autoscroll">පෙරනිමි ස්වයං අනුචලන වේලාවන්</string>
     <string name="default_presentation_text">පෙරනිමි ඉදිරිපත් කිරීමේ පෙළ ඇතුළත් කරන්න</string>
+    <string name="delay">ප්රමාදය</string>
     <string name="delete">මකන්න</string>
     <string name="delete_folder_info">ගීත උප බහලුම මකන්න</string>
     <string name="delete_folder_warning">ඔබ මෙම උප බහලුම මකා දැමුවහොත්, මෙය එහි අඩංගු ඕනෑම ගීත හෝ ෆෝල්ඩර මකා දමයි.  ඔබට මෙම වෙනස පසුගමනය කළ නොහැක!\n\nකරුණාකර ඉදිරියට යාමට පෙර ඔබ ඔබගේ සියලුම ගොනු උපස්ථ කර ඇති බවට වග බලා ගන්න!!!</string>
@@ -298,6 +303,7 @@
     <string name="display">ප්රදර්ශනය කරන්න</string>
     <string name="display_settings">දර්ශන සැකසුම් වෙනස් කරන්න (ඔබ තිරයේ දකින දේ)</string>
     <string name="divisions">කොට්ඨාශ</string>
+    <string name="double_string">ද්විත්ව</string>
     <string name="double_tap">ද්විත්ව තට්ටු කිරීමේ ක්‍රියාව තෝරන්න</string>
     <string name="double_time">ද්විත්ව කාලය</string>
     <string name="download">බාගත</string>
@@ -405,8 +411,12 @@
     <string name="green">කොළ</string>
     <string name="guitar">ගිටාර්</string>
     <string name="half_time">අර්ධ කාලය</string>
+    <string name="hard_tune">දැඩි තාලයක්</string>
     <string name="hardware_acceleration">දෘඪාංග ත්වරණය භාවිතා කරන්න</string>
     <string name="hardware_acceleration_info">දෘඪාංග ත්වරණය ක්‍රියාත්මක කිරීමෙන් අනුචලනය වඩාත් සුමට කළ හැක, කෙසේ වෙතත්, එය ඇතැම් උපාංගවල දර්ශන දෝෂ සහ බිඳ වැටීම් ඇති කළ හැක.</string>
+    <string name="harmony">සමගිය</string>
+    <string name="harmony_hold">සමගිය රඳවා ගැනීම</string>
+    <string name="harmony_vibrato_boost">සමගිය කම්පනය වැඩි කිරීම</string>
     <string name="heading_scale">පරිමාණ ශීර්ෂ පාඨය</string>
     <string name="help">උදව් (මාර්ගගත)</string>
     <string name="hex_color_code">Hex වර්ණ කේතය</string>
@@ -416,6 +426,7 @@
     <string name="highlight">උද්දීපනය කරන්නා</string>
     <string name="highlight_info">උද්දීපන සටහන් / විවරණ සංස්කරණය කරන්න</string>
     <string name="highlighter_low_memory">එය විශාල වැඩි බැවින් උද්දීපනය සමඟ පෙරදසුන් කිරීම සඳහා ඔබේ උපාංගයට ගීතයේ තිර රුවක් තැනීමට නොහැකි විය.  කරුණාකර ගීතයේ ස්වයංක්‍රීය පරිමාණය සම්පූර්ණයෙන්ම වෙනස් කිරීමට හෝ උපරිම අකුරු පරිමාණය ප්‍රමාණය අඩු කිරීමට උත්සාහ කරන්න.</string>
+    <string name="hit">පහර</string>
     <string name="hot_zone_bottom_center">පහළ මැද</string>
     <string name="hot_zone_center_disabled">ඉහළ සහ පහළ මධ්‍ය උණුසුම් කලාප අබල කරනු ඇත</string>
     <string name="hot_zone_left_disabled">ඉහළ වම් උණුසුම් කලාපය අබල වනු ඇත</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">අගය</string>
     <string name="midi_velocity">ප්‍රවේගය</string>
     <string name="min_font_size">කැමති අවම ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය</string>
+    <string name="modulation">මොඩියුලේෂන්</string>
     <string name="move_from">සිට ගමන් කරන්න</string>
     <string name="move_to_folder">ෆෝල්ඩරය වෙත මාරු</string>
     <string name="music">සංගීත</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">කරුණාකර ඔබේ ගීතය සඳහා ෆෝල්ඩරයක් තෝරන්න</string>
     <string name="note">සටහන</string>
     <string name="nothing_selected">කිසිවක් තෝරා නැත</string>
+    <string name="octaver">ඔක්ටවර්</string>
     <string name="off">අක්රියයි</string>
     <string name="okay">හරි</string>
     <string name="on">මත</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">ගීත ඉදිරිපත් කිරීමේ අනුපිළිවෙල පහත දැක්වේ.  ඔබට ඇණවුම නැවත සකස් කිරීමට අයිතම ඇදගෙන ගොස් ඉවත් කිරීමට ස්වයිප් කරන්න.</string>
     <string name="presentation_order_use">ගීතය සඳහා ඉදිරිපත් කිරීමේ අනුපිළිවෙල තිබේ නම්, සංදර්ශකය නිර්මාණය කිරීමට මෙය භාවිතා කරන්න</string>
     <string name="presenter_mode">ඉදිරිපත් කරන්නා මාදිලිය</string>
+    <string name="preset">පෙරසිටුවයි</string>
     <string name="preso_alpha">පසුබිම් පාරාන්ධතාව</string>
     <string name="prev_next_autohide">පෙර / ඊළඟ බොත්තම් ස්වයංක්‍රීයව සඟවන්න</string>
     <string name="prev_next_text">පෙළ පෙර / ඊළඟ බොත්තම් භාවිතා කරන්න</string>
@@ -792,11 +806,14 @@
     <string name="restore">ප්‍රතිෂ්ඨාපනය කරන්න</string>
     <string name="restore_sets">කට්ටල ප්රතිෂ්ඨාපනය කරන්න</string>
     <string name="resume">අරඹන්න</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">රිද්මයානුකූලයි</string>
     <string name="root">ROOT</string>
     <string name="rotate_display">සංදර්ශකය කරකවන්න</string>
     <string name="save">සුරකින්න</string>
     <string name="save_changes">වෙනස්කම් සුරකින්න</string>
     <string name="save_text_for_searching">සෙවීම සඳහා පෙළ සුරකින්න</string>
+    <string name="scale">පරිමාණය</string>
     <string name="scale_auto">ස්වයංක්‍රීය පරිමාණ සැකසුම් ටොගල් කරන්න</string>
     <string name="scale_style">පරිමාණ විලාසය</string>
     <string name="scale_width">උපරිම පළල (උස නොසලකා හැරීම)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">උපරිම කොටස උස (අදියර මාදිලිය)</string>
     <string name="start">ආරම්භ කරන්න</string>
     <string name="start_stop_pad">ආරම්භක/නැවතුම් පෑඩ්</string>
+    <string name="step">පියවර</string>
     <string name="stop">නවත්වන්න</string>
     <string name="stopping">නවතිනවා…</string>
     <string name="storage">ගබඞා</string>
@@ -996,6 +1014,7 @@
     <string name="title">ශීර්ෂය</string>
     <string name="tool">මෙවලම</string>
     <string name="top">ඉහල</string>
+    <string name="transducer">පරිවර්තකය</string>
     <string name="transition">සංක්රමණය</string>
     <string name="transpose">මාරු කරන්න</string>
     <string name="transpose_capo">කපෝ ෆ්‍රෙට් වෙනස් කිරීම මගින් මාරු කරන්න</string>
@@ -1031,6 +1050,8 @@
     <string name="video">වීඩියෝ</string>
     <string name="visible">දෘශ්‍යමානයි</string>
     <string name="visual_metronome">දෘශ්ය</string>
+    <string name="vocal">කටහඬ</string>
+    <string name="vocoder_synth">Vocoder / synth</string>
     <string name="voicelive_autosend_key">ස්වයංක්‍රීය VoiceLive යතුර</string>
     <string name="voicelive_autosend_key_info">ගීතය පූරණය වන විට ගීතයේ යතුර (සකසන්නේ නම්) VoiceLive වෙත ස්වයංක්‍රීයව යවන්න</string>
     <string name="voicelive_info">TC Helicon VoiceLive පැඩලයක් පාලනය කිරීම සඳහා පද්ධති පෙරනිමි (උදා. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">පරිමාව</string>
     <string name="volume_headphone">හෙඩ්ෆෝන් පරිමාව</string>
     <string name="volume_value">වත්මන් පරිමාව අගය</string>
+    <string name="wah">වාහ්</string>
     <string name="wait">ඉන්න....</string>
     <string name="web_server">වෙබ් සේවාදායකය</string>
     <string name="web_server_hint">OpenSongApp නොමැති පරිශීලකයින්ට වෙබ් බ්‍රවුසරයක් භාවිතයෙන් ඔබේ ගීත බැලීමට ඉඩ දෙන්න</string>

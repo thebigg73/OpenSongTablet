@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">两个字符的字母索引</string>
     <string name="alphabetical_level2_info">单击字母索引中的项目将在一个和两个字符的字母索引之间切换</string>
     <string name="alphabetical_sort">按字母顺序放置项目</string>
+    <string name="amp">放大器</string>
     <string name="app_specific_file">特定于 OpenSongApp 的文件</string>
     <string name="appearance_change">调整外观</string>
     <string name="apply_changes">应用更改</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">以粗体显示和弦和标题</string>
     <string name="bold_chorus">以粗体显示合唱</string>
     <string name="book">"书"</string>
+    <string name="boost">促进</string>
     <string name="both">两个都</string>
     <string name="bottom">底部</string>
     <string name="bridge">桥梁</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"重置CCLI日志"</string>
     <string name="ccli_view">"查看CCLI日志"</string>
     <string name="chapter">"章节"</string>
+    <string name="choir">唱诗班</string>
     <string name="choose_app_mode">"选择应用模式"</string>
     <string name="choose_background">单击背景以使用它。 长按/右键更改。</string>
     <string name="choose_folder">"选择文件夹保存文件"</string>
@@ -197,6 +200,7 @@
     <string name="comment">评论</string>
     <string name="comment_background">"评论背景"</string>
     <string name="commentline_scale">"缩放注释文本"</string>
+    <string name="compressor">压缩机</string>
     <string name="confirm">确认</string>
     <string name="connected_display">"连接显示"</string>
     <string name="connected_display_description">特定于Chromecast / HDMI输出的设置</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"降低自动滚动速度"</string>
     <string name="default_autoscroll">"默认自动滚屏次"</string>
     <string name="default_presentation_text">包括默认演示文稿文本</string>
+    <string name="delay">延迟</string>
     <string name="delete">"删除"</string>
     <string name="delete_folder_info">删除歌曲子目录</string>
     <string name="delete_folder_warning">如果删除此子目录，这还将删除它包含的所有歌曲或文件夹。 您无法撤消此更改！</string>
@@ -298,6 +303,7 @@
     <string name="display">"显示"</string>
     <string name="display_settings">更改显示设置（您在屏幕上看到的内容）</string>
     <string name="divisions">部门</string>
+    <string name="double_string">双倍的</string>
     <string name="double_tap">"选择双击动作"</string>
     <string name="double_time">双倍时间</string>
     <string name="download">下载</string>
@@ -405,8 +411,12 @@
     <string name="green">绿</string>
     <string name="guitar">吉他</string>
     <string name="half_time">中场休息</string>
+    <string name="hard_tune">硬调</string>
     <string name="hardware_acceleration">使用硬件加速</string>
     <string name="hardware_acceleration_info">打开硬件加速可以使滚动更顺畅，但是，它可能会导致某些设备上的显示错误和崩溃。</string>
+    <string name="harmony">和谐</string>
+    <string name="harmony_hold">和谐保持</string>
+    <string name="harmony_vibrato_boost">和谐颤音增强</string>
     <string name="heading_scale">"缩放标题文本"</string>
     <string name="help">"帮助（在线）"</string>
     <string name="hex_color_code">十六进制颜色代码</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"荧光笔"</string>
     <string name="highlight_info">编辑荧光笔注释/注释</string>
     <string name="highlighter_low_memory">您的设备无法创建歌曲的屏幕截图，以便使用荧光笔预览，因为它太大。 请尝试将歌曲的自动缩放更改为完整或减小最大字体缩放大小。</string>
+    <string name="hit">打</string>
     <string name="hot_zone_bottom_center">底部中心</string>
     <string name="hot_zone_center_disabled">顶部和底部中心热区将被禁用</string>
     <string name="hot_zone_left_disabled">左上角的热区将被禁用</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"值"</string>
     <string name="midi_velocity">"速度"</string>
     <string name="min_font_size">"首选最小自动缩放字体大小"</string>
+    <string name="modulation">调制</string>
     <string name="move_from">从移动</string>
     <string name="move_to_folder">移到文件夹</string>
     <string name="music">音乐</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">请为您的歌曲选择一个文件夹</string>
     <string name="note">"注意"</string>
     <string name="nothing_selected">未选择任何内容</string>
+    <string name="octaver">八度</string>
     <string name="off">"关闭"</string>
     <string name="okay">行</string>
     <string name="on">"打开"</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">歌曲呈现顺序如下所示。 您可以拖动项目以重新排列顺序并滑动以删除。</string>
     <string name="presentation_order_use">如果歌曲存在演示顺序，则使用它来创建显示</string>
     <string name="presenter_mode">"演示模式"</string>
+    <string name="preset">预设</string>
     <string name="preso_alpha">背景透明度</string>
     <string name="prev_next_autohide">自动隐藏上一个/下一个按钮</string>
     <string name="prev_next_text">使用文本上一个/下一个按钮</string>
@@ -792,11 +806,14 @@
     <string name="restore">恢复</string>
     <string name="restore_sets">恢复集</string>
     <string name="resume">恢复</string>
+    <string name="reverb">混响</string>
+    <string name="rhythmic">有节奏的</string>
     <string name="root">根</string>
     <string name="rotate_display">旋转显示</string>
     <string name="save">"为了节省"</string>
     <string name="save_changes">"保存更改"</string>
     <string name="save_text_for_searching">保存文本以供搜索</string>
+    <string name="scale">规模</string>
     <string name="scale_auto">Wissel outoskaalinstellings</string>
     <string name="scale_style">"缩放风格"</string>
     <string name="scale_width">最大宽度（忽略高度）</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"最大截面高度（舞台模式）"</string>
     <string name="start">" 开始"</string>
     <string name="start_stop_pad">"启动/停止背景音乐"</string>
+    <string name="step">步</string>
     <string name="stop">"站住"</string>
     <string name="stopping">停止…</string>
     <string name="storage">"存储"</string>
@@ -996,6 +1014,7 @@
     <string name="title">"称号"</string>
     <string name="tool">工具</string>
     <string name="top">最佳</string>
+    <string name="transducer">传感器</string>
     <string name="transition">过渡</string>
     <string name="transpose">"移调"</string>
     <string name="transpose_capo">通过变调夹改变移调</string>
@@ -1031,6 +1050,8 @@
     <string name="video">视频</string>
     <string name="visible">可见的</string>
     <string name="visual_metronome">"视觉"</string>
+    <string name="vocal">声乐</string>
+    <string name="vocoder_synth">声码器/合成器</string>
     <string name="voicelive">TC Helicon VoiceLive</string>
     <string name="voicelive_autosend_key">自动 VoiceLive 键</string>
     <string name="voicelive_autosend_key_info">歌曲加载时自动将歌曲的调（如果设置）发送到 VoiceLive</string>
@@ -1042,6 +1063,7 @@
     <string name="volume">"音量"</string>
     <string name="volume_headphone">Koptelefoon volume</string>
     <string name="volume_value">"当前音量值"</string>
+    <string name="wah">哇</string>
     <string name="wait">"等待...."</string>
     <string name="web_server">网页服务器</string>
     <string name="web_server_hint">允许没有OpenSongApp的用户使用网络浏览器查看您的歌曲</string>

@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Двозначний алфавітний покажчик</string>
     <string name="alphabetical_level2_info">Натискання елемента в алфавітному покажчику перемикає алфавітний індекс з одного та двох символів</string>
     <string name="alphabetical_sort">Розставте предмети в алфавітному порядку</string>
+    <string name="amp">підсилювач</string>
     <string name="app_specific_file">Спеціальний файл для OpenSongApp</string>
     <string name="appearance_change">Коригує зовнішній вигляд</string>
     <string name="apply_changes">Застосувати зміни</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Акорди та заголовки відображаються жирним шрифтом</string>
     <string name="bold_chorus">Виділення приспіву жирним шрифтом</string>
     <string name="book">Книга</string>
+    <string name="boost">Підвищення</string>
     <string name="both">Обидва</string>
     <string name="bottom">Дно</string>
     <string name="bridge">Міст</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">Скинути журнал CCLI</string>
     <string name="ccli_view">Перегляд журналу CCLI</string>
     <string name="chapter">Rлава</string>
+    <string name="choir">Хор</string>
     <string name="choose_app_mode">Виберіть режим додатки</string>
     <string name="choose_background">Натисніть на фон, щоб використовувати його. Довго натискайте / клацніть правою кнопкою миші, щоб змінити його.</string>
     <string name="choose_folder">Виберіть папку для збереження файлу в</string>
@@ -197,6 +200,7 @@
     <string name="comment">Коментар</string>
     <string name="comment_background">Фон коментаря</string>
     <string name="commentline_scale">Розмір тексту коментаря</string>
+    <string name="compressor">Компресор</string>
     <string name="confirm">Підтвердьте</string>
     <string name="connected_display">Підключений дисплей</string>
     <string name="connected_display_description">Налаштування, специфічні для виходу Chromecast/HDMI</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">Зменшити швидкість автопрокрутки</string>
     <string name="default_autoscroll">Автопрокрутка за замовчуванням</string>
     <string name="default_presentation_text">Включення тексту презентації за промовчанням</string>
+    <string name="delay">Затримка</string>
     <string name="delete">Видалення</string>
     <string name="delete_folder_info">Видалити підкаталог пісень</string>
     <string name="delete_folder_warning">Якщо ви видалите цей підкаталог, це також видалить усі пісні та папки, які він містить. Ви не можете скасувати цю зміну!  Будь ласка, переконайтеся, що ви зробили та зберегли резервні копії УСІХ ваших файлів, перш ніж продовжити!!!</string>
@@ -298,6 +303,7 @@
     <string name="display">Дисплей</string>
     <string name="display_settings">Змінити налаштування дисплея (те, що ви бачите на екрані)</string>
     <string name="divisions">Дивізії</string>
+    <string name="double_string">Двомісний</string>
     <string name="double_tap">Дія при подвійному торканні</string>
     <string name="double_time">Подвійний час</string>
     <string name="download">Завантажити</string>
@@ -405,8 +411,12 @@
     <string name="green">Зелений</string>
     <string name="guitar">Гітара</string>
     <string name="half_time">Половина часу</string>
+    <string name="hard_tune">Жорстка мелодія</string>
     <string name="hardware_acceleration">Використання апаратного прискорення</string>
     <string name="hardware_acceleration_info">Увімкнення апаратного прискорення може зробити прокрутку плавнішою, однак це може спричинити помилки відображення та збої на певних пристроях.</string>
+    <string name="harmony">Гармонія</string>
+    <string name="harmony_hold">Тримайте гармонію</string>
+    <string name="harmony_vibrato_boost">Посилення гармонії вібрато</string>
     <string name="heading_scale">Розмір тексту заголовка</string>
     <string name="help">Допомога (онлайн)</string>
     <string name="hex_color_code">Шістнадцятковий код кольору</string>
@@ -416,6 +426,7 @@
     <string name="highlight">Маркер</string>
     <string name="highlight_info">Редагувати примітки/анотації маркера</string>
     <string name="highlighter_low_memory">Ваш пристрій не зміг створити знімок екрана пісні для попереднього перегляду за допомогою маркера, оскільки він був занадто великим.  Будь ласка, спробуйте змінити автоматичне масштабування пісні на повне або зменшити максимальний розмір масштабування шрифту.</string>
+    <string name="hit">удар</string>
     <string name="hot_zone_bottom_center">Нижній центр</string>
     <string name="hot_zone_center_disabled">Гарячі зони зверху та знизу по центру будуть вимкнені</string>
     <string name="hot_zone_left_disabled">Верхня ліва гаряча зона буде вимкнена</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">Значення</string>
     <string name="midi_velocity">Швидкість</string>
     <string name="min_font_size">Кращий мінімальний розмір шрифту при Автомасштабування</string>
+    <string name="modulation">Модуляція</string>
     <string name="move_from">Перейти з</string>
     <string name="move_to_folder">Перемістити в папку</string>
     <string name="music">музика</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Виберіть папку для вашої пісні</string>
     <string name="note">Зберегти</string>
     <string name="nothing_selected">Нічого не вибрано</string>
+    <string name="octaver">октавер</string>
     <string name="off">Вимк</string>
     <string name="okay">OK</string>
     <string name="on">Вкл</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">Порядок презентації пісні наведено нижче. Ви можете перетягнути елементи, щоб змінити порядок, і провести пальцем, щоб видалити.</string>
     <string name="presentation_order_use">Якщо для пісні існує порядок презентації, використовуйте його для створення дисплея</string>
     <string name="presenter_mode">Режим презентації</string>
+    <string name="preset">Попереднє налаштування</string>
     <string name="preso_alpha">Прозорість фону</string>
     <string name="prev_next_autohide">Автоматично приховувати кнопки «попередній/наступний».</string>
     <string name="prev_next_text">Використовуйте текстові кнопки «попередній/наступний».</string>
@@ -792,11 +806,14 @@
     <string name="restore">Відновлення</string>
     <string name="restore_sets">Відновлення наборів</string>
     <string name="resume">Резюме</string>
+    <string name="reverb">Реверберація</string>
+    <string name="rhythmic">Ритмічний</string>
     <string name="root">КОРІНЬ</string>
     <string name="rotate_display">Повернути дисплей</string>
     <string name="save">Збережемо</string>
     <string name="save_changes">Зберегти зміни</string>
     <string name="save_text_for_searching">Збережіть текст для пошуку</string>
+    <string name="scale">масштаб</string>
     <string name="scale_auto">Перемикання налаштувань автомасштабування</string>
     <string name="scale_style">Стиль масштабу</string>
     <string name="scale_width">Максимальна ширина (без урахування висоти)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">Максимальна висота секції (режим Сцени)</string>
     <string name="start">Пуск</string>
     <string name="start_stop_pad">Пуск/стоп панель</string>
+    <string name="step">Крок</string>
     <string name="stop">Стоп</string>
     <string name="stopping">Зупинка…</string>
     <string name="storage">Сховище</string>
@@ -996,6 +1014,7 @@
     <string name="title">Hазва</string>
     <string name="tool">Інструмент</string>
     <string name="top">Верх</string>
+    <string name="transducer">Перетворювач</string>
     <string name="transition">Перехід</string>
     <string name="transpose">Транспонування</string>
     <string name="transpose_capo">Транспонування за допомогою зміни ладу капо</string>
@@ -1031,6 +1050,8 @@
     <string name="video">Відео</string>
     <string name="visible">Видно</string>
     <string name="visual_metronome">Візуальний метроном</string>
+    <string name="vocal">Вокал</string>
+    <string name="vocoder_synth">Вокодер / синтезатор</string>
     <string name="voicelive_autosend_key">Автоматичний ключ VoiceLive</string>
     <string name="voicelive_autosend_key_info">Автоматично надсилайте ключ пісні (якщо встановлено) до VoiceLive, коли пісня завантажується</string>
     <string name="voicelive_info">Системні параметри за замовчуванням для керування педаллю TC Helicon VoiceLive (наприклад, VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">Гучність</string>
     <string name="volume_headphone">Гучність навушників</string>
     <string name="volume_value">Поточне значення гучності</string>
+    <string name="wah">вау</string>
     <string name="wait">Зачекайте ....</string>
     <string name="web_server">Веб-сервер</string>
     <string name="web_server_hint">Дозвольте користувачам без OpenSongApp переглядати ваші пісні за допомогою веб-браузера</string>

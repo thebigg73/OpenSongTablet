@@ -36,6 +36,7 @@
     <string name="alphabetical_level2">Dvouznakový abecední rejstřík</string>
     <string name="alphabetical_level2_info">Kliknutím na položku v abecedním rejstříku přepnete mezi jedno a dvouznakovým abecedním rejstříkem</string>
     <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
+    <string name="amp">Amp</string>
     <string name="app_specific_file">Soubor specifický pro OpenSongApp</string>
     <string name="appearance_change">Upravuje vzhled</string>
     <string name="apply_changes">Aplikuj změny</string>
@@ -127,6 +128,7 @@
     <string name="bold_chords_headings">Zobrazit akordy a nadpisy tučně</string>
     <string name="bold_chorus">Zobrazit refrén tučně</string>
     <string name="book">"Rezervovat"</string>
+    <string name="boost">Posílit</string>
     <string name="both">Oba</string>
     <string name="bottom">Dno</string>
     <string name="bridge">Přechod</string>
@@ -154,6 +156,7 @@
     <string name="ccli_reset">"Obnovit protokol CCLI"</string>
     <string name="ccli_view">"Zobrazit protokol CCLI"</string>
     <string name="chapter">"Kapitola"</string>
+    <string name="choir">Pěvecký sbor</string>
     <string name="choose_app_mode">"Vyberte režim aplikace"</string>
     <string name="choose_background">Klepnutím na pozadí jej použijete. Dlouhým stisknutím / pravým kliknutím jej změníte.</string>
     <string name="choose_folder">"Vyberte složku pro uložení souboru v"</string>
@@ -197,6 +200,7 @@
     <string name="comment">Komentář</string>
     <string name="comment_background">"Komentář pozadí"</string>
     <string name="commentline_scale">"Měřítko text komentáře"</string>
+    <string name="compressor">Kompresor</string>
     <string name="confirm">Potvrdit</string>
     <string name="connected_display">"Připojený displej"</string>
     <string name="connected_display_description">Nastavení specifická pro výstup Chromecast / HDMI</string>
@@ -289,6 +293,7 @@
     <string name="dec_autoscroll_speed">"Snížit rychlost Autoscroll Speed"</string>
     <string name="default_autoscroll">"Krát Výchozí AutoScroll"</string>
     <string name="default_presentation_text">Zahrnout výchozí text prezentace</string>
+    <string name="delay">Zpoždění</string>
     <string name="delete">"Odstranit"</string>
     <string name="delete_folder_info">Smazat podadresář skladby</string>
     <string name="delete_folder_warning">Pokud odstraníte tento podadresář, budou odstraněny také všechny skladby nebo složky, které obsahuje. Tuto změnu nelze vrátit zpět!</string>
@@ -298,6 +303,7 @@
     <string name="display">Zobrazit</string>
     <string name="display_settings">Změna nastavení zobrazení (to, co vidíte na obrazovce)</string>
     <string name="divisions">Divize</string>
+    <string name="double_string">Dvojnásobek</string>
     <string name="double_tap">"Vyberte dvojí akci klepněte na položku"</string>
     <string name="double_time">Dvojnásobný čas</string>
     <string name="download">Stažení</string>
@@ -405,8 +411,12 @@
     <string name="green">Zelená</string>
     <string name="guitar">Kytara</string>
     <string name="half_time">Poločas</string>
+    <string name="hard_tune">Tvrdá melodie</string>
     <string name="hardware_acceleration">Použití hardwarové akcelerace</string>
     <string name="hardware_acceleration_info">Zapnutí hardwarové akcelerace může zajistit plynulejší posouvání, ale na některých zařízeních může způsobit chyby zobrazení a pády.</string>
+    <string name="harmony">Harmonie</string>
+    <string name="harmony_hold">Harmonie drží</string>
+    <string name="harmony_vibrato_boost">Posílení vibrata Harmony</string>
     <string name="heading_scale">"Měřítko textu záhlaví"</string>
     <string name="help">"Help (online)"</string>
     <string name="hex_color_code">Hexadecimální kód barvy</string>
@@ -416,6 +426,7 @@
     <string name="highlight">"Zvýrazňovač"</string>
     <string name="highlight_info">Upravit poznámky / anotace zvýrazňovače</string>
     <string name="highlighter_low_memory">Vaše zařízení nedokázalo vytvořit snímek obrazovky skladby pro náhled pomocí zvýrazňovače, protože byl příliš velký.  Zkuste změnit automatické měřítko skladby na plné nebo zmenšit maximální velikost měřítka písma.</string>
+    <string name="hit">Hit</string>
     <string name="hot_zone_bottom_center">Dolní střed</string>
     <string name="hot_zone_center_disabled">Horké zóny horního a dolního středu budou zakázány</string>
     <string name="hot_zone_left_disabled">Vlevo nahoře bude horká zóna deaktivována</string>
@@ -597,6 +608,7 @@
     <string name="midi_value">"Hodnota"</string>
     <string name="midi_velocity">"Rychlost"</string>
     <string name="min_font_size">"Preferovaný minimální velikost písma Autoscale"</string>
+    <string name="modulation">Modulace</string>
     <string name="move_from">Odstěhovat se</string>
     <string name="move_to_folder">Přesunout do složky</string>
     <string name="music">Hudba</string>
@@ -639,6 +651,7 @@
     <string name="not_saved_folder">Vyberte prosím složku pro vaši skladbu</string>
     <string name="note">"Poznámka"</string>
     <string name="nothing_selected">Není vybráno nic</string>
+    <string name="octaver">Oktáver</string>
     <string name="off">Vypnuto</string>
     <string name="okay">OK</string>
     <string name="on">Zapnuto</string>
@@ -741,6 +754,7 @@
     <string name="presentation_order_info">Pořadí prezentace skladeb je uvedeno níže. Přetažením položek můžete změnit pořadí a přejetím prstem odstranit.</string>
     <string name="presentation_order_use">Pokud pro skladbu existuje pořadí prezentace, použijte toto k vytvoření zobrazení</string>
     <string name="presenter_mode">"Režim prezentace"</string>
+    <string name="preset">Přednastaveno</string>
     <string name="preso_alpha">Pozadí neprůhlednost</string>
     <string name="prev_next_autohide">Automaticky skrýt předchozí / další tlačítka</string>
     <string name="prev_next_text">Použijte tlačítka text předchozí / další</string>
@@ -792,11 +806,14 @@
     <string name="restore">Obnovit</string>
     <string name="restore_sets">Obnovit sady</string>
     <string name="resume">Životopis</string>
+    <string name="reverb">Reverb</string>
+    <string name="rhythmic">Rytmický</string>
     <string name="root">VYKOŘENIT</string>
     <string name="rotate_display">Otočení displeje</string>
     <string name="save">"Zachránit"</string>
     <string name="save_changes">"Uložit změny"</string>
     <string name="save_text_for_searching">Uložte text pro vyhledávání</string>
+    <string name="scale">Měřítko</string>
     <string name="scale_auto">Přepnout nastavení automatického měřítka</string>
     <string name="scale_style">"Stupnice měřítka"</string>
     <string name="scale_width">Maximální šířka (bez ohledu na výšku)</string>
@@ -932,6 +949,7 @@
     <string name="stage_section_max">"Maximální výška sekce (Režim fáze)"</string>
     <string name="start">"Počátek"</string>
     <string name="start_stop_pad">"Start / zastavit hudba na pozadí"</string>
+    <string name="step">Krok</string>
     <string name="stop">"Zastavení"</string>
     <string name="stopping">Zastavení…</string>
     <string name="storage">Skladování</string>
@@ -996,6 +1014,7 @@
     <string name="title">Nadpis</string>
     <string name="tool">Nástroj</string>
     <string name="top">Horní</string>
+    <string name="transducer">Převodník</string>
     <string name="transition">Přechod</string>
     <string name="transpose">"Transpozice"</string>
     <string name="transpose_capo">Transponujte změnou capo pražce</string>
@@ -1031,6 +1050,8 @@
     <string name="video">Video</string>
     <string name="visible">Viditelné</string>
     <string name="visual_metronome">"Vizuální"</string>
+    <string name="vocal">Hlasitý</string>
+    <string name="vocoder_synth">Vokodér / syntezátor</string>
     <string name="voicelive_autosend_key">Automatická klávesa VoiceLive</string>
     <string name="voicelive_autosend_key_info">Odešlete klíč skladby (pokud je nastaven) do VoiceLive automaticky, když se skladba načte</string>
     <string name="voicelive_info">Výchozí nastavení systému pro ovládání pedálu TC Helicon VoiceLive (např. VoiceLive Extreme 3)</string>
@@ -1041,6 +1062,7 @@
     <string name="volume">"Hlasitost"</string>
     <string name="volume_headphone">Hlasitost sluchátek</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>
+    <string name="wah">Wah</string>
     <string name="wait">"Počkejte ...."</string>
     <string name="web_server">Webový server</string>
     <string name="web_server_hint">Umožněte uživatelům bez OpenSongApp prohlížet vaše skladby pomocí webového prohlížeče</string>
