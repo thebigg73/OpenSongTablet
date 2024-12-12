@@ -89,6 +89,8 @@ public class ProcessSong {
     private boolean multilineSong;
     private boolean forceColumns;
     private boolean makingScaledScreenShot;
+    private boolean pdfPrinting;
+    private boolean forceSinglePagePDF;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha, lineSpacing;
     public float scaleChords, scaleHeadings, scaleComments, scaleTabs;
     private String songAutoScale;
@@ -2642,7 +2644,7 @@ public class ProcessSong {
     }
 
     // v6 logic that splits always by the biggest scaling arrangement
-    private float[] columnSplitAlgorithm(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
+    private float[] columnSplitAlgorithm(Song thisSong, ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
                                          int availableWidth, int availableHeight, String autoScale,
                                          boolean forceColumns, int[] forceColumnInfo, boolean presentation) {
         // An updated algorithm to calculate the best way to split a song into columns
@@ -2650,7 +2652,7 @@ public class ProcessSong {
         // v6 algorithm uses the actual section widths and heights.
         // This fudge factor is effectively a percentage of the running total subtracted from the best so far
         // This favours more in column 1.  It doesn't need much!!  1% is a little too high.
-        float fudgeFactor = 0.005f;
+        float fudgeFactor = 0.001f;
 
         // Prepare the return float.  [0]=num columns best
         float[] returnFloats = null;
@@ -2668,7 +2670,7 @@ public class ProcessSong {
         boolean stageOrPresenter = (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) && !presentation;
 
-        if ((performance || stageOrPresenter) && addSectionSpace && !mainActivityInterface.getMakePDF().getIsSetListPrinting()) {
+        if ((performance || stageOrPresenter) && addSectionSpace && (!mainActivityInterface.getMakePDF().getIsSetListPrinting() || pdfPrinting)) {
             sectionSpace = (int) (0.75 * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, defFontSize, c.getResources().getDisplayMetrics()));
             if (sectionHeights.size() > 1) {
                 totalSectionSpace = sectionSpace * (sectionHeights.size() - 1);
@@ -2690,6 +2692,9 @@ public class ProcessSong {
         // Firstly, work out the scaling for one column
         int col1_1Width = getMaxValue(sectionWidths, 0, sectionWidths.size());
         int col1_1Height = getTotal(sectionHeights, 0, sectionHeights.size()) + totalSectionSpace;
+        if (mainActivityInterface.getStorageAccess().isIMGorPDF(thisSong.getFilename())) {
+            col1_1Height = sectionHeights.get(0);
+        }
         float col1_1XScale = (float) availableWidth / (float) col1_1Width;
         float col1_1YScale = (float) availableHeight / (float) col1_1Height;
         float oneColumnScale = Math.min(col1_1XScale, col1_1YScale);
@@ -2703,7 +2708,10 @@ public class ProcessSong {
         int col1_2Height = 0, col2_2Height = 0, col1_3Height = 0, col2_3Height = 0, col3_3Height = 0;
 
         // Only need to work out 2/3 columns if full autoscaling, or we have force splitpoints
-        if (autoScale.equals("Y") || (presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
+
+        boolean isSongList = thisSong.getUser1()!=null && thisSong.getUser1().equals("PRINT_SONG_LIST");
+
+        if (!isSongList && !mainActivityInterface.getStorageAccess().isIMGorPDF(thisSong.getFilename()) && (autoScale.equals("Y") || (pdfPrinting && forceSinglePagePDF) || (presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))))) {
 
             if (forceColumns && forceColumnInfo != null && forceColumnInfo[0] != 1) {
                 if (forceColumnInfo[0] == 2) {
@@ -3026,7 +3034,7 @@ public class ProcessSong {
         int[] forceColumnsInfo = new int[]{cols,split1,split2};
 
         // Figure out the best option of 1,2 or 3 columns and how to arrange them
-        float[] columnInfo = columnSplitAlgorithm(sectionWidths, sectionHeights, availableWidth,
+        float[] columnInfo = columnSplitAlgorithm(thisSong, sectionWidths, sectionHeights, availableWidth,
                 availableHeight-songSheetTitleHeight,songAutoScale,
                 doForceColumns, forceColumnsInfo, presentation);
 
@@ -3062,6 +3070,83 @@ public class ProcessSong {
 
         return columnInfo;
     }
+
+
+
+
+
+
+    public float[] getPDFColumnInfo(Song thisSong, ArrayList<View> sectionViews,
+                                    ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
+                                    int availableWidth, int availableHeight,
+                                    boolean presentation, DisplayMetrics displayMetrics) {
+
+        updateProcessingPreferences();
+
+        // Now we have all the sizes in, determines the best way to show the song
+        // This will be single, two or three columns.  The best one will be the one
+        // which gives the best scale size
+
+        // Set the padding and boxpadding from 8dp to px
+        float scale = displayMetrics.density;
+        padding = (int) (4 * scale);
+
+        // Reset any scaling of the views
+        for (int i=0; i<sectionViews.size(); i++) {
+            sectionViews.get(i).setScaleX(1f);
+            sectionViews.get(i).setScaleY(1f);
+        }
+
+        String thisAutoScale = songAutoScale;
+
+        // A request to force columns (still a maximum of 3 allowed though)
+        boolean doForceColumns = false;
+        int cols = 1;
+        int split1 = -1;
+        int split2 = -1;
+        ArrayList<Integer> sectionswithbreak = new ArrayList<>();
+        if (thisSong==null) {
+            thisSong = new Song();
+        }
+        if (thisSong.getLyrics()==null) {
+            thisSong.setLyrics("");
+        }
+
+        if (thisAutoScale.equals("Y") && forceColumns && (thisSong.getLyrics().contains("!--")||thisSong.getLyrics().contains(columnbreak_string))) {
+            // The song sections will have the page break at the start.
+            // Count the columns forced (max of 3 though!!!).
+            // Need to count the sections
+            for (int x=0; x<thisSong.getPresoOrderSongSections().size();x++) {
+                String section = thisSong.getPresoOrderSongSections().get(x);
+                if (section.contains(columnbreak_string)) {
+                    sectionswithbreak.add(x+1); // Add afterwards
+                    if (split1==-1) {
+                        split1 = x+1;
+                    } else if (split2==-1) {
+                        split2 = x+1;
+                    }
+                }
+
+            }
+            if (!sectionswithbreak.isEmpty()) {
+                doForceColumns = true;
+                if (sectionswithbreak.size()==1) {
+                    cols=2;
+                } else {
+                    cols=3;  // The max allowed
+                }
+            }
+        }
+        int[] forceColumnsInfo = new int[]{cols,split1,split2};
+
+        // Figure out the best option of 1,2 or 3 columns and how to arrange them
+        return columnSplitAlgorithm(thisSong, sectionWidths, sectionHeights, availableWidth,
+                availableHeight,songAutoScale,
+                doForceColumns, forceColumnsInfo, presentation);
+    }
+
+
+
 
 
     // 1 column stuff
@@ -3366,6 +3451,14 @@ public class ProcessSong {
             }
         }
         return false;
+    }
+
+    public void setPdfPrinting(boolean pdfPrinting) {
+        this.pdfPrinting = pdfPrinting;
+    }
+
+    public void setForceSinglePagePDF(boolean forceSinglePagePDF) {
+        this.forceSinglePagePDF = forceSinglePagePDF;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -3954,7 +4047,6 @@ public class ProcessSong {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @SuppressWarnings("unused")
     public ArrayList<ImageView> getPDFAsImageViews(Context c, Uri pdfUri) {
         ArrayList<ImageView> imageViews = new ArrayList<>();
 
@@ -3967,6 +4059,8 @@ public class ProcessSong {
             } else {
                 totalPages = 0;
             }
+
+            // Get the bitmap size
 
             if (pdfRenderer != null) {
                 for (int x = 0; x < totalPages; x++) {

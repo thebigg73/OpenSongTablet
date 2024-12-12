@@ -70,6 +70,7 @@ public class ExportFragment extends Fragment {
             custom1_string="", custom2_string="", pdf_print_string="";
     private StringBuilder combinedSetText;
     private String currentSongFolder, currentSongFile;
+    private Song tempSong;
 
     @Override
     public void onResume() {
@@ -102,6 +103,9 @@ public class ExportFragment extends Fragment {
         // Get a note of the currently loaded song so we can force it back onDestroy()
         currentSongFolder = mainActivityInterface.getSong().getFolder();
         currentSongFile = mainActivityInterface.getSong().getFilename();
+
+        // Clear the PDF printing
+        mainActivityInterface.getProcessSong().setPdfPrinting(false);
 
         prepareStrings();
 
@@ -153,14 +157,13 @@ public class ExportFragment extends Fragment {
         myView.print.setOnClickListener(v -> mainActivityInterface.getThreadPoolExecutor().execute(() -> {
 
             isPrint = true;
+            mainActivityInterface.getProcessSong().setPdfPrinting(true);
+            mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
             if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
                 doPrint(true);
             } else {
-                if (sectionViewsPDF == null || sectionViewsPDF.isEmpty()) {
-                    createOnTheFly(mainActivityInterface.getSong(), mainActivityInterface.getSong().getFilename() + ".pdf");
-                } else {
-                    doPrint(false);
-                }
+                tempSong = mainActivityInterface.getSong();
+                doPrint(false);
             }
         }));
         myView.maxPDFScaling.addOnChangeListener((slider, value, fromUser) -> updatePDFMaxScaling((int)value));
@@ -804,12 +807,15 @@ public class ExportFragment extends Fragment {
     }
 
     private void renderPDFSet() {
+        mainActivityInterface.getProcessSong().setPdfPrinting(true);
+        mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
+
         songsProcessed = 0;
         setPDFDone = false;
         setPNGDone = false;
         if (setPDF || setPNG) {
             mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
-            Song tempSong = new Song();
+            tempSong = new Song();
             tempSong.setTitle(setToExport);
             String[] items = setData[1].split("\n");
             StringBuilder setItems = new StringBuilder();
@@ -824,6 +830,8 @@ public class ExportFragment extends Fragment {
     }
 
     private void renderPDFSongs() {
+        mainActivityInterface.getProcessSong().setPdfPrinting(true);
+        mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
         mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
         // Go through the songs if we are adding them as pdfs until we have processed all
         if (ids==null) {
@@ -848,25 +856,24 @@ public class ExportFragment extends Fragment {
                 } else {
                     updateProgressText(location[1] + ".pdf", songsProcessed + 1, ids.length);
                 }
-                Song song;
                 if (location[0].contains("../") || location[0].contains("**")) {
-                    song = new Song();
-                    song.setFolder("../Export");
-                    song.setFilename(location[1]);
-                    song = mainActivityInterface.getLoadSong().doLoadSongFile(song,false);
+                    tempSong = new Song();
+                    tempSong.setFolder("../Export");
+                    tempSong.setFilename(location[1]);
+                    tempSong = mainActivityInterface.getLoadSong().doLoadSongFile(tempSong,false);
                 } else {
-                    song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                    tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
                     // If we have transposed this song in the set on the fly, match the key here
-                    if (!key.isEmpty() && song.getKey()!=null && !song.getKey().isEmpty() &&
-                            !key.equals(song.getKey())) {
-                        int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(song.getKey(),key);
-                        mainActivityInterface.getTranspose().checkChordFormat(song);
-                        song = mainActivityInterface.getTranspose().doTranspose(song,"+1",transposeTimes,song.getDetectedChordFormat(),song.getDesiredChordFormat());
-                        song.setFilename(song.getFilename()+"__"+key);
+                    if (!key.isEmpty() && tempSong.getKey()!=null && !tempSong.getKey().isEmpty() &&
+                            !key.equals(tempSong.getKey())) {
+                        int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(tempSong.getKey(),key);
+                        mainActivityInterface.getTranspose().checkChordFormat(tempSong);
+                        tempSong = mainActivityInterface.getTranspose().doTranspose(tempSong,"+1",transposeTimes,tempSong.getDetectedChordFormat(),tempSong.getDesiredChordFormat());
+                        tempSong.setFilename(tempSong.getFilename()+"__"+key);
                         location[1] = location[1]+"__"+key;
                     }
                 }
-                createOnTheFly(song,location[1]+".pdf");
+                createOnTheFly(tempSong,location[1]+".pdf");
             } else if (id.equals("ignore") || !likelyXML) {
                 songsProcessed++;
                 renderPDFSongs();
@@ -902,8 +909,6 @@ public class ExportFragment extends Fragment {
                         "Songs", fixSubfolder(folder), filename,
                         "Export", "", filename));
 
-                /*uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Songs",
-                        fixSubfolder(folder), filename));*/
                 if (pdf && !mimeTypes.contains("application/pdf")) {
                     mimeTypes.add("application/pdf");
                 } else if (openSong && !mimeTypes.contains("text/plain")) {
@@ -976,6 +981,7 @@ public class ExportFragment extends Fragment {
 
             if ((pdf && isXML) || (screenShot && isXML) || png) {
                 // Create PDF song on the fly and only initiate share once done
+                tempSong = mainActivityInterface.getSong();
                 createOnTheFly(mainActivityInterface.getSong(),mainActivityInterface.getSong().getFilename()+".pdf");
             } else {
                 // No pdf processing required, so initiate the share
@@ -1003,25 +1009,14 @@ public class ExportFragment extends Fragment {
                     try {
                         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                         // Get the file name after the OpenSong/Export/ bit
-                        String name = uri.getLastPathSegment();
-                        String bitToRemove = "OpenSong/Export/";
-                        if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
-                            name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
+                        File file = getFileFromUri(uri, exportFolder);
+                        if (file!=null) {
+                            OutputStream outputStream = new FileOutputStream(file);
+                            // Don't delete - does something!
+                            Log.d(TAG, "Copy:" + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
+                            Uri newUri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
+                            newUris.add(newUri);
                         }
-                        bitToRemove = "OpenSong%2FExport%2F";
-                        if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
-                            name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
-                        }
-                        bitToRemove = "/";
-                        if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
-                            name = name.substring(name.indexOf(bitToRemove)+bitToRemove.length());
-                        }
-                        File file = new File(exportFolder, name);
-                        OutputStream outputStream = new FileOutputStream(file);
-                        // Don't delete - does something!
-                        Log.d(TAG, "Copy:" + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
-                        Uri newUri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
-                        newUris.add(newUri);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1057,9 +1052,34 @@ public class ExportFragment extends Fragment {
         });
     }
 
+    private File getFileFromUri(Uri uri, File exportFolder) {
+        if (uri!=null) {
+            String name = uri.getLastPathSegment();
+            String bitToRemove = "OpenSong/Export/";
+            if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
+                name = name.substring(name.indexOf(bitToRemove) + bitToRemove.length());
+            }
+            bitToRemove = "OpenSong%2FExport%2F";
+            if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
+                name = name.substring(name.indexOf(bitToRemove) + bitToRemove.length());
+            }
+            bitToRemove = "/";
+            if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
+                name = name.substring(name.indexOf(bitToRemove) + bitToRemove.length());
+            }
+            return new File(exportFolder, name);
+        } else {
+            return null;
+        }
+    }
+
     // We can create nice views on the fly here by processing the Song, then populating the views
     private void createOnTheFly(Song thisSong, String pdfName) {
         // Make sure any current headers/sections are wiped
+        tempSong = thisSong;
+        mainActivityInterface.getProcessSong().setPdfPrinting(true);
+        mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
+
         mainActivityInterface.getMainHandler().post(()-> {
             try {
                 initialiseViews();
@@ -1087,6 +1107,10 @@ public class ExportFragment extends Fragment {
     public void createOnTheFlyHeader(Song thisSong, String pdfName) {
         // Get the song sheet header
         // Once this has drawn, move to the next stage of the song sections
+        mainActivityInterface.getProcessSong().setPdfPrinting(true);
+        mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
+
+        tempSong = thisSong;
 
         ViewTreeObserver headerVTO = myView.hiddenHeader.getViewTreeObserver();
         headerVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1114,13 +1138,16 @@ public class ExportFragment extends Fragment {
 
     public void createOnTheFlySections(Song thisSong, String pdfName) {
         // If we don't have any sections in the song, change the double line breaks into sections
+        mainActivityInterface.getProcessSong().setPdfPrinting(true);
+        mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
         if (thisSong==null) {
             thisSong =  new Song();
         }
         if (thisSong.getLyrics()==null) {
             thisSong.setLyrics("");
         }
-        if (thisSong.getLyrics().contains("\n[")) {
+        tempSong = thisSong;
+        if (!thisSong.getLyrics().contains("\n[")) {
             String[] lines = thisSong.getLyrics().split("\n");
             StringBuilder stringBuilder = new StringBuilder();
             for (String line:lines) {
@@ -1135,6 +1162,7 @@ public class ExportFragment extends Fragment {
 
         // Create the content for the section views.
         myView.hiddenSections.setBackgroundColor(Color.WHITE);
+        mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
         sectionViewsPDF = mainActivityInterface.getProcessSong().
                 setSongInLayout(thisSong,true, false);
 
@@ -1230,6 +1258,8 @@ public class ExportFragment extends Fragment {
                     if ((setPDF && isSetFile && !setPDFDone) || (!isSetFile && pdf)) {
                         // Sets are always processed first, so mark as done
                         setPDFDone = true;
+                        mainActivityInterface.getMakePDF().setSong(tempSong);
+                        mainActivityInterface.getMakePDF().getColumns(sectionViewsPDF,sectionViewWidthsPDF,sectionViewHeightsPDF);
                         uris.add(mainActivityInterface.getMakePDF().createTextPDF(
                                 sectionViewsPDF, sectionViewWidthsPDF,
                                 sectionViewHeightsPDF, headerLayoutPDF,
@@ -1524,6 +1554,8 @@ public class ExportFragment extends Fragment {
                 if (isSet) {
                     // Set the variable that will remove gaps from set items on the set list page(s)
                     mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
+                    mainActivityInterface.getProcessSong().setPdfPrinting(true);
+                    mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
 
                     // Go through the sets and create any custom slides required (variations, slides, etc).
                     ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
@@ -1533,19 +1565,42 @@ public class ExportFragment extends Fragment {
 
                     // This is sent to the MultipagePrinterAdapter class to deal with
                     MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(getActivity());
-                    multipagePrinterAdapter.updateSetList(this, setToExport, setData[0], setData[1], setData[2]);
+                    multipagePrinterAdapter.updateSetList(this, null, setToExport, setData[0], setData[1], setData[2]);
                     mainActivityInterface.getMakePDF().setPreferedAttributes();
                     printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
 
+
                 } else {
-                    PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
+                    // We are printing a single item (song, or song list)
+                    // Set the variable that will remove gaps from set items on the set list page(s)
+                    mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
+                    mainActivityInterface.getProcessSong().setPdfPrinting(true);
+                    mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
+
+                    // This is sent to the MultipagePrinterAdapter class to deal with
+                    MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(getActivity());
+                    multipagePrinterAdapter.updateSetList(this, null,null, tempSong.getFolderNamePair(), tempSong.getTitle(), tempSong.getKey());
+                    mainActivityInterface.getMakePDF().setPreferedAttributes();
+                    printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+
+                    /*
+                    PrinterAdapter printerAdapter = new PrinterAdapter
+                   (getActivity());
                     printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
                             headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, song_string);
                     mainActivityInterface.getMakePDF().setPreferedAttributes();
+                    mainActivityInterface.getMakePDF().setSong(tempSong);
+                    mainActivityInterface.getMakePDF().getColumns(sectionViewsPDF,sectionViewWidthsPDF,sectionViewHeightsPDF);
                     printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+
+
+                     */
                 }
                 mainActivityInterface.getSong().setFolder(currentSongFolder);
                 mainActivityInterface.getSong().setFilename(currentSongFile);
+                mainActivityInterface.getProcessSong().setPdfPrinting(false);
+                mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
+
             }
         });
     }
@@ -1623,6 +1678,8 @@ public class ExportFragment extends Fragment {
     private void tidyOnClose() {
         try {
             if (mainActivityInterface!=null) {
+                mainActivityInterface.getProcessSong().setPdfPrinting(false);
+                mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
                 mainActivityInterface.getOpenSongSetBundle().setProgressText(null);
                 mainActivityInterface.getSong().setFolder(currentSongFolder);
                 mainActivityInterface.getSong().setFilename(currentSongFile);
@@ -1636,4 +1693,7 @@ public class ExportFragment extends Fragment {
         }
     }
 
+    public Song getTempSong() {
+        return tempSong;
+    }
 }

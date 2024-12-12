@@ -12,7 +12,6 @@ import android.print.PageRange;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -23,6 +22,7 @@ import android.widget.TextView;
 import androidx.lifecycle.MutableLiveData;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.filemanagement.ExportSongListBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -45,9 +45,11 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
     private int headerLayoutWidth;
     private int headerLayoutHeight;
     private ExportFragment exportFragment;
+    private ExportSongListBottomSheet exportSongListBottomSheet;
     private LayoutResultCallback layoutResultCallback;
     private int currentSetItem;
     private final Context c;
+    private Song thisSong;
 
     // THIS IS USED TO MAKE MULTIPAGE PDF FILES FROM SETS WITH THE SONGS IN ONE PDF
 
@@ -57,18 +59,31 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
         c = activity;
     }
 
-    public void updateSetList(ExportFragment exportFragment, String setName, String setList, String setEntries, String setKeys) {
-        String[] sil = setList.split("\n");
-        String[] sie = setEntries.split("\n");
-        String[] sik = setKeys.split("\n");
+    public void updateSetList(ExportFragment exportFragment, ExportSongListBottomSheet exportSongListBottomSheet, String setName, String setList, String setEntries, String setKeys) {
         setItemLocations = new ArrayList<>();
         setItemEntries = new ArrayList<>();
         setItemKeys = new ArrayList<>();
-        Collections.addAll(setItemLocations, sil);
-        Collections.addAll(setItemEntries, sie);
-        Collections.addAll(setItemKeys, sik);
+        if (setList!=null) {
+            String[] sil = setList.split("\n");
+            Collections.addAll(setItemLocations, sil);
+        }
+        if (setEntries!=null) {
+            String[] sie = setEntries.split("\n");
+            Collections.addAll(setItemEntries, sie);
+        }
+        if (setKeys!=null) {
+            String[] sik = setKeys.split("\n");
+            Collections.addAll(setItemKeys, sik);
+        }
+
         this.setName = setName;
         this.exportFragment = exportFragment;
+        this.exportSongListBottomSheet = exportSongListBottomSheet;
+        thisSong = null;
+    }
+
+    public void setThisSong(Song thisSong) {
+        this.thisSong = thisSong;
     }
 
     @Override
@@ -84,57 +99,96 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
             return;
         }
 
+        boolean singleItem = false;
+        if (setName==null || setName.isEmpty()) {
+            // This is a single item, not a set
+            setName = setItemEntries.get(0);
+            singleItem = true;
+        }
+
         mainActivityInterface.getMakePDF().createBlankPDFDoc(setName+".pdf",printAttributes);
 
         // Create the first section of the PDF - the set list
-        mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
-        Song tempSong = new Song();
-        tempSong.setTitle(setName);
-        StringBuilder setItems = new StringBuilder();
-        for (String setItemEntry:setItemEntries) {
-            setItems.append(setItemEntry).append("\n[]\n");
+        if (!singleItem && (thisSong==null || (thisSong.getUser1()!=null && !thisSong.getUser1().equals("PRINT_SONG_LIST")))) {
+            mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
+            thisSong = new Song();
+            thisSong.setTitle(setName);
+            thisSong.setCapoprint("ISTHESET");
+            StringBuilder setItems = new StringBuilder();
+            for (String setItemEntry : setItemEntries) {
+                setItems.append(setItemEntry).append("\n[]\n");
+            }
+            thisSong.setLyrics(setItems.toString());
+
+            listen.setValue(false);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+            mainActivityInterface.getMakePDF().setSong(thisSong);
+            createOnTheFlyHeader(thisSong, true);
+        } else {
+            currentSetItem = 0;
+            getSongOrPrintIfDone();
         }
-        tempSong.setLyrics(setItems.toString());
-
-        listen.setValue(false);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences();
-
-        createOnTheFlyHeader(tempSong,true);
     }
 
     public void createOnTheFlyHeader(Song thisSong,boolean theSetList) {
         // Get the song sheet header
         // Once this has drawn, move to the next stage of the song sections
+        this.thisSong = thisSong;
         float scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
 
-        ViewTreeObserver headerVTO = exportFragment.getHiddenHeader().getViewTreeObserver();
-        headerVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                exportFragment.getHiddenHeader().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                headerLayoutWidth = exportFragment.getHiddenHeader().getWidth();
-                headerLayoutHeight = exportFragment.getHiddenHeader().getHeight();
-                exportFragment.getHiddenHeader().removeAllViews();
-                createOnTheFlySections(thisSong,theSetList);
-            }
-        });
-
-        // Now draw it here for measuring via the VTO
-        exportFragment.setHeaderLayoutPDF(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
-                scaleComments, mainActivityInterface.getMyThemeColors().getPdfTextColor()));
-        if (exportFragment.getHeaderLayout()==null) {
-            exportFragment.setHeaderLayoutPDF(new LinearLayout(exportFragment.getHiddenHeader().getContext()));
+        ViewTreeObserver headerVTO = null;
+        if (exportFragment!=null) {
+            headerVTO = exportFragment.getHiddenHeader().getViewTreeObserver();
+        } else if (exportSongListBottomSheet!=null) {
+            headerVTO = exportSongListBottomSheet.getHeaderLayout().getViewTreeObserver();
+        }
+        if (headerVTO!=null) {
+            headerVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (exportFragment != null) {
+                        exportFragment.getHiddenHeader().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        headerLayoutWidth = exportFragment.getHiddenHeader().getWidth();
+                        headerLayoutHeight = exportFragment.getHiddenHeader().getHeight();
+                        exportFragment.getHiddenHeader().removeAllViews();
+                    } else if (exportSongListBottomSheet != null) {
+                        exportSongListBottomSheet.getHeaderLayout().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        headerLayoutWidth = exportSongListBottomSheet.getHeaderLayout().getWidth();
+                        headerLayoutHeight = exportSongListBottomSheet.getHeaderLayout().getHeight();
+                    }
+                    createOnTheFlySections(thisSong, theSetList);
+                }
+            });
         }
 
-        exportFragment.getHiddenHeader().addView(exportFragment.getHeaderLayout());
+        // Now draw it here for measuring via the VTO
+        if (exportFragment!=null) {
+            exportFragment.setHeaderLayoutPDF(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
+                    scaleComments, mainActivityInterface.getMyThemeColors().getPdfTextColor()));
+            if (exportFragment.getHeaderLayout() == null) {
+                exportFragment.setHeaderLayoutPDF(new LinearLayout(exportFragment.getHiddenHeader().getContext()));
+            }
+            exportFragment.getHiddenHeader().addView(exportFragment.getHeaderLayout());
+        } else if (exportSongListBottomSheet!=null) {
+            exportSongListBottomSheet.setHeaderLayoutPDF(mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
+                    scaleComments, mainActivityInterface.getMyThemeColors().getPdfTextColor()));
+            if (exportSongListBottomSheet.getHeaderLayoutPDF() == null) {
+                exportSongListBottomSheet.setHeaderLayoutPDF(new LinearLayout(exportSongListBottomSheet.getHeaderLayout().getContext()));
+            }
+            if (exportSongListBottomSheet.getHeaderLayoutPDF()!=null) {
+                exportSongListBottomSheet.getHeaderLayout().addView(exportSongListBottomSheet.getHeaderLayoutPDF());
+            }
+        }
     }
 
-    public void createOnTheFlySections(Song thisSong,boolean theSetList) {
+    public void createOnTheFlySections(Song thisSong, boolean theSetList) {
+        this.thisSong = thisSong;
         if (thisSong!=null) {
-
             if (mainActivityInterface.getStorageAccess().isIMGorPDF(thisSong)) {
                 sectionViewsPDF = new ArrayList<>();
-                exportFragment.resetSectionViews();
+                if (exportFragment!=null) {
+                    exportFragment.resetSectionViews();
+                }
                 Uri thisUri = mainActivityInterface.getStorageAccess().
                         getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
 
@@ -147,22 +201,26 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                     sectionViewsPDF.add(imageView);
                     prepareLayoutListenerForPDFViews(theSetList);
                     // Add the image and this will trigger the VTO
-                    exportFragment.getHiddenSections().addView(sectionViewsPDF.get(0));
+                    if (exportFragment!=null) {
+                        exportFragment.getHiddenSections().addView(sectionViewsPDF.get(0));
+                    }
                 } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     ArrayList<ImageView> pdfImages = mainActivityInterface.getProcessSong().getPDFAsImageViews(c,thisUri);
                     sectionViewsPDF.addAll(pdfImages);
                     prepareLayoutListenerForPDFViews(theSetList);
                     // Now add the pages and trigger the VTO
-                    for (View view:sectionViewsPDF) {
-                        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                        Log.d(TAG,"view size:"+view.getMeasuredWidth()+"x"+view.getMeasuredHeight());
-                        exportFragment.getHiddenSections().addView(view);
+                    if (exportFragment!=null) {
+                        for (View view : pdfImages) {
+                            exportFragment.getHiddenSections().addView(view);
+                        }
                     }
                 } else {
                     // Not allowed PDFs
                     TextView textView = new TextView(c);
                     textView.setText(c.getString(R.string.not_allowed));
-                    exportFragment.getHiddenSections().addView(new TextView(c));
+                    if (exportFragment!=null) {
+                        exportFragment.getHiddenSections().addView(new TextView(c));
+                    }
                 }
             } else {
                 if (thisSong.getLyrics() == null) {
@@ -183,15 +241,26 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 }
 
                 // Create the content for the section views.
+                mainActivityInterface.getProcessSong().setPdfPrinting(true);
+                thisSong.setLyrics(thisSong.getLyrics().trim());
                 sectionViewsPDF = mainActivityInterface.getProcessSong().
                         setSongInLayout(thisSong, true, false);
 
-                exportFragment.resetSectionViews();
+                mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
+                mainActivityInterface.getProcessSong().setPdfPrinting(true);
+
+                if (exportFragment!=null) {
+                    exportFragment.resetSectionViews();
+                }
                 prepareLayoutListenerForPDFViews(theSetList);
 
                 // Add the section views and this will trigger the VTO
                 for (int x = 0; x < sectionViewsPDF.size(); x++) {
-                    exportFragment.getHiddenSections().addView(sectionViewsPDF.get(x));
+                    if (exportFragment!=null) {
+                        exportFragment.getHiddenSections().addView(sectionViewsPDF.get(x));
+                    } else if (exportSongListBottomSheet!=null) {
+                        exportSongListBottomSheet.getSectionLayout().addView(sectionViewsPDF.get(x));
+                    }
                 }
             }
         }
@@ -199,59 +268,111 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
 
     private void prepareLayoutListenerForPDFViews(boolean theSetList) {
         // Prepare the view listener for after the views have been drawn
-        ViewTreeObserver sectionsVTO = exportFragment.getHiddenSections().getViewTreeObserver();
-        sectionsVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // The views are ready so lets measure them after clearing this listener
+        mainActivityInterface.getMakePDF().setSong(thisSong);
+        ViewTreeObserver sectionsVTO = null;
+        if (exportFragment!=null) {
+            sectionsVTO = exportFragment.getHiddenSections().getViewTreeObserver();
+        } else if (exportSongListBottomSheet!=null) {
+            sectionsVTO = exportSongListBottomSheet.getSectionLayout().getViewTreeObserver();
+        }
+        if (sectionsVTO!=null) {
+            sectionsVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // The views are ready so lets measure them after clearing this listener
 
-                // If all the views are there, we can start measuring
-                if (exportFragment.getHiddenSections().getChildCount() == sectionViewsPDF.size()) {
-                    exportFragment.getHiddenSections().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    for (int x = 0; x < exportFragment.getHiddenSections().getChildCount(); x++) {
-                        View view = exportFragment.getHiddenSections().getChildAt(x);
-                        int width = view.getMeasuredWidth();
-                        int height = view.getMeasuredHeight();
-                        exportFragment.getSectionViews().add(view);
-                        exportFragment.getSectionWidths().add(width);
-                        exportFragment.getSectionHeights().add(height);
+                    // If all the views are there, we can start measuring
+                    if ((exportFragment!=null && exportFragment.getHiddenSections().getChildCount() == sectionViewsPDF.size()) ||
+                            (exportSongListBottomSheet!=null && exportSongListBottomSheet.getSectionLayout().getChildCount() == sectionViewsPDF.size())) {
+                        if (exportFragment!=null) {
+                            exportFragment.getHiddenSections().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else if (exportSongListBottomSheet!=null) {
+                            exportSongListBottomSheet.getSectionLayout().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                        int size = 0;
+                        if (exportFragment!=null) {
+                            size = exportFragment.getHiddenSections().getChildCount();
+                        } else if (exportSongListBottomSheet!=null) {
+                            size = exportSongListBottomSheet.getSectionLayout().getChildCount();
+                        }
+                        for (int x = 0; x < size; x++) {
+                            View view = null;
+                            if (exportFragment!=null) {
+                                view = exportFragment.getHiddenSections().getChildAt(x);
+                            } else if (exportSongListBottomSheet!=null) {
+                                view = exportSongListBottomSheet.getSectionLayout().getChildAt(x);
+                            }
+                            if (view!=null) {
+                                int width = view.getMeasuredWidth();
+                                int height = view.getMeasuredHeight();
+                                if (exportFragment!=null) {
+                                    exportFragment.getSectionViews().add(view);
+                                    exportFragment.getSectionWidths().add(width);
+                                    exportFragment.getSectionHeights().add(height);
+                                } else if (exportSongListBottomSheet!=null) {
+                                    exportSongListBottomSheet.getSectionViews().add(view);
+                                    exportSongListBottomSheet.getSectionWidths().add(width);
+                                    exportSongListBottomSheet.getSectionHeights().add(height);
+                                }
+                            }
+                        }
+
+                        if (exportFragment!=null && exportFragment.getHeaderLayout() != null) {
+                            mainActivityInterface.getMakePDF().setHeaderHeight(exportFragment.getHeaderLayout().getMeasuredHeight());
+                            mainActivityInterface.getMakePDF().getColumns(exportFragment.getSectionViews(), exportFragment.getSectionWidths(), exportFragment.getSectionHeights());
+                            // Now detach from this view (can only be shown in one layout)
+                            exportFragment.getHiddenSections().removeAllViews();
+                        } else if (exportSongListBottomSheet!=null && exportSongListBottomSheet.getHeaderLayout()!=null) {
+                            mainActivityInterface.getMakePDF().setHeaderHeight(exportSongListBottomSheet.getHeaderLayout().getMeasuredHeight());
+                            mainActivityInterface.getMakePDF().getColumns(exportSongListBottomSheet.getSectionViews(), exportSongListBottomSheet.getSectionWidths(), exportSongListBottomSheet.getSectionHeights());
+                            exportSongListBottomSheet.getSectionLayout().removeAllViews();
+                        }
+
+                        // Now trigger the next step of preparing the pdf from the views created on the fly
+                        listen.setValue(true);
+
+                        if (exportFragment!=null) {
+                            mainActivityInterface.getMakePDF().addCurrentItemToPDF(exportFragment.getSectionViews(),
+                                    exportFragment.getSectionWidths(), exportFragment.getSectionHeights(),
+                                    exportFragment.getHeaderLayout(), headerLayoutWidth,
+                                    headerLayoutHeight);
+                        } else if (exportSongListBottomSheet!=null) {
+                            mainActivityInterface.getMakePDF().addCurrentItemToPDF(exportSongListBottomSheet.getSectionViews(),
+                                    exportSongListBottomSheet.getSectionWidths(), exportSongListBottomSheet.getSectionHeights(),
+                                    exportSongListBottomSheet.getHeaderLayout(), headerLayoutWidth,
+                                    headerLayoutHeight);
+                        }
+
+                        if (theSetList) {
+                            // Now we have finished the set list, deal with the content/songs
+                            currentSetItem = 0;
+                            getSongOrPrintIfDone();
+                        } else if (thisSong!=null && thisSong.getUser1()!=null && thisSong.getUser1().equals("PRINT_SONG_LIST")) {
+                            callPrint();
+                        } else {
+                            // Move to the next song
+                            currentSetItem++;
+                            getSongOrPrintIfDone();
+                        }
                     }
-                    // Now detach from this view (can only be shown in one layout)
-                    exportFragment.getHiddenSections().removeAllViews();
-
-                    // Now trigger the next step of preparing the pdf from the views created on the fly
-                    listen.setValue(true);
-
-                    mainActivityInterface.getMakePDF().addCurrentItemToPDF(exportFragment.getSectionViews(),
-                            exportFragment.getSectionWidths(), exportFragment.getSectionHeights(),
-                            exportFragment.getHeaderLayout(), headerLayoutWidth,
-                            headerLayoutHeight);
-
-                    if (theSetList) {
-                        // Now we have finished the set list, deal with the content/songs
-                        currentSetItem = 0;
-                        getSongOrPrintIfDone();
-                    } else {
-                        // Move to the next song
-                        currentSetItem++;
-                        getSongOrPrintIfDone();
-                    }
-
                 }
-            }
-        });
+            });
+        }
     }
     private void getSongOrPrintIfDone() {
-        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",true) ||
+        if (thisSong!=null && thisSong.getUser1()!=null && thisSong.getUser1().equals("PRINT_SONG_LIST")) {
+            // Must be the song list
+            createOnTheFlyHeader(thisSong,false);
+
+        } else if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportSetSongs",true) ||
                 currentSetItem>=setItemEntries.size()) {
             callPrint();
         } else if (setItemLocations.size()>currentSetItem && !setItemLocations.get(currentSetItem).equals("ignore")) {
             // Initialse the song for processing
             Song currentSetSong;
-            Log.d(TAG,"setItemLocation:"+setItemLocations.get(currentSetItem));
 
             if (setItemLocations.get(currentSetItem).contains("../") ||
-            setItemLocations.get(currentSetItem).contains("**")) {
+                setItemLocations.get(currentSetItem).contains("**")) {
                 String s = setItemLocations.get(currentSetItem);
                 s = s.replace("../","**");
                 // This is a custom file - load it!
@@ -260,14 +381,11 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 //currentSetSong.setFolder(location[0]);
                 currentSetSong.setFolder("../Export");
                 currentSetSong.setFilename(location[1]);
-                Log.d(TAG,"loading song at :"+currentSetSong.getFolder()+"/"+currentSetSong.getFilename());
                 currentSetSong = mainActivityInterface.getLoadSong().doLoadSongFile(currentSetSong,false);
             } else {
                 if (setItemLocations.get(currentSetItem).contains("/")) {
                     String folder = setItemLocations.get(currentSetItem).substring(0,setItemLocations.get(currentSetItem).lastIndexOf("/"));
                     String filename = setItemLocations.get(currentSetItem).replace(folder+"/","");
-                    Log.d(TAG,"folder:"+folder);
-                    Log.d(TAG,"filename:"+filename);
                     currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename);
                 } else {
                     currentSetSong = mainActivityInterface.getSQLiteHelper().getSpecificSong("", setItemLocations.get(currentSetItem));
@@ -275,7 +393,7 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
             }
 
             // If we have transposed this song in the set on the fly, match the key here
-            if (!setItemKeys.get(currentSetItem).equals("ignore") && !setItemKeys.get(currentSetItem).trim().isEmpty() && currentSetSong.getKey()!=null && !currentSetSong.getKey().isEmpty() &&
+            if (setItemKeys!=null && setItemKeys.size()>currentSetItem && !setItemKeys.get(currentSetItem).equals("ignore") && !setItemKeys.get(currentSetItem).trim().isEmpty() && currentSetSong.getKey()!=null && !currentSetSong.getKey().isEmpty() &&
                     !setItemKeys.get(currentSetItem).trim().equals(currentSetSong.getKey())) {
                 int transposeTimes = mainActivityInterface.getTranspose().getTransposeTimes(currentSetSong.getKey(),setItemKeys.get(currentSetItem).trim());
                 mainActivityInterface.getTranspose().checkChordFormat(currentSetSong);

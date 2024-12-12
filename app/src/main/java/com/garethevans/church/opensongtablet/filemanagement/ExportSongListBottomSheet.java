@@ -14,13 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetExportSongListBinding;
-import com.garethevans.church.opensongtablet.export.PrinterAdapter;
+import com.garethevans.church.opensongtablet.export.MultipagePrinterAdapter;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -44,6 +46,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     private ArrayList<View> sectionViews;
     private ArrayList<Integer> sectionWidths, sectionHeights;
     private int headerWidth, headerHeight;
+    private LinearLayout headerLayoutPDF;
     private boolean printing;
     private Song outputSong;
 
@@ -104,6 +107,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
         }
 
         myView.export.setOnClickListener(view -> {
+            resetSectionViews();
             if (!selectedFolders.isEmpty()) {
                 printing = false;
                 prepareExport();
@@ -113,6 +117,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
         });
 
         myView.print.setOnClickListener(view -> {
+            resetSectionViews();
             if (!selectedFolders.isEmpty()) {
                 printing = true;
                 prepareExport();
@@ -236,7 +241,6 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                         songContentsCSV.append("\n").append(songFolder).append(",").append(songFilename).
                                 append(",").append(songTitle).append(",").append(songAuthor).append(",").
                                 append(songKey);
-
                         songContentsTextPDF.append("[]\n");
                         songContentsTextPDF.append(song.getTitle());
 
@@ -260,7 +264,9 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
             // Now, if we are expecting a PDF or printing, prepare the views on the UI
             if (exportPDF || printing) {
-                preparePDF(mainActivityInterface.getMainHandler());
+                outputSong.setLyrics(contentPDF);
+                doPrint();
+                //preparePDF(mainActivityInterface.getMainHandler());
             } else {
                 // Just proceed to the share
                 initiateShare();
@@ -347,6 +353,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     private void doPrint() {
         // Get a PrintManager instance
         if (getActivity() != null) {
+
             PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
 
             // Set job name, which will be displayed in the print queue
@@ -357,7 +364,26 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
             processing(false);
 
+            // Set the variable that will remove gaps from set items on the set list page(s)
+            mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
+            mainActivityInterface.getProcessSong().setPdfPrinting(true);
+            mainActivityInterface.getProcessSong().setForceSinglePagePDF(false);
+
+
+            // This is sent to the MultipagePrinterAdapter class to deal with
+            MultipagePrinterAdapter multipagePrinterAdapter = new MultipagePrinterAdapter(getActivity());
+            outputSong.setTitle(export_song_directory_string);
+            outputSong.setUser1("PRINT_SONG_LIST");
+            multipagePrinterAdapter.updateSetList(null,this, outputSong.getTitle(), null,null, null);
+            multipagePrinterAdapter.setThisSong(outputSong);
+            mainActivityInterface.getMakePDF().setPreferedAttributes();
+            mainActivityInterface.getMakePDF().setForceSinglePage(false);
+            printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+
+
             // Set the exporting scale to be min of 0.75f
+
+            /*
             mainActivityInterface.getMakePDF().setExportingSongList(true);
 
             PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
@@ -365,6 +391,56 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                     myView.headerLayout, headerWidth, headerHeight, song_string);
             mainActivityInterface.getMakePDF().setPreferedAttributes();
             printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
+
+             */
         }
+    }
+
+    public LinearLayout getHeaderLayout() {
+        return myView.headerLayout;
+    }
+
+    public RelativeLayout getSectionLayout() {
+        return myView.sectionViews;
+    }
+
+    public ArrayList<View> getSectionViews() {
+        return sectionViews;
+    }
+
+    public ArrayList<Integer> getSectionWidths() {
+        return sectionWidths;
+    }
+
+    public ArrayList<Integer> getSectionHeights() {
+        return sectionHeights;
+    }
+
+
+    public void setHeaderLayoutPDF(LinearLayout headerLayoutPDF) {
+        this.headerLayoutPDF = headerLayoutPDF;
+    }
+
+    public LinearLayout getHeaderLayoutPDF() {
+        return headerLayoutPDF;
+    }
+
+    public void resetSectionViews() {
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null) {
+                try {
+                    myView.sectionViews.removeAllViews();
+                    myView.headerLayout.removeAllViews();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        sectionViews = new ArrayList<>();
+        sectionWidths = new ArrayList<>();
+        sectionHeights = new ArrayList<>();
+        mimeTypes = new ArrayList<>();
+        uris = new ArrayList<>();
     }
 }
