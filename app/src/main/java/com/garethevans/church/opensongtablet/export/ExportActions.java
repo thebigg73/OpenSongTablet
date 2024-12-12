@@ -306,16 +306,22 @@ public class ExportActions {
                                     String scripture_title = "";
                                     String scripture_translation = "";
                                     while (!scripture_finished) {
-                                        switch (xpp.getName()) {
-                                            case "title":
-                                                scripture_title = safeNextText(xpp);
-                                                break;
-                                            case "subtitle":
-                                                scripture_translation = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
-                                                break;
+                                        if (xpp.getName()!=null) {
+                                            switch (xpp.getName()) {
+                                                case "title":
+                                                    scripture_title = safeNextText(xpp);
+                                                    break;
+                                                case "subtitle":
+                                                    scripture_translation = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
+                                                    break;
+                                            }
                                         }
 
-                                        xpp.nextTag();
+                                        try {
+                                            xpp.nextTag();
+                                        } catch (Exception e) {
+                                            Log.d(TAG,"end of scripture");
+                                        }
 
                                         if (xpp.getEventType()==XmlPullParser.END_TAG) {
                                             if (xpp.getName().equals("slides")) {

@@ -1448,7 +1448,6 @@ public class PerformanceFragment extends Fragment {
                 }
 
                 // Send the VoiceLive key if required
-                Log.d(TAG,"mainActivityInterface.getVoiceLive().getVoiceLiveSendKey():"+mainActivityInterface.getVoiceLive().getVoiceLiveSendKey());
                 if (mainActivityInterface.getVoiceLive().getVoiceLiveSendKey()) {
                     delay += mainActivityInterface.getVoiceLive().tryAutoSend(mainActivityInterface.getSong());
                 }

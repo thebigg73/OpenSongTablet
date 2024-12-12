@@ -76,7 +76,7 @@ public class StorageAccess {
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache", "Variations/_cache"};
     private Uri uriTreeHome = null; // This is the home folder.  Set as required from preferences.
-
+    private int updateCrashLogAttempts = 0;
     private DocumentFile uriTreeDF, songsDF;
     private long databaseLastUpdate;
 
@@ -2636,12 +2636,15 @@ public class StorageAccess {
     }
 
     public void updateCrashLog(String crash) {
-        // Get details about the user's device - they can delete this before sending
-        int sdkInt = Build.VERSION.SDK_INT;
-        String appVersion = mainActivityInterface.getVersionNumber().getFullVersionInfo();
-        String deviceCode = Build.DEVICE;
-        String crashDate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        String crashContent = "Please share this with crashlog@opensongapp.com\n" +
+        // Write a crash log file
+        // If this has caused crashes, keep a check otherwise we end in a recursive loop
+        if (updateCrashLogAttempts<3 && mainActivityInterface!=null) {
+            // Get details about the user's device - they can delete this before sending
+            int sdkInt = Build.VERSION.SDK_INT;
+            String appVersion = mainActivityInterface.getVersionNumber().getFullVersionInfo();
+            String deviceCode = Build.DEVICE;
+            String crashDate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+            String crashContent = "Please share this with crashlog@opensongapp.com\n" +
                 "=============================\n"+
                 "OpenSongApp version: "+appVersion + "\n" +
                 "Android API: "+sdkInt+"\n" +
@@ -2651,8 +2654,16 @@ public class StorageAccess {
                 "If possible, please give a brief description of what you were doing when the app crashed:\n\n\n\n\n\n" +
                 "=============================\n" +
                 crash;
-        // Write a crash log file
-        doStringWriteToFile("Settings","","CrashLog.txt",crashContent);
+            try {
+                doStringWriteToFile("Settings", "", "CrashLog.txt", crashContent);
+                // Set the crashLogAttempts back to zero so we can
+                updateCrashLogAttempts = 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                // This has crashed, so increment the crashLogAttempts
+                updateCrashLogAttempts++;
+            }
+        }
     }
 
     public Uri getCrashLogUri() {

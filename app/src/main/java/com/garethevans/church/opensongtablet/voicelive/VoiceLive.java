@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.voicelive;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -161,7 +160,6 @@ public class VoiceLive {
 
     public int tryAutoSend(Song song) {
         // Try sending the auto key message and return the delay for the number of messages
-        Log.d(TAG,"message:"+getVoiceLiveKeyMessage(song));
         return mainActivityInterface.getMidi().sendMidiHexSequence(getVoiceLiveKeyMessage(song));
     }
 
@@ -169,8 +167,6 @@ public class VoiceLive {
     @SuppressWarnings("NullPointerException")
     public String getVoiceLiveKeyMessage(Song song) {
         // Get the song key if it exists
-        Log.d(TAG,"voiceLoveSendKey:"+voiceLiveSendKey+"  song.getKey():"+song.getKey());
-
         if (voiceLiveSendKey && song.getKey()!=null &&
             !song.getKey().isEmpty()) {
 
