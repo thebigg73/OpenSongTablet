@@ -595,6 +595,13 @@
     <string name="midi_devices">"Dostupné zařízení"</string>
     <string name="midi_disconnect">Odpojit</string>
     <string name="midi_error">"Zkontrolujte prosím připojení MIDI"</string>
+    <string name="midi_index">MIDI index</string>
+    <string name="midi_index_code">K načtení skladby je vyžadováno MIDI</string>
+    <string name="midi_input_channel_pedal">Poslouchejte akce MIDI pedálu na tomto kanálu</string>
+    <string name="midi_input_channel_song">Poslouchejte ovládací prvky MIDI skladeb na tomto kanálu</string>
+    <string name="midi_input_channel_song_autoscroll_info">Start/stop autoscroll při příjmu MIDI příkazu start/stop</string>
+    <string name="midi_input_channel_song_metronome_info">Start/stop metronom při příjmu MIDI příkazu start/stop</string>
+    <string name="midi_input_channel_song_pad_info">Start/stop pad při příjmu MIDI příkazu start/stop</string>
     <string name="midi_list_item">Kliknutím otestujte, přejetím prstem odstraníte nebo změníte uspořádání</string>
     <string name="midi_message_include">Zahrňte to do zpráv skladby</string>
     <string name="midi_messages">MIDI zprávy ve skladbě (odeslané v pořadí)</string>

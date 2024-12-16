@@ -595,6 +595,13 @@
     <string name="midi_devices">"可用设备"</string>
     <string name="midi_disconnect">断开</string>
     <string name="midi_error">"请检查MIDI连接"</string>
+    <string name="midi_index">MIDI索引</string>
+    <string name="midi_index_code">加载歌曲需要 MIDI</string>
+    <string name="midi_input_channel_pedal">监听该通道上的 MIDI 踏板动作</string>
+    <string name="midi_input_channel_song">监听此通道上的 MIDI 歌曲控制</string>
+    <string name="midi_input_channel_song_autoscroll_info">接收 MIDI 开始/停止命令时开始/停止自动滚动</string>
+    <string name="midi_input_channel_song_metronome_info">接收 MIDI 启动/停止命令时启动/停止节拍器</string>
+    <string name="midi_input_channel_song_pad_info">接收 MIDI 开始/停止命令时的开始/停止垫</string>
     <string name="midi_list_item">单击以测试、滑动以删除或重新排列</string>
     <string name="midi_message_include">将其包含在歌曲消息中</string>
     <string name="midi_messages">歌曲 MIDI 消息（按顺序发送）</string>

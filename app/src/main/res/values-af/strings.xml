@@ -595,6 +595,13 @@
     <string name="midi_devices">"Beskikbare toestelle"</string>
     <string name="midi_disconnect">Ontkoppel</string>
     <string name="midi_error">"Kontroleer asseblief MIDI-verbinding"</string>
+    <string name="midi_index">MIDI-indeks</string>
+    <string name="midi_index_code">MIDI benodig om liedjie te laai</string>
+    <string name="midi_input_channel_pedal">Luister vir MIDI-pedaalaksies op hierdie kanaal</string>
+    <string name="midi_input_channel_song">Luister vir MIDI-liedjiekontroles op hierdie kanaal</string>
+    <string name="midi_input_channel_song_autoscroll_info">Begin/stop outoscroll wanneer MIDI begin/stop-opdrag ontvang word</string>
+    <string name="midi_input_channel_song_metronome_info">Begin/stop metronoom wanneer MIDI begin/stop-opdrag ontvang word</string>
+    <string name="midi_input_channel_song_pad_info">Start/stop pad wanneer MIDI begin/stop opdrag ontvang word</string>
     <string name="midi_list_item">Klik om te toets, vee om uit te vee of herrangskik</string>
     <string name="midi_message_include">Sluit dit in die liedboodskappe in</string>
     <string name="midi_messages">Song MIDI-boodskappe (in volgorde gestuur)</string>

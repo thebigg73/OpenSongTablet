@@ -595,6 +595,13 @@
     <string name="midi_devices">"Διαθέσιμες συσκευές"</string>
     <string name="midi_disconnect">Αποσυνδέω</string>
     <string name="midi_error">"Ελέγξτε τη σύνδεση MIDI"</string>
+    <string name="midi_index">Ευρετήριο MIDI</string>
+    <string name="midi_index_code">Απαιτείται MIDI για τη φόρτωση του τραγουδιού</string>
+    <string name="midi_input_channel_pedal">Ακούστε τις ενέργειες του πεντάλ MIDI σε αυτό το κανάλι</string>
+    <string name="midi_input_channel_song">Ακούστε τα στοιχεία ελέγχου τραγουδιού MIDI σε αυτό το κανάλι</string>
+    <string name="midi_input_channel_song_autoscroll_info">Έναρξη/διακοπή αυτόματης κύλισης κατά τη λήψη της εντολής έναρξης/διακοπής MIDI</string>
+    <string name="midi_input_channel_song_metronome_info">Έναρξη/διακοπή μετρονόμου κατά τη λήψη εντολής έναρξης/διακοπής MIDI</string>
+    <string name="midi_input_channel_song_pad_info">Start/stop pad κατά τη λήψη της εντολής start/stop MIDI</string>
     <string name="midi_list_item">Κάντε κλικ για δοκιμή, σάρωση για διαγραφή ή αναδιάταξη</string>
     <string name="midi_message_include">Συμπεριλάβετε αυτό στα μηνύματα τραγουδιού</string>
     <string name="midi_messages">Μηνύματα MIDI τραγουδιού (αποστέλλονται με τη σειρά)</string>

@@ -595,6 +595,13 @@
     <string name="midi_devices">Доступные устройства</string>
     <string name="midi_disconnect">Отключить</string>
     <string name="midi_error">Проверьте подключение MIDI</string>
+    <string name="midi_index">MIDI-индекс</string>
+    <string name="midi_index_code">MIDI требуется для загрузки песни</string>
+    <string name="midi_input_channel_pedal">Слушайте действия MIDI-педали на этом канале.</string>
+    <string name="midi_input_channel_song">Слушайте MIDI-элементы управления песнями на этом канале.</string>
+    <string name="midi_input_channel_song_autoscroll_info">Запуск/остановка автопрокрутки при получении MIDI-команды запуска/остановки.</string>
+    <string name="midi_input_channel_song_metronome_info">Запуск/остановка метронома при получении MIDI-команды запуска/остановки.</string>
+    <string name="midi_input_channel_song_pad_info">Панель запуска/остановки при получении MIDI-команды запуска/остановки</string>
     <string name="midi_list_item">Нажмите, чтобы проверить, проведите пальцем, чтобы удалить или изменить порядок</string>
     <string name="midi_message_include">Добавить этот текст в сообщения к песням</string>
     <string name="midi_messages">MIDI сообщения в песнях (отправляются по порядку)</string>

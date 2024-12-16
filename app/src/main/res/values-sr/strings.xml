@@ -1077,4 +1077,11 @@
     <string name="transducer">Pretvornik</string>
     <string name="step">Korak</string>
     <string name="preset">Predložak</string>
+    <string name="midi_input_channel_pedal">Slušajte MIDI pedale akcije na ovom kanalu</string>
+    <string name="midi_input_channel_song">Slušajte kontrole MIDI pesama na ovom kanalu</string>
+    <string name="midi_input_channel_song_autoscroll_info">Start / stop autoscroll prilikom prijema MIDI start / stop komandu</string>
+    <string name="midi_input_channel_song_metronome_info">Start / stop metronom prilikom prijema MIDI start / stop komandu</string>
+    <string name="midi_input_channel_song_pad_info">Start / stop pad prilikom prijema MIDI start / stop komandu</string>
+    <string name="midi_index">MIDI indeks</string>
+    <string name="midi_index_code">MIDI potreban za učitavanje pesme</string>
 </resources>

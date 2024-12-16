@@ -595,6 +595,13 @@
     <string name="midi_devices">"Dispositifs disponibles"</string>
     <string name="midi_disconnect">Déconnecter</string>
     <string name="midi_error">"Veuillez vérifier la connexion MIDI"</string>
+    <string name="midi_index">Index MIDI</string>
+    <string name="midi_index_code">MIDI requis pour charger la chanson</string>
+    <string name="midi_input_channel_pedal">Écoutez les actions des pédales MIDI sur ce canal</string>
+    <string name="midi_input_channel_song">Écoutez les commandes de morceau MIDI sur ce canal</string>
+    <string name="midi_input_channel_song_autoscroll_info">Démarrer/arrêter le défilement automatique lors de la réception d’une commande MIDI de démarrage/arrêt</string>
+    <string name="midi_input_channel_song_metronome_info">Métronome de démarrage/arrêt lors de la réception d\'une commande MIDI de démarrage/arrêt</string>
+    <string name="midi_input_channel_song_pad_info">Pad de démarrage/arrêt lors de la réception d\'une commande de démarrage/arrêt MIDI</string>
     <string name="midi_list_item">Cliquez pour tester, balayez pour supprimer ou réorganisez</string>
     <string name="midi_message_include">Incluez ceci dans les messages de la chanson</string>
     <string name="midi_messages">Messages MIDI de chanson (envoyés dans l’ordre)</string>

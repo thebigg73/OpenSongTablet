@@ -595,6 +595,13 @@
     <string name="midi_devices">"Rendelkezésre álló eszközök"</string>
     <string name="midi_disconnect">Leválasztás</string>
     <string name="midi_error">"Kérjük, ellenőrizze a MIDI kapcsolatot"</string>
+    <string name="midi_index">MIDI index</string>
+    <string name="midi_index_code">MIDI szükséges a dal betöltéséhez</string>
+    <string name="midi_input_channel_pedal">Hallgassa meg a MIDI pedálműveleteket ezen a csatornán</string>
+    <string name="midi_input_channel_song">Hallgassa meg a MIDI dalvezérlőket ezen a csatornán</string>
+    <string name="midi_input_channel_song_autoscroll_info">Automatikus görgetés indítása/leállítása MIDI start/stop parancs fogadásakor</string>
+    <string name="midi_input_channel_song_metronome_info">Start/stop metronóm MIDI start/stop parancs fogadásakor</string>
+    <string name="midi_input_channel_song_pad_info">Start/stop pad MIDI start/stop parancs fogadásakor</string>
     <string name="midi_list_item">Kattintson ide a teszteléshez, pöccintéssel törölje vagy rendezze át</string>
     <string name="midi_message_include">Ezt szerepeltesse a dal üzeneteiben</string>
     <string name="midi_messages">Dal MIDI-üzenetek (sorrendben elküldve)</string>

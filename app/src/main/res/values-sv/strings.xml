@@ -595,6 +595,13 @@
     <string name="midi_devices">"Tillgängliga enheter"</string>
     <string name="midi_disconnect">Koppla ifrån</string>
     <string name="midi_error">"Kontrollera MIDI-anslutningen"</string>
+    <string name="midi_index">MIDI-index</string>
+    <string name="midi_index_code">MIDI krävs för att ladda låten</string>
+    <string name="midi_input_channel_pedal">Lyssna efter MIDI-pedalåtgärder på den här kanalen</string>
+    <string name="midi_input_channel_song">Lyssna efter MIDI-låtkontroller på den här kanalen</string>
+    <string name="midi_input_channel_song_autoscroll_info">Starta/stoppa autoscroll när du tar emot MIDI start/stopp-kommando</string>
+    <string name="midi_input_channel_song_metronome_info">Start/stopp metronom vid mottagning av MIDI start/stopp kommando</string>
+    <string name="midi_input_channel_song_pad_info">Start/stopp-knapp vid mottagning av MIDI start/stopp-kommando</string>
     <string name="midi_list_item">Klicka för att testa, svepa för att radera eller ordna om</string>
     <string name="midi_message_include">Inkludera detta i låtmeddelandena</string>
     <string name="midi_messages">Sång MIDI-meddelanden (skickas i ordning)</string>

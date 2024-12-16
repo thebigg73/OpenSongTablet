@@ -595,6 +595,13 @@
     <string name="midi_devices">පවතින උපාංග</string>
     <string name="midi_disconnect">විසන්ධි කරන්න</string>
     <string name="midi_error">කරුණාකර MIDI සම්බන්ධතාවය පරීක්ෂා කරන්න</string>
+    <string name="midi_index">MIDI දර්ශකය</string>
+    <string name="midi_index_code">ගීතය පූරණය කිරීමට MIDI අවශ්‍යයි</string>
+    <string name="midi_input_channel_pedal">මෙම නාලිකාවේ MIDI පැඩල් ක්‍රියා සඳහා සවන් දෙන්න</string>
+    <string name="midi_input_channel_song">මෙම නාලිකාවේ MIDI ගීත පාලන සඳහා සවන් දෙන්න</string>
+    <string name="midi_input_channel_song_autoscroll_info">MIDI ආරම්භක/නැවතුම් විධානය ලැබෙන විට ස්වයංක්‍රීයව අනුචලනය කරන්න</string>
+    <string name="midi_input_channel_song_metronome_info">MIDI ආරම්භක/නැවතුම් විධානය ලැබෙන විට මෙට්‍රොනෝමය අරඹන්න</string>
+    <string name="midi_input_channel_song_pad_info">MIDI start/stop විධානය ලැබෙන විට Start/stop pad</string>
     <string name="midi_list_item">පරීක්ෂා කිරීමට ක්ලික් කරන්න, මකා දැමීමට ස්වයිප් කරන්න, හෝ නැවත සකස් කරන්න</string>
     <string name="midi_message_include">ගීත පණිවිඩවලට මෙය ඇතුළත් කරන්න</string>
     <string name="midi_messages">ගීත MIDI පණිවිඩ (පිළිවෙලින් යවන ලදි)</string>

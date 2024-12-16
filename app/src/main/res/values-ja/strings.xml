@@ -595,6 +595,13 @@
     <string name="midi_devices">"使用可能なデバイス"</string>
     <string name="midi_disconnect">切断する</string>
     <string name="midi_error">"MIDI接続を確認してください"</string>
+    <string name="midi_index">MIDIインデックス</string>
+    <string name="midi_index_code">曲をロードするにはMIDIが必要です</string>
+    <string name="midi_input_channel_pedal">このチャンネルの MIDI ペダルアクションをリッスンします</string>
+    <string name="midi_input_channel_song">このチャンネルの MIDI ソング コントロールを聞く</string>
+    <string name="midi_input_channel_song_autoscroll_info">MIDI 開始/停止コマンドを受信したときに自動スクロールを開始/停止します</string>
+    <string name="midi_input_channel_song_metronome_info">MIDIスタート/ストップコマンド受信時のメトロノームスタート/ストップ</string>
+    <string name="midi_input_channel_song_pad_info">MIDI スタート/ストップ コマンド受信時のパッドのスタート/ストップ</string>
     <string name="midi_list_item">クリックしてテスト、スワイプして削除、または並べ替え</string>
     <string name="midi_message_include">これを曲のメッセージに含めます</string>
     <string name="midi_messages">曲のMIDIメッセージ(順番に送信)</string>

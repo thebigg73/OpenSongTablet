@@ -595,6 +595,13 @@
     <string name="midi_devices">"Verfügbare Geräte"</string>
     <string name="midi_disconnect">Trennen</string>
     <string name="midi_error">"Bitte überprüfen Sie die MIDI-Verbindung"</string>
+    <string name="midi_index">MIDI-Index</string>
+    <string name="midi_index_code">Zum Laden des Songs ist MIDI erforderlich</string>
+    <string name="midi_input_channel_pedal">Achten Sie auf MIDI-Pedalaktionen auf diesem Kanal</string>
+    <string name="midi_input_channel_song">Achten Sie auf MIDI-Song-Steuerungen auf diesem Kanal</string>
+    <string name="midi_input_channel_song_autoscroll_info">Automatisches Scrollen starten/stoppen, wenn ein MIDI-Start/Stopp-Befehl empfangen wird</string>
+    <string name="midi_input_channel_song_metronome_info">Starten/Stoppen des Metronoms beim Empfang eines MIDI-Start/Stopp-Befehls</string>
+    <string name="midi_input_channel_song_pad_info">Start/Stopp-Pad beim Empfang eines MIDI-Start/Stopp-Befehls</string>
     <string name="midi_list_item">Klicken Sie zum Testen, wischen Sie, um zu löschen, oder ordnen Sie sie neu an</string>
     <string name="midi_message_include">Fügen Sie dies in die Songbotschaften ein</string>
     <string name="midi_messages">Song-MIDI-Nachrichten (in der richtigen Reihenfolge gesendet)</string>

@@ -595,6 +595,13 @@
     <string name="midi_devices">Dostępne urządzenia</string>
     <string name="midi_disconnect">Rozłącz</string>
     <string name="midi_error">Sprawdź połączenie MIDI</string>
+    <string name="midi_index">Indeks MIDI</string>
+    <string name="midi_index_code">Aby załadować utwór, wymagane jest MIDI</string>
+    <string name="midi_input_channel_pedal">Posłuchaj działań pedałów MIDI na tym kanale</string>
+    <string name="midi_input_channel_song">Posłuchaj elementów sterujących utworu MIDI na tym kanale</string>
+    <string name="midi_input_channel_song_autoscroll_info">Rozpocznij/zatrzymaj automatyczne przewijanie po otrzymaniu polecenia start/stop MIDI</string>
+    <string name="midi_input_channel_song_metronome_info">Uruchom/zatrzymaj metronom po otrzymaniu polecenia MIDI Start/Stop</string>
+    <string name="midi_input_channel_song_pad_info">Pad start/stop po otrzymaniu polecenia start/stop MIDI</string>
     <string name="midi_list_item">Kliknij, aby przetestować, przesuń palcem, aby usunąć lub zmienić kolejność</string>
     <string name="midi_message_include">Dołącz do komunikatów piosenki</string>
     <string name="midi_messages">Komunikaty MIDI piosenki (wysyłane w kolejności)</string>

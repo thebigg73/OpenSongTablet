@@ -1444,4 +1444,11 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="midi_input_channel_pedal">Listen for MIDI pedal actions on this channel</string>
+    <string name="midi_input_channel_song">Listen for MIDI song controls on this channel</string>
+    <string name="midi_input_channel_song_autoscroll_info">Start/stop autoscroll when receiving MIDI start/stop command</string>
+    <string name="midi_input_channel_song_metronome_info">Start/stop metronome when receiving MIDI start/stop command</string>
+    <string name="midi_input_channel_song_pad_info">Start/stop pad when receiving MIDI start/stop command</string>
+    <string name="midi_index">MIDI index</string>
+    <string name="midi_index_code">MIDI required to load song</string>
 </resources>
