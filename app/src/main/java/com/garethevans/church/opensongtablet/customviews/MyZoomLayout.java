@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -303,9 +302,11 @@ public class MyZoomLayout extends FrameLayout {
     }
 
     public boolean getScrolledToTop() {
+        checkScrollPosition();
         return scrolledToTop;
     }
     public boolean getScrolledToBottom() {
+        checkScrollPosition();
         return scrolledToBottom;
     }
 
@@ -314,10 +315,8 @@ public class MyZoomLayout extends FrameLayout {
     }
 
     public void checkScrollPosition() {
-        Log.d(TAG,"getScrollPos():"+getScrollPos());
         scrolledToBottom = getScrollPos()>=maxScrollY;
         scrolledToTop = getScrollPos()==0;
-        Log.d(TAG,"scrolledToBottom:"+scrolledToBottom+"  overScroller.getCurrY():"+overScroller.getCurrY()+"  maxScrollY:"+maxScrollY);
     }
 
     public void toggleScale() {
