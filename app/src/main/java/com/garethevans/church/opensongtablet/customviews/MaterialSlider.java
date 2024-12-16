@@ -50,7 +50,7 @@ public class MaterialSlider extends LinearLayout {
                 R.attr.trackHeight,                 // 7
                 R.attr.thumbRadius,                 // 8
                 R.attr.thumbColor,                  // 9
-                R.attr.adjustable,                  // 10
+                androidx.preference.R.attr.adjustable,                  // 10
                 R.attr.infoText                     // 11
         };
         TypedArray a = context.obtainStyledAttributes(attrs, set);

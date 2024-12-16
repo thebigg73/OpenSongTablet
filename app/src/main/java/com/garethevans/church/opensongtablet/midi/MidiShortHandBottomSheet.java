@@ -332,7 +332,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
                     myView.midiChannel, R.layout.view_exposed_dropdown_item, midiChannel);
             myView.midiChannel.setAdapter(channelAdapter);
         }
-        myView.midiChannel.setText("1");
+        myView.midiChannel.setText(String.valueOf(mainActivityInterface.getMidi().getMidiOutputChannel()));
 
         // The MIDI commands available (Name and shorthand)
         midiCommand = new ArrayList<>();
@@ -476,6 +476,11 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 updateMIDIString();
+                try {
+                    mainActivityInterface.getMidi().setMidiOutputChannel(Integer.parseInt(myView.midiChannel.getText().toString()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

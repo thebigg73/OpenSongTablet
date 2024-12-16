@@ -36,7 +36,7 @@ public class Midi {
     private final Context c;
     private final Activity activity;
     private final MainActivityInterface mainActivityInterface;
-    private PedalMidiReceiver pedalMidiReceiver;
+    private MidiInputReceiver pedalMidiReceiver;
     private final ShortHandMidi shortHandMidi;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "Midi";
@@ -44,6 +44,8 @@ public class Midi {
     private String[] messageParts;
     private final String sysexStartCode = "0xF0 0x7F 0xFA 0xF7";
     private final String sysexStopCode = "0xF0 0x7F 0xFC 0xF7";
+    private int midiInputChannelPedal, midiInputChannelSong, midiOutputChannel;
+    private boolean midiInput, midiInputAutoscroll, midiInputMetronome, midiInputPad;
 
     // Initialise
     public Midi(Activity activity,
@@ -67,6 +69,13 @@ public class Midi {
         midiAction7 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction7", "MIDI10:NO43:100");
         midiAction8 = mainActivityInterface.getPreferences().getMyPreferenceString("midiAction8", "MIDI10:NO55:100");
         midiSendAuto = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",true);
+        midiInputChannelPedal = mainActivityInterface.getPreferences().getMyPreferenceInt("midiInputChannelPedal",8);
+        midiInputChannelSong = mainActivityInterface.getPreferences().getMyPreferenceInt("midiInputChannelSong",9);
+        midiOutputChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("midiOutputChannel",1);
+        midiInput = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInput",false);
+        midiInputAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputAutoscroll",false);
+        midiInputMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputMetronome",false);
+        midiInputPad = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputPad",false);
     }
 
     public String getMidiAction(int which) {
@@ -671,7 +680,7 @@ public class Midi {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener() {
         if (midiDevice != null && midiOutputPort != null) {
-            pedalMidiReceiver = new PedalMidiReceiver(this, mainActivityInterface);
+            pedalMidiReceiver = new MidiInputReceiver(c);
             try {
                 midiOutputPort.connect(pedalMidiReceiver);
             } catch (Exception e) {
@@ -957,7 +966,61 @@ public class Midi {
         return sysexStopCode;
     }
 
+    public void setMidiInputChannelPedal (int midiInputChannelPedal) {
+        this.midiInputChannelPedal = midiInputChannelPedal;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiInputChannelPedal",midiInputChannelPedal);
+    }
+    public int getMidiInputChannelPedal() {
+        return midiInputChannelPedal;
+    }
+    public void setMidiInputChannelSong (int midiInputChannelSong) {
+        this.midiInputChannelSong = midiInputChannelSong;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiInputChannelSong",midiInputChannelSong);
+    }
+    public int getMidiInputChannelSong() {
+        return midiInputChannelSong;
+    }
 
+
+    public void setMidiOutputChannel (int midiOutputChannel) {
+        this.midiOutputChannel = midiOutputChannel;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiOutputChannel",midiOutputChannel);
+    }
+    public int getMidiOutputChannel() {
+        return midiOutputChannel;
+    }
+
+    public void setMidiInput(boolean midiInput) {
+        this.midiInput = midiInput;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiInput",midiInput);
+    }
+    public boolean getMidiInput() {
+        return midiInput;
+    }
+
+    public void setMidiInputAutoscroll(boolean midiInputAutoscroll) {
+        this.midiInputAutoscroll = midiInputAutoscroll;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiInputAutoscroll",midiInputAutoscroll);
+    }
+    public boolean getMidiInputAutoscroll() {
+        return midiInputAutoscroll;
+    }
+
+    public void setMidiInputMetronome(boolean midiInputMetronome) {
+        this.midiInputMetronome = midiInputMetronome;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiInputMetronome",midiInputMetronome);
+    }
+    public boolean getMidiInputMetronome() {
+        return midiInputMetronome;
+    }
+
+    public void setMidiInputPad(boolean midiInputPad) {
+        this.midiInputPad = midiInputPad;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiInputPad",midiInputPad);
+    }
+    public boolean getMidiInputPad() {
+        return midiInputPad;
+    }
 
     public BluetoothManager getBluetoothManager() {
         return bluetoothManager;

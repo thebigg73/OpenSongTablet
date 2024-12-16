@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
-                android:id="@+id/midiAsPedal"
+                android:id="@+id/midiInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_pedal"

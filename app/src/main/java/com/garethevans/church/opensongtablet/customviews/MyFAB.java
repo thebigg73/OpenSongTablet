@@ -34,7 +34,7 @@ public class MyFAB extends FrameLayout {
         myFAB.setId(View.generateViewId());
         myFABHolder.setId(View.generateViewId());
 
-        int[] set = new int[] {R.attr.srcCompat,R.attr.fabSize};
+        int[] set = new int[] {androidx.appcompat.R.attr.srcCompat, com.google.android.material.R.attr.fabSize};
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
         // Get drawable image

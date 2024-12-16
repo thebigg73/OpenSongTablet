@@ -150,19 +150,19 @@ public class PedalsFragment extends Fragment {
 
     private void midiPedalAllowed() {
         //String midiDevice = mainActivityInterface.getMidi().getMidiDeviceName();
-        myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
-        myView.midiAsPedal.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal",b);
-            mainActivityInterface.getPedalActions().setMidiAsPedal(b);
+        myView.midiInput.setChecked(mainActivityInterface.getMidi().getMidiInput());
+        myView.midiInput.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiInput",b);
+            mainActivityInterface.getMidi().setMidiInput(b);
             midiPedalAllowed();
         });
         if (mainActivityInterface.getMidi() != null && mainActivityInterface.getMidi().getMidiDevice() != null &&
-                mainActivityInterface.getPedalActions().getMidiAsPedal()) {
+                mainActivityInterface.getMidi().getMidiInput()) {
             String message = midi_pedal_string + ": " +
                     mainActivityInterface.getMidi().getMidiDeviceName();
-            myView.midiAsPedal.setHint(message);
+            myView.midiInput.setHint(message);
         } else {
-            myView.midiAsPedal.setHint(pedal_midi_warning_string);
+            myView.midiInput.setHint(pedal_midi_warning_string);
         }
     }
 
@@ -320,9 +320,7 @@ public class PedalsFragment extends Fragment {
             myView.pedalTestLayout.setVisibility(b ? View.VISIBLE:View.GONE);
             resetTestViews();
         });
-        myView.resetButton.setOnClickListener(view -> {
-            resetTestViews();
-        });
+        myView.resetButton.setOnClickListener(view -> resetTestViews());
         for (int w = 1; w <= 8; w++) {
             doButtons(w);
         }
@@ -596,9 +594,7 @@ public class PedalsFragment extends Fragment {
             longEnabled = true;
         }
 
-        shortPressDropdown.post(() -> {
-            shortPressDropdown.setHint(shortHint);
-        });
+        shortPressDropdown.post(() -> shortPressDropdown.setHint(shortHint));
         longPressDropdown.post(() -> {
             longPressDropdown.setHint(longHint);
             if (longTextOverride != null) {

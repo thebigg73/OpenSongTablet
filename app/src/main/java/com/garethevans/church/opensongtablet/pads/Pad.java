@@ -583,7 +583,16 @@ public class Pad {
             startPad();
         }
     }
-    private void playStopOrPause(int padNum) {
+    public int whichPadPlaying() {
+        if (pad1Prepared && pad1.isPlaying()) {
+            return 1;
+        } else if (pad2Prepared && pad2.isPlaying()) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+    public void playStopOrPause(int padNum) {
         // IV - Both pads, active and fading, are considered
         switch (padNum) {
             case 1:

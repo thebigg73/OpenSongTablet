@@ -40,7 +40,7 @@ public class PedalActions {
     public final String[] defLongActions  = new String[] {"", "songmenu", "set", "", "", "", "", "", ""};
     private int airTurnLongPressTime, repeatModeCount, repeatModeTime, currentRepeatCount = 0,
             testPedalKeycode = -1;
-    private boolean beatBuddyDownRegistered = false, airTurnMode, repeatMode, midiAsPedal,
+    private boolean beatBuddyDownRegistered = false, airTurnMode, repeatMode,
             pedalScrollBeforeMove, pedalShowWarningBeforeMove, warningActive, warningGracePeriod,
             pedalIgnorePrevNext, testing = false, testPedalDown, testPedalWasLongPressed,
             handlerChecking, blockLongPress, actionUpTriggered = false, checkRepeatShortPressUp=true;
@@ -272,7 +272,6 @@ public class PedalActions {
         airTurnLongPressTime = mainActivityInterface.getPreferences().getMyPreferenceInt("airTurnLongPressTime", 1000);
         pedalScrollBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pedalScrollBeforeMove",true);
         pedalShowWarningBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pedalShowWarningBeforeMove",false);
-        midiAsPedal = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiAsPedal", false);
     }
 
     public void commonEventDown(int keyCode, String keyMidi) {
@@ -297,8 +296,6 @@ public class PedalActions {
     }
 
     public void commonEventUp(int keyCode, String keyMidi) {
-        //Log.d(TAG,"commonEventUp:"+keyCode);
-        //Log.d(TAG,"keyMidi:"+keyMidi+"  repeatMode:"+repeatMode);
         // If we already triggered the action with key down, skip
         if (actionUpTriggered) {
             actionUpTriggered = false;
@@ -312,8 +309,6 @@ public class PedalActions {
                 desiredAction = getDesiredAction(true, pedal);
             }
 
-            Log.d(TAG,"testing:"+testing);
-            Log.d(TAG,"desiredAction:"+desiredAction);
             if (testing && keyCode!=0) {
                 // We don't want to action anything other than test for repeatMode for long press
                 doRepeatDetectionUp(keyCode,"","");
@@ -327,7 +322,6 @@ public class PedalActions {
             } else if (airTurnMode && (keyMidi == null || keyMidi.isEmpty())) {
                 doAirTurnDetectionUp(keyCode);
             } else if (repeatMode && (keyMidi == null || keyMidi.isEmpty())) {
-                Log.d(TAG, "doRepeatDetectionUp repeatMode:"+ true);
                 doRepeatDetectionUp(keyCode, keyMidi, desiredAction);
             } else {
                 whichEventTriggered(true, keyCode, keyMidi);
@@ -348,7 +342,6 @@ public class PedalActions {
             desiredAction = "";
         }
 
-        Log.d(TAG,"whichEventTriggered()");
         // IV - code supporting intentional page turns when using pedal for next/previous.
         // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
         // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
@@ -481,9 +474,6 @@ public class PedalActions {
     public String getMidiCode(int which) {
         return pedalMidi[which];
     }
-    public boolean getMidiAsPedal() {
-        return midiAsPedal;
-    }
     public String getPedalShortPressAction(int which) {
         return pedalShortPressAction[which];
     }
@@ -504,9 +494,6 @@ public class PedalActions {
                 break;
             case "repeatMode":
                 this.repeatMode = bool;
-                break;
-            case "midiAsPedal":
-                this.midiAsPedal = bool;
                 break;
         }
         // Save the preference
@@ -546,9 +533,6 @@ public class PedalActions {
         }
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString(pref, action);
-    }
-    public void setMidiAsPedal(boolean midiAsPedal) {
-        this.midiAsPedal = midiAsPedal;
     }
     private int getPedalFromKeyCode(int keyCode) {
         // Go through the pedal codes and return the matching event
@@ -678,7 +662,6 @@ public class PedalActions {
         int keyPedalNum = getPedalFromKeyCode(keyCode);
         testPedalKeycode = keyPedalNum;
 
-        //Log.d(TAG,"doRepeatDetectionUp");
         // Remove callbacks to any checks scheduled
         repeatHandlerCheck.removeCallbacks(repeatRunnableCheck);
 
@@ -725,14 +708,12 @@ public class PedalActions {
                 notAlreadyLongPressed = pedalWasLongPressed[keyPedalNum] == null || !pedalWasLongPressed[keyPedalNum];
             }
 
-            //Log.d(TAG,"pedalIsDown:"+pedalIsDown+"  longTimeHasPassed:"+longTimeHasPassed+"  notAlreadyLongPressed:"+notAlreadyLongPressed+"  currentCount:"+currentRepeatCount);
             // Check if the pedal is down and longPress time has elapsed and isn't already registered
             if (pedalIsDown && longTimeHasPassed && notAlreadyLongPressed && currentRepeatCount >= repeatModeCount) {
                 // The time has elapsed and we have enough keyups to trigger the long press
                 // Reset the counter and clear any delayed handler checks
                 currentRepeatCount = 0;
 
-                //Log.d(TAG,"blockLongPress:"+blockLongPress);
                 if (testing && pedalsFragment!=null) {
                     // Testing, so update the long press mode
                     testPedalWasLongPressed = false;
@@ -771,7 +752,6 @@ public class PedalActions {
                 }
 
             } else if (pedalIsDown && !longTimeHasPassed && (desiredAction==null || !desiredAction.startsWith("midiaction"))) {
-                //Log.d(TAG,"checkRepeatShortPressUp:"+checkRepeatShortPressUp);
                 if (checkRepeatShortPressUp) {
                     checkRepeatShortPressUpHandler.postDelayed(checkRepeatShortPressUpRunnable,500);
 

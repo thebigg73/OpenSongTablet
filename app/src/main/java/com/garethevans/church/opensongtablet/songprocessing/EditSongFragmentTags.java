@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,7 +34,9 @@ public class EditSongFragmentTags extends Fragment {
     private EditSongTagsBinding myView;
     private TagsBottomSheet tagsBottomSheet;
     private PresentationOrderBottomSheet presentationOrderBottomSheet;
-    private String search_index_wait_string="";
+    private String search_index_wait_string="", midi_channel_string="";
+    private int lightgrey = Color.parseColor("#E0E0E0");
+    private int red = Color.parseColor("#FF0000");
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -73,6 +76,9 @@ public class EditSongFragmentTags extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             search_index_wait_string = getString(R.string.index_songs_wait);
+            lightgrey = getContext().getResources().getColor(R.color.lightgrey);
+            red = getContext().getResources().getColor(R.color.red);
+            midi_channel_string = getContext().getString(R.string.midi_channel);
         }
     }
 
@@ -235,6 +241,43 @@ public class EditSongFragmentTags extends Fragment {
                 case "beatbuddykit":
                     mainActivityInterface.getTempSong().setBeatbuddykit(editable.toString());
                     break;
+                case "midiindex":
+                    String originalMidiIndexString = editable.toString();
+                    String newMidiIndexString = originalMidiIndexString.replaceAll("\\D","");
+                    int val = -1;
+                    Song foundSong = null;
+                    if (!newMidiIndexString.isEmpty()) {
+                        val = Integer.parseInt(newMidiIndexString);
+                        if (val<0 || val>16000) {
+                            newMidiIndexString = "";
+                            myView.midiIndexInfo.setHint(null);
+                        } else {
+                            // Check that no other song has this MIDI index already
+                            foundSong = mainActivityInterface.getSQLiteHelper().getSongFromMidiIndex(val);
+                        }
+                    }
+                    if (!originalMidiIndexString.equals(newMidiIndexString)) {
+                        myView.midiIndex.setText(newMidiIndexString);
+                    }
+
+                    if (foundSong!=null) {
+                        // Song exists, so show a warning
+                        myView.midiIndexInfo.setHint(val+" = "+foundSong.getFolder() + "/" + foundSong.getFilename());
+                        myView.midiIndexInfo.setHintColor(red);
+                    } else if (val>=0 && val<16000){
+                        // All good with this song code
+                        // Get the MIDI code from the midi index
+                        // Subtract 1 as MIDI ranges from 0-127, we want numbers starting at 1 for the song midi index
+                        // Divide by 127 to get the MSB value and the remainder is the PC
+                        double msbVal = Math.floorDiv(val-1,127);
+                        double pcVal = Math.floorMod(val-1,127);
+                        String midiCode = midi_channel_string + ":" +
+                                mainActivityInterface.getMidi().getMidiInputChannelSong() +
+                                " MSB:" + msbVal + " PC:" + pcVal;
+                        myView.midiIndexInfo.setHint(midiCode);
+                        myView.midiIndexInfo.setHintColor(lightgrey);
+                    }
+                    mainActivityInterface.getTempSong().setMidiindex(editable.toString());
             }
         }
     }
@@ -346,4 +389,5 @@ public class EditSongFragmentTags extends Fragment {
         }
         return newTheme;
     }
+
 }

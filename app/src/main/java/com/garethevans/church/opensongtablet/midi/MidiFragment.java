@@ -198,7 +198,19 @@ public class MidiFragment extends Fragment {
         }
 
         // Set the pedal preference
-        myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
+        myView.midiInput.setChecked(mainActivityInterface.getMidi().getMidiInput());
+        myView.midiInputChannelPedal.setValue(mainActivityInterface.getMidi().getMidiInputChannelPedal());
+        myView.midiInputChannelPedal.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiInputChannelPedal()));
+        myView.midiInputChannelPedal.setVisibility(mainActivityInterface.getMidi().getMidiInput() ? View.VISIBLE : View.GONE);
+        myView.midiInputChannelSong.setValue(mainActivityInterface.getMidi().getMidiInputChannelSong());
+        myView.midiInputChannelSong.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiInputChannelSong()));
+        myView.midiInputChannelSong.setVisibility(mainActivityInterface.getMidi().getMidiInput() ? View.VISIBLE : View.GONE);
+        myView.midiInputAutoscroll.setChecked(mainActivityInterface.getMidi().getMidiInputAutoscroll());
+        myView.midiInputAutoscroll.setVisibility(mainActivityInterface.getMidi().getMidiInput() ? View.VISIBLE : View.GONE);
+        myView.midiInputMetronome.setChecked(mainActivityInterface.getMidi().getMidiInputMetronome());
+        myView.midiInputMetronome.setVisibility(mainActivityInterface.getMidi().getMidiInput() ? View.VISIBLE : View.GONE);
+        myView.midiInputPad.setChecked(mainActivityInterface.getMidi().getMidiInputPad());
+        myView.midiInputPad.setVisibility(mainActivityInterface.getMidi().getMidiInput() ? View.VISIBLE : View.GONE);
     }
 
     // Set the view listeners
@@ -232,22 +244,32 @@ public class MidiFragment extends Fragment {
         myView.testMidiDevice.setOnClickListener(v -> sendTestNote());
         myView.disconnectMidiDevice.setOnClickListener(v -> disconnectDevices());
         myView.autoSendMidi.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiSendAuto(isChecked)));
-        myView.midiAsPedal.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal", isChecked);
-            mainActivityInterface.getPedalActions().setMidiAsPedal(isChecked);
-            if (isChecked) {
-                mainActivityInterface.getMidi().enableMidiListener();
-            }
-        }));
-        myView.midiAsPedal.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        myView.midiInput.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiInput", isChecked);
+            mainActivityInterface.getMidi().setMidiInput(isChecked);
             if (isChecked && mainActivityInterface.getMidi().getMidiDevice() != null &&
-                    mainActivityInterface.getMidi().getMidiOutputPort() != null) {
+                mainActivityInterface.getMidi().getMidiInputPort() != null) {
                 mainActivityInterface.getMidi().enableMidiListener();
-            } else if (!isChecked && mainActivityInterface.getMidi().getMidiDevice() != null &&
-                    mainActivityInterface.getMidi().getMidiOutputPort() != null) {
+            } else {
                 mainActivityInterface.getMidi().disableMidiListener();
             }
+            myView.midiInputChannelPedal.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            myView.midiInputChannelSong.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            myView.midiInputAutoscroll.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            myView.midiInputMetronome.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            myView.midiInputPad.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        }));
+        myView.midiInputChannelPedal.addOnChangeListener((slider, value, fromUser) -> {
+            mainActivityInterface.getMidi().setMidiInputChannelPedal((int) value);
+            myView.midiInputChannelPedal.setHint(String.valueOf((int)value));
         });
+        myView.midiInputChannelSong.addOnChangeListener((slider, value, fromUser) -> {
+            mainActivityInterface.getMidi().setMidiInputChannelSong((int) value);
+            myView.midiInputChannelSong.setHint(String.valueOf((int)value));
+        });
+        myView.midiInputAutoscroll.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiInputAutoscroll(isChecked)));
+        myView.midiInputMetronome.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiInputMetronome(isChecked)));
+        myView.midiInputPad.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getMidi().setMidiInputPad(isChecked)));
     }
 
 
@@ -568,7 +590,7 @@ public class MidiFragment extends Fragment {
                 case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
                     if (!foundoutport) {
                         mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
-                        if (myView.midiAsPedal.getChecked()) {
+                        if (myView.midiInput.getChecked()) {
                             mainActivityInterface.getMidi().enableMidiListener();
                         }
                         foundoutport = true;

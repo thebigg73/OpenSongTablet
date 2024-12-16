@@ -2621,7 +2621,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // Song actions
     @Override
-    public void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
+    public void registerMidiPedalAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
         // If pedalsFragment is open, send the midiNote and event there
         if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment) getCurrentFragment()).isListening()) {
             if (actionDown) {

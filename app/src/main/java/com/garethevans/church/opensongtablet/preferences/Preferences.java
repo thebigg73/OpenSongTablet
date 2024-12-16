@@ -444,7 +444,6 @@ public class Preferences extends Activity {
     // metronomeTockSound               String      The reference to the filename in the assets/metronome for the tick (def:digital_low)
     // metronomeTockVol                 float       The volume of the metronome tick (def:0.6f)
     // metronomeShowVisual              boolean     Should the metronome be visual (flash action bar) (def:false)
-    // midiAsPedal                      boolean     Should the midi device trigger pedal commands (def:false)
     // midiAction1                      String      Midi message allocated to midiAction1 assignable to action/pedal (def:0x99 0x24 0x64) - bass drum
     // midiAction2                      String      Midi message allocated to midiAction2 assignable to action/pedal (def:0x99 0x26 0x64) - snare drum
     // midiAction3                      String      Midi message allocated to midiAction3 assignable to action/pedal (def:0x99 0x2A 0x64) - closed hat
@@ -453,7 +452,7 @@ public class Preferences extends Activity {
     // midiAction6                      String      Midi message allocated to midiAction6 assignable to action/pedal (def:0x99 0x2F 0x64) - tom 2
     // midiAction7                      String      Midi message allocated to midiAction7 assignable to action/pedal (def:0x99 0x2B 0x64) - tom 3
     // midiAction8                      String      Midi message allocated to midiAction8 assignable to action/pedal (def:0x99 0x37 0x64) - crash
-    // midiBoard                        int     Which MIDI board is selected (def:1)
+    // midiBoard                        int         Which MIDI board is selected (def:1)
     // midiBoard{1-3}Title              String      The title of MIDI board 1-3 (def:"")
     // midiBoard{1-3}Button{1-8}Name    String      The name of the MIDI buttons 1-8 on the boards 1-3 (def:"")
     // midiBoard{1-3}Button{1-8}MIDI    String      The MIDI code of the MIDI buttons 1-8 on the boards 1-3 (def:"")
@@ -461,6 +460,10 @@ public class Preferences extends Activity {
     // midiBoard{1-3}Slider{1-2}Channel int         The MIDI channel of the MIDI sliders 1-2 on the boards 1-3 (def:0)
     // midiBoard{1-3}Slider{1-2}CC      int         The CC number of the MIDI sliders 1-2 on the boards 1-3 (def:0)
     // midiBoard{1-3}Slider{1-2}Value   int         The value of the MIDI sliders 1-2 on the boards 1-3 (def:0)
+    // midiInput                        boolean     Should the app listen for MIDI messages for songs/foot pedal (def:false)
+    // midiInputChannelPedal            int         The default MIDI input channel to listen on for pedal controls (def:8)
+    // midiInputChannelSong             int         The default MIDI input channel to listen on for song controls (def:9)
+    // midiOutputChannel                int         The default MIDI output channel for building MIDI messages, etc. (def:1)
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)

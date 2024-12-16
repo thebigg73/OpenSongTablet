@@ -556,6 +556,27 @@ public class CommonSQL {
         return count > 0;
     }
 
+    public Song getSongFromMidiIndex(SQLiteDatabase db, int midiIndex) {
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_MIDI_INDEX + "= ? ";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(midiIndex)});
+        Song thisSong = new Song();
+
+        // Get the first item (the matching songID)
+        try {
+            if (cursor.moveToFirst()) {
+                thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
+                thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
+                cursor.close();
+                return thisSong;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            cursor.close();
+        }
+        // No song found,
+        return null;
+    }
+
     public ArrayList<String> getFolders(SQLiteDatabase db) {
         ArrayList<String> folders = new ArrayList<>();
         String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +

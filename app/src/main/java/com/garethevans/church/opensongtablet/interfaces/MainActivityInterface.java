@@ -261,7 +261,7 @@ public interface MainActivityInterface {
 
     // Midi
     Midi getMidi();
-    void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
+    void registerMidiPedalAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
     Drummer getDrummer();
     BeatBuddy getBeatBuddy();
     Aeros getAeros();

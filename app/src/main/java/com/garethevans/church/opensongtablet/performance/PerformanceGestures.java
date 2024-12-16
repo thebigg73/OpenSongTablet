@@ -768,6 +768,8 @@ public class PerformanceGestures {
 
     // Next song
     public void prevSong() {
+        Log.d(TAG,"mainActivityInterface.getPedalActions().getPedalScrollBeforeMove():"+mainActivityInterface.getPedalActions().getPedalScrollBeforeMove());
+        Log.d(TAG,"canScroll:"+canScroll(false));
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(false)) {
             scroll(false);
         } else {
@@ -782,6 +784,7 @@ public class PerformanceGestures {
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.first_song));
                 }
             } else {
+                Log.d(TAG,"trying to move to previous");
                 mainActivityInterface.getDisplayPrevNext().moveToPrev();
             }
         }

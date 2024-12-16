@@ -224,6 +224,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Song getSongFromMidiIndex(int midiIndex) {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getSongFromMidiIndex(db,midiIndex);
+        } catch (OutOfMemoryError | Exception e) {
+            return null;
+        }
+    }
     public void exportDatabase() {
         // Export a csv version of the temporary database
         mainActivityInterface.getCommonSQL().exportDatabase(getDB(),"SongDatabase.csv");
