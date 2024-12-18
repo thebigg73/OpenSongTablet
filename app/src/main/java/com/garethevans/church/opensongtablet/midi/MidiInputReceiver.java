@@ -69,7 +69,7 @@ public class MidiInputReceiver extends MidiReceiver {
             boolean midiStop = isMidiStop(bytes);
             String messageType = getMessageType(bytes);
             int midiChannel = getMidiChannelFromBytes(bytes);
-            // We are only ever interested in data1 for these actions
+            // The data is numerical from 0-127
             int data1 = getData1(bytes);
             int data2 = getData2(bytes);
 
@@ -146,7 +146,6 @@ public class MidiInputReceiver extends MidiReceiver {
                         mainActivityInterface.getPad().playStopOrPause(mainActivityInterface.getPad().whichPadPlaying());
                     }
 
-
                 } else if (messageType.equals("CC") && data1 == 0) {
                     // This is the bank select on the MSB
                     // Set the handler to clear the MSB value after 1s.  Time for PC to arrive
@@ -155,9 +154,10 @@ public class MidiInputReceiver extends MidiReceiver {
                     Log.d(TAG,"MSB chosen:" + data2);
                     msbChosen = data2;
 
-                } else if (messageType.equals("PC") && msbChosen >= 0) {
-                    // We have received the PC song number and also have the MSB chosen - song chosen
+                } else if (messageType.equals("PC")) {
+                    // We have received the PC song number and may also have the MSB chosen - song chosen
                     songMessageHander.removeCallbacks(songMessageRunnable);
+                    pcChosen = data1;
                     int songNumber = getSongNumber();
                     // Clear the chosen values
                     msbChosen = -1;
@@ -332,11 +332,20 @@ public class MidiInputReceiver extends MidiReceiver {
 
     private int getSongNumber() {
         // Use the MSB bank number and PC to get the song number
-        if (msbChosen>=0 && pcChosen>=0) {
-            int songNumber =  (msbChosen * 128) + pcChosen;
-            Log.d(TAG,"songNumber:"+songNumber);
-            return songNumber;
+        // If not MSB received, we assume bank 0 and only use the first 127 songs
+        // Song 1 will have msbChosen = 0, pcChosen = 0, so (msbChosen * 128) + pcChosen + 1 = 1
+        // Song 128 will have msbChosen = 0, pcChosen = 127, so (msbChosen * 128) + pcChosen + 1 = 128
+        // Song 129 will have msbChosen = 1, pcChosen = 0, so (msbChosen * 128) + pcChosen + 1 = 129
+        // The final +1 is to change 0 into 1, etc.
+        int songNumber = -1;
+        if (pcChosen>=0) {
+            if (msbChosen>=0) {
+                songNumber = (msbChosen * 128) + pcChosen + 1;
+            } else {
+                songNumber = pcChosen + 1;
+            }
         }
-        return -1;
+        Log.d(TAG,"songNumber:"+songNumber);
+        return songNumber;
     }
 }
