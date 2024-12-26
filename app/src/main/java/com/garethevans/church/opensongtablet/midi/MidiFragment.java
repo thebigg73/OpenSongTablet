@@ -572,31 +572,42 @@ public class MidiFragment extends Fragment {
     // Connect or disconnect devices
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupDevice(MidiDevice device) {
-        mainActivityInterface.getMidi().setMidiDevice(device);
-        MidiDeviceInfo midiDeviceInfo = mainActivityInterface.getMidi().getMidiDevice().getInfo();
+        if (device!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                mainActivityInterface.getMidi().setMidiDevice(device);
 
-        boolean foundinport = false;  // We will only grab the first one
-        boolean foundoutport = false; // We will only grab the first one
+                MidiDeviceInfo midiDeviceInfo = mainActivityInterface.getMidi().getMidiDevice().getInfo();
 
-        MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
-        for (MidiDeviceInfo.PortInfo pi : portInfos) {
-            switch (pi.getType()) {
-                case MidiDeviceInfo.PortInfo.TYPE_INPUT:
-                    if (!foundinport) {
-                        mainActivityInterface.getMidi().setMidiInputPort(mainActivityInterface.getMidi().getMidiDevice().openInputPort(pi.getPortNumber()));
-                        foundinport = true;
-                    }
-                    break;
-                case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
-                    if (!foundoutport) {
-                        mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
-                        if (myView.midiInput.getChecked()) {
-                            mainActivityInterface.getMidi().enableMidiListener();
+                boolean foundinport = false;  // We will only grab the first one
+                boolean foundoutport = false; // We will only grab the first one
+
+                if (midiDeviceInfo!=null) {
+                    MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
+                    if (portInfos!=null) {
+                        for (MidiDeviceInfo.PortInfo pi : portInfos) {
+                            switch (pi.getType()) {
+                                case MidiDeviceInfo.PortInfo.TYPE_INPUT:
+                                    if (!foundinport) {
+                                        mainActivityInterface.getMidi().setMidiInputPort(mainActivityInterface.getMidi().getMidiDevice().openInputPort(pi.getPortNumber()));
+                                        foundinport = true;
+                                    }
+                                    break;
+                                case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
+                                    if (!foundoutport) {
+                                        mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
+                                        if (myView.midiInput.getChecked()) {
+                                            mainActivityInterface.getMidi().enableMidiListener();
+                                        }
+                                        foundoutport = true;
+                                    }
+                                    break;
+                            }
                         }
-                        foundoutport = true;
                     }
-                    break;
-            }
+                } else {
+                    Log.d(TAG,"No midiDevice connected");
+                }
+            });
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -514,6 +515,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         myView.midiTest.setOnClickListener(view -> {
             updateMIDIString();
             String hexSequence = mainActivityInterface.getMidi().checkForShortHandMIDI(midiCode);
+            Log.d(TAG,"hexSequence:"+hexSequence);
             mainActivityInterface.getMidi().sendMidiHexSequence(hexSequence);
         });
         myView.midiAdd.setOnClickListener(view -> {

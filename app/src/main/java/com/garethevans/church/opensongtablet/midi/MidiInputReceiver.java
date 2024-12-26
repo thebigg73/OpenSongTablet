@@ -12,6 +12,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class MidiInputReceiver extends MidiReceiver {
@@ -26,10 +27,7 @@ public class MidiInputReceiver extends MidiReceiver {
     private final Runnable songMessageRunnable;
     private final Handler longPressHandler = new Handler();
     private final Runnable longPressRunnable;
-    private byte[] longPressMessage;
-    private int longPressOffset;
-    private int longPressCount;
-    private long longPressTimeStamp;
+    private int longPressNote = -1;
     private boolean listeningForLongPress = false;
     private boolean isLongPress = false;
 
@@ -47,10 +45,12 @@ public class MidiInputReceiver extends MidiReceiver {
         };
         longPressRunnable = () -> {
             // If we haven't received the NX yet, but did receive the NO 1 sec ago, it's a long press
-            isLongPress = true;
-            onSend(longPressMessage,longPressOffset,longPressCount,longPressTimeStamp+1000);
-            longPressMessage = null;
-            listeningForLongPress = false;
+            if (listeningForLongPress) {
+                // This stops us recording the next actionUp message
+                isLongPress = true;
+                mainActivityInterface.registerMidiPedalAction(false, false, true,
+                        mainActivityInterface.getMidi().getNoteFromInt(longPressNote));
+            }
         };
     }
 
@@ -65,50 +65,62 @@ public class MidiInputReceiver extends MidiReceiver {
                 bytes[i] = msg[i] & 0xFF;
             }
 
+            Log.d(TAG,"message:"+ Arrays.toString(bytes));
             boolean midiStart = isMidiStart(bytes);
             boolean midiStop = isMidiStop(bytes);
+            boolean songSelect = isSongSelect(bytes);
             String messageType = getMessageType(bytes);
             int midiChannel = getMidiChannelFromBytes(bytes);
             // The data is numerical from 0-127
             int data1 = getData1(bytes);
             int data2 = getData2(bytes);
 
+            Log.d(TAG,"messageType:"+messageType+"  midiChannel:"+midiChannel+"  data1:"+data1+"  data2:"+data2);
+
             // Only do something if we are listening on these channels and the message is appropriate
             if (midiChannel == mainActivityInterface.getMidi().getMidiInputChannelPedal() &&
                     messageType.equals("NO") || messageType.equals("NX")) {
-                // This is a likely foot pedal command - note on==action down, note off=action up
-                // We also check for a long press
+                // This is a likely foot pedal command - note on==actionDown==NO, note off=actionUp==NX
+                // We also check for a long press using a handler
+                // Long press means the actionDown is recieved and no actionUp is received within 1 second
                 boolean actionDown = messageType.equals("NO");
                 boolean actionUp = messageType.equals("NX");
-                boolean actionLong = false;
 
                 if (actionDown) {
-                    if (!listeningForLongPress) {
-                        // Clear existing listener and listen for no NX within 1 sec
-                        // Only do this once per 1 second
-                        longPressMessage = new byte[msg.length];
-                        System.arraycopy(msg, 0, longPressMessage, 0, msg.length);
-                        longPressMessage[1] = (byte) (nx_start+midiChannel-1);
-                        longPressCount = count;
-                        longPressOffset = offset;
-                        longPressTimeStamp = timestamp;
-                        isLongPress = false;
-                        listeningForLongPress = true;
-                        longPressHandler.removeCallbacks(longPressRunnable);
-                        longPressHandler.postDelayed(longPressRunnable, 1000);
-                    }
+                    // Just in case this is a long press, keep a note of the data 1 (note pressed)
+                    longPressNote = data1;
+
+                    // Set the values to start waiting for a long press
+                    // Clear any current runnables from the handler and listen for 1 second
+                    isLongPress = false;
+                    listeningForLongPress = true;
+                    longPressHandler.removeCallbacks(longPressRunnable);
+                    longPressHandler.postDelayed(longPressRunnable, 1000);
+                } else {
+                    // This is an actionUp, so we don't need the long press check
+                    longPressHandler.removeCallbacks(longPressRunnable);
                 }
 
-                if (isLongPress) {
-                    actionDown = false;
-                    actionUp = false;
+                // Check if this is an actionUp called immediately after a long press
+                // Because the long press handler dealt with it, ignore this one.
+                // If we didn't we'd trigger both a long press and single press action
+                boolean falseActionUp = actionUp && isLongPress;
+
+                // Now we can reset the longPress flag ready for another go later
+                if (actionUp) {
+                    isLongPress = false;
+                    listeningForLongPress = false;
                 }
 
-                mainActivityInterface.registerMidiPedalAction(actionDown, actionUp, actionLong,
-                        mainActivityInterface.getMidi().getNoteFromInt(data1));
+                // This only sends simple actionDown/actionUp.
+                // Long presses are sent from the handler directly, so use the check
+                if (!falseActionUp) {
+                    mainActivityInterface.registerMidiPedalAction(actionDown, actionUp, false,
+                            mainActivityInterface.getMidi().getNoteFromInt(data1));
+                }
 
 
-            } else if (midiChannel == mainActivityInterface.getMidi().getMidiInputChannelSong()) {
+            } else if ((midiChannel == mainActivityInterface.getMidi().getMidiInputChannelSong()) || songSelect) {
                 // This is a likely a change song command or a start/stop for autoscroll
                 // This is in multiple parts so only proceed if within time and first part is received
                 if (midiStart) {
@@ -146,15 +158,15 @@ public class MidiInputReceiver extends MidiReceiver {
                         mainActivityInterface.getPad().playStopOrPause(mainActivityInterface.getPad().whichPadPlaying());
                     }
 
-                } else if (messageType.equals("CC") && data1 == 0) {
+                } else if (messageType.equals("CC") && (data1 == 0 || data1 == 32)) {
                     // This is the bank select on the MSB
                     // Set the handler to clear the MSB value after 1s.  Time for PC to arrive
                     songMessageHander.removeCallbacks(songMessageRunnable);
                     songMessageHander.postDelayed(songMessageRunnable, 1000);
-                    Log.d(TAG,"MSB chosen:" + data2);
+                    Log.d(TAG,"MSB chosen:" + data1 + "," + data2);
                     msbChosen = data2;
 
-                } else if (messageType.equals("PC")) {
+                } else if (messageType.equals("PC") || songSelect) {
                     // We have received the PC song number and may also have the MSB chosen - song chosen
                     songMessageHander.removeCallbacks(songMessageRunnable);
                     pcChosen = data1;
@@ -176,70 +188,6 @@ public class MidiInputReceiver extends MidiReceiver {
             e.printStackTrace();
         }
     }
-
-
-    /*
-    if (msg.length >= 4) {
-                int byte1 = msg[1] & 0xFF;  // This determines action and channel
-                int byte2 = msg[2] & 0xFF;  // This is the note
-                int byte3 = msg[3] & 0xFF;  // This is the velocity - if 0 then action up
-
-                boolean actionDown = false;
-                boolean actionUp = false;
-                boolean actionLong = false;
-                int incomingChannel = -1;
-
-                long upTime;
-                upTime = System.currentTimeMillis();
-                if (upTime - downTime > 1000 && upTime - downTime < 5000) {
-                    // If between 1 and 5 secs, it is a long press
-                    actionLong = true;
-                } else {
-                    actionUp = true;
-                }
-
-                if (byte1 >= 144 && byte1 <= 159) {
-                    incomingChannel = ((byte1 - 144) + 1);
-
-                    if (byte3 > 0) {
-                        incomingChannel = ((byte1 - 144) + 1);
-                        Log.d(TAG, "Note on channel:" + incomingChannel);
-                        downByte = byte2;
-                        actionDown = true;
-                        downTime = System.currentTimeMillis();
-                    } else if (byte2 == downByte) {
-                        Log.d(TAG, "Note off channel=" + ((byte1 - 144) + 1));
-                        // This is action up or long press
-                        upTime = System.currentTimeMillis();
-                        if (upTime - downTime > 1000 && upTime - downTime < 5000) {
-                            // If between 1 and 5 secs, it is a long press
-                            actionLong = true;
-                        } else {
-                            actionUp = true;
-                        }
-                    }
-                } else if (byte1 >= 128 && byte1 <= 143) {
-                    // This is a note off.  Don't need this
-                    Log.d(TAG,"Note off channel="+((byte1-128)+1));
-                    //upTime = System.currentTimeMillis();
-                    actionUp = true;
-                }
-
-                String note = midi.getNoteFromInt(byte2);
-                //Log.d(TAG,"Note="+byte2);
-                //Log.d(TAG,"Velocity="+byte3);
-
-                //String b0 = Integer.toString(msg[0], 16);
-                //String b1 = Integer.toString(msg[1], 16);
-                //String b2 = Integer.toString(msg[2], 16);
-                //Log.d(TAG,"b0="+b0+"  b1="+b1+"  b2="+b2);
-                //Log.d(TAG, "actionDown="+actionDown+"  actionUp="+actionUp+" actionLong="+actionLong);
-                //Log.d(TAG, "note="+note);
-
-                mainActivityInterface.registerMidiPedalAction(actionDown, actionUp, actionLong, note);
-
-            }
-     */
 
     // MIDI message logging
     public void resetReceivedMessage() {
@@ -301,13 +249,13 @@ public class MidiInputReceiver extends MidiReceiver {
     }
     private int getData1(int[] bytes) {
         if (bytes.length>=3) {
-            return bytes[3];
+            return bytes[2];
         }
         return 0;
     }
     private int getData2(int[] bytes) {
         if (bytes.length >= 4) {
-            return bytes[4];
+            return bytes[3];
         }
         return 0;
     }
@@ -326,6 +274,15 @@ public class MidiInputReceiver extends MidiReceiver {
             int decimal = bytes[1] & 0xFF;
             String hexCode = "0x" + String.format("%02X", decimal);
             return hexCode.equals("0xFC");
+        }
+        return false;
+    }
+    private boolean isSongSelect(int[] bytes) {
+        // Could be a Song Select message (0xF3)
+        if (bytes.length>=2) {
+            int decimal = bytes[1] & 0xFF;
+            String hexCode = "0x" + String.format("%02X", decimal);
+            return hexCode.equals("0xF3");
         }
         return false;
     }

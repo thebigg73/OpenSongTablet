@@ -187,6 +187,7 @@ public class Midi {
 
     public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
         this.bluetoothDevice = bluetoothDevice;
+        mainActivityInterface.getMidi().tryPairBluetoothLE();
     }
 
     public BluetoothDevice getBluetoothDevice() {
@@ -563,8 +564,14 @@ public class Midi {
     public String buildMidiString(String action, int channel, int byte2, int byte3) {
         String s = "";
         String b1 = "0x";                                 // This initialises the hex numbering convention
-        String b2 = " 0x" + String.format("%02X", byte2); // Convert numbers 0-127 to hex 2 digits
-        String b3 = " 0x" + String.format("%02X", byte3);
+        String b2 = "";
+        String b3 = "";
+        if (byte2>=0) {
+            b2 = " 0x" + String.format("%02X", byte2); // Convert numbers 0-127 to hex 2 digits
+        }
+        if (byte3>=0) {
+            b3 = " 0x" + String.format("%02X", byte3); // Convert numbers 0-127 to hex 2 digits
+        }
         String hexString = Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         String bCommon = b1 + "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         switch (action) {
@@ -674,7 +681,22 @@ public class Midi {
         }
 
     }
+    public void tryPairBluetoothLE() {
 
+        // This bonds so pairing is requested
+        if (bluetoothDevice!=null && bluetoothDevice.getBondState()==BluetoothDevice.BOND_NONE) {
+            try {
+                //Method m = bluetoothDevice.getClass()
+                //        .getMethod("createBond");
+                //m.invoke(bluetoothDevice, (Object[]) null);
+                bluetoothDevice.connectGatt(c,false,null);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                bluetoothDevice = null;
+            }
+        }
+
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -1032,12 +1054,20 @@ public class Midi {
         // If we haven't paired a device in the app, make sure suitable devices are unpaired now so we can discover them
         if (bluetoothDevice == null) {
             List<BluetoothDevice> connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+            if (midiManager == null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    setMidiManager((MidiManager) c.getSystemService(Context.MIDI_SERVICE));
+                }
+            }
             for (BluetoothDevice device : connectedDevices) {
+                Log.d(TAG,"already connected device:"+device.getName());
                 // If this is a MIDI BLE device, then use it!
                 ParcelUuid[] uuids = device.getUuids();
+                Log.d(TAG,"uuids:"+Arrays.toString(uuids));
                 if (uuids != null) {
                     for (ParcelUuid uuid : uuids) {
                         if (uuid.toString().equalsIgnoreCase(uuidBle)) {
+                            Log.d(TAG,"This device is MIDI");
                             // This is a MIDI device!
                             if (midiDevice == null &&
                                     device.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -1045,12 +1075,8 @@ public class Midi {
                                 // Unpair as the pairing needs to be initiated here
                                 bluetoothDevice = device;
                                 tryDisconnectBluetoothLE();
-
-                            }
-                            if (midiManager == null) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    setMidiManager((MidiManager) c.getSystemService(Context.MIDI_SERVICE));
-                                }
+                                Log.d(TAG,"disconnected, try pairing again");
+                                tryPairBluetoothLE();
                             }
                         }
                     }
