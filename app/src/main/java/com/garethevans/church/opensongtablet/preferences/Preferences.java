@@ -152,6 +152,8 @@ public class Preferences extends Activity {
     // Variable name                    Type        What
     // abcAuto                          boolean     Should abc notation automatically be shown? (def:false)
     // abcAutoTranspose                 boolean     Should the abc notation output be transposed to match the song key (def:true)
+    // abcIncludeTab                    boolean     Include TAB for abcNotation (def:false)
+    // abcInstrumentTab                 String      Which instrument for guitar tab (guitar, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle) (def:guitar)
     // abcPopupWidth                    float       The percentage of the screen width for the abc score popup (def:0.95f)
     // abcTranspose                     int         The visual transposing of abc notation
     // abcXPosition                     int         The x position of the popup sticky note (def: -1 which means figure it out first)

@@ -3,13 +3,13 @@ package com.garethevans.church.opensongtablet.abcnotation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -17,17 +17,28 @@ import java.util.Locale;
 
 public class ABCNotation {
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ABCNotation";
 
-    private String songTitle, songKey, songAbc, songTimeSig;
+    private String songTitle, songKey, songAbc, songTimeSig, abcInstrumentTab;
     private int songAbcTranspose, abcZoom;
     private float abcPopupWidth;
-    private boolean isPopup, abcAutoTranspose, autoshowMusicScore;
+    private boolean isPopup, abcAutoTranspose, autoshowMusicScore, abcIncludeTab;
     private final MainActivityInterface mainActivityInterface;
+    private final String guitar, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
 
     public ABCNotation(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
+        guitar = c.getString(R.string.guitar);
+        banjo4 = c.getString(R.string.banjo4);
+        banjo5 = c.getString(R.string.banjo5);
+        mandolin = c.getString(R.string.mandolin);
+        cavaquinho = c.getString(R.string.cavaquinho);
+        ukulele = c.getString(R.string.ukulele);
+        bass4 = c.getString(R.string.bass4);
+        bass5 = c.getString(R.string.bass5);
+        violin = c.getString(R.string.violin);
+        fiddle = c.getString(R.string.fiddle);
         getUpdatedPreferences();
     }
 
@@ -37,6 +48,8 @@ public class ABCNotation {
         abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
         abcZoom = mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2);
         autoshowMusicScore = mainActivityInterface.getPreferences().getMyPreferenceBoolean("autoshowMusicScore",false);
+        abcIncludeTab = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcIncludeTab",false);
+        abcInstrumentTab = mainActivityInterface.getPreferences().getMyPreferenceString("abcInstrumentTab","guitar");
     }
 
     // This is set when a song is set for editing or displaying the Abc notation
@@ -168,10 +181,14 @@ public class ABCNotation {
                     mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2)+");");
         }
 
-        Log.d(TAG,"newContent:"+newContent);
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
-        webView.loadUrl("javascript:setTranspose(" + songAbcTranspose + ");");
-        webView.loadUrl("javascript:initEditor()");
+        webView.evaluateJavascript("javascript:setHideTab(" + !abcIncludeTab + ");", null);
+        webView.evaluateJavascript("javascript:setTranspose(" + songAbcTranspose + ");",null);
+        webView.evaluateJavascript("javascript:setInstrument('" + getAbcIntrumentTabForABCJS()+"');",null);
+        String[] strings = getAbcInstrumentTuningABCJS();
+        webView.evaluateJavascript("javascript:setTuning('"+strings[6]+"','"+strings[5]+"','"+strings[4]+"','"+strings[3]+"','"+strings[2]+"','"+strings[1]+"');",null);
+        webView.evaluateJavascript("javascript:setLabel('" + getAbcInstrumentLabelABCJS()+"');",null);
+        webView.evaluateJavascript("javascript:initEditor()",null);
     }
 
     public void updateZoom(WebView webView) {
@@ -302,6 +319,38 @@ public class ABCNotation {
         updateContent(webView);
     }
 
+    // Get the list of ABC tab instruments
+    public String[] getABCInstruments() {
+        return new String[]{guitar, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle};
+    }
+
+    // Get the default tuning options for the instrument
+    public String[] getAbcInstrumentTuning() {
+        // Check we have the correct number of strings for our instrument
+        // Convert our preference which is a single string with commas into an array
+
+        switch (abcInstrumentTab) {
+            case "guitar":
+            default:
+                return new String[] {"E,","A,","D","G","B","e"};
+            case "banjo4":
+            case "cavaquinho":
+                return new String[] {"D","G","B","d"};
+            case "banjo5":
+                return new String[] {"G,","D","G","B","d"};
+            case "ukulele":
+                return new String[] {"G","c","e","a"};
+            case "mandolin":
+            case "fiddle":
+            case "violin":
+                return new String[] {"G","d","a","e'"};
+            case "bass4":
+                return new String[] {"E,,","A,,","D,","G,"};
+            case "bass5":
+                return new String[] {"B,,,","E,,","A,,","D,","G,"};
+        }
+    }
+
     // The getters
     public String getSongAbc() {
         return songAbc;
@@ -320,6 +369,115 @@ public class ABCNotation {
     }
     public boolean getAutoshowMusicScore() {
         return autoshowMusicScore;
+    }
+    public boolean getAbcIncludeTab() {
+        return abcIncludeTab;
+    }
+    public String getAbcInstrumentNice() {
+        // The preference is a non translated simple text string
+        // Get a nice translated string from this
+        switch (abcInstrumentTab) {
+            case "guitar":
+            default:
+                return guitar;
+            case "banjo4":
+                return banjo4;
+            case "banjo5":
+                return banjo5;
+            case "mandolin":
+                return mandolin;
+            case "cavaquinho":
+                return cavaquinho;
+            case "violin":
+                return violin;
+            case "fiddle":
+                return fiddle;
+            case "ukulele":
+                return ukulele;
+            case "bass4":
+                return bass4;
+            case "bass5":
+                return bass5;
+        }
+    }
+    public String getAbcInstrumentPrefFromNice(String niceInstrument) {
+        // The user picks the instrument from a dropdown using translated strings
+        // We need to get the preference version which is a lowercase text string
+        if (niceInstrument.equals(banjo4)) {
+            return "banjo4";
+        } else if (niceInstrument.equals(banjo5)) {
+            return "banjo5";
+        } else if (niceInstrument.equals(mandolin)) {
+            return "mandolin";
+        } else if (niceInstrument.equals(cavaquinho)) {
+            return "cavaquinho";
+        } else if (niceInstrument.equals(violin)) {
+            return "violin";
+        } else if (niceInstrument.equals(fiddle)) {
+            return "fiddle";
+        } else if (niceInstrument.equals(ukulele)) {
+            return "ukulele";
+        } else if (niceInstrument.equals(bass4)) {
+            return "bass4";
+        } else if (niceInstrument.equals(bass5)) {
+            return "bass5";
+        } else {
+            return guitar;
+        }
+    }
+
+    public String getAbcIntrumentTabForABCJS() {
+        // ABC notation only allows some instrument types
+        // We fudge this by grouping them into available options
+        switch (abcInstrumentTab) {
+            case "guitar":
+            default:
+                return "guitar";
+            case "banjo4":
+            case "bass4":
+            case "cavaquinho":
+            case "mandolin":
+            case "ukulele":
+                return "mandolin";
+            case "violin":
+                return "violin";
+            case "fiddle":
+                return "fiddle";
+            case "banjo5":
+            case "bass5":
+                return "fiveString";
+        }
+    }
+    public String getAbcInstrumentLabelABCJS() {
+        // The instrument label uses the nice instrument and the tuning
+        return getAbcInstrumentNice() + " (%T)";
+    }
+    public String[] getAbcInstrumentTuningABCJS() {
+        String[] instrumentTuningArray = getAbcInstrumentTuning();
+        String[] returnStrings = new String[7];
+        if (instrumentTuningArray.length == 6) {
+            returnStrings[6] = instrumentTuningArray[0];
+            returnStrings[5] = instrumentTuningArray[1];
+            returnStrings[4] = instrumentTuningArray[2];
+            returnStrings[3] = instrumentTuningArray[3];
+            returnStrings[2] = instrumentTuningArray[4];
+            returnStrings[1] = instrumentTuningArray[5];
+        } else if (instrumentTuningArray.length == 5) {
+            returnStrings[6] = "";
+            returnStrings[5] = instrumentTuningArray[0];
+            returnStrings[4] = instrumentTuningArray[1];
+            returnStrings[3] = instrumentTuningArray[2];
+            returnStrings[2] = instrumentTuningArray[3];
+            returnStrings[1] = instrumentTuningArray[4];
+        } else {
+            returnStrings[6] = "";
+            returnStrings[5] = "";
+            returnStrings[4] = instrumentTuningArray[0];
+            returnStrings[3] = instrumentTuningArray[1];
+            returnStrings[2] = instrumentTuningArray[2];
+            returnStrings[1] = instrumentTuningArray[3];
+        }
+        return returnStrings;
     }
 
     // The setters
@@ -346,5 +504,13 @@ public class ABCNotation {
     public void setAutoshowMusicScore(boolean autoshowMusicScore) {
         this.autoshowMusicScore = autoshowMusicScore;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoshowMusicScore",autoshowMusicScore);
+    }
+    public void setAbcIncludeTab(boolean abcIncludeTab) {
+        this.abcIncludeTab = abcIncludeTab;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("abcIncludeTab",abcIncludeTab);
+    }
+    public void setAbcInstrumentTab(String abcInstrumentTab) {
+        this.abcInstrumentTab = abcInstrumentTab;
+        mainActivityInterface.getPreferences().setMyPreferenceString("abcInstrumentTab",abcInstrumentTab);
     }
 }

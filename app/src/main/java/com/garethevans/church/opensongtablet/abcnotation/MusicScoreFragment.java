@@ -16,9 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsAbcnotationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
+
+import java.util.Arrays;
 
 public class MusicScoreFragment extends Fragment {
 
@@ -89,12 +92,23 @@ public class MusicScoreFragment extends Fragment {
         myView.zoomSlider.setHint(String.valueOf((int)myView.zoomSlider.getValue()));
         myView.zoomSlider.setLabelFormatter(value -> String.valueOf((int)value));
 
+        if (getContext()!=null) {
+            myView.abcIncludeTab.setChecked(mainActivityInterface.getAbcNotation().getAbcIncludeTab());
+            ExposedDropDownArrayAdapter tabIntrumentAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                    myView.abcInstrumentTab, R.layout.view_exposed_dropdown_item,
+                    mainActivityInterface.getAbcNotation().getABCInstruments());
+            myView.abcInstrumentTab.setAdapter(tabIntrumentAdapter);
+            myView.abcInstrumentTab.setText(mainActivityInterface.getAbcNotation().getAbcInstrumentNice());
+            setTheStringValues();
+            myView.tabLayout.setVisibility(mainActivityInterface.getAbcNotation().getAbcIncludeTab() ? View.VISIBLE : View.GONE);
+        }
+
         myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
 
         myView.transposeSlider.setEnabled(!myView.autoTranspose.getChecked());
         myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
         myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
-        myView.transposeSlider.setLabelFormatter(value -> showPositiveValue((int)value));
+        myView.transposeSlider.setLabelFormatter(value -> showPositiveValue((int) value));
 
         // Check for overrides
         if (mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getSong())) {
@@ -193,6 +207,27 @@ public class MusicScoreFragment extends Fragment {
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         });
 
+        myView.abcIncludeTab.setOnCheckedChangeListener((compoundButton, b) -> {
+            myView.tabLayout.setVisibility(b ? View.VISIBLE:View.GONE);
+            mainActivityInterface.getAbcNotation().setAbcIncludeTab(b);
+            setTheStringValues();
+            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+        });
+        myView.abcInstrumentTab.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String prefString = mainActivityInterface.getAbcNotation().getAbcInstrumentPrefFromNice(myView.abcInstrumentTab.getText().toString());
+                mainActivityInterface.getAbcNotation().setAbcInstrumentTab(prefString);
+                setTheStringValues();
+                mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+            }
+        });
     }
 
     private class MySliderTouchListener implements Slider.OnSliderTouchListener {
@@ -241,6 +276,39 @@ public class MusicScoreFragment extends Fragment {
             return "+" + value;
         }
         return String.valueOf(value);
+    }
+
+    private void setTheStringValues() {
+        String[] stringNotes = mainActivityInterface.getAbcNotation().getAbcInstrumentTuning();
+        int numStrings = stringNotes.length;
+        boolean showString = mainActivityInterface.getAbcNotation().getAbcIncludeTab();
+        Log.d(TAG,"stringNotes:"+ Arrays.toString(stringNotes));
+        Log.d(TAG,"numStrings:"+ numStrings);
+        Log.d(TAG,"showStrings:"+showString);
+        // E,A,DGBe  length=6  [0]=[6-6]=E, [1]=[6-5]=A, [2]=D [3]=G [4]=B [5]=E
+        String string1 = stringNotes[stringNotes.length-1];
+        String string2 = stringNotes[stringNotes.length-2];
+        String string3 = stringNotes[stringNotes.length-3];
+        String string4 = stringNotes[stringNotes.length-4];
+        String string5 = numStrings>=5 ? stringNotes[stringNotes.length-5] : "";
+        String string6 = numStrings>=6 ? stringNotes[stringNotes.length-6] : "";
+
+        Log.d(TAG,"strings:"+string1+" "+string2+" "+string3+" "+string4+" "+string5+" "+string6);
+        myView.string1Tuning.setText(string1);
+        myView.string2Tuning.setText(string2);
+        myView.string3Tuning.setText(string3);
+        myView.string4Tuning.setText(string4);
+        myView.string5Tuning.setText(string5);
+        myView.string6Tuning.setText(string6);
+
+        myView.string1Tuning.setVisibility((showString || !string1.isEmpty()) ? View.VISIBLE:View.GONE);
+        myView.string2Tuning.setVisibility((showString || !string2.isEmpty()) ? View.VISIBLE:View.GONE);
+        myView.string3Tuning.setVisibility((showString || !string3.isEmpty()) ? View.VISIBLE:View.GONE);
+        myView.string4Tuning.setVisibility((showString || !string4.isEmpty()) ? View.VISIBLE:View.GONE);
+        myView.string5Tuning.setVisibility((showString && !string5.isEmpty()) ? View.VISIBLE:View.GONE);
+        myView.string6Tuning.setVisibility((showString && !string6.isEmpty()) ? View.VISIBLE:View.GONE);
+
+        myView.tabLayout.setVisibility(showString ? View.VISIBLE:View.GONE);
     }
 
     private void doSave() {

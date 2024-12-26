@@ -62,6 +62,108 @@
                 android:valueFrom="1"
                 android:valueTo="4"
                 android:value="2"/>
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/abcIncludeTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/abc_include_tab"
+                android:hint="@string/abc_include_tab_info"/>
+
+            <LinearLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/abcInstrumentTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/instrument"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/string_tunings"/>
+            <LinearLayout
+                android:id="@+id/stringTuningLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="32dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/string6Tuning"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp"
+                    android:layout_margin="2dp"
+                    android:text="6"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/string5Tuning"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp"
+                    android:layout_margin="2dp"
+                    android:text="5"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/string4Tuning"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp"
+                    android:layout_margin="2dp"
+                    android:text="4"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/string3Tuning"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp"
+                    android:layout_margin="2dp"
+                    android:text="3"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/string2Tuning"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp"
+                    android:layout_margin="2dp"
+                    android:text="2"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/string1Tuning"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp"
+                    android:layout_margin="2dp"
+                    android:text="1"/>
+            </LinearLayout>
+            </LinearLayout>
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/autoTranspose"

@@ -43,6 +43,18 @@
     var w = 720;
     var z = 2;
     var t = 0;
+    var my_hideTab = false;
+    var my_instrument = "guitar";
+    var s6 = "E,";
+    var s5 = "A,";
+    var s4 = "D";
+    var s3 = "G";
+    var s2 = "B";
+    var s1 = "e";
+    var strings_6 = true;
+    var strings_5 = false;
+    var strings_4 = false;
+    var my_label = "Guitar";
 
     function updateABC(s) {
         var unencoded = decodeURIComponent(s);
@@ -50,6 +62,7 @@
         document.getElementById("abc").innerHTML = unencoded;
         initEditor();
     }
+
     updateABC(s);
 
     function selectionCallback(abcelem) {
@@ -59,7 +72,7 @@
                 note[key] = abcelem[key];
             }
         }
-        console.log(abcelem);
+        //console.log(abcelem);
         var el = document.getElementById("selection");
         el.innerHTML = "<b>selectionCallback parameter:</b><br>" + JSON.stringify(note);
     }
@@ -72,37 +85,124 @@
     function getTextVal() {
         var myJsString = document.getElementById("abc").value;
         AndroidApp.receiveString(myJsString);
-        //window.AndroidApp.receiveString(myJsString);
     }
 
     function setTranspose(halfSteps) {
         t = halfSteps;
     }
 
+    function setHideTab(hideTab) {
+        //console.log('hideTab:'+hideTab);
+        my_hideTab = hideTab;
+    }
+
+    function setInstrument(tabInstrument) {
+        //console.log('tabInstrument:'+tabInstrument);
+        my_instrument = tabInstrument;
+    }
+
+    function setTuning(string6, string5, string4, string3, string2, string1) {
+        s6 = string6;
+        s5 = string5;
+        s4 = string4;
+        s3 = string3;
+        s2 = string2;
+        s1 = string1;
+        if (string6.length===0 && string5.length===0) {
+            strings_6 = false;
+            strings_5 = false;
+            strings_4 = true;
+        } else if (string6.length===0) {
+            strings_6 = false;
+            strings_5 = true;
+            strings_4 = false;
+        } else {
+            strings_6 = true;
+            strings_5 = false;
+            strings_4 = false;
+        }
+        //console.log('6:'+strings_6+'  5:'+strings_5+'  4:'+strings_4);
+        //console.log('6:'+s6+'  5:'+s5+'  4:'+s4+'  3:'+s3+'  2:'+s2+'  1:'+s1);
+    }
+
+    function setLabel(tabLabel) {
+        //console.log('tabLabel:'+tabLabel);
+        my_label = tabLabel;
+    }
+
     function initEditor() {
-        new ABCJS.Editor("abc", { paper_id: "paper",
-        abcjsParams: {
-            paddingtop: 0,
-            paddingbottom: 0,
-            paddingright: 0,
-            paddingleft: 0,
-            staffwidth: w/z,
-            responsive: "resize",
-            viewportHorizontal: true,
-            viewportVertical: true,
-            visualTranspose: t,
-            },
-        generate_midi: false,
-        midi_id:"midi",
-        midi_download_id: "midi-download",
-        generate_warnings: true,
-        warnings_id:"warnings",
-        midi_options: {
-            generateDownload: false
-        },
-        render_options: {
-            listener: { highlight: selectionCallback }
-        }});
+        if (my_hideTab) {
+            new ABCJS.Editor("abc", {
+                paper_id: "paper", abcjsParams: {
+                    paddingtop: 0, paddingbottom: 0, paddingright: 0, paddingleft: 0,
+                    staffwidth: w/z,
+                    responsive: "resize",
+                    viewportHorizontal: true, viewportVertical: true,
+                    visualTranspose: t,
+                    },
+                generate_midi: false, midi_id:"midi", midi_download_id: "midi-download",
+                generate_warnings: true, warnings_id:"warnings",
+                midi_options: {generateDownload: false},
+                render_options: {listener: {highlight: selectionCallback}}
+            });
+        } else if (strings_6) {
+            new ABCJS.Editor("abc", {
+                paper_id: "paper", abcjsParams: {
+                    paddingtop: 0, paddingbottom: 0, paddingright: 0, paddingleft: 0,
+                    staffwidth: w/z,
+                    responsive: "resize",
+                    viewportHorizontal: true, viewportVertical: true,
+                    visualTranspose: t,
+                    tablature: [{
+                        instrument: my_instrument,
+                        tuning: [s6,s5,s4,s3,s2,s1],
+                        label: my_label,
+                        },],
+                    },
+                generate_midi: false, midi_id:"midi", midi_download_id: "midi-download",
+                generate_warnings: true, warnings_id:"warnings",
+                midi_options: {generateDownload: false},
+                render_options: {listener: {highlight: selectionCallback}}
+            });
+        } else if (strings_5) {
+            new ABCJS.Editor("abc", {
+                paper_id: "paper", abcjsParams: {
+                    paddingtop: 0, paddingbottom: 0, paddingright: 0, paddingleft: 0,
+                    staffwidth: w/z,
+                    responsive: "resize",
+                    viewportHorizontal: true, viewportVertical: true,
+                    visualTranspose: t,
+                    tablature: [{
+                        instrument: my_instrument,
+                        tuning: [s5,s4,s3,s2,s1],
+                        label: my_label,
+                        },],
+                    },
+                generate_midi: false, midi_id:"midi", midi_download_id: "midi-download",
+                generate_warnings: true, warnings_id:"warnings",
+                midi_options: {generateDownload: false},
+                render_options: {listener: {highlight: selectionCallback}}
+            });
+        } else {
+            new ABCJS.Editor("abc", {
+                paper_id: "paper", abcjsParams: {
+                    paddingtop: 0, paddingbottom: 0, paddingright: 0, paddingleft: 0,
+                    staffwidth: w/z,
+                    responsive: "resize",
+                    viewportHorizontal: true, viewportVertical: true,
+                    visualTranspose: t,
+                    tablature: [{
+                        instrument: my_instrument,
+                        tuning: [s4,s3,s2,s1],
+                        label: my_label,
+                        },],
+                    },
+                generate_midi: false, midi_id:"midi", midi_download_id: "midi-download",
+                generate_warnings: true, warnings_id:"warnings",
+                midi_options: {generateDownload: false},
+                render_options: {listener: {highlight: selectionCallback}}
+            });
+        }
     }
 
     function displayOnly() {
