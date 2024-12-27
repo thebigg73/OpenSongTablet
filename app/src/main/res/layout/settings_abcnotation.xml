@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/DefaultView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -29,6 +30,14 @@
                 android:hint="@string/music_score"
                 android:inputType="textMultiLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/copyInlineAbc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/abc_inline_text"
+                android:hint="@string/abc_inline_text_info"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/settingsAbcGlobal"
                 style="@style/largeText"
@@ -52,7 +61,8 @@
                 android:text="@string/width"
                 android:valueFrom="50"
                 android:valueTo="100"
-                android:value="80"/>
+                android:value="80"
+                app:adjustable="true"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/zoomSlider"
@@ -61,7 +71,18 @@
                 android:text="@string/zoom_level"
                 android:valueFrom="1"
                 android:valueTo="4"
-                android:value="2"/>
+                android:value="2"
+                app:adjustable="true"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/abcInlineHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/abc_inline_height"
+                android:valueFrom="50"
+                android:valueTo="500"
+                app:stepSize="10"
+                app:adjustable="true"/>
             <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
@@ -173,6 +194,14 @@
                 android:hint="@string/abc_transpose_to_song_info"
                 android:layout_marginBottom="16dp"/>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/settingsAbcLocal"
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings" />
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/transposeSlider"
                 android:layout_width="match_parent"
@@ -182,14 +211,6 @@
                 android:valueTo="12"
                 android:value="0"
                 android:layout_marginBottom="16dp"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/settingsAbcLocal"
-                style="@style/largeText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/settings" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"

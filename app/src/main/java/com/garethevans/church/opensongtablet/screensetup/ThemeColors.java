@@ -850,6 +850,12 @@ public class ThemeColors {
         stickyBackgroundSplitAlpha = alpha / 255f;
     }
 
+    public String getNonAlphaHexColorFromInt(int color) {
+        String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
+        hex=hex.toUpperCase();
+        return hex;
+    }
+
     public int adjustAlpha(int color, float newAlpha) {
         int alpha = Math.round((float)Color.alpha(color) * newAlpha);
         int red = Color.red(color);
