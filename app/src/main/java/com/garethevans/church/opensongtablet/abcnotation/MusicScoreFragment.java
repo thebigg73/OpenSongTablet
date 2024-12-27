@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsAbcnotationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public class MusicScoreFragment extends Fragment {
     private SettingsAbcnotationBinding myView;
     private final String TAG = "MusicScoreFragment";
     private String music_score="", website_music_score="", settings_text="",
-        global_text="", song_specific_text="";
+        global_text="", song_specific_text="", inline_text="", copied_text;
     private String webAddress;
 
     @Override
@@ -73,6 +74,8 @@ public class MusicScoreFragment extends Fragment {
             settings_text = getString(R.string.settings);
             global_text = getString(R.string.global);
             song_specific_text = getString(R.string.song_specific);
+            inline_text = getString(R.string.abc_inline_text);
+            copied_text = getString(R.string.copied);
         }
     }
     private void setViews() {
@@ -103,6 +106,15 @@ public class MusicScoreFragment extends Fragment {
             myView.tabLayout.setVisibility(mainActivityInterface.getAbcNotation().getAbcIncludeTab() ? View.VISIBLE : View.GONE);
         }
 
+        myView.abcInlineHeight.setValue(mainActivityInterface.getAbcNotation().getAbcInlineHeight());
+        myView.abcInlineHeight.setHint(String.valueOf(mainActivityInterface.getAbcNotation().getAbcInlineHeight()));
+        myView.abcInlineHeight.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int)value);
+            }
+        });
         myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
 
         myView.transposeSlider.setEnabled(!myView.autoTranspose.getChecked());
@@ -129,13 +141,25 @@ public class MusicScoreFragment extends Fragment {
 
     private void setListeners() {
         myView.editABC.setOnClickListener(v -> doSave());
+        myView.copyInlineAbc.setOnClickListener(view -> {
+            if (getContext()!=null) {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                String inlineText = myView.abcText.getText().toString();
+                inlineText = ";#:" + inlineText.replace("\n","\\n");
+                android.content.ClipData clip = android.content.ClipData.newPlainText("inlineAbc", inlineText);
+                mainActivityInterface.getShowToast().doIt(inline_text+" - " + copied_text + ":\n\n"+inlineText);
+                clipboard.setPrimaryClip(clip);
+            }
+        });
         myView.nestedScrollView.setExtendedFabToAnimate(myView.editABC);
         myView.abcText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -167,16 +191,25 @@ public class MusicScoreFragment extends Fragment {
 
         myView.autoshowMusicScore.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getAbcNotation().setAutoshowMusicScore(isChecked)));
         myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> {
-            myView.sizeSlider.setHint((int)value+"%");
+            myView.sizeSlider.setHint((int) value + "%");
             // Update the webview with the new values
             mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
         });
         myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> {
-            myView.zoomSlider.setHint(String.valueOf((int)value));
+            myView.zoomSlider.setHint(String.valueOf((int) value));
             // Update the webview with the new values
             mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+            if (!fromUser) {
+                mainActivityInterface.getAbcNotation().setAbcZoom((int) value);
+                mainActivityInterface.getAbcNotation().updateZoom(myView.abcWebView);
+            }
         });
-
+        myView.abcInlineHeight.addOnChangeListener((slider, value, fromUser) -> {
+            myView.abcInlineHeight.setHint(String.valueOf((int) value));
+            if (!fromUser) {
+                mainActivityInterface.getAbcNotation().setAbcInlineHeight((int)value);
+            }
+        });
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
             myView.transposeSlider.setHint(showPositiveValue((int)value));
             // Update the webview with the new values
@@ -184,6 +217,7 @@ public class MusicScoreFragment extends Fragment {
         });
         myView.sizeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
         myView.zoomSlider.addOnSliderTouchListener(new MySliderTouchListener("abcZoom"));
+        myView.abcInlineHeight.addOnSliderTouchListener(new MySliderTouchListener("abcInlineHeight"));
         myView.transposeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcTranspose"));
 
         // The music score override
@@ -252,6 +286,9 @@ public class MusicScoreFragment extends Fragment {
                     // This isn't a preference, but a song specific value
                     mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
                     mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+                    break;
+                case "abcInlineHeight":
+                    mainActivityInterface.getAbcNotation().setAbcInlineHeight((int)myView.abcInlineHeight.getValue());
                     break;
             }
         }

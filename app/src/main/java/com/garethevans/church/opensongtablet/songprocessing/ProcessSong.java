@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -29,6 +30,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,7 +66,7 @@ public class ProcessSong {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
-    private final String TAG = "ProcessSong",
+    private final String TAG = "ProcessSong", abcIdentifier = ";#:",
         newline_string="___NEWLINE___";
     public final String columnbreak_string="::CBr::", groupline_string="____groupline____";
     private final float defFontSize = 8.0f;
@@ -510,6 +512,8 @@ public class ProcessSong {
             } else if ((string.contains("+") && string.contains("1") && string.contains("2"))) {
                 // Drum tab count line
                 type = "tab";
+            } else if (string.startsWith(abcIdentifier)) {
+                type = "abc";
             } else {
                 type = "comment";
             }
@@ -552,6 +556,9 @@ public class ProcessSong {
                 break;
             case "heading":
                 what = "heading";
+                break;
+            case "abc":
+                what = "abc_notation";
                 break;
         }
         return what;
@@ -788,6 +795,8 @@ public class ProcessSong {
             return "capoline";
         } else if (string.startsWith(";") && string.contains("|")) {
             return "tab";
+        } else if (string.startsWith(abcIdentifier)) {
+            return "abc";
         } else if (string.startsWith(";")) {
             return "comment";
         } else if (string.startsWith("[")) {
@@ -814,6 +823,9 @@ public class ProcessSong {
                 if (!string.isEmpty()) {
                     string = string.substring(1);
                 }
+                break;
+            case "abc":
+                string = string.replace(abcIdentifier,"");
                 break;
             case "lyric":
             default:
@@ -860,6 +872,7 @@ public class ProcessSong {
         line = replaceBadHeadings(line, "chorus", "C");
         line = replaceBadHeadings(line, "tag", "T");
         line = replaceBadHeadings(line, "bridge", "B");
+        line = replaceBadHeadings(line, "abc", "ABC");
 
         // IV - Test 1 char or 2 chars ending 0-9 or 3 chars ending 10
         if (line.length() == 1 ||
@@ -1809,6 +1822,18 @@ public class ProcessSong {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    private WebView inlineABC(String string) {
+        // Now the WebView for the music score
+        WebView webView = new WebView(c);
+        webView.getSettings().setJavaScriptEnabled(true);
+        Log.d(TAG,"string:"+string);
+        webView.setTag("abc:"+string);
+        mainActivityInterface.getAbcNotation().setWebView(webView);
+        //webView.setLayoutParams(new LinearLayout.LayoutParams(mainActivityInterface.getAbcNotation().getAbcInlineWidth(),mainActivityInterface.getAbcNotation().getAbcInlineHeight()));
+        return webView;
+    }
+
     private TextView lineText(Song thisSong, String linetype,
                               String string, Typeface typeface, float size, int color,
                               int highlightHeadingColor, int highlightChordColor,
@@ -2346,7 +2371,15 @@ public class ProcessSong {
                                     linearLayout.addView(tl);
                                 }
                             } else if (!(clearedCurlyText && line.trim().isEmpty())) {
-                                if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
+                                if (line.startsWith(abcIdentifier)) {
+                                    // This is an inline ABC view
+                                    WebView wv = inlineABC(line);
+                                    wv.setBackgroundColor(overallBackgroundColor);
+                                    wv.setPadding(0,0,0,0);
+                                    linearLayout.addView(wv);
+                                    wv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,mainActivityInterface.getAbcNotation().getAbcInlineHeight()));
+
+                                } else if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
                                     if (!showChords) {
