@@ -230,7 +230,9 @@ public class BootUpFragment extends Fragment {
 
                     // Set up the Bluetooth adapter in the MIDI class if it exists
                     // This also disconnects any BLEMidi devices that were externally paired
-                    mainActivityInterface.getMidi().setupBluetoothManager();
+                    if (mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                        mainActivityInterface.getMidi().setupBluetoothManager();
+                    }
 
                     // Set up the rest of the main activity (on the main thread)
                     mainActivityInterface.getMainHandler().post(() -> {

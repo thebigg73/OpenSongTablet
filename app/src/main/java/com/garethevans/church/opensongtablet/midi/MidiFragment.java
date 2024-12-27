@@ -100,7 +100,10 @@ public class MidiFragment extends Fragment {
 
         prepareStrings();
 
-        mainActivityInterface.getMidi().setupBluetoothManager();
+        if (mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+            mainActivityInterface.getMidi().setupBluetoothManager();
+        }
+
         selected.postDelayed(runnable, 1000);
 
         webAddress = website_midi_connections_string;
@@ -152,11 +155,7 @@ public class MidiFragment extends Fragment {
 
     private void setValues() {
         displayCurrentDevice();
-        if (mainActivityInterface.getMidi().getBluetoothManager()==null || mainActivityInterface.getMidi().getBluetoothManager().getAdapter()==null) {
-            myView.enableBluetooth.setVisibility(View.GONE);
-        } else {
-            myView.enableBluetooth.setChecked(allowBluetoothSearch(mainActivityInterface.getMidi().getIncludeBluetoothMidi()));
-        }
+        myView.enableBluetooth.setChecked(allowBluetoothSearch(mainActivityInterface.getMidi().getIncludeBluetoothMidi()));
         myView.autoSendMidi.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiSendAuto",false));
         myView.midiDelay.setAdjustableButtons(true);
         myView.midiDelay.setHint(mainActivityInterface.getMidi().getMidiDelay() + "ms");
@@ -222,7 +221,12 @@ public class MidiFragment extends Fragment {
                 if (mainActivityInterface.getMidi().getBluetoothManager()!=null &&
                         mainActivityInterface.getMidi().getBluetoothManager().getAdapter()!=null &&
                         !mainActivityInterface.getMidi().getBluetoothManager().getAdapter().isEnabled()) {
-                    tryTurnOnBluetooth();
+                    if (mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                        tryTurnOnBluetooth();
+                    } else {
+                        isChecked = false;
+                        midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
+                    }
                 } else {
                     // Check we have the permission
                     if (!mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
