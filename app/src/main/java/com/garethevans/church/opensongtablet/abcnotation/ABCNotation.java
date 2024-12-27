@@ -25,12 +25,14 @@ public class ABCNotation {
     private float abcPopupWidth;
     private boolean isPopup, abcAutoTranspose, autoshowMusicScore, abcIncludeTab;
     private final MainActivityInterface mainActivityInterface;
-    private final String guitar, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
+    private final String guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
     private int abcInlineWidth = 800, abcInlineHeight = 300;
 
     public ABCNotation(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
         guitar = c.getString(R.string.guitar);
+        guitar_drop_d = c.getString(R.string.guitar_drop_d);
+        guitar_open_g = c.getString(R.string.guitar_open_g);
         banjo4 = c.getString(R.string.banjo4);
         banjo5 = c.getString(R.string.banjo5);
         mandolin = c.getString(R.string.mandolin);
@@ -364,7 +366,7 @@ public class ABCNotation {
 
     // Get the list of ABC tab instruments
     public String[] getABCInstruments() {
-        return new String[]{guitar, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle};
+        return new String[]{guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle};
     }
 
     // Get the default tuning options for the instrument
@@ -376,6 +378,10 @@ public class ABCNotation {
             case "guitar":
             default:
                 return new String[] {"E,","A,","D","G","B","e"};
+            case "guitardropd":
+                return new String[] {"D,","A,","D","G","B","e"};
+            case "guitaropeng":
+                return new String[] {"D,","G,","D","G","B","d"};
             case "banjo4":
             case "cavaquinho":
                 return new String[] {"D","G","B","d"};
@@ -423,6 +429,10 @@ public class ABCNotation {
             case "guitar":
             default:
                 return guitar;
+            case "guitardropd":
+                return guitar_drop_d;
+            case "guitaropeng":
+                return guitar_open_g;
             case "banjo4":
                 return banjo4;
             case "banjo5":
@@ -464,6 +474,10 @@ public class ABCNotation {
             return "bass4";
         } else if (niceInstrument.equals(bass5)) {
             return "bass5";
+        } else if (niceInstrument.equals(guitar_drop_d)) {
+            return "guitardropd";
+        } else if (niceInstrument.equals(guitar_open_g)) {
+            return "guitaropeng";
         } else {
             return guitar;
         }
@@ -474,6 +488,8 @@ public class ABCNotation {
         // We fudge this by grouping them into available options
         switch (abcInstrumentTab) {
             case "guitar":
+            case "guitardropd":
+            case "guitaropeng":
             default:
                 return "guitar";
             case "banjo4":
