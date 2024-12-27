@@ -42,6 +42,7 @@
         <attr name="thumbRadius" format="dimension"/>
         <attr name="size" />
         <attr name="infoText" format="string"/>"
+        <attr name="adjustable" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="MaterialSwitch">

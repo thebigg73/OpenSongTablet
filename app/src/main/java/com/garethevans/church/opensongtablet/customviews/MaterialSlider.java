@@ -48,27 +48,38 @@ public class MaterialSlider extends LinearLayout {
                 android.R.attr.value,               // 5
                 R.attr.trackColor,                  // 6
                 R.attr.trackHeight,                 // 7
-                R.attr.thumbRadius,                 // 8
-                R.attr.thumbColor,                  // 9
-                androidx.preference.R.attr.adjustable,                  // 10
-                R.attr.infoText                     // 11
+                R.attr.thumbColor,                  // 8
+                R.attr.thumbRadius,                 // 9
+                R.attr.size,                        // 10
+                R.attr.infoText,                     // 11
+                R.attr.adjustable
         };
-        TypedArray a = context.obtainStyledAttributes(attrs, set);
-        CharSequence text = a.getText(0);
-        CharSequence hint = a.getText(1);
-        float valueFrom = a.getFloat(2, 0.0f);
-        float valueTo = a.getFloat(3,10.0f);
-        stepSize = a.getFloat(4,1.0f);
-        float value = a.getFloat(5,0.0f);
-        int track = a.getColor(6,0);
-        float height = a.getDimensionPixelSize(7,0);
-        float radius = a.getDimensionPixelSize(8,0);
-        int thumb = a.getColor(9,0);
-        adjustButtons = a.getBoolean(10,false);
-
-        TypedArray b = context.obtainStyledAttributes(attrs, R.styleable.MaterialSlider, -1,-1);
-        String infoText = b.getString(R.styleable.MaterialSlider_infoText);
-        b.recycle();
+        //TypedArray b = context.obtainStyledAttributes(attrs, set);
+        //CharSequence text = a.getText(0);
+        //CharSequence hint = a.getText(1);
+        //float valueFrom = a.getFloat(2, 0.0f);
+        //float valueTo = a.getFloat(3,10.0f);
+        //stepSize = a.getFloat(4,1.0f);
+        //float value = a.getFloat(5,0.0f);
+        //int track = a.getColor(6,0);
+        //float height = a.getDimensionPixelSize(7,0);
+        //int thumb = a.getColor(8,0);
+        //float radius = a.getDimensionPixelSize(9,0);
+        //CharSequence infoText = a.getText(11);
+        //adjustButtons = a.getBoolean(12,false);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialSlider, -1,-1);
+        String text = a.getString(R.styleable.MaterialSlider_android_text);
+        String infoText = a.getString(R.styleable.MaterialSlider_infoText);
+        String hint = a.getString(R.styleable.MaterialSlider_android_hint);
+        float valueFrom = a.getFloat(R.styleable.MaterialSlider_android_valueFrom, 0.0f);
+        float valueTo = a.getFloat(R.styleable.MaterialSlider_android_valueTo,10.0f);
+        stepSize = a.getFloat(R.styleable.MaterialSlider_stepSize,1.0f);
+        float value = a.getFloat(R.styleable.MaterialSlider_android_value,0.0f);
+        int track = a.getColor(R.styleable.MaterialSlider_trackColor,0);
+        int height = a.getDimensionPixelSize(R.styleable.MaterialSlider_trackHeight,0);
+        int thumb = a.getColor(R.styleable.MaterialSlider_thumbColor,0);
+        float radius = a.getDimensionPixelSize(R.styleable.MaterialSlider_thumbRadius,0);
+        adjustButtons = a.getBoolean(R.styleable.MaterialSlider_adjustable,false);
 
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
