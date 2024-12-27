@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.justchords;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -25,6 +26,7 @@ public class ConvertJustChords {
     private final String extension = ".justchords";
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<Song> songs;
+    private final String abc_start = "{start_of_abcnotation}", abc_end = "{end_of_abcnotation}";
 
     // Instatiate the class
     public ConvertJustChords(Context c) {
@@ -124,6 +126,10 @@ public class ConvertJustChords {
 
         // Build the lyrics!
         String alllyrics = mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(),thisSong);
+        // If there is a popup abc code, insert that too as part of the lyrics
+        if (thisSong.getAbc()!=null && !thisSong.getAbc().isEmpty()) {
+            alllyrics = abc_start + "\n" + thisSong.getAbc().replaceAll("\\n","\n") + "\n" + abc_end + "\n" + alllyrics;
+        }
         String[] lyriclines = alllyrics.split("\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line: lyriclines) {
@@ -132,6 +138,11 @@ public class ConvertJustChords {
                 line = line.replace("[","").replace("]","");
                 line = mainActivityInterface.getProcessSong().beautifyHeading(line);
                 line = line + ":";
+            }
+            if (line.startsWith(";#:")) {
+                // This is inline abc notation, so convert that to abc notation
+                line = line.replace(";#:","");
+                line = abc_start + "\n" + line.replace("\\n","\n") + "\n" + abc_end;
             }
             stringBuilder.append(line).append("\n");
         }
@@ -283,14 +294,37 @@ public class ConvertJustChords {
         song.setKey(key + minor);
         String lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(justChordsSongObject.getRawData());
         // Go through each line and replace headings with []
+        // Get abc notation lines into inlineABC for OpenSongApp
+        boolean containsAbc = lyrics.contains(abc_start) && lyrics.contains(abc_end);
+        while (containsAbc) {
+            int indexStart = lyrics.indexOf(abc_start);
+            int indexEnd = lyrics.indexOf(abc_end,indexStart);
+            containsAbc = indexStart>=0 && indexEnd>=0 && indexEnd>indexStart;
+            if (containsAbc) {
+                String extractedBit = lyrics.substring(indexStart, indexEnd + abc_end.length());
+                // Process the extractedBit
+                extractedBit = extractedBit.replace(abc_start, "").replace(abc_end, "");
+                extractedBit = extractedBit.replace("\n", "\\n");
+                extractedBit = ";#:" + extractedBit;
+                // Now put it back in place of the old bit
+                lyrics = lyrics.substring(0, indexStart) + extractedBit + lyrics.substring(indexEnd + abc_end.length());
+            }
+        }
+
         String[] lyriclines = lyrics.split("\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line: lyriclines) {
+            Log.d(TAG,"fixed lyrics:"+line);
             // Replace the heading lines with lines that end with :
             if (line.endsWith(":")) {
                 line = "[" + line + "]";
                 line = line.replace(":]", "]");
             }
+            // Make sure inline abc starts at the beginning of the line without a space
+            if (line.trim().startsWith(";#:")) {
+                line = line.trim();
+            }
+
             stringBuilder.append(line).append("\n");
         }
         song.setLyrics(stringBuilder.toString());
