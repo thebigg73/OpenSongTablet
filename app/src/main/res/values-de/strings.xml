@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Fügen Sie Tabulatur hinzu</string>
+    <string name="abc_include_tab_info">Instrumententabulatur unterhalb der Musikpartitur anzeigen</string>
+    <string name="abc_inline_height">Inline-ABC-Höhe (Liedzeilen beginnen mit ;#:)</string>
+    <string name="abc_inline_text">Inline-ABC-Text</string>
+    <string name="abc_inline_text_info">Kopieren Sie den obigen Code in eine einzelne Zeile der Inline-ABC-Notation, die in den Liedtext eingefügt werden kann</string>
     <string name="abc_transpose_to_song">Automatische Transponierung in die Tonart des Songs</string>
     <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="about">Über</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">In Ihren OpenSong/Songs/-Ordnern wurden einige unerwartete Songdateien gefunden, die nicht direkt unterstützt werden.  Sie wurden in Ihren OpenSong/Import-Ordner verschoben, aber Sie können die Option zum Importieren mehrerer Dateien verwenden, um zu versuchen, sie in das OpenSong-Format zu konvertieren und sie wieder zu Ihrem OpenSong/Songs/-Ordner hinzuzufügen</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
+    <string name="bass4">Bass – 4 Saiten</string>
+    <string name="bass5">Bass – 5 Saiten</string>
     <string name="battery">"Batterie"</string>
     <string name="beat_buddy_auto">BeatBuddy-Song automatisch senden</string>
     <string name="beat_buddy_auto_info">Vergleicht deine Song-Felder Dateiname, Titel und auch bekannt als Felder mit deiner BeatBuddy-Datenbank.  Wenn ein passender Song gefunden wird, werden der Ordner und der Songcode automatisch über MIDI gesendet</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Fortsetzen</string>
     <string name="controls">Steuerung</string>
     <string name="controls_description">Fußpedale und Bildschirmgesten</string>
+    <string name="copied">Kopiert</string>
     <string name="copy_chord">Kopieren Sie Akkorde zwischen Abschnitten</string>
     <string name="copy_chord_info">Nimm die Akkorde aus einem Abschnitt und wende sie auf einen anderen an</string>
     <string name="copy_chord_into">Kopieren Sie hinein</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Zusatzinformation"</string>
     <string name="extra_settings">Erweiterte Einstellungen</string>
     <string name="extract">"Text extrahieren"</string>
+    <string name="fiddle">Geige</string>
     <string name="file">Datei</string>
     <string name="file_choose_info">Wählen Sie unten die gewünschte(n) Datei(en) aus.</string>
     <string name="file_chooser">Dateiauswahl</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Auf diese Weise können Sie Songs schnell durchsuchen und erst nach einer Kulanzzeit von 2 Sekunden Informationen an andere angeschlossene Geräte senden.</string>
     <string name="green">Grün</string>
     <string name="guitar">Gitarre</string>
+    <string name="guitar_drop_d">Gitarre - Drop D</string>
+    <string name="guitar_open_g">Gitarre - offenes G</string>
     <string name="half_time">Halbzeit</string>
     <string name="hard_tune">Harte Melodie</string>
     <string name="hardware_acceleration">Verwenden der Hardwarebeschleunigung</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Initialisierung</string>
     <string name="inline_midi">Inline-MIDI-Befehle</string>
     <string name="inline_midi_info">MIDI-Befehle, die durch Klicken auf einen Songabschnitt ausgelöst werden können</string>
+    <string name="insert_guitar_tab">Gitarrentabulatur einfügen</string>
+    <string name="insert_guitar_tab_info">Erstellen Sie Standard-Gitarren-Tab-Zeilen</string>
+    <string name="insert_inline_abc">Fügen Sie Inline-ABC ein</string>
+    <string name="insert_inline_abc_info">Erstellen Sie den Einfügecode zum Erstellen einer kurzen Zeile mit Inline-ABC-Notation</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">"Instrumental"</string>
     <string name="interlude">"Interlude"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Klicken Sie hier, um Ihren Speicherort zu ändern (wo sich der Stammordner von OpenSong befindet).</string>
     <string name="storage_settings">Verwalten Sie Ihren Speicherort und Ihre Songordner</string>
     <string name="storage_warning">Bitte wählen Sie nicht den Ordner \'Songs\' als Speicherort. Sie sollten stattdessen den übergeordneten Ordner \"OpenSong\" auswählen.</string>
+    <string name="string_tunings">Saitenstimmungen</string>
     <string name="success">"Aktion erfolgreich abgeschlossen"</string>
     <string name="swipe">"Wisch-Einstellungen"</string>
     <string name="swipe_allowance">"Vertikale Bewegung erlaubt"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Vers aus:</string>
     <string name="verse_to">Vers zu:</string>
     <string name="video">Video</string>
+    <string name="violin">Violine</string>
     <string name="visible">Sichtbar</string>
     <string name="visual_metronome">"Visuell"</string>
     <string name="vocal">Gesang</string>

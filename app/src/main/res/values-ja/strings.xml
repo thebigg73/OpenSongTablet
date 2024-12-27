@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">タブ譜を含める</string>
+    <string name="abc_include_tab_info">楽譜の下に楽器のタブ譜を表示</string>
+    <string name="abc_inline_height">インライン abc 高さ (;#: で始まるソングライン)</string>
+    <string name="abc_inline_text">インラインABCテキスト</string>
+    <string name="abc_inline_text_info">上記のコードを 1 行のインライン ABC 表記にコピーし、曲の歌詞に貼り付けることができます。</string>
     <string name="abc_transpose_to_song">曲のキーに自動移調</string>
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">約</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">直接サポートされていないOpenSong / Songs /フォルダに予期しない曲ファイルが見つかりました。 それらはOpenSong / Importフォルダーに移動されましたが、複数のファイルをインポートしてOpenSong形式に変換し、OpenSong / Songs /フォルダーに追加し直すオプションを使用できます</string>
     <string name="banjo4">"バンジョー (4)"</string>
     <string name="banjo5">"バンジョー (5)"</string>
+    <string name="bass4">ベース - 4弦</string>
+    <string name="bass5">ベース - 5弦</string>
     <string name="battery">"バッテリー"</string>
     <string name="beat_buddy_auto">ビートバディの曲を自動的に送信する</string>
     <string name="beat_buddy_auto_info">曲のファイル名、タイトル、フィールドとも呼ばれますBeatBuddyデータベースを比較します。 一致する曲が見つかった場合、フォルダと曲コードは自動的にMIDI経由で送信されます</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">続ける</string>
     <string name="controls">コントロール</string>
     <string name="controls_description">フットペダルと画面ジェスチャー</string>
+    <string name="copied">コピーされました</string>
     <string name="copy_chord">セクション間でコードをコピーする</string>
     <string name="copy_chord_info">あるセクションのコードを別のセクションに適用する</string>
     <string name="copy_chord_into">にコピー</string>
@@ -350,6 +358,7 @@
     <string name="extra">"追加情報"</string>
     <string name="extra_settings">高度な設定</string>
     <string name="extract">"抽出テキスト"</string>
+    <string name="fiddle">フィドル</string>
     <string name="file">ファイル</string>
     <string name="file_choose_info">以下の必要なファイルを選択します。</string>
     <string name="file_chooser">ファイルチュー</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">これにより、曲をすばやく閲覧でき、2秒の猶予期間後にのみ、接続されている他のデバイスに情報を送信できます。</string>
     <string name="green">緑</string>
     <string name="guitar">ギター</string>
+    <string name="guitar_drop_d">ギター - ドロップ D</string>
+    <string name="guitar_open_g">ギター - オープンG</string>
     <string name="half_time">ハーフタイム</string>
     <string name="hard_tune">ハードチューン</string>
     <string name="hardware_acceleration">ハードウェアアクセラレーションを使用する</string>
@@ -486,6 +497,10 @@
     <string name="initialising">初期化中</string>
     <string name="inline_midi">インライン MIDI コマンド</string>
     <string name="inline_midi_info">曲のセクションをクリックするとトリガーできるMIDIコマンド</string>
+    <string name="insert_guitar_tab">「ギターを挿入」タブ</string>
+    <string name="insert_guitar_tab_info">デフォルトのギタータブ線を作成する</string>
+    <string name="insert_inline_abc">インラインABCを挿入</string>
+    <string name="insert_inline_abc_info">インラインABC表記の短い行を作成するための挿入コードを作成します。</string>
     <string name="instrument">楽器</string>
     <string name="instrumental">"インストゥルメンタル"</string>
     <string name="interlude">"間奏"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">ここをクリックして、保存場所（ルートのOpenSongフォルダーがある場所）を変更します。</string>
     <string name="storage_settings">保存場所と曲のフォルダを管理する</string>
     <string name="storage_warning">保存場所として「曲」フォルダを選択しないでください。 代わりに、親の「OpenSong」フォルダーの場所を選択する必要があります。</string>
+    <string name="string_tunings">弦のチューニング</string>
     <string name="success">"成功"</string>
     <string name="swipe">"スワイプ設定"</string>
     <string name="swipe_allowance">"垂直移動が許可されている"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">からの詩：</string>
     <string name="verse_to">詩：</string>
     <string name="video">ビデオ</string>
+    <string name="violin">バイオリン</string>
     <string name="visible">見える</string>
     <string name="visual_metronome">"ビジュアル"</string>
     <string name="vocal">ボーカル</string>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Inkludera tabulatur</string>
+    <string name="abc_include_tab_info">Visa instrumenttabellen under noten</string>
+    <string name="abc_inline_height">Inline abc höjd (låtrader som börjar med ;#:)</string>
+    <string name="abc_inline_text">Inline ABC-text</string>
+    <string name="abc_inline_text_info">Kopiera ovanstående kod till en enda rad med inline ABC-notation som kan klistras in i sångtexten</string>
     <string name="abc_transpose_to_song">Autotransponera till sångnyckel</string>
     <string name="abc_transpose_to_song_info">Om en tangent är inställd i låten och i abc-notationen, kommer appen att försöka justera utmatningen av abc-notationen för att matcha sångnyckeln.</string>
     <string name="about">Handla om</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">Några oväntade låtfiler har hittats i dina OpenSong/Songs/-mappar som inte stöds direkt.  De har flyttats till din OpenSong/Import-mapp, men du kan använda alternativet att importera flera filer för att försöka konvertera dem till OpenSong-format och lägga till dem tillbaka i din OpenSong/Songs/-mapp</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
+    <string name="bass4">Bas - 4 strängar</string>
+    <string name="bass5">Bas - 5 strängar</string>
     <string name="battery">"Batteri"</string>
     <string name="beat_buddy_auto">Skicka automatiskt BeatBuddy-låt</string>
     <string name="beat_buddy_auto_info">Jämför din låt Filnamn, Titel och Även känd som fält med din BeatBuddy-databas.  Om en matchande låt hittas skickas mappen och låtkoden automatiskt över MIDI</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Fortsätta</string>
     <string name="controls">Kontrollera</string>
     <string name="controls_description">Fotpedaler och skärmgester</string>
+    <string name="copied">Kopierade</string>
     <string name="copy_chord">Kopiera ackord mellan avsnitten</string>
     <string name="copy_chord_info">Ta ackorden från ett avsnitt och tillämpa dem på ett annat</string>
     <string name="copy_chord_into">Kopiera in</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Extra information"</string>
     <string name="extra_settings">Avancerade inställningar</string>
     <string name="extract">"Extrahera text"</string>
+    <string name="fiddle">Fiddle/Fiol</string>
     <string name="file">Fil</string>
     <string name="file_choose_info">Välj önskad fil(er) nedan.</string>
     <string name="file_chooser">"Filvalare"</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Detta gör att du kan bläddra bland låtar snabbt och skickar bara information till andra anslutna enheter efter en respitperiod på 2 sekunder.</string>
     <string name="green">Grön</string>
     <string name="guitar">"Gitarr"</string>
+    <string name="guitar_drop_d">Gitarr - drop D</string>
+    <string name="guitar_open_g">Gitarr - öppen G</string>
     <string name="half_time">Halvtid</string>
     <string name="hard_tune">Hård låt</string>
     <string name="hardware_acceleration">Använda maskinvaruacceleration</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Initiering</string>
     <string name="inline_midi">Textbundna MIDI-kommandon</string>
     <string name="inline_midi_info">MIDI-kommandon som kan utlösas genom att klicka på en låtsektion</string>
+    <string name="insert_guitar_tab">Infoga fliken Gitarr</string>
+    <string name="insert_guitar_tab_info">Skapa standard gitarrflikarlinjer</string>
+    <string name="insert_inline_abc">Infoga inline ABC</string>
+    <string name="insert_inline_abc_info">Skapa infogningskoden för att skapa en kort rad med inline ABC-notation</string>
     <string name="instrument">"Instrument"</string>
     <string name="instrumental">"Instrumental"</string>
     <string name="interlude">"Mellanspel"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Klicka här för att ändra din lagringsplats (där rotmappen för OpenSong finns).</string>
     <string name="storage_settings">Hantera din lagringsplats och låtmappar</string>
     <string name="storage_warning">Välj inte mappen \"Songs\" som din lagringsplats. Du bör i stället välja den överordnade \"OpenSong\" -mappsplatsen.</string>
+    <string name="string_tunings">Stämningar av strängar</string>
     <string name="success">"Framgång"</string>
     <string name="swipe">"Rita in inställningar"</string>
     <string name="swipe_allowance">"Vertikal rörelse tillåten"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Vers från:</string>
     <string name="verse_to">Vers till:</string>
     <string name="video">Video</string>
+    <string name="violin">Fiol</string>
     <string name="visible">Synlig</string>
     <string name="visual_metronome">"Visuell"</string>
     <string name="vocal">Sång</string>

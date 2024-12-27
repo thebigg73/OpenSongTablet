@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Tartalmazza a tabulatúrát</string>
+    <string name="abc_include_tab_info">Mutasd a hangszer tablatúrát a kotta alatt</string>
+    <string name="abc_inline_height">Soron belüli abc magasság (;#:-val kezdődő dalsorok)</string>
+    <string name="abc_inline_text">Inline ABC szöveg</string>
+    <string name="abc_inline_text_info">Másolja a fenti kódot a soron belüli ABC jelölés egyetlen sorába, amelyet beilleszthet a dal szövegébe</string>
     <string name="abc_transpose_to_song">Automatikus transzponálás a dal kulcsára</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Ról ről</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">Néhány váratlan dalfájl található az OpenSong / Songs / mappákban, amelyek közvetlenül nem támogatottak.  Ezek átkerültek az OpenSong/Import mappába, de több fájl importálásával is megpróbálhatja OpenSong formátumba konvertálni őket, majd visszahelyezni őket az OpenSong/Songs/ mappába</string>
     <string name="banjo4">"Bendzsó (4)"</string>
     <string name="banjo5">"Bendzsó (5)"</string>
+    <string name="bass4">Basszus - 4 húr</string>
+    <string name="bass5">Basszus - 5 húr</string>
     <string name="battery">"Akkumulátor"</string>
     <string name="beat_buddy_auto">BeatBuddy dal automatikus küldése</string>
     <string name="beat_buddy_auto_info">Összehasonlítja a dalodat Fájlnév, cím és más néven mezők a BeatBuddy adatbázisoddal.  Ha talál egyező dalt, a mappa és a dal kódja automatikusan MIDI-n keresztül kerül elküldésre</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Folytatódik</string>
     <string name="controls">Vezérlők</string>
     <string name="controls_description">Lábpedálok és képernyőmozdulatok</string>
+    <string name="copied">Másolva</string>
     <string name="copy_chord">Akkordok másolása a szakaszok között</string>
     <string name="copy_chord_info">Vegye ki az akkordokat az egyik szakaszból, és alkalmazza őket egy másikra</string>
     <string name="copy_chord_into">Másolás be</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Extra információ"</string>
     <string name="extra_settings">További beállítások</string>
     <string name="extract">Kivonat szöveget</string>
+    <string name="fiddle">Fiddle/Hegedű</string>
     <string name="file">Fájl</string>
     <string name="file_choose_info">Válassza ki a kívánt fájl(oka)t lent.</string>
     <string name="file_chooser">Fájlválasztó</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Ez lehetővé teszi a dalok gyors böngészését, és csak 2 másodperces türelmi idő után küld információkat más csatlakoztatott eszközökre.</string>
     <string name="green">Zöld</string>
     <string name="guitar">Gitár</string>
+    <string name="guitar_drop_d">Gitár – drop D</string>
+    <string name="guitar_open_g">Gitár – nyitott G</string>
     <string name="half_time">Félidő</string>
     <string name="hard_tune">Kemény dallam</string>
     <string name="hardware_acceleration">Hardveres gyorsítás használata</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Inicializálás</string>
     <string name="inline_midi">Beágyazott MIDI-parancsok</string>
     <string name="inline_midi_info">MIDI-parancsok, amelyek egy dalszakaszra kattintva indíthatók el</string>
+    <string name="insert_guitar_tab">Helyezze be a Gitár fület</string>
+    <string name="insert_guitar_tab_info">Hozzon létre alapértelmezett gitár tabulátorvonalakat</string>
+    <string name="insert_inline_abc">Szúrja be a soron belüli ABC-t</string>
+    <string name="insert_inline_abc_info">Hozzon létre egy beszúrási kódot a soron belüli ABC jelölés rövid sorának létrehozásához</string>
     <string name="instrument">Eszköz</string>
     <string name="instrumental">"Hangszeres"</string>
     <string name="interlude">"Közjáték"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Kattintson ide a tárolási hely megváltoztatásához (ahol a gyökér OpenSong mappa található).</string>
     <string name="storage_settings">Kezelje tárolási helyét és dalmappáit</string>
     <string name="storage_warning">Kérjük, ne válassza a \'Dalok\' mappát tárhelyének. Ehelyett inkább a szülő \'OpenSong\' mappát kell kiválasztania.</string>
+    <string name="string_tunings">Vonós hangolások</string>
     <string name="success">"Siker"</string>
     <string name="swipe">"Swipe beállítások"</string>
     <string name="swipe_allowance">"Függőleges mozgás megengedett"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Vers innen:</string>
     <string name="verse_to">Vers ehhez:</string>
     <string name="video">Videó</string>
+    <string name="violin">Hegedű</string>
     <string name="visible">Látható</string>
     <string name="visual_metronome">"Vizuális"</string>
     <string name="vocal">Ének</string>

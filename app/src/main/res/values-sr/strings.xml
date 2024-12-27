@@ -1084,4 +1084,21 @@
     <string name="midi_input_channel_song_pad_info">Start / stop pad prilikom prijema MIDI start / stop komandu</string>
     <string name="midi_index">MIDI indeks</string>
     <string name="midi_index_code">MIDI potreban za učitavanje pesme</string>
+    <string name="guitar_drop_d">Gitara - drop D</string>
+    <string name="guitar_open_g">Gitara - otvorena G</string>
+    <string name="bass4">Bas - 4 žice</string>
+    <string name="bass5">Bas - 5 žica</string>
+    <string name="violin">Violina</string>
+    <string name="fiddle">Violinu</string>
+    <string name="abc_include_tab">Uključite tabulaturu</string>
+    <string name="abc_include_tab_info">Prikaži tablaturu instrumenata ispod muzičke partiture</string>
+    <string name="string_tunings">Gudački tunings</string>
+    <string name="abc_inline_height">Inline abc visina (linije pesama koje počinju sa ;#:)</string>
+    <string name="insert_guitar_tab">Ubaci karticu Gitara</string>
+    <string name="insert_guitar_tab_info">Kreirajte podrazumevane linije tabulatora gitare</string>
+    <string name="insert_inline_abc">Ubacite inline ABC</string>
+    <string name="insert_inline_abc_info">Kreirajte kod za umetanje za kreiranje kratke linije ugrađene ABC notacije</string>
+    <string name="abc_inline_text">Inline ABC tekst</string>
+    <string name="abc_inline_text_info">Kopirajte gornji kod u jednu liniju ugrađene ABC notacije koja se može nalepiti u tekst pesme</string>
+    <string name="copied">Kopira</string>
 </resources>

@@ -1827,10 +1827,8 @@ public class ProcessSong {
         // Now the WebView for the music score
         WebView webView = new WebView(c);
         webView.getSettings().setJavaScriptEnabled(true);
-        Log.d(TAG,"string:"+string);
         webView.setTag("abc:"+string);
         mainActivityInterface.getAbcNotation().setWebView(webView);
-        //webView.setLayoutParams(new LinearLayout.LayoutParams(mainActivityInterface.getAbcNotation().getAbcInlineWidth(),mainActivityInterface.getAbcNotation().getAbcInlineHeight()));
         return webView;
     }
 

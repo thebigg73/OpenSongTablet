@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">包括指法谱</string>
+    <string name="abc_include_tab_info">在乐谱下方显示乐器指法谱</string>
+    <string name="abc_inline_height">内联 abc 高度（以 ;#: 开头的歌曲行）</string>
+    <string name="abc_inline_text">内嵌 ABC 文本</string>
+    <string name="abc_inline_text_info">将以上代码复制到一行内联 ABC 符号中，该符号可以粘贴到歌词中</string>
     <string name="abc_transpose_to_song">自动移调到乐曲键</string>
     <string name="abc_transpose_to_song_info">如果在歌曲和 abc 表示法中设置了键，应用程序将尝试调整 abc 表示法的输出以匹配歌曲键。</string>
     <string name="about">关于</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">在您的 OpenSong/Songs/ 文件夹中发现了一些不直接支持的意外歌曲文件。 它们已移至您的 OpenSong/Import 文件夹，但您可以使用导入多个文件的选项来尝试将它们转换为 OpenSong 格式并将它们添加回您的 OpenSong/Songs/ 文件夹</string>
     <string name="banjo4">"班卓琴 (4)"</string>
     <string name="banjo5">"班卓琴 (5)"</string>
+    <string name="bass4">贝司 - 4 弦</string>
+    <string name="bass5">贝司 - 5 弦</string>
     <string name="battery">"电池"</string>
     <string name="beat_buddy_auto">自动发送 BeatBuddy 歌曲</string>
     <string name="beat_buddy_auto_info">将您的歌曲文件名、标题和也称为字段与您的 BeatBuddy 数据库进行比较。 如果找到匹配的歌曲，文件夹和歌曲代码将自动通过 MIDI 发送</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">继续</string>
     <string name="controls">控制</string>
     <string name="controls_description">脚踏板和屏幕手势</string>
+    <string name="copied">已复制</string>
     <string name="copy_chord">在部分之间复制和弦</string>
     <string name="copy_chord_info">从一个部分提取和弦并将它们应用到另一个部分</string>
     <string name="copy_chord_into">复制到</string>
@@ -350,6 +358,7 @@
     <string name="extra">"额外的信息"额外的信息"</string>
     <string name="extra_settings">高级设置</string>
     <string name="extract">"提取文本"</string>
+    <string name="fiddle">Fiddle/小提琴</string>
     <string name="file">文件</string>
     <string name="file_choose_info">在下面选择所需的文件。</string>
     <string name="file_chooser">文件选择器</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">这使您可以快速浏览歌曲，并且仅在宽限期为 2 秒后将信息发送到其他连接的设备。</string>
     <string name="green">绿</string>
     <string name="guitar">吉他</string>
+    <string name="guitar_drop_d">吉他-下降D</string>
+    <string name="guitar_open_g">吉他 - 开 G</string>
     <string name="half_time">中场休息</string>
     <string name="hard_tune">硬调</string>
     <string name="hardware_acceleration">使用硬件加速</string>
@@ -486,6 +497,10 @@
     <string name="initialising">初始化</string>
     <string name="inline_midi">内联 MIDI 命令</string>
     <string name="inline_midi_info">可以通过单击歌曲部分触发的 MIDI 命令</string>
+    <string name="insert_guitar_tab">插入吉他谱</string>
+    <string name="insert_guitar_tab_info">创建默认的吉他标签线</string>
+    <string name="insert_inline_abc">插入内联 ABC</string>
+    <string name="insert_inline_abc_info">创建插入代码以创建短行内联 ABC 表示法</string>
     <string name="instrument">仪器</string>
     <string name="instrumental">"仪器的"</string>
     <string name="interlude">"插曲"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">单击此处更改您的存储位置（根 OpenSong 文件夹所在的位置）。</string>
     <string name="storage_settings">管理您的存储位置和歌曲文件夹</string>
     <string name="storage_warning">请勿选择“Songs”文件夹作为存储位置。 您应该选择父“OpenSong”文件夹位置。</string>
+    <string name="string_tunings">弦乐调音</string>
     <string name="success">"成功"</string>
     <string name="swipe">"滑动设置"</string>
     <string name="swipe_allowance">"允许垂直运动"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">诗出自：</string>
     <string name="verse_to">诗句：</string>
     <string name="video">视频</string>
+    <string name="violin">小提琴</string>
     <string name="visible">可见的</string>
     <string name="visual_metronome">"视觉"</string>
     <string name="vocal">声乐</string>

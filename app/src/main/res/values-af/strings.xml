@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Sluit tablatuur in</string>
+    <string name="abc_include_tab_info">Wys instrumenttabel onder die musiekpartituur</string>
+    <string name="abc_inline_height">Inlyn abc hoogte (liedjie reëls wat begin met ;#:)</string>
+    <string name="abc_inline_text">Inlyn ABC-teks</string>
+    <string name="abc_inline_text_info">Kopieer die bogenoemde kode in \'n enkele reël van inlyn ABC-notasie wat in die liedjie se lirieke geplak kan word</string>
     <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
     <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="about">Oor</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">\'N Paar onverwagte liedjielêers is gevind in u OpenSong/Songs/ -gidse wat nie direk ondersteun word nie.  Hulle is na u OpenSong/Import-lêergids verskuif, maar u kan die opsie gebruik om verskeie lêers in te voer om dit na OpenSong-formaat te probeer omskakel en dit weer by u OpenSong/Songs/ -lêergids te voeg</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
+    <string name="bass4">Bas - 4 snaar</string>
+    <string name="bass5">Bas - 5 snaar</string>
     <string name="battery">"Battery"</string>
     <string name="beat_buddy_auto">Stuur outomaties BeatBuddy-liedjie</string>
     <string name="beat_buddy_auto_info">Vergelyk u liedjie Lêernaam, titel en ook bekend as velde met u BeatBuddy-databasis.  As \'n bypassende liedjie gevind word, word die lêergids en liedjiekode outomaties via MIDI gestuur</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Voortgaan</string>
     <string name="controls">Beheer</string>
     <string name="controls_description">Voetpedale en skermbewegings</string>
+    <string name="copied">Gekopieer</string>
     <string name="copy_chord">Kopieer akkoorde tussen afdelings</string>
     <string name="copy_chord_info">Neem die akkoorde uit een afdeling en pas dit toe op \'n ander</string>
     <string name="copy_chord_into">Kopieer in</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Ekstra inligting"</string>
     <string name="extra_settings">Gevorderde instellings</string>
     <string name="extract">Uittreksel teks</string>
+    <string name="fiddle">Fiddle (Viool)</string>
     <string name="file">Lêer</string>
     <string name="file_choose_info">Kies die vereiste lêer(s) hieronder.</string>
     <string name="file_chooser">Lêer chooser</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Hiermee kan u vinnig deur liedjies blaai en slegs inligting na ander gekoppelde toestelle stuur na \'n grasietydperk van 2\'s.</string>
     <string name="green">Groen</string>
     <string name="guitar">Guitar</string>
+    <string name="guitar_drop_d">Kitaar - drop D</string>
+    <string name="guitar_open_g">Kitaar - oop G</string>
     <string name="half_time">Halftyd</string>
     <string name="hard_tune">Harde deuntjie</string>
     <string name="hardware_acceleration">Gebruik hardeware versnelling</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Inisialisering</string>
     <string name="inline_midi">Inlyn MIDI opdragte</string>
     <string name="inline_midi_info">MIDI-opdragte wat geaktiveer kan word deur op \'n liedjie-afdeling te klik</string>
+    <string name="insert_guitar_tab">Voeg Kitaar-oortjie in</string>
+    <string name="insert_guitar_tab_info">Skep standaard kitaar-oortjielyne</string>
+    <string name="insert_inline_abc">Voeg inlyn ABC in</string>
+    <string name="insert_inline_abc_info">Skep die invoegkode vir die skep van \'n kort lyn van inlyn ABC-notasie</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">"instrumentele"</string>
     <string name="interlude">"Interlude"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Klik hier om jou stoorplek te verander (waar die wortel OpenSong-lêergids geleë is).</string>
     <string name="storage_settings">Bestuur jou stoorplek en liedjie-vouers</string>
     <string name="storage_warning">Moenie die \'Songs\'-lêergids as u stoorplek kies nie. In plaas daarvan moet u die \'OpenSong\'-lêergidslêer kies.</string>
+    <string name="string_tunings">Snaar stemmings</string>
     <string name="success">Sukses</string>
     <string name="swipe">"Swiep instellings"</string>
     <string name="swipe_allowance">"Vertikale beweging toegelaat"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Vers uit:</string>
     <string name="verse_to">Vers aan:</string>
     <string name="video">Video</string>
+    <string name="violin">Viool</string>
     <string name="visible">Sigbaar</string>
     <string name="visual_metronome">"Visueel"</string>
     <string name="vocal">Vokaal</string>

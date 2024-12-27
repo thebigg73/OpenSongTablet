@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">ටැබ්ලේචර් ඇතුළත් කරන්න</string>
+    <string name="abc_include_tab_info">සංගීත ලකුණු වලට පහළින් උපකරණ ටැබ්ලචරය පෙන්වන්න</string>
+    <string name="abc_inline_height">පේළිගත abc උස (ගීත රේඛා ආරම්භ වන්නේ ;#:)</string>
+    <string name="abc_inline_text">පේළිගත ABC පෙළ</string>
+    <string name="abc_inline_text_info">ඉහත කේතය ගීතයේ පදවලට ඇලවිය හැකි පේළිගත ABC අංකනයක තනි පේළියකට පිටපත් කරන්න</string>
     <string name="abc_transpose_to_song">ගීත යතුරට ස්වයංක්‍රීයව මාරු කරන්න</string>
     <string name="abc_transpose_to_song_info">ගීතයේ සහ abc අංකනයේ යතුරක් සකසා ඇත්නම්, යෙදුම ගීත යතුරට ගැළපෙන පරිදි abc අංකනයේ ප්‍රතිදානය සකස් කිරීමට උත්සාහ කරයි.</string>
     <string name="about">ගැන</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">සමහර අනපේක්ෂිත ගීත ගොනු ඔබේ OpenSong/Songs/ ෆෝල්ඩර තුළ සෘජුව සහාය නොදක්වයි.  ඒවා ඔබේ OpenSong/Import ෆෝල්ඩරය වෙත ගෙන ගොස් ඇත, නමුත් ඔබට ඒවා OpenSong ආකෘතියට පරිවර්තනය කිරීමට සහ ඒවා නැවත ඔබේ OpenSong/Song</string>
     <string name="banjo4">බන්ජෝ (4)</string>
     <string name="banjo5">බන්ජෝ (5)</string>
+    <string name="bass4">බාස් - 4 නූල්</string>
+    <string name="bass5">බාස් - 5 නූල්</string>
     <string name="battery">බැටරි</string>
     <string name="beat_buddy_auto">BeatBuddy ගීතය ස්වයංක්‍රීයව යවන්න</string>
     <string name="beat_buddy_auto_info">ඔබගේ BeatBuddy දත්ත සමුදාය සමඟ ඔබගේ ගීතය \'ගොනු නාමය\', \'මාතෘකාව\' සහ \'ලෙස ද හඳුන්වනු ලැබේ\' යන ක්ෂේත්‍ර සසඳයි.  ගැළපෙන ගීතයක් හමු වුවහොත්, ෆෝල්ඩරය සහ ගීත කේතය ස්වයංක්‍රීයව MIDI හරහා යවනු ලැබේ</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">දිගටම කරගෙන යන්න</string>
     <string name="controls">පාලනයන්</string>
     <string name="controls_description">පාද පැඩල් සහ තිර අභිනයන්</string>
+    <string name="copied">පිටපත් කර ඇත</string>
     <string name="copy_chord">කොටස් අතර කෝඩ්ස් පිටපත් කරන්න</string>
     <string name="copy_chord_info">එක් කොටසකින් කෝඩ්ස් ගෙන තවත් කොටසකට යොදන්න</string>
     <string name="copy_chord_into">පිටපත් කරන්න</string>
@@ -350,6 +358,7 @@
     <string name="extra">අමතර තොරතුරු</string>
     <string name="extra_settings">උසස් සැකසුම්</string>
     <string name="extract">පෙළ උපුටා ගන්න</string>
+    <string name="fiddle">ෆිඩල්</string>
     <string name="file">ගොනුව</string>
     <string name="file_choose_info">පහත අවශ්‍ය ගොනු(ය) තෝරන්න.</string>
     <string name="file_chooser">ගොනු තේරීම</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">මෙය ඔබට ඉක්මනින් ගීත බ්‍රවුස් කිරීමට ඉඩ ලබා දෙන අතර තත්පර 2ක සහන කාල සීමාවකට පසුව පමණක් සම්බන්ධිත අනෙකුත් උපාංග වෙත තොරතුරු යවයි.</string>
     <string name="green">කොළ</string>
     <string name="guitar">ගිටාර්</string>
+    <string name="guitar_drop_d">ගිටාර් - drop D</string>
+    <string name="guitar_open_g">ගිටාර් - විවෘත ජී</string>
     <string name="half_time">අර්ධ කාලය</string>
     <string name="hard_tune">දැඩි තාලයක්</string>
     <string name="hardware_acceleration">දෘඪාංග ත්වරණය භාවිතා කරන්න</string>
@@ -486,6 +497,10 @@
     <string name="initialising">ආරම්භ කිරීම</string>
     <string name="inline_midi">පේළිගත MIDI විධාන</string>
     <string name="inline_midi_info">ගීත අංශයක් මත ක්ලික් කිරීමෙන් ක්‍රියාත්මක කළ හැකි MIDI විධාන</string>
+    <string name="insert_guitar_tab">ගිටාර් ටැබ් එක ඇතුළු කරන්න</string>
+    <string name="insert_guitar_tab_info">පෙරනිමි ගිටාර් ටැබ් රේඛා සාදන්න</string>
+    <string name="insert_inline_abc">පේළිගත ABC ඇතුළු කරන්න</string>
+    <string name="insert_inline_abc_info">පේළිගත ABC අංකනයේ කෙටි රේඛාවක් නිර්මාණය කිරීම සඳහා ඇතුළු කිරීමේ කේතය සාදන්න</string>
     <string name="instrument">උපකරණය</string>
     <string name="instrumental">උපකරණ</string>
     <string name="interlude">අතුරුමුහුණත</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">ඔබගේ ගබඩා ස්ථානය වෙනස් කිරීමට මෙතන ක්ලික් කරන්න (root OpenSong ෆෝල්ඩරය පිහිටා ඇති ස්ථානය).</string>
     <string name="storage_settings">ඔබගේ ගබඩා ස්ථානය සහ ගීත ෆෝල්ඩර කළමනාකරණය කරන්න</string>
     <string name="storage_warning">"කරුණාකර \'Songs\' ෆෝල්ඩරය ඔබගේ ගබඩා ස්ථානය ලෙස තෝරා නොගන්න. ඒ වෙනුවට ඔබ මාපිය \'OpenSong\' ෆෝල්ඩර ස්ථානය තෝරාගත යුතුය."</string>
+    <string name="string_tunings">නූල් සුසර කිරීම</string>
     <string name="success">සාර්ථකත්වය</string>
     <string name="swipe">ස්වයිප් සැකසුම්</string>
     <string name="swipe_allowance">සිරස් චලනය කිරීමට අවසර ඇත</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">පදය:</string>
     <string name="verse_to">පදය:</string>
     <string name="video">වීඩියෝ</string>
+    <string name="violin">වයලීනය</string>
     <string name="visible">දෘශ්‍යමානයි</string>
     <string name="visual_metronome">දෘශ්ය</string>
     <string name="vocal">කටහඬ</string>

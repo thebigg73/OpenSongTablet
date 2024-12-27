@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Συμπεριλάβετε ταμπλατούρα</string>
+    <string name="abc_include_tab_info">Εμφάνιση ταμπλατούρας οργάνων κάτω από την παρτιτούρα</string>
+    <string name="abc_inline_height">Ενσωματωμένο ύψος abc (σειρές τραγουδιών που ξεκινούν με ;#:)</string>
+    <string name="abc_inline_text">Ενσωματωμένο κείμενο ABC</string>
+    <string name="abc_inline_text_info">Αντιγράψτε τον παραπάνω κώδικα σε μια γραμμή ενσωματωμένης σημειογραφίας ABC που μπορεί να επικολληθεί στους στίχους του τραγουδιού</string>
     <string name="abc_transpose_to_song">Αυτόματη μεταφορά στο πλήκτρο τραγουδιού</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Σχετικά με</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">Ορισμένα απροσδόκητα αρχεία τραγουδιών έχουν βρεθεί στους φακέλους OpenSong/Songs/που δεν υποστηρίζονται άμεσα.  Έχουν μετακινηθεί στο φάκελο OpenSong/Import, αλλά μπορείτε να χρησιμοποιήσετε την επιλογή εισαγωγής πολλών αρχείων για να προσπαθήσετε να τα μετατρέψετε σε μορφή OpenSong και να τα προσθέσετε ξανά στο φάκελο OpenSong/Songs/</string>
     <string name="banjo4">"Μπάντζο (4)"</string>
     <string name="banjo5">"Μπάντζο (5)"</string>
+    <string name="bass4">Μπάσο - 4 χορδές</string>
+    <string name="bass5">Μπάσο - 5 χορδές</string>
     <string name="battery">"μπαταρία"</string>
     <string name="beat_buddy_auto">Αυτόματη αποστολή τραγουδιού BeatBuddy</string>
     <string name="beat_buddy_auto_info">Συγκρίνει το τραγούδι σας Όνομα αρχείου, Τίτλος και Επίσης γνωστά ως πεδία με τη βάση δεδομένων BeatBuddy.  Εάν βρεθεί ένα αντίστοιχο τραγούδι, ο φάκελος και ο κωδικός τραγουδιού αποστέλλονται αυτόματα μέσω MIDI</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Συνεχίζω</string>
     <string name="controls">Ελεγχος</string>
     <string name="controls_description">Πεντάλ ποδιών και χειρονομίες οθόνης</string>
+    <string name="copied">Αντιγράφηκε</string>
     <string name="copy_chord">Αντιγράψτε τις συγχορδίες μεταξύ των ενοτήτων</string>
     <string name="copy_chord_info">Πάρτε τις συγχορδίες από ένα τμήμα και εφαρμόστε τις σε ένα άλλο</string>
     <string name="copy_chord_into">Αντιγραφή σε</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Extra Information"</string>
     <string name="extra_settings">Προηγμένες ρυθμίσεις</string>
     <string name="extract">"Εξαγωγή κειμένου"</string>
+    <string name="fiddle">Fiddle/Βιολί</string>
     <string name="file">Αρχείο</string>
     <string name="file_choose_info">Επιλέξτε τα απαιτούμενα αρχεία παρακάτω.</string>
     <string name="file_chooser">"Επιλογέας αρχείου"</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Αυτό σας επιτρέπει να περιηγείστε γρήγορα στα τραγούδια και να στέλνετε πληροφορίες μόνο σε άλλες συνδεδεμένες συσκευές μετά από μια χρονική περίοδο χάριτος 2 δευτερολέπτων.</string>
     <string name="green">Πράσινος</string>
     <string name="guitar">"Κιθάρα"</string>
+    <string name="guitar_drop_d">Κιθάρα - σταγόνα Δ</string>
+    <string name="guitar_open_g">Κιθάρα - ανοιχτό Γ</string>
     <string name="half_time">Ημίχρονο</string>
     <string name="hard_tune">Σκληρή μελωδία</string>
     <string name="hardware_acceleration">Χρήση επιτάχυνσης υλικού</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Αρχικοποίηση</string>
     <string name="inline_midi">Ενσωματωμένες εντολές MIDI</string>
     <string name="inline_midi_info">Εντολές MIDI που μπορούν να ενεργοποιηθούν κάνοντας κλικ σε μια ενότητα τραγουδιού</string>
+    <string name="insert_guitar_tab">Εισαγάγετε την καρτέλα Κιθάρα</string>
+    <string name="insert_guitar_tab_info">Δημιουργήστε προεπιλεγμένες γραμμές καρτέλας κιθάρας</string>
+    <string name="insert_inline_abc">Εισαγάγετε ενσωματωμένο ABC</string>
+    <string name="insert_inline_abc_info">Δημιουργήστε τον κωδικό εισαγωγής για τη δημιουργία μιας σύντομης γραμμής ενσωματωμένης σημειογραφίας ABC</string>
     <string name="instrument">"Όργανο"</string>
     <string name="instrumental">"Ενόργανος"</string>
     <string name="interlude">"Διάλειμμα"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Κάντε κλικ εδώ για να αλλάξετε τη θέση αποθήκευσης (όπου βρίσκεται ο ριζικός φάκελος OpenSong).</string>
     <string name="storage_settings">Διαχειριστείτε την τοποθεσία αποθήκευσης και τους φακέλους τραγουδιών</string>
     <string name="storage_warning">Μην επιλέξετε το φάκελο \"Τραγούδια\" ως τη θέση αποθήκευσης. Πρέπει να επιλέξετε αντί για τη θέση του γονικού αρχείου \"OpenSong\".</string>
+    <string name="string_tunings">Κούρδισμα χορδών</string>
     <string name="success">"Επιτυχία"</string>
     <string name="swipe">"Ρυθμίστε τις ρυθμίσεις"</string>
     <string name="swipe_allowance">"Η κάθετη κίνηση επιτρέπεται"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Στίχος από:</string>
     <string name="verse_to">Στίχος προς:</string>
     <string name="video">βίντεο</string>
+    <string name="violin">Βιολί</string>
     <string name="visible">Ορατός</string>
     <string name="visual_metronome">"Visual"</string>
     <string name="vocal">Φωνητικός</string>

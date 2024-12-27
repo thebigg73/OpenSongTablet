@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Includi tablature</string>
+    <string name="abc_include_tab_info">Mostra l\'intavolatura dello strumento sotto lo spartito musicale</string>
+    <string name="abc_inline_height">Altezza abc in linea (righe di brani che iniziano con ;#:)</string>
+    <string name="abc_inline_text">Testo ABC in linea</string>
+    <string name="abc_inline_text_info">Copia il codice sopra in una singola riga di notazione ABC in linea che può essere incollata nel testo della canzone</string>
     <string name="abc_transpose_to_song">Trasposizione automatica alla chiave del brano</string>
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">Di</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">Nelle cartelle OpenSong/Songs/ sono stati trovati alcuni file di brani inaspettati che non sono supportati direttamente.  Sono stati spostati nella cartella OpenSong/Import, ma è possibile utilizzare l\'opzione per importare più file per tentare di convertirli in formato OpenSong e aggiungerli nuovamente alla cartella OpenSong/Songs/</string>
     <string name="banjo4">"Banjio (4)"</string>
     <string name="banjo5">"Banjio (5)</string>
+    <string name="bass4">Basso: 4 corde</string>
+    <string name="bass5">Basso: 5 corde</string>
     <string name="battery">"Batteria"</string>
     <string name="beat_buddy_auto">Invia automaticamente la canzone BeatBuddy</string>
     <string name="beat_buddy_auto_info">Confronta i campi Nome file, Titolo e Conosciuto come brano con il database BeatBuddy.  Se viene trovato un brano corrispondente, la cartella e il codice del brano vengono inviati automaticamente tramite MIDI</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Continuare</string>
     <string name="controls">Controlli</string>
     <string name="controls_description">Pedali e gesti sullo schermo</string>
+    <string name="copied">Copiato</string>
     <string name="copy_chord">Copia gli accordi tra le sezioni</string>
     <string name="copy_chord_info">Prendi gli accordi da una sezione e applicali a un\'altra</string>
     <string name="copy_chord_into">Copia in</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Ulteriori informazioni"</string>
     <string name="extra_settings">Impostazioni avanzate</string>
     <string name="extract">Il testo estratto</string>
+    <string name="fiddle">Fiddle/Violino</string>
     <string name="file">File</string>
     <string name="file_choose_info">Seleziona i file richiesti di seguito.</string>
     <string name="file_chooser">Chooser file</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Ciò consente di sfogliare rapidamente i brani e invia informazioni solo ad altri dispositivi collegati dopo un periodo di tolleranza di 2 secondi.</string>
     <string name="green">Verde</string>
     <string name="guitar">Chitarra</string>
+    <string name="guitar_drop_d">Chitarra - goccia D</string>
+    <string name="guitar_open_g">Chitarra - Sol aperto</string>
     <string name="half_time">Intervallo</string>
     <string name="hard_tune">Sintonia dura</string>
     <string name="hardware_acceleration">Utilizzo dell\'accelerazione hardware</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Inizializzazione</string>
     <string name="inline_midi">Comandi MIDI in linea</string>
     <string name="inline_midi_info">Comandi MIDI che possono essere attivati cliccando su una sezione del brano</string>
+    <string name="insert_guitar_tab">Inserisci la tablatura della chitarra</string>
+    <string name="insert_guitar_tab_info">Crea tablature di chitarra predefinite</string>
+    <string name="insert_inline_abc">Inserisci ABC in linea</string>
+    <string name="insert_inline_abc_info">Crea il codice di inserimento per creare una breve riga di notazione ABC in linea</string>
     <string name="instrument">Strumento</string>
     <string name="instrumental">"Strumentale"</string>
     <string name="interlude">"Interludio"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Fare clic qui per modificare la posizione di archiviazione (dove si trova la cartella principale di OpenSong).</string>
     <string name="storage_settings">Gestisci la tua posizione di archiviazione e le cartelle dei brani</string>
     <string name="storage_warning">Non selezionare la cartella \"Songs\" come posizione di archiviazione. È invece necessario selezionare il percorso della cartella \'OpenSong\' padre.</string>
+    <string name="string_tunings">Accordature delle corde</string>
     <string name="success">"Successo"</string>
     <string name="swipe">"Scorrimento delle impostazioni"</string>
     <string name="swipe_allowance">"Permesso il movimento verticale"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Versetto da:</string>
     <string name="verse_to">Verso a:</string>
     <string name="video">Video</string>
+    <string name="violin">Violino</string>
     <string name="visible">Visibile</string>
     <string name="visual_metronome">"Visivo"</string>
     <string name="vocal">Vocale</string>

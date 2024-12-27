@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Включіть табулатуру</string>
+    <string name="abc_include_tab_info">Показувати інструментальну табулатуру під партитурою</string>
+    <string name="abc_inline_height">Вбудована висота abc (рядки пісні починаються з ;#:)</string>
+    <string name="abc_inline_text">Вбудований ABC текст</string>
+    <string name="abc_inline_text_info">Скопіюйте наведений вище код в один рядок вбудованої нотації ABC, який можна вставити в текст пісні</string>
     <string name="abc_transpose_to_song">Autotransponera till sångnyckel</string>
     <string name="abc_transpose_to_song_info">Якщо в пісні та нотації abc встановлено тональність, програма спробує налаштувати вихід нотації abc відповідно до тональності пісні.</string>
     <string name="about">Про</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">У ваших теках OpenSong/Songs/ було знайдено деякі несподівані файли пісень, підтримку яких не передбачено безпосередньо.  Їх було переміщено до вашої теки OpenSong/Import, але ви можете скористатися опцією імпортування кількох файлів, щоб спробувати перетворити їх у формат OpenSong і додати їх назад до вашої теки OpenSong/Songs/</string>
     <string name="banjo4">Банджо (4)</string>
     <string name="banjo5">Банджо (5)</string>
+    <string name="bass4">Бас - 4 струни</string>
+    <string name="bass5">Бас - 5 струн</string>
     <string name="battery">Aкумулятор</string>
     <string name="beat_buddy_auto">Автоматично надсилати пісню BeatBuddy</string>
     <string name="beat_buddy_auto_info">Порівнює вашу пісню Filename, Title і Також відомі як поля з вашою базою даних BeatBuddy.  Якщо знайдено відповідну пісню, папка та код пісні автоматично надсилаються через MIDI</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Продовжити</string>
     <string name="controls">Елементи керування</string>
     <string name="controls_description">Ножні педалі та екранні жести</string>
+    <string name="copied">Скопійовано</string>
     <string name="copy_chord">Копіюйте акорди між розділами</string>
     <string name="copy_chord_info">Візьміть акорди з одного розділу і застосуйте їх до іншого</string>
     <string name="copy_chord_into">Копіювати в</string>
@@ -350,6 +358,7 @@
     <string name="extra">Додаткова інформація</string>
     <string name="extra_settings">Розширені налаштування</string>
     <string name="extract">Витягти текст</string>
+    <string name="fiddle">Fiddle/Скрипка</string>
     <string name="file">Файл</string>
     <string name="file_choose_info">Виберіть необхідний(і) файл(и) нижче.</string>
     <string name="file_chooser">Вибір файл</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">Це дозволяє швидко переглядати пісні та надсилати інформацію лише на інші підключені пристрої після пільгового періоду часу 2 секунди.</string>
     <string name="green">Зелений</string>
     <string name="guitar">Гітара</string>
+    <string name="guitar_drop_d">Гітара - Дроп Д</string>
+    <string name="guitar_open_g">Гітара - відкритий G</string>
     <string name="half_time">Половина часу</string>
     <string name="hard_tune">Жорстка мелодія</string>
     <string name="hardware_acceleration">Використання апаратного прискорення</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Ініціалізація</string>
     <string name="inline_midi">Вбудовані команди MIDI</string>
     <string name="inline_midi_info">MIDI-команди, які можна запустити, натиснувши на розділ пісні</string>
+    <string name="insert_guitar_tab">Вставити вкладку «Гітара».</string>
+    <string name="insert_guitar_tab_info">Створіть стандартні рядки табулатури гітари</string>
+    <string name="insert_inline_abc">Вставити рядковий ABC</string>
+    <string name="insert_inline_abc_info">Створіть код вставки для створення короткого рядка вбудованої нотації ABC</string>
     <string name="instrument">інструмент</string>
     <string name="instrumental">Iнструментал</string>
     <string name="interlude">Iнтерлюдія</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Натисніть тут, щоб змінити місце зберігання (де знаходиться коренева папка OpenSong).</string>
     <string name="storage_settings">Керуйте місцем зберігання та папками пісень</string>
     <string name="storage_warning">Будь ласка, не вибирайте папку «Пісні» в якості місця зберігання. Замість цього ви повинні вибрати батьківську папку «OpenSong».</string>
+    <string name="string_tunings">Налаштування струн</string>
     <string name="success">Yспішно</string>
     <string name="swipe">Налаштування ковзання</string>
     <string name="swipe_allowance">Дозволено вертикальне переміщення</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Вірш із:</string>
     <string name="verse_to">Вірш до:</string>
     <string name="video">Відео</string>
+    <string name="violin">Скрипка</string>
     <string name="visible">Видно</string>
     <string name="visual_metronome">Візуальний метроном</string>
     <string name="vocal">Вокал</string>

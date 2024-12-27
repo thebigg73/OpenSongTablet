@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_include_tab">Zahrnout tabulaturu</string>
+    <string name="abc_include_tab_info">Zobrazit tabulaturu nástroje pod notovým záznamem</string>
+    <string name="abc_inline_height">Vložená výška abc (řádky skladeb začínající na ;#:)</string>
+    <string name="abc_inline_text">Vložený text ABC</string>
+    <string name="abc_inline_text_info">Zkopírujte výše uvedený kód do jednoho řádku vložené notace ABC, kterou lze vložit do textu písně</string>
     <string name="abc_transpose_to_song">Automatická transpozice do tóniny písně</string>
     <string name="abc_transpose_to_song_info">Pokud je ve skladbě a v notaci abc nastavena tónina, aplikace se pokusí upravit výstup notace abc tak, aby odpovídal tónině skladby.</string>
     <string name="about">Asi</string>
@@ -82,6 +87,8 @@
     <string name="bad_songs_found">Ve vašich složkách OpenSong/Songs/ byly nalezeny některé neočekávané soubory skladeb, které nejsou přímo podporovány.  Byly přesunuty do složky OpenSong/Import, ale můžete použít možnost importovat více souborů a pokusit se je převést do formátu OpenSong a přidat je zpět do složky OpenSong/Songs/</string>
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
+    <string name="bass4">Baskytara - 4 strunné</string>
+    <string name="bass5">Baskytara - 5 strun</string>
     <string name="battery">"Baterie"</string>
     <string name="beat_buddy_auto">Automaticky odeslat skladbu BeatBuddy</string>
     <string name="beat_buddy_auto_info">Porovná vaše skladba Název souboru, Název a Také známé jako pole s databází BeatBuddy.  Pokud je nalezena odpovídající skladba, složka a kód skladby jsou automaticky odeslány přes MIDI</string>
@@ -259,6 +266,7 @@
     <string name="continue_text">Pokračovat</string>
     <string name="controls">Řízení</string>
     <string name="controls_description">Nožní pedály a gesta na obrazovce</string>
+    <string name="copied">Zkopírováno</string>
     <string name="copy_chord">Kopírovat akordy mezi sekcemi</string>
     <string name="copy_chord_info">Vezměte akordy z jedné části a aplikujte je na druhou</string>
     <string name="copy_chord_into">Zkopírujte do</string>
@@ -350,6 +358,7 @@
     <string name="extra">"Informace navíc"</string>
     <string name="extra_settings">Pokročilé nastavení</string>
     <string name="extract">Extrakt text</string>
+    <string name="fiddle">Fiddle (Housle)</string>
     <string name="file">Soubor</string>
     <string name="file_choose_info">Níže vyberte požadované soubory.</string>
     <string name="file_chooser">Soubor chooser</string>
@@ -410,6 +419,8 @@
     <string name="grace_time_info">To vám umožní rychle procházet skladby a odesílat informace do jiných připojených zařízení pouze po uplynutí doby odkladu 2 s.</string>
     <string name="green">Zelená</string>
     <string name="guitar">Kytara</string>
+    <string name="guitar_drop_d">Kytara - drop D</string>
+    <string name="guitar_open_g">Kytara - otevřená G</string>
     <string name="half_time">Poločas</string>
     <string name="hard_tune">Tvrdá melodie</string>
     <string name="hardware_acceleration">Použití hardwarové akcelerace</string>
@@ -486,6 +497,10 @@
     <string name="initialising">Inicializace</string>
     <string name="inline_midi">Vložené MIDI příkazy</string>
     <string name="inline_midi_info">MIDI příkazy, které lze spustit kliknutím na sekci skladby</string>
+    <string name="insert_guitar_tab">Vložte kartu Guitar</string>
+    <string name="insert_guitar_tab_info">Vytvořte výchozí kytarové tabulátory</string>
+    <string name="insert_inline_abc">Vložit vložené ABC</string>
+    <string name="insert_inline_abc_info">Vytvořte vkládací kód pro vytvoření krátkého řádku vložené notace ABC</string>
     <string name="instrument">Nástroj</string>
     <string name="instrumental">"Instrumentální"</string>
     <string name="interlude">"Mezihra"</string>
@@ -971,6 +986,7 @@
     <string name="storage_reset">Kliknutím sem změníte umístění úložiště (kde se nachází kořenová složka OpenSong).</string>
     <string name="storage_settings">Spravujte své úložiště a složky skladeb</string>
     <string name="storage_warning">Nevyberejte jako místo úložiště složku „Songs“. Místo toho byste měli vybrat umístění nadřazené složky „OpenSong“.</string>
+    <string name="string_tunings">Ladění strun</string>
     <string name="success">"Úspěch"</string>
     <string name="swipe">"Přesuňte nastavení"</string>
     <string name="swipe_allowance">"Vertikální pohyb povolen"</string>
@@ -1055,6 +1071,7 @@
     <string name="verse_from">Verš z:</string>
     <string name="verse_to">Verš pro:</string>
     <string name="video">Video</string>
+    <string name="violin">Housle</string>
     <string name="visible">Viditelné</string>
     <string name="visual_metronome">"Vizuální"</string>
     <string name="vocal">Hlasitý</string>
