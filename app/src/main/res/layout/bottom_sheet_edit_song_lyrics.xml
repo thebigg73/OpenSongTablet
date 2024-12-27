@@ -33,6 +33,22 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/insertGuitarTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/insert_guitar_tab_info"
+                android:text="@string/insert_guitar_tab" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/insertInlineAbc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/insert_inline_abc_info"
+                android:text="@string/insert_inline_abc" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/insertInlineMidi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

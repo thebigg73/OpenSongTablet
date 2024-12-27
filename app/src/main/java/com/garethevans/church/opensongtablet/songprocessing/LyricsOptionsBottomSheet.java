@@ -123,6 +123,34 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+": \n"+e);
             }
         });
+        myView.insertGuitarTab.setOnClickListener(v -> {
+            try {
+                if (openingFragment != null) {
+                    String bitToAdd = "\n;e |--------|\n" +
+                            ";B |--------|\n" +
+                            ";G |--------|\n" +
+                            ";D |--------|\n" +
+                            ";A |--------|\n" +
+                            ";E |--------|";
+                    openingFragment.insertSection(bitToAdd,1);
+                    this.dismiss();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        myView.insertInlineAbc.setOnClickListener(v -> {
+            try {
+                if (openingFragment != null) {
+                    String bitToAdd = "\n;#:";
+                    openingFragment.insertSection(bitToAdd,4);
+                    this.dismiss();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         myView.insertInlineMidi.setOnClickListener(view -> {
             if (openingFragment!=null) {
                 InlineMidiBottomSheet inlineMidiBottomSheet = new InlineMidiBottomSheet(openingFragment);
