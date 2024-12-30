@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">ටැබ්ලේචර් ඇතුළත් කරන්න</string>
     <string name="abc_include_tab_info">සංගීත ලකුණු වලට පහළින් උපකරණ ටැබ්ලචරය පෙන්වන්න</string>
-    <string name="abc_inline_height">පේළිගත abc උස (ගීත රේඛා ආරම්භ වන්නේ ;#:)</string>
     <string name="abc_inline_text">පේළිගත ABC පෙළ</string>
     <string name="abc_inline_text_info">ඉහත කේතය ගීතයේ පදවලට ඇලවිය හැකි පේළිගත ABC අංකනයක තනි පේළියකට පිටපත් කරන්න</string>
+    <string name="abc_inline_width">ABC අංකනය කාර්ය මණ්ඩල පළල</string>
+    <string name="abc_inline_width_info">කාර්ය මණ්ඩලයේ පළල ඉතා ඉහළ ලෙස සැකසීම abc අංකනය ඉතා කුඩා වීමට හේතු වන අතර පේළිගතව භාවිතා කරන විට ඕනෑම ගීතයක් හැකිලීමට හේතු වේ.</string>
+    <string name="abc_not_available">ABC අංකනය බැලීම මෙහි අවසර නැත</string>
+    <string name="abc_popup_width">උත්පතන පළල</string>
+    <string name="abc_popup_width_info">උත්පතන කවුළුවේ පළල තිරයේ පළලෙහි ප්‍රතිශතයක් ලෙස</string>
     <string name="abc_transpose_to_song">ගීත යතුරට ස්වයංක්‍රීයව මාරු කරන්න</string>
     <string name="abc_transpose_to_song_info">ගීතයේ සහ abc අංකනයේ යතුරක් සකසා ඇත්නම්, යෙදුම ගීත යතුරට ගැළපෙන පරිදි abc අංකනයේ ප්‍රතිදානය සකස් කිරීමට උත්සාහ කරයි.</string>
     <string name="about">ගැන</string>

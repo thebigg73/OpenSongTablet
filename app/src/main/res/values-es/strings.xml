@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">incluir tablatura</string>
     <string name="abc_include_tab_info">Mostrar tablatura de instrumentos debajo de la partitura</string>
-    <string name="abc_inline_height">Altura abc en línea (líneas de canciones que comienzan con ;#:)</string>
     <string name="abc_inline_text">Texto ABC en línea</string>
     <string name="abc_inline_text_info">Copie el código anterior en una sola línea de notación ABC en línea que se pueda pegar en la letra de la canción.</string>
+    <string name="abc_inline_width">Ancho del pentagrama de notación ABC</string>
+    <string name="abc_inline_width_info">Configurar el ancho del pentagrama demasiado alto hará que la notación abc se vuelva muy pequeña y también reducirá las letras de las canciones cuando se usen en línea.</string>
+    <string name="abc_not_available">La vista de notación ABC no está permitida aquí</string>
+    <string name="abc_popup_width">Ancho de ventana emergente</string>
+    <string name="abc_popup_width_info">El ancho de la ventana emergente como porcentaje del ancho de la pantalla.</string>
     <string name="abc_transpose_to_song">Transposición automática a clave de canción</string>
     <string name="abc_transpose_to_song_info">Si se establece una clave en la canción y en la notación abc, la aplicación intentará ajustar la salida de la notación abc para que coincida con la clave de la canción.</string>
     <string name="about">Acerca de</string>

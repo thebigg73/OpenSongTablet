@@ -3,7 +3,6 @@
     <string name="a_hz" translatable="false">A (Hz)</string>
     <string name="abc_include_tab">Include tablature</string>
     <string name="abc_include_tab_info">Show instrument tablature below the music score</string>
-    <string name="abc_inline_height">Inline abc height (song lines starting with ;#:)</string>
     <string name="abc_inline_text">Inline ABC text</string>
     <string name="abc_inline_text_info">Copy the above code into a single line of inline ABC notation that can be pasted into the song lyrics</string>
     <string name="abc_transpose_to_song">Auto transpose to song key</string>
@@ -1468,4 +1467,9 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="abc_not_available">ABC notation view not allowed here</string>
+    <string name="abc_popup_width">Popup width</string>
+    <string name="abc_popup_width_info">The width of the popup window as a percentage of the screen width</string>
+    <string name="abc_inline_width">ABC notation staff width</string>
+    <string name="abc_inline_width_info">Setting the staff width too high will cause the abc notation to become very small and will also shrink any song lyrics when used inline</string>
 </resources>

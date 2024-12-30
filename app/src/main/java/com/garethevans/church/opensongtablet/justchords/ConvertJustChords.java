@@ -139,9 +139,9 @@ public class ConvertJustChords {
                 line = mainActivityInterface.getProcessSong().beautifyHeading(line);
                 line = line + ":";
             }
-            if (line.startsWith(";#:")) {
+            if (line.trim().startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
                 // This is inline abc notation, so convert that to abc notation
-                line = line.replace(";#:","");
+                line = line.trim().replace(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator(),"");
                 line = abc_start + "\n" + line.replace("\\n","\n") + "\n" + abc_end;
             }
             stringBuilder.append(line).append("\n");
@@ -301,13 +301,9 @@ public class ConvertJustChords {
             int indexEnd = lyrics.indexOf(abc_end,indexStart);
             containsAbc = indexStart>=0 && indexEnd>=0 && indexEnd>indexStart;
             if (containsAbc) {
-                String extractedBit = lyrics.substring(indexStart, indexEnd + abc_end.length());
-                // Process the extractedBit
-                extractedBit = extractedBit.replace(abc_start, "").replace(abc_end, "");
-                extractedBit = extractedBit.replace("\n", "\\n");
-                extractedBit = ";#:" + extractedBit;
+                String extractedBit = getExtractedBit(lyrics, indexStart, indexEnd);
                 // Now put it back in place of the old bit
-                lyrics = lyrics.substring(0, indexStart) + extractedBit + lyrics.substring(indexEnd + abc_end.length());
+                lyrics = lyrics.substring(0, indexStart) + extractedBit + "\n" + lyrics.substring(indexEnd + abc_end.length());
             }
         }
 
@@ -321,8 +317,10 @@ public class ConvertJustChords {
                 line = line.replace(":]", "]");
             }
             // Make sure inline abc starts at the beginning of the line without a space
-            if (line.trim().startsWith(";#:")) {
+            if (line.trim().startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
                 line = line.trim();
+                line = line.replace(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator()+" ",
+                        mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator());
             }
 
             stringBuilder.append(line).append("\n");
@@ -331,6 +329,18 @@ public class ConvertJustChords {
         String songXML = mainActivityInterface.getProcessSong().getXML(song);
         song.setSongXML(songXML);
         return song;
+    }
+
+    private String getExtractedBit(String lyrics, int indexStart, int indexEnd) {
+        String extractedBit = lyrics.substring(indexStart, indexEnd + abc_end.length());
+        // Process the extractedBit
+        extractedBit = extractedBit.replace(abc_start, "").replace(abc_end, "");
+        extractedBit = extractedBit.replace("\n", "\\n");
+        extractedBit = extractedBit.replace("\\n ", "\\n");
+        extractedBit = extractedBit.replace(" \\n", "\\n");
+        extractedBit = extractedBit.replace("\\n\\n","\\n");
+        extractedBit = mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator() + extractedBit.trim();
+        return extractedBit;
     }
 
     public String getExtension() {

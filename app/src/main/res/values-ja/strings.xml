@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">タブ譜を含める</string>
     <string name="abc_include_tab_info">楽譜の下に楽器のタブ譜を表示</string>
-    <string name="abc_inline_height">インライン abc 高さ (;#: で始まるソングライン)</string>
     <string name="abc_inline_text">インラインABCテキスト</string>
     <string name="abc_inline_text_info">上記のコードを 1 行のインライン ABC 表記にコピーし、曲の歌詞に貼り付けることができます。</string>
+    <string name="abc_inline_width">ABC譜の五線幅</string>
+    <string name="abc_inline_width_info">五線幅の設定が大きすぎると、abc 表記が非常に小さくなり、インラインで使用すると歌詞も小さくなります。</string>
+    <string name="abc_not_available">ここでは ABC 表記の表示は許可されていません</string>
+    <string name="abc_popup_width">ポップアップの幅</string>
+    <string name="abc_popup_width_info">画面幅に対するポップアップ ウィンドウの幅のパーセンテージ</string>
     <string name="abc_transpose_to_song">曲のキーに自動移調</string>
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">約</string>

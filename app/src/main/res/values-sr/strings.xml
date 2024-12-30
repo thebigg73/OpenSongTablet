@@ -1093,7 +1093,6 @@
     <string name="abc_include_tab">Uključite tabulaturu</string>
     <string name="abc_include_tab_info">Prikaži tablaturu instrumenata ispod muzičke partiture</string>
     <string name="string_tunings">Gudački tunings</string>
-    <string name="abc_inline_height">Inline abc visina (linije pesama koje počinju sa ;#:)</string>
     <string name="insert_guitar_tab">Ubaci karticu Gitara</string>
     <string name="insert_guitar_tab_info">Kreirajte podrazumevane linije tabulatora gitare</string>
     <string name="insert_inline_abc">Ubacite inline ABC</string>
@@ -1101,4 +1100,9 @@
     <string name="abc_inline_text">Inline ABC tekst</string>
     <string name="abc_inline_text_info">Kopirajte gornji kod u jednu liniju ugrađene ABC notacije koja se može nalepiti u tekst pesme</string>
     <string name="copied">Kopira</string>
+    <string name="abc_not_available">ABC notacija pogled nije dozvoljen ovde</string>
+    <string name="abc_popup_width">Širina iskačućeg prozora</string>
+    <string name="abc_popup_width_info">Širina iskačućeg prozora kao procenat širine ekrana</string>
+    <string name="abc_inline_width">ABC notacija širina osoblja</string>
+    <string name="abc_inline_width_info">Postavljanje širine osoblja previsoko će dovesti do toga da abc notacija postane veoma mala i takođe će smanjiti sve tekstove pesama kada se koriste u liniji</string>
 </resources>

@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Zahrnout tabulaturu</string>
     <string name="abc_include_tab_info">Zobrazit tabulaturu nástroje pod notovým záznamem</string>
-    <string name="abc_inline_height">Vložená výška abc (řádky skladeb začínající na ;#:)</string>
     <string name="abc_inline_text">Vložený text ABC</string>
     <string name="abc_inline_text_info">Zkopírujte výše uvedený kód do jednoho řádku vložené notace ABC, kterou lze vložit do textu písně</string>
+    <string name="abc_inline_width">Šířka notace ABC</string>
+    <string name="abc_inline_width_info">Nastavení příliš vysoké šířky notové osnovy způsobí, že abc notace bude velmi malá a také se zmenší všechny texty písní, když se použijí vložené</string>
+    <string name="abc_not_available">Zobrazení notace ABC zde není povoleno</string>
+    <string name="abc_popup_width">Šířka vyskakovacího okna</string>
+    <string name="abc_popup_width_info">Šířka vyskakovacího okna v procentech šířky obrazovky</string>
     <string name="abc_transpose_to_song">Automatická transpozice do tóniny písně</string>
     <string name="abc_transpose_to_song_info">Pokud je ve skladbě a v notaci abc nastavena tónina, aplikace se pokusí upravit výstup notace abc tak, aby odpovídal tónině skladby.</string>
     <string name="about">Asi</string>

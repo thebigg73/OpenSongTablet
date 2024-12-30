@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Inclure la tablature</string>
     <string name="abc_include_tab_info">Afficher la tablature de l\'instrument sous la partition musicale</string>
-    <string name="abc_inline_height">Hauteur abc en ligne (lignes de chanson commençant par ;#:)</string>
     <string name="abc_inline_text">Texte ABC en ligne</string>
     <string name="abc_inline_text_info">Copiez le code ci-dessus sur une seule ligne de notation ABC en ligne qui peut être collée dans les paroles de la chanson.</string>
+    <string name="abc_inline_width">Largeur de la portée de la notation ABC</string>
+    <string name="abc_inline_width_info">Définir une largeur de portée trop élevée entraînera une notation ABC très petite et réduira également les paroles des chansons lorsqu\'elles sont utilisées en ligne.</string>
+    <string name="abc_not_available">L\'affichage en notation ABC n\'est pas autorisé ici</string>
+    <string name="abc_popup_width">Largeur de la fenêtre contextuelle</string>
+    <string name="abc_popup_width_info">La largeur de la fenêtre contextuelle en pourcentage de la largeur de l\'écran</string>
     <string name="abc_transpose_to_song">Transposition automatique à la clé de la chanson</string>
     <string name="abc_transpose_to_song_info">Si une clé est définie dans la chanson et dans la notation abc, l\'application essaiera d\'ajuster la sortie de la notation abc pour qu\'elle corresponde à la clé de la chanson.</string>
     <string name="about">À propos</string>

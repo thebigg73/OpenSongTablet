@@ -26,6 +26,7 @@ public class ABCNotation {
     private final MainActivityInterface mainActivityInterface;
     private final String guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
     private int abcInlineWidth;
+    private final String inlineAbcLineIndicator = ";#:";
 
     public ABCNotation(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -523,6 +524,9 @@ public class ABCNotation {
     }
     public int getAbcInlineWidth() {
         return abcInlineWidth;
+    }
+    public String getInlineAbcLineIndicator() {
+        return inlineAbcLineIndicator;
     }
 
     // The setters

@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Fügen Sie Tabulatur hinzu</string>
     <string name="abc_include_tab_info">Instrumententabulatur unterhalb der Musikpartitur anzeigen</string>
-    <string name="abc_inline_height">Inline-ABC-Höhe (Liedzeilen beginnen mit ;#:)</string>
     <string name="abc_inline_text">Inline-ABC-Text</string>
     <string name="abc_inline_text_info">Kopieren Sie den obigen Code in eine einzelne Zeile der Inline-ABC-Notation, die in den Liedtext eingefügt werden kann</string>
+    <string name="abc_inline_width">Notenzeilenbreite der ABC-Notation</string>
+    <string name="abc_inline_width_info">Wenn Sie die Notenzeilenbreite zu hoch einstellen, wird die ABC-Notation sehr klein und die Songtexte werden bei Inline-Nutzung kleiner</string>
+    <string name="abc_not_available">Die ABC-Notationsansicht ist hier nicht zulässig</string>
+    <string name="abc_popup_width">Popup-Breite</string>
+    <string name="abc_popup_width_info">Die Breite des Popup-Fensters als Prozentsatz der Bildschirmbreite</string>
     <string name="abc_transpose_to_song">Automatische Transponierung in die Tonart des Songs</string>
     <string name="abc_transpose_to_song_info">Wenn im Song und in der abc-Notation eine Tonart festgelegt ist, versucht die App, die Ausgabe der abc-Notation an die Tonart des Songs anzupassen.</string>
     <string name="about">Über</string>

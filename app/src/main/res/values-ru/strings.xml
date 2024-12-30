@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Включить табулатуру</string>
     <string name="abc_include_tab_info">Показывать табулатуру инструментов под партитурой</string>
-    <string name="abc_inline_height">Встроенная высота abc (строки песни начинаются с ;#:)</string>
     <string name="abc_inline_text">Встроенный текст ABC</string>
     <string name="abc_inline_text_info">Скопируйте приведенный выше код в одну строку встроенной записи ABC, которую можно вставить в текст песни.</string>
+    <string name="abc_inline_width">Ширина нотоносца для обозначения ABC</string>
+    <string name="abc_inline_width_info">Установка слишком большой ширины нотоносца приведет к тому, что нотная запись abc станет очень маленькой, а также уменьшится текст песни при использовании в строке.</string>
+    <string name="abc_not_available">Просмотр обозначений ABC здесь не разрешен.</string>
+    <string name="abc_popup_width">Ширина всплывающего окна</string>
+    <string name="abc_popup_width_info">Ширина всплывающего окна в процентах от ширины экрана.</string>
     <string name="abc_transpose_to_song">Авто транспонирование в тональность</string>
     <string name="abc_transpose_to_song_info">Если тональность задана в песне и в нотации abc, приложение попытается настроить вывод нотации abc в соответствии с тональностью песни.</string>
     <string name="about">О программе</string>

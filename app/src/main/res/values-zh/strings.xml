@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">包括指法谱</string>
     <string name="abc_include_tab_info">在乐谱下方显示乐器指法谱</string>
-    <string name="abc_inline_height">内联 abc 高度（以 ;#: 开头的歌曲行）</string>
     <string name="abc_inline_text">内嵌 ABC 文本</string>
     <string name="abc_inline_text_info">将以上代码复制到一行内联 ABC 符号中，该符号可以粘贴到歌词中</string>
+    <string name="abc_inline_width">ABC 乐谱五线谱宽度</string>
+    <string name="abc_inline_width_info">将五线谱宽度设置得太高会导致 abc 表示法变得非常小，并且在内联使用时也会缩小任何歌词</string>
+    <string name="abc_not_available">此处不允许查看 ABC 表示法</string>
+    <string name="abc_popup_width">弹出宽度</string>
+    <string name="abc_popup_width_info">弹出窗口的宽度占屏幕宽度的百分比</string>
     <string name="abc_transpose_to_song">自动移调到乐曲键</string>
     <string name="abc_transpose_to_song_info">如果在歌曲和 abc 表示法中设置了键，应用程序将尝试调整 abc 表示法的输出以匹配歌曲键。</string>
     <string name="about">关于</string>

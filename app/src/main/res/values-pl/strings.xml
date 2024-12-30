@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Dołącz tabulaturę</string>
     <string name="abc_include_tab_info">Pokaż tabulaturę instrumentu pod partyturą</string>
-    <string name="abc_inline_height">Wysokość abc w wierszu (linie utworu zaczynające się od ;#:)</string>
     <string name="abc_inline_text">Wbudowany tekst ABC</string>
     <string name="abc_inline_text_info">Skopiuj powyższy kod do pojedynczego wiersza wbudowanego zapisu ABC, który można wkleić do tekstu utworu</string>
+    <string name="abc_inline_width">Szerokość pięciolinii zapisu ABC</string>
+    <string name="abc_inline_width_info">Ustawienie zbyt dużej szerokości pięciolinii spowoduje, że zapis abc stanie się bardzo mały, a także zmniejszy tekst piosenki, jeśli zostanie użyty w wierszu</string>
+    <string name="abc_not_available">Widok notacji ABC jest tutaj niedozwolony</string>
+    <string name="abc_popup_width">Szerokość wyskakującego okienka</string>
+    <string name="abc_popup_width_info">Szerokość wyskakującego okna jako procent szerokości ekranu</string>
     <string name="abc_transpose_to_song">Automatyczna transpozycja do tonacji piosenki</string>
     <string name="abc_transpose_to_song_info">Jeśli tonacja jest ustawiona w piosence i w notacji abc, aplikacja spróbuje dostosować wyjście notacji abc, aby pasowało do tonacji piosenki.</string>
     <string name="about">O aplikacji</string>

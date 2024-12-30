@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Includi tablature</string>
     <string name="abc_include_tab_info">Mostra l\'intavolatura dello strumento sotto lo spartito musicale</string>
-    <string name="abc_inline_height">Altezza abc in linea (righe di brani che iniziano con ;#:)</string>
     <string name="abc_inline_text">Testo ABC in linea</string>
     <string name="abc_inline_text_info">Copia il codice sopra in una singola riga di notazione ABC in linea che può essere incollata nel testo della canzone</string>
+    <string name="abc_inline_width">Larghezza del rigo della notazione ABC</string>
+    <string name="abc_inline_width_info">Impostare una larghezza del rigo troppo alta farà sì che la notazione abc diventi molto piccola e ridurrà anche il testo della canzone se usata in linea</string>
+    <string name="abc_not_available">La visualizzazione della notazione ABC non è consentita qui</string>
+    <string name="abc_popup_width">Larghezza popup</string>
+    <string name="abc_popup_width_info">La larghezza della finestra popup come percentuale della larghezza dello schermo</string>
     <string name="abc_transpose_to_song">Trasposizione automatica alla chiave del brano</string>
     <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
     <string name="about">Di</string>

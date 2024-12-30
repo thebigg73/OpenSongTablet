@@ -2296,7 +2296,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean isfinished = true;
             for (int x=0; x<countInlineAbcWebViews(); x++) {
                 InlineAbcWebView inlineAbcWebView = inlineAbcWebViews.get(x);
-                if (height > inlineAbcWebView.getWebViewHeight() && inlineAbcWebView.getWebViewItem() == webViewItem) {
+                if (height > 0 && inlineAbcWebView.getWebViewItem() == webViewItem) {
                     inlineAbcWebView.setWebViewMeasured(true);
                     inlineAbcWebView.setWebViewWidth(width);
                     inlineAbcWebView.setWebViewHeight(height);
@@ -2309,7 +2309,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Now pass the abcWebViewProperties to the performance fragment
                 if (performanceValid()) {
                     // All good, so sending to Performance Fragment after a short delay for final measurements
-                    mainLooper.postDelayed(() -> performanceFragment.abcWebViewsDrawn(),500);
+                    mainLooper.postDelayed(() -> performanceFragment.abcWebViewsDrawn(),200);
                 }
             }
         }

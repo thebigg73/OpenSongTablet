@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Sluit tablatuur in</string>
     <string name="abc_include_tab_info">Wys instrumenttabel onder die musiekpartituur</string>
-    <string name="abc_inline_height">Inlyn abc hoogte (liedjie reëls wat begin met ;#:)</string>
     <string name="abc_inline_text">Inlyn ABC-teks</string>
     <string name="abc_inline_text_info">Kopieer die bogenoemde kode in \'n enkele reël van inlyn ABC-notasie wat in die liedjie se lirieke geplak kan word</string>
+    <string name="abc_inline_width">ABC-notasie stafwydte</string>
+    <string name="abc_inline_width_info">As die notebalkwydte te hoog gestel word, sal die abc-notasie baie klein word en sal ook enige liedjie lirieke krimp wanneer dit inlyn gebruik word</string>
+    <string name="abc_not_available">ABC-notasie-aansig word nie hier toegelaat nie</string>
+    <string name="abc_popup_width">Pop-up breedte</string>
+    <string name="abc_popup_width_info">Die breedte van die opspringvenster as \'n persentasie van die skermwydte</string>
     <string name="abc_transpose_to_song">Transponeer outomaties na liedsleutel</string>
     <string name="abc_transpose_to_song_info">As \'n sleutel in die liedjie en in die abc-notasie gestel is, sal die toepassing probeer om die uitvoer van die abc-notasie aan te pas om by die liedjiesleutel te pas.</string>
     <string name="about">Oor</string>

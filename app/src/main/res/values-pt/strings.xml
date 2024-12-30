@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Incluir tablatura</string>
     <string name="abc_include_tab_info">Mostrar tablatura do instrumento abaixo da partitura musical</string>
-    <string name="abc_inline_height">Altura abc inline (linhas de música começando com ;#:)</string>
     <string name="abc_inline_text">Texto ABC embutido</string>
     <string name="abc_inline_text_info">Copie o código acima em uma única linha de notação ABC embutida que pode ser colada na letra da música</string>
+    <string name="abc_inline_width">Largura da pauta da notação ABC</string>
+    <string name="abc_inline_width_info">Definir a largura da pauta muito alta fará com que a notação abc fique muito pequena e também diminuirá qualquer letra de música quando usada em linha</string>
+    <string name="abc_not_available">A visualização da notação ABC não é permitida aqui</string>
+    <string name="abc_popup_width">Largura do pop-up</string>
+    <string name="abc_popup_width_info">A largura da janela pop-up como uma porcentagem da largura da tela</string>
     <string name="abc_transpose_to_song">Transposição automática para a tecla da música</string>
     <string name="abc_transpose_to_song_info">Se uma tecla for definida na música e na notação abc, o aplicativo tentará ajustar a saída da notação abc para corresponder à tecla da música.</string>
     <string name="about">Cerca de</string>

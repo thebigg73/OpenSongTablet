@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Tartalmazza a tabulatúrát</string>
     <string name="abc_include_tab_info">Mutasd a hangszer tablatúrát a kotta alatt</string>
-    <string name="abc_inline_height">Soron belüli abc magasság (;#:-val kezdődő dalsorok)</string>
     <string name="abc_inline_text">Inline ABC szöveg</string>
     <string name="abc_inline_text_info">Másolja a fenti kódot a soron belüli ABC jelölés egyetlen sorába, amelyet beilleszthet a dal szövegébe</string>
+    <string name="abc_inline_width">ABC jelölés rúd szélessége</string>
+    <string name="abc_inline_width_info">Ha túl nagyra állítja a bot szélességét, akkor az abc jelölés nagyon kicsi lesz, és a dalszövegeket is lecsökkenti, ha soron belül használják</string>
+    <string name="abc_not_available">Az ABC jelölés nézet itt nem engedélyezett</string>
+    <string name="abc_popup_width">Felugró ablak szélessége</string>
+    <string name="abc_popup_width_info">A felugró ablak szélessége a képernyő szélességének százalékában</string>
     <string name="abc_transpose_to_song">Automatikus transzponálás a dal kulcsára</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Ról ről</string>

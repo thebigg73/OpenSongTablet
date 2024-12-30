@@ -2,9 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Συμπεριλάβετε ταμπλατούρα</string>
     <string name="abc_include_tab_info">Εμφάνιση ταμπλατούρας οργάνων κάτω από την παρτιτούρα</string>
-    <string name="abc_inline_height">Ενσωματωμένο ύψος abc (σειρές τραγουδιών που ξεκινούν με ;#:)</string>
     <string name="abc_inline_text">Ενσωματωμένο κείμενο ABC</string>
     <string name="abc_inline_text_info">Αντιγράψτε τον παραπάνω κώδικα σε μια γραμμή ενσωματωμένης σημειογραφίας ABC που μπορεί να επικολληθεί στους στίχους του τραγουδιού</string>
+    <string name="abc_inline_width">Πλάτος στελέχους σημειογραφίας ABC</string>
+    <string name="abc_inline_width_info">Εάν ρυθμίσετε το πλάτος του προσωπικού πολύ ψηλά, ο συμβολισμός abc θα γίνει πολύ μικρός και θα συρρικνωθεί επίσης τυχόν στίχοι τραγουδιών όταν χρησιμοποιούνται ενσωματωμένα</string>
+    <string name="abc_not_available">Δεν επιτρέπεται η προβολή σημειογραφίας ABC εδώ</string>
+    <string name="abc_popup_width">Πλάτος αναδυόμενου παραθύρου</string>
+    <string name="abc_popup_width_info">Το πλάτος του αναδυόμενου παραθύρου ως ποσοστό του πλάτους της οθόνης</string>
     <string name="abc_transpose_to_song">Αυτόματη μεταφορά στο πλήκτρο τραγουδιού</string>
     <string name="abc_transpose_to_song_info">Εάν έχει οριστεί ένα πλήκτρο στο τραγούδι και στη σημειογραφία abc, η εφαρμογή θα προσπαθήσει να προσαρμόσει την έξοδο της σημειογραφίας abc ώστε να ταιριάζει με το πλήκτρο τραγουδιού.</string>
     <string name="about">Σχετικά με</string>
