@@ -113,6 +113,12 @@ public class MyZoomLayout extends FrameLayout {
         overScroller.notifyVerticalEdgeReached(0,maxScrollY,overShootY);
     }
 
+    public int getSetWidth() {
+        return viewWidth;
+    }
+    public int getSetHeight() {
+        return viewHeight;
+    }
     private void calculateMaxScrolls() {
         maxScrollX = Math.max(0,songWidth - viewWidth);
         maxScrollY = Math.max(0,songHeight - viewHeight);

@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.View;
@@ -21,12 +20,12 @@ public class ABCNotation {
     private final String TAG = "ABCNotation";
 
     private String songTitle, songKey, songAbc, songTimeSig, abcInstrumentTab;
-    private int songAbcTranspose, abcZoom;
+    private int songAbcTranspose;
     private float abcPopupWidth;
     private boolean isPopup, abcAutoTranspose, autoshowMusicScore, abcIncludeTab;
     private final MainActivityInterface mainActivityInterface;
     private final String guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
-    private int abcInlineWidth = 800, abcInlineHeight = 300;
+    private int abcInlineWidth;
 
     public ABCNotation(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -49,12 +48,10 @@ public class ABCNotation {
     public void getUpdatedPreferences() {
         abcAutoTranspose = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true);
         abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
-        abcZoom = mainActivityInterface.getPreferences().getMyPreferenceInt("abcZoom",2);
         autoshowMusicScore = mainActivityInterface.getPreferences().getMyPreferenceBoolean("autoshowMusicScore",false);
         abcIncludeTab = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcIncludeTab",false);
         abcInstrumentTab = mainActivityInterface.getPreferences().getMyPreferenceString("abcInstrumentTab","guitar");
-        abcInlineWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("abcInlineWidth",800);
-        abcInlineHeight = mainActivityInterface.getPreferences().getMyPreferenceInt("abcInlineHeight",140);
+        abcInlineWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("abcInlineWidth",480);
     }
 
     // This is set when a song is set for editing or displaying the Abc notation
@@ -81,13 +78,10 @@ public class ABCNotation {
         getABCTransposeFromSongKey();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     public void setWebView(WebView webView) {
         webView.post(new Runnable() {
             @Override
             public void run() {
-                webView.getSettings().getJavaScriptEnabled();
-                webView.getSettings().setJavaScriptEnabled(true);
                 webView.setInitialScale(1);
                 webView.getSettings().setDomStorageEnabled(true);
                 webView.getSettings().setLoadWithOverviewMode(true);
@@ -128,9 +122,6 @@ public class ABCNotation {
 
             // Set to view only
             webView.loadUrl("javascript:displayOnly();");
-
-            // We could have a split view/edit, but prefer just viewing in html
-            // webView.loadUrl("javascript:displayAndEdit();");
         }
     }
 
@@ -178,18 +169,17 @@ public class ABCNotation {
     private void updateContent(WebView webView) {
         String newContent;
         boolean isInline = false;
+        int webViewNum = 0;
         // Encode the abc text for passing to the webview
-        if (webView.getTag()!=null && webView.getTag().toString().startsWith("abc:")) {
-            try {
-                isInline = true;
-                String content = webView.getTag().toString().substring(4);
-                content = content.replace(";#:","");
-                content = content.replace("\\n","__NEWLINE__");
-                newContent = Uri.encode(content,"UTF-8").replace("'","&apos;");
-            } catch (Exception e) {
-                e.printStackTrace();
-                newContent = webView.getTag().toString().replace("abc:","");
-            }
+        if (webView.getTag()!=null) {
+            isInline = true;
+            InlineAbcWebViewTagObject inlineAbcWebViewTagObject = (InlineAbcWebViewTagObject) webView.getTag();
+            String content = inlineAbcWebViewTagObject.getAbc().substring(4);
+            content = content.replace(";#:", "");
+            content = content.replace("\\n", "__NEWLINE__");
+            newContent = Uri.encode(content, "UTF-8").replace("'", "&apos;");
+            webViewNum = inlineAbcWebViewTagObject.getWebViewNum();
+
         } else {
             try {
                 newContent = Uri.encode(songAbc,"UTF-8").replace("'","&apos;");
@@ -200,26 +190,30 @@ public class ABCNotation {
         }
 
         if (isInline) {
-            webView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+",1);",null);
-            webView.evaluateJavascript("javascript:setZoom(1);",null);
-            webView.evaluateJavascript("javascript:setHeight("+abcInlineHeight+");",null);
+            // Display for song view
+            webView.evaluateJavascript("javascript:setWebView("+webViewNum+");",null);
             webView.evaluateJavascript("javascript:setResponsive('resize');",null);
+            webView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
             webView.evaluateJavascript("javascript:setMainColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsTextColor())+"');",null);
             webView.evaluateJavascript("javascript:setChordColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsChordsColor())+"');",null);
             webView.evaluateJavascript("javascript:displayOnly();",null);
 
         } else if (isPopup) {
+            // PopUp ABC window
+            webView.evaluateJavascript("javascript:setWebView(0);",null);
             webView.evaluateJavascript("javascript:setResponsive('resize');",null);
+            webView.evaluateJavascript("javascript:setWidth("+(int)(abcInlineWidth * abcPopupWidth)+")",null);
             webView.evaluateJavascript("javascript:setMainColor('#000000');",null);
             webView.evaluateJavascript("javascript:setChordColor('#000000');",null);
             webView.evaluateJavascript("javascript:displayOnly();",null);
-            webView.loadUrl("javascript:setWidth("+(int)(mainActivityInterface.getDisplayMetrics()[0] *abcPopupWidth)+","+
-                    abcZoom+");");
+
         } else {
+            // ABC editor fragment
+            webView.evaluateJavascript("javascript:setWebView(0);",null);
             webView.evaluateJavascript("javascript:setResponsive('resize');",null);
+            webView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
             webView.evaluateJavascript("javascript:setMainColor('#000000');",null);
             webView.evaluateJavascript("javascript:setChordColor('#000000');",null);
-            webView.evaluateJavascript("javascript:setWidth("+mainActivityInterface.getDisplayMetrics()[0]+","+abcZoom+");",null);
             webView.evaluateJavascript("javascript:displayAndEdit();",null);
         }
         updateWebViewVariables(webView, newContent);
@@ -234,13 +228,6 @@ public class ABCNotation {
         webView.evaluateJavascript("javascript:setTuning('"+strings[6]+"','"+strings[5]+"','"+strings[4]+"','"+strings[3]+"','"+strings[2]+"','"+strings[1]+"');",null);
         webView.evaluateJavascript("javascript:setLabel('" + getAbcInstrumentLabelABCJS()+"');",null);
         webView.evaluateJavascript("javascript:initEditor()",null);
-    }
-
-    public void updateZoom(WebView webView) {
-        webView.post(() -> {
-            webView.evaluateJavascript("javascript:setZoom("+abcZoom+");",null);
-            webView.evaluateJavascript("javascript:initEditor()",null);
-        });
     }
 
     // Using the song key and abc key, decide an automatic transpose value
@@ -283,7 +270,6 @@ public class ABCNotation {
             }
         }
     }
-
 
     // This is used to gradually strip out extra info from the key line
     private String keybits(String keyline) {
@@ -413,9 +399,6 @@ public class ABCNotation {
     public float getAbcPopupWidth() {
         return abcPopupWidth;
     }
-    public int getAbcZoom() {
-        return abcZoom;
-    }
     public boolean getAutoshowMusicScore() {
         return autoshowMusicScore;
     }
@@ -541,9 +524,6 @@ public class ABCNotation {
     public int getAbcInlineWidth() {
         return abcInlineWidth;
     }
-    public int getAbcInlineHeight() {
-        return abcInlineHeight;
-    }
 
     // The setters
     // Update the string value for the songAbc (due to editing it in the MusicScoreFragment)
@@ -562,10 +542,6 @@ public class ABCNotation {
         this.abcPopupWidth = abcPopupWidth;
         mainActivityInterface.getPreferences().setMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
     }
-    public void setAbcZoom(int abcZoom) {
-        this.abcZoom = abcZoom;
-        mainActivityInterface.getPreferences().setMyPreferenceInt("abcZoom",abcZoom);
-    }
     public void setAutoshowMusicScore(boolean autoshowMusicScore) {
         this.autoshowMusicScore = autoshowMusicScore;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoshowMusicScore",autoshowMusicScore);
@@ -578,8 +554,8 @@ public class ABCNotation {
         this.abcInstrumentTab = abcInstrumentTab;
         mainActivityInterface.getPreferences().setMyPreferenceString("abcInstrumentTab",abcInstrumentTab);
     }
-    public void setAbcInlineHeight(int abcInlineHeight) {
-        this.abcInlineHeight = abcInlineHeight;
-        mainActivityInterface.getPreferences().setMyPreferenceInt("abcInlineHeight",abcInlineHeight);
+    public void setAbcInlineWidth(int abcInlineWidth) {
+        this.abcInlineWidth = abcInlineWidth;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("abcInlineWidth",abcInlineWidth);
     }
 }

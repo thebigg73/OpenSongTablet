@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
@@ -16,6 +15,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -112,14 +112,13 @@ public class ABCPopup {
         floatWindow.addView(closeButton);
 
         // Now the WebView for the music score
-        WebView webView = new WebView(c);
-        webView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        webView.setLayoutParams(new LinearLayout.LayoutParams((int)(mainActivityInterface.getDisplayMetrics()[0] *
+        InlineAbcWebView inlineAbcWebView = new InlineAbcWebView(c);
+        inlineAbcWebView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+        inlineAbcWebView.setLayoutParams(new LinearLayout.LayoutParams((int)(mainActivityInterface.getDisplayMetrics()[0] *
                 mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f)),
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        webView.getSettings().setJavaScriptEnabled(true);
-        mainActivityInterface.getAbcNotation().setWebView(webView);
-        floatWindow.addView(webView);
+        mainActivityInterface.getAbcNotation().setWebView(inlineAbcWebView);
+        floatWindow.addView(inlineAbcWebView);
         popupWindow.setContentView(floatWindow);
     }
 

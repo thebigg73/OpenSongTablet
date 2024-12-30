@@ -17,11 +17,6 @@
             android:orientation="vertical"
             android:layout_marginBottom="64dp">
 
-            <WebView
-                android:id="@+id/abcWebView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/abcText"
                 android:layout_width="match_parent"
@@ -30,6 +25,22 @@
                 android:hint="@string/music_score"
                 android:inputType="textMultiLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.InlineAbcWebView
+                android:id="@+id/abcWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/editABC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/save"
+                android:text="@string/save"
+                app:icon="@drawable/save"/>
+            <TableRow style="@style/DividerLine"/>
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/copyInlineAbc"
                 android:layout_width="match_parent"
@@ -37,6 +48,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/abc_inline_text"
                 android:hint="@string/abc_inline_text_info"/>
+            <TableRow style="@style/DividerLine"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/settingsAbcGlobal"
@@ -55,32 +67,24 @@
                 android:hint="@string/autoshow_musicscore_info" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/sizeSlider"
+                android:id="@+id/abcPopupWidth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/width"
+                android:text="@string/abc_popup_width"
+                app:infoText="@string/abc_popup_width_info"
                 android:valueFrom="50"
                 android:valueTo="100"
                 android:value="80"
                 app:adjustable="true"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/zoomSlider"
+                android:id="@+id/abcInlineWidth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/zoom_level"
-                android:valueFrom="1"
-                android:valueTo="4"
-                android:value="2"
-                app:adjustable="true"/>
-
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                android:id="@+id/abcInlineHeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/abc_inline_height"
-                android:valueFrom="50"
-                android:valueTo="500"
+                android:text="@string/abc_inline_width"
+                app:infoText="@string/abc_inline_width_info"
+                android:valueFrom="280"
+                android:valueTo="720"
                 app:stepSize="10"
                 app:adjustable="true"/>
             <TableRow style="@style/DividerLine"/>
@@ -126,7 +130,8 @@
                     android:background="@color/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
-                    android:text="6"/>
+                    android:fontFamily="monospace"
+                    tools:text="6" />
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/string5Tuning"
                     android:layout_width="0dp"
@@ -137,7 +142,8 @@
                     android:background="@color/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
-                    android:text="5"/>
+                    android:fontFamily="monospace"
+                    tools:text="5"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/string4Tuning"
                     android:layout_width="0dp"
@@ -148,7 +154,8 @@
                     android:background="@color/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
-                    android:text="4"/>
+                    android:fontFamily="monospace"
+                    tools:text="4"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/string3Tuning"
                     android:layout_width="0dp"
@@ -159,7 +166,8 @@
                     android:background="@color/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
-                    android:text="3"/>
+                    android:fontFamily="monospace"
+                    tools:text="3"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/string2Tuning"
                     android:layout_width="0dp"
@@ -170,7 +178,8 @@
                     android:background="@color/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
-                    android:text="2"/>
+                    android:fontFamily="monospace"
+                    tools:text="2,,"/>
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/string1Tuning"
                     android:layout_width="0dp"
@@ -181,7 +190,8 @@
                     android:background="@color/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
-                    android:text="1"/>
+                    android:fontFamily="monospace"
+                    tools:text="1"/>
             </LinearLayout>
             </LinearLayout>
             <TableRow style="@style/DividerLine"/>
@@ -228,17 +238,8 @@
                 android:layout_marginBottom="32dp"
                 app:textL="@string/override_none"
                 app:textC="@string/override_on"
-                app:textR="@string/override_off"
-                android:paddingBottom="128dp"/>
+                app:textR="@string/override_off"/>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/editABC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:contentDescription="@string/save"
-        android:text="@string/save"
-        app:icon="@drawable/save"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -100,6 +100,9 @@ public class ExportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsExportBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
+        mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);
+
         // Get a note of the currently loaded song so we can force it back onDestroy()
         currentSongFolder = mainActivityInterface.getSong().getFolder();
         currentSongFile = mainActivityInterface.getSong().getFilename();
@@ -982,7 +985,9 @@ public class ExportFragment extends Fragment {
             if ((pdf && isXML) || (screenShot && isXML) || png) {
                 // Create PDF song on the fly and only initiate share once done
                 tempSong = mainActivityInterface.getSong();
+                mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(true);
                 createOnTheFly(mainActivityInterface.getSong(),mainActivityInterface.getSong().getFilename()+".pdf");
+                mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
             } else {
                 // No pdf processing required, so initiate the share
                 initiateShare();
@@ -1276,7 +1281,9 @@ public class ExportFragment extends Fragment {
                         }
                     }
                     if (screenShot) {
+                        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(true);
                         createOnTheFlySectionsScreenshot(finalThisSong,pdfName);
+                        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
                     } else if (isPrint) {
                         // We have exported a song as a print layout
                         doPrint(false);
@@ -1528,10 +1535,13 @@ public class ExportFragment extends Fragment {
         // Remove any scaled header that exists
         myView.scaledHeader.removeAllViews();
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(true);
+        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(true);
         scaleInfo = mainActivityInterface.getProcessSong().addViewsToScreen(thisSong, sectionViewsScreenshot,
                 sectionViewWidthsScreenshot,sectionViewHeightsScreenshot,myView.scaledPageHolder,myView.scaledSongContent,myView.scaledHeader,availableWidth,availableHeight,
                 myView.scaledSongContent.getCol1(),myView.scaledSongContent.getCol2(),myView.scaledSongContent.getCol3(),false,getResources().getDisplayMetrics());
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);
+        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
+
     }
 
     private void updateProgressText(String text, int curr, int total) {

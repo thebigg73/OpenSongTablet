@@ -81,7 +81,7 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
-        Log.d(TAG,"action:"+action+"  longpress:"+isLongPress);
+        //Log.d(TAG,"action:"+action+"  longpress:"+isLongPress);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":

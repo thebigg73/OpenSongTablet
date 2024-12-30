@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -32,6 +33,7 @@ import com.garethevans.church.opensongtablet.abcnotation.ABCPopup;
 import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.customviews.RecyclerLayoutManager;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
@@ -73,6 +75,7 @@ public class PerformanceFragment extends Fragment {
     private boolean songChange;
     private boolean firstSongLoad = true;
     private boolean metronomeWasRunning;
+    private boolean abcWebViewsDrawn = false;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -83,7 +86,6 @@ public class PerformanceFragment extends Fragment {
     private RecyclerLayoutManager recyclerLayoutManager;
     private final Handler dealWithExtraStuffOnceSettledHandler = new Handler();
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
-
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
             not_allowed="", image_string="", nearby_large_file_string="", inline_set_string="";
     private int sendSongDelay = 0;
@@ -516,6 +518,10 @@ public class PerformanceFragment extends Fragment {
                     // Remove capo
                     mainActivityInterface.updateOnScreenInfo("capoHide");
 
+                    // Clear any reference to existing abc Webviews
+                    mainActivityInterface.resetInlineAbcWebViews();
+                    abcWebViewsDrawn = false;
+
                     // IV - Deal with stop of metronome if we have changed song
                     metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
                     if (songChange && metronomeWasRunning) {
@@ -533,7 +539,6 @@ public class PerformanceFragment extends Fragment {
 
                     // Stop the highlighter autohide if required
                     autoHideHighlighterHandler.removeCallbacks(autoHideHighlighterRunnable);
-
 
 
                     String keyInSet = null;
@@ -1091,7 +1096,9 @@ public class PerformanceFragment extends Fragment {
                         }
                     }
                     if (isReady) {
-                        songIsReadyToDisplay();
+                        if (mainActivityInterface.countInlineAbcWebViews()==0) {
+                            songIsReadyToDisplay();
+                        }
                     }
                 });
 
@@ -1109,13 +1116,32 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.getLayoutParams().height = availableHeight;
                 myView.songSheetTitle.setVisibility(View.VISIBLE);
 
+
                 // All views have now been drawn, so measure the arraylist views
                 for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
                     int width = mainActivityInterface.getSectionViews().get(x).getWidth();
                     int height = mainActivityInterface.getSectionViews().get(x).getHeight();
+                    if (mainActivityInterface.countInlineAbcWebViews()>0) {
+                        // Get the extra webView height for any webview in this section
+                        for (InlineAbcWebView inlineAbcWebView:mainActivityInterface.getInlineAbcWebViews()) {
+                            if (inlineAbcWebView.getWebViewContainingViewItem()==x && inlineAbcWebView.getWebViewHeight()>1) {
+                                int origWebViewHeight = inlineAbcWebView.getHeight();
+                                int heightOfWebView = inlineAbcWebView.getWebViewHeight();
+                                int widthOfWebView = inlineAbcWebView.getWebViewWidth();
+                                float scaleWebViewSize = (float)mainActivityInterface.getAbcNotation().getAbcInlineWidth()/(float)widthOfWebView;
+                                int heightToAdd = (int)((heightOfWebView*scaleWebViewSize) - origWebViewHeight);
+                                inlineAbcWebView.setLayoutParams(new LinearLayout.LayoutParams((int)(widthOfWebView*scaleWebViewSize),(int)(heightOfWebView*scaleWebViewSize)));
+                                height = height + heightToAdd;
+                            }
+                        }
+                    }
                     mainActivityInterface.addSectionSize(x, width, height);
                 }
 
+
+                /*
+                X: 12\nT: Cooley's\nR: reel\nM: 4/4\nL: 1/8\nK: Edor\n|:D2|"Em"EBBA B2 EB|B2 AB dBAG|"D"FDAD BDAD|FDAD dAFD|\n"Em"EBBA B2 EB|B2 AB defg|"D"afec dBAF|DEFD "Em"E2:|\n|:gf|"Em"eB B2 efge|eB B2 gedB|"D/H"A2 FA DAFA|A2 FA defg|\n"C"eB B2 eBgB|"Am"eB B2 defg|"D/H"afec dBAF|DEFD "Em"E2:|
+                 */
                 myView.testPane.removeAllViews();
 
                 // Decide which mode we are in to determine how the views are rendered
@@ -1780,10 +1806,18 @@ public class PerformanceFragment extends Fragment {
         }
     }
 
+    // We have abc webviews, so need to resize
+    public void abcWebViewsDrawn() {
+        if (!abcWebViewsDrawn) {
+            abcWebViewsDrawn = true;
+            mainActivityInterface.getMainHandler().post(this::songIsReadyToDisplay);
+        }
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.clear();
         super.onSaveInstanceState(outState);
     }
+
 }

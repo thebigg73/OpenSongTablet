@@ -80,20 +80,15 @@ public class MusicScoreFragment extends Fragment {
     }
     private void setViews() {
         mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView);
-        myView.abcWebView.post(() -> myView.abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp"));
-
+        myView.abcWebView.addJavascriptInterface(new ABCWebViewJSInterface() , "AndroidApp");
         myView.abcText.setText(mainActivityInterface.getAbcNotation().getSongAbc());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abcText);
         myView.abcText.setTextSize(18f);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.abcText,6);
 
-        myView.sizeSlider.setValue((int)(100*mainActivityInterface.getAbcNotation().getAbcPopupWidth()));
-        myView.sizeSlider.setLabelFormatter(value -> ((int)value)+"%");
-        myView.sizeSlider.setHint((int)myView.sizeSlider.getValue()+"%");
-
-        myView.zoomSlider.setValue(mainActivityInterface.getAbcNotation().getAbcZoom());
-        myView.zoomSlider.setHint(String.valueOf((int)myView.zoomSlider.getValue()));
-        myView.zoomSlider.setLabelFormatter(value -> String.valueOf((int)value));
+        myView.abcPopupWidth.setValue((int)(100*mainActivityInterface.getAbcNotation().getAbcPopupWidth()));
+        myView.abcPopupWidth.setLabelFormatter(value -> ((int)value)+"%");
+        myView.abcPopupWidth.setHint((int)myView.abcPopupWidth.getValue()+"%");
 
         if (getContext()!=null) {
             myView.abcIncludeTab.setChecked(mainActivityInterface.getAbcNotation().getAbcIncludeTab());
@@ -106,13 +101,13 @@ public class MusicScoreFragment extends Fragment {
             myView.tabLayout.setVisibility(mainActivityInterface.getAbcNotation().getAbcIncludeTab() ? View.VISIBLE : View.GONE);
         }
 
-        myView.abcInlineHeight.setValue(mainActivityInterface.getAbcNotation().getAbcInlineHeight());
-        myView.abcInlineHeight.setHint(String.valueOf(mainActivityInterface.getAbcNotation().getAbcInlineHeight()));
-        myView.abcInlineHeight.setLabelFormatter(new LabelFormatter() {
+        myView.abcInlineWidth.setValue(mainActivityInterface.getAbcNotation().getAbcInlineWidth());
+        myView.abcInlineWidth.setHint(mainActivityInterface.getAbcNotation().getAbcInlineWidth()+"px");
+        myView.abcInlineWidth.setLabelFormatter(new LabelFormatter() {
             @NonNull
             @Override
             public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
+                return (int)value+"px";
             }
         });
         myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
@@ -151,7 +146,6 @@ public class MusicScoreFragment extends Fragment {
                 clipboard.setPrimaryClip(clip);
             }
         });
-        myView.nestedScrollView.setExtendedFabToAnimate(myView.editABC);
         myView.abcText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -190,34 +184,27 @@ public class MusicScoreFragment extends Fragment {
         }));
 
         myView.autoshowMusicScore.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getAbcNotation().setAutoshowMusicScore(isChecked)));
-        myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> {
-            myView.sizeSlider.setHint((int) value + "%");
-            // Update the webview with the new values
-            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
-        });
-        myView.zoomSlider.addOnChangeListener((slider, value, fromUser) -> {
-            myView.zoomSlider.setHint(String.valueOf((int) value));
-            // Update the webview with the new values
-            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+        myView.abcPopupWidth.addOnChangeListener((slider, value, fromUser) -> {
+            myView.abcPopupWidth.setHint((int) value + "%");
             if (!fromUser) {
-                mainActivityInterface.getAbcNotation().setAbcZoom((int) value);
-                mainActivityInterface.getAbcNotation().updateZoom(myView.abcWebView);
+                mainActivityInterface.getAbcNotation().setAbcPopupWidth(value/100f);
             }
         });
-        myView.abcInlineHeight.addOnChangeListener((slider, value, fromUser) -> {
-            myView.abcInlineHeight.setHint(String.valueOf((int) value));
+        myView.abcInlineWidth.addOnChangeListener((slider, value, fromUser) -> {
+            myView.abcInlineWidth.setHint((int)value+"px");
             if (!fromUser) {
-                mainActivityInterface.getAbcNotation().setAbcInlineHeight((int)value);
+                mainActivityInterface.getAbcNotation().setAbcInlineWidth((int)value);
             }
+            // Update the webview with the new values
+            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
         });
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
             myView.transposeSlider.setHint(showPositiveValue((int)value));
             // Update the webview with the new values
             mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
         });
-        myView.sizeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
-        myView.zoomSlider.addOnSliderTouchListener(new MySliderTouchListener("abcZoom"));
-        myView.abcInlineHeight.addOnSliderTouchListener(new MySliderTouchListener("abcInlineHeight"));
+        myView.abcPopupWidth.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
+        myView.abcInlineWidth.addOnSliderTouchListener(new MySliderTouchListener("abcInlineWidth"));
         myView.transposeSlider.addOnSliderTouchListener(new MySliderTouchListener("abcTranspose"));
 
         // The music score override
@@ -276,35 +263,17 @@ public class MusicScoreFragment extends Fragment {
         public void onStopTrackingTouch(@NonNull Slider slider) {
             switch (prefName) {
                 case "abcPopupWidth":
-                    mainActivityInterface.getAbcNotation().setAbcPopupWidth(myView.sizeSlider.getValue()/100f);
-                    break;
-                case "abcZoom":
-                    mainActivityInterface.getAbcNotation().setAbcZoom((int)myView.zoomSlider.getValue());
-                    mainActivityInterface.getAbcNotation().updateZoom(myView.abcWebView);
+                    mainActivityInterface.getAbcNotation().setAbcPopupWidth(myView.abcPopupWidth.getValue()/100f);
                     break;
                 case "abcTranspose":
                     // This isn't a preference, but a song specific value
                     mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
                     mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
                     break;
-                case "abcInlineHeight":
-                    mainActivityInterface.getAbcNotation().setAbcInlineHeight((int)myView.abcInlineHeight.getValue());
+                case "abcInlineWidth":
+                    mainActivityInterface.getAbcNotation().setAbcInlineWidth((int)myView.abcInlineWidth.getValue());
                     break;
             }
-        }
-    }
-
-    // This bit is triggered from the Save button
-    private class JsInterface {
-        @JavascriptInterface
-        public void receiveString(String myJsString) {
-            Log.d(TAG, "string: " + myJsString);
-        }
-
-
-        @JavascriptInterface
-        public void checkKey(String abcText) {
-            Log.d(TAG,"checkKey called");
         }
     }
 
@@ -346,6 +315,25 @@ public class MusicScoreFragment extends Fragment {
         myView.string6Tuning.setVisibility((showString && !string6.isEmpty()) ? View.VISIBLE:View.GONE);
 
         myView.tabLayout.setVisibility(showString ? View.VISIBLE:View.GONE);
+    }
+
+    // This bit is triggered from the Save button
+    private class ABCWebViewJSInterface {
+        @JavascriptInterface
+        public void returnSize(int webViewItem, int width, int height) {
+            Log.d(TAG,"do nothing as not required in this view");
+        }
+
+        @JavascriptInterface
+        public void receiveString(String myJsString) {
+            Log.d(TAG, "string: " + myJsString);
+        }
+
+
+        @JavascriptInterface
+        public void checkKey(String abcText) {
+            Log.d(TAG,"checkKey called");
+        }
     }
 
     private void doSave() {

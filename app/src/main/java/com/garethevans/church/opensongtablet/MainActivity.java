@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -91,6 +92,7 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
@@ -347,6 +349,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info ="";
+
+    // For ABC webview size calculations
+    ArrayList<InlineAbcWebView> inlineAbcWebViews = new ArrayList<>();
 
     // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
     //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
@@ -775,6 +780,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         makePDF = getMakePDF();
         transpose = getTranspose();
         abcNotation = getAbcNotation();
+
         song = getSong();
         variations = getVariations();
 
@@ -2250,6 +2256,65 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.availableHeight = availableHeight;
     }
 
+    // Web view sizes for inline ABC notation
+    @Override
+    public void resetInlineAbcWebViews() {
+        inlineAbcWebViews.clear();
+        getProcessSong().resetInlineAbcWebViewCount();
+    }
+
+    @Override
+    public int countInlineAbcWebViews() {
+        return inlineAbcWebViews.size();
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public void assignInlineAbcWebView(int containingLinearLayoutPosition, InlineAbcWebView inlineAbcWebView) {
+        //ABCWebViewProperties abcWebView = new ABCWebViewProperties();
+        inlineAbcWebView.setContainingViewItem(containingLinearLayoutPosition);
+        inlineAbcWebView.setWebViewMeasured(false);
+        //abcWebView.setContainingViewItem(containingLinearLayoutPosition);
+        int newPosition = inlineAbcWebViews.size();
+        inlineAbcWebView.setWebViewItem(newPosition);
+        inlineAbcWebView.setWebViewHeight(-1);
+        inlineAbcWebView.getSettings().setJavaScriptEnabled(true);
+        inlineAbcWebView.addJavascriptInterface(new ABCWebViewJSInterface(), "AndroidApp");
+        //abcWebView.setWebView(webView);
+        inlineAbcWebViews.add(inlineAbcWebView);
+    }
+
+    @Override
+    public ArrayList<InlineAbcWebView> getInlineAbcWebViews() {
+        return inlineAbcWebViews;
+    }
+
+    // This bit is triggered from the Save button
+    private class ABCWebViewJSInterface {
+        @JavascriptInterface
+        public void returnSize(int webViewItem, int width, int height) {
+            boolean isfinished = true;
+            for (int x=0; x<countInlineAbcWebViews(); x++) {
+                InlineAbcWebView inlineAbcWebView = inlineAbcWebViews.get(x);
+                if (height > inlineAbcWebView.getWebViewHeight() && inlineAbcWebView.getWebViewItem() == webViewItem) {
+                    inlineAbcWebView.setWebViewMeasured(true);
+                    inlineAbcWebView.setWebViewWidth(width);
+                    inlineAbcWebView.setWebViewHeight(height);
+                }
+                if (inlineAbcWebView.getWebViewHeight()<=1 || !inlineAbcWebView.getWebViewMeasured()) {
+                    isfinished = false;
+                }
+            }
+            if (isfinished) {
+                // Now pass the abcWebViewProperties to the performance fragment
+                if (performanceValid()) {
+                    // All good, so sending to Performance Fragment after a short delay for final measurements
+                    mainLooper.postDelayed(() -> performanceFragment.abcWebViewsDrawn(),500);
+                }
+            }
+        }
+    }
+
     @Override
     public void chooseMenu(boolean showSetMenu) {
         this.showSetMenu = showSetMenu;
@@ -2638,17 +2703,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 pedalActions.commonEventUp(-1, note);
             } else if (actionLong && !settingsOpen) {
                 pedalActions.commonEventLong(-1, note);
-            }
-        }
-    }
-
-    @Override
-    public void midiStartStopReceived(boolean start) {
-        if (beatBuddy.getMetronomeSyncWithBeatBuddy() && midi.getMidiDevice()!=null) {
-            if (start && metronome.metronomeValid() && !metronome.getIsRunning()) {
-                metronome.startMetronome();
-            } else if (!start) {
-                metronome.stopMetronome();
             }
         }
     }

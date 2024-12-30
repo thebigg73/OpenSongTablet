@@ -30,7 +30,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,6 +43,8 @@ import androidx.annotation.RequiresApi;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.abcnotation.InlineAbcWebViewTagObject;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -91,6 +92,7 @@ public class ProcessSong {
     private boolean multilineSong;
     private boolean forceColumns;
     private boolean makingScaledScreenShot;
+    private boolean makingImageOrScreenShot;
     private boolean pdfPrinting;
     private boolean forceSinglePagePDF;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha, lineSpacing;
@@ -105,6 +107,7 @@ public class ProcessSong {
     private StringBuilder htmlLyrics = new StringBuilder();
     private final String abc_on_override = "abc_on", abc_off_override = "abc_off",
             sticky_on_override = "sticky_on", sticky_off_override="sticky_off";
+    private int webViewCount = 0;
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -1823,13 +1826,20 @@ public class ProcessSong {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private WebView inlineABC(String string) {
+    private InlineAbcWebView inlineABC(String string) {
         // Now the WebView for the music score
-        WebView webView = new WebView(c);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setTag("abc:"+string);
+        InlineAbcWebView webView = new InlineAbcWebView(c);
+        InlineAbcWebViewTagObject inlineAbcWebViewTagObject = new InlineAbcWebViewTagObject();
+        inlineAbcWebViewTagObject.setWebViewNum(webViewCount);
+        inlineAbcWebViewTagObject.setAbc("abc:"+string);
+        webView.setTag(inlineAbcWebViewTagObject);
+        webViewCount++;
         mainActivityInterface.getAbcNotation().setWebView(webView);
         return webView;
+    }
+
+    public void resetInlineAbcWebViewCount() {
+        webViewCount = 0;
     }
 
     private TextView lineText(Song thisSong, String linetype,
@@ -2370,13 +2380,23 @@ public class ProcessSong {
                                 }
                             } else if (!(clearedCurlyText && line.trim().isEmpty())) {
                                 if (line.startsWith(abcIdentifier)) {
-                                    // This is an inline ABC view
-                                    WebView wv = inlineABC(line);
-                                    wv.setBackgroundColor(overallBackgroundColor);
-                                    wv.setPadding(0,0,0,0);
-                                    linearLayout.addView(wv);
-                                    wv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,mainActivityInterface.getAbcNotation().getAbcInlineHeight()));
-
+                                    if ((!presentation || performancePresentation) && !asPDF && !makingImageOrScreenShot) {
+                                        // This is an inline ABC view
+                                        InlineAbcWebView wv = inlineABC(line);
+                                        wv.setBackgroundColor(overallBackgroundColor);
+                                        wv.setPadding(0, 0, 0, 0);
+                                        linearLayout.addView(wv);
+                                        wv.setLayoutParams(new LinearLayout.LayoutParams(mainActivityInterface.getAbcNotation().getAbcInlineWidth(), LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        mainActivityInterface.assignInlineAbcWebView(sect,wv);
+                                    } else {
+                                        TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface,
+                                                size, textColor,
+                                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
+                                        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        tv.setBackgroundColor(backgroundColor);
+                                        linearLayout.addView(tv);
+                                    }
                                 } else if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
@@ -2659,6 +2679,10 @@ public class ProcessSong {
 
     public void setMakingScaledScreenShot(boolean makingScaledScreenShot) {
         this.makingScaledScreenShot = makingScaledScreenShot;
+    }
+
+    public void setMakingImageOrScreenShot(boolean makingImageOrScreenShot) {
+        this.makingImageOrScreenShot = makingImageOrScreenShot;
     }
 
     private void scaleView(LinearLayout innerColumn, float scaleSize) {

@@ -35,6 +35,7 @@ import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
@@ -136,7 +137,6 @@ public interface MainActivityInterface {
 
     // Metronome
     Metronome getMetronome();
-    void midiStartStopReceived(boolean start);
 
     // Pads
     Pad getPad();
@@ -302,6 +302,11 @@ public interface MainActivityInterface {
 
     // ABC Notation
     ABCNotation getAbcNotation();
+    void resetInlineAbcWebViews();
+    void assignInlineAbcWebView(int containingLinearLayoutPosition, InlineAbcWebView webView);
+    int countInlineAbcWebViews();
+    ArrayList<InlineAbcWebView> getInlineAbcWebViews();
+
     // Highlighter notes
     DrawNotes getDrawNotes();
     void setDrawNotes(DrawNotes view);

@@ -12,21 +12,23 @@
 :root {
   --main-color: #000000;
   --main-chord-color: #000000;
-  --main-size-width: 100%
-  --main-size-height: 100%
+  --main-size-width: 1px;
+  --main-size-height: 1px;
+  --main-font-size: 18pt;
 }
 
 svg {
     fill: var(--main-color);
     stroke: var(--main-color);
     }
+
 .abcjs-chord {
         fill: var(--main-chord-color);
         stroke: var(--main-chord-color);
     }
 
 #warnings {
-    font-size: 32pt;
+    font-size: var(--main-font-size);
 }
 
 #top {
@@ -34,17 +36,17 @@ svg {
     right: 0px;
     margin: 0px 0px;
     width: var(--main-size-width);
-    height: var(--main-size-height);
+    height: 1px;
 }
 
 #abc {
   display: visible;
   width: var(--main-size-width);
-  height: var(--main-size-height);
+  height: 1px;
   left: 0px;
   right: 0px;
   margin: 0px 0px;
-  font-size: 24pt;
+  font-size: var(--main-font-size);
   outline: none;
   border: none 0px;
   overflow: scroll;
@@ -53,10 +55,10 @@ svg {
     <script type="text/javascript">
         // Get the root element
         var root = document.querySelector(':root');
+        var whichView = -1;
         var editmode = false;
         var s = "";
         var w = 720;
-        var z = 2;
         var t = 0;
         var my_hideTab = false;
         var my_instrument = "guitar";
@@ -75,6 +77,8 @@ svg {
         var resp = "resize";
         var defaultoptions = {};
         var midioptions = {};
+        var reported = false;
+        var padding = 4;
 
         function setEditMode(mode) {
             editmode = mode;
@@ -175,30 +179,39 @@ svg {
             document.getElementById("abc").style.display = "none";
         }
 
-        function setWidth(wd,zoom) {
+        function setWidth(wd) {
             w = wd;
-            z = zoom;
-            document.getElementById("top").style.width = w+"px";
-            document.getElementById("top").style.height = "100%";
-            document.querySelector(':root').style.setProperty('--main-size-width', wd);
-            document.querySelector(':root').style.setProperty('--main-size-height', "100%");
+            document.getElementById("top").style.width = (wd)+"px";
+            document.getElementById("abc").style.width = (wd)+"px";
+            document.querySelector(':root').style.setProperty('--main-size-width', (wd)+"px");
         }
 
-        function setHeight(hd) {
-            document.getElementById("top").style.height = hd+"px";
-            document.querySelector(':root').style.setProperty('--main-size-height', hd);
+        function setWebView(whichWebView) {
+            whichView = whichWebView;
         }
 
-        function setZoom(zoom) {
-            z = zoom;
+        var ro = new ResizeObserver( entries => {
+            for (let entry of entries) {
+                var width = entry.contentRect.width;
+                var height = entry.contentRect.height;
+                if (height>1 && !reported) {
+                    reported = true;
+                    AndroidApp.returnSize(whichView,width,height+padding);
+                }
+            }
+        });
+
+        function getMyScrollHeight() {
+            reported = false;
+            ro.observe(document.getElementById('paper'));
         }
 
         function updateOptions() {
-            defaultoptions = {paddingtop:0, paddingbottom:4, paddingright:4, paddingleft:0,
-                                    staffwidth: w/z, responsive: resp, add_classes:true,
+            defaultoptions = {paddingtop:0, paddingbottom:padding, paddingright:0, paddingleft:0,
+                                    staffwidth: w, add_classes:true, responsive: 'resize',
                                     foregroundColor: maincolor,
-                                    viewportHorizontal: false, viewportVertical: true,
-                                    scrollHorizontal:true, scrollVertical:true,
+                                    viewportHorizontal: true, viewportVertical: true,
+                                    scrollHorizontal:false, scrollVertical:false,
                                     visualTranspose: t,
                                     format:{tablabelfont: "Arial 10", gchordfont: "Arial 12"}};
             midioptions = {generate_midi: false, midi_id:"midi", midi_download_id: "midi-download",
@@ -209,29 +222,28 @@ svg {
 
         function initEditor() {
             updateOptions();
+            getMyScrollHeight();
             if (my_hideTab) {
                 // We just want the score
-                let text = "";
-                for (let x in defaultoptions) {
-                    text += defaultoptions[x] + " ";
-                };
                 new ABCJS.Editor("abc", {paper_id: "paper", warnings_id:"warnings", abcjsParams: defaultoptions, midioptions});
             } else {
                 // Decide how many strings we are using
+                var taboptions;
                 if (strings_6) {
-                    var taboptions = {tablature: [{instrument: my_instrument, label: my_label,
+                    taboptions = {tablature: [{instrument: my_instrument, label: my_label,
                                     tuning: [s6,s5,s4,s3,s2,s1]}]};
                 } else if (strings_5) {
-                    var taboptions = {tablature: [{instrument: my_instrument, label: my_label,
+                    taboptions = {tablature: [{instrument: my_instrument, label: my_label,
                                     tuning: [s5,s4,s3,s2,s1]}]};
                 } else {
-                    var taboptions = {tablature: [{instrument: my_instrument, label: my_label,
+                    taboptions = {tablature: [{instrument: my_instrument, label: my_label,
                                     tuning: [s4,s3,s2,s1]}]};
                 }
                 var myoptions = {...defaultoptions, ...taboptions};
                 new ABCJS.Editor("abc", {paper_id: "paper", warnings_id:"warnings", abcjsParams: myoptions, midioptions});
             }
 
+            // Update the colours to match our preferences
             document.getElementById("paper").querySelectorAll('.abcjs-chord').forEach((el) => {
                 if (el.getAttribute("fill")) {
                     el.setAttribute("fill", maincolor);
@@ -240,9 +252,9 @@ svg {
                     el.setAttribute("stroke", maincolor);
                 }
             });
+
         }
 
-        window.addEventListener("load", initEditor, false);
     </script>
 </head>
 <body>
