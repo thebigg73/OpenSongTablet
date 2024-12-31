@@ -520,6 +520,7 @@ public class PerformanceFragment extends Fragment {
 
                     // Clear any reference to existing abc Webviews
                     mainActivityInterface.resetInlineAbcWebViews();
+                    mainActivityInterface.resetInlineAbcWebViewsSecondary();
                     abcWebViewsDrawn = false;
 
                     // IV - Deal with stop of metronome if we have changed song
@@ -1131,6 +1132,7 @@ public class PerformanceFragment extends Fragment {
                                 float scaleWebViewSize = (float)mainActivityInterface.getAbcNotation().getAbcInlineWidth()/(float)widthOfWebView;
                                 int heightToAdd = (int)((heightOfWebView*scaleWebViewSize) - origWebViewHeight);
                                 inlineAbcWebView.setLayoutParams(new LinearLayout.LayoutParams((int)(widthOfWebView*scaleWebViewSize),(int)(heightOfWebView*scaleWebViewSize)));
+                                //mainActivityInterface.getAbcNotation().convertWebViewToBitmap(inlineAbcWebView);
                                 height = height + heightToAdd;
                             }
                         }
@@ -1807,7 +1809,8 @@ public class PerformanceFragment extends Fragment {
     }
 
     // We have abc webviews, so need to resize
-    public void abcWebViewsDrawn() {
+    public void inlineAbcWebViewsDrawn() {
+        Log.d(TAG,"inlineAbcWebViewsDrawn()");
         if (!abcWebViewsDrawn) {
             abcWebViewsDrawn = true;
             mainActivityInterface.getMainHandler().post(this::songIsReadyToDisplay);

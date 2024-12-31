@@ -108,6 +108,7 @@ public class ProcessSong {
     private final String abc_on_override = "abc_on", abc_off_override = "abc_off",
             sticky_on_override = "sticky_on", sticky_off_override="sticky_off";
     private int webViewCount = 0;
+    private int webViewCountSecondary = 0;
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -1826,20 +1827,31 @@ public class ProcessSong {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private InlineAbcWebView inlineABC(String string) {
+    private InlineAbcWebView inlineABC(String string, boolean presentation) {
         // Now the WebView for the music score
-        InlineAbcWebView webView = new InlineAbcWebView(c);
+        InlineAbcWebView inlineAbcWebView = new InlineAbcWebView(c);
         InlineAbcWebViewTagObject inlineAbcWebViewTagObject = new InlineAbcWebViewTagObject();
-        inlineAbcWebViewTagObject.setWebViewNum(webViewCount);
         inlineAbcWebViewTagObject.setAbc("abc:"+string);
-        webView.setTag(inlineAbcWebViewTagObject);
-        webViewCount++;
-        mainActivityInterface.getAbcNotation().setWebView(webView);
-        return webView;
+        inlineAbcWebViewTagObject.setIsForSecondary(presentation);
+        inlineAbcWebView.setTag(inlineAbcWebViewTagObject);
+
+        if (presentation) {
+            inlineAbcWebViewTagObject.setWebViewNum(webViewCountSecondary);
+            webViewCountSecondary++;
+        } else {
+            inlineAbcWebViewTagObject.setWebViewNum(webViewCount);
+            webViewCount++;
+        }
+
+        mainActivityInterface.getAbcNotation().setWebView(inlineAbcWebView);
+        return inlineAbcWebView;
     }
 
     public void resetInlineAbcWebViewCount() {
         webViewCount = 0;
+    }
+    public void resetInlineAbcWebViewCountSecondary() {
+        webViewCountSecondary = 0;
     }
 
     private TextView lineText(Song thisSong, String linetype,
@@ -1886,7 +1898,9 @@ public class ProcessSong {
             } else {
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
-                if (linetype.equals("tab")) {
+                if (linetype.equals("comment")) {
+                    htmlLyrics.append("<p>\n<div class=\"comment\">").append(str).append("</div>\n");
+                } else if (linetype.equals("tab")) {
                     htmlLyrics.append("<p>\n<div class=\"mono\">").append(str).append("</div>\n");
                 } else {
                     htmlLyrics.append("<p>\n<div class=\"heading\">").append(str).append("</div>\n");
@@ -1897,12 +1911,17 @@ public class ProcessSong {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
         }
-
         return textView;
     }
 
+    // TODO move to top and reset on song load from webview
+    int abcID = 0;
     public String lineTextHTML(Song thisSong, String linetype,
                                String string) {
+
+        if (string.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
+            linetype = "abc";
+        }
 
         StringBuilder text = new StringBuilder();
 
@@ -1918,8 +1937,12 @@ public class ProcessSong {
                 str = str.replaceAll("[|_]", "&nbsp;");
                 text.append("<div class=\"lyric\">").append(str).append("</div>\n");
             } else {
-                if (linetype.equals("tab")) {
+                if (linetype.equals("comment")) {
+                    htmlLyrics.append("<p>\n<div class=\"comment\">").append(str).append("</div>\n");
+                } else if (linetype.equals("tab")) {
                     text.append("<p>\n<div class=\"mono\">").append(str).append("</div>\n");
+                } else if (linetype.equals("abc")) {
+                    text.append(getInlineAbcAsInlineHTML(str));
                 } else {
                     text.append("<p>\n<div class=\"heading\">\n").append(str).append("</div>\n");
                 }
@@ -1928,6 +1951,19 @@ public class ProcessSong {
         return text.toString();
     }
 
+    private String getInlineAbcAsInlineHTML(String line) {
+        line = line.replace("&nbsp;"," ");
+        line = line.replace("\\n ","\\n");
+        line = line.replace("\"","&quot;");
+        line = line.replace("\\&quot;","&quot;");
+        line = line.replace("&quot;","\\\"");
+        String abcJS = "<p>\n<div " +
+                "id=\""+abcID+"\"></div>\n<script>ABCJS.renderAbc(\""+abcID+"\", \"" +
+                line + "\", {paddingtop:0, paddingbottom:0, paddingright:0, paddingleft:0,staffwidth:"+
+                mainActivityInterface.getAbcNotation().getAbcInlineWidth()+", responsive: 'resize'});</script>";
+        abcID++;
+        return abcJS;
+    }
     public String fixExcessSpaces(String str) {
         if (trimWordSpacing) {
             // Encode new lines as something else first
@@ -2380,23 +2416,24 @@ public class ProcessSong {
                                 }
                             } else if (!(clearedCurlyText && line.trim().isEmpty())) {
                                 if (line.startsWith(abcIdentifier)) {
-                                    if ((!presentation || performancePresentation) && !asPDF && !makingImageOrScreenShot) {
+                                    if (!presentation && !performancePresentation) {
                                         // This is an inline ABC view
-                                        InlineAbcWebView wv = inlineABC(line);
+                                        InlineAbcWebView wv = inlineABC(line, presentation);
                                         wv.setBackgroundColor(overallBackgroundColor);
                                         wv.setPadding(0, 0, 0, 0);
                                         linearLayout.addView(wv);
                                         wv.setLayoutParams(new LinearLayout.LayoutParams(mainActivityInterface.getAbcNotation().getAbcInlineWidth(), LinearLayout.LayoutParams.WRAP_CONTENT));
-                                        mainActivityInterface.assignInlineAbcWebView(sect,wv);
+                                        mainActivityInterface.assignInlineAbcWebView(sect, wv, presentation);
                                     } else {
-                                        TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface,
-                                                size, textColor,
+                                        // I have tried to get ABC notation working elsewhere, but only 1 view seems to render
+                                        // This applies to PDF export and secondary display
+                                        TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
                                                 mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
-                                        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                        tv.setBackgroundColor(backgroundColor);
+                                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
+                                                true,isChorusBold);
                                         linearLayout.addView(tv);
                                     }
+
                                 } else if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
@@ -3497,11 +3534,14 @@ public class ProcessSong {
         if (v!=null) {
             try {
                 if (v.getParent() !=null) {
-                    ((LinearLayout) v.getParent()).removeView(v);
+                    if (v.getParent() instanceof android.widget.LinearLayout || v.getParent() instanceof LinearLayout) {
+                        ((LinearLayout) v.getParent()).removeView(v);
+                    } else if (v.getParent() instanceof android.widget.RelativeLayout || v.getParent() instanceof RelativeLayout) {
+                        ((RelativeLayout) v.getParent()).removeView(v);
+                    }
                 }
                 return true;
             } catch (Exception e) {
-                e.printStackTrace();
                 return false;
             }
         }

@@ -34,8 +34,9 @@ public class WebServer extends NanoHTTPD {
     private final String nochords = "nochords/", songmenu = "songmenu/", songitem = "songitem/",
             setmenu = "setmenu/", setitem = "setitem/", hostsong = "hostsong/";
     private String ip;
-    private boolean runWebServer, allowWebNavigation;
+    private boolean runWebServer, allowWebNavigation, hasAbc;
     private final String localFileSplit = ":____:";
+    private String abcJSFromAsset;
 
     // Web server instantiation and closure
     public WebServer() {
@@ -45,6 +46,13 @@ public class WebServer extends NanoHTTPD {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         getUpdatedPreferences();
+        abcJSFromAsset = "";
+        try {
+            InputStream inputStream = c.getAssets().open("ABC/abcjs-basic-min.js");
+            abcJSFromAsset = "\n" + mainActivityInterface.getStorageAccess().readTextFileToString(inputStream) + "\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // If we change load in a profile, this is called
@@ -416,6 +424,8 @@ public class WebServer extends NanoHTTPD {
         // IV - Initialise transpose capo key  - might be needed
         mainActivityInterface.getTranspose().capoKeyTranspose(songForHTML);
 
+        hasAbc = songForHTML.getLyrics().contains(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator());
+
         String imgPDFSong = "";
         String fileExtension = songForHTML.getFilename().toLowerCase();
         if (fileExtension.contains(".")) {
@@ -496,6 +506,7 @@ public class WebServer extends NanoHTTPD {
                 getResizeJS() +
                 getGoToSongJS() +
                 getNavigateJS() +
+                getAbcJSIfRequired() +
                 "</script>\n" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" id=\"viewport-meta\">\n" +
                 "</head>\n" +
@@ -508,7 +519,13 @@ public class WebServer extends NanoHTTPD {
                 "</html>";
     }
 
-
+    private String getAbcJSIfRequired() {
+        if (hasAbc) {
+            return abcJSFromAsset;
+        } else {
+            return "";
+        }
+    }
     // Repeatable bits of code to save on duplication
     private String getHTMLFontImports() {
         // This prepares the import code for the top of the html file that locates the fonts from Google
@@ -671,7 +688,6 @@ public class WebServer extends NanoHTTPD {
                 "  window.addEventListener(\"hashchange\", offsetAnchor);\n" +
                 "  window.setTimeout(offsetAnchor, 1); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).\n\n";
     }
-
 
     private String getGoToSongJS() {
         return  "  function getSong() {\n" +

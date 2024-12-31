@@ -25,7 +25,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.JavascriptInterface;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -352,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // For ABC webview size calculations
     ArrayList<InlineAbcWebView> inlineAbcWebViews = new ArrayList<>();
+    ArrayList<InlineAbcWebView> inlineAbcWebViewsSecondary = new ArrayList<>();
 
     // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
     //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
@@ -2259,8 +2259,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Web view sizes for inline ABC notation
     @Override
     public void resetInlineAbcWebViews() {
-        inlineAbcWebViews.clear();
+        inlineAbcWebViews = null;
+        inlineAbcWebViews = new ArrayList<>();
         getProcessSong().resetInlineAbcWebViewCount();
+    }
+    @Override
+    public void resetInlineAbcWebViewsSecondary() {
+        inlineAbcWebViewsSecondary = null;
+        inlineAbcWebViewsSecondary = new ArrayList<>();
+        getProcessSong().resetInlineAbcWebViewCountSecondary();
+        if (secondaryDisplays != null) {
+            for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
+                secondaryDisplay.setInlineAbcWebViewsDrawnSecondary(false);
+            }
+        }
     }
 
     @Override
@@ -2268,51 +2280,40 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return inlineAbcWebViews.size();
     }
 
+    @Override
+    public int countInlineAbcWebViewsSecondary() {
+        return inlineAbcWebViewsSecondary.size();
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public void assignInlineAbcWebView(int containingLinearLayoutPosition, InlineAbcWebView inlineAbcWebView) {
-        //ABCWebViewProperties abcWebView = new ABCWebViewProperties();
+    public void assignInlineAbcWebView(int containingLinearLayoutPosition,
+                                       InlineAbcWebView inlineAbcWebView, boolean presentation) {
         inlineAbcWebView.setContainingViewItem(containingLinearLayoutPosition);
         inlineAbcWebView.setWebViewMeasured(false);
-        //abcWebView.setContainingViewItem(containingLinearLayoutPosition);
-        int newPosition = inlineAbcWebViews.size();
-        inlineAbcWebView.setWebViewItem(newPosition);
         inlineAbcWebView.setWebViewHeight(-1);
+        inlineAbcWebView.setIsForPresentation(presentation);
         inlineAbcWebView.getSettings().setJavaScriptEnabled(true);
-        inlineAbcWebView.addJavascriptInterface(new ABCWebViewJSInterface(), "AndroidApp");
-        //abcWebView.setWebView(webView);
-        inlineAbcWebViews.add(inlineAbcWebView);
+        if (presentation) {
+            int newPosition = inlineAbcWebViewsSecondary.size();
+            inlineAbcWebView.setWebViewItem(newPosition);
+            inlineAbcWebViewsSecondary.add(inlineAbcWebView);
+        } else {
+            int newPosition = inlineAbcWebViews.size();
+            inlineAbcWebView.setWebViewItem(newPosition);
+            inlineAbcWebViews.add(inlineAbcWebView);
+        }
     }
+
 
     @Override
     public ArrayList<InlineAbcWebView> getInlineAbcWebViews() {
         return inlineAbcWebViews;
     }
 
-    // This bit is triggered from the Save button
-    private class ABCWebViewJSInterface {
-        @JavascriptInterface
-        public void returnSize(int webViewItem, int width, int height) {
-            boolean isfinished = true;
-            for (int x=0; x<countInlineAbcWebViews(); x++) {
-                InlineAbcWebView inlineAbcWebView = inlineAbcWebViews.get(x);
-                if (height > 0 && inlineAbcWebView.getWebViewItem() == webViewItem) {
-                    inlineAbcWebView.setWebViewMeasured(true);
-                    inlineAbcWebView.setWebViewWidth(width);
-                    inlineAbcWebView.setWebViewHeight(height);
-                }
-                if (inlineAbcWebView.getWebViewHeight()<=1 || !inlineAbcWebView.getWebViewMeasured()) {
-                    isfinished = false;
-                }
-            }
-            if (isfinished) {
-                // Now pass the abcWebViewProperties to the performance fragment
-                if (performanceValid()) {
-                    // All good, so sending to Performance Fragment after a short delay for final measurements
-                    mainLooper.postDelayed(() -> performanceFragment.abcWebViewsDrawn(),200);
-                }
-            }
-        }
+    @Override
+    public ArrayList<InlineAbcWebView> getInlineAbcWebViewsSecondary() {
+        return inlineAbcWebViewsSecondary;
     }
 
     @Override
@@ -2482,6 +2483,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private boolean performanceValid() {
         return performanceFragment != null && !whichMode.equals(presenter) && !settingsOpen;
+    }
+
+    @Override
+    public boolean getPerformanceValid() {
+        return performanceValid();
+    }
+
+    @Override
+    public PerformanceFragment getPerformanceFragment() {
+        return performanceFragment;
     }
 
     private boolean presenterValid() {
@@ -4771,6 +4782,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean getIsSecondaryDisplaying() {
         return secondaryDisplays != null && secondaryDisplays.length > 0;
+    }
+
+    @Override
+    public SecondaryDisplay[] getSecondaryDisplays() {
+        return secondaryDisplays;
     }
 
     @Override

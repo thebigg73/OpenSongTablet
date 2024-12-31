@@ -79,6 +79,7 @@ svg {
         var midioptions = {};
         var reported = false;
         var padding = 4;
+        var isForPresentation = false;
 
         function setEditMode(mode) {
             editmode = mode;
@@ -190,13 +191,27 @@ svg {
             whichView = whichWebView;
         }
 
+        function setIsForPresentation(presentation) {
+            isForPresentation = presentation;
+            console.log("isForPresentation set to:"+isForPresentation);
+        }
+
         var ro = new ResizeObserver( entries => {
             for (let entry of entries) {
                 var width = entry.contentRect.width;
                 var height = entry.contentRect.height;
                 if (height>1 && !reported) {
                     reported = true;
-                    AndroidApp.returnSize(whichView,width,height+padding);
+                    if (isForPresentation) {
+                        console.log("sending returnSizeSecondary");
+                        setTimeout(function() {
+                            AndroidApp.returnSizeSecondary(whichView,width,height+padding);
+                        },2000);
+
+                    } else {
+                        console.log("sending returnSize non secondary");
+                        AndroidApp.returnSize(whichView,width,height+padding);
+                    }
                 }
             }
         });
@@ -223,16 +238,16 @@ svg {
         function initEditor() {
             updateOptions();
             getMyScrollHeight();
-            if (my_hideTab) {
+            if (my_hideTab==true) {
                 // We just want the score
                 new ABCJS.Editor("abc", {paper_id: "paper", warnings_id:"warnings", abcjsParams: defaultoptions, midioptions});
             } else {
                 // Decide how many strings we are using
                 var taboptions;
-                if (strings_6) {
+                if (strings_6===true) {
                     taboptions = {tablature: [{instrument: my_instrument, label: my_label,
                                     tuning: [s6,s5,s4,s3,s2,s1]}]};
-                } else if (strings_5) {
+                } else if (strings_5===true) {
                     taboptions = {tablature: [{instrument: my_instrument, label: my_label,
                                     tuning: [s5,s4,s3,s2,s1]}]};
                 } else {

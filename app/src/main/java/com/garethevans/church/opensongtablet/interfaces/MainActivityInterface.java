@@ -54,6 +54,7 @@ import com.garethevans.church.opensongtablet.pads.Pad;
 import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
+import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.AppPermissions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -63,6 +64,7 @@ import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
+import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplay;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -235,6 +237,8 @@ public interface MainActivityInterface {
     void dealWithIntent(int fragmentId);
     void setForceReload(boolean forceReload);
     boolean getForceReload();
+    boolean getPerformanceValid();
+    PerformanceFragment getPerformanceFragment();
 
     // Showcase
     ShowCase getShowCase();
@@ -303,9 +307,12 @@ public interface MainActivityInterface {
     // ABC Notation
     ABCNotation getAbcNotation();
     void resetInlineAbcWebViews();
-    void assignInlineAbcWebView(int containingLinearLayoutPosition, InlineAbcWebView webView);
+    void resetInlineAbcWebViewsSecondary();
+    void assignInlineAbcWebView(int containingLinearLayoutPosition, InlineAbcWebView webView, boolean presentation);
     int countInlineAbcWebViews();
+    int countInlineAbcWebViewsSecondary();
     ArrayList<InlineAbcWebView> getInlineAbcWebViews();
+    ArrayList<InlineAbcWebView> getInlineAbcWebViewsSecondary();
 
     // Highlighter notes
     DrawNotes getDrawNotes();
@@ -335,6 +342,7 @@ public interface MainActivityInterface {
     void updateMargins();
     int[] getViewMargins();
     boolean getIsSecondaryDisplaying();
+    SecondaryDisplay[] getSecondaryDisplays();
 
     // Song sheet titles
     void setSongSheetTitleLayout(LinearLayout linearLayout);

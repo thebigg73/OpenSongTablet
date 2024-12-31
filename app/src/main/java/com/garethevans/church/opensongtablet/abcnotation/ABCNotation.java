@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -9,6 +10,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -79,31 +81,32 @@ public class ABCNotation {
         getABCTransposeFromSongKey();
     }
 
-    public void setWebView(WebView webView) {
-        webView.post(new Runnable() {
+    public void setWebView(InlineAbcWebView inlineAbcWebView) {
+        inlineAbcWebView.post(new Runnable() {
             @Override
             public void run() {
-                webView.setInitialScale(1);
-                webView.getSettings().setDomStorageEnabled(true);
-                webView.getSettings().setLoadWithOverviewMode(true);
-                webView.getSettings().setUseWideViewPort(true);
-                webView.getSettings().setSupportZoom(true);
-                webView.getSettings().setBuiltInZoomControls(true);
-                webView.getSettings().setDisplayZoomControls(false);
-                webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-                webView.setScrollbarFadingEnabled(false);
-                webView.setWebChromeClient(new WebChromeClient() {
+                inlineAbcWebView.setInitialScale(1);
+                inlineAbcWebView.getSettings().setDomStorageEnabled(true);
+                inlineAbcWebView.getSettings().setLoadWithOverviewMode(true);
+                inlineAbcWebView.getSettings().setUseWideViewPort(true);
+                inlineAbcWebView.getSettings().setSupportZoom(true);
+                inlineAbcWebView.getSettings().setBuiltInZoomControls(true);
+                inlineAbcWebView.getSettings().setDisplayZoomControls(false);
+                inlineAbcWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                inlineAbcWebView.setScrollbarFadingEnabled(false);
+                inlineAbcWebView.setWebChromeClient(new WebChromeClient() {
                     @Override
                     public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                         return super.onConsoleMessage(consoleMessage);
                     }
                 });
-                if (webView.getTag()!=null && webView.getTag().toString().startsWith("abc:")) {
-                    webView.setWebViewClient(new MyWebViewClient(true));
+                if (inlineAbcWebView.getTag()!=null && inlineAbcWebView.getTag().toString().startsWith("abc:")) {
+                    inlineAbcWebView.setWebViewClient(new MyWebViewClient(true));
                 } else {
-                    webView.setWebViewClient(new MyWebViewClient(false));
+                    inlineAbcWebView.setWebViewClient(new MyWebViewClient(false));
                 }
-                webView.loadUrl("file:///android_asset/ABC/abc.html");
+                inlineAbcWebView.loadUrl("file:///android_asset/ABC/abc.html");
+
             }
         });
     }
@@ -119,10 +122,10 @@ public class ABCNotation {
         @Override
         public void onPageFinished(WebView webView, String url) {
             super.onPageFinished(webView, url);
-            updateContent(webView);
+            updateContent((InlineAbcWebView) webView);
 
             // Set to view only
-            webView.loadUrl("javascript:displayOnly();");
+            webView.evaluateJavascript("javascript:displayOnly();",null);
         }
     }
 
@@ -167,14 +170,14 @@ public class ABCNotation {
 
 
     // Update the output display for the abc score
-    private void updateContent(WebView webView) {
+    private void updateContent(InlineAbcWebView inlineAbcWebView) {
         String newContent;
         boolean isInline = false;
         int webViewNum = 0;
         // Encode the abc text for passing to the webview
-        if (webView.getTag()!=null) {
+        if (inlineAbcWebView.getTag()!=null) {
             isInline = true;
-            InlineAbcWebViewTagObject inlineAbcWebViewTagObject = (InlineAbcWebViewTagObject) webView.getTag();
+            InlineAbcWebViewTagObject inlineAbcWebViewTagObject = (InlineAbcWebViewTagObject) inlineAbcWebView.getTag();
             String content = inlineAbcWebViewTagObject.getAbc().substring(4);
             content = content.replace(";#:", "");
             content = content.replace("\\n", "__NEWLINE__");
@@ -192,43 +195,46 @@ public class ABCNotation {
 
         if (isInline) {
             // Display for song view
-            webView.evaluateJavascript("javascript:setWebView("+webViewNum+");",null);
-            webView.evaluateJavascript("javascript:setResponsive('resize');",null);
-            webView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
-            webView.evaluateJavascript("javascript:setMainColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsTextColor())+"');",null);
-            webView.evaluateJavascript("javascript:setChordColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsChordsColor())+"');",null);
-            webView.evaluateJavascript("javascript:displayOnly();",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setWebView("+webViewNum+");",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setMainColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsTextColor())+"');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setChordColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsChordsColor())+"');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:displayOnly();",null);
 
         } else if (isPopup) {
             // PopUp ABC window
-            webView.evaluateJavascript("javascript:setWebView(0);",null);
-            webView.evaluateJavascript("javascript:setResponsive('resize');",null);
-            webView.evaluateJavascript("javascript:setWidth("+(int)(abcInlineWidth * abcPopupWidth)+")",null);
-            webView.evaluateJavascript("javascript:setMainColor('#000000');",null);
-            webView.evaluateJavascript("javascript:setChordColor('#000000');",null);
-            webView.evaluateJavascript("javascript:displayOnly();",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setWebView(0);",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setWidth("+(int)(abcInlineWidth * abcPopupWidth)+")",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setMainColor('#000000');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setChordColor('#000000');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:displayOnly();",null);
 
         } else {
             // ABC editor fragment
-            webView.evaluateJavascript("javascript:setWebView(0);",null);
-            webView.evaluateJavascript("javascript:setResponsive('resize');",null);
-            webView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
-            webView.evaluateJavascript("javascript:setMainColor('#000000');",null);
-            webView.evaluateJavascript("javascript:setChordColor('#000000');",null);
-            webView.evaluateJavascript("javascript:displayAndEdit();",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setWebView(0);",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setMainColor('#000000');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:setChordColor('#000000');",null);
+            inlineAbcWebView.evaluateJavascript("javascript:displayAndEdit();",null);
         }
-        updateWebViewVariables(webView, newContent);
+
+        inlineAbcWebView.evaluateJavascript("javascript:setIsForPresentation("+inlineAbcWebView.getIsForPresentation()+");",null);
+        updateWebViewVariables(inlineAbcWebView, newContent);
     }
 
-    private void updateWebViewVariables(WebView webView, String newContent) {
-        webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
-        webView.evaluateJavascript("javascript:setHideTab(" + !abcIncludeTab + ");", null);
-        webView.evaluateJavascript("javascript:setTranspose(" + songAbcTranspose + ");",null);
-        webView.evaluateJavascript("javascript:setInstrument('" + getAbcIntrumentTabForABCJS()+"');",null);
+    private void updateWebViewVariables(InlineAbcWebView inlineAbcWebView, String newContent) {
+        inlineAbcWebView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
+        inlineAbcWebView.evaluateJavascript("javascript:setHideTab(" + !abcIncludeTab + ");", null);
+        inlineAbcWebView.evaluateJavascript("javascript:setTranspose(" + songAbcTranspose + ");",null);
+        inlineAbcWebView.evaluateJavascript("javascript:setInstrument('" + getAbcIntrumentTabForABCJS()+"');",null);
         String[] strings = getAbcInstrumentTuningABCJS();
-        webView.evaluateJavascript("javascript:setTuning('"+strings[6]+"','"+strings[5]+"','"+strings[4]+"','"+strings[3]+"','"+strings[2]+"','"+strings[1]+"');",null);
-        webView.evaluateJavascript("javascript:setLabel('" + getAbcInstrumentLabelABCJS()+"');",null);
-        webView.evaluateJavascript("javascript:initEditor()",null);
+        inlineAbcWebView.evaluateJavascript("javascript:setTuning('"+strings[6]+"','"+strings[5]+"','"+strings[4]+"','"+strings[3]+"','"+strings[2]+"','"+strings[1]+"');",null);
+        inlineAbcWebView.evaluateJavascript("javascript:setLabel('" + getAbcInstrumentLabelABCJS()+"');",null);
+
+        inlineAbcWebView.evaluateJavascript("javascript:initEditor()",null);
     }
 
     // Using the song key and abc key, decide an automatic transpose value
@@ -346,9 +352,9 @@ public class ABCNotation {
     }
 
 
-    // Tell the webview to update
-    public void updateWebView(WebView webView) {
-        updateContent(webView);
+    // Tell the inlineAbcWebView to update
+    public void updateWebView(InlineAbcWebView inlineAbcWebView) {
+        updateContent(inlineAbcWebView);
     }
 
     // Get the list of ABC tab instruments

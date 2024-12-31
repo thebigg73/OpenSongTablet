@@ -35,6 +35,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -70,7 +71,7 @@ public class SecondaryDisplay extends Presentation {
     private boolean firstRun = true;
     private boolean isNewSong;
     private String currentInfoText;
-    private boolean infoBarRequired=false;
+    private boolean infoBarRequired=false, inlineAbcWebViewsDrawnSecondary=false;
     private boolean invertXY;
     private final int castPadding;
 
@@ -865,10 +866,12 @@ public class SecondaryDisplay extends Presentation {
     }
 
     private void setSectionViews() {
+        mainActivityInterface.resetInlineAbcWebViewsSecondary();
         secondaryViews = mainActivityInterface.getProcessSong().
                 setSongInLayout(mainActivityInterface.getSong(),
                         false, true);
 
+        Log.d(TAG,"webView count:"+mainActivityInterface.getInlineAbcWebViewsSecondary().size());
         // Draw them to the screen test layout for measuring
         waitingOnViewsToDraw = secondaryViews.size();
         for (View view : secondaryViews) {
@@ -881,8 +884,11 @@ public class SecondaryDisplay extends Presentation {
                     if (waitingOnViewsToDraw > 0) {
                         waitingOnViewsToDraw--;
                         if (waitingOnViewsToDraw == 0) {
-                            // This was the last item, so move on
-                            viewsAreReady();
+                            // If we have webViews for inline ABC, we need to deal with those sizes first
+                            if (mainActivityInterface.countInlineAbcWebViewsSecondary()==0) {
+                                // This was the last item, so move on
+                                viewsAreReady();
+                            }
                         }
                     } else {
                         waitingOnViewsToDraw = 0;
@@ -894,15 +900,41 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
+    public void setInlineAbcWebViewsDrawnSecondary(boolean inlineAbcWebViewsDrawnSecondary) {
+        this.inlineAbcWebViewsDrawnSecondary = inlineAbcWebViewsDrawnSecondary;
+    }
+
+    // We have abc webviews, so need to resize
+    public void inlineAbcWebViewsDrawnSecondary() {
+        Log.d(TAG,"inlineAbcWebViewsDrawnSecondary()");
+        Log.d(TAG,"inlineAbcWebViewsDrawnSecondary:"+inlineAbcWebViewsDrawnSecondary);
+        if (!inlineAbcWebViewsDrawnSecondary) {
+            inlineAbcWebViewsDrawnSecondary = true;
+            mainActivityInterface.getMainHandler().post(this::viewsAreReady);
+        }
+    }
+
     public void viewsAreReady() {
-        Log.d(TAG,"viewsAreReady()");
+        Log.d(TAG,"viewsAreReady() and can measure");
         // The views are ready so prepare to create the song page
         for (int x = 0; x < secondaryViews.size(); x++) {
             int width = secondaryViews.get(x).getMeasuredWidth();
             int height = secondaryViews.get(x).getMeasuredHeight();
+            if (mainActivityInterface.countInlineAbcWebViewsSecondary()>0) {
+                // Get the extra webView height for any webview in this section
+                for (InlineAbcWebView inlineAbcWebView:mainActivityInterface.getInlineAbcWebViewsSecondary()) {
+                    if (inlineAbcWebView.getWebViewContainingViewItem()==x && inlineAbcWebView.getWebViewHeight()>1) {
+                        int origWebViewHeight = inlineAbcWebView.getHeight();
+                        int heightOfWebView = inlineAbcWebView.getWebViewHeight();
+                        int widthOfWebView = inlineAbcWebView.getWebViewWidth();
+                        float scaleWebViewSize = (float)mainActivityInterface.getAbcNotation().getAbcInlineWidth()/(float)widthOfWebView;
+                        int heightToAdd = (int)((heightOfWebView*scaleWebViewSize) - origWebViewHeight);
+                        inlineAbcWebView.setNewSizes((int)(widthOfWebView*scaleWebViewSize),(int)(heightOfWebView*scaleWebViewSize));
+                        height = height + heightToAdd;
+                    }
+                }
+            }
             secondaryWidths.add(x, width);
-            Log.d(TAG,"viewsAreReady()  secondaryWidths["+x+"]:"+width);
-
             secondaryHeights.add(x, height);
 
             // Calculate the scale factor for each section individually
@@ -912,8 +944,8 @@ public class SecondaryDisplay extends Presentation {
             float max_y = (float) availableScreenHeight / (float) secondaryHeights.get(x);
             // The text size is 14sp by default.  Compare this to the pref
             float best = Math.min(max_x, max_y);
-            if ((best * 14f) > mainActivityInterface.getPresenterSettings().getFontSizePresoMax()) {
-                best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+            if ((best * mainActivityInterface.getProcessSong().getDefFontSize()) > mainActivityInterface.getPresenterSettings().getFontSizePresoMax()) {
+                best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / mainActivityInterface.getProcessSong().getDefFontSize();
             }
             secondaryViews.get(x).setPivotX(0f);
             secondaryViews.get(x).setPivotY(0f);
@@ -1220,7 +1252,11 @@ public class SecondaryDisplay extends Presentation {
 
     private void removeViewFromParent(View view) {
         if (view!=null && view.getParent()!=null) {
-            ((ViewGroup)view.getParent()).removeView(view);
+            try {
+                ((ViewGroup) view.getParent()).removeView(view);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

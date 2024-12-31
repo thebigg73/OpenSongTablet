@@ -4,10 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.garethevans.church.opensongtablet.abcnotation.ABCWebViewJSInterface;
 
 public class InlineAbcWebView extends WebView {
 
@@ -19,24 +23,31 @@ public class InlineAbcWebView extends WebView {
     private int webViewHeight=0;
     private int webViewItem=-1;
     private int webViewContainingViewItem=-1;
+    private boolean isForPresentation = false;
+    private boolean isForExport = false;
 
-    public InlineAbcWebView(@NonNull Context context) {
-        super(context);
-        setJavaScriptEnabled();
+    public InlineAbcWebView(@NonNull Context c) {
+        super(c);
+        this.setId(View.generateViewId());
+        setJavaScriptEnabled(c);
     }
 
-    public InlineAbcWebView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        setJavaScriptEnabled();
+    public InlineAbcWebView(@NonNull Context c, @Nullable AttributeSet attrs) {
+        super(c, attrs);
+        this.setId(View.generateViewId());
+        setJavaScriptEnabled(c);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void setJavaScriptEnabled() {
+    private void setJavaScriptEnabled(Context c) {
         this.setFocusable(false);
         this.setClickable(false);
         this.setFocusableInTouchMode(false);
         this.setScrollContainer(false);
         this.getSettings().setJavaScriptEnabled(true);
+        this.getSettings().setDomStorageEnabled(true);
+        this.addJavascriptInterface(new ABCWebViewJSInterface(c),"AndroidApp");
+
     }
 
     @Override
@@ -61,6 +72,12 @@ public class InlineAbcWebView extends WebView {
     public int getWebViewContainingViewItem() {
         return webViewContainingViewItem;
     }
+    public boolean getIsForPresentation() {
+        return isForPresentation;
+    }
+    public boolean getIsForExport() {
+        return isForExport;
+    }
 
 
     // The setters
@@ -78,5 +95,20 @@ public class InlineAbcWebView extends WebView {
     }
     public void setContainingViewItem(int webViewContainingViewItem) {
         this.webViewContainingViewItem = webViewContainingViewItem;
+    }
+    public void setIsForPresentation(boolean isForPresentation) {
+        this.isForPresentation = isForPresentation;
+    }
+    public void setIsForExport(boolean isForExport) {
+        this.isForExport = isForExport;
+    }
+
+    public void setNewSizes(int width, int height) {
+        ViewGroup.LayoutParams vglp = this.getLayoutParams();
+        vglp.width = width;
+        vglp.height = height;
+        this.setLayoutParams(vglp);
+        this.setBackgroundColor(((int)(Math.random()*16777215)) | (0xFF << 24));
+        this.invalidate();
     }
 }
