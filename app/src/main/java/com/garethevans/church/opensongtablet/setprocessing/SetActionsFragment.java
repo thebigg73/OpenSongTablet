@@ -149,7 +149,7 @@ public class SetActionsFragment extends Fragment {
     private void openFileIntent(String where) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
-        String[] mimetypes = {"text/xml", "application/octet-stream"};
+        String[] mimetypes = {"text/xml", "application/octet-stream","text/html"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,

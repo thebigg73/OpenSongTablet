@@ -5,7 +5,10 @@ import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ConvertOnSong {
@@ -13,7 +16,10 @@ public class ConvertOnSong {
     // This is virtually the same as convertChoPro, but with a few extra tags
     // To simplify this, we will extract the specific OnSongStuff first and then pass it to convertChoPro
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ConvertOnSong";
     private final MainActivityInterface mainActivityInterface;
+    private final Context c;
     private String title;
     private String author;
     private String key;
@@ -36,9 +42,11 @@ public class ConvertOnSong {
     private String[] lines;
     private StringBuilder parsedLines;
     private final String string_chorus;
+    private String setTitle = "";
 
     public ConvertOnSong(Context c) {
         // Declare the variables;
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         string_chorus = c.getString(R.string.chorus);
     }
@@ -414,5 +422,92 @@ public class ConvertOnSong {
             }
         }
         return stringBuilder.toString();
+    }
+
+    public ArrayList<SetItemInfo> getOnSongHTMLSetList(Uri uri) {
+        // If this is an OnSong HTML setlist, we can extract what we need
+        ArrayList<SetItemInfo> setItemInfos = new ArrayList<>();
+        int songNum = 0;
+
+        if (mainActivityInterface.getStorageAccess().getFileNameFromUri(uri).toLowerCase().endsWith(".html")) {
+            // Read in the contents to a string
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+            String string = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+
+            setTitle = mainActivityInterface.getStorageAccess().getFileNameFromUri(uri);
+            setTitle = setTitle.replace(".html","").replace(".HTML","");
+
+            // Check it has the headings we expect
+            if (string.contains("<th>" + string.contains(c.getString(R.string.title))) ||
+                    string.contains("<th>Title")) {
+                String[] lines = string.split("\n");
+                for (String line:lines) {
+                    line = line.trim();
+                    if (line.contains("<title>")) {
+                        // Get the set title
+                        setTitle = line.replace("<title>", "").replace("</title>", "");
+                        break;
+                    }
+                }
+
+                // Get rid of the stuff we don't need
+                if (string.contains("<td>")) {
+                    string = string.substring(string.indexOf("<td>"));
+                }
+
+                // Now we can split the page into entries
+                String[] entries = string.split("<tr>");
+                String mainFolderName = c.getString(R.string.mainfoldername);
+                String unknown = c.getString(R.string.unknown);
+                for (String entry:entries) {
+                    // Set some fallback default entries
+                    String[] trs = entry.split("</td>");
+                    SetItemInfo setItemInfo = new SetItemInfo();
+                    setItemInfo.songitem = songNum;
+                    setItemInfo.songfilename = unknown;
+                    setItemInfo.songtitle = unknown;
+                    setItemInfo.songfolder = mainFolderName;
+                    setItemInfo.songkey = "";
+                    songNum++;
+
+                    // Now look for the stuff we want
+                    for (int x=0; x<trs.length; x++) {
+                        if (x==0) {
+                            // The song title
+                            String title = mainActivityInterface.getProcessSong().removeHTMLTags(trs[0].trim());
+                            setItemInfo.songtitle = title;
+                            setItemInfo.songfilename = title;
+                            if (mainActivityInterface.getSQLiteHelper().songExists(mainFolderName,title)) {
+                                setItemInfo.songfolder = mainFolderName;
+                                setItemInfo.songfoldernice = mainFolderName;
+                            } else {
+                                // Look for it
+                                setItemInfo.songfolder = mainActivityInterface.getSQLiteHelper().getFolderForSong(title);
+                                setItemInfo.songfoldernice = setItemInfo.songfolder;
+                                if (setItemInfo.songfolder.equals(mainFolderName)) {
+                                    // Still not found, so annotate the start of the title
+                                    title = "__NOTFOUND__" + title;
+                                    setItemInfo.songfilename = title;
+                                }
+                            }
+                            // See if this song exist in our database, and if so, get the
+                        } else if (x==2) {
+                            // The key
+                            setItemInfo.songkey = mainActivityInterface.getProcessSong().removeHTMLTags(trs[2].trim());
+                            break;
+                        }
+                    }
+
+                    // Now add this item to the setlist
+                    setItemInfos.add(setItemInfo);
+                }
+
+            }
+        }
+        return setItemInfos;
+    }
+
+    public String getSetTitle() {
+        return setTitle;
     }
 }

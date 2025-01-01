@@ -2903,8 +2903,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Log.d(TAG,"Getting here");
                 setWhattodo("intentlaunch");
                 dealingWithIntent = deeplink_import_file;
-            } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osts")) {
-                // OpenSong set
+            } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".osts") ||
+                    importFilename.toLowerCase(Locale.ROOT).endsWith(".html")) {
+                // OpenSong (or OnSong) set
                 setWhattodo("importset");
                 dealingWithIntent = deeplink_import_file;
             } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".backup")) {

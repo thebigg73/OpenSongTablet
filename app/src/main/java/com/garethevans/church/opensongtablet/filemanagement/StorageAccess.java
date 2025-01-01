@@ -1106,6 +1106,9 @@ public class StorageAccess {
             case "justchord":
                 toCheck = ".justchords";
                 break;
+            case "html":
+                toCheck = ".html";
+                break;
         }
         // This is a simple check for file extensions that tell the app which database to use
         filename = filename.toLowerCase(Locale.ROOT);

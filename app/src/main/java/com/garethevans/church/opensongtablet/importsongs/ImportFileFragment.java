@@ -17,12 +17,14 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportFileBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.justchords.JustChordsObject;
 import com.garethevans.church.opensongtablet.justchords.JustChordsSongObject;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.InputStream;
@@ -37,15 +39,16 @@ public class ImportFileFragment extends Fragment {
     private SettingsImportFileBinding myView;
     private Song newSong = new Song();
     private ArrayList<String> folders;
-    private boolean isIMGorPDF;
+    private boolean isIMGorPDF, showNotFoundToast=false, isSetFile = false, isHTML = false;
     private String basename, requiredExtension, setcategory, newSetName;
     private Uri copyTo;
     private String originalFolder, originalFilename, import_from_file_string = "",
             error_string = "", mainfoldername_string = "", overwrite_string = "",
             filename_string = "", file_exists_string = "", set_name_string = "",
-            set_category_string = "", import_set_string="", deeplink_import_file = "";
+            set_category_string = "", import_set_string="", deeplink_import_file = "",
+            set_items_not_found_string = "";
     private ExposedDropDownArrayAdapter exposedDropDownArrayAdapter;
-    private boolean isSetFile = false;
+    private ArrayList<SetItemInfo> setItemInfos = null;
 
     @Override
     public void onResume() {
@@ -174,37 +177,73 @@ public class ImportFileFragment extends Fragment {
             set_name_string = getString(R.string.set_name);
             import_set_string = getString(R.string.set_import);
             deeplink_import_file = getString(R.string.deeplink_import_file);
+            set_items_not_found_string = getString(R.string.set_items_not_found);
         }
     }
 
 
     private void readInSetFile() {
         // Read in as a text string
-        String textString = mainActivityInterface.getStorageAccess().readTextFileToString(
-                mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri()));
-        if (textString!=null) {
-            String[] items = textString.split("<slide_group name=\"");
-            StringBuilder newItems = new StringBuilder();
-            for (String item : items) {
-                if (item.contains("\"")) {
-                    item = item.substring(0, item.indexOf("\""));
+        isHTML = mainActivityInterface.getStorageAccess().isSpecificFileExtension("html",mainActivityInterface.getImportFilename());
+        showNotFoundToast = false;
+        if (isHTML) {
+            setItemInfos = mainActivityInterface.getConvertOnSong().getOnSongHTMLSetList(mainActivityInterface.getImportUri());
+            if (setItemInfos!=null && !setItemInfos.isEmpty()) {
+                StringBuilder newItems = new StringBuilder();
+                for (SetItemInfo setItemInfo:setItemInfos) {
+                    String foundOrNot = "";
+                    if (setItemInfo.songfilename.startsWith("__NOTFOUND__")) {
+                        showNotFoundToast = true;
+                        foundOrNot = "* ";
+                        setItemInfo.songfilename = setItemInfo.songfilename.replace("__NOTFOUND__","");
+                    }
+                    newItems.append(foundOrNot).append((setItemInfo.songitem+1)).append(". ").
+                            append(setItemInfo.songfolder).append("/").
+                            append(setItemInfo.songfilename);
+                    if (setItemInfo.songkey!=null && !setItemInfo.songkey.isEmpty()) {
+                        newItems.append(" (").append(setItemInfo.songkey).append(")");
+                    }
+                    newItems.append("\n");
                 }
-                item = item.replace("# ", "");
-                if (!item.contains("<?xml")) {
-                    newItems.append(item.trim()).append("\n");
-                }
+
+                myView.content.post(() -> {
+                    if (showNotFoundToast) {
+                        InformationBottomSheet informationBottomSheet = new InformationBottomSheet(import_set_string,set_items_not_found_string,null,null);
+                        informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InformationBottomSheet");
+                    }
+                    basename = mainActivityInterface.getConvertOnSong().getSetTitle();
+                    myView.filename.setText(basename);
+                    myView.content.setText(basename);
+                    myView.content.setHint(newItems.toString().trim());
+                });
             }
-            myView.content.post(()-> {
-                myView.content.setText(basename);
-                myView.content.setHint(newItems.toString().trim());
-            });
-            myView.folder.post(()-> {
-                if (!folders.contains(setcategory)) {
-                    folders.add(setcategory);
-                    exposedDropDownArrayAdapter.notifyDataSetChanged();
+        } else {
+            String textString = mainActivityInterface.getStorageAccess().readTextFileToString(
+                    mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri()));
+            if (textString != null) {
+                String[] items = textString.split("<slide_group name=\"");
+                StringBuilder newItems = new StringBuilder();
+                for (String item : items) {
+                    if (item.contains("\"")) {
+                        item = item.substring(0, item.indexOf("\""));
+                    }
+                    item = item.replace("# ", "");
+                    if (!item.contains("<?xml")) {
+                        newItems.append(item.trim()).append("\n");
+                    }
                 }
-                myView.folder.setText(setcategory);
-            });
+                myView.content.post(() -> {
+                    myView.content.setText(basename);
+                    myView.content.setHint(newItems.toString().trim());
+                });
+                myView.folder.post(() -> {
+                    if (!folders.contains(setcategory)) {
+                        folders.add(setcategory);
+                        exposedDropDownArrayAdapter.notifyDataSetChanged();
+                    }
+                    myView.folder.setText(setcategory);
+                });
+            }
         }
     }
 
@@ -248,8 +287,8 @@ public class ImportFileFragment extends Fragment {
                 newSong.setLyrics(mainActivityInterface.getConvertWord().convertDocxToText(mainActivityInterface.getImportUri(), mainActivityInterface.getImportFilename()));
             } else if (isJustChords) {
                 JustChordsObject justChordsObject = mainActivityInterface.getConvertJustChords().getJustChordsObjectFromImportUri();
-                JustChordsSongObject justChordsSongObject = mainActivityInterface.getConvertJustChords().getJustChordsSongObject(justChordsObject,0);
-                if (justChordsSongObject!=null) {
+                JustChordsSongObject justChordsSongObject = mainActivityInterface.getConvertJustChords().getJustChordsSongObject(justChordsObject, 0);
+                if (justChordsSongObject != null) {
                     newSong = mainActivityInterface.getConvertJustChords().getOpenSongFromJustChordsSong(justChordsSongObject);
                     basename = newSong.getTitle();
                 }
@@ -384,7 +423,6 @@ public class ImportFileFragment extends Fragment {
                         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport copyFile from "+mainActivityInterface.getImportUri()+" to Songs/" + folder + "/" + newFilename);
                         success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-                        Log.d(TAG, "success:" + success);
 
                     } else if (newSong.getFilename()!=null &&
                             !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
@@ -443,26 +481,53 @@ public class ImportFileFragment extends Fragment {
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                     try {
                         // Clear the existing set
+                        boolean oktocontinue = false;
                         mainActivityInterface.getSetActions().clearCurrentSet();
+                        if (isHTML && setItemInfos!=null && !setItemInfos.isEmpty()) {
+                            // Use the setItemInfo to create a new set from our OnSong HTML set
+                            mainActivityInterface.getSetActions().clearCurrentSet();
+                            mainActivityInterface.getCurrentSet().initialiseTheSet();
+                            mainActivityInterface.getCurrentSet().setSetCurrentLastName(mainActivityInterface.getConvertOnSong().getSetTitle());
+                            for (SetItemInfo setItemInfo:setItemInfos) {
+                                mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, false);
+                            }
+                            // Save this as an actual set file
+                            String xml = mainActivityInterface.getSetActions().createSetXML();
+                            copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", newSetName);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Sets","",newSetName);
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
+                            mainActivityInterface.getStorageAccess().writeFileFromString(xml,outputStream);
+                            // Now clear the currentSet aagin
+                            mainActivityInterface.getSetActions().clearCurrentSet();
+                            oktocontinue = true;
 
-                        // Copy the file
-                        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
-                        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " finishImportSet copyFile from " + mainActivityInterface.getImportUri() + " to Sets/" + newSetName);
-                        // Don't delete!
-                        Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
-                        ArrayList<Uri> thisSet = new ArrayList<>();
-                        thisSet.add(copyTo);
-                        mainActivityInterface.setWhattodo("pendingLoadSet");
-                        mainActivityInterface.getSetActions().loadSets(thisSet, newSetName);
-                        mainActivityInterface.getMainHandler().post(() -> {
-                            showProgress(false);
-                            mainActivityInterface.navHome();
-                            mainActivityInterface.getShowToast().success();
-                        });
-                        mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.chooseMenu(true), 1000);
+                        } else if (!isHTML) {
+                            // Copy the file
+                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
+                            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " finishImportSet copyFile from " + mainActivityInterface.getImportUri() + " to Sets/" + newSetName);
+                            // Don't delete!
+                            Log.d(TAG, "copy: " + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
+                            oktocontinue = true;
+                        }
+
+                        if (oktocontinue) {
+                            ArrayList<Uri> thisSet = new ArrayList<>();
+                            thisSet.add(copyTo);
+                            mainActivityInterface.setWhattodo("pendingLoadSet");
+                            mainActivityInterface.getSetActions().loadSets(thisSet, newSetName);
+                            mainActivityInterface.getMainHandler().post(() -> {
+                                showProgress(false);
+                                mainActivityInterface.navHome();
+                                mainActivityInterface.getShowToast().success();
+                            });
+                            mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.chooseMenu(true), 1000);
+                        } else {
+                            mainActivityInterface.getShowToast().doIt(error_string);
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -497,7 +562,6 @@ public class ImportFileFragment extends Fragment {
                 if (myView!=null) {
                     try {
                         myView.progress.setVisibility(show ? View.VISIBLE : View.GONE);
-                        Log.d(TAG,"showProgress:"+show);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
