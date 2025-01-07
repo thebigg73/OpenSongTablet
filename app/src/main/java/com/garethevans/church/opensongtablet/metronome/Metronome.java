@@ -34,7 +34,7 @@ public class Metronome {
     private int beats;
     private int beatVisual;
     private int divisions;
-    private int beatTimeLength=0;
+    private int beatTimeLength=0, tempo=0;
     private int beatsRequired;
     private int beatsRunningTotal;
     private int metronomeFlashOnColor;
@@ -80,6 +80,11 @@ public class Metronome {
                     e.printStackTrace();
                 }
             }
+            try {
+                mainActivityInterface.getMidi().sendMidiTick();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         };
         tockRunnable = () -> {
             if (soundPool != null) {
@@ -89,6 +94,11 @@ public class Metronome {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+            try {
+                mainActivityInterface.getMidi().sendMidiTock();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         };
         AudioManager myAudioMgr = (AudioManager) c.getSystemService(Context.AUDIO_SERVICE);
@@ -131,6 +141,8 @@ public class Metronome {
         isRunningVisual = false;
         stopTimers(false);
 
+        mainActivityInterface.getMidi().stopMidiClock();
+
         // Make sure the action bar resets to the off color
         new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength);
         new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength*2L);
@@ -164,6 +176,7 @@ public class Metronome {
         beat = 1;
         beatVisual = 1;
 
+
         // Get the song tempo and time signatures
         setSongValues();
 
@@ -172,6 +185,14 @@ public class Metronome {
 
         // Set up the visual beat bar
         mainActivityInterface.getToolbar().setUpMetronomeBar(beats);
+
+        // Set the MIDI clock time delay
+        if (tempo>0) {
+            // If we are sending MIDI clock, set that going
+            mainActivityInterface.getMidi().calculateMidiClock(tempo);
+        } else {
+            mainActivityInterface.getMidi().calculateMidiClock(100);
+        }
     }
 
     // This is called on MainActivity.onResume() and if metronome sounds are changed
@@ -322,7 +343,7 @@ public class Metronome {
 
     public void setSongValues() {
         // First up the tempo
-        int tempo;
+        tempo = 0;
         validTempo = false;
         String t = mainActivityInterface.getSong().getTempo();
         if (t==null || t.isEmpty()) {
@@ -356,7 +377,7 @@ public class Metronome {
             meterTimeFactor(); // 1.0f for simple signatures, 2.0f or 3.0f for compound ones
             getEmphasisBeats();   // Always has beat 1, but can have more
 
-            if (tempo >0) {
+            if (tempo > 0) {
                 beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / meterTimeDivision);
             } else {
                 beatTimeLength = 0;
@@ -529,6 +550,7 @@ public class Metronome {
         audioTime = System.currentTimeMillis() + buffer;
         if (beatTimeLength>0) {
             metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
+            //metronomeTimer.schedule(metronomeTimerTask,0,);
         }
     }
     private void timerVisual() {
@@ -744,4 +766,7 @@ public class Metronome {
         }
     }
 
+    public int getTempo() {
+        return tempo;
+    }
 }

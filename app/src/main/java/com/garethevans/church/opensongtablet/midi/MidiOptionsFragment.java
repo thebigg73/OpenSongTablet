@@ -20,7 +20,7 @@ public class MidiOptionsFragment extends Fragment {
     private SettingsMidiOptionsBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MidiOptionsFragment";
-    private String midi_string="";
+    private String midi_string="", deeplink_midi_clock="";
 
     @Override
     public void onResume() {
@@ -33,6 +33,7 @@ public class MidiOptionsFragment extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         midi_string = context.getString(R.string.midi);
+        deeplink_midi_clock = getString(R.string.deeplink_midi_clock);
     }
 
     @Nullable
@@ -59,6 +60,9 @@ public class MidiOptionsFragment extends Fragment {
         myView.midiBoard.setOnClickListener(view -> {
             MidiBoardBottomSheet midiBoardBottomSheet = new MidiBoardBottomSheet();
             midiBoardBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiBoardBottomSheet");
+        });
+        myView.midiClock.setOnClickListener(view -> {
+            mainActivityInterface.navigateToFragment(deeplink_midi_clock,0);
         });
     }
 }

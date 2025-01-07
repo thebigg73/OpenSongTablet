@@ -30,6 +30,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Midi {
 
@@ -46,7 +50,15 @@ public class Midi {
     private final String sysexStopCode = "0xF0 0x7F 0xFC 0xF7";
     private int midiInputChannelPedal, midiInputChannelSong, midiOutputChannel;
     private boolean midiInput, midiInputAutoscroll, midiInputMetronome, midiInputPad;
-
+    private boolean midiClickTrackSend, midiClockSend;
+    private int midiClickTrackChannel, midiClickTrackTick = 76, midiClickTrackTock = 77,
+            midiClickTrackTickVolume, midiClickTrackTockVolume;
+    private String midiClickTickMessageOn="", midiClickTockMessageOn="", midiClickTickMessageOff="", midiClickTockMessageOff="";
+    private long midiClockDelay = 0;
+    private final byte[] midiClockBytes;
+    private ScheduledExecutorService midiClockExecutor;
+    private ScheduledFuture<?> future;
+    private Runnable clock;
     // Initialise
     public Midi(Activity activity,
                 Context c) {
@@ -55,6 +67,7 @@ public class Midi {
         mainActivityInterface = (MainActivityInterface) c;
         getUpdatedPreferences();
         shortHandMidi = new ShortHandMidi(c);
+        midiClockBytes = returnBytesFromHexText("0xF8");
     }
 
     // If we change load in a profile, this is called
@@ -76,6 +89,15 @@ public class Midi {
         midiInputAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputAutoscroll",false);
         midiInputMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputMetronome",false);
         midiInputPad = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputPad",false);
+        // Because MIDI clock can be processor intensive, it isn't a user preference.  It must be turned on manually
+        midiClockSend = false;
+        midiClickTrackSend = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiClickTrackSend",false);
+        midiClickTrackChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackChannel",10);
+        midiClickTrackTick = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTick",76);
+        midiClickTrackTock = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTock",77);
+        midiClickTrackTickVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTickVolume",110);
+        midiClickTrackTockVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTockVolume",110);
+        setUpMidiTickTock();
     }
 
     public String getMidiAction(int which) {
@@ -146,7 +168,6 @@ public class Midi {
     private final String allOff = "7F B0 7B 00 ";
     private long noteOnDelta, noteOffDelta;
     private final String uuidBle = "03B80E5A-EDE8-4B33-A751-6CE34EC4C700";
-
 
     private final String midiFileHeader = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 ";
     //                                                                            80 = 128 ticks (hex)
@@ -1050,36 +1071,201 @@ public class Midi {
 
     // Scan for already connected Bluetooth MIDI devices
     public void setupBluetoothManager() {
-        bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
-        // If we haven't paired a device in the app, make sure suitable devices are unpaired now so we can discover them
-        if (bluetoothDevice == null) {
-            List<BluetoothDevice> connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
-            if (midiManager == null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (activity!=null && Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+            Log.d(TAG,"activity:"+activity);
+            //BluetoothManager bluetoothManager = c.getSystemService(BluetoothManager.class);
+            //bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
+            Object obj = activity.getSystemService(Context.BLUETOOTH_SERVICE);
+            if (obj!=null) {
+                bluetoothManager = (BluetoothManager) obj;
+            } else {
+                bluetoothManager = null;
+            }
+            Log.d(TAG,"bluetoothManager");
+            // If we haven't paired a device in the app, make sure suitable devices are unpaired now so we can discover them
+            List<BluetoothDevice> connectedDevices;
+            if (bluetoothDevice == null && bluetoothManager != null) {
+                try {
+                    connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    connectedDevices = null;
+                }
+                if (midiManager == null) {
                     setMidiManager((MidiManager) c.getSystemService(Context.MIDI_SERVICE));
                 }
-            }
-            for (BluetoothDevice device : connectedDevices) {
-                Log.d(TAG,"already connected device:"+device.getName());
-                // If this is a MIDI BLE device, then use it!
-                ParcelUuid[] uuids = device.getUuids();
-                Log.d(TAG,"uuids:"+Arrays.toString(uuids));
-                if (uuids != null) {
-                    for (ParcelUuid uuid : uuids) {
-                        if (uuid.toString().equalsIgnoreCase(uuidBle)) {
-                            Log.d(TAG,"This device is MIDI");
-                            // This is a MIDI device!
-                            if (midiDevice == null &&
-                                    device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                                // Already connected to device, but not set in the app
-                                // Unpair as the pairing needs to be initiated here
-                                bluetoothDevice = device;
-                                tryDisconnectBluetoothLE();
-                                Log.d(TAG,"disconnected, try pairing again");
-                                tryPairBluetoothLE();
+                if (connectedDevices != null && midiManager!=null) {
+                    for (BluetoothDevice device : connectedDevices) {
+                        Log.d(TAG, "already connected device:" + device.getName());
+                        // If this is a MIDI BLE device, then use it!
+                        ParcelUuid[] uuids = device.getUuids();
+                        Log.d(TAG, "uuids:" + Arrays.toString(uuids));
+                        if (uuids != null) {
+                            for (ParcelUuid uuid : uuids) {
+                                if (uuid.toString().equalsIgnoreCase(uuidBle)) {
+                                    Log.d(TAG, "This device is MIDI");
+                                    // This is a MIDI device!
+                                    if (midiDevice == null &&
+                                            device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                                        // Already connected to device, but not set in the app
+                                        // Unpair as the pairing needs to be initiated here
+                                        bluetoothDevice = device;
+                                        tryDisconnectBluetoothLE();
+                                        Log.d(TAG, "disconnected, try pairing again");
+                                        tryPairBluetoothLE();
+                                    }
+                                }
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+
+    // The MIDI metronome stuff
+    public void setUpMidiTickTock() {
+        // Build the MIDI hex strings for the tick-tock
+        midiClickTickMessageOn = buildMidiString("NO",midiClickTrackChannel,midiClickTrackTick,midiClickTrackTickVolume);
+        midiClickTickMessageOff = buildMidiString("NX",midiClickTrackChannel,midiClickTrackTick,0);
+        midiClickTockMessageOn = buildMidiString("NO",midiClickTrackChannel,midiClickTrackTock,midiClickTrackTockVolume);
+        midiClickTockMessageOff = buildMidiString("NX",midiClickTrackChannel,midiClickTrackTock,0);
+    }
+    public String getMidiClickTickMessageOn() {
+        return midiClickTickMessageOn;
+    }
+    public String getMidiClickTockMessageOn() {
+        return midiClickTockMessageOn;
+    }
+    public void setMidiClockSend(boolean midiClockSend) {
+        this.midiClockSend = midiClockSend;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClockSend",midiClockSend);
+        // Stop any existing midiClock
+        stopMidiClock();
+        if (midiClockSend) {
+            // Start the MIDI clock
+            startMidiClock();
+        }
+    }
+    public void setMidiClickTrackSend(boolean midiClickTrackSend) {
+        this.midiClickTrackSend = midiClickTrackSend;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClickTrackSend",midiClickTrackSend);
+    }
+    public void setMidiClickTrackChannel(int midiClickTrackChannel) {
+        this.midiClickTrackChannel = midiClickTrackChannel;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackChannel",midiClickTrackChannel);
+        setUpMidiTickTock();
+    }
+    public void setMidiClickTrackTick(int midiClickTrackTick) {
+        this.midiClickTrackTick = midiClickTrackTick;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackTick",midiClickTrackTick);
+        setUpMidiTickTock();
+    }
+    public void setMidiClickTrackTock(int midiClickTrackTock) {
+        this.midiClickTrackTock = midiClickTrackTock;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackTock",midiClickTrackTock);
+        setUpMidiTickTock();
+    }
+    public void setMidiClickTrackTickVolume(int midiClickTrackTickVolume) {
+        this.midiClickTrackTickVolume = midiClickTrackTickVolume;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackTickVolume",midiClickTrackTickVolume);
+        setUpMidiTickTock();
+    }
+    public void setMidiClickTrackTockVolume(int midiClickTrackTockVolume) {
+        this.midiClickTrackTockVolume = midiClickTrackTockVolume;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackTockVolume",midiClickTrackTockVolume);
+        setUpMidiTickTock();
+    }
+    public boolean getMidiClockSend() {
+        return midiClockSend;
+    }
+    public boolean getMidiClickTrackSend() {
+        return midiClickTrackSend;
+    }
+    public int getMidiClickTrackChannel() {
+        setUpMidiTickTock();
+        return midiClickTrackChannel;
+    }
+    public int getMidiClickTrackTick() {
+        setUpMidiTickTock();
+        return midiClickTrackTick;
+    }
+    public int getMidiClickTrackTock() {
+        setUpMidiTickTock();
+        return midiClickTrackTock;
+    }
+    public int getMidiClickTrackTickVolume() {
+        setUpMidiTickTock();
+        return midiClickTrackTickVolume;
+    }
+    public int getMidiClickTrackTockVolume() {
+        setUpMidiTickTock();
+        return midiClickTrackTockVolume;
+    }
+    public void sendMidiTick() {
+        if (midiClickTrackSend && midiDevice!=null) {
+            sendMidiHexSequence(midiClickTickMessageOn + "\n" + midiClickTockMessageOff);
+        }
+    }
+    public void sendMidiTock() {
+        if (midiClickTrackSend && midiDevice!=null) {
+            sendMidiHexSequence(midiClickTockMessageOn + "\n" + midiClickTickMessageOff);
+        }
+    }
+    public void calculateMidiClock(int tempo) {
+        // Use the song bpm to calculate the microsecond delay for the MIDI clock messages
+        // Each beat (quarter note) has 24 pulses.
+        // 1 minute = 60 seconds
+        // 60 seconds = 60000 milliseconds = 60000000
+        // Uses the formula:  delay = 60,000,000 / (24 × BPM)
+        // 60,000,000 / (24 × BPM).  Answer is in microseconds
+
+        if (tempo > 0) {
+            float calculation = Math.round((float) (60000000) / ((float) (24 * tempo)));
+            midiClockDelay = Math.round(calculation);
+            Log.d(TAG, "midiClockDelay:" + midiClockDelay);
+        } else {
+            float calculation = Math.round((float) (60000000) / ((float) (24 * 100)));
+            midiClockDelay = Math.round(calculation);
+            Log.d(TAG, "midiClockDelay:" + midiClockDelay);
+        }
+    }
+
+    private long currentTimeMicroSecs;
+    public void startMidiClock() {
+        if (midiClockSend && midiDevice!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                currentTimeMicroSecs = System.nanoTime() / 1000;
+                clock = () -> {
+                    // Expected time was startTime + midiClockDelay.
+                    // Any larger value is a delay that we remove from the next schedule
+                    long expectedTime = currentTimeMicroSecs + midiClockDelay;
+                    currentTimeMicroSecs = System.nanoTime()/1000;
+                    long latency = currentTimeMicroSecs - expectedTime;
+                    sendMidi(midiClockBytes);
+                    future = midiClockExecutor.schedule(clock, midiClockDelay-latency, TimeUnit.MICROSECONDS);
+                };
+                midiClockExecutor = Executors.newSingleThreadScheduledExecutor();
+                future = midiClockExecutor.schedule(clock, midiClockDelay, TimeUnit.MICROSECONDS);
+            }
+        }
+    }
+
+    public void stopMidiClock() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (midiClockExecutor!=null && future!=null) {
+                future.cancel(true);
+                midiClockExecutor.shutdown();
+                midiClockExecutor.shutdownNow();
+                Thread.currentThread().interrupt();
+                Log.d(TAG,"try shutdown");
+                Runnable endclock = () -> midiClockExecutor.shutdown();
+                try {
+                    midiClockExecutor.schedule(endclock, 100, TimeUnit.MILLISECONDS);
+                } catch (Exception e) {
+                    Log.d(TAG,"Exception stopping");
+                    midiClockExecutor.shutdownNow();
                 }
             }
         }

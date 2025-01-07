@@ -51,6 +51,15 @@
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/midiClock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_clock"
+                android:hint="@string/midi_clock_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

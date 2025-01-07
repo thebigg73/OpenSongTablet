@@ -1040,6 +1040,15 @@
                     app:uri="@string/deeplink_midi" />
             </fragment>
             <fragment
+                android:id="@+id/midiClock"
+                android:name="com.garethevans.church.opensongtablet.midi.MidiClockFragment"
+                android:label="settings_midi_clock"
+                tools:layout="@layout/settings_midi_clock">
+                <deepLink
+                    android:id="@+id/deepLinkMidiClock"
+                    app:uri="@string/deeplink_midi_clock" />
+            </fragment>
+            <fragment
                 android:id="@+id/midiOptionsFragment"
                 android:name="com.garethevans.church.opensongtablet.midi.MidiOptionsFragment"
                 android:label="options_midi"
@@ -1056,6 +1065,9 @@
                 <action
                     android:id="@+id/action_midiOptionsFragment_to_midiCustomActionsBottomSheet"
                     app:destination="@id/midiCustomActionsBottomSheet" />
+                <action
+                    android:id="@+id/action_midiOptionsFragment_to_midiClock"
+                    app:destination="@id/midiClock" />
             </fragment>
             <dialog
                 android:id="@+id/midiSongActionsBottomSheet"

@@ -235,6 +235,9 @@ public class MetronomeFragment extends Fragment {
         myView.tickVolume.setLabelFormatter(value -> ((int)value)+"%");
         myView.tockVolume.setLabelFormatter(value -> ((int)value)+"%");
 
+        // Set the midiClickTrack option
+        myView.midiClickTrackSwitch.setChecked(mainActivityInterface.getMidi().getMidiClickTrackSend());
+
         // Set the stop or start icon
         setStartStopIcon(mainActivityInterface.getMetronome().getIsRunning());
     }
@@ -264,6 +267,7 @@ public class MetronomeFragment extends Fragment {
         myView.tockVolume.addOnChangeListener(new MySliderChangeListener("metronomeTockVol"));
         myView.maxBars.addOnSliderTouchListener(new MySliderTouchListener("metronomeLength"));
         myView.maxBars.addOnChangeListener(new MySliderChangeListener("metronomeLength"));
+        myView.midiClickTrackSwitch.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMidi().setMidiClickTrackSend(b));
 
         myView.scrollView.setFabToAnimate(myView.startStopButton);
 

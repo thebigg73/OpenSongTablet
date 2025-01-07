@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/midiClockSend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_clock_master"
+                android:hint="@string/midi_clock_master_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/midiClickTrackSend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_click_track"
+                android:hint="@string/midi_click_track_info"
+                app:size="large"/>
+
+            <LinearLayout
+                android:id="@+id/midiClickTrackLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/midiClickTrackChannel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_click_track_channel"
+                    app:infoText="@string/midi_click_track_channel_info"
+                    android:valueFrom="1"
+                    android:valueTo="16"
+                    app:adjustable="true"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beat_tick"
+                    android:layout_marginBottom="8dp"/>
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/midiClickTrackTick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_note"
+                    app:infoText="@string/midi_click_track_tick_tock_info"
+                    android:valueFrom="0"
+                    android:valueTo="127"
+                    app:adjustable="true"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/midiClickTrackTickVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/volume"
+                    android:valueFrom="0"
+                    android:valueTo="127"
+                    app:adjustable="true"/>
+                <TableRow style="@style/DividerLine" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/beat_tock"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/midiClickTrackTock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_note"
+                    app:infoText="@string/midi_click_track_tick_tock_info"
+                    android:valueFrom="0"
+                    android:valueTo="127"
+                    app:adjustable="true"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/midiClickTrackTockVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/volume"
+                    android:valueFrom="0"
+                    android:valueTo="127"
+                    app:adjustable="true"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/midiClickTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/midi_test"
+                    app:icon="@drawable/play"/>
+            </LinearLayout>
+            <TableRow style="@style/DividerLine" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

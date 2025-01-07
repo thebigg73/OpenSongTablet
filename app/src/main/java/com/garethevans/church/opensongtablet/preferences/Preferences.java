@@ -244,6 +244,8 @@ public class Preferences extends Activity {
     // custom1_highlightChordColor      int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // custom1_highlightHeadingColor    int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     // custom1_hotZoneColor             int         The color to tint the hot zones (def: transparent/0x00000000);
+    // custom1_abcPopupColor            int         The background colour for the abc popup window (def:white)
+    // custom2_abcPopupTextColor        int         The text color for the abc popup windonw (def:black)
     // custom2_invertPDF                boolean     Should the PDF colours be inverted (def:false)
     // custom2_lyricsBackgroundColor    int         The color for the lyrics background in the custom2 theme
     // custom2_lyricsBridgeColor        int         The color for the background for the bridge in the custom2 theme
@@ -271,6 +273,8 @@ public class Preferences extends Activity {
     // custom2_highlightChordColor      int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // custom2_highlightHeadingColor    int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     // custom2_hotZoneColor             int         The color to tint the hot zones (def: transparent/0x00000000);
+    // custom2_abcPopupColor            int         The background colour for the abc popup window (def:vvlightgrey)
+    // custom2_abcPopupTextColor        int         The text color for the abc popup windonw (def:black)
     // customLogo                       String      The uri of the user logo for presentations (def:"")
     // customLogoSize                   float       Size of the custom logo (% of screen) (def:0.5f)
     // customPadAb                      String      Custom pad uri for the key specified
@@ -324,6 +328,8 @@ public class Preferences extends Activity {
     // dark_highlightChordColor         int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // dark_highlightHeadingColor       int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     // dark_hotZoneColor                int         The color to tint the hot zones (def: transparent/0x00000000);
+    // dark_abcPopupColor               int         The background colour for the abc popup window (def:white)
+    // dark_abcPopupTextColor           int         The text color for the abc popup windonw (def:black)
     // databaseLastUpdate               long        The timestamp the song folder was last indexed (def:-1)
     // defaultPresentationText          boolean     Should the 'Words and music by' and 'Used by permission' be included (def:true)
     // deviceId                         String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
@@ -432,6 +438,8 @@ public class Preferences extends Activity {
     // light_highlightChordColor        int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     // light_highlightHeadingColor      int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     // light_hotZoneColor               int         The color to tint the hot zones (def: transparent/0x00000000);
+    // light_abcPopupColor              int         The background colour for the abc popup window (def:vvlightgrey)
+    // light_abcPopupTextColor          int         The text color for the abc popup windonw (def:black)
     // lineSpacing                      float       The line spacing trim value to use (def:0.1f)
     // marginToolbarLeft                int         Any additional padding to the left of the actionbar content (def:0)
     // marginToolbarRight               int         Any additional padding to the right of the actionbar content (def:0)
@@ -463,6 +471,12 @@ public class Preferences extends Activity {
     // midiBoard{1-3}Slider{1-2}Channel int         The MIDI channel of the MIDI sliders 1-2 on the boards 1-3 (def:0)
     // midiBoard{1-3}Slider{1-2}CC      int         The CC number of the MIDI sliders 1-2 on the boards 1-3 (def:0)
     // midiBoard{1-3}Slider{1-2}Value   int         The value of the MIDI sliders 1-2 on the boards 1-3 (def:0)
+    // midiClickTrackSend               boolean     Should the metronome send midi click track information (def:false)
+    // midiClickTrackChannel            int         The MIDI channel to send the metronome MIDI click track (def:10)
+    // midiClickTrackTick               int         The PC number for the MIDI click track tick sound (def 76 == woodblock high)
+    // midiClickTrackTickVolume         int         The volume for the tick sound (def:110)
+    // midiClickTrackTock               int         The PC number for the MIDI click track tock sound (def 77 == woodblock low)
+    // midiClickTrackTockVolume         int         The volume for the tock sound (def:110)
     // midiInput                        boolean     Should the app listen for MIDI messages for songs/foot pedal (def:false)
     // midiInputChannelPedal            int         The default MIDI input channel to listen on for pedal controls (def:8)
     // midiInputChannelSong             int         The default MIDI input channel to listen on for song controls (def:9)

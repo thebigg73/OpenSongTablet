@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
+            android:paddingBottom="100dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -125,6 +126,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/audio"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/midiClickTrackSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_click_track"
+                    android:hint="@string/midi_click_track_info"
                     android:layout_marginBottom="16dp"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
