@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -71,6 +73,8 @@ public class ExportFragment extends Fragment {
     private StringBuilder combinedSetText;
     private String currentSongFolder, currentSongFile;
     private Song tempSong;
+    private Song thisSong;
+    private String pdfName;
 
     @Override
     public void onResume() {
@@ -93,6 +97,7 @@ public class ExportFragment extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         mainActivityInterface.getSongSheetHeaders().setForExport(true);
+        mainActivityInterface.getAbcNotation().setExportFragment(this);
     }
 
     @Nullable
@@ -876,6 +881,7 @@ public class ExportFragment extends Fragment {
                         location[1] = location[1]+"__"+key;
                     }
                 }
+                Log.d(TAG,"about to createOnTheFly:"+location[1]+".pdf");
                 createOnTheFly(tempSong,location[1]+".pdf");
             } else if (id.equals("ignore") || !likelyXML) {
                 songsProcessed++;
@@ -1143,6 +1149,10 @@ public class ExportFragment extends Fragment {
 
     public void createOnTheFlySections(Song thisSong, String pdfName) {
         // If we don't have any sections in the song, change the double line breaks into sections
+        // Keep a reference of the song/pdfName
+        this.thisSong = thisSong;
+        this.pdfName = pdfName;
+
         mainActivityInterface.getProcessSong().setPdfPrinting(true);
         mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
         if (thisSong==null) {
@@ -1166,6 +1176,10 @@ public class ExportFragment extends Fragment {
         }
 
         // Create the content for the section views.
+        // In case we have inline abc notation, reset those objects
+        mainActivityInterface.getAbcNotation().resetInlineAbcObjects();
+        mainActivityInterface.getAbcNotation().setAbcWebViewsDrawn(false);
+
         myView.hiddenSections.setBackgroundColor(Color.WHITE);
         mainActivityInterface.getMakePDF().setIsSetListPrinting(true);
         sectionViewsPDF = mainActivityInterface.getProcessSong().
@@ -1182,113 +1196,13 @@ public class ExportFragment extends Fragment {
                 if (myView.hiddenSections.getChildCount()>=sectionViewsPDF.size()) {
                     myView.hiddenSections.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     sectionsVTO.removeOnGlobalLayoutListener(this);
-                    int maxWidth = 0;
-                    for (int x=0; x<myView.hiddenSections.getChildCount(); x++) {
-                        View view = myView.hiddenSections.getChildAt(x);
-                        int width = view.getMeasuredWidth();
-                        int height = view.getMeasuredHeight();
-                        sectionViewWidthsPDF.add(width);
-                        sectionViewHeightsPDF.add(height);
-                        if (width>maxWidth) {
-                            maxWidth = width;
-                        }
-                    }
 
-                    boolean isSetFile = pdfName.equals(set_string +" " +setToExport+".pdf");
-
-                    // If we are exporting a setPNG and this is the set, take a bitmap!
-                    if (isSetFile && setPNG && !setPNGDone) {
-                        try {
-                            // The header should still be in place
-                            // Now take a bitmap of the layout
-                            // Check how many columns are used for the bitmap
-                            setPNGContent = Bitmap.createBitmap(maxWidth, myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
-                            Canvas canvas = new Canvas(setPNGContent);
-                            myView.previewLayout.draw(canvas);
-                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",pdfName.replace(".pdf",".png"));
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",pdfName.replace(".pdf",".png"));
-                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-                            mainActivityInterface.getStorageAccess().writeImage(outputStream,setPNGContent);
-                            if (uris==null) {
-                                uris = new ArrayList<>();
-                            }
-                            uris.add(uri);
-                            // Remove the header
-                            myView.hiddenHeader.removeAllViews();
-
-                            // Check the bitmap is released/cleared
-                            if (setPNGContent!=null) {
-                                setPNGContent.recycle();
-                            }
-
-                        } catch (OutOfMemoryError | Exception e) {
-                            e.printStackTrace();
-                        }
-                        setPNGDone = true;
-                    }
-
-                    // Now trigger the next step of preparing the pdf from the views created on the fly
-                    if (uris==null) {
-                        uris = new ArrayList<>();
-                    }
-                    if (mimeTypes==null) {
-                        mimeTypes = new ArrayList<>();
-                    }
-
-                    if ((png || image) && !isSetFile) {
-                        // Now take a bitmap of the layout for the song
-                        myView.previewLayout.setVisibility(View.VISIBLE);
-                        setPNGContent = Bitmap.createBitmap(myView.previewLayout.getWidth(), myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(setPNGContent);
-                        myView.previewLayout.draw(canvas);
-
-                        pngName = pdfName.replace(".pdf",".png");
-                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", pngName);
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", pngName);
-                        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-                        mainActivityInterface.getStorageAccess().writeImage(outputStream, setPNGContent);
-                        uris.add(uri);
-                        if (!mimeTypes.contains("image/png")) {
-                            mimeTypes.add("image/png");
-                        }
-                        myView.previewLayout.setVisibility(View.INVISIBLE);
-                        myView.hiddenHeader.removeAllViews();
-                    }
-
-                    // Now detach from this view (can only be shown in one layout)
-                    myView.hiddenSections.removeAllViews();
-
-                    // If we wanted a pdf (rather than png), add it
-
-                    if ((setPDF && isSetFile && !setPDFDone) || (!isSetFile && pdf)) {
-                        // Sets are always processed first, so mark as done
-                        setPDFDone = true;
-                        mainActivityInterface.getMakePDF().setSong(tempSong);
-                        mainActivityInterface.getMakePDF().getColumns(sectionViewsPDF,sectionViewWidthsPDF,sectionViewHeightsPDF);
-                        uris.add(mainActivityInterface.getMakePDF().createTextPDF(
-                                sectionViewsPDF, sectionViewWidthsPDF,
-                                sectionViewHeightsPDF, headerLayoutPDF,
-                                headerLayoutWidth, headerLayoutHeight,
-                                pdfName, null));
-
-                        if ((!isSetFile && !pdf) || (isSetFile && !setPDF)) {
-                            // Remove that uri as it was only created for an image screenshot
-                            uris.remove(uris.size()-1);
-                        } else {
-                            if (!mimeTypes.contains("application/pdf")) {
-                                mimeTypes.add("application/pdf");
-                            }
-                        }
-                    }
-                    if (screenShot) {
-                        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(true);
-                        createOnTheFlySectionsScreenshot(finalThisSong,pdfName);
-                        mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
-                    } else if (isPrint) {
-                        // We have exported a song as a print layout
-                        doPrint(false);
-                    } else {
-                        renderPDFSongs();
+                    // Proceed if we don't have inlineAbcObjects, or they have been measured
+                    // If there are inlineAbcObjects, we will hear back via the JSInterface that triggers abcFinished()
+                    Log.d(TAG,"inlineAbcObjects:"+mainActivityInterface.getAbcNotation().countInlineAbcObjects()+"  drawn:"+mainActivityInterface.getAbcNotation().getAbcWebViewsDrawn());
+                    if (mainActivityInterface.getAbcNotation().countInlineAbcObjects()==0 ||
+                                mainActivityInterface.getAbcNotation().getAbcWebViewsDrawn()) {
+                        measureSectionsAndContinue();
                     }
                 }
             }
@@ -1299,6 +1213,136 @@ public class ExportFragment extends Fragment {
             myView.hiddenSections.addView(sectionViewsPDF.get(x));
         }
     }
+
+    public void measureSectionsAndContinue() {
+        int maxWidth = 0;
+        for (int x=0; x<myView.hiddenSections.getChildCount(); x++) {
+            View view = myView.hiddenSections.getChildAt(x);
+            int width = view.getMeasuredWidth();
+            int height = view.getMeasuredHeight();
+            // If we have inlineAbcObjects, then fix these sections to use the ImageView version
+            if (mainActivityInterface.getAbcNotation().countInlineAbcObjects()>0) {
+                // Get the extra webView height for any webview in this section
+                for (InlineAbcObject inlineAbcObject:mainActivityInterface.getAbcNotation().getInlineAbcObjects()) {
+                    Log.d(TAG,"inlineAbcObject("+inlineAbcObject.getAbcItem()+")  containingItem("+inlineAbcObject.getAbcContainingItem()+")  size:"+inlineAbcObject.getAbcWidth()+"x"+inlineAbcObject.getAbcHeight());
+                    if (inlineAbcObject.getAbcContainingItem()==x && inlineAbcObject.getAbcHeight()>1) {
+                        // The inlineAbcWebView was hidden, so had no size
+                        // We are going to switch on the ImageView and need to size this to what the webView reported
+                        ImageView imageView = inlineAbcObject.getInlineAbcImageView(false);
+                        inlineAbcObject.drawTheImageView(imageView);
+                        imageView.setVisibility(View.VISIBLE);
+                        imageView.setBackgroundColor(Color.RED);
+                        // To make the scroll work properly, adjust the size
+                        height = height + inlineAbcObject.getAbcHeight();
+                        width = Math.max(width,inlineAbcObject.getAbcWidth());
+                    }
+                }
+            }
+            sectionViewWidthsPDF.add(width);
+            sectionViewHeightsPDF.add(height);
+            if (width>maxWidth) {
+                maxWidth = width;
+            }
+        }
+
+        boolean isSetFile = pdfName.equals(set_string +" " +setToExport+".pdf");
+
+        // If we are exporting a setPNG and this is the set, take a bitmap!
+        if (isSetFile && setPNG && !setPNGDone) {
+            try {
+                // The header should still be in place
+                // Now take a bitmap of the layout
+                // Check how many columns are used for the bitmap
+                setPNGContent = Bitmap.createBitmap(maxWidth, myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(setPNGContent);
+                myView.previewLayout.draw(canvas);
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",pdfName.replace(".pdf",".png"));
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",pdfName.replace(".pdf",".png"));
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                mainActivityInterface.getStorageAccess().writeImage(outputStream,setPNGContent);
+                if (uris==null) {
+                    uris = new ArrayList<>();
+                }
+                uris.add(uri);
+                // Remove the header
+                myView.hiddenHeader.removeAllViews();
+
+                // Check the bitmap is released/cleared
+                if (setPNGContent!=null) {
+                    setPNGContent.recycle();
+                }
+
+            } catch (OutOfMemoryError | Exception e) {
+                e.printStackTrace();
+            }
+            setPNGDone = true;
+        }
+
+        // Now trigger the next step of preparing the pdf from the views created on the fly
+        if (uris==null) {
+            uris = new ArrayList<>();
+        }
+        if (mimeTypes==null) {
+            mimeTypes = new ArrayList<>();
+        }
+
+        if ((png || image) && !isSetFile) {
+            // Now take a bitmap of the layout for the song
+            myView.previewLayout.setVisibility(View.VISIBLE);
+            setPNGContent = Bitmap.createBitmap(myView.previewLayout.getWidth(), myView.previewLayout.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(setPNGContent);
+            myView.previewLayout.draw(canvas);
+
+            pngName = pdfName.replace(".pdf",".png");
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", pngName);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", pngName);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+            mainActivityInterface.getStorageAccess().writeImage(outputStream, setPNGContent);
+            uris.add(uri);
+            if (!mimeTypes.contains("image/png")) {
+                mimeTypes.add("image/png");
+            }
+            myView.previewLayout.setVisibility(View.INVISIBLE);
+            myView.hiddenHeader.removeAllViews();
+        }
+
+        // Now detach from this view (can only be shown in one layout)
+        myView.hiddenSections.removeAllViews();
+
+        // If we wanted a pdf (rather than png), add it
+
+        if ((setPDF && isSetFile && !setPDFDone) || (!isSetFile && pdf)) {
+            // Sets are always processed first, so mark as done
+            setPDFDone = true;
+            mainActivityInterface.getMakePDF().setSong(tempSong);
+            mainActivityInterface.getMakePDF().getColumns(sectionViewsPDF,sectionViewWidthsPDF,sectionViewHeightsPDF);
+            uris.add(mainActivityInterface.getMakePDF().createTextPDF(
+                    sectionViewsPDF, sectionViewWidthsPDF,
+                    sectionViewHeightsPDF, headerLayoutPDF,
+                    headerLayoutWidth, headerLayoutHeight,
+                    pdfName, null));
+
+            if ((!isSetFile && !pdf) || (isSetFile && !setPDF)) {
+                // Remove that uri as it was only created for an image screenshot
+                uris.remove(uris.size()-1);
+            } else {
+                if (!mimeTypes.contains("application/pdf")) {
+                    mimeTypes.add("application/pdf");
+                }
+            }
+        }
+        if (screenShot) {
+            mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(true);
+            createOnTheFlySectionsScreenshot(thisSong,pdfName);
+            mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
+        } else if (isPrint) {
+            // We have exported a song as a print layout
+            doPrint(false);
+        } else {
+            renderPDFSongs();
+        }
+    }
+
     public void createOnTheFlySectionsScreenshot(Song thisSong, String pdfName) {
         // Prepare the song sheet header if required
         mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
@@ -1688,6 +1732,7 @@ public class ExportFragment extends Fragment {
     private void tidyOnClose() {
         try {
             if (mainActivityInterface!=null) {
+                mainActivityInterface.getAbcNotation().setExportFragment(null);
                 mainActivityInterface.getProcessSong().setPdfPrinting(false);
                 mainActivityInterface.getMakePDF().setIsSetListPrinting(false);
                 mainActivityInterface.getOpenSongSetBundle().setProgressText(null);
@@ -1705,5 +1750,13 @@ public class ExportFragment extends Fragment {
 
     public Song getTempSong() {
         return tempSong;
+    }
+
+    public void abcFinished() {
+        // We have rendered the inline ABC notation, so can continue with measuring
+        Log.d(TAG,"abcFinished");
+        myView.previewLayout.setVisibility(View.VISIBLE);
+        myView.hiddenSections.setVisibility(View.VISIBLE);
+        measureSectionsAndContinue();
     }
 }

@@ -325,7 +325,6 @@ public class MakePDF {
         String string = "Prepared by OpenSongApp (<a href='https://www.opensongapp.com'>https://www.opensongapp.com</a>)";
         footerPaint.getTextBounds(string,0,string.length(),bounds);
         pageCanvas.drawText(String.valueOf(Html.fromHtml(string)),cmToPx(margin_cm),docHeight-cmToPx(margin_cm)-cmToPx(footerHeight_cm),footerPaint);
-
         // The page numbering if there is more than 1 page needed
         if (totalPages>1) {
             bounds = new Rect();
@@ -509,6 +508,14 @@ public class MakePDF {
             pageCanvas.save();
             pageCanvas.translate(cmToPx(margin_cm),ypos);
             pageCanvas.scale(columnScale, columnScale);
+            //Log.d(TAG,"view:"+view.getClass()+"  width:"+view.getMeasuredWidth()+"  height:"+view.getMeasuredHeight());
+            //TextView logo = new TextView(c);
+            //logo.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), R.drawable.splash_logo,null));
+            //logo.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            //logo.setText("HHELLLOO");
+            //logo.setLayoutParams(new LinearLayout.LayoutParams(200,20));
+            //logo.setBackgroundColor(Color.RED);
+            //logo.draw(pageCanvas);
             view.draw(pageCanvas);
             pageCanvas.restore();
 

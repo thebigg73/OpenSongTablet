@@ -123,6 +123,7 @@ dependencies {
     implementation 'org.nanohttpd:nanohttpd:2.3.1'                                      // For a webserver to display songs for non OpenSongApp users
     implementation('com.vanniktech:android-image-cropper:4.6.0')                        // For image cropping/rotation
     implementation 'com.google.zxing:core:3.5.3'                                        // To generate QR code
+    implementation 'com.caverock:androidsvg-aar:1.4'                                    // To convert SVG from abc notation into ImageView
     implementation 'com.gu.android:toolargetool:0.3.2'                                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
     implementation 'androidx.exifinterface:exifinterface:1.3.7'                         // To get image exif data (orientation for camera)

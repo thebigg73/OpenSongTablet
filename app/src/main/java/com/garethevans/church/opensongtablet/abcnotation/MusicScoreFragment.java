@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.JavascriptInterface;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +25,14 @@ import java.util.Arrays;
 
 public class MusicScoreFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "MusicScoreFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsAbcnotationBinding myView;
-    private final String TAG = "MusicScoreFragment";
     private String music_score="", website_music_score="", settings_text="",
         global_text="", song_specific_text="", inline_text="", copied_text;
     private String webAddress;
+    private InlineAbcObject inlineAbcObject;
 
     @Override
     public void onResume() {
@@ -56,7 +57,7 @@ public class MusicScoreFragment extends Fragment {
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         // Get the song prefs so we can edit before saving
-        mainActivityInterface.getAbcNotation().prepareSongValues(mainActivityInterface.getSong(), false);
+        mainActivityInterface.getAbcNotation().prepareSongValues(mainActivityInterface.getSong());
 
         // Set up the views
         setViews();
@@ -79,17 +80,35 @@ public class MusicScoreFragment extends Fragment {
         }
     }
     private void setViews() {
-        mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView);
-        myView.abcWebView.addJavascriptInterface(new ABCWebViewJSInterface() , "AndroidApp");
+        // Create an InlineAbcObject
+        inlineAbcObject = new InlineAbcObject(getContext(),null,0,
+                mainActivityInterface.getMyThemeColors().getColorInt("white"));
+        inlineAbcObject.setAbcItem(0);
+        inlineAbcObject.setMainColor("#000000");
+        inlineAbcObject.setChordColor("#000000");
+
+        // Identify this WebView to the object so it can deal with the logic
+        inlineAbcObject.setInlineAbcWebView(myView.abcWebView);
+
+        // Call the webview to load the html file
+        inlineAbcObject.getInlineAbcWebView();
+
+        // Make it visible and touchable as the object hides the WebView in favour of the ImageView
+        myView.abcWebView.setVisibility(View.VISIBLE);
+        myView.abcWebView.setAllowTouch(true);
+
+        // Set up the edit text box
         myView.abcText.setText(mainActivityInterface.getAbcNotation().getSongAbc());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abcText);
         myView.abcText.setTextSize(18f);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.abcText,6);
 
+        // Set up the popupWidth
         myView.abcPopupWidth.setValue((int)(100*mainActivityInterface.getAbcNotation().getAbcPopupWidth()));
         myView.abcPopupWidth.setLabelFormatter(value -> ((int)value)+"%");
         myView.abcPopupWidth.setHint((int)myView.abcPopupWidth.getValue()+"%");
 
+        // Set up the include guitar tab option
         if (getContext()!=null) {
             myView.abcIncludeTab.setChecked(mainActivityInterface.getAbcNotation().getAbcIncludeTab());
             ExposedDropDownArrayAdapter tabIntrumentAdapter = new ExposedDropDownArrayAdapter(getContext(),
@@ -101,6 +120,7 @@ public class MusicScoreFragment extends Fragment {
             myView.tabLayout.setVisibility(mainActivityInterface.getAbcNotation().getAbcIncludeTab() ? View.VISIBLE : View.GONE);
         }
 
+        // Set up the inline staff width
         myView.abcInlineWidth.setValue(mainActivityInterface.getAbcNotation().getAbcInlineWidth());
         myView.abcInlineWidth.setHint(mainActivityInterface.getAbcNotation().getAbcInlineWidth()+"px");
         myView.abcInlineWidth.setLabelFormatter(new LabelFormatter() {
@@ -110,8 +130,9 @@ public class MusicScoreFragment extends Fragment {
                 return (int)value+"px";
             }
         });
-        myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
 
+        // Set up the transpose options
+        myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());
         myView.transposeSlider.setEnabled(!myView.autoTranspose.getChecked());
         myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
         myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
@@ -126,11 +147,13 @@ public class MusicScoreFragment extends Fragment {
             myView.overrideSettingsAbcSlider.setSliderPos(0);
         }
 
+        // Update the settings text as global or song specific
         String global = settings_text + " (" + global_text + ")";
         String local = settings_text + " (" + song_specific_text + ")";
         myView.settingsAbcGlobal.setText(global);
         myView.settingsAbcLocal.setText(local);
 
+        //  Set up autoshow abc notation
         myView.autoshowMusicScore.setChecked(mainActivityInterface.getAbcNotation().getAutoshowMusicScore());
     }
 
@@ -157,8 +180,9 @@ public class MusicScoreFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // Update the songAbc
+                // Update the songAbc in the object and class
                 mainActivityInterface.getAbcNotation().setSongAbc(s.toString());
+                inlineAbcObject.setAbcInlineText(s.toString());
                 // If we are autotransposing, figure that out too and update the songAbc
                 if (myView.autoTranspose.getChecked()) {
                     mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
@@ -166,7 +190,7 @@ public class MusicScoreFragment extends Fragment {
                 myView.transposeSlider.setValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose());
                 myView.transposeSlider.setHint(showPositiveValue(mainActivityInterface.getAbcNotation().getSongAbcTranspose()));
                 // Update the webview with the new values
-                mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+                inlineAbcObject.updateContent();
             }
         });
 
@@ -180,7 +204,7 @@ public class MusicScoreFragment extends Fragment {
             }
             myView.transposeSlider.setEnabled(!isChecked);
             // Update the webview with the new values
-            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+            inlineAbcObject.updateContent();
         }));
 
         myView.autoshowMusicScore.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getAbcNotation().setAutoshowMusicScore(isChecked)));
@@ -196,12 +220,12 @@ public class MusicScoreFragment extends Fragment {
                 mainActivityInterface.getAbcNotation().setAbcInlineWidth((int)value);
             }
             // Update the webview with the new values
-            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+            inlineAbcObject.updateContent();
         });
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
             myView.transposeSlider.setHint(showPositiveValue((int)value));
             // Update the webview with the new values
-            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+            inlineAbcObject.updateContent();
         });
         myView.abcPopupWidth.addOnSliderTouchListener(new MySliderTouchListener("abcPopupWidth"));
         myView.abcInlineWidth.addOnSliderTouchListener(new MySliderTouchListener("abcInlineWidth"));
@@ -232,7 +256,8 @@ public class MusicScoreFragment extends Fragment {
             myView.tabLayout.setVisibility(b ? View.VISIBLE:View.GONE);
             mainActivityInterface.getAbcNotation().setAbcIncludeTab(b);
             setTheStringValues();
-            mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+            // Update the webview with the new values
+            inlineAbcObject.updateContent();
         });
         myView.abcInstrumentTab.addTextChangedListener(new TextWatcher() {
             @Override
@@ -246,7 +271,8 @@ public class MusicScoreFragment extends Fragment {
                 String prefString = mainActivityInterface.getAbcNotation().getAbcInstrumentPrefFromNice(myView.abcInstrumentTab.getText().toString());
                 mainActivityInterface.getAbcNotation().setAbcInstrumentTab(prefString);
                 setTheStringValues();
-                mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+                // Update the webview with the new values
+                inlineAbcObject.updateContent();
             }
         });
     }
@@ -264,14 +290,19 @@ public class MusicScoreFragment extends Fragment {
             switch (prefName) {
                 case "abcPopupWidth":
                     mainActivityInterface.getAbcNotation().setAbcPopupWidth(myView.abcPopupWidth.getValue()/100f);
+                    // Update the webview with the new values
+                    inlineAbcObject.updateContent();
                     break;
                 case "abcTranspose":
                     // This isn't a preference, but a song specific value
                     mainActivityInterface.getAbcNotation().setSongAbcTranspose((int)myView.transposeSlider.getValue());
-                    mainActivityInterface.getAbcNotation().updateWebView(myView.abcWebView);
+                    // Update the webview with the new values
+                    inlineAbcObject.updateContent();
                     break;
                 case "abcInlineWidth":
                     mainActivityInterface.getAbcNotation().setAbcInlineWidth((int)myView.abcInlineWidth.getValue());
+                    // Update the webview with the new values
+                    inlineAbcObject.updateContent();
                     break;
             }
         }
@@ -315,25 +346,6 @@ public class MusicScoreFragment extends Fragment {
         myView.string6Tuning.setVisibility((showString && !string6.isEmpty()) ? View.VISIBLE:View.GONE);
 
         myView.tabLayout.setVisibility(showString ? View.VISIBLE:View.GONE);
-    }
-
-    // This bit is triggered from the Save button
-    private class ABCWebViewJSInterface {
-        @JavascriptInterface
-        public void returnSize(int webViewItem, int width, int height) {
-            Log.d(TAG,"do nothing as not required in this view");
-        }
-
-        @JavascriptInterface
-        public void receiveString(String myJsString) {
-            Log.d(TAG, "string: " + myJsString);
-        }
-
-
-        @JavascriptInterface
-        public void checkKey(String abcText) {
-            Log.d(TAG,"checkKey called");
-        }
     }
 
     private void doSave() {

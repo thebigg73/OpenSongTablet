@@ -374,6 +374,7 @@
     <string name="deeplink_margins" translatable="false">https://www.opensongapp.com/?p=settings/display/margins</string>
     <string name="deeplink_metronome" translatable="false">https://www.opensongapp.com/?p=settings/actions/metronome</string>
     <string name="deeplink_midi" translatable="false">https://www.opensongapp.com/?p=settings/midi</string>
+    <string name="deeplink_midi_clock" translatable="false">https://www.opensongapp.com/?p=settings/midi/midiclock</string>
     <string name="deeplink_move" translatable="false">https://www.opensongapp.com/?p=settings/storage/move</string>
     <string name="deeplink_nearby" translatable="false">https://www.opensongapp.com/?p=settings/nearby</string>
     <string name="deeplink_onsong" translatable="false">https://www.opensongapp.com/?p=settings/onsong</string>
@@ -1420,6 +1421,7 @@
     <string name="website_midi_actions" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-actions/</string>
     <string name="website_midi_board" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-board</string>
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
+    <string name="website_midi_clock" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-clock</string>
     <string name="website_midi_shorthand" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-shorthand</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
     <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
@@ -1472,4 +1474,15 @@
     <string name="abc_popup_width_info">The width of the popup window as a percentage of the screen width</string>
     <string name="abc_inline_width">ABC notation staff width</string>
     <string name="abc_inline_width_info">Setting the staff width too high will cause the abc notation to become very small and will also shrink any song lyrics when used inline</string>
+    <string name="set_items_not_found">Some set items were not found on your device (they may just have a different filename, spelling, etc).  You can manually edit these items (marked with an *) from the set menu after importing.</string>
+    <string name="music_score_popup">Music score (abc) popup window</string>
+    <string name="midi_clock">MIDI clock / click track</string>
+    <string name="midi_clock_info">Send MIDI clock information (tempo) to connected MIDI devices or send MIDI metronome click track</string>
+    <string name="midi_clock_master">Act as MIDI clock master</string>
+    <string name="midi_clock_master_info">If your songs have a tempo set and a MIDI connection has been made, OpenSongApp will send the tempo to all devices via a MIDI clock code.  This will default to 100bpm for songs with no tempo set.</string>
+    <string name="midi_click_track_channel">MIDI channel for click track</string>
+    <string name="midi_click_track_channel_info">The MIDI channel used by your click track or drum module</string>
+    <string name="midi_click_track_tick_tock_info">Not all MIDI percussion notes may be available on your device.  Please check your manual for the MIDI notes used for each sound.</string>
+    <string name="midi_click_track">Send MIDI click track</string>
+    <string name="midi_click_track_info">If you have a MIDI device connected and your songs have a tempo and time signature set, the app can send MIDI click track information as part of the metronome function.</string>
 </resources>

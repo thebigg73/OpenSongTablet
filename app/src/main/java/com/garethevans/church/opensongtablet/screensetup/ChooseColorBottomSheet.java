@@ -385,6 +385,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             case "stickyBackgroundColor":
             case "extraInfoBgColor":
             case "backgroundColor":
+            case "abcPopupColor":
                 title = background_string;
                 break;
             case "lyricsVerseColor":
@@ -414,6 +415,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             case "presoFontColor":
             case "extraInfoTextColor":
             case "stickyTextColor":
+            case "abcPopupTextColor":
                 title = text_string;
                 break;
             case "presoChordColor":

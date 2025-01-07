@@ -33,15 +33,21 @@ public class ABCPopup {
     private final String TAG = "ABCPopup";
     private final Handler handler = new Handler();
     private final Runnable autoCloseScoreRunnable = this::closeScore;
+    private InlineAbcObject inlineAbcObject;
+    private InlineAbcWebView inlineAbcWebView;
+    private View viewHolder;
 
     public ABCPopup(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        mainActivityInterface.getAbcNotation().setAbcPopup(this);
     }
+
     public void floatABC(View viewHolder, boolean forceShow) {
         // Force show is if we manually clicked on the score page button
         // If the popup is showing already, dismiss it
         // This is called when a song is about to load
+        this.viewHolder = viewHolder;
         if (popupWindow!=null && popupWindow.isShowing()) {
             try {
                 popupWindow.dismiss();
@@ -54,12 +60,13 @@ public class ABCPopup {
 
             // Let's display the popup music score
         } else {
-            mainActivityInterface.getAbcNotation().prepareSongValues(mainActivityInterface.getSong(),true);
+            mainActivityInterface.getAbcNotation().prepareSongValues(mainActivityInterface.getSong());
             // Set up the views
             getPositionAndSize();
             setupViews();
             setListeners();
-            popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
+            Log.d(TAG,"popUpWindow:"+popupWindow);
+            Log.d(TAG,"getting here in the PopUp");
 
             Log.d(TAG,"showing, posX="+posX+"  posY="+posY);
             // If we want to autohide the score, set a post delayed handler
@@ -75,6 +82,7 @@ public class ABCPopup {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setupViews() {
+        Log.d(TAG,"ABC PopUpViews");
         // The popup
         popupWindow = new PopupWindow(c);
 
@@ -83,21 +91,24 @@ public class ABCPopup {
             mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
         }
 
+        float[] splitColors = mainActivityInterface.getMyThemeColors().getAbcColorAndAlphaSplit();
+
+        Log.d(TAG,"color:"+splitColors[0]+"  alpha:"+splitColors[1]);
         // The main layout (FloatWindow) is just a custom linearlayout where I've overridden the performclick
         floatWindow = new FloatWindow(c);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100,100);
         floatWindow.setLayoutParams(layoutParams);
         floatWindow.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
                 R.drawable.popup_sticky,null);
         if (drawable!=null) {
-            drawable.setColor(mainActivityInterface.getMyThemeColors().getColorInt("white"));
+            drawable.setColor((int)splitColors[0]);
         }
         popupWindow.setBackgroundDrawable(null);
         floatWindow.setBackground(drawable);
+        floatWindow.setAlpha(splitColors[1]);
         floatWindow.setPadding(16,16,16,16);
 
         // Add the close button
@@ -112,14 +123,32 @@ public class ABCPopup {
         floatWindow.addView(closeButton);
 
         // Now the WebView for the music score
-        InlineAbcWebView inlineAbcWebView = new InlineAbcWebView(c);
-        inlineAbcWebView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        inlineAbcWebView.setLayoutParams(new LinearLayout.LayoutParams((int)(mainActivityInterface.getDisplayMetrics()[0] *
-                mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.95f)),
+        inlineAbcObject = new InlineAbcObject(c,null,0,
+                mainActivityInterface.getMyThemeColors().getColorInt("transparent"));
+        inlineAbcObject.setAbcItem(0);
+        inlineAbcObject.setIsPopup(true);
+        inlineAbcObject.setMainColor(mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor()));
+        inlineAbcObject.setChordColor(mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor()));
+
+        // Make it visible and touchable as the object hides the WebView in favour of the ImageView
+        inlineAbcWebView = new InlineAbcWebView(c);
+        inlineAbcWebView.setLayoutParams(new LinearLayout.LayoutParams(
+                mainActivityInterface.getAbcNotation().getAbcPopupScreenWidth(),
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        mainActivityInterface.getAbcNotation().setWebView(inlineAbcWebView);
+        inlineAbcObject.setInlineAbcWebView(inlineAbcWebView);
+        inlineAbcWebView.setVisibility(View.VISIBLE);
+        inlineAbcWebView.setAllowTouch(true);
+
         floatWindow.addView(inlineAbcWebView);
+        floatWindow.setAlpha(splitColors[1]);
         popupWindow.setContentView(floatWindow);
+        popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
+        inlineAbcObject.getInlineAbcWebView();
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            if (inlineAbcObject!=null) {
+                inlineAbcObject.updateContent();
+            }
+        },1000);
     }
 
     private void setListeners() {
@@ -183,5 +212,20 @@ public class ABCPopup {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setMeasured(int width, int height) {
+        Log.d(TAG,"setMeasured("+width+","+height+")");
+        inlineAbcWebView.post(() -> {
+            if (inlineAbcObject!=null) {
+                inlineAbcObject.setAbcWidth(width);
+                inlineAbcObject.setAbcHeight(height);
+                inlineAbcObject.setAbcMeasured(true);
+            }
+
+            if (inlineAbcWebView!=null) {
+                inlineAbcWebView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

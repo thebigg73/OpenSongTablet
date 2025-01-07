@@ -1,19 +1,18 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
+import com.garethevans.church.opensongtablet.export.ExportFragment;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class ABCNotation {
@@ -24,13 +23,23 @@ public class ABCNotation {
     private String songTitle, songKey, songAbc, songTimeSig, abcInstrumentTab;
     private int songAbcTranspose;
     private float abcPopupWidth;
-    private boolean isPopup, abcAutoTranspose, autoshowMusicScore, abcIncludeTab;
+    private boolean abcAutoTranspose;
+    private boolean autoshowMusicScore;
+    private boolean abcIncludeTab;
+    private boolean abcWebViewsDrawn = false;
     private final MainActivityInterface mainActivityInterface;
     private final String guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle;
     private int abcInlineWidth;
+    @SuppressWarnings("FieldCanBeLocal")
     private final String inlineAbcLineIndicator = ";#:";
+    private final Context c;
+    private ArrayList<InlineAbcObject> inlineAbcObjects = new ArrayList<>();
+    private int secondaryInlineAbcObjectPosition = 0;
+    private ABCPopup abcPopup;
+    private ExportFragment exportFragment;
 
     public ABCNotation(Context c) {
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         guitar = c.getString(R.string.guitar);
         guitar_drop_d = c.getString(R.string.guitar_drop_d);
@@ -57,9 +66,19 @@ public class ABCNotation {
         abcInlineWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("abcInlineWidth",480);
     }
 
+    // If we need to update the popup, we need a reference to it
+    public void setAbcPopup(ABCPopup abcPopup) {
+        this.abcPopup = abcPopup;
+    }
+
+    public void allowPopupToContinue(int width, int height) {
+        Log.d(TAG,"abcPopup:"+abcPopup);
+        if (abcPopup!=null) {
+            abcPopup.setMeasured(width, height);
+        }
+    }
     // This is set when a song is set for editing or displaying the Abc notation
-    public void prepareSongValues(Song thisSong, boolean isPopup) {
-        this.isPopup = isPopup;
+    public void prepareSongValues(Song thisSong) {
         songTitle = thisSong.getTitle();
         songKey = thisSong.getKey();
         songAbc = thisSong.getAbc();
@@ -100,33 +119,10 @@ public class ABCNotation {
                         return super.onConsoleMessage(consoleMessage);
                     }
                 });
-                if (inlineAbcWebView.getTag()!=null && inlineAbcWebView.getTag().toString().startsWith("abc:")) {
-                    inlineAbcWebView.setWebViewClient(new MyWebViewClient(true));
-                } else {
-                    inlineAbcWebView.setWebViewClient(new MyWebViewClient(false));
-                }
                 inlineAbcWebView.loadUrl("file:///android_asset/ABC/abc.html");
 
             }
         });
-    }
-
-    // Listener for the webview drawing the abc score
-    private class MyWebViewClient extends WebViewClient {
-
-        boolean isInline;
-        MyWebViewClient(boolean isInline) {
-            this.isInline = isInline;
-        }
-
-        @Override
-        public void onPageFinished(WebView webView, String url) {
-            super.onPageFinished(webView, url);
-            updateContent((InlineAbcWebView) webView);
-
-            // Set to view only
-            webView.evaluateJavascript("javascript:displayOnly();",null);
-        }
     }
 
     // Return the songAbc
@@ -160,81 +156,11 @@ public class ABCNotation {
         }
     }
 
-
     // Save the edits to the song XML file (and in the database)
     public void saveAbcContent(MainActivityInterface mainActivityInterface, Song thisSong) {
         thisSong.setAbc(songAbc);
         thisSong.setAbcTranspose(String.valueOf(songAbcTranspose));
         mainActivityInterface.getSaveSong().updateSong(thisSong, false);
-    }
-
-
-    // Update the output display for the abc score
-    private void updateContent(InlineAbcWebView inlineAbcWebView) {
-        String newContent;
-        boolean isInline = false;
-        int webViewNum = 0;
-        // Encode the abc text for passing to the webview
-        if (inlineAbcWebView.getTag()!=null) {
-            isInline = true;
-            InlineAbcWebViewTagObject inlineAbcWebViewTagObject = (InlineAbcWebViewTagObject) inlineAbcWebView.getTag();
-            String content = inlineAbcWebViewTagObject.getAbc().substring(4);
-            content = content.replace(";#:", "");
-            content = content.replace("\\n", "__NEWLINE__");
-            newContent = Uri.encode(content, "UTF-8").replace("'", "&apos;");
-            webViewNum = inlineAbcWebViewTagObject.getWebViewNum();
-
-        } else {
-            try {
-                newContent = Uri.encode(songAbc,"UTF-8").replace("'","&apos;");
-            } catch  (Exception e) {
-                e.printStackTrace();
-                newContent = songAbc;
-            }
-        }
-
-        if (isInline) {
-            // Display for song view
-            inlineAbcWebView.evaluateJavascript("javascript:setWebView("+webViewNum+");",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setMainColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsTextColor())+"');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setChordColor('"+mainActivityInterface.getMyThemeColors().getNonAlphaHexColorFromInt(mainActivityInterface.getMyThemeColors().getLyricsChordsColor())+"');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:displayOnly();",null);
-
-        } else if (isPopup) {
-            // PopUp ABC window
-            inlineAbcWebView.evaluateJavascript("javascript:setWebView(0);",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setWidth("+(int)(abcInlineWidth * abcPopupWidth)+")",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setMainColor('#000000');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setChordColor('#000000');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:displayOnly();",null);
-
-        } else {
-            // ABC editor fragment
-            inlineAbcWebView.evaluateJavascript("javascript:setWebView(0);",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setResponsive('resize');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setWidth("+abcInlineWidth+");",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setMainColor('#000000');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:setChordColor('#000000');",null);
-            inlineAbcWebView.evaluateJavascript("javascript:displayAndEdit();",null);
-        }
-
-        inlineAbcWebView.evaluateJavascript("javascript:setIsForPresentation("+inlineAbcWebView.getIsForPresentation()+");",null);
-        updateWebViewVariables(inlineAbcWebView, newContent);
-    }
-
-    private void updateWebViewVariables(InlineAbcWebView inlineAbcWebView, String newContent) {
-        inlineAbcWebView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
-        inlineAbcWebView.evaluateJavascript("javascript:setHideTab(" + !abcIncludeTab + ");", null);
-        inlineAbcWebView.evaluateJavascript("javascript:setTranspose(" + songAbcTranspose + ");",null);
-        inlineAbcWebView.evaluateJavascript("javascript:setInstrument('" + getAbcIntrumentTabForABCJS()+"');",null);
-        String[] strings = getAbcInstrumentTuningABCJS();
-        inlineAbcWebView.evaluateJavascript("javascript:setTuning('"+strings[6]+"','"+strings[5]+"','"+strings[4]+"','"+strings[3]+"','"+strings[2]+"','"+strings[1]+"');",null);
-        inlineAbcWebView.evaluateJavascript("javascript:setLabel('" + getAbcInstrumentLabelABCJS()+"');",null);
-
-        inlineAbcWebView.evaluateJavascript("javascript:initEditor()",null);
     }
 
     // Using the song key and abc key, decide an automatic transpose value
@@ -351,12 +277,6 @@ public class ABCNotation {
         return string;
     }
 
-
-    // Tell the inlineAbcWebView to update
-    public void updateWebView(InlineAbcWebView inlineAbcWebView) {
-        updateContent(inlineAbcWebView);
-    }
-
     // Get the list of ABC tab instruments
     public String[] getABCInstruments() {
         return new String[]{guitar, guitar_drop_d, guitar_open_g, banjo4, banjo5, mandolin, cavaquinho, ukulele, bass4, bass5, violin, fiddle};
@@ -405,6 +325,9 @@ public class ABCNotation {
     }
     public float getAbcPopupWidth() {
         return abcPopupWidth;
+    }
+    public int getAbcPopupScreenWidth() {
+        return Math.round(c.getResources().getDisplayMetrics().widthPixels * abcPopupWidth);
     }
     public boolean getAutoshowMusicScore() {
         return autoshowMusicScore;
@@ -567,5 +490,55 @@ public class ABCNotation {
     public void setAbcInlineWidth(int abcInlineWidth) {
         this.abcInlineWidth = abcInlineWidth;
         mainActivityInterface.getPreferences().setMyPreferenceInt("abcInlineWidth",abcInlineWidth);
+    }
+    public void setPopupAbcReady(int width, int height) {
+        if (abcPopup != null) {
+            abcPopup.setMeasured(width,height);
+        }
+    }
+
+    public void resetInlineAbcObjects() {
+        inlineAbcObjects = new ArrayList<>();
+        Log.d(TAG,"RESETTING THE INLINE ABC VIEWS");
+    }
+
+    public int countInlineAbcObjects() {
+        return inlineAbcObjects.size();
+    }
+
+    public void addInlineAbcObject(InlineAbcObject inlineAbcObject) {
+        int item = countInlineAbcObjects();
+        inlineAbcObject.setAbcItem(item);
+        inlineAbcObjects.add(inlineAbcObject);
+    }
+
+    public ArrayList<InlineAbcObject> getInlineAbcObjects() {
+        return inlineAbcObjects;
+    }
+
+    public void setAbcWebViewsDrawn(boolean abcWebViewsDrawn) {
+        this.abcWebViewsDrawn = abcWebViewsDrawn;
+    }
+
+    public boolean getAbcWebViewsDrawn() {
+        return abcWebViewsDrawn;
+    }
+
+    public void setSecondaryInlineAbcObjectPosition(int secondaryInlineAbcObjectPosition) {
+        this.secondaryInlineAbcObjectPosition = secondaryInlineAbcObjectPosition;
+    }
+    public int getSecondaryInlineAbcObjectPosition() {
+        return secondaryInlineAbcObjectPosition;
+    }
+    public void increaseSecondaryInlineAbcObjectPosition() {
+        secondaryInlineAbcObjectPosition ++;
+    }
+
+    public void setExportFragment(ExportFragment exportFragment) {
+        this.exportFragment = exportFragment;
+    }
+
+    public ExportFragment getExportFragment() {
+        return exportFragment;
     }
 }

@@ -35,7 +35,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
+import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -846,6 +846,9 @@ public class SecondaryDisplay extends Presentation {
         secondaryHeights = null;
         secondaryHeights = new ArrayList<>();
 
+        // If we use any inline abc content, we access the objects already created in turn
+        mainActivityInterface.getAbcNotation().setSecondaryInlineAbcObjectPosition(0);
+
         // Decide if this is an XML and proceed accordingly
         // PDF and IMG files don't need this
         if (mainActivityInterface.getSong().getFiletype().equals("XML") &&
@@ -866,71 +869,69 @@ public class SecondaryDisplay extends Presentation {
     }
 
     private void setSectionViews() {
-        mainActivityInterface.resetInlineAbcWebViewsSecondary();
-        secondaryViews = mainActivityInterface.getProcessSong().
-                setSongInLayout(mainActivityInterface.getSong(),
-                        false, true);
+        try {
+            secondaryViews = mainActivityInterface.getProcessSong().
+                    setSongInLayout(mainActivityInterface.getSong(),
+                            false, true);
 
-        Log.d(TAG,"webView count:"+mainActivityInterface.getInlineAbcWebViewsSecondary().size());
-        // Draw them to the screen test layout for measuring
-        waitingOnViewsToDraw = secondaryViews.size();
-        for (View view : secondaryViews) {
-            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    // Remove this listener
-                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    // In case rogue calls get fired, only proceed if we should
-                    if (waitingOnViewsToDraw > 0) {
-                        waitingOnViewsToDraw--;
-                        if (waitingOnViewsToDraw == 0) {
-                            // If we have webViews for inline ABC, we need to deal with those sizes first
-                            if (mainActivityInterface.countInlineAbcWebViewsSecondary()==0) {
-                                // This was the last item, so move on
+            Log.d(TAG, "webView count:" + mainActivityInterface.getAbcNotation().getInlineAbcObjects().size());
+            // Draw them to the screen test layout for measuring
+            waitingOnViewsToDraw = secondaryViews.size();
+            for (View view : secondaryViews) {
+                view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        // Remove this listener
+                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        // In case rogue calls get fired, only proceed if we should
+                        if (waitingOnViewsToDraw > 0) {
+                            waitingOnViewsToDraw--;
+                            if (waitingOnViewsToDraw == 0) {
+                                // If we have webViews for inline ABC, we need to deal with those sizes first
                                 viewsAreReady();
                             }
+                        } else {
+                            waitingOnViewsToDraw = 0;
                         }
-                    } else {
-                        waitingOnViewsToDraw = 0;
                     }
-                }
-            });
-            myView.testLayout.addView(view);
-            myView.testLayout.requestLayout();
+                });
+                myView.testLayout.addView(view);
+                myView.testLayout.requestLayout();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    public void setInlineAbcWebViewsDrawnSecondary(boolean inlineAbcWebViewsDrawnSecondary) {
-        this.inlineAbcWebViewsDrawnSecondary = inlineAbcWebViewsDrawnSecondary;
     }
 
     // We have abc webviews, so need to resize
     public void inlineAbcWebViewsDrawnSecondary() {
-        Log.d(TAG,"inlineAbcWebViewsDrawnSecondary()");
+        /*Log.d(TAG,"inlineAbcWebViewsDrawnSecondary()");
         Log.d(TAG,"inlineAbcWebViewsDrawnSecondary:"+inlineAbcWebViewsDrawnSecondary);
         if (!inlineAbcWebViewsDrawnSecondary) {
             inlineAbcWebViewsDrawnSecondary = true;
             mainActivityInterface.getMainHandler().post(this::viewsAreReady);
-        }
+        }*/
     }
 
     public void viewsAreReady() {
         Log.d(TAG,"viewsAreReady() and can measure");
         // The views are ready so prepare to create the song page
+        Log.d(TAG,"secondaryViews.size():"+secondaryViews.size());
         for (int x = 0; x < secondaryViews.size(); x++) {
             int width = secondaryViews.get(x).getMeasuredWidth();
             int height = secondaryViews.get(x).getMeasuredHeight();
-            if (mainActivityInterface.countInlineAbcWebViewsSecondary()>0) {
-                // Get the extra webView height for any webview in this section
-                for (InlineAbcWebView inlineAbcWebView:mainActivityInterface.getInlineAbcWebViewsSecondary()) {
-                    if (inlineAbcWebView.getWebViewContainingViewItem()==x && inlineAbcWebView.getWebViewHeight()>1) {
-                        int origWebViewHeight = inlineAbcWebView.getHeight();
-                        int heightOfWebView = inlineAbcWebView.getWebViewHeight();
-                        int widthOfWebView = inlineAbcWebView.getWebViewWidth();
-                        float scaleWebViewSize = (float)mainActivityInterface.getAbcNotation().getAbcInlineWidth()/(float)widthOfWebView;
-                        int heightToAdd = (int)((heightOfWebView*scaleWebViewSize) - origWebViewHeight);
-                        inlineAbcWebView.setNewSizes((int)(widthOfWebView*scaleWebViewSize),(int)(heightOfWebView*scaleWebViewSize));
-                        height = height + heightToAdd;
+            Log.d(TAG,"mainActivityInterface.getAbcNotation().countInlineAbcObjects():"+mainActivityInterface.getAbcNotation().countInlineAbcObjects());
+            if (mainActivityInterface.getAbcNotation().countInlineAbcObjects()>0) {
+                //Get the extra webView height for any webview in this section
+                for (InlineAbcObject inlineAbcObject:mainActivityInterface.getAbcNotation().getInlineAbcObjects()) {
+                    Log.d(TAG,"inlineAbcObject.getAbcContainingItem():"+inlineAbcObject.getAbcContainingItem()+"  x:"+x);
+                    if (inlineAbcObject.getAbcContainingItem()==x && inlineAbcObject.getAbcHeight()>1) {
+                        // The inlineAbcWebView was hidden, so had no size
+                        // We are going to switch on the ImageView and need to size this to what the webView reported
+                        inlineAbcObject.drawTheImageView(inlineAbcObject.getInlineAbcImageView(true));
+                        // To make the scroll work properly, adjust the size
+                        //height = height + inlineAbcObject.getAbcHeight();
+                        //width = Math.max(width,inlineAbcObject.getAbcWidth());
                     }
                 }
             }
@@ -982,10 +983,10 @@ public class SecondaryDisplay extends Presentation {
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
                 !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                viewsAreReady();
-                showAllSections();
-            },1000);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    viewsAreReady();
+                    showAllSections();
+                }, 1000);
 
         } else {
             measureAvailableSizes();

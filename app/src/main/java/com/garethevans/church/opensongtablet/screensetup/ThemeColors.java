@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ThemeColors {
@@ -50,7 +49,7 @@ public class ThemeColors {
     private int pdfTextColor, pdfCapoColor, pdfBackgroundColor, pdfVerseColor, pdfChorusColor,
             pdfBridgeColor, pdfCommentColor, pdfPreChorusColor, pdfTagColor, pdfChordsColor,
             pdfCustomColor, pdfHighlightChordColor, pdfHighlightHeadingColor;
-
+    private int abcPopupColor, abcPopupTextColor;
 
     public ThemeColors(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -142,6 +141,12 @@ public class ThemeColors {
     }
     public void setHotZoneColor(int i) {
         this.hotZoneColor = i;
+    }
+    public void setAbcPopupColor(int i) {
+        this.abcPopupColor = i;
+    }
+    public void setAbcPopupTextColor(int i) {
+        this.abcPopupTextColor = i;
     }
     
     // Get the values
@@ -247,6 +252,12 @@ public class ThemeColors {
     public int getHotZoneColor() {
         return hotZoneColor;
     }
+    public int getAbcPopupColor() {
+        return abcPopupColor;
+    }
+    public int getAbcPopupTextColor() {
+        return abcPopupTextColor;
+    }
 
     public void getDefaultColors() {
         themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
@@ -332,6 +343,8 @@ public class ThemeColors {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChordsColor",      yellow);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsCustomColor",      vdarkyellow);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoShadowColor",       translucentDark);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupColor",          white);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupTextColor",      black);
                 break;
 
             case "light_":
@@ -347,6 +360,8 @@ public class ThemeColors {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChordsColor",      darkblue);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsCustomColor",      lightishcyan);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoShadowColor",       translucentLight);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupColor",          vvlightgrey);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupTextColor",      black);
                 break;
 
             case "custom1_":
@@ -362,6 +377,8 @@ public class ThemeColors {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChordsColor",      white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsCustomColor",      black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoShadowColor",       translucentDark);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupColor",          white);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupTextColor",      black);
                 break;
 
             case "custom2_":
@@ -377,6 +394,8 @@ public class ThemeColors {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChordsColor",      black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsCustomColor",      white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoShadowColor",       translucentLight);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupColor",          vvlightgrey);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"abcPopupTextColor",      black);
                 break;
 
         }
@@ -410,6 +429,8 @@ public class ThemeColors {
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightHeadingColor", transparent));
         setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_hotZoneColor",                   transparent));
+        setAbcPopupColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_abcPopupColor",                 white));
+        setAbcPopupTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_abcPopupTextColor",         black));
     }
     private void setThemeLight() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("light_invertPDF",             false));
@@ -439,6 +460,8 @@ public class ThemeColors {
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightHeadingColor", transparent));
         setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_hotZoneColor",                   transparent));
+        setAbcPopupColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_abcPopupColor",                 vvlightgrey));
+        setAbcPopupTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_abcPopupTextColor",         black));
     }
     private void setThemeCustom1() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom1_invertPDF",           true));
@@ -468,7 +491,8 @@ public class ThemeColors {
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightChordColor",   transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightHeadingColor",transparent));
         setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_hotZoneColor",                 transparent));
-
+        setAbcPopupColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_abcPopupColor",               white));
+        setAbcPopupTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_abcPopupTextColor",       black));
     }
     private void setThemeCustom2() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom2_invertPDF",           false));
@@ -498,8 +522,9 @@ public class ThemeColors {
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightChordColor",   transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_highlightHeadingColor",transparent));
         setHotZoneColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_hotZoneColor",                 transparent));
+        setAbcPopupColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_abcPopupColor",               vvlightgrey));
+        setAbcPopupTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_abcPopupTextColor",       black));
     }
-
 
     public String getPdfTheme() {
         if (pdfTheme==null) {
@@ -585,7 +610,6 @@ public class ThemeColors {
     public void setPDFHighlightHeadingColor(int i) {
         this.pdfHighlightHeadingColor = i;
     }
-
 
 
     private void setPDFThemeDefault() {
@@ -719,6 +743,10 @@ public class ThemeColors {
                 return getHighlightHeadingColor();
             case "hotZoneColor":
                 return getHotZoneColor();
+            case "abcPopupColor":
+                return abcPopupColor;
+            case "abcPopupTextColor":
+                return abcPopupTextColor;
         }
     }
     private String which;
@@ -741,7 +769,8 @@ public class ThemeColors {
     private final int translucentDark = 0x66000000;
     private final int translucentLight = 0x66ffffff;
     @SuppressWarnings("FieldCanBeLocal")
-    private final int vlightgrey = R.color.vlightgrey;
+    private final int vlightgrey = 0xffbbbbbb;
+    private final int vvlightgrey = 0xffeeeeee;
     @SuppressWarnings("FieldCanBeLocal")
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
@@ -816,6 +845,10 @@ public class ThemeColors {
                 break;
             case "vlightgrey":
                 color = vlightgrey;
+                break;
+            case "vvlightgrey":
+                color = vvlightgrey;
+                break;
         }
         return color;
     }
@@ -874,5 +907,21 @@ public class ThemeColors {
         return pageButtonsColor;
     }
 
+    public String getHexFromIntNoAlpha(int intValue) {
+        // Returns an 8 character hex code for int=0-255;
+        int red = Color.red(intValue);
+        int green = Color.green(intValue);
+        int blue = Color.blue(intValue);
 
+        return String.format("%08X", (intValue));
+    }
+
+    public float[] getAbcColorAndAlphaSplit() {
+        // Repeat for the sticky notes
+        int alpha = Color.alpha(abcPopupColor);
+        int red = Color.red(abcPopupColor);
+        int green = Color.green(abcPopupColor);
+        int blue = Color.blue(abcPopupColor);
+        return new float[] {Color.argb(255,red,green,blue),(float)(alpha / 255f)};
+    }
 }

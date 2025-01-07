@@ -56,7 +56,6 @@ svg {
         // Get the root element
         var root = document.querySelector(':root');
         var whichView = -1;
-        var editmode = false;
         var s = "";
         var w = 720;
         var t = 0;
@@ -79,11 +78,7 @@ svg {
         var midioptions = {};
         var reported = false;
         var padding = 4;
-        var isForPresentation = false;
-
-        function setEditMode(mode) {
-            editmode = mode;
-        }
+        var isPopup = false;
 
         function updateABC(s) {
             var unencoded = decodeURIComponent(s);
@@ -118,16 +113,6 @@ svg {
 
         function setResponsive(responsive) {
             resp = responsive;
-        }
-
-        function checkKey() {
-            var myJsString = document.getElementById("abc").value;
-            AndroidApp.checkKey(myJsString);
-        }
-
-        function getTextVal() {
-            var myJsString = document.getElementById("abc").value;
-            AndroidApp.receiveString(myJsString);
         }
 
         function setTranspose(halfSteps) {
@@ -168,6 +153,10 @@ svg {
             my_label = tabLabel;
         }
 
+        function setIsPopup(p) {
+            isPopup = p;
+        }
+
         function displayOnly() {
             document.getElementById("bottom").style.display = "none";
             document.getElementById("warnings").style.display = "none";
@@ -191,27 +180,14 @@ svg {
             whichView = whichWebView;
         }
 
-        function setIsForPresentation(presentation) {
-            isForPresentation = presentation;
-            console.log("isForPresentation set to:"+isForPresentation);
-        }
-
         var ro = new ResizeObserver( entries => {
             for (let entry of entries) {
                 var width = entry.contentRect.width;
                 var height = entry.contentRect.height;
                 if (height>1 && !reported) {
                     reported = true;
-                    if (isForPresentation) {
-                        console.log("sending returnSizeSecondary");
-                        setTimeout(function() {
-                            AndroidApp.returnSizeSecondary(whichView,width,height+padding);
-                        },2000);
-
-                    } else {
-                        console.log("sending returnSize non secondary");
-                        AndroidApp.returnSize(whichView,width,height+padding);
-                    }
+                    console.log("sending returnSize non secondary");
+                    AndroidApp.returnSize(whichView,width,height+padding,document.getElementById("paper").innerHTML,isPopup);
                 }
             }
         });
@@ -236,6 +212,7 @@ svg {
         }
 
         function initEditor() {
+            console.log("initEditor() running");
             updateOptions();
             getMyScrollHeight();
             if (my_hideTab==true) {
@@ -267,9 +244,7 @@ svg {
                     el.setAttribute("stroke", maincolor);
                 }
             });
-
         }
-
     </script>
 </head>
 <body>

@@ -38,6 +38,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
@@ -91,7 +92,6 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customslides.CustomSlideFragment;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
-import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
@@ -348,10 +348,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info ="";
-
-    // For ABC webview size calculations
-    ArrayList<InlineAbcWebView> inlineAbcWebViews = new ArrayList<>();
-    ArrayList<InlineAbcWebView> inlineAbcWebViewsSecondary = new ArrayList<>();
 
     // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
     //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
@@ -1269,6 +1265,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     .build();
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
             NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
+
+            try {
+                TooltipCompat.setTooltipText(myView.drawerLayout, null);
+                int size = myView.myToolbar.getChildCount();
+                for (int i = 0; i < size; i++) {
+                    View child = myView.myToolbar.getChildAt(i);
+                    if (child != null) {
+                        Log.d(TAG, "setting child(" + i + ") tooltip as null");
+                        TooltipCompat.setTooltipText(child, null);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
                 // IV - We are changing so adjust option menu elements
                 if (globalMenuItem != null) {
@@ -1312,6 +1323,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                     }
                     myView.myToolbar.setNavigationOnClickListener(view -> {
+                        TooltipCompat.setTooltipText(view,null);
                         int aboutToGoTo = -1;
                         if (navController.getPreviousBackStackEntry()!=null) {
                             aboutToGoTo = navController.getPreviousBackStackEntry().getDestination().getId();
@@ -2208,7 +2220,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
                         break;
                 }
+                // "removing" tooltip
+                TooltipCompat.setTooltipText(tab.view, null);
             }).attach();
+
+            // Still try to remove tooltips
+            for (int i = 0; i < tabLayout.getTabCount(); ++i) {
+                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                if (tab == null) {
+                    continue;
+                }
+
+                tab.view.addOnLayoutChangeListener((view, i0, i1, i2, i3, i4, i5, i6, i7) -> {
+                    view.setContentDescription(null);
+                    TooltipCompat.setTooltipText(view, null);
+                });
+            }
             viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int position) {
@@ -2254,66 +2281,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void setAvailableSizes(int availableWidth, int availableHeight) {
         this.availableWidth = availableWidth;
         this.availableHeight = availableHeight;
-    }
-
-    // Web view sizes for inline ABC notation
-    @Override
-    public void resetInlineAbcWebViews() {
-        inlineAbcWebViews = null;
-        inlineAbcWebViews = new ArrayList<>();
-        getProcessSong().resetInlineAbcWebViewCount();
-    }
-    @Override
-    public void resetInlineAbcWebViewsSecondary() {
-        inlineAbcWebViewsSecondary = null;
-        inlineAbcWebViewsSecondary = new ArrayList<>();
-        getProcessSong().resetInlineAbcWebViewCountSecondary();
-        if (secondaryDisplays != null) {
-            for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
-                secondaryDisplay.setInlineAbcWebViewsDrawnSecondary(false);
-            }
-        }
-    }
-
-    @Override
-    public int countInlineAbcWebViews() {
-        return inlineAbcWebViews.size();
-    }
-
-    @Override
-    public int countInlineAbcWebViewsSecondary() {
-        return inlineAbcWebViewsSecondary.size();
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    public void assignInlineAbcWebView(int containingLinearLayoutPosition,
-                                       InlineAbcWebView inlineAbcWebView, boolean presentation) {
-        inlineAbcWebView.setContainingViewItem(containingLinearLayoutPosition);
-        inlineAbcWebView.setWebViewMeasured(false);
-        inlineAbcWebView.setWebViewHeight(-1);
-        inlineAbcWebView.setIsForPresentation(presentation);
-        inlineAbcWebView.getSettings().setJavaScriptEnabled(true);
-        if (presentation) {
-            int newPosition = inlineAbcWebViewsSecondary.size();
-            inlineAbcWebView.setWebViewItem(newPosition);
-            inlineAbcWebViewsSecondary.add(inlineAbcWebView);
-        } else {
-            int newPosition = inlineAbcWebViews.size();
-            inlineAbcWebView.setWebViewItem(newPosition);
-            inlineAbcWebViews.add(inlineAbcWebView);
-        }
-    }
-
-
-    @Override
-    public ArrayList<InlineAbcWebView> getInlineAbcWebViews() {
-        return inlineAbcWebViews;
-    }
-
-    @Override
-    public ArrayList<InlineAbcWebView> getInlineAbcWebViewsSecondary() {
-        return inlineAbcWebViewsSecondary;
     }
 
     @Override
@@ -4135,7 +4102,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public LocalWiFiHost getLocalWiFiHost() {
-        if (localWiFiHost == null) {
+        if (localWiFiHost == null && Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
             localWiFiHost = new LocalWiFiHost(this);
         }
         return localWiFiHost;
@@ -4665,7 +4632,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // If we had a bluetooth MIDI device, cancel the connection and unpair
+        // Also stop any MIDI clock
         if (midi!=null) {
+            midi.stopMidiClock();
             midi.tryDisconnectBluetoothLE();
         }
 

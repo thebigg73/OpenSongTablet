@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -43,8 +42,7 @@ import androidx.annotation.RequiresApi;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.abcnotation.InlineAbcWebViewTagObject;
-import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
+import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -67,8 +65,7 @@ public class ProcessSong {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"FieldCanBeLocal","unused"})
-    private final String TAG = "ProcessSong", abcIdentifier = ";#:",
-        newline_string="___NEWLINE___";
+    private final String TAG = "ProcessSong", newline_string="___NEWLINE___";
     public final String columnbreak_string="::CBr::", groupline_string="____groupline____";
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace;
@@ -107,8 +104,9 @@ public class ProcessSong {
     private StringBuilder htmlLyrics = new StringBuilder();
     private final String abc_on_override = "abc_on", abc_off_override = "abc_off",
             sticky_on_override = "sticky_on", sticky_off_override="sticky_off";
-    private int webViewCount = 0;
+    /*private int webViewCount = 0;
     private int webViewCountSecondary = 0;
+    private int inlineAbcObjectCount = 0;*/
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -516,7 +514,7 @@ public class ProcessSong {
             } else if ((string.contains("+") && string.contains("1") && string.contains("2"))) {
                 // Drum tab count line
                 type = "tab";
-            } else if (string.startsWith(abcIdentifier)) {
+            } else if (string.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
                 type = "abc";
             } else {
                 type = "comment";
@@ -799,7 +797,7 @@ public class ProcessSong {
             return "capoline";
         } else if (string.startsWith(";") && string.contains("|")) {
             return "tab";
-        } else if (string.startsWith(abcIdentifier)) {
+        } else if (string.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
             return "abc";
         } else if (string.startsWith(";")) {
             return "comment";
@@ -829,7 +827,7 @@ public class ProcessSong {
                 }
                 break;
             case "abc":
-                string = string.replace(abcIdentifier,"");
+                string = string.replace(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator(),"");
                 break;
             case "lyric":
             default:
@@ -1826,7 +1824,20 @@ public class ProcessSong {
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    /*private ImageView getInlineAbcImageView(String string, int which) {
+        ImageView  imageView = new ImageView(c);
+        imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        try {
+            SVG svg = SVG.getFromString(string);
+            Drawable drawable = new PictureDrawable(svg.renderToPicture());
+            imageView.setImageDrawable(drawable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imageView;
+    }*/
+
+    /*@SuppressLint("SetJavaScriptEnabled")
     private InlineAbcWebView inlineABC(String string, boolean presentation) {
         // Now the WebView for the music score
         InlineAbcWebView inlineAbcWebView = new InlineAbcWebView(c);
@@ -1845,14 +1856,17 @@ public class ProcessSong {
 
         mainActivityInterface.getAbcNotation().setWebView(inlineAbcWebView);
         return inlineAbcWebView;
-    }
+    }*/
 
+    /*public void resetInlineAbcObjectCount() {
+        inlineAbcObjectCount = 0;
+    }
     public void resetInlineAbcWebViewCount() {
         webViewCount = 0;
-    }
-    public void resetInlineAbcWebViewCountSecondary() {
+    }*/
+    /*public void resetInlineAbcWebViewCountSecondary() {
         webViewCountSecondary = 0;
-    }
+    }*/
 
     private TextView lineText(Song thisSong, String linetype,
                               String string, Typeface typeface, float size, int color,
@@ -1937,14 +1951,19 @@ public class ProcessSong {
                 str = str.replaceAll("[|_]", "&nbsp;");
                 text.append("<div class=\"lyric\">").append(str).append("</div>\n");
             } else {
-                if (linetype.equals("comment")) {
-                    htmlLyrics.append("<p>\n<div class=\"comment\">").append(str).append("</div>\n");
-                } else if (linetype.equals("tab")) {
-                    text.append("<p>\n<div class=\"mono\">").append(str).append("</div>\n");
-                } else if (linetype.equals("abc")) {
-                    text.append(getInlineAbcAsInlineHTML(str));
-                } else {
-                    text.append("<p>\n<div class=\"heading\">\n").append(str).append("</div>\n");
+                switch (linetype) {
+                    case "comment":
+                        htmlLyrics.append("<p>\n<div class=\"comment\">").append(str).append("</div>\n");
+                        break;
+                    case "tab":
+                        text.append("<p>\n<div class=\"mono\">").append(str).append("</div>\n");
+                        break;
+                    case "abc":
+                        text.append(getInlineAbcAsInlineHTML(str));
+                        break;
+                    default:
+                        text.append("<p>\n<div class=\"heading\">\n").append(str).append("</div>\n");
+                        break;
                 }
             }
         }
@@ -2415,23 +2434,47 @@ public class ProcessSong {
                                     linearLayout.addView(tl);
                                 }
                             } else if (!(clearedCurlyText && line.trim().isEmpty())) {
-                                if (line.startsWith(abcIdentifier)) {
+                                if (line.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
                                     if (!presentation && !performancePresentation) {
-                                        // This is an inline ABC view
-                                        InlineAbcWebView wv = inlineABC(line, presentation);
-                                        wv.setBackgroundColor(overallBackgroundColor);
-                                        wv.setPadding(0, 0, 0, 0);
-                                        linearLayout.addView(wv);
-                                        wv.setLayoutParams(new LinearLayout.LayoutParams(mainActivityInterface.getAbcNotation().getAbcInlineWidth(), LinearLayout.LayoutParams.WRAP_CONTENT));
-                                        mainActivityInterface.assignInlineAbcWebView(sect, wv, presentation);
+                                        // This is where we render the ABC WebView.
+                                        // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
+                                        InlineAbcObject inlineAbcObject = new InlineAbcObject(c, line, sect, overallBackgroundColor);
+                                        if (pdfPrinting) {
+                                            inlineAbcObject.setIsPDF(true);
+                                        }
+                                        mainActivityInterface.getAbcNotation().addInlineAbcObject(inlineAbcObject);
+                                        // Now we add the WebView and ImageView for the song display
+                                        // Once rendering is complete, we hide the WebView and display the ImageView
+                                        Log.d(TAG,"adding webView");
+                                        linearLayout.addView(inlineAbcObject.getInlineAbcWebView());
+                                        linearLayout.addView(inlineAbcObject.getInlineAbcImageView(false));
+
                                     } else {
-                                        // I have tried to get ABC notation working elsewhere, but only 1 view seems to render
-                                        // This applies to PDF export and secondary display
-                                        TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
-                                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
-                                                true,isChorusBold);
-                                        linearLayout.addView(tv);
+                                        // This is for the secondary display
+                                        // This is where we render the ABC WebView.
+                                        // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
+                                        InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition());
+                                        mainActivityInterface.getAbcNotation().increaseSecondaryInlineAbcObjectPosition();
+                                        // Now we add the WebView and ImageView for the song display
+                                        // Once rendering is complete, we hide the WebView and display the ImageView
+                                        inlineAbcObject.setIsPresentation(true);
+                                        linearLayout.addView(inlineAbcObject.getInlineAbcImageView(true));
+                                        inlineAbcObject.setIsPresentation(false);
+                                        // We have already created the WebView and can now call a new ImageView from it.
+                                    /*    try {
+                                            int positionToGet = mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition();
+                                            InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(positionToGet);
+                                            mainActivityInterface.getAbcNotation().increaseSecondaryInlineAbcObjectPosition();
+                                            ImageView imageView = inlineAbcObject.getInlineAbcImageView(true);
+                                            linearLayout.addView(imageView);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
+                                                    mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                                    mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
+                                                    true,isChorusBold);
+                                            linearLayout.addView(tv);
+                                        }*/
                                     }
 
                                 } else if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {

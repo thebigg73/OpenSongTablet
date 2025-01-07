@@ -172,6 +172,8 @@ public class ThemeSetupFragment extends Fragment {
         myView.hotZoneButton.setColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
         myView.extratextButton.setColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
         myView.extrabackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getExtraInfoBgColor());
+        myView.abctextButton.setColor(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor());
+        myView.abcbackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getAbcPopupColor());
     }
 
     private void setListeners() {
@@ -203,6 +205,8 @@ public class ThemeSetupFragment extends Fragment {
         myView.presoCapoButton.setOnClickListener(v -> chooseColor("presoCapoColor"));
         myView.presoShadowButton.setOnClickListener(v -> chooseColor("presoShadowColor"));
         myView.resetTheme.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("resetColors",myView.themeName.getText().toString() + ": "+reset_colours_string,null,"themeSetupFragment",this,null));
+        myView.abctextButton.setOnClickListener(v -> chooseColor("abcPopupTextColor"));
+        myView.abcbackgroundButton.setOnClickListener(v -> chooseColor("abcPopupColor"));
     }
 
     private void chooseColor(String which) {

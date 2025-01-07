@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.preferences;
 
 import android.Manifest;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -131,15 +132,23 @@ public class AppPermissions {
     // MIDI
     public String[] getMidiScanPermissions() {
         Log.d(TAG,"checking permissions");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_ADVERTISE};
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_ADVERTISE};
-        } else {
-            return new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            BluetoothManager bluetoothManager = context.getSystemService(BluetoothManager.class);
+            if (bluetoothManager != null) {
+                if (bluetoothManager.getAdapter() != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
+                                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_ADVERTISE};
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        return new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT,
+                                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_ADVERTISE};
+                    } else {
+                        return new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+                    }
+                }
+            }
         }
+        return new String[] {""};
     }
 
     public boolean hasMidiScanPermissions() {
@@ -175,15 +184,19 @@ public class AppPermissions {
 
     // GENERAL CHECK
     public boolean checkForPermission(String permission) {
-        boolean granted = ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
-        permissionsLog += "permission: " + permission + "   granted:" + granted + "\n";
-        return granted;
+        if (permission!=null && !permission.isEmpty()) {
+            boolean granted = ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+            permissionsLog += "permission: " + permission + "   granted:" + granted + "\n";
+            return granted;
+        } else {
+            return true;
+        }
     }
 
     public boolean checkForPermissions(String[] permissions) {
         boolean returnVal = true;
         StringBuilder stringBuilder = new StringBuilder();
-        if (permissions != null) {
+        if (permissions != null && permissions.length > 0) {
             for (String permission : permissions) {
                 boolean thisPermission = checkForPermission(permission);
                 stringBuilder.append("permission: ").append(permission).append("   granted:").append(thisPermission).append("\n");
