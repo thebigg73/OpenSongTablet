@@ -1119,7 +1119,6 @@ public class PerformanceFragment extends Fragment {
                 for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
                     int width = mainActivityInterface.getSectionViews().get(x).getWidth();
                     int height = mainActivityInterface.getSectionViews().get(x).getHeight();
-                    Log.d(TAG,"objects:"+mainActivityInterface.getAbcNotation().countInlineAbcObjects());
                     if (mainActivityInterface.getAbcNotation().countInlineAbcObjects()>0) {
                         // Get the extra webView height for any webview in this section
                         for (InlineAbcObject inlineAbcObject:mainActivityInterface.getAbcNotation().getInlineAbcObjects()) {
@@ -1365,7 +1364,6 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setCurrentSection(0);
             displayInterface.updateDisplay("showSection");
         } else {
-            Log.d(TAG,"Now updating the secondary display");
             displayInterface.updateDisplay("setSongContent");
         }
 
@@ -1806,7 +1804,6 @@ public class PerformanceFragment extends Fragment {
 
     // We have abc webviews, so need to resize
     public void inlineAbcWebViewsDrawn() {
-        Log.d(TAG,"inlineAbcWebViewsDrawn()");
         if (!mainActivityInterface.getAbcNotation().getAbcWebViewsDrawn()) {
             mainActivityInterface.getAbcNotation().setAbcWebViewsDrawn(true);
             mainActivityInterface.getMainHandler().post(this::songIsReadyToDisplay);

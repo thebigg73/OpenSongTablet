@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.content.Context;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -19,22 +18,18 @@ public class ABCWebViewJSInterface {
 
     @JavascriptInterface
     public void returnSize(int webViewItem, int width, int height, String abcSvgText, boolean isPopup) {
-        Log.d(TAG, "returning size for song(" + webViewItem + "):" + width + "x" + height + "  count:" + mainActivityInterface.getAbcNotation().countInlineAbcObjects());
         boolean isfinished = true;
         if (isPopup) {
             // Is a popup window, so deal with that via the abcNotation fragment
             // We don't use the object arrays for inline objects
-            Log.d(TAG,"isPopup!!!!");
             mainActivityInterface.getAbcNotation().allowPopupToContinue(width,height);
 
         } else {
             for (int x = 0; x < mainActivityInterface.getAbcNotation().countInlineAbcObjects(); x++) {
                 InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(x);
                 if (inlineAbcObject.getIsPopup()) {
-                    Log.d(TAG, "identified view(" + x + ") as a popup");
                     isPopup = true;
                 }
-                Log.d(TAG, "inlineAbcObject.get(" + inlineAbcObject.getAbcItem() + ")  abcItem:" + webViewItem + "  " + width + "x" + height);
                 if (height > 0 && inlineAbcObject.getAbcItem() == webViewItem) {
                     inlineAbcObject.setAbcWidth(width);
                     inlineAbcObject.setAbcHeight(height);

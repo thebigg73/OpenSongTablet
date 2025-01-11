@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
@@ -122,11 +121,9 @@ public class InlineAbcObject {
     // This returns a new WebView for the object.  Only one parent allowed
     public InlineAbcWebView getInlineAbcWebView() {
         // We override the default WebView class so we can dispatch touch events
-        Log.d(TAG,"inlineAbcWebView:"+inlineAbcWebView);
         if (inlineAbcWebView==null) {
             inlineAbcWebView = new InlineAbcWebView(c);
         }
-        Log.d(TAG,"preparing inlineAbcWebView()");
         inlineAbcWebView.setVisibility(View.GONE);
         inlineAbcWebView.post(() -> {
             inlineAbcWebView.setBackgroundColor(backgroundColor);
@@ -137,7 +134,6 @@ public class InlineAbcObject {
                 }
             });
             inlineAbcWebView.setWebViewClient(new MyWebViewClient(getIsInline()));
-            Log.d(TAG,"about to load abc.html");
             inlineAbcWebView.loadUrl("file:///android_asset/ABC/abc.html");
         });
         return inlineAbcWebView;
@@ -153,7 +149,6 @@ public class InlineAbcObject {
 
         // Now either return the default ImageView or create a new one that can be drawn
         if (generateNewView) {
-            Log.d(TAG,"generating a new ImageView");
             ImageView newImageView = new ImageView(c);
             newImageView.setBackgroundColor(backgroundColor);
             drawTheImageView(newImageView);
@@ -178,7 +173,6 @@ public class InlineAbcObject {
     }
 
     public void drawTheImageView(ImageView thisImageView) {
-        Log.d(TAG,"imageView using:"+abcSvgText);
         if (abcSvgText!=null) {
             if (abcSvgText.contains("<svg")) {
                 abcSvgText = abcSvgText.substring(abcSvgText.indexOf("<svg"));
@@ -187,7 +181,6 @@ public class InlineAbcObject {
 
             try {
                 //abcSvgText = abcSvgText.replace("#FFFFFF","#000000");
-                Log.d(TAG,"drawing the image with abcSvgText:"+abcSvgText);
                 SVG svg = SVG.getFromString(swapSvgTextColors());
                 svg.setDocumentWidth(abcWidth);
                 svg.setDocumentHeight(abcHeight);
@@ -204,8 +197,6 @@ public class InlineAbcObject {
                 thisImageView.setImageDrawable(drawable);
                 inlineAbcWebView.setVisibility(View.GONE);
                 thisImageView.setVisibility(View.VISIBLE);
-                //thisImageView.setBackgroundColor(Color.RED);
-                Log.d(TAG,"size:"+abcWidth+"x"+abcHeight);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -236,13 +227,11 @@ public class InlineAbcObject {
         boolean isInline;
         MyWebViewClient(boolean isInline) {
             this.isInline = isInline;
-            Log.d(TAG,"setting webclient inline:"+isInline);
         }
 
         @Override
         public void onPageFinished(WebView webView, String url) {
             super.onPageFinished(webView, url);
-            Log.d(TAG,"onPageFinished");
             updateContent();
         }
     }
