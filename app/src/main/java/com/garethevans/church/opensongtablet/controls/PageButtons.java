@@ -309,7 +309,8 @@ public class PageButtons {
         prepareOption("midiaction8",c.getString(R.string.midi_action)+" "+8,c.getString(R.string.select),"",R.drawable.midi8);
         prepareOption("sysexstart",c.getString(R.string.midi_sysex)+" "+c.getString(R.string.start), c.getString(R.string.select),"",R.drawable.midi_start);
         prepareOption("sysexstop",c.getString(R.string.midi_sysex)+" "+c.getString(R.string.stop), c.getString(R.string.select),"",R.drawable.midi_stop);
-
+        prepareOption("midiclock",c.getString(R.string.midi_clock),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.midiclock);
+        prepareOption("midiclockburst",c.getString(R.string.midi_clock_short_burst),c.getString(R.string.on)+" / "+c.getString(R.string.off),c.getString(R.string.settings),R.drawable.midiclockburst);
         prepareOption("","","","",R.drawable.help);
 
         // Nearby messages

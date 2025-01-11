@@ -6,6 +6,7 @@ import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -30,6 +31,7 @@ public class InlineAbcObject {
     private final Context c;
     private final int backgroundColor, abcContainingItem;
     private String mainColor, chordColor;
+    private InlineAbcWebViewTagObject inlineAbcWebViewTagObject;
 
     public InlineAbcObject(Context c, String abcInlineText, int abcContainingItem, int backgroundColor) {
         // Each object has a single associated webView (is only used in the pre-measure view)
@@ -48,6 +50,8 @@ public class InlineAbcObject {
 
         this.abcContainingItem = abcContainingItem;
         inlineAbcWebView = new InlineAbcWebView(c);
+        inlineAbcWebViewTagObject = new InlineAbcWebViewTagObject();
+
         this.backgroundColor = backgroundColor;
         mainColor = mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
         chordColor = mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
@@ -153,6 +157,7 @@ public class InlineAbcObject {
             ImageView newImageView = new ImageView(c);
             newImageView.setBackgroundColor(backgroundColor);
             drawTheImageView(newImageView);
+            setImageViewTags(newImageView);
             return newImageView;
 
         } else {
@@ -160,8 +165,16 @@ public class InlineAbcObject {
                 inlineAbcImageView = new ImageView(c);
                 inlineAbcImageView.setBackgroundColor(backgroundColor);
             }
+            setImageViewTags(inlineAbcImageView);
             return inlineAbcImageView;
         }
+    }
+
+    private void setImageViewTags(ImageView thisImageView) {
+        inlineAbcWebViewTagObject = new InlineAbcWebViewTagObject();
+        inlineAbcWebViewTagObject.setContainingViewNumber(abcContainingItem);
+        inlineAbcWebViewTagObject.setObjectNumber(abcItem);
+        thisImageView.setTag(inlineAbcWebViewTagObject);
     }
 
     public void drawTheImageView(ImageView thisImageView) {
@@ -181,7 +194,11 @@ public class InlineAbcObject {
                 Drawable drawable = new PictureDrawable(svg.renderToPicture());
 
                 // Make sure the sizes are as expected
-                thisImageView.setLayoutParams(new LinearLayout.LayoutParams(abcWidth, abcHeight));
+                if (isPDF) {
+                    thisImageView.setLayoutParams(new ViewGroup.LayoutParams(abcWidth, abcHeight));
+                } else {
+                    thisImageView.setLayoutParams(new LinearLayout.LayoutParams(abcWidth, abcHeight));
+                }
                 thisImageView.setCropToPadding(false);
                 thisImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 thisImageView.setImageDrawable(drawable);

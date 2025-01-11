@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Vissa enheter är beroende av att ta emot flera kontrollmeddelanden snabbt.  När den är påslagen kommer alla MIDI-kommandon som genereras att kommenteras av * som ett burst-kommando (dvs. skickas flera gånger i rad)</string>
     <string name="midi_channel">Kanalisera</string>
     <string name="midi_channel_default">När du skickar automatiska meddelanden till VoiceLive kommer MIDI-kanalen nedan att användas</string>
+    <string name="midi_click_track">Skicka MIDI-klickspår</string>
+    <string name="midi_click_track_channel">MIDI-kanal för klickspår</string>
+    <string name="midi_click_track_channel_info">MIDI-kanalen som används av ditt klickspår eller trummodul</string>
+    <string name="midi_click_track_info">Om du har en MIDI-enhet ansluten och dina låtar har ett tempo och en taktart inställd, kan appen skicka MIDI-klickspårinformation som en del av metronomfunktionen.</string>
+    <string name="midi_click_track_tick_tock_info">Alla MIDI-slagverksnoter kanske inte är tillgängliga på din enhet.  Kontrollera din manual för MIDI-noter som används för varje ljud.</string>
+    <string name="midi_clock">MIDI klocka</string>
+    <string name="midi_clock_click">MIDI-klocka/klickspår</string>
+    <string name="midi_clock_info">Skicka MIDI-klockinformation (tempo) till anslutna MIDI-enheter eller skicka MIDI-metronomklickspår</string>
+    <string name="midi_clock_latency">MIDI klocka latens</string>
+    <string name="midi_clock_latency_info">På grund av potentiella Android-timingproblem och Bluetooth-latens kan du lägga till en kompensationsnivå om du upptäcker att ditt MIDI-klocktempo går långsammare än förväntat.</string>
+    <string name="midi_clock_master">Agera som MIDI clock master</string>
+    <string name="midi_clock_master_info">Om dina låtar har ett tempoinställt och en MIDI-anslutning har gjorts, kommer OpenSongApp att skicka tempot till alla enheter via en MIDI-klockkod.  Detta kommer som standard till 100 bpm för låtar utan tempo inställt.</string>
+    <string name="midi_clock_short_burst">Skicka MIDI-klocka som en kort skur</string>
+    <string name="midi_clock_short_burst_info">När en låt laddas kommer MIDI-klockan bara att skickas under de första fem sekunderna så att enheter kan ta emot ett tempo.  Detta kan hjälpa till att undvika att MIDI-klockan från Android driver och får enheter att ständigt justera sina tempo.</string>
     <string name="midi_code_current">MIDI-kod som för närvarande är tilldelad till åtgärd</string>
     <string name="midi_code_new">Ny MIDI-kod</string>
     <string name="midi_commands">"Redigera låtkommandon"</string>
@@ -640,6 +654,7 @@
     <string name="music">Musik</string>
     <string name="music_score">"Noter"</string>
     <string name="music_score_info">Redigera notanteckningar</string>
+    <string name="music_score_popup">Popup-fönster för musikpartitur (abc).</string>
     <string name="my_band">"Importera bandprov låtar"</string>
     <string name="my_church">"Importera kyrkans provlåtar"</string>
     <string name="nearby_devices">Enheter i närheten</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Det finns inga objekt i ditt set</string>
     <string name="set_item_info">Du kan ändra mappen / filnamnet på låten som laddas från uppsättningen och du kan också ändra tangenten för låtvisning (detta utför en tillfällig transponering av låten på din enhet om det behövs)</string>
     <string name="set_item_removed">Objekt borttaget från uppsättningen</string>
+    <string name="set_items_not_found">Vissa uppsättningsobjekt hittades inte på din enhet (de kan bara ha ett annat filnamn, stavning osv.).  Du kan manuellt redigera dessa objekt (markerade med en *) från inställningsmenyn efter import.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Ställ in listfiler</string>
     <string name="set_load_first">Öppna den inlästa uppsättningen vid det första objektet</string>

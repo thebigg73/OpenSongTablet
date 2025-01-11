@@ -557,6 +557,20 @@ public class PerformanceGestures {
             case "sysexstop":
                 sysexStop();
                 break;
+            case "midiclock":
+                if (isLongPress) {
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi_clock),0);
+                } else {
+                    midiClock();
+                }
+                break;
+            case "midiclockburst":
+                if (isLongPress) {
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi_clock),0);
+                } else {
+                    midiClockBurst();
+                }
+                break;
 
             // Nearby messages
             case "nearbymessage1":
@@ -1357,6 +1371,38 @@ public class PerformanceGestures {
     }
     public void sysexStop() {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStopCode());
+    }
+    public void midiClock() {
+        // Start or stop the MIDI clock.  This will trigger messages to the user
+        // Only allow if MIDI device
+        if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+            boolean currValue= mainActivityInterface.getMidi().getMidiClockSend();
+            if (currValue) {
+                // Tell the user
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock)+": "+c.getString(R.string.start));
+            } else {
+                // Tell the user
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock)+": "+c.getString(R.string.stop));
+            }
+            mainActivityInterface.getMidi().setMidiClockSend(!currValue);
+        } else {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_no_devices));
+            mainActivityInterface.getMidi().setMidiClockSend(false);
+        }
+    }
+    public void midiClockBurst() {
+        // Find out if we were sending this already
+        boolean sendingalready = mainActivityInterface.getMidi().getMidiClockShortBurst();
+        if (!sendingalready) {
+            // Switch off the master MIDI clock send
+            mainActivityInterface.getMidi().setMidiClockSend(false);
+            // Tell the user
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst) + ": " + c.getString(R.string.on));
+        } else {
+            // Tell the user
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst)+": "+c.getString(R.string.off));
+        }
+        mainActivityInterface.getMidi().setMidiClockShortBurst(!sendingalready);
     }
 
     // Nearby messages

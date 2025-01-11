@@ -603,6 +603,20 @@
     <string name="midi_burst_info">一部のデバイスは、複数のコントローラー メッセージをすばやく受信することに依存しています。 オンにすると、生成されたMIDIコマンドには、バーストコマンドとして*で注釈が付けられます(つまり、連続して数回送信されます)。</string>
     <string name="midi_channel">"チャネル"</string>
     <string name="midi_channel_default">VoiceLive に自動メッセージを送信する場合、以下の MIDI チャンネルが使用されます。</string>
+    <string name="midi_click_track">MIDIクリックトラックを送信する</string>
+    <string name="midi_click_track_channel">クリックトラックのMIDIチャンネル</string>
+    <string name="midi_click_track_channel_info">クリックトラックまたはドラムモジュールで使用されるMIDIチャンネル</string>
+    <string name="midi_click_track_info">MIDI デバイスが接続されており、曲にテンポと拍子記号が設定されている場合、アプリはメトロノーム機能の一部として MIDI クリック トラック情報を送信できます。</string>
+    <string name="midi_click_track_tick_tock_info">すべての MIDI パーカッションノートがデバイスで利用できるわけではありません。  各サウンドに使用される MIDI ノートについてはマニュアルを確認してください。</string>
+    <string name="midi_clock">MIDIクロック</string>
+    <string name="midi_clock_click">MIDIクロック/クリックトラック</string>
+    <string name="midi_clock_info">接続されている MIDI デバイスに MIDI クロック情報 (テンポ) を送信するか、MIDI メトロノームのクリック トラックを送信します。</string>
+    <string name="midi_clock_latency">MIDIクロックレイテンシー</string>
+    <string name="midi_clock_latency_info">Android のタイミングの問題と Bluetooth 遅延の可能性により、MIDI クロックのテンポが予想よりも遅い場合は、補正レベルを追加できます。</string>
+    <string name="midi_clock_master">MIDIクロックマスターとして機能する</string>
+    <string name="midi_clock_master_info">曲にテンポが設定されており、MIDI 接続が確立されている場合、OpenSongApp は MIDI クロック コードを介してすべてのデバイスにテンポを送信します。  テンポが設定されていない曲の場合、デフォルトで 100bpm になります。</string>
+    <string name="midi_clock_short_burst">MIDIクロックをショートバーストとして送信します</string>
+    <string name="midi_clock_short_burst_info">曲がロードされると、MIDI クロックは最初の 5 秒間のみ送信され、デバイスがテンポを受信できるようになります。  これにより、Android の MIDI クロックがドリフトしてデバイスがテンポを常に調整することを回避できます。</string>
     <string name="midi_code_current">現在アクションに割り当てられているMIDIコード</string>
     <string name="midi_code_new">新しい MIDI コード</string>
     <string name="midi_commands">"曲の編集コマンド"</string>
@@ -640,6 +654,7 @@
     <string name="music">音楽</string>
     <string name="music_score">"楽譜"</string>
     <string name="music_score_info">スコアノートを編集する</string>
+    <string name="music_score_popup">楽譜(abc)ポップアップウィンドウ</string>
     <string name="my_band">"バンドのサンプル曲をインポートする"</string>
     <string name="my_church">"教会のサンプル曲をインポートする"</string>
     <string name="nearby_devices">近くのデバイス</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">セットにアイテムがありません</string>
     <string name="set_item_info">セットからロードされた曲のフォルダ/ファイル名を変更したり、曲表示のキーを変更したりすることもできます(これにより、必要に応じてデバイス上の曲の一時的な移調が実行されます)</string>
     <string name="set_item_removed">セットから削除されたアイテム</string>
+    <string name="set_items_not_found">一部の設定項目がデバイス上に見つかりませんでした (ファイル名、スペルなどが異なるだけである可能性があります)。  これらの項目 (* マーク) は、インポート後にセット メニューから手動で編集できます。</string>
     <string name="set_list">セットリスト</string>
     <string name="set_list_separate">セットリストファイル</string>
     <string name="set_load_first">ロードされたセットを最初のアイテムで開く</string>

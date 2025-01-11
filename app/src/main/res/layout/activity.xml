@@ -10,7 +10,6 @@
     android:keepScreenOn="true"
     android:focusableInTouchMode="false"
     android:focusable="false"
-    android:tooltipText="DDFSDFSFS"
     android:contentDescription="@null"
     android:descendantFocusability="blocksDescendants">
 

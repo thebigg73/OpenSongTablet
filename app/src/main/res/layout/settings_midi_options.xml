@@ -55,7 +55,7 @@
                 android:id="@+id/midiClock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/midi_clock"
+                android:text="@string/midi_clock_click"
                 android:hint="@string/midi_clock_info"
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />

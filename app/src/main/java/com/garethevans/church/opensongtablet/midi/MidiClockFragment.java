@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +32,7 @@ public class MidiClockFragment extends Fragment {
     private final String TAG = "MidiClockFragment";
     private MainActivityInterface mainActivityInterface;
     private String midi_clock_string="", midi_clock_webpage="", test_string="",
-            stop_string="", no_device_string="";
+            stop_string="", no_device_string="", start_string;
     private Drawable play_icon, stop_icon;
     private SettingsMidiClockBinding myView;
     private ScheduledExecutorService midiTestExecutor;
@@ -45,10 +45,8 @@ public class MidiClockFragment extends Fragment {
         public void run() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (count==1) {
-                    Log.d(TAG,"tick");
                     mainActivityInterface.getMidi().sendMidi(mainActivityInterface.getMidi().returnBytesFromHexText(mainActivityInterface.getMidi().getMidiClickTickMessageOn()));
                 } else {
-                    Log.d(TAG,"tock");
                     mainActivityInterface.getMidi().sendMidi(mainActivityInterface.getMidi().returnBytesFromHexText(mainActivityInterface.getMidi().getMidiClickTockMessageOn()));
                 }
                 count ++;
@@ -89,10 +87,11 @@ public class MidiClockFragment extends Fragment {
 
     private void prepareStrings() {
         if (getContext()!=null) {
-            midi_clock_string = getString(R.string.midi_clock);
+            midi_clock_string = getString(R.string.midi_clock_click);
             midi_clock_webpage = getString(R.string.website_midi_clock);
             test_string = getString(R.string.midi_test);
             stop_string = getString(R.string.stop);
+            start_string = getString(R.string.start);
             play_icon = AppCompatResources.getDrawable(getContext(),R.drawable.play);
             stop_icon = AppCompatResources.getDrawable(getContext(),R.drawable.stop);
             no_device_string = getContext().getString(R.string.connections_no_devices);
@@ -101,6 +100,17 @@ public class MidiClockFragment extends Fragment {
 
     private void setupViews() {
         myView.midiClockSend.setChecked(mainActivityInterface.getMidi().getMidiClockSend());
+        myView.midiClockShortBurst.setChecked(mainActivityInterface.getMidi().getMidiClockShortBurst());
+        myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || mainActivityInterface.getMidi().getMidiClockSend() ? View.VISIBLE:View.GONE);
+        myView.midiClockLatency.setValue(mainActivityInterface.getMidi().getMidiClockLatency());
+        myView.midiClockLatency.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClockLatency()));
+        myView.midiClickTrackChannel.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int)value);
+            }
+        });
         myView.midiClickTrackSend.setChecked(mainActivityInterface.getMidi().getMidiClickTrackSend());
         myView.midiClickTrackLayout.setVisibility(mainActivityInterface.getMidi().getMidiClickTrackSend() ? View.VISIBLE:View.GONE);
         myView.midiClickTrackChannel.setValue(mainActivityInterface.getMidi().getMidiClickTrackChannel());
@@ -151,7 +161,6 @@ public class MidiClockFragment extends Fragment {
         myView.midiClickTest.setIcon(play_icon);
     }
 
-
     private void setListeners() {
         myView.midiClockSend.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getMidi().calculateMidiClock(mainActivityInterface.getMetronome().getTempo());
@@ -160,7 +169,33 @@ public class MidiClockFragment extends Fragment {
             } else {
                 mainActivityInterface.getShowToast().doIt(no_device_string);
                 myView.midiClockSend.setChecked(false);
+                mainActivityInterface.getMidi().setMidiClockSend(false);
             }
+            if (myView.midiClockSend.getChecked()) {
+                myView.midiClockShortBurst.setChecked(false);
+            }
+            // Tell the user
+            if (mainActivityInterface.getMidi().getMidiClockSend()) {
+                mainActivityInterface.getShowToast().doIt(midi_clock_string+": "+start_string);
+            } else {
+                mainActivityInterface.getShowToast().doIt(midi_clock_string+": "+stop_string);
+            }
+            myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || mainActivityInterface.getMidi().getMidiClockSend() ? View.VISIBLE:View.GONE);
+        });
+        myView.midiClockShortBurst.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mainActivityInterface.getMidi().setMidiClockShortBurst(b);
+                if (b) {
+                    myView.midiClockSend.setChecked(false);
+                    mainActivityInterface.getMidi().sendMidiClockShortBurst();
+                }
+                myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || b ? View.VISIBLE:View.GONE);
+            }
+        });
+        myView.midiClockLatency.addOnChangeListener((slider, value, fromUser) -> {
+            mainActivityInterface.getMidi().setMidiClockLatency((int)value);
+            myView.midiClockLatency.setHint(String.valueOf((int)value));
         });
         myView.midiClickTrackSend.setOnCheckedChangeListener(((compoundButton, b) -> {
             mainActivityInterface.getMidi().setMidiClickTrackSend(b);
@@ -209,12 +244,10 @@ public class MidiClockFragment extends Fragment {
             midiTestExecutor.shutdown();
             midiTestExecutor.shutdownNow();
             Thread.currentThread().interrupt();
-            Log.d(TAG, "try shutdown");
             Runnable endtest = () -> midiTestExecutor.shutdown();
             try {
                 midiTestExecutor.schedule(endtest, midiDelay, TimeUnit.MILLISECONDS);
             } catch (Exception e) {
-                Log.d(TAG, "Exception stopping");
                 midiTestExecutor.shutdownNow();
             }
             count = 0;

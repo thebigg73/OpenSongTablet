@@ -603,6 +603,20 @@
     <string name="midi_burst_info">සමහර උපාංග ඉක්මනින් බහු පාලක පණිවිඩ ලැබීම මත රඳා පවතී.  ස්විචය ක්‍රියාත්මක කළ විට, ජනනය කරන ලද ඕනෑම MIDI විධානයක් * මගින් පිපිරුම් විධානයක් ලෙස සටහන් කරනු ලැබේ (එනම් පේළියකට කිහිප වතාවක් යවනු ලැබේ)</string>
     <string name="midi_channel">නාලිකාව</string>
     <string name="midi_channel_default">VoiceLive වෙත ස්වයංක්‍රීය පණිවිඩ යැවීමේදී පහත MIDI නාලිකාව භාවිත වේ</string>
+    <string name="midi_click_track">MIDI ක්ලික් පථය යවන්න</string>
+    <string name="midi_click_track_channel">ක්ලික් ධාවන පථය සඳහා MIDI නාලිකාව</string>
+    <string name="midi_click_track_channel_info">ඔබගේ ක්ලික් පථය හෝ ඩ්‍රම් මොඩියුලය විසින් භාවිතා කරන MIDI නාලිකාව</string>
+    <string name="midi_click_track_info">ඔබ MIDI උපාංගයක් සම්බන්ධ කර ඇත්නම් සහ ඔබේ ගීතවල වේගය සහ කාල අත්සන කට්ටලයක් තිබේ නම්, යෙදුමට මෙට්‍රොනොම් ශ්‍රිතයේ කොටසක් ලෙස MIDI ක්ලික් ධාවන තොරතුරු යැවිය හැක.</string>
+    <string name="midi_click_track_tick_tock_info">සියලුම MIDI බෙර වාදන සටහන් ඔබගේ උපාංගයේ නොතිබිය හැකිය.  එක් එක් ශබ්දය සඳහා භාවිතා කරන MIDI සටහන් සඳහා කරුණාකර ඔබගේ අත්පොත පරීක්ෂා කරන්න.</string>
+    <string name="midi_clock">MIDI ඔරලෝසුව</string>
+    <string name="midi_clock_click">MIDI ඔරලෝසුව / ධාවන පථය ක්ලික් කරන්න</string>
+    <string name="midi_clock_info">සම්බන්ධිත MIDI උපාංග වෙත MIDI ඔරලෝසු තොරතුරු (tempo) යවන්න හෝ MIDI metronom click track යවන්න</string>
+    <string name="midi_clock_latency">MIDI ඔරලෝසු ප්‍රමාදය</string>
+    <string name="midi_clock_latency_info">විය හැකි ඇන්ඩ්‍රොයිඩ් කාල ගැටළු සහ බ්ලූටූත් ප්‍රමාදය හේතුවෙන්, ඔබේ MIDI ඔරලෝසුවේ වේගය බලාපොරොත්තු වූවාට වඩා සෙමින් ධාවනය වන බව ඔබට පෙනී ගියහොත් ඔබට වන්දි මට්ටමක් එක් කළ හැක.</string>
+    <string name="midi_clock_master">MIDI ඔරලෝසු මාස්ටර් ලෙස ක්‍රියා කරන්න</string>
+    <string name="midi_clock_master_info">ඔබේ ගීතවල ටෙම්පෝ කට්ටලයක් තිබේ නම් සහ MIDI සම්බන්ධතාවයක් සිදු කර ඇත්නම්, OpenSongApp MIDI ඔරලෝසු කේතයක් හරහා සියලුම උපාංග වෙත ටෙම්පෝ යවනු ඇත.  මෙය ටෙම්පෝ කට්ටලයක් නොමැති ගීත සඳහා 100bpm දක්වා පෙරනිමි වේ.</string>
+    <string name="midi_clock_short_burst">MIDI ඔරලෝසුව කෙටි පිපිරීමක් ලෙස යවන්න</string>
+    <string name="midi_clock_short_burst_info">ගීතයක් පූරණය වන විට, MIDI ඔරලෝසුව යවනු ලබන්නේ පළමු තත්පර පහ සඳහා පමණක් උපාංගවලට ටෙම්පෝ ලබා ගැනීමට ඉඩ සලසමිනි.  මෙය ඇන්ඩ්‍රොයිඩ් ප්ලාවිතයෙන් MIDI ඔරලෝසුව මඟහරවා ගැනීමට සහ උපාංගවලට ඔවුන්ගේ tempos නිරන්තරයෙන් සීරුමාරු කිරීමට හේතු වේ.</string>
     <string name="midi_code_current">MIDI කේතය දැනට ක්‍රියාවට පවරා ඇත</string>
     <string name="midi_code_new">නව MIDI කේතය</string>
     <string name="midi_commands">ගීත විධාන සංස්කරණය කරන්න</string>
@@ -640,6 +654,7 @@
     <string name="music">සංගීත</string>
     <string name="music_score">සංගීත ලකුණු</string>
     <string name="music_score_info">ලකුණු සටහන් සංස්කරණය කරන්න</string>
+    <string name="music_score_popup">සංගීත ලකුණු (abc) උත්පතන කවුළුව</string>
     <string name="my_band">සංගීත කණ්ඩායම් ආදර්ශ ගීත ආනයනය කරන්න</string>
     <string name="my_church">පල්ලියේ ආදර්ශ ගීත ආනයනය කරන්න</string>
     <string name="nearby_devices">ආසන්න උපාංග</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">ඔබගේ කට්ටලයේ අයිතම කිසිවක් නොමැත</string>
     <string name="set_item_info">ඔබට කට්ටලයෙන් පටවා ඇති ගීතයේ ෆෝල්ඩරය/ගොනු නාමය වෙනස් කළ හැකි අතර ඔබට ගීත සංදර්ශකය සඳහා යතුරද වෙනස් කළ හැකිය (මෙය අවශ්‍ය නම් ඔබගේ උපාංගයේ ගීතය තාවකාලිකව මාරු කිරීම සිදු කරයි)</string>
     <string name="set_item_removed">අයිතමය කට්ටලයෙන් ඉවත් කරන ලදී</string>
+    <string name="set_items_not_found">සමහර කට්ටල අයිතම ඔබගේ උපාංගයේ හමු නොවීය (ඔවුන්ට හුදෙක් වෙනස් ගොනු නාමයක්, අක්ෂර වින්‍යාසය, ආදිය තිබිය හැක).  ඔබට ආයාත කිරීමෙන් පසු සකසන ලද මෙනුවෙන් මෙම අයිතම (* ලකුණින් සලකුණු කර ඇති) අතින් සංස්කරණය කළ හැක.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">ලැයිස්තු ගොනු සකසන්න</string>
     <string name="set_load_first">පළමු අයිතමයේ පටවන ලද කට්ටලය විවෘත කරන්න</string>

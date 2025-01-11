@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Деякі пристрої покладаються на швидке отримання декількох повідомлень контролера.  При включенні будь-яка згенерована команда MIDI буде анотована * як серійна команда (тобто відправлена кілька разів поспіль)</string>
     <string name="midi_channel">Kанал</string>
     <string name="midi_channel_default">Під час надсилання автоматичних повідомлень до VoiceLive використовуватиметься вказаний нижче канал MIDI</string>
+    <string name="midi_click_track">Надіслати трек кліків MIDI</string>
+    <string name="midi_click_track_channel">MIDI-канал для кліків</string>
+    <string name="midi_click_track_channel_info">MIDI-канал, який використовується вашим треком кліків або барабанним модулем</string>
+    <string name="midi_click_track_info">Якщо у вас під’єднано MIDI-пристрій і для ваших пісень встановлено темп і тактовий розмір, програма може надсилати інформацію про трек кліків MIDI як частину функції метронома.</string>
+    <string name="midi_click_track_tick_tock_info">На вашому пристрої можуть бути доступні не всі ноти перкусії MIDI.  Будь ласка, перевірте свій посібник щодо нот MIDI, які використовуються для кожного звуку.</string>
+    <string name="midi_clock">MIDI годинник</string>
+    <string name="midi_clock_click">MIDI-годинник / трек кліків</string>
+    <string name="midi_clock_info">Надсилайте інформацію про годинник MIDI (темп) на підключені пристрої MIDI або надсилайте доріжку клацання метронома MIDI</string>
+    <string name="midi_clock_latency">Затримка синхронізації MIDI</string>
+    <string name="midi_clock_latency_info">Через потенційні проблеми з синхронізацією Android і затримкою Bluetooth ви можете додати рівень компенсації, якщо ви виявите, що темп MIDI-тактової частоти працює повільніше, ніж очікувалося.</string>
+    <string name="midi_clock_master">Виконуйте функції майстра синхронізації MIDI</string>
+    <string name="midi_clock_master_info">Якщо для ваших пісень встановлено темп і встановлено з’єднання MIDI, OpenSongApp надішле темп на всі пристрої за допомогою коду годинника MIDI.  Для пісень без встановленого темпу за умовчанням буде 100 ударів на хвилину.</string>
+    <string name="midi_clock_short_burst">Надішліть такт MIDI як короткий пакет</string>
+    <string name="midi_clock_short_burst_info">Під час завантаження пісні MIDI-годинник надсилатиметься лише протягом перших п’яти секунд, що дозволить пристроям отримати темп.  Це може допомогти уникнути дрейфу MIDI-годинника від Android і змушувати пристрої постійно коригувати свій темп.</string>
     <string name="midi_code_current">MIDI-код в даний час призначається дії</string>
     <string name="midi_code_new">Новий MIDI-код</string>
     <string name="midi_commands">Редагування команд пісні</string>
@@ -640,6 +654,7 @@
     <string name="music">музика</string>
     <string name="music_score">Рейтинг</string>
     <string name="music_score_info">Редагувати нотатки</string>
+    <string name="music_score_popup">Спливаюче вікно ноти (abc).</string>
     <string name="my_band">Імпорт пісень з файлу групи</string>
     <string name="my_church">Імпорт пісень з файлу церкви</string>
     <string name="nearby_devices">Пристрої поблизу</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">У вашому наборі немає предметів</string>
     <string name="set_item_info">Ви можете змінити папку/ім\'я файлу пісні, завантаженої з набору, а також змінити клавішу відображення пісні (це виконує тимчасову транспозицію пісні на вашому пристрої, якщо потрібно)</string>
     <string name="set_item_removed">Предмет вилучено з набору</string>
+    <string name="set_items_not_found">Деякі елементи набору не знайдено на вашому пристрої (можливо, вони мають іншу назву файлу, інше написання тощо).  Ви можете вручну редагувати ці пункти (позначені *) у встановленому меню після імпортування.</string>
     <string name="set_list">Сет-лист</string>
     <string name="set_list_separate">Встановити файли списку</string>
     <string name="set_load_first">Відкрийте завантажений набір при першому пункті</string>

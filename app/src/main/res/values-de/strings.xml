@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Einige Geräte sind darauf angewiesen, schnell mehrere Controller-Nachrichten zu empfangen.  Beim Einschalten wird jeder erzeugte MIDI-Befehl mit * als Burst-Befehl annotiert (d.h. mehrmals hintereinander gesendet)</string>
     <string name="midi_channel">"Kanal"</string>
     <string name="midi_channel_default">Beim Senden automatischer Nachrichten an das VoiceLive wird der unten stehende MIDI-Kanal verwendet</string>
+    <string name="midi_click_track">MIDI-Click-Spur senden</string>
+    <string name="midi_click_track_channel">MIDI-Kanal für Click-Track</string>
+    <string name="midi_click_track_channel_info">Der von Ihrer Click-Spur oder Ihrem Drum-Modul verwendete MIDI-Kanal</string>
+    <string name="midi_click_track_info">Wenn Sie ein MIDI-Gerät angeschlossen haben und für Ihre Songs ein Tempo und eine Taktart festgelegt sind, kann die App im Rahmen der Metronomfunktion MIDI-Click-Track-Informationen senden.</string>
+    <string name="midi_click_track_tick_tock_info">Möglicherweise sind nicht alle MIDI-Percussion-Noten auf Ihrem Gerät verfügbar.  Bitte schauen Sie in Ihrem Handbuch nach, welche MIDI-Noten für jeden Sound verwendet werden.</string>
+    <string name="midi_clock">MIDI-Clock</string>
+    <string name="midi_clock_click">MIDI-Clock/Click-Spur</string>
+    <string name="midi_clock_info">Senden Sie MIDI-Clock-Informationen (Tempo) an angeschlossene MIDI-Geräte oder senden Sie eine MIDI-Metronom-Klickspur</string>
+    <string name="midi_clock_latency">MIDI-Clock-Latenz</string>
+    <string name="midi_clock_latency_info">Aufgrund möglicher Android-Timing-Probleme und der Bluetooth-Latenz können Sie eine Kompensationsstufe hinzufügen, wenn Sie feststellen, dass das Tempo Ihrer MIDI-Uhr langsamer als erwartet läuft.</string>
+    <string name="midi_clock_master">Fungieren Sie als MIDI-Clock-Master</string>
+    <string name="midi_clock_master_info">Wenn für Ihre Songs ein Tempo festgelegt ist und eine MIDI-Verbindung hergestellt wurde, sendet OpenSongApp das Tempo über einen MIDI-Clock-Code an alle Geräte.  Für Songs ohne festgelegtes Tempo ist die Standardeinstellung 100 BPM.</string>
+    <string name="midi_clock_short_burst">Senden Sie MIDI-Clock als kurzen Burst</string>
+    <string name="midi_clock_short_burst_info">Wenn ein Song geladen wird, wird die MIDI-Clock nur in den ersten fünf Sekunden gesendet, sodass Geräte ein Tempo empfangen können.  Dadurch kann verhindert werden, dass die MIDI-Clock von Android abdriftet und Geräte dazu führt, dass sie ihr Tempo ständig anpassen.</string>
     <string name="midi_code_current">MIDI-Code, der derzeit der Aktion zugewiesen ist</string>
     <string name="midi_code_new">Neuer MIDI-Code</string>
     <string name="midi_commands">"Song-Befehle bearbeiten"</string>
@@ -640,6 +654,7 @@
     <string name="music">Musik</string>
     <string name="music_score">"Musikpartitur"</string>
     <string name="music_score_info">Partiturnotizen bearbeiten</string>
+    <string name="music_score_popup">Popup-Fenster „Musikpartitur (abc)“.</string>
     <string name="my_band">"Band Beispielsongs importieren"</string>
     <string name="my_church">"Kirchen Beispielsongs importieren"</string>
     <string name="nearby_devices">Geräte in der Nähe</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Es befinden sich keine Artikel in Ihrem Set</string>
     <string name="set_item_info">Sie können den Ordner/Dateinamen des aus dem Set geladenen Songs ändern und Sie können auch die Taste für die Songanzeige ändern (dies führt bei Bedarf eine temporäre Transponierung des Songs auf Ihrem Gerät durch)</string>
     <string name="set_item_removed">Artikel aus dem Set entfernt</string>
+    <string name="set_items_not_found">Einige eingestellte Elemente wurden auf Ihrem Gerät nicht gefunden (sie haben möglicherweise nur einen anderen Dateinamen, eine andere Schreibweise usw.).  Sie können diese Elemente (mit einem * markiert) nach dem Import manuell im Einstellungsmenü bearbeiten.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Listendateien festlegen</string>
     <string name="set_load_first">Öffnen Sie das geladene Set beim ersten Element</string>

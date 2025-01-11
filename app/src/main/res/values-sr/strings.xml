@@ -1105,4 +1105,20 @@
     <string name="abc_popup_width_info">Širina iskačućeg prozora kao procenat širine ekrana</string>
     <string name="abc_inline_width">ABC notacija širina osoblja</string>
     <string name="abc_inline_width_info">Postavljanje širine osoblja previsoko će dovesti do toga da abc notacija postane veoma mala i takođe će smanjiti sve tekstove pesama kada se koriste u liniji</string>
+    <string name="set_items_not_found">Neke postavljene stavke nisu pronađene na vašem uređaju (možda imaju samo drugačije ime datoteke, pravopis itd.). Možete ručno izmeniti ove stavke (označene sa ) iz menija podešenog nakon uvoza.</string>
+    <string name="music_score_popup">Muzička partitura (abc) popup prozor</string>
+    <string name="midi_clock_click">MIDI sat / klik staza</string>
+    <string name="midi_clock">MIDI sat</string>
+    <string name="midi_clock_info">Pošalji informacije o MIDI satu (tempo) na povezane MIDI uređaje ili poslati MIDI metronom klik stazu</string>
+    <string name="midi_clock_master">Ponašajte se kao majstor MIDI sata</string>
+    <string name="midi_clock_master_info">Ako vaše pesme imaju podešen tempo i uspostavljena je MIDI veza, OpenSongApp će poslati tempo na sve uređaje putem MIDI koda.  Ovo će podrazumevano na 100bpm za pesme bez podešenog tempa.</string>
+    <string name="midi_click_track_channel">MIDI kanal za klik stazu</string>
+    <string name="midi_click_track_channel_info">MIDI kanal koji koristi vaš klik staza ili bubanj modul</string>
+    <string name="midi_click_track_tick_tock_info">Nisu sve MIDI udaraljke beleške mogu biti dostupne na vašem uređaju.  Molimo Vas da proverite svoj priručnik za MIDI note koje se koriste za svaki zvuk.</string>
+    <string name="midi_click_track">Pošalji MIDI klik stazu</string>
+    <string name="midi_click_track_info">Ako imate MIDI uređaj povezan i vaše pesme imaju tempo i vremenski potpis, aplikacija može da pošalje MIDI klik informacije o numeri kao deo funkcije metronoma.</string>
+    <string name="midi_clock_latency">Kašnjenje MIDI sata</string>
+    <string name="midi_clock_latency_info">Zbog potencijalnih problema sa Android vremenom i Bluetooth kašnjenja, možete dodati nivo kompenzacije ako smatrate da vaš MIDI sat tempo radi sporije nego što se očekivalo.</string>
+    <string name="midi_clock_short_burst">Pošalji MIDI sat kao kratak rafal</string>
+    <string name="midi_clock_short_burst_info">Kada se pesma učita, MIDI sat će biti poslat samo prvih pet sekundi omogućavajući uređajima da primaju tempo.  Ovo može pomoći da se izbegne MIDI sat od Android-a koji se kreće i izaziva uređaje da stalno prilagođavaju svoje tempo.</string>
 </resources>

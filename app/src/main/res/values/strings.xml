@@ -5,6 +5,11 @@
     <string name="abc_include_tab_info">Show instrument tablature below the music score</string>
     <string name="abc_inline_text">Inline ABC text</string>
     <string name="abc_inline_text_info">Copy the above code into a single line of inline ABC notation that can be pasted into the song lyrics</string>
+    <string name="abc_inline_width">ABC notation staff width</string>
+    <string name="abc_inline_width_info">Setting the staff width too high will cause the abc notation to become very small and will also shrink any song lyrics when used inline</string>
+    <string name="abc_not_available">ABC notation view not allowed here</string>
+    <string name="abc_popup_width">Popup width</string>
+    <string name="abc_popup_width_info">The width of the popup window as a percentage of the screen width</string>
     <string name="abc_transpose_to_song">Auto transpose to song key</string>
     <string name="abc_transpose_to_song_info">If a key is set in the song and in the abc notation, the app will try to adjust the output of the abc notation to match the song key.</string>
     <string name="about">About</string>
@@ -757,6 +762,20 @@
     <string name="midi_burst_info">Some devices rely on receiving multiple controller messages quickly.  When switched on, any MIDI command generated will be annotated by * as a burst command (i.e. sent several times in a row)</string>
     <string name="midi_channel">Channel</string>
     <string name="midi_channel_default">When sending automatic messages to the VoiceLive the MIDI channel below will be used</string>
+    <string name="midi_click_track">Send MIDI click track</string>
+    <string name="midi_click_track_channel">MIDI channel for click track</string>
+    <string name="midi_click_track_channel_info">The MIDI channel used by your click track or drum module</string>
+    <string name="midi_click_track_info">If you have a MIDI device connected and your songs have a tempo and time signature set, the app can send MIDI click track information as part of the metronome function.</string>
+    <string name="midi_click_track_tick_tock_info">Not all MIDI percussion notes may be available on your device.  Please check your manual for the MIDI notes used for each sound.</string>
+    <string name="midi_clock">MIDI clock</string>
+    <string name="midi_clock_click">MIDI clock / click track</string>
+    <string name="midi_clock_info">Send MIDI clock information (tempo) to connected MIDI devices or send MIDI metronome click track</string>
+    <string name="midi_clock_latency">MIDI clock latency</string>
+    <string name="midi_clock_latency_info">Due to potential Android timing issues and Bluetooth latency, you can add a compensation level if you find your MIDI clock tempo runs slower than expected.</string>
+    <string name="midi_clock_master">Act as MIDI clock master</string>
+    <string name="midi_clock_master_info">If your songs have a tempo set and a MIDI connection has been made, OpenSongApp will send the tempo to all devices via a MIDI clock code.  This will default to 100bpm for songs with no tempo set.</string>
+    <string name="midi_clock_short_burst">Send MIDI clock as a short burst</string>
+    <string name="midi_clock_short_burst_info">When a song loads, the MIDI clock will only be sent for the first five seconds allowing devices to receive a tempo.  This can help avoid the MIDI clock from Android drifting and causing devices to constantly adjust their tempos.</string>
     <string name="midi_code_current">MIDI code currently assigned to action</string>
     <string name="midi_code_new">New MIDI code</string>
     <string name="midi_commands">Edit song commands</string>
@@ -799,6 +818,7 @@
     <string name="music">Music</string>
     <string name="music_score">Music score</string>
     <string name="music_score_info">Edit score notes</string>
+    <string name="music_score_popup">Music score (abc) popup window</string>
     <string name="my_band">Import Band sample songs</string>
     <string name="my_church">Import Church sample songs</string>
     <string name="nearby_devices">Nearby devices</string>
@@ -1053,6 +1073,7 @@
     <string name="set_is_empty">There are no items in your set</string>
     <string name="set_item_info">You can change the folder/filename of the song loaded from the set and you can also change the key for song display (this performs a temporary transpose of the song on your device if required)</string>
     <string name="set_item_removed">Item removed from set</string>
+    <string name="set_items_not_found">Some set items were not found on your device (they may just have a different filename, spelling, etc).  You can manually edit these items (marked with an *) from the set menu after importing.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Set list files</string>
     <string name="set_load_first">Open the loaded set at the first item</string>
@@ -1420,8 +1441,8 @@
     <string name="website_metronome" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/metronome</string>
     <string name="website_midi_actions" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-actions/</string>
     <string name="website_midi_board" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-board</string>
-    <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_clock" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-clock</string>
+    <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_shorthand" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-shorthand</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
     <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
@@ -1469,20 +1490,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="abc_not_available">ABC notation view not allowed here</string>
-    <string name="abc_popup_width">Popup width</string>
-    <string name="abc_popup_width_info">The width of the popup window as a percentage of the screen width</string>
-    <string name="abc_inline_width">ABC notation staff width</string>
-    <string name="abc_inline_width_info">Setting the staff width too high will cause the abc notation to become very small and will also shrink any song lyrics when used inline</string>
-    <string name="set_items_not_found">Some set items were not found on your device (they may just have a different filename, spelling, etc).  You can manually edit these items (marked with an *) from the set menu after importing.</string>
-    <string name="music_score_popup">Music score (abc) popup window</string>
-    <string name="midi_clock">MIDI clock / click track</string>
-    <string name="midi_clock_info">Send MIDI clock information (tempo) to connected MIDI devices or send MIDI metronome click track</string>
-    <string name="midi_clock_master">Act as MIDI clock master</string>
-    <string name="midi_clock_master_info">If your songs have a tempo set and a MIDI connection has been made, OpenSongApp will send the tempo to all devices via a MIDI clock code.  This will default to 100bpm for songs with no tempo set.</string>
-    <string name="midi_click_track_channel">MIDI channel for click track</string>
-    <string name="midi_click_track_channel_info">The MIDI channel used by your click track or drum module</string>
-    <string name="midi_click_track_tick_tock_info">Not all MIDI percussion notes may be available on your device.  Please check your manual for the MIDI notes used for each sound.</string>
-    <string name="midi_click_track">Send MIDI click track</string>
-    <string name="midi_click_track_info">If you have a MIDI device connected and your songs have a tempo and time signature set, the app can send MIDI click track information as part of the metronome function.</string>
 </resources>

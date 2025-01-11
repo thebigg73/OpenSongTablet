@@ -158,6 +158,8 @@ public class CommonControls {
         addString("midiaction8",c.getString(R.string.midi_action)+" "+8);
         addString("sysexstart",c.getString(R.string.midi_sysex)+" "+c.getString(R.string.start));
         addString("sysexstop", c.getString(R.string.midi_sysex)+" "+c.getString(R.string.stop));
+        addString("midiclock",c.getString(R.string.midi_clock)+startstop);
+        addString("midiclockburst", c.getString(R.string.midi_clock_short_burst)+onoff);
 
         addString("","");
 

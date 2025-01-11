@@ -101,6 +101,9 @@ public class SaveSong {
                 }
             }
 
+            // Update the MIDI clock
+            mainActivityInterface.getMidi().calculateMidiClock(newSong);
+
             return saveSuccessful;
 
         } else {
@@ -142,6 +145,9 @@ public class SaveSong {
 
             // Update the song xml ready for saving
             mainActivityInterface.getSong().setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
+
+            // Update the MIDI clock
+            mainActivityInterface.getMidi().calculateMidiClock(thisSong);
 
             Log.d(TAG,"thisSong.getFolder():"+thisSong.getFolder());
             Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());

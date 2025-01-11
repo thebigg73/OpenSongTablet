@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Egyes eszközök több vezérlőüzenet gyors fogadására támaszkodnak.  Bekapcsoláskor minden létrehozott MIDI parancsot * jegyzetel burst parancsként (azaz többször egymás után elküldve)</string>
     <string name="midi_channel">"Csatorna"</string>
     <string name="midi_channel_default">Amikor automatikus üzeneteket küld a VoiceLive-nek, az alábbi MIDI csatorna kerül felhasználásra</string>
+    <string name="midi_click_track">MIDI kattintásszám küldése</string>
+    <string name="midi_click_track_channel">MIDI csatorna kattintásos sávhoz</string>
+    <string name="midi_click_track_channel_info">A kattintósáv vagy a dobmodul által használt MIDI-csatorna</string>
+    <string name="midi_click_track_info">Ha csatlakoztatott MIDI-eszközt, és a dalokhoz tempó- és időaláírás van beállítva, az alkalmazás a metronóm funkció részeként küldhet MIDI-kattintás-információkat.</string>
+    <string name="midi_click_track_tick_tock_info">Előfordulhat, hogy nem minden MIDI ütőhangszer érhető el az eszközön.  Kérjük, ellenőrizze a kézikönyvben az egyes hangokhoz használt MIDI hangjegyeket.</string>
+    <string name="midi_clock">MIDI óra</string>
+    <string name="midi_clock_click">MIDI óra / click track</string>
+    <string name="midi_clock_info">MIDI órainformáció (tempó) küldése a csatlakoztatott MIDI-eszközökre, vagy MIDI-metronóm kattintási sáv küldése</string>
+    <string name="midi_clock_latency">MIDI óra késleltetés</string>
+    <string name="midi_clock_latency_info">Az Android lehetséges időzítési problémái és a Bluetooth késleltetése miatt kompenzációs szintet adhat hozzá, ha úgy találja, hogy a MIDI óratempója a vártnál lassabban fut.</string>
+    <string name="midi_clock_master">MIDI óramesterként működik</string>
+    <string name="midi_clock_master_info">Ha a dalok tempója be van állítva, és létrejött a MIDI-kapcsolat, az OpenSongApp egy MIDI-órakódon keresztül elküldi a tempót az összes eszközre.  Ez az alapértelmezett 100 bpm a tempó nélküli daloknál.</string>
+    <string name="midi_clock_short_burst">MIDI óra küldése rövid sorozatként</string>
+    <string name="midi_clock_short_burst_info">Amikor egy dal betöltődik, a MIDI óra csak az első öt másodpercben kerül elküldésre, lehetővé téve az eszközök számára a tempó fogadását.  Ezzel elkerülhető, hogy a MIDI óra Android elsodródjon, és az eszközök folyamatosan módosítsák a tempójukat.</string>
     <string name="midi_code_current">A művelethez jelenleg hozzárendelt MIDI-kód</string>
     <string name="midi_code_new">Új MIDI-kód</string>
     <string name="midi_commands">"Zeneszerzőparancsok szerkesztése"</string>
@@ -640,6 +654,7 @@
     <string name="music">Zene</string>
     <string name="music_score">"Kotta"</string>
     <string name="music_score_info">Pontszámjegyzetek szerkesztése</string>
+    <string name="music_score_popup">Kotta (abc) felugró ablak</string>
     <string name="my_band">"Import sáv minta dalok"</string>
     <string name="my_church">"Import Church minta dalok"</string>
     <string name="nearby_devices">Közeli eszközök</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Nincsenek tárgyak a készletben</string>
     <string name="set_item_info">Megváltoztathatja a készletből betöltött dal mappáját/fájlnevét, és megváltoztathatja a dal megjelenítésének gombját is (ez szükség esetén elvégzi a dal ideiglenes átültetését az eszközön)</string>
     <string name="set_item_removed">A készletből eltávolított elem</string>
+    <string name="set_items_not_found">Egyes beállított elemek nem találhatók az eszközön (lehet, hogy más a fájlnév, a helyesírásuk stb.).  Ezeket az elemeket (*-gal jelöltük) manuálisan szerkesztheti a beállítás menüből az importálás után.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Listafájlok beállítása</string>
     <string name="set_load_first">Nyissa ki a betöltött készletet az első elemnél</string>

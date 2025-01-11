@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Algunos dispositivos dependen de recibir mensajes de múltiples controladores rápidamente.  Cuando se enciende, cualquier comando MIDI generado será anotado por * como un comando de ráfaga (es decir, enviado varias veces seguidas)</string>
     <string name="midi_channel">"Canal"</string>
     <string name="midi_channel_default">Al enviar mensajes automáticos al VoiceLive, se utilizará el canal MIDI siguiente.</string>
+    <string name="midi_click_track">Enviar pista de clic MIDI</string>
+    <string name="midi_click_track_channel">Canal MIDI para pista de clic</string>
+    <string name="midi_click_track_channel_info">El canal MIDI utilizado por su pista de clic o módulo de batería</string>
+    <string name="midi_click_track_info">Si tiene un dispositivo MIDI conectado y sus canciones tienen un tempo y un compás configurados, la aplicación puede enviar información de pista de clic MIDI como parte de la función de metrónomo.</string>
+    <string name="midi_click_track_tick_tock_info">Es posible que no todas las notas de percusión MIDI estén disponibles en su dispositivo.  Consulte su manual para conocer las notas MIDI utilizadas para cada sonido.</string>
+    <string name="midi_clock">reloj midi</string>
+    <string name="midi_clock_click">Reloj MIDI/pista de clic</string>
+    <string name="midi_clock_info">Envíe información de reloj MIDI (tempo) a dispositivos MIDI conectados o envíe una pista de clic de metrónomo MIDI</string>
+    <string name="midi_clock_latency">Latencia del reloj MIDI</string>
+    <string name="midi_clock_latency_info">Debido a posibles problemas de sincronización de Android y la latencia de Bluetooth, puede agregar un nivel de compensación si encuentra que el tempo de su reloj MIDI es más lento de lo esperado.</string>
+    <string name="midi_clock_master">Actuar como reloj maestro MIDI</string>
+    <string name="midi_clock_master_info">Si sus canciones tienen un tempo establecido y se ha realizado una conexión MIDI, OpenSongApp enviará el tempo a todos los dispositivos a través de un código de reloj MIDI.  El valor predeterminado será 100 bpm para canciones sin tempo establecido.</string>
+    <string name="midi_clock_short_burst">Enviar reloj MIDI como una ráfaga corta</string>
+    <string name="midi_clock_short_burst_info">Cuando se carga una canción, el reloj MIDI solo se enviará durante los primeros cinco segundos, lo que permitirá a los dispositivos recibir un tempo.  Esto puede ayudar a evitar que el reloj MIDI de Android se desvíe y haga que los dispositivos ajusten constantemente sus tempos.</string>
     <string name="midi_code_current">Código MIDI actualmente asignado a la acción</string>
     <string name="midi_code_new">Nuevo código MIDI</string>
     <string name="midi_commands">"Editar comandos de canciones"</string>
@@ -640,6 +654,7 @@
     <string name="music">Música</string>
     <string name="music_score">"Partitura musical"</string>
     <string name="music_score_info">Editar notas de partitura</string>
+    <string name="music_score_popup">Ventana emergente de partitura musical (abc)</string>
     <string name="my_band">"Canciones de Import Band"</string>
     <string name="my_church">"Canciones de la muestra de la iglesia de la importación"</string>
     <string name="nearby_devices">Dispositivos cercanos</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">No hay elementos en tu colección</string>
     <string name="set_item_info">Puede cambiar la carpeta / nombre de archivo de la canción cargada desde el conjunto y también puede cambiar la tecla para la visualización de la canción (esto realiza una transposición temporal de la canción en su dispositivo si es necesario)</string>
     <string name="set_item_removed">Objeto eliminado del conjunto</string>
+    <string name="set_items_not_found">Algunos elementos configurados no se encontraron en su dispositivo (es posible que simplemente tengan un nombre de archivo, ortografía, etc. diferentes).  Puede editar manualmente estos elementos (marcados con un *) desde el menú de configuración después de importarlos.</string>
     <string name="set_list">Lista de canciones</string>
     <string name="set_list_separate">Establecer archivos de lista</string>
     <string name="set_load_first">Abra el conjunto cargado en el primer elemento</string>

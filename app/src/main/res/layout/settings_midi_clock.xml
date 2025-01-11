@@ -20,8 +20,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_clock_master"
-                android:hint="@string/midi_clock_master_info"
-                app:size="large"/>
+                android:hint="@string/midi_clock_master_info" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/midiClockShortBurst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/midi_clock_short_burst"
+                android:hint="@string/midi_clock_short_burst_info" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/midiClockLatency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/midi_clock_latency"
+                app:infoText="@string/midi_clock_latency_info"
+                android:valueFrom="0"
+                android:valueTo="5"
+                app:adjustable="true" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
@@ -29,8 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_click_track"
-                android:hint="@string/midi_click_track_info"
-                app:size="large"/>
+                android:hint="@string/midi_click_track_info" />
 
             <LinearLayout
                 android:id="@+id/midiClickTrackLayout"

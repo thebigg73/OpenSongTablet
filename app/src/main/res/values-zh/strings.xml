@@ -603,6 +603,20 @@
     <string name="midi_burst_info">某些设备依赖于快速接收多个控制器消息。 打开时，生成的任何 MIDI 命令都将由 * 注释为突发命令（即连续发送几次）</string>
     <string name="midi_channel">"渠道"</string>
     <string name="midi_channel_default">当向 VoiceLive 发送自动消息时，将使用下面的 MIDI 通道</string>
+    <string name="midi_click_track">发送 MIDI 节拍音轨</string>
+    <string name="midi_click_track_channel">用于节拍音轨的 MIDI 通道</string>
+    <string name="midi_click_track_channel_info">您的节拍音轨或鼓音源器使用的 MIDI 通道</string>
+    <string name="midi_click_track_info">如果您连接了 MIDI 设备并且您的歌曲设置了速度和拍号，则该应用程序可以发送 MIDI 节拍音轨信息作为节拍器功能的一部分。</string>
+    <string name="midi_click_track_tick_tock_info">并非所有 MIDI 打击乐音符都可以在您的设备上使用。  请检查您的手册以了解每种声音所使用的 MIDI 音符。</string>
+    <string name="midi_clock">MIDI时钟</string>
+    <string name="midi_clock_click">MIDI 时钟/节拍音轨</string>
+    <string name="midi_clock_info">将 MIDI 时钟信息（速度）发送到连接的 MIDI 设备或发送 MIDI 节拍器节拍音轨</string>
+    <string name="midi_clock_latency">MIDI 时钟延迟</string>
+    <string name="midi_clock_latency_info">由于潜在的 Android 计时问题和蓝牙延迟，如果您发现 MIDI 时钟速度运行得比预期慢，您可以添加补偿级别。</string>
+    <string name="midi_clock_master">充当 MIDI 时钟主控</string>
+    <string name="midi_clock_master_info">如果您的歌曲设置了速度并且已建立 MIDI 连接，OpenSongApp 将通过 MIDI 时钟代码将速度发送到所有设备。  对于没有速度设置的歌曲，默认为 100bpm。</string>
+    <string name="midi_clock_short_burst">以短脉冲形式发送 MIDI 时钟</string>
+    <string name="midi_clock_short_burst_info">当歌曲加载时，MIDI 时钟将仅在前五秒内发送，允许设备接收节奏。  这有助于避免 Android 的 MIDI 时钟漂移并导致设备不断调整其速度。</string>
     <string name="midi_code_current">当前分配给动作的 MIDI 代码</string>
     <string name="midi_code_new">新的 MIDI 代码</string>
     <string name="midi_commands">"编辑歌曲命令"</string>
@@ -640,6 +654,7 @@
     <string name="music">音乐</string>
     <string name="music_score">"谱子"</string>
     <string name="music_score_info">编辑乐谱注释</string>
+    <string name="music_score_popup">乐谱 (abc) 弹出窗口</string>
     <string name="my_band">"导入乐队示例歌曲"</string>
     <string name="my_church">"进口教会样品歌曲"</string>
     <string name="nearby_devices">附近的设备</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">您的套装中没有物品</string>
     <string name="set_item_info">您可以更改从集合加载的歌曲的文件夹/文件名，也可以更改歌曲显示的键（如果需要，这会在您的设备上临时转置歌曲）</string>
     <string name="set_item_removed">从集合中删除的项目</string>
+    <string name="set_items_not_found">在您的设备上找不到某些设置项目（它们可能只是有不同的文件名、拼写等）。  导入后，您可以从设置菜单手动编辑这些项目（标有 *）。</string>
     <string name="set_list">歌单</string>
     <string name="set_list_separate">设置列表文件</string>
     <string name="set_load_first">在第一项打开加载的集</string>

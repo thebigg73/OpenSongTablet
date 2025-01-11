@@ -72,7 +72,7 @@ public class Metronome {
         mainActivityInterface = (MainActivityInterface) c;
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
         tickRunnable = () -> {
-            if (soundPool != null) {
+            if (soundPool != null && audioMetronome) {
                 try {
                     soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
                     //soundPool.stop(tockClip);
@@ -87,7 +87,7 @@ public class Metronome {
             }
         };
         tockRunnable = () -> {
-            if (soundPool != null) {
+            if (soundPool != null && audioMetronome) {
                 try {
                     soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
                     //soundPool.stop(tickClip);
@@ -141,13 +141,13 @@ public class Metronome {
         isRunningVisual = false;
         stopTimers(false);
 
-        mainActivityInterface.getMidi().stopMidiClock();
-
         // Make sure the action bar resets to the off color
         new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength);
         new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength*2L);
 
         mainActivityInterface.getToolbar().hideMetronomeBar();
+
+        Log.d(TAG,"metronome stopped");
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
@@ -498,13 +498,13 @@ public class Metronome {
             tickHandler = new Handler();
             tockHandler = new Handler();
 
-            if (audioMetronome) {
+            if (audioMetronome || (mainActivityInterface.getMidi().getMidiClickTrackSend() && mainActivityInterface.getMidi().getMidiDevice()!=null)) {
                 timerMetronome();
             }
             if (visualMetronome) {
                 timerVisual();
             }
-            if (!audioMetronome && !visualMetronome) {
+            if (!audioMetronome && !visualMetronome && !mainActivityInterface.getMidi().getMidiClickTrackSend()) {
                 stopMetronome();
             }
         }

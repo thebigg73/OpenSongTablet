@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Некоторые устройства полагаются на быстрое получение сообщений нескольких контроллеров.  При включении любая сгенерированная MIDI-команда будет помечена * как пакетная команда (т.е. отправлена несколько раз подряд)</string>
     <string name="midi_channel">Kанал</string>
     <string name="midi_channel_default">При отправке автоматических сообщений на VoiceLive будет использоваться указанный ниже MIDI-канал.</string>
+    <string name="midi_click_track">Отправить MIDI-трек кликов</string>
+    <string name="midi_click_track_channel">MIDI-канал для трека кликов</string>
+    <string name="midi_click_track_channel_info">MIDI-канал, используемый треком кликов или модулем ударных.</string>
+    <string name="midi_click_track_info">Если у вас подключено MIDI-устройство и для ваших песен установлены темп и тактовый размер, приложение может отправлять информацию MIDI-трека щелчков как часть функции метронома.</string>
+    <string name="midi_click_track_tick_tock_info">Не все MIDI-ноты перкуссии могут быть доступны на вашем устройстве.  Пожалуйста, проверьте руководство по MIDI-нотам, используемым для каждого звука.</string>
+    <string name="midi_clock">MIDI-часы</string>
+    <string name="midi_clock_click">MIDI-часы/дорожка кликов</string>
+    <string name="midi_clock_info">Отправка информации о синхронизации MIDI (темп) на подключенные MIDI-устройства или отправка трека щелчков метронома MIDI.</string>
+    <string name="midi_clock_latency">Задержка MIDI-синхронизации</string>
+    <string name="midi_clock_latency_info">Из-за потенциальных проблем с синхронизацией Android и задержки Bluetooth вы можете добавить уровень компенсации, если обнаружите, что темп синхронизации MIDI работает медленнее, чем ожидалось.</string>
+    <string name="midi_clock_master">Действовать как мастер MIDI-часов</string>
+    <string name="midi_clock_master_info">Если для ваших песен установлен темп и установлено MIDI-соединение, OpenSongApp отправит темп на все устройства через тактовый код MIDI.  По умолчанию для песен без установленного темпа будет установлено значение 100 ударов в минуту.</string>
+    <string name="midi_clock_short_burst">Отправка MIDI-синхронизации в виде короткого пакета</string>
+    <string name="midi_clock_short_burst_info">Когда песня загружается, MIDI-синхронизация будет отправляться только в течение первых пяти секунд, позволяя устройствам получать темп.  Это может помочь избежать дрейфа MIDI-часов Android, из-за которого устройства постоянно корректируют свой темп.</string>
     <string name="midi_code_current">MIDI-код, назначенный в настоящее время действию</string>
     <string name="midi_code_new">Новый MIDI-код</string>
     <string name="midi_commands">Редактирование команд для песни</string>
@@ -640,6 +654,7 @@
     <string name="music">Музыка</string>
     <string name="music_score">Партитура</string>
     <string name="music_score_info">Редактировать партитуру</string>
+    <string name="music_score_popup">Всплывающее окно музыкальной партитуры (abc)</string>
     <string name="my_band">Импорт семплов группы</string>
     <string name="my_church">"Импорт семплов церкви"</string>
     <string name="nearby_devices">Ближайшие устройства</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">В вашем сетлисте пусто</string>
     <string name="set_item_info">Вы можете изменить имя папки/файла песни, загруженной из сетлиста, а также изменить тональность песни ТОЛЬКО для текущего отображения в сетлисте (транспозиция песни в самой базе при этом не меняется)</string>
     <string name="set_item_removed">Элемент удален из сетлиста</string>
+    <string name="set_items_not_found">Некоторые элементы набора не были найдены на вашем устройстве (у них может быть просто другое имя файла, написание и т. д.).  Вы можете вручную редактировать эти элементы (отмеченные *) в меню настроек после импорта.</string>
     <string name="set_list">Сетлист</string>
     <string name="set_list_separate">Задать отдельные файлы сетлиста</string>
     <string name="set_load_first">Загрузить сетлист и отобразить 1-й элемент сетлиста</string>

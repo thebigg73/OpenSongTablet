@@ -11,8 +11,12 @@ import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
+import com.garethevans.church.opensongtablet.abcnotation.InlineAbcWebViewTagObject;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -508,6 +512,36 @@ public class MakePDF {
             pageCanvas.save();
             pageCanvas.translate(cmToPx(margin_cm),ypos);
             pageCanvas.scale(columnScale, columnScale);
+
+            Log.d(TAG,"try to check the children");
+            Log.d(TAG,"inlineAbcObjects.count():"+mainActivityInterface.getAbcNotation().countInlineAbcObjects());
+            if (mainActivityInterface.getAbcNotation().countInlineAbcObjects()>0) {
+                for (int i = 0; i < ((LinearLayout) view).getChildCount(); i++) {
+                    View thisView = ((LinearLayout) view).getChildAt(i);
+                    Log.d(TAG, "child:" + thisView.getClass().getName());
+                    if (thisView.getClass().getName().equals("android.widget.ImageView")) {
+                        // Get the tag and therefore the abcObject
+                        InlineAbcWebViewTagObject tagObject = (InlineAbcWebViewTagObject) thisView.getTag();
+                        int item = tagObject.getObjectNumber();
+                        Log.d(TAG, "tagObject item:" + item);
+                        InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(item);
+                        Log.d(TAG, "size of object:" + inlineAbcObject.getAbcWidth() + "x" + inlineAbcObject.getAbcHeight());
+                        Log.d(TAG, "size of ImageView:" + thisView.getMeasuredWidth() + "x" + thisView.getMeasuredHeight());
+                        float resize = (float) inlineAbcObject.getAbcWidth() / (float) thisView.getMeasuredWidth();
+                        int newImgHeight = (int) (resize * inlineAbcObject.getAbcHeight());
+                        ViewGroup.LayoutParams lp = thisView.getLayoutParams();
+                        lp.height = newImgHeight;
+                        //thisView.setLayoutParams(llp);
+                        //thisView.invalidate();
+                        inlineAbcObject.setIsPDF(true);
+                        mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(item).drawTheImageView((ImageView) thisView);
+                        Log.d(TAG, "size of ImageView:" + thisView.getMeasuredWidth() + "x" + thisView.getMeasuredHeight());
+                        inlineAbcObject.setIsPDF(false);
+                        thisView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
             //Log.d(TAG,"view:"+view.getClass()+"  width:"+view.getMeasuredWidth()+"  height:"+view.getMeasuredHeight());
             //TextView logo = new TextView(c);
             //logo.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), R.drawable.splash_logo,null));

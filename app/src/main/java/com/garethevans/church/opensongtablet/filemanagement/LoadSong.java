@@ -88,6 +88,9 @@ public class LoadSong {
                 // Get the detected chord format
                 mainActivityInterface.getTranspose().checkChordFormat(thisSong);
 
+                // Check the tempo for the MIDI clock
+                mainActivityInterface.getMidi().calculateMidiClock(thisSong);
+
                 return thisSong;
             }
         }
@@ -237,6 +240,9 @@ public class LoadSong {
             // Get the detected chord format - don't do while indexing!
             mainActivityInterface.getTranspose().checkChordFormat(thisSong);
         }
+
+        // Check the tempo for the MIDI clock
+        mainActivityInterface.getMidi().calculateMidiClock(thisSong);
 
         // Send the song back with all of its children populated!
         return thisSong;

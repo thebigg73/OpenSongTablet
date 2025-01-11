@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Certains appareils s’appuient sur la réception rapide de plusieurs messages de contrôleur.  Lorsqu’elle est activée, toute commande MIDI générée sera annotée par * en tant que commande en rafale (c’est-à-dire envoyée plusieurs fois de suite)</string>
     <string name="midi_channel">"Canal"</string>
     <string name="midi_channel_default">Lors de l\'envoi de messages automatiques au VoiceLive, le canal MIDI ci-dessous sera utilisé</string>
+    <string name="midi_click_track">Envoyer une piste de clic MIDI</string>
+    <string name="midi_click_track_channel">Canal MIDI pour la piste de clic</string>
+    <string name="midi_click_track_channel_info">Le canal MIDI utilisé par votre piste de clic ou votre module de batterie</string>
+    <string name="midi_click_track_info">Si vous avez un appareil MIDI connecté et que vos chansons ont un tempo et une signature rythmique définis, l\'application peut envoyer des informations sur la piste de clic MIDI dans le cadre de la fonction métronome.</string>
+    <string name="midi_click_track_tick_tock_info">Toutes les notes de percussion MIDI ne sont peut-être pas disponibles sur votre appareil.  Veuillez consulter votre manuel pour connaître les notes MIDI utilisées pour chaque son.</string>
+    <string name="midi_clock">Horloge MIDI</string>
+    <string name="midi_clock_click">Horloge MIDI / piste de clic</string>
+    <string name="midi_clock_info">Envoyez des informations d\'horloge MIDI (tempo) aux appareils MIDI connectés ou envoyez une piste de clic de métronome MIDI</string>
+    <string name="midi_clock_latency">Latence de l\'horloge MIDI</string>
+    <string name="midi_clock_latency_info">En raison de problèmes potentiels de timing Android et de latence Bluetooth, vous pouvez ajouter un niveau de compensation si vous constatez que le tempo de votre horloge MIDI est plus lent que prévu.</string>
+    <string name="midi_clock_master">Agir en tant que maître d\'horloge MIDI</string>
+    <string name="midi_clock_master_info">Si vos chansons ont un tempo défini et qu\'une connexion MIDI a été établie, OpenSongApp enverra le tempo à tous les appareils via un code d\'horloge MIDI.  La valeur par défaut sera 100 bpm pour les chansons sans tempo défini.</string>
+    <string name="midi_clock_short_burst">Envoyer l\'horloge MIDI sous forme de courte rafale</string>
+    <string name="midi_clock_short_burst_info">Lorsqu\'une chanson est chargée, l\'horloge MIDI ne sera envoyée que pendant les cinq premières secondes permettant aux appareils de recevoir un tempo.  Cela peut aider à éviter que l\'horloge MIDI d\'Android ne dérive et que les appareils n\'ajustent constamment leur tempo.</string>
     <string name="midi_code_current">Code MIDI actuellement affecté à l’action</string>
     <string name="midi_code_new">Nouveau code MIDI</string>
     <string name="midi_commands">"Modifier les commandes de morceau"</string>
@@ -640,6 +654,7 @@
     <string name="music">Musique</string>
     <string name="music_score">"Score de musique"</string>
     <string name="music_score_info">Modifier les notes de partition</string>
+    <string name="music_score_popup">Fenêtre contextuelle de partition musicale (abc)</string>
     <string name="my_band">"Bandes d'échange de bandes d'importation"</string>
     <string name="my_church">"Import Church exemple de chansons"</string>
     <string name="nearby_devices">Appareils à proximité</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Il n’y a pas d’objets dans votre ensemble</string>
     <string name="set_item_info">Vous pouvez changer le dossier / nom de fichier de la chanson chargée à partir de l’ensemble et vous pouvez également changer la touche d’affichage de la chanson (cela effectue une transposition temporaire de la chanson sur votre appareil si nécessaire)</string>
     <string name="set_item_removed">Élément supprimé de l’ensemble</string>
+    <string name="set_items_not_found">Certains éléments définis n\'ont pas été trouvés sur votre appareil (ils peuvent simplement avoir un nom de fichier, une orthographe, etc. différents).  Vous pouvez modifier manuellement ces éléments (marqués d\'un *) à partir du menu de configuration après l\'importation.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Définir les fichiers de liste</string>
     <string name="set_load_first">Ouvrez le jeu chargé au premier élément</string>

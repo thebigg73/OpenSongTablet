@@ -243,6 +243,9 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                 // Create the content for the section views.
                 mainActivityInterface.getProcessSong().setPdfPrinting(true);
                 thisSong.setLyrics(thisSong.getLyrics().trim());
+
+                mainActivityInterface.getAbcNotation().resetInlineAbcObjects();
+
                 sectionViewsPDF = mainActivityInterface.getProcessSong().
                         setSongInLayout(thisSong, true, false);
 

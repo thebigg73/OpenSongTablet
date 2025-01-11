@@ -2435,7 +2435,7 @@ public class ProcessSong {
                                 }
                             } else if (!(clearedCurlyText && line.trim().isEmpty())) {
                                 if (line.startsWith(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
-                                    if (!presentation && !performancePresentation) {
+                                    if (!presentation && !performancePresentation && !pdfPrinting && !asPDF) {
                                         // This is where we render the ABC WebView.
                                         // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
                                         InlineAbcObject inlineAbcObject = new InlineAbcObject(c, line, sect, overallBackgroundColor);
@@ -2450,16 +2450,23 @@ public class ProcessSong {
                                         linearLayout.addView(inlineAbcObject.getInlineAbcImageView(false));
 
                                     } else {
+                                        // Just show a text view for now until I can fix this for PDF/presentation/export
+                                        TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
+                                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
+                                                true,isChorusBold);
+                                        linearLayout.addView(tv);
+
                                         // This is for the secondary display
                                         // This is where we render the ABC WebView.
                                         // Once done, we can access an ImageView version for Secondary displays, PDF, etc.
-                                        InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition());
-                                        mainActivityInterface.getAbcNotation().increaseSecondaryInlineAbcObjectPosition();
+                                        //InlineAbcObject inlineAbcObject = mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition());
+                                        //mainActivityInterface.getAbcNotation().increaseSecondaryInlineAbcObjectPosition();
                                         // Now we add the WebView and ImageView for the song display
                                         // Once rendering is complete, we hide the WebView and display the ImageView
-                                        inlineAbcObject.setIsPresentation(true);
-                                        linearLayout.addView(inlineAbcObject.getInlineAbcImageView(true));
-                                        inlineAbcObject.setIsPresentation(false);
+                                        //inlineAbcObject.setIsPresentation(true);
+                                        //linearLayout.addView(inlineAbcObject.getInlineAbcImageView(true));
+                                        //inlineAbcObject.setIsPresentation(false);
                                         // We have already created the WebView and can now call a new ImageView from it.
                                     /*    try {
                                             int positionToGet = mainActivityInterface.getAbcNotation().getSecondaryInlineAbcObjectPosition();

@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,13 +49,14 @@ public class Midi {
     private String[] messageParts;
     private final String sysexStartCode = "0xF0 0x7F 0xFA 0xF7";
     private final String sysexStopCode = "0xF0 0x7F 0xFC 0xF7";
-    private int midiInputChannelPedal, midiInputChannelSong, midiOutputChannel;
-    private boolean midiInput, midiInputAutoscroll, midiInputMetronome, midiInputPad;
-    private boolean midiClickTrackSend, midiClockSend;
+    private int midiInputChannelPedal, midiInputChannelSong, midiOutputChannel, midiClockLatency;
+    private boolean midiInput, midiInputAutoscroll, midiInputMetronome, midiInputPad, midiClockShortBurst;
+    private boolean midiClickTrackSend, midiClockSend, midiClockRunning=false;
     private int midiClickTrackChannel, midiClickTrackTick = 76, midiClickTrackTock = 77,
             midiClickTrackTickVolume, midiClickTrackTockVolume;
     private String midiClickTickMessageOn="", midiClickTockMessageOn="", midiClickTickMessageOff="", midiClickTockMessageOff="";
     private long midiClockDelay = 0;
+    private long actualMidiClockDelay = 0;
     private final byte[] midiClockBytes;
     private ScheduledExecutorService midiClockExecutor;
     private ScheduledFuture<?> future;
@@ -91,6 +93,8 @@ public class Midi {
         midiInputPad = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputPad",false);
         // Because MIDI clock can be processor intensive, it isn't a user preference.  It must be turned on manually
         midiClockSend = false;
+        midiClockShortBurst = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiClockShortBurst",false);
+        midiClockLatency = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClockLatency",0);
         midiClickTrackSend = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiClickTrackSend",false);
         midiClickTrackChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackChannel",10);
         midiClickTrackTick = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTick",76);
@@ -286,6 +290,14 @@ public class Midi {
 
     public void setIncludeBluetoothMidi(boolean includeBluetoothMidi) {
         this.includeBluetoothMidi = includeBluetoothMidi;
+    }
+
+    public void setMidiClockShortBurst(boolean midiClockShortBurst) {
+        this.midiClockShortBurst = midiClockShortBurst;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClockShortBurst",midiClockShortBurst);
+    }
+    public boolean getMidiClockShortBurst() {
+        return midiClockShortBurst;
     }
 
     public void setMidiDelay(int midiDelay) {
@@ -597,11 +609,13 @@ public class Midi {
         String bCommon = b1 + "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         switch (action) {
             case "NoteOn":
+            case "NO":
                 b1 += "9" + hexString;
                 s = b1 + b2 + b3;
                 break;
 
             case "NoteOff":
+            case "NX":
                 b1 += "8" + hexString;
                 s = b1 + b2 + " 0x00";
                 break;
@@ -707,14 +721,14 @@ public class Midi {
         // This bonds so pairing is requested
         if (bluetoothDevice!=null && bluetoothDevice.getBondState()==BluetoothDevice.BOND_NONE) {
             try {
-                //Method m = bluetoothDevice.getClass()
-                //        .getMethod("createBond");
-                //m.invoke(bluetoothDevice, (Object[]) null);
-                bluetoothDevice.connectGatt(c,false,null);
+                bluetoothDevice.connectGatt(c, false, null);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
                 bluetoothDevice = null;
             }
+            /*Method m = bluetoothDevice.getClass()
+            .getMethod("createBond");
+            m.invoke(bluetoothDevice, (Object[]) null);*/
         }
 
     }
@@ -1072,16 +1086,12 @@ public class Midi {
     // Scan for already connected Bluetooth MIDI devices
     public void setupBluetoothManager() {
         if (activity!=null && Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
-            Log.d(TAG,"activity:"+activity);
-            //BluetoothManager bluetoothManager = c.getSystemService(BluetoothManager.class);
-            //bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
             Object obj = activity.getSystemService(Context.BLUETOOTH_SERVICE);
             if (obj!=null) {
                 bluetoothManager = (BluetoothManager) obj;
             } else {
                 bluetoothManager = null;
             }
-            Log.d(TAG,"bluetoothManager");
             // If we haven't paired a device in the app, make sure suitable devices are unpaired now so we can discover them
             List<BluetoothDevice> connectedDevices;
             if (bluetoothDevice == null && bluetoothManager != null) {
@@ -1096,14 +1106,11 @@ public class Midi {
                 }
                 if (connectedDevices != null && midiManager!=null) {
                     for (BluetoothDevice device : connectedDevices) {
-                        Log.d(TAG, "already connected device:" + device.getName());
                         // If this is a MIDI BLE device, then use it!
                         ParcelUuid[] uuids = device.getUuids();
-                        Log.d(TAG, "uuids:" + Arrays.toString(uuids));
                         if (uuids != null) {
                             for (ParcelUuid uuid : uuids) {
                                 if (uuid.toString().equalsIgnoreCase(uuidBle)) {
-                                    Log.d(TAG, "This device is MIDI");
                                     // This is a MIDI device!
                                     if (midiDevice == null &&
                                             device.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -1111,7 +1118,6 @@ public class Midi {
                                         // Unpair as the pairing needs to be initiated here
                                         bluetoothDevice = device;
                                         tryDisconnectBluetoothLE();
-                                        Log.d(TAG, "disconnected, try pairing again");
                                         tryPairBluetoothLE();
                                     }
                                 }
@@ -1127,10 +1133,10 @@ public class Midi {
     // The MIDI metronome stuff
     public void setUpMidiTickTock() {
         // Build the MIDI hex strings for the tick-tock
-        midiClickTickMessageOn = buildMidiString("NO",midiClickTrackChannel,midiClickTrackTick,midiClickTrackTickVolume);
-        midiClickTickMessageOff = buildMidiString("NX",midiClickTrackChannel,midiClickTrackTick,0);
-        midiClickTockMessageOn = buildMidiString("NO",midiClickTrackChannel,midiClickTrackTock,midiClickTrackTockVolume);
-        midiClickTockMessageOff = buildMidiString("NX",midiClickTrackChannel,midiClickTrackTock,0);
+        midiClickTickMessageOn = buildMidiString("NoteOn",midiClickTrackChannel,midiClickTrackTick,midiClickTrackTickVolume);
+        midiClickTickMessageOff = buildMidiString("NoteOff",midiClickTrackChannel,midiClickTrackTick,0);
+        midiClickTockMessageOn = buildMidiString("NoteOn",midiClickTrackChannel,midiClickTrackTock,midiClickTrackTockVolume);
+        midiClickTockMessageOff = buildMidiString("NoteOff",midiClickTrackChannel,midiClickTrackTock,0);
     }
     public String getMidiClickTickMessageOn() {
         return midiClickTickMessageOn;
@@ -1145,6 +1151,13 @@ public class Midi {
         stopMidiClock();
         if (midiClockSend) {
             // Start the MIDI clock
+            startMidiClock();
+        }
+    }
+    public void sendMidiClockShortBurst() {
+        calculateMidiClock(mainActivityInterface.getSong());
+        if (midiClockShortBurst && midiDevice!=null ) {
+            stopMidiClock();
             startMidiClock();
         }
     }
@@ -1206,11 +1219,24 @@ public class Midi {
     public void sendMidiTick() {
         if (midiClickTrackSend && midiDevice!=null) {
             sendMidiHexSequence(midiClickTickMessageOn + "\n" + midiClickTockMessageOff);
+            //sendMidiHexSequence(midiClickTickMessageOn);
         }
     }
     public void sendMidiTock() {
         if (midiClickTrackSend && midiDevice!=null) {
             sendMidiHexSequence(midiClickTockMessageOn + "\n" + midiClickTickMessageOff);
+        }
+    }
+    public void calculateMidiClock(Song thisSong) {
+        if (thisSong!=null && thisSong.getTempo()!=null && !thisSong.getTempo().isEmpty()) {
+            String tempo = thisSong.getTempo().trim().replaceAll("\\D","");
+            if (!tempo.isEmpty()) {
+                calculateMidiClock(Integer.parseInt(tempo));
+            } else {
+                calculateMidiClock(100);
+            }
+        } else {
+            calculateMidiClock(100);
         }
     }
     public void calculateMidiClock(int tempo) {
@@ -1222,52 +1248,104 @@ public class Midi {
         // 60,000,000 / (24 × BPM).  Answer is in microseconds
 
         if (tempo > 0) {
-            float calculation = Math.round((float) (60000000) / ((float) (24 * tempo)));
+            // Likely we will need a fudge factor to account for Android timing issues
+            // The strenth of this will be 0-5
+            // For me 40bpm needed an extra 0.4bpm added = 1%
+            // 100bpm needed an extra 2bpm = 2%
+            // (bpm / 4)  / 10   40 / 4  / 10  =   = 1%
+            // (bpm / 4) / 10    100/4   / 10  = 2.5%
+            float fudgeFactor = 1 + (midiClockLatency * (((float)tempo/5f)/1000f));
+            int tempoToUse = Math.round(fudgeFactor * tempo);
+            float calculation = Math.round((float) (60000000) / ((float) (24 * tempoToUse)));
             midiClockDelay = Math.round(calculation);
-            Log.d(TAG, "midiClockDelay:" + midiClockDelay);
         } else {
-            float calculation = Math.round((float) (60000000) / ((float) (24 * 100)));
+            float fudgeFactor = 1 + (midiClockLatency * (((float)100/5f)/1000f));
+            int tempoToUse = Math.round(fudgeFactor * 100);
+
+            float calculation = Math.round((float) (60000000) / ((float) (24 * tempoToUse)));
             midiClockDelay = Math.round(calculation);
-            Log.d(TAG, "midiClockDelay:" + midiClockDelay);
         }
     }
 
-    private long currentTimeMicroSecs;
+    public void setMidiClockLatency(int midiClockLatency) {
+        this.midiClockLatency = midiClockLatency;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClockLatency",midiClockLatency);
+        calculateMidiClock(mainActivityInterface.getMetronome().getTempo());
+    }
+    public int getMidiClockLatency() {
+        return midiClockLatency;
+    }
+
+    private long midiClockStartTime=0;
+    private long startFor24ppqn;
+    private int count = 1;
     public void startMidiClock() {
-        if (midiClockSend && midiDevice!=null) {
+        actualMidiClockDelay = midiClockDelay;
+        startFor24ppqn = 0;
+        midiClockStartTime = 0;
+        if ((midiClockSend || midiClockShortBurst) && midiDevice!=null) {
+            midiClockRunning = true;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                currentTimeMicroSecs = System.nanoTime() / 1000;
                 clock = () -> {
-                    // Expected time was startTime + midiClockDelay.
-                    // Any larger value is a delay that we remove from the next schedule
-                    long expectedTime = currentTimeMicroSecs + midiClockDelay;
-                    currentTimeMicroSecs = System.nanoTime()/1000;
-                    long latency = currentTimeMicroSecs - expectedTime;
                     sendMidi(midiClockBytes);
-                    future = midiClockExecutor.schedule(clock, midiClockDelay-latency, TimeUnit.MICROSECONDS);
+                    // Expected time was startTime + midiClockDelay.  We use actualMidiClockDelay as we might need to adjust
+                    // Any larger value is a delay that we remove from the next schedule
+                    //long expectedTime = currentTimeMicroSecs + midiClockDelay;
+                    //currentTimeMicroSecs = (System.nanoTime() / 1000);
+                    if (startFor24ppqn==0) {
+                        startFor24ppqn = (System.nanoTime() / 1000);
+                        if (midiClockStartTime==0) {
+                            midiClockStartTime = startFor24ppqn;
+                        }
+                    }
+
+                    //long latency = currentTimeMicroSecs - expectedTime;
+                    count ++;
+                    if (count>24) {
+                        // Work out the average time there has actually been between pulses
+                        long currentTime = (System.nanoTime() / 1000);
+                        long averageTime = (currentTime - startFor24ppqn) / 24;
+                        // The average time will likely be bigger than we want, so subtract this from the currentValue
+                        long difference = averageTime - midiClockDelay;
+                        actualMidiClockDelay = midiClockDelay - difference;
+                        count = 1;
+                        startFor24ppqn=0;
+
+                        if (midiClockShortBurst && currentTime > midiClockStartTime+4000000) {
+                            // If the time has exceeded 5 seconds, stop
+                            stopMidiClock();
+                        }
+                    }
+
+                    //future = midiClockExecutor.schedule(clock, actualMidiClockDelay-latency, TimeUnit.MICROSECONDS);
+                    future = midiClockExecutor.schedule(clock, actualMidiClockDelay, TimeUnit.MICROSECONDS);
                 };
                 midiClockExecutor = Executors.newSingleThreadScheduledExecutor();
                 future = midiClockExecutor.schedule(clock, midiClockDelay, TimeUnit.MICROSECONDS);
+                //future = midiClockExecutor.scheduleAtFixedRate(clock, 0, midiClockDelay, TimeUnit.MICROSECONDS);
             }
         }
     }
 
     public void stopMidiClock() {
+        midiClockRunning = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (midiClockExecutor!=null && future!=null) {
                 future.cancel(true);
                 midiClockExecutor.shutdown();
                 midiClockExecutor.shutdownNow();
                 Thread.currentThread().interrupt();
-                Log.d(TAG,"try shutdown");
                 Runnable endclock = () -> midiClockExecutor.shutdown();
                 try {
                     midiClockExecutor.schedule(endclock, 100, TimeUnit.MILLISECONDS);
                 } catch (Exception e) {
-                    Log.d(TAG,"Exception stopping");
                     midiClockExecutor.shutdownNow();
                 }
             }
         }
+    }
+
+    public boolean getMidiClockRunning() {
+        return midiClockRunning;
     }
 }

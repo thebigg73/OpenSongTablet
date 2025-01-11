@@ -1,32 +1,21 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 public class InlineAbcWebViewTagObject {
-    private String abc = "";
-    private int webViewNum = -1;
-    private boolean isForSecondary = false;
+    private int objectNumber = -1;
+    private int containingViewNumber = -1;
 
     // This is used to set some tag information for WebViews
-    public void setAbc(String abc) {
-        this.abc = abc;
+    public void setObjectNumber(int objectNumber) {
+        this.objectNumber = objectNumber;
+    }
+    public int getObjectNumber() {
+        return objectNumber;
     }
 
-    public String getAbc() {
-        return abc;
+    public void setContainingViewNumber(int containingViewNumber) {
+        this.containingViewNumber = containingViewNumber;
     }
-
-    public void setWebViewNum(int webViewNum) {
-        this.webViewNum = webViewNum;
-    }
-
-    public void setIsForSecondary(boolean isForSecondary) {
-        this.isForSecondary = isForSecondary;
-    }
-
-    public boolean getIsForSecondary() {
-        return isForSecondary;
-    }
-
-    public int getWebViewNum() {
-        return webViewNum;
+    public int getContainingViewNumber() {
+        return containingViewNumber;
     }
 }

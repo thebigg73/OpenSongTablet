@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Niektóre urządzenia polegają na szybkim odbieraniu wielu komunikatów kontrolera.  Po włączeniu każde wygenerowane polecenie MIDI będzie opatrzone adnotacją * jako polecenie Burst (tj. wysłane kilka razy z rzędu)</string>
     <string name="midi_channel">Kanał</string>
     <string name="midi_channel_default">Podczas wysyłania automatycznych wiadomości do VoiceLive używany będzie poniższy kanał MIDI</string>
+    <string name="midi_click_track">Wyślij ścieżkę kliknięcia MIDI</string>
+    <string name="midi_click_track_channel">Kanał MIDI dla ścieżki kliknięcia</string>
+    <string name="midi_click_track_channel_info">Kanał MIDI używany przez ścieżkę kliknięcia lub moduł perkusyjny</string>
+    <string name="midi_click_track_info">Jeśli masz podłączone urządzenie MIDI, a Twoje utwory mają ustawione tempo i metrum, aplikacja może wysyłać informacje o utworze MIDI o kliknięciu w ramach funkcji metronomu.</string>
+    <string name="midi_click_track_tick_tock_info">Nie wszystkie nuty perkusyjne MIDI mogą być dostępne na Twoim urządzeniu.  Sprawdź w instrukcji obsługi nuty MIDI używane dla każdego dźwięku.</string>
+    <string name="midi_clock">Zegar MIDI</string>
+    <string name="midi_clock_click">Zegar MIDI/ścieżka kliknięcia</string>
+    <string name="midi_clock_info">Wyślij informacje o zegarze MIDI (tempo) do podłączonych urządzeń MIDI lub wyślij ścieżkę kliknięcia metronomu MIDI</string>
+    <string name="midi_clock_latency">Opóźnienie zegara MIDI</string>
+    <string name="midi_clock_latency_info">Ze względu na potencjalne problemy z synchronizacją w systemie Android i opóźnienia Bluetooth, możesz dodać poziom kompensacji, jeśli zauważysz, że tempo zegara MIDI działa wolniej niż oczekiwano.</string>
+    <string name="midi_clock_master">Działaj jako mistrz zegara MIDI</string>
+    <string name="midi_clock_master_info">Jeśli Twoje utwory mają ustawione tempo i nawiązano połączenie MIDI, OpenSongApp wyśle ​​tempo do wszystkich urządzeń za pomocą kodu zegara MIDI.  Domyślnie będzie to 100 bpm dla utworów bez ustawionego tempa.</string>
+    <string name="midi_clock_short_burst">Wyślij zegar MIDI jako krótką serię</string>
+    <string name="midi_clock_short_burst_info">Po załadowaniu utworu zegar MIDI będzie wysyłany tylko przez pierwsze pięć sekund, umożliwiając urządzeniom odebranie tempa.  Pomoże to uniknąć dryfowania zegara MIDI w systemie Android i powodowania ciągłego dostosowywania tempa urządzeń.</string>
     <string name="midi_code_current">Kod MIDI aktualnie przypisany do akcji</string>
     <string name="midi_code_new">Nowy kod MIDI</string>
     <string name="midi_commands">Edytuj polecenia piosenki</string>
@@ -640,6 +654,7 @@
     <string name="music">Muzyka</string>
     <string name="music_score">Nuty</string>
     <string name="music_score_info">Edytuj nuty</string>
+    <string name="music_score_popup">Wyskakujące okienko z partyturą muzyczną (abc).</string>
     <string name="my_band">Importuj przykładowe piosenki Zespołu</string>
     <string name="my_church">Importuj przykładowe piosenki z Kościoła</string>
     <string name="nearby_devices">Urządzenia w pobliżu</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">W zestawie nie ma żadnych przedmiotów</string>
     <string name="set_item_info">Możesz zmienić katalog/nazwę pliku piosenki załadowanego z zestawu, a także zmienić tonację do wyświetlania (w razie potrzeby wykonuje tymczasową transpozycję piosenki na urządzeniu)</string>
     <string name="set_item_removed">Element usunięty z zestawu</string>
+    <string name="set_items_not_found">Na Twoim urządzeniu nie znaleziono niektórych ustawionych elementów (mogą mieć inną nazwę pliku, pisownię itp.).  Możesz ręcznie edytować te elementy (oznaczone *) w menu ustawień po imporcie.</string>
     <string name="set_list">Setlista</string>
     <string name="set_list_separate">Ustaw pliki list</string>
     <string name="set_load_first">Otwórz załadowany zestaw na pierwszym elemencie</string>

@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Ορισμένες συσκευές βασίζονται στη γρήγορη λήψη πολλών μηνυμάτων ελεγκτή.  Όταν είναι ενεργοποιημένη, οποιαδήποτε εντολή MIDI δημιουργείται θα σχολιάζεται με * ως εντολή ριπής (δηλ. θα αποστέλλεται αρκετές φορές στη σειρά)</string>
     <string name="midi_channel">"Κανάλι"</string>
     <string name="midi_channel_default">Κατά την αποστολή αυτόματων μηνυμάτων στο VoiceLive θα χρησιμοποιηθεί το παρακάτω κανάλι MIDI</string>
+    <string name="midi_click_track">Αποστολή κομματιού κλικ MIDI</string>
+    <string name="midi_click_track_channel">Κανάλι MIDI για κλικ στο κομμάτι</string>
+    <string name="midi_click_track_channel_info">Το κανάλι MIDI που χρησιμοποιείται από το κομμάτι κλικ ή τη μονάδα τυμπάνου σας</string>
+    <string name="midi_click_track_info">Εάν έχετε συνδεδεμένη μια συσκευή MIDI και τα τραγούδια σας έχουν καθορισμένο ρυθμό και χρονική υπογραφή, η εφαρμογή μπορεί να στείλει πληροφορίες κομματιού κλικ MIDI ως μέρος της λειτουργίας μετρονόμου.</string>
+    <string name="midi_click_track_tick_tock_info">Μπορεί να μην είναι διαθέσιμες όλες οι νότες κρουστών MIDI στη συσκευή σας.  Ελέγξτε το εγχειρίδιό σας για τις σημειώσεις MIDI που χρησιμοποιούνται για κάθε ήχο.</string>
+    <string name="midi_clock">Ρολόι MIDI</string>
+    <string name="midi_clock_click">Ρολόι MIDI / κομμάτι κλικ</string>
+    <string name="midi_clock_info">Στείλτε πληροφορίες ρολογιού MIDI (τέμπο) σε συνδεδεμένες συσκευές MIDI ή στείλτε κομμάτι κλικ μετρονόμου MIDI</string>
+    <string name="midi_clock_latency">Καθυστέρηση ρολογιού MIDI</string>
+    <string name="midi_clock_latency_info">Λόγω πιθανών προβλημάτων χρονισμού Android και καθυστέρησης Bluetooth, μπορείτε να προσθέσετε ένα επίπεδο αντιστάθμισης εάν διαπιστώσετε ότι ο ρυθμός του ρολογιού MIDI σας τρέχει πιο αργά από το αναμενόμενο.</string>
+    <string name="midi_clock_master">Λειτουργήστε ως κύριος ρολογιού MIDI</string>
+    <string name="midi_clock_master_info">Εάν τα τραγούδια σας έχουν οριστεί ρυθμό και έχει γίνει σύνδεση MIDI, το OpenSongApp θα στείλει το ρυθμό σε όλες τις συσκευές μέσω ενός κωδικού ρολογιού MIDI.  Αυτή η προεπιλογή θα είναι 100 bpm για τραγούδια χωρίς καθορισμένο ρυθμό.</string>
+    <string name="midi_clock_short_burst">Στείλτε το ρολόι MIDI ως σύντομη ριπή</string>
+    <string name="midi_clock_short_burst_info">Όταν φορτώνεται ένα τραγούδι, το ρολόι MIDI θα σταλεί μόνο για τα πρώτα πέντε δευτερόλεπτα επιτρέποντας στις συσκευές να λαμβάνουν ένα ρυθμό.  Αυτό μπορεί να σας βοηθήσει να αποφύγετε το ρολόι MIDI από το Android να παρασύρεται και να αναγκάζει τις συσκευές να προσαρμόζουν συνεχώς τους ρυθμούς τους.</string>
     <string name="midi_code_current">Κωδικός MIDI που έχει εκχωρηθεί αυτήν τη στιγμή στην ενέργεια</string>
     <string name="midi_code_new">Νέος κωδικός MIDI</string>
     <string name="midi_commands">"Επεξεργασία εντολών τραγουδιού"</string>
@@ -640,6 +654,7 @@
     <string name="music">ΜΟΥΣΙΚΗ</string>
     <string name="music_score">"Μουσικό σκορ"</string>
     <string name="music_score_info">Επεξεργασία σημειώσεων βαθμολογίας</string>
+    <string name="music_score_popup">Αναδυόμενο παράθυρο παρτιτούρας (abc).</string>
     <string name="my_band">"Εισαγωγή τραγουδιών δείγματος μπάντας"</string>
     <string name="my_church">"Εισάγετε δείγματα τραγουδιών της Εκκλησίας"</string>
     <string name="nearby_devices">Κοντινές συσκευές</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Δεν υπάρχουν στοιχεία στο σετ σας</string>
     <string name="set_item_info">Μπορείτε να αλλάξετε το όνομα φακέλου/αρχείου του τραγουδιού που φορτώθηκε από το σετ και μπορείτε επίσης να αλλάξετε το πλήκτρο για την εμφάνιση του τραγουδιού (αυτό εκτελεί προσωρινή αντιμετάθεση του τραγουδιού στη συσκευή σας, εάν απαιτείται)</string>
     <string name="set_item_removed">Στοιχείο που αφαιρέθηκε από το σετ</string>
+    <string name="set_items_not_found">Ορισμένα στοιχεία συνόλου δεν βρέθηκαν στη συσκευή σας (μπορεί απλώς να έχουν διαφορετικό όνομα αρχείου, ορθογραφία κ.λπ.).  Μπορείτε να επεξεργαστείτε χειροκίνητα αυτά τα στοιχεία (σημειωμένα με *) από το μενού set μετά την εισαγωγή.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Ορισμός αρχείων λίστας</string>
     <string name="set_load_first">Ανοίξτε το φορτωμένο σύνολο στο πρώτο στοιχείο</string>

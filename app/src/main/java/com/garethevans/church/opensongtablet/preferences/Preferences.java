@@ -480,6 +480,7 @@ public class Preferences extends Activity {
     // midiInput                        boolean     Should the app listen for MIDI messages for songs/foot pedal (def:false)
     // midiInputChannelPedal            int         The default MIDI input channel to listen on for pedal controls (def:8)
     // midiInputChannelSong             int         The default MIDI input channel to listen on for song controls (def:9)
+    // midiClockLatency                 int         The level of latency to try to account for.  A fudge factor of 1-5 (def:0)
     // midiOutputChannel                int         The default MIDI output channel for building MIDI messages, etc. (def:1)
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)

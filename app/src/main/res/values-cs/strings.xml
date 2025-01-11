@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Některá zařízení spoléhají na rychlý příjem více zpráv ovladače.  Při zapnutí bude jakýkoliv vygenerovaný MIDI příkaz anotován * jako burst příkaz (tj. odeslán několikrát za sebou)</string>
     <string name="midi_channel">"Kanál"</string>
     <string name="midi_channel_default">Při odesílání automatických zpráv do VoiceLive bude použit níže uvedený MIDI kanál</string>
+    <string name="midi_click_track">Odeslat stopu kliknutí MIDI</string>
+    <string name="midi_click_track_channel">MIDI kanál pro klikací stopu</string>
+    <string name="midi_click_track_channel_info">MIDI kanál používaný vaší klikací stopou nebo bicím modulem</string>
+    <string name="midi_click_track_info">Pokud máte připojené MIDI zařízení a vaše skladby mají nastavené tempo a takt, aplikace může odesílat informace o klikací stopě MIDI jako součást funkce metronomu.</string>
+    <string name="midi_click_track_tick_tock_info">Na vašem zařízení nemusí být k dispozici všechny MIDI perkuse.  Zkontrolujte prosím svůj manuál pro MIDI poznámky používané pro každý zvuk.</string>
+    <string name="midi_clock">MIDI hodiny</string>
+    <string name="midi_clock_click">MIDI hodiny / klikací stopa</string>
+    <string name="midi_clock_info">Odešlete informace o MIDI hodinách (tempo) do připojených MIDI zařízení nebo odešlete klikací stopu MIDI metronomu</string>
+    <string name="midi_clock_latency">Latence MIDI hodin</string>
+    <string name="midi_clock_latency_info">Kvůli potenciálním problémům s časováním systému Android a latencí Bluetooth můžete přidat úroveň kompenzace, pokud zjistíte, že tempo MIDI hodin běží pomaleji, než se očekávalo.</string>
+    <string name="midi_clock_master">Působit jako mistr MIDI hodin</string>
+    <string name="midi_clock_master_info">Pokud mají vaše skladby nastavené tempo a bylo vytvořeno MIDI připojení, OpenSongApp odešle tempo do všech zařízení prostřednictvím MIDI hodinového kódu.  Toto bude výchozí hodnota 100 bpm pro skladby bez nastaveného tempa.</string>
+    <string name="midi_clock_short_burst">Pošlete MIDI hodiny jako krátkou dávku</string>
+    <string name="midi_clock_short_burst_info">Když se skladba načte, MIDI hodiny budou odeslány pouze na prvních pět sekund, což umožní zařízením přijímat tempo.  To může pomoci zabránit tomu, aby MIDI hodiny unášely Android a způsobovaly, že zařízení neustále upravují svá tempa.</string>
     <string name="midi_code_current">MIDI kód aktuálně přiřazený k akci</string>
     <string name="midi_code_new">Nový MIDI kód</string>
     <string name="midi_commands">"Upravit příkazy ke skladbě"</string>
@@ -640,6 +654,7 @@
     <string name="music">Hudba</string>
     <string name="music_score">"Hudební skóre"</string>
     <string name="music_score_info">Upravte poznámky ke skóre</string>
+    <string name="music_score_popup">Vyskakovací okno hudební partitury (abc).</string>
     <string name="my_band">"Importovat skladby"</string>
     <string name="my_church">"Importovat církevní vzorové písně"</string>
     <string name="nearby_devices">Blízká zařízení</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Ve vaší sadě nejsou žádné položky</string>
     <string name="set_item_info">Můžete změnit složku/název souboru skladby načtené ze sady a můžete také změnit klávesu pro zobrazení skladby (v případě potřeby provede dočasnou transpozici skladby do vašeho zařízení)</string>
     <string name="set_item_removed">Položka odstraněna ze sady</string>
+    <string name="set_items_not_found">Některé položky sady nebyly ve vašem zařízení nalezeny (mohou mít pouze jiný název souboru, pravopis atd.).  Tyto položky (označené *) můžete po importu ručně upravit z nabídky nastavení.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Nastavit soubory seznamu</string>
     <string name="set_load_first">Otevřete načtenou sadu u první položky</string>

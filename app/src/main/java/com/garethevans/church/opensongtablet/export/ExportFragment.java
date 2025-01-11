@@ -1087,6 +1087,7 @@ public class ExportFragment extends Fragment {
     // We can create nice views on the fly here by processing the Song, then populating the views
     private void createOnTheFly(Song thisSong, String pdfName) {
         // Make sure any current headers/sections are wiped
+
         tempSong = thisSong;
         mainActivityInterface.getProcessSong().setPdfPrinting(true);
         mainActivityInterface.getProcessSong().setForceSinglePagePDF(myView.forceSinglePage.getChecked());
@@ -1637,18 +1638,6 @@ public class ExportFragment extends Fragment {
                     mainActivityInterface.getMakePDF().setPreferedAttributes();
                     printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
 
-                    /*
-                    PrinterAdapter printerAdapter = new PrinterAdapter
-                   (getActivity());
-                    printerAdapter.updateSections(sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF,
-                            headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, song_string);
-                    mainActivityInterface.getMakePDF().setPreferedAttributes();
-                    mainActivityInterface.getMakePDF().setSong(tempSong);
-                    mainActivityInterface.getMakePDF().getColumns(sectionViewsPDF,sectionViewWidthsPDF,sectionViewHeightsPDF);
-                    printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
-
-
-                     */
                 }
                 mainActivityInterface.getSong().setFolder(currentSongFolder);
                 mainActivityInterface.getSong().setFilename(currentSongFile);

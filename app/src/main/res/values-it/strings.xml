@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Alcuni dispositivi si basano sulla ricezione rapida di più messaggi del controller.  Quando è acceso, qualsiasi comando MIDI generato verrà annotato da * come comando burst (cioè inviato più volte di seguito)</string>
     <string name="midi_channel">"Canale"</string>
     <string name="midi_channel_default">Quando si inviano messaggi automatici a VoiceLive verrà utilizzato il canale MIDI riportato di seguito</string>
+    <string name="midi_click_track">Invia traccia clic MIDI</string>
+    <string name="midi_click_track_channel">Canale MIDI per la traccia clic</string>
+    <string name="midi_click_track_channel_info">Il canale MIDI utilizzato dalla traccia clic o dal modulo per batteria</string>
+    <string name="midi_click_track_info">Se hai un dispositivo MIDI collegato e i tuoi brani hanno un tempo e un\'indicazione temporale impostati, l\'app può inviare informazioni sulla traccia del clic MIDI come parte della funzione metronomo.</string>
+    <string name="midi_click_track_tick_tock_info">Non tutte le note di percussioni MIDI potrebbero essere disponibili sul tuo dispositivo.  Controlla il manuale per le note MIDI utilizzate per ciascun suono.</string>
+    <string name="midi_clock">Orologio MIDI</string>
+    <string name="midi_clock_click">Clock MIDI/traccia clic</string>
+    <string name="midi_clock_info">Invia informazioni di clock MIDI (tempo) ai dispositivi MIDI collegati o invia la traccia di clic del metronomo MIDI</string>
+    <string name="midi_clock_latency">Latenza del clock MIDI</string>
+    <string name="midi_clock_latency_info">A causa di potenziali problemi di timing Android e di latenza Bluetooth, puoi aggiungere un livello di compensazione se ritieni che il tempo del tuo clock MIDI sia più lento del previsto.</string>
+    <string name="midi_clock_master">Agisci come master del clock MIDI</string>
+    <string name="midi_clock_master_info">Se i tuoi brani hanno un tempo impostato ed è stata stabilita una connessione MIDI, OpenSongApp invierà il tempo a tutti i dispositivi tramite un codice di clock MIDI.  Per impostazione predefinita, verrà impostato su 100 bpm per i brani senza tempo impostato.</string>
+    <string name="midi_clock_short_burst">Invia il clock MIDI come una breve raffica</string>
+    <string name="midi_clock_short_burst_info">Quando viene caricata una canzone, il clock MIDI verrà inviato solo per i primi cinque secondi consentendo ai dispositivi di ricevere un tempo.  Ciò può aiutare a evitare che il clock MIDI di Android vada alla deriva e faccia sì che i dispositivi regolino costantemente i loro tempi.</string>
     <string name="midi_code_current">Codice MIDI attualmente assegnato all\'azione</string>
     <string name="midi_code_new">Nuovo codice MIDI</string>
     <string name="midi_commands">"Modifica i comandi del brano"</string>
@@ -640,6 +654,7 @@
     <string name="music">Musica</string>
     <string name="music_score">"Spartito"</string>
     <string name="music_score_info">Modifica le note sulla partitura</string>
+    <string name="music_score_popup">Finestra popup della partitura musicale (abc).</string>
     <string name="my_band">"Importa canzoni di brano di band"</string>
     <string name="my_church">"Importare canzoni di esempio Church"</string>
     <string name="nearby_devices">Dispositivi nelle vicinanze</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Non ci sono oggetti nel tuo set</string>
     <string name="set_item_info">È possibile modificare la cartella / nome del file del brano caricato dal set e si può anche cambiare la chiave per la visualizzazione del brano (questo esegue una trasposizione temporanea del brano sul dispositivo, se necessario)</string>
     <string name="set_item_removed">Elemento rimosso dal set</string>
+    <string name="set_items_not_found">Alcuni elementi impostati non sono stati trovati sul tuo dispositivo (potrebbero semplicemente avere un nome file, un\'ortografia diversa, ecc.).  È possibile modificare manualmente questi elementi (contrassegnati con un *) dal menu Set dopo l\'importazione.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Imposta i file dell\'elenco</string>
     <string name="set_load_first">Aprire il set caricato al primo elemento</string>

@@ -1457,6 +1457,9 @@ public class PerformanceFragment extends Fragment {
             // Start the pad (if the pads are activated and the pad is valid)
             mainActivityInterface.getPad().autoStartPad();
 
+            // Send an update to the MIDI clock if we are sending a short burst
+            mainActivityInterface.getMidi().sendMidiClockShortBurst();
+
             // Update any midi commands (if any)
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() ||
                     mainActivityInterface.getVoiceLive().getVoiceLiveSendKey() ||

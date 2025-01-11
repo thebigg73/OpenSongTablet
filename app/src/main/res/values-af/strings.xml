@@ -603,6 +603,20 @@
     <string name="midi_burst_info">Sommige toestelle maak staat op die ontvangs van verskeie beheerderboodskappe vinnig.  As dit aangeskakel is, sal enige MIDI-opdrag wat gegenereer word, deur * as \'n barsopdrag geannoteer word (d.w.s. verskeie kere agtereenvolgens gestuur)</string>
     <string name="midi_channel">Kanaal</string>
     <string name="midi_channel_default">Wanneer outomatiese boodskappe na die VoiceLive gestuur word, sal die MIDI-kanaal hieronder gebruik word</string>
+    <string name="midi_click_track">Stuur MIDI-klieksnit</string>
+    <string name="midi_click_track_channel">MIDI-kanaal vir kliksnit</string>
+    <string name="midi_click_track_channel_info">Die MIDI-kanaal wat deur jou kliksnit of drommodule gebruik word</string>
+    <string name="midi_click_track_info">As jy \'n MIDI-toestel gekoppel het en jou liedjies het \'n tempo en tydmaatteken gestel, kan die toepassing MIDI-kliksnitinligting stuur as deel van die metronoomfunksie.</string>
+    <string name="midi_click_track_tick_tock_info">Nie alle MIDI-perkussienotas is dalk op jou toestel beskikbaar nie.  Gaan asseblief jou handleiding na vir die MIDI-note wat vir elke klank gebruik word.</string>
+    <string name="midi_clock">MIDI horlosie</string>
+    <string name="midi_clock_click">MIDI klok / klik snit</string>
+    <string name="midi_clock_info">Stuur MIDI-klokinligting (tempo) na gekoppelde MIDI-toestelle of stuur MIDI-metronoom-klikspoor</string>
+    <string name="midi_clock_latency">MIDI klok latency</string>
+    <string name="midi_clock_latency_info">As gevolg van moontlike Android-tydsberekeningskwessies en Bluetooth-latency, kan jy \'n vergoedingsvlak byvoeg as jy vind dat jou MIDI-kloktempo stadiger loop as wat verwag is.</string>
+    <string name="midi_clock_master">Tree op as MIDI-klokmeester</string>
+    <string name="midi_clock_master_info">As jou liedjies \'n tempo gestel het en \'n MIDI-verbinding gemaak is, sal OpenSongApp die tempo na alle toestelle via \'n MIDI-klokkode stuur.  Dit sal verstek na 100 bpm vir liedjies met geen tempo gestel nie.</string>
+    <string name="midi_clock_short_burst">Stuur MIDI-klok as \'n kort sarsie</string>
+    <string name="midi_clock_short_burst_info">Wanneer \'n liedjie laai, sal die MIDI-klok net vir die eerste vyf sekondes gestuur word sodat toestelle \'n tempo kan ontvang.  Dit kan help om te verhoed dat die MIDI-klok van Android dryf en veroorsaak dat toestelle voortdurend hul tempo aanpas.</string>
     <string name="midi_code_current">MIDI-kode wat tans aan aksie toegewys is</string>
     <string name="midi_code_new">Nuwe MIDI-kode</string>
     <string name="midi_commands">"Wys liedjies opdragte"</string>
@@ -640,6 +654,7 @@
     <string name="music">Musiek</string>
     <string name="music_score">"Musiek telling"</string>
     <string name="music_score_info">Wysig telling notas</string>
+    <string name="music_score_popup">Musiek partituur (abc) pop-up venster</string>
     <string name="my_band">"Invoer Band voorbeeld liedjies"</string>
     <string name="my_church">"Voer kerkmonsterliedjies in"</string>
     <string name="nearby_devices">Nabygeleë toestelle</string>
@@ -881,6 +896,7 @@
     <string name="set_is_empty">Daar is geen items in jou stel nie</string>
     <string name="set_item_info">U kan die vouer/lêernaam van die liedjie wat uit die stel gelaai is, verander, en u kan ook die sleutel vir die vertoon van die liedjie verander (dit voer \'n tydelike transponeer van die liedjie op u toestel uit indien nodig)</string>
     <string name="set_item_removed">Item verwyder van stel</string>
+    <string name="set_items_not_found">Sommige gestelde items is nie op jou toestel gevind nie (hulle het dalk net \'n ander lêernaam, spelling, ens.).  U kan hierdie items (met \'n * gemerk) handmatig wysig vanaf die stelkieslys na invoer.</string>
     <string name="set_list">Stellys</string>
     <string name="set_list_separate">Stel lys lêers</string>
     <string name="set_load_first">Maak die gelaaide stel by die eerste item oop</string>
