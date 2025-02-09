@@ -27,7 +27,7 @@ public class PresenterSettings {
     private String backgroundToUse, presoAlertText, ccliLicence;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
             presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize,
-            presoClockSize;
+            presoClockSize,presenterViewContentSize;
     private SongSectionsAdapter songSectionsAdapter;
 
 
@@ -157,6 +157,9 @@ public class PresenterSettings {
     }
     public void setDefaultPresentationText(boolean defaultPresentationText) {
         this.defaultPresentationText = defaultPresentationText;
+    }
+    public void setPresenterViewContentSize(float presenterViewContentSize) {
+        this.presenterViewContentSize = presenterViewContentSize;
     }
 
     public void setStartedProjection(boolean clickedOnSection) {
@@ -297,7 +300,9 @@ public class PresenterSettings {
     public boolean getDefaultPresentationText() {
         return defaultPresentationText;
     }
-
+    public float getPresenterViewContentSize() {
+        return presenterViewContentSize;
+    }
 
     // The helpers for this class
     public void getAllPreferences() {
@@ -344,6 +349,7 @@ public class PresenterSettings {
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizePresoMax", 40f));
         setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean("usePresentationOrder", false));
         setPresoLyricsBold(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold",false));
+        setPresenterViewContentSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presenterViewContentSize",12f));
     }
     public void getInfoPreferences() {
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoInfoBarAlpha",0.5f));

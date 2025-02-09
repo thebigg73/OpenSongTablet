@@ -16,7 +16,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterAdvancedBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.slider.Slider;
 
 public class AdvancedFragment extends Fragment {
 
@@ -50,6 +49,11 @@ public class AdvancedFragment extends Fragment {
         myView.presoAlertTextSize.setValue((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize());
         myView.presoAlertTextSize.setHint((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize() + "sp");
         myView.presoAlertTextSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.presoAlertTextSize.setAdjustableButtons(true);
+        myView.presenterViewContentSize.setValue((int)mainActivityInterface.getPresenterSettings().getPresenterViewContentSize());
+        myView.presenterViewContentSize.setHint((int)mainActivityInterface.getPresenterSettings().getPresenterViewContentSize() + "sp");
+        myView.presenterViewContentSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.presenterViewContentSize.setAdjustableButtons(true);
     }
 
     private void setListeners() {
@@ -80,18 +84,17 @@ public class AdvancedFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setAlertOn(b);
             displayInterface.updateDisplay("showAlert");
         });
-        myView.presoAlertTextSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) { }
-
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat("presoAlertTextSize",slider.getValue());
-                mainActivityInterface.getPresenterSettings().setPresoAlertTextSize(slider.getValue());
-                displayInterface.updateDisplay("updateAlert");
-            }
+        myView.presoAlertTextSize.addOnChangeListener((slider, value, fromUser) -> {
+            myView.presoAlertTextSize.setHint((int)slider.getValue() + "sp");
+            mainActivityInterface.getPreferences().setMyPreferenceFloat("presoAlertTextSize",slider.getValue());
+            mainActivityInterface.getPresenterSettings().setPresoAlertTextSize(slider.getValue());
+            displayInterface.updateDisplay("updateAlert");
         });
-        myView.presoAlertTextSize.addOnChangeListener((slider, value, fromUser) -> myView.presoAlertTextSize.setHint((int)slider.getValue() + "sp"));
+        myView.presenterViewContentSize.addOnChangeListener((slider, value, fromUser) -> {
+            myView.presenterViewContentSize.setHint((int)slider.getValue() + "sp");
+            mainActivityInterface.getPreferences().setMyPreferenceFloat("presenterViewContentSize",slider.getValue());
+            mainActivityInterface.getPresenterSettings().setPresenterViewContentSize(slider.getValue());
+        });
     }
 
 }
