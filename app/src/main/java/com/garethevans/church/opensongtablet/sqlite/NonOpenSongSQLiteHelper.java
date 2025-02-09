@@ -29,6 +29,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private final String TAG = "NonOSSQLHelper";
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
+    // Database Version
+    private static final int DATABASE_VERSION = 8;
 
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,8 +53,6 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         userDB = mainActivityInterface.getStorageAccess().getUriForItem(
                 "Settings", "", SQLite.NON_OS_DATABASE_NAME);
     }
-    // Database Version
-    private static final int DATABASE_VERSION = 6;
 
     public SQLiteDatabase getDB() {
         // The version we use has to be in local app storage unfortunately.  We can copy this though
@@ -133,7 +133,9 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db2, int oldVersion, int newVersion) {
         // Do nothing here as we manually update the table to match
-        db2.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
+        //db2.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
+        Log.d(TAG,"onUpgrade path:"+db2.getPath());
+        addMissingColumns(db2.getPath(),oldVersion);
     }
     public void initialise() {
         // If the database doesn't exist, create it
@@ -235,7 +237,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     public void importDB(String dbToImport, boolean overwrite) {
         // This is from the restore osb fragment to import non-opensongapp database
         SQLiteDatabase currentDB = getDB();
-        addMissingColumns(dbToImport);
+        addMissingColumns(dbToImport,0);
         currentDB.execSQL("ATTACH DATABASE '" + dbToImport + "' AS tempDb");
         if (overwrite) {
             currentDB.execSQL("REPLACE INTO main." + SQLite.TABLE_NAME +  " SELECT * FROM tempDb."+ SQLite.TABLE_NAME);
@@ -245,7 +247,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         currentDB.close();
     }
 
-    private void addMissingColumns(String dbPath) {
+    private void addMissingColumns(String dbPath,int oldVersion) {
         try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
             Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
             if (cursor.getColumnIndex(SQLite.COLUMN_ABC_TRANSPOSE) == -1) {
@@ -280,6 +282,24 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_PREFERRED_INSTRUMENT + " TEXT");
             }
             cursor.close();
+        }
+        if (oldVersion<7) {
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_UUID) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_UUID + " TEXT");
+                }
+                cursor.close();
+            }
+        }
+        if (oldVersion<8) {
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_LAST_MODIFIED) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_LAST_MODIFIED + " TEXT");
+                }
+                cursor.close();
+            }
         }
     }
 

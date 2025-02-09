@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +17,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class CurrentSet {
 
@@ -29,6 +31,9 @@ public class CurrentSet {
     private MyMaterialTextView setTitleView;
     private ExtendedFloatingActionButton saveButtonView;
     private final MainActivityInterface mainActivityInterface;
+    private String uuid;
+    private String lastModified;
+    private String notes;
 
     public CurrentSet(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -47,7 +52,43 @@ public class CurrentSet {
 
         indexSongInSet = -1;
         prevIndexSongInSet = -1;
+        setUuid(null);
         updateSetTitleView();
+    }
+
+    public void setUuid(String uuid) {
+        if (uuid==null) {
+            uuid = String.valueOf(UUID.randomUUID());
+        }
+        this.uuid = uuid;
+    }
+    public String getUuid() {
+        if (uuid==null) {
+            uuid = String.valueOf(UUID.randomUUID());
+        }
+        return uuid;
+    }
+    public void setLastModified(String lastModified) {
+        if (lastModified==null) {
+            lastModified = mainActivityInterface.getTimeTools().getNowIsoTime();
+        }
+        this.lastModified = lastModified;
+    }
+    public String getLastModified() {
+        if (lastModified==null) {
+            lastModified = mainActivityInterface.getTimeTools().getNowIsoTime();
+        }
+        return lastModified;
+    }
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+    public String getNotes() {
+        if (notes==null) {
+            return "";
+        } else {
+            return notes;
+        }
     }
 
     // Get the setItemInfos
@@ -149,7 +190,7 @@ public class CurrentSet {
         updateCurrentSetPreferences();
     }
 
-    public void addItemToSet(String folder, String filename, String title, String key) {
+    public void addItemToSet(String folder, String filename, String title, String key, boolean doSave) {
         SetItemInfo setItemInfo = new SetItemInfo();
         setItemInfo.songfilename = filename;
         setItemInfo.songfolder = folder;
@@ -159,11 +200,15 @@ public class CurrentSet {
         setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
         setItemInfo.songitem = (getCurrentSetSize()+1);
 
+        Log.d(TAG,"adding filename:"+filename);
+        Log.d(TAG,"size():"+getCurrentSetSize());
         // Add to the set
         setItemInfos.add(setItemInfo);
 
         // Update the currentSet preferences
-        updateCurrentSetPreferences();
+        if (doSave) {
+            updateCurrentSetPreferences();
+        }
     }
 
     // Remove an item from the set

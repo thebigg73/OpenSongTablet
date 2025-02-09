@@ -2073,7 +2073,7 @@ public class NearbyConnections implements NearbyInterface {
             if (bits.length == 4) {
                 Uri uri;
                 if (bits[1].equals("Sets") && bits[2].equals("["+c.getString(R.string.set_current)+"]")) {
-                    String currentSetXML = mainActivityInterface.getSetActions().createSetXML();
+                    String currentSetXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
                     uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","","currentSet.xml");
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","","currentSet.xml");
                     OutputStream currentSetOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
@@ -2220,7 +2220,7 @@ public class NearbyConnections implements NearbyInterface {
                                             mainActivityInterface.notifySetFragment("clear", oldSize);
 
                                             // Set this as our current set
-                                            mainActivityInterface.getSetActions().loadSets(uris, null);
+                                            mainActivityInterface.getSetActions().loadSets(uris, mainActivityInterface.getCurrentSet(),null);
                                         }
                                     }
                                 } else {

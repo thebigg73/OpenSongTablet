@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
 public class ExportActions {
 
@@ -137,10 +138,13 @@ public class ExportActions {
 
 
     public String[] parseSets(ArrayList<String> setNames) {
-        String[] setData = new String[3];
+        String[] setData = new String[6];
         setData[0] = ""; // The ids of any songs
         setData[1] = ""; // A text line for display/email/etc.
         setData[2] = ""; // A note of specified keys
+        setData[3] = ""; // The uuid of the set
+        setData[4] = ""; // The last modified date
+        setData[5] = ""; // Any set notes
 
         for (String setName:setNames) {
             String[] thisSet = setParser(setName);
@@ -153,19 +157,39 @@ public class ExportActions {
             if (!thisSet[2].trim().isEmpty()) {
                 setData[2] = setData[2] + thisSet[2].trim() + "\n";
             }
+            if (!thisSet[3].trim().isEmpty()) {
+                setData[3] = thisSet[3].trim();
+            } else {
+                setData[3] = String.valueOf(UUID.randomUUID());
+            }
+            if (!thisSet[4].trim().isEmpty()) {
+                setData[4] = thisSet[4].trim();
+            } else {
+                setData[4] = mainActivityInterface.getTimeTools().getNowIsoTime();
+            }
+            if (!thisSet[5].trim().isEmpty()) {
+                setData[5] = thisSet[5].trim();
+            }
         }
 
         // Trim
         setData[0] = setData[0].trim();
         setData[1] = setData[1].trim();
         setData[2] = setData[2].trim();
+        setData[3] = setData[3].trim();
+        setData[4] = setData[4].trim();
+        setData[5] = setData[5].trim();
         return setData;
     }
 
     private String[] setParser(String setName) {
         // bits[0] will be the song ids split by new line
         // bits[1] will be a text version of the set list
-        String[] bits = new String[3];
+        // bits[2] will be the keys of the songs split by new line
+        // bits[3] will be the set uuid
+        // bits[4] will be the last modified date
+        // bits[5] will be the set notes
+        String[] bits = new String[6];
         StringBuilder stringBuilderIDs = new StringBuilder();
         StringBuilder stringBuilderSet = new StringBuilder();
         StringBuilder stringBuilderKey = new StringBuilder();
@@ -186,6 +210,13 @@ public class ExportActions {
 
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equals("uuid")) {
+                            bits[3] = xpp.getText();
+                        } else if (xpp.getName().equals("lastModified")) {
+                            bits[4] = xpp.getText();
+                        } else if (xpp.getName().equals("notes")) {
+                            bits[5] = xpp.getText();
+                        }
                         if (xpp.getName().equals("slide_group")) {
                             // Look for the type attribute and see what type of slide it is
                             switch (xpp.getAttributeValue(null, "type")) {
@@ -358,7 +389,15 @@ public class ExportActions {
         bits[0] = stringBuilderIDs.toString().trim();
         bits[1] = stringBuilderSet.toString().trim();
         bits[2] = stringBuilderKey.toString().trim();
-
+        if (bits[3]==null || bits[3].isEmpty()) {
+            bits[3] = String.valueOf(UUID.randomUUID());
+        }
+        if (bits[4]==null || bits[4].isEmpty()) {
+            bits[4] = mainActivityInterface.getTimeTools().getIsoTimeFromFileMetadata("Sets", "", setName);
+        }
+        if (bits[5]==null) {
+            bits[5] = "";
+        }
         return bits;
     }
 

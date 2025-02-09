@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,21 +140,34 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardItem.setTextSize(titleSize);
         String text = si.songitem + ".";
         holder.cardItem.setText(text);
-
         holder.cardTitle.setTextSize(titleSize);
-        holder.cardTitle.setText(titlesongname);
         holder.cardFilename.setTextSize(titleSize);
-        holder.cardFilename.setText(filename);
         holder.cardFolder.setTextSize(subtitleSizeFile);
+
         holder.cardFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
         holder.cardTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
-        holder.cardFolder.setText(newfoldername);
 
-        // Set the listener for the edit button
-        holder.cardEdit.setOnClickListener(view -> {
-            SetEditItemBottomSheet setEditItemBottomSheet = new SetEditItemBottomSheet(position);
-            setEditItemBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"SetEditItemBottomSheet");
-        });
+        Log.d(TAG,"filename:"+filename);
+        if (filename.equals("---")) {
+            holder.cardTitle.setText("");
+            holder.cardFilename.setVisibility(View.GONE);
+            holder.cardFolder.setVisibility(View.GONE);
+            holder.cardFilename.setVisibility(View.GONE);
+            holder.cardTitle.setVisibility(View.GONE);
+            holder.cardEdit.setVisibility(View.GONE);
+            holder.cardFolder.setVisibility(View.GONE);
+        } else {
+            // Not a divider
+            holder.cardTitle.setText(titlesongname);
+            holder.cardFilename.setText(filename);
+            holder.cardFolder.setText(newfoldername);
+
+            // Set the listener for the edit button
+            holder.cardEdit.setOnClickListener(view -> {
+                SetEditItemBottomSheet setEditItemBottomSheet = new SetEditItemBottomSheet(position);
+                setEditItemBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"SetEditItemBottomSheet");
+            });
+        }
 
         if (si.songicon==null || si.songicon.isEmpty()) {
             si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
@@ -424,7 +438,18 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
-        mainActivityInterface.loadSongFromSet(position);
+        Log.d(TAG,"onItemClicked("+position+")");
+        SetItemInfo si = null;
+        try {
+            si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (si!=null && si.songfilename!=null && si.songfilename.equals("---")) {
+            Log.d(TAG,"Divider, so do nothing");
+        } else {
+            mainActivityInterface.loadSongFromSet(position);
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.UUID;
 
 public class SongListBuildIndex {
 
@@ -292,6 +293,7 @@ public class SongListBuildIndex {
                     thisSong.setFiletype("TXT");
                     String filecontents = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
                     thisSong.setTitle(thisSong.getFilename());
+                    thisSong.setUuid(String.valueOf(UUID.randomUUID()));
                     thisSong.setAuthor("");
                     thisSong.setCopyright("");
                     thisSong.setKey("");
@@ -302,6 +304,7 @@ public class SongListBuildIndex {
 
                 } catch (Exception e) {
                     thisSong.setTitle(thisSong.getFilename());
+                    thisSong.setUuid(String.valueOf(UUID.randomUUID()));
                     thisSong.setAuthor("");
                     thisSong.setCopyright("");
                     thisSong.setKey("");
@@ -312,6 +315,7 @@ public class SongListBuildIndex {
                 }
             } else {
                 thisSong.setTitle(thisSong.getFilename());
+                thisSong.setUuid(String.valueOf(UUID.randomUUID()));
                 thisSong.setAuthor("");
                 thisSong.setCopyright("");
                 thisSong.setKey("");

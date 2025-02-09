@@ -525,7 +525,7 @@ public class ExportFragment extends Fragment {
             // Go through the set and create any custom slides required (variations, slides, etc).
             ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
             for (Uri setFile:setFiles) {
-                mainActivityInterface.getSetActions().extractSetFile(setFile,true);
+                mainActivityInterface.getSetActions().extractSetFile(setFile,mainActivityInterface.getCurrentSet(),true);
             }
 
 
@@ -1615,7 +1615,7 @@ public class ExportFragment extends Fragment {
                     // Go through the sets and create any custom slides required (variations, slides, etc).
                     ArrayList<Uri> setFiles = mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames);
                     for (Uri setFile : setFiles) {
-                        mainActivityInterface.getSetActions().extractSetFile(setFile, true);
+                        mainActivityInterface.getSetActions().extractSetFile(setFile, mainActivityInterface.getCurrentSet(),true);
                     }
 
                     // This is sent to the MultipagePrinterAdapter class to deal with

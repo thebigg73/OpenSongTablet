@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,17 +170,21 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
         if (heading != null && !heading.isEmpty()) {
             holder.heading.setText(heading);
+            holder.content.setTextSize(TypedValue.COMPLEX_UNIT_SP,mainActivityInterface.getPresenterSettings().getPresenterViewContentSize());
             holder.heading.setVisibility(View.VISIBLE);
         } else {
             holder.heading.setText("");
+            holder.content.setTextSize(TypedValue.COMPLEX_UNIT_SP,mainActivityInterface.getPresenterSettings().getPresenterViewContentSize());
             holder.heading.setVisibility(View.GONE);
         }
 
         if (content != null && !content.isEmpty()) {
             holder.content.setText(content);
+            holder.content.setTextSize(TypedValue.COMPLEX_UNIT_SP,mainActivityInterface.getPresenterSettings().getPresenterViewContentSize());
             holder.content.setVisibility(View.VISIBLE);
         } else {
             holder.content.setText("");
+            holder.content.setTextSize(TypedValue.COMPLEX_UNIT_SP,mainActivityInterface.getPresenterSettings().getPresenterViewContentSize());
             holder.content.setVisibility(View.GONE);
         }
 

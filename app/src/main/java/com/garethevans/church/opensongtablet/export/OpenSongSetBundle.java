@@ -194,7 +194,7 @@ public class OpenSongSetBundle {
             }
 
             // Read in the set file to the current set
-            mainActivityInterface.getSetActions().extractSetFile(Uri.fromFile(setFile), false);
+            mainActivityInterface.getSetActions().extractSetFile(Uri.fromFile(setFile), mainActivityInterface.getCurrentSet(),false);
         }
 
     }

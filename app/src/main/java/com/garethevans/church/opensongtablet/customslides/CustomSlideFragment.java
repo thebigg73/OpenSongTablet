@@ -110,6 +110,9 @@ public class CustomSlideFragment extends Fragment {
             case "image":
                 myView.customImageSlide.setChecked(true);
                 break;
+            case "divider":
+                myView.customDivider.setChecked(true);
+                break;
         }
         myView.loopSlides.setChecked(mainActivityInterface.getCustomSlide().getCreateLoop());
         myView.title.setText(mainActivityInterface.getCustomSlide().getCreateTitle());
@@ -150,23 +153,29 @@ public class CustomSlideFragment extends Fragment {
         // The slide type
         myView.customNote.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                showViews(false,false,true,false);
+                showViews(true,false,false,true,false);
                 mainActivityInterface.getCustomSlide().setCreateType("note");
             }
         });
         myView.customSlide.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                showViews(true,true,true,false);
+                showViews(true,true,true,true,false);
                 mainActivityInterface.getCustomSlide().setCreateType("slide");
             }
         });
         myView.customImageSlide.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                showViews(true,true,false,true);
+                showViews(true,true,true,false,true);
                 mainActivityInterface.getCustomSlide().setCreateType("image");
                 buildImageRows();
             }
         });
+        myView.customDivider.setOnCheckedChangeListener(((compoundButton, b) -> {
+            if (b) {
+                showViews(false,false,false,false,false);
+                mainActivityInterface.getCustomSlide().setCreateType("divider");
+            }
+        }));
         // Add to the set
         myView.addToSet.setOnClickListener(v -> addToSet());
         // Text listeners
@@ -202,7 +211,8 @@ public class CustomSlideFragment extends Fragment {
             }
         });
     }
-    private void showViews(boolean showTime, boolean showLoop, boolean showContent, boolean showImageContent) {
+    private void showViews(boolean showTitle, boolean showTime, boolean showLoop, boolean showContent, boolean showImageContent) {
+        showView(myView.title,showTitle);
         showView(myView.time,showTime);
         showView(myView.loopSlides,showLoop);
         showView(myView.content,showContent);

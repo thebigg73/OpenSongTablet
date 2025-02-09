@@ -9,16 +9,22 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.Locale;
+import java.util.UUID;
 
 public class SaveSong {
 
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final String TAG = "SaveSong";
+    private boolean resetLastModified = true;
 
     public SaveSong(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+    }
+
+    public void setResetLastModified(boolean resetLastModified) {
+        this.resetLastModified = resetLastModified;
     }
 
     public boolean doSave(Song newSong) {
@@ -119,6 +125,16 @@ public class SaveSong {
 
         // Won't do anything if this is the 'Welcome' song
         if (checkNotWelcomeSong(thisSong)) {
+
+            // Check we have a uuid
+            if (thisSong.getUuid()==null || thisSong.getUuid().isEmpty()) {
+                thisSong.setUuid(String.valueOf(UUID.randomUUID()));
+            }
+            // Update the last edited date.  When downloading from OpenChords, we temporarily set this to false
+            if (resetLastModified) {
+                thisSong.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
+            }
+
             // First update the song database
             mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
 

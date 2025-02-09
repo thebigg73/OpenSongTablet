@@ -39,6 +39,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/image_slide" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/customDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/divider"/>
             </RadioGroup>
 
             <com.google.android.material.button.MaterialButton

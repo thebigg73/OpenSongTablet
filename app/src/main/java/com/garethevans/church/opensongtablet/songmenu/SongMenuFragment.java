@@ -770,26 +770,28 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void moveToSongInMenu(Song song) {
         // scroll to the song in the song menu
         try {
-            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                if (mainActivityInterface!=null && songListLayoutManager!=null) {
-                    mainActivityInterface.getMainHandler().post(() -> {
-                        try {
-                            if (songListAdapter.getItemCount() > songListAdapter.getPositionOfSong(song)) {
-                                int position = songListAdapter.getPositionOfSong(song);
-                                if (position == -1) {
-                                    position = 0;
+            if (mainActivityInterface!=null) {
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    if (mainActivityInterface != null && songListLayoutManager != null) {
+                        mainActivityInterface.getMainHandler().post(() -> {
+                            try {
+                                if (songListAdapter.getItemCount() > songListAdapter.getPositionOfSong(song)) {
+                                    int position = songListAdapter.getPositionOfSong(song);
+                                    if (position == -1) {
+                                        position = 0;
+                                    }
+                                    songListLayoutManager.scrollToPositionWithOffset(position, 0);
+                                    // IV - Reset to a 1 char alphabetic index
+                                    alphalistposition = -1;
+                                    displayIndex();
                                 }
-                                songListLayoutManager.scrollToPositionWithOffset(position, 0);
-                                // IV - Reset to a 1 char alphabetic index
-                                alphalistposition = -1;
-                                displayIndex();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -368,11 +368,12 @@ public class InlineSetList extends RecyclerView {
     private class InlineSetListAdapter extends RecyclerView.Adapter<InlineSetItemViewHolder> {
 
         // All the helpers we need to access are in the MainActivity
-        private final int onColor, offColor;
+        private final int onColor, offColor, transparentColor;
 
         InlineSetListAdapter(Context context) {
             onColor = context.getResources().getColor(R.color.colorSecondary);
             offColor = context.getResources().getColor(R.color.colorAltPrimary);
+            transparentColor = context.getResources().getColor(R.color.transparent);
         }
 
         @Override
@@ -413,14 +414,26 @@ public class InlineSetList extends RecyclerView {
                                 textsn = textsn + " (" + si.songkey + ")";
                                 textfn = textfn + " (" + si.songkey + ")";
                             }
-                            holder.vSongTitle.setText(textsn);
-                            holder.vSongFilename.setText(textfn);
+
+                            if (si.songfilename.equals("---")) {
+                                holder.vSongTitle.setText("");
+                                holder.vSongFilename.setText("");
+                                holder.vSongFilename.setVisibility(View.GONE);
+                                holder.vSongTitle.setVisibility(View.GONE);
+                                setColor(holder,transparentColor);
+                            } else {
+                                holder.vSongTitle.setText(textsn);
+                                holder.vSongFilename.setText(textfn);
+                            }
                         }
+
 
                         if (payload.equals(highlightItem) || payload.equals(updateNumber)) {
                             // We want to update the highlight colour to on/off
                             if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                                 setColor(holder, onColor);
+                            } else if (mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfilename.equals("---")) {
+                                setColor(holder, transparentColor);
                             } else {
                                 setColor(holder, offColor);
                             }
@@ -468,11 +481,35 @@ public class InlineSetList extends RecyclerView {
                     textfn = textfn + " (" + si.songkey + ")";
                 }
                 setitemViewHolder.vSongTitle.setTextSize(textSize);
-                setitemViewHolder.vSongTitle.setText(textsn);
                 setitemViewHolder.vSongFilename.setTextSize(textSize);
-                setitemViewHolder.vSongFilename.setText(textfn);
                 setitemViewHolder.vSongTitle.setVisibility(useTitle ? View.VISIBLE : View.GONE);
                 setitemViewHolder.vSongFilename.setVisibility(useTitle ? View.GONE : View.VISIBLE);
+
+                if (si.songfilename.equals("---")) {
+                    setitemViewHolder.vSongTitle.setText("");
+                    setitemViewHolder.vSongFilename.setText("");
+                    setitemViewHolder.vSongFilename.setVisibility(View.GONE);
+                    setitemViewHolder.vSongTitle.setVisibility(View.GONE);
+                    setColor(setitemViewHolder,transparentColor);
+
+                } else {
+                    setitemViewHolder.vSongTitle.setText(textsn);
+                    setitemViewHolder.vSongFilename.setText(textfn);
+
+                    int finalPosition = position;
+                    setitemViewHolder.cardView.setOnClickListener((view) -> {
+                        // Load the song and that sends the updates to the setMenuFragment and inlineSetList
+                        if (mainActivityInterface != null) {
+                            mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.loadSongFromSet(finalPosition));
+                        }
+                    });
+                }
+                setitemViewHolder.cardView.setOnLongClickListener(v1 -> {
+                    if (mainActivityInterface != null) {
+                        scrollToItem(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                    }
+                    return true;
+                });
             }
         }
 
@@ -509,7 +546,7 @@ public class InlineSetList extends RecyclerView {
             vSongFilename.setTextSize(textSize);
             vSongFolder = v.findViewById(R.id.cardview_folder);
             vSongFolder.setVisibility(View.GONE);
-            v.setOnClickListener((view) -> {
+            /*v.setOnClickListener((view) -> {
                 // Load the song and that sends the updates to the setMenuFragment and inlineSetList
                 if (mainActivityInterface!=null) {
                     mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.loadSongFromSet(getAbsoluteAdapterPosition()));
@@ -520,7 +557,7 @@ public class InlineSetList extends RecyclerView {
                     scrollToItem(mainActivityInterface.getCurrentSet().getIndexSongInSet());
                 }
                 return true;
-            });
+            });*/
         }
     }
 

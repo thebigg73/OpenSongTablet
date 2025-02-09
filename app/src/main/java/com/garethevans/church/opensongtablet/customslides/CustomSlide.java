@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.customslides;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -78,6 +79,13 @@ public class CustomSlide {
                     folder = "Images";
                     type = c.getResources().getString(R.string.image);
                     break;
+                case "divider":
+                    title = "---";
+                    lyrics = "";
+                    file = null;
+                    folder = null;
+                    type = c.getResources().getString(R.string.divider);
+                    break;
             }
         }
     }
@@ -101,7 +109,7 @@ public class CustomSlide {
     }
 
     public void addItemToSet(boolean reusable) {
-        if (file != null && !file.isEmpty() && folder != null && !folder.isEmpty()) {
+        if (file != null && !file.isEmpty() && folder != null && !folder.isEmpty() && !createType.equals("divider")) {
             // Prepare the custom slide so it can be viewed in the app
             // When exporting/saving the set, the contents get grabbed from this
 
@@ -132,18 +140,34 @@ public class CustomSlide {
             // Now prepare to save the file
             // If it is flagged to be reusable, it also gets saved in the top level folder
             // All custom slides get saved into the temp _cache folder for use with this set
-            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" addItemToSet doStringWriteToFile "+folder+"/_cache/"+file+" with: "+xml);
+            mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " addItemToSet doStringWriteToFile " + folder + "/_cache/" + file + " with: " + xml);
             mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "_cache", file, xml);
 
             if (reusable) {
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" addItemToSet doStringWriteToFile "+folder+"/"+file+" with: "+xml);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " addItemToSet doStringWriteToFile " + folder + "/" + file + " with: " + xml);
                 mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "", file, xml);
             }
 
             // Update the current set and save the preference
-            String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**"+folder,file,key);
+            String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**" + folder, file, key);
             SetItemInfo setItemInfo = new SetItemInfo();
-            setItemInfo.setItem("**"+folder,file,title,key,mainActivityInterface.getCurrentSet().getCurrentSetSize()+1,setItem,"");
+            setItemInfo.setItem("**" + folder, file, title, key, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
+            mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
+            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
+
+            // Update the set menu title
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
+
+            // Let the user know the action was successful
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));
+
+        } else if (getCreateType()!=null && getCreateType().equals("divider")) {
+            Log.d(TAG,"divider");
+            // This is a divider so no file required
+            // Update the current set and save the preference
+            String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**Divider", null, null);
+            SetItemInfo setItemInfo = new SetItemInfo();
+            setItemInfo.setItem("---", "---", "---", null, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
             mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 

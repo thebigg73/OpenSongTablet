@@ -290,7 +290,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                             // This wasn't in the set, so add it
                             boolean firstItem = mainActivityInterface.getCurrentSet().getCurrentSetSize()==0;
                             songItemViewHolder.itemChecked.setChecked(true);
-                            mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey);
+                            mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey, true);
 
                             // Notify the set menu fragment which updates the adapters
                             mainActivityInterface.notifySetFragment("setItemInserted",-1);

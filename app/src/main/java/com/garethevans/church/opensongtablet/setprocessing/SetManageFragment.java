@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -485,7 +484,7 @@ public class SetManageFragment extends Fragment {
                             "Sets", "", newSetFilename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newSetUri);
 
-                    String setXML = mainActivityInterface.getSetActions().createSetXML();
+                    String setXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
                     String setAsPref = mainActivityInterface.getSetActions().getSetAsPreferenceString();
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveSet writeFileFromString Sets/" + newSetFilename + " with: " + setXML);
                     if (mainActivityInterface.getStorageAccess().writeFileFromString(setXML, outputStream)) {
@@ -652,7 +651,7 @@ public class SetManageFragment extends Fragment {
             mainActivityInterface.getCurrentSet().initialiseTheSet();
 
             // Empty the cache directories as new sets can have custom items
-            mainActivityInterface.getSetActions().loadSets(setUris, newSetTitle);
+            mainActivityInterface.getSetActions().loadSets(setUris, mainActivityInterface.getCurrentSet(), newSetTitle);
 
             // Import ended - do this on the main UI
             mainActivityInterface.getMainHandler().post(() -> {

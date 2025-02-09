@@ -461,6 +461,9 @@ public class SetActions {
             case "PDF":
                 icon = R.drawable.pdf;
                 break;
+            case "Divider":
+                icon = R.drawable.divider;
+                break;
             default:
                 icon = R.drawable.music_note;
                 break;
@@ -470,32 +473,36 @@ public class SetActions {
     public String getIconIdentifier(String folder, String filename) {
         // If the filename is an image, we use that
         String valueToDecideFrom;
-        if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {
+        if (filename.equals("---")) {
+            valueToDecideFrom = "Divider";
+        } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {
             valueToDecideFrom = "Images";
         } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",filename)) {
             valueToDecideFrom = "PDF";
         } else if (folder.contains(customLocStart)) {
-            valueToDecideFrom = folder.replace(customLocStart,"");
+            valueToDecideFrom = folder.replace(customLocStart, "");
         } else {
             valueToDecideFrom = "Songs";
         }
         return valueToDecideFrom;
     }
 
-    public String createSetXML() {
+    public String createSetXML(CurrentSet thisCurrentSet) {
         StringBuilder stringBuilder = new StringBuilder();
 
         // The starting of the xml file
         stringBuilder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").
                 append("<set name=\"").
                 append(mainActivityInterface.getProcessSong().parseToHTMLEntities(
-                        mainActivityInterface.getCurrentSet().getSetCurrentLastName())).
-                append("\">\n  <slide_groups>\n");
+                        thisCurrentSet.getSetCurrentLastName())).
+                append("\">\n<slide_groups>\n");
 
         // Now go through each set entry and build the appropriate xml
-        for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
-            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
+        Log.d(TAG,"thisSetCurrentSet.getCurrentSetSize():"+thisCurrentSet.getCurrentSetSize());
+        for (int x = 0; x < thisCurrentSet.getCurrentSetSize(); x++) {
+            SetItemInfo setItemInfo = thisCurrentSet.getSetItemInfo(x);
 
+            Log.d(TAG,"setItemInfo:"+setItemInfo);
             String key = fixNull(setItemInfo.songkey);
             String folder = setItemInfo.songfolder;
             // If the path isn't empty, add a forward slash to the end
@@ -509,7 +516,7 @@ public class SetActions {
             boolean isScripture = folder.contains("**Scripture") || folder.contains("**"+c.getString(R.string.scripture));
             boolean isSlide = folder.contains("**Slide") || folder.contains("**"+c.getString(R.string.slide));
             boolean isNote = folder.contains("**Note") || folder.contains("**"+c.getString(R.string.note));
-
+            boolean isDivider = folder.equals("---");
             if (isImage) {
                 // Adding an image
                 Song tempSong = getTempSong("**" + folderImages + "/_cache",
@@ -541,13 +548,21 @@ public class SetActions {
                         setItemInfo.songfilename);
                 stringBuilder.append(buildNote(tempSong));
 
+            } else if (isDivider) {
+                // Adding a divider
+                stringBuilder.append(buildDivider());
+
             } else {
                 // Adding a song
                 stringBuilder.append(buildSong(folder,setItemInfo.songfilename,key));
             }
         }
         // Now add the final part of the xml
-        stringBuilder.append("</slide_groups>\n</set>");
+        stringBuilder.append("</slide_groups>\n").
+                append("<uuid>").append(thisCurrentSet.getUuid()).append("</uuid>\n").
+                append("<lastModified>").append(thisCurrentSet.getLastModified()).append("</lastModified>\n").
+                append("<notes>").append(thisCurrentSet.getNotes()).append("</notes>\n").
+                append("</set>");
 
         return stringBuilder.toString();
     }
@@ -733,8 +748,27 @@ public class SetActions {
 
         return sb;
     }
+    private StringBuilder buildDivider() {
+        StringBuilder sb = new StringBuilder();
+        // Adding a divider
 
-    public void loadSets(ArrayList<Uri> setsToLoad, String setName) {
+        sb.append("  <slide_group name=\"# ")
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(c.getResources().getString(R.string.divider)))
+                .append(" #")
+                .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
+                .append("    ")
+                .append(emptyTagCheck("title",""))
+                .append("\n    ")
+                .append(emptyTagCheck("subtitle",""))
+                .append("\n    ")
+                .append(emptyTagCheck("notes",""))
+                .append("\n")
+                .append("    <slides></slides>\n")
+                .append("  </slide_group>\n");
+        return sb;
+    }
+
+    public void loadSets(ArrayList<Uri> setsToLoad, CurrentSet currentSet, String setName) {
         // This is called via a new thread in the manage sets fragment
         // We can append multiple sets together
         // If the set loaded has a song has a key specified with it, we compare with our key
@@ -757,7 +791,7 @@ public class SetActions {
         // Now users can load multiple sets and merge them, we need to load each one it turn
         for (Uri setToLoad:setsToLoad) {
             // Pass each uri to the set extraction function and let it populate the arrays
-            extractSetFile(setToLoad, false);
+            extractSetFile(setToLoad, currentSet,false);
         }
         // Now we have the entire set contents, save it to our preferences
         saveTheSet();
@@ -766,7 +800,7 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().updateSetTitleView();
     }
 
-    public void extractSetFile(Uri uri, boolean asExport) {
+    public void extractSetFile(Uri uri, CurrentSet currentSet, boolean asExport) {
         // This loads individual set files and populates the arrays
         // Set up the xml utility
         try {
@@ -782,13 +816,19 @@ public class SetActions {
 
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equals("slide_group")) {
+                        if (xpp.getName().equals("uuid")) {
+                            getUuid(xpp,currentSet,asExport);
+                        } else if (xpp.getName().equals("lastModified")) {
+                            getLastModified(xpp,currentSet,asExport);
+                        } else if (xpp.getName().equals("notes")) {
+                            getNotes(xpp,currentSet,asExport);
+                        } else if (xpp.getName().equals("slide_group")) {
                             // Look for the type attribute and see what type of slide it is
                             switch (xpp.getAttributeValue(null, "type")) {
                                 case "song":
                                     // Get Song
                                     try {
-                                        getSong(xpp,asExport);
+                                        getSong(xpp,currentSet,asExport);
                                     } catch (Exception e) {
                                         Log.d(TAG, "Couldn't get song location from set");
                                         e.printStackTrace();
@@ -797,7 +837,7 @@ public class SetActions {
                                 case "scripture":
                                     // Get Scripture
                                     try {
-                                        getScripture(xpp,asExport);
+                                        getScripture(xpp,currentSet,asExport);
                                     } catch (Exception e) {
                                         Log.d(TAG, "Couldn't get scripture from set");
                                         e.printStackTrace();
@@ -806,7 +846,7 @@ public class SetActions {
                                 case "custom":
                                     // Get Custom (Note or slide or variation)
                                     try {
-                                        getCustom(xpp,asExport);
+                                        getCustom(xpp,currentSet,asExport);
                                     } catch (Exception e) {
                                         Log.d(TAG, "Couldn't get custom from set");
                                         e.printStackTrace();
@@ -815,7 +855,7 @@ public class SetActions {
                                 case "image":
                                     // Get the Image(s)
                                     try {
-                                        getImage(xpp,asExport);
+                                        getImage(xpp,currentSet,asExport);
                                     } catch (Exception e) {
                                         Log.d(TAG, "Couldn't get image from set");
                                         e.printStackTrace();
@@ -842,7 +882,32 @@ public class SetActions {
         return string;
     }
 
-    private void getSong(XmlPullParser xpp, boolean asExport)
+    private void getUuid(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
+            throws IOException, XmlPullParserException {
+        // Set this info into the current set
+        if (!asExport && currentSet!=null) {
+            currentSet.setUuid(xpp.getText());
+        }
+        xpp.nextTag();
+    }
+    private void getLastModified(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
+            throws IOException, XmlPullParserException {
+        // Set this info into the current set
+        if (!asExport && currentSet!=null) {
+            currentSet.setLastModified(xpp.getText());
+        }
+        xpp.nextTag();
+    }
+    private void getNotes(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
+            throws IOException, XmlPullParserException {
+        // Set this info into the current set
+        if (!asExport && currentSet!=null) {
+            currentSet.setNotes(xpp.getText());
+        }
+        xpp.nextTag();
+    }
+
+    private void getSong(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
             throws IOException, XmlPullParserException {
         // Set this info into the current set.  We will just load our song
         // When we load, we will transpose our song if the key is different
@@ -862,14 +927,14 @@ public class SetActions {
             path = c.getString(R.string.mainfoldername);
         }
 
-        if (!asExport) {
+        if (!asExport && currentSet!=null) {
             // Only add to the current set if we aren't just preparing an export
-            mainActivityInterface.getCurrentSet().addItemToSet(path,name,name,key);
+            currentSet.addItemToSet(path,name,name,key,true);
         }
         xpp.nextTag();
     }
 
-    private void getScripture(XmlPullParser xpp, boolean asExport) throws IOException, XmlPullParserException {
+    private void getScripture(XmlPullParser xpp, CurrentSet currentSet, boolean asExport) throws IOException, XmlPullParserException {
         // Scripture entries in a set are custom slides.  Get the data and save it
         // This will ultimately be saved in our Scripture/_cache folder
         String scripture_title = "";
@@ -946,8 +1011,9 @@ public class SetActions {
             writeTempSlide(folderExport, "", tempSong);
 
         } else {
-            mainActivityInterface.getCurrentSet().addItemToSet(tempSong.getFolder(),tempSong.getFilename(),tempSong.getTitle(),"");
-
+            if (currentSet!=null) {
+                currentSet.addItemToSet(tempSong.getFolder(), tempSong.getFilename(), tempSong.getTitle(), "", true);
+            }
             // Now create the file in the Scripture/_cache folder
             writeTempSlide(folderScripture, cache, tempSong);
         }
@@ -981,7 +1047,7 @@ public class SetActions {
         return vlines;
     }
 
-    private void getCustom(XmlPullParser xpp, boolean asExport) throws XmlPullParserException {
+    private void getCustom(XmlPullParser xpp, CurrentSet currentSet, boolean asExport) throws XmlPullParserException {
         // Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
@@ -1123,7 +1189,9 @@ public class SetActions {
                 tempSong = mainActivityInterface.getLoadSong().doLoadSongFile(tempSong, false);
 
                 // Add the slide to the set
-                mainActivityInterface.getCurrentSet().addItemToSet(tempSong);
+                if (currentSet!=null) {
+                    currentSet.addItemToSet(tempSong);
+                }
             }
         } else {
             tempSong.setLyrics(custom_text.toString());
@@ -1139,7 +1207,9 @@ public class SetActions {
                 writeTempSlide(folderExport,"",tempSong);
 
             } else {
-                mainActivityInterface.getCurrentSet().addItemToSet(tempSong);
+                if (currentSet!=null) {
+                    currentSet.addItemToSet(tempSong);
+                }
 
                 // Now create the file in the appropriate location /_cache folder
                 writeTempSlide(
@@ -1149,7 +1219,7 @@ public class SetActions {
         }
     }
 
-    private void getImage(XmlPullParser xpp, boolean asExport) throws IOException, XmlPullParserException {
+    private void getImage(XmlPullParser xpp, CurrentSet currentSet, boolean asExport) throws IOException, XmlPullParserException {
         // Ok parse this bit separately.  This could have multiple images
         String image_name = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name"));
         String image_seconds = mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "seconds"));
@@ -1276,9 +1346,9 @@ public class SetActions {
         if (asExport) {
             writeTempSlide(folderExport,"",tempSong);
 
-        } else {
+        } else if (currentSet!=null) {
             // Add the set item
-            mainActivityInterface.getCurrentSet().addItemToSet(tempSong);
+            currentSet.addItemToSet(tempSong);
         }
     }
 

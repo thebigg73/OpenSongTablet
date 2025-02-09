@@ -161,7 +161,6 @@ public class DisplayPrevNext {
                 prev.setText(previousText);
                 next.setText(nextText);
 
-
                 // Set the listeners
                 // Use the text as it is for the filename (might be Uri encoded)
                 prev.setOnClickListener(v -> moveToPrev());
@@ -195,20 +194,32 @@ public class DisplayPrevNext {
         if (setPosition>=0) {
             moveNextInMenu = false;
             movePrevInMenu = false;
-            if (setPosition>0) {
-                prevIndex = setPosition - 1;
-                movePrevInSet = true;
-            } else {
-                prevIndex = -1;
-                movePrevInSet = false;
+            prevIndex = -1;
+            movePrevInSet = false;
+            int currentPos = setPosition;
+            boolean notdone = true;
+            while (currentPos > 0 && notdone) {
+                currentPos--;
+                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).songfilename.equals("---")) {
+                    prevIndex = currentPos;
+                    movePrevInSet = true;
+                    notdone = false;
+                }
             }
-            if (setPosition < mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1) {
-                nextIndex = setPosition + 1;
-                moveNextInSet = true;
-            } else {
-                nextIndex = -1;
-                moveNextInSet = false;
+
+            nextIndex = -1;
+            moveNextInSet = false;
+            currentPos = setPosition;
+            notdone = true;
+            while (currentPos < mainActivityInterface.getCurrentSet().getCurrentSetSize() -1 && notdone) {
+                currentPos++;
+                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).songfilename.equals("---")) {
+                    nextIndex = currentPos;
+                    moveNextInSet = true;
+                    notdone = false;
+                }
             }
+
         } else {
             moveNextInSet = false;
             movePrevInSet = false;

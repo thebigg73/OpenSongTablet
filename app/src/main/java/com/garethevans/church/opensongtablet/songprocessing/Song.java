@@ -11,6 +11,7 @@ import com.garethevans.church.opensongtablet.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Song implements Serializable {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -18,6 +19,8 @@ public class Song implements Serializable {
 
     // The holders
     private int id;
+    private String uuid="";
+    private String lastModified="";
     private String songid="";
     private String filename="";
     private String folder="";
@@ -84,6 +87,12 @@ public class Song implements Serializable {
     // The getters
     public int getId() {
         return id;
+    }
+    public String getUuid() {
+        return uuid;
+    }
+    public String getLastModified() {
+        return lastModified;
     }
     public String getSongid() {
         return songid;
@@ -245,6 +254,12 @@ public class Song implements Serializable {
     // The setters
     public void setId(int id) {
         this.id = id;
+    }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
     public void setSongid(String songid) {
         this.songid = songid;
@@ -412,6 +427,8 @@ public class Song implements Serializable {
     public Song(Song toCopy) {
         this.id = toCopy.id;
         this.songid = toCopy.songid;
+        this.uuid = toCopy.uuid;
+        this.lastModified = toCopy.lastModified;
         this.filename = toCopy.filename;
         this.folder = toCopy.folder;
         this.title = toCopy.title;
@@ -485,6 +502,7 @@ public class Song implements Serializable {
         thisSong.setLinkweb("https://www.opensongapp.com");
         thisSong.setFiletype("XML");
         thisSong.setAka("Error!");
+        thisSong.setUuid(String.valueOf(UUID.randomUUID()));
         return thisSong;
     }
 

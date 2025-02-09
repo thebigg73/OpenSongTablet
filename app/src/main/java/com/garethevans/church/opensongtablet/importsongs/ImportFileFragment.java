@@ -492,7 +492,7 @@ public class ImportFileFragment extends Fragment {
                                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, false);
                             }
                             // Save this as an actual set file
-                            String xml = mainActivityInterface.getSetActions().createSetXML();
+                            String xml = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
                             copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", newSetName);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
                             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Sets","",newSetName);
@@ -518,7 +518,7 @@ public class ImportFileFragment extends Fragment {
                             ArrayList<Uri> thisSet = new ArrayList<>();
                             thisSet.add(copyTo);
                             mainActivityInterface.setWhattodo("pendingLoadSet");
-                            mainActivityInterface.getSetActions().loadSets(thisSet, newSetName);
+                            mainActivityInterface.getSetActions().loadSets(thisSet, mainActivityInterface.getCurrentSet(), newSetName);
                             mainActivityInterface.getMainHandler().post(() -> {
                                 showProgress(false);
                                 mainActivityInterface.navHome();
