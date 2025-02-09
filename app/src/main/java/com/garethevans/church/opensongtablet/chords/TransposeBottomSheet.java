@@ -115,7 +115,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         // If this song is in the current set, show the transpose in set switch
         position = mainActivityInterface.getCurrentSet().getIndexSongInSet();
         songFolder = mainActivityInterface.getSong().getFolder();
-        myView.transposeSetItem.setChecked(false);
+        myView.transposeSetItem.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("transposeInSet",true));
         myView.transposeVariation.setChecked(false);
         myView.transposeCopy.setChecked(false);
         myView.transposeCapo.setChecked(false);
@@ -144,7 +144,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 // Allow variation creation and setItem transpose (default)
                 myView.transposeVariation.setVisibility(View.VISIBLE);
                 myView.transposeSetItem.setVisibility(View.VISIBLE);
-                myView.transposeSetItem.setChecked(true);
             }
 
         } else {
@@ -279,11 +278,10 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             if (isChecked) {
                 myView.transposeVariation.setChecked(false);
             }
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("transposeInSet",isChecked);
         });
         myView.transposeVariation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                myView.transposeSetItem.setChecked(false);
-            }
+            myView.transposeSetItem.setVisibility(isChecked && position>=0 ? View.GONE:View.VISIBLE);
         });
 
         myView.doTransposeButton.setOnClickListener(v -> doTranspose());
@@ -387,7 +385,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     private void doTranspose() {
         getValues();
-        transposeSet = myView.transposeSetItem.getChecked();
+        transposeSet = position>=0 && myView.transposeSetItem.getChecked() &&
+                myView.transposeSetItem.getVisibility()==View.VISIBLE;
         transposeVariation = myView.transposeVariation.getChecked();
         transposeCapo = myView.transposeCapo.getChecked();
         transposeCopy = myView.transposeCopy.getChecked();
