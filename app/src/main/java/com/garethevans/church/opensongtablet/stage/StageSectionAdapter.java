@@ -128,7 +128,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position, @NonNull List<Object> payloads) {
-        final int pos = position;
+        final int pos = holder.getAbsoluteAdapterPosition();
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
@@ -143,7 +143,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                             //holder.v.getLayoutParams().width = availableWidth;
                             holder.sectionView.getLayoutParams().width = availableWidth;
                             //holder.v.getLayoutParams().height = (int) (sectionInfos.get(pos).height * scale);
-                            holder.sectionView.getLayoutParams().height = (int) (sectionInfos.get(position).height * scale);
+                            holder.sectionView.getLayoutParams().height = (int) (sectionInfos.get(pos).height * scale);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -155,12 +155,19 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
-        final int pos = position;
+        final int pos = holder.getAbsoluteAdapterPosition();
         if (pos<sectionInfos.size()) {
             View v = mainActivityInterface.getSectionViews().get(pos);
 
             if (v.getParent()!=null) {
                 ((ViewGroup)v.getParent()).removeView(v);
+            }
+
+            // Remove any view artifacts
+            try {
+                holder.sectionView.removeAllViews();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             int section = sectionInfos.get(pos).section;
