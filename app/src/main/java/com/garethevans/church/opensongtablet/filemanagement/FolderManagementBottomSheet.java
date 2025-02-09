@@ -138,6 +138,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
             myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder"));
             myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem"));
+            myView.openChords.setOnClickListener(new ActionClickListener("openChords"));
         }
 
         myView.exportSongList.setVisibility(View.VISIBLE);

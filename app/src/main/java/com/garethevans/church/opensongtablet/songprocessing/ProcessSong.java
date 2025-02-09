@@ -53,6 +53,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.UUID;
 
 public class ProcessSong {
 
@@ -176,6 +177,17 @@ public class ProcessSong {
         }
 
         // Fix null values
+        String uuid = thisSong.getUuid();
+        if (uuid==null || uuid.isEmpty()) {
+            uuid = String.valueOf(UUID.randomUUID());
+            thisSong.setUuid(uuid);
+        }
+        String lastModified = thisSong.getLastModified();
+        Log.d(TAG,"getting XML. lastModified:"+lastModified);
+        if (lastModified==null || lastModified.isEmpty()) {
+            lastModified = mainActivityInterface.getTimeTools().getNowIsoTime();
+            thisSong.setLastModified(lastModified);
+        }
         thisSong.setTitle(fixNullValues(thisSong.getTitle()));
         thisSong.setAuthor(fixNullValues(thisSong.getAuthor()));
         thisSong.setCopyright(fixNullValues(thisSong.getCopyright()));
@@ -212,6 +224,8 @@ public class ProcessSong {
 
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + thisSong.getEncoding() + "\"?>\n";
         myNEWXML += "<song>\n";
+        myNEWXML += "  <uuid>" + parseToHTMLEntities(thisSong.getUuid()).trim() + "</uuid>\n";
+        myNEWXML += "  <last_modified>" + parseToHTMLEntities(thisSong.getLastModified()) + "</last_modified>\n";
         myNEWXML += "  <title>" + parseToHTMLEntities(thisSong.getTitle()).trim() + "</title>\n";
         myNEWXML += "  <author>" + parseToHTMLEntities(thisSong.getAuthor()).trim() + "</author>\n";
         myNEWXML += "  <copyright>" + parseToHTMLEntities(thisSong.getCopyright()).trim() + "</copyright>\n";
@@ -1020,7 +1034,7 @@ public class ProcessSong {
 
         // If we have a capo and want to show capo chords, duplicate and transpose the chord line
         String capoText = thisSong.getCapo();
-        boolean hasCapo = capoText!=null && !capoText.isEmpty();
+        boolean hasCapo = capoText!=null && !capoText.isEmpty() && !capoText.equals("0");
 
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
             int capo = Integer.parseInt(capoText);

@@ -114,8 +114,12 @@ public class Variations {
                 key = "";
             }
         }
-        folder = folder.replace(underscorereplacement, "_");
-        filename = filename.replace(underscorereplacement, "_");
+        if (folder!=null) {
+            folder = folder.replace(underscorereplacement, "_");
+        }
+        if (filename!=null) {
+            filename = filename.replace(underscorereplacement, "_");
+        }
 
         return new String[]{folder,filename,key};
     }

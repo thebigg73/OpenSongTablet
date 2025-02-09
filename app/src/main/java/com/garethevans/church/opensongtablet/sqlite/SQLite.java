@@ -63,6 +63,7 @@ public class SQLite {
     user1
     user2
     user3
+    uuid
 
 */
 
@@ -111,6 +112,8 @@ public class SQLite {
     public static final String COLUMN_LINK_OTHER = "linkother";
     public static final String COLUMN_PRESENTATIONORDER = "presentationorder";
     public static final String COLUMN_FILETYPE = "filetype";
+    public static final String COLUMN_UUID = "uuid";
+    public static final String COLUMN_LAST_MODIFIED = "lastmodified";
 
     // Create table SQL query.  Because this will have non OpenSong stuff too, include all useable fields
     static final String CREATE_TABLE =
@@ -155,6 +158,8 @@ public class SQLite {
                     + COLUMN_LINK_AUDIO + " TEXT,"
                     + COLUMN_LINK_OTHER + " TEXT,"
                     + COLUMN_PRESENTATIONORDER + " TEXT,"
-                    + COLUMN_FILETYPE + " TEXT"
+                    + COLUMN_FILETYPE + " TEXT,"
+                    + COLUMN_UUID + " TEXT,"
+                    + COLUMN_LAST_MODIFIED + " TEXT"
                     + ");";
 }

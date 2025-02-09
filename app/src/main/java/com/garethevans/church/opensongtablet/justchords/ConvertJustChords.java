@@ -244,7 +244,7 @@ public class ConvertJustChords {
                 }
                 // Get a setXML file
                 mainActivityInterface.getCurrentSet().setSetCurrentLastName(mainActivityInterface.getImportFilename().replace(extension,""));
-                String setXML = mainActivityInterface.getSetActions().createSetXML();
+                String setXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
 
                 // Save the set file
                 File setFile = new File(extractFolder,mainActivityInterface.getImportFilename().replace(extension,"")+".osts");
@@ -268,6 +268,7 @@ public class ConvertJustChords {
         song.setAuthor(justChordsSongObject.getArtist());
         song.setAutoscrolllength(String.valueOf(mainActivityInterface.getTimeTools().getTotalSecsFromColonTimes(justChordsSongObject.getDuration())));
         song.setTempo(justChordsSongObject.getTempo());
+        song.setUuid(justChordsSongObject.getId());
         song.setNotes(justChordsSongObject.getNotes());
         song.setCopyright(justChordsSongObject.getCopyright());
         song.setTimesig(justChordsSongObject.getTimeSignature());
@@ -292,7 +293,14 @@ public class ConvertJustChords {
             }
         }
         song.setKey(key + minor);
-        String lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(justChordsSongObject.getRawData());
+        song.setLyrics(getOpenSongLyrics(justChordsSongObject.getRawData()));
+        String songXML = mainActivityInterface.getProcessSong().getXML(song);
+        song.setSongXML(songXML);
+        return song;
+    }
+
+    public String getOpenSongLyrics(String justChordLyrics) {
+        String lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(justChordLyrics);
         // Go through each line and replace headings with []
         // Get abc notation lines into inlineABC for OpenSongApp
         boolean containsAbc = lyrics.contains(abc_start) && lyrics.contains(abc_end);
@@ -325,10 +333,7 @@ public class ConvertJustChords {
 
             stringBuilder.append(line).append("\n");
         }
-        song.setLyrics(stringBuilder.toString());
-        String songXML = mainActivityInterface.getProcessSong().getXML(song);
-        song.setSongXML(songXML);
-        return song;
+        return stringBuilder.toString();
     }
 
     private String getExtractedBit(String lyrics, int indexStart, int indexEnd) {

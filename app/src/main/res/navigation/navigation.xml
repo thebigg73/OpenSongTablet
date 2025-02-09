@@ -1028,6 +1028,15 @@
                 android:id="@+id/deepLinkWebServer"
                 app:uri="@string/website_web_server"/>
         </fragment>
+        <fragment
+            android:id="@+id/openChordsFragment"
+            android:name="com.garethevans.church.opensongtablet.openchords.OpenChordsFragment"
+            android:label="OpenChordsFragment"
+            tools:layout="@layout/settings_openchords">
+            <deepLink
+                android:id="@+id/deeplinkOpenChords"
+                app:uri="@string/deeplink_openchords"/>
+        </fragment>
         <navigation android:id="@+id/midi_graph"
             app:startDestination="@id/midiOptionsFragment">
             <fragment

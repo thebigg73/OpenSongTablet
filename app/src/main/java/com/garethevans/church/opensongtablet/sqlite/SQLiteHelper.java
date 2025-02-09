@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings("FieldCanBeLocal")
@@ -182,6 +183,42 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return new ArrayList<>();
         }
     }
+    public ArrayList<Song> openChordsSyncGetSongsFromFolder(String folder) {
+        Log.d(TAG,"folder:"+folder);
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().openChordsSyncGetSongsFromFolder(db,folder);
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    public Song getOpenChordsSong(String folder, String uuid) {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getOpenChordsSong(db,folder,uuid);
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String[] getUuidFromFolderAndFile(String folderAndFile) {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getUuidFromFolderAndFile(db,folderAndFile);
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public ArrayList<OpenChordsTag> getThemesFromFilesInFolder(String folder) {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getThemesFromFilesInFolder(db, folder);
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
     public String getKey(String folder, String filename) {
         try (SQLiteDatabase db = getDB()) {
             return mainActivityInterface.getCommonSQL().getKey(db, folder, filename);

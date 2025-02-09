@@ -123,6 +123,7 @@ import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
+import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
 import com.garethevans.church.opensongtablet.pads.Pad;
 import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
@@ -253,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private NearbyConnections nearbyConnections;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private OCR ocr;
+    private OpenChordsAPI openChordsAPI;
     private OpenSongSetBundle openSongSetBundle;
     private Pad pad;
     private PageButtons pageButtons;
@@ -682,10 +684,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
         fileOpenIntent = intent;
+        Log.d(TAG,"new intent:"+intent+"  "+intent.getData());
         // Send the action to be called from the opening fragment to fix backstack!
         if (presenterValid()) {
+            Log.d(TAG,"sending to presenter fragment");
             presenterFragment.tryToImportIntent();
         } else if (performanceValid()) {
+            Log.d(TAG,"sending to performance fragment");
             performanceFragment.tryToImportIntent();
         }
         super.onNewIntent(intent);
@@ -693,28 +698,47 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void dealWithIntent(int navigationId) {
+        boolean dealtWith = getPreferences().getMyPreferenceBoolean("intentAlreadyDealtWith",false);
+        Log.d(TAG,"intentAlreadyDealtWith:"+dealtWith);
         getThreadPoolExecutor().execute(() -> {
-            if (!preferences.getMyPreferenceBoolean("intentAlreadyDealtWith", false) &&
-                    fileOpenIntent != null && fileOpenIntent.getData() != null && getStorageAccess().getFileSizeFromUri(fileOpenIntent.getData()) > 0) {
-                preferences.setMyPreferenceBoolean("intentAlreadyDealtWith", true);
-                importUri = fileOpenIntent.getData();
-                getMainHandler().post(() -> navController.popBackStack(navigationId, false));
+            if (!dealtWith && fileOpenIntent != null && (fileOpenIntent.getDataString() != null || fileOpenIntent.getData()!=null)) {
+                if (fileOpenIntent.getDataString()!=null && fileOpenIntent.getDataString().startsWith(getOpenChordsAPI().getAppFolderTrigger())) {
+                    // This should trigger the GET request to sync OpenChords
+                    try {
+                        getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
+                        String uuid = fileOpenIntent.getData().toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
+                        Log.d(TAG,"uuid:"+uuid);
+                        getOpenChordsAPI().setOpenChordsFolderUuid(null,uuid);
+                        setWhattodo("openchordsintent");
+                        navigateToFragment(getString(R.string.deeplink_openchords),0);
 
-                // We need to copy this file to our temp storage for now to have later permission
-                InputStream inputStream;
-                try {
-                    inputStream = getContentResolver().openInputStream(importUri);
-                    importFilename = getStorageAccess().getFileNameFromUri(importUri);
-                    if (inputStream != null) {
-                        File tempFile = getStorageAccess().getAppSpecificFile("Import", "", importFilename);
-                        FileOutputStream outputStream = new FileOutputStream(tempFile);
-                        getStorageAccess().updateFileActivityLog(TAG + " dealWithIntent CopyFile " + importUri + " to " + tempFile);
-                        getStorageAccess().copyFile(inputStream, outputStream);
-                        importUri = Uri.fromFile(tempFile);
-                        openFragmentBasedOnFileImport();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                } else if (getStorageAccess().getFileSizeFromUri(fileOpenIntent.getData()) > 0) {
+                    getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
+                    importUri = fileOpenIntent.getData();
+                    Log.d(TAG, "intent received:" + importUri);
+
+                    getMainHandler().post(() -> navController.popBackStack(navigationId, false));
+
+                    // We need to copy this file to our temp storage for now to have later permission
+                    InputStream inputStream;
+                    try {
+                        inputStream = getContentResolver().openInputStream(importUri);
+                        importFilename = getStorageAccess().getFileNameFromUri(importUri);
+                        if (inputStream != null) {
+                            File tempFile = getStorageAccess().getAppSpecificFile("Import", "", importFilename);
+                            FileOutputStream outputStream = new FileOutputStream(tempFile);
+                            getStorageAccess().updateFileActivityLog(TAG + " dealWithIntent CopyFile " + importUri + " to " + tempFile);
+                            getStorageAccess().copyFile(inputStream, outputStream);
+                            importUri = Uri.fromFile(tempFile);
+                            openFragmentBasedOnFileImport();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             // Try to clear the intent
@@ -726,6 +750,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
 
         });
+        getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith",false);
     }
 
     private void setupHelpers() {
@@ -773,6 +798,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         prepareFormats = getPrepareFormats();
         songSheetHeaders = getSongSheetHeaders();
         ocr = getOCR();
+        openChordsAPI = getOpenChordsAPI();
         makePDF = getMakePDF();
         transpose = getTranspose();
         abcNotation = getAbcNotation();
@@ -1616,7 +1642,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
         if (navController!=null && myView!=null) {
-            whichMode = preferences.getMyPreferenceString("whichMode", performance);
+            whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
             if (navController.getCurrentDestination() != null) {
                 navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
             }
@@ -2951,7 +2977,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String deeplink = dealingWithIntent;
                 getMainHandler().post(() -> navigateToFragment(deeplink, 0));
                 // Reset the flag to allow dealing with a new intent as we have handled this one
-                preferences.setMyPreferenceBoolean("intentAlreadyDealtWith", false);
+                getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", false);
             }
         } else {
             setWhattodo("");
@@ -3024,6 +3050,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public OpenChordsAPI getOpenChordsAPI() {
+        if (openChordsAPI==null) {
+            openChordsAPI = new OpenChordsAPI(this);
+        }
+        return openChordsAPI;
+    }
+    @Override
     public ConvertJustChords getConvertJustChords() {
         if (convertJustChords == null) {
             convertJustChords = new ConvertJustChords(this);
@@ -3044,6 +3077,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         return convertWord;
     }
+
 
     @Override
     public ConvertTextSong getConvertTextSong() {
@@ -3098,7 +3132,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public TimeTools getTimeTools() {
         if (timeTools == null) {
-            timeTools = new TimeTools();
+            timeTools = new TimeTools(this);
         }
         return timeTools;
     }
@@ -3194,6 +3228,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String setKey = setItemInfo.songkey;
                 Uri setUri = getStorageAccess().getUriForItem("Songs",setFolder,setFilename);
 
+                if (setItemInfo.songfilename.equals("---")) {
+                    // Exit here!
+                    return;
+                }
                 // If we are viewing a set item with a temp key change, we will need these variables
                 String[] bits = getVariations().getPreVariationInfo(setItemInfo);
                 String originalFolder = bits[0];
@@ -3448,7 +3486,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "saveset":
                     // Overwriting the last loaded set with the current one via bottom sheet
                     // This is only called if we are editing a previously saved set
-                    String xml = getSetActions().createSetXML();
+                    String xml = getSetActions().createSetXML(getCurrentSet());
                     String setString = getSetActions().getSetAsPreferenceString();
                     result = getStorageAccess().doStringWriteToFile("Sets", "", currentSet.getSetCurrentLastName(), xml);
                     if (result) {
@@ -3798,7 +3836,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public String getMode() {
         if (whichMode == null) {
-            whichMode = preferences.getMyPreferenceString("whichMode", performance);
+            whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
         }
         return whichMode;
     }
@@ -4625,7 +4663,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Reset the dealt with intent
         try {
             if (preferences!=null) {
-                preferences.setMyPreferenceBoolean("intentAlreadyDealtWith", false);
+                getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", false);
             }
         } catch (Exception e) {
             e.printStackTrace();

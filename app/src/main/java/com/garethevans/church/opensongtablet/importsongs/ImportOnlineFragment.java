@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ImportOnlineFragment extends Fragment {
 
@@ -55,7 +56,7 @@ public class ImportOnlineFragment extends Fragment {
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
             "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google",
             "DuckDuckGo"};
-    private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
+    private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?type=300&search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/search/results?search=",
             "https://www.worshiptogether.com/search-results/#?cludoquery=", "https://ukutabs.com/?s=",
             "https://holychords.pro/search?name=", "https://www.boiteachansons.net/recherche/",
@@ -657,12 +658,14 @@ public class ImportOnlineFragment extends Fragment {
         // Trim whitespace
         newSong.setTitle(newSong.getTitle().trim());
         newSong.setAuthor(newSong.getAuthor().trim());
+        newSong.setUuid(String.valueOf(UUID.randomUUID()));
         newSong.setCopyright(newSong.getCopyright().trim());
         newSong.setFilename(newSong.getFilename().trim());
         newSong.setKey(newSong.getKey().trim());
         newSong.setKeyOriginal(newSong.getKeyOriginal().trim());
         newSong.setCapo(newSong.getCapo().trim());
-        newSong.setLyrics(newSong.getLyrics().trim());
+        // Use the text conversion to fix
+        newSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(newSong.getLyrics().trim()));
         newSong.setTheme(newSong.getTheme().trim());
         newSong.setAlttheme(newSong.getAlttheme().trim());
         newSong.setAka(newSong.getAka().trim());
@@ -724,6 +727,7 @@ public class ImportOnlineFragment extends Fragment {
             }
             myView.folderChoice.setText(folder);
             changeLayouts(false, false, true);
+            myView.preview.setText(newSong.getLyrics());
             myView.saveSong.setOnClickListener(v -> saveTheSong());
         }
     }

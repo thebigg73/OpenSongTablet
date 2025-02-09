@@ -49,6 +49,7 @@ import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
+import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
 import com.garethevans.church.opensongtablet.pads.Pad;
 import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
@@ -197,6 +198,9 @@ public interface MainActivityInterface {
     void updateCheckForThisSong(Song thisSong);
     SongMenuFragment getSongMenuFragment();
     void setHighlightChangeAllowed(boolean highlightChangeAllowed);
+
+    // OpenChords stuff
+    OpenChordsAPI getOpenChordsAPI();
 
     // Action bar
     MyToolbar getToolbar();

@@ -26,6 +26,9 @@ android {
     }
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -81,8 +84,8 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.9.3'
-    // Required for activity and permission requests
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'                    // To allow Java time/date utilities on <Android 8
+    implementation 'androidx.activity:activity:1.10.0'                                  // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.8.5'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.12.0'                        // Required for material design goodness
     implementation 'com.google.android.gms:play-services-cast:22.0.0'                   // For casting obviously!
@@ -101,7 +104,7 @@ dependencies {
     // For updated resources
     implementation 'androidx.browser:browser:1.8.0'                                     // To open custom tab browser intents
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'                 // RecyclerView (obviously)
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'                           // RecyclerView (obviously)
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'                           // RecyclerView (obviously)
     implementation 'androidx.gridlayout:gridlayout:1.0.0'                               // GridLayout (obviously)
     implementation 'androidx.appcompat:appcompat:1.7.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
@@ -129,8 +132,9 @@ dependencies {
     implementation 'androidx.exifinterface:exifinterface:1.3.7'                         // To get image exif data (orientation for camera)
     //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
-    implementation 'com.google.code.gson:gson:2.11.0'
-    // GSon for JSON conversion of Song/Set objects
+    implementation 'com.google.code.gson:gson:2.11.0'                                   // GSon for JSON conversion of Song/Set objects
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
 
     // To include jar libraries

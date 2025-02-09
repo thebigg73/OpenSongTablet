@@ -459,6 +459,10 @@ public class MakePDF {
             float widthScaling = availableWidth / columnInfo[2];
             float heightScaling = availableHeight / columnInfo[3];
             columnScale = Math.min(widthScaling, heightScaling);
+            if (columnInfo[2]==0 && columnInfo[3]==0) {
+                // Empty song, don't try for infinite scale
+                columnScale = 1;
+            }
         }
 
         if (thisSong!=null && thisSong.getUser1()!=null && thisSong.getUser1().equals("PRINT_SONG_LIST")) {

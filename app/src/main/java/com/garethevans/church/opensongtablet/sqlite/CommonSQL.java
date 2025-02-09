@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.UUID;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -47,7 +49,7 @@ public class CommonSQL {
                 SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1,
                 SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_BEATBUDDY_SONG,
                 SQLite.COLUMN_BEATBUDDY_KIT, SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
-                SQLite.COLUMN_PREFERRED_INSTRUMENT,
+                SQLite.COLUMN_PREFERRED_INSTRUMENT, SQLite.COLUMN_UUID, SQLite.COLUMN_LAST_MODIFIED,
                 SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA, SQLite.COLUMN_AUTOSCROLL_DELAY,
                 SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
                 SQLite.COLUMN_PAD_LOOP, SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
@@ -110,6 +112,7 @@ public class CommonSQL {
             values.put(SQLite.COLUMN_SONGID, songid);
             values.put(SQLite.COLUMN_FOLDER, folder);
             values.put(SQLite.COLUMN_FILENAME, filename);
+            values.put(SQLite.COLUMN_UUID, UUID.randomUUID().toString());
 
             // Insert the new row
             try {
@@ -133,8 +136,19 @@ public class CommonSQL {
         if (thisSong.getSongid()==null || thisSong.getSongid().isEmpty() || !thisSong.getSongid().equals(correctId)) {
             thisSong.setSongid(correctId);
         }
+        String uuid = thisSong.getUuid();
+        if (uuid==null || uuid.isEmpty()) {
+            thisSong.setUuid(String.valueOf(UUID.randomUUID()));
+        }
+        String lastModified = thisSong.getLastModified();
+        Log.d(TAG,"updateSong()  lastModified:"+lastModified);
+        if (lastModified==null || lastModified.isEmpty()) {
+            thisSong.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
+        }
+
         ContentValues values = new ContentValues();
         values.put(SQLite.COLUMN_SONGID, thisSong.getSongid());
+        values.put(SQLite.COLUMN_UUID, thisSong.getUuid());
         values.put(SQLite.COLUMN_FILENAME, thisSong.getFilename());
         values.put(SQLite.COLUMN_FOLDER, thisSong.getFolder());
         values.put(SQLite.COLUMN_TITLE, thisSong.getTitle());
@@ -174,6 +188,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_LINK_OTHER, thisSong.getLinkother());
         values.put(SQLite.COLUMN_PRESENTATIONORDER, thisSong.getPresentationorder());
         values.put(SQLite.COLUMN_FILETYPE, thisSong.getFiletype());
+        values.put(SQLite.COLUMN_LAST_MODIFIED, thisSong.getLastModified());
 
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
@@ -484,47 +499,8 @@ public class CommonSQL {
         // Get the first item (the matching songID)
         try {
             if (cursor.moveToFirst()) {
-                thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
-                thisSong.setSongid(songId);
-                thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
-                thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
-                thisSong.setTitle(getValue(cursor, SQLite.COLUMN_TITLE));
-                thisSong.setAuthor(getValue(cursor, SQLite.COLUMN_AUTHOR));
-                thisSong.setCopyright(getValue(cursor, SQLite.COLUMN_COPYRIGHT));
-                thisSong.setLyrics(getValue(cursor, SQLite.COLUMN_LYRICS));
-                thisSong.setHymnnum(getValue(cursor, SQLite.COLUMN_HYMNNUM));
-                thisSong.setCcli(getValue(cursor, SQLite.COLUMN_CCLI));
-                thisSong.setTheme(getValue(cursor, SQLite.COLUMN_THEME));
-                thisSong.setAlttheme(getValue(cursor, SQLite.COLUMN_ALTTHEME));
-                thisSong.setUser1(getValue(cursor, SQLite.COLUMN_USER1));
-                thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
-                thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
-                thisSong.setBeatbuddysong(getValue(cursor, SQLite.COLUMN_BEATBUDDY_SONG));
-                thisSong.setBeatbuddykit(getValue(cursor, SQLite.COLUMN_BEATBUDDY_KIT));
-                thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
-                thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
-                thisSong.setPreferredInstrument(getValue(cursor, SQLite.COLUMN_PREFERRED_INSTRUMENT));
-                thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
-                thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
-                thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));
-                thisSong.setAutoscrolllength(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_LENGTH));
-                thisSong.setTempo(getValue(cursor, SQLite.COLUMN_TEMPO));
-                thisSong.setPadfile(getValue(cursor, SQLite.COLUMN_PAD_FILE));
-                thisSong.setPadloop(getValue(cursor, SQLite.COLUMN_PAD_LOOP));
-                thisSong.setMidi(getValue(cursor, SQLite.COLUMN_MIDI));
-                thisSong.setMidiindex(getValue(cursor, SQLite.COLUMN_MIDI_INDEX));
-                thisSong.setCapo(getValue(cursor, SQLite.COLUMN_CAPO));
-                thisSong.setCapoprint(getValue(cursor, SQLite.COLUMN_CAPO_PRINT));
-                thisSong.setCustomChords((getValue(cursor, SQLite.COLUMN_CUSTOM_CHORDS)));
-                thisSong.setNotes(getValue(cursor, SQLite.COLUMN_NOTES));
-                thisSong.setAbc(getValue(cursor, SQLite.COLUMN_ABC));
-                thisSong.setAbcTranspose(getValue(cursor, SQLite.COLUMN_ABC_TRANSPOSE));
-                thisSong.setLinkyoutube(getValue(cursor, SQLite.COLUMN_LINK_YOUTUBE));
-                thisSong.setLinkweb(getValue(cursor, SQLite.COLUMN_LINK_WEB));
-                thisSong.setLinkaudio(getValue(cursor, SQLite.COLUMN_LINK_AUDIO));
-                thisSong.setLinkother(getValue(cursor, SQLite.COLUMN_LINK_OTHER));
-                thisSong.setPresentationorder(getValue(cursor, SQLite.COLUMN_PRESENTATIONORDER));
-                thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
+                setSongValues(thisSong, cursor);
+
             } else {
                 // Song not found
                 thisSong.setTitle(filename);
@@ -538,6 +514,75 @@ public class CommonSQL {
             Log.e(TAG,"error:"+e);
         }
 
+        return thisSong;
+    }
+
+    private void setSongValues(Song thisSong, Cursor cursor) {
+        thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
+        thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
+        thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
+        thisSong.setSongid(getAnySongId(thisSong.getFolder(), thisSong.getFilename()));
+        thisSong.setTitle(getValue(cursor, SQLite.COLUMN_TITLE));
+        thisSong.setAuthor(getValue(cursor, SQLite.COLUMN_AUTHOR));
+        thisSong.setCopyright(getValue(cursor, SQLite.COLUMN_COPYRIGHT));
+        thisSong.setLyrics(getValue(cursor, SQLite.COLUMN_LYRICS));
+        thisSong.setHymnnum(getValue(cursor, SQLite.COLUMN_HYMNNUM));
+        thisSong.setCcli(getValue(cursor, SQLite.COLUMN_CCLI));
+        thisSong.setTheme(getValue(cursor, SQLite.COLUMN_THEME));
+        thisSong.setAlttheme(getValue(cursor, SQLite.COLUMN_ALTTHEME));
+        thisSong.setUser1(getValue(cursor, SQLite.COLUMN_USER1));
+        thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
+        thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
+        thisSong.setBeatbuddysong(getValue(cursor, SQLite.COLUMN_BEATBUDDY_SONG));
+        thisSong.setBeatbuddykit(getValue(cursor, SQLite.COLUMN_BEATBUDDY_KIT));
+        thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
+        thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
+        thisSong.setPreferredInstrument(getValue(cursor, SQLite.COLUMN_PREFERRED_INSTRUMENT));
+        thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
+        thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
+        thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));
+        thisSong.setAutoscrolllength(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_LENGTH));
+        thisSong.setTempo(getValue(cursor, SQLite.COLUMN_TEMPO));
+        thisSong.setPadfile(getValue(cursor, SQLite.COLUMN_PAD_FILE));
+        thisSong.setPadloop(getValue(cursor, SQLite.COLUMN_PAD_LOOP));
+        thisSong.setMidi(getValue(cursor, SQLite.COLUMN_MIDI));
+        thisSong.setMidiindex(getValue(cursor, SQLite.COLUMN_MIDI_INDEX));
+        thisSong.setCapo(getValue(cursor, SQLite.COLUMN_CAPO));
+        thisSong.setCapoprint(getValue(cursor, SQLite.COLUMN_CAPO_PRINT));
+        thisSong.setCustomChords((getValue(cursor, SQLite.COLUMN_CUSTOM_CHORDS)));
+        thisSong.setNotes(getValue(cursor, SQLite.COLUMN_NOTES));
+        thisSong.setAbc(getValue(cursor, SQLite.COLUMN_ABC));
+        thisSong.setAbcTranspose(getValue(cursor, SQLite.COLUMN_ABC_TRANSPOSE));
+        thisSong.setLinkyoutube(getValue(cursor, SQLite.COLUMN_LINK_YOUTUBE));
+        thisSong.setLinkweb(getValue(cursor, SQLite.COLUMN_LINK_WEB));
+        thisSong.setLinkaudio(getValue(cursor, SQLite.COLUMN_LINK_AUDIO));
+        thisSong.setLinkother(getValue(cursor, SQLite.COLUMN_LINK_OTHER));
+        thisSong.setPresentationorder(getValue(cursor, SQLite.COLUMN_PRESENTATIONORDER));
+        thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
+        String uuid = getValue(cursor, SQLite.COLUMN_UUID);
+        if (uuid==null || uuid.isEmpty()) {
+            uuid = String.valueOf(UUID.randomUUID());
+        }
+        thisSong.setUuid(uuid);
+        thisSong.setLastModified(getValue(cursor,SQLite.COLUMN_LAST_MODIFIED));
+    }
+
+    public Song getOpenChordsSong(SQLiteDatabase db, String folder, String uuid) {
+        String[] selectionArgs = new String[]{folder,uuid};
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_UUID + "=? AND " + SQLite.COLUMN_FOLDER + "=?";
+        Song thisSong = new Song();
+
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        // Get the first item (the matching songID)
+        try {
+            if (cursor.moveToFirst()) {
+                setSongValues(thisSong, cursor);
+            }
+            closeCursor(cursor);
+        } catch (Exception e) {
+            Log.e(TAG,"error:"+e);
+        }
         return thisSong;
     }
 
@@ -555,6 +600,78 @@ public class CommonSQL {
         closeCursor(cursor);
         return count > 0;
     }
+
+    public ArrayList<Song> openChordsSyncGetSongsFromFolder(SQLiteDatabase db, String folder) {
+        ArrayList<Song> songs = new ArrayList<>();
+
+        // To avoid SQL injections, we need to build the args
+        String[] selectionArgs = new String[] {folder};
+        String sqlQuery = "SELECT * FROM " + SQLite.TABLE_NAME +" WHERE "+SQLite.COLUMN_FOLDER+"=? ORDER BY filename ASC";
+        Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
+
+        Log.d(TAG,"search count:"+cursor.getCount());
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String fi = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME));
+                String fo = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+                String ui = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
+                String lm = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LAST_MODIFIED));
+                String au = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR));
+                String ke = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY));
+                String ca = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CAPO));
+                String th = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
+                String at = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ALTTHEME));
+                String ly = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LYRICS));
+                String du = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_LENGTH));
+                String te = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO));
+                String ti = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG));
+                String no = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_NOTES));
+                String co = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_COPYRIGHT));
+                String cc = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CCLI));
+
+                Song song = new Song();
+                song.setFilename(fi);
+                song.setFolder(fo);
+                song.setUuid(ui);
+                song.setLastModified(lm);
+                song.setAuthor(au);
+                song.setKey(ke);
+                song.setCapo(ca);
+                song.setTitle(fi);
+                song.setTheme(th);
+                song.setAlttheme(at);
+                song.setLyrics(ly);
+                song.setAutoscrolllength(du);
+                song.setTempo(te);
+                song.setTimesig(ti);
+                song.setNotes(no);
+                song.setCopyright(co);
+                song.setCcli(cc);
+
+                songs.add(song);
+
+            }
+            while (cursor.moveToNext());
+        }
+
+        // close cursor connection
+        closeCursor(cursor);
+
+        // Because the song sorting from SQL ignores accented characters (non-English),
+        // we need to set up a custom collator
+        Comparator<Song> comparator = (o1, o2) -> {
+            //Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            Collator collator = Collator.getInstance();
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1.getFilename(),o2.getFilename());
+        };
+        Collections.sort(songs, comparator);
+
+        //Return the songs
+        return songs;
+    }
+
 
     public Song getSongFromMidiIndex(SQLiteDatabase db, int midiIndex) {
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_MIDI_INDEX + "= ? ";
@@ -801,6 +918,53 @@ public class CommonSQL {
         return text;
     }
 
+    public String[] getUuidFromFolderAndFile(SQLiteDatabase db, String folderAndFile) {
+        String selectQuery = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_TITLE + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ?;";
+        String[] args = {folderAndFile};
+        String[] results = new String[2];
+        results[0] = "";
+        results[1] = "";
+        Cursor cursor = db.rawQuery(selectQuery, args);
+        if (cursor.getCount()>0) {
+            cursor.moveToFirst();
+            results[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
+            results[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
+        } else {
+            results[0] = String.valueOf(UUID.randomUUID());
+            results[1] = "";
+        }
+        cursor.close();
+        return results;
+    }
+
+    public ArrayList<OpenChordsTag> getThemesFromFilesInFolder(SQLiteDatabase db, String folder) {
+        String selectQuery = "SELECT " + SQLite.COLUMN_THEME + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FOLDER + " = ?;";
+        String[] args = {folder};
+        Cursor cursor = db.rawQuery(selectQuery, args);
+        ArrayList<OpenChordsTag> tags = new ArrayList<>();
+        ArrayList<String> uniqueThemes = new ArrayList<>();
+        if (cursor.getCount()>0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String[] themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME)).split("\n");
+                    for (String theme : themes) {
+                        if (!uniqueThemes.contains(theme)) {
+                            uniqueThemes.add(theme);
+                            Log.d(TAG,"theme found:"+theme);
+                            OpenChordsTag openChordsTag = new OpenChordsTag();
+                            openChordsTag.setTitle(theme);
+                            tags.add(openChordsTag);
+                        }
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        // close cursor connection
+        closeCursor(cursor);
+
+        return tags;
+    }
+
     // This can be used to export the persistent database to a 'readable' csv table that can be imported into a spreadsheet
     public void exportDatabase(SQLiteDatabase db, String exportedFilename) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
@@ -847,6 +1011,7 @@ public class CommonSQL {
     public void addCSVTableHeadings(StringBuilder stringBuilder) {
         // Add the table headings - CODE MUST BE UPDATED IF COLUMNS CHANGE - USE SQLite file
         // Don't worry about ID or SONG_ID as they are created automatically based on entry / filenames / folders
+        stringBuilder.append("\"").append(SQLite.COLUMN_UUID).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_FILENAME).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_FOLDER).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_TITLE).append("\",");
@@ -889,6 +1054,7 @@ public class CommonSQL {
 
     public void addCSVTableValue(StringBuilder stringBuilder, Song song, Cursor cursor) {
         // This can be called from a database cursor, or a song item that has already been retrieved
+        stringBuilder.append("\"").append(song!=null ? song.getUuid() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getFilename() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getFolder() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getTitle() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE))).append("\",");

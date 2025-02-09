@@ -86,7 +86,7 @@
         android:id="@+id/webLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -165,13 +165,22 @@
             android:visibility="visible" />
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/saveLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:isScrollContainer="true"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="96dp">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
             android:id="@+id/saveFilename"
@@ -189,11 +198,25 @@
             android:layout_marginTop="16dp"
             android:hint="@string/choose_folder" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveSong"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/save" />
-    </LinearLayout>
+            android:layout_marginTop="32dp"
+            android:textSize="@dimen/text_small"
+            android:fontFamily="monospace"
+            android:textColor="@color/lightgrey" />
+
+        </LinearLayout>
+        </ScrollView>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/saveSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:text="@string/save"
+            app:icon="@drawable/save"/>
+
+    </FrameLayout>
 </LinearLayout>

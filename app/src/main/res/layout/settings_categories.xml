@@ -116,6 +116,15 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/openChordsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/openchords"
+                android:hint="@string/openchords_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/utilitiesButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

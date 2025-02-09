@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public class StorageAccess {
 
@@ -68,7 +69,7 @@ public class StorageAccess {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean fileWriteLog, fileViewLog;
-    public final String appFolder = "OpenSong";
+    public final String appFolder = "OpenSong", songFolderUUIDs = "songFolderUUIDs.txt";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
@@ -255,6 +256,10 @@ public class StorageAccess {
                 if (!nf.mkdirs()) {
                     Log.d(TAG, "Error creating folder: " + folder);
                 }
+                if (folder.equals("Songs")) {
+                    // Make sure that this MAIN folder has a UUID recorded in the text file
+                    checkSongFolderUUIDExist(mainActivityInterface.getMainfoldername(),null);
+                }
             }
         }
 
@@ -339,6 +344,10 @@ public class StorageAccess {
 
                     } else {
                         stringBuilder.append(" - Found, so skip:").append(dfFolder.getUri());
+                    }
+                    if (folder.equals("Songs")) {
+                        // Make sure that this MAIN folder has a UUID recorded in the text file
+                        checkSongFolderUUIDExist(mainActivityInterface.getMainfoldername(),null);
                     }
 
                 } catch (Exception e) {
@@ -775,7 +784,67 @@ public class StorageAccess {
         return path;
     }
 
+    public String checkSongFolderUUIDExist(String subfolderPath, String uuidOrNull) {
+        String newUUIDIfRequired;
+        if (uuidOrNull == null) {
+            newUUIDIfRequired = String.valueOf(UUID.randomUUID());
+        } else {
+            newUUIDIfRequired = uuidOrNull;
+        }
 
+        // Each song folder/subfolder has a UUID stored in a text file in Settings
+        // Load this as a string and check if this folder exists, if not, add it
+        Uri uri = getUriForItem("Settings","",songFolderUUIDs);
+        lollipopCreateFileForOutputStream(false,uri,null,"Settings","",songFolderUUIDs);
+        String content = readTextFileToString(getInputStream(uri));
+        if (content==null) {
+            content = "";
+        }
+        Log.d(TAG,"uri:"+uri+"  content:"+content);
+
+        String whatToCheck;
+        if (uuidOrNull == null) {
+            whatToCheck = subfolderPath + ":";
+        } else {
+            whatToCheck = subfolderPath + ":" + uuidOrNull;
+        }
+
+        if (!content.contains(whatToCheck) && subfolderPath!=null && !subfolderPath.isEmpty()) {
+            content = (content.trim()+"\n"+subfolderPath+":" + newUUIDIfRequired).trim();
+            writeFileFromString(content,getOutputStream(uri));
+        }
+
+        return newUUIDIfRequired;
+    }
+
+    public String getUUIDForSongFolder(String subfolderPath) {
+        Uri uri = getUriForItem("Settings","",songFolderUUIDs);
+        String content = readTextFileToString(getInputStream(uri));
+        if (content!=null) {
+            String[] lines = content.split("\n");
+            for (String line : lines) {
+                if (line.contains(subfolderPath + ":")) {
+                    return line.substring(line.lastIndexOf(":") + 1);
+                }
+            }
+        }
+        // If we get this far, we just need to create a new UUID for the subfolder
+        return checkSongFolderUUIDExist(subfolderPath,null);
+    }
+    public String getSongFolderForUUID(String expectedFolderName, String folderUuid) {
+        Uri uri = getUriForItem("Settings","",songFolderUUIDs);
+        String content = readTextFileToString(getInputStream(uri));
+        if (content!=null && folderUuid!=null) {
+            String[] lines = content.split("\n");
+            for (String line : lines) {
+                if (line.contains(":"+folderUuid)) {
+                    return line.substring(0,line.indexOf(":"));
+                }
+            }
+        }
+        // If we get this far, we just need to create a new UUID for the subfolder
+        return checkSongFolderUUIDExist(expectedFolderName,null);
+    }
     // Get information about the files
     public String getUTFEncoding(Uri uri) {
         // Try to determine the BOM for UTF encoding
@@ -1111,15 +1180,26 @@ public class StorageAccess {
                 break;
         }
         // This is a simple check for file extensions that tell the app which database to use
-        filename = filename.toLowerCase(Locale.ROOT);
-        if (filename.contains(".")) {
-            filename = filename.substring(filename.lastIndexOf("."));
-            return toCheck.contains(filename);
+        if (filename!=null) {
+            filename = filename.toLowerCase(Locale.ROOT);
+
+            if (filename.contains(".")) {
+                filename = filename.substring(filename.lastIndexOf("."));
+                return toCheck.contains(filename);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
     }
 
+    public String removeWhiteSpaceFromFilename(String filename) {
+        return filename.replace('\u00A0',' ').
+                replace("\u2007"," ").
+                replace("\u202F"," ").
+                trim();
+    }
 
     // Get references to the files and folders
     // This is used for files we know exist already

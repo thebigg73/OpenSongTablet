@@ -26,63 +26,88 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/storage_reset"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/storage_change"
                 custom:mydrawable="@drawable/database" />
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/backupFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/backup_osb"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/backup"
                 custom:mydrawable="@drawable/database_export" />
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/createSubdirectory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/new_folder_info"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/new_folder"
                 custom:mydrawable="@drawable/folder_new" />
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/renameFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/folder_rename"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/rename"
                 custom:mydrawable="@drawable/folder_edit" />
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/moveContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/folder_move_contents_info"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/folder_move_contents"
                 custom:mydrawable="@drawable/folder_move" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/openChords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/openchords_info"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/openchords"
+                custom:mydrawable="@drawable/openchords_folder" />
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/deleteSubdirectory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/delete_folder_info"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/delete"
                 custom:mydrawable="@drawable/delete" />
+            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/exportSongList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/text"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:text="@string/export_song_directory"
+                android:hint="@string/export_song_directory_info"
                 custom:mydrawable="@drawable/list_bullet" />
+            <TableRow style="@style/DividerLine"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
