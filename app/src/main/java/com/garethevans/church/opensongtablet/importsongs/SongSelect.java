@@ -10,6 +10,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class SongSelect {
 
@@ -22,6 +23,7 @@ public class SongSelect {
     public Song processContentChordPro(Context c, MainActivityInterface mainActivityInterface, Song newSong, String s) {    // Get the content we want
         s = getSubstring(s,"<span class=\"cproSongHeader\">","<p class=\"disclaimer\">");
 
+        newSong.setUuid(String.valueOf(UUID.randomUUID()));
         newSong.setTitle(mainActivityInterface.getProcessSong().parseHTML(getTitle(s)));
         newSong.setFilename(newSong.getTitle());
         newSong.setFiletype("XML");
@@ -310,6 +312,7 @@ public class SongSelect {
         }
         newSong.setFilename(newSong.getTitle());
         newSong.setFiletype("XML");
+        newSong.setUuid(String.valueOf(UUID.randomUUID()));
         newSong.setAuthor(mainActivityInterface.getProcessSong().parseHTML(getAuthor(s)));
         newSong.setCcli(mainActivityInterface.getProcessSong().parseHTML(getCCLI(s)));
         newSong.setCopyright(mainActivityInterface.getProcessSong().parseHTML(getCopyright(s)));

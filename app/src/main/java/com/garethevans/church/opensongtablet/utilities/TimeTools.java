@@ -1,10 +1,16 @@
 package com.garethevans.church.opensongtablet.utilities;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.View;
 import android.widget.TextClock;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 
@@ -12,6 +18,11 @@ public class TimeTools {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "TimeTools";
+    private final MainActivityInterface mainActivityInterface;
+
+    public TimeTools(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     public String timeFormatFixer(int secstime) {
         if (secstime<0) {
@@ -108,5 +119,30 @@ public class TimeTools {
             }
             return totalSecs(hours, mins, secs);
         }
+    }
+
+    public String getNowIsoTime() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.UK).format(new Date());
+    }
+
+    public String getIsoTimeFromSongFileMetadata(Song thisSong) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
+        long millis;
+        if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
+            millis = mainActivityInterface.getStorageAccess().getLastModifiedDate(uri);
+        } else {
+            millis = 0;
+        }
+        return String.valueOf(Instant.ofEpochSecond(millis/1000));
+    }
+    public String getIsoTimeFromFileMetadata(String folder, String subfolder, String file) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, file);
+        long millis;
+        if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
+            millis = mainActivityInterface.getStorageAccess().getLastModifiedDate(uri);
+        } else {
+            millis = 0;
+        }
+        return String.valueOf(Instant.ofEpochSecond(millis / 1000));
     }
 }

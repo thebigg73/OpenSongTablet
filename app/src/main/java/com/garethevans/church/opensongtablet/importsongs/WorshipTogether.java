@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.importsongs;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
+import java.util.UUID;
+
 public class WorshipTogether {
 
     public Song processContent(MainActivityInterface mainActivityInterface, Song newSong, String s) {
@@ -127,6 +129,7 @@ public class WorshipTogether {
         newSong.setTitle(title);
         newSong.setAuthor(author);
         newSong.setCopyright(copyright);
+        newSong.setUuid(String.valueOf(UUID.randomUUID()));
         newSong.setKey(key);
         newSong.setCcli(ccli);
         newSong.setTempo(bpm);
