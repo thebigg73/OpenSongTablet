@@ -101,6 +101,7 @@ public class ActionBarSettingsFragment extends Fragment {
         } else {
             myView.actionBarHideTime.setVisibility(View.GONE);
         }
+        myView.actionBarTempo.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("actionBarTempo",false));
 
         showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryDialOn",true),
                 true,myView.batteryDialOnOff,myView.batteryDialSize);
@@ -124,6 +125,10 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.clockTextSize.addOnSliderTouchListener(new MyOnSliderTouch("clockTextSize",true));
         myView.actionBarHideTime.addOnChangeListener(new MyOnChangeListener("actionBarHideTime",false));
         myView.actionBarHideTime.addOnSliderTouchListener(new MyOnSliderTouch("actionBarHideTime",false));
+        myView.actionBarTempo.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("actionBarTempo",isChecked);
+            updateActionBar("actionBarTempo",0,isChecked);
+        });
         myView.autohideActionBar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("hideActionBar",0.0f,!isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("hideActionBar",isChecked);

@@ -40,6 +40,7 @@ public class MyToolbar extends MaterialToolbar {
     private final TextView key;
     private final TextView capo;
     private final TextClock clock;
+    private final TextView tempo;
     private final ImageView setIcon, batteryimage;
     private final FrameLayout songandauthor;
     private final LinearLayout metronomeLayout;
@@ -50,10 +51,10 @@ public class MyToolbar extends MaterialToolbar {
     private int actionBarHideTime = 1200, additionalTopPadding = 0;
     private float clockTextSize;
     private int beats = 4;
-    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode;
+    private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode, actionBarTempo;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyToolbar";
-    private String capoString = "", keyString = "";
+    private String capoString = "", keyString = "", tempoString="";
 
     // Set up the view and view items
     public void initialiseToolbar(Context c, ActionBar actionBar) {
@@ -76,6 +77,7 @@ public class MyToolbar extends MaterialToolbar {
         key = v.findViewById(R.id.songkey_ab);
         capo = v.findViewById(R.id.songcapo_ab);
         author = v.findViewById(R.id.songauthor_ab);
+        tempo = v.findViewById(R.id.songtempo_ab);
         batteryholder = v.findViewById(R.id.batteryholder);
         batteryimage = v.findViewById(R.id.batteryimage);
         batterycharge = v.findViewById(R.id.batterycharge);
@@ -117,6 +119,7 @@ public class MyToolbar extends MaterialToolbar {
         clockSeconds = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockSeconds",false);
         hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false);
         actionBarHideTime = mainActivityInterface.getPreferences().getMyPreferenceInt("actionBarHideTime",1200);
+        actionBarTempo = mainActivityInterface.getPreferences().getMyPreferenceBoolean("actionBarTempo",false);
     }
     public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
 
@@ -169,6 +172,9 @@ public class MyToolbar extends MaterialToolbar {
                 // GE The battery holder is now just the clickable area
                 // This is called to stop clicks while changing the settings
                 batteryholder.setVisibility(isvisible ? View.VISIBLE : View.GONE);
+                break;
+            case "actionBarTempo":
+                actionBarTempo = isvisible;
                 break;
         }
     }
@@ -268,6 +274,17 @@ public class MyToolbar extends MaterialToolbar {
                 hideView(capo,false);
             }
 
+            if (actionBarTempo && tempo!=null && mainActivityInterface.getSong().getTempo() != null &&
+                !mainActivityInterface.getSong().getTempo().isEmpty()) {
+                tempoString = " " + mainActivityInterface.getSong().getTempo() + " bpm";
+                tempo.setTextSize(mainsize);
+                tempo.setText(tempoString);
+                hideView(tempo, false);
+            } else if (tempo!=null) {
+                tempo.setText("");
+                hideView(tempo, true);
+            }
+
             if (title!=null) {
                 title.setOnClickListener(v -> openDetails());
                 title.setOnLongClickListener(view -> {
@@ -310,6 +327,7 @@ public class MyToolbar extends MaterialToolbar {
             hideView(author, true);
             hideView(key, true);
             hideView(capo,true);
+            hideView(tempo,true);
             if (songandauthor!=null) {
                 songandauthor.setOnClickListener(null);
                 songandauthor.setOnLongClickListener(null);

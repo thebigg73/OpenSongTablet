@@ -160,6 +160,7 @@ public class Preferences extends Activity {
     // abcXPosition                     int         The x position of the popup sticky note (def: -1 which means figure it out first)
     // abcYPosition                     int         The y position of the popup sticky note (def: -1 which means figure it out first)
     // abcZoom                          int         How much the staff width is reduced thus zooming in.  Calculated by width/zoom (def:2)
+    // actionBarTempo                   boolean     Should the song tempo (if set) be shown in the action bar (def:false)
     // addSectionBox   *NOTYET*         boolean     Draw a box around sections when in Performance mode (def:false)
     // addSectionSpace                  boolean     Should a spacing line be added between sections to improve readability (def:true)
     // aerosChannel                     int         The MIDI channel for the Aeros loop pedal (def:1);
@@ -504,6 +505,8 @@ public class Preferences extends Activity {
     // onscreenAutoscrollHide           boolean     Performance/Stage autoscroll info text at the top - should it autohide after a delay (def:true)
     // onscreenCapoHide                 boolean     Performance/Stage capo info text at the top - should it autohide after a delay (def:true)
     // onscreenPadHide                  boolean     Performance/Stage pad info text at the top - should it autohide after a delay (def:true)
+    // openChordsFolderName        String      The chosen local folder name for OpenChords synchronisation (def:MAIN)
+    // openChordsFolderUuid             String      The UUID for the chosen folder for OpenChords synchronisation. UUID is the main lookup (def:MAIN's uuid - if it doesn't exist, it gets created)
     // padAutoStart                     boolean     Should the pad autostart with song (after manually starting first time) (def:false)
     // padCrossFadeTime                 int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def:8000)
     // padLargeFontInfoBar              boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)
@@ -562,6 +565,7 @@ public class Preferences extends Activity {
     // prefKey_Dbm                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
     // prefKey_Ebm                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:true)
     // prefKey_Gbm                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
+    // presenterViewContentSize         float       The text size for the song content (def:12f);
     // presoAlertText                   String      The text for the alert in Presentation mode (def:"")
     // presoAlertTextSize               float       The size of the alert text in Presentation mode (def:12.0f)
     // presoAuthorTextSize              float       The size of the author text in Presentation mode (def:12.0f)
@@ -645,6 +649,7 @@ public class Preferences extends Activity {
     // swipeMaxDistanceYError           int         The maximum Y movement in a swipe allowed for it to be recognised (def:200)
     // timeToDisplayHighlighter         int         The time to show highlighter notes for before hiding (def=0 means keep on) ms
     // timeToDisplaySticky              int         The time to show sticky notes for before hiding (def=0 means keep on)
+    // transposeInSet                   boolean     Should the transpose action default to transpoing in the set only (def:true)
     // trimSections                     boolean     Should whitespace be removed from song sections (def:true)
     // trimLines                        boolean     Should the lines be trimmed (using the lineSpacing) value (def:false)
     // trimWordSpacing                  boolean     Should multiple spaces be trimmed between words (e.g. 'This    is   a    sentence. What   happens?'>'This is a sentence.  What happens?' (def:true)

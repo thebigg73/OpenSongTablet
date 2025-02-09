@@ -215,12 +215,27 @@
             android:singleLine="true"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/songkey_ab"
-            app:layout_constraintEnd_toStartOf="@id/batterySpace"
+            app:layout_constraintEnd_toStartOf="@+id/songtempo_ab"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/songkey_ab"
             app:layout_constraintTop_toTopOf="@+id/songkey_ab"
             app:layout_constraintVertical_bias="1.0"
             tools:text=" [Capo]" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songtempo_ab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:singleLine="true"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/songcapo_ab"
+            app:layout_constraintEnd_toStartOf="@id/batterySpace"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/songcapo_ab"
+            app:layout_constraintTop_toTopOf="@+id/songcapo_ab"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text=" 120bpm" />
 
         <androidx.legacy.widget.Space
             android:id="@+id/batterySpace"
