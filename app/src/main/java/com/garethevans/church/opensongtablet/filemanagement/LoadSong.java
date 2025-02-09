@@ -47,9 +47,13 @@ public class LoadSong {
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
 
-        if (filename.equals(c.getString(R.string.welcome))) {
+        if (filename!=null && filename.equals(c.getString(R.string.welcome))) {
             filename = "Welcome to OpenSongApp";
             thisSong.setFilename(filename);
+        }
+
+        if (filename==null) {
+            return null;
         }
 
         // Clear the song object then add the folder filename back
@@ -439,6 +443,12 @@ public class LoadSong {
                                             // Try to read in the xml
                                             thisSong.setAuthor(fixXML(thisSong, "author", where));
                                         }
+                                        break;
+                                    case "uuid":
+                                        thisSong.setUuid(xpp.nextText());
+                                        break;
+                                    case "last_modified":
+                                        thisSong.setLastModified(xpp.nextText());
                                         break;
                                     case "copyright":
                                         thisSong.setCopyright(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
