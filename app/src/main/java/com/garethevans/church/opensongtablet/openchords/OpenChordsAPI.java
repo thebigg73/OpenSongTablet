@@ -197,10 +197,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         ArrayList<Song> localOpenSongSongs = mainActivityInterface.getSQLiteHelper().openChordsSyncGetSongsFromFolder(openChordsFolderName);
         // For each found song, create an OpenChordsSong object and add it to the array
         for (Song localOpenSongSong : localOpenSongSongs) {
-            updateProgress(c.getString(R.string.sync_checking_local_item)+"\n"+localOpenSongSong.getTitle());
-            localSongs.add(convertOpenSongToOpenChords(localOpenSongSong));
-            localSongsCompareObjects.add(createOpenChordsCompareObject(localOpenSongSong.getUuid(),
-                    localOpenSongSong.getTitle(),localOpenSongSong.getLastModified(),"song"));
+            // Only allow xml songs (no PDF/images)
+            if (!mainActivityInterface.getStorageAccess().isIMGorPDF(localOpenSongSong)) {
+                updateProgress(c.getString(R.string.sync_checking_local_item) + "\n" + localOpenSongSong.getTitle());
+                localSongs.add(convertOpenSongToOpenChords(localOpenSongSong));
+                localSongsCompareObjects.add(createOpenChordsCompareObject(localOpenSongSong.getUuid(),
+                        localOpenSongSong.getTitle(), localOpenSongSong.getLastModified(), "song"));
+            }
         }
 
         // Go through our sets and look for sets with a category matching OpenChords
