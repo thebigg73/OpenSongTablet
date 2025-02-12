@@ -147,8 +147,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
         holder.cardTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
 
-        Log.d(TAG,"filename:"+filename);
-        if (filename.equals("---")) {
+        if (filename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
             holder.cardTitle.setText("");
             holder.cardFilename.setVisibility(View.GONE);
             holder.cardFolder.setVisibility(View.GONE);
@@ -438,14 +437,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     @Override
     public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
-        Log.d(TAG,"onItemClicked("+position+")");
         SetItemInfo si = null;
         try {
             si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (si!=null && si.songfilename!=null && si.songfilename.equals("---")) {
+        if (si!=null && si.songfilename!=null && si.songfilename.
+                equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
             Log.d(TAG,"Divider, so do nothing");
         } else {
             mainActivityInterface.loadSongFromSet(position);

@@ -80,7 +80,7 @@ public class CustomSlide {
                     type = c.getResources().getString(R.string.image);
                     break;
                 case "divider":
-                    title = "---";
+                    title = mainActivityInterface.getSetActions().getDividerIdentifier();
                     lyrics = "";
                     file = null;
                     folder = null;
@@ -167,7 +167,9 @@ public class CustomSlide {
             // Update the current set and save the preference
             String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**Divider", null, null);
             SetItemInfo setItemInfo = new SetItemInfo();
-            setItemInfo.setItem("---", "---", "---", null, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
+            setItemInfo.setItem(mainActivityInterface.getSetActions().getDividerIdentifier(),
+                    mainActivityInterface.getSetActions().getDividerIdentifier(),
+                    mainActivityInterface.getSetActions().getDividerIdentifier(), null, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
             mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 

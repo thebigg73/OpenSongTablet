@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -72,7 +71,6 @@ public class ABCNotation {
     }
 
     public void allowPopupToContinue(int width, int height) {
-        Log.d(TAG,"abcPopup:"+abcPopup);
         if (abcPopup!=null) {
             abcPopup.setMeasured(width, height);
         }
@@ -499,7 +497,6 @@ public class ABCNotation {
 
     public void resetInlineAbcObjects() {
         inlineAbcObjects = new ArrayList<>();
-        Log.d(TAG,"RESETTING THE INLINE ABC VIEWS");
     }
 
     public int countInlineAbcObjects() {

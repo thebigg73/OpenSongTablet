@@ -141,7 +141,6 @@ public class CommonSQL {
             thisSong.setUuid(String.valueOf(UUID.randomUUID()));
         }
         String lastModified = thisSong.getLastModified();
-        Log.d(TAG,"updateSong()  lastModified:"+lastModified);
         if (lastModified==null || lastModified.isEmpty()) {
             thisSong.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
         }
@@ -568,7 +567,7 @@ public class CommonSQL {
     }
 
     public Song getOpenChordsSong(SQLiteDatabase db, String folder, String uuid) {
-        String[] selectionArgs = new String[]{folder,uuid};
+        String[] selectionArgs = new String[]{uuid,folder};
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_UUID + "=? AND " + SQLite.COLUMN_FOLDER + "=?";
         Song thisSong = new Song();
 
@@ -609,7 +608,6 @@ public class CommonSQL {
         String sqlQuery = "SELECT * FROM " + SQLite.TABLE_NAME +" WHERE "+SQLite.COLUMN_FOLDER+"=? ORDER BY filename ASC";
         Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
 
-        Log.d(TAG,"search count:"+cursor.getCount());
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
@@ -950,7 +948,6 @@ public class CommonSQL {
                     for (String theme : themes) {
                         if (!uniqueThemes.contains(theme)) {
                             uniqueThemes.add(theme);
-                            Log.d(TAG,"theme found:"+theme);
                             OpenChordsTag openChordsTag = new OpenChordsTag();
                             openChordsTag.setTitle(theme);
                             tags.add(openChordsTag);

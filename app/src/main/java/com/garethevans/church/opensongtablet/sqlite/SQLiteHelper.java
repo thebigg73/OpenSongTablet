@@ -63,7 +63,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
     void emptyTable(SQLiteDatabase db) {
-        Log.d(TAG,"db:"+db);
         // This drops the table if it exists (wipes it ready to start again)
         if (db!=null) {
             try {
@@ -184,7 +183,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
     public ArrayList<Song> openChordsSyncGetSongsFromFolder(String folder) {
-        Log.d(TAG,"folder:"+folder);
         try (SQLiteDatabase db = getDB()) {
             return mainActivityInterface.getCommonSQL().openChordsSyncGetSongsFromFolder(db,folder);
         } catch (Exception | OutOfMemoryError e) {
