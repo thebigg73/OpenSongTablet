@@ -49,6 +49,8 @@ public class SetActions {
     private final String nicePDF, niceVariation, niceImage, niceSlide,
         niceScripture, niceNote;
     private ArrayList<Integer> missingKeyPositions;
+    private String useThisLastModifedDate = null;
+    private final String dividerIdentifier = "---";
 
     public SetActions(Context c) {
         this.c = c;
@@ -473,7 +475,7 @@ public class SetActions {
     public String getIconIdentifier(String folder, String filename) {
         // If the filename is an image, we use that
         String valueToDecideFrom;
-        if (filename.equals("---")) {
+        if (filename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
             valueToDecideFrom = "Divider";
         } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {
             valueToDecideFrom = "Images";
@@ -487,6 +489,9 @@ public class SetActions {
         return valueToDecideFrom;
     }
 
+    public String getDividerIdentifier() {
+        return dividerIdentifier;
+    }
     public String createSetXML(CurrentSet thisCurrentSet) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -516,7 +521,7 @@ public class SetActions {
             boolean isScripture = folder.contains("**Scripture") || folder.contains("**"+c.getString(R.string.scripture));
             boolean isSlide = folder.contains("**Slide") || folder.contains("**"+c.getString(R.string.slide));
             boolean isNote = folder.contains("**Note") || folder.contains("**"+c.getString(R.string.note));
-            boolean isDivider = folder.equals("---");
+            boolean isDivider = folder.equals(dividerIdentifier);
             if (isImage) {
                 // Adding an image
                 Song tempSong = getTempSong("**" + folderImages + "/_cache",
@@ -559,9 +564,13 @@ public class SetActions {
         }
         // Now add the final part of the xml
         stringBuilder.append("</slide_groups>\n").
-                append("<uuid>").append(thisCurrentSet.getUuid()).append("</uuid>\n").
-                append("<lastModified>").append(thisCurrentSet.getLastModified()).append("</lastModified>\n").
-                append("<notes>").append(thisCurrentSet.getNotes()).append("</notes>\n").
+                append("<uuid>").append(thisCurrentSet.getUuid()).append("</uuid>\n");
+        if (useThisLastModifedDate==null || useThisLastModifedDate.isEmpty()) {
+            stringBuilder.append("<lastModified>").append(thisCurrentSet.getLastModified()).append("</lastModified>\n");
+        } else {
+            stringBuilder.append("<lastModified>").append(useThisLastModifedDate).append("</lastModified>\n");
+        }
+        stringBuilder.append("<notes>").append(thisCurrentSet.getNotes()).append("</notes>\n").
                 append("</set>");
 
         return stringBuilder.toString();
@@ -1453,6 +1462,10 @@ public class SetActions {
             returnBits[1] = bits[bits.length-1];
         }
         return returnBits;
+    }
+
+    public void setUseThisLastModifiedDate(String useThisLastModifedDate) {
+        this.useThisLastModifedDate = useThisLastModifedDate;
     }
 
 }

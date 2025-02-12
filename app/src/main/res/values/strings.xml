@@ -400,6 +400,7 @@
     <string name="deeplink_sets_manage" translatable="false">https://www.opensongapp.com/?p=settings/sets/manage</string>
     <string name="deeplink_song_actions" translatable="false">https://www.opensongapp.com/?p=settings/actions</string>
     <string name="deeplink_sticky_notes" translatable="false">https://www.opensongapp.com/?p=settings/actions/stickynotes</string>
+    <string name="deeplink_storage_options" translatable="false">https://www.opensongapp.com/?p=settings/storage</string>
     <string name="deeplink_swipe" translatable="false">https://www.opensongapp.com/?p=settings/controls/swipe</string>
     <string name="deeplink_tags" translatable="false">https://www.opensongapp.com/?p=settings/actions/tags</string>
     <string name="deeplink_theme" translatable="false">https://www.opensongapp.com/?p=settings/display/theme</string>
@@ -1493,53 +1494,59 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
     <string name="openchords" translatable="false">OpenChords</string>
+    <string name="website_openchords" translatable="false">https://www.opensongapp.com/user-manual/storage/openchords</string>
+    <string name="deeplink_openchords" translatable="false">https://www.opensongapp.com/?p=settings/storage/openchords</string>
     <string name="openchords_info">Synchronise folder with OpenChords.  This allows other apps such as JustChords to synchronise with OpenSongApp</string>
-    <string name="openchords_synchronise_info">Synchronise the selected folder with the OpenChords server</string>
-    <string name="openchords_download_local_info">Download changes from the OpenChords server to your local folder.  This will update existing files that have changed and create new files if required.Synchronise the selected folder with the OpenChords server.  This will generate a link that can be shared with other users.</string>
-    <string name="upload">Upload</string>
-    <string name="openchords_update_local">Update local version of this folder with content from the OpenChords server</string>
-    <string name="openchords_replace_local">Replace local folder contents with the version on the OpenChords server</string>
+    <string name="sync_push_info">Upload files from your local folder to the remote folder</string>
+    <string name="sync_pull_info">Download files from the remote folder to your local folder</string>
     <string name="openchords_link">Share link for folder</string>
     <string name="openchords_link_info">If a folder has already been uploaded to the OpenChords server you can share a link for others to use</string>
-    <string name="website_openchords" translatable="false">https://www.opensongapp.com/user-manual/openchords</string>
-    <string name="deeplink_openchords" translatable="false">https://www.opensongapp.com/?p=settings/openchords</string>
     <string name="folder_doesnt_exist">This folder does not exist in your Songs folder</string>
     <string name="folder_created_on_download">This folder will be created if you download content from the OpenChords server</string>
     <string name="folder_exists_but_is_different">This folder already exists, but is not the same as the OpenChords server.  Downloading will replace the contents of your local folder.  You may wish to rename your local folder first from the Storage menu option.</string>
-    <string name="sync_updating">Updating</string>
-    <string name="openchords_skipping">No changes required</string>
-    <string name="sync_creating">New file - creating</string>
-    <string name="openchords_deleting">Local file not on server - deleting</string>
-    <string name="openchords_comparing">Checking local and OpenChords server for changes…</string>
-    <string name="openchords_show_differences">Show differences</string>
-    <string name="openchords_show_differences_info">This will show the differences between files on your local folder with the OpenChords server</string>
+    <string name="sync_updating_item">Updating item</string>
+    <string name="sync_creating_new_item">Creating new item</string>
+    <string name="sync_comparing_local_and_remote">Checking local and remote folders for changes…</string>
     <string name="export_song_directory_info">Create a list of the songs in your library</string>
-    <string name="openchords_folder_changes">Changes detected</string>
     <string name="divider">Divider</string>
+    <string name="sync_uploading_changes">Uploading changes to the remote folder</string>
+    <string name="sync_preparing_item">Preparing item for upload</string>
     <string name="presenter_song_section_text_size">The text size of the song content in the presenter view</string>
-
-
-
+    <string name="sync_check_for_updates">Check for updates</string>
+    <string name="sync_check_for_updates_info">Query the remote folder again and check for differences with local items</string>
     <string name="openchords_folder_doesnt_exist">This folder does not exist on the OpenChords server.  You can create this by uploading</string>
-
     <string name="sync_no_changes_required">Items are already synchronised</string>
     <string name="sync_items_not_on_local">New items that are not in the local folder</string>
     <string name="sync_items_not_on_remote">New items that are not in the remote folder</string>
     <string name="sync_reading_remote_folder">Reading the contents of the remote folder</string>
     <string name="sync_reading_local_folder">Reading the contents of the local folder</string>
     <string name="sync_checking_local_item">Checking local item</string>
-    <string name="sync_checking_remote_item">Checking remote item</string>
     <string name="sync_download_new_items">Download new items</string>
     <string name="sync_upload_new_items">Upload new items</string>
     <string name="sync_update_local_items">Update local items</string>
     <string name="sync_update_remote_items">Update remote items</string>
     <string name="sync_local_items_older">Local items that need updated</string>
     <string name="sync_remote_items_older">Remote items that need updated</string>
-
     <string name="set_lists">Setlists</string>
     <string name="sync_upload_to_openchords">Upload to OpenChords server</string>
     <string name="sync_download_from_openchords">Download from OpenChords server</string>
     <string name="show_tempo">Show tempo in the title</string>
-
-
+    <string name="storage_local">Local storage</string>
+    <string name="storage_options_info">Manage local storage (OpenSong root folder and song folders) and synchronise storage with OpenChords</string>
+    <string name="sync_pull_download">Pull (download)</string>
+    <string name="sync_push_upload">Push (upload)</string>
+    <string name="sync_force_changes">Force changes</string>
+    <string name="sync_force_changes_info">Use this option to force a pull or refresh</string>
+    <string name="sync_force_changes_warning_pull">WARNING!  This will delete all items in the local folder and replace them with the items downloaded from the remote folder.  You cannot undo this, so please make sure you have made a backup before proceeding</string>
+    <string name="sync_force_changes_warning_push">WARNING!  This will delete all items in the remote folder and replace them with the items uploaded from the local folder.  You cannot undo this.  Any user sharing your remote folder will lose access to the original files</string>
+    <string name="sync_items_deleted_local">Items that will be deleted from the local folder if you proceed</string>
+    <string name="sync_items_deleted_remote">Items that will be deleted from the remote folder if you proceed</string>
+    <string name="sync_newer_items_local_replaced">These items in the local folder are newer, but will be replaced by the remote items</string>
+    <string name="sync_newer_items_remote_replaced">These items in the remote folder are newer, but will be replaced by the local items</string>
+    <string name="sync_force_push_info">This will replace the remote folder with your local folder contents</string>
+    <string name="sync_force_pull_info">This will replace your local folder with the remove folder contents</string>
+    <string name="sync_force_general_info1">The changes above cannot be undone.  Make sure you have made suitable backups before proceeding</string>
+    <string name="sync_force_general_info2">After selecting one of these options, you will be shown information on potential issues and asked to confirm your choice</string>
+    <string name="sync_deleting_local_items">Deleting local item before getting remote items</string>
+    <string name="sync_querying_remote">Querying the remote server...</string>
 </resources>

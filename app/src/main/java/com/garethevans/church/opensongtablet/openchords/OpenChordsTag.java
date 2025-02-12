@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.openchords;
 
 public class OpenChordsTag {
     // This gets the tags from the folder object
+
+    // Matches v1.0.7
     private String id;
     private String title;
     private String color;

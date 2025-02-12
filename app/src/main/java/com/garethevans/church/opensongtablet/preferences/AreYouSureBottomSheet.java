@@ -94,7 +94,20 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
             myView.dialogHeading.setWebHelp(mainActivityInterface,getString(R.string.website_set_create_new));
         }
 
-        myView.action.setText(textToShow);
+        String text = textToShow;
+
+        if ((what.equals("openChordsForcePush") || what.equals("openChordsForcePull")) &&
+            arguments!=null && !arguments.isEmpty()) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(text);
+                stringBuilder.append("\n\n");
+                for (String arg : arguments) {
+                    stringBuilder.append(arg).append("\n");
+                }
+                text = stringBuilder.toString();
+        }
+
+        myView.action.setText(text);
         myView.okButton.setOnClickListener(v -> {
             dismiss();
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);

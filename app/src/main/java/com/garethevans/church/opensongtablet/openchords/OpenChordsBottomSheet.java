@@ -3,8 +3,8 @@ package com.garethevans.church.opensongtablet.openchords;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetOpenchordsBinding;
@@ -24,11 +25,15 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
     private BottomSheetOpenchordsBinding myView;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "OpenChordsBottomSheet";
     private final String what;
     private final OpenChordsFragment openChordsFragment;
     private String download_title_string="", upload_title_string="", download_new_items_string="",
-            upload_new_items_string="", update_local_items_string="", update_remote_items_string="";
+            upload_new_items_string="", update_local_items_string="", update_remote_items_string="",
+            sync_items_not_on_local_string="", sync_items_not_on_remote_string="",
+            sync_local_items_older_string="", sync_remote_items_older_string="";
+    private Drawable upload_icon, download_icon;
     OpenChordsBottomSheet(OpenChordsFragment openChordsFragment, String what) {
         this.openChordsFragment = openChordsFragment;
         this.what = what;
@@ -64,6 +69,7 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
         prepareStrings();
 
         setupViews();
+        setListeners();
 
         return myView.getRoot();
     }
@@ -76,18 +82,15 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
             download_new_items_string = getString(R.string.sync_download_new_items);
             update_local_items_string = getString(R.string.sync_update_local_items);
             update_remote_items_string = getString(R.string.sync_update_remote_items);
+            sync_items_not_on_local_string = getString(R.string.sync_items_not_on_local);
+            sync_items_not_on_remote_string = getString(R.string.sync_items_not_on_remote);
+            sync_local_items_older_string = getString(R.string.sync_local_items_older);
+            sync_remote_items_older_string = getString(R.string.sync_remote_items_older);
+            upload_icon = AppCompatResources.getDrawable(getContext(),R.drawable.upload);
+            download_icon = AppCompatResources.getDrawable(getContext(),R.drawable.download);
         }
     }
     private void setupViews() {
-
-        //TODO
-        for (OpenChordsCompareObject object:mainActivityInterface.getOpenChordsAPI().getLocalSongsCompareObjects()) {
-            Log.d(TAG,"local "+object.getType()+": "+object.getTitle());
-        }
-        for (OpenChordsCompareObject object:mainActivityInterface.getOpenChordsAPI().getServerSongsCompareObjects()) {
-            Log.d(TAG,"server "+object.getType()+": "+object.getTitle());
-        }
-
         switch (what) {
             case "download":
                 // Sort the title
@@ -95,21 +98,27 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
 
                 // New songs on the server that need downloaded
                 myView.newSongsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSongsNotOnLocalCount()>0 ? View.VISIBLE:View.GONE);
+                myView.newSongs.setText(sync_items_not_on_local_string);
                 myView.newSongs.setHint(mainActivityInterface.getOpenChordsAPI().getSongsNotOnLocalString());
                 myView.newSongsAction.setText(download_new_items_string);
+                myView.newSongsAction.setIcon(download_icon);
 
                 // Songs that need updated in the local folder
                 myView.updateSongsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSongsOnLocalOlderCount()>0 ? View.VISIBLE:View.GONE);
-                myView.updateSongs.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsOnLocalOlderString());
+                myView.updateSongs.setText(sync_local_items_older_string);
+                myView.updateSongs.setHint(mainActivityInterface.getOpenChordsAPI().getSongsOnLocalOlderString());
                 myView.updateSongsAction.setText(update_local_items_string);
 
                 // New sets on the server that need downloaded
                 myView.newSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnLocalCount()>0 ? View.VISIBLE:View.GONE);
+                myView.newSets.setText(sync_items_not_on_local_string);
                 myView.newSets.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnLocalString());
                 myView.newSetsAction.setText(download_new_items_string);
+                myView.newSetsAction.setIcon(download_icon);
 
                 // Sets that need updated in the local folder
                 myView.updateSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsOnLocalOlderCount()>0 ? View.VISIBLE:View.GONE);
+                myView.updateSets.setText(sync_local_items_older_string);
                 myView.updateSets.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsOnLocalOlderString());
                 myView.updateSetsAction.setText(update_local_items_string);
 
@@ -121,27 +130,33 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
 
                 // New songs in the local folder that need uploaded
                 myView.newSongsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerCount()>0 ? View.VISIBLE:View.GONE);
+                myView.newSongs.setText(sync_items_not_on_remote_string);
                 myView.newSongs.setHint(mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerString());
                 myView.newSongsAction.setText(upload_new_items_string);
+                myView.newSongsAction.setIcon(upload_icon);
 
                 // Songs that need updated in the remote folder
                 myView.updateSongsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSongsOnServerOlderCount()>0 ? View.VISIBLE:View.GONE);
-                myView.updateSongs.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsOnServerOlderString());
+                myView.updateSongs.setText(sync_remote_items_older_string);
+                myView.updateSongs.setHint(mainActivityInterface.getOpenChordsAPI().getSongsOnServerOlderString());
                 myView.updateSongsAction.setText(update_remote_items_string);
 
                 // New sets in the local folder that need uploads
                 myView.newSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnServerCount()>0 ? View.VISIBLE:View.GONE);
+                myView.newSets.setText(sync_items_not_on_remote_string);
                 myView.newSets.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnServerString());
                 myView.newSetsAction.setText(upload_new_items_string);
+                myView.newSetsAction.setIcon(upload_icon);
 
                 // Sets that need updated in the remote folder
                 myView.updateSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsOnServerOlderCount()>0 ? View.VISIBLE:View.GONE);
+                myView.updateSets.setText(sync_remote_items_older_string);
                 myView.updateSets.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsOnServerOlderString());
                 myView.updateSetsAction.setText(update_remote_items_string);
                 break;
         }
 
-        // Show the no changes required if appropriate
+        // Show the number of changes required if appropriate
         myView.songsNoChangesRequired.setVisibility(
                 myView.newSongsLayout.getVisibility()==View.VISIBLE ||
                         myView.updateSongsLayout.getVisibility()==View.VISIBLE ?
@@ -156,11 +171,47 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
     private void setListeners() {
         switch (what) {
             case "download":
-
+                myView.newSongsAction.setOnClickListener((v) ->    prepareDownload(true,false,false,false));
+                myView.updateSongsAction.setOnClickListener((v) -> prepareDownload(false,true,false,false));
+                myView.newSetsAction.setOnClickListener((v) ->     prepareDownload(false,false,true,false));
+                myView.updateSetsAction.setOnClickListener((v) ->  prepareDownload(false,false,false,true));
                 break;
 
             case "upload":
+                myView.newSongsAction.setOnClickListener((v) ->    prepareUpload(true,false,false,false));
+                myView.updateSongsAction.setOnClickListener((v) -> prepareUpload(false,true,false,false));
+                myView.newSetsAction.setOnClickListener((v) ->     prepareUpload(false,false,true,false));
+                myView.updateSetsAction.setOnClickListener((v) ->  prepareUpload(false,false,false,true));
                 break;
+        }
+    }
+
+    private void prepareDownload(boolean newSongs, boolean updateSongs, boolean newSets, boolean updateSets) {
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (openChordsFragment!=null) {
+            try {
+                openChordsFragment.prepareDownload(newSongs,updateSongs,newSets,updateSets);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void prepareUpload(boolean newSongs, boolean updateSongs, boolean newSets, boolean updateSets) {
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (openChordsFragment!=null) {
+            try {
+                openChordsFragment.prepareUpload(newSongs,updateSongs,newSets,updateSets);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

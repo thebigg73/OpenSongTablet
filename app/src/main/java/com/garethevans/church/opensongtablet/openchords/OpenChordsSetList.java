@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class OpenChordsSetList {
     // This gets the set from the folder object
+
+    // Matches v1.0.7
     private String id;
     private String title;
     private String notes;

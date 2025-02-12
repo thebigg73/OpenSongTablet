@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.openchords;
 public class OpenChordsSetListSongItem {
 
     // This holds the basic information required for a song in the set list
+
+    // Matches v1.0.7
     private String songId;
     private int capo;
     private String transpose;

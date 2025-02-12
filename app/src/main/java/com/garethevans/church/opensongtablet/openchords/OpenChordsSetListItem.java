@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.openchords;
 public class OpenChordsSetListItem {
 
     // This lists the items in the setlist
+
+    // Matches 1.0.7
     private String id;
     private String title;
     private String type;

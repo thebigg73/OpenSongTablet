@@ -56,6 +56,15 @@ public class ConvertJustChords {
         return uri;
     }
 
+    public String getJustChordsLyrics(Song thisSong) {
+        String lyrics = "";
+        if (thisSong!=null) {
+            JustChordsSongObject justChordsSongObject = buildJustChordsSongObject(thisSong);
+            lyrics = justChordsSongObject.rawData;
+        }
+        return lyrics;
+    }
+
     // Called from ExportFragment - Add a song to the songs array in order to build a justchords set file
     public void addOpenSongToArray(Song thisSong) {
         if (songs==null) {
@@ -115,7 +124,7 @@ public class ConvertJustChords {
 
         Map<String,Object> keyChord = new HashMap<>();
         // The key needs to be split into 2 parts, key and minor
-        if (thisSong.getKey().contains("m")) {
+    if (thisSong.getKey()!=null && thisSong.getKey().contains("m")) {
             keyChord.put("key", thisSong.getKey().replace("m",""));
             keyChord.put("minor", true);
         } else {

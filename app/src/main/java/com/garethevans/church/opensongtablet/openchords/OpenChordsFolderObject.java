@@ -6,11 +6,11 @@ public class OpenChordsFolderObject {
 
     // This is the shareable folder object that can hold songs, sets, tags, etc
 
+    // Matches v1.0.7
     private String title;                   // The name of the shared folder
     private String ownerId;                 // The UUID that matches the user folder
     private ArrayList<OpenChordsSong> songs;     // The songs array in the folder
     private ArrayList<OpenChordsTag> tags;       // The tags array in the folder
-    // TODO add sets, tags, etc.
     private ArrayList<OpenChordsSetList> setlists;       // The sets array in the folder
 
     // The getters

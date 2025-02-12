@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -22,152 +22,202 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="140dp"
+                    android:layout_width="228dp"
+                    android:layout_height="96dp"
+                    android:layout_marginBottom="32dp"
                     android:layout_gravity="center"
                     android:contentDescription="@string/openchords"
-                    android:src="@drawable/openchords_image" />
+                    android:src="@drawable/openchords_logo_white_blue" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/openchords_info"
-                    android:layout_marginBottom="32dp"/>
+                    android:layout_marginBottom="32dp"
+                    android:text="@string/openchords_info" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="32dp">
+                    android:layout_marginBottom="32dp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/folderLayout"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
-                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                    android:id="@+id/folderToSync"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/folder"/>
+
+                        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                            android:id="@+id/folderToSync"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/folder" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/folderMessage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp" />
                     </LinearLayout>
+
                     <ImageView
                         android:id="@+id/openChordsQRImage"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_weight="1"
                         android:contentDescription="@string/openchords_link" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/differencesOpenChordsLayout"
+                <TableRow style="@style/DividerLine"/>
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/refresh"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/openchords_show_differences"
-                    android:hint="@string/openchords_show_differences_info"/>
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/differencesCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@drawable/circle"
-                            app:backgroundTint="@color/colorAltSecondary"
-                            android:padding="8dp"
-                            tools:text="1" />
-                    </LinearLayout>
+                    android:text="@string/sync_check_for_updates"
+                    android:hint="@string/sync_check_for_updates_info"/>
                 <TableRow style="@style/DividerLine"/>
-                </LinearLayout>
-
                 <LinearLayout
                     android:id="@+id/uploadLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/uploadOpenChords"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/upload"
-                    android:hint="@string/openchords_synchronise_info"/>
-                <TableRow style="@style/DividerLine"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                            android:id="@+id/uploadOpenChords"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/sync_push_info"
+                            android:text="@string/sync_push_upload" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/uploadCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/circle"
+                            android:padding="8dp"
+                            app:backgroundTint="@color/colorAltSecondary"
+                            tools:text="0" />
+                    </LinearLayout>
+                    <TableRow style="@style/DividerLine" />
                 </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/downloadLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/downloadOpenChords"
+                <LinearLayout
+                    android:id="@+id/downloadLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/download"
-                    android:hint="@string/openchords_synchronise_info"/>
-                <TableRow style="@style/DividerLine"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/linkLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                    android:id="@+id/openChordsLink"
+                        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                            android:id="@+id/downloadOpenChords"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/sync_pull_info"
+                            android:text="@string/sync_pull_download" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/downloadCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/circle"
+                            android:padding="8dp"
+                            app:backgroundTint="@color/colorAltSecondary"
+                            tools:text="0" />
+                    </LinearLayout>
+                    <TableRow style="@style/DividerLine" />
+                </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/forceChanges"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/openchords_link"
-                    android:hint="@string/openchords_link_info"/>
-                <TableRow style="@style/DividerLine"/>
-            </LinearLayout>
+                    android:text="@string/sync_force_changes"
+                    android:hint="@string/sync_force_changes_info" />
+                <TableRow style="@style/DividerLine" />
+
+                <LinearLayout
+                    android:id="@+id/linkLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                        android:id="@+id/openChordsLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/openchords_link_info"
+                        android:text="@string/openchords_link" />
+
+                    <TableRow style="@style/DividerLine" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
         <FrameLayout
             android:id="@+id/scrimOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/scrim"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/progressLayout"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:minHeight="120dp"
             android:layout_centerInParent="true"
-            android:visibility="gone">
+            android:orientation="vertical"
+            android:visibility="visible">
+
             <ProgressBar
                 android:layout_width="@dimen/progress_bar_size"
                 android:layout_height="@dimen/progress_bar_size"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="400dp"
+                android:minHeight="128dp"
+                android:padding="16dp"
+                android:background="@drawable/popup_bg"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/progressText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="68dp"
-                android:background="@drawable/popup_bg"
-                android:text="@string/processing"
                 android:layout_gravity="center"
-                android:padding="32dp"/>
+                android:gravity="center"
+                android:textSize="@dimen/text_large"
+                android:text="@string/processing" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/progressSubText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_medium"
+                    android:textColor="@color/vlightgrey"
+                    android:text="@string/wait" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

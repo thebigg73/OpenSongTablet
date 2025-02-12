@@ -5,6 +5,8 @@ public class OpenChordsSong {
     // This is the OpenChords song object
     // These are used in the obvious OpenChords class files
     // Also called in CommonSQL.openChordsSyncGetSongsFromFolder()
+
+    // Matches v1.0.7
     private String id;              // UUID 4 id, e.g. 93E5D3EF-8B1E-4B35-851E-16A0859315E3
     private String title;           // The song title
     private String rawData;         // The actual ChordPro song formatted text

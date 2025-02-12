@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/storage"
-                android:hint="@string/storage_settings"
+                android:hint="@string/storage_options_info"
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
@@ -112,15 +112,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ccli"
                 android:hint="@string/ccli_description"
-                app:size="large"/>
-            <TableRow style="@style/DividerLine" />
-
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-                android:id="@+id/openChordsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/openchords"
-                android:hint="@string/openchords_info"
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
