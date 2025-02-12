@@ -87,7 +87,7 @@
     <string name="backup_info">"Soubor OpenSongApp Backup"</string>
     <string name="backup_now">"Vytvořte nyní zálohu"</string>
     <string name="backup_osb">Vytvořte zálohu skladeb OpenSongApp (*.osb)</string>
-    <string name="backup_sets">备份集</string>
+    <string name="backup_sets">Záložní sady</string>
     <string name="bad_songs_found">Ve vašich složkách OpenSong/Songs/ byly nalezeny některé neočekávané soubory skladeb, které nejsou přímo podporovány.  Byly přesunuty do složky OpenSong/Import, ale můžete použít možnost importovat více souborů a pokusit se je převést do formátu OpenSong a přidat je zpět do složky OpenSong/Songs/</string>
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
@@ -314,9 +314,7 @@
     <string name="device">Zařízení</string>
     <string name="display">Zobrazit</string>
     <string name="display_settings">Změna nastavení zobrazení (to, co vidíte na obrazovce)</string>
-    <string name="divider">
-        <string name="divider">Verdeler</string>
-    </string>
+    <string name="divider">Verdeler</string>
     <string name="divisions">Divize</string>
     <string name="double_string">Dvojnásobek</string>
     <string name="double_tap">"Vyberte dvojí akci klepněte na položku"</string>
@@ -361,9 +359,7 @@
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
     <string name="export_set">"Sada OpenSongApp (.osts)"</string>
     <string name="export_song_directory">"Exportovat seznam skladeb"</string>
-    <string name="export_song_directory_info">
-        <string name="export_song_directory_info">Skep \'n lys van die liedjies in jou biblioteek</string>
-    </string>
+    <string name="export_song_directory_info">Skep \'n lys van die liedjies in jou biblioteek</string>
     <string name="export_text">"Text (.txt)"</string>
     <string name="extra">"Informace navíc"</string>
     <string name="extra_settings">Pokročilé nastavení</string>
@@ -402,16 +398,10 @@
     <string name="fix">"Automatická oprava"</string>
     <string name="fix_info">Pokuste se opravit drobné problémy s formátováním</string>
     <string name="folder">Složka</string>
-    <string name="folder_created_on_download">
-        <string name="folder_created_on_download">Hierdie vouer sal geskep word as jy inhoud van die OpenChords-bediener aflaai</string>
-    </string>
-    <string name="folder_doesnt_exist">
-        <string name="folder_doesnt_exist">Hierdie vouer bestaan nie in jou Songs-lêergids nie</string>
-    </string>
+    <string name="folder_created_on_download">Hierdie vouer sal geskep word as jy inhoud van die OpenChords-bediener aflaai</string>
+    <string name="folder_doesnt_exist">Hierdie vouer bestaan nie in jou Songs-lêergids nie</string>
     <string name="folder_exists">"Tato složka již existuje!"</string>
-    <string name="folder_exists_but_is_different">
-        <string name="folder_exists_but_is_different">Hierdie vouer bestaan Reeds, maar není dieselfde jako die OpenChords-bediener nie.  Aflaai sal die inhoud van jou plaaslike gids vervang.  Miskien bude plaaslike vouer hernoem vanaf die Berging-kieslys-opsie.</string>
-    </string>
+    <string name="folder_exists_but_is_different">Hierdie vouer bestaan Reeds, maar není dieselfde jako die OpenChords-bediener nie.  Aflaai sal die inhoud van jou plaaslike gids vervang.  Miskien bude plaaslike vouer hernoem vanaf die Berging-kieslys-opsie.</string>
     <string name="folder_move_contents">Přesuňte obsah složky</string>
     <string name="folder_move_contents_info">Přesouvejte skladby mezi složkami skladeb</string>
     <string name="folder_rename">"Upravit název složky song"</string>
@@ -719,18 +709,10 @@
     <string name="opacity">Neprůhlednost</string>
     <string name="open">"Otevřít"</string>
     <string name="open_song_menu">"Otevřete menu píseň"</string>
-    <string name="openchords_folder_doesnt_exist">
-        <string name="openchords_folder_doesnt_exist">Hierdie vouer bestaan nie op die OpenChords-bediener ne.  Jy kan dit skep deur op te laai</string>
-    </string>
-    <string name="openchords_info">
-        <string name="openchords_info">Gids Sinkroniseer se setkaly s OpenChords.  Dit laat ander toepassings soos JustChords toe om om met OpenSongApp te sinchroniseer</string>
-    </string>
-    <string name="openchords_link">
-        <string name="openchords_link">Deel skakel vir gids</string>
-    </string>
-    <string name="openchords_link_info">
-        <string name="openchords_link_info">Jak je \'n gids reeds na die OpenChords-bediener opgelaai, kan jy \'n skakel deel vir ander om te gebruik</string>
-    </string>
+    <string name="openchords_folder_doesnt_exist">Hierdie vouer bestaan nie op die OpenChords-bediener ne.  Jy kan dit skep deur op te laai</string>
+    <string name="openchords_info">Gids Sinkroniseer se setkaly s OpenChords.  Dit laat ander toepassings soos JustChords toe om om met OpenSongApp te sinchroniseer</string>
+    <string name="openchords_link">Deel skakel vir gids</string>
+    <string name="openchords_link_info">Jak je \'n gids reeds na die OpenChords-bediener opgelaai, kan jy \'n skakel deel vir ander om te gebruik</string>
     <string name="opensong_media">Zvukové nahrávky se ukládají do /OpenSong/Media/</string>
     <string name="optional">Volitelný</string>
     <string name="other">Ostatní</string>
@@ -822,9 +804,7 @@
     <string name="presentation_order_info">Pořadí prezentace skladeb je uvedeno níže. Přetažením položek můžete změnit pořadí a přejetím prstem odstranit.</string>
     <string name="presentation_order_use">Pokud pro skladbu existuje pořadí prezentace, použijte toto k vytvoření zobrazení</string>
     <string name="presenter_mode">"Režim prezentace"</string>
-    <string name="presenter_song_section_text_size">
-        <string name="presenter_song_section_text_size">Die teksgrootte van die liedjie-inhoud in die aanbiederaansig</string>
-    </string>
+    <string name="presenter_song_section_text_size">Die teksgrootte van die liedjie-inhoud in die aanbiederaansig</string>
     <string name="preset">Přednastaveno</string>
     <string name="preso_alpha">Pozadí neprůhlednost</string>
     <string name="prev_next_autohide">Automaticky skrýt předchozí / další tlačítka</string>
@@ -929,9 +909,7 @@
     <string name="set_items_not_found">Některé položky sady nebyly ve vašem zařízení nalezeny (mohou mít pouze jiný název souboru, pravopis atd.).  Tyto položky (označené *) můžete po importu ručně upravit z nabídky nastavení.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Nastavit soubory seznamu</string>
-    <string name="set_lists">
-        <string name="set_lists">Stellyste</string>
-    </string>
+    <string name="set_lists">Stellyste</string>
     <string name="set_load_first">Otevřete načtenou sadu u první položky</string>
     <string name="set_load_first_info">Vždy otevřete první nastavenou položku.  Pokud je vypnutá, sada se pokusí otevřít na aktuálně načtené skladbě, pokud je v sadě.</string>
     <string name="set_load_info">Načtěte dříve uloženou sadu</string>
@@ -970,9 +948,7 @@
     <string name="show_next_prev_in_song_menu">Zobrazit také předchozí/následující pro skladby, které nejsou v sadě (pomocí nabídky skladeb)</string>
     <string name="show_prev_song">Zobrazit předchozí skladbu v sadě</string>
     <string name="show_songs">Zobrazit skladby</string>
-    <string name="show_tempo">
-        <string name="show_tempo">Wys tempo v názvu</string>
-    </string>
+    <string name="show_tempo">Wys tempo v názvu</string>
     <string name="simple_color">Jednoduchá barva</string>
     <string name="simple_color_info">Jednobarevné pozadí</string>
     <string name="simple_note">"Simple note / zástupný"</string>
@@ -1035,15 +1011,11 @@
     <string name="storage_ext">"Externí paměť"</string>
     <string name="storage_graph_overview_info">Vaše aktuální adresářová struktura OpenSong/Songs je zobrazena níže. Kliknutím na složku OpenSong (ROOT) změňte umístění úložiště. Kliknutím na složku Songs (MAIN) vytvoříte zálohu nebo podadresář. Pokud již podadresáře máte, kliknutím na ně se zobrazí další možnosti.</string>
     <string name="storage_help">Vyberte umístění složky „OpenSong“. Toto je výchozí umístění úložiště pro soubory OpenSong. Toto můžete kdykoli změnit v nabídce Možnosti. Doporučuje se interní úložiště.\n\nPro aktualizaci nebo opětovnou instalaci:\nPomocí žlutého tlačítka níže můžete vyhledat předchozí složku „OpenSong“.</string>
-    <string name="storage_local">
-        <string name="storage_local">Plaaslike berging</string>
-    </string>
+    <string name="storage_local">Plaaslike berging</string>
     <string name="storage_main">Zde jsou normálně uloženy vaše skladby (často se jim říká MAIN složka). Volitelně můžete nastavit podadresáře pro lepší správu knihovny skladeb.</string>
     <string name="storage_manage">"Správa úložiště"</string>
     <string name="storage_notwritable">"Nelze použít"</string>
-    <string name="storage_options_info">
-        <string name="storage_options_info">Bestuur plaaslike berging (OpenSong-wortelvouer en liedjievouers) a sinchroniseer berging met OpenChords</string>
-    </string>
+    <string name="storage_options_info">Bestuur plaaslike berging (OpenSong-wortelvouer en liedjievouers) a sinchroniseer berging met OpenChords</string>
     <string name="storage_quicktip">Při výběru umístění:\nSeznam úložiště pomocí nabídky (pro zobrazení celého úložiště bude pravděpodobně nutné změnit nastavení).\nVYBERTE POUZE VNITŘNÍ NEBO SD KARTU.\nDoporučuje se interní úložiště. Může se zobrazit jako úložiště zařízení nebo s názvem vašeho zařízení.\nV systému Android 10+ byste neměli vybírat složku Stahování nebo Kořen. V případě pochybností vyberte složku „Dokumenty“.</string>
     <string name="storage_reset">Kliknutím sem změníte umístění úložiště (kde se nachází kořenová složka OpenSong).</string>
     <string name="storage_settings">Spravujte své úložiště a složky skladeb</string>
@@ -1064,7 +1036,7 @@
     <string name="sync_download_new_items">Nové položky</string>
     <string name="sync_force_changes">Dwing veranderinge af</string>
     <string name="sync_force_changes_info">Tuto možnost použijte k vynucení nabízení (odesílání) nebo stahování (stahování)</string>
-    <string name="sync_force_changes_warning_pull">WAARSKUWING!  Dit sale alle items in die plaaslike vouer uitvee and dit verrvang met die items wat van die afgeleë vouer afgelaai is.  Jy kan dit nie ongedaan maak nie, tak maak asseblief seker dat jy \\'n rugsteun gemaak het voordat jy voortgaan</string>
+    <string name="sync_force_changes_warning_pull">WAARSKUWING!  Dit sale alle items in die plaaslike vouer uitvee and dit verrvang met die items wat van die afgeleë vouer afgelaai is.  Jy kan dit nie ongedaan maak nie, tak maak asseblief seker dat jy \'n rugsteun gemaak het voordat jy voortgaan</string>
     <string name="sync_force_changes_warning_push">WAARSKUWING!  Dit sale alle items in die afgeleë vouer uitvee and dit vervanang met die items wat vanaf die plaaslike vouer opgelaai is.  Jy kan dit nie ongedaan maak nie.  Enige gebruiker wat jou afgeleë vouer deel, sal toegang tot die oorspronklike lêers verloor</string>
     <string name="sync_force_general_info1">Není to žádné slovo.  Chcete-li se starat o rugsteun gemaak het voordat jy voortgaan</string>
     <string name="sync_force_general_info2">Nadat jy een van hierdie opsies gekies het, sal jy inligting oor potensiële kwessies gewys word en gevra word om jou keuse te bevestig</string>
@@ -1188,7 +1160,7 @@
     <string name="volume_headphone">Hlasitost sluchátek</string>
     <string name="volume_value">"Aktuální hodnota objemu"</string>
     <string name="wah">Wah</string>
-    <string name="wait">"Počkejte ...."</string>
+    <string name="wait">Počkejte…</string>
     <string name="web_server">Webový server</string>
     <string name="web_server_hint">Umožněte uživatelům bez OpenSongApp prohlížet vaše skladby pomocí webového prohlížeče</string>
     <string name="web_server_host_song">Hostitelská píseň</string>
