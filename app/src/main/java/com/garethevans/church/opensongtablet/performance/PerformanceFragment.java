@@ -1377,8 +1377,14 @@ public class PerformanceFragment extends Fragment {
 
         // Now deal with the highlighter file
         if (mainActivityInterface.getMode().equals(mode_performance)) {
-            // The highlighter is already part of the scaling
-            dealWithHighlighterFile(widthBeforeScale,heightBeforeScale);
+            // The highlighter is already part of the scaling if it isn't an xml
+            if (mainActivityInterface.getSong().getFiletype()==null ||
+                    mainActivityInterface.getSong().getFiletype().isEmpty() ||
+                    mainActivityInterface.getSong().getFiletype().equals("XML")) {
+                dealWithHighlighterFile(widthAfterScale, heightAfterScale);
+            } else {
+                dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+            }
         }
 
         // Load up the sticky notes if the user wants them
