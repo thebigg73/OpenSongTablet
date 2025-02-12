@@ -314,6 +314,9 @@
     <string name="device">Zařízení</string>
     <string name="display">Zobrazit</string>
     <string name="display_settings">Změna nastavení zobrazení (to, co vidíte na obrazovce)</string>
+    <string name="divider">
+        <string name="divider">Verdeler</string>
+    </string>
     <string name="divisions">Divize</string>
     <string name="double_string">Dvojnásobek</string>
     <string name="double_tap">"Vyberte dvojí akci klepněte na položku"</string>
@@ -358,6 +361,9 @@
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
     <string name="export_set">"Sada OpenSongApp (.osts)"</string>
     <string name="export_song_directory">"Exportovat seznam skladeb"</string>
+    <string name="export_song_directory_info">
+        <string name="export_song_directory_info">Skep \'n lys van die liedjies in jou biblioteek</string>
+    </string>
     <string name="export_text">"Text (.txt)"</string>
     <string name="extra">"Informace navíc"</string>
     <string name="extra_settings">Pokročilé nastavení</string>
@@ -396,7 +402,16 @@
     <string name="fix">"Automatická oprava"</string>
     <string name="fix_info">Pokuste se opravit drobné problémy s formátováním</string>
     <string name="folder">Složka</string>
+    <string name="folder_created_on_download">
+        <string name="folder_created_on_download">Hierdie vouer sal geskep word as jy inhoud van die OpenChords-bediener aflaai</string>
+    </string>
+    <string name="folder_doesnt_exist">
+        <string name="folder_doesnt_exist">Hierdie vouer bestaan nie in jou Songs-lêergids nie</string>
+    </string>
     <string name="folder_exists">"Tato složka již existuje!"</string>
+    <string name="folder_exists_but_is_different">
+        <string name="folder_exists_but_is_different">Hierdie vouer bestaan Reeds, maar není dieselfde jako die OpenChords-bediener nie.  Aflaai sal die inhoud van jou plaaslike gids vervang.  Miskien bude plaaslike vouer hernoem vanaf die Berging-kieslys-opsie.</string>
+    </string>
     <string name="folder_move_contents">Přesuňte obsah složky</string>
     <string name="folder_move_contents_info">Přesouvejte skladby mezi složkami skladeb</string>
     <string name="folder_rename">"Upravit název složky song"</string>
@@ -704,6 +719,18 @@
     <string name="opacity">Neprůhlednost</string>
     <string name="open">"Otevřít"</string>
     <string name="open_song_menu">"Otevřete menu píseň"</string>
+    <string name="openchords_folder_doesnt_exist">
+        <string name="openchords_folder_doesnt_exist">Hierdie vouer bestaan nie op die OpenChords-bediener ne.  Jy kan dit skep deur op te laai</string>
+    </string>
+    <string name="openchords_info">
+        <string name="openchords_info">Gids Sinkroniseer se setkaly s OpenChords.  Dit laat ander toepassings soos JustChords toe om om met OpenSongApp te sinchroniseer</string>
+    </string>
+    <string name="openchords_link">
+        <string name="openchords_link">Deel skakel vir gids</string>
+    </string>
+    <string name="openchords_link_info">
+        <string name="openchords_link_info">Jak je \'n gids reeds na die OpenChords-bediener opgelaai, kan jy \'n skakel deel vir ander om te gebruik</string>
+    </string>
     <string name="opensong_media">Zvukové nahrávky se ukládají do /OpenSong/Media/</string>
     <string name="optional">Volitelný</string>
     <string name="other">Ostatní</string>
@@ -795,6 +822,9 @@
     <string name="presentation_order_info">Pořadí prezentace skladeb je uvedeno níže. Přetažením položek můžete změnit pořadí a přejetím prstem odstranit.</string>
     <string name="presentation_order_use">Pokud pro skladbu existuje pořadí prezentace, použijte toto k vytvoření zobrazení</string>
     <string name="presenter_mode">"Režim prezentace"</string>
+    <string name="presenter_song_section_text_size">
+        <string name="presenter_song_section_text_size">Die teksgrootte van die liedjie-inhoud in die aanbiederaansig</string>
+    </string>
     <string name="preset">Přednastaveno</string>
     <string name="preso_alpha">Pozadí neprůhlednost</string>
     <string name="prev_next_autohide">Automaticky skrýt předchozí / další tlačítka</string>
@@ -899,6 +929,9 @@
     <string name="set_items_not_found">Některé položky sady nebyly ve vašem zařízení nalezeny (mohou mít pouze jiný název souboru, pravopis atd.).  Tyto položky (označené *) můžete po importu ručně upravit z nabídky nastavení.</string>
     <string name="set_list">Setlist</string>
     <string name="set_list_separate">Nastavit soubory seznamu</string>
+    <string name="set_lists">
+        <string name="set_lists">Stellyste</string>
+    </string>
     <string name="set_load_first">Otevřete načtenou sadu u první položky</string>
     <string name="set_load_first_info">Vždy otevřete první nastavenou položku.  Pokud je vypnutá, sada se pokusí otevřít na aktuálně načtené skladbě, pokud je v sadě.</string>
     <string name="set_load_info">Načtěte dříve uloženou sadu</string>
@@ -937,6 +970,9 @@
     <string name="show_next_prev_in_song_menu">Zobrazit také předchozí/následující pro skladby, které nejsou v sadě (pomocí nabídky skladeb)</string>
     <string name="show_prev_song">Zobrazit předchozí skladbu v sadě</string>
     <string name="show_songs">Zobrazit skladby</string>
+    <string name="show_tempo">
+        <string name="show_tempo">Wys tempo v názvu</string>
+    </string>
     <string name="simple_color">Jednoduchá barva</string>
     <string name="simple_color_info">Jednobarevné pozadí</string>
     <string name="simple_note">"Simple note / zástupný"</string>
@@ -999,9 +1035,15 @@
     <string name="storage_ext">"Externí paměť"</string>
     <string name="storage_graph_overview_info">Vaše aktuální adresářová struktura OpenSong/Songs je zobrazena níže. Kliknutím na složku OpenSong (ROOT) změňte umístění úložiště. Kliknutím na složku Songs (MAIN) vytvoříte zálohu nebo podadresář. Pokud již podadresáře máte, kliknutím na ně se zobrazí další možnosti.</string>
     <string name="storage_help">Vyberte umístění složky „OpenSong“. Toto je výchozí umístění úložiště pro soubory OpenSong. Toto můžete kdykoli změnit v nabídce Možnosti. Doporučuje se interní úložiště.\n\nPro aktualizaci nebo opětovnou instalaci:\nPomocí žlutého tlačítka níže můžete vyhledat předchozí složku „OpenSong“.</string>
+    <string name="storage_local">
+        <string name="storage_local">Plaaslike berging</string>
+    </string>
     <string name="storage_main">Zde jsou normálně uloženy vaše skladby (často se jim říká MAIN složka). Volitelně můžete nastavit podadresáře pro lepší správu knihovny skladeb.</string>
     <string name="storage_manage">"Správa úložiště"</string>
     <string name="storage_notwritable">"Nelze použít"</string>
+    <string name="storage_options_info">
+        <string name="storage_options_info">Bestuur plaaslike berging (OpenSong-wortelvouer en liedjievouers) a sinchroniseer berging met OpenChords</string>
+    </string>
     <string name="storage_quicktip">Při výběru umístění:\nSeznam úložiště pomocí nabídky (pro zobrazení celého úložiště bude pravděpodobně nutné změnit nastavení).\nVYBERTE POUZE VNITŘNÍ NEBO SD KARTU.\nDoporučuje se interní úložiště. Může se zobrazit jako úložiště zařízení nebo s názvem vašeho zařízení.\nV systému Android 10+ byste neměli vybírat složku Stahování nebo Kořen. V případě pochybností vyberte složku „Dokumenty“.</string>
     <string name="storage_reset">Kliknutím sem změníte umístění úložiště (kde se nachází kořenová složka OpenSong).</string>
     <string name="storage_settings">Spravujte své úložiště a složky skladeb</string>
@@ -1012,6 +1054,45 @@
     <string name="swipe_allowance">"Vertikální pohyb povolen"</string>
     <string name="swipe_distance">"Přesuňte vzdálenost"</string>
     <string name="swipe_info">Upravte gesta pro pohyb mezi skladbami</string>
+    <string name="sync_check_for_updates">Kyk vir opdaterings</string>
+    <string name="sync_check_for_updates_info">Doen weer navraag nebo die afgeleë vouer en kyk vir verskille met plaaslike items</string>
+    <string name="sync_checking_local_item">Kontroleer tans plaaslike item</string>
+    <string name="sync_comparing_local_and_remote">Gaan tans plaaslike en afgeleë vouers na vir veranderinge …</string>
+    <string name="sync_creating_new_item">Skep nuwe item</string>
+    <string name="sync_deleting_local_items">Veee plaaslike item pro it in afgeleë items kry</string>
+    <string name="sync_download_from_openchords">Přečtěte si OpenChords-bediener</string>
+    <string name="sync_download_new_items">Nové položky</string>
+    <string name="sync_force_changes">Dwing veranderinge af</string>
+    <string name="sync_force_changes_info">Tuto možnost použijte k vynucení nabízení (odesílání) nebo stahování (stahování)</string>
+    <string name="sync_force_changes_warning_pull">WAARSKUWING!  Dit sale alle items in die plaaslike vouer uitvee and dit verrvang met die items wat van die afgeleë vouer afgelaai is.  Jy kan dit nie ongedaan maak nie, tak maak asseblief seker dat jy \\'n rugsteun gemaak het voordat jy voortgaan</string>
+    <string name="sync_force_changes_warning_push">WAARSKUWING!  Dit sale alle items in die afgeleë vouer uitvee and dit vervanang met die items wat vanaf die plaaslike vouer opgelaai is.  Jy kan dit nie ongedaan maak nie.  Enige gebruiker wat jou afgeleë vouer deel, sal toegang tot die oorspronklike lêers verloor</string>
+    <string name="sync_force_general_info1">Není to žádné slovo.  Chcete-li se starat o rugsteun gemaak het voordat jy voortgaan</string>
+    <string name="sync_force_general_info2">Nadat jy een van hierdie opsies gekies het, sal jy inligting oor potensiële kwessies gewys word en gevra word om jou keuse te bevestig</string>
+    <string name="sync_force_pull_info">Dit sal jou plaaslike vouer vervang met die verwyder vouer inhoud</string>
+    <string name="sync_force_push_info">Dit sal die afgeleë vouer vervang met you plaaslike vouer inhoud</string>
+    <string name="sync_items_deleted_local">Položky, které jsou plaaslike vouer uitgevee se slovem jako jy voortgaan</string>
+    <string name="sync_items_deleted_remote">Položky, které jsou k dispozici podle slov jako jy voortgaan</string>
+    <string name="sync_items_not_on_local">Nové položky, které nejsou v plaaslike vouer is no</string>
+    <string name="sync_items_not_on_remote">Nové položky, které nejsou v afgeleë vouer is no</string>
+    <string name="sync_local_items_older">Plaaslike položky wat opgedateer moet word</string>
+    <string name="sync_newer_items_local_replaced">Hierdie items in die plaaslike vouer is nuwer, maar sal deur die afgeleë items in word</string>
+    <string name="sync_newer_items_remote_replaced">Hierdie items in die afgeleë vouer is nuwer, maar sal deur die plaaslike items in word</string>
+    <string name="sync_no_changes_required">Items is reeds gesinchroniseer</string>
+    <string name="sync_preparing_item">Berei tans item voor vir oplaai</string>
+    <string name="sync_pull_download">Trek (laai af)</string>
+    <string name="sync_pull_info">Laai lêers van die afgeleë vouer af na jou plaaslike vouer</string>
+    <string name="sync_push_info">Laai lêers op vanaf jou plaaslike vouer na die afgeleë vouer</string>
+    <string name="sync_push_upload">Druk (oplaai)</string>
+    <string name="sync_querying_remote">Doen navraag oor die afgeleë bediener …</string>
+    <string name="sync_reading_local_folder">Lees zemře v plaaslike gids</string>
+    <string name="sync_reading_remote_folder">Lees die inhoud van die afgeleë vouer</string>
+    <string name="sync_remote_items_older">Afgeleë items wat opgedateer moet word</string>
+    <string name="sync_update_local_items">Dateer plaaslike items op</string>
+    <string name="sync_update_remote_items">Dateer afgeleë items op</string>
+    <string name="sync_updating_item">Dateer tans item op</string>
+    <string name="sync_upload_new_items">Op. nuwe položky</string>
+    <string name="sync_upload_to_openchords">Přejděte na OpenChords-bediener</string>
+    <string name="sync_uploading_changes">Laai tans veranderinge op na die afgeleë vouer</string>
     <string name="tabs_scale">Text karty Měřítko (kytara, bicí atd.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Zvýrazněné skladby obsahují vybranou značku. Kliknutím na libovolnou skladbu přidáte/odstraníte vybranou značku.</string>
