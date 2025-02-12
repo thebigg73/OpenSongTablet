@@ -2267,6 +2267,9 @@ public class ProcessSong {
     private String fixSquareBracketComments(String lyrics) {
         // For IV - replace comments in lyrics from [..] to (..)
         // May cause issues if songs from UG, etc. have spaces before section names
+        if (lyrics==null) {
+            lyrics = "";
+        }
         String[] lines = lyrics.split("\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line:lines) {
