@@ -415,7 +415,7 @@ public class InlineSetList extends RecyclerView {
                                 textfn = textfn + " (" + si.songkey + ")";
                             }
 
-                            if (si.songfilename.equals("---")) {
+                            if (si.songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
                                 holder.vSongTitle.setText("");
                                 holder.vSongFilename.setText("");
                                 holder.vSongFilename.setVisibility(View.GONE);
@@ -432,7 +432,8 @@ public class InlineSetList extends RecyclerView {
                             // We want to update the highlight colour to on/off
                             if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                                 setColor(holder, onColor);
-                            } else if (mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfilename.equals("---")) {
+                            } else if (mainActivityInterface.getCurrentSet().getSetItemInfo(position).
+                                    songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
                                 setColor(holder, transparentColor);
                             } else {
                                 setColor(holder, offColor);
@@ -485,7 +486,7 @@ public class InlineSetList extends RecyclerView {
                 setitemViewHolder.vSongTitle.setVisibility(useTitle ? View.VISIBLE : View.GONE);
                 setitemViewHolder.vSongFilename.setVisibility(useTitle ? View.GONE : View.VISIBLE);
 
-                if (si.songfilename.equals("---")) {
+                if (si.songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
                     setitemViewHolder.vSongTitle.setText("");
                     setitemViewHolder.vSongFilename.setText("");
                     setitemViewHolder.vSongFilename.setVisibility(View.GONE);

@@ -139,7 +139,7 @@
         <!-- The storage graph -->
         <navigation
             android:id="@+id/storage_graph"
-            app:startDestination="@id/storageManagementFragment">
+            app:startDestination="@id/storageOptionsFragment">
 
             <!-- The storage layout fragment -->
             <fragment
@@ -173,6 +173,34 @@
                 <action
                     android:id="@+id/action_setStorageLocationFragment_to_kitKatFolderChoose"
                     app:destination="@id/kitKatFolderChoose" />
+            </fragment>
+
+            <!-- The options fragment -->
+            <fragment
+                android:id="@+id/storageOptionsFragment"
+                android:name="com.garethevans.church.opensongtablet.filemanagement.StorageOptionsFragment"
+                android:label="fragment_storageoption"
+                tools:layout="@layout/settings_storage_options">
+                <deepLink
+                    android:id="@+id/deepLinkStorageOptions"
+                    app:uri="@string/deeplink_storage_options" />
+                <action
+                    android:id="@+id/action_storageOptionsFragment_to_storageManagementFragment"
+                    app:destination="@id/storageManagementFragment" />
+                <action
+                    android:id="@+id/action_storageOptionsFragment_to_openChordsFragment"
+                    app:destination="@id/openChordsFragment" />
+            </fragment>
+
+            <!-- The OpenChords fragment -->
+            <fragment
+                android:id="@+id/openChordsFragment"
+                android:name="com.garethevans.church.opensongtablet.openchords.OpenChordsFragment"
+                android:label="OpenChordsFragment"
+                tools:layout="@layout/settings_openchords">
+                <deepLink
+                    android:id="@+id/deeplinkOpenChords"
+                    app:uri="@string/deeplink_openchords"/>
             </fragment>
 
             <fragment
@@ -1027,15 +1055,6 @@
             <deepLink
                 android:id="@+id/deepLinkWebServer"
                 app:uri="@string/website_web_server"/>
-        </fragment>
-        <fragment
-            android:id="@+id/openChordsFragment"
-            android:name="com.garethevans.church.opensongtablet.openchords.OpenChordsFragment"
-            android:label="OpenChordsFragment"
-            tools:layout="@layout/settings_openchords">
-            <deepLink
-                android:id="@+id/deeplinkOpenChords"
-                app:uri="@string/deeplink_openchords"/>
         </fragment>
         <navigation android:id="@+id/midi_graph"
             app:startDestination="@id/midiOptionsFragment">

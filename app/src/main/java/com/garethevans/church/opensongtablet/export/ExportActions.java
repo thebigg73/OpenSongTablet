@@ -8,7 +8,6 @@ import android.util.Log;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.gson.Gson;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -51,10 +50,6 @@ public class ExportActions {
 
         if (content!=null) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
-        }
-
-        for (Uri tempUri:uris) {
-            Log.d(TAG,"uri:"+tempUri);
         }
 
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -130,8 +125,6 @@ public class ExportActions {
             extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(
                     "Sets", "", setName,
                     "Export", "", setName));
-            Log.d(TAG,"added:"+extraUris.get(extraUris.size()-1));
-            //    extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setName));
         }
         return extraUris;
     }
@@ -211,11 +204,11 @@ public class ExportActions {
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().equals("uuid")) {
-                            bits[3] = xpp.getText();
+                            bits[3] = xpp.nextText();
                         } else if (xpp.getName().equals("lastModified")) {
-                            bits[4] = xpp.getText();
+                            bits[4] = xpp.nextText();
                         } else if (xpp.getName().equals("notes")) {
-                            bits[5] = xpp.getText();
+                            bits[5] = xpp.nextText();
                         }
                         if (xpp.getName().equals("slide_group")) {
                             // Look for the type attribute and see what type of slide it is
@@ -228,9 +221,9 @@ public class ExportActions {
                                             xpp.getAttributeValue(null, "name").contains("# " +
                                                     c.getResources().getString(R.string.note) + " # - ") ||
                                             xpp.getAttributeValue(null, "type").equals("custom") ||
-                                            xpp.getAttributeValue(null, "type").equals("song")){
+                                            xpp.getAttributeValue(null, "type").equals("song")) {
                                         String folder;
-                                        String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
+                                        String filename = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name"))));
                                         String title = "";
                                         String key = "";
                                         String author = "";
@@ -249,6 +242,10 @@ public class ExportActions {
                                             filename = filename.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
                                             id = "../Notes/" + filename;
                                             custom = c.getString(R.string.note);
+
+                                        } else if (filename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
+                                            id = filename;
+                                            custom = c.getString(R.string.divider);
 
                                         } else if (xpp.getAttributeValue(null, "type").equals("custom")) {
                                             // This is likely custom slides
@@ -387,8 +384,8 @@ public class ExportActions {
         }
 
         bits[0] = stringBuilderIDs.toString().trim();
-        bits[1] = stringBuilderSet.toString().trim();
-        bits[2] = stringBuilderKey.toString().trim();
+        bits[1] = stringBuilderSet.toString();
+        bits[2] = stringBuilderKey.toString();
         if (bits[3]==null || bits[3].isEmpty()) {
             bits[3] = String.valueOf(UUID.randomUUID());
         }
@@ -435,16 +432,4 @@ public class ExportActions {
         }
     }
 
-    public void songXMLToJsong() {
-        Gson gson = new Gson();
-
-        String jsonString = gson.toJson(mainActivityInterface.getSong());
-
-        //transform a java object to json
-        Log.d(TAG,"jsonString:" + jsonString);
-
-        //Transform a json to java object
-        Song songObject = gson.fromJson(jsonString, Song.class);
-        Log.d(TAG,"song.getFilename():"+ songObject.getFilename());
-    }
 }

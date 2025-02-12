@@ -479,8 +479,15 @@ public class PerformanceFragment extends Fragment {
             firstSongLoad = true;
             if (needToPauseTryAgain) {
                 mainActivityInterface.getMainHandler().postDelayed(() -> {
-                    processingTestView = false;
-                    doSongLoad(tryagainfolder, tryagainfilename);
+                    Log.d(TAG,"trying to load the song again");
+                    if (processingTestView) {
+                        processingTestView = false;
+                        try {
+                            doSongLoad(tryagainfolder, tryagainfilename);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 },1000);
             } else {
                 mainActivityInterface.getMainHandler().post(() -> doSongLoad(tryagainfolder,tryagainfilename));
@@ -496,14 +503,15 @@ public class PerformanceFragment extends Fragment {
 
             // Clear any force reload flags
             firstSongLoad = false;
-            mainActivityInterface.setForceReload(false);
-            myView.inlineSetList.setForceReload(false);
-            mainActivityInterface.getTranspose().setForceReload(false);
-            mainActivityInterface.getNearbyConnections().setForceReload(false);
-
-            mainActivityInterface.setHighlightChangeAllowed(false);
 
             try {
+                mainActivityInterface.setForceReload(false);
+                myView.inlineSetList.setForceReload(false);
+                mainActivityInterface.getTranspose().setForceReload(false);
+                mainActivityInterface.getNearbyConnections().setForceReload(false);
+
+                mainActivityInterface.setHighlightChangeAllowed(false);
+
                 doSongLoadStartTime = System.currentTimeMillis();
                 mainActivityInterface.closeDrawer(true);
                 mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
@@ -1369,7 +1377,8 @@ public class PerformanceFragment extends Fragment {
 
         // Now deal with the highlighter file
         if (mainActivityInterface.getMode().equals(mode_performance)) {
-            dealWithHighlighterFile(widthAfterScale, heightAfterScale);
+            // The highlighter is already part of the scaling
+            dealWithHighlighterFile(widthBeforeScale,heightBeforeScale);
         }
 
         // Load up the sticky notes if the user wants them

@@ -8,7 +8,6 @@ package com.garethevans.church.opensongtablet.filemanagement;
 // The older method is now deprecated and legacy storage flag is ignored in Android 11+
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -211,9 +210,11 @@ public class StorageAccess {
     public void setUriTreeHome(Uri uriTreeHome) {
         this.uriTreeHome = uriTreeHome;
     }
+    public Uri getUriTreeHome() {
+        return uriTreeHome;
+    }
 
     // Sort the initial default folders and files needed when the app installs changes storage location
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public String createOrCheckRootFolders(Uri uri) {
         // uri if the uriTree.  If not sent/null, load from preferences
         if (uri == null) {
@@ -291,8 +292,7 @@ public class StorageAccess {
         copyAssets();
         return "Success";
     }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private String createOrCheckRootFolders_SAF(Uri uri) {
         uriTreeHome = homeFolder(uri);
 
@@ -351,7 +351,6 @@ public class StorageAccess {
                     }
 
                 } catch (Exception e) {
-                    Log.d(TAG, folder + " error creating");
                     stringBuilder.append(" - error creating\n");
                 }
             }
@@ -385,7 +384,6 @@ public class StorageAccess {
                     }
 
                 } catch (Exception e2) {
-                    Log.d(TAG, "Error creating cache: " + folder);
                     stringBuilder.append("\nError creating cache:").append(folder);
                 }
 
@@ -800,7 +798,6 @@ public class StorageAccess {
         if (content==null) {
             content = "";
         }
-        Log.d(TAG,"uri:"+uri+"  content:"+content);
 
         String whatToCheck;
         if (uuidOrNull == null) {
@@ -829,7 +826,11 @@ public class StorageAccess {
             }
         }
         // If we get this far, we just need to create a new UUID for the subfolder
-        return checkSongFolderUUIDExist(subfolderPath,null);
+        if (mainActivityInterface.getStorageAccess().uriTreeHome!=null) {
+            return checkSongFolderUUIDExist(subfolderPath, null);
+        } else {
+            return String.valueOf(UUID.randomUUID());
+        }
     }
     public String getSongFolderForUUID(String expectedFolderName, String folderUuid) {
         Uri uri = getUriForItem("Settings","",songFolderUUIDs);
@@ -1500,6 +1501,7 @@ public class StorageAccess {
             OutputStream outputStream = getOutputStream(uri);
             return writeFileFromString(string, outputStream);
         } catch (Exception e) {
+            updateCrashLogAttempts++;
             e.printStackTrace();
             return false;
         }
@@ -1601,7 +1603,6 @@ public class StorageAccess {
             return "";
         }
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void createFile(String mimeType, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(folder, subfolder, filename);
         if (lollipopOrLater()) {
@@ -1997,7 +1998,7 @@ public class StorageAccess {
         }
         return outcome;
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private boolean renameFolder_SAF(String oldsubfolder, String newsubfolder, boolean showToast) {
         // SAF can only rename final name (can't move within directory structure) - No / allowed!
         Uri oldUri = getUriForItem("Songs", oldsubfolder, "");
@@ -2102,7 +2103,7 @@ public class StorageAccess {
             return false;
         }
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private boolean createFolder_SAF(Uri dirUri, String newFolder, boolean showToast) {
         String message;
         boolean outcome;
@@ -2116,9 +2117,10 @@ public class StorageAccess {
                 outcome = false;
             }
         } catch (Exception e) {
+            updateCrashLogAttempts ++;
             e.printStackTrace();
             message = c.getString(R.string.create_folder_error);
-            updateCrashLog(e.toString());
+            //updateCrashLog(e.toString());
             outcome = false;
         }
         if (showToast) {
@@ -2740,7 +2742,6 @@ public class StorageAccess {
             try {
                 doStringWriteToFile("Settings", "", "CrashLog.txt", crashContent);
                 // Set the crashLogAttempts back to zero so we can
-                updateCrashLogAttempts = 0;
             } catch (Exception e) {
                 e.printStackTrace();
                 // This has crashed, so increment the crashLogAttempts

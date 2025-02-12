@@ -200,7 +200,8 @@ public class DisplayPrevNext {
             boolean notdone = true;
             while (currentPos > 0 && notdone) {
                 currentPos--;
-                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).songfilename.equals("---")) {
+                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).
+                        songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
                     prevIndex = currentPos;
                     movePrevInSet = true;
                     notdone = false;
@@ -213,7 +214,8 @@ public class DisplayPrevNext {
             notdone = true;
             while (currentPos < mainActivityInterface.getCurrentSet().getCurrentSetSize() -1 && notdone) {
                 currentPos++;
-                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).songfilename.equals("---")) {
+                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).
+                        songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
                     nextIndex = currentPos;
                     moveNextInSet = true;
                     notdone = false;
