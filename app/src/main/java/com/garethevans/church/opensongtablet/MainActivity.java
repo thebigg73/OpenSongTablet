@@ -1075,7 +1075,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         bootUpCompleted = true;
 
         mainLooper.post(() -> myView.myAppBarLayout.setVisibility(View.VISIBLE));
-
     }
 
     @Override
