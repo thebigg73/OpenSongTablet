@@ -9,8 +9,11 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.openchords.OpenChordsSetListItem;
+import com.garethevans.church.opensongtablet.openchords.OpenChordsSetListSongItem;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.gson.Gson;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.UUID;
 
 // This class interacts with the CurrentSet object and does the processing, etc.
 
@@ -51,6 +55,7 @@ public class SetActions {
     private ArrayList<Integer> missingKeyPositions;
     private String useThisLastModifedDate = null;
     private final String dividerIdentifier = "---";
+    public static final Gson gson = new Gson();
 
     public SetActions(Context c) {
         this.c = c;
@@ -433,6 +438,11 @@ public class SetActions {
         Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
         coll.setStrength(Collator.SECONDARY);
         Collections.sort(categories, coll);
+        // Add the OpenChords category if we don't have it
+        if (!categories.contains(c.getString(R.string.openchords))) {
+            categories.add(0,c.getString(R.string.openchords));
+        }
+        // Add the MAIN category
         categories.add(0,c.getString(R.string.mainfoldername));
         return categories;
     }
@@ -475,7 +485,7 @@ public class SetActions {
     public String getIconIdentifier(String folder, String filename) {
         // If the filename is an image, we use that
         String valueToDecideFrom;
-        if (filename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
+        if (folder.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
             valueToDecideFrom = "Divider";
         } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {
             valueToDecideFrom = "Images";
@@ -503,11 +513,9 @@ public class SetActions {
                 append("\">\n<slide_groups>\n");
 
         // Now go through each set entry and build the appropriate xml
-        Log.d(TAG,"thisSetCurrentSet.getCurrentSetSize():"+thisCurrentSet.getCurrentSetSize());
         for (int x = 0; x < thisCurrentSet.getCurrentSetSize(); x++) {
             SetItemInfo setItemInfo = thisCurrentSet.getSetItemInfo(x);
 
-            Log.d(TAG,"setItemInfo:"+setItemInfo);
             String key = fixNull(setItemInfo.songkey);
             String folder = setItemInfo.songfolder;
             // If the path isn't empty, add a forward slash to the end
@@ -521,10 +529,10 @@ public class SetActions {
             boolean isScripture = folder.contains("**Scripture") || folder.contains("**"+c.getString(R.string.scripture));
             boolean isSlide = folder.contains("**Slide") || folder.contains("**"+c.getString(R.string.slide));
             boolean isNote = folder.contains("**Note") || folder.contains("**"+c.getString(R.string.note));
-            boolean isDivider = folder.equals(dividerIdentifier);
+            boolean isDivider = folder.contains("**Divider") || folder.contains(dividerIdentifier);
             if (isImage) {
                 // Adding an image
-                Song tempSong = getTempSong("**" + folderImages + "/_cache",
+                Song tempSong = getTempSong("**" + folderImages,
                         setItemInfo.songfilename);
                 stringBuilder.append(buildImage(tempSong));
 
@@ -547,15 +555,19 @@ public class SetActions {
                         setItemInfo.songfilename);
                 stringBuilder.append(buildSlide(tempSong));
 
+            } else if (isDivider) {
+                // Dividers are actually stored as Notes
+                // Adding a divider to the Notes folder
+                Song tempSong = getTempSong("**" + folderNotes + "/_cache",
+                        setItemInfo.songfilename);
+                tempSong.setTheme("Divider");
+                stringBuilder.append(buildDivider(tempSong));
+
             } else if (isNote) {
                 // Adding a note
                 Song tempSong = getTempSong("**" + folderNotes + "/_cache",
                         setItemInfo.songfilename);
                 stringBuilder.append(buildNote(tempSong));
-
-            } else if (isDivider) {
-                // Adding a divider
-                stringBuilder.append(buildDivider());
 
             } else {
                 // Adding a song
@@ -708,12 +720,24 @@ public class SetActions {
 
         return sb;
     }
+    private StringBuilder buildDivider(Song tempSong) {
+        StringBuilder sb = new StringBuilder();
+        // Adding a divider
+        sb.append("    <slide_group name=\"# ")
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(c.getResources().getString(R.string.divider)))
+                .append(" # - ")
+                .append(tempSong.getFilename())
+                .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
+                .append("    </slide_group>\n");
+        return sb;
+    }
     private StringBuilder buildImage(Song tempSong) {
         // Adding a custom image slide
         StringBuilder sb = new StringBuilder();
 
         // The mUser3 field should contain all the images
         // Break all the images into the relevant slides
+        Log.d(TAG,"tempSong.getUser3()="+tempSong.getUser3());
         String[] separate_slide = tempSong.getUser3().trim().split("\n");
 
         StringBuilder slideCode = new StringBuilder();
@@ -751,29 +775,9 @@ public class SetActions {
                 .append("\n    ")
                 .append("  <slides>\n")
                 .append(slideCode)
-                .append("\n    ")
                 .append("  </slides>\n")
                 .append("  </slide_group>\n");
 
-        return sb;
-    }
-    private StringBuilder buildDivider() {
-        StringBuilder sb = new StringBuilder();
-        // Adding a divider
-
-        sb.append("  <slide_group name=\"# ")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(c.getResources().getString(R.string.divider)))
-                .append(" #")
-                .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
-                .append("    ")
-                .append(emptyTagCheck("title",""))
-                .append("\n    ")
-                .append(emptyTagCheck("subtitle",""))
-                .append("\n    ")
-                .append(emptyTagCheck("notes",""))
-                .append("\n")
-                .append("    <slides></slides>\n")
-                .append("  </slide_group>\n");
         return sb;
     }
 
@@ -911,7 +915,7 @@ public class SetActions {
             throws IOException, XmlPullParserException {
         // Set this info into the current set
         if (!asExport && currentSet!=null) {
-            currentSet.setNotes(xpp.getText());
+            currentSet.setNotes(getTrimmedOrNullText(xpp.getText()));
         }
         xpp.nextTag();
     }
@@ -1369,10 +1373,8 @@ public class SetActions {
     }
 
     private void removeCacheItemsFromDB(String folder) {
-        Log.d(TAG,"removeCacheItemsFromDB:"+folder);
         ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "_cache");
         for (String filename:filesInFolder) {
-            Log.d(TAG,"removing: "+folder+"/"+filename);
             mainActivityInterface.getSQLiteHelper().deleteSong(customLocStart+folder, filename);
         }
 
@@ -1468,4 +1470,594 @@ public class SetActions {
         this.useThisLastModifedDate = useThisLastModifedDate;
     }
 
+
+    // New logic to convert between objects and xml
+    public SetObject createSetObjectFromFilename(String setFilename) {
+        // We need to parse the set xml and populate the object
+        SetObject setObject = new SetObject();
+        setObject.setSetName(setFilename);
+
+        Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setFilename);
+        if (mainActivityInterface.getStorageAccess().uriExists(setUri)) {
+            try {
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(true);
+                XmlPullParser xpp = factory.newPullParser();
+                String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(setUri);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(setUri);
+                if (inputStream != null) {
+                    boolean set_finished = false;
+                    xpp.setInput(inputStream, utf);
+                    xpp.next();
+                    while (!set_finished) {
+                        if (xpp.getEventType() == XmlPullParser.START_TAG) {
+                            String name = xpp.getName();
+                            if (name != null) {
+                                switch (name) {
+                                    case "uuid":
+                                        setObject.setUuid(xpp.nextText());
+                                        break;
+                                    case "lastModified":
+                                    case "lastUpdated":
+                                        setObject.setLastModified(xpp.nextText());
+                                        break;
+                                    case "notes":
+                                        setObject.setNotes(getTrimmedOrNullText(xpp.nextText()));
+                                        break;
+                                    case "slide_group":
+                                        SetSlideGroupObject setSlideGroupObject = new SetSlideGroupObject();
+                                        // Look for the type attribute and see what type of slide it is
+                                        switch (xpp.getAttributeValue(null, "type")) {
+                                            case "song":
+                                                pullXMLIntoSongSlideGroupObject(xpp, setSlideGroupObject);
+                                                break;
+                                            case "custom":
+                                            case "scripture":
+                                            case "image":
+                                                setSlideGroupObject.setType(xpp.getAttributeValue(null, "type"));
+                                                pullXMLIntoCustomSlideGroupObject(xpp, setSlideGroupObject);
+                                                break;
+                                        }
+                                        // Add this item to the setObject
+                                        if (setObject.getSlideGroups()==null) {
+                                            setObject.setSlideGroups(new ArrayList<>());
+                                        }
+                                        setObject.getSlideGroups().add(setSlideGroupObject);
+                                        break;
+                                }
+                            }
+                        }
+
+                        try {
+                            xpp.next();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (xpp.getName()!=null) {
+                            if (xpp.getName().equals("set")) {
+                                set_finished = true;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (setObject.getLastModified()==null || setObject.getLastModified().isEmpty()) {
+            // First try to get the file metadata
+            setObject.setLastModified(mainActivityInterface.getTimeTools().getIsoTimeFromFileMetadata("Sets","",setFilename));
+            Log.d(TAG,"lastModified:"+setObject.getLastModified());
+        }
+        return setObject;
+    }
+    public void createSetXMLFromSetObject(SetObject setObject, boolean updateLastModified) {
+        // Now we build the xml!!
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+        if (setObject!=null) {
+            // set name
+            if (setObject.getSetName() != null) {
+                stringBuilder.append("<set name=\"").append(setObject.getSetName().trim()).append("\">\n");
+            } else {
+                stringBuilder.append("<set>\n");
+            }
+
+            // uuid
+            if (setObject.getUuid() != null) {
+                stringBuilder.append("  <uuid>").append(setObject.getUuid().trim()).append("</uuid>\n");
+            } else {
+                stringBuilder.append("  <uuid>").append(UUID.randomUUID()).append("</uuid>\n");
+            }
+
+            // lastModified
+            if (setObject.getLastModified() != null && !updateLastModified) {
+                stringBuilder.append("  <lastModified>").append(setObject.getLastModified().trim()).append("</lastModified>\n");
+            } else {
+                stringBuilder.append("  <lastModified>").append(mainActivityInterface.getTimeTools().getNowIsoTime()).append("</lastModified>\n");
+            }
+
+            // Notes
+            if (setObject.getNotes() != null) {
+                stringBuilder.append("  <notes>").append(setObject.getNotes().trim()).append("</notes>\n");
+            }
+
+            // The slide_groups
+            stringBuilder.append("  <slide_groups>\n");
+            if (setObject.getSlideGroups() != null) {
+                for (SetSlideGroupObject setSlideGroupObject:setObject.getSlideGroups()) {
+
+                    if (setSlideGroupObject.getType()!=null && setSlideGroupObject.getName()!=null) {
+                        switch (setSlideGroupObject.getType()) {
+                            case "song":
+                                stringBuilder.append(getSetXMLBitForSong(setSlideGroupObject));
+                                break;
+
+                            case "scripture":
+                                Log.d(TAG,"creating scripture");
+                                // TODO not done yet
+                                break;
+                        }
+                    }
+                }
+            }
+
+            // The end of the xml
+            stringBuilder.append("  </slide_groups>\n");
+            stringBuilder.append("</set>");
+
+        }
+    }
+    private String getSetXMLBitForSong(SetSlideGroupObject setSlideGroupObject) {
+        // This creates the slide_group tag for a song in the following format
+        // <slide_group name="FILENAME" type="song" path="PATH OR /" prefKey="KEY"/>
+
+        StringBuilder xmlBit = new StringBuilder();
+        xmlBit.append("    <slide_group");
+        if (setSlideGroupObject.getName()!=null) {
+            xmlBit.append(" name=\"").append(setSlideGroupObject.getName().trim()).append("\"");
+        }
+        xmlBit.append(" type=\"song\" ");
+        if (setSlideGroupObject.getPath()!=null && !setSlideGroupObject.getPath().isEmpty()) {
+            xmlBit.append(" path=\"").append(setSlideGroupObject.getPath()).append("\"");
+        } else {
+            xmlBit.append(" path=\"/\"");
+        }
+        if (setSlideGroupObject.getPrefKey()!=null) {
+            xmlBit.append(" prefKey=\"").append(setSlideGroupObject.getPrefKey()).append("\"");
+        } else {
+            xmlBit.append(" prefKey=\"\"");
+        }
+        xmlBit.append("/>\n");
+        return xmlBit.toString();
+    }
+    private String getSetXMLBitForSongFromOpenChords(OpenChordsSetListItem openChordsSetListItem) {
+        /* This creates the slide_group tag for a song in the following format
+           <slide_group name="FILENAME" type="song" path="PATH OR /" prefKey="KEY"/>
+
+           The OpenChord item looks like
+                "id": "F4309D47-7007-484A-B2E3-A58FE90792BE",
+                "type": "song",
+                "songItem": {
+                     "capo": 0,
+                     "songId": "F4309D47-7007-484A-B2E3-A58FE90792BE"
+                }  */
+
+        // Get a temporary song
+        StringBuilder xmlBit = new StringBuilder();
+
+        Song tempSong = mainActivityInterface.getSQLiteHelper().getOpenChordsSong(
+                mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName(),
+                openChordsSetListItem.getId());
+        if (tempSong!=null) {
+            xmlBit.append("    <slide_group");
+            xmlBit.append(" name=\"").append(tempSong.getFilename()).append("\"");
+            xmlBit.append(" type=\"song\" ");
+            if (tempSong.getFolder().equals(mainActivityInterface.getMainfoldername())) {
+                xmlBit.append(" path=\"/\"");
+            } else {
+                xmlBit.append(" path=\"").append(tempSong.getFolder()).append("\"");
+            }
+            xmlBit.append(" prefKey=\"").append(tempSong.getKey()).append("\"");
+            xmlBit.append("/>");
+        }
+        return xmlBit.toString();
+    }
+
+    // Parse setObject (OpenSong) into OpenChordsSetList object
+    public OpenChordsSetListItem getOpenChordsSetListItemForSong(SetSlideGroupObject setSlideGroupObject) {
+        OpenChordsSetListItem openChordsSetListItem = null;
+        OpenChordsSetListSongItem openChordsSetListSongItem;
+
+        String folder = setSlideGroupObject.getPath();
+        String filename = setSlideGroupObject.getName();
+        if (folder==null || folder.isEmpty() || folder.equals("/")) {
+            folder = mainActivityInterface.getMainfoldername();
+        }
+        if (filename!=null) {
+            // Get the song object
+            Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename);
+            if (tempSong != null) {
+                openChordsSetListItem = new OpenChordsSetListItem();
+                openChordsSetListItem.setType("song");
+                openChordsSetListSongItem = new OpenChordsSetListSongItem();
+                if (tempSong.getUuid() == null || tempSong.getUuid().isEmpty()) {
+                    tempSong.setUuid(String.valueOf(UUID.randomUUID()));
+                }
+                openChordsSetListSongItem.setSongId(tempSong.getUuid());
+                openChordsSetListItem.setId(tempSong.getUuid());
+                openChordsSetListItem.setSongItem(openChordsSetListSongItem);
+                if (tempSong.getLastModified() == null || tempSong.getLastModified().isEmpty()) {
+                    tempSong.setLastModified(mainActivityInterface.getTimeTools().getIsoTimeFromSongFileMetadata(tempSong));
+                }
+                openChordsSetListItem.setLastUpdated(tempSong.getLastModified());
+            }
+        }
+        return openChordsSetListItem;
+    }
+    public OpenChordsSetListItem getOpenChordsSetListItemForDivider(SetSlideGroupObject setSlideGroupObject) {
+        /*   This is how it should look
+                   "id": "249C5E5E-4E2E-498F-BC3A-32323D027D30",
+                   "type": "divider",
+                   "title": "Divider title"  */
+        Log.d(TAG,"this is a divider!");
+        OpenChordsSetListItem openChordsSetListItem = new OpenChordsSetListItem();
+        openChordsSetListItem.setId(String.valueOf(UUID.randomUUID()));
+        openChordsSetListItem.setType("divider");
+        String folder = setSlideGroupObject.getPath();
+        String filename = setSlideGroupObject.getName();
+        if (folder==null || folder.isEmpty() || folder.equals("/")) {
+            folder = mainActivityInterface.getMainfoldername();
+        }
+        Log.d(TAG,"folder for divider:"+folder);
+        Log.d(TAG,"filename for divider:"+filename);
+        if (setSlideGroupObject.getName()!=null && !setSlideGroupObject.getName().isEmpty()) {
+            openChordsSetListItem.setTitle(setSlideGroupObject.getName());
+        } else {
+            openChordsSetListItem.setTitle(c.getString(R.string.divider));
+        }
+        openChordsSetListItem.setLastUpdated(mainActivityInterface.getTimeTools().getNowIsoTime());
+        return openChordsSetListItem;
+    }
+    public OpenChordsSetListItem getOpenChordsSetListItemForCustom(SetSlideGroupObject setSlideGroupObject) {
+        OpenChordsSetListItem openChordsSetListItem = null;
+
+        if (setSlideGroupObject.getType()!=null) {
+            openChordsSetListItem = new OpenChordsSetListItem();
+            // We treat all of my custom slides as OpenChords slides with the format
+            /*{
+                "id": "94060C61-AC44-4109-B0FE-80229F563392",
+                    "type": "slide",
+                    "notes": "Detail",
+                    "title": "Event"
+            }*/
+            openChordsSetListItem.setId(String.valueOf(UUID.randomUUID()));
+            openChordsSetListItem.setType("slide");
+            if (setSlideGroupObject.getName()!=null && !setSlideGroupObject.getTitle().isEmpty()) {
+                openChordsSetListItem.setTitle(setSlideGroupObject.getName());
+            }
+
+            // This is where we need to get the correct content
+            if (setSlideGroupObject.getType()!=null) {
+                switch (setSlideGroupObject.getType()) {
+                    case "variation":
+                        // Song variations have the following useful info
+                        // subtitle=author, notes=base64encoded song
+                        String author = "";
+                        if (setSlideGroupObject.getSubtitle()!=null) {
+                            author = mainActivityInterface.getProcessSong().parseHTML(setSlideGroupObject.getSubtitle());
+                        }
+                        String lyrics = author;
+                        if (setSlideGroupObject.getNotes()!=null) {
+                            byte[] decodedString = Base64.decode(setSlideGroupObject.getNotes(), Base64.DEFAULT);
+                            String extracted = "";
+                            try {
+                                extracted = new String(decodedString, StandardCharsets.UTF_8);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (extracted.contains("<lyrics>") || extracted.contains("</lyrics>")) {
+                                int start = extracted.indexOf("<lyrics>")+8;
+                                int end = extracted.indexOf("</lyrics>");
+                                if (start<end) {
+                                    Song tempSong = new Song();
+                                    tempSong.setLyrics(extracted.substring(start,end));
+                                    lyrics += "\n\n" + mainActivityInterface.getConvertJustChords().getJustChordsLyrics(tempSong);
+                                }
+                            }
+                        }
+                        openChordsSetListItem.setNotes(getTrimmedOrNullText(lyrics));
+                        openChordsSetListItem.setCustomData(setSlideGroupObject.getNotes());
+                        break;
+
+                        case "image":
+                            // Images (in Song format) have the following useful info
+                            // image = base64 image - will ignore for now
+                            // description = image descriptioon
+                            // filename = image filename
+                            if (setSlideGroupObject.getSlides()!=null) {
+                                StringBuilder notes = new StringBuilder();
+                                for (SetSlideObject setSlideObject : setSlideGroupObject.getSlides()) {
+                                    if (setSlideObject.getFilename() != null) {
+                                        notes.append(c.getString(R.string.image)).append(": ").
+                                                append(setSlideObject.getFilename()).append("\n");
+                                    }
+                                    if (setSlideObject.getDescription() != null) {
+                                        notes.append(c.getString(R.string.info_text)).append(": ").
+                                                append(setSlideObject.getDescription()).append("\n");
+                                    }
+                                }
+                                if (!notes.toString().isEmpty()) {
+                                    openChordsSetListItem.setNotes(getTrimmedOrNullText(notes.toString()));
+                                }
+                            }
+                        break;
+
+                    case "scripture":
+                    case "custom":
+                    default:
+                        if (setSlideGroupObject.getSlides()!=null) {
+                            StringBuilder notes = new StringBuilder();
+                            for (SetSlideObject setSlideObject : setSlideGroupObject.getSlides()) {
+                                if (setSlideObject.getBody() != null) {
+                                    notes.append(setSlideObject.getBody()).append("\n\n");
+                                }
+                            }
+                            if (!notes.toString().isEmpty()) {
+                                openChordsSetListItem.setNotes(getTrimmedOrNullText(notes.toString()));
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        return openChordsSetListItem;
+    }
+
+
+
+
+    private OpenChordsSetListItem getOpenChordsEventItem(SetSlideGroupObject setSlideGroupObject) {
+        /* An event with detail is a custom slide that needs the following info
+            "id": "94060C61-AC44-4109-B0FE-80229F563392",
+            "type": "slide",
+            "notes": "Detail",
+            "title": "Event"    */
+
+        OpenChordsSetListItem openChordsSetListItem = new OpenChordsSetListItem();
+        // OpenSong doens't use uuid for custom set items
+        openChordsSetListItem.setId(String.valueOf((UUID.randomUUID())));
+        if (setSlideGroupObject.getName() != null && !setSlideGroupObject.getName().isEmpty()) {
+            openChordsSetListItem.setTitle(setSlideGroupObject.getName());
+        }
+        openChordsSetListItem.setType("slide");
+        StringBuilder notes = new StringBuilder();
+        if (setSlideGroupObject.getSlides() != null) {
+            for (SetSlideObject setSlideObject : setSlideGroupObject.getSlides()) {
+                if (setSlideObject.getBody() != null) {
+                    notes.append(setSlideObject.getBody()).append("\n");
+                }
+            }
+            openChordsSetListItem.setNotes(getTrimmedOrNullText(notes.toString()));
+        }
+        return openChordsSetListItem;
+    }
+    private OpenChordsSetListSongItem getOpenChordsSetListSongItem(SetSlideGroupObject setSlideGroupObject) {
+
+            return null;
+    }
+    private String getXMLBitForScripture(SetSlideGroupObject setSlideGroupObject) {
+        // This creates the slide_group tag for a scripture in the following format
+        /*
+            <slide_group name="SCRIPTURE_REF" type="scripture">
+              <title>SCRIPTURE_REF</title>
+              <subtitle>TRANSLATION</subtitle>
+              <notes>NOTES</notes>
+              <slides>
+                <slide>
+                  <body>SLIDE 1 CONTENT</body>
+                </slide>
+                <slide>
+                  <body>SLIDE 2 CONTENT</body>
+                </slide>
+                .....
+              </slides>
+            </slide_group>
+        */
+
+        String xmlBit = "" +
+                "    <slide_group " + "name=\"" + setSlideGroupObject.getName().trim() + "\" type=\"scripture\">\n" +
+                "      <title>" + setSlideGroupObject.getTitle() + "</title>\n" +
+                "      <subtitle>" + setSlideGroupObject.getSubtitle() + "</subtitle>\n" +
+                "      <notes>" + setSlideGroupObject.getNotes() + "</notes>\n";
+
+        return xmlBit;
+    }
+    private void pullXMLIntoSongSlideGroupObject(XmlPullParser xpp, SetSlideGroupObject setSlideGroupObject) {
+        String path = stripSlashes(mainActivityInterface.getProcessSong().
+                parseHTML(xpp.getAttributeValue(null,"path")));
+        String name = stripSlashes(mainActivityInterface.getProcessSong().
+                parseHTML(xpp.getAttributeValue(null,"name")));
+        String key = null;
+        if (xpp.getAttributeCount()>2) {
+            // Assume a key has been set as well
+            key = xpp.getAttributeValue(null, "prefKey");
+        }
+
+        if (path.isEmpty()) {
+            path = "/";
+        }
+
+        setSlideGroupObject.setName(name);
+        setSlideGroupObject.setPath(path);
+        setSlideGroupObject.setPrefKey(key);
+        setSlideGroupObject.setType("song");
+    }
+    private void pullXMLIntoCustomSlideGroupObject(XmlPullParser xpp, SetSlideGroupObject setSlideGroupObject) throws XmlPullParserException, IOException {
+        // Could be a scripture, a note, a variation, a divider, image slides, or standard custom slides
+        // Notes have # Note # - in the name
+        // Variations have # Variation # - in the name
+        // Dividers have # Divider # - in the name
+
+        setSlideGroupObject.setName(xpp.getAttributeValue(null, "name"));
+        setSlideGroupObject.setType(xpp.getAttributeValue(null, "type"));
+        setSlideGroupObject.setSeconds(xpp.getAttributeValue(null, "seconds"));
+        setSlideGroupObject.setLoop(xpp.getAttributeValue(null, "loop"));
+        setSlideGroupObject.setPrefKey(xpp.getAttributeValue(null, "prefKey"));
+        setSlideGroupObject.setPrint(xpp.getAttributeValue(null,"print"));
+
+        // Now we go through the fields, stopping when we reach the slide_group end tag
+        boolean end_of_slide_group = false;
+        while (!end_of_slide_group) {
+            if (xpp.getEventType() == XmlPullParser.START_TAG) {
+                switch (xpp.getName()) {
+                    case "title":
+                        setSlideGroupObject.setTitle(getTrimmedOrNullText(xpp.nextText()));
+                        break;
+
+                    case "notes":
+                        setSlideGroupObject.setNotes(getTrimmedOrNullText(xpp.nextText()));
+                        break;
+
+                    case "slide":
+                        // This is a new SetSlideObject (nested inside <slides>...</slides>)
+                        SetSlideObject setSlideObject = new SetSlideObject();
+                        pullXMLIntoSlideObject(xpp, setSlideObject);
+                        if (setSlideGroupObject.getSlides()==null) {
+                            setSlideGroupObject.setSlides(new ArrayList<>());
+                        }
+                        if (setSlideGroupObject.getType()!=null &&
+                                setSlideGroupObject.getType().equals("scripture")) {
+                            setSlideGroupObject.getSlides().addAll(fixCustomSlideScripture(setSlideObject.getBody()));
+                        } else {
+                            setSlideGroupObject.getSlides().add(setSlideObject);
+                        }
+                        break;
+
+                    case "subtitle":
+                        setSlideGroupObject.setSubtitle(getTrimmedOrNullText(xpp.nextText()));
+                        break;
+
+                }
+            }
+            xpp.next();
+            if (xpp.getName()!=null && xpp.getName().equals("slide_group")) {
+                end_of_slide_group = true;
+            }
+        }
+
+        // Deal with the different OpenSongApp variations of custom slides
+        String noteStringOpt1 = "# " + c.getResources().getString(R.string.note) + " # - ";
+        String noteStringOpt2 = "# Note # - ";
+        String variationStringOpt1 = "# " + c.getResources().getString(R.string.variation) + " # - ";
+        String variationStringOpt2 = "# Variation # - ";
+        String dividerStringOpt1 = "# " + c.getResources().getString(R.string.divider) + " # - ";
+        String dividerStringOpt2 = "# Divider # - ";
+
+        if (setSlideGroupObject.getName()!=null &&
+                (setSlideGroupObject.getName().contains(noteStringOpt1) ||
+                        setSlideGroupObject.getName().contains(noteStringOpt2))) {
+            String newText = setSlideGroupObject.getName().replace(noteStringOpt1,"");
+            newText = newText.replace(noteStringOpt2,"");
+            setSlideGroupObject.setName(newText);
+            setSlideGroupObject.setType("note");
+
+        } else if (setSlideGroupObject.getName()!=null &&
+                (setSlideGroupObject.getName().contains(variationStringOpt1) ||
+                        setSlideGroupObject.getName().contains(variationStringOpt2))) {
+            String newText = setSlideGroupObject.getName().replace(variationStringOpt1,"");
+            newText = newText.replace(variationStringOpt2,"");
+            setSlideGroupObject.setName(newText);
+            setSlideGroupObject.setType("variation");
+
+        } else if (setSlideGroupObject.getName()!=null &&
+                (setSlideGroupObject.getName().contains(dividerStringOpt1) ||
+                        setSlideGroupObject.getName().contains(dividerStringOpt2))) {
+            String newText = setSlideGroupObject.getName().replace(dividerStringOpt1,"");
+            newText = newText.replace(dividerStringOpt2,"");
+            setSlideGroupObject.setName(newText);
+            setSlideGroupObject.setType("divider");
+        }
+
+    }
+    private void pullXMLIntoSlideObject(XmlPullParser xpp, SetSlideObject setSlideObject) throws XmlPullParserException, IOException {
+        boolean slide_finished = false;
+        xpp.nextTag();
+        while (!slide_finished) {
+            if (xpp.getEventType() == XmlPullParser.START_TAG) {
+                switch (xpp.getName()) {
+                    case "body":
+                        // This is a new SetSlideObject
+                        setSlideObject.setBody(mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp)));
+                        break;
+
+                    case "image":
+                        // This is a base64 encoded image
+                        setSlideObject.setImage(safeNextText(xpp));
+                        break;
+
+                    case "description":
+                        // This is a description (for images)
+                        setSlideObject.setDescription(safeNextText(xpp));
+                        break;
+
+                    case "filename":
+                        // This is an image filename
+                        setSlideObject.setFilename(safeNextText(xpp));
+                        break;
+                }
+            }
+            xpp.nextTag();
+            if (xpp.getName()!=null && xpp.getName().equals("slide")) {
+                slide_finished = true;
+            }
+        }
+    }
+    private ArrayList<SetSlideObject> fixCustomSlideScripture(String text) {
+        // This setSlideGroupObject will have one slide with one body.
+        // We might need to break this into multiple slides/body
+        ArrayList<SetSlideObject> slides = new ArrayList<>();
+        text = "\n[]\n" + text;
+
+        // Break the text into separate word chunks so we can check for new slided
+        text = text.replace(" ", "\n");
+        text = text.replace("---","[]");
+        StringBuilder scripture_text = new StringBuilder();
+        scripture_text.append(text);
+        ArrayList<String> vlines = getVlines(scripture_text);
+
+        // Ok go back through the array and add the non-empty lines back up
+        scripture_text = new StringBuilder();
+        for (int i = 0; i < vlines.size(); i++) {
+            String s = vlines.get(i);
+            if (s != null && !s.isEmpty()) {
+                s = s.replace("[]","___NEWSLIDE___");
+                s = s.replace("[ ]","___NEWSLIDE___");
+                scripture_text.append("\n").append(s);
+            }
+        }
+
+        // Check for lots of blank lines
+        while (scripture_text.toString().contains("\\n\\n")) {
+            scripture_text = new StringBuilder(scripture_text.toString().replace("\\n\\n", "\\n"));
+        }
+
+        // Now split the text into the sections
+        String[] sections = scripture_text.toString().split("___NEWSLIDE___");
+        for (String section:sections) {
+            if (section!=null && !section.trim().isEmpty()) {
+                SetSlideObject newSlide = new SetSlideObject();
+                newSlide.setBody(section.trim());
+                slides.add(newSlide);
+            }
+        }
+
+        return slides;
+    }
+    private String getTrimmedOrNullText(String text) {
+        if (text!=null) {
+            text = text.trim();
+        }
+        return text;
+    }
 }

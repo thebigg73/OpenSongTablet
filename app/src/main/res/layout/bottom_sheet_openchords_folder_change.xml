@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sync_folder_name_change" />
+
+    <ScrollView
+        android:id="@+id/openChordsBottomScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/sync_folder_name_change_info" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/localName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sync_local_folder_name" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/remoteName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/sync_remote_folder_name" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/updateRemoteFolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/sync_update_remote_folder_name_info"
+                android:text="@string/sync_update_remote_folder_name" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/newRemoteFolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/sync_new_remote_folder_info"
+                android:text="@string/sync_new_remote_folder" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <LinearLayout
+                android:id="@+id/newLocalFolderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/newLocalFolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sync_new_local_folder_info"
+                    android:text="@string/sync_new_local_folder" />
+
+                <TableRow style="@style/DividerLine" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/switchLocalFolderLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/switchLocalFolder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sync_switch_local_folder_info"
+                    android:text="@string/sync_switch_local_folder" />
+
+                <TableRow style="@style/DividerLine" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

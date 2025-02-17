@@ -183,6 +183,8 @@
         <item name="boxStrokeColor">@color/vlightgrey</item>
         <item name="boxStrokeWidth">1dp</item>
 
+        <item name="textInputLayoutFocusedRectEnabled">false</item>
+
         <item name="materialThemeOverlay">@style/TextInputOverlay</item>
     </style>
     <style name="EditTextLayout" parent="AppTheme">
@@ -195,6 +197,8 @@
         <item name="android:scrollbars">vertical</item>
         <item name="android:layout_gravity">top</item>
         <item name="android:background">@color/transparent</item>
+        <item name="textInputLayoutFocusedRectEnabled">false</item>
+
 
         <!-- The text position thumb and trailing icon colours -->
         <item name="colorPrimary">@color/colorSecondary</item>
@@ -206,6 +210,7 @@
         <item name="colorControlNormal">@color/colorAltSecondary</item>
         <item name="colorOnSurface">@color/colorAltSecondary</item>
         <item name="android:popupBackground">@color/transparent</item>
+        <item name="textInputLayoutFocusedRectEnabled">false</item>
     </style>
 
     <!-- The ActionBar -->

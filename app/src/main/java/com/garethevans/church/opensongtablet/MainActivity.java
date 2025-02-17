@@ -708,7 +708,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     try {
                         getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
                         String uuid = fileOpenIntent.getData().toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
-                        getOpenChordsAPI().setOpenChordsFolderUuid(null,uuid);
+                        getOpenChordsAPI().setOpenChordsFolderUuid(uuid);
+                        getOpenChordsAPI().setReceivedFolderLink(true);
                         setWhattodo("openchordsintent");
                         navigateToFragment(getString(R.string.deeplink_openchords),0);
 
@@ -1067,9 +1068,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Set up nearby
         setupNearby();
-
-        // Prepare the OpenChords info
-        getOpenChordsAPI().initialise();
 
         // Tell the second screen we are ready
         bootUpCompleted = true;

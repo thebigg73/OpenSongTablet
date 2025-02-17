@@ -42,6 +42,7 @@ public class InlineSetList extends RecyclerView {
     private boolean useTitle = true, reloadSong = false, toggling = false;
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
     private String no_set_string;
+    private String divider_string;
     public InlineSetList(@NonNull Context context) {
         super(context);
         llm = new LinearLayoutManager(context);
@@ -71,6 +72,7 @@ public class InlineSetList extends RecyclerView {
         mode_presenter_string = c.getString(R.string.mode_presenter);
         no_set_string = c.getString(R.string.set_is_empty);
         useTitle = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles",true);
+        divider_string = c.getString(R.string.divider);
     }
 
     // Change the preference to use the inlineSet
@@ -368,12 +370,13 @@ public class InlineSetList extends RecyclerView {
     private class InlineSetListAdapter extends RecyclerView.Adapter<InlineSetItemViewHolder> {
 
         // All the helpers we need to access are in the MainActivity
-        private final int onColor, offColor, transparentColor;
+        private final int onColor, offColor, menuColor, grey;
 
         InlineSetListAdapter(Context context) {
             onColor = context.getResources().getColor(R.color.colorSecondary);
             offColor = context.getResources().getColor(R.color.colorAltPrimary);
-            transparentColor = context.getResources().getColor(R.color.transparent);
+            menuColor = context.getResources().getColor(R.color.colorPrimary);
+            grey = context.getResources().getColor(R.color.grey);
         }
 
         @Override
@@ -415,12 +418,14 @@ public class InlineSetList extends RecyclerView {
                                 textfn = textfn + " (" + si.songkey + ")";
                             }
 
-                            if (si.songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
-                                holder.vSongTitle.setText("");
-                                holder.vSongFilename.setText("");
-                                holder.vSongFilename.setVisibility(View.GONE);
-                                holder.vSongTitle.setVisibility(View.GONE);
-                                setColor(holder,transparentColor);
+                            if (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                                    si.songfolder.contains("**Divider") ||
+                                    si.songfolder.contains("**"+divider_string)) {
+                                holder.vSongTitle.setTextColor(grey);
+                                holder.vSongTitle.setText(textsn);
+                                holder.vSongFilename.setTextColor(grey);
+                                holder.vSongFilename.setText(textfn);
+                                setColor(holder,menuColor);
                             } else {
                                 holder.vSongTitle.setText(textsn);
                                 holder.vSongFilename.setText(textfn);
@@ -430,11 +435,13 @@ public class InlineSetList extends RecyclerView {
 
                         if (payload.equals(highlightItem) || payload.equals(updateNumber)) {
                             // We want to update the highlight colour to on/off
+                            String songfolder = mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder;
                             if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                                 setColor(holder, onColor);
-                            } else if (mainActivityInterface.getCurrentSet().getSetItemInfo(position).
-                                    songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
-                                setColor(holder, transparentColor);
+                            } else if (songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                                songfolder.contains("**Divider") ||
+                                songfolder.contains("**"+divider_string)) {
+                                setColor(holder, menuColor);
                             } else {
                                 setColor(holder, offColor);
                             }
@@ -486,12 +493,14 @@ public class InlineSetList extends RecyclerView {
                 setitemViewHolder.vSongTitle.setVisibility(useTitle ? View.VISIBLE : View.GONE);
                 setitemViewHolder.vSongFilename.setVisibility(useTitle ? View.GONE : View.VISIBLE);
 
-                if (si.songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
-                    setitemViewHolder.vSongTitle.setText("");
-                    setitemViewHolder.vSongFilename.setText("");
-                    setitemViewHolder.vSongFilename.setVisibility(View.GONE);
-                    setitemViewHolder.vSongTitle.setVisibility(View.GONE);
-                    setColor(setitemViewHolder,transparentColor);
+                if (si.songfolder.contains(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                        si.songfolder.contains("**Divider") ||
+                        si.songfolder.contains("**"+divider_string)) {
+                    setitemViewHolder.vSongTitle.setTextColor(grey);
+                    setitemViewHolder.vSongTitle.setText(textfn);
+                    setitemViewHolder.vSongFilename.setTextColor(grey);
+                    setitemViewHolder.vSongFilename.setText(textsn);
+                    setColor(setitemViewHolder,menuColor);
 
                 } else {
                     setitemViewHolder.vSongTitle.setText(textsn);

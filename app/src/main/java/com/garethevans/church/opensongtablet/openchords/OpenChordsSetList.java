@@ -1,46 +1,49 @@
 package com.garethevans.church.opensongtablet.openchords;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class OpenChordsSetList {
     // This gets the set from the folder object
 
     // Matches v1.0.7
+    @Nullable
     private String id;
-    private String title;
-    private String notes;
-    private ArrayList<OpenChordsSetListItem> items;
-    private String lastUpdated;
+    @Nullable private String title;
+    @Nullable private String notes;
+    @Nullable private ArrayList<OpenChordsSetListItem> items;
+    @Nullable private String lastUpdated;
 
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
-    public String getTitle() {
+    @Nullable public String getTitle() {
         return title;
     }
-    public String getNotes() {
+    @Nullable public String getNotes() {
         return notes;
     }
-    public ArrayList<OpenChordsSetListItem> getItems() {
+    @Nullable public ArrayList<OpenChordsSetListItem> getItems() {
         return items;
     }
-    public String getLastUpdated() {
+    @Nullable public String getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setId(String id) {
+    public void setId(@Nullable String id) {
         this.id = id;
     }
-    public void setTitle(String title) {
+    public void setTitle(@Nullable String title) {
         this.title = title;
     }
-    public void setNotes(String notes) {
+    public void setNotes(@Nullable String notes) {
         this.notes = notes;
     }
-    public void setItems(ArrayList<OpenChordsSetListItem> items) {
+    public void setItems(@Nullable ArrayList<OpenChordsSetListItem> items) {
         this.items = items;
     }
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(@Nullable String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 

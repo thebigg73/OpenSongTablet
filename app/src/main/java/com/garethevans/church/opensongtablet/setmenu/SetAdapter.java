@@ -28,7 +28,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // Only the set adapter should change the indexSongInSet
 
     private final MainActivityInterface mainActivityInterface;
-    private final int onColor, offColor;
+    private final int onColor, offColor, menuColor, grey, white;
     private float titleSize, subtitleSizeFile;
     private boolean useTitle;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -40,6 +40,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private boolean updatingHighlight = false, removingHighlight = false;
     private boolean highlightChangeAllowed =true;
+    private final String divider_string;
     //Initialise the class
     public SetAdapter(Context c, RecyclerView recyclerView) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -49,6 +50,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         getUpdatedPreferences();
         onColor = c.getResources().getColor(R.color.colorSecondary);
         offColor = c.getResources().getColor(R.color.colorAltPrimary);
+        menuColor = c.getResources().getColor(R.color.colorPrimary);
+        grey = c.getResources().getColor(R.color.grey);
+        white = c.getResources().getColor(R.color.white);
+        divider_string = c.getString(R.string.divider);
     }
 
     // If we change load in a profile, this is called
@@ -129,12 +134,32 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         }
 
         // If this is the current set item, highlight it
-        if (currentSetItem) {
+        if (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                si.songfolder.contains("**"+mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                si.songfolder.contains("**Divider")) {
+            setColor(holder, menuColor);
+            setFABColor(holder.cardEdit,onColor);
+            holder.cardFilename.setTextColor(grey);
+            holder.cardTitle.setTextColor(grey);
+            holder.cardFolder.setTextColor(grey);
+            holder.cardItem.setTextColor(grey);
+
+        } else if (currentSetItem) {
             setColor(holder,onColor);
             setFABColor(holder.cardEdit,offColor);
+            holder.cardFilename.setTextColor(white);
+            holder.cardTitle.setTextColor(white);
+            holder.cardFolder.setTextColor(white);
+            holder.cardItem.setTextColor(white);
+
         } else {
             setColor(holder,offColor);
             setFABColor(holder.cardEdit,onColor);
+            holder.cardFilename.setTextColor(white);
+            holder.cardTitle.setTextColor(white);
+            holder.cardFolder.setTextColor(white);
+            holder.cardItem.setTextColor(white);
+
         }
 
         holder.cardItem.setTextSize(titleSize);
@@ -147,14 +172,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
         holder.cardTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
 
-        if (filename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
-            holder.cardTitle.setText("");
-            holder.cardFilename.setVisibility(View.GONE);
+        if (songfolder.equals("**Divider") ||
+                songfolder.contains(mainActivityInterface.getSetActions().getDividerIdentifier())) {
             holder.cardFolder.setVisibility(View.GONE);
-            holder.cardFilename.setVisibility(View.GONE);
-            holder.cardTitle.setVisibility(View.GONE);
-            holder.cardEdit.setVisibility(View.GONE);
-            holder.cardFolder.setVisibility(View.GONE);
+            holder.cardTitle.setText(titlesongname);
+            holder.cardFilename.setText(titlesongname);
         } else {
             // Not a divider
             holder.cardTitle.setText(titlesongname);
@@ -193,16 +215,34 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                     holder.cardItem.setText(text);
                 }
 
+                String folder = mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder;
                 if (payload.equals(highlightItem) || payload.equals(unhighlightitem) || payload.equals(updateNumber)) {
                     // We want to update the highlight colour to on/off
-                    if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+                    if (folder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                            folder.contains("**Divider") ||
+                            folder.contains("**"+divider_string)) {
+                        setColor(holder, menuColor);
+                        holder.cardFilename.setTextColor(grey);
+                        holder.cardFilename.setTextColor(grey);
+                        holder.cardFolder.setTextColor(grey);
+                        holder.cardItem.setTextColor(grey);
+                        setFABColor(holder.cardEdit, onColor);
+
+                    } else if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
                         setColor(holder, onColor);
-                        setFABColor(holder.cardEdit,offColor);
+                        setFABColor(holder.cardEdit, offColor);
+                        holder.cardFilename.setTextColor(white);
+                        holder.cardFilename.setTextColor(white);
+                        holder.cardFolder.setTextColor(white);
+                        holder.cardItem.setTextColor(white);
 
                     } else {
                         setColor(holder, offColor);
                         setFABColor(holder.cardEdit,onColor);
-
+                        holder.cardFilename.setTextColor(white);
+                        holder.cardFilename.setTextColor(white);
+                        holder.cardFolder.setTextColor(white);
+                        holder.cardItem.setTextColor(white);
                     }
                 }
             }
@@ -346,7 +386,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         mainActivityInterface.notifyInlineSetInserted();
     }
 
-
     // This method is called when an item is swiped away or unticked in the song menu.
     public void removeItem(int fromPosition,boolean updateMenu) {
         if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition) {
@@ -383,7 +422,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             mainActivityInterface.notifyInlineSetRangeChanged(fromPosition,mainActivityInterface.getCurrentSet().getCurrentSetSize()-fromPosition);
         }
     }
-
 
     // This method is used to undo a swiped away item
     public void restoreItem(SetItemInfo setItemInfo, int position) {
@@ -443,8 +481,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (si!=null && si.songfilename!=null && si.songfilename.
-                equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
+        if (si!=null && si.songfolder!=null &&
+                (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                si.songfolder.contains("**Divider") ||
+                        si.songfolder.contains("**"+divider_string))) {
             Log.d(TAG,"Divider, so do nothing");
         } else {
             mainActivityInterface.loadSongFromSet(position);

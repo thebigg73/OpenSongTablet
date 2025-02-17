@@ -53,6 +53,19 @@
                 android:textColor="@color/yellow"
                 android:text="@string/sync_force_general_info2"/>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lastForcePushInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/sync_last_force_upload"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lastForcePullInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sync_last_force_download"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

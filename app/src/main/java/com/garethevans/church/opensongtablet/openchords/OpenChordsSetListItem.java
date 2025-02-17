@@ -1,59 +1,61 @@
 package com.garethevans.church.opensongtablet.openchords;
 
+import androidx.annotation.Nullable;
+
 public class OpenChordsSetListItem {
 
     // This lists the items in the setlist
 
     // Matches 1.0.7
-    private String id;
-    private String title;
-    private String type;
-    private OpenChordsSetListSongItem songItem;
-    private String notes;
-    private String customData;
-    private String lastUpdated;
+    @Nullable private String id;
+    @Nullable private String title;
+    @Nullable private String type;
+    @Nullable private OpenChordsSetListSongItem songItem;
+    @Nullable private String notes;
+    @Nullable private String customData;
+    @Nullable private String lastUpdated;
 
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
-    public String getTitle() {
+    @Nullable public String getTitle() {
         return title;
     }
-    public String getType() {
+    @Nullable public String getType() {
         return type;
     }
-    public OpenChordsSetListSongItem getSongItem() {
+    @Nullable public OpenChordsSetListSongItem getSongItem() {
         return songItem;
     }
-    public String getNotes() {
+    @Nullable public String getNotes() {
         return notes;
     }
-    public String getCustomData() {
+    @Nullable public String getCustomData() {
         return customData;
     }
-    public String getLastUpdated() {
+    @Nullable public String getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setId(String id) {
+    public void setId(@Nullable String id) {
         this.id = id;
     }
-    public void setTitle(String title) {
+    public void setTitle(@Nullable String title) {
         this.title = title;
     }
-    public void setType(String type) {
+    public void setType(@Nullable String type) {
         this.type = type;
     }
-    public void setSongItem(OpenChordsSetListSongItem songItem) {
+    public void setSongItem(@Nullable OpenChordsSetListSongItem songItem) {
         this.songItem = songItem;
     }
-    public void setNotes(String notes) {
+    public void setNotes(@Nullable String notes) {
         this.notes = notes;
     }
-    public void setCustomData(String customData) {
+    public void setCustomData(@Nullable String customData) {
         this.customData = customData;
     }
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(@Nullable String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 }

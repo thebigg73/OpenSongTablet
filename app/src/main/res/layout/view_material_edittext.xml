@@ -18,6 +18,9 @@
     android:textColorHint="@color/vlightgrey"
     app:hintTextColor="@color/vlightgrey"
     android:saveEnabled="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    app:textInputLayoutFocusedRectEnabled="false"
     tools:hint="Hint">
 
     <com.google.android.material.textfield.TextInputEditText

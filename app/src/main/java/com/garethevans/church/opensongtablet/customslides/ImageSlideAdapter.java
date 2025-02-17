@@ -39,6 +39,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     private int currentSection = 0;
     private final Context c;
     private final String alphaChange = "alpha";
+    private int inlineSetWidth = 0;
 
     public ImageSlideAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -176,7 +177,8 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         holder.imageSlideNumText.setText(pageNumText);
 
         Bitmap imageSlideBitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(uri,width,height);
-
+        // If we have an inline set, pad the view to make it fit
+        holder.imageSlideImage.setPadding(inlineSetWidth,0,0,0);
         Glide.with(c).load(imageSlideBitmap).override(width,height).into(holder.imageSlideImage);
         holder.imageSlideImage.setOnClickListener(view -> sectionSelected(pageNum));
         holder.imageSlideImage.setOnLongClickListener(view -> {
@@ -197,6 +199,9 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         return (int) floatHeight;
     }
 
+    public void setInlineSetWidth(int inlineSetWidth) {
+        this.inlineSetWidth = inlineSetWidth;
+    }
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
         mainActivityInterface.updateOnScreenInfo("showhide");

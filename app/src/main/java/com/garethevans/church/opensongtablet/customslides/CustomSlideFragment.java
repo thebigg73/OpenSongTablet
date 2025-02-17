@@ -100,10 +100,6 @@ public class CustomSlideFragment extends Fragment {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.content,8);
         switch (mainActivityInterface.getCustomSlide().getCreateType()) {
-            case "note":
-            default:
-                myView.customNote.setChecked(true);
-                break;
             case "slide":
                 myView.customSlide.setChecked(true);
                 break;
@@ -112,6 +108,10 @@ public class CustomSlideFragment extends Fragment {
                 break;
             case "divider":
                 myView.customDivider.setChecked(true);
+                break;
+            case "note":
+            default:
+                myView.customNote.setChecked(true);
                 break;
         }
         myView.loopSlides.setChecked(mainActivityInterface.getCustomSlide().getCreateLoop());
@@ -172,7 +172,7 @@ public class CustomSlideFragment extends Fragment {
         });
         myView.customDivider.setOnCheckedChangeListener(((compoundButton, b) -> {
             if (b) {
-                showViews(false,false,false,false,false);
+                showViews(true,false,false,false,false);
                 mainActivityInterface.getCustomSlide().setCreateType("divider");
             }
         }));
@@ -217,6 +217,7 @@ public class CustomSlideFragment extends Fragment {
         showView(myView.loopSlides,showLoop);
         showView(myView.content,showContent);
         showView(myView.slideImageTable,showImageContent);
+        showView(myView.addReusable,!myView.customDivider.isChecked());
     }
 
     private void showView(View view, boolean showView) {

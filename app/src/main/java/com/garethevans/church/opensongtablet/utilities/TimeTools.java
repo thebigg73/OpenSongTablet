@@ -126,14 +126,7 @@ public class TimeTools {
     }
 
     public String getIsoTimeFromSongFileMetadata(Song thisSong) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
-        long millis;
-        if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
-            millis = mainActivityInterface.getStorageAccess().getLastModifiedDate(uri);
-        } else {
-            millis = 0;
-        }
-        return String.valueOf(Instant.ofEpochSecond(millis/1000));
+        return getIsoTimeFromFileMetadata("Songs", thisSong.getFolder(), thisSong.getFilename());
     }
     public String getIsoTimeFromFileMetadata(String folder, String subfolder, String file) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, file);

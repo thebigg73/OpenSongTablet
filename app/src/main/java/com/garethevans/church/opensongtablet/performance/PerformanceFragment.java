@@ -954,6 +954,11 @@ public class PerformanceFragment extends Fragment {
         if (getContext()!=null) {
             imageSlideAdapter = new ImageSlideAdapter(getContext(), mainActivityInterface, displayInterface,
                     availableWidth, availableHeight);
+            try {
+                imageSlideAdapter.setInlineSetWidth(myView.inlineSetList.getInlineSetWidth());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // If we have a time for each slide, set the song duration
@@ -1386,6 +1391,14 @@ public class PerformanceFragment extends Fragment {
                 dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
             }
         }
+
+
+        // TODO REMOVE
+        /*try {
+            mainActivityInterface.getOpenChordsAPI().convertOpenSongSetToOpenChordsSetList2("Church__2022 06 05 Ormiston");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
 
         // Load up the sticky notes if the user wants them
         if (!mainActivityInterface.getProcessSong().getHasStickyOffOverride(mainActivityInterface.getSong())) {

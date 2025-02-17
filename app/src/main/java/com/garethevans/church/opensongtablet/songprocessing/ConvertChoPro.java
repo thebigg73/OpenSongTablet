@@ -1080,6 +1080,9 @@ public class ConvertChoPro {
         // The app will convert it into OpenSong before saving.
         StringBuilder newlyrics = new StringBuilder();
 
+        if (lyrics==null) {
+            lyrics = "";
+        }
         // Extract tabs
         if ((lyrics.contains("{sot") || lyrics.contains("{start_of_tab")) &&
                 (lyrics.contains("{eot") || lyrics.contains("{end_of_tab}"))) {

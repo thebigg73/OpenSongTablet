@@ -7,7 +7,6 @@ package com.garethevans.church.opensongtablet.filemanagement;
 // KitKat and below will use file uris based on built in folder chooser (File)
 // The older method is now deprecated and legacy storage flag is ignored in Android 11+
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +48,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 public class StorageAccess {
 
@@ -79,6 +77,7 @@ public class StorageAccess {
     private int updateCrashLogAttempts = 0;
     private DocumentFile uriTreeDF, songsDF;
     private long databaseLastUpdate;
+    private final String crashLogFilename = "CrashLog.txt";
 
     // Permissions for accessing non OpenSong folder uris
     public int getTakePersistentReadUriFlags() {
@@ -257,10 +256,6 @@ public class StorageAccess {
                 if (!nf.mkdirs()) {
                     Log.d(TAG, "Error creating folder: " + folder);
                 }
-                if (folder.equals("Songs")) {
-                    // Make sure that this MAIN folder has a UUID recorded in the text file
-                    checkSongFolderUUIDExist(mainActivityInterface.getMainfoldername(),null);
-                }
             }
         }
 
@@ -344,10 +339,6 @@ public class StorageAccess {
 
                     } else {
                         stringBuilder.append(" - Found, so skip:").append(dfFolder.getUri());
-                    }
-                    if (folder.equals("Songs")) {
-                        // Make sure that this MAIN folder has a UUID recorded in the text file
-                        checkSongFolderUUIDExist(mainActivityInterface.getMainfoldername(),null);
                     }
 
                 } catch (Exception e) {
@@ -782,7 +773,10 @@ public class StorageAccess {
         return path;
     }
 
-    public String checkSongFolderUUIDExist(String subfolderPath, String uuidOrNull) {
+    // TODO delete these definitely old and unused functions
+    /*public String checkSongFolderUUIDExist(String subfolderPath, String uuidOrNull) {
+        // This uses the json object stored in the OpenChordsAPI
+
         String newUUIDIfRequired;
         if (uuidOrNull == null) {
             newUUIDIfRequired = String.valueOf(UUID.randomUUID());
@@ -812,9 +806,9 @@ public class StorageAccess {
         }
 
         return newUUIDIfRequired;
-    }
+    }*/
 
-    public String getUUIDForSongFolder(String subfolderPath) {
+    /*public String getUUIDForSongFolder(String subfolderPath) {
         Uri uri = getUriForItem("Settings","",songFolderUUIDs);
         String content = readTextFileToString(getInputStream(uri));
         if (content!=null) {
@@ -831,8 +825,9 @@ public class StorageAccess {
         } else {
             return String.valueOf(UUID.randomUUID());
         }
-    }
-    public String getSongFolderForUUID(String expectedFolderName, String folderUuid) {
+    }*/
+
+    /*public String getSongFolderForUUID(String expectedFolderName, String folderUuid) {
         Uri uri = getUriForItem("Settings","",songFolderUUIDs);
         String content = readTextFileToString(getInputStream(uri));
         if (content!=null && folderUuid!=null) {
@@ -845,7 +840,8 @@ public class StorageAccess {
         }
         // If we get this far, we just need to create a new UUID for the subfolder
         return checkSongFolderUUIDExist(expectedFolderName,null);
-    }
+    }*/
+
     // Get information about the files
     public String getUTFEncoding(Uri uri) {
         // Try to determine the BOM for UTF encoding
@@ -953,11 +949,15 @@ public class StorageAccess {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     public boolean checkModifiedDate_SAF(Uri uri) {
         if (uri != null && uri.getPath() != null) {
             try {
-                return (DocumentFile.fromSingleUri(c, uri).lastModified() > databaseLastUpdate);
+                DocumentFile df = DocumentFile.fromSingleUri(c, uri);
+                if (df!=null) {
+                    return (df.lastModified() > databaseLastUpdate);
+                } else {
+                    return true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return true;
@@ -968,15 +968,22 @@ public class StorageAccess {
         }
     }
 
-    @SuppressWarnings("ConstantConditions")
     public long getLastModifiedDate(Uri uri) {
+        Log.d(TAG,"getLastModifiedDate()");
+        Log.d(TAG,"uriExists("+uri+"):"+uriExists(uri));
         if (uri!=null && uriExists(uri)) {
+            Log.d(TAG,"about to process getLastModifed()");
             if (lollipopOrLater()) {
-                if (DocumentFile.fromSingleUri(c, uri) != null) {
-                    return DocumentFile.fromSingleUri(c, uri).lastModified();
+                Log.d(TAG,"lollipopOrLater()");
+                DocumentFile df = DocumentFile.fromSingleUri(c,uri);
+                Log.d(TAG,"df:"+df);
+                if (df != null) {
+                    Log.d(TAG,"getting this far");
+                    return df.lastModified();
                 }
             }
         }
+        Log.d(TAG, "didn't work");
         return 0;
     }
 
@@ -1213,7 +1220,7 @@ public class StorageAccess {
         }
     }
 
-    @SuppressLint("NewApi")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
 
         // Get the home folder as our start point
@@ -1303,7 +1310,6 @@ public class StorageAccess {
         }
     }
 
-    @SuppressLint("NewApi")
     private String getDocumentsContractId(Uri uri) {
         try {
             if (lollipopOrLater()) {
@@ -1804,6 +1810,7 @@ public class StorageAccess {
         Log.d(TAG,"stuffCreated:"+stuffCreated);
     }
     public boolean deleteFile(Uri uri) {
+
         if (lollipopOrLater()) {
             return deleteFile_SAF(uri);
         } else {
@@ -1833,6 +1840,7 @@ public class StorageAccess {
     private boolean deleteFile_File(Uri uri) {
         try {
             if (uri != null && uri.getPath() != null) {
+                String itemName = uri.getLastPathSegment();
                 File f = new File(uri.getPath());
                 // If this is a directory, empty it first
                 if (f.isDirectory() && f.listFiles() != null) {
@@ -1859,6 +1867,7 @@ public class StorageAccess {
         } else {
             uri = Uri.parse(loc);
         }
+        Log.d(TAG,"image slide loc:"+loc+"  uri:"+uri);
         if (uriExists(uri)) {
             try {
                 InputStream inputStream = getInputStream(uri);
@@ -2168,7 +2177,6 @@ public class StorageAccess {
     }
 
     // This builds an index of all the songs on the device
-    @SuppressLint("NewApi")
     public ArrayList<String> listSongs(boolean showAllIncludingBad) {
         ArrayList<String> noSongs = new ArrayList<>();
         // We need to make sure the locale version of MAIN is correct (change language during run)
@@ -2751,7 +2759,10 @@ public class StorageAccess {
     }
 
     public Uri getCrashLogUri() {
-        return getUriForItem("Settings","","CrashLog.txt");
+        return getUriForItem("Settings","",crashLogFilename);
+    }
+    public String getCrashLogFilename() {
+        return crashLogFilename;
     }
     public boolean crashLogExists() {
         return uriExists(getCrashLogUri());

@@ -31,7 +31,9 @@ public class OpenChordsForceBottomSheet extends BottomSheetDialogFragment {
     private String force_push_warning_string = "", force_pull_warning_string = "",
             files_deleted_local_string = "", files_deleted_remote_string = "",
             song_string = "", set_list_string = "", files_replaced_local_string="",
-            files_replaced_remote_string="";
+            files_replaced_remote_string="",
+            sync_song_force_uploaded_string="", sync_set_force_uploaded_string="",
+            sync_song_force_downloaded_string="", sync_set_force_downloaded_string="";
     private ArrayList<String> itemsAffected = new ArrayList<>();
 
     OpenChordsForceBottomSheet(OpenChordsFragment openChordsFragment) {
@@ -63,7 +65,7 @@ public class OpenChordsForceBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetOpenchordsForceBinding.inflate(inflater, null, false);
 
         prepareStrings();
-
+        setupViews();
         setupListeners();
 
         return myView.getRoot();
@@ -79,7 +81,18 @@ public class OpenChordsForceBottomSheet extends BottomSheetDialogFragment {
             set_list_string = getString(R.string.set_list);
             files_replaced_local_string = getString(R.string.sync_newer_items_local_replaced);
             files_replaced_remote_string = getString(R.string.sync_newer_items_remote_replaced);
+            sync_song_force_uploaded_string = getString(R.string.sync_song_force_uploaded);
+            sync_set_force_uploaded_string = getString(R.string.sync_set_force_uploaded);
+            sync_song_force_downloaded_string = getString(R.string.sync_last_force_download);
+            sync_set_force_downloaded_string = getString(R.string.sync_last_force_upload);
         }
+    }
+
+    private void setupViews() {
+        String value = sync_song_force_uploaded_string + ": " + mainActivityInterface.getOpenChordsAPI().getLastModified("lastForcePush");
+        myView.lastForcePushInfo.setText(value);
+        value = sync_song_force_downloaded_string + ": " + mainActivityInterface.getOpenChordsAPI().getLastModified("lastForcePull");
+        myView.lastForcePullInfo.setText(value);
     }
 
     private void setupListeners() {

@@ -1,13 +1,13 @@
 package com.garethevans.church.opensongtablet.customslides;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class CustomSlide {
 
@@ -40,7 +40,8 @@ public class CustomSlide {
     private String aka;                     // Any image saved as a background
     private String hymn_num;                // Notes saved with the slide
     private String key_line;                //
-
+    private String uuid;                    // The uuid
+    private String lastModified;            // The lastModified ISO date
     public CustomSlide(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
@@ -65,6 +66,10 @@ public class CustomSlide {
                     folder = "Notes";
                     type = c.getResources().getString(R.string.note);
                     break;
+                case "divider":
+                    folder = "Divider";
+                    type = c.getResources().getString(R.string.divider);
+                    break;
                 case "slide":
                     user1 = customSlide.get(3);
                     user2 = customSlide.get(4);
@@ -78,13 +83,6 @@ public class CustomSlide {
                     lyrics = "";
                     folder = "Images";
                     type = c.getResources().getString(R.string.image);
-                    break;
-                case "divider":
-                    title = mainActivityInterface.getSetActions().getDividerIdentifier();
-                    lyrics = "";
-                    file = null;
-                    folder = null;
-                    type = c.getResources().getString(R.string.divider);
                     break;
             }
         }
@@ -106,10 +104,12 @@ public class CustomSlide {
         folder = "";
         type = "";
         file = "";
+        uuid = "";
+        lastModified = "";
     }
 
     public void addItemToSet(boolean reusable) {
-        if (file != null && !file.isEmpty() && folder != null && !folder.isEmpty() && !createType.equals("divider")) {
+        if (file != null && !file.isEmpty() && folder != null && !folder.isEmpty()) {
             // Prepare the custom slide so it can be viewed in the app
             // When exporting/saving the set, the contents get grabbed from this
 
@@ -131,6 +131,16 @@ public class CustomSlide {
             xml += "  <key_line>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(key_line) + "</key_line>\n";
             xml += "  <hymn_number>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(hymn_num) + "</hymn_number>\n";
             xml += "  <lyrics>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(lyrics) + "</lyrics>\n";
+            if (uuid==null || uuid.isEmpty()) {
+                xml += "  <uuid>" + UUID.randomUUID() + "</uuid>\n";
+            } else {
+                xml += "  <uuid>" + uuid + "</uuid>\n";
+            }
+            if (lastModified==null || lastModified.isEmpty()) {
+                xml += "  <lastModified>" + mainActivityInterface.getTimeTools().getNowIsoTime() + "</lastModified>\n";
+            } else {
+                xml += "  <lastModified>" + lastModified + "</lastModified>\n";
+            }
             xml += "</song>";
 
             // Make sure any & are encoded properly - first reset any currently encoded, then put back
@@ -141,35 +151,21 @@ public class CustomSlide {
             // If it is flagged to be reusable, it also gets saved in the top level folder
             // All custom slides get saved into the temp _cache folder for use with this set
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " addItemToSet doStringWriteToFile " + folder + "/_cache/" + file + " with: " + xml);
-            mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "_cache", file, xml);
+            String folderToUse = folder;
+            if (folder.equals("Divider")) {
+                folderToUse = "Notes";
+            }
+            mainActivityInterface.getStorageAccess().doStringWriteToFile(folderToUse, "_cache", file, xml);
 
             if (reusable) {
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " addItemToSet doStringWriteToFile " + folder + "/" + file + " with: " + xml);
-                mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "", file, xml);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " addItemToSet doStringWriteToFile " + folderToUse + "/" + file + " with: " + xml);
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(folderToUse, "", file, xml);
             }
 
             // Update the current set and save the preference
             String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**" + folder, file, key);
             SetItemInfo setItemInfo = new SetItemInfo();
             setItemInfo.setItem("**" + folder, file, title, key, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
-            mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
-            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-
-            // Update the set menu title
-            mainActivityInterface.getCurrentSet().updateSetTitleView();
-
-            // Let the user know the action was successful
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));
-
-        } else if (getCreateType()!=null && getCreateType().equals("divider")) {
-            Log.d(TAG,"divider");
-            // This is a divider so no file required
-            // Update the current set and save the preference
-            String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**Divider", null, null);
-            SetItemInfo setItemInfo = new SetItemInfo();
-            setItemInfo.setItem(mainActivityInterface.getSetActions().getDividerIdentifier(),
-                    mainActivityInterface.getSetActions().getDividerIdentifier(),
-                    mainActivityInterface.getSetActions().getDividerIdentifier(), null, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
             mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 

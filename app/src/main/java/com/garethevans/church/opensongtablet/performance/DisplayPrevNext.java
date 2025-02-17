@@ -200,8 +200,10 @@ public class DisplayPrevNext {
             boolean notdone = true;
             while (currentPos > 0 && notdone) {
                 currentPos--;
-                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).
-                        songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
+                String songfolder = mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).songfolder;
+                if (!songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) &&
+                        !songfolder.contains("**Divider") &&
+                        !songfolder.contains("**" + c.getString(R.string.divider))) {
                     prevIndex = currentPos;
                     movePrevInSet = true;
                     notdone = false;
@@ -214,8 +216,10 @@ public class DisplayPrevNext {
             notdone = true;
             while (currentPos < mainActivityInterface.getCurrentSet().getCurrentSetSize() -1 && notdone) {
                 currentPos++;
-                if (!mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).
-                        songfilename.equals(mainActivityInterface.getSetActions().getDividerIdentifier())) {
+                String songfolder = mainActivityInterface.getCurrentSet().getSetItemInfo(currentPos).songfolder;
+                if (!songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) &&
+                        !songfolder.contains("**Divider") &&
+                        !songfolder.contains("**" + c.getString(R.string.divider))) {
                     nextIndex = currentPos;
                     moveNextInSet = true;
                     notdone = false;
@@ -239,6 +243,7 @@ public class DisplayPrevNext {
                 nextIndex = -1;
                 moveNextInMenu = false;
             }
+
         }
     }
 

@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet.openchords;
 
+import androidx.annotation.Nullable;
+
 public class OpenChordsSong {
 
     // This is the OpenChords song object
@@ -7,121 +9,120 @@ public class OpenChordsSong {
     // Also called in CommonSQL.openChordsSyncGetSongsFromFolder()
 
     // Matches v1.0.7
-    private String id;              // UUID 4 id, e.g. 93E5D3EF-8B1E-4B35-851E-16A0859315E3
-    private String title;           // The song title
-    private String rawData;         // The actual ChordPro song formatted text
-    private String artist;          // The song artist
-    private String duration;        // The song duration in ordinal ISO 8601 format. e.g. 268 (seconds) and 4:28 (mins:secs) both work
-    private int tempo;              // The tempo of the song in bpm
-    private String timeSignature;   // The time signature of the song e.g. 4/4
-    private String key;             // The key of the song e.g. A, G#, Ab
-    private boolean keyIsMinor;     // If the key is a minor key
-    private int capo;               // The capo fret to use
-    private String transpose;       // Transposed to a different key e.g. A, G#, Ab
-    private String notes;           // Notes to save with the song
-    private String copyright;       // The copyright information
-    private String ccli;            // The CCLI information
-    private String lastUpdated;     // The last time the song was updated ISO 8601 format e.g. 2025-01-14T07:17:02Z
-    private String[] tags;          // The tags for the song.  These are UUIDs that get looked up
+    @Nullable private String id;              // UUID 4 id, e.g. 93E5D3EF-8B1E-4B35-851E-16A0859315E3
+    @Nullable private String title;           // The song title
+    @Nullable private String rawData;         // The actual ChordPro song formatted text
+    @Nullable private String artist;          // The song artist
+    @Nullable private String duration;        // The song duration in ordinal ISO 8601 format. e.g. 268 (seconds) and 4:28 (mins:secs) both work
+    @Nullable private Integer tempo;          // The tempo of the song in bpm
+    @Nullable private String timeSignature;   // The time signature of the song e.g. 4/4
+    @Nullable private String key;             // The key of the song e.g. A, G#, Ab
+    @Nullable private Boolean keyIsMinor;     // If the key is a minor key
+    @Nullable private Integer capo;               // The capo fret to use
+    @Nullable private String transpose;       // Transposed to a different key e.g. A, G#, Ab
+    @Nullable private String notes;           // Notes to save with the song
+    @Nullable private String copyright;       // The copyright information
+    @Nullable private String ccli;            // The CCLI information
+    @Nullable private String lastUpdated;     // The last time the song was updated ISO 8601 format e.g. 2025-01-14T07:17:02Z
+    @Nullable private String[] tags;          // The tags for the song.  These are UUIDs that get looked up
 
     // The getters
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
-    public String getTitle() {
+    @Nullable public String getTitle() {
         return title;
     }
-    public String getRawData() {
+    @Nullable public String getRawData() {
         return rawData;
     }
-    public String getArtist() {
+    @Nullable public String getArtist() {
         return artist;
     }
-    public String getDuration() {
+    @Nullable public String getDuration() {
         return duration;
     }
-    public int getTempo() {
+    @Nullable public Integer getTempo() {
         return tempo;
     }
-    public String getTimeSignature() {
+    @Nullable public String getTimeSignature() {
         return timeSignature;
     }
-    public String getKey() {
+    @Nullable public String getKey() {
         return key;
     }
-    public boolean isKeyIsMinor() {
+    @Nullable public Boolean isKeyIsMinor() {
         return keyIsMinor;
     }
-    public int getCapo() {
+    @Nullable public Integer getCapo() {
         return capo;
     }
-    public String getTranspose() {
+    @Nullable public String getTranspose() {
         return transpose;
     }
-    public String getNotes() {
+    @Nullable public String getNotes() {
         return notes;
     }
-    public String getCopyright() {
+    @Nullable public String getCopyright() {
         return copyright;
     }
-    public String getCcli() {
+    @Nullable public String getCcli() {
         return ccli;
     }
-    public String getLastUpdated() {
+    @Nullable public String getLastUpdated() {
         return lastUpdated;
     }
-    public String[] getTags() {
+    @Nullable public String[] getTags() {
         return tags;
     }
 
     // The setters
-    public void setId(String id) {
+    public void setId(@Nullable String id) {
         this.id = id;
     }
-    public void setTitle(String title) {
+    public void setTitle(@Nullable String title) {
         this.title = title;
     }
-    public void setRawData(String rawData) {
+    public void setRawData(@Nullable String rawData) {
         this.rawData = rawData;
     }
-    public void setArtist(String artist) {
+    public void setArtist(@Nullable String artist) {
         this.artist = artist;
     }
-    public void setDuration(String duration) {
+    public void setDuration(@Nullable String duration) {
         this.duration = duration;
     }
-    public void setTempo(int tempo) {
+    public void setTempo(@Nullable Integer tempo) {
         this.tempo = tempo;
     }
-    public void setTimeSignature(String timeSignature) {
+    public void setTimeSignature(@Nullable String timeSignature) {
         this.timeSignature = timeSignature;
     }
-    public void setKey(String key) {
+    public void setKey(@Nullable String key) {
         this.key = key;
     }
-    public void setKeyIsMinor(boolean keyIsMinor) {
+    public void setKeyIsMinor(@Nullable Boolean keyIsMinor) {
         this.keyIsMinor = keyIsMinor;
     }
-    public void setCapo(int capo) {
+    public void setCapo(@Nullable Integer capo) {
         this.capo = capo;
     }
-    public void setTranspose(String transpose) {
+    public void setTranspose(@Nullable String transpose) {
         this.transpose = transpose;
     }
-    public void setNotes(String notes) {
+    public void setNotes(@Nullable String notes) {
         this.notes = notes;
     }
-    public void setCopyright(String copyright) {
+    public void setCopyright(@Nullable String copyright) {
         this.copyright = copyright;
     }
-    public void setCcli(String ccli) {
+    public void setCcli(@Nullable String ccli) {
         this.ccli = ccli;
     }
-    public void setLastUpdated(String lastUpdated) {
+    public void setLastUpdated(@Nullable String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-    public void setTags(String[] tags) {
+    public void setTags(@Nullable String[] tags) {
         this.tags = getTags();
     }
-
 }

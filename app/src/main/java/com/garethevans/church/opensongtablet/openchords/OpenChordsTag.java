@@ -1,31 +1,32 @@
 package com.garethevans.church.opensongtablet.openchords;
 
+import androidx.annotation.Nullable;
+
 public class OpenChordsTag {
     // This gets the tags from the folder object
 
     // Matches v1.0.7
-    private String id;
-    private String title;
-    private String color;
+    @Nullable private String id;
+    @Nullable private String title;
+    @Nullable private String color;
 
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
-    public String getTitle() {
+    @Nullable public String getTitle() {
         return title;
     }
-    public String getColor() {
+    @Nullable public String getColor() {
         return color;
     }
 
-    public void setId(String id) {
+    public void setId(@Nullable String id) {
         this.id = id;
     }
-    public void setTitle(String title) {
+    public void setTitle(@Nullable String title) {
         this.title = title;
     }
-    public void setColor(String color) {
+    public void setColor(@Nullable String color) {
         this.color = color;
     }
-
 }
