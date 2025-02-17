@@ -270,22 +270,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
         return openChordsCompareObject;
     }
-    /*private OpenChordsSetListItem createOpenChordsSetListItem(String[] songInfo, String preferredKey) {
-        OpenChordsSetListItem localSetListItem = new OpenChordsSetListItem();
-        localSetListItem.setId(songInfo[0]);
-        // Set list items don't include the song title
-        localSetListItem.setTitle("");
-        localSetListItem.setType("song");
-        localSetListItem.setSongItem(createOpenChordsSetListSongItem(songInfo[0],preferredKey));
-        return localSetListItem;
-    }*/
-    /*private OpenChordsSetListSongItem createOpenChordsSetListSongItem(String uuid, String transposeKey) {
-        OpenChordsSetListSongItem openChordsSetListSongItem = new OpenChordsSetListSongItem();
-        openChordsSetListSongItem.setSongId(uuid);
-        TODO something wrong with the server logic for transpose
-        openChordsSetListSongItem.setTranspose(transposeKey.replace("m",""));
-        return openChordsSetListSongItem;
-    }*/
+
     // The comparison information between the server and local
     private void findSongsNotOnLocal() {
         for (OpenChordsCompareObject serverObject : serverSongsCompareObjects) {
@@ -483,9 +468,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             }
         }
     }
-    public ArrayList<OpenChordsCompareObject> getSetListsNotOnServer() {
-        return setListsNotOnServer;
-    }
+
     public int getSongsNotOnLocalCount() {
         songsNotOnLocalCount = songsNotOnLocal.size();
         return songsNotOnLocalCount;
@@ -617,44 +600,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 }
             }
 
-            /*boolean haveFolder = false;
-            // Do we have a local folder with the same UUID
-            String localFolderName = getOpenSongFolderNameFromUUID(openChordsFolderUuid);
-            if (localFolderName==null) {
-                // We don't have a folder with this UUID.
-                // Let's check if we have a folder with the same name
-                for (OpenSongFolderRecordObject openSongFolderRecordObject : openSongFolderRecordObjects) {
-                    if (openSongFolderRecordObject.getFolderName()!=null && openSongFolderRecordObject.getFolderName().equals(openChordsFolderName)) {
-                        // We have this folder, but the uuid is wrong!
-                        // Change the UUID and then tell the user
-                        openSongFolderRecordObject.setFolderUuid(openChordsFolderUuid);
-                        openSongFolderRecordObject.setFolderOwnerUuid(openChordsFolderUuid);
-                        saveOpenSongFolderObject();
-                        if (openChordsFragment != null) {
-                            openChordsFragment.openChordsFolderDifferentFromLocal();
-                        }
-                        haveFolder = true;
-                        break;
-                    }
-                }
-            } else {
-                haveFolder = true;
-            }
-
-            // Check we don't somehow have a local folder with the same uuid, but different name
-            if (!haveFolder) {
-                for (OpenSongFolderRecordObject openSongFolderRecordObject : openSongFolderRecordObjects) {
-                    if (openSongFolderRecordObject.getFolderUuid()!=null &&
-                            openSongFolderRecordObject.getFolderUuid().equalsIgnoreCase(openChordsFolderUuid)) {
-                        // We have somehow managed to have no folder names that match,
-                        // However, one of our folders (different name) has the same uuid as the OpenChords folder
-                        // We need to change the id of the offending folder to a new random value
-                        changeOpenSongFolderUUID(openSongFolderRecordObject.getFolderUuid(), String.valueOf(UUID.randomUUID()));
-                        saveOpenSongFolderObject();
-                    }
-                }
-            }
-*/
             // Now compare the local and server objects
             updateProgress(c.getString(R.string.sync_comparing_local_and_remote)+"\n");
             //if (haveFolder) {
@@ -665,15 +610,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
                 // Now create the local compare objects
                 createLocalCompareObjects();
-
-
-
-            /*} else {
-                // Let the user know we don't (yet) have the local folder
-                if (openChordsFragment != null) {
-                    openChordsFragment.localFolderNotFound();
-                }
-            }*/
 
             // We can find out what we don't have on the server that is on the local
             findSongsNotOnServer();
@@ -999,61 +935,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             openChordsSetList.setItems(openChordsSetListItems);
         }
 
-        // TODO check if this works...
         String json = gson.toJson(openChordsSetList);
         mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","testingSetObject.json",json);
 
         return openChordsSetList;
     }
-    public OpenChordsSetList convertOpenSongSetToOpenChordsSetList_OLD(String filename) {
-        // Parse the set XML file and get the contents
-        ArrayList<String> thisSet = new ArrayList<>();
-        thisSet.add(filename);
-        String[] bits = mainActivityInterface.getExportActions().parseSets(thisSet);
 
-        // bits[0] = folder/filename pair
-        // bits[1] = text for export (not needed here) which includes author, hymn num and key
-        // bits[2] = preferred key
-        // bits[3] = uuid (creates new if null)
-        // bits[4] = lastModified (creates new if null)
-        // bits[5] = notes
-
-        OpenChordsSetList openChordsSetList = new OpenChordsSetList();
-        String actualSetName = convertOpenSongSetNameToOpenChordsSetName(filename);
-        openChordsSetList.setTitle(jsonNullIfEmpty(actualSetName));
-        openChordsSetList.setId(bits[3]);
-        openChordsSetList.setLastUpdated(bits[4]);
-        openChordsSetList.setNotes(jsonNullIfEmpty(bits[5]));
-
-        // Now we need to go through the set items and add them
-        // TODO deal with separators and slides/notes rather than just songs
-        String[] folderAndFiles = bits[0].split("\n");
-        String[] preferredKeys = bits[2].split("\n");
-        ArrayList<OpenChordsSetListItem> localSetListItems = new ArrayList<>();
-        for (int i = 0; i < folderAndFiles.length; i++) {
-            String folderAndFile = folderAndFiles[i];
-            String preferredKey = preferredKeys[i];
-            // Now we need to get the id of the song item
-            String[] songInfo = mainActivityInterface.getSQLiteHelper().getUuidFromFolderAndFile(folderAndFile);
-            localSetListItems.add(createSetListItem(songInfo, preferredKey));
-        }
-        openChordsSetList.setItems(localSetListItems);
-        return openChordsSetList;
-    }
-    private OpenChordsSetListItem createSetListItem(String[] songInfo, String preferredKey) {
-        OpenChordsSetListItem localSetListItem = new OpenChordsSetListItem();
-        localSetListItem.setId(songInfo[0]);
-        // Set list items don't include the song title
-        localSetListItem.setTitle(null);
-        localSetListItem.setType("song");
-        OpenChordsSetListSongItem openChordsSetListSongItem = new OpenChordsSetListSongItem();
-        openChordsSetListSongItem.setSongId(songInfo[0]);
-        if (preferredKey!=null && !preferredKey.isEmpty() && !preferredKey.equals("ignore")) {
-            openChordsSetListSongItem.setTranspose(preferredKey.replace("m",""));
-        }
-        localSetListItem.setSongItem(openChordsSetListSongItem);
-        return localSetListItem;
-    }
     private String convertOpenSongSetNameToOpenChordsSetName(String openSongSetName) {
         return mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(openSongSetName).
                 replace(getOpenSongSetCategoryStart(),"");
@@ -1440,9 +1327,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
 
         updateProgress(c.getString(R.string.sync_uploading_changes)+"\n");
-        // TODO reinstate once I figure out the issues
-        Log.d(TAG,"Songs for upload");
-
 
         Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
         call.enqueue(new Callback<OpenChordsFolderObject>() {
@@ -1587,7 +1471,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private String jsonNullIfEmpty(String string) {
         return (string==null || string.trim().isEmpty()) ? null : string;
     }
-    // TODO tidy objects
     private void removePointlessStuffFromSongs(ArrayList<OpenChordsSong> songobjects) {
         for (OpenChordsSong songobject : songobjects) {
             songobject.setTitle(trimmedOrNull(songobject.getTitle()));
@@ -1670,7 +1553,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         String nowTime = mainActivityInterface.getTimeTools().getNowIsoTime();
         for (OpenChordsSong song : localSongs) {
             OpenChordsConflictItemObject openChordsConflictItemObject = new OpenChordsConflictItemObject();
-            openChordsConflictItemObject.setAction(c.getString(R.string.sync_song_force_uploaded));
+            openChordsConflictItemObject.setAction(c.getString(R.string.sync_last_force_uploaded));
             openChordsConflictItemObject.setItem(song.getTitle());
             openChordsConflictItemObject.setDate(nowTime);
             conflictItemRecords.add(openChordsConflictItemObject);
@@ -1678,11 +1561,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setSongs(songsForUpload);
 
         // Deal with the sets
-        if (localSetLists!=null) {
-            setsForUpload = new ArrayList<>(localSetLists);
-        } else {
-            setsForUpload = new ArrayList<>();
-        }
+        setsForUpload = new ArrayList<>(localSetLists);
         for (OpenChordsSetList set : localSetLists) {
             OpenChordsConflictItemObject openChordsConflictItemObject = new OpenChordsConflictItemObject();
             openChordsConflictItemObject.setAction(c.getString(R.string.sync_set_force_uploaded));
@@ -1693,11 +1572,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setSetLists(setsForUpload);
 
         // Deal with the tags
-        if (newTagsForUpload!=null) {
-            uploadFolderObject.setTags(newTagsForUpload);
-        } else {
-            uploadFolderObject.setTags(new ArrayList<>());
-        }
+        uploadFolderObject.setTags(newTagsForUpload);
 
         updateConflictItem("lastForcePush");
 
@@ -1809,15 +1684,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         setListsWithNoChangesCount = 0;
     }
 
-    private ArrayList<?> doClearOrInitialise(ArrayList<?> arrayList) {
-        if (arrayList!=null) {
-            arrayList.clear();
-        } else {
-            arrayList = new ArrayList<>();
-        }
-        return arrayList;
-    }
-
     // Deal with maintaining the conflict file record
     public void loadConflictObject() {
         Uri conflictCheckUri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", conflictCheckFile);
@@ -1838,39 +1704,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             openChordsConflictObjects = openChordsConflictCheck.getConflictObjects();
         }
     }
-    public String getConflictItem(String which) {
-        for (OpenChordsConflictObject conflictObject : openChordsConflictObjects) {
-            if (conflictObject.getUuid() != null && conflictObject.getUuid().equalsIgnoreCase(openChordsFolderUuid)) {
-                switch (which) {
-                    case "lastQuery":
-                        return conflictObject.getLastQuery();
-                    case "lastUploadNewSongs":
-                        return conflictObject.getLastUploadNewSongs();
-                    case "lastUploadNewSets":
-                        return conflictObject.getLastUploadNewSets();
-                    case "lastUploadSongChanges":
-                        return conflictObject.getLastUploadSongChanges();
-                    case "lastUploadSetChanges":
-                        return conflictObject.getLastUploadSetChanges();
-                    case "lastDownloadNewSongs":
-                        return conflictObject.getLastDownloadNewSongs();
-                    case "lastDownloadNewSets":
-                        return conflictObject.getLastDownloadNewSets();
-                    case "lastDownloadSongChanges":
-                        return conflictObject.getLastDownloadSongChanges();
-                    case "lastDownloadSetChanges":
-                        return conflictObject.getLastDownloadSetChanges();
-                    case "lastForcePush":
-                        return conflictObject.getLastForcePush();
-                    case "lastForcePull":
-                        return conflictObject.getLastForcePull();
-                    default:
-                        return c.getString(R.string.is_not_set);
-                }
-            }
-        }
-        return c.getString(R.string.is_not_set);
-    }
+
     private void updateConflictItem(String which) {
         for (OpenChordsConflictObject conflictObject : openChordsConflictObjects) {
             if (conflictObject.getUuid()!=null && conflictObject.getUuid().equalsIgnoreCase(openChordsFolderUuid)) {
@@ -1930,8 +1764,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private void checkForConflictObject() {
         boolean found = false;
         for (OpenChordsConflictObject conflictObject : openChordsConflictObjects) {
-            if (conflictObject.getUuid()!=null && conflictObject.getUuid().equalsIgnoreCase(openChordsFolderUuid)) {
+            if (conflictObject.getUuid() != null && conflictObject.getUuid().equalsIgnoreCase(openChordsFolderUuid)) {
                 found = true;
+                break;
             }
         }
         if (!found) {
@@ -2054,7 +1889,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 for (String folder : validFolders) {
                     boolean found = false;
                     for (OpenSongFolderRecordObject openSongFolderRecordObject : openSongFolderRecordObjects) {
-                        if (openSongFolderRecordObject.getFolderName().equals(folder)) {
+                        if (openSongFolderRecordObject.getFolderName()!=null && openSongFolderRecordObject.getFolderName().equals(folder)) {
                             found = true;
                             break;
                         }
@@ -2113,16 +1948,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // Now save the json file
         saveOpenSongFolderObject();
     }
-    public void removeFolderRecordObject(String folderName) {
-        for (OpenSongFolderRecordObject openSongFolderRecordObject : openSongFolderRecordObjects) {
-            if (openSongFolderRecordObject.getFolderName()!=null && openSongFolderRecordObject.getFolderName().equals(folderName)) {
-                openSongFolderRecordObjects.remove(openSongFolderRecordObject);
-                break;
-            }
-        }
-        // Now save the json file
-        saveOpenSongFolderObject();
-    }
+
     private OpenSongFolderRecordObject createNewFolderRecordObject(String folderName,
                                                                    String folderUuid) {
         OpenSongFolderRecordObject openSongFolderRecordObject = new OpenSongFolderRecordObject();
