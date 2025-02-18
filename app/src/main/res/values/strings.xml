@@ -1215,6 +1215,10 @@
     <string name="sync_checking_local_item">Checking local item</string>
     <string name="sync_comparing_local_and_remote">Checking local and remote folders for changes…</string>
     <string name="sync_creating_new_item">Creating new item</string>
+    <string name="sync_delete_local_not_in_remote">Delete old local items</string>
+    <string name="sync_delete_local_not_in_remote_info">The following items exist in the local folder, but are not in the remote folder.  These can be removed if they are no longer required</string>
+    <string name="sync_delete_remote_not_in_local">Delete old remote items</string>
+    <string name="sync_delete_remote_not_in_local_info">The following items exist in the remote folder, but are not in the local folder.  These can be removed if they are no longer required</string>
     <string name="sync_deleting_local_items">Deleting local item before getting remote items</string>
     <string name="sync_download_from_openchords">Download from OpenChords server</string>
     <string name="sync_download_new_items">Download new items</string>
@@ -1242,6 +1246,7 @@
     <string name="sync_last_download_update_songs">Last time song updates were pulled/downloaded</string>
     <string name="sync_last_force_download">Last time a force pull/download was run</string>
     <string name="sync_last_force_upload">Last time a force push/upload was run</string>
+    <string name="sync_last_force_uploaded">Song force pushed/uploaded</string>
     <string name="sync_last_query">Last check for updates</string>
     <string name="sync_last_upload_new_sets">Last time new setlists were pushed/uploaded</string>
     <string name="sync_last_upload_new_songs">Last time new songs were pushed/uploaded</string>
@@ -1249,6 +1254,8 @@
     <string name="sync_last_upload_update_songs">Last time song updates were pushed/uploaded</string>
     <string name="sync_local_folder_name">Local folder name</string>
     <string name="sync_local_items_older">Local items that need updated</string>
+    <string name="sync_local_set_deleted">Local set deleted</string>
+    <string name="sync_local_song_deleted">Local song deleted</string>
     <string name="sync_new_local_folder">Create new local folder</string>
     <string name="sync_new_local_folder_info">A new local folder will be created when you pull items from the remote folder</string>
     <string name="sync_new_remote_folder">Create new remote folder</string>
@@ -1266,6 +1273,8 @@
     <string name="sync_reading_remote_folder">Reading the contents of the remote folder</string>
     <string name="sync_remote_folder_name">Remote folder name</string>
     <string name="sync_remote_items_older">Remote items that need updated</string>
+    <string name="sync_remote_set_deleted">Remote set deleted</string>
+    <string name="sync_remote_song_deleted">Remote song deleted</string>
     <string name="sync_server_no_matching_folder">This folder does not exist on the remote server</string>
     <string name="sync_server_noresponse_error">There was no response from the server</string>
     <string name="sync_set_downloaded">New setlist pulled/downloaded</string>
@@ -1276,7 +1285,6 @@
     <string name="sync_set_uploaded">New setlist pushed/uploaded</string>
     <string name="sync_song_downloaded">New song pulled/downloaded</string>
     <string name="sync_song_force_downloaded">Song force pulled/download</string>
-    <string name="sync_last_force_uploaded">Song force pushed/uploaded</string>
     <string name="sync_song_update_downloaded">Updated song pulled/downloaded</string>
     <string name="sync_song_update_uploaded">Updated song pushed/uploaded</string>
     <string name="sync_song_uploaded">New song pushed/uploaded</string>

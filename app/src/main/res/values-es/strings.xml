@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Comprobando el artículo local</string>
     <string name="sync_comparing_local_and_remote">Comprobando las carpetas locales y remotas en busca de cambios…</string>
     <string name="sync_creating_new_item">Creando nuevo elemento</string>
+    <string name="sync_delete_local_not_in_remote">Eliminar elementos locales antiguos</string>
+    <string name="sync_delete_local_not_in_remote_info">Los siguientes elementos existen en la carpeta local, pero no en la carpeta remota.  Estos se pueden eliminar si ya no son necesarios.</string>
+    <string name="sync_delete_remote_not_in_local">Eliminar elementos remotos antiguos</string>
+    <string name="sync_delete_remote_not_in_local_info">Los siguientes elementos existen en la carpeta remota, pero no en la carpeta local.  Estos se pueden eliminar si ya no son necesarios.</string>
     <string name="sync_deleting_local_items">Eliminar elemento local antes de obtener elementos remotos</string>
     <string name="sync_download_from_openchords">Descargar desde el servidor OpenChords</string>
     <string name="sync_download_new_items">Descargar nuevos elementos</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">La última vez que se extrajeron/descargaron actualizaciones de canciones</string>
     <string name="sync_last_force_download">La última vez que se ejecutó una extracción/descarga forzada</string>
     <string name="sync_last_force_upload">La última vez que se ejecutó una carga/inserción forzada</string>
+    <string name="sync_last_force_uploaded">Fuerza de canción empujada/subida</string>
     <string name="sync_last_query">Última comprobación de actualizaciones</string>
     <string name="sync_last_upload_new_sets">La última vez que se publicaron/cargaron nuevos setlists</string>
     <string name="sync_last_upload_new_songs">La última vez que se publicaron/subieron nuevas canciones</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">La última vez que se enviaron/cargaron actualizaciones de canciones</string>
     <string name="sync_local_folder_name">Nombre de la carpeta local</string>
     <string name="sync_local_items_older">Artículos locales que necesitan ser actualizados.</string>
+    <string name="sync_local_set_deleted">Conjunto local eliminado</string>
+    <string name="sync_local_song_deleted">Canción local eliminada</string>
     <string name="sync_new_local_folder">Crear nueva carpeta local</string>
     <string name="sync_new_local_folder_info">Se creará una nueva carpeta local cuando extraiga elementos de la carpeta remota</string>
     <string name="sync_new_remote_folder">Crear nueva carpeta remota</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Leer el contenido de la carpeta remota</string>
     <string name="sync_remote_folder_name">Nombre de la carpeta remota</string>
     <string name="sync_remote_items_older">Elementos remotos que necesitan actualización</string>
+    <string name="sync_remote_set_deleted">Conjunto remoto eliminado</string>
+    <string name="sync_remote_song_deleted">Canción remota eliminada</string>
     <string name="sync_server_no_matching_folder">Esta carpeta no existe en el servidor remoto.</string>
     <string name="sync_server_noresponse_error">No hubo respuesta del servidor.</string>
     <string name="sync_set_downloaded">Nueva lista de canciones extraída/descargada</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nueva lista de canciones enviada/subida</string>
     <string name="sync_song_downloaded">Nueva canción extraída/descargada</string>
     <string name="sync_song_force_downloaded">Fuerza de canción extraída/descargada</string>
-    <string name="sync_last_force_uploaded">Fuerza de canción empujada/subida</string>
     <string name="sync_song_update_downloaded">Canción actualizada extraída/descargada</string>
     <string name="sync_song_update_uploaded">Canción actualizada enviada/subida</string>
     <string name="sync_song_uploaded">Nueva canción enviada/subida</string>

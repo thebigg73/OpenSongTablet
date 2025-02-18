@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Controllo dell\'articolo locale</string>
     <string name="sync_comparing_local_and_remote">Controllo delle modifiche nelle cartelle locali e remote…</string>
     <string name="sync_creating_new_item">Creazione di un nuovo elemento</string>
+    <string name="sync_delete_local_not_in_remote">Elimina i vecchi elementi locali</string>
+    <string name="sync_delete_local_not_in_remote_info">I seguenti elementi esistono nella cartella locale, ma non si trovano nella cartella remota.  Questi possono essere rimossi se non sono più necessari</string>
+    <string name="sync_delete_remote_not_in_local">Elimina i vecchi elementi remoti</string>
+    <string name="sync_delete_remote_not_in_local_info">I seguenti elementi esistono nella cartella remota, ma non si trovano nella cartella locale.  Questi possono essere rimossi se non sono più necessari</string>
     <string name="sync_deleting_local_items">Eliminazione dell\'elemento locale prima di ottenere elementi remoti</string>
     <string name="sync_download_from_openchords">Scarica dal server OpenChords</string>
     <string name="sync_download_new_items">Scarica nuovi elementi</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">L\'ultima volta che sono stati estratti/scaricati gli aggiornamenti dei brani</string>
     <string name="sync_last_force_download">L\'ultima volta che è stato eseguito un pull/download forzato</string>
     <string name="sync_last_force_upload">L\'ultima volta che è stato eseguito un push/caricamento forzato</string>
+    <string name="sync_last_force_uploaded">Forza brano spinto/caricato</string>
     <string name="sync_last_query">Ultimo controllo per gli aggiornamenti</string>
     <string name="sync_last_upload_new_sets">L\'ultima volta che sono state inviate/caricate nuove setlist</string>
     <string name="sync_last_upload_new_songs">L\'ultima volta che sono state inviate/caricate nuove canzoni</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">L\'ultima volta che sono stati inviati/caricati aggiornamenti dei brani</string>
     <string name="sync_local_folder_name">Nome della cartella locale</string>
     <string name="sync_local_items_older">Elementi locali che necessitano di aggiornamento</string>
+    <string name="sync_local_set_deleted">Set locale eliminato</string>
+    <string name="sync_local_song_deleted">Canzone locale eliminata</string>
     <string name="sync_new_local_folder">Crea una nuova cartella locale</string>
     <string name="sync_new_local_folder_info">Verrà creata una nuova cartella locale quando si estraggono elementi dalla cartella remota</string>
     <string name="sync_new_remote_folder">Crea una nuova cartella remota</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Lettura del contenuto della cartella remota</string>
     <string name="sync_remote_folder_name">Nome della cartella remota</string>
     <string name="sync_remote_items_older">Elementi remoti che necessitano di aggiornamento</string>
+    <string name="sync_remote_set_deleted">Dispositivo remoto eliminato</string>
+    <string name="sync_remote_song_deleted">Canzone remota eliminata</string>
     <string name="sync_server_no_matching_folder">Questa cartella non esiste sul server remoto</string>
     <string name="sync_server_noresponse_error">Non c\'è stata risposta dal server</string>
     <string name="sync_set_downloaded">Nuova setlist estratta/scaricata</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nuova setlist inviata/caricata</string>
     <string name="sync_song_downloaded">Nuova canzone estratta/scaricata</string>
     <string name="sync_song_force_downloaded">Forza brano estratto/scaricato</string>
-    <string name="sync_last_force_uploaded">Forza brano spinto/caricato</string>
     <string name="sync_song_update_downloaded">Canzone aggiornata estratta/scaricata</string>
     <string name="sync_song_update_uploaded">Canzone aggiornata inviata/caricata</string>
     <string name="sync_song_uploaded">Nuova canzone inviata/caricata</string>

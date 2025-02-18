@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Kontroleer tans plaaslike item</string>
     <string name="sync_comparing_local_and_remote">Gaan tans plaaslike en afgeleë vouers na vir veranderinge …</string>
     <string name="sync_creating_new_item">Skep nuwe item</string>
+    <string name="sync_delete_local_not_in_remote">Odstraňte staré místní položky</string>
+    <string name="sync_delete_local_not_in_remote_info">Následující položky existují v místní složce, ale nejsou ve vzdálené složce.  Tyto lze odstranit, pokud již nejsou potřeba</string>
+    <string name="sync_delete_remote_not_in_local">Odstraňte staré vzdálené položky</string>
+    <string name="sync_delete_remote_not_in_local_info">Následující položky existují ve vzdálené složce, ale nejsou v místní složce.  Tyto lze odstranit, pokud již nejsou potřeba</string>
     <string name="sync_deleting_local_items">Veee plaaslike item pro it in afgeleë items kry</string>
     <string name="sync_download_from_openchords">Přečtěte si OpenChords-bediener</string>
     <string name="sync_download_new_items">Nové položky</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Poslední aktualizace skladeb byly staženy/staženy</string>
     <string name="sync_last_force_download">Naposledy bylo spuštěno vynucené stahování/stahování</string>
     <string name="sync_last_force_upload">Naposledy bylo spuštěno vynucené odeslání/nahrání</string>
+    <string name="sync_last_force_uploaded">Síla písně odeslána/nahrána</string>
     <string name="sync_last_query">Poslední kontrola aktualizací</string>
     <string name="sync_last_upload_new_sets">Naposledy byly odeslány/nahrány nové setlisty</string>
     <string name="sync_last_upload_new_songs">Naposledy byly odeslány/nahrány nové skladby</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Poslední aktualizace skladeb byly odeslány/nahrány</string>
     <string name="sync_local_folder_name">Název místní složky</string>
     <string name="sync_local_items_older">Plaaslike položky wat opgedateer moet word</string>
+    <string name="sync_local_set_deleted">Místní sada byla smazána</string>
+    <string name="sync_local_song_deleted">Místní skladba byla smazána</string>
     <string name="sync_new_local_folder">Vytvořte novou místní složku</string>
     <string name="sync_new_local_folder_info">Při stahování položek ze vzdálené složky se vytvoří nová místní složka</string>
     <string name="sync_new_remote_folder">Vytvořte novou vzdálenou složku</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Lees die inhoud van die afgeleë vouer</string>
     <string name="sync_remote_folder_name">Název vzdálené složky</string>
     <string name="sync_remote_items_older">Afgeleë items wat opgedateer moet word</string>
+    <string name="sync_remote_set_deleted">Vzdálená sada byla smazána</string>
+    <string name="sync_remote_song_deleted">Vzdálená skladba byla smazána</string>
     <string name="sync_server_no_matching_folder">Tato složka na vzdáleném serveru neexistuje</string>
     <string name="sync_server_noresponse_error">Ze serveru nepřišla žádná odpověď</string>
     <string name="sync_set_downloaded">Nový setlist stažen/stažen</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nový setlist odeslán/nahrán</string>
     <string name="sync_song_downloaded">Nová skladba stažena/stažena</string>
     <string name="sync_song_force_downloaded">Píseň síla vytažena/stáhnout</string>
-    <string name="sync_last_force_uploaded">Síla písně odeslána/nahrána</string>
     <string name="sync_song_update_downloaded">Aktualizovaná skladba stažena/stažena</string>
     <string name="sync_song_update_uploaded">Aktualizovaná skladba odeslána/nahrána</string>
     <string name="sync_song_uploaded">Nová skladba odeslána/nahrána</string>

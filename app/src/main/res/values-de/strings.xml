@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Überprüfen des lokalen Artikels</string>
     <string name="sync_comparing_local_and_remote">Lokale und Remote-Ordner auf Änderungen überprüfen…</string>
     <string name="sync_creating_new_item">Neues Element erstellen</string>
+    <string name="sync_delete_local_not_in_remote">Löschen Sie alte lokale Elemente</string>
+    <string name="sync_delete_local_not_in_remote_info">Die folgenden Elemente sind im lokalen Ordner vorhanden, befinden sich jedoch nicht im Remote-Ordner.  Diese können entfernt werden, wenn sie nicht mehr benötigt werden</string>
+    <string name="sync_delete_remote_not_in_local">Löschen Sie alte Remote-Elemente</string>
+    <string name="sync_delete_remote_not_in_local_info">Die folgenden Elemente sind im Remote-Ordner vorhanden, befinden sich jedoch nicht im lokalen Ordner.  Diese können entfernt werden, wenn sie nicht mehr benötigt werden</string>
     <string name="sync_deleting_local_items">Lokales Element löschen, bevor Remote-Elemente abgerufen werden</string>
     <string name="sync_download_from_openchords">Vom OpenChords-Server herunterladen</string>
     <string name="sync_download_new_items">Laden Sie neue Artikel herunter</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Das letzte Mal, dass Song-Updates abgerufen/heruntergeladen wurden</string>
     <string name="sync_last_force_download">Das letzte Mal, als ein Force Pull/Download ausgeführt wurde</string>
     <string name="sync_last_force_upload">Das letzte Mal, als ein erzwungener Push/Upload ausgeführt wurde</string>
+    <string name="sync_last_force_uploaded">Song zwangsweise gepusht/hochgeladen</string>
     <string name="sync_last_query">Letzte Überprüfung auf Updates</string>
     <string name="sync_last_upload_new_sets">Das letzte Mal wurden neue Setlisten gepusht/hochgeladen</string>
     <string name="sync_last_upload_new_songs">Das letzte Mal wurden neue Songs gepusht/hochgeladen</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Das letzte Mal, dass Songaktualisierungen gepusht/hochgeladen wurden</string>
     <string name="sync_local_folder_name">Name des lokalen Ordners</string>
     <string name="sync_local_items_older">Lokale Elemente, die aktualisiert werden müssen</string>
+    <string name="sync_local_set_deleted">Lokaler Satz gelöscht</string>
+    <string name="sync_local_song_deleted">Lokaler Song gelöscht</string>
     <string name="sync_new_local_folder">Erstellen Sie einen neuen lokalen Ordner</string>
     <string name="sync_new_local_folder_info">Wenn Sie Elemente aus dem Remote-Ordner abrufen, wird ein neuer lokaler Ordner erstellt</string>
     <string name="sync_new_remote_folder">Erstellen Sie einen neuen Remote-Ordner</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Lesen des Inhalts des Remote-Ordners</string>
     <string name="sync_remote_folder_name">Name des Remote-Ordners</string>
     <string name="sync_remote_items_older">Remote-Elemente, die aktualisiert werden müssen</string>
+    <string name="sync_remote_set_deleted">Remote-Set gelöscht</string>
+    <string name="sync_remote_song_deleted">Remote-Song gelöscht</string>
     <string name="sync_server_no_matching_folder">Dieser Ordner ist auf dem Remote-Server nicht vorhanden</string>
     <string name="sync_server_noresponse_error">Es gab keine Antwort vom Server</string>
     <string name="sync_set_downloaded">Neue Setlist abgerufen/heruntergeladen</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Neue Setlist gepusht/hochgeladen</string>
     <string name="sync_song_downloaded">Neuer Song gezogen/heruntergeladen</string>
     <string name="sync_song_force_downloaded">Song zwangsweise gezogen/heruntergeladen</string>
-    <string name="sync_last_force_uploaded">Song zwangsweise gepusht/hochgeladen</string>
     <string name="sync_song_update_downloaded">Aktualisierter Song abgerufen/heruntergeladen</string>
     <string name="sync_song_update_uploaded">Aktualisierter Song gepusht/hochgeladen</string>
     <string name="sync_song_uploaded">Neuer Song gepusht/hochgeladen</string>

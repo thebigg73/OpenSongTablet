@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Sprawdzanie przedmiotu lokalnego</string>
     <string name="sync_comparing_local_and_remote">Sprawdzam foldery lokalne i zdalne pod kątem zmian…</string>
     <string name="sync_creating_new_item">Tworzenie nowego elementu</string>
+    <string name="sync_delete_local_not_in_remote">Usuń stare produkty lokalne</string>
+    <string name="sync_delete_local_not_in_remote_info">Następujące elementy istnieją w folderze lokalnym, ale nie ma ich w folderze zdalnym.  Można je usunąć, jeśli nie są już potrzebne</string>
+    <string name="sync_delete_remote_not_in_local">Usuń stare zdalne elementy</string>
+    <string name="sync_delete_remote_not_in_local_info">Następujące elementy istnieją w folderze zdalnym, ale nie ma ich w folderze lokalnym.  Można je usunąć, jeśli nie są już potrzebne</string>
     <string name="sync_deleting_local_items">Usuwanie elementu lokalnego przed pobraniem elementów zdalnych</string>
     <string name="sync_download_from_openchords">Pobierz z serwera OpenChords</string>
     <string name="sync_download_new_items">Pobierz nowe elementy</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Ostatni raz pobrano/pobrano aktualizacje utworów</string>
     <string name="sync_last_force_download">Ostatni raz uruchomiono wymuszone ściąganie/pobieranie</string>
     <string name="sync_last_force_upload">Ostatni raz uruchomiono wymuszone przesyłanie/przesyłanie</string>
+    <string name="sync_last_force_uploaded">Przesłano/przesłano siłę utworu</string>
     <string name="sync_last_query">Ostatnie sprawdzenie dostępności aktualizacji</string>
     <string name="sync_last_upload_new_sets">Ostatni raz, gdy przesłano/przesłano nowe setlisty</string>
     <string name="sync_last_upload_new_songs">Ostatni raz, gdy nowe utwory zostały przesłane/przesłane</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Ostatni raz, kiedy aktualizacje utworów zostały przesłane/przesłane</string>
     <string name="sync_local_folder_name">Nazwa folderu lokalnego</string>
     <string name="sync_local_items_older">Lokalne produkty, które wymagają aktualizacji</string>
+    <string name="sync_local_set_deleted">Zestaw lokalny usunięty</string>
+    <string name="sync_local_song_deleted">Lokalny utwór został usunięty</string>
     <string name="sync_new_local_folder">Utwórz nowy folder lokalny</string>
     <string name="sync_new_local_folder_info">Po pobraniu elementów z folderu zdalnego zostanie utworzony nowy folder lokalny</string>
     <string name="sync_new_remote_folder">Utwórz nowy folder zdalny</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Odczytywanie zawartości folderu zdalnego</string>
     <string name="sync_remote_folder_name">Nazwa folderu zdalnego</string>
     <string name="sync_remote_items_older">Elementy zdalne, które wymagają aktualizacji</string>
+    <string name="sync_remote_set_deleted">Zestaw zdalny usunięty</string>
+    <string name="sync_remote_song_deleted">Zdalny utwór został usunięty</string>
     <string name="sync_server_no_matching_folder">Ten folder nie istnieje na serwerze zdalnym</string>
     <string name="sync_server_noresponse_error">Serwer nie odpowiedział</string>
     <string name="sync_set_downloaded">Pobrano/pobrano nową setlistę</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nowa setlista została wysłana/przesłana</string>
     <string name="sync_song_downloaded">Nowa piosenka pobrana/pobrana</string>
     <string name="sync_song_force_downloaded">Wymuszenie/pobranie utworu</string>
-    <string name="sync_last_force_uploaded">Przesłano/przesłano siłę utworu</string>
     <string name="sync_song_update_downloaded">Zaktualizowano pobrany/pobrany utwór</string>
     <string name="sync_song_update_uploaded">Zaktualizowany utwór przesłany/przesłany</string>
     <string name="sync_song_uploaded">Nowa piosenka została wysłana/przesłana</string>

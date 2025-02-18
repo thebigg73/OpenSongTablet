@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">ローカルアイテムを確認中</string>
     <string name="sync_comparing_local_and_remote">ローカルおよびリモートのフォルダーに変更がないか確認しています…</string>
     <string name="sync_creating_new_item">新しいアイテムの作成</string>
+    <string name="sync_delete_local_not_in_remote">古いローカル アイテムを削除する</string>
+    <string name="sync_delete_local_not_in_remote_info">次のアイテムはローカル フォルダーに存在しますが、リモート フォルダーには存在しません。  不要になった場合は削除できます</string>
+    <string name="sync_delete_remote_not_in_local">古いリモート項目を削除する</string>
+    <string name="sync_delete_remote_not_in_local_info">次のアイテムはリモート フォルダーに存在しますが、ローカル フォルダーには存在しません。  不要になった場合は削除できます</string>
     <string name="sync_deleting_local_items">リモートアイテムを取得する前にローカルアイテムを削除する</string>
     <string name="sync_download_from_openchords">OpenChordsサーバーからダウンロード</string>
     <string name="sync_download_new_items">新しいアイテムをダウンロードする</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">最後に曲のアップデートがプル/ダウンロードされた時間</string>
     <string name="sync_last_force_download">最後に強制プル/ダウンロードが実行された時刻</string>
     <string name="sync_last_force_upload">最後に強制プッシュ/アップロードが実行された時刻</string>
+    <string name="sync_last_force_uploaded">曲が強制的にプッシュ/アップロードされました</string>
     <string name="sync_last_query">アップデートの最終チェック</string>
     <string name="sync_last_upload_new_sets">新しいセットリストが最後にプッシュ/アップロードされた時間</string>
     <string name="sync_last_upload_new_songs">最後に新しい曲がプッシュ/アップロードされた時間</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">最後に曲のアップデートがプッシュ/アップロードされた時間</string>
     <string name="sync_local_folder_name">ローカルフォルダー名</string>
     <string name="sync_local_items_older">更新が必要なローカル項目</string>
+    <string name="sync_local_set_deleted">ローカルセットが削除されました</string>
+    <string name="sync_local_song_deleted">ローカルソングが削除されました</string>
     <string name="sync_new_local_folder">新しいローカルフォルダーを作成する</string>
     <string name="sync_new_local_folder_info">リモート フォルダーからアイテムをプルすると、新しいローカル フォルダーが作成されます</string>
     <string name="sync_new_remote_folder">新しいリモートフォルダーを作成する</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">リモートフォルダーの内容を読み取る</string>
     <string name="sync_remote_folder_name">リモートフォルダー名</string>
     <string name="sync_remote_items_older">更新が必要なリモート項目</string>
+    <string name="sync_remote_set_deleted">リモートセットが削除されました</string>
+    <string name="sync_remote_song_deleted">リモートソングが削除されました</string>
     <string name="sync_server_no_matching_folder">このフォルダーはリモートサーバー上に存在しません</string>
     <string name="sync_server_noresponse_error">サーバーから応答がありませんでした</string>
     <string name="sync_set_downloaded">新しいセットリストがプル/ダウンロードされました</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">新しいセットリストがプッシュ/アップロードされました</string>
     <string name="sync_song_downloaded">新しい曲がプル/ダウンロードされました</string>
     <string name="sync_song_force_downloaded">曲の強制プル/ダウンロード</string>
-    <string name="sync_last_force_uploaded">曲が強制的にプッシュ/アップロードされました</string>
     <string name="sync_song_update_downloaded">更新された曲がプル/ダウンロードされました</string>
     <string name="sync_song_update_uploaded">更新された曲がプッシュ/アップロードされました</string>
     <string name="sync_song_uploaded">新しい曲がプッシュ/アップロードされました</string>

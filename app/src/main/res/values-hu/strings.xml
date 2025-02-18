@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Helyi tétel ellenőrzése</string>
     <string name="sync_comparing_local_and_remote">Helyi és távoli mappák módosításainak ellenőrzése…</string>
     <string name="sync_creating_new_item">Új elem létrehozása</string>
+    <string name="sync_delete_local_not_in_remote">Törölje a régi helyi elemeket</string>
+    <string name="sync_delete_local_not_in_remote_info">A következő elemek léteznek a helyi mappában, de nem a távoli mappában.  Ezek eltávolíthatók, ha már nincs rájuk szükség</string>
+    <string name="sync_delete_remote_not_in_local">Törölje a régi távoli elemeket</string>
+    <string name="sync_delete_remote_not_in_local_info">A következő elemek léteznek a távoli mappában, de nem a helyi mappában.  Ezek eltávolíthatók, ha már nincs rájuk szükség</string>
     <string name="sync_deleting_local_items">Helyi elem törlése távoli elemek beszerzése előtt</string>
     <string name="sync_download_from_openchords">Letöltés az OpenChords szerverről</string>
     <string name="sync_download_new_items">Új elemek letöltése</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">A dalfrissítések legutóbbi lehívása/letöltése</string>
     <string name="sync_last_force_download">Legutóbbi kényszerhúzás/letöltés futott</string>
     <string name="sync_last_force_upload">Legutóbbi kényszernyomás/feltöltés futott</string>
+    <string name="sync_last_force_uploaded">Dal erő tolva/feltöltve</string>
     <string name="sync_last_query">Utolsó frissítések ellenőrzése</string>
     <string name="sync_last_upload_new_sets">Legutóbbi új setlist-ek leküldése/feltöltése</string>
     <string name="sync_last_upload_new_songs">Legutóbbi új dalok leküldése/feltöltése</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">A dalfrissítések legutóbbi leküldése/feltöltése</string>
     <string name="sync_local_folder_name">Helyi mappa neve</string>
     <string name="sync_local_items_older">Helyi elemek, amelyeket frissíteni kell</string>
+    <string name="sync_local_set_deleted">Helyi készlet törölve</string>
+    <string name="sync_local_song_deleted">Helyi dal törölve</string>
     <string name="sync_new_local_folder">Hozzon létre új helyi mappát</string>
     <string name="sync_new_local_folder_info">Egy új helyi mappa jön létre, amikor kiveszi az elemeket a távoli mappából</string>
     <string name="sync_new_remote_folder">Hozzon létre új távoli mappát</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">A távoli mappa tartalmának beolvasása</string>
     <string name="sync_remote_folder_name">Távoli mappa neve</string>
     <string name="sync_remote_items_older">Távoli elemek, amelyek frissítésre szorulnak</string>
+    <string name="sync_remote_set_deleted">Távirányító készlet törölve</string>
+    <string name="sync_remote_song_deleted">A távoli dal törölve</string>
     <string name="sync_server_no_matching_folder">Ez a mappa nem létezik a távoli kiszolgálón</string>
     <string name="sync_server_noresponse_error">Nem érkezett válasz a szervertől</string>
     <string name="sync_set_downloaded">Új setlist húzva/letöltve</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Új setlist küldve/feltöltve</string>
     <string name="sync_song_downloaded">Új dal húzva/letöltve</string>
     <string name="sync_song_force_downloaded">Song force pulled/download</string>
-    <string name="sync_last_force_uploaded">Dal erő tolva/feltöltve</string>
     <string name="sync_song_update_downloaded">Frissített dal húzva/letöltve</string>
     <string name="sync_song_update_uploaded">A frissített dal elküldve/feltöltve</string>
     <string name="sync_song_uploaded">Új dal elküldve/feltöltve</string>

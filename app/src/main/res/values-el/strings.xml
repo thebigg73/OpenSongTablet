@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Έλεγχος τοπικού στοιχείου</string>
     <string name="sync_comparing_local_and_remote">Έλεγχος τοπικών και απομακρυσμένων φακέλων για αλλαγές…</string>
     <string name="sync_creating_new_item">Δημιουργία νέου αντικειμένου</string>
+    <string name="sync_delete_local_not_in_remote">Διαγράψτε παλιά τοπικά στοιχεία</string>
+    <string name="sync_delete_local_not_in_remote_info">Τα ακόλουθα στοιχεία υπάρχουν στον τοπικό φάκελο, αλλά δεν βρίσκονται στον απομακρυσμένο φάκελο.  Αυτά μπορούν να αφαιρεθούν εάν δεν είναι πλέον απαραίτητα</string>
+    <string name="sync_delete_remote_not_in_local">Διαγράψτε παλιά απομακρυσμένα στοιχεία</string>
+    <string name="sync_delete_remote_not_in_local_info">Τα ακόλουθα στοιχεία υπάρχουν στον απομακρυσμένο φάκελο, αλλά δεν βρίσκονται στον τοπικό φάκελο.  Αυτά μπορούν να αφαιρεθούν εάν δεν είναι πλέον απαραίτητα</string>
     <string name="sync_deleting_local_items">Διαγραφή τοπικού στοιχείου πριν από τη λήψη απομακρυσμένων στοιχείων</string>
     <string name="sync_download_from_openchords">Λήψη από τον διακομιστή OpenChords</string>
     <string name="sync_download_new_items">Λήψη νέων στοιχείων</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Τελευταία φορά που λήφθηκαν/λήφθηκαν ενημερώσεις τραγουδιού</string>
     <string name="sync_last_force_download">Την τελευταία φορά που εκτελέστηκε μια αναγκαστική έλξη/λήψη</string>
     <string name="sync_last_force_upload">Την τελευταία φορά που εκτελέστηκε μια αναγκαστική ώθηση/μεταφόρτωση</string>
+    <string name="sync_last_force_uploaded">Τραγούδι δύναμη ώθησε/ανεβάστηκε</string>
     <string name="sync_last_query">Τελευταίος έλεγχος για ενημερώσεις</string>
     <string name="sync_last_upload_new_sets">Τελευταία φορά που προωθήθηκαν/μεταφορτώθηκαν νέες λίστες ρύθμισης</string>
     <string name="sync_last_upload_new_songs">Τελευταία φορά που προωθήθηκαν/ανέβηκαν νέα τραγούδια</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Τελευταία φορά που προωθήθηκαν/μεταφορτώθηκαν ενημερώσεις τραγουδιού</string>
     <string name="sync_local_folder_name">Όνομα τοπικού φακέλου</string>
     <string name="sync_local_items_older">Τοπικά στοιχεία που χρειάζονται ενημέρωση</string>
+    <string name="sync_local_set_deleted">Το τοπικό σύνολο διαγράφηκε</string>
+    <string name="sync_local_song_deleted">Το τοπικό τραγούδι διαγράφηκε</string>
     <string name="sync_new_local_folder">Δημιουργία νέου τοπικού φακέλου</string>
     <string name="sync_new_local_folder_info">Ένας νέος τοπικός φάκελος θα δημιουργηθεί όταν τραβάτε στοιχεία από τον απομακρυσμένο φάκελο</string>
     <string name="sync_new_remote_folder">Δημιουργία νέου απομακρυσμένου φακέλου</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Ανάγνωση των περιεχομένων του απομακρυσμένου φακέλου</string>
     <string name="sync_remote_folder_name">Όνομα απομακρυσμένου φακέλου</string>
     <string name="sync_remote_items_older">Απομακρυσμένα στοιχεία που χρειάζονται ενημέρωση</string>
+    <string name="sync_remote_set_deleted">Το απομακρυσμένο σύνολο διαγράφηκε</string>
+    <string name="sync_remote_song_deleted">Το απομακρυσμένο τραγούδι διαγράφηκε</string>
     <string name="sync_server_no_matching_folder">Αυτός ο φάκελος δεν υπάρχει στον απομακρυσμένο διακομιστή</string>
     <string name="sync_server_noresponse_error">Δεν υπήρξε απάντηση από τον διακομιστή</string>
     <string name="sync_set_downloaded">Έγινε/λήψη νέας λίστας setlist</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Πραγματοποιήθηκε ώθηση/μεταφόρτωση νέου setlist</string>
     <string name="sync_song_downloaded">Τράβηξε/κατέβασε νέο τραγούδι</string>
     <string name="sync_song_force_downloaded">Τραγούδι δύναμη τράβηξε/λήψη</string>
-    <string name="sync_last_force_uploaded">Τραγούδι δύναμη ώθησε/ανεβάστηκε</string>
     <string name="sync_song_update_downloaded">Έγινε λήψη/λήψη του ενημερωμένου τραγουδιού</string>
     <string name="sync_song_update_uploaded">Το ενημερωμένο τραγούδι προωθήθηκε/ανεβάστηκε</string>
     <string name="sync_song_uploaded">Έσπρωξε/ανέβηκε νέο τραγούδι</string>

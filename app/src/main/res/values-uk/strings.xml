@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Перевірка місцевого товару</string>
     <string name="sync_comparing_local_and_remote">Перевірка локальних і віддалених папок на наявність змін…</string>
     <string name="sync_creating_new_item">Створення нового елемента</string>
+    <string name="sync_delete_local_not_in_remote">Видаліть старі локальні елементи</string>
+    <string name="sync_delete_local_not_in_remote_info">Наступні елементи існують у локальній папці, але їх немає у віддаленій папці.  Їх можна видалити, якщо вони більше не потрібні</string>
+    <string name="sync_delete_remote_not_in_local">Видаліть старі віддалені елементи</string>
+    <string name="sync_delete_remote_not_in_local_info">Наступні елементи існують у віддаленій папці, але їх немає в локальній папці.  Їх можна видалити, якщо вони більше не потрібні</string>
     <string name="sync_deleting_local_items">Видалення локального елемента перед отриманням віддалених елементів</string>
     <string name="sync_download_from_openchords">Завантажити з сервера OpenChords</string>
     <string name="sync_download_new_items">Завантажте нові елементи</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Останній раз оновлення пісень було отримано/завантажено</string>
     <string name="sync_last_force_download">Останній раз було запущено примусове витягування/завантаження</string>
     <string name="sync_last_force_upload">Останній раз було запущено примусове надсилання/завантаження</string>
+    <string name="sync_last_force_uploaded">Пісню примусово надіслано/завантажено</string>
     <string name="sync_last_query">Остання перевірка оновлень</string>
     <string name="sync_last_upload_new_sets">Останній раз, коли було надіслано/завантажено нові набори</string>
     <string name="sync_last_upload_new_songs">Останній раз, коли було надіслано/завантажено нові пісні</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Останній раз надсилання/завантаження оновлень пісень</string>
     <string name="sync_local_folder_name">Назва локальної папки</string>
     <string name="sync_local_items_older">Локальні елементи, які потребують оновлення</string>
+    <string name="sync_local_set_deleted">Локальний набір видалено</string>
+    <string name="sync_local_song_deleted">Місцеву пісню видалено</string>
     <string name="sync_new_local_folder">Створіть нову локальну папку</string>
     <string name="sync_new_local_folder_info">Нова локальна папка буде створена, коли ви витягнете елементи з віддаленої папки</string>
     <string name="sync_new_remote_folder">Створіть нову віддалену папку</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Читання вмісту віддаленої папки</string>
     <string name="sync_remote_folder_name">Назва віддаленої папки</string>
     <string name="sync_remote_items_older">Віддалені елементи, які потрібно оновити</string>
+    <string name="sync_remote_set_deleted">Віддалений набір видалено</string>
+    <string name="sync_remote_song_deleted">Віддалену пісню видалено</string>
     <string name="sync_server_no_matching_folder">Ця папка не існує на віддаленому сервері</string>
     <string name="sync_server_noresponse_error">Відповіді від сервера не було</string>
     <string name="sync_set_downloaded">Вилучено/завантажено новий сет-лист</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Новий сет-лист надіслано/завантажено</string>
     <string name="sync_song_downloaded">Нова пісня витягнута/завантажена</string>
     <string name="sync_song_force_downloaded">Пісню силою витягнув/завантажити</string>
-    <string name="sync_last_force_uploaded">Пісню примусово надіслано/завантажено</string>
     <string name="sync_song_update_downloaded">Витягнуто/завантажено оновлену пісню</string>
     <string name="sync_song_update_uploaded">Оновлену пісню надіслано/завантажено</string>
     <string name="sync_song_uploaded">Нову пісню надіслано/завантажено</string>

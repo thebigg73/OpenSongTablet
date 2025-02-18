@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Kontroleer tans plaaslike item</string>
     <string name="sync_comparing_local_and_remote">Gaan tans plaaslike en afgeleë vouers na vir veranderinge …</string>
     <string name="sync_creating_new_item">Skep nuwe item</string>
+    <string name="sync_delete_local_not_in_remote">Vee ou plaaslike items uit</string>
+    <string name="sync_delete_local_not_in_remote_info">Die volgende items bestaan in die plaaslike vouer, maar is nie in die afgeleë vouer nie.  Dit kan verwyder word as dit nie meer nodig is nie</string>
+    <string name="sync_delete_remote_not_in_local">Vee ou afgeleë items uit</string>
+    <string name="sync_delete_remote_not_in_local_info">Die volgende items bestaan in die afgeleë vouer, maar is nie in die plaaslike vouer nie.  Dit kan verwyder word as dit nie meer nodig is nie</string>
     <string name="sync_deleting_local_items">Vee plaaslike item uit voordat u afgeleë items kry</string>
     <string name="sync_download_from_openchords">Laai af vanaf OpenChords-bediener</string>
     <string name="sync_download_new_items">Laai nuwe items af</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Laaste keer dat liedjie-opdaterings getrek/afgelaai is</string>
     <string name="sync_last_force_download">Laaste keer is \'n kragtrek/aflaai uitgevoer</string>
     <string name="sync_last_force_upload">Laaste keer is \'n kragstoot/oplaai uitgevoer</string>
+    <string name="sync_last_force_uploaded">Liedjie krag gedruk/opgelaai</string>
     <string name="sync_last_query">Laaste tjek vir opdaterings</string>
     <string name="sync_last_upload_new_sets">Laaste keer is nuwe stellyste gestoot/opgelaai</string>
     <string name="sync_last_upload_new_songs">Laas keer is nuwe liedjies gestoot/opgelaai</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Laaste keer dat liedjie-opdaterings gestoot/opgelaai is</string>
     <string name="sync_local_folder_name">Plaaslike vouernaam</string>
     <string name="sync_local_items_older">Plaaslike items wat opgedateer moet word</string>
+    <string name="sync_local_set_deleted">Plaaslike stel is uitgevee</string>
+    <string name="sync_local_song_deleted">Plaaslike liedjie is uitgevee</string>
     <string name="sync_new_local_folder">Skep nuwe plaaslike gids</string>
     <string name="sync_new_local_folder_info">\'n Nuwe plaaslike vouer sal geskep word wanneer jy items uit die afgeleë vouer trek</string>
     <string name="sync_new_remote_folder">Skep nuwe afgeleë vouer</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Lees die inhoud van die afgeleë vouer</string>
     <string name="sync_remote_folder_name">Afgeleë vouernaam</string>
     <string name="sync_remote_items_older">Afgeleë items wat opgedateer moet word</string>
+    <string name="sync_remote_set_deleted">Afstandstel is uitgevee</string>
+    <string name="sync_remote_song_deleted">Afgeleë liedjie is uitgevee</string>
     <string name="sync_server_no_matching_folder">Hierdie vouer bestaan nie op die afgeleë bediener nie</string>
     <string name="sync_server_noresponse_error">Daar was geen reaksie vanaf die bediener nie</string>
     <string name="sync_set_downloaded">Nuwe stellys getrek/afgelaai</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nuwe stellys gestoot/opgelaai</string>
     <string name="sync_song_downloaded">Nuwe liedjie getrek/afgelaai</string>
     <string name="sync_song_force_downloaded">Liedjie krag getrek/aflaai</string>
-    <string name="sync_last_force_uploaded">Liedjie krag gedruk/opgelaai</string>
     <string name="sync_song_update_downloaded">Opgedateerde liedjie getrek/afgelaai</string>
     <string name="sync_song_update_uploaded">Opgedateerde liedjie gestoot/opgelaai</string>
     <string name="sync_song_uploaded">Nuwe liedjie gestoot/opgelaai</string>

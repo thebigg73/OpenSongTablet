@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">දේශීය අයිතමය පරීක්ෂා කිරීම</string>
     <string name="sync_comparing_local_and_remote">වෙනස්කම් සඳහා දේශීය සහ දුරස්ථ ෆෝල්ඩර පරීක්ෂා කරමින්…</string>
     <string name="sync_creating_new_item">නව අයිතමයක් නිර්මාණය කිරීම</string>
+    <string name="sync_delete_local_not_in_remote">පැරණි දේශීය අයිතම මකන්න</string>
+    <string name="sync_delete_local_not_in_remote_info">පහත අයිතම දේශීය ෆෝල්ඩරයේ පවතින නමුත් දුරස්ථ ෆෝල්ඩරයේ නොමැත.  මේවා තවදුරටත් අවශ්‍ය නැතිනම් ඉවත් කළ හැක</string>
+    <string name="sync_delete_remote_not_in_local">පැරණි දුරස්ථ අයිතම මකන්න</string>
+    <string name="sync_delete_remote_not_in_local_info">පහත අයිතම දුරස්ථ ෆෝල්ඩරයේ පවතින නමුත් දේශීය ෆෝල්ඩරයේ නොමැත.  මේවා තවදුරටත් අවශ්‍ය නැතිනම් ඉවත් කළ හැක</string>
     <string name="sync_deleting_local_items">දුරස්ථ අයිතම ලබා ගැනීමට පෙර දේශීය අයිතමය මකා දැමීම</string>
     <string name="sync_download_from_openchords">OpenChords සේවාදායකයෙන් බාගන්න</string>
     <string name="sync_download_new_items">නව අයිතම බාගන්න</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">අවසන් වරට ගීත යාවත්කාලීන ඇදගෙන / බාගත කර ඇත</string>
     <string name="sync_last_force_download">අවසන් වරට බල ඇදීම/බාගැනීමක් ධාවනය විය</string>
     <string name="sync_last_force_upload">අවසන් වරට බල තල්ලුවක්/උඩුගත කිරීමක් ධාවනය විය</string>
+    <string name="sync_last_force_uploaded">ගීත බලය තල්ලු කර/උඩුගත කරන ලදී</string>
     <string name="sync_last_query">යාවත්කාලීන සඳහා අවසාන පරීක්ෂාව</string>
     <string name="sync_last_upload_new_sets">අවසන් වරට නව කට්ටල ලැයිස්තු තල්ලු කර/උඩුගත කරන ලදී</string>
     <string name="sync_last_upload_new_songs">ගිය සැරේ අලුත් සින්දු තල්ලු/උඩුගත කළා</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">අවසන් වරට ගීත යාවත්කාලීන කිරීම් තල්ලු කර/උඩුගත කරන ලදී</string>
     <string name="sync_local_folder_name">දේශීය ෆෝල්ඩරයේ නම</string>
     <string name="sync_local_items_older">යාවත්කාලීන කළ යුතු දේශීය අයිතම</string>
+    <string name="sync_local_set_deleted">දේශීය කට්ටලය මකා ඇත</string>
+    <string name="sync_local_song_deleted">දේශීය ගීතය මකා දමන ලදී</string>
     <string name="sync_new_local_folder">නව දේශීය ෆෝල්ඩරය සාදන්න</string>
     <string name="sync_new_local_folder_info">ඔබ දුරස්ථ ෆෝල්ඩරයෙන් අයිතම ඇද ගන්නා විට නව දේශීය ෆෝල්ඩරයක් සාදනු ඇත</string>
     <string name="sync_new_remote_folder">නව දුරස්ථ ෆෝල්ඩරය සාදන්න</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">දුරස්ථ ෆෝල්ඩරයේ අන්තර්ගතය කියවීම</string>
     <string name="sync_remote_folder_name">දුරස්ථ ෆෝල්ඩරයේ නම</string>
     <string name="sync_remote_items_older">යාවත්කාලීන කළ යුතු දුරස්ථ අයිතම</string>
+    <string name="sync_remote_set_deleted">දුරස්ථ කට්ටලය මකා ඇත</string>
+    <string name="sync_remote_song_deleted">දුරස්ථ ගීතය මකා දමන ලදී</string>
     <string name="sync_server_no_matching_folder">මෙම ෆෝල්ඩරය දුරස්ථ සේවාදායකයේ නොමැත</string>
     <string name="sync_server_noresponse_error">සේවාදායකයෙන් ප්‍රතිචාරයක් නැත</string>
     <string name="sync_set_downloaded">නව කට්ටල ලැයිස්තුව ඇද/බාගෙන ඇත</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">නව කට්ටල ලැයිස්තුව තල්ලු කර/උඩුගත කරන ලදී</string>
     <string name="sync_song_downloaded">නව ගීතය ඇද / බාගත කර ඇත</string>
     <string name="sync_song_force_downloaded">ගීත බලය ඇද/බාගත</string>
-    <string name="sync_last_force_uploaded">ගීත බලය තල්ලු කර/උඩුගත කරන ලදී</string>
     <string name="sync_song_update_downloaded">යාවත්කාලීන කරන ලද ගීතය ඇදගෙන / බාගත කර ඇත</string>
     <string name="sync_song_update_uploaded">යාවත්කාලීන කරන ලද ගීතය තල්ලු කර/උඩුගත කරන ලදී</string>
     <string name="sync_song_uploaded">නව ගීතය තල්ලු කර / උඩුගත කරන ලදී</string>

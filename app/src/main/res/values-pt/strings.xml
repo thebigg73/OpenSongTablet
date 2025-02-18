@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Verificando item local</string>
     <string name="sync_comparing_local_and_remote">Verificando pastas locais e remotas em busca de alterações…</string>
     <string name="sync_creating_new_item">Criando novo item</string>
+    <string name="sync_delete_local_not_in_remote">Excluir itens locais antigos</string>
+    <string name="sync_delete_local_not_in_remote_info">Os seguintes itens existem na pasta local, mas não estão na pasta remota.  Eles podem ser removidos se não forem mais necessários</string>
+    <string name="sync_delete_remote_not_in_local">Exclua itens remotos antigos</string>
+    <string name="sync_delete_remote_not_in_local_info">Os seguintes itens existem na pasta remota, mas não estão na pasta local.  Eles podem ser removidos se não forem mais necessários</string>
     <string name="sync_deleting_local_items">Excluindo item local antes de obter itens remotos</string>
     <string name="sync_download_from_openchords">Baixe do servidor OpenChords</string>
     <string name="sync_download_new_items">Baixe novos itens</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">Última vez que as atualizações de músicas foram extraídas/baixadas</string>
     <string name="sync_last_force_download">Última vez que um pull/download forçado foi executado</string>
     <string name="sync_last_force_upload">Última vez que um push/upload forçado foi executado</string>
+    <string name="sync_last_force_uploaded">Forçar música enviada/enviada</string>
     <string name="sync_last_query">Última verificação de atualizações</string>
     <string name="sync_last_upload_new_sets">Última vez que novas setlists foram enviadas/enviadas</string>
     <string name="sync_last_upload_new_songs">Última vez que novas músicas foram enviadas/enviadas</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">Última vez que as atualizações de músicas foram enviadas/enviadas</string>
     <string name="sync_local_folder_name">Nome da pasta local</string>
     <string name="sync_local_items_older">Itens locais que precisam ser atualizados</string>
+    <string name="sync_local_set_deleted">Conjunto local excluído</string>
+    <string name="sync_local_song_deleted">Música local excluída</string>
     <string name="sync_new_local_folder">Crie uma nova pasta local</string>
     <string name="sync_new_local_folder_info">Uma nova pasta local será criada quando você extrair itens da pasta remota</string>
     <string name="sync_new_remote_folder">Crie uma nova pasta remota</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Lendo o conteúdo da pasta remota</string>
     <string name="sync_remote_folder_name">Nome da pasta remota</string>
     <string name="sync_remote_items_older">Itens remotos que precisam ser atualizados</string>
+    <string name="sync_remote_set_deleted">Conjunto remoto excluído</string>
+    <string name="sync_remote_song_deleted">Música remota excluída</string>
     <string name="sync_server_no_matching_folder">Esta pasta não existe no servidor remoto</string>
     <string name="sync_server_noresponse_error">Não houve resposta do servidor</string>
     <string name="sync_set_downloaded">Nova setlist retirada/baixada</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nova setlist enviada/enviada</string>
     <string name="sync_song_downloaded">Nova música extraída/baixada</string>
     <string name="sync_song_force_downloaded">Força de música puxada/download</string>
-    <string name="sync_last_force_uploaded">Forçar música enviada/enviada</string>
     <string name="sync_song_update_downloaded">Música atualizada extraída/baixada</string>
     <string name="sync_song_update_uploaded">Música atualizada enviada/enviada</string>
     <string name="sync_song_uploaded">Nova música enviada/enviada</string>

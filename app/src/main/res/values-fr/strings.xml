@@ -1031,6 +1031,10 @@
     <string name="sync_checking_local_item">Vérification de l\'article local</string>
     <string name="sync_comparing_local_and_remote">Vérification des modifications dans les dossiers locaux et distants…</string>
     <string name="sync_creating_new_item">Création d\'un nouvel élément</string>
+    <string name="sync_delete_local_not_in_remote">Supprimer les anciens éléments locaux</string>
+    <string name="sync_delete_local_not_in_remote_info">Les éléments suivants existent dans le dossier local, mais ne se trouvent pas dans le dossier distant.  Ceux-ci peuvent être supprimés s’ils ne sont plus nécessaires</string>
+    <string name="sync_delete_remote_not_in_local">Supprimer les anciens éléments distants</string>
+    <string name="sync_delete_remote_not_in_local_info">Les éléments suivants existent dans le dossier distant, mais ne se trouvent pas dans le dossier local.  Ceux-ci peuvent être supprimés s’ils ne sont plus nécessaires</string>
     <string name="sync_deleting_local_items">Suppression d\'un élément local avant d\'obtenir des éléments distants</string>
     <string name="sync_download_from_openchords">Télécharger depuis le serveur OpenChords</string>
     <string name="sync_download_new_items">Télécharger de nouveaux articles</string>
@@ -1058,6 +1062,7 @@
     <string name="sync_last_download_update_songs">La dernière fois que les mises à jour des chansons ont été extraites/téléchargées</string>
     <string name="sync_last_force_download">La dernière fois qu\'une extraction/téléchargement forcé a été exécuté</string>
     <string name="sync_last_force_upload">La dernière fois qu\'un push/upload forcé a été exécuté</string>
+    <string name="sync_last_force_uploaded">Force de chanson poussée/téléchargée</string>
     <string name="sync_last_query">Dernière vérification des mises à jour</string>
     <string name="sync_last_upload_new_sets">La dernière fois que de nouvelles setlists ont été poussées/téléchargées</string>
     <string name="sync_last_upload_new_songs">La dernière fois que de nouvelles chansons ont été transférées/téléchargées</string>
@@ -1065,6 +1070,8 @@
     <string name="sync_last_upload_update_songs">La dernière fois que les mises à jour des chansons ont été poussées/téléchargées</string>
     <string name="sync_local_folder_name">Nom du dossier local</string>
     <string name="sync_local_items_older">Éléments locaux qui doivent être mis à jour</string>
+    <string name="sync_local_set_deleted">Poste local supprimé</string>
+    <string name="sync_local_song_deleted">Chanson locale supprimée</string>
     <string name="sync_new_local_folder">Créer un nouveau dossier local</string>
     <string name="sync_new_local_folder_info">Un nouveau dossier local sera créé lorsque vous extrayez des éléments du dossier distant</string>
     <string name="sync_new_remote_folder">Créer un nouveau dossier distant</string>
@@ -1082,6 +1089,8 @@
     <string name="sync_reading_remote_folder">Lire le contenu du dossier distant</string>
     <string name="sync_remote_folder_name">Nom du dossier distant</string>
     <string name="sync_remote_items_older">Éléments distants qui doivent être mis à jour</string>
+    <string name="sync_remote_set_deleted">Poste distant supprimé</string>
+    <string name="sync_remote_song_deleted">Chanson distante supprimée</string>
     <string name="sync_server_no_matching_folder">Ce dossier n\'existe pas sur le serveur distant</string>
     <string name="sync_server_noresponse_error">Il n\'y a pas eu de réponse du serveur</string>
     <string name="sync_set_downloaded">Nouvelle setlist extraite/téléchargée</string>
@@ -1092,7 +1101,6 @@
     <string name="sync_set_uploaded">Nouvelle setlist poussée/téléchargée</string>
     <string name="sync_song_downloaded">Nouvelle chanson extraite/téléchargée</string>
     <string name="sync_song_force_downloaded">Force de chanson tirée/téléchargement</string>
-    <string name="sync_last_force_uploaded">Force de chanson poussée/téléchargée</string>
     <string name="sync_song_update_downloaded">Chanson mise à jour extraite/téléchargée</string>
     <string name="sync_song_update_uploaded">Chanson mise à jour poussée/téléchargée</string>
     <string name="sync_song_uploaded">Nouvelle chanson poussée/téléchargée</string>
