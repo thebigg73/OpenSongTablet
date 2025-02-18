@@ -1932,11 +1932,15 @@ public class StorageAccess {
         // Now get an InputStream from the oldUri and an OutputStream for the newUri
         InputStream inputStream = getInputStream(oldUri);
         OutputStream outputStream = getOutputStream(newUri);
+        Log.d(TAG,"inputStream:"+inputStream);
+        Log.d(TAG,"outputStream:"+outputStream);
         // Copy the file, which also closes the streams and on success, delete the old file
         if (copyFile(inputStream, outputStream)) {
-            // Likely the inputStream or outputStream was null, so don't delete the old file!
+            // Likely the inputStream or outputStream wasn't null, so delete the old file!
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" renameFileFromUri_SAF deleteFile "+oldUri);
             deleteFile(oldUri);
+        } else {
+            Log.d(TAG,"copy error");
         }
     }
     public String getFileNameFromUri(Uri uri) {

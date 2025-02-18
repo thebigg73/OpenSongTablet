@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -2282,6 +2281,29 @@ public class ProcessSong {
         return stringBuilder.toString();
     }
 
+    private String removeJustChordsFormatting(String line) {
+        // When synchronising via OpenChords, we may receive text formatting from justchords songs
+        // OpenSongApp doesn't like this, so we hide it during rendering to the screen
+        // Colors can look like <yellow>....<     or <@yellow>....<
+        // The < and > will likely already be encoded as &lt; and &gt;
+        String[] colorsRecognised = new String[]{"black", "blue", "brown", "cyan", "darkGray", "gray",
+                "green", "lightGray", "magenta", "orange", "purple", "red", "white", "yellow" };
+
+        if (line.contains("<") || line.contains("&lt;")) {
+            for (String color : colorsRecognised) {
+                line = line.replace("<" + color + ">", "");
+                line = line.replace("<@" + color + ">", "");
+                line = line.replace("&lt;" + color + "&gt;", "");
+                line = line.replace("&lt;@" + color + "&gt;", "");
+            }
+            line = line.replace("<", "");
+            line = line.replace("&lt;", "");
+        }
+
+        return line;
+    }
+
+
     public ArrayList<View> setSongInLayout(Song song, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
@@ -2375,6 +2397,8 @@ public class ProcessSong {
                         String line = lines[l];
                         // IV - Do not process an empty group line or empty header line
                         if (!line.equals(groupline_string) && !line.equals("[]")) {
+                            // Remove any justChords formatting, but don't edit the song
+                            line = removeJustChordsFormatting(line);
                             // Get the text stylings
                             String linetype = getLineType(line);
                             boolean notLyricOrChord = linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab");
@@ -3623,7 +3647,7 @@ public class ProcessSong {
         this.forceSinglePagePDF = forceSinglePagePDF;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(String folder, String filename, int page, int allowedWidth,
                                    int allowedHeight, String scale, boolean useCropped) {
         Bitmap bmp = null;
@@ -3684,7 +3708,7 @@ public class ProcessSong {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public PdfRenderer getPDFRenderer(ParcelFileDescriptor parcelFileDescriptor) {
         try {
             return new PdfRenderer(parcelFileDescriptor);
@@ -3694,7 +3718,7 @@ public class ProcessSong {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public int getPDFPageCount(PdfRenderer pdfRenderer) {
         if (pdfRenderer != null) {
             return pdfRenderer.getPageCount();
@@ -3714,12 +3738,12 @@ public class ProcessSong {
         return page;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public PdfRenderer.Page getPDFPage(PdfRenderer pdfRenderer, int page) {
         return pdfRenderer.openPage(page);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public ArrayList<Integer> getPDFPageSize(PdfRenderer.Page currentPage, boolean useCropped) {
         ArrayList<Integer> sizes = new ArrayList<>();
         // Get pdf size from page
@@ -3849,7 +3873,7 @@ public class ProcessSong {
         return bitmap;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap createBitmapFromPage(ArrayList<Integer> bmpSize, PdfRenderer.Page currentPage, boolean forDisplayOnly, boolean useCropped) {
         try {
             // Try to deal with soft clipping of PDF - trying to figure out for now!

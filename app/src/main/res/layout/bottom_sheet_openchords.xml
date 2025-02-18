@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -63,8 +62,6 @@
                         android:layout_marginBottom="32dp"
                         android:text="@string/sync_download_new_items"
                         app:icon="@drawable/download" />
-
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -90,6 +87,29 @@
                     <TableRow
                         style="@style/DividerLine"
                         android:layout_marginTop="32dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deleteSongsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                        android:id="@+id/songsToDelete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sync_delete_local_not_in_remote_info" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/deleteSongsAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="32dp"
+                        android:text="@string/sync_delete_local_not_in_remote"
+                        app:icon="@drawable/delete" />
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -156,6 +176,29 @@
                         android:layout_marginBottom="32dp"
                         android:text="@string/sync_update_local_items"
                         app:icon="@drawable/sync" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deleteSetsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                        android:id="@+id/setsToDelete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sync_delete_local_not_in_remote_info" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/deleteSetsAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="32dp"
+                        android:text="@string/sync_delete_local_not_in_remote"
+                        app:icon="@drawable/delete" />
 
                 </LinearLayout>
             </LinearLayout>

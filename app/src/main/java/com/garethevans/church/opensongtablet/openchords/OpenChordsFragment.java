@@ -437,6 +437,18 @@ public class OpenChordsFragment extends Fragment {
             queryOpenChordsServer();
         });
     }
+    public void deleteLocalSongs() {
+        mainActivityInterface.getOpenChordsAPI().deleteLocalSongs();
+    }
+    public void deleteLocalSets() {
+        mainActivityInterface.getOpenChordsAPI().deleteLocalSets();
+    }
+    public void deleteRemoteSongs() {
+        mainActivityInterface.getOpenChordsAPI().deleteRemoteSongs();
+    }
+    public void deleteRemoteSets() {
+        mainActivityInterface.getOpenChordsAPI().deleteRemoteSets();
+    }
 
     @Override
     public void onDestroy() {

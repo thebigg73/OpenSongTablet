@@ -36,7 +36,9 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
             sync_song_downloaded_string="", sync_song_uploaded_string="",
             sync_song_update_downloaded_string="", sync_song_update_uploaded_string="",
             sync_set_downloaded_string="", sync_set_uploaded_string="",
-            sync_set_update_downloaded_string="", sync_set_update_uploaded_string="";
+            sync_set_update_downloaded_string="", sync_set_update_uploaded_string="",
+            sync_delete_local_not_in_remote="", sync_delete_local_not_in_remote_info="",
+            sync_delete_remote_not_in_local="", sync_delete_remote_not_in_local_info="";
     private Drawable upload_icon, download_icon;
     OpenChordsBottomSheet(OpenChordsFragment openChordsFragment, String what) {
         this.openChordsFragment = openChordsFragment;
@@ -101,6 +103,10 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
             sync_song_update_uploaded_string = getString(R.string.sync_last_upload_update_songs);
             sync_set_uploaded_string = getString(R.string.sync_last_upload_new_sets);
             sync_set_update_uploaded_string = getString(R.string.sync_last_upload_update_sets);
+            sync_delete_local_not_in_remote = getString(R.string.sync_delete_local_not_in_remote);
+            sync_delete_local_not_in_remote_info = getString(R.string.sync_delete_local_not_in_remote_info);
+            sync_delete_remote_not_in_local = getString(R.string.sync_delete_remote_not_in_local);
+            sync_delete_remote_not_in_local_info = getString(R.string.sync_delete_remote_not_in_local_info);
         }
     }
     private void setupViews() {
@@ -127,6 +133,12 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
                 myView.updateSongs.setHint(value);
                 myView.updateSongsAction.setText(update_local_items_string);
 
+                // Songs that need deleted in the local folder because they aren't in the remote folder
+                myView.deleteSongsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerCount()>0 ? View.VISIBLE:View.GONE);
+                myView.songsToDelete.setText(sync_delete_local_not_in_remote_info);
+                myView.songsToDelete.setHint(mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerString());
+                myView.deleteSongsAction.setText(sync_delete_local_not_in_remote);
+
                 // New sets on the server that need downloaded
                 myView.newSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnLocalCount()>0 ? View.VISIBLE:View.GONE);
                 myView.newSets.setText(sync_items_not_on_local_string);
@@ -144,6 +156,11 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
                 myView.updateSets.setHint(value);
                 myView.updateSetsAction.setText(update_local_items_string);
 
+                // Sets that need deleted in the local folder because they aren't in the remote folder
+                myView.deleteSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnServerCount()>0 ? View.VISIBLE:View.GONE);
+                myView.setsToDelete.setText(sync_delete_local_not_in_remote_info);
+                myView.setsToDelete.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnServerString());
+                myView.deleteSetsAction.setText(sync_delete_local_not_in_remote);
                 break;
 
             case "upload":
@@ -167,6 +184,12 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
                 myView.updateSongs.setHint(value);
                 myView.updateSongsAction.setText(update_remote_items_string);
 
+                // Songs that need deleted in the remote folder because they aren't in the local folder
+                myView.deleteSongsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSongsNotOnLocalCount()>0 ? View.VISIBLE:View.GONE);
+                myView.songsToDelete.setText(sync_delete_remote_not_in_local_info);
+                myView.songsToDelete.setHint(mainActivityInterface.getOpenChordsAPI().getSongsNotOnLocalString());
+                myView.deleteSongsAction.setText(sync_delete_remote_not_in_local);
+
                 // New sets in the local folder that need uploads
                 myView.newSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnServerCount()>0 ? View.VISIBLE:View.GONE);
                 myView.newSets.setText(sync_items_not_on_remote_string);
@@ -183,6 +206,12 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
                         "\n\n" + sync_set_update_uploaded_string + ": " + mainActivityInterface.getOpenChordsAPI().getLastModified("lastUploadSetChanges");
                 myView.updateSets.setHint(value);
                 myView.updateSetsAction.setText(update_remote_items_string);
+
+                // Sets that need deleted in the remote folder because they aren't in the local folder
+                myView.deleteSetsLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnLocalCount()>0 ? View.VISIBLE:View.GONE);
+                myView.setsToDelete.setText(sync_delete_remote_not_in_local_info);
+                myView.setsToDelete.setHint(mainActivityInterface.getOpenChordsAPI().getSetListsNotOnLocalString());
+                myView.deleteSetsAction.setText(sync_delete_remote_not_in_local);
                 break;
         }
 
@@ -205,6 +234,8 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
                 myView.updateSongsAction.setOnClickListener((v) -> prepareDownload(false,true,false,false));
                 myView.newSetsAction.setOnClickListener((v) ->     prepareDownload(false,false,true,false));
                 myView.updateSetsAction.setOnClickListener((v) ->  prepareDownload(false,false,false,true));
+                myView.deleteSongsAction.setOnClickListener((v) -> deleteLocalSongs());
+                myView.deleteSetsAction.setOnClickListener((v) -> deleteLocalSets());
                 break;
 
             case "upload":
@@ -212,6 +243,8 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
                 myView.updateSongsAction.setOnClickListener((v) -> prepareUpload(false,true,false,false));
                 myView.newSetsAction.setOnClickListener((v) ->     prepareUpload(false,false,true,false));
                 myView.updateSetsAction.setOnClickListener((v) ->  prepareUpload(false,false,false,true));
+                myView.deleteSongsAction.setOnClickListener((v) -> deleteRemoteSongs());
+                myView.deleteSetsAction.setOnClickListener((v) -> deleteRemoteSets());
                 break;
         }
     }
@@ -244,7 +277,66 @@ public class OpenChordsBottomSheet extends BottomSheetDialogFragment {
             }
         }
     }
-
+    private void deleteLocalSongs() {
+        // Delete local songs that aren't in the remote folder
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (openChordsFragment!=null) {
+            try {
+                openChordsFragment.deleteLocalSongs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void deleteLocalSets() {
+        // Delete local sets that aren't in the remote folder
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (openChordsFragment!=null) {
+            try {
+                openChordsFragment.deleteLocalSets();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void deleteRemoteSongs() {
+        // Delete remote songs that aren't in the local folder folder
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (openChordsFragment!=null) {
+            try {
+                openChordsFragment.deleteRemoteSongs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void deleteRemoteSets() {
+        // Delete remote sets that aren't in the local folder folder
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (openChordsFragment!=null) {
+            try {
+                openChordsFragment.deleteRemoteSets();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
