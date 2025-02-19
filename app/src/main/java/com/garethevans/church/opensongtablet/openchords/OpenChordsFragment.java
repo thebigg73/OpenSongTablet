@@ -447,6 +447,7 @@ public class OpenChordsFragment extends Fragment {
         mainActivityInterface.getOpenChordsAPI().deleteRemoteSongs();
     }
     public void deleteRemoteSets() {
+        Log.d(TAG,"delete remote sets");
         mainActivityInterface.getOpenChordsAPI().deleteRemoteSets();
     }
 
