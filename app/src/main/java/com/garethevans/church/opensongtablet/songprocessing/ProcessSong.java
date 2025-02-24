@@ -182,7 +182,6 @@ public class ProcessSong {
             thisSong.setUuid(uuid);
         }
         String lastModified = thisSong.getLastModified();
-        Log.d(TAG,"getting XML. lastModified:"+lastModified);
         if (lastModified==null || lastModified.isEmpty()) {
             lastModified = mainActivityInterface.getTimeTools().getNowIsoTime();
             thisSong.setLastModified(lastModified);
@@ -1794,7 +1793,15 @@ public class ProcessSong {
     private void checkFilteringForSections(Song song) {
         boolean filterSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("filterSections",false);
         if (filterSections) {
-            boolean hasFilters = song.getLyrics().contains("[*");
+            boolean hasFilters = false;
+            // We need to split the song into lines and only filter by sections headers, not lyrics or comments
+            String[] lines = song.getLyrics().split("\n");
+            for (String line : lines) {
+                if (line.startsWith("[*") || line.startsWith(" [*")) {
+                    hasFilters = true;
+                    break;
+                }
+            }
             boolean filterShow = mainActivityInterface.getPreferences().getMyPreferenceBoolean("filterShow", false);
             String filterText = mainActivityInterface.getPreferences().getMyPreferenceString("filterText","");
             if (hasFilters && !filterText.isEmpty()) {
@@ -1811,6 +1818,7 @@ public class ProcessSong {
                     // Check we aren't filtering this out!
                     boolean keepSection = true;
                     try {
+                        String section = song.getPresoOrderSongSections().get(a);
                         String header = song.getPresoOrderSongHeadings().get(a);
                         if (header != null && header.startsWith("*") && header.contains(":")) {
                             header = header.substring(0, header.indexOf(":")) + ":";
@@ -2049,7 +2057,16 @@ public class ProcessSong {
     public void processSongIntoSections(Song song, boolean presentation) {
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         // 1. Get a temporary version of the lyrics (as we are going to process them)
-        String lyrics = song.getLyrics();
+        // Replace [ or ] that aren't in headers to protect them
+        String[] lines = song.getLyrics().split("\n");
+        StringBuilder sb = new StringBuilder();
+        for (String line : lines) {
+            if (!line.startsWith("[")) {
+                line = line.replace("[","__OPENSQUAREBRACKETS__").replace("]","__CLOSESQUAREBRACKETS__");
+            }
+            sb.append(line).append("\n");
+        }
+        String lyrics = sb.toString().trim();
 
         // Display any encoded html entities properly
         lyrics = parseHTML(lyrics);
@@ -2201,6 +2218,7 @@ public class ProcessSong {
         boolean stageOrPresenter = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter));
         boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        Log.d(TAG,"lyrics:"+lyrics);
         if (stageOrPresenter || (performance && trimSections)) {
                 lyrics = lyrics
                     // We protect the leading space of lyric lines
@@ -4198,13 +4216,31 @@ public class ProcessSong {
         // These are used to create buttons in the edit song tags section
         // All sections are obtained regardless if the user doesn't want them in presentationOrder
         String nums = "0123456789";
+
+        // First up, we might have lines with [ and ] that aren't headers
+        // Change them for now
+        String[] allLines = lyrics.split("\n");
+        StringBuilder sb = new StringBuilder();
+        for (String line : allLines) {
+            if (!line.startsWith("§[")) {
+                line = line.replace("[","__OPENSQUAREBRACKETS__");
+                line = line.replace("]","__CLOSESQUAREBRACKETS__");
+            }
+            sb.append(line).append("\n");
+        }
+        lyrics = sb.toString();
         String[] bits = lyrics.split("\\[");
         ArrayList<String> sections = new ArrayList<>();
         for (String bit : bits) {
             if (bit.contains("]") && bit.indexOf("]") < 30) {
                 String section = bit.substring(0, bit.indexOf("]"));
+                section = section.replace("__OPENSQUAREBRACKETS__","[").
+                        replace("__CLOSESQUAREBRACKETS__","]");
+                bit = bit.replace("__OPENSQUAREBRACKETS__","[").
+                        replace("__CLOSESQUAREBRACKETS__","]");
                 boolean multiverse = false;
                 // Check for multiverse/chorus
+                Log.d(TAG,"bit:"+bit);
                 String[] lines = bit.split("\n");
                 for (String line : lines) {
                     if (line.length() > 2 &&
