@@ -1,5 +1,5 @@
 # Passwords/logins
-app/src/main/java/com/garethevans/church/opensongtablet/keys.properties
+app/src/main/assets/keys.properties
 
 # Built application files
 *.apk
