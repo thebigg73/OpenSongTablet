@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +29,6 @@ public class OpenChordsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private String openchords_string = "";
     private String webAddress = "";
-    private String folder_doesnt_exist_string = "";
-    private String folder_created_on_download_string = "";
     private String folder_exists_but_is_different_string = "";
     private String openchords_folder_doesnt_exist_string = "";
     private String sync_no_changes_required_string ="";
@@ -84,9 +81,7 @@ public class OpenChordsFragment extends Fragment {
         if (getContext() != null) {
             openchords_string = getString(R.string.openchords);
             webAddress = getString(R.string.website_openchords);
-            folder_doesnt_exist_string = getString(R.string.folder_doesnt_exist);
             openchords_folder_doesnt_exist_string = getString(R.string.openchords_folder_doesnt_exist);
-            folder_created_on_download_string = getString(R.string.folder_created_on_download);
             folder_exists_but_is_different_string = getString(R.string.folder_exists_but_is_different);
             wait_string = getString(R.string.wait);
             sync_no_changes_required_string = getString(R.string.sync_no_changes_required);
@@ -234,18 +229,6 @@ public class OpenChordsFragment extends Fragment {
         });
     }
 
-    public void localFolderNotFound() {
-        mainActivityInterface.getMainHandler().post(() -> {
-            if (myView != null) {
-                String message = folder_doesnt_exist_string + " - " +
-                        folder_created_on_download_string;
-                myView.folderMessage.setText(message);
-                //myView.uploadLayout.setVisibility(View.GONE);
-                changeButtonsEnable(true);
-            }
-        });
-    }
-
     public void openChordsFolderDifferentFromLocal() {
         // We already have the folder, but it has a different UUID
         // Warn the user that downloading will replace the content of this folder
@@ -281,12 +264,9 @@ public class OpenChordsFragment extends Fragment {
     }
 
     public void justUpdateTitle(String title) {
-        mainActivityInterface.getMainHandler().post(() -> {
-            myView.folderToSync.setText(title);
-        });
+        mainActivityInterface.getMainHandler().post(() -> myView.folderToSync.setText(title));
     }
     public void updateFolderTitle(String title) {
-        Log.d(TAG, "updateFolderTitle(" + title + ")");
         mainActivityInterface.getMainHandler().post(() -> {
             mainActivityInterface.getOpenChordsAPI().setIsServerResponse(true);
             folderChangedProgrammatically = true;
@@ -316,7 +296,6 @@ public class OpenChordsFragment extends Fragment {
 
     public void queryOpenChordsServer() {
         checkQueryHandler.removeCallbacks(checkQueryRunnable);
-        Log.d(TAG,"queryOpenChordsServer()");
         // Use the folder chosen to query the server and get the results
         mainActivityInterface.getMainHandler().post(() -> {
             myView.folderMessage.setText("");
@@ -339,7 +318,6 @@ public class OpenChordsFragment extends Fragment {
 
     // We are sent here after hearing back from the server
     public void logChanges() {
-        Log.d(TAG,"logChanges()");
         // Do this on a new thread
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Update the change number identifiers
@@ -386,7 +364,6 @@ public class OpenChordsFragment extends Fragment {
     }
     // Force changes confirmed by the user!
     public void doForceChanges(String which) {
-        Log.d(TAG,"doForceChanges("+which+")");
         switch (which) {
             case "openChordsForcePull":
                 // We have forced a pull.
@@ -447,7 +424,6 @@ public class OpenChordsFragment extends Fragment {
         mainActivityInterface.getOpenChordsAPI().deleteRemoteSongs();
     }
     public void deleteRemoteSets() {
-        Log.d(TAG,"delete remote sets");
         mainActivityInterface.getOpenChordsAPI().deleteRemoteSets();
     }
 

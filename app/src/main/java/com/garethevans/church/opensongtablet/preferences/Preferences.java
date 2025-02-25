@@ -3,10 +3,9 @@ package com.garethevans.church.opensongtablet.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class Preferences extends Activity {
@@ -151,15 +150,17 @@ public class Preferences extends Activity {
     // Getting keys excluded from GitHub
     public String getKey(Context c, String which) {
         String string;
-        try (AssetFileDescriptor assetFileDescriptor = c.getAssets().openFd("keys.properties")) {
-            FileDescriptor fileDescriptor = assetFileDescriptor.getFileDescriptor();
-            FileInputStream stream = new FileInputStream(fileDescriptor);
+        try {
+            AssetManager assetManager = c.getAssets();
+            InputStream inputStream = assetManager.open("keys.properties");
             Properties keysProperties = new Properties();
-            keysProperties.load(stream);
+            keysProperties.load(inputStream);
             string = keysProperties.getProperty(which);
+
         } catch (Exception e) {
             // This will be called if the file doesn't exist
             string = "Unknown";
+            e.printStackTrace();
         }
         return string;
     }

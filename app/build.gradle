@@ -39,8 +39,8 @@ android {
         targetSdkVersion 35
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 411
-        versionName '6.3.9'
+        versionCode 412
+        versionName '6.4.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -84,7 +84,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'                    // To allow Java time/date utilities on <Android 8
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'                    // To allow Java time/date utilities on <Android 8
     implementation 'androidx.activity:activity:1.10.0'                                  // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.8.6'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.12.0'                        // Required for material design goodness

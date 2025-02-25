@@ -66,7 +66,7 @@ public class StorageAccess {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean fileWriteLog, fileViewLog;
-    public final String appFolder = "OpenSong", songFolderUUIDs = "songFolderUUIDs.txt";
+    public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
@@ -77,7 +77,6 @@ public class StorageAccess {
     private int updateCrashLogAttempts = 0;
     private DocumentFile uriTreeDF, songsDF;
     private long databaseLastUpdate;
-    private final String crashLogFilename = "CrashLog.txt";
 
     // Permissions for accessing non OpenSong folder uris
     public int getTakePersistentReadUriFlags() {
@@ -772,75 +771,6 @@ public class StorageAccess {
         }
         return path;
     }
-
-    // TODO delete these definitely old and unused functions
-    /*public String checkSongFolderUUIDExist(String subfolderPath, String uuidOrNull) {
-        // This uses the json object stored in the OpenChordsAPI
-
-        String newUUIDIfRequired;
-        if (uuidOrNull == null) {
-            newUUIDIfRequired = String.valueOf(UUID.randomUUID());
-        } else {
-            newUUIDIfRequired = uuidOrNull;
-        }
-
-        // Each song folder/subfolder has a UUID stored in a text file in Settings
-        // Load this as a string and check if this folder exists, if not, add it
-        Uri uri = getUriForItem("Settings","",songFolderUUIDs);
-        lollipopCreateFileForOutputStream(false,uri,null,"Settings","",songFolderUUIDs);
-        String content = readTextFileToString(getInputStream(uri));
-        if (content==null) {
-            content = "";
-        }
-
-        String whatToCheck;
-        if (uuidOrNull == null) {
-            whatToCheck = subfolderPath + ":";
-        } else {
-            whatToCheck = subfolderPath + ":" + uuidOrNull;
-        }
-
-        if (!content.contains(whatToCheck) && subfolderPath!=null && !subfolderPath.isEmpty()) {
-            content = (content.trim()+"\n"+subfolderPath+":" + newUUIDIfRequired).trim();
-            writeFileFromString(content,getOutputStream(uri));
-        }
-
-        return newUUIDIfRequired;
-    }*/
-
-    /*public String getUUIDForSongFolder(String subfolderPath) {
-        Uri uri = getUriForItem("Settings","",songFolderUUIDs);
-        String content = readTextFileToString(getInputStream(uri));
-        if (content!=null) {
-            String[] lines = content.split("\n");
-            for (String line : lines) {
-                if (line.contains(subfolderPath + ":")) {
-                    return line.substring(line.lastIndexOf(":") + 1);
-                }
-            }
-        }
-        // If we get this far, we just need to create a new UUID for the subfolder
-        if (mainActivityInterface.getStorageAccess().uriTreeHome!=null) {
-            return checkSongFolderUUIDExist(subfolderPath, null);
-        } else {
-            return String.valueOf(UUID.randomUUID());
-        }
-    }*/
-
-    /*public String getSongFolderForUUID(String expectedFolderName, String folderUuid) {
-        Uri uri = getUriForItem("Settings","",songFolderUUIDs);
-        String content = readTextFileToString(getInputStream(uri));
-        if (content!=null && folderUuid!=null) {
-            String[] lines = content.split("\n");
-            for (String line : lines) {
-                if (line.contains(":"+folderUuid)) {
-                    return line.substring(0,line.indexOf(":"));
-                }
-            }
-        }
-        // If we get this far, we just need to create a new UUID for the subfolder
-        return checkSongFolderUUIDExist(expectedFolderName,null);
-    }*/
 
     // Get information about the files
     public String getUTFEncoding(Uri uri) {
@@ -1840,7 +1770,7 @@ public class StorageAccess {
     private boolean deleteFile_File(Uri uri) {
         try {
             if (uri != null && uri.getPath() != null) {
-                String itemName = uri.getLastPathSegment();
+                //String itemName = uri.getLastPathSegment();
                 File f = new File(uri.getPath());
                 // If this is a directory, empty it first
                 if (f.isDirectory() && f.listFiles() != null) {
@@ -2763,10 +2693,8 @@ public class StorageAccess {
     }
 
     public Uri getCrashLogUri() {
-        return getUriForItem("Settings","",crashLogFilename);
-    }
-    public String getCrashLogFilename() {
-        return crashLogFilename;
+        String crashLogFilename = "CrashLog.txt";
+        return getUriForItem("Settings","", crashLogFilename);
     }
     public boolean crashLogExists() {
         return uriExists(getCrashLogUri());

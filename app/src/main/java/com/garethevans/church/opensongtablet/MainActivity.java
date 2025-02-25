@@ -436,7 +436,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             setHardwareAcceleration();
 
             mainLooper.post(() -> {
-                // TODO can remove once we track down TransactionTooLarge crash
                 TooLargeTool.startLogging(this.getApplication());
                 WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
             });
@@ -1971,38 +1970,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         String whichShowcase;
         if (!getAlertChecks().getIsShowing()) {
             switch (what) {
-                case "performanceView":
-                default:
-                    whichShowcase = "performanceMode";
-                    // Get the hamburger icon and settings if shown
-                    View hamburgerView = null;
-                    View settingsView = null;
-                    for (int z = 0; z < myView.myToolbar.getChildCount(); z++) {
-                        if (hamburgerView == null && myView.myToolbar.getChildAt(z).getClass().toString().contains("ImageButton")) {
-                            hamburgerView = myView.myToolbar.getChildAt(z);
-                        }
-                        if (settingsView == null && myView.myToolbar.getChildAt(z).getClass().toString().contains("ActionMenu")) {
-                            settingsView = myView.myToolbar.getChildAt(z);
-                        }
-                    }
-
-                    if (hamburgerView != null) {
-                        targets.add(hamburgerView);
-                        infos.add(menu_showcase_info);
-                        rects.add(false);
-                    }
-                    if (settingsView != null) {
-                        targets.add(settingsView);
-                        infos.add(extra_settings);
-                        rects.add(false);
-                    }
-
-                    // The page button
-                    targets.add(myView.actionFAB);
-                    infos.add(action_button_info);
-                    rects.add(false);
-                    break;
-
                 case "presenterSongs":
                     whichShowcase = "presenterSongs";
                     // The hamburger (song/set menu)
@@ -2060,6 +2027,38 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     infos.add(add_songs + " / " + song_actions);
                     rects.add(true);
                     rects.add(true);
+                    rects.add(false);
+                    break;
+
+                case "performanceView":
+                default:
+                    whichShowcase = "performanceMode";
+                    // Get the hamburger icon and settings if shown
+                    View hamburgerView = null;
+                    View settingsView = null;
+                    for (int z = 0; z < myView.myToolbar.getChildCount(); z++) {
+                        if (hamburgerView == null && myView.myToolbar.getChildAt(z).getClass().toString().contains("ImageButton")) {
+                            hamburgerView = myView.myToolbar.getChildAt(z);
+                        }
+                        if (settingsView == null && myView.myToolbar.getChildAt(z).getClass().toString().contains("ActionMenu")) {
+                            settingsView = myView.myToolbar.getChildAt(z);
+                        }
+                    }
+
+                    if (hamburgerView != null) {
+                        targets.add(hamburgerView);
+                        infos.add(menu_showcase_info);
+                        rects.add(false);
+                    }
+                    if (settingsView != null) {
+                        targets.add(settingsView);
+                        infos.add(extra_settings);
+                        rects.add(false);
+                    }
+
+                    // The page button
+                    targets.add(myView.actionFAB);
+                    infos.add(action_button_info);
                     rects.add(false);
                     break;
 
@@ -2907,7 +2906,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 setWhattodo("ossb");
                 dealingWithIntent = deeplink_set_bundle;
             } else if (importFilename.toLowerCase(Locale.ROOT).endsWith(".justchords")) {
-                // TODO - we need to decide if it is a single song or a set
                 JustChordsObject justChordsObject = getConvertJustChords().getJustChordsObjectFromImportUri();
                 if (justChordsObject!=null && justChordsObject.getSongs()!=null) {
                     if (justChordsObject.getSongs().length > 1) {
