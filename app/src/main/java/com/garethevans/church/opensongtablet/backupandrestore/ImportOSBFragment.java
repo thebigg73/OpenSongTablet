@@ -555,7 +555,7 @@ public class ImportOSBFragment extends Fragment {
 
                 if (alive) {
                     // Deal with the database
-                    if (hasPersistentDB && tempDBFile != null) {
+                    if (hasPersistentDB && myView.includePersistentDB.getChecked() && tempDBFile != null) {
                         // We will use SQL to merge the database to our existing one
                         // If we are allowing overwrite, we use REPLACE, if not we use INSERT OR IGNORE
                         String dbPath = tempDBFile.getPath();
