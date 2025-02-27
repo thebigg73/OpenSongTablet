@@ -56,7 +56,7 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.7'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.8'
         }
     }
 
@@ -85,7 +85,7 @@ android {
 
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'                    // To allow Java time/date utilities on <Android 8
-    implementation 'androidx.activity:activity:1.10.0'                                  // Required for activity and permission requests
+    implementation 'androidx.activity:activity:1.10.1'                                  // Required for activity and permission requests
     implementation 'androidx.fragment:fragment:1.8.6'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.12.0'                        // Required for material design goodness
     implementation 'com.google.android.gms:play-services-cast:22.0.0'                   // For casting obviously!
@@ -108,11 +108,11 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'                               // GridLayout (obviously)
     implementation 'androidx.appcompat:appcompat:1.7.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'                   // Constraint layouts with FAB
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.8.7'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.8.7'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.8.7'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment:2.8.8'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui:2.8.8'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.8.8'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.9.1'                               // Allows annotations in code
@@ -129,7 +129,7 @@ dependencies {
     implementation 'com.caverock:androidsvg-aar:1.4'                                    // To convert SVG from abc notation into ImageView
     implementation 'com.gu.android:toolargetool:0.3.2'                                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
-    implementation 'androidx.exifinterface:exifinterface:1.3.7'                         // To get image exif data (orientation for camera)
+    implementation 'androidx.exifinterface:exifinterface:1.4.0'                         // To get image exif data (orientation for camera)
     //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     implementation 'com.google.code.gson:gson:2.11.0'                                   // GSon for JSON conversion of Song/Set objects
