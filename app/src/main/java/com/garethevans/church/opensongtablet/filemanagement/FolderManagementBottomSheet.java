@@ -108,32 +108,33 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
         }
     }
     private void setupView() {
-        myView.backupFolder.setVisibility(View.VISIBLE);
+        myView.backupFolderLayout.setVisibility(View.VISIBLE);
         myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB"));
 
         if (root) {
             myView.dialogHeading.setText(mainActivityInterface.getStorageAccess().
                     niceUriTree(mainActivityInterface.getStorageAccess().homeFolder(null))[1]);
-            myView.createSubdirectory.setVisibility(View.GONE);
-            myView.moveContents.setVisibility(View.GONE);
-            myView.renameFolder.setVisibility(View.GONE);
-            myView.deleteSubdirectory.setVisibility(View.GONE);
+            myView.createSubdirectoryLayout.setVisibility(View.GONE);
+            myView.moveContentsLayout.setVisibility(View.GONE);
+            myView.renameFolderLayout.setVisibility(View.GONE);
+            myView.deleteSubdirectoryLayout.setVisibility(View.GONE);
+            myView.openChordsLayout.setVisibility(View.GONE);
             myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage"));
 
         } else if (songs) {
             String s = "OpenSong/Songs";
             myView.dialogHeading.setText(s);
-            myView.changeLocation.setVisibility(View.GONE);
-            myView.renameFolder.setVisibility(View.GONE);
+            myView.changeLocationLayout.setVisibility(View.GONE);
+            myView.renameFolderLayout.setVisibility(View.GONE);
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
-            myView.deleteSubdirectory.setVisibility(View.GONE);
+            myView.deleteSubdirectoryLayout.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem"));
 
 
         } else {
             String s = "OpenSong/Songs/" + subdir;
             myView.dialogHeading.setText(s);
-            myView.changeLocation.setVisibility(View.GONE);
+            myView.changeLocationLayout.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem"));
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents"));
             myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder"));
@@ -141,7 +142,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.openChords.setOnClickListener(new ActionClickListener("openChords"));
         }
 
-        myView.exportSongList.setVisibility(View.VISIBLE);
+        myView.exportSongListLayout.setVisibility(View.VISIBLE);
         myView.exportSongList.setOnClickListener(v -> {
             if (getActivity()!=null) {
                 ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
