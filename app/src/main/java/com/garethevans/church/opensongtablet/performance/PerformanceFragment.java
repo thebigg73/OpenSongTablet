@@ -89,7 +89,7 @@ public class PerformanceFragment extends Fragment {
     private int sendSongDelay = 0;
     @SuppressWarnings("FieldCanBeLocal")
     // GE - hidden this option, but reserving the right to reinstate even just for me
-    private final int graceTime = 2000;
+    private final int graceTime = 1500;
     private final Handler sendSongAfterDelayHandler = new Handler(),
         autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
@@ -527,12 +527,6 @@ public class PerformanceFragment extends Fragment {
                     // Clear any reference to existing abcObjects
                     mainActivityInterface.getAbcNotation().resetInlineAbcObjects();
                     mainActivityInterface.getAbcNotation().setAbcWebViewsDrawn(false);
-
-                    // IV - Deal with stop of metronome if we have changed song
-                    metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
-                    if (songChange && metronomeWasRunning) {
-                        mainActivityInterface.getMetronome().stopMetronome();
-                    }
 
                     // Stop any autoscroll if required, but not if it was activated
                     boolean autoScrollActivated = mainActivityInterface.getAutoscroll().getAutoscrollActivated();
@@ -1392,14 +1386,6 @@ public class PerformanceFragment extends Fragment {
             }
         }
 
-
-        // TODO REMOVE
-        /*try {
-            mainActivityInterface.getOpenChordsAPI().convertOpenSongSetToOpenChordsSetList2("Church__2022 06 05 Ormiston");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
         // Load up the sticky notes if the user wants them
         if (!mainActivityInterface.getProcessSong().getHasStickyOffOverride(mainActivityInterface.getSong())) {
             dealWithStickyNotes(mainActivityInterface.getProcessSong().getHasStickyOnOverride(mainActivityInterface.getSong()), false);
@@ -1470,10 +1456,15 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }
 
-            // Deal with auto start of metronome
-            if (mainActivityInterface.getMetronome().getMetronomeAutoStart() &&
-                    songChange && metronomeWasRunning) {
-                mainActivityInterface.getMetronome().startMetronome();
+            // TODO Gareth changes
+            metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
+            if (songChange && metronomeWasRunning && !mainActivityInterface.getMetronome().getMetronomeAutoStart()) {
+                // The metronome autostart is switched of and the metronome was running, stop it
+                mainActivityInterface.getMetronome().stopMetronome();
+
+            } else if (songChange && metronomeWasRunning) {
+                // The metronome was running, with autostart on, so update the song values
+                mainActivityInterface.getMetronome().setMetronomeChanged(true);
             }
 
             // Deal with capo information (if required)

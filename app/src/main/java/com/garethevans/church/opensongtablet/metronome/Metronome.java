@@ -9,7 +9,6 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
@@ -59,6 +58,7 @@ public class Metronome {
     private final Runnable tickRunnable;
     private final Runnable tockRunnable;
     private ArrayList<Integer> tickBeats;
+    private boolean metronomeChanged = false;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
     private long old_time = 0L;
@@ -127,12 +127,14 @@ public class Metronome {
     public void startMetronome() {
         // If the metronome is valid and not running, start. If not stop
         if (metronomeValid() && !getIsRunning()){
+            Log.d(TAG,"metronomeValid and trying to start");
             // Get the tick and tock sounds ready
             setVisualMetronome();
             setAudioMetronome();
             newSongLoaded();
             checkPlayersReady();
         } else {
+            metronomeChanged = false;
             stopMetronome();
         }
     }
@@ -141,13 +143,22 @@ public class Metronome {
         isRunningVisual = false;
         stopTimers(false);
 
-        // Make sure the action bar resets to the off color
-        new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),beatTimeLength*2L);
+        // If we have change the metronome values (new song loaded), start again
+        setSongValues();
+        if (metronomeChanged && validTimeSig && validTempo) {
+            metronomeChanged = false;
+            mainActivityInterface.getMainHandler().post(() -> {
+                mainActivityInterface.getToolbar().makeAllBeatsTransparent();
+                startMetronome();
+            });
+        } else {
+            metronomeChanged = false;
+            mainActivityInterface.getToolbar().hideMetronomeBar();
 
-        mainActivityInterface.getToolbar().hideMetronomeBar();
-
-        Log.d(TAG,"metronome stopped");
+            // Do it again after a pause
+            mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),200);
+            mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.getToolbar().hideMetronomeBar(),500);
+        }
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
@@ -388,11 +399,8 @@ public class Metronome {
     }
     public ArrayList<String> processTimeSignature() {
         ArrayList<String> timeSignature = new ArrayList<>();
-        String ts = mainActivityInterface.getSong().getTimesig();
         // Always assume we want 4/4 if there is no value set
-        if (ts==null || ts.isEmpty()) {
-            ts = "4/4";
-        }
+        String ts = fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true);
         if (ts.contains("/")) {
             validTimeSig = true;
             try {
@@ -413,6 +421,32 @@ public class Metronome {
         timeSignature.add(String.valueOf(beats));
         timeSignature.add(String.valueOf(divisions));
         return timeSignature;  // Used when editing
+    }
+
+    public String fixInvalidTimeSignature(String currentTimeSignature, boolean useDefaultBackup) {
+        if (currentTimeSignature!=null) {
+            if (currentTimeSignature.contains(" ")) {
+                String[] bits = currentTimeSignature.split(" ");
+                for (String bit : bits) {
+                    if (bit.contains("/")) {
+                        currentTimeSignature = bit;
+                        break;
+                    }
+                }
+            }
+            if (currentTimeSignature.contains("/")) {
+                currentTimeSignature = currentTimeSignature.replaceAll("[^0-9/]","").trim();
+                return currentTimeSignature;
+            } else {
+                if (useDefaultBackup) {
+                    return "4/4";
+                } else {
+                    return "";
+                }
+            }
+        } else {
+            return null;
+        }
     }
 
     public float meterTimeFactor() {
@@ -486,13 +520,16 @@ public class Metronome {
     }
 
     // Checks to the metronome
+    public void setMetronomeChanged(boolean metronomeChanged) {
+        this.metronomeChanged = metronomeChanged;
+    }
     public boolean metronomeValid() {
         return validTempo && validTimeSig;
     }
     public boolean getIsRunning() {
         return isRunningAudio || isRunningVisual;
     }
-    private void checkPlayersReady() {
+    public void checkPlayersReady() {
         // Called when the mediaPlayer are prepared
         if (tickPlayerReady && tockPlayerReady) {
             tickHandler = new Handler();
@@ -526,24 +563,36 @@ public class Metronome {
                     long latency = sysTime - (audioTime - buffer);
                     final long bufferFix = buffer - latency;
 
+                    boolean doStop = false;
                     if (beat > beats) {
                         beat = 1;
+                        if (!visualMetronome && metronomeChanged) {
+                            // Normally the visual metronome does the stop
+                            // If it isn't running, stop it here
+                            doStop = true;
+                        }
                     }
-                    if (soundPool != null && tickBeats.contains(beat)) {
-                        tickHandler.postDelayed(tickRunnable,bufferFix);
 
-                    } else if (soundPool != null) {
-                        tockHandler.postDelayed(tockRunnable,bufferFix);
-                    }
-
-                    beat++;
-                    beatsRunningTotal++;
-
-                    if (beatsRequired > 0 && beatsRunningTotal > beatsRequired+2) {
-                        // Stop the metronome (beats and visual)
+                    if (doStop) {
                         stopMetronome();
+
+                    } else {
+                        if (soundPool != null && tickBeats.contains(beat)) {
+                            tickHandler.postDelayed(tickRunnable, bufferFix);
+
+                        } else if (soundPool != null) {
+                            tockHandler.postDelayed(tockRunnable, bufferFix);
+                        }
+
+                        beat++;
+                        beatsRunningTotal++;
+
+                        if (beatsRequired > 0 && beatsRunningTotal > beatsRequired + 2) {
+                            // Stop the metronome (beats and visual)
+                            stopMetronome();
+                        }
+                        audioTime += beatTimeLength;
                     }
-                    audioTime += beatTimeLength;
                 });
             }
         };
@@ -569,24 +618,32 @@ public class Metronome {
                     final long bufferFix = buffer - latency;
                     if (beatVisual > beats) {
                         beatVisual = 1;
+                        if (metronomeChanged) {
+                            stopMetronome();
+                        }
                     }
                     visualTimerHandler.removeCallbacks(visualTimerTask);
-                    final int thisBeat = beatVisual;
-                    if (tickBeats.contains(beatVisual)) {
-                        try {
-                            mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColor, bufferFix);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    if (beatVisual==1 && metronomeChanged) {
+                        Log.d(TAG,"we are stopping the metronome via visual");
+
                     } else {
-                        try {
-                            mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColorDarker, bufferFix);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        final int thisBeat = beatVisual;
+                        if (tickBeats.contains(beatVisual)) {
+                            try {
+                                mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColor, bufferFix);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            try {
+                                mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColorDarker, bufferFix);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
+                        beatVisual++;
+                        visualTime += beatTimeLength;
                     }
-                    beatVisual++;
-                    visualTime += beatTimeLength;
                 });
             }
         };
@@ -634,11 +691,6 @@ public class Metronome {
         isRunningVisual = false;
         isRunningAudio = false;
 
-        try {
-            mainActivityInterface.getToolbar().hideMetronomeBar();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void initialiseTapTempo(MaterialButton tapButton, ExposedDropDown timeSigView,
@@ -702,7 +754,7 @@ public class Metronome {
         // If it ends in /4, then leave as is
         // If it ends in /8, then half it
         // If it isn't set, set it to default as 4/4
-        String timeSig = mainActivityInterface.getSong().getTimesig();
+        String timeSig = fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),false);
         if (timeSig==null || timeSig.isEmpty()) {
             if (beatsView!=null && divisionsView!=null) {
                 beatsView.setText("4");

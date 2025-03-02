@@ -178,8 +178,9 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getSong().setTempo("100");
             updateSong = true;
         }
-        if (mainActivityInterface.getSong().getTimesig()==null || mainActivityInterface.getSong().getTimesig().isEmpty()) {
-            mainActivityInterface.getSong().setTimesig("4/4");
+        String timeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true);
+        if (!mainActivityInterface.getSong().getTimesig().equals(timeSig)) {
+            mainActivityInterface.getSong().setTimesig(timeSig);
             updateSong = true;
         }
         if (updateSong) {
@@ -402,7 +403,7 @@ public class MetronomeFragment extends Fragment {
         // If it ends in /4, then leave as is
         // If it ends in /8, then half it
         // If it isn't set, set it to default as 4/4
-        String timeSig = mainActivityInterface.getSong().getTimesig();
+        String timeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true);
         if (timeSig.isEmpty()) {
             myView.signatureBeats.setText("4");
             myView.signatureDivisions.setText("4");

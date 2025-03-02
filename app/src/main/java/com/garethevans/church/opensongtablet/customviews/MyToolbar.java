@@ -54,7 +54,8 @@ public class MyToolbar extends MaterialToolbar {
     private boolean clock24hFormat, clockOn, hideActionBar, clockSeconds, performanceMode, actionBarTempo;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyToolbar";
-    private String capoString = "", keyString = "", tempoString="";
+    private String capoString = "";
+    private String keyString = "";
 
     // Set up the view and view items
     public void initialiseToolbar(Context c, ActionBar actionBar) {
@@ -276,7 +277,7 @@ public class MyToolbar extends MaterialToolbar {
 
             if (actionBarTempo && tempo!=null && mainActivityInterface.getSong().getTempo() != null &&
                 !mainActivityInterface.getSong().getTempo().isEmpty()) {
-                tempoString = " " + mainActivityInterface.getSong().getTempo() + " bpm";
+                String tempoString = " " + mainActivityInterface.getSong().getTempo() + " bpm";
                 tempo.setTextSize(mainsize);
                 tempo.setText(tempoString);
                 hideView(tempo, false);
@@ -507,18 +508,34 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void hideMetronomeBar() {
+        Log.d(TAG,"hideMetronomeBar()");
         for (int x=1; x<=16; x++) {
-            beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
-            beatView.get(x).setVisibility(View.GONE);
+            View view = beatView.get(x);
+            view.post(() -> {
+                view.setBackgroundColor(Color.TRANSPARENT);
+                //view.setVisibility(View.GONE);
+            });
         }
-        metronomeLayout.setVisibility(View.GONE);
+        metronomeLayout.post(() -> metronomeLayout.setVisibility(View.GONE));
+    }
+
+    public void makeAllBeatsTransparent() {
+        Log.d(TAG,"makeAllBeatsTransparent()");
+        for (int x=1; x<=16; x++) {
+            View view = beatView.get(x);
+            view.post(() -> view.setBackgroundColor(Color.TRANSPARENT));
+        }
     }
 
     public void highlightBeat(int beat, int colorOn, long bufferFix) {
         // Highlight the beat
+        // Make sure the layout is visible!
 
             mainActivityInterface.getMainHandler().postDelayed(() -> {
                 try {
+                    if (metronomeLayout.getVisibility()!=View.VISIBLE) {
+                        metronomeLayout.setVisibility(View.VISIBLE);
+                    }
                     beatView.get(beat).setBackgroundColor(colorOn);
                     if (beat == 1) {
                         // Hide the last beat
