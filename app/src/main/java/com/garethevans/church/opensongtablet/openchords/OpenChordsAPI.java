@@ -710,7 +710,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     }
 
                 } else {
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_no_matching_folder));
                     serverFolder = null;
                     serverSongs.clear();
                     serverTags.clear();
@@ -1003,7 +1002,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 openChordsSong.setTempo(Integer.parseInt(tempo));
             }
         }
-        openChordsSong.setTimeSignature(jsonNullIfEmpty(openSongSong.getTimesig()));
+        // Make sure timeSignature is valid!
+        openChordsSong.setTimeSignature(jsonNullIfEmpty(
+                mainActivityInterface.getMetronome().fixInvalidTimeSignature(
+                openSongSong.getTimesig(),false)));
         String key = openSongSong.getKey();
         if (key != null && !key.isEmpty()) {
             openChordsSong.setKey(key.replace("m", ""));
@@ -1351,7 +1353,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         existingSong.setAuthor(newOpenSongSong.getAuthor());
         existingSong.setAutoscrolllength(newOpenSongSong.getAutoscrolllength());
         existingSong.setTempo(newOpenSongSong.getTempo());
-        existingSong.setTimesig(newOpenSongSong.getTimesig());
+        existingSong.setTimesig(mainActivityInterface.getMetronome().fixInvalidTimeSignature(newOpenSongSong.getTimesig(),false));
         existingSong.setKey(newOpenSongSong.getKey());
         existingSong.setCapo(newOpenSongSong.getCapo());
         existingSong.setNotes(newOpenSongSong.getNotes());

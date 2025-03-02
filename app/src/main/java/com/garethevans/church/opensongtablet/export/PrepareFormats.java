@@ -97,7 +97,7 @@ public class PrepareFormats {
                 replaceNulls("", "\n", thisSong.getAuthor()) +
                 replaceNulls("Key: ", "\n", thisSong.getKey()) +
                 replaceNulls("Tempo: ", "\n", thisSong.getTempo()) +
-                replaceNulls("Time signature: ", "\n", thisSong.getTimesig()) +
+                replaceNulls("Time signature: ", "\n", mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)) +
                 replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
                 replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
                 "\n\n" +
@@ -116,7 +116,7 @@ public class PrepareFormats {
                 replaceNulls("{artist:", "}\n", thisSong.getAuthor()) +
                 replaceNulls("{key:", "}\n", thisSong.getKey()) +
                 replaceNulls("{tempo:", "}\n", thisSong.getTempo()) +
-                replaceNulls("{time:", "}\n", thisSong.getTimesig()) +
+                replaceNulls("{time:", "}\n", mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)) +
                 replaceNulls("{copyright:", "}\n", thisSong.getCopyright()) +
                 replaceNulls("{ccli:", "}\n", thisSong.getCcli()) +
                 "\n\n" +
@@ -156,7 +156,7 @@ public class PrepareFormats {
                 replaceNulls("", "\n", thisSong.getAuthor()) +
                 replaceNulls("Key: ", "\n", thisSong.getKey()) +
                 replaceNulls("Tempo: ", "\n", thisSong.getTempo()) +
-                replaceNulls("Time signature: ", "\n", thisSong.getTimesig()) +
+                replaceNulls("Time signature: ", "\n", mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)) +
                 replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
                 replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
                 "\n\n" +

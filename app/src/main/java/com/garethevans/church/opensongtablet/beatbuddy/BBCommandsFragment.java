@@ -1019,7 +1019,7 @@ public class BBCommandsFragment extends Fragment {
                 ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.timesigDropDown, R.layout.view_exposed_dropdown_item, timesigs);
                 myView.timesigDropDown.setAdapter(timesigArrayAdapter);
-                myView.timesigDropDown.setText(mainActivityInterface.getSong().getTimesig());
+                myView.timesigDropDown.setText(mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true));
                 myView.timesigDropDown.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}

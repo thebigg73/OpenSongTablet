@@ -143,7 +143,7 @@ public class ImportOnlineFragment extends Fragment {
         newSong = new Song();
         worshipTogether = new WorshipTogether();
         chordie = new Chordie();
-        songSelect = new SongSelect();
+        songSelect = new SongSelect(mainActivityInterface);
         ukuTabs = new UkuTabs();
         holyChords = new HolyChords();
         boiteachansons = new Boiteachansons();
@@ -532,10 +532,10 @@ public class ImportOnlineFragment extends Fragment {
                 }
 
                 if (webString.contains("class=\"music-sheet\"")) {
-                    newSong = songSelect.processContentLyricsText(mainActivityInterface, newSong, webString);
+                    newSong = songSelect.processContentLyricsText(newSong, webString);
                     //show = false;
                 } else if (webString.contains("<span class=\"cproTitleLine\">")) {
-                    newSong = songSelect.processContentChordPro(getContext(), mainActivityInterface, newSong, webString);
+                    newSong = songSelect.processContentChordPro(getContext(), newSong, webString);
                     //show = false;
                 } else {
                     // IV - Set a song name for possible use with SongSelect web page download buttons
@@ -679,7 +679,7 @@ public class ImportOnlineFragment extends Fragment {
             }
         }
         newSong.setTempo(newSong.getTempo().trim());
-        newSong.setTimesig(newSong.getTimesig().trim());
+        newSong.setTimesig(mainActivityInterface.getMetronome().fixInvalidTimeSignature(newSong.getTimesig().trim(),false));
         newSong.setCcli(newSong.getCcli().trim());
 
         if (songSelectAutoDownload.isEmpty()) {

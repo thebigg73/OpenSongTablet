@@ -411,7 +411,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                     valueNotEmpty(song.getKey()) ||
                     valueNotEmpty(song.getKeyOriginal()) ||
                     valueNotEmpty(song.getPreferredInstrument()) ||
-                    valueNotEmpty(song.getTimesig()) ||
+                    valueNotEmpty(mainActivityInterface.getMetronome().fixInvalidTimeSignature(song.getTimesig(),false)) ||
                     valueNotEmpty(song.getAka()) ||
                     valueNotEmpty(song.getAutoscrolldelay()) ||
                     valueNotEmpty(song.getAutoscrolllength()) ||

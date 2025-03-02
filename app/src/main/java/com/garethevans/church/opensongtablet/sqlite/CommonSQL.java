@@ -166,7 +166,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_KEY, thisSong.getKey());
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_PREFERRED_INSTRUMENT, thisSong.getPreferredInstrument());
-        values.put(SQLite.COLUMN_TIMESIG, thisSong.getTimesig());
+        values.put(SQLite.COLUMN_TIMESIG, mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false));
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
         values.put(SQLite.COLUMN_AUTOSCROLL_LENGTH, thisSong.getAutoscrolllength());
@@ -1070,7 +1070,7 @@ public class CommonSQL {
         stringBuilder.append("\"").append(song!=null ? song.getKey() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getKeyOriginal() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY_ORIGINAL))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getPreferredInstrument() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PREFERRED_INSTRUMENT))).append("\",");
-        stringBuilder.append("\"").append(song!=null ? song.getTimesig() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG))).append("\",");
+        stringBuilder.append("\"").append(song!=null ? mainActivityInterface.getMetronome().fixInvalidTimeSignature(song.getTimesig(),false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getAka() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AKA))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getAutoscrolldelay() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_DELAY))).append("\",");
         stringBuilder.append("\"").append(song!=null ? song.getAutoscrolllength() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_LENGTH))).append("\",");

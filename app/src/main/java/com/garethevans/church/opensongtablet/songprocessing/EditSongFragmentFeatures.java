@@ -185,7 +185,7 @@ public class EditSongFragmentFeatures extends Fragment {
                 ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
                 myView.timesig.setAdapter(timesigArrayAdapter);
-                myView.timesig.setText(mainActivityInterface.getTempSong().getTimesig());
+                myView.timesig.setText(mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getTempSong().getTimesig(),false));
             });
         }
 

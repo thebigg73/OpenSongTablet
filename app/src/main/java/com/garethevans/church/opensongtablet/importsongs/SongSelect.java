@@ -20,7 +20,12 @@ public class SongSelect {
     // Chord lines will have the chord identifier in them.  That can be removed
     // Text is html entitied - i.e. " is shown as &quot;, ' is shown as &#039;
 
-    public Song processContentChordPro(Context c, MainActivityInterface mainActivityInterface, Song newSong, String s) {    // Get the content we want
+    private final MainActivityInterface mainActivityInterface;
+    public SongSelect(MainActivityInterface mainActivityInterface) {
+        this.mainActivityInterface = mainActivityInterface;
+    }
+
+    public Song processContentChordPro(Context c, Song newSong, String s) {    // Get the content we want
         s = getSubstring(s,"<span class=\"cproSongHeader\">","<p class=\"disclaimer\">");
 
         newSong.setUuid(String.valueOf(UUID.randomUUID()));
@@ -160,12 +165,22 @@ public class SongSelect {
 
     private void getTempoTimeSig(Song newSong, String s) {
         s = getSubstring(s,"<span class=\"cproTempoTimeWrapper\">","</span>");
-        newSong.setTempo(getSubstring(s,"Tempo -","|").trim().
-                replace("bpm", "").
-                replace("BPM", "").
-                replace("Bpm", ""));
-        newSong.setTimesig(getSubstring(s,"Time -",null).trim().
-                replace("&nbsp;",""));
+        String tempo = "";
+        String timeSig = "";
+        // Because these can have different languages, we need to scour for content
+        s = s.replace("-", " ");
+        String[] bits = s.split(" ");
+        for (String bit:bits) {
+            if (bit.contains("/")) {
+                // This is likely the time signature
+                timeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(bit,true);
+            } else if (!bit.replaceAll("\\D","").isEmpty()) {
+                // This is likely the tempo
+                tempo = bit;
+            }
+        }
+        newSong.setTempo(tempo);
+        newSong.setTimesig(timeSig);
     }
 
     private String getCopyright(String s) {
@@ -282,7 +297,7 @@ public class SongSelect {
         return s;
     }
 
-    public Song processContentLyricsText(MainActivityInterface mainActivityInterface, Song newSong, String s) {
+    public Song processContentLyricsText(Song newSong, String s) {
         int start = s.indexOf("sheet-container\">");
         int end = s.indexOf("</main><footer", start);
         if (start > -1 && end > -1 && end > start) {

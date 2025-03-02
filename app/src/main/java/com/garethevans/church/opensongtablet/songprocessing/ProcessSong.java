@@ -194,7 +194,7 @@ public class ProcessSong {
         thisSong.setCapoprint(fixNullValues(thisSong.getCapoprint()));
         thisSong.setCapo(fixNullValues(thisSong.getCapo()));
         thisSong.setTempo(fixNullValues(thisSong.getTempo()));
-        thisSong.setTimesig(fixNullValues(thisSong.getTimesig()));
+        thisSong.setTimesig(fixNullValues(mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)));
         thisSong.setAutoscrolldelay(fixNullValues(thisSong.getAutoscrolldelay()));
         thisSong.setAutoscrolllength(fixNullValues(thisSong.getAutoscrolllength()));
         thisSong.setCcli(fixNullValues(thisSong.getCcli()));
@@ -2218,7 +2218,6 @@ public class ProcessSong {
         boolean stageOrPresenter = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter));
         boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
-        Log.d(TAG,"lyrics:"+lyrics);
         if (stageOrPresenter || (performance && trimSections)) {
                 lyrics = lyrics
                     // We protect the leading space of lyric lines
@@ -2504,7 +2503,6 @@ public class ProcessSong {
                                         mainActivityInterface.getAbcNotation().addInlineAbcObject(inlineAbcObject);
                                         // Now we add the WebView and ImageView for the song display
                                         // Once rendering is complete, we hide the WebView and display the ImageView
-                                        Log.d(TAG,"adding webView");
                                         linearLayout.addView(inlineAbcObject.getInlineAbcWebView());
                                         linearLayout.addView(inlineAbcObject.getInlineAbcImageView(false));
 
@@ -4240,7 +4238,6 @@ public class ProcessSong {
                         replace("__CLOSESQUAREBRACKETS__","]");
                 boolean multiverse = false;
                 // Check for multiverse/chorus
-                Log.d(TAG,"bit:"+bit);
                 String[] lines = bit.split("\n");
                 for (String line : lines) {
                     if (line.length() > 2 &&

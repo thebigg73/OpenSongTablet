@@ -90,7 +90,7 @@ public class ABCNotation {
                 songAbcTranspose = 0;
             }
         }
-        songTimeSig = thisSong.getTimesig();
+        songTimeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),true);
         // Check for default abcText
         getSongAbcOrDefault();
 

@@ -151,7 +151,7 @@ public class Drummer {
     }
 
     private void setTimeSig() {
-        timesig_string = mainActivityInterface.getSong().getTimesig();
+        timesig_string = mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),false);
         if (timesig_string==null || timesig_string.isEmpty()) {
             // Assume 4/4
             timesig_string = "4/4";

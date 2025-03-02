@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -55,6 +57,7 @@ public class ShowToast {
         popupWindow.setBackgroundDrawable(null);
         textToast = view.findViewById(R.id.textToast);
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
+        popupWindow.getContentView().getRootView().setOnClickListener(v -> popupWindow.dismiss());
     }
 
     public void doIt(final String message) {
@@ -78,12 +81,22 @@ public class ShowToast {
 
                 runnableShow = () -> {
                     if (textToast != null && popupWindow != null) {
+
                         try {
+                            try {
+                                ((DrawerLayout)anchor).removeView(popupWindow.getContentView().getRootView());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             textToast.setText(message);
-                            popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
                             messageEndTime = System.currentTimeMillis() + showTime;
                             handlerHide = new Handler(Looper.getMainLooper());
                             handlerHide.postDelayed(runnableHide, showTime);
+                            for (int i=0; i<((DrawerLayout)anchor).getChildCount(); i++) {
+                               View v = ((DrawerLayout)anchor).getChildAt(i);
+                               Log.d(TAG,"v."+v);
+                            }
+                            popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -162,7 +175,15 @@ public class ShowToast {
                 popupWindow.dismiss();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Log.d(TAG,"Couldn't kill showToast");
+
+        }
+
+        try {
+            popupWindow.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

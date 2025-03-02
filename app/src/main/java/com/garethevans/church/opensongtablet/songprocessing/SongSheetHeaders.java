@@ -103,7 +103,7 @@ public class SongSheetHeaders {
         String key = thisSong.getKey();
         String capo = thisSong.getCapo();
         String tempo = thisSong.getTempo();
-        String timesig = thisSong.getTimesig();
+        String timesig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false);
 
         String keyCapoTempo = "";
 

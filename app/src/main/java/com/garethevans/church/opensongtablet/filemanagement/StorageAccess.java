@@ -2513,7 +2513,7 @@ public class StorageAccess {
                         "\"" + fixNull(thisSong.getUser3()).replaceAll("\"", "'") + "\"," +
                         "\"" + fixNull(thisSong.getHymnnum()).replaceAll("\"", "'") + "\"," +
                         "\"" + fixNull(thisSong.getTempo()).replaceAll("\"", "'") + "\"," +
-                        "\"" + fixNull(thisSong.getTimesig()).replaceAll("\"", "'") + "\"";
+                        "\"" + fixNull(mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)).replaceAll("\"", "'") + "\"";
 
                 String topline = "\"" + c.getString(R.string.date) + "/" +
                         c.getString(R.string.time) + "\"," +

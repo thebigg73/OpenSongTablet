@@ -873,10 +873,11 @@ public class BBSQLite extends SQLiteOpenHelper {
                     }
                 }
                 String timesigString = "";
+                String tempTimeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false);
                 // If valid the timeSig isn't empty, contains '/' and will have two non-empty bits when split
-                if (thisSong.getTimesig() != null && thisSong.getTimesig().contains("/") &&
-                        !thisSong.getTimesig().replace("/","").isEmpty()) {
-                    String[] timeSigBits = thisSong.getTimesig().split("/");
+                if (tempTimeSig != null && tempTimeSig.contains("/") &&
+                        !tempTimeSig.replace("/","").isEmpty()) {
+                    String[] timeSigBits = tempTimeSig.split("/");
                     if (timeSigBits.length == 2 && !timeSigBits[0].isEmpty() && !timeSigBits[1].isEmpty()) {
                         String numerator = timeSigBits[0].replaceAll("\\D", "");
                         String denominator = timeSigBits[1].replaceAll("\\D", "");
@@ -893,7 +894,7 @@ public class BBSQLite extends SQLiteOpenHelper {
                                         "0x" + String.format("%02X", num) + " " +
                                         "0x" + String.format("%02X", (int)n) +
                                         " 0x18 0x08 0xF7";
-                                timesigString = "\n" +  c.getString(R.string.time_signature) + ": "+thisSong.getTimesig();
+                                timesigString = "\n" +  c.getString(R.string.time_signature) + ": "+tempTimeSig;
                             }
                         }
                     }
