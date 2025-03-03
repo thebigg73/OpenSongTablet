@@ -30,6 +30,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
+
 public class PresentationOrderBottomSheet extends BottomSheetDialogFragment implements RecyclerInterface {
     private BottomSheetEditSongOrderBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -108,6 +110,16 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
 
             // The adapter above sorted the available headings.
             // Now create buttons to add them
+
+            ArrayList<String> sectionHeadings = new ArrayList<>();
+            String[] lines = mainActivityInterface.getTempSong().getLyrics().split("\n");
+            for (String line : lines) {
+                if (line.startsWith("[") && line.trim().endsWith("]")) {
+                    sectionHeadings.add(line.trim().replace("[","").replace("]",""));
+                }
+            }
+            mainActivityInterface.getTempSong().setSongSectionHeadings(sectionHeadings);
+
             for (String heading : mainActivityInterface.getTempSong().getSongSectionHeadings()) {
                 MaterialButton button = new MaterialButton(requireContext());
                 button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));

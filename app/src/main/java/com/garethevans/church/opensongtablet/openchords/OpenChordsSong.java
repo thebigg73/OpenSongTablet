@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.openchords;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class OpenChordsSong {
 
     // This is the OpenChords song object
@@ -25,6 +27,7 @@ public class OpenChordsSong {
     @Nullable private String ccli;            // The CCLI information
     @Nullable private String lastUpdated;     // The last time the song was updated ISO 8601 format e.g. 2025-01-14T07:17:02Z
     @Nullable private String[] tags;          // The tags for the song.  These are UUIDs that get looked up
+    @Nullable private ArrayList<OpenChordsSongStructureItem> structure;     // Any song structure/presentation order in OpenSongApp
 
     // The getters
     @Nullable public String getId() {
@@ -75,6 +78,9 @@ public class OpenChordsSong {
     @Nullable public String[] getTags() {
         return tags;
     }
+    @Nullable public ArrayList<OpenChordsSongStructureItem> getStructure() {
+        return structure;
+    }
 
     // The setters
     public void setId(@Nullable String id) {
@@ -124,5 +130,8 @@ public class OpenChordsSong {
     }
     public void setTags(@Nullable String[] tags) {
         this.tags = getTags();
+    }
+    public void setStructure(@Nullable ArrayList<OpenChordsSongStructureItem> structure) {
+        this.structure = structure;
     }
 }

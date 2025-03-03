@@ -13,6 +13,7 @@ public class OpenChordsSetList {
     @Nullable private String title;
     @Nullable private String notes;
     @Nullable private ArrayList<OpenChordsSetListItem> items;
+    @Nullable private ArrayList<OpenChordsSongStructureItem> structure;
     @Nullable private String lastUpdated;
 
     @Nullable public String getId() {
@@ -30,6 +31,9 @@ public class OpenChordsSetList {
     @Nullable public String getLastUpdated() {
         return lastUpdated;
     }
+    @Nullable public ArrayList<OpenChordsSongStructureItem> getStructure() {
+        return structure;
+    }
 
     public void setId(@Nullable String id) {
         this.id = id;
@@ -46,5 +50,7 @@ public class OpenChordsSetList {
     public void setLastUpdated(@Nullable String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-
+    public void setStructure(@Nullable ArrayList<OpenChordsSongStructureItem> structure) {
+        this.structure = structure;
+    }
 }

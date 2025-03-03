@@ -47,7 +47,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private final String TAG = "OpenChordsAPI";
     @SuppressWarnings("FieldCanBeLocal")
     private final String getAppFolderTrigger = "opensongapp://openchords?folder=",
-            //openChordsApiBase = "https://openchords.net/api/folder/",
             openChordsApiBase = "https://openchords.net/api/v2/",
             openChordsFolderBaseShareable = "https://openchords.net/?fld=",
             songFolderUUIDsFile = "songFolderUUIDs.json";
@@ -703,7 +702,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                                 removePointlessStuffFromSetLists(serverSetLists);
                             }
 
-
                             // Now create the server compare objects
                             createServerCompareObjects();
                         }
@@ -851,6 +849,15 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         song.setCcli(openChordsSong.getCcli());
         // Now get the tags
         song.setTheme(getTagsFromOpenChordsForOpenSong(openChordsSong));
+        // Now get the presentation order
+        if (openChordsSong.getStructure()!=null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i=0; i<openChordsSong.getStructure().size(); i++) {
+                stringBuilder.append(openChordsSong.getStructure().get(i).getSectionName()).append(" ");
+            }
+            String presentationOrder = stringBuilder.toString().replace("  "," ");
+            song.setPresentationorder(presentationOrder);
+        }
         return song;
     }
 
@@ -1018,7 +1025,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 openChordsSong.setCapo(Integer.parseInt(capo));
             }
         }
-        //openChordsSong.setTranspose(key);
+        //openChordsSong.setTranspose(jsonNullIfEmpty(key));
         openChordsSong.setNotes(jsonNullIfEmpty(openSongSong.getNotes()));
         openChordsSong.setCopyright(jsonNullIfEmpty(openSongSong.getCopyright()));
         openChordsSong.setCcli(jsonNullIfEmpty(openSongSong.getCcli()));
@@ -1056,7 +1063,39 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 openChordsSong.setTags(tags);
             }
         }
+        // Now get the presentation order if it exists
+        if (openSongSong.getPresentationorder()!=null &&
+                !openSongSong.getPresentationorder().isEmpty()) {
+            Log.d(TAG,"trying to add presentation order:"+openSongSong.getPresentationorder());
+            openChordsSong.setStructure(getOpenChordsStructure(openSongSong));
+        }
         return openChordsSong;
+    }
+
+    private ArrayList<OpenChordsSongStructureItem> getOpenChordsStructure(Song openSongSong) {
+        // OpenSong desktop looked like this: V1 V2 C B C V3
+        // OpenSongApp pre v6.4.1 presentation order looked like this: Verse 1;V2;C;Break;
+
+        ArrayList<OpenChordsSongStructureItem> structureItems = new ArrayList<>();
+        // Try to extract OpenSong desktop presentation order
+        if (!openSongSong.getPresentationorder().contains(";")) {
+            // Split the items by spaces
+            String[] items = openSongSong.getPresentationorder().split(" ");
+            for (String item : items) {
+                OpenChordsSongStructureItem structureItem = new OpenChordsSongStructureItem();
+                structureItem.setSectionName(item);
+                structureItems.add(structureItem);
+            }
+        } else {
+            // Split the item by semicolon
+            String[] items = openSongSong.getPresentationorder().split(";");
+            for (String item : items) {
+                OpenChordsSongStructureItem structureItem = new OpenChordsSongStructureItem();
+                structureItem.setSectionName(item);
+                structureItems.add(structureItem);
+            }
+        }
+        return structureItems;
     }
 
     public OpenChordsSetList convertOpenSongSetToOpenChordsSetList(String filename) {
