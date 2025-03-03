@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -426,10 +427,25 @@ public class SetManageFragment extends Fragment {
     }
 
     private void importSet() {
+        Log.d(TAG,"importing set");
         // We will copy the importUri to the new chosen set name
         extractUserValuesBeforeProceeding();
 
+        // Get a note of how many items were in the currently loaded set
+        int oldSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
+
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Initialise the current set
+            mainActivityInterface.getCurrentSet().initialiseTheSet();
+            mainActivityInterface.getCurrentSet().setSetCurrent("");
+            mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
+
+            // Notify the set menu to update to an empty set
+            mainActivityInterface.notifySetFragment("clear",oldSize);
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+            mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(-1);
+
+
             newSetFilename = setName;
             if (!setCategory.equals(mainActivityInterface.getMainfoldername())) {
                 // Add the category to the name
@@ -612,6 +628,7 @@ public class SetManageFragment extends Fragment {
     }
 
     private void loadSet() {
+        Log.d(TAG,"loadSet");
         extractUserValuesBeforeProceeding();
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Show the progressBar
@@ -658,8 +675,8 @@ public class SetManageFragment extends Fragment {
                 myView.progressBar.setVisibility(View.GONE);
                 mainActivityInterface.setWhattodo("pendingLoadSet");
                 mainActivityInterface.getCurrentSet().updateSetTitleView();
-                mainActivityInterface.navHome();
                 mainActivityInterface.chooseMenu(true);
+                mainActivityInterface.navHome();
             });
         });
     }

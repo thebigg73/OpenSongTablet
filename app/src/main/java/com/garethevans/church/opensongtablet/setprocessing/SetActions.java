@@ -899,25 +899,25 @@ public class SetActions {
             throws IOException, XmlPullParserException {
         // Set this info into the current set
         if (!asExport && currentSet!=null) {
-            currentSet.setUuid(xpp.getText());
+            currentSet.setUuid(xpp.nextText());
         }
-        xpp.nextTag();
+        xpp.next();
     }
     private void getLastModified(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
             throws IOException, XmlPullParserException {
         // Set this info into the current set
         if (!asExport && currentSet!=null) {
-            currentSet.setLastModified(xpp.getText());
+            currentSet.setLastModified(xpp.nextText());
         }
-        xpp.nextTag();
+        xpp.next();
     }
     private void getNotes(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
             throws IOException, XmlPullParserException {
         // Set this info into the current set
         if (!asExport && currentSet!=null) {
-            currentSet.setNotes(getTrimmedOrNullText(xpp.getText()));
+            currentSet.setNotes(getTrimmedOrNullText(xpp.nextText()));
         }
-        xpp.nextTag();
+        xpp.next();
     }
 
     private void getSong(XmlPullParser xpp, CurrentSet currentSet, boolean asExport)
@@ -944,7 +944,7 @@ public class SetActions {
             // Only add to the current set if we aren't just preparing an export
             currentSet.addItemToSet(path,name,name,key,true);
         }
-        xpp.nextTag();
+        xpp.next();
     }
 
     private void getScripture(XmlPullParser xpp, CurrentSet currentSet, boolean asExport) throws IOException, XmlPullParserException {

@@ -2167,10 +2167,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void closeDrawer(boolean close) {
         if (close) {
-            myView.drawerLayout.post(() -> myView.drawerLayout.closeDrawer(GravityCompat.START));
+            myView.drawerLayout.post(() -> {
+                myView.drawerLayout.closeDrawer(GravityCompat.START);
+                Log.d(TAG,"trying to close the drawer");
+            });
             menuOpen = false;
         } else {
-            myView.drawerLayout.post(() -> myView.drawerLayout.openDrawer(GravityCompat.START));
+            myView.drawerLayout.post(() -> {
+                Log.d(TAG,"trying to open the drawer");
+                myView.drawerLayout.openDrawer(GravityCompat.START);
+            });
             menuOpen = true;
         }
         // Hide the keyboard

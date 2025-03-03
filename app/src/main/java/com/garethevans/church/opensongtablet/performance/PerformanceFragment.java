@@ -234,9 +234,7 @@ public class PerformanceFragment extends Fragment {
 
         removeViews();
 
-        if (mainActivityInterface.getWhattodo().equals("pendingLoadSet") &&
-            mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-            mainActivityInterface.setWhattodo("");
+        if (mainActivityInterface.getWhattodo().equals("pendingLoadSet")) {
             // If we have chosen to open the first item (preference), do that, otherwise, look for the current song
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst",true)) {
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(0);
@@ -246,6 +244,10 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.loadSongFromSet(Math.max(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0));
 
             }
+            Log.d(TAG,"TRY TO SHOW THE SET MENU");
+            mainActivityInterface.chooseMenu(true);
+            mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.closeDrawer(false),2000);
+
         } else {
             processingTestView = false;
             String songFolder = mainActivityInterface.getPreferences().getMyPreferenceString("songFolder",mainfoldername);
@@ -513,7 +515,12 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.setHighlightChangeAllowed(false);
 
                 doSongLoadStartTime = System.currentTimeMillis();
-                mainActivityInterface.closeDrawer(true);
+                if (mainActivityInterface.getWhattodo()==null ||
+                        !mainActivityInterface.getWhattodo().equals("pendingLoadSet")) {
+                    mainActivityInterface.closeDrawer(true);
+                }
+                mainActivityInterface.setWhattodo("");
+
                 mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
 
                 // Make sure we only do this once (reset at the end of 'dealwithstuffafterready')

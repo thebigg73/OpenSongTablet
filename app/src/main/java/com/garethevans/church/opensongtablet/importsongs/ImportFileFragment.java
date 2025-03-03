@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.importsongs;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -249,7 +250,8 @@ public class ImportFileFragment extends Fragment {
 
     private void readInFile() {
         if (isIMGorPDF && getActivity()!=null && getContext()!=null) {
-            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",mainActivityInterface.getImportFilename())) {
+            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",mainActivityInterface.getImportFilename()) &&
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 // Load in a preview if the version of Android is high enough
                 Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N", true);
                 myView.imageView.post(()-> Glide.with(getContext()).load(bmp).into(myView.imageView));
@@ -482,11 +484,21 @@ public class ImportFileFragment extends Fragment {
                     try {
                         // Clear the existing set
                         boolean oktocontinue = false;
-                        mainActivityInterface.getSetActions().clearCurrentSet();
+                        // Get a note of how many items were in the currently loaded set
+                        int oldSize = mainActivityInterface.getCurrentSet().getCurrentSetSize();
+                        // Initialise the current set
+                        mainActivityInterface.getCurrentSet().initialiseTheSet();
+                        mainActivityInterface.getCurrentSet().setSetCurrent("");
+                        mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
+                        //mainActivityInterface.getSetActions().clearCurrentSet();
+
+                        // Notify the set menu to update to an empty set
+                        mainActivityInterface.notifySetFragment("clear",oldSize);
+                        mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+                        mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(-1);
+
                         if (isHTML && setItemInfos!=null && !setItemInfos.isEmpty()) {
                             // Use the setItemInfo to create a new set from our OnSong HTML set
-                            mainActivityInterface.getSetActions().clearCurrentSet();
-                            mainActivityInterface.getCurrentSet().initialiseTheSet();
                             mainActivityInterface.getCurrentSet().setSetCurrentLastName(mainActivityInterface.getConvertOnSong().getSetTitle());
                             for (SetItemInfo setItemInfo:setItemInfos) {
                                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, false);
@@ -517,14 +529,21 @@ public class ImportFileFragment extends Fragment {
                         if (oktocontinue) {
                             ArrayList<Uri> thisSet = new ArrayList<>();
                             thisSet.add(copyTo);
-                            mainActivityInterface.setWhattodo("pendingLoadSet");
-                            mainActivityInterface.getSetActions().loadSets(thisSet, mainActivityInterface.getCurrentSet(), newSetName);
                             mainActivityInterface.getMainHandler().post(() -> {
+                                mainActivityInterface.setWhattodo("pendingLoadSet");
+                                mainActivityInterface.getSetActions().loadSets(thisSet, mainActivityInterface.getCurrentSet(), newSetName);
                                 showProgress(false);
-                                mainActivityInterface.navHome();
+                                //mainActivityInterface.navHome();
                                 mainActivityInterface.getShowToast().success();
+
+
+                                //mainActivityInterface.setWhattodo("pendingLoadSet");
+                                mainActivityInterface.getCurrentSet().updateSetTitleView();
+                                mainActivityInterface.navHome();
+                                Log.d(TAG,"getting here");
+                                //mainActivityInterface.chooseMenu(true);
                             });
-                            mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.chooseMenu(true), 1000);
+                            //mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.chooseMenu(true), 1000);
                         } else {
                             mainActivityInterface.getShowToast().doIt(error_string);
                         }
