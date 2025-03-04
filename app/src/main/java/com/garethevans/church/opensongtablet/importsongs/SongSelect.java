@@ -123,6 +123,7 @@ public class SongSelect {
         if (start>-1 && end>-1 && end>start) {
             start = s.indexOf(">", start) + 1;
             author = s.substring(start, end);
+            author = author.replace("&nbsp;"," ");
         }
 
         // IV - Try song viewer style
