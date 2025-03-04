@@ -824,7 +824,7 @@ public class ProcessSong {
     // When processing the lyrics, chords+lyrics or chords+comments or multiple chords+chords are processed
     // as groups of lines and returned as a TableLayout containing two or more rows to allow alignment
 
-    private String trimOutLineIdentifiers(Song thisSong, String linetype, String string) {
+    public String trimOutLineIdentifiers(Song thisSong, String linetype, String string) {
         switch (linetype) {
             case "heading":
                 string = beautifyHeading(string);
@@ -1694,7 +1694,7 @@ public class ProcessSong {
         return replacementtext.toString();
     }
 
-    public void matchPresentationOrder(Song song) {
+    public void matchPresentationOrder(Song song, boolean showToast) {
         // presentationOrder probably looks like "Intro V1 V2 C V3 C C Guitar Solo C Outro"
         // We need to identify the sections in the song that are in here
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
@@ -1770,9 +1770,9 @@ public class ProcessSong {
                     }
                 }
 
-                if (!errors.toString().trim().isEmpty()) {
+                if (showToast && !errors.toString().trim().isEmpty()) {
                     // Use a toast which is less intrusive during live performance - Inform but do not demand a reponse. For example, not using a verse section may be valid.
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.presentation_order) + ": " + c.getString(R.string.error) + "?");
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.presentation_order) + ": " + c.getString(R.string.error) + ":" + errors);
                 }
             } catch (Exception e) {
                 // IV - An error has occurred so return what we have
@@ -2271,7 +2271,7 @@ public class ProcessSong {
         song.setGroupedSections(groupedSections);
 
         // 15. Put into presentation order when required
-        matchPresentationOrder(song);
+        matchPresentationOrder(song,true);
 
         // 16. Check for filtered sections
         checkFilteringForSections(song);

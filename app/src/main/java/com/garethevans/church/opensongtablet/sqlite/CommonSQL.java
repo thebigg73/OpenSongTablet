@@ -627,6 +627,7 @@ public class CommonSQL {
                 String no = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_NOTES));
                 String co = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_COPYRIGHT));
                 String cc = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CCLI));
+                String po = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PRESENTATIONORDER));
 
                 Song song = new Song();
                 song.setFilename(fi);
@@ -646,6 +647,7 @@ public class CommonSQL {
                 song.setNotes(no);
                 song.setCopyright(co);
                 song.setCcli(cc);
+                song.setPresentationorder(po);
 
                 songs.add(song);
 

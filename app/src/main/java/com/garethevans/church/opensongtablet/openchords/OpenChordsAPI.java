@@ -326,7 +326,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             }
         }
         removePointlessStuffFromSetLists(localSetLists);
-
     }
 
     private void createServerCompareObjects() {
@@ -853,10 +852,19 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         if (openChordsSong.getStructure()!=null) {
             StringBuilder stringBuilder = new StringBuilder();
             for (int i=0; i<openChordsSong.getStructure().size(); i++) {
-                stringBuilder.append(openChordsSong.getStructure().get(i).getSectionName()).append(" ");
+                String sectionHeading = openChordsSong.getStructure().get(i).getSectionName();
+                String instructionBefore = openChordsSong.getStructure().get(i).getInstructionBefore();
+                String instructionAfter = openChordsSong.getStructure().get(i).getInstructionAfter();
+                if (instructionAfter!=null && !instructionAfter.isEmpty()) {
+                    song.setLyrics(song.getLyrics().replace("["+sectionHeading+"]\n","["+sectionHeading+"]\n"+instructionAfter+"\n"));
+                }
+                if (instructionBefore!=null && !instructionBefore.isEmpty()) {
+                    song.setLyrics(song.getLyrics().replace("["+sectionHeading+"]\n","["+sectionHeading+"]\n"+instructionBefore+"\n"));
+                }
+                stringBuilder.append(sectionHeading).append(" ");
             }
             String presentationOrder = stringBuilder.toString().replace("  "," ");
-            song.setPresentationorder(presentationOrder);
+            song.setPresentationorder(presentationOrder.trim());
         }
         return song;
     }
@@ -1025,6 +1033,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 openChordsSong.setCapo(Integer.parseInt(capo));
             }
         }
+        //TODO
         //openChordsSong.setTranspose(jsonNullIfEmpty(key));
         openChordsSong.setNotes(jsonNullIfEmpty(openSongSong.getNotes()));
         openChordsSong.setCopyright(jsonNullIfEmpty(openSongSong.getCopyright()));
@@ -1066,7 +1075,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // Now get the presentation order if it exists
         if (openSongSong.getPresentationorder()!=null &&
                 !openSongSong.getPresentationorder().isEmpty()) {
-            Log.d(TAG,"trying to add presentation order:"+openSongSong.getPresentationorder());
             openChordsSong.setStructure(getOpenChordsStructure(openSongSong));
         }
         return openChordsSong;
@@ -1076,26 +1084,33 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // OpenSong desktop looked like this: V1 V2 C B C V3
         // OpenSongApp pre v6.4.1 presentation order looked like this: Verse 1;V2;C;Break;
 
+        // TODO Likely use the method in mainActivityInterface.getProcessSong().matchPresentationOrder()
         ArrayList<OpenChordsSongStructureItem> structureItems = new ArrayList<>();
-        // Try to extract OpenSong desktop presentation order
-        if (!openSongSong.getPresentationorder().contains(";")) {
-            // Split the items by spaces
-            String[] items = openSongSong.getPresentationorder().split(" ");
-            for (String item : items) {
-                OpenChordsSongStructureItem structureItem = new OpenChordsSongStructureItem();
-                structureItem.setSectionName(item);
-                structureItems.add(structureItem);
+        // Try to extract OpenSong presentation order
+        // Get a note of the section headings in the song
+        openSongSong.setSongSectionHeadings(new ArrayList<>());
+        openSongSong.setGroupedSections(new ArrayList<>());
+        String[] lines = openSongSong.getLyrics().split("\n");
+        for (String line:lines) {
+            if (line.startsWith("[")) {
+                openSongSong.getSongSectionHeadings().add(line.replace("[", "").replace("]", ""));
+                openSongSong.getGroupedSections().add(line);
             }
-        } else {
-            // Split the item by semicolon
-            String[] items = openSongSong.getPresentationorder().split(";");
-            for (String item : items) {
+        }
+        mainActivityInterface.getProcessSong().matchPresentationOrder(openSongSong,false);
+        if (openSongSong.getPresoOrderSongHeadings()!=null &&
+            !openSongSong.getPresoOrderSongHeadings().isEmpty()) {
+            for (String heading : openSongSong.getPresoOrderSongHeadings()) {
                 OpenChordsSongStructureItem structureItem = new OpenChordsSongStructureItem();
-                structureItem.setSectionName(item);
+                structureItem.setSectionName(heading);
                 structureItems.add(structureItem);
             }
         }
-        return structureItems;
+        if (structureItems.isEmpty()) {
+            return null;
+        } else {
+            return structureItems;
+        }
     }
 
     public OpenChordsSetList convertOpenSongSetToOpenChordsSetList(String filename) {

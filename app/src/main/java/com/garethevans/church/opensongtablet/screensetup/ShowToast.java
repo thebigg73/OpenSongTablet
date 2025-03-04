@@ -92,10 +92,6 @@ public class ShowToast {
                             messageEndTime = System.currentTimeMillis() + showTime;
                             handlerHide = new Handler(Looper.getMainLooper());
                             handlerHide.postDelayed(runnableHide, showTime);
-                            for (int i=0; i<((DrawerLayout)anchor).getChildCount(); i++) {
-                               View v = ((DrawerLayout)anchor).getChildAt(i);
-                               Log.d(TAG,"v."+v);
-                            }
                             popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
                         } catch (Exception e) {
                             e.printStackTrace();
