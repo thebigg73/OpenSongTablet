@@ -201,9 +201,8 @@ public class PageButtons {
         longText = new ArrayList<>();
         drawableIds = new ArrayList<>();
 
-        prepareOption("?","","","",R.drawable.help);
-
         // Set actions
+        prepareOption("?","--- " + c.getString(R.string.set_lists) + " ---","","",R.drawable.help);
         prepareOption("set",c.getString(R.string.set_current),c.getString(R.string.show),"",R.drawable.list_number);
         prepareOption("inlineset",c.getString(R.string.set_inline),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.settings),R.drawable.inline_set);
         prepareOption("addtoset",c.getString(R.string.add_song_to_set),c.getString(R.string.set_add),c.getString(R.string.variation_make),R.drawable.set_add);
@@ -212,6 +211,18 @@ public class PageButtons {
         prepareOption("?","","","",R.drawable.help);
 
         // Song actions
+        prepareOption("?","--- " + c.getString(R.string.song_actions) + " ---","","",R.drawable.help);
+        prepareOption("songmenu",c.getString(R.string.show_songs),c.getString(R.string.open) + " / " + c.getString(R.string.close),"",R.drawable.search);
+        prepareOption("scrolldown",c.getString(R.string.scroll_down),c.getString(R.string.select),"",R.drawable.arrow_down);
+        prepareOption("scrollup",c.getString(R.string.scroll_up),c.getString(R.string.select),"",R.drawable.arrow_up);
+        prepareOption("next",c.getString(R.string.next),c.getString(R.string.select),"",R.drawable.arrow_right);
+        prepareOption("prev",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
+        prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),"",R.drawable.shuffle);
+
+        prepareOption("?","","","",R.drawable.help);
+
+        // Song features
+        prepareOption("?","--- " + c.getString(R.string.song_features) + " ---","","",R.drawable.help);
         prepareOption("pad",c.getString(R.string.pad),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.amplifier);
         prepareOption("metronome",c.getString(R.string.metronome),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.metronome);
         prepareOption("autoscroll",c.getString(R.string.autoscroll),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.autoscroll);
@@ -225,27 +236,6 @@ public class PageButtons {
         prepareOption("editsong",c.getString(R.string.edit) + " " + c.getString(R.string.song),c.getString(R.string.open),"",R.drawable.set_edit);
         prepareOption("share_song",c.getString(R.string.export)+" "+c.getString(R.string.song),c.getString(R.string.select),"",R.drawable.share);
         prepareOption("import",c.getString(R.string.import_basic),c.getString(R.string.online_services),c.getString(R.string.import_main),R.drawable.database_import);
-
-        prepareOption("?","","","",R.drawable.help);
-
-        // Song navigation
-        prepareOption("songmenu",c.getString(R.string.show_songs),c.getString(R.string.open) + " / " + c.getString(R.string.close),"",R.drawable.search);
-        prepareOption("scrolldown",c.getString(R.string.scroll_down),c.getString(R.string.select),"",R.drawable.arrow_down);
-        prepareOption("scrollup",c.getString(R.string.scroll_up),c.getString(R.string.select),"",R.drawable.arrow_up);
-        prepareOption("next",c.getString(R.string.next),c.getString(R.string.select),"",R.drawable.arrow_right);
-        prepareOption("prev",c.getString(R.string.previous),c.getString(R.string.select),"",R.drawable.arrow_left);
-        prepareOption("randomsong",c.getString(R.string.random_song),c.getString(R.string.random_song),"",R.drawable.shuffle);
-
-        prepareOption("?","","","",R.drawable.help);
-
-        // Chords
-        prepareOption("transpose",c.getString(R.string.transpose),c.getString(R.string.open),c.getString(R.string.settings),R.drawable.transpose);
-        prepareOption("chordfingerings",c.getString(R.string.chord_fingering),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.guitar_fingering);
-        prepareOption("chordsettings",c.getString(R.string.chord_settings),c.getString(R.string.open),"",R.drawable.guitar_settings);
-
-        prepareOption("?","","","",R.drawable.help);
-
-        // Song information
         prepareOption("link",c.getString(R.string.link),c.getString(R.string.open),"",R.drawable.link);
         prepareOption("stickynotes",c.getString(R.string.song_notes),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.note_text);
         prepareOption("highlight",c.getString(R.string.highlight),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.highlighter);
@@ -253,7 +243,16 @@ public class PageButtons {
 
         prepareOption("?","","","",R.drawable.help);
 
+        // Chords
+        prepareOption("?","--- " + c.getString(R.string.chords) + " ---","","",R.drawable.help);
+        prepareOption("transpose",c.getString(R.string.transpose),c.getString(R.string.open),c.getString(R.string.settings),R.drawable.transpose);
+        prepareOption("chordfingerings",c.getString(R.string.chord_fingering),c.getString(R.string.show) + " / " + c.getString(R.string.hide),c.getString(R.string.edit),R.drawable.guitar_fingering);
+        prepareOption("chordsettings",c.getString(R.string.chord_settings),c.getString(R.string.open),"",R.drawable.guitar_settings);
+
+        prepareOption("?","","","",R.drawable.help);
+
         // Display
+        prepareOption("?","--- " + c.getString(R.string.display) + " ---","","",R.drawable.help);
         prepareOption("profiles",c.getString(R.string.profile),c.getString(R.string.settings),"",R.drawable.account);
         prepareOption("showchords",c.getString(R.string.show_chords),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.guitar);
         prepareOption("showcapo",c.getString(R.string.show_capo),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.capo);
@@ -266,14 +265,32 @@ public class PageButtons {
         prepareOption("invertpdf",c.getString(R.string.invert_PDF),c.getString(R.string.select),"",R.drawable.invert_colors);
         prepareOption("fonts",c.getString(R.string.font_choose),c.getString(R.string.select),"",R.drawable.text);
         prepareOption("refreshsong",c.getString(R.string.refresh_song),c.getString(R.string.select),"",R.drawable.redo);
-        prepareOption("showlogo",c.getString(R.string.show_logo) + " (" + c.getString(R.string.connected_display) + ")",c.getString(R.string.logo_info),"",R.drawable.projector);
 
         prepareOption("","","","",R.drawable.help);
 
         // Controls
-        prepareOption("nearby",c.getString(R.string.connections_connect),c.getString(R.string.connections_discover),c.getString(R.string.settings),R.drawable.nearby);
+        prepareOption("?","--- " + c.getString(R.string.controls) + " ---","","",R.drawable.help);
         prepareOption("gestures",c.getString(R.string.custom_gestures),c.getString(R.string.settings),"",R.drawable.fingerprint);
         prepareOption("pedals",c.getString(R.string.pedal),c.getString(R.string.settings),"",R.drawable.pedal);
+
+        prepareOption("?","","","",R.drawable.help);
+
+        // Nearby
+        prepareOption("?","--- " + c.getString(R.string.nearby_devices) + " ---","","",R.drawable.help);
+        prepareOption("nearby",c.getString(R.string.connections_connect),c.getString(R.string.connections_discover),c.getString(R.string.settings),R.drawable.nearby);
+        prepareOption("nearbymessage1",c.getString(R.string.nearby_message)+" "+1,c.getString(R.string.select),"",R.drawable.message1);
+        prepareOption("nearbymessage2",c.getString(R.string.nearby_message)+" "+2,c.getString(R.string.select),"",R.drawable.message2);
+        prepareOption("nearbymessage3",c.getString(R.string.nearby_message)+" "+3,c.getString(R.string.select),"",R.drawable.message3);
+        prepareOption("nearbymessage4",c.getString(R.string.nearby_message)+" "+4,c.getString(R.string.select),"",R.drawable.message4);
+        prepareOption("nearbymessage5",c.getString(R.string.nearby_message)+" "+5,c.getString(R.string.select),"",R.drawable.message5);
+        prepareOption("nearbymessage6",c.getString(R.string.nearby_message)+" "+6,c.getString(R.string.select),"",R.drawable.message6);
+        prepareOption("nearbymessage7",c.getString(R.string.nearby_message)+" "+7,c.getString(R.string.select),"",R.drawable.message7);
+        prepareOption("nearbymessage8",c.getString(R.string.nearby_message)+" "+8,c.getString(R.string.select),"",R.drawable.message8);
+
+        prepareOption("","","","",R.drawable.help);
+
+        // MIDI
+        prepareOption("?","--- " + c.getString(R.string.midi) + " ---","","",R.drawable.help);
         prepareOption("midi",c.getString(R.string.midi),c.getString(R.string.midi_send),c.getString(R.string.midi_auto)+" "+
                 c.getString(R.string.on)+" / "+c.getString(R.string.off),R.drawable.midi);
         prepareOption("midiboard",c.getString(R.string.midi_board),c.getString(R.string.select),"",R.drawable.midi_board);
@@ -311,21 +328,11 @@ public class PageButtons {
         prepareOption("sysexstop",c.getString(R.string.midi_sysex)+" "+c.getString(R.string.stop), c.getString(R.string.select),"",R.drawable.midi_stop);
         prepareOption("midiclock",c.getString(R.string.midi_clock),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.midiclock);
         prepareOption("midiclockburst",c.getString(R.string.midi_clock_short_burst),c.getString(R.string.on)+" / "+c.getString(R.string.off),c.getString(R.string.settings),R.drawable.midiclockburst);
-        prepareOption("","","","",R.drawable.help);
 
-        // Nearby messages
-        prepareOption("nearbymessage1",c.getString(R.string.nearby_message)+" "+1,c.getString(R.string.select),"",R.drawable.message1);
-        prepareOption("nearbymessage2",c.getString(R.string.nearby_message)+" "+2,c.getString(R.string.select),"",R.drawable.message2);
-        prepareOption("nearbymessage3",c.getString(R.string.nearby_message)+" "+3,c.getString(R.string.select),"",R.drawable.message3);
-        prepareOption("nearbymessage4",c.getString(R.string.nearby_message)+" "+4,c.getString(R.string.select),"",R.drawable.message4);
-        prepareOption("nearbymessage5",c.getString(R.string.nearby_message)+" "+5,c.getString(R.string.select),"",R.drawable.message5);
-        prepareOption("nearbymessage6",c.getString(R.string.nearby_message)+" "+6,c.getString(R.string.select),"",R.drawable.message6);
-        prepareOption("nearbymessage7",c.getString(R.string.nearby_message)+" "+7,c.getString(R.string.select),"",R.drawable.message7);
-        prepareOption("nearbymessage8",c.getString(R.string.nearby_message)+" "+8,c.getString(R.string.select),"",R.drawable.message8);
-
-        prepareOption("","","","",R.drawable.help);
+        prepareOption("?","","","",R.drawable.help);
 
         // Utilities
+        prepareOption("?","--- " + c.getString(R.string.utilities) + " ---","","",R.drawable.help);
         prepareOption("soundlevel",c.getString(R.string.sound_level_meter),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.sound_level);
         prepareOption("tuner",c.getString(R.string.tuner),c.getString(R.string.select),"",R.drawable.tuner);
         prepareOption("bible",c.getString(R.string.bible_verse),c.getString(R.string.search),"",R.drawable.bible);
@@ -333,6 +340,14 @@ public class PageButtons {
         prepareOption("audioplayer",c.getString(R.string.audio_player),c.getString(R.string.select),"",R.drawable.audio_player);
 
         prepareOption("","","","",R.drawable.help);
+
+        // Presentation controls (second screen)
+        prepareOption("?","--- " + c.getString(R.string.connected_display) + " ---","","",R.drawable.help);
+        prepareOption("showlogo", c.getString(R.string.show_logo),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.logo);
+        prepareOption("blankscreen", c.getString(R.string.blank_screen),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.projector_blank);
+        prepareOption("blackscreen", c.getString(R.string.black_screen),c.getString(R.string.show) + " / " + c.getString(R.string.hide),"",R.drawable.projector_black);
+
+        prepareOption("?","","","",R.drawable.help);
 
         // Exit
         prepareOption("exit",c.getString(R.string.exit),c.getString(R.string.exit) + " " + c.getString(R.string.app_name),"",R.drawable.exit);

@@ -335,9 +335,6 @@ public class PerformanceGestures {
             case "refreshsong":
                 loadSong();
                 break;
-            case "showlogo":
-                showLogo();
-                break;
 
 
             // Controls
@@ -611,9 +608,19 @@ public class PerformanceGestures {
             case "audiorecorder":
                 audioRecorder();
                 break;
-
             case "audioplayer":
                 audioPlayer();
+                break;
+
+            case "showlogo":
+            case "showLogo":
+                showLogo();
+                break;
+            case "blackscreen":
+                blackScreen();
+                break;
+            case "blankscreen":
+                blankScreen();
                 break;
 
             // Exit
@@ -1014,12 +1021,6 @@ public class PerformanceGestures {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
     }
 
-    // Toggle the show logo on the secondary screen
-    public void showLogo() {
-        mainActivityInterface.getPresenterSettings().setLogoOn(!mainActivityInterface.getPresenterSettings().getLogoOn());
-        displayInterface.updateDisplay("showLogo");
-    }
-
     // Toggle between native, capo and both
     public void showCapo() {
         boolean displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoChords", true);
@@ -1410,6 +1411,82 @@ public class PerformanceGestures {
         mainActivityInterface.getNearbyConnections().sendMessage(which);
     }
 
+    // The second screen
+    // Toggle the show logo on the secondary screen
+    public void showLogo() {
+        updatePresenterSettings(!mainActivityInterface.getPresenterSettings().getLogoOn(),false,false);
+    }
+    public void blackScreen() {
+        updatePresenterSettings(false,!mainActivityInterface.getPresenterSettings().getBlackscreenOn(),false);
+    }
+    public void blankScreen() {
+        updatePresenterSettings(false,false,!mainActivityInterface.getPresenterSettings().getBlankscreenOn());
+    }
+    private void updatePresenterSettings(boolean setLogoOn, boolean setBlackscreenOn, boolean setBlankscreenOn) {
+        boolean getLogoOn = mainActivityInterface.getPresenterSettings().getLogoOn();
+        boolean getBlackscreenOn = mainActivityInterface.getPresenterSettings().getBlackscreenOn();
+        boolean getBlankscreenOn = mainActivityInterface.getPresenterSettings().getBlankscreenOn();
+
+        boolean changeLogo = getLogoOn!=setLogoOn;
+        boolean changeBlackscreen = getBlackscreenOn!=setBlackscreenOn;
+        boolean changeBlankscreen = getBlankscreenOn!=setBlankscreenOn;
+
+        Log.d(TAG,"currently  logoOn:"+getLogoOn+"  blackscreenOn:"+getBlackscreenOn+"  blankscreenOn:"+getBlankscreenOn);
+        Log.d(TAG,"trying for logoOn:"+setLogoOn+"  blackscreenOn:"+setBlackscreenOn+"  blankscreenOn:"+setBlankscreenOn);
+        // We don't want black and blank screen set to on when the logo is showing
+        // We don't want the logo to show when the black or blank screen is on
+        if (getLogoOn && (setBlackscreenOn || setBlankscreenOn)) {
+            // If the logo is currently on and we want to turn on black or blank screen, we turn off the logo first
+            mainActivityInterface.getPresenterSettings().setLogoOn(false);
+            displayInterface.updateDisplay("showLogo");
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(setBlackscreenOn);
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(setBlankscreenOn);
+            if (setBlackscreenOn) {
+                displayInterface.updateDisplay("showBlackscreen");
+            } else {
+                displayInterface.updateDisplay("showBlankscreen");
+            }
+
+        } else if ((getBlackscreenOn || getBlankscreenOn) && changeLogo) {
+            // If the black or blank screen is on and we want the logo, we remove the black or blank screen
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(false);
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(false);
+            if (changeBlackscreen) {
+                displayInterface.updateDisplay("showBlackscreen");
+            } else if (changeBlankscreen) {
+                displayInterface.updateDisplay("showBlankscreen");
+            }
+            mainActivityInterface.getPresenterSettings().setLogoOn(true);
+            displayInterface.updateDisplay("showLogo");
+
+        } else if (getBlackscreenOn && setBlankscreenOn) {
+            // We currently have a black screen, but want to change to a blank screen
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(false);
+            displayInterface.updateDisplay("showBlackscreen");
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(true);
+            displayInterface.updateDisplay("showBlankscreen");
+
+        } else if (getBlankscreenOn && setBlackscreenOn) {
+            // We currently have a blank screen, but want to change to a blanck screen
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(false);
+            displayInterface.updateDisplay("showBlankscreen");
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(true);
+            displayInterface.updateDisplay("showBlackscreen");
+
+        } else {
+            // Just a straightforward change
+            mainActivityInterface.getPresenterSettings().setLogoOn(setLogoOn);
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(setBlackscreenOn);
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(setBlankscreenOn);
+            if (changeLogo) {
+                displayInterface.updateDisplay("showLogo");
+            } else if (changeBlackscreen) {
+                displayInterface.updateDisplay("showBlackscreen");
+            } else if (changeBlankscreen) {
+                displayInterface.updateDisplay("showBlankscreen");
+            }
+        }
+    }
 
     // The checks
     private boolean ifPDFAndAllowed() {

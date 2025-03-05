@@ -109,6 +109,7 @@ public class PedalActions {
         addString("","");
 
         // Set actions
+        addString("?","--- "+c.getString(R.string.set_lists)+" ---");
         addString("set",c.getString(R.string.set_current) + showhide);
         addString("inlineset",c.getString(R.string.set_inline) + showhide);
         addString("inlinesetsettings",c.getString(R.string.set_inline)+ settings);
@@ -119,6 +120,18 @@ public class PedalActions {
         addString("","");
 
         // Song actions
+        addString("?","--- "+c.getString(R.string.song_actions)+" ---");
+        addString("songmenu",c.getString(R.string.show_songs) + showhide);
+        addString("scrolldown",c.getString(R.string.scroll_down));
+        addString("scrollup",c.getString(R.string.scroll_up));
+        addString("next",c.getString(R.string.next));
+        addString("prev",c.getString(R.string.previous));
+        addString("randomsong",c.getString(R.string.random_song));
+
+        addString("","");
+
+        // Song features
+        addString("?","--- "+c.getString(R.string.song_features)+" ---");
         addString("pad",pad);
         addString("padsettings",c.getString(R.string.pad)+settings);
         addString("metronome",metronome);
@@ -137,28 +150,6 @@ public class PedalActions {
         addString("importoptions",c.getString(R.string.import_main));
         addString("importonline",c.getString(R.string.import_basic)+" "+c.getString(R.string.online_services));
         addString("refreshsong",c.getString(R.string.refresh_song));
-        addString("","");
-
-        // Song navigation
-        addString("songmenu",c.getString(R.string.show_songs) + showhide);
-        addString("scrolldown",c.getString(R.string.scroll_down));
-        addString("scrollup",c.getString(R.string.scroll_up));
-        addString("next",c.getString(R.string.next));
-        addString("prev",c.getString(R.string.previous));
-        addString("randomsong",c.getString(R.string.random_song));
-
-        addString("","");
-
-        // Chords
-        addString("transpose",c.getString(R.string.transpose));
-        addString("transposesettings",c.getString(R.string.chord_settings));
-        addString("chordfingerings",c.getString(R.string.chord_fingering)+showhide);
-        addString("customchords",c.getString(R.string.custom_chords));
-        addString("chordsettings",c.getString(R.string.chord_settings));
-
-        addString("","");
-
-        // Song information
         addString("link",c.getString(R.string.link));
         addString("stickynotes",c.getString(R.string.song_notes)+showhide);
         addString("stickynotessettings",c.getString(R.string.song_notes_edit));
@@ -169,7 +160,18 @@ public class PedalActions {
 
         addString("","");
 
+        // Chords
+        addString("?","--- "+c.getString(R.string.chords)+" ---");
+        addString("transpose",c.getString(R.string.transpose));
+        addString("transposesettings",c.getString(R.string.chord_settings));
+        addString("chordfingerings",c.getString(R.string.chord_fingering)+showhide);
+        addString("customchords",c.getString(R.string.custom_chords));
+        addString("chordsettings",c.getString(R.string.chord_settings));
+
+        addString("","");
+
         // Display
+        addString("?","--- "+c.getString(R.string.display)+" ---");
         addString("profiles",c.getString(R.string.profile));
         addString("showchords",c.getString(R.string.show_chords));
         addString("showcapo",c.getString(R.string.show_capo));
@@ -185,11 +187,29 @@ public class PedalActions {
         addString("","");
 
         // Controls
-        addString("nearby",c.getString(R.string.connections_discover));
-        addString("nearbysettings",c.getString(R.string.connections_connect)+settings);
+        addString("?","--- "+c.getString(R.string.controls)+" ---");
         addString("gestures",c.getString(R.string.custom_gestures));
         addString("pedals",c.getString(R.string.pedal)+settings);
-        addString("midi",c.getString(R.string.midi_send));
+
+        addString("","");
+
+        // Nearby
+        addString("?","--- "+c.getString(R.string.nearby_devices)+" ---");
+        addString("nearby",c.getString(R.string.connections_discover));
+        addString("nearbysettings",c.getString(R.string.connections_connect)+settings);
+        addString("nearbymessage1",c.getString(R.string.nearby_message)+" "+1);
+        addString("nearbymessage2",c.getString(R.string.nearby_message)+" "+2);
+        addString("nearbymessage3",c.getString(R.string.nearby_message)+" "+3);
+        addString("nearbymessage4",c.getString(R.string.nearby_message)+" "+4);
+        addString("nearbymessage5",c.getString(R.string.nearby_message)+" "+5);
+        addString("nearbymessage6",c.getString(R.string.nearby_message)+" "+6);
+        addString("nearbymessage7",c.getString(R.string.nearby_message)+" "+7);
+        addString("nearbymessage8",c.getString(R.string.nearby_message)+" "+8);
+
+        addString("","");
+
+        // MIDI
+        addString("?","--- "+c.getString(R.string.midi)+" ---");
         addString("midiboard",c.getString(R.string.midi_board));
         addString("midisettings",c.getString(R.string.midi)+settings);
         addString("midisend",c.getString(R.string.midi_auto)+onoff);
@@ -234,24 +254,23 @@ public class PedalActions {
 
         addString("","");
 
-        // Nearby messages
-        addString("nearbymessage1",c.getString(R.string.nearby_message)+" "+1);
-        addString("nearbymessage2",c.getString(R.string.nearby_message)+" "+2);
-        addString("nearbymessage3",c.getString(R.string.nearby_message)+" "+3);
-        addString("nearbymessage4",c.getString(R.string.nearby_message)+" "+4);
-        addString("nearbymessage5",c.getString(R.string.nearby_message)+" "+5);
-        addString("nearbymessage6",c.getString(R.string.nearby_message)+" "+6);
-        addString("nearbymessage7",c.getString(R.string.nearby_message)+" "+7);
-        addString("nearbymessage8",c.getString(R.string.nearby_message)+" "+8);
-
-        addString("","");
-
         // Utilities
+        addString("?","--- "+c.getString(R.string.utilities)+" ---");
         addString("soundlevel",c.getString(R.string.sound_level_meter));
         addString("tuner",c.getString(R.string.tuner));
         addString("bible",c.getString(R.string.bible_verse));
+        addString("audiorecorder",c.getString(R.string.audio_recorder));
+        addString("audioplayer",c.getString(R.string.audio_player));
 
         addString("","");
+
+        // Presentation controls (second screen)
+        addString("?","--- "+c.getString(R.string.connected_display)+" ---");
+        addString("showlogo",c.getString(R.string.show_logo));
+        addString("blankscreen", c.getString(R.string.blank_screen));
+        addString("blackscreen", c.getString(R.string.black_screen));
+
+        addString("?","");
 
         // Exit
         addString("exit",c.getString(R.string.exit) + " " + c.getString(R.string.app_name));

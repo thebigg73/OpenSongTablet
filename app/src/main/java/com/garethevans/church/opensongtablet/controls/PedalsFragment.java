@@ -553,6 +553,14 @@ public class PedalsFragment extends Fragment {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             val = s.toString();
+            if (val.startsWith("---")) {
+                val = "";
+                if (shortPress) {
+                    shortPressDropdown.setText("");
+                } else {
+                    longPressDropdown.setText("");
+                }
+            }
         }
 
         @Override

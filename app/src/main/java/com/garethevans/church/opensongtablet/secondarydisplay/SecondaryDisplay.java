@@ -467,6 +467,7 @@ public class SecondaryDisplay extends Presentation {
     }
     public void showLogo(boolean show, boolean timedHide) {
         cancelInfoTimers();
+        Log.d(TAG,"showLogo("+show+","+timedHide+")");
         // Fade in/out the logo based on the setting
         if (show) {
             crossFadeContent(myView.allContent,myView.mainLogo);
@@ -490,6 +491,7 @@ public class SecondaryDisplay extends Presentation {
 
     // The black or blank screen
     public void showBlackScreen() {
+        Log.d(TAG,"showBlackScreen()");
         cancelInfoTimers();
         int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
         if (mainActivityInterface.getPresenterSettings().getBlackscreenOn()) {
@@ -501,6 +503,7 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     public void showBlankScreen() {
+        Log.d(TAG,"showBlankScreen()");
         cancelInfoTimers();
         if (mainActivityInterface.getPresenterSettings().getBlankscreenOn()) {
             int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();

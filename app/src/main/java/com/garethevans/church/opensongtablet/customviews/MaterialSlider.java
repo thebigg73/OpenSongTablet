@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -209,7 +208,6 @@ public class MaterialSlider extends LinearLayout {
         }
     }
     public void setInfoText(String text) {
-        Log.d("MaterialSlider", "text:" + text);
         infoTextView.setText(text);
         if (text == null || text.isEmpty()) {
             infoTextView.setVisibility(View.GONE);

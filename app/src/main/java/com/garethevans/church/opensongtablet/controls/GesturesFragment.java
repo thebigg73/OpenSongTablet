@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class GesturesFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private String custom_gestures_string="", website_custom_gestures_string="";
     private String webAddress;
+    private boolean programmaticChange = false;
 
     @Override
     public void onResume() {
@@ -102,11 +104,25 @@ public class GesturesFragment extends Fragment {
             String mydescription;
             if (which.equals("gestureDoubleTap")) {
                 mydescription = myView.doubleTap.getText().toString();
+                if (mydescription.startsWith("---")) {
+                    myView.doubleTap.setText("");
+                    mydescription = "";
+                    programmaticChange = true;
+                }
             } else {
                 mydescription = myView.longPress.getText().toString();
+                if (mydescription.startsWith("---")) {
+                    myView.longPress.setText("");
+                    mydescription = "";
+                    programmaticChange = true;
+                }
             }
-            String mygesture = mainActivityInterface.getCommonControls().getCodeFromDescription(mydescription);
-            mainActivityInterface.getGestures().setPreferences(which,mygesture);
+            if (!programmaticChange) {
+                String mygesture = mainActivityInterface.getCommonControls().getCodeFromDescription(mydescription);
+                Log.d(TAG, "saving pref:" + mygesture);
+                mainActivityInterface.getGestures().setPreferences(which, mygesture);
+            }
+            programmaticChange = false;
         }
     }
 }

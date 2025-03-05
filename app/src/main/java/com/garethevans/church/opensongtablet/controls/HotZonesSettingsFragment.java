@@ -125,29 +125,53 @@ public class HotZonesSettingsFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            String code = mainActivityInterface.getCommonControls().getCodeFromDescription(editable.toString());
-            // Update the preferences
-            switch (prefName) {
-                case "hotZoneTopLeftShort":
-                    mainActivityInterface.getHotZones().setHotZoneTopLeftShort(code);
-                    break;
-                case "hotZoneTopLeftLong":
-                    mainActivityInterface.getHotZones().setHotZoneTopLeftLong(code);
-                    break;
-                case "hotZoneTopCenterShort":
-                    mainActivityInterface.getHotZones().setHotZoneTopCenterShort(code);
-                    break;
-                case "hotZoneTopCenterLong":
-                    mainActivityInterface.getHotZones().setHotZoneTopCenterLong(code);
-                    break;
-                case "hotZoneBottomCenterShort":
-                    mainActivityInterface.getHotZones().setHotZoneBottomCenterShort(code);
-                    break;
-                case "hotZoneBottomCenterLong":
-                    mainActivityInterface.getHotZones().setHotZoneBottomCenterLong(code);
-                    break;
+            if (editable.toString().startsWith("---")) {
+                switch (prefName) {
+                    case "hotZoneTopLeftShort":
+                        myView.hotZoneTLShort.setText("");
+                        break;
+                    case "hotZoneTopLeftLong":
+                        myView.hotZoneTLLong.setText("");
+                        break;
+                    case "hotZoneTopCenterShort":
+                        myView.hotZoneTCShort.setText("");
+                        break;
+                    case "hotZoneTopCenterLong":
+                        myView.hotZoneTCLong.setText("");
+                        break;
+                    case "hotZoneBottomCenterShort":
+                        myView.hotZoneBCShort.setText("");
+                        break;
+                    case "hotZoneBottomCenterLong":
+                        myView.hotZoneBCLong.setText("");
+                        break;
+                }
+            } else {
+                String code = mainActivityInterface.getCommonControls().getCodeFromDescription(editable.toString());
+                // Update the preferences
+
+                switch (prefName) {
+                    case "hotZoneTopLeftShort":
+                        mainActivityInterface.getHotZones().setHotZoneTopLeftShort(code);
+                        break;
+                    case "hotZoneTopLeftLong":
+                        mainActivityInterface.getHotZones().setHotZoneTopLeftLong(code);
+                        break;
+                    case "hotZoneTopCenterShort":
+                        mainActivityInterface.getHotZones().setHotZoneTopCenterShort(code);
+                        break;
+                    case "hotZoneTopCenterLong":
+                        mainActivityInterface.getHotZones().setHotZoneTopCenterLong(code);
+                        break;
+                    case "hotZoneBottomCenterShort":
+                        mainActivityInterface.getHotZones().setHotZoneBottomCenterShort(code);
+                        break;
+                    case "hotZoneBottomCenterLong":
+                        mainActivityInterface.getHotZones().setHotZoneBottomCenterLong(code);
+                        break;
+                }
+                checkHotZoneConflict();
             }
-            checkHotZoneConflict();
         }
     }
 

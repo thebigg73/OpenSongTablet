@@ -266,18 +266,48 @@ public class PageButtonFragment extends Fragment {
 
     private void saveDropDownChoice(int x, String text) {
         // x tells us the button we are dealing with and action is, well, the action
-        int foundpos = mainActivityInterface.getPageButtons().getPositionFromText(text);
-        mainActivityInterface.getPageButtons().setPageButtonAction(x,foundpos);
-        mainActivityInterface.getPageButtons().setPageButtonText(x,foundpos);
-        mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);
-        mainActivityInterface.getPageButtons().setPageButtonLongText(x,foundpos);
-        if (getContext()!=null) {
-            mainActivityInterface.getPageButtons().setPageButtonDrawable(getContext(), x, foundpos);
+        if (text.startsWith("---")) {
+            // We don't want to allow this, so set the text to blank instead
+           switch (x) {
+               case 0:
+                   myView.button1Opt.setText("");
+                   break;
+               case 1:
+                   myView.button2Opt.setText("");
+                   break;
+                   case 2:
+                   myView.button3Opt.setText("");
+                   break;
+               case 3:
+                   myView.button4Opt.setText("");
+                   break;
+               case 4:
+                   myView.button5Opt.setText("");
+                   break;
+               case 5:
+                   myView.button6Opt.setText("");
+                   break;
+               case 6:
+                   myView.button7Opt.setText("");
+                   break;
+               case 7:
+                   myView.button8Opt.setText("");
+                   break;
+           }
+        } else {
+            int foundpos = mainActivityInterface.getPageButtons().getPositionFromText(text);
+            mainActivityInterface.getPageButtons().setPageButtonAction(x, foundpos);
+            mainActivityInterface.getPageButtons().setPageButtonText(x, foundpos);
+            mainActivityInterface.getPageButtons().setPageButtonShortText(x, foundpos);
+            mainActivityInterface.getPageButtons().setPageButtonLongText(x, foundpos);
+            if (getContext() != null) {
+                mainActivityInterface.getPageButtons().setPageButtonDrawable(getContext(), x, foundpos);
+            }
+            mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x, true);
+            setTheText(x);
+            mainActivityInterface.getPreferences().setMyPreferenceString("pageButton" + (x + 1), mainActivityInterface.getPageButtons().getPageButtonAction(x));
+            mainActivityInterface.updatePageButtonLayout();
         }
-        mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x,true);
-        setTheText(x);
-        mainActivityInterface.getPreferences().setMyPreferenceString("pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));
-        mainActivityInterface.updatePageButtonLayout();
     }
 
     @Override

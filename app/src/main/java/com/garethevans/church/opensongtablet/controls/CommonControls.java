@@ -34,8 +34,10 @@ public class CommonControls {
         String autoscroll = c.getString(R.string.autoscroll);
         String metronome = c.getString(R.string.metronome);
         String pad = c.getString(R.string.pad);
+        String divider = "---";
 
         // Set actions
+        addString("",divider+" "+c.getString(R.string.set_lists)+" "+divider);
         addString("set",c.getString(R.string.set_current) + showhide);
         addString("inlineset",c.getString(R.string.set_inline) + showhide);
         addString("inlinesetsettings",c.getString(R.string.set_inline)+ settings);
@@ -46,6 +48,18 @@ public class CommonControls {
         addString("","");
 
         // Song actions
+        addString("",divider+" "+c.getString(R.string.song_actions)+" "+divider);
+        addString("songmenu",c.getString(R.string.show_songs) + showhide);
+        addString("scrolldown",c.getString(R.string.scroll_down));
+        addString("scrollup",c.getString(R.string.scroll_up));
+        addString("next",c.getString(R.string.next));
+        addString("prev",c.getString(R.string.previous));
+        addString("randomsong",c.getString(R.string.random_song));
+
+        addString("","");
+
+        // Song features
+        addString("",divider+" "+c.getString(R.string.song_features)+" "+divider);
         addString("pad",pad+startstop);
         addString("padsettings",c.getString(R.string.pad)+settings);
         addString("metronome",metronome+startstop);
@@ -64,28 +78,6 @@ public class CommonControls {
         addString("importoptions",c.getString(R.string.import_main));
         addString("importonline",c.getString(R.string.import_basic)+" "+c.getString(R.string.online_services));
         addString("refreshsong",c.getString(R.string.refresh_song));
-        addString("","");
-
-        // Song navigation
-        addString("songmenu",c.getString(R.string.show_songs) + showhide);
-        addString("scrolldown",c.getString(R.string.scroll_down));
-        addString("scrollup",c.getString(R.string.scroll_up));
-        addString("next",c.getString(R.string.next));
-        addString("prev",c.getString(R.string.previous));
-        addString("randomsong",c.getString(R.string.random_song));
-
-        addString("","");
-
-        // Chords
-        addString("transpose",c.getString(R.string.transpose));
-        addString("transposesettings",c.getString(R.string.chord_settings));
-        addString("chordfingerings",c.getString(R.string.chord_fingering)+showhide);
-        addString("customchords",c.getString(R.string.custom_chords));
-        addString("chordsettings",c.getString(R.string.chord_settings));
-
-        addString("","");
-
-        // Song information
         addString("link",c.getString(R.string.link));
         addString("stickynotes",c.getString(R.string.song_notes)+showhide);
         addString("stickynotessettings",c.getString(R.string.song_notes_edit));
@@ -96,7 +88,18 @@ public class CommonControls {
 
         addString("","");
 
+        // Chords
+        addString("",divider+" "+c.getString(R.string.chord_settings)+" "+divider);
+        addString("transpose",c.getString(R.string.transpose));
+        addString("transposesettings",c.getString(R.string.chord_settings));
+        addString("chordfingerings",c.getString(R.string.chord_fingering)+showhide);
+        addString("customchords",c.getString(R.string.custom_chords));
+        addString("chordsettings",c.getString(R.string.chord_settings));
+
+        addString("","");
+
         // Display
+        addString("",divider+" "+c.getString(R.string.display)+" "+divider);
         addString("profiles",c.getString(R.string.profile));
         addString("showchords",c.getString(R.string.show_chords));
         addString("showcapo",c.getString(R.string.show_capo));
@@ -109,15 +112,33 @@ public class CommonControls {
         addString("pdfpage",c.getString(R.string.select_page));
         addString("invertpdf",c.getString(R.string.invert_PDF));
         addString("fonts",c.getString(R.string.font_choose));
-        addString("showlogo",c.getString(R.string.show_logo) + " (" + c.getString(R.string.connected_display) + ")");
 
         addString("","");
 
         // Controls
-        addString("nearby",c.getString(R.string.connections_advertise)+"/"+c.getString(R.string.connections_discover));
-        addString("nearbysettings",c.getString(R.string.connections_connect)+settings);
+        addString("",divider+" "+c.getString(R.string.controls)+" "+divider);
         addString("gestures",c.getString(R.string.custom_gestures));
         addString("pedals",c.getString(R.string.pedal)+settings);
+
+        addString("","");
+
+        // Nearby
+        addString("",divider+" "+c.getString(R.string.nearby_devices)+" "+divider);
+        addString("nearby",c.getString(R.string.connections_advertise)+"/"+c.getString(R.string.connections_discover));
+        addString("nearbysettings",c.getString(R.string.connections_connect)+settings);
+        addString("nearbymessage1",c.getString(R.string.nearby_message)+" "+1);
+        addString("nearbymessage2",c.getString(R.string.nearby_message)+" "+2);
+        addString("nearbymessage3",c.getString(R.string.nearby_message)+" "+3);
+        addString("nearbymessage4",c.getString(R.string.nearby_message)+" "+4);
+        addString("nearbymessage5",c.getString(R.string.nearby_message)+" "+5);
+        addString("nearbymessage6",c.getString(R.string.nearby_message)+" "+6);
+        addString("nearbymessage7",c.getString(R.string.nearby_message)+" "+7);
+        addString("nearbymessage8",c.getString(R.string.nearby_message)+" "+8);
+
+        addString("","");
+
+        // MIDI
+        addString("",divider+" "+c.getString(R.string.midi)+" "+divider);
         addString("midi",c.getString(R.string.midi_send));
         addString("midiboard",c.getString(R.string.midi_board));
         addString("midisettings",c.getString(R.string.midi)+settings);
@@ -163,24 +184,21 @@ public class CommonControls {
 
         addString("","");
 
-        // Nearby messages
-        addString("nearbymessage1",c.getString(R.string.nearby_message)+" "+1);
-        addString("nearbymessage2",c.getString(R.string.nearby_message)+" "+2);
-        addString("nearbymessage3",c.getString(R.string.nearby_message)+" "+3);
-        addString("nearbymessage4",c.getString(R.string.nearby_message)+" "+4);
-        addString("nearbymessage5",c.getString(R.string.nearby_message)+" "+5);
-        addString("nearbymessage6",c.getString(R.string.nearby_message)+" "+6);
-        addString("nearbymessage7",c.getString(R.string.nearby_message)+" "+7);
-        addString("nearbymessage8",c.getString(R.string.nearby_message)+" "+8);
-
-        addString("","");
-
         // Utilities
+        addString("",divider+" "+c.getString(R.string.utilities)+" "+divider);
         addString("soundlevel",c.getString(R.string.sound_level_meter));
         addString("tuner",c.getString(R.string.tuner));
         addString("bible",c.getString(R.string.bible_verse));
         addString("audiorecorder",c.getString(R.string.audio_recorder));
         addString("audioplayer",c.getString(R.string.audio_player));
+
+        addString("","");
+
+        // Presentation controls (second screen)
+        addString("",divider+" "+c.getString(R.string.connected_display)+" "+divider);
+        addString("showlogo",c.getString(R.string.show_logo));
+        addString("blankscreen", c.getString(R.string.blank_screen));
+        addString("blackscreen", c.getString(R.string.black_screen));
 
         addString("","");
 
@@ -202,8 +220,7 @@ public class CommonControls {
     }
 
     public String getDescriptionFromCode(String code) {
-        Log.d(TAG,"getDescriptionFromCode("+code+"):"+getGestureDescriptions().get(gestures.indexOf(code)));
-        if (gestures!=null && gestureDescriptions!=null && gestures.contains(code)) {
+        if (gestures!=null && gestureDescriptions!=null && !code.isEmpty() && gestures.contains(code)) {
             return gestureDescriptions.get(gestures.indexOf(code));
         } else {
             return "";
@@ -212,7 +229,7 @@ public class CommonControls {
 
     public String getCodeFromDescription(String description) {
         Log.d(TAG,"getCodeFromDescription("+description+"):"+getGestures().get(gestureDescriptions.indexOf(description)));
-        if (gestures!=null && gestureDescriptions!=null && gestureDescriptions.contains(description)) {
+        if (gestures!=null && gestureDescriptions!=null && !description.isEmpty() && gestureDescriptions.contains(description)) {
             return gestures.get(gestureDescriptions.indexOf(description));
         } else {
             return "";
