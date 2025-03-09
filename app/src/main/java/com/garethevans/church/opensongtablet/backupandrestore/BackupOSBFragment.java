@@ -204,6 +204,7 @@ public class BackupOSBFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             }
             ZipEntry ze;
 
@@ -275,6 +276,7 @@ public class BackupOSBFragment extends Fragment {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         error = true;
+                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                     }
                                 }
                                 inputStream.close();
@@ -323,11 +325,13 @@ public class BackupOSBFragment extends Fragment {
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                             error = true;
+                                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                         }
                                     }
                                     inputStream.close();
                                 } catch (Exception e) {
                                     e.printStackTrace();
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                 }
                             }
                         }
@@ -342,6 +346,7 @@ public class BackupOSBFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
+                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
             }
 
             // Update the view

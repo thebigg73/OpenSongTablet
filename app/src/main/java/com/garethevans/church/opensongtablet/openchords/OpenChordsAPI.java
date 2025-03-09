@@ -332,6 +332,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // This goes through the server objects and converts them to compareObjects
         for (int i = 0; i < serverSongs.size(); i++) {
             OpenChordsSong serverObject = serverSongs.get(i);
+            if (serverObject.getTitle().equals("All around the world")) {
+                Log.d(TAG,"found All around the world");
+                ArrayList<OpenChordsSongStructureItem> structureItems = serverObject.getStructure();
+                for (OpenChordsSongStructureItem item : structureItems) {
+                    Log.d(TAG,item.getSectionName());
+                }
+            }
             serverSongsCompareObjects.add(createOpenChordsCompareObject(serverObject.getId(), serverObject.getTitle(), serverObject.getLastUpdated(), "song"));
         }
         for (int i = 0; i < serverSetLists.size(); i++) {
@@ -840,21 +847,24 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         if (openChordsSong.getTempo() != null) {
             song.setTempo(String.valueOf(openChordsSong.getTempo()));
         }
-        if (openChordsSong.getCapo() != null) {
+        /*if (openChordsSong.getCapo() != null) {
             song.setCapo(String.valueOf(openChordsSong.getCapo()));
-        }
+        }*/
         song.setNotes(openChordsSong.getNotes());
         song.setCopyright(openChordsSong.getCopyright());
         song.setCcli(openChordsSong.getCcli());
         // Now get the tags
         song.setTheme(getTagsFromOpenChordsForOpenSong(openChordsSong));
         // Now get the presentation order
+        Log.d(TAG,"openChordsSong.getStructure():"+openChordsSong.getStructure());
         if (openChordsSong.getStructure()!=null) {
             StringBuilder stringBuilder = new StringBuilder();
             for (int i=0; i<openChordsSong.getStructure().size(); i++) {
                 String sectionHeading = openChordsSong.getStructure().get(i).getSectionName();
                 String instructionBefore = openChordsSong.getStructure().get(i).getInstructionBefore();
                 String instructionAfter = openChordsSong.getStructure().get(i).getInstructionAfter();
+                Log.d(TAG,"openChordsSong.getStructure("+i+").getSectionName():"+openChordsSong.getStructure().get(i).getSectionName());
+                Log.d(TAG,"sectionHeading:"+sectionHeading);
                 if (instructionAfter!=null && !instructionAfter.isEmpty()) {
                     song.setLyrics(song.getLyrics().replace("["+sectionHeading+"]\n","["+sectionHeading+"]\n"+instructionAfter+"\n"));
                 }
@@ -1026,13 +1036,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             openChordsSong.setKey(key.replace("m", ""));
             openChordsSong.setKeyIsMinor(key.endsWith("m"));
         }
-        String capo = openSongSong.getCapo();
+        /*String capo = openSongSong.getCapo();
         if (capo != null) {
             capo = capo.replaceAll("\\D", "").trim();
             if (!capo.isEmpty()) {
                 openChordsSong.setCapo(Integer.parseInt(capo));
             }
-        }
+        }*/
         //TODO
         //openChordsSong.setTranspose(jsonNullIfEmpty(key));
         openChordsSong.setNotes(jsonNullIfEmpty(openSongSong.getNotes()));
@@ -1084,7 +1094,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // OpenSong desktop looked like this: V1 V2 C B C V3
         // OpenSongApp pre v6.4.1 presentation order looked like this: Verse 1;V2;C;Break;
 
-        // TODO Likely use the method in mainActivityInterface.getProcessSong().matchPresentationOrder()
         ArrayList<OpenChordsSongStructureItem> structureItems = new ArrayList<>();
         // Try to extract OpenSong presentation order
         // Get a note of the section headings in the song
@@ -1409,11 +1418,14 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         existingSong.setTempo(newOpenSongSong.getTempo());
         existingSong.setTimesig(mainActivityInterface.getMetronome().fixInvalidTimeSignature(newOpenSongSong.getTimesig(),false));
         existingSong.setKey(newOpenSongSong.getKey());
-        existingSong.setCapo(newOpenSongSong.getCapo());
+        //existingSong.setCapo(newOpenSongSong.getCapo());
         existingSong.setNotes(newOpenSongSong.getNotes());
         existingSong.setCcli(newOpenSongSong.getCcli());
         existingSong.setLastModified(newOpenSongSong.getLastModified());
         existingSong.setTheme(newOpenSongSong.getTheme());
+        Log.d(TAG,"existingSong.getPresentationOrder:"+existingSong.getPresentationorder());
+        Log.d(TAG,"newOpenSongSong.getPresentationOrder:"+newOpenSongSong.getPresentationorder());
+        existingSong.setPresentationorder(newOpenSongSong.getPresentationorder());
     }
 
     public void forcePull() {
@@ -1710,7 +1722,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             OpenChordsSong songobject = songobjects.get(i);
             songobject.setTitle(trimmedOrNull(songobject.getTitle()));
             songobject.setLastUpdated(trimmedOrNull(songobject.getLastUpdated()));
-            songobject.setCapo(nullFromZero(songobject.getCapo()));
+            //songobject.setCapo(nullFromZero(songobject.getCapo()));
             songobject.setArtist(trimmedOrNull(songobject.getArtist()));
             songobject.setCcli(trimmedOrNull(songobject.getCcli()));
             songobject.setCopyright(trimmedOrNull(songobject.getCopyright()));
@@ -1745,7 +1757,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     setListItem.setCustomData(trimmedOrNull(setListItem.getCustomData()));
                     if (setListItem.getSongItem() != null) {
                         OpenChordsSetListSongItem songItem = setListItem.getSongItem();
-                        songItem.setCapo(nullFromZero(songItem.getCapo()));
+                        //songItem.setCapo(nullFromZero(songItem.getCapo()));
                         songItem.setTranspose(trimmedOrNull(songItem.getTranspose()));
                     }
                 }
@@ -1997,7 +2009,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     private String removeUnnecessaryBitsFromJson(String json) {
-        json = json.replace("\"capo\": 0,", "");
+        //json = json.replace("\"capo\": 0,", "");
         json = json.replace("\"tempo\": 0,", "");
         json = json.replace("\"duration\": 0,", "");
         json = json.replace("\"title\": \"\",", "");

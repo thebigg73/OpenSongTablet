@@ -20,7 +20,7 @@ public class OpenChordsSong {
     @Nullable private String timeSignature;   // The time signature of the song e.g. 4/4
     @Nullable private String key;             // The key of the song e.g. A, G#, Ab
     @Nullable private Boolean keyIsMinor;     // If the key is a minor key
-    @Nullable private Integer capo;               // The capo fret to use
+    //@Nullable private Integer capo;               // The capo fret to use
     @Nullable private String transpose;       // Transposed to a different key e.g. A, G#, Ab
     @Nullable private String notes;           // Notes to save with the song
     @Nullable private String copyright;       // The copyright information
@@ -57,9 +57,9 @@ public class OpenChordsSong {
     @Nullable public Boolean isKeyIsMinor() {
         return keyIsMinor;
     }
-    @Nullable public Integer getCapo() {
-        return capo;
-    }
+    //@Nullable public Integer getCapo() {
+    //    return capo;
+    //}
     @Nullable public String getTranspose() {
         return transpose;
     }
@@ -110,9 +110,9 @@ public class OpenChordsSong {
     public void setKeyIsMinor(@Nullable Boolean keyIsMinor) {
         this.keyIsMinor = keyIsMinor;
     }
-    public void setCapo(@Nullable Integer capo) {
-        this.capo = capo;
-    }
+    //public void setCapo(@Nullable Integer capo) {
+    //    this.capo = capo;
+    //}
     public void setTranspose(@Nullable String transpose) {
         this.transpose = transpose;
     }

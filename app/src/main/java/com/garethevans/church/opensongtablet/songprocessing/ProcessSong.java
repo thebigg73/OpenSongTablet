@@ -1694,12 +1694,45 @@ public class ProcessSong {
         return replacementtext.toString();
     }
 
+    private void fixNonMatchingPresentationOrder(Song song) {
+        // If the presentation order contains extended names(Verse 1), but the song contains shortened ([V1])
+        // Try to fix the presentation order
+        if (song.getPresentationorder()==null) {
+            song.setPresentationorder("");
+        }
+        for (int i=1; i<=9; i++) {
+            if (song.getPresentationorder().contains("Verse "+i) &&
+                    !song.getLyrics().contains("[Verse "+i+"]") &&
+                    song.getLyrics().contains("[V"+i+"]")) {
+                song.setPresentationorder(song.getPresentationorder().replace("Verse "+i, "V"+i));
+            }
+            if (song.getPresentationorder().contains("Chorus "+i) &&
+                    !song.getLyrics().contains("[Chorus "+i+"]") &&
+                    song.getLyrics().contains("[C"+i+"]")) {
+                song.setPresentationorder(song.getPresentationorder().replace("Chorus "+i, "C"+i));
+            }
+            if (song.getPresentationorder().contains("V"+i) &&
+                    !song.getLyrics().contains("[V"+i+"]") &&
+                    song.getLyrics().contains("[Verse "+i+"]")) {
+                song.setLyrics(song.getLyrics().replace("[Verse "+i+"]", "[V"+i+"]"));
+            }
+            if (song.getPresentationorder().contains("C"+i) &&
+                    !song.getLyrics().contains("[C"+i+"]") &&
+                    song.getLyrics().contains("[Chorus "+i+"]")) {
+                song.setLyrics(song.getLyrics().replace("[Chorus "+i+"]", "[C"+i+"]"));
+            }
+        }
+    }
+
     public void matchPresentationOrder(Song song, boolean showToast) {
         // presentationOrder probably looks like "Intro V1 V2 C V3 C C Guitar Solo C Outro"
         // We need to identify the sections in the song that are in here
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
+        // If the presentation order contains extended names(Verse 1), but the song contains shortened ([V1])
+        // Try to fix the presentation order
+        fixNonMatchingPresentationOrder(song);
         ArrayList<String> newSections = new ArrayList<>();
         ArrayList<String> newHeaders = new ArrayList<>();
 
@@ -2055,6 +2088,14 @@ public class ProcessSong {
     }
 
     public void processSongIntoSections(Song song, boolean presentation) {
+        // If the song doesn't start with a section header but text/chords, add in a blank one
+        if (song.getLyrics()==null) {
+            song.setLyrics("");
+        }
+        if (!song.getLyrics().trim().startsWith("[")) {
+            song.setLyrics("[ ]\n"+song.getLyrics());
+        }
+
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         // 1. Get a temporary version of the lyrics (as we are going to process them)
         // Replace [ or ] that aren't in headers to protect them
