@@ -243,6 +243,7 @@ public class ImportOSBFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
+                mainActivityInterface.getStorageAccess().updateCrashLog("Trying to find folders in the zip archive\n"+ e);
             } finally {
                 if (zipInputStream != null) {
                     try {
@@ -250,6 +251,7 @@ public class ImportOSBFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                         error = true;
+                        mainActivityInterface.getStorageAccess().updateCrashLog("Closing the zip stream\n"+e);
                     }
                 }
             }
@@ -517,8 +519,10 @@ public class ImportOSBFragment extends Fragment {
                                 } else {
                                     Log.d(TAG,"error = "+ze.getName());
                                     error = true;
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(ze.getName()+" closed before finish");
                                 }
                             } catch (Exception e) {
+                                mainActivityInterface.getStorageAccess().updateCrashLog("Writing song "+ze.getName()+"\n"+e);
                                 e.printStackTrace();
                             } finally {
                                 try {
@@ -528,6 +532,8 @@ public class ImportOSBFragment extends Fragment {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     error = true;
+                                    mainActivityInterface.getStorageAccess().updateCrashLog("Closing the zip stream\n"+e);
+
                                 }
                             }
 

@@ -204,7 +204,7 @@ public class BackupOSBFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
-                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                mainActivityInterface.getStorageAccess().updateCrashLog("Creating outputstream\n"+e);
             }
             ZipEntry ze;
 
@@ -276,7 +276,7 @@ public class BackupOSBFragment extends Fragment {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         error = true;
-                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                        mainActivityInterface.getStorageAccess().updateCrashLog("Adding item "+ze.getName()+"\n"+e);
                                     }
                                 }
                                 inputStream.close();
@@ -325,7 +325,7 @@ public class BackupOSBFragment extends Fragment {
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                             error = true;
-                                            mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                            mainActivityInterface.getStorageAccess().updateCrashLog("Writing item "+ze.getName()+"\n"+e);
                                         }
                                     }
                                     inputStream.close();
@@ -346,7 +346,7 @@ public class BackupOSBFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
-                mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                mainActivityInterface.getStorageAccess().updateCrashLog("Close outputstrean\n"+e);
             }
 
             // Update the view
