@@ -377,34 +377,6 @@ public class ImportOSBFragment extends Fragment {
                 }
             });
 
-            /*// Go through the checked folders and check they exist on the local storage
-            // If not, create them
-            ArrayList<String> allBits = new ArrayList<>();
-            for (String folder : checkedFolders) {
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (alive) {
-                        message = folder_string + ": " + folder;
-                        myView.progressText.setText(message);
-                    }
-                });
-                if (alive) {
-                    // Because the folder could have subdirectories, we need to start at the beginning
-                    if (folder.contains("/")) {
-                        String[] bits = folder.split("/");
-                        StringBuilder folderBits = new StringBuilder();
-                        for (String bit:bits) {
-                            folderBits.append(bit);
-                            if (!allBits.contains(folderBits.toString())) {
-                                allBits.add(folderBits.toString());
-                            }
-                            folderBits.append("/");
-                        }
-                    } else {
-                        allBits.add(folder);
-                    }
-                }
-            }*/
-
             for (String folder : checkedFolders) {
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (alive) {
@@ -434,40 +406,6 @@ public class ImportOSBFragment extends Fragment {
                     }
                 }
             }
-
-            /*DocumentFile df = mainActivityInterface.getStorageAccess().getSongsDF();
-            for (String folderBit:checkedFolders) {
-                Log.d(TAG,"folderBit:"+folderBit);
-                DocumentFile currdf = df;
-                if (df!=null && !folderBit.equals(mainfoldername) && !folderBit.equals("MAIN")) {
-                    // Folder bit might be a folder or multiple subfolders in order
-                    String[] bits = folderBit.split("/");
-                    for (String bit:bits) {
-                        // Check if it exists
-                        if (currdf!=null) {
-                            DocumentFile subdf = currdf.findFile(bit);
-                            if (subdf == null || !subdf.exists()) {
-                                Log.d(TAG, "Creating folder: " + currdf.getName()+": "+bit);
-                                currdf = currdf.createDirectory(bit);
-                                //currdf = currdf.findFile(bit);
-                                //currdf = currdf.findFile(bit);
-                                if (currdf != null) {
-                                    Log.d(TAG,"currdf now:"+currdf.getName());
-                                    stringBuilder.append(TAG).append(" create folders ").append(currdf.getUri()).append("\n");
-                                } else {
-                                    stringBuilder.append(TAG).append(" failed to create folder: ").append(folderBit).append("\n");
-                                }
-                            } else {
-                                currdf = subdf;
-                                stringBuilder.append(TAG).append(" folder already exists: ").append(folderBit).append("\n");
-                            }
-                        }
-                    }
-                }
-            }
-            if (!stringBuilder.toString().isEmpty()) {
-                mainActivityInterface.getStorageAccess().updateFileActivityLog("\n" + stringBuilder + "\n");
-            }*/
 
             // Now deal with the zip entries
             stringBuilder = new StringBuilder();
