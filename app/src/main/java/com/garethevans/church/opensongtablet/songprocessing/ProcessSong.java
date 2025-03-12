@@ -1045,6 +1045,9 @@ public class ProcessSong {
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
 
+        // Get rid of any square brackets holders in the content
+        string = string.replace("__OPENSQUAREBRACKETS__","[").replace("__CLOSESQUAREBRACKETS__","]");
+
         // Split the group into lines
         String[] lines = string.split(groupline_string);
 
@@ -2453,6 +2456,9 @@ public class ProcessSong {
                     String[] lines = section.split("\n",-1);
                     for (int l=0; l<lines.length; l++) {
                         String line = lines[l];
+                        line = line.replace("__OPENSQUAREBRACKETS__","[").replace("__CLOSESQUAREBRACKETS__","]");
+                        line = line.replace("- OPENSQUAREBRACKETS- ","[").replace("- CLOSESQUAREBRACKETS- ","]");
+
                         // IV - Do not process an empty group line or empty header line
                         if (!line.equals(groupline_string) && !line.equals("[]")) {
                             // Remove any justChords formatting, but don't edit the song
@@ -2583,6 +2589,8 @@ public class ProcessSong {
                                     }
 
                                 } else if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
+                                    // Get rid of any square brackets holders in the content
+
                                     // IV - Remove typical word splits, white space and trim - beautify!
                                     // IV - Similar logic is used in other places - if changed find and make changes to all
                                     if (!showChords) {
