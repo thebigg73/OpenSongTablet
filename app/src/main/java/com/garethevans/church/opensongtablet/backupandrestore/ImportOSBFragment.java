@@ -19,7 +19,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -362,10 +361,12 @@ public class ImportOSBFragment extends Fragment {
         zipProgress = 0;
         item = 0;
 
+
         // The actual importing runs in a new thread
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             inputStream = mainActivityInterface.getStorageAccess().getInputStream(importUri);
             zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
+            StringBuilder stringBuilder = new StringBuilder();
 
             mainActivityInterface.getMainHandler().post(() -> {
                 if (alive) {
@@ -376,9 +377,9 @@ public class ImportOSBFragment extends Fragment {
                 }
             });
 
-            // Go through the checked folders and check they exist on the local storage
+            /*// Go through the checked folders and check they exist on the local storage
             // If not, create them
-            StringBuilder stringBuilder = new StringBuilder();
+            ArrayList<String> allBits = new ArrayList<>();
             for (String folder : checkedFolders) {
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (alive) {
@@ -388,48 +389,92 @@ public class ImportOSBFragment extends Fragment {
                 });
                 if (alive) {
                     // Because the folder could have subdirectories, we need to start at the beginning
-                    ArrayList<String> allBits = new ArrayList<>();
                     if (folder.contains("/")) {
                         String[] bits = folder.split("/");
+                        StringBuilder folderBits = new StringBuilder();
                         for (String bit:bits) {
-                            stringBuilder.append(bit);
-                            allBits.add(stringBuilder.toString());
-                            stringBuilder.append("/");
+                            folderBits.append(bit);
+                            if (!allBits.contains(folderBits.toString())) {
+                                allBits.add(folderBits.toString());
+                            }
+                            folderBits.append("/");
                         }
                     } else {
                         allBits.add(folder);
                     }
+                }
+            }*/
 
-                    DocumentFile df = mainActivityInterface.getStorageAccess().getSongsDF();
-                    for (String folderBit:allBits) {
-                        if (df!=null && !folderBit.equals(mainfoldername) && !folderBit.equals("MAIN")) {
-                            DocumentFile subdf = df.findFile(folderBit);
+            for (String folder : checkedFolders) {
+                mainActivityInterface.getMainHandler().post(() -> {
+                    if (alive) {
+                        message = folder_string + ": " + folder;
+                        myView.progressText.setText(message);
+                    }
+                });
+                if (folder.contains("/")) {
+                    String[] foldersegments = folder.split("/");
+                    String currentFolder = "";
+                    for (String segment : foldersegments) {
+                        if (mainActivityInterface.getStorageAccess().createFolder("Songs", currentFolder, segment, false)) {
+                            stringBuilder.append(TAG).append(" check or create song folder: ").append(segment).append("\n");
+                        } else {
+                            stringBuilder.append(TAG).append(" failed to create song folder: ").append(segment).append("\n");
+                        }
+                        currentFolder = currentFolder + "/" + segment;
+                        if (currentFolder.startsWith("/")) {
+                            currentFolder = currentFolder.substring(1);
+                        }
+                    }
+                } else if (!folder.equals("MAIN") && !folder.equals(mainActivityInterface.getMainfoldername())) {
+                    if (mainActivityInterface.getStorageAccess().createFolder("Songs", "", folder, false)) {
+                        stringBuilder.append(TAG).append(" check or create song folder: ").append(folder).append("\n");
+                    } else {
+                        stringBuilder.append(TAG).append(" failed to create song folder: ").append(folder).append("\n");
+                    }
+                }
+            }
+
+            /*DocumentFile df = mainActivityInterface.getStorageAccess().getSongsDF();
+            for (String folderBit:checkedFolders) {
+                Log.d(TAG,"folderBit:"+folderBit);
+                DocumentFile currdf = df;
+                if (df!=null && !folderBit.equals(mainfoldername) && !folderBit.equals("MAIN")) {
+                    // Folder bit might be a folder or multiple subfolders in order
+                    String[] bits = folderBit.split("/");
+                    for (String bit:bits) {
+                        // Check if it exists
+                        if (currdf!=null) {
+                            DocumentFile subdf = currdf.findFile(bit);
                             if (subdf == null || !subdf.exists()) {
-                                df.createDirectory(folderBit);
-                                df = df.findFile(folderBit);
-                                if (df != null) {
-                                    stringBuilder.append(TAG).append(" create folders ").append(df.getUri()).append("\n");
+                                Log.d(TAG, "Creating folder: " + currdf.getName()+": "+bit);
+                                currdf = currdf.createDirectory(bit);
+                                //currdf = currdf.findFile(bit);
+                                //currdf = currdf.findFile(bit);
+                                if (currdf != null) {
+                                    Log.d(TAG,"currdf now:"+currdf.getName());
+                                    stringBuilder.append(TAG).append(" create folders ").append(currdf.getUri()).append("\n");
                                 } else {
                                     stringBuilder.append(TAG).append(" failed to create folder: ").append(folderBit).append("\n");
                                 }
                             } else {
+                                currdf = subdf;
                                 stringBuilder.append(TAG).append(" folder already exists: ").append(folderBit).append("\n");
                             }
                         }
                     }
-
                 }
             }
             if (!stringBuilder.toString().isEmpty()) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog("\n" + stringBuilder + "\n");
-            }
+            }*/
 
             // Now deal with the zip entries
             stringBuilder = new StringBuilder();
             try {
                 byte[] buffer = new byte[1024];
                 while ((ze = zipInputStream.getNextEntry()) != null) {
-                    item ++;
+                    item++;
                     if (!ze.isDirectory()) {
                         // Get a uri for the song
                         Uri file_uri = null;
@@ -440,10 +485,10 @@ public class ImportOSBFragment extends Fragment {
                         boolean isDB = false;
                         if (alive) {
                             if (ze.getName().startsWith("_Highlighter")) {
-                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", ze.getName().replace("_Highlighter/",""));
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", ze.getName().replace("_Highlighter/", ""));
                             } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                 // Put the database into our app folder
-                                tempDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","","importedDB.db");
+                                tempDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database", "", "importedDB.db");
                                 //tempDBFile = new File(requireContext().getExternalFilesDir("Database"), "importedDB.db");
                                 file_uri = Uri.fromFile(tempDBFile);
                                 isDB = true;
@@ -455,6 +500,7 @@ public class ImportOSBFragment extends Fragment {
                             }
                             if (ze.getName().contains("/")) {
                                 filefolder = ze.getName().substring(0, ze.getName().lastIndexOf("/"));
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", filefolder, ze.getName().replace(filefolder + "/", ""));
                             }
 
                             // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
@@ -470,7 +516,7 @@ public class ImportOSBFragment extends Fragment {
                             zipProgress++;
                             mainActivityInterface.getMainHandler().post(() -> {
                                 String name;
-                                if (ze==null || ze.getName()==null) {
+                                if (ze == null || ze.getName() == null) {
                                     name = "";
                                 } else {
                                     name = ze.getName();
@@ -484,18 +530,19 @@ public class ImportOSBFragment extends Fragment {
                             // Make sure the file exists (might be non-existent)
                             if (!exists && alive) {
                                 if (ze.getName().contains("_Highlighter/")) {
-                                    filename = ze.getName().replace("_Highlighter/","");
+                                    filename = ze.getName().replace("_Highlighter/", "");
                                     stringBuilder.append("\n").append(TAG).append(" Create Highlighlighter/").append(filename);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                            false, file_uri,null,"Highlighter","",filename);
+                                            false, file_uri, null, "Highlighter", "", filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                     // the file_uri is actually pointing to the app folder as we will save it there then SQL insert or replace in the existing DB
-                                    Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                    Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", SQLite.NON_OS_DATABASE_NAME);
                                     stringBuilder.append("\n").append(TAG).append(" Create Settings/").append(SQLite.NON_OS_DATABASE_NAME);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                            false, final_file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                            false, final_file_uri, null, "Settings", "", SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
+                                    Log.d(TAG, "filefolder:" + filefolder + "  ze.getName():" + ze.getName());
                                     stringBuilder.append("\n").append(TAG).append(" Create Songs/").append(filefolder).append("/").append(filename);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             true, file_uri, null, "Songs", filefolder, filename);
@@ -517,12 +564,12 @@ public class ImportOSBFragment extends Fragment {
                                         outputStream.write(buffer, 0, count);
                                     }
                                 } else {
-                                    Log.d(TAG,"error = "+ze.getName());
+                                    Log.d(TAG, "error = " + ze.getName());
                                     error = true;
-                                    mainActivityInterface.getStorageAccess().updateCrashLog(ze.getName()+" closed before finish");
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(ze.getName() + " closed before finish");
                                 }
                             } catch (Exception e) {
-                                mainActivityInterface.getStorageAccess().updateCrashLog("Writing song "+ze.getName()+"\n"+e);
+                                mainActivityInterface.getStorageAccess().updateCrashLog("Writing song " + ze.getName() + "\n" + e);
                                 e.printStackTrace();
                             } finally {
                                 try {
@@ -532,7 +579,7 @@ public class ImportOSBFragment extends Fragment {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     error = true;
-                                    mainActivityInterface.getStorageAccess().updateCrashLog("Closing the zip stream\n"+e);
+                                    mainActivityInterface.getStorageAccess().updateCrashLog("Closing the zip stream\n" + e);
 
                                 }
                             }
@@ -565,7 +612,7 @@ public class ImportOSBFragment extends Fragment {
                         // We will use SQL to merge the database to our existing one
                         // If we are allowing overwrite, we use REPLACE, if not we use INSERT OR IGNORE
                         String dbPath = tempDBFile.getPath();
-                        mainActivityInterface.getNonOpenSongSQLiteHelper().importDB(dbPath,canoverwrite);
+                        mainActivityInterface.getNonOpenSongSQLiteHelper().importDB(dbPath, canoverwrite);
                         tempDBFile = null;
                     }
 
@@ -599,7 +646,7 @@ public class ImportOSBFragment extends Fragment {
                 // Likely the user navigated away before the process completed
                 e.printStackTrace();
                 mainActivityInterface.allowNavigationUp(true);
-                if (getContext()!=null && alive) {
+                if (getContext() != null && alive) {
                     mainActivityInterface.getMainHandler().post(() -> {
                         myView.progressText.setText(error_string);
                         myView.progressBar.setVisibility(View.GONE);
