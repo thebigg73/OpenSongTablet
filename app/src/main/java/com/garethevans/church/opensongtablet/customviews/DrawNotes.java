@@ -112,8 +112,10 @@ public class DrawNotes extends View {
         currentSwipePaint.setStyle(Paint.Style.STROKE);
         currentSwipePaint.setStrokeJoin(Paint.Join.ROUND);
         currentSwipePaint.setStrokeCap(Paint.Cap.ROUND);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, currentPaint);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, bitmapPaint);
+        post(() -> {
+            setLayerType(View.LAYER_TYPE_SOFTWARE, currentPaint);
+            setLayerType(View.LAYER_TYPE_SOFTWARE, bitmapPaint);
+        });
     }
 
     public void resetVars() {

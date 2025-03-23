@@ -1387,7 +1387,11 @@ public class PerformanceFragment extends Fragment {
             if (mainActivityInterface.getSong().getFiletype()==null ||
                     mainActivityInterface.getSong().getFiletype().isEmpty() ||
                     mainActivityInterface.getSong().getFiletype().equals("XML")) {
-                dealWithHighlighterFile(widthAfterScale, heightAfterScale);
+                if (myView.inlineSetList!=null && myView.inlineSetList.getWidth()>0) {
+                    dealWithHighlighterFile(availableWidth + myView.inlineSetList.getWidth(), availableHeight);
+                } else {
+                    dealWithHighlighterFile(widthAfterScale, heightAfterScale);
+                }
             } else {
                 dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
             }
