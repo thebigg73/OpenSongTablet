@@ -1388,7 +1388,11 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getSong().getFiletype().isEmpty() ||
                     mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 if (myView.inlineSetList!=null && myView.inlineSetList.getWidth()>0) {
-                    dealWithHighlighterFile(availableWidth + myView.inlineSetList.getWidth(), availableHeight);
+                    int actualAvailableWidth = availableWidth + myView.inlineSetList.getWidth();
+                    float rescale = (float) actualAvailableWidth / widthBeforeScale;
+                    int newWidth = (int)(widthAfterScale * rescale);
+                    int newHeight = (int)(heightAfterScale * rescale);
+                    dealWithHighlighterFile(newWidth, newHeight);
                 } else {
                     dealWithHighlighterFile(widthAfterScale, heightAfterScale);
                 }
