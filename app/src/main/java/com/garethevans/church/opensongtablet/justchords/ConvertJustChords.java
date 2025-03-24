@@ -26,7 +26,9 @@ public class ConvertJustChords {
     private final String extension = ".justchords";
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<Song> songs;
-    private final String abc_start = "{start_of_abcnotation}", abc_end = "{end_of_abcnotation}";
+    private final String abc_start = "{start_of_abc}", abc_end = "{end_of_abc}";
+    private final String abc_start_alt1 = "{start_of_abcnotation}", abc_end_alt1 = "{end_of_abcnotation}";
+    private final String abc_start_alt2 = "{start_of_abctablature}", abc_end_alt2 = "{end_of_abctablature}";
 
     // Instatiate the class
     public ConvertJustChords(Context c) {
@@ -318,9 +320,35 @@ public class ConvertJustChords {
             int indexEnd = lyrics.indexOf(abc_end,indexStart);
             containsAbc = indexStart>=0 && indexEnd>=0 && indexEnd>indexStart;
             if (containsAbc) {
-                String extractedBit = getExtractedBit(lyrics, indexStart, indexEnd);
+                String extractedBit = getExtractedBit(lyrics, indexStart, indexEnd, abc_end.length());
                 // Now put it back in place of the old bit
                 lyrics = lyrics.substring(0, indexStart) + extractedBit + "\n" + lyrics.substring(indexEnd + abc_end.length());
+            }
+        }
+
+        // Repeat for older abc identifiers
+        boolean containsAbcAlt1 = lyrics.contains(abc_start_alt1) && lyrics.contains(abc_end_alt1);
+        while (containsAbcAlt1) {
+            int indexStart = lyrics.indexOf(abc_start_alt1);
+            int indexEnd = lyrics.indexOf(abc_end_alt1,indexStart);
+            containsAbcAlt1 = indexStart>=0 && indexEnd>=0 && indexEnd>indexStart;
+            if (containsAbcAlt1) {
+                String extractedBit = getExtractedBit(lyrics, indexStart, indexEnd, abc_end_alt1.length());
+                // Now put it back in place of the old bit
+                lyrics = lyrics.substring(0, indexStart) + extractedBit + "\n" + lyrics.substring(indexEnd + abc_end_alt1.length());
+            }
+        }
+
+        // Repeat for older abc identifiers
+        boolean containsAbcAlt2 = lyrics.contains(abc_start_alt2) && lyrics.contains(abc_end_alt2);
+        while (containsAbcAlt2) {
+            int indexStart = lyrics.indexOf(abc_start_alt2);
+            int indexEnd = lyrics.indexOf(abc_end_alt2,indexStart);
+            containsAbcAlt2 = indexStart>=0 && indexEnd>=0 && indexEnd>indexStart;
+            if (containsAbcAlt2) {
+                String extractedBit = getExtractedBit(lyrics, indexStart, indexEnd, abc_end_alt2.length());
+                // Now put it back in place of the old bit
+                lyrics = lyrics.substring(0, indexStart) + extractedBit + "\n" + lyrics.substring(indexEnd + abc_end_alt2.length());
             }
         }
 
@@ -345,10 +373,12 @@ public class ConvertJustChords {
         return stringBuilder.toString();
     }
 
-    private String getExtractedBit(String lyrics, int indexStart, int indexEnd) {
-        String extractedBit = lyrics.substring(indexStart, indexEnd + abc_end.length());
+    private String getExtractedBit(String lyrics, int indexStart, int indexEnd, int abc_end_length) {
+        String extractedBit = lyrics.substring(indexStart, indexEnd + abc_end_length);
         // Process the extractedBit
         extractedBit = extractedBit.replace(abc_start, "").replace(abc_end, "");
+        extractedBit = extractedBit.replace(abc_start_alt1, "").replace(abc_end_alt1, "");
+        extractedBit = extractedBit.replace(abc_start_alt2, "").replace(abc_end_alt2, "");
         extractedBit = extractedBit.replace("\n", "\\n");
         extractedBit = extractedBit.replace("\\n ", "\\n");
         extractedBit = extractedBit.replace(" \\n", "\\n");
