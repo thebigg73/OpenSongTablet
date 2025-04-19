@@ -206,6 +206,8 @@ public class UltimateGuitar {
         String key = getMetaData(s, "<div class=\"label\">Key</div>");
         String key2 = "";
         String key3 = "";
+        String key4 = "";
+
         // Try new method looking for line: "musicalKey": "XX"
         String bit = "\"musicalKey\":";
         if (key.isEmpty() && s.contains(bit)) {
@@ -221,7 +223,8 @@ public class UltimateGuitar {
             }
         }
 
-        // Try final method
+
+        // Try normal method
         String bit2 = "Key: </th><td class=\"";
         if (key.isEmpty() && s.contains(bit2)) {
             int startpos = s.indexOf(bit2);
@@ -234,6 +237,24 @@ public class UltimateGuitar {
                 }
                 if (!key3.isEmpty()) {
                     key = key3;
+                }
+            }
+        }
+
+        // Try another method looking for Key:</span><.....>X</span>
+        String bit3 = "Key:</span>";
+        if (key.isEmpty() && s.contains(bit3)) {
+            int startpos = s.indexOf(bit3);
+            startpos = s.indexOf("<span",startpos);
+            if (startpos>-1) {
+                startpos = s.indexOf(">",startpos) + 1;
+                int endpos = s.indexOf("</span>",startpos);
+                if (endpos>startpos && endpos-startpos<5) {
+                    key4 = s.substring(startpos,endpos);
+                    key4 = stripOutTags(key4).trim();
+                }
+                if (!key4.isEmpty()) {
+                    key = key4;
                 }
             }
         }
