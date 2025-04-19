@@ -106,9 +106,6 @@ public class Midi {
 
     public String getMidiAction(int which) {
         switch (which) {
-            case 1:
-            default:
-                return midiAction1;
             case 2:
                 return midiAction2;
             case 3:
@@ -123,6 +120,9 @@ public class Midi {
                 return midiAction7;
             case 8:
                 return midiAction8;
+            case 1:
+            default:
+                return midiAction1;
         }
     }
 
@@ -572,11 +572,6 @@ public class Midi {
         instrumentLetter = instrument;
         // Get the General Midi program for the instrument
         switch (instrument) {
-            case "g":
-            default:
-                midiInstrument = 25;
-                break;
-
             case "p":
                 midiInstrument = 0;
                 break;
@@ -590,6 +585,10 @@ public class Midi {
             case "b":
             case "B":
                 midiInstrument = 105;
+                break;
+            case "g":
+            default:
+                midiInstrument = 25;
                 break;
         }
     }
@@ -726,9 +725,6 @@ public class Midi {
                 Log.e(TAG, e.getMessage());
                 bluetoothDevice = null;
             }
-            /*Method m = bluetoothDevice.getClass()
-            .getMethod("createBond");
-            m.invoke(bluetoothDevice, (Object[]) null);*/
         }
 
     }
@@ -810,12 +806,6 @@ public class Midi {
     public List<String> getStartNotes(String tuning) {
         List<String> startNote = new ArrayList<>();
         switch (instrumentLetter) {
-            case "g":
-            default:
-                if (tuning.equals("standard")) {
-                    startNote = guitarStringStartNotes;
-                }
-                break;
             case "p":
                 startNote = pianoNotesStartNotes;
                 break;
@@ -833,6 +823,12 @@ public class Midi {
                 break;
             case "m":
                 startNote = mandolinStringStartNotes;
+                break;
+            case "g":
+            default:
+                if (tuning.equals("standard")) {
+                    startNote = guitarStringStartNotes;
+                }
                 break;
         }
         return startNote;

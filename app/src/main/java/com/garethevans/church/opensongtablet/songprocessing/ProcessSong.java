@@ -1808,7 +1808,7 @@ public class ProcessSong {
 
                 if (showToast && !errors.toString().trim().isEmpty()) {
                     // Use a toast which is less intrusive during live performance - Inform but do not demand a reponse. For example, not using a verse section may be valid.
-                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.presentation_order) + ": " + c.getString(R.string.error) + ":" + errors);
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.presentation_order) + " - " + c.getString(R.string.error) + ": " + errors);
                 }
             } catch (Exception e) {
                 // IV - An error has occurred so return what we have
