@@ -171,20 +171,23 @@ public class PageButtons {
     public void animatePageButton(boolean open) {
         if (open) {
             if (actionButton.getRotation()==0) {
-                actionButton.animate().rotation(45f).withLayer().setDuration(animationTime).
-                        setInterpolator(interpolator).start();
+                mainActivityInterface.getMainHandler().post(() ->
+                    actionButton.animate().rotation(45f).withLayer().setDuration(animationTime).
+                        setInterpolator(interpolator).start());
             }
         } else {
             if (actionButton.getRotation()!=0) {
-                actionButton.animate().rotation(0f).withLayer().setDuration(animationTime).
-                        setInterpolator(interpolator).start();
+                mainActivityInterface.getMainHandler().post(() ->
+                        actionButton.animate().rotation(0f).withLayer().setDuration(animationTime).
+                        setInterpolator(interpolator).start());
             }
         }
         for (int x=0; x<pageButtonNum; x++) {
+            int finalX = x;
             if (pageButtonVisibility.get(x) && open) {
-                getFAB(x).show();
+                mainActivityInterface.getMainHandler().post(() -> getFAB(finalX).show());
             } else {
-                getFAB(x).hide();
+                mainActivityInterface.getMainHandler().post(() -> getFAB(finalX).hide());
             }
         }
     }

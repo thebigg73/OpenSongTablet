@@ -11,18 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textview.MaterialTextView;
 
 public class ShowToast {
 
     private final View anchor;
-    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "ShowToast";
-    private final PopupWindow popupWindow;
-    private final MaterialTextView textToast;
+    private PopupWindow popupWindow;
+    private MaterialTextView textToast;
+    private final Context c;
     private Handler handlerShow;
     private Handler handlerHide;
     private Runnable runnableShow;
@@ -36,7 +35,7 @@ public class ShowToast {
                 currentMessage = "";
                 popupWindow.dismiss();
             } catch (Exception e) {
-                Log.d(TAG,"Couldn't dismiss popupWindow");
+                Log.d(TAG, "Couldn't dismiss popupWindow");
             }
         }
     };
@@ -44,14 +43,20 @@ public class ShowToast {
 
     public ShowToast(Context c, View anchor) {
         this.anchor = anchor;
+        this.c = c;
         success = c.getString(R.string.success);
         error = c.getString(R.string.error);
+        initialisePopupWindow();
+    }
+
+    // Initialise popupWindow
+    private void initialisePopupWindow() {
         popupWindow = new PopupWindow(c);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             popupWindow.setElevation(32);
         }
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.view_toast,null,false);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.view_toast, null, false);
         popupWindow.setContentView(view);
         popupWindow.setFocusable(false);
         popupWindow.setBackgroundDrawable(null);
@@ -64,42 +69,42 @@ public class ShowToast {
         try {
             // Only proceed if the message is valid and isn't currently shown
             if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
-                currentMessage = message;
-                // Toasts with custom layouts are deprecated and look ugly!
-                // Use a more customisable popup window
+                // Kill any existing
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    kill();
 
-                // If a message is already showing, then wait
-                long delayTime;
-                long currTime = System.currentTimeMillis();
-                if (currTime > messageEndTime) {
-                    // Good to go now
-                    delayTime = 0;
-                    messageEndTime = currTime + showTime;
-                } else {
-                    delayTime = messageEndTime - currTime + 500;
-                }
+                    currentMessage = message;
+                    // Toasts with custom layouts are deprecated and look ugly!
+                    // Use a more customisable popup window
 
-                runnableShow = () -> {
-                    if (textToast != null && popupWindow != null) {
+                    // If a message is already showing, then wait
+                    long delayTime;
+                    long currTime = System.currentTimeMillis();
+                    if (currTime > messageEndTime) {
+                        // Good to go now
+                        delayTime = 0;
+                        messageEndTime = currTime + showTime;
+                    } else {
+                        delayTime = messageEndTime - currTime + 500;
+                    }
 
-                        try {
+                    runnableShow = () -> {
+                        if (textToast != null && popupWindow != null) {
                             try {
-                                ((DrawerLayout)anchor).removeView(popupWindow.getContentView().getRootView());
+                                textToast.setText(message);
+                                messageEndTime = System.currentTimeMillis() + showTime;
+                                handlerHide = new Handler(Looper.getMainLooper());
+                                handlerHide.postDelayed(runnableHide, showTime);
+                                popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            textToast.setText(message);
-                            messageEndTime = System.currentTimeMillis() + showTime;
-                            handlerHide = new Handler(Looper.getMainLooper());
-                            handlerHide.postDelayed(runnableHide, showTime);
-                            popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                };
-                handlerShow = new Handler(Looper.getMainLooper());
-                handlerShow.postDelayed(runnableShow, delayTime);
+                    };
+                    handlerShow = new Handler(Looper.getMainLooper());
+                    handlerShow.postDelayed(runnableShow, delayTime);
+                });
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,18 +173,28 @@ public class ShowToast {
 
             // Just hide the popup window
             if (popupWindow != null && popupWindow.isShowing()) {
-                popupWindow.dismiss();
+                // Close the popup using the onclick method
+                textToast.performClick();
+                if (popupWindow.isShowing()) {
+                    try {
+                        popupWindow.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d(TAG,"Couldn't kill showToast");
+            Log.d(TAG, "Couldn't kill showToast");
 
         }
 
-        try {
-            popupWindow.dismiss();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (popupWindow != null) {
+            try {
+                popupWindow.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

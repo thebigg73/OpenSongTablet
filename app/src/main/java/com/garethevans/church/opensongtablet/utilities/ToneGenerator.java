@@ -65,7 +65,12 @@ public class ToneGenerator {
 
         // Start audio and then we will write to the audio track
         if (audioTrack != null && audioTrack.getState() != AudioTrack.PLAYSTATE_PLAYING) {
-            audioTrack.play();
+            try {
+                audioTrack.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+                isPlaying = false;
+            }
         }
 
         // synthesis loop
@@ -75,7 +80,12 @@ public class ToneGenerator {
                 ph += twopi * chosenFrequency / (float) sampleRate;
             }
             if (audioTrack != null) {
-                audioTrack.write(samples, 0, bufferSize);
+                try {
+                    audioTrack.write(samples, 0, bufferSize);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    isPlaying = false;
+                }
             }
         }
     }
