@@ -781,6 +781,8 @@ public class LoadSong {
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.fix));
         String toFix;
 
+        Uri fixUri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),thisSong.getFilename());
+
         // Try to get this section
         toFix = getSongAsText(where,thisSong.getFolder(),thisSong.getFilename());
 
@@ -789,14 +791,14 @@ public class LoadSong {
             int end   = toFix.indexOf("</" + section + ">");
             if (start>-1 && end>start) {
                 String origExtracted = toFix.substring(start,end);
-                String newExtracted  = origExtracted.replace("<","&lt;");
+                String newExtracted = mainActivityInterface.getProcessSong().parseToHTMLEntities(origExtracted);
+                newExtracted = newExtracted.replace("<","&lt;");
                 newExtracted = newExtracted.replace(">","&gt;");
-
                 toFix = toFix.replace(origExtracted,newExtracted).replace("<>","");
 
                 // Now save the song again (output stream is closed in the write file method)
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+uri+" with: "+toFix);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(fixUri);
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+fixUri+" with: "+toFix);
                 mainActivityInterface.getStorageAccess().writeFileFromString(toFix,outputStream);
 
                 Log.d(TAG,"fixed "+section+" :"+newExtracted);
