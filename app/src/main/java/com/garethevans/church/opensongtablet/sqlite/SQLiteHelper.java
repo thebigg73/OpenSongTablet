@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.nearby.ShareableObject;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -270,6 +271,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         // Export a csv version of the temporary database
         mainActivityInterface.getCommonSQL().exportDatabase(getDB(),"SongDatabase.csv");
         getDB().close();
+    }
+
+    public ArrayList<ShareableObject> getShareableSongs() {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getShareableSongs(db);
+        } catch (OutOfMemoryError | Exception e) {
+            return new ArrayList<>();
+        }
     }
 }
 

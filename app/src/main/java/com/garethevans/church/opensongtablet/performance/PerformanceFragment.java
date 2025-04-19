@@ -269,6 +269,9 @@ public class PerformanceFragment extends Fragment {
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
         mainActivityInterface.getDisplayPrevNext().setZoomLayout(myView.zoomLayout);
 
+        // TODO
+        // mainActivityInterface.getNearbyConnections().createShareableObjectsForRequester("gareth");
+
         return myView.getRoot();
     }
 

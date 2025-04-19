@@ -184,6 +184,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 import com.gu.toolargetool.TooLargeTool;
 
 import java.io.File;
@@ -207,6 +208,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
     private boolean rebooted = false, alreadyBackPressed = false;
+
+    public static final Gson gson = new Gson();
 
     // Initialise the Executors and main handlers for async tasks
     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(

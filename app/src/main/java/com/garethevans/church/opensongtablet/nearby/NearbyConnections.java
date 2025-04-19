@@ -15,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.collection.SimpleArrayMap;
 
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.setprocessing.SetObject;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.nearby.Nearby;
@@ -98,7 +100,7 @@ public class NearbyConnections implements NearbyInterface {
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             nearbyReceiveHostAutoscroll, nearbyReceiveHostSongSections = true, connectionsOpen,
             nearbyHostPassthrough, nearbyReceiveHostScroll, nearbyMatchToPDFSong, nearbyMessageSticky,
-            nearbyMessageMIDIAction;
+            nearbyMessageMIDIAction, nearbyFileSharing;
     private String nearbyMessage1, nearbyMessage2, nearbyMessage3, nearbyMessage4, nearbyMessage5,
             nearbyMessage6, nearbyMessage7, nearbyMessage8;
 
@@ -137,15 +139,15 @@ public class NearbyConnections implements NearbyInterface {
             nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
             String preference = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyStrategy", "cluster");
             switch (preference) {
-                case "cluster":
-                default:
-                    nearbyStrategy = Strategy.P2P_CLUSTER;
-                    break;
                 case "star":
                     nearbyStrategy = Strategy.P2P_STAR;
                     break;
                 case "single":
                     nearbyStrategy = Strategy.P2P_POINT_TO_POINT;
+                    break;
+                case "cluster":
+                default:
+                    nearbyStrategy = Strategy.P2P_CLUSTER;
                     break;
             }
             setNearbyStrategy(nearbyStrategy);
@@ -174,6 +176,7 @@ public class NearbyConnections implements NearbyInterface {
             nearbyMessage7 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage7", "");
             nearbyMessage8 = mainActivityInterface.getPreferences().getMyPreferenceString("nearbyMessage8", "");
             nearbyMessageMIDIAction = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyMessageMIDIAction", true);
+            nearbyFileSharing = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyFileSharing",true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1805,11 +1808,7 @@ public class NearbyConnections implements NearbyInterface {
             // After 10 seconds, stop advertising
             new Handler().postDelayed(() -> {
                 try {
-                    if (countAdvertise<2) {
-                        tempAdvertiseShowStop = false;
-                    } else {
-                        tempAdvertiseShowStop = true;
-                    }
+                    tempAdvertiseShowStop = countAdvertise >= 2;
                     if (hasValidConnections()) {
                         tempAdvertiseShowStop = true;
                     }
@@ -1961,6 +1960,57 @@ public class NearbyConnections implements NearbyInterface {
         this.browseHostFragment = browseHostFragment;
     }
 
+
+
+    // Getting info on shareable songs/sets between hosts/sets
+    public void createShareableObjectsForRequester(String requesterId) {
+        // We have been asked to provide a list of shareable items
+        // Only proceed if the users has allowed this!
+        if (nearbyFileSharing) {
+            // TODO Send a message to the requester that we're working on preparing a list of items available
+
+            // Do the next bit asynchronously
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // Go through our songs and create an array of objects
+                ArrayList<ShareableObject> shareableObjects = mainActivityInterface.getSQLiteHelper().getShareableSongs();
+
+                // Now add the sets
+                ArrayList<String> sets = mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
+                for (String set:sets) {
+                    ShareableObject shareableObject = new ShareableObject();
+                    shareableObject.setFilename(set);
+                    shareableObject.setFolder("../Sets");
+
+                    // This is a newer method that parsers the set into a setObject first
+                    SetObject setObject = mainActivityInterface.getSetActions().createSetObjectFromFilename(set);
+                    shareableObject.setLastModified(setObject.getLastModified());
+                    shareableObject.setUuid(setObject.getUuid());
+                    shareableObject.setTitle(setObject.getSetName());
+
+                    // Add object to the shareable sets
+                    shareableObjects.add(shareableObject);
+                }
+
+                // Now create a zip file and add these items together as json objects
+                String jsonString = MainActivity.gson.toJson(shareableObjects);
+
+                mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","nearbyShareableList.json",jsonString);
+            });
+
+
+        } else {
+            // TODO return a message to say that user has not allowed sharing of files
+            // This should also stop their progress bar from spinning
+        }
+
+    }
+
+
+
+
+
+
+
     // If we are a host, we might be asked to return an list of items
     // This list will be built from the arraylists but passed as a string split by lines
     public String getHostItems(String what) {
@@ -1973,12 +2023,12 @@ public class NearbyConnections implements NearbyInterface {
                     hostItems.add(0, "["+c.getString(R.string.set_current)+"]");
                 }
                 break;
+            case "browseprofiles":
+                hostItems = mainActivityInterface.getStorageAccess().listFilesInFolder("Profiles", "");
+                break;
             case "browsesongs":
             default:
                 hostItems = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
-                break;
-            case "browseprofiles":
-                hostItems = mainActivityInterface.getStorageAccess().listFilesInFolder("Profiles", "");
                 break;
         }
         StringBuilder stringBuilder = new StringBuilder();
