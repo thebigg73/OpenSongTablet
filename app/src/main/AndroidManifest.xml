@@ -140,7 +140,7 @@
             android:exported="true"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|navigation|screenLayout"
             android:screenOrientation="fullUser"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
             android:hardwareAccelerated="false"
