@@ -129,6 +129,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
 
             // In a set, so hide the song only transpose options
+            //String itemFolder = mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder;
+            //myView.transposeCapo.setVisibility(itemFolder.equals("**Variation")?View.VISIBLE:View.GONE);
             myView.transposeCapo.setVisibility(View.GONE);
             myView.transposeCopy.setVisibility(View.GONE);
 
@@ -455,6 +457,18 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                         // If this is a normal song, but want to convert to a variation
                         mainActivityInterface.getVariations().makeVariation(position);
 
+                    /*} else if ((setFolder!=null && setFolder.contains("**Variation")) || (setFolder!=null && setFolder.contains(string_variation)) && transposeCapo) {
+                        // Capo transpose the variation and resave it
+                        Log.d(TAG,"do capo transpose...");
+                        String newCapo = String.valueOf(((Integer.parseInt("0" + mainActivityInterface.getSong().getCapo()) + 12 +
+                                (transposeTimes * Integer.parseInt(transposeDirection))) % 12));
+                        if (newCapo.equals("0")) {
+                            newCapo = "";
+                        }
+                        Log.d(TAG,"newCapo:"+newCapo);
+                        mainActivityInterface.getSong().setCapo(newCapo);
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
+                    */
                     } else if ((setFolder!=null && setFolder.contains("Variation")) || (setFolder!=null && setFolder.contains(string_variation.replace("**","")))) {
                         // This song was already a variation (no option to transposeSet or transposeVariation)
                         mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
