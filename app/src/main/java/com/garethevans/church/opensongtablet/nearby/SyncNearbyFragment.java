@@ -2,23 +2,30 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
-import com.garethevans.church.opensongtablet.databinding.SettingsNearbyBrowseBinding;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.databinding.SettingsSyncBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
-public class BrowseHostFragment extends Fragment {
+public class SyncNearbyFragment extends Fragment {
     // This fragment is used to request, then display a list of files available on the host device
     // It is only accessible on devices that are connected and are not running as hosts themselves
     // This fragment can be called from the SetActionsFragment, ProfileActionsFragment and SongActionsFragment
@@ -26,12 +33,12 @@ public class BrowseHostFragment extends Fragment {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BrowseHostFragment";
     private MainActivityInterface mainActivityInterface;
-    private SettingsNearbyBrowseBinding myView;
+    private SettingsSyncBinding myView;
     @SuppressWarnings("FieldCanBeLocal")
-    private String browse_host_files_string="", set_string="", profile_string="", song_string="",
+    private String browse_host_files_string="", sets_string="", profiles_string="", songs_string="",
             set_current_string="", set_is_empty_string="", processing_string="",
             nearby_files_copied_string="", nearby_files_skipped_string="",
-            nearby_files_failed_string="";
+            nearby_files_failed_string="", no_response_string="";
     private int currentFile=0;
     private BrowseHostAdapter browseHostAdapter;
     private ArrayList<HostItem> checkedItems = new ArrayList<>();
@@ -41,19 +48,41 @@ public class BrowseHostFragment extends Fragment {
     private final ArrayList<String> filesCopied = new ArrayList<>();
     private final ArrayList<String> filesSkipped = new ArrayList<>();
     private final ArrayList<String> filesFailed = new ArrayList<>();
+    private SyncViewPagerAdapter syncViewPagerAdapter;
+    private SyncSongFragment syncSongFragment;
+    private SyncSetFragment syncSetFragment;
+    private SyncProfileFragment syncProfileFragment;
+    private ArrayList<String> connectedDeviceCodes = new ArrayList<>();
+    private ArrayList<String> connectedDeviceNames = new ArrayList<>();
+    private boolean timeout = false;
+    private Handler timeoutHandler = new Handler();
+    private Runnable timeoutRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (timeout) {
+                showProgress(false);
+                if (myView != null) {
+                    myView.chooseConnected.setText("");
+                    mainActivityInterface.getShowToast().doIt(no_response_string);
+                }
+                timeout = false;
+            }
+        }
+    };
+
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        mainActivityInterface.getNearbyConnections().setBrowseHostFragment(this);
+        mainActivityInterface.getNearbyConnections().setNearbySyncFragment(this);
     }
 
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        myView = SettingsNearbyBrowseBinding.inflate(inflater, container, false);
+        myView = SettingsSyncBinding.inflate(inflater, container, false);
         return myView.getRoot();
     }
 
@@ -62,15 +91,15 @@ public class BrowseHostFragment extends Fragment {
         prepareStrings();
         setupViews();
         setupListeners();
-        mainActivityInterface.getNearbyConnections().setBrowseHostFragment(this);
+        mainActivityInterface.getNearbyConnections().setNearbySyncFragment(this);
         // Now request the files from the host and wait for a response
-        mainActivityInterface.getNearbyConnections().sendRequestHostItems();
+        //mainActivityInterface.getNearbyConnections().sendRequestHostItems();
         super.onResume();
     }
 
     @Override
     public void onDestroy() {
-        mainActivityInterface.getNearbyConnections().setBrowseHostFragment(null);
+        mainActivityInterface.getNearbyConnections().setNearbySyncFragment(null);
         mainActivityInterface.setWhattodo("");
         super.onDestroy();
     }
@@ -78,17 +107,19 @@ public class BrowseHostFragment extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
             browse_host_files_string = getString(R.string.connections_browse_host);
-            set_string = getString(R.string.set);
-            profile_string = getString(R.string.profile);
-            song_string = getString(R.string.song);
+            sets_string = getString(R.string.set_lists);
+            profiles_string = getString(R.string.profile);
+            songs_string = getString(R.string.songs);
             set_current_string = getString(R.string.set_current);
             processing_string = getString(R.string.processing);
             nearby_files_copied_string = getString(R.string.nearby_files_copied);
             nearby_files_skipped_string = getString(R.string.nearby_files_skipped);
             nearby_files_failed_string = getString(R.string.nearby_files_failed);
-            String title_string;
-            String web_help;
-            switch (mainActivityInterface.getWhattodo()) {
+            no_response_string = getString(R.string.sync_server_noresponse_error);
+            String title_string = getString(R.string.sync);
+            String web_help = getString(R.string.website_sync);
+
+            /*switch (mainActivityInterface.getWhattodo()) {
                 case "browsesets":
                 default:
                     folder = "Sets";
@@ -109,7 +140,7 @@ public class BrowseHostFragment extends Fragment {
                     folder = "CurrentSet";
                     title_string = browse_host_files_string + ": " + set_current_string;
                     web_help = getString(R.string.website_browse_host_files_set);
-            }
+            }*/
             set_is_empty_string = getString(R.string.set_is_empty);
             mainActivityInterface.updateToolbar(title_string);
             mainActivityInterface.updateToolbarHelp(web_help);
@@ -117,21 +148,117 @@ public class BrowseHostFragment extends Fragment {
     }
 
     private void setupViews() {
-        // When we start up, we need to show the dimmed background and progress bar and hide the rest
-        myView.dimBackground.setVisibility(View.VISIBLE);
-        myView.hostProgressBar.setVisibility(View.VISIBLE);
-        myView.hostFilesRecycler.setVisibility(View.VISIBLE);
-        myView.importNearbyCurrentSet.setVisibility(View.GONE);
-        myView.importNearbyCurrentSet.setVisibility(View.GONE);
+        // Show the progress bar
+        showProgress(true);
+
+        if (getActivity()!=null) {
+            if (syncViewPagerAdapter == null) {
+                syncViewPagerAdapter = new SyncViewPagerAdapter(getActivity().getSupportFragmentManager(), this.getLifecycle());
+                syncViewPagerAdapter.createFragment(0);
+            }
+            if (syncSongFragment == null) {
+                syncSongFragment = (SyncSongFragment) syncViewPagerAdapter.menuFragments[0];
+            }
+            if (syncSetFragment == null) {
+                syncSetFragment = (SyncSetFragment) syncViewPagerAdapter.createFragment(1);
+            }
+            if (syncProfileFragment == null) {
+                syncProfileFragment = (SyncProfileFragment) syncViewPagerAdapter.createFragment(2);
+
+            }
+
+            // Give a reference back to this fragment
+            syncSongFragment.setMainFragment(this);
+            syncSetFragment.setMainFragment(this);
+            syncProfileFragment.setMainFragment(this);
+
+            myView.syncPager.setAdapter(syncViewPagerAdapter);
+            myView.syncPager.setOffscreenPageLimit(2);
+            TabLayout tabLayout = myView.syncTabs;
+            new TabLayoutMediator(tabLayout, myView.syncPager, (tab, position) -> {
+                switch (position) {
+                    case 0:
+                        tab.setText(songs_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
+                        break;
+                    case 1:
+                        tab.setText(sets_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
+                        break;
+                    case 2:
+                        tab.setText(profiles_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.settings, null));
+                        break;
+                }
+                // "removing" tooltip
+                TooltipCompat.setTooltipText(tab.view, null);
+            }).attach();
+        }
+
+        // Get a note of the connected devices into the exposedDropdown
+        if (getContext()!=null) {
+            // Go through the connected devices and split the names/codes
+            for (String endpoint:mainActivityInterface.getNearbyConnections().getConnectedEndpoints()) {
+                if (!endpoint.contains("__")) {
+                    endpoint = "UNKNOWN__" + endpoint;
+                }
+                String[] endpointSplit = endpoint.split("__");
+                connectedDeviceCodes.add(endpointSplit[0]);
+                connectedDeviceNames.add(endpointSplit[1]);
+            }
+            ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.chooseConnected, R.layout.view_exposed_dropdown_item, connectedDeviceNames);
+            myView.chooseConnected.setAdapter(exposedDropDownArrayAdapter);
+            myView.chooseConnected.setText("");
+        }
+
+        myView.syncTabs.setVisibility(View.GONE);
+        myView.syncPager.setVisibility(View.VISIBLE);
+
+        showProgress(false);
     }
 
     private void setupListeners() {
-        myView.nearbyBrowseSelectAll.setOnClickListener(view -> browseHostAdapter.selectAll(myView.nearbyBrowseSelectAll.isChecked()));
-        myView.importNearbyFiles.setOnClickListener(view -> {
+        //myView.nearbyBrowseSelectAll.setOnClickListener(view -> browseHostAdapter.selectAll(myView.nearbyBrowseSelectAll.isChecked()));
+        /*myView.importNearbyFiles.setOnClickListener(view -> {
             myView.hostProgressTextView.setVisibility(View.VISIBLE);
             startGetFiles();
         });
         myView.importNearbyCurrentSet.setOnClickListener(view -> doImportCurrentSet());
+    */
+
+        myView.chooseConnected.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Only proceed if the device name isn't empty
+                if (editable!=null && !editable.toString().isEmpty()) {
+                    // Wait for info from the required device.  Have a 10 sec timeout
+                    try {
+                        int pos = connectedDeviceNames.indexOf(editable.toString());
+                        if (mainActivityInterface.getNearbyConnections().getConnectedEndpoints().size()>=pos) {
+                            showProgress(true);
+                            timeout = true;
+                            timeoutHandler.postDelayed(timeoutRunnable, 10000);
+                            mainActivityInterface.getNearbyConnections().sendRequestHostItems(editable.toString());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void showProgress(boolean show) {
+        if (myView!=null) {
+            myView.hostProgressBar.setVisibility(show ? View.VISIBLE:View.GONE);
+            myView.dimBackground.setVisibility(show ? View.VISIBLE:View.GONE);
+        }
     }
 
     public void setNearbyCurrentSet(String nearbyCurrentSet) {
@@ -140,19 +267,19 @@ public class BrowseHostFragment extends Fragment {
     public void displayHostItems(String[] hostItems) {
         // We can now update the arrayAdapter on the main UI
         mainActivityInterface.getMainHandler().post(() -> {
-            myView.hostFilesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            browseHostAdapter = new BrowseHostAdapter(getContext(),hostItems,folder);
-            myView.hostFilesRecycler.setAdapter(browseHostAdapter);
-            myView.dimBackground.setVisibility(View.GONE);
-            myView.hostProgressBar.setVisibility(View.GONE);
+            //myView.hostFilesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            //browseHostAdapter = new BrowseHostAdapter(getContext(),hostItems,folder);
+            //myView.hostFilesRecycler.setAdapter(browseHostAdapter);
+            //myView.dimBackground.setVisibility(View.GONE);
+            //myView.hostProgressBar.setVisibility(View.GONE);
 
-            if (nearbyCurrentSet!=null && !nearbyCurrentSet.isEmpty()) {
+            /*if (nearbyCurrentSet!=null && !nearbyCurrentSet.isEmpty()) {
                 myView.importNearbyCurrentSet.setVisibility(View.VISIBLE);
             }
             if (hostItems.length>0) {
                 myView.importNearbyFiles.setVisibility(View.VISIBLE);
-            }
-            myView.nearbyBrowseSelectAll.setVisibility(View.VISIBLE);
+            }*/
+            //myView.nearbyBrowseSelectAll.setVisibility(View.VISIBLE);
         });
 
     }
@@ -182,7 +309,7 @@ public class BrowseHostFragment extends Fragment {
         checkedItems = browseHostAdapter.getCheckedItems();
         currentFile = 0;
         waitingForFiles = true;
-        overwrite = myView.nearbyOverwrite.getChecked();
+        //overwrite = myView.nearbyOverwrite.getChecked();
         // Get the first file if chosen
         if (!checkedItems.isEmpty()) {
             getFile();
