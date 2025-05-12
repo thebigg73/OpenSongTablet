@@ -237,7 +237,7 @@
             app:layout_constraintVertical_bias="1.0"
             tools:text=" 120bpm" />
 
-        <androidx.legacy.widget.Space
+        <Space
             android:id="@+id/batterySpace"
             android:layout_width="12dp"
             android:layout_height="wrap_content"
