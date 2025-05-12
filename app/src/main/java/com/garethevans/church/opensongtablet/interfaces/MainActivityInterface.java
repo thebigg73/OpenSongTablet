@@ -179,7 +179,7 @@ public interface MainActivityInterface {
     int getPositionOfSongInMenu();
     void updateSongList();
     void quickSongMenuBuild();
-    void fullIndex();
+    void fullIndex(String specificFolder);
     void indexSongs();
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(Song song);

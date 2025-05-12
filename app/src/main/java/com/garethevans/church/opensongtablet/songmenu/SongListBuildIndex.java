@@ -95,7 +95,7 @@ public class SongListBuildIndex {
 
     // This scans the files (quick and full).
     // Quick scan only updates newer files than the database
-    public String fullIndex(MaterialTextView progressText) {
+    public String fullIndex(MaterialTextView progressText, String specificFolder) {
 
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
@@ -112,11 +112,17 @@ public class SongListBuildIndex {
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the sql table
+            String folderMatch = "";
+            if (specificFolder!=null) {
+                folderMatch = " WHERE " + SQLite.COLUMN_FOLDER + " = '"+specificFolder+"'";
+            }
+
             String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
-                    " FROM " + SQLite.TABLE_NAME;
+                     " FROM " + SQLite.TABLE_NAME + folderMatch;
 
             Cursor cursor = db.rawQuery(altquery, null);
 
+            Log.d(TAG,"altQuery:"+altquery+"   count:"+cursor.getCount());
             if (cursor.getCount()>0) {
                 // Get the total song number
                 int totalSongs = cursor.getCount();

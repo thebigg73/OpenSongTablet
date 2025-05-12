@@ -2334,13 +2334,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 });
                 if (songListBuildIndex != null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
                     songListBuildIndex.setIndexComplete(false);
-                    songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                    songListBuildIndex.fullIndex(songMenuFragment.getProgressText(),null);
                 } else {
                     // Try again in a short while
                     mainLooper.postDelayed(() -> {
                         if (songListBuildIndex!=null && songMenuFragment != null && songMenuFragment.getProgressText() != null) {
                             songListBuildIndex.setIndexComplete(false);
-                            songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                            songListBuildIndex.fullIndex(songMenuFragment.getProgressText(),null);
                         }
                     }, 1000);
                 }
@@ -3672,13 +3672,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
     @Override
-    public void fullIndex() {
-        if (songListBuildIndex.getIndexRequired()) {
+    public void fullIndex(String specificFolder) {
+        if (songListBuildIndex.getIndexRequired() && !songListBuildIndex.getCurrentlyIndexing()) {
             getShowToast().doIt(search_index_start);
             getThreadPoolExecutor().execute(() -> {
-                String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText());
+                String outcome = songListBuildIndex.fullIndex(songMenuFragment.getProgressText(),specificFolder);
                 if (songMenuFragment != null && !songMenuFragment.isDetached()) {
                     try {
                         songMenuFragment.updateSongMenu();
