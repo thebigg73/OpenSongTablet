@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.justchords;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -136,7 +135,7 @@ public class ConvertJustChords {
         justChordsSongObject.setKeyChord(keyChord);
 
         // Build the lyrics!
-        String alllyrics = mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(),thisSong);
+        String alllyrics = mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(),thisSong,false);
         // If there is a popup abc code, insert that too as part of the lyrics
         if (thisSong.getAbc()!=null && !thisSong.getAbc().isEmpty()) {
             alllyrics = abc_start + "\n" + thisSong.getAbc().replaceAll("\\n","\n") + "\n" + abc_end + "\n" + alllyrics;
@@ -355,10 +354,9 @@ public class ConvertJustChords {
         String[] lyriclines = lyrics.split("\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line: lyriclines) {
-            Log.d(TAG,"fixed lyrics:"+line);
             // Replace the heading lines with lines that end with :
             if (line.endsWith(":")) {
-                line = "[" + line + "]";
+                line = "[" + line.trim() + "]";
                 line = line.replace(":]", "]");
             }
             // Make sure inline abc starts at the beginning of the line without a space

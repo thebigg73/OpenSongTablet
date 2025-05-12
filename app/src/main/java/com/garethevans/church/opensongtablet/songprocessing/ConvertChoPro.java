@@ -728,6 +728,7 @@ public class ConvertChoPro {
                 s = guessTagsReplaces(s, "Verse", "V");
                 s = guessTagsReplaces(s, "Prechorus", "P");
                 s = guessTagsReplaces(s, "Pre-chorus", "P");
+                s = guessTagsReplaces(s, "Pre-Chorus","P");
                 s = guessTagsReplaces(s, "Chorus", "C");
                 s = guessTagsReplaces(s, "Bridge", "B");
                 s = guessTagsReplaces(s, "Tag", "T");
