@@ -354,7 +354,6 @@
     <string name="deeplink_beatbuddy_options" translatable="false">https://www.opensongapp.com/?p=settings/utilities/beatbuddy/options</string>
     <string name="deeplink_bible" translatable="false">https://www.opensongapp.com/?p=settings/bible</string>
     <string name="deeplink_bootup" translatable="false">https://www.opensongapp.com/?p=bootup</string>
-    <string name="deeplink_browse_host_files" translatable="false">https://www.opensongapp.com/?p=settings/host/browse</string>
     <string name="deeplink_chords" translatable="false">https://www.opensongapp.com/?p=settings/actions/chords</string>
     <string name="deeplink_chords_custom" translatable="false">https://www.opensongapp.com/?p=settings/chords/custom</string>
     <string name="deeplink_chords_settings" translatable="false">https://www.opensongapp.com/?p=settings/chords/settings</string>
@@ -402,6 +401,7 @@
     <string name="deeplink_song_actions" translatable="false">https://www.opensongapp.com/?p=settings/actions</string>
     <string name="deeplink_sticky_notes" translatable="false">https://www.opensongapp.com/?p=settings/actions/stickynotes</string>
     <string name="deeplink_storage_options" translatable="false">https://www.opensongapp.com/?p=settings/storage</string>
+    <string name="deeplink_sync" translatable="false">https://www.opensongapp.com/?p=settings/nearby/sync</string>
     <string name="deeplink_swipe" translatable="false">https://www.opensongapp.com/?p=settings/controls/swipe</string>
     <string name="deeplink_tags" translatable="false">https://www.opensongapp.com/?p=settings/actions/tags</string>
     <string name="deeplink_theme" translatable="false">https://www.opensongapp.com/?p=settings/display/theme</string>
@@ -1508,7 +1508,7 @@
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
     <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>
     <string name="website_bible_online" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-online</string>
-    <string name="website_browse_host_files_set" translatable="false">https://www.opensongapp.com/user-manual/sets/browse-host-sets</string>
+    <string name="website_sync" translatable="false">https://www.opensongapp.com/user-manual/storage/synchronise-connected-devices</string>
     <string name="website_browse_host_files_songs" translatable="false">https://www.opensongapp.com/user-manual/songs/browse-host-songs</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_chords" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chords</string>
@@ -1599,4 +1599,7 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="sync">Synchronise connected devices</string>
+    <string name="sync_info">Compare your songs and sets with connected devices and download any new or updated files</string>
+    <string name="sync_choose_device">Device to synchronise with</string>
 </resources>

@@ -1029,7 +1029,7 @@
     <string name="sync_check_for_updates">Proverite ažuriranja</string>
     <string name="sync_check_for_updates_info">Ponovo upitajte udaljeni folder i proverite razlike sa lokalnim stavkama</string>
     <string name="sync_checking_local_item">Provera lokalne stavke</string>
-    <string name="sync_comparing_local_and_remote">Provera lokalnih i udaljenih foldera za promene...</string>
+    <string name="sync_comparing_local_and_remote">Provera lokalnih i udaljenih foldera za promene…</string>
     <string name="sync_creating_new_item">Kreiranje nove stavke</string>
     <string name="sync_delete_local_not_in_remote">Izbriši stare lokalne stavke</string>
     <string name="sync_delete_local_not_in_remote_info">Sledeće stavke postoje u lokalnom folderu, ali nisu u udaljenom folderu.  Oni se mogu ukloniti ako više nisu potrebni</string>
@@ -1084,7 +1084,7 @@
     <string name="sync_pull_info">Preuzmite datoteke iz udaljenog foldera u lokalnu fasciklu</string>
     <string name="sync_push_info">Upload fajlova iz vašeg lokalnog foldera u udaljeni folder</string>
     <string name="sync_push_upload">Push (otpremanje)</string>
-    <string name="sync_querying_remote">Upit udaljenog servera ...</string>
+    <string name="sync_querying_remote">Upit udaljenog servera …</string>
     <string name="sync_reading_local_folder">Čitanje sadržaja lokalnog foldera</string>
     <string name="sync_reading_remote_folder">Čitanje sadržaja udaljenog foldera</string>
     <string name="sync_remote_folder_name">Ime udaljene fascikle</string>
@@ -1224,4 +1224,7 @@
     <string name="width">Širina</string>
     <string name="words_and_music_by">Reči i muzika</string>
     <string name="zoom_level">Nivo zumiranja</string>
+    <string name="sync">Sinhronizujte povezane uređaje</string>
+    <string name="sync_info">Uporedite svoje pesme i setove sa povezanim uređajima i preuzmite sve nove ili ažurirane datoteke</string>
+    <string name="sync_choose_device">Uređaj za sinhronizaciju sa</string>
 </resources>
