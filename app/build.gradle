@@ -56,7 +56,7 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.9'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.0'
         }
     }
 
@@ -105,31 +105,31 @@ dependencies {
     implementation 'androidx.browser:browser:1.8.0'                                     // To open custom tab browser intents
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'                 // RecyclerView (obviously)
     implementation 'androidx.recyclerview:recyclerview:1.4.0'                           // RecyclerView (obviously)
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'                               // GridLayout (obviously)
+    implementation 'androidx.gridlayout:gridlayout:1.1.0'                               // GridLayout (obviously)
     implementation 'androidx.appcompat:appcompat:1.7.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.8.9'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.8.9'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.8.9'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment:2.9.0'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui:2.9.0'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.0'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.9.1'                               // Allows annotations in code
     annotationProcessor 'androidx.annotation:annotation:1.9.1'                          // Allows annotations in code
-    implementation 'androidx.core:core:1.15.0'
+    implementation 'androidx.core:core:1.16.0'
     implementation 'org.apache.commons:commons-compress:1.27.1'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
     implementation 'com.github.bumptech.glide:glide:4.16.0'                             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'                     // For better setting of images
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'                    // To highlight new features in the app
     implementation 'org.nanohttpd:nanohttpd:2.3.1'                                      // For a webserver to display songs for non OpenSongApp users
-    implementation('com.vanniktech:android-image-cropper:4.6.0')                        // For image cropping/rotation
+    implementation 'com.vanniktech:android-image-cropper:4.6.0'                         // For image cropping/rotation
     implementation 'com.google.zxing:core:3.5.3'                                        // To generate QR code
     implementation 'com.caverock:androidsvg-aar:1.4'                                    // To convert SVG from abc notation into ImageView
     implementation 'com.gu.android:toolargetool:0.3.2'                                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
-    implementation 'androidx.exifinterface:exifinterface:1.4.0'                         // To get image exif data (orientation for camera)
+    implementation 'androidx.exifinterface:exifinterface:1.4.1'                         // To get image exif data (orientation for camera)
     //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     implementation 'com.google.code.gson:gson:2.11.0'                                   // GSon for JSON conversion of Song/Set objects
