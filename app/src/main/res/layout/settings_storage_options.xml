@@ -23,6 +23,24 @@
                 app:size="large"/>
             <TableRow style="@style/DividerLine" />
 
+            <LinearLayout
+                android:id="@+id/syncWithConnectedLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/syncWithConnected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sync"
+                    android:hint="@string/sync_info"
+                    app:size="large"/>
+                <TableRow
+                    android:id="@+id/syncWithConnectedLine"
+                    style="@style/DividerLine" />
+            </LinearLayout>
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/openChords"
                 android:layout_width="match_parent"

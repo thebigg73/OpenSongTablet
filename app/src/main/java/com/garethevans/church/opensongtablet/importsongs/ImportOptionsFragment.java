@@ -48,7 +48,7 @@ public class ImportOptionsFragment extends Fragment {
     private int whichFileType;
     private Uri uri;
     private File file;
-    private String cameraFilename, import_main_string="", deeplink_browse_host_files="",
+    private String cameraFilename, import_main_string="",
             deeplink_import_osb_string="", network_error_string="";
 
     @Override
@@ -72,30 +72,18 @@ public class ImportOptionsFragment extends Fragment {
         // Set up launcher
         setupLauncher();
 
-        // Set up views
-        setupViews();
-
         // Set the listeners
         setListeners();
 
         return myView.getRoot();
     }
 
-    private void setupViews() {
-        /* Not got this working yet, so leave hidden
-        if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
-            myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
-                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
-        //}*/
-        myView.browseHostLayout.setVisibility(View.GONE);
-    }
     private void prepareStrings() {
         if (getContext()!=null) {
             import_main_string = getString(R.string.import_main);
             deeplink_import_osb_string = getString(R.string.deeplink_import_osb);
             network_error_string = getString(R.string.network_error);
-            deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
+            //deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
         }
     }
     private void setupLauncher() {
@@ -215,10 +203,6 @@ public class ImportOptionsFragment extends Fragment {
         myView.importBand.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("importBandSample");
             mainActivityInterface.getCheckInternet().checkConnection(getContext(),this, R.id.importOSBFragment, mainActivityInterface);
-        });
-        myView.browseHost.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("browsesongs");
-            mainActivityInterface.navigateToFragment(deeplink_browse_host_files,0);
         });
     }
 

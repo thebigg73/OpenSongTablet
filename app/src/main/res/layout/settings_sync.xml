@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/DefaultView"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/chooseConnected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/sync_choose_device"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/checkForUpdates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:text="@string/sync_check_for_updates"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/syncTabs"
+                style="@style/menuTabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_gravity="top"
+                android:background="@color/colorAltPrimary"
+                android:contentDescription="@string/sync_querying_remote"/>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/syncPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    <FrameLayout
+        android:id="@+id/dimBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/scrim"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/hostProgressBar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:minHeight="@dimen/progress_bar_size"
+        android:minWidth="@dimen/progress_bar_size"
+        android:layout_gravity="center"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/hostProgressTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/progress_bar_size"
+        android:background="@drawable/rounded_box"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/importNearbyFiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:text="@string/nearby_get_songs"
+        app:icon="@drawable/download"
+        android:visibility="visible"/>
+
+
+</FrameLayout>

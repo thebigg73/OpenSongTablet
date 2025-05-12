@@ -28,8 +28,7 @@ public class SetActionsFragment extends Fragment {
     private SettingsSetsBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetActionsFragment";
-    private String set_manage_string="", set_new_string="",
-            deeplink_browse_host_files="";
+    private String set_manage_string="", set_new_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,7 +41,6 @@ public class SetActionsFragment extends Fragment {
         super.onResume();
         mainActivityInterface.updateToolbar(set_manage_string);
         prepareStrings();
-        setupViews();
     }
 
     @Nullable
@@ -52,7 +50,6 @@ public class SetActionsFragment extends Fragment {
 
         prepareStrings();
         initialiseLauncher();
-        setupViews();
         setupListeners();
 
         return myView.getRoot();
@@ -62,7 +59,6 @@ public class SetActionsFragment extends Fragment {
         if (getContext()!=null) {
             set_manage_string = getString(R.string.set_manage);
             set_new_string = getString(R.string.set_new);
-            deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
         }
     }
 
@@ -84,18 +80,6 @@ public class SetActionsFragment extends Fragment {
                 }
             }
         });
-    }
-
-    private void setupViews() {
-        if (getContext() != null && mainActivityInterface != null && myView != null) {
-            myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
-                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE : View.GONE);
-
-            myView.hostCurrentSet.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
-                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE : View.GONE);
-        }
     }
 
     private void setupListeners() {
@@ -134,14 +118,6 @@ public class SetActionsFragment extends Fragment {
             myView.importSet.setOnClickListener(v -> {
                 mainActivityInterface.setWhattodo("importset");
                 openFileIntent("Import");
-            });
-            myView.browseHost.setOnClickListener(v -> {
-                mainActivityInterface.setWhattodo("browsesets");
-                mainActivityInterface.navigateToFragment(deeplink_browse_host_files, 0);
-            });
-            myView.hostCurrentSet.setOnClickListener(v -> {
-                mainActivityInterface.setWhattodo("browsecurrentset");
-                mainActivityInterface.navigateToFragment(deeplink_browse_host_files, 0);
             });
         }
     }

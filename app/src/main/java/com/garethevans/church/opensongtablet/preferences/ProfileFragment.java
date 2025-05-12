@@ -22,7 +22,7 @@ public class ProfileFragment extends Fragment {
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String profile_string="", website_profiles_string="",
-            deeplink_browse_host_files="", profile_restart_string="", profile_restore_string="";
+            profile_restart_string="", profile_restore_string="";
     private String webAddress;
 
     @Override
@@ -61,22 +61,13 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupViews() {
-        /* Not got this working yet, so leave hidden
-        if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
-            myView.browseHostLayout.setVisibility((!mainActivityInterface.getNearbyConnections().getIsHost() &&
-                    !mainActivityInterface.getNearbyConnections().getConnectedEndpoints().isEmpty() &&
-                    mainActivityInterface.getNearbyConnections().getUsingNearby()) ? View.VISIBLE:View.GONE);
-        //}*/
         String textForLoad = profile_restore_string+".\n"+profile_restart_string;
         myView.loadButton.setHint(textForLoad);
-
-        myView.browseHostLayout.setVisibility(View.GONE);
     }
     private void prepareStrings() {
         if (getContext()!=null) {
             profile_string = getString(R.string.profile);
             website_profiles_string = getString(R.string.website_profiles);
-            deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
             profile_restart_string = getString(R.string.profile_restart);
             profile_restore_string = getString(R.string.profile_restore);
         }
@@ -90,10 +81,6 @@ public class ProfileFragment extends Fragment {
         myView.loadButton.setOnClickListener(v -> loadProfile());
         myView.saveButton.setOnClickListener(v -> saveProfile());
         myView.resetButton.setOnClickListener(v -> resetPreferences());
-        myView.browseHost.setOnClickListener(v -> {
-            mainActivityInterface.setWhattodo("browseprofiles");
-            mainActivityInterface.navigateToFragment(deeplink_browse_host_files,0);
-        });
     }
 
     private void loadProfile() {
