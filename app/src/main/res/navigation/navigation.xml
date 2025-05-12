@@ -133,6 +133,9 @@
             <action
                 android:id="@+id/action_preferencesFragment_to_webServerFragment"
                 app:destination="@id/webServerFragment" />
+            <action
+                android:id="@+id/action_preferencesFragment_to_syncNearbyFragment"
+                app:destination="@id/syncNearbyFragment" />
 
         </fragment>
 
@@ -190,6 +193,20 @@
                 <action
                     android:id="@+id/action_storageOptionsFragment_to_openChordsFragment"
                     app:destination="@id/openChordsFragment" />
+                <action
+                    android:id="@+id/action_storageOptionsFragment_to_syncNearbyFragment"
+                    app:destination="@id/syncNearbyFragment" />
+            </fragment>
+
+            <!-- The Sync with Nearby fragment -->
+            <fragment
+                android:id="@+id/syncNearbyFragment"
+                android:name="com.garethevans.church.opensongtablet.nearby.SyncNearbyFragment"
+                android:label="BrowseHostFiles"
+                tools:layout="@layout/settings_sync">
+                <deepLink
+                    android:id="@+id/deepLinkSync"
+                    app:uri="@string/deeplink_sync" />
             </fragment>
 
             <!-- The OpenChords fragment -->
@@ -837,6 +854,7 @@
             </fragment>
 
         </navigation>
+
         <fragment
             android:id="@+id/modeFragment"
             android:name="com.garethevans.church.opensongtablet.appdata.ModeFragment"
@@ -866,9 +884,6 @@
                     android:id="@+id/action_setActionsFragment_to_backupRestoreSetsFragment"
                     app:destination="@id/backupRestoreSetsFragment" />
                 <action
-                    android:id="@+id/action_setActionsFragment_to_browseHostFilesFragment"
-                    app:destination="@id/browseHostFilesFragment" />
-                <action
                     android:id="@+id/action_setActionsFragment_to_importSetBundleFragment"
                     app:destination="@id/importSetBundleFragment" />
 
@@ -891,17 +906,6 @@
                 <deepLink
                     android:id="@+id/deepLinkSetBundle"
                     app:uri="@string/deeplink_set_bundle" />
-            </fragment>
-
-
-            <fragment
-                android:id="@+id/browseHostFilesFragment"
-                android:name="com.garethevans.church.opensongtablet.nearby.BrowseHostFragment"
-                android:label="BrowseHostFiles"
-                tools:layout="@layout/settings_nearby_browse">
-                <deepLink
-                    android:id="@+id/deepLinkBrowseHost"
-                    app:uri="@string/deeplink_browse_host_files" />
             </fragment>
 
             <navigation android:id="@+id/bible_graph"
