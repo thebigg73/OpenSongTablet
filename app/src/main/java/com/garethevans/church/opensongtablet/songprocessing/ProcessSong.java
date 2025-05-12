@@ -685,7 +685,7 @@ public class ProcessSong {
         return sections;
     }
 
-    public String parseLyrics(Locale locale, Song song) {
+    public String parseLyrics(Locale locale, Song song, boolean changeTagsToOpenSong) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -693,22 +693,8 @@ public class ProcessSong {
 
         myLyrics = fixSquareBracketComments(myLyrics);
 
-        // To replace [<Verse>] with [V] and [<Verse> 1] with [V1]
-        String languageverseV = c.getResources().getString(R.string.verse);
-        String languageverse_lowercaseV = languageverseV.toLowerCase(locale);
-        String languageverse_uppercaseV = languageverseV.toUpperCase(locale);
-
-        // To replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
-        String languagechorusC = c.getResources().getString(R.string.chorus);
-        String languagechorus_lowercaseC = languagechorusC.toLowerCase(locale);
-        String languagechorus_uppercaseC = languagechorusC.toUpperCase(locale);
-
         myLyrics = myLyrics
-                .replace("Slide 1", "[V1]")
-                .replace("Slide 2", "[V2]")
-                .replace("Slide 3", "[V3]")
-                .replace("Slide 4", "[V4]")
-                .replace("Slide 5", "[V5]")
+                // Fix standard conversions
                 .replace("]\n\n", "]\n")
                 .replaceAll("\r\n", "\n")
                 .replaceAll("\r", "\n")
@@ -743,48 +729,72 @@ public class ProcessSong {
                 .replace("pre class=\"\"", "")
                 // Make double tags into single ones
                 .replace("[[", "[")
-                .replace("]]", "]")
-                // Make lowercase start tags into caps
-                .replace("[v", "[V")
-                .replace("[b", "[B")
-                .replace("[c", "[C")
-                .replace("[t", "[T")
-                .replace("[p", "[P")
-                // Replace [Verse] with [V] and [Verse 1] with [V1]
-                .replace("[" + languageverse_lowercaseV, "[" + languageverseV)
-                .replace("[" + languageverse_uppercaseV, "[" + languageverseV)
-                .replace("[" + languageverseV + "]", "[V]")
-                .replace("[" + languageverseV + " 1]", "[V1]")
-                .replace("[" + languageverseV + " 2]", "[V2]")
-                .replace("[" + languageverseV + " 3]", "[V3]")
-                .replace("[" + languageverseV + " 4]", "[V4]")
-                .replace("[" + languageverseV + " 5]", "[V5]")
-                .replace("[" + languageverseV + " 6]", "[V6]")
-                .replace("[" + languageverseV + " 7]", "[V7]")
-                .replace("[" + languageverseV + " 8]", "[V8]")
-                .replace("[" + languageverseV + " 9]", "[V9]")
-                .replace("[" + languageverseV + "1]", "[V1]")
-                .replace("[" + languageverseV + "2]", "[V2]")
-                .replace("[" + languageverseV + "3]", "[V3]")
-                .replace("[" + languageverseV + "4]", "[V4]")
-                .replace("[" + languageverseV + "5]", "[V5]")
-                .replace("[" + languageverseV + "6]", "[V6]")
-                .replace("[" + languageverseV + "7]", "[V7]")
-                .replace("[" + languageverseV + "8]", "[V8]")
-                .replace("[" + languageverseV + "9]", "[V9]")
-                // Replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
-                .replace("[" + languagechorus_lowercaseC, "[" + languagechorusC)
-                .replace("[" + languagechorus_uppercaseC, "[" + languagechorusC)
-                .replace("[" + languagechorusC + "]", "[C]")
-                .replace("[" + languagechorusC + " 1]", "[C1]")
-                .replace("[" + languagechorusC + " 2]", "[C2]")
-                .replace("[" + languagechorusC + " 3]", "[C3]")
-                .replace("[" + languagechorusC + " 4]", "[C4]")
-                .replace("[" + languagechorusC + " 5]", "[C5]")
-                .replace("[" + languagechorusC + " 6]", "[C6]")
-                .replace("[" + languagechorusC + " 7]", "[C7]")
-                .replace("[" + languagechorusC + " 8]", "[C8]")
-                .replace("[" + languagechorusC + " 9]", "[C9]")
+                .replace("]]", "]");
+
+        if (changeTagsToOpenSong) {
+            // To replace [<Verse>] with [V] and [<Verse> 1] with [V1]
+            String languageverseV = c.getResources().getString(R.string.verse);
+            String languageverse_lowercaseV = languageverseV.toLowerCase(locale);
+            String languageverse_uppercaseV = languageverseV.toUpperCase(locale);
+
+            // To replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
+            String languagechorusC = c.getResources().getString(R.string.chorus);
+            String languagechorus_lowercaseC = languagechorusC.toLowerCase(locale);
+            String languagechorus_uppercaseC = languagechorusC.toUpperCase(locale);
+
+            myLyrics = myLyrics
+                    .replace("Slide 1", "[V1]")
+                    .replace("Slide 2", "[V2]")
+                    .replace("Slide 3", "[V3]")
+                    .replace("Slide 4", "[V4]")
+                    .replace("Slide 5", "[V5]")
+                    // Make double tags into single ones
+                    .replace("[[", "[")
+                    .replace("]]", "]")
+                    // Make lowercase start tags into caps
+                    .replace("[v", "[V")
+                    .replace("[b", "[B")
+                    .replace("[c", "[C")
+                    .replace("[t", "[T")
+                    .replace("[p", "[P")
+                    // Replace [Verse] with [V] and [Verse 1] with [V1]
+                    .replace("[" + languageverse_lowercaseV, "[" + languageverseV)
+                    .replace("[" + languageverse_uppercaseV, "[" + languageverseV)
+                    .replace("[" + languageverseV + "]", "[V]")
+                    .replace("[" + languageverseV + " 1]", "[V1]")
+                    .replace("[" + languageverseV + " 2]", "[V2]")
+                    .replace("[" + languageverseV + " 3]", "[V3]")
+                    .replace("[" + languageverseV + " 4]", "[V4]")
+                    .replace("[" + languageverseV + " 5]", "[V5]")
+                    .replace("[" + languageverseV + " 6]", "[V6]")
+                    .replace("[" + languageverseV + " 7]", "[V7]")
+                    .replace("[" + languageverseV + " 8]", "[V8]")
+                    .replace("[" + languageverseV + " 9]", "[V9]")
+                    .replace("[" + languageverseV + "1]", "[V1]")
+                    .replace("[" + languageverseV + "2]", "[V2]")
+                    .replace("[" + languageverseV + "3]", "[V3]")
+                    .replace("[" + languageverseV + "4]", "[V4]")
+                    .replace("[" + languageverseV + "5]", "[V5]")
+                    .replace("[" + languageverseV + "6]", "[V6]")
+                    .replace("[" + languageverseV + "7]", "[V7]")
+                    .replace("[" + languageverseV + "8]", "[V8]")
+                    .replace("[" + languageverseV + "9]", "[V9]")
+                    // Replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
+                    .replace("[" + languagechorus_lowercaseC, "[" + languagechorusC)
+                    .replace("[" + languagechorus_uppercaseC, "[" + languagechorusC)
+                    .replace("[" + languagechorusC + "]", "[C]")
+                    .replace("[" + languagechorusC + " 1]", "[C1]")
+                    .replace("[" + languagechorusC + " 2]", "[C2]")
+                    .replace("[" + languagechorusC + " 3]", "[C3]")
+                    .replace("[" + languagechorusC + " 4]", "[C4]")
+                    .replace("[" + languagechorusC + " 5]", "[C5]")
+                    .replace("[" + languagechorusC + " 6]", "[C6]")
+                    .replace("[" + languagechorusC + " 7]", "[C7]")
+                    .replace("[" + languagechorusC + " 8]", "[C8]")
+                    .replace("[" + languagechorusC + " 9]", "[C9]");
+        }
+
+        myLyrics = myLyrics
                 // Try to convert ISO / Windows
                 .replace("\0x91", "'")
                 // Get rid of BOMs and stuff

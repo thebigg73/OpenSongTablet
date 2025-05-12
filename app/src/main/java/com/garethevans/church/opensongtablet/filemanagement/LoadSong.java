@@ -85,7 +85,7 @@ public class LoadSong {
                 if (thisSong.getLyrics()==null || thisSong.getLyrics().isEmpty()) {
                     thisSong.setLyrics(" ");
                 }
-                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(), thisSong));
+                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(), thisSong, true));
 
                 sortLoadingSuccessful(thisSong);
 
@@ -224,7 +224,7 @@ public class LoadSong {
                 if (thisSong.getLyrics()==null || thisSong.getLyrics().isEmpty()) {
                     thisSong.setLyrics(" ");
                 }
-                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(), thisSong));
+                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(), thisSong, true));
 
             } else {
                 thisSong.setTitle(thisSong.getFilename());

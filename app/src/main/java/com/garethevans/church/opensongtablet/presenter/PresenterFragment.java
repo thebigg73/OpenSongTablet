@@ -125,7 +125,7 @@ public class PresenterFragment extends Fragment {
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-            mainActivityInterface.fullIndex();
+            mainActivityInterface.fullIndex(null);
         }
 
         // Set the switches

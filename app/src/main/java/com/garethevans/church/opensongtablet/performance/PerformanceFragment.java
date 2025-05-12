@@ -206,7 +206,7 @@ public class PerformanceFragment extends Fragment {
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-            mainActivityInterface.fullIndex();
+            mainActivityInterface.fullIndex(null);
         }
 
         // Set listeners for the scroll/scale/gestures
@@ -1474,7 +1474,6 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }
 
-            // TODO Gareth changes
             metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
             if (songChange && metronomeWasRunning && !mainActivityInterface.getMetronome().getMetronomeAutoStart()) {
                 // The metronome autostart is switched of and the metronome was running, stop it

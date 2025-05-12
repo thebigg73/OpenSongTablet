@@ -101,14 +101,15 @@ public class ImportFileFragment extends Fragment {
 
             if (mainActivityInterface.getWhattodo().equals("importset")) {
                 // This is actually a set
-                mainActivityInterface.updateToolbar(import_set_string);
-                myView.filename.setHint(set_name_string);
-                myView.folder.setHint(set_category_string);
-                myView.existing.setVisibility(View.GONE);
-                myView.setLoadFirst.setVisibility(View.VISIBLE);
-                myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst", true));
-                myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst", b));
-
+                mainActivityInterface.getMainHandler().post(() -> {
+                            mainActivityInterface.updateToolbar(import_set_string);
+                            myView.filename.setHint(set_name_string);
+                            myView.folder.setHint(set_category_string);
+                            myView.existing.setVisibility(View.GONE);
+                            myView.setLoadFirst.setVisibility(View.VISIBLE);
+                            myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst", true));
+                            myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst", b));
+                        });
                 isSetFile = true;
                 folders = mainActivityInterface.getSetActions().getCategories(mainActivityInterface.getSetActions().getAllSets());
                 if (basename.contains("__")) {
@@ -121,7 +122,7 @@ public class ImportFileFragment extends Fragment {
                 }
             } else {
                 folders = mainActivityInterface.getSQLiteHelper().getFolders();
-                myView.setLoadFirst.setVisibility(View.GONE);
+                mainActivityInterface.getMainHandler().post(() -> myView.setLoadFirst.setVisibility(View.GONE));
             }
 
             newSong.setFilename(mainActivityInterface.getImportFilename());

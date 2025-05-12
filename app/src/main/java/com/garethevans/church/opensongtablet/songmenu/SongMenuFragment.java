@@ -806,7 +806,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public ArrayList<Song> getSongsFound() {
-        if (songMenuSongs.getFoundSongs()==null) {
+        if (songMenuSongs!=null && songMenuSongs.getFoundSongs()==null) {
             try {
                 ArrayList<Song> tempSongsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
@@ -821,10 +821,15 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 e.printStackTrace();
             }
         }
-        updateSongCount();
+        if (songMenuSongs!=null) {
+            updateSongCount();
 
-        return songMenuSongs.getFoundSongs();
+            return songMenuSongs.getFoundSongs();
+        } else {
+            return new ArrayList<>();
+        }
     }
+
     public ArrayList<Song> getSongs() {
         return songMenuSongs.getFoundSongs();
     }

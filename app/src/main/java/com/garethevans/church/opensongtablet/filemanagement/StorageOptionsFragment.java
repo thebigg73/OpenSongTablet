@@ -20,7 +20,7 @@ public class StorageOptionsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsStorageOptionsBinding myView;
     private String storage_string="";
-    private String deeplink_manage_storage, deeplink_openchords;
+    private String deeplink_manage_storage, deeplink_openchords, deeplink_sync;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,6 +43,8 @@ public class StorageOptionsFragment extends Fragment {
         prepareStrings();
         mainActivityInterface.updateToolbar(storage_string);
 
+        setupViews();
+
         setupListeners();
 
         return myView.getRoot();
@@ -53,11 +55,26 @@ public class StorageOptionsFragment extends Fragment {
             storage_string = getString(R.string.storage);
             deeplink_openchords = getString(R.string.deeplink_openchords);
             deeplink_manage_storage = getString(R.string.deeplink_manage_storage);
+            deeplink_sync = getString(R.string.deeplink_sync);
+        }
+    }
+
+    private void setupViews() {
+        // TODO Still to implement this
+        myView.syncWithConnectedLayout.setVisibility(View.GONE);
+        // If we aren't at least using nearby connections, hide the sync menu item
+        if (!mainActivityInterface.getNearbyConnections().getUsingNearby()) {
+            myView.syncWithConnectedLayout.setVisibility(View.GONE);
         }
     }
 
     private void setupListeners() {
         myView.storageManage.setOnClickListener(view -> mainActivityInterface.navigateToFragment(deeplink_manage_storage,R.id.storageManagementFragment));
         myView.openChords.setOnClickListener(view -> mainActivityInterface.navigateToFragment(deeplink_openchords,R.id.openChordsFragment));
+        myView.syncWithConnected.setOnClickListener(v -> {
+            // We must already have the required permissions
+            mainActivityInterface.setWhattodo("songs");
+            mainActivityInterface.navigateToFragment(deeplink_sync, R.id.syncNearbyFragment);
+        });
     }
 }
