@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +28,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -33,8 +37,8 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
-import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.IOException;
@@ -53,6 +57,7 @@ public class ImportOnlineFragment extends Fragment {
     private ClipboardManager.OnPrimaryClipChangedListener clipboardManagerListener;
     private final String TAG = "ImportOnline";
     private String clipboardText = "";
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect",
             "WorshipTogether", "UkuTabs", "HolyChords", "La Boîte à chansons", "eChords", "Google",
             "DuckDuckGo"};
@@ -83,6 +88,7 @@ public class ImportOnlineFragment extends Fragment {
     private Uri downloadUri;
     private String downloadFilename;
     private boolean webViewDesktop;
+    private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream","application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
 
     @Override
     public void onResume() {
@@ -105,6 +111,9 @@ public class ImportOnlineFragment extends Fragment {
         prepareStrings();
 
         webAddress = website_song_online_string;
+
+        // Setup launcher
+        setupLauncher();
 
         // Setup helper
         setupHelpers();
@@ -185,7 +194,9 @@ public class ImportOnlineFragment extends Fragment {
                 myView.webViewDesktop.setVisibility(
                                 myView.onlineSource.getText().toString().equals("UltimateGuitar")
                                 ? View.VISIBLE:View.GONE);
-                myView.songSelectInfo.setVisibility(
+                myView.songSelectInfo2.setVisibility(
+                        myView.onlineSource.getText().toString().equals("SongSelect") ? View.VISIBLE:View.GONE);
+                myView.importDownload.setVisibility(
                         myView.onlineSource.getText().toString().equals("SongSelect") ? View.VISIBLE:View.GONE);
                 mainActivityInterface.getCheckInternet().setSearchSite(myView.onlineSource.getText().toString());
             }
@@ -240,6 +251,8 @@ public class ImportOnlineFragment extends Fragment {
             webViewDesktop = b;
             changeUserAgent();
         });
+        myView.importDownload.setOnClickListener(v -> selectFile());
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -424,7 +437,12 @@ public class ImportOnlineFragment extends Fragment {
                         }
 
                     } else {
-                        webView.loadUrl(webSearchFull);
+                        if (source.equals("SongSelect")) {
+                            changeLayouts(true, false, false);
+                            mainActivityInterface.openDocument(webSearchFull);
+                        } else {
+                            webView.loadUrl(webSearchFull);
+                        }
                     }
                 });
             }
@@ -450,9 +468,11 @@ public class ImportOnlineFragment extends Fragment {
                     if (source.equals("SongSelect")) {
                         MyJSInterface.resetFlattenedWebString();
                         // IV - SongSelect viewers use shadow DOM content, allow time to fully populate and then extract
-                        if (webView.getOriginalUrl().endsWith("/viewchordsheet") || webView.getOriginalUrl().endsWith("/viewlyrics")) {
+                        if ((webView.getOriginalUrl().endsWith("/viewchordsheet") || webView.getOriginalUrl().endsWith("/viewlyrics")) &&
+                                !webView.getOriginalUrl().contains("returnUrl")) {
                             script = MyJSInterface.flattenShadowRoot();
                             String finalScript = script;
+                            Log.d(TAG,"using shadow root for:"+webView.getOriginalUrl());
                             new Handler().postDelayed(() -> webView.evaluateJavascript(finalScript, webContent), 5000);
                         } else {
                             script = "javascript:document.getElementsByTagName('html')[0].innerHTML;";
@@ -948,6 +968,38 @@ public class ImportOnlineFragment extends Fragment {
             }
         }*/
 
+    }
+
+    private void selectFile() {
+    // mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, validFiles);
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
+        activityResultLauncher.launch(intent);
+    }
+
+    private void setupLauncher() {
+        // Initialise the launchers
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                try {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        mainActivityInterface.setImportUri(data.getData());
+                        String filename;
+                        if (data.getDataString() != null) {
+                            filename = mainActivityInterface.getStorageAccess().
+                                    getActualFilename(data.getDataString());
+                            mainActivityInterface.setImportFilename(filename);
+                        }
+                        mainActivityInterface.openFragmentBasedOnFileImport();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void showDownloadProgress(final boolean waiting) {

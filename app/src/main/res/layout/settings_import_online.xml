@@ -32,11 +32,20 @@
             android:hint="@string/website" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/songSelectInfo"
+            android:id="@+id/songSelectInfo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/song_select_warning"/>
+            android:text="@string/song_select_warning_more"/>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/importDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="16dp"
+            android:text="@string/import_download"
+            app:icon="@drawable/import_file"/>
 
         <LinearLayout
             android:id="@+id/googleInfo"
