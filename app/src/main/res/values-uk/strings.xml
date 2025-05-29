@@ -102,7 +102,7 @@
    <string name="beat_buddy_import_error">Виникла проблема з імпортом проекту BeatBuddy.  Будь ласка, зверніться до посібника користувача для отримання додаткової інформації.</string>
    <string name="beat_buddy_import_options">У вас є два варіанти імпорту інформації про проект з вашого BeatBuddy:</string>
    <string name="beat_buddy_import_options1">1. Підключіть SD-карту BeatBuddy або BeatBuddy до цього пристрою за допомогою USB-кабелю та виберіть кореневу/головну папку</string>
-   <string name="beat_buddy_import_options2">2. Імпортуйте комбінований файл MyBeatBuddyProject.csv, створений на вашому комп\&apos;ютері за допомогою мого сценарію python BeatBuddy (доступний на сторінці завантажень).  Файл .csv можна імпортувати безпосередньо</string>
+   <string name="beat_buddy_import_options2">2. Імпортуйте комбінований файл MyBeatBuddyProject.csv, створений на вашому комп\'ютері за допомогою мого сценарію python BeatBuddy (доступний на сторінці завантажень).  Файл .csv можна імпортувати безпосередньо</string>
    <string name="beat_buddy_import_options_choose">Виберіть потрібний параметр нижче, щоб розпочати процес імпорту.</string>
    <string name="beat_buddy_import_project">Імпорт інформації про проект BeatBuddy</string>
    <string name="beat_buddy_import_project_info">Це дозволить вам вибирати/переглядати барабани, пісні та папки за назвою з вашої педалі BeatBuddy</string>
@@ -112,7 +112,7 @@
    <string name="beat_buddy_project_csv">Імпорт файлу проекту .csv</string>
    <string name="beat_buddy_project_csv_previous">Використати наявний файл MyBeatBuddyProject.csv (можна знайти в OpenSong/Settings)</string>
    <string name="beat_buddy_song_info">Пісня має бути від 1 до 128</string>
-   <string name="beat_buddy_song_list_info">Торкніться елемента, щоб підготувати та надіслати MIDI-код. Крім того, натисніть і утримуйте ім\&apos;я, щоб зберегти назву цього елемента BeatBuddy у вашій пісні (використовується при автоматичному надсиланні пісні BeatBuddy). Цей метод завжди відповідає назві пісні, незалежно від того, яка це папка чи номер пісні</string>
+   <string name="beat_buddy_song_list_info">Торкніться елемента, щоб підготувати та надіслати MIDI-код. Крім того, натисніть і утримуйте ім\'я, щоб зберегти назву цього елемента BeatBuddy у вашій пісні (використовується при автоматичному надсиланні пісні BeatBuddy). Цей метод завжди відповідає назві пісні, незалежно від того, яка це папка чи номер пісні</string>
    <string name="beat_tick">Удар 1 (галочка)</string>
    <string name="beat_tock">Удар 2 (такт)</string>
    <string name="beats">Удари</string>
@@ -142,7 +142,7 @@
    <string name="both">Обидва</string>
    <string name="bottom">Дно</string>
    <string name="bridge">Міст</string>
-   <string name="bridge_background">​​&quot;Фон моста</string>
+   <string name="bridge_background">Фон моста</string>
    <string name="browse_sd_card">Виберіть основну папку SD-карти</string>
    <string name="button">Кнопка</string>
    <string name="camera">Камера</string>
@@ -204,6 +204,8 @@
    <string name="clipboard_info">Коли ви знайдете тексти пісень/акорди, які потрібно імпортувати, виділіть їх і натисніть опцію Копіювати в буфері обміну.</string>
    <string name="close">причиняти</string>
    <string name="color_choose">Вибір кольору</string>
+   <string name="song_select_warning_more">Через обмеження SongSelect тепер вам доведеться вручну завантажити файл пісні, а потім імпортувати його в програму.  Після завантаження файлу ви повернетесь на цю сторінку та зможете натиснути кнопку \\'Імпортувати завантаження\\', щоб імпортувати завантажений файл в OpenSongApp.</string>
+   <string name="import_download">Імпорт завантаження</string>
    <string name="column_force">Перевизначте розриви стовпців вручну</string>
    <string name="column_force_info" tools:ignore="TypographyDashes">Використовуйте новий код сторінки (!--) у пісні, щоб примусово створювати новий розрив стовпця під час автоматичного масштабування</string>
    <string name="column_force_insert">Вставити розрив стовпця</string>
@@ -218,7 +220,7 @@
    <string name="connection_match_to_pdf_song">Віддавайте перевагу відповідному PDF-файлу</string>
    <string name="connection_match_to_pdf_song_info">Замість того, щоб намагатися завантажити відповідні файли OpenSong, спробуйте завантажити файли PDF з такою самою назвою (але закінчуючи на .pdf)</string>
    <string name="connection_scroll_info">Слухайте команди прокрутки вгору та вниз</string>
-   <string name="connections_accept">З\\\&apos;єднати з</string>
+   <string name="connections_accept">З\'єднати з</string>
    <string name="connections_accept_code">Підтвердіть збіг коду на обох пристроях:</string>
    <string name="connections_actasclient">Діяти як клієнт</string>
    <string name="connections_actasclient_info">Слухайте інструкції від підключених пристроїв, які встановлені як хости</string>
@@ -238,7 +240,7 @@
    <string name="connections_connected">Підключений до</string>
    <string name="connections_connected_devices_info">Показує список підключених на даний момент пристроїв</string>
    <string name="connections_description">Підключайтеся до інших пристроїв під керуванням OpenSongApp</string>
-   <string name="connections_device_name">Ім\&apos;я пристрою</string>
+   <string name="connections_device_name">Ім\'я пристрою</string>
    <string name="connections_disconnect">Відключити</string>
    <string name="connections_discover">Пошук пристроїв</string>
    <string name="connections_discover_info">Шукайте інші пристрої, які зараз рекламуються</string>
@@ -367,13 +369,13 @@
    <string name="file">Файл</string>
    <string name="file_choose_info">Виберіть необхідний(і) файл(и) нижче.</string>
    <string name="file_chooser">Вибір файл</string>
-   <string name="file_exists">Файл з таким ім\&apos;ям існує. Будь ласка виберіть інше ім\&apos;я</string>
+   <string name="file_exists">Файл з таким ім\'ям існує. Будь ласка виберіть інше ім\'я</string>
    <string name="file_log">Запис файлу журналу активності</string>
    <string name="file_log_info">Ведіть журнал дій з файлами (створення, збереження, редагування тощо).  Може допомогти виявити проблеми, якщо щось піде не так.</string>
    <string name="file_type">Тип файлу</string>
    <string name="file_view_log">Журнал перегляду пісень</string>
    <string name="file_view_log_info">Ведення журналу останніх переглянутих пісень</string>
-   <string name="filename">Ім\&apos;я файлу</string>
+   <string name="filename">Ім\'я файлу</string>
    <string name="files_restored">Файли відновлені</string>
    <string name="fill">Заповнити</string>
    <string name="filter_by_artist">Ця кнопка використовується для включення фільтра виконавців до вашого списку пісень</string>
@@ -535,7 +537,7 @@
    <string name="link">Посилання</string>
    <string name="link_audio">Посилання на звуковий файл</string>
    <string name="link_audio_pad">Встановіть це як панель для пісень/мінусівку</string>
-   <string name="link_choose">Виберіть файл, щоб зв\&apos;язати з піснею</string>
+   <string name="link_choose">Виберіть файл, щоб зв\'язати з піснею</string>
    <string name="link_error">Посилання недійсне, скиньте посилання.</string>
    <string name="link_file">Посилання на інший файл</string>
    <string name="link_info">Зв’язуйте файли, аудіо тощо з піснями</string>
@@ -684,7 +686,7 @@
    <string name="new_folder">Створення нової папки</string>
    <string name="new_folder_add">Нова папка</string>
    <string name="new_folder_info">Додайте підпапки в папку «Пісні».</string>
-   <string name="new_folder_name">Введіть ім\&apos;я нової папки</string>
+   <string name="new_folder_name">Введіть ім\'я нової папки</string>
    <string name="new_something">Нова</string>
    <string name="next">Наступна</string>
    <string name="no_previous_found">Попередніх установок не знайдено.</string>
@@ -768,7 +770,7 @@
    <string name="pedal_scroll_before_move">Спробуйте прокрутити, перш ніж змінювати пісні</string>
    <string name="pedal_scroll_before_move_info">Дозволяє наступній і попередній педалі також функціонувати як педалі прокручування</string>
    <string name="pedal_test">Перевірте підключену педаль</string>
-   <string name="pedal_test_info">Перевірте підключену педаль, натиснувши кнопку на педалі.  На екрані з\&apos;явиться код, який надсилається.  Натисніть і утримуйте кнопку на педалях, щоб програма спробувала визначити рекомендований режим тривалого натискання для використання (якщо доступно).</string>
+   <string name="pedal_test_info">Перевірте підключену педаль, натиснувши кнопку на педалі.  На екрані з\'явиться код, який надсилається.  Натисніть і утримуйте кнопку на педалях, щоб програма спробувала визначити рекомендований режим тривалого натискання для використання (якщо доступно).</string>
    <string name="pedal_up">Педаль вгору (випуск)</string>
    <string name="pedal_waiting">Очікуємо натискання ....</string>
    <string name="pedal_waiting_ended">Натискання педалі не виявлено</string>
@@ -778,7 +780,7 @@
    <string name="permissions_refused">У дозволах було відмовлено. Можливо, їх потрібно буде надати вручну з налаштувань Android, якщо ви знову не бачите цю опцію</string>
    <string name="persistent_database">Постійна база даних</string>
    <string name="persistent_database_clean">Очищення бази даних</string>
-   <string name="persistent_database_clean_info">Перевірте базу даних на наявність записів, які посилаються на файли, які більше не існують.  Це може бути пов\&apos;язано з ручним видаленням або перейменуванням файлів PDF/зображень.  Якщо записи не містять корисної інформації, вони будуть видалені.</string>
+   <string name="persistent_database_clean_info">Перевірте базу даних на наявність записів, які посилаються на файли, які більше не існують.  Це може бути пов\'язано з ручним видаленням або перейменуванням файлів PDF/зображень.  Якщо записи не містять корисної інформації, вони будуть видалені.</string>
    <string name="persistent_database_clean_perfect">Вітаємо, ваша база даних PDF/зображень чиста і не містить безглуздих записів!</string>
    <string name="persistent_database_clean_useful">База даних містить посилання на наступні PDF/графічні файли, які більше не існують.  Однак записи бази даних містять деяку потенційно корисну інформацію (таку як тексти пісень, ноти, інформація MIDI тощо).  Ви можете безпечно видалити ці записи, але програма створить файл CSV з цим вмістом, щоб ви могли вручну відновити дані, якщо це потрібно.  Файл буде створено в OpenSong/Settings/removedNonOpenSongSongs.csv</string>
    <string name="persistent_database_clean_useless">Наступні файли PDF/зображень є посиланнями у вашій базі даних, але ці файли більше не існують.  Записи бази даних для цих файлів не містять корисних відомостей, тому їх можна безпечно видалити.</string>
@@ -788,7 +790,7 @@
    <string name="persistent_database_restore_warning">Продовжуйте лише в тому випадку, якщо ви створили резервну копію постійного файлу бази даних.  Це призведе до перезапису вашої поточної постійної бази даних, і її не можна буде скасувати</string>
    <string name="piano">Піаніно</string>
    <string name="pinch_to_zoom">Зведення для масштабування</string>
-   <string name="pinch_to_zoom_info">Дозволити збільшення та зменшення масштабу пісні в режимі \&quot;Виконання\&quot; за допомогою жесту зведення для масштабування</string>
+   <string name="pinch_to_zoom_info">Дозволити збільшення та зменшення масштабу пісні в режимі \'Виконання\' за допомогою жесту зведення для масштабування</string>
    <string name="play_services_error">Щоб використовувати Google Cast, Fonts і Nearby Connections, вам необхідно встановити Google Play Services.</string>
    <string name="play_services_how">Показати мені, як</string>
    <string name="playlist">Список відтворення</string>
@@ -903,7 +905,7 @@
    <string name="set_inline_info">Показати сет-лист на екрані біля вікна пісні</string>
    <string name="set_inline_showcase">Це вбудований набір, який дозволяє переглядати сет-лист під час виконання.  Ви можете змінити налаштування в Налаштування / Дисплей / Вбудований набір.</string>
    <string name="set_is_empty">У вашому наборі немає предметів</string>
-   <string name="set_item_info">Ви можете змінити папку/ім\&apos;я файлу пісні, завантаженої з набору, а також змінити клавішу відображення пісні (це виконує тимчасову транспозицію пісні на вашому пристрої, якщо потрібно)</string>
+   <string name="set_item_info">Ви можете змінити папку/ім\'я файлу пісні, завантаженої з набору, а також змінити клавішу відображення пісні (це виконує тимчасову транспозицію пісні на вашому пристрої, якщо потрібно)</string>
    <string name="set_item_removed">Предмет вилучено з набору</string>
    <string name="set_items_not_found">Деякі елементи набору не знайдено на вашому пристрої (можливо, вони мають іншу назву файлу, інше написання тощо).  Ви можете вручну редагувати ці пункти (позначені *) у встановленому меню після імпортування.</string>
    <string name="set_list">Сет-лист</string>
@@ -971,8 +973,8 @@
    <string name="song_menu_checkboxes">Показувати встановлені прапорці в меню пісень</string>
    <string name="song_menu_subtitle_size">Розмір субтитрів пункту меню пісні</string>
    <string name="song_menu_title_size">Розмір назви пункту меню пісні</string>
-   <string name="song_name_already_taken">На жаль, це назва пісні/ім\&apos;я файлу вже використовується (рекомендується додати номер версії).</string>
-   <string name="song_new_name">Введіть нове ім\&apos;я файлу для цієї пісні (то, як вона з\&apos;явиться у вашому меню пісень)</string>
+   <string name="song_name_already_taken">На жаль, це назва пісні/ім\'я файлу вже використовується (рекомендується додати номер версії).</string>
+   <string name="song_new_name">Введіть нове ім\'я файлу для цієї пісні (то, як вона з\'явиться у вашому меню пісень)</string>
    <string name="song_notes">Нотатки</string>
    <string name="song_notes_edit">Виправлення замітки</string>
    <string name="song_sections">Частини пісні</string>
@@ -1009,13 +1011,13 @@
    <string name="storage_change">Вибір місця зберігання</string>
    <string name="storage_ext">Зовнішні накопичувачі</string>
    <string name="storage_graph_overview_info">Ваша поточна структура каталогу папок OpenSong/Songs показана нижче. Натисніть папку OpenSong (ROOT), щоб змінити місце зберігання. Клацніть папку Songs (MAIN), щоб створити резервну копію або підкаталог. Якщо у вас уже є підкаталоги, натискання на них відкриє додаткові параметри.</string>
-   <string name="storage_help">Будь ласка, виберіть місце для вашої папки OpenSong. Це місце зберігання файлів OpenSong за замовчуванням. Ви можете змінити це в будь-який час в меню «Параметри». Рекомендується карту пам\&apos;яті. \n\n Для поновлення або переустановлення: \n Ви можете використовувати жовту кнопку нижче, щоб знайти будь-яку попередню папку OpenSong.</string>
+   <string name="storage_help">Будь ласка, виберіть місце для вашої папки OpenSong. Це місце зберігання файлів OpenSong за замовчуванням. Ви можете змінити це в будь-який час в меню «Параметри». Рекомендується карту пам\'яті. \n\n Для поновлення або переустановлення: \n Ви можете використовувати жовту кнопку нижче, щоб знайти будь-яку попередню папку OpenSong.</string>
    <string name="storage_local">Локальне сховище</string>
    <string name="storage_main">Тут зазвичай зберігаються ваші пісні (часто називається ОСНОВНА папка). Ви можете додатково налаштувати підкаталоги, щоб краще керувати своєю бібліотекою пісень.</string>
    <string name="storage_manage">Вибір місця зберігання</string>
    <string name="storage_notwritable">Неможливо використовувати</string>
    <string name="storage_options_info">Керуйте локальним сховищем (коренева папка OpenSong і папки пісень) і синхронізуйте сховище з OpenChords</string>
-   <string name="storage_quicktip">При виборі місця: \nПеречісліть сховище за допомогою меню (вам може знадобитися змінити налаштування, щоб відобразити всі сховища).\nВИБЕРІТЕ ТІЛЬКИ ВНУТРІШНЮ АБО SD-КАРТУ.\nРекомендуется карту пам\&apos;яті. Це може бути зазначено як сховище пристрою або з ім\&apos;ям вашого пристрою.\nНа Android 10+ не слід вибирати папку «Завантаження» або «Кореневу папку». У разі сумнівів виберіть папку «Документи».</string>
+   <string name="storage_quicktip">При виборі місця: \nПеречісліть сховище за допомогою меню (вам може знадобитися змінити налаштування, щоб відобразити всі сховища).\nВИБЕРІТЕ ТІЛЬКИ ВНУТРІШНЮ АБО SD-КАРТУ.\nРекомендуется карту пам\'яті. Це може бути зазначено як сховище пристрою або з ім\'ям вашого пристрою.\nНа Android 10+ не слід вибирати папку «Завантаження» або «Кореневу папку». У разі сумнівів виберіть папку «Документи».</string>
    <string name="storage_reset">Натисніть тут, щоб змінити місце зберігання (де знаходиться коренева папка OpenSong).</string>
    <string name="storage_settings">Керуйте місцем зберігання та папками пісень</string>
    <string name="storage_warning">Будь ласка, не вибирайте папку «Пісні» в якості місця зберігання. Замість цього ви повинні вибрати батьківську папку «OpenSong».</string>

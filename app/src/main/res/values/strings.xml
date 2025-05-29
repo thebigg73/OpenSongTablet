@@ -401,8 +401,8 @@
     <string name="deeplink_song_actions" translatable="false">https://www.opensongapp.com/?p=settings/actions</string>
     <string name="deeplink_sticky_notes" translatable="false">https://www.opensongapp.com/?p=settings/actions/stickynotes</string>
     <string name="deeplink_storage_options" translatable="false">https://www.opensongapp.com/?p=settings/storage</string>
-    <string name="deeplink_sync" translatable="false">https://www.opensongapp.com/?p=settings/nearby/sync</string>
     <string name="deeplink_swipe" translatable="false">https://www.opensongapp.com/?p=settings/controls/swipe</string>
+    <string name="deeplink_sync" translatable="false">https://www.opensongapp.com/?p=settings/nearby/sync</string>
     <string name="deeplink_tags" translatable="false">https://www.opensongapp.com/?p=settings/actions/tags</string>
     <string name="deeplink_theme" translatable="false">https://www.opensongapp.com/?p=settings/display/theme</string>
     <string name="deeplink_voicelive" translatable="false">https://www.opensongapp.com/?p=settings/utilities/voicelive</string>
@@ -581,6 +581,7 @@
     <string name="import_bulk_showcase_choose">Click here to select multiple files using the Android file picker</string>
     <string name="import_bulk_showcase_found">These are the files that you have chosen to import</string>
     <string name="import_bulk_showcase_import">Click here to attempt to import these files</string>
+    <string name="import_download">Import download</string>
     <string name="import_from_file">Import from a saved file</string>
     <string name="import_main">Import or create songs</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
@@ -1162,6 +1163,7 @@
     <string name="song_sections_info">The sections found in your song lyrics are shown below.  Click on the buttons to add them to the presentation order.</string>
     <string name="song_sections_project">Click on a song section to send it to the connected displays</string>
     <string name="song_select_warning">This site requires a valid account.  You must use the download button within the SongSelect web page to trigger the download required.  The file will be imported into your OpenSong/Songs/ folder after it has been downloaded.</string>
+    <string name="song_select_warning_more">Due to SongSelect restrictions, you will now have to manually download your song file and then import it into the app.  After downloading the file, you will be returned to this page and can click on the \'Import download\' button to import the downloaded file into OpenSongApp.</string>
     <string name="song_specific">Song specific</string>
     <string name="song_swipe_toggle">Allow swiping between songs</string>
     <string name="song_title">Song title</string>
@@ -1210,9 +1212,11 @@
     <string name="swipe_allowance">Vertical movement allowed</string>
     <string name="swipe_distance">Swipe distance</string>
     <string name="swipe_info">Adjust gestures to move between songs</string>
+    <string name="sync">Synchronise connected devices</string>
     <string name="sync_check_for_updates">Check for updates</string>
     <string name="sync_check_for_updates_info">Query the remote folder again and check for differences with local items</string>
     <string name="sync_checking_local_item">Checking local item</string>
+    <string name="sync_choose_device">Device to synchronise with</string>
     <string name="sync_comparing_local_and_remote">Checking local and remote folders for changes…</string>
     <string name="sync_creating_new_item">Creating new item</string>
     <string name="sync_delete_local_not_in_remote">Delete old local items</string>
@@ -1232,6 +1236,7 @@
     <string name="sync_force_general_info2">After selecting one of these options, you will be shown information on potential issues and asked to confirm your choice</string>
     <string name="sync_force_pull_info">This will replace your local folder with the remove folder contents</string>
     <string name="sync_force_push_info">This will replace the remote folder with your local folder contents</string>
+    <string name="sync_info">Compare your songs and sets with connected devices and download any new or updated files</string>
     <string name="sync_items_deleted_local">Items that will be deleted from the local folder if you proceed</string>
     <string name="sync_items_deleted_remote">Items that will be deleted from the remote folder if you proceed</string>
     <string name="sync_items_not_on_local">New items that are not in the local folder</string>
@@ -1508,7 +1513,6 @@
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
     <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>
     <string name="website_bible_online" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-online</string>
-    <string name="website_sync" translatable="false">https://www.opensongapp.com/user-manual/storage/synchronise-connected-devices</string>
     <string name="website_browse_host_files_songs" translatable="false">https://www.opensongapp.com/user-manual/songs/browse-host-songs</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
     <string name="website_chords" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/chords/chords</string>
@@ -1587,6 +1591,7 @@
     <string name="website_storage_overview" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-overview</string>
     <string name="website_storage_set" translatable="false">https://www.opensongapp.com/user-manual/storage/set-storage-location</string>
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
+    <string name="website_sync" translatable="false">https://www.opensongapp.com/user-manual/storage/synchronise-connected-devices</string>
     <string name="website_tags" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/tags</string>
     <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_tuner" translatable="false">https://www.opensongapp.com/user-manual/utilities/tuner</string>
@@ -1599,7 +1604,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="sync">Synchronise connected devices</string>
-    <string name="sync_info">Compare your songs and sets with connected devices and download any new or updated files</string>
-    <string name="sync_choose_device">Device to synchronise with</string>
 </resources>

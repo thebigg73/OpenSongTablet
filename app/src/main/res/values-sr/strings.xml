@@ -1227,4 +1227,6 @@
     <string name="sync">Sinhronizujte povezane uređaje</string>
     <string name="sync_info">Uporedite svoje pesme i setove sa povezanim uređajima i preuzmite sve nove ili ažurirane datoteke</string>
     <string name="sync_choose_device">Uređaj za sinhronizaciju sa</string>
+    <string name="song_select_warning_more">Zbog ograničenja SongSelect-a, sada ćete morati ručno da preuzmete datoteku pesme, a zatim je uvezete u aplikaciju.  Nakon preuzimanja datoteke, bićete vraćeni na ovu stranicu i možete kliknuti na dugme \"Uvoz preuzimanja\" da biste uvezli preuzetu datoteku u OpenSongApp.</string>
+    <string name="import_download">Uvoz preuzimanje</string>
 </resources>

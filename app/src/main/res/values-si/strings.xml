@@ -94,7 +94,7 @@
    <string name="bass5">බාස් - 5 නූල්</string>
    <string name="battery">බැටරි</string>
    <string name="beat_buddy_auto">BeatBuddy ගීතය ස්වයංක්‍රීයව යවන්න</string>
-   <string name="beat_buddy_auto_info">ඔබගේ BeatBuddy දත්ත සමුදාය සමඟ ඔබගේ ගීතය \&apos;ගොනු නාමය\&apos;, \&apos;මාතෘකාව\&apos; සහ \&apos;ලෙස ද හඳුන්වනු ලැබේ\&apos; යන ක්ෂේත්‍ර සසඳයි.  ගැළපෙන ගීතයක් හමු වුවහොත්, ෆෝල්ඩරය සහ ගීත කේතය ස්වයංක්‍රීයව MIDI හරහා යවනු ලැබේ</string>
+   <string name="beat_buddy_auto_info">ඔබගේ BeatBuddy දත්ත සමුදාය සමඟ ඔබගේ ගීතය \'ගොනු නාමය\', \'මාතෘකාව\' සහ \'ලෙස ද හඳුන්වනු ලැබේ\' යන ක්ෂේත්‍ර සසඳයි.  ගැළපෙන ගීතයක් හමු වුවහොත්, ෆෝල්ඩරය සහ ගීත කේතය ස්වයංක්‍රීයව MIDI හරහා යවනු ලැබේ</string>
    <string name="beat_buddy_browse_info">BeatBuddy හි ගීත බ්‍රවුස් කරන්න (පෙරනිමි ව්‍යාපෘතිය හෝ ආනයනය කළ ව්‍යාපෘතිය භාවිතයෙන්)</string>
    <string name="beat_buddy_database_reset">යෙදුමේ BeatBuddy දත්ත සමුදාය හිස් කරන්න.  මෙය pedal defaults පමණක් ප්‍රතිසාධනය කරයි.</string>
    <string name="beat_buddy_dynamic_messages">ගතික MIDI පණිවිඩ (යෙදුම කේතය සමඟ ගනුදෙනු කරයි)</string>
@@ -201,10 +201,12 @@
    <string name="chords_found">ගීතයේ පදවල ඇති සියලුම ස්වර</string>
    <string name="chorus">ගායනය</string>
    <string name="chorus_background">ගායන පසුබිම</string>
-   <string name="clipboard_info">ඔබට ආයාත කිරීමට අවශ්‍ය ගීත පද/චෝඩ් සොයාගත් විට, ඒවා උද්දීපනය කර පසුරු පුවරුවේ ඇති \&apos;පිටපත්\&apos; විකල්පය මත ක්ලික් කරන්න.</string>
+   <string name="clipboard_info">ඔබට ආයාත කිරීමට අවශ්‍ය ගීත පද/චෝඩ් සොයාගත් විට, ඒවා උද්දීපනය කර පසුරු පුවරුවේ ඇති \'පිටපත්\' විකල්පය මත ක්ලික් කරන්න.</string>
    <string name="close">වසන්න</string>
    <string name="color_choose">වර්ණ තේරීම</string>
    <string name="column_force">තීරු බිඳීම් අතින් අභිබවා යන්න</string>
+   <string name="song_select_warning_more">SongSelect සීමා කිරීම් හේතුවෙන්, ඔබට දැන් ඔබගේ ගීත ගොනුව අතින් බාගත කර එය යෙදුමට ආයාත කිරීමට සිදුවේ.  ගොනුව බාගත කිරීමෙන් පසු, ඔබව මෙම පිටුවට ආපසු පැමිණෙන අතර, බාගත කළ ගොනුව OpenSongApp වෙත ආයාත කිරීමට \\'ආයාත බාගැනීම\\' බොත්තම ක්ලික් කළ හැක.</string>
+   <string name="import_download">ආයාත බාගත කිරීම</string>
    <string name="column_force_info" tools:ignore="TypographyDashes">ස්වයං පරිමාණය කිරීමේදී නව තීරු බිඳීමක් බල කිරීමට ගීතයේ නව පිටු කේතය (!--) භාවිතා කරන්න</string>
    <string name="column_force_insert">තීරු කඩනය ඇතුළු කරන්න</string>
    <string name="comment">අදහස් දක්වන්න</string>
@@ -385,7 +387,7 @@
    <string name="filter_by_this_value">මෙම අගය අනුව තවදුරටත් පෙරීම.  මෙම පෙරහන මාතෘකා, ගොනු නාම, පරිශීලක ක්ෂේත්‍ර සහ ගීතිකා අංක සොයයි</string>
    <string name="filter_by_title">ගීතයේ මාතෘකාව අනුව සොයන්න</string>
    <string name="filter_entry">එක් එක් පෙරහන පහත නව පේළියකට එක් කරන්න.</string>
-   <string name="filter_info">උපසර්ග භාවිතා කිරීමෙන් ඔබට කොටස් පෙරීමට හැකිය.  ඔබ \&apos;ගිටාර්\&apos; පෙරහන එකතු කළහොත්, මෙම උපසර්ගය භාවිතා කරන ඕනෑම කොටසක් පෙරහන් කරනු ලැබේ. උදා. [*ගිටාරය:උපකරණ]</string>
+   <string name="filter_info">උපසර්ග භාවිතා කිරීමෙන් ඔබට කොටස් පෙරීමට හැකිය.  ඔබ \'ගිටාර්\' පෙරහන එකතු කළහොත්, මෙම උපසර්ගය භාවිතා කරන ඕනෑම කොටසක් පෙරහන් කරනු ලැබේ. උදා. [*ගිටාරය:උපකරණ]</string>
    <string name="filter_mode_info">පෙරනිමියෙන් පෙරන ලද කොටස් සඟවා ඇත, නමුත් ඔබට ඒ වෙනුවට මෙම පෙරූ කොටස් පමණක් පෙන්වීමට මෙය සැකසිය හැක</string>
    <string name="filter_results">පෙරහන් ප්රතිඵල</string>
    <string name="filter_section">අංශ පෙරීම</string>
@@ -471,7 +473,7 @@
    <string name="immersive_mode_info">ඔබගේ සංදර්ශකය වැඩිපුර භාවිතා කිරීමට සංචාලනය සහ තත්ව තීරු සඟවන්න</string>
    <string name="import_basic">ආනයන</string>
    <string name="import_bulk">බහු ගොනු</string>
-   <string name="import_bulk_details">යෙදුම \&apos;ආනයනය කළ\&apos; ගීත ෆෝල්ඩරයකට කියවිය හැකි ආකෘතිවලින් ගීත ගොනු ආයාත කිරීමට උත්සාහ කරයි.  අවශ්‍ය නම් ඔබට ගීත වෙනත් ෆෝල්ඩර වෙත ගෙන යාමට තෝරා ගත හැක.</string>
+   <string name="import_bulk_details">යෙදුම \'ආනයනය කළ\' ගීත ෆෝල්ඩරයකට කියවිය හැකි ආකෘතිවලින් ගීත ගොනු ආයාත කිරීමට උත්සාහ කරයි.  අවශ්‍ය නම් ඔබට ගීත වෙනත් ෆෝල්ඩර වෙත ගෙන යාමට තෝරා ගත හැක.</string>
    <string name="import_bulk_info">කණ්ඩායම් කිහිපයක් ගීත ගොනු ආයාත කරන්න</string>
    <string name="import_bulk_showcase_choose">ඇන්ඩ්‍රොයිඩ් ගොනු පිකර් භාවිතයෙන් ගොනු කිහිපයක් තේරීමට මෙතන ක්ලික් කරන්න</string>
    <string name="import_bulk_showcase_found">ඔබ ආයාත කිරීමට තෝරාගෙන ඇති ගොනු මේවාය</string>
@@ -542,14 +544,14 @@
    <string name="link_reset">ඉහත සබැඳිය නැවත සකසන්න</string>
    <string name="link_search_document">ඔබගේ උපාංගයේ ලේඛනයක් තෝරන්න. ඔබට උපාංග හරහා සමමුහුර්ත කිරීමට ඉඩ දීමට අවශ්‍ය නම්, මෙම ගොනුව ඔබගේ OpenSong ෆෝල්ඩරය තුළ කොතැනක හෝ සුරැකිය යුතුය.</string>
    <string name="link_search_web">මෙම ගීතය අන්තර්ජාලයේ සොයන්න. ඔබ සුදුසු වෙබ් පිටුවක් සොයා ගන්නේ නම්, වෙබ් ලිපිනය පසුරු පුවරුවට පිටපත් කර, මෙතැනට ආපසු ගොස් ඉහත කොටුවේ අලවන්න.</string>
-   <string name="link_search_youtube">YouTube හි මෙම ගීතය සොයා ගැනීමට උත්සාහ කරන්න. ඔබ නිවැරදි අයිතමය සොයා ගන්නේ නම්, \&apos;Share\&apos; විකල්පය තෝරා ඉන්පසු සබැඳිය පසුරු පුවරුවට පිටපත් කරන්න. එවිට ඔබට මෙහි ආපසු ගොස් ඉහත සබැඳිය ඇලවිය හැක.</string>
+   <string name="link_search_youtube">YouTube හි මෙම ගීතය සොයා ගැනීමට උත්සාහ කරන්න. ඔබ නිවැරදි අයිතමය සොයා ගන්නේ නම්, \'Share\' විකල්පය තෝරා ඉන්පසු සබැඳිය පසුරු පුවරුවට පිටපත් කරන්න. එවිට ඔබට මෙහි ආපසු ගොස් ඉහත සබැඳිය ඇලවිය හැක.</string>
    <string name="link_web">සබැඳි සබැඳිය</string>
    <string name="link_youtube">YouTube සබැඳිය</string>
    <string name="listen">සවන් දෙන්න</string>
    <string name="load">පැටවීම</string>
    <string name="load_reusable">නැවත භාවිත කළ හැකි ස්ලයිඩයක් පූරණය කරන්න</string>
    <string name="location">ස්ථානය</string>
-   <string name="location_not_enabled">උපාංග වෙත සම්බන්ධ වීමට කරුණාකර \&apos;ස්ථානය\&apos; ක්‍රියාත්මක කරන්න.  ඔබට මාදිලියේ තේරීමක් තිබේ නම්, Wi-Fi භාවිතා කරන මාදිලියක් තෝරන්න.</string>
+   <string name="location_not_enabled">උපාංග වෙත සම්බන්ධ වීමට කරුණාකර \'ස්ථානය\' ක්‍රියාත්මක කරන්න.  ඔබට මාදිලියේ තේරීමක් තිබේ නම්, Wi-Fi භාවිතා කරන මාදිලියක් තෝරන්න.</string>
    <string name="log">යෙදුම් භාවිත ලොග</string>
    <string name="log_info">ගොනු ලොග කළමනාකරණය කරන්න (නිදොස්කරණයට උදවු කළ හැක)</string>
    <string name="logo">ලාංඡනය</string>
@@ -702,7 +704,7 @@
    <string name="on">මත</string>
    <string name="online">ඔන්ලයින්</string>
    <string name="onsong_file_info">iOS උපාංග මත OnSong වෙත ආයාත කළ හැකි ගොනුවක්</string>
-   <string name="onsong_import">&quot;OnSong උපස්ථ ගොනුව ආයාත කරන්න&quot;</string>
+   <string name="onsong_import">OnSong උපස්ථ ගොනුව ආයාත කරන්න</string>
    <string name="onsong_import_folder">ආනයනික ගීත සුරැකීමට ෆෝල්ඩරයක් තෝරන්න</string>
    <string name="onsong_import_folder_info">නිර්දේශිත විකල්පය වන්නේ වෙනම OnSong ෆෝල්ඩරයකට ආයාත කිරීමයි.  ඔබට සැම විටම ගීත පසුව වෙනත් ෆෝල්ඩර වෙත ගෙන යා හැක.</string>
    <string name="opacity">පාරාන්ධතාව</string>
@@ -731,7 +733,7 @@
    <string name="pad_auto">ඔටෝ</string>
    <string name="pad_cross_fade">හරස් ෆේඩ් පෑඩ්</string>
    <string name="pad_cross_fade_info">මෙය ගීත අතර ගමන් කරන විට ස්වයංක්‍රීයව පෑඩ් ආරම්භ කරන අතර සුමට හරස් මැකී යාමට ඉඩ සලසයි.  ඔබ පළමු වරට පෑඩය අතින් ආරම්භ කළ යුතුය.</string>
-   <string name="pad_custom_info">ගීත යතුරු ගැළපෙන පසුබිම් පීලි ලෙස භාවිත කිරීමට අභිරුචි පෑඩ් සකසන්න.  මෙම ගොනු OpenSong/Pads ෆෝල්ඩරය තුළ සුරැකිය යුතුය.  පෑඩ් එක \&apos;ස්වයං\&apos; ලෙස සකසා ඇති සහ යතුරු කට්ටලයක් ඇති ගීත මෙහි සටහන් කර ඇති ගොනුව භාවිතා කරයි.</string>
+   <string name="pad_custom_info">ගීත යතුරු ගැළපෙන පසුබිම් පීලි ලෙස භාවිත කිරීමට අභිරුචි පෑඩ් සකසන්න.  මෙම ගොනු OpenSong/Pads ෆෝල්ඩරය තුළ සුරැකිය යුතුය.  පෑඩ් එක \'ස්වයං\' ලෙස සකසා ඇති සහ යතුරු කට්ටලයක් ඇති ගීත මෙහි සටහන් කර ඇති ගොනුව භාවිතා කරයි.</string>
    <string name="pad_custom_pad_error">මෙම යතුර සඳහා සැකසූ අභිරුචි ස්වයංක්‍රීය පෑඩ් සමඟ ගැටළුවක් ඇත</string>
    <string name="pad_custom_short">එක් එක් යතුරට ගැළපීමට බිල්ට් හෝ අභිරුචි පෑඩ් තෝරන්න</string>
    <string name="pad_file_error">සබැඳි ශ්‍රව්‍ය ගොනුවේ ගැටලුවක් ඇත</string>
@@ -876,7 +878,7 @@
    <string name="scroll">අනුචලනය කරන්න</string>
    <string name="scroll_amount">අනුචලන මුදල</string>
    <string name="scroll_down">පහළට අනුචලනය කරන්න</string>
-   <string name="scroll_up">&quot;ඉහළට අනුචලනය කරන්න</string>
+   <string name="scroll_up">ඉහළට අනුචලනය කරන්න</string>
    <string name="search">සෙවීම</string>
    <string name="search_biblegateway">BibleGateway.com සොයන්න</string>
    <string name="section_box">කොටස් පෙට්ටිය අඳින්න</string>
@@ -1009,16 +1011,16 @@
    <string name="storage_change">ගබඩා ස්ථානය තෝරන්න</string>
    <string name="storage_ext">බාහිර ගබඩා</string>
    <string name="storage_graph_overview_info">ඔබගේ වත්මන් OpenSong/Songs ෆෝල්ඩර නාමාවලි ව්‍යුහය පහත දැක්වේ.\nඔබගේ ගබඩා ස්ථානය වෙනස් කිරීමට OpenSong (ROOT) ෆෝල්ඩරය මත ක්ලික් කරන්න.\nඋපස්ථයක් හෝ උප නාමාවලියක් සෑදීමට ගීත (MAIN) ෆෝල්ඩරය මත ක්ලික් කරන්න.\nඔබට දැනටමත් උප නාමාවලි තිබේ නම්, ඒවා මත ක්ලික් කිරීමෙන් වැඩිදුර විකල්ප ලබා දෙනු ඇත.</string>
-   <string name="storage_help">කරුණාකර ඔබේ \&apos;OpenSong\&apos; ෆෝල්ඩරය තෝරන්න.  මෙහි ගීත, කට්ටල සහ තවත් දේ ගබඩා කර ඇත.  ඔබට නව ෆෝල්ඩරයක් අවශ්‍ය නම්, එකක් එක් කළ යුතු ස්ථානයක් තෝරන්න.  ඔබට විකල්ප මෙනුවෙන් ඕනෑම අවස්ථාවක මෙය වෙනස් කළ හැක.  අභ්යන්තර ගබඩා කිරීම නිර්දේශ කෙරේ.\nයාවත්කාලීනයක් හෝ නැවත ස්ථාපනයක් සඳහා: ඔබට පෙර ඕනෑම \&apos;OpenSong\&apos; ෆෝල්ඩරයක් සොයා ගැනීමට කහ බොත්තම (Android 11+ හි නොමැත) භාවිතා කළ හැක.</string>
+   <string name="storage_help">කරුණාකර ඔබේ \'OpenSong\' ෆෝල්ඩරය තෝරන්න.  මෙහි ගීත, කට්ටල සහ තවත් දේ ගබඩා කර ඇත.  ඔබට නව ෆෝල්ඩරයක් අවශ්‍ය නම්, එකක් එක් කළ යුතු ස්ථානයක් තෝරන්න.  ඔබට විකල්ප මෙනුවෙන් ඕනෑම අවස්ථාවක මෙය වෙනස් කළ හැක.  අභ්යන්තර ගබඩා කිරීම නිර්දේශ කෙරේ.\nයාවත්කාලීනයක් හෝ නැවත ස්ථාපනයක් සඳහා: ඔබට පෙර ඕනෑම \'OpenSong\' ෆෝල්ඩරයක් සොයා ගැනීමට කහ බොත්තම (Android 11+ හි නොමැත) භාවිතා කළ හැක.</string>
    <string name="storage_local">දේශීය ගබඩාව</string>
    <string name="storage_main">ඔබේ ගීත සාමාන්‍යයෙන් ගබඩා කර ඇති ස්ථානය මෙයයි (බොහෝ විට MAIN ෆෝල්ඩරය ලෙස හැඳින්වේ).  ඔබේ ගීත පුස්තකාලය වඩා හොඳින් කළමනාකරණය කිරීමට ඔබට විකල්ප වශයෙන් උප බහලුම් පිහිටුවිය හැක.</string>
    <string name="storage_manage">ගබඩාව කළමනාකරණය කරන්න</string>
    <string name="storage_notwritable">භාවිතා කළ නොහැක</string>
    <string name="storage_options_info">දේශීය ගබඩාව කළමනාකරණය කරන්න (OpenSong මූල ෆෝල්ඩරය සහ ගීත ෆෝල්ඩර) සහ OpenChords සමඟ ගබඩාව සමමුහුර්ත කරන්න</string>
-   <string name="storage_quicktip">OpenSong ෆෝල්ඩර ස්ථානයක් තෝරාගැනීමේදී:\nඅභ්‍යන්තර හෝ SD කාඩ් ගබඩාව පමණක් තෝරන්න.\nඅභ්‍යන්තර ගබඩාව නිර්දේශ කෙරේ.  මෙය උපාංග ආචයනය ලෙස හෝ ඔබගේ උපාංගයේ නම සමඟ ලැයිස්තුගත කළ හැක.\nතේරීමේදී ඔබට සියලු ගබඩා පෙන්වීමට සැකසීම් වෙනස් කිරීමට අවශ්‍ය විය හැක.\nAndroid 10+ මත ඔබ බාගැනීම් හෝ Root ෆෝල්ඩරය තෝරා නොගත යුතුය.  සැකයක් ඇත්නම්, \&apos;ලේඛන\&apos; ෆෝල්ඩරය තෝරන්න.</string>
+   <string name="storage_quicktip">OpenSong ෆෝල්ඩර ස්ථානයක් තෝරාගැනීමේදී:\nඅභ්‍යන්තර හෝ SD කාඩ් ගබඩාව පමණක් තෝරන්න.\nඅභ්‍යන්තර ගබඩාව නිර්දේශ කෙරේ.  මෙය උපාංග ආචයනය ලෙස හෝ ඔබගේ උපාංගයේ නම සමඟ ලැයිස්තුගත කළ හැක.\nතේරීමේදී ඔබට සියලු ගබඩා පෙන්වීමට සැකසීම් වෙනස් කිරීමට අවශ්‍ය විය හැක.\nAndroid 10+ මත ඔබ බාගැනීම් හෝ Root ෆෝල්ඩරය තෝරා නොගත යුතුය.  සැකයක් ඇත්නම්, \'ලේඛන\' ෆෝල්ඩරය තෝරන්න.</string>
    <string name="storage_reset">ඔබගේ ගබඩා ස්ථානය වෙනස් කිරීමට මෙතන ක්ලික් කරන්න (root OpenSong ෆෝල්ඩරය පිහිටා ඇති ස්ථානය).</string>
    <string name="storage_settings">ඔබගේ ගබඩා ස්ථානය සහ ගීත ෆෝල්ඩර කළමනාකරණය කරන්න</string>
-   <string name="storage_warning">&quot;කරුණාකර \&apos;Songs\&apos; ෆෝල්ඩරය ඔබගේ ගබඩා ස්ථානය ලෙස තෝරා නොගන්න. ඒ වෙනුවට ඔබ මාපිය \&apos;OpenSong\&apos; ෆෝල්ඩර ස්ථානය තෝරාගත යුතුය.&quot;</string>
+   <string name="storage_warning">කරුණාකර \'Songs\' ෆෝල්ඩරය ඔබගේ ගබඩා ස්ථානය ලෙස තෝරා නොගන්න. ඒ වෙනුවට ඔබ මාපිය \'OpenSong\' ෆෝල්ඩර ස්ථානය තෝරාගත යුතුය.</string>
    <string name="string_tunings">නූල් සුසර කිරීම</string>
    <string name="success">සාර්ථකත්වය</string>
    <string name="swipe">ස්වයිප් සැකසුම්</string>
