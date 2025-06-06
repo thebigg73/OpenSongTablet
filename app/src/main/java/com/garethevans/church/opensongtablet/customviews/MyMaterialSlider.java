@@ -17,69 +17,33 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
-public class MaterialSlider extends LinearLayout {
+public class MyMaterialSlider extends LinearLayout {
 
-    private final Slider slider;
-    private final TextView titleTextView, infoTextView;
-    private final TextView valueTextView, bottomHintView;
-    private final FloatingActionButton minusFAB, plusFAB;
-    private final FrameLayout minusHolder, plusHolder;
-    private final float stepSize;
+    @SuppressWarnings({"FieldCanBeLocal","unused"})
+    private final String TAG = "MyMaterialSlider";
+    private Slider slider;
+    private TextView titleTextView, infoTextView;
+    private TextView valueTextView, bottomHintView;
+    private FloatingActionButton minusFAB, plusFAB;
+    private FrameLayout minusHolder, plusHolder;
+    private float stepSize;
     private boolean adjustButtons;
-    private final float xxlarge, xlarge, large, medium, small, xsmall;
+    private float xxlarge, xlarge, large, medium, small, xsmall;
 
-    public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
+    public MyMaterialSlider(Context context) {
+        super(context);
+        inflate(context, R.layout.view_material_slider, this);
+        getViews();
+    }
+
+    public MyMaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_material_slider, this);
+        getViews();
+        getAttributes(context, attrs);
+    }
 
-        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
-        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
-        large = context.getResources().getDimension(R.dimen.text_large);
-        medium = context.getResources().getDimension(R.dimen.text_medium);
-        small = context.getResources().getDimension(R.dimen.text_small);
-        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
-
-        int[] set = new int[]{android.R.attr.text,  // 0
-                android.R.attr.hint,                // 1
-                android.R.attr.valueFrom,           // 2
-                android.R.attr.valueTo,             // 3
-                R.attr.stepSize,                    // 4
-                android.R.attr.value,               // 5
-                R.attr.trackColor,                  // 6
-                R.attr.trackHeight,                 // 7
-                R.attr.thumbColor,                  // 8
-                R.attr.thumbRadius,                 // 9
-                R.attr.size,                        // 10
-                R.attr.infoText,                     // 11
-                R.attr.adjustable
-        };
-        //TypedArray b = context.obtainStyledAttributes(attrs, set);
-        //CharSequence text = a.getText(0);
-        //CharSequence hint = a.getText(1);
-        //float valueFrom = a.getFloat(2, 0.0f);
-        //float valueTo = a.getFloat(3,10.0f);
-        //stepSize = a.getFloat(4,1.0f);
-        //float value = a.getFloat(5,0.0f);
-        //int track = a.getColor(6,0);
-        //float height = a.getDimensionPixelSize(7,0);
-        //int thumb = a.getColor(8,0);
-        //float radius = a.getDimensionPixelSize(9,0);
-        //CharSequence infoText = a.getText(11);
-        //adjustButtons = a.getBoolean(12,false);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialSlider, -1,-1);
-        String text = a.getString(R.styleable.MaterialSlider_android_text);
-        String infoText = a.getString(R.styleable.MaterialSlider_infoText);
-        String hint = a.getString(R.styleable.MaterialSlider_android_hint);
-        float valueFrom = a.getFloat(R.styleable.MaterialSlider_android_valueFrom, 0.0f);
-        float valueTo = a.getFloat(R.styleable.MaterialSlider_android_valueTo,10.0f);
-        stepSize = a.getFloat(R.styleable.MaterialSlider_stepSize,1.0f);
-        float value = a.getFloat(R.styleable.MaterialSlider_android_value,0.0f);
-        int track = a.getColor(R.styleable.MaterialSlider_trackColor,0);
-        int height = a.getDimensionPixelSize(R.styleable.MaterialSlider_trackHeight,0);
-        int thumb = a.getColor(R.styleable.MaterialSlider_thumbColor,0);
-        float radius = a.getDimensionPixelSize(R.styleable.MaterialSlider_thumbRadius,0);
-        adjustButtons = a.getBoolean(R.styleable.MaterialSlider_adjustable,false);
-
+    private void getViews() {
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
         infoTextView = findViewById(R.id.infoText);
@@ -99,42 +63,81 @@ public class MaterialSlider extends LinearLayout {
         plusHolder.setId(View.generateViewId());
         minusFAB.setId(View.generateViewId());
         plusFAB.setId(View.generateViewId());
+    }
+
+    private void getAttributes(Context context, AttributeSet attrs) {
+        /*
+       <attr name="trackHeight" format="dimension"/>
+        <attr name="thumbRadius" format="dimension"/>
+        <attr name="size" />
+        <attr name="infoText" format="string"/>"
+        <attr name="adjustable" format="boolean"/>
+         */
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialSlider);
+        String text = a.getString(R.styleable.MyMaterialSlider_android_text);
+        String hint = a.getString(R.styleable.MyMaterialSlider_android_hint);
+        float valueFrom = a.getFloat(R.styleable.MyMaterialSlider_android_valueFrom, 0.0f);
+        float valueTo = a.getFloat(R.styleable.MyMaterialSlider_android_valueTo,10.0f);
+        stepSize = a.getFloat(R.styleable.MyMaterialSlider_android_stepSize,1.0f);
+        float value = a.getFloat(R.styleable.MyMaterialSlider_android_value,0.0f);
+        int trackColor = a.getColor(R.styleable.MyMaterialSlider_trackColor,0);
+        int thumbColor = a.getColor(R.styleable.MyMaterialSlider_thumbColor,0);
+        int trackHeight = a.getDimensionPixelSize(R.styleable.MyMaterialSlider_trackHeight,0);
+        int thumbRadius = a.getDimensionPixelSize(R.styleable.MyMaterialSlider_thumbRadius,0);
+        String infoText = a.getString(R.styleable.MyMaterialSlider_infoText);
+        adjustButtons = a.getBoolean(R.styleable.MyMaterialSlider_adjustable,false);
+
+        a.recycle();
+
+        xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
+        xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
+        large = context.getResources().getDimension(R.dimen.text_large);
+        medium = context.getResources().getDimension(R.dimen.text_medium);
+        small = context.getResources().getDimension(R.dimen.text_small);
+        xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
         setAdjustableButtons(adjustButtons);
         setSize("medium");
 
-        if (text==null) {
-            text = "";
+        if (text!=null) {
+            setText(text);
         }
-        setText(text.toString());
-
         setInfoText(infoText);
 
         if (hint==null) {
             hint = "";
         }
-        setHint(hint.toString());
+        setHint(hint);
 
-        slider.setValueFrom(valueFrom);
-        slider.setValueTo(valueTo);
-        slider.setStepSize(stepSize);
-        setValue(value);
+        if (valueFrom>-1) {
+            slider.setValueFrom(valueFrom);
+        }
+        if (valueTo>-1) {
+            slider.setValueTo(valueTo);
+        }
+        if (stepSize>-1) {
+            slider.setStepSize(stepSize);
+        }
+        if (value>-1) {
+            setValue(value);
+        }
 
-        if (track!=0) {
-            slider.setTrackTintList(ColorStateList.valueOf(track));
+        if (trackColor!=0) {
+            slider.setTrackTintList(ColorStateList.valueOf(trackColor));
         }
-        if (height!=0) {
-            slider.setTrackHeight((int)height);
+        if (thumbColor!=0) {
+            slider.setThumbStrokeColor(ColorStateList.valueOf(thumbColor));
+            slider.setThumbTintList(ColorStateList.valueOf(thumbColor));
         }
-        if (radius!=0) {
-            slider.setThumbRadius((int)radius);
-            slider.setThumbStrokeWidth(radius);
+
+        if (trackHeight!=0) {
+            slider.setTrackHeight(trackHeight);
         }
-        if (thumb!=0) {
-            slider.setThumbStrokeColor(ColorStateList.valueOf(thumb));
-            slider.setThumbTintList(ColorStateList.valueOf(thumb));
+        if (thumbRadius!=0) {
+            slider.setThumbRadius(thumbRadius);
+            slider.setThumbStrokeWidth(thumbRadius);
         }
-        a.recycle();
+        setAdjustableButtons(adjustButtons);
     }
 
     // The getters
@@ -262,11 +265,6 @@ public class MaterialSlider extends LinearLayout {
                 textSize = large;
                 hintSize = medium;
                 break;
-            case "medium":
-            default:
-                textSize = medium;
-                hintSize = small;
-                break;
             case "small":
                 textSize = small;
                 hintSize = xsmall;
@@ -274,6 +272,11 @@ public class MaterialSlider extends LinearLayout {
             case "xsmall":
                 textSize = xsmall;
                 hintSize = xsmall-1;
+                break;
+            case "medium":
+            default:
+                textSize = medium;
+                hintSize = small;
                 break;
         }
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
@@ -300,4 +303,5 @@ public class MaterialSlider extends LinearLayout {
         });
         requestLayout();
     }
+
 }

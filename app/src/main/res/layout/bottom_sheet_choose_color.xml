@@ -99,7 +99,7 @@
                 android:digits="abcdefABCDEF0123456789#"
                 android:hint="@string/hex_color_code" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/alphaSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                 android:valueFrom="0"
                 android:valueTo="255" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/redSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 android:valueFrom="0"
                 android:valueTo="255" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/greenSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                 android:valueFrom="0"
                 android:valueTo="255" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/blueSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/not_available" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/pageSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

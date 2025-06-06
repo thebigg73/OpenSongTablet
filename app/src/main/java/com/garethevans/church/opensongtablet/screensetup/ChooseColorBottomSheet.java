@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private BottomSheetChooseColorBinding myView;
+    @SuppressWarnings({"unused","fieldCanBeLocal"})
     private final String TAG = "ChooseColorBottomSheet";
 
     private String newColorHex, alphaHex, redHex, greenHex, blueHex, themePrefix,
@@ -204,10 +204,8 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private void setupOriginalColor() {
         themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme", "dark");
 
-        Log.d(TAG,"themePrefix:"+themePrefix);
         // Load the chosen colours up
         mainActivityInterface.getMyThemeColors().getDefaultColors();
-        Log.d(TAG,"whichColor:"+whichColor);
         int oldColorInt;
         try {
             if (whichColor.equals("backgroundColor")) {

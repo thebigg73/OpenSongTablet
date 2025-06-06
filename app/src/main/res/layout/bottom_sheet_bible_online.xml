@@ -5,7 +5,8 @@
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="VisualLintTextFieldSize">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeader"
@@ -65,7 +66,7 @@
         android:layout_below="@+id/webControls"
         android:padding="16dp">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -150,9 +151,10 @@
                         android:id="@+id/verseNumbers"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/bible_verse_numbers" />
+                        android:text="@string/bible_verse_numbers"
+                        tools:ignore="VisualLintButtonSize" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                         android:id="@+id/lineLength"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -164,7 +166,7 @@
                         android:valueTo="100"
                         app:stepSize="5" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                         android:id="@+id/linesPerSlide"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -187,7 +189,7 @@
                         app:useMonospace="true" />
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </RelativeLayout>
 
     <ProgressBar

@@ -29,18 +29,17 @@
         <attr name="size" />
     </declare-styleable>
 
-    <declare-styleable name="MaterialSlider">
+    <declare-styleable name="MyMaterialSlider">
         <attr name="android:text"/>
         <attr name="android:hint"/>
         <attr name="android:valueFrom"/>
         <attr name="android:valueTo"/>
-        <attr name="stepSize" format="float"/>
+        <attr name="android:stepSize" format="float"/>
         <attr name="android:value"/>
         <attr name="trackColor" format="color" />
-        <attr name="trackHeight" format="dimension"/>
         <attr name="thumbColor" format="color"/>
+        <attr name="trackHeight" format="dimension"/>
         <attr name="thumbRadius" format="dimension"/>
-        <attr name="size" />
         <attr name="infoText" format="string"/>"
         <attr name="adjustable" format="boolean"/>
     </declare-styleable>

@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/bible_verse_numbers" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/lineLength"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                     android:value="60"
                     app:stepSize="5"/>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/linesPerSlide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

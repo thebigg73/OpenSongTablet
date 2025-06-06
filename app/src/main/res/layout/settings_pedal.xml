@@ -37,7 +37,7 @@
                 android:text="@string/pedal_scroll_before_move"
                 android:hint="@string/pedal_scroll_before_move_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/scrollDistance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/airTurnLongPressTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/repeatModeTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                     android:valueTo="2000"
                     app:stepSize="100"/>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/repeatModeCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

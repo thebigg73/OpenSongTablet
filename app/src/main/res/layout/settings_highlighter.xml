@@ -24,7 +24,7 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/timeToDisplayHighlighter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

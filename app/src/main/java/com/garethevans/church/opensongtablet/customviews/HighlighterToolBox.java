@@ -30,7 +30,7 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
     private FloatingActionButton currentTool, saveButton, penFAB, highlighterFAB, eraserFAB,
             undoFAB, redoFAB, deleteFAB, blackFAB, whiteFAB, yellowFAB, redFAB, greenFAB, blueFAB;
     private ImageView dragIcon;
-    private MaterialSlider sizeSlider;
+    private MyMaterialSlider sizeSlider;
     private Drawable penDrawable, highlighterDrawable, eraserDrawable;
     private boolean settingsVisible = false;
     public HighlighterToolBox(Context context) {
@@ -81,15 +81,15 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
 
     public void changeDrawable(String which) {
         switch (which) {
-            case "pen":
-            default:
-                currentTool.setImageDrawable(penDrawable);
-                break;
             case "highlighter":
                 currentTool.setImageDrawable(highlighterDrawable);
                 break;
             case "eraser":
                 currentTool.setImageDrawable(eraserDrawable);
+                break;
+            case "pen":
+            default:
+                currentTool.setImageDrawable(penDrawable);
                 break;
         }
         penFAB.setAlpha(which.equals("pen") ? 1f:0.5f);

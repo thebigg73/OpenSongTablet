@@ -136,7 +136,7 @@
                     android:hint="@string/midi_click_track_info"
                     android:layout_marginBottom="16dp"/>
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/maxBars"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                     android:hint="@string/sound"
                     android:text="@string/sound" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/tickVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                     android:hint="@string/sound"
                     android:text="@string/sound" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/tockVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

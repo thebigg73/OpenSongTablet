@@ -70,7 +70,7 @@
             </FrameLayout>
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/presoBackgroundAlpha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
             </FrameLayout>
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/logoSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
             style="@style/DividerLine" />
 
         <!-- Display settings -->
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/crossFadeTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:valueTo="3000"
             app:stepSize="200" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/rotateDisplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
             android:valueTo="270"
             app:stepSize="90" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/horizontalMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
             android:valueTo="50"
             app:stepSize="1" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/verticalMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/titleTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
                 android:valueFrom="6"
                 android:valueTo="22" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/authorTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,7 +261,7 @@
                 android:valueFrom="6"
                 android:valueTo="22" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/copyrightTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -298,7 +298,7 @@
                 android:layout_margin="0dp"
                 android:text="@string/time_seconds" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/clockTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -311,7 +311,7 @@
 
         <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/maxFontSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -360,7 +360,7 @@
             android:hint="@string/block_text_shadow_info"
             android:text="@string/block_text_shadow" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/blockShadowAlpha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

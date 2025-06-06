@@ -161,7 +161,7 @@
             android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/sizeSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

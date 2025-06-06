@@ -395,7 +395,7 @@
         <item name="colorOnPrimary">@color/colorAltSecondary</item>
         <item name="colorOnSurface">@color/colorSecondary</item>
     </style>
-    <style name="SliderLabel" parent="@style/Widget.MaterialComponents.Tooltip">
+    <style name="SliderLabel" parent="Widget.MaterialComponents.Tooltip">
         <item name="backgroundTint">@color/colorSecondary</item>
         <item name="android:textAppearance">@style/SliderLabelText</item>
     </style>

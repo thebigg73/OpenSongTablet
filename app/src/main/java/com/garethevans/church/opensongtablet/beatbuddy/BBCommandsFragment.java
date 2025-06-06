@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyCommandsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiInfo;
@@ -521,7 +521,7 @@ public class BBCommandsFragment extends Fragment {
         }
     }
 
-    private void initialiseSlider(MaterialSlider slider, String prefName, int value, String labelEnd) {
+    private void initialiseSlider(MyMaterialSlider slider, String prefName, int value, String labelEnd) {
         if (prefName!=null && prefName.equals("songTempo") && (value<40 || value>300)) {
             slider.setValue(39); // The off position
             slider.setHint(not_set_string);
@@ -611,10 +611,10 @@ public class BBCommandsFragment extends Fragment {
     }
 
     private class MyOnChangeListener implements Slider.OnChangeListener {
-        MaterialSlider materialSlider;
+        MyMaterialSlider materialSlider;
         String prefName;
         String labelEnd;
-        MyOnChangeListener(MaterialSlider materialSlider, String prefName, String labelEnd) {
+        MyOnChangeListener(MyMaterialSlider materialSlider, String prefName, String labelEnd) {
             this.materialSlider = materialSlider;
             this.prefName = prefName;
             this.labelEnd = labelEnd;
@@ -661,7 +661,7 @@ public class BBCommandsFragment extends Fragment {
             }
         }
     }
-    private void setSliderHintText(MaterialSlider slider, String prefix, String querySearch ,
+    private void setSliderHintText(MyMaterialSlider slider, String prefix, String querySearch ,
                                    boolean songs, String getColumn, int value1, int value2) {
         String hint;
         String table;

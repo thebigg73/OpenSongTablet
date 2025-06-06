@@ -248,7 +248,7 @@
                 android:text="@string/linespacing"
                 android:hint="@string/linespacing_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/trimLineSpacingSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

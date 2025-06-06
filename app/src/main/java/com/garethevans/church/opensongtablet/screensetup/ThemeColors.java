@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -728,7 +727,6 @@ public class ThemeColors {
     }
 
     public int getValue(String what) {
-        Log.d("ThemeColors","getValue("+what+")");
         switch(what) {
             case "multilingualTextColor":
                 return getMultilingualTextColor();

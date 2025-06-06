@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsMenuBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -196,8 +196,8 @@ public class MenuSettingsFragment extends Fragment {
 
     private class MyChangeSlider implements Slider.OnChangeListener {
 
-        final MaterialSlider materialSlider;
-        MyChangeSlider(MaterialSlider materialSlider) {
+        final MyMaterialSlider materialSlider;
+        MyChangeSlider(MyMaterialSlider materialSlider) {
             this.materialSlider = materialSlider;
         }
         @Override
@@ -217,8 +217,8 @@ public class MenuSettingsFragment extends Fragment {
 
     private class MySliderTouch implements Slider.OnSliderTouchListener {
         String prefName;
-        MaterialSlider materialSlider;
-        MySliderTouch(MaterialSlider materialSlider, String prefName) {
+        MyMaterialSlider materialSlider;
+        MySliderTouch(MyMaterialSlider materialSlider, String prefName) {
             this.prefName = prefName;
             this.materialSlider = materialSlider;
         }

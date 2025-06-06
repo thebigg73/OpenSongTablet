@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayScalingBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -140,7 +140,7 @@ public class DisplayScalingFragment extends Fragment {
         }
     }
 
-    private void setSliderValue(MaterialSlider slider, String prefName, float fallback,
+    private void setSliderValue(MyMaterialSlider slider, String prefName, float fallback,
                                 int multiplier, String unit) {
         // Get the float (% values need to be scaled by 100 multiplier
         float val = multiplier * mainActivityInterface.getPreferences().getMyPreferenceFloat(prefName,fallback);
@@ -148,7 +148,7 @@ public class DisplayScalingFragment extends Fragment {
         slider.setValue(val);
     }
 
-    private void updateHint(MaterialSlider slider, float size, String unit) {
+    private void updateHint(MyMaterialSlider slider, float size, String unit) {
         if (unit.equals("sp")) {
             slider.setHintTextSize(size);
         }
@@ -230,7 +230,7 @@ public class DisplayScalingFragment extends Fragment {
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
     }
 
-    private void updateSlider(MaterialSlider slider, String prefName, float multiplier, String unit) {
+    private void updateSlider(MyMaterialSlider slider, String prefName, float multiplier, String unit) {
         // The float to store could be out of 100, or 1.  Use the multiplier to convert
         float sliderVal = slider.getValue();
         mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName, sliderVal/multiplier);
@@ -238,17 +238,17 @@ public class DisplayScalingFragment extends Fragment {
         updateHint(slider, sliderVal, unit);
     }
 
-    private void setSliderListeners(MaterialSlider slider, String pref, float multiplier, String unit) {
+    private void setSliderListeners(MyMaterialSlider slider, String pref, float multiplier, String unit) {
         slider.addOnSliderTouchListener(new MyOnSliderTouchListener(slider,pref,unit,multiplier));
         slider.addOnChangeListener(new MyOnChangeListener(slider,unit));
     }
     private class MyOnSliderTouchListener implements Slider.OnSliderTouchListener {
-        MaterialSlider materialSlider;
+        MyMaterialSlider materialSlider;
         String pref;
         String unit;
         float multiplier;
 
-        MyOnSliderTouchListener (MaterialSlider materialSlider, String pref, String unit, float multiplier) {
+        MyOnSliderTouchListener (MyMaterialSlider materialSlider, String pref, String unit, float multiplier) {
             this.materialSlider = materialSlider;
             this.pref = pref;
             this.unit = unit;
@@ -267,10 +267,10 @@ public class DisplayScalingFragment extends Fragment {
         }
     }
     private class MyOnChangeListener implements Slider.OnChangeListener {
-        MaterialSlider materialSlider;
+        MyMaterialSlider materialSlider;
         String unit;
 
-        MyOnChangeListener (MaterialSlider materialSlider, String unit) {
+        MyOnChangeListener (MyMaterialSlider materialSlider, String unit) {
             this.materialSlider = materialSlider;
             this.unit = unit;
         }

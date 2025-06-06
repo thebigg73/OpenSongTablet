@@ -182,7 +182,7 @@
                     android:layout_margin="8dp"
                     android:text="@string/reset" />
 
-                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                         android:id="@+id/maxvolrange"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

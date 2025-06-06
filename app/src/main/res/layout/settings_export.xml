@@ -356,7 +356,7 @@
                 android:text="@string/use_default"
                 android:layout_marginBottom="16dp"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/maxPDFScaling"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

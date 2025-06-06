@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsSwipesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -118,7 +118,7 @@ public class SwipeFragment extends Fragment {
             myView.swipeOptionsLayout.setVisibility(View.GONE);
         }
     }
-    private void setSlider(MaterialSlider slider, String pref, int myval, int min, int max, String unit, boolean createListener) {
+    private void setSlider(MyMaterialSlider slider, String pref, int myval, int min, int max, String unit, boolean createListener) {
         slider.setValueFrom(min);
         slider.setValueTo(max);
         slider.setStepSize(1.0f);

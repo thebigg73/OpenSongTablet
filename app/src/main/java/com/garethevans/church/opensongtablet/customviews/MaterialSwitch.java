@@ -86,11 +86,6 @@ public class MaterialSwitch extends LinearLayout {
                 textSize = large;
                 hintSize = medium;
                 break;
-            case "medium":
-            default:
-                textSize = medium;
-                hintSize = small;
-                break;
             case "small":
                 textSize = small;
                 hintSize = xsmall;
@@ -98,6 +93,11 @@ public class MaterialSwitch extends LinearLayout {
             case "xsmall":
                 textSize = xsmall;
                 hintSize = xsmall-1;
+                break;
+            case "medium":
+            default:
+                textSize = medium;
+                hintSize = small;
                 break;
         }
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);

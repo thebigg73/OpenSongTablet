@@ -35,7 +35,7 @@
                 android:hint="@string/alert_text"
                 app:endIconMode="clear_text" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/presoAlertTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/presenterViewContentSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
