@@ -250,7 +250,9 @@ public class Preferences extends Activity {
     // custom1_lyricsTagColor           int         The color for the background for the tag in the custom1 theme
     // custom1_lyricsTextColor          int         The color for the lyrics text in the custom1 theme
     // custom1_lyricsVerseColor         int         The color for the background for the verse in the custom1 theme,
+    // custom1_multilingualTextColor    int         The color for the multilingual text lines (alternative line if heading ends with "L]")
     // custom1_presoFontColor           int         The color for the presentation text in the custom1 theme
+    // custom1_presoMultilingualColor   int         The color for the presentation multilingual text (if heading ends with "L]")
     // custom2_presoChordColor          int         The color for the presentation chords in the custom1 theme
     // custom1_presoShadowColor         int         The color for the presentation text shadow in the custom1 theme
     // custom1_presoInfoColor           int         The color for the presentation info text in the custom1 theme
@@ -279,7 +281,9 @@ public class Preferences extends Activity {
     // custom2_lyricsTagColor           int         The color for the background for the tag in the custom2 theme
     // custom2_lyricsTextColor          int         The color for the lyrics text in the custom2 theme
     // custom2_lyricsVerseColor         int         The color for the background for the verse in the custom2 theme,
+    // custom2_multilingualTextColor    int         The color for the multilingual text lines (alternative line if heading ends with "L]")
     // custom2_presoFontColor           int         The color for the presentation text in the custom2 theme
+    // custom2_presoMultilingualColor   int         The color for the presentation multilingual text (if heading ends with "L]")
     // custom2_presoChordColor          int         The color for the presentation chords in the custom2 theme
     // custom2_presoShadowColor         int         The color for the presentation text shadow in the custom2 theme
     // custom2_presoInfoColor           int         The color for the presentation info text in the custom2 theme
@@ -334,7 +338,9 @@ public class Preferences extends Activity {
     // dark_lyricsTagColor              int         The color for the background for the tag in the dark theme
     // dark_lyricsTextColor             int         The color for the lyrics text in the dark theme
     // dark_lyricsVerseColor            int         The color for the background for the verse in the dark theme,
+    // dark_multilingualTextColor       int         The color for the multilingual text lines (alternative line if heading ends with "L]")
     // dark_presoFontColor              int         The color for the presentation text in the dark theme
+    // dark_presoMultilingualColor      int         The color for the presentation multilingual text (if heading ends with "L]")
     // dark_presoChordColor             int         The color for the presentation chords in the dark theme
     // dark_presoShadowColor            int         The color for the presentation text shadow in the dark theme
     // dark_presoInfoColor              int         The color for the presentation info text in the dark theme
@@ -444,7 +450,9 @@ public class Preferences extends Activity {
     // light_lyricsTagColor             int         The color for the background for the tag in the light theme
     // light_lyricsTextColor            int         The color for the lyrics text in the light theme
     // light_lyricsVerseColor           int         The color for the background for the verse in the light theme,
+    // light_multilingualTextColor      int         The color for the multilingual text lines (alternative line if heading ends with "L]")
     // light_presoFontColor             int         The color for the presentation text in the light theme
+    // light_presoMultilingualColor     int         The color for the presentation multilingual text (if heading ends with "L]")
     // light_presoChordColor            int         The color for the presentation chords in the light theme
     // light_presoShadowColor           int         The color for the presentation text shadow in the light theme
     // light_presoInfoColor             int         The color for the presentation info text in the light theme
@@ -621,6 +629,7 @@ public class Preferences extends Activity {
     // scaleChords                      float       The scale factor for chords relative to the lyrics (def:0.8f)
     // scaleComments                    float       The scale factor for comments relative to the lyrics (def:0.8f)
     // scaleHeadings                    float       The scale factor for headings relative to the lyrics (def:0.6f)
+    // scaleMultilingual                float       The scale factor to use for multilingual text (every second line if heading ends with "L]")
     // scaleTabs                        float       The scale factor for tabs relative to the lyrics (def:0.8f)
     // scrollDistance                   float       The percentage of the screen that is scrolled using the scroll buttons/pedals (def:0.7f)
     // scrollSpeed                      int         How quick should the scroll animation be (def:1500)

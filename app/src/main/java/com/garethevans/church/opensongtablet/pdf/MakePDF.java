@@ -182,12 +182,12 @@ public class MakePDF {
 
         PrintAttributes.MediaSize mediaSize;
         switch (pdfSize) {
+            case "Letter":
+                mediaSize = PrintAttributes.MediaSize.NA_LETTER;
+                break;
             case "A4":
             default:
                 mediaSize = PrintAttributes.MediaSize.ISO_A4;
-                break;
-            case "Letter":
-                mediaSize = PrintAttributes.MediaSize.NA_LETTER;
                 break;
         }
         printAttributes = new PrintAttributes.Builder().setMediaSize(mediaSize).build();
@@ -359,7 +359,7 @@ public class MakePDF {
     private void checkSizes(ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights) {
         setAvailableWidth();
         setAvailableHeight();
-        determineSpaceAndPages(sectionWidths,sectionWidths);
+        determineSpaceAndPages(sectionWidths,sectionHeights);
     }
 
     private void setAvailableWidth() {
@@ -396,15 +396,15 @@ public class MakePDF {
 
         if (columnInfo!=null && columnInfo.length>0) {
             switch ((int)columnInfo[0]) {
-                case 1:
-                default:
-                    singleColumn(sectionViews, sectionWidths, sectionHeights);
-                    break;
                 case 2:
                     doubleColumn(sectionViews, sectionWidths, sectionHeights);
                     break;
                 case 3:
                     tripleColumn(sectionViews, sectionWidths, sectionHeights);
+                    break;
+                case 1:
+                default:
+                    singleColumn(sectionViews, sectionWidths, sectionHeights);
                     break;
             }
         }
@@ -600,7 +600,7 @@ public class MakePDF {
         boolean useSmallestScale = !mainActivityInterface.getPreferences().getMyPreferenceBoolean("songAutoScaleColumnMaximise",true);
         // We may have changed the orientation since first measuring, so check again
         int sectionsInCol1 = (int)columnInfo[2];
-        int sectionsInCol2 = (int)sectionViews.size()-sectionsInCol1;
+        int sectionsInCol2 = sectionViews.size() -sectionsInCol1;
 
         float columnScale1 = Math.min(columnWidth/columnInfo[4],availableHeight/columnInfo[5]);
         float columnScale2 = Math.min(columnWidth/columnInfo[7],availableHeight/columnInfo[8]);
@@ -834,12 +834,6 @@ public class MakePDF {
     }
     public PrintAttributes getPrintAttributes() {
         return printAttributes;
-    }
-    public int getDocWidth() {
-        return docWidth;
-    }
-    public int getDocHeight() {
-        return docHeight;
     }
 
     private int cmToPx(float cm) {

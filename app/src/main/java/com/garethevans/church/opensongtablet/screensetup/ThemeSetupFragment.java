@@ -91,10 +91,6 @@ public class ThemeSetupFragment extends Fragment {
         }
         myTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         switch (myTheme) {
-            case "dark":
-            default:
-                myView.themeName.setText(themes.get(0));
-                break;
             case "light":
                 myView.themeName.setText(themes.get(1));
                 break;
@@ -103,6 +99,10 @@ public class ThemeSetupFragment extends Fragment {
                 break;
             case "custom2":
                 myView.themeName.setText(themes.get(3));
+                break;
+            case "dark":
+            default:
+                myView.themeName.setText(themes.get(0));
                 break;
         }
         myView.themeName.setAdapter(arrayAdapter);
@@ -147,6 +147,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.lyricsButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
         myView.chordsButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
         myView.capoButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
+        myView.multilingualButton.setColor(mainActivityInterface.getMyThemeColors().getMultilingualTextColor());
 
         myView.verseButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsVerseColor());
         myView.chorusButton.setColor(mainActivityInterface.getMyThemeColors().getLyricsChorusColor());
@@ -163,6 +164,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.presoInfoButton.setColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         myView.presoAlertButton.setColor(mainActivityInterface.getMyThemeColors().getPresoAlertColor());
         myView.presoCapoButton.setColor(mainActivityInterface.getMyThemeColors().getPresoCapoColor());
+        myView.presoMultilingualButton.setColor(mainActivityInterface.getMyThemeColors().getPresoMultilingualColor());
         myView.presoShadowButton.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
 
         myView.metronomeButton.setColor(mainActivityInterface.getMyThemeColors().getMetronomeColor());
@@ -184,6 +186,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.presoInfoButton.setOnClickListener(v -> chooseColor("presoInfoFontColor"));
         myView.chordsButton.setOnClickListener(v-> chooseColor("lyricsChordsColor"));
         myView.capoButton.setOnClickListener(v-> chooseColor("lyricsCapoColor"));
+        myView.multilingualButton.setOnClickListener(v -> chooseColor("multilingualTextColor"));
         myView.pageButton.setOnClickListener(v-> chooseColor("lyricsBackgroundColor"));
         myView.verseButton.setOnClickListener(v-> chooseColor("lyricsVerseColor"));
         myView.chorusButton.setOnClickListener(v-> chooseColor("lyricsChorusColor"));
@@ -203,6 +206,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
         myView.presoCapoButton.setOnClickListener(v -> chooseColor("presoCapoColor"));
+        myView.presoMultilingualButton.setOnClickListener(v -> chooseColor("presoMultilingualColor"));
         myView.presoShadowButton.setOnClickListener(v -> chooseColor("presoShadowColor"));
         myView.resetTheme.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("resetColors",myView.themeName.getText().toString() + ": "+reset_colours_string,null,"themeSetupFragment",this,null));
         myView.abctextButton.setOnClickListener(v -> chooseColor("abcPopupTextColor"));

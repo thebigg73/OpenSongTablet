@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private BottomSheetChooseColorBinding myView;
+    private final String TAG = "ChooseColorBottomSheet";
 
     private String newColorHex, alphaHex, redHex, greenHex, blueHex, themePrefix,
             lyrics_color_string="", chord_color_string="", capo_chords_string="",
@@ -37,7 +39,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             custom_background_string="", comment_background_string="", info_text_string="",
             text_string="", chords_string="", metronome_string="", page_buttons_string="",
             alert_string="", block_text_shadow_string="", highlight_string="", title_string="",
-            hot_zone_string="";
+            hot_zone_string="", multilingual_color_string="";
     private final String whichColor, fragName;
     private int newColorInt;
     private boolean sliding = false, typing = false;
@@ -106,6 +108,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             lyrics_color_string = getString(R.string.lyrics_color);
+            multilingual_color_string = getString(R.string.multilingual);
             chord_color_string = getString(R.string.chord_color);
             capo_chords_string = getString(R.string.capo_chords);
             background_string = getString(R.string.background);
@@ -201,8 +204,10 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private void setupOriginalColor() {
         themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme", "dark");
 
+        Log.d(TAG,"themePrefix:"+themePrefix);
         // Load the chosen colours up
         mainActivityInterface.getMyThemeColors().getDefaultColors();
+        Log.d(TAG,"whichColor:"+whichColor);
         int oldColorInt;
         try {
             if (whichColor.equals("backgroundColor")) {
@@ -373,6 +378,10 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         switch (whichColor) {
             case "lyricsTextColor":
                 title = lyrics_color_string;
+                break;
+            case "multilingualTextColor":
+            case "presoMultilingualColor":
+                title = multilingual_color_string;
                 break;
             case "lyricsChordsColor":
                 title = chord_color_string;

@@ -76,6 +76,7 @@ public class DisplayScalingFragment extends Fragment {
         setSliderValue(myView.scaleChords,"scaleChords",0.8f,100,"%");
         setSliderValue(myView.scaleComments,"scaleComments",0.8f,100,"%");
         setSliderValue(myView.scaleTabs,"scaleTabs",0.8f,100,"%");
+        setSliderValue(myView.scaleMultilingual,"scaleMultilingual",0.8f,100,"%");
         setSliderValue(myView.scaleStage,"stageModeScale", 0.8f,100,"%");
 
         myView.manualFontSize.setLabelFormatter(value -> ((int)value)+"sp");
@@ -85,6 +86,7 @@ public class DisplayScalingFragment extends Fragment {
         myView.scaleChords.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleComments.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleTabs.setLabelFormatter(value -> ((int)value)+"%");
+        myView.scaleMultilingual.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleStage.setLabelFormatter(value -> ((int)value)+"%");
 
         visibilityByBoolean(myView.manualFontSize,!myView.useAutoscale.getChecked() ||
@@ -219,6 +221,7 @@ public class DisplayScalingFragment extends Fragment {
         setSliderListeners(myView.scaleChords, "scaleChords", 100f, "%");
         setSliderListeners(myView.scaleComments, "scaleComments", 100f, "%");
         setSliderListeners(myView.scaleTabs, "scaleTabs", 100f, "%");
+        setSliderListeners(myView.scaleMultilingual, "scaleMultilingual", 100f, "%");
         setSliderListeners(myView.scaleStage, "stageModeScale", 100f,"%");
     }
 

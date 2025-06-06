@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DefaultView"
+<LinearLayout style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -164,6 +164,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tabs_scale"
+                android:valueFrom="0"
+                android:valueTo="200"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/scaleMultilingual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/multilingual_scale"
                 android:valueFrom="0"
                 android:valueTo="200"
                 android:layout_marginTop="16dp"

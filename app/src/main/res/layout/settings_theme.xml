@@ -81,6 +81,12 @@
                     android:text="@string/capo_chords"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/multilingualButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/multilingual"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/pageButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,6 +200,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/capo"/>
+
+                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
+                    android:id="@+id/presoMultilingualButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/multilingual"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/presoInfoButton"

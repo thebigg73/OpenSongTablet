@@ -50,6 +50,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.UUID;
@@ -93,7 +94,7 @@ public class ProcessSong {
     private boolean pdfPrinting;
     private boolean forceSinglePagePDF;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha, lineSpacing;
-    public float scaleChords, scaleHeadings, scaleComments, scaleTabs;
+    public float scaleChords, scaleHeadings, scaleComments, scaleMultilingual, scaleTabs;
     private String songAutoScale;
     // Stuff for resizing/scaling
     private int padding = 8, primaryScreenColumns=1;
@@ -104,9 +105,6 @@ public class ProcessSong {
     private StringBuilder htmlLyrics = new StringBuilder();
     private final String abc_on_override = "abc_on", abc_off_override = "abc_off",
             sticky_on_override = "sticky_on", sticky_off_override="sticky_off";
-    /*private int webViewCount = 0;
-    private int webViewCountSecondary = 0;
-    private int inlineAbcObjectCount = 0;*/
 
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -144,6 +142,7 @@ public class ProcessSong {
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
         scaleTabs = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleTabs",0.8f);
+        scaleMultilingual = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleMultilingual", 0.8f);
         multiLineVerseKeepCompact = mainActivityInterface.getPreferences().getMyPreferenceBoolean("multiLineVerseKeepCompact", false);
         bracketsStyle = mainActivityInterface.getPreferences().getMyPreferenceInt("bracketsStyle",Typeface.NORMAL);
         curlyBrackets = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBrackets",true);
@@ -531,6 +530,8 @@ public class ProcessSong {
             } else {
                 type = "comment";
             }
+        } else if (string.startsWith("ʡ")) {
+            type = "multilingual";
         } else {
             type = "lyric";
         }
@@ -541,7 +542,7 @@ public class ProcessSong {
         String what = "null";
         switch (thislinetype) {
             case "chord":
-                if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
+                if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("multilingual") || nextlinetype.equals("comment"))) {
                     what = "chord_then_lyric";
                 /*} else if (linenum < totallines - 1 && nextlinetype.equals("comment")) {
                     what = "chord_then_comment";*/
@@ -550,6 +551,7 @@ public class ProcessSong {
                 }
                 break;
             case "lyric":
+            case "multilingual":
                 if (!previouslinetype.equals("chord")) {
                     what = "lyric_no_chord";
                 }
@@ -825,10 +827,60 @@ public class ProcessSong {
             return "comment";
         } else if (string.startsWith("[")) {
             return "heading";
+        } else if (string.startsWith("ʡ")) {
+            return "multilingual";
         } else {
             return "lyric";
         }
     }
+
+    public String convertMultilingualSection(String sectionString) {
+        // OpenSong desktop introduced multilingual support using 'L' at the end of a section heading
+        // Check for a suitable section heading, and if so, remove the L and change every second line
+        // to be identified as a multilingual line
+        String[] possibleSectionIdentifiers = new String[] {"[VL]", "[VC]", "[VT]", "[VB]", "[VP]",
+                "[V1L]", "[V2L]", "[V3L]", "[V4L]", "[V5L]", "[V6L]", "[V7L]", "[V8L]", "[V9L]",
+                "[C1L]", "[C2L]", "[C3L]", "[C4L]", "[C5L]", "[C6L]", "[C7L]", "[C8L]", "[C9L]",
+                "[T1L]", "[T2L]", "[T3L]", "[T4L]", "[T5L]", "[T6L]", "[T7L]", "[T8L]", "[T9L]",
+                "[B1L]", "[B2L]", "[B3L]", "[B4L]", "[B5L]", "[B6L]", "[B7L]", "[B8L]", "[B9L]",
+                "[P1L]", "[P2L]", "[P3L]", "[P4L]", "[P5L]", "[P6L]", "[P7L]", "[P8L]", "[P9L]"};
+        if (sectionString.contains("[") && sectionString.contains("]")) {
+            int start = sectionString.indexOf("[");
+            int end = sectionString.indexOf("]",start);
+            if (start>-1 && end>start) {
+                String sectionIdentifier = sectionString.substring(start, end + 1);
+                if (Arrays.asList(possibleSectionIdentifiers).contains(sectionIdentifier)) {
+                    String replacementSectionIdentifier = sectionIdentifier.replace("L]", "]");
+                    sectionString = sectionString.replace(sectionIdentifier,replacementSectionIdentifier);
+                    // Now go through each line and add a format identifier to every second lyric line
+                    sectionString = reformatWithMultilingualLineIdentifier(sectionString).toString();
+                }
+            }
+        }
+        return sectionString;
+    }
+
+    private StringBuilder reformatWithMultilingualLineIdentifier(String sectionString) {
+        String[] lines = sectionString.split("\n");
+        StringBuilder newlines = new StringBuilder();
+        int count = 0;
+        for (String line : lines) {
+            if (line.startsWith(" ")) {
+                // This is a lyric line
+                count ++;
+                if (count % 2 == 0) {
+                    // Even number, so the second line, add identifier
+                    newlines.append("ʡ").append(line.trim()).append("\n");
+                } else {
+                    newlines.append(line).append("\n");
+                }
+            } else {
+                newlines.append(line).append("\n");
+            }
+        }
+        return newlines;
+    }
+
 
     // This is used for preparing the lyrics as views
     // When processing the lyrics, chords+lyrics or chords+comments or multiple chords+chords are processed
@@ -837,6 +889,7 @@ public class ProcessSong {
     public String trimOutLineIdentifiers(Song thisSong, String linetype, String string) {
         switch (linetype) {
             case "heading":
+            case "heading_multilingual":
                 string = beautifyHeading(string);
                 thisSong.getSongSectionHeadings().add(string);
                 break;
@@ -850,6 +903,9 @@ public class ProcessSong {
                 break;
             case "abc":
                 string = string.replace(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator(),"");
+                break;
+            case "multilingual":
+                string = string.replace("ʡ","");
                 break;
             case "lyric":
             default:
@@ -1029,7 +1085,7 @@ public class ProcessSong {
         }
     }
 
-    private TableLayout groupTable(Song thisSong, String string, int lyricColor, int chordColor, int capoColor,
+    private TableLayout groupTable(Song thisSong, String string, int lyricColor, int multilingualColor, int chordColor, int capoColor,
                                    int highlightChordColor, boolean presentation, boolean boldText, boolean asPDF) {
         TableLayout tableLayout = newTableLayout();
         tableLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -1133,7 +1189,7 @@ public class ProcessSong {
 
             Typeface typeface = getTypeface(presentation && !performancePresentation, linetype);
             float size = getFontSize(linetype);
-            int color = getFontColor(linetype, lyricColor, chordColor, capoColor);
+            int color = getFontColor(linetype, lyricColor, multilingualColor, chordColor, capoColor);
             int startpos = 0;
             for (int endpos : pos) {
                 if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
@@ -1233,6 +1289,7 @@ public class ProcessSong {
                             }
                             break;
                         case "lyric":
+                        case "multilingual":
                             if (displayLyrics) {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
@@ -1250,7 +1307,11 @@ public class ProcessSong {
                                     textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
                                 }
                                 textView.setText(spannableString);
-                                htmlLyrics.append("<td class=\"lyric\">").append(str).append("</td>");
+                                if (linetype.equals("lyric")) {
+                                    htmlLyrics.append("<td class=\"lyric\">").append(str).append("</td>");
+                                } else {
+                                    htmlLyrics.append("<td class=\"multilingual\">").append(str).append("</td>");
+                                }
                             } else {
                                 textView = null;
                             }
@@ -1452,6 +1513,7 @@ public class ProcessSong {
                             }
                             break;
                         case "lyric":
+                        case "multilingual":
                             if (displayLyrics) {
                                 str = str.replace("_","");
                                 str = str.replaceAll("[|]"," ");
@@ -1459,7 +1521,11 @@ public class ProcessSong {
                                     // IV - Remove typical word splits, white space and beautify!
                                     str = fixLyricsOnlySpace(str);
                                 }
-                                text.append("<td class=\"lyric\">").append(str).append("</td>");
+                                if (linetype.equals("lyric")) {
+                                    text.append("<td class=\"lyric\">").append(str).append("</td>");
+                                } else {
+                                    text.append("<td class=\"multilingual\">").append(str).append("</td>");
+                                }
                             }
                             break;
                         default:
@@ -1708,7 +1774,7 @@ public class ProcessSong {
     }
 
     private void fixNonMatchingPresentationOrder(Song song) {
-        // If the presentation order contains extended names(Verse 1), but the song contains shortened ([V1])
+        // If the presentation order contains extended names (Verse 1), but the song contains shortened ([V1])
         // Try to fix the presentation order
         if (song.getPresentationorder()==null) {
             song.setPresentationorder("");
@@ -1743,7 +1809,7 @@ public class ProcessSong {
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
-        // If the presentation order contains extended names(Verse 1), but the song contains shortened ([V1])
+        // If the presentation order contains extended names (Verse 1), but the song contains shortened ([V1])
         // Try to fix the presentation order
         fixNonMatchingPresentationOrder(song);
         ArrayList<String> newSections = new ArrayList<>();
@@ -1864,7 +1930,7 @@ public class ProcessSong {
                     // Check we aren't filtering this out!
                     boolean keepSection = true;
                     try {
-                        String section = song.getPresoOrderSongSections().get(a);
+                        //String section = song.getPresoOrderSongSections().get(a);
                         String header = song.getPresoOrderSongHeadings().get(a);
                         if (header != null && header.startsWith("*") && header.contains(":")) {
                             header = header.substring(0, header.indexOf(":")) + ":";
@@ -1967,7 +2033,7 @@ public class ProcessSong {
             if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
                 textView.setText(highlightChords(str, highlightChordColor));
                 htmlLyrics.append("<div class=\"chord\">").append(str).append("</div>\n");
-            } else if (linetype.equals("lyric")) {
+            } else if (linetype.equals("lyric") || linetype.equals("multilingual")) {
                 // Just set the text
                 str = str.replaceAll("[|_]", " ");
                 if (applyFixExcessSpaces) {
@@ -1975,7 +2041,11 @@ public class ProcessSong {
                 }
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
-                htmlLyrics.append("<div class=\"lyric\">").append(str).append("</div>\n");
+                if (linetype.equals("lyric")) {
+                    htmlLyrics.append("<div class=\"lyric\">").append(str).append("</div>\n");
+                } else {
+                    htmlLyrics.append("<div class=\"multilingual\">").append(str).append("</div>\n");
+                }
             } else {
                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                 textView.setText(spannableString);
@@ -2013,10 +2083,14 @@ public class ProcessSong {
         } else {
             if (linetype.equals("chord")) {
                 text.append("<div class=\"chord\">").append(str).append("</div>\n");
-            } else if (linetype.equals("lyric")) {
+            } else if (linetype.equals("lyric") || linetype.equals("multilingual")) {
                 // Just set the text
                 str = str.replaceAll("[|_]", "&nbsp;");
-                text.append("<div class=\"lyric\">").append(str).append("</div>\n");
+                if (linetype.equals("lyric")) {
+                    text.append("<div class=\"lyric\">").append(str).append("</div>\n");
+                } else {
+                    text.append("<div class=\"multilingual\">").append(str).append("</div>\n");
+                }
             } else {
                 switch (linetype) {
                     case "comment":
@@ -2231,10 +2305,16 @@ public class ProcessSong {
                         sections[x] += line + "\n";
                     }
 
+                    // Check for multilingual lines (section heading ends with "L]");
+                    sections[x] = convertMultilingualSection(sections[x]);
+
                     // Add to the array, split by the section split
                     Collections.addAll(songSections, sections[x].split("║"));
 
                 } else {
+                    // Check for multilingual lines (section heading ends with "L]");
+                    sections[x] = convertMultilingualSection(sections[x]);
+
                     // Add to the array
                     songSections.add(sections[x]);
                 }
@@ -2514,11 +2594,13 @@ public class ProcessSong {
                             float size = getFontSize(linetype);
                             if (!asPDF && (!presentation || performancePresentation)) {
                                 textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
-                                        getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                        getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getMultilingualTextColor(),
+                                        mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
                             } else if (asPDF) {
                                 textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
-                                        getPdfTextColor(), mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
+                                        getPdfTextColor(),mainActivityInterface.getMyThemeColors().getPdfMultilingualColor(),
+                                        mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
                                         mainActivityInterface.getMyThemeColors().getPdfCapoColor());
                             }
 
@@ -2527,6 +2609,7 @@ public class ProcessSong {
                                 if (asPDF) {
                                     linearLayout.addView(groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getPdfTextColor(),
+                                            mainActivityInterface.getMyThemeColors().getPdfMultilingualColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getPdfHighlightChordColor(),
@@ -2534,6 +2617,7 @@ public class ProcessSong {
                                 } else if (presentation && !performancePresentation) {
                                     linearLayout.addView(groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                            mainActivityInterface.getMyThemeColors().getPresoMultilingualColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoChordColor(),
                                             mainActivityInterface.getMyThemeColors().getPresoCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
@@ -2541,6 +2625,7 @@ public class ProcessSong {
                                 } else {
                                     TableLayout tl = groupTable(song, line,
                                             mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
+                                            mainActivityInterface.getMyThemeColors().getMultilingualTextColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                             mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
@@ -2692,13 +2777,16 @@ public class ProcessSong {
         return mainActivityInterface.getMyFonts().getLyricFont();
     }
 
-    private int getFontColor(String string, int lyricColor, int chordColor, int capoColor) {
-        if (string.equals("chord")) {
-            return chordColor;
-        } else if (string.equals("capoline")) {
-            return capoColor;
-        } else {
-            return lyricColor;
+    private int getFontColor(String string, int lyricColor, int multilingualColor, int chordColor, int capoColor) {
+        switch (string) {
+            case "chord":
+                return chordColor;
+            case "capoline":
+                return capoColor;
+            case "multilingual":
+                return multilingualColor;
+            default:
+                return lyricColor;
         }
     }
 
@@ -2720,6 +2808,9 @@ public class ProcessSong {
                 break;
             case "heading":
                 f = defFontSize * scaleHeadings;
+                break;
+            case "multilingual":
+                f = defFontSize * scaleMultilingual;
                 break;
         }
         return f;

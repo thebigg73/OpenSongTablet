@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -15,6 +16,7 @@ public class ThemeColors {
     // Set the colours from preferences
     private boolean invertPDF;
     private int lyricsTextColor;
+    private int multilingualTextColor;
     private int lyricsBackgroundColor;
     private int lyricsCapoColor;
     private int lyricsVerseColor;
@@ -26,6 +28,7 @@ public class ThemeColors {
     private int lyricsChordsColor;
     private int lyricsCustomColor;
     private int presoFontColor;
+    private int presoMultilingualColor;
     private int presoChordColor;
     private int presoInfoFontColor;
     private int presoAlertColor;
@@ -46,7 +49,7 @@ public class ThemeColors {
     private int highlightChordColor;
     private int highlightHeadingColor;
     private int hotZoneColor;
-    private int pdfTextColor, pdfCapoColor, pdfBackgroundColor, pdfVerseColor, pdfChorusColor,
+    private int pdfTextColor, pdfMultilingualColor, pdfCapoColor, pdfBackgroundColor, pdfVerseColor, pdfChorusColor,
             pdfBridgeColor, pdfCommentColor, pdfPreChorusColor, pdfTagColor, pdfChordsColor,
             pdfCustomColor, pdfHighlightChordColor, pdfHighlightHeadingColor;
     private int abcPopupColor, abcPopupTextColor;
@@ -66,6 +69,9 @@ public class ThemeColors {
     }
     public void setLyricsTextColor(int i) {
         this.lyricsTextColor = i;
+    }
+    public void setMultilingualTextColor(int i) {
+        this.multilingualTextColor = i;
     }
     public void setLyricsBackgroundColor(int i) {
         this.lyricsBackgroundColor = i;
@@ -99,6 +105,9 @@ public class ThemeColors {
     }
     public void setPresoFontColor(int i) {
         this.presoFontColor = i;
+    }
+    public void setPresoMultilingualColor(int i) {
+        this.presoMultilingualColor = i;
     }
     public void setPresoChordColor(int i) {
         this.presoChordColor = i;
@@ -159,6 +168,9 @@ public class ThemeColors {
     public int getLyricsTextColor() {
         return lyricsTextColor;
     }
+    public int getMultilingualTextColor() {
+        return multilingualTextColor;
+    }
     public int getLyricsBackgroundColor() {
         return lyricsBackgroundColor;
     }
@@ -191,6 +203,9 @@ public class ThemeColors {
     }
     public int getPresoFontColor() {
         return presoFontColor;
+    }
+    public int getPresoMultilingualColor() {
+        return presoMultilingualColor;
     }
     public int getPresoChordColor() {
         return presoChordColor;
@@ -262,10 +277,6 @@ public class ThemeColors {
     public void getDefaultColors() {
         themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         switch (themeName) {
-            case "dark":
-            default:
-                setThemeDark();
-                break;
             case "light":
                 setThemeLight();
                 break;
@@ -274,6 +285,10 @@ public class ThemeColors {
                 break;
             case "custom2":
                 setThemeCustom2();
+                break;
+            case "dark":
+            default:
+                setThemeDark();
                 break;
         }
         // Update the theme colours for the PDF/Print outputs when exporting
@@ -288,10 +303,6 @@ public class ThemeColors {
             mainActivityInterface.getPreferences().setMyPreferenceString("pdfTheme",pdfTheme);
         }
         switch (pdfTheme) {
-            case "default":
-            default:
-                setPDFThemeDefault();
-                break;
             case "dark":
                 setPDFThemeDark();
                 break;
@@ -303,6 +314,10 @@ public class ThemeColors {
                 break;
             case "custom2":
                 setPDFThemeCustom2();
+                break;
+            case "default":
+            default:
+                setPDFThemeDefault();
                 break;
         }
     }
@@ -324,6 +339,7 @@ public class ThemeColors {
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoHighlightChordColor",   transparent);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoHighlightHeadingColor", transparent);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoFontColor",             white);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoMultilingualColor",     vlightgrey);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoChordColor",            yellow);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"presoInfoFontColor",         white);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"hotZoneColor",               transparent);
@@ -333,6 +349,7 @@ public class ThemeColors {
             case "dark_":
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          true);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        white);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"multilingualTextColor",  vlightgrey);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChorusColor",      vdarkblue);
@@ -350,6 +367,7 @@ public class ThemeColors {
             case "light_":
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          false);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        black);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"multilingualTextColor",  grey);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChorusColor",      vlightpurple);
@@ -367,6 +385,7 @@ public class ThemeColors {
             case "custom1_":
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          true);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        white);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"multilingualTextColor",  vlightgrey);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       black);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChorusColor",      black);
@@ -384,6 +403,7 @@ public class ThemeColors {
             case "custom2_":
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(theme+"invertPDF",          false);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsTextColor",        black);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"multilingualTextColor",  grey);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsBackgroundColor",  white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsVerseColor",       white);
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"lyricsChorusColor",      white);
@@ -410,6 +430,7 @@ public class ThemeColors {
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_extraInfoBgColor",           pageButtonColor));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_extraInfoTextColor",       white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsTextColor",             white));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_multilingualTextColor", vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCapoColor",             red));
         setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsBackgroundColor", black));
         setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsVerseColor",           black));
@@ -421,6 +442,7 @@ public class ThemeColors {
         setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsChordsColor",         yellow));
         setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCustomColor",         vdarkyellow));
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoFontColor",               white));
+        setPresoMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoMultilingualColor", vlightgrey));
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoChordColor",             yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoInfoFontColor",       white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_presoAlertColor",             red));
@@ -441,6 +463,7 @@ public class ThemeColors {
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_extraInfoBgColor",           pageButtonColor));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_extraInfoTextColor",       white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsTextColor",             black));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_multilingualTextColor", grey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCapoColor",             red));
         setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsBackgroundColor", white));
         setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsVerseColor",           white));
@@ -452,6 +475,7 @@ public class ThemeColors {
         setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsChordsColor",         darkblue));
         setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCustomColor",         lightishcyan));
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoFontColor",               white));
+        setPresoMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoMultilingualColor", vlightgrey));
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoChordColor",             yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoInfoFontColor",       white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_presoAlertColor",             red));
@@ -472,6 +496,7 @@ public class ThemeColors {
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_extraInfoBgColor",         pageButtonColor));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_extraInfoTextColor",     white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsTextColor",           white));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_multilingualTextColor",vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCapoColor",           red));
         setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsBackgroundColor",black));
         setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsVerseColor",         black));
@@ -483,6 +508,7 @@ public class ThemeColors {
         setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsChordsColor",       yellow));
         setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCustomColor",       black));
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoFontColor",             white));
+        setPresoMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoMultilingualColor",vlightgrey));
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoChordColor",           yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoInfoFontColor",     white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_presoAlertColor",           red));
@@ -503,6 +529,7 @@ public class ThemeColors {
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_extraInfoBgColor",         pageButtonColor));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_extraInfoTextColor",     white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsTextColor",           black));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_multilingualTextColor",grey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCapoColor",           red));
         setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsBackgroundColor",white));
         setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsVerseColor",         white));
@@ -514,6 +541,7 @@ public class ThemeColors {
         setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsChordsColor",       darkblue));
         setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCustomColor",       white));
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoFontColor",             white));
+        setPresoMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoMultilingualColor",vlightgrey));
         setPresoChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoChordColor",           yellow));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoInfoFontColor",     white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_presoAlertColor",           red));
@@ -534,6 +562,9 @@ public class ThemeColors {
     }
     public int getPdfTextColor() {
         return pdfTextColor;
+    }
+    public int getPdfMultilingualColor() {
+        return pdfMultilingualColor;
     }
     public int getPdfCapoColor() {
         return pdfCapoColor;
@@ -573,6 +604,9 @@ public class ThemeColors {
     }
     public void setPDFTextColor(int i) {
         this.pdfTextColor = i;
+    }
+    public void setPDFMultilingualColor(int i) {
+        this.pdfMultilingualColor = i;
     }
     public void setPDFCapoColor(int i) {
         this.pdfCapoColor = i;
@@ -615,6 +649,7 @@ public class ThemeColors {
     private void setPDFThemeDefault() {
         setPDFTextColor(black);
         setPDFCapoColor(grey);
+        setPDFMultilingualColor(grey);
         setPDFBackgroundColor(white);
         setPDFVerseColor(white);
         setPDFChorusColor(white);
@@ -629,6 +664,7 @@ public class ThemeColors {
     }
     private void setPDFThemeDark() {
         setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsTextColor",             white));
+        setPDFMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_multilingualTextColor",vlightgrey));
         setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCapoColor",             red));
         setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsBackgroundColor", black));
         setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsVerseColor",           black));
@@ -644,6 +680,7 @@ public class ThemeColors {
     }
     private void setPDFThemeLight() {
         setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsTextColor",             black));
+        setPDFMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_multilingualTextColor",grey));
         setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCapoColor",             red));
         setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsBackgroundColor", white));
         setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsVerseColor",           white));
@@ -659,6 +696,7 @@ public class ThemeColors {
     }
     private void setPDFThemeCustom1() {
         setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsTextColor",             white));
+        setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_multilingualTextColor",vlightgrey));
         setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCapoColor",             red));
         setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsBackgroundColor", black));
         setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsVerseColor",           black));
@@ -674,6 +712,7 @@ public class ThemeColors {
     }
     private void setPDFThemeCustom2() {
         setPDFTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsTextColor",             black));
+        setPDFMultilingualColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_multilingualTextColor",grey));
         setPDFCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCapoColor",             red));
         setPDFBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsBackgroundColor", white));
         setPDFVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsVerseColor",           white));
@@ -689,10 +728,10 @@ public class ThemeColors {
     }
 
     public int getValue(String what) {
+        Log.d("ThemeColors","getValue("+what+")");
         switch(what) {
-            case "lyricsTextColor":
-            default:
-                return getLyricsTextColor();
+            case "multilingualTextColor":
+                return getMultilingualTextColor();
             case "lyricsBackgroundColor":
                 return getLyricsBackgroundColor();
             case "lyricsCapoColor":
@@ -715,6 +754,8 @@ public class ThemeColors {
                 return getLyricsCustomColor();
             case "presoFontColor":
                 return getPresoFontColor();
+            case "presoMultilingualColor":
+                return getPresoMultilingualColor();
             case "presoChordColor":
                 return getPresoChordColor();
             case "presoInfoFontColor":
@@ -747,6 +788,9 @@ public class ThemeColors {
                 return abcPopupColor;
             case "abcPopupTextColor":
                 return abcPopupTextColor;
+            case "lyricsTextColor":
+            default:
+                return getLyricsTextColor();
         }
     }
     private String which;
@@ -833,10 +877,6 @@ public class ThemeColors {
             case "vlightpurple":
                 color = vlightpurple;
                 break;
-            case "white":
-            default:
-                color = white;
-                break;
             case "yellow":
                 color = yellow;
                 break;
@@ -848,6 +888,10 @@ public class ThemeColors {
                 break;
             case "vvlightgrey":
                 color = vvlightgrey;
+                break;
+            case "white":
+            default:
+                color = white;
                 break;
         }
         return color;
