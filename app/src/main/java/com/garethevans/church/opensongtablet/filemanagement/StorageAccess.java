@@ -897,18 +897,12 @@ public class StorageAccess {
             return true;
         }
     }
-
     public long getLastModifiedDate(Uri uri) {
-        Log.d(TAG,"getLastModifiedDate()");
-        Log.d(TAG,"uriExists("+uri+"):"+uriExists(uri));
         if (uri!=null && uriExists(uri)) {
             Log.d(TAG,"about to process getLastModifed()");
             if (lollipopOrLater()) {
-                Log.d(TAG,"lollipopOrLater()");
                 DocumentFile df = DocumentFile.fromSingleUri(c,uri);
-                Log.d(TAG,"df:"+df);
                 if (df != null) {
-                    Log.d(TAG,"getting this far");
                     return df.lastModified();
                 }
             }
@@ -1094,7 +1088,7 @@ public class StorageAccess {
                 toCheck = ".jpg.jpeg.gif.bmp.pdf.png";
                 break;
             case "chordpro":
-                toCheck = ".cho.crd.chopro.pro";
+                toCheck = ".cho.crd.chopro.pro.chordpro";
                 break;
             case "onsong":
                 toCheck = ".onsong";
