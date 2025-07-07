@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiClockBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.Slider;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -29,10 +29,11 @@ public class MidiClockFragment extends Fragment {
     // This class allows the user to switch on master MIDI clock send
     // It also allows a MIDI click track to be sent
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MidiClockFragment";
     private MainActivityInterface mainActivityInterface;
     private String midi_clock_string="", midi_clock_webpage="", test_string="",
-            stop_string="", no_device_string="", start_string;
+            stop_string="", no_device_string="", start_string="", on_string="";
     private Drawable play_icon, stop_icon;
     private SettingsMidiClockBinding myView;
     private ScheduledExecutorService midiTestExecutor;
@@ -92,6 +93,7 @@ public class MidiClockFragment extends Fragment {
             test_string = getString(R.string.midi_test);
             stop_string = getString(R.string.stop);
             start_string = getString(R.string.start);
+            on_string = getString(R.string.on);
             play_icon = AppCompatResources.getDrawable(getContext(),R.drawable.play);
             stop_icon = AppCompatResources.getDrawable(getContext(),R.drawable.stop);
             no_device_string = getContext().getString(R.string.connections_no_devices);
@@ -158,6 +160,10 @@ public class MidiClockFragment extends Fragment {
                 return String.valueOf((int)value);
             }
         });
+        // Get the max bars required
+        myView.maxBars.setValue(mainActivityInterface.getMetronome().getBarsRequired());
+        myView.maxBars.setHint(getMaxBars(mainActivityInterface.getMetronome().getBarsRequired()));
+
         myView.midiClickTest.setIcon(play_icon);
     }
 
@@ -182,16 +188,13 @@ public class MidiClockFragment extends Fragment {
             }
             myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || mainActivityInterface.getMidi().getMidiClockSend() ? View.VISIBLE:View.GONE);
         });
-        myView.midiClockShortBurst.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                mainActivityInterface.getMidi().setMidiClockShortBurst(b);
-                if (b) {
-                    myView.midiClockSend.setChecked(false);
-                    mainActivityInterface.getMidi().sendMidiClockShortBurst();
-                }
-                myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || b ? View.VISIBLE:View.GONE);
+        myView.midiClockShortBurst.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getMidi().setMidiClockShortBurst(b);
+            if (b) {
+                myView.midiClockSend.setChecked(false);
+                mainActivityInterface.getMidi().sendMidiClockShortBurst();
             }
+            myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || b ? View.VISIBLE:View.GONE);
         });
         myView.midiClockLatency.addOnChangeListener((slider, value, fromUser) -> {
             mainActivityInterface.getMidi().setMidiClockLatency((int)value);
@@ -235,7 +238,37 @@ public class MidiClockFragment extends Fragment {
                         stopTest();
                     }
                 });
+        myView.maxBars.addOnSliderTouchListener(new MySliderTouchListener());
+        myView.maxBars.addOnChangeListener(new MySliderChangeListener());
 
+    }
+
+    private class MySliderTouchListener implements Slider.OnSliderTouchListener {
+
+        @Override
+        public void onStartTrackingTouch(@NonNull Slider slider) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(@NonNull Slider slider) {
+            int bars = (int) slider.getValue();
+            mainActivityInterface.getMetronome().setBarsRequired(bars);
+        }
+
+    }
+    private class MySliderChangeListener implements Slider.OnChangeListener {
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            myView.maxBars.setHint(getMaxBars((int)value));
+        }
+    }
+
+    private String getMaxBars(int bars) {
+        if (bars==0) {
+            return on_string;
+        } else {
+            return String.valueOf(bars);
+        }
     }
 
     private void stopTest() {

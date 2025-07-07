@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="@string/volume"
+                    android:hint="@string/metronome_duration"
                     android:text="@string/metronome_duration"
                     android:value="0"
                     android:valueFrom="0"

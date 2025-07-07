@@ -49,6 +49,17 @@
                 android:text="@string/midi_click_track"
                 android:hint="@string/midi_click_track_info" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
+                android:id="@+id/maxBars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/metronome_duration"
+                android:text="@string/metronome_duration"
+                android:value="0"
+                android:valueFrom="0"
+                android:valueTo="64" />
+
             <LinearLayout
                 android:id="@+id/midiClickTrackLayout"
                 android:layout_width="match_parent"

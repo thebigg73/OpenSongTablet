@@ -126,7 +126,7 @@
                 android:text="@string/midi_input_channel_pedal"
                 android:valueFrom="1"
                 android:valueTo="16"
-                app:stepSize="1"
+                android:stepSize="1"
                 app:adjustable="true"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
@@ -137,7 +137,7 @@
                 android:text="@string/midi_input_channel_song"
                 android:valueFrom="1"
                 android:valueTo="16"
-                app:stepSize="1"
+                android:stepSize="1"
                 app:adjustable="true"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
@@ -177,7 +177,7 @@
                 android:text="@string/midi_delay"
                 android:valueFrom="0"
                 android:valueTo="1000"
-                app:stepSize="100"
+                android:stepSize="100"
                 android:value="100"
                 app:adjustable="true"/>
         </LinearLayout>

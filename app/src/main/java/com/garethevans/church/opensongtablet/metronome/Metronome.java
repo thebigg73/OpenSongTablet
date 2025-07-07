@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.metronome;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -46,12 +47,13 @@ public class Metronome {
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f, metronomeTickVol = 1f,
             metronomeTockVol = 1f;
-    private boolean audioMetronome = true, visualMetronome = false, isRunningVisual = false, isRunningAudio, validTimeSig = false,
+    private boolean audioMetronome = true, visualMetronome = false, isRunningVisual = false,
+            isRunningAudio = false, isRunningMidiClick = false, validTimeSig = false,
             validTempo = false, tickPlayerReady, tockPlayerReady, metronomeAutoStart;
     private String tickSound, tockSound, metronomePan;
     private SoundPool soundPool;
-    private Timer metronomeTimer, visualTimer;
-    private TimerTask metronomeTimerTask, visualTimerTask;
+    private Timer metronomeTimer, visualTimer, midiClickTimer;
+    private TimerTask metronomeTimerTask, visualTimerTask, midiClickTimerTask;
     private final Handler metronomeTimerHandler = new Handler();
     private final Handler visualTimerHandler = new Handler();
     private Handler tickHandler, tockHandler;
@@ -81,6 +83,7 @@ public class Metronome {
                 }
             }
             try {
+                Log.d(TAG,"sendMidiTick()");
                 mainActivityInterface.getMidi().sendMidiTick();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -96,6 +99,7 @@ public class Metronome {
                 }
             }
             try {
+                Log.d(TAG,"sendMidiTock()");
                 mainActivityInterface.getMidi().sendMidiTock();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -141,6 +145,7 @@ public class Metronome {
     public void stopMetronome() {
         isRunningAudio = false;
         isRunningVisual = false;
+        isRunningMidiClick = false;
         stopTimers(false);
 
         // If we have change the metronome values (new song loaded), start again
@@ -527,7 +532,7 @@ public class Metronome {
         return validTempo && validTimeSig;
     }
     public boolean getIsRunning() {
-        return isRunningAudio || isRunningVisual;
+        return isRunningAudio || isRunningVisual || isRunningMidiClick;
     }
     public void checkPlayersReady() {
         // Called when the mediaPlayer are prepared
@@ -541,6 +546,10 @@ public class Metronome {
             if (visualMetronome) {
                 timerVisual();
             }
+            if (!audioMetronome && !visualMetronome) {
+                timerClickTrack();
+            }
+
             if (!audioMetronome && !visualMetronome && !mainActivityInterface.getMidi().getMidiClickTrackSend()) {
                 stopMetronome();
             }
@@ -548,6 +557,7 @@ public class Metronome {
     }
 
     // The metronome timers and runnables
+    @SuppressLint("DiscouragedApi")
     private void timerMetronome() {
         isRunningAudio = true;
         metronomeTimer = new Timer();
@@ -630,19 +640,37 @@ public class Metronome {
                         final int thisBeat = beatVisual;
                         if (tickBeats.contains(beatVisual)) {
                             try {
+                                if (!audioMetronome) {
+                                    Log.d(TAG,"sendMidiTick()");
+                                    mainActivityInterface.getMidi().sendMidiTick();
+                                }
                                 mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColor, bufferFix);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         } else {
                             try {
+                                if (!audioMetronome) {
+                                    Log.d(TAG,"sendMidiTock()");
+                                    mainActivityInterface.getMidi().sendMidiTock();
+                                }
                                 mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColorDarker, bufferFix);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                         beatVisual++;
+                        if (!audioMetronome) {
+                            // Keep track of the total beats here
+                            beatsRunningTotal++;
+                        }
+
                         visualTime += beatTimeLength;
+
+                        if (beatsRequired > 0 && beatsRunningTotal > beatsRequired + 1) {
+                            // Stop the metronome (beats and visual)
+                            stopMetronome();
+                        }
                     }
                 });
             }
@@ -650,6 +678,80 @@ public class Metronome {
         visualTime = System.currentTimeMillis() + buffer;
         if (beatTimeLength>0) {
             visualTimer.scheduleAtFixedRate(visualTimerTask, 0, beatTimeLength);
+        }
+    }
+    private void timerClickTrack() {
+        // Only need to do this if the audio and visual metronomes are switched off
+        // Otherwise, they deal with this
+        if (!audioMetronome && !visualMetronome) {
+            beat = 1;
+            isRunningMidiClick = true;
+            // This timer off is runs half way through the beat to turn the flash off
+            midiClickTimer = new Timer();
+
+            // Expected time is a running total of start time + beatTimeLength each loop
+            // Build in a time buffer of 100ms and subtract the latency from this
+            // What is left is a post delay task
+            long sysTime = System.currentTimeMillis();
+            // Latency is always positive as the sysTime will always be on or after the audioTime
+            long latency = sysTime - (audioTime - buffer);
+            final long bufferFix = buffer - latency;
+
+            boolean doStop = false;
+            Log.d(TAG,"beat:"+beat + "  beats:"+beats);
+            if (beat > beats) {
+                beat = 1;
+                if (metronomeChanged) {
+                    // Normally the visual metronome does the stop
+                    // If it isn't running, stop it here
+                    doStop = true;
+                }
+            }
+
+            if (doStop) {
+                stopMetronome();
+
+            } else {
+
+                midiClickTimerTask = new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        Log.d(TAG,"beat:"+beat + "  beats:"+beats + "max required:"+beatsRequired);
+                        if (beat > beats) {
+                            beat = 1;
+                        }
+
+                        if (tickBeats.contains(beat)) {
+                            tickHandler.postDelayed(() -> {
+                                Log.d(TAG, "sendMidiTick()");
+                                mainActivityInterface.getMidi().sendMidiTick();
+                            }, bufferFix);
+
+
+                        } else {
+                            tockHandler.postDelayed(() -> {
+                                Log.d(TAG, "sendMidiTock()");
+                                mainActivityInterface.getMidi().sendMidiTock();
+                            }, bufferFix);
+                        }
+
+                        beat++;
+                        beatsRunningTotal++;
+
+                        if (beatsRequired > 0 && beatsRunningTotal > beatsRequired + 1) {
+                            // Stop the metronome (beats and visual)
+                            stopMetronome();
+                        }
+                        audioTime += beatTimeLength;
+                    }
+                };
+
+                audioTime = System.currentTimeMillis() + buffer;
+                if (beatTimeLength > 0) {
+                    midiClickTimer.scheduleAtFixedRate(midiClickTimerTask, 0, beatTimeLength);
+                }
+            }
         }
     }
 
@@ -684,12 +786,23 @@ public class Metronome {
             visualTimer.purge();
         }
 
+        // Stop the MIDI click track stuff
+        if (midiClickTimerTask!=null) {
+            midiClickTimerTask.cancel();
+            midiClickTimerTask = null;
+        }
+        if (midiClickTimer != null) {
+            midiClickTimer.cancel();
+            midiClickTimer.purge();
+        }
         if (nullTimer) {
             metronomeTimer = null;
             visualTimer = null;
+            midiClickTimer = null;
         }
         isRunningVisual = false;
         isRunningAudio = false;
+        isRunningMidiClick = false;
 
     }
 
