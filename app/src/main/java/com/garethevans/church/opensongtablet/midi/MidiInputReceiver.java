@@ -184,7 +184,7 @@ public class MidiInputReceiver extends MidiReceiver {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }
     }
@@ -198,13 +198,15 @@ public class MidiInputReceiver extends MidiReceiver {
         return receivedMessage;
     }
     private void addReceivedMessage(byte[] bytes) {
-        Log.d(TAG,"addReceivedMessage()");
-        if (receivedMessage==null) {
-            resetReceivedMessage();
-        }
+        resetReceivedMessage();
         for (byte thisByte:bytes) {
-            //Log.d(TAG,"Adding byte:"+thisByte);
-            receivedMessage.add(thisByte);
+            try {
+                receivedMessage.add(thisByte);
+            } catch (Exception | OutOfMemoryError e) {
+                receivedMessage = null;
+                resetReceivedMessage();
+                e.printStackTrace();
+            }
         }
     }
 
