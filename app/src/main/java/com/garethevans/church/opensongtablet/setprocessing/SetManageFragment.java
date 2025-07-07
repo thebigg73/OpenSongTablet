@@ -672,11 +672,13 @@ public class SetManageFragment extends Fragment {
 
             // Import ended - do this on the main UI
             mainActivityInterface.getMainHandler().post(() -> {
-                myView.progressBar.setVisibility(View.GONE);
-                mainActivityInterface.setWhattodo("pendingLoadSet");
-                mainActivityInterface.getCurrentSet().updateSetTitleView();
-                mainActivityInterface.chooseMenu(true);
-                mainActivityInterface.navHome();
+                if (myView!=null && mainActivityInterface!=null) {
+                    myView.progressBar.setVisibility(View.GONE);
+                    mainActivityInterface.setWhattodo("pendingLoadSet");
+                    mainActivityInterface.getCurrentSet().updateSetTitleView();
+                    mainActivityInterface.chooseMenu(true);
+                    mainActivityInterface.navHome();
+                }
             });
         });
     }

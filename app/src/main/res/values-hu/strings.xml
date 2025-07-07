@@ -203,7 +203,7 @@
    <string name="chorus_background">Chorus háttér</string>
    <string name="clipboard_info">Ha megtalálta az importálni kívánt dalszövegeket / akkordokat, jelölje ki őket, és kattintson a gombra másolás opciót a vágólapon.</string>
    <string name="close">Bezár</string>
-   <string name="song_select_warning_more">A SongSelect korlátozások miatt most manuálisan kell letöltenie a dalfájlt, majd importálnia kell az alkalmazásba.  A fájl letöltése után visszatér erre az oldalra, és a \\'Letöltés importálása\\' gombra kattintva importálhatja a letöltött fájlt az OpenSongApp alkalmazásba.</string>
+   <string name="song_select_warning_more">A SongSelect korlátozások miatt most manuálisan kell letöltenie a dalfájlt, majd importálnia kell az alkalmazásba.  A fájl letöltése után visszatér erre az oldalra, és a \'Letöltés importálása\' gombra kattintva importálhatja a letöltött fájlt az OpenSongApp alkalmazásba.</string>
    <string name="import_download">Letöltés importálása</string>
    <string name="color_choose">Szín-választó</string>
    <string name="column_force">Oszloptörések manuális felülírása</string>

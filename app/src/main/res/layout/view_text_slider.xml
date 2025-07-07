@@ -35,7 +35,7 @@
             android:valueFrom="0"
             android:valueTo="1"
             app:labelBehavior="gone"
-            app:stepSize="1"
+            android:stepSize="1"
             app:thumbColor="@color/colorAltSecondary"
             app:thumbRadius="8dp"
             app:trackColor="@color/colorSecondary"

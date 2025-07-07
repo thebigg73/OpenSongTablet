@@ -981,7 +981,7 @@
     <string name="song_sections_info">Sekcje znalezione w tekście są pokazane poniżej. Kliknij przyciski, aby dodać je do kolejności prezentacji.</string>
     <string name="song_sections_project">Kliknij sekcję piosenki, aby wysłać ją do połączonych wyświetlaczy</string>
     <string name="song_select_warning">Ta strona wymaga ważnego konta.  Musisz użyć przycisku pobierania na stronie internetowej SongSelect, aby uruchomić wymagane pobieranie.  Plik zostanie zaimportowany do folderu OpenSong/Songs/ po pobraniu.</string>
-    <string name="song_select_warning_more">Ze względu na ograniczenia SongSelect, będziesz musiał ręcznie pobrać plik utworu, a następnie zaimportować go do aplikacji. Po pobraniu pliku zostaniesz przeniesiony z powrotem na tę stronę i możesz kliknąć przycisk \\'Importuj pobranie\\', aby zaimportować pobrany plik do OpenSongApp.</string>
+    <string name="song_select_warning_more">Ze względu na ograniczenia SongSelect, będziesz musiał ręcznie pobrać plik utworu, a następnie zaimportować go do aplikacji. Po pobraniu pliku zostaniesz przeniesiony z powrotem na tę stronę i możesz kliknąć przycisk \'Importuj pobranie\', aby zaimportować pobrany plik do OpenSongApp.</string>
     <string name="song_specific">Konkretny utwór</string>
     <string name="song_swipe_toggle">Pozwól na przełączanie piosenek przez przeciągnięcie</string>
     <string name="song_title">Tytuł piosenki</string>

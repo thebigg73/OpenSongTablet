@@ -1472,6 +1472,39 @@ public class SetActions {
 
 
     // New logic to convert between objects and xml
+    public SetObject createSetObjectFromCurrent() {
+        // We need to parse the set and populate the object
+        SetObject setObject = new SetObject();
+        setObject.setSetName(mainActivityInterface.getCurrentSet().getSetCurrentLastName());
+        setObject.setUuid(mainActivityInterface.getCurrentSet().getUuid());
+        setObject.setLastModified(mainActivityInterface.getCurrentSet().getLastModified());
+        setObject.setNotes(mainActivityInterface.getCurrentSet().getNotes());
+        ArrayList<SetSlideGroupObject> slideGroupObjects = new ArrayList<>();
+        for (SetItemInfo setItemInfo:mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+            SetSlideGroupObject setSlideGroupObject = new SetSlideGroupObject();
+            setSlideGroupObject.setName(setItemInfo.songfilename);
+            setSlideGroupObject.setPath(setItemInfo.songfolder);
+            setSlideGroupObject.setPrefKey(setItemInfo.songkey);
+            setSlideGroupObject.setTitle(setItemInfo.songtitle);
+            if (setItemInfo.songfolder.startsWith(folderVariations)) {
+                setSlideGroupObject.setType("variation");
+            } else if (setItemInfo.songfolder.startsWith(folderNotes)) {
+                setSlideGroupObject.setType("notes");
+            } else if (setItemInfo.songfolder.startsWith(folderSlides)) {
+                setSlideGroupObject.setType("slides");
+            } else if (setItemInfo.songfolder.startsWith(folderScripture)) {
+                setSlideGroupObject.setType("scripture");
+            } else if (setItemInfo.songfolder.startsWith(folderImages)) {
+                setSlideGroupObject.setType("image");
+            } else {
+                setSlideGroupObject.setType("song");
+            }
+            slideGroupObjects.add(setSlideGroupObject);
+        }
+        setObject.setSlideGroups(slideGroupObjects);
+
+        return setObject;
+    }
     public SetObject createSetObjectFromFilename(String setFilename) {
         // We need to parse the set xml and populate the object
         SetObject setObject = new SetObject();

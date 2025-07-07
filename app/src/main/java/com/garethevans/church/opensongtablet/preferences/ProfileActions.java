@@ -191,7 +191,9 @@ public class ProfileActions {
             mainActivityInterface.getStorageAccess().updatePreferences();
             mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getMetronome().initialiseMetronome());
             mainActivityInterface.getMidi().getUpdatedPreferences();
-            mainActivityInterface.getNearbyConnections().getUpdatedPreferences();
+            mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getUpdatedPreferences();
+            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getUpdatedPreferences();
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().getUpdatedPreferences();
             mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getDisplayPrevNext().updateShow());
             mainActivityInterface.getDisplayPrevNext().updateColors();
             mainActivityInterface.getBatteryStatus().updateBatteryPrefs();
@@ -211,13 +213,6 @@ public class ProfileActions {
             mainActivityInterface.prepareStrings();
         });
     }
-
-    /*
-    // If we change load in a profile, this is called
-    public void getUpdatedPreferences() {
-    }
-
-    */
 
 
     public boolean saveProfile(Uri uri, String profileName) {

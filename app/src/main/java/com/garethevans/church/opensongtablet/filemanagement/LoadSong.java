@@ -134,7 +134,7 @@ public class LoadSong {
         }
 
         Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
-        Log.d(TAG,"thisSoing.getFolder():"+thisSong.getFolder());
+        Log.d(TAG,"thisSong.getFolder():"+thisSong.getFolder());
         if (thisSong.getFilename().equals("importUri")) {
             Log.d(TAG,"importFilename:"+mainActivityInterface.getImportFilename());
             uri = mainActivityInterface.getImportUri();

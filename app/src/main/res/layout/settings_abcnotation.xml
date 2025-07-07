@@ -85,7 +85,7 @@
                 app:infoText="@string/abc_inline_width_info"
                 android:valueFrom="280"
                 android:valueTo="720"
-                app:stepSize="10"
+                android:stepSize="10"
                 app:adjustable="true"/>
             <TableRow style="@style/DividerLine"/>
 

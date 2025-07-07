@@ -94,7 +94,7 @@
                 android:valueFrom="100"
                 android:valueTo="1200"
                 android:value="400"
-                app:stepSize="100"/>
+                android:stepSize="100"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/settingsLocal"

@@ -48,7 +48,7 @@ import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
-import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
+import com.garethevans.church.opensongtablet.nearby.NearbyActions;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
 import com.garethevans.church.opensongtablet.pads.Pad;
 import com.garethevans.church.opensongtablet.pdf.MakePDF;
@@ -261,8 +261,7 @@ public interface MainActivityInterface {
     void openFragmentBasedOnFileImport();
 
     // Nearby connections
-    NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
-    NearbyConnections getNearbyConnections();
+    NearbyActions getNearbyActions();
     void updateConnectionsLog();
     void showNearbyAlertPopUp(String message);
 

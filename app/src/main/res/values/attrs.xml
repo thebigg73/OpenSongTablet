@@ -1,5 +1,4 @@
 <resources>
-
     <declare-styleable name="MaterialRadioButtonItem">
         <attr name="android:text" format="string"/>
         <attr name="android:hint" format="string"/>
@@ -21,12 +20,13 @@
         <attr name="android:imeOptions"/>
         <attr name="android:inputType"/>
         <attr name="useMonospace" format="boolean"/>
+        <attr name="removeStyle" format="boolean"/>
         <attr name="android:saveEnabled"/>
         <attr name="endIconMode"/>
         <attr name="suffixText" />
         <attr name="helperText" />
         <attr name="android:layout_gravity" />
-        <attr name="size" />
+        <attr name="size"/>
     </declare-styleable>
 
     <declare-styleable name="MyMaterialSlider">

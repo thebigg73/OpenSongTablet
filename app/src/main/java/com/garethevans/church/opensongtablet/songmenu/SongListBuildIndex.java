@@ -35,7 +35,6 @@ public class SongListBuildIndex {
         mainActivityInterface = (MainActivityInterface) c;
     }
 
-
     // This is true if we need to scan the song folder (quick or full)
     private boolean indexRequired;
     public void setIndexRequired(boolean indexRequired) {
@@ -45,6 +44,10 @@ public class SongListBuildIndex {
         return indexRequired;
     }
 
+    private boolean checkForUUIDLastMod = false;
+    public void setCheckForUUIDLastMod(boolean checkForUUIDLastMod) {
+        this.checkForUUIDLastMod = checkForUUIDLastMod;
+    }
 
     // This is true if we need to run the full scan (rather than quick)
     private boolean fullIndexRequired;
@@ -96,10 +99,8 @@ public class SongListBuildIndex {
     // This scans the files (quick and full).
     // Quick scan only updates newer files than the database
     public String fullIndex(MaterialTextView progressText, String specificFolder) {
-
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
-        Log.d(TAG,"starting full index   indexRequired:"+indexRequired+"  fullIndexRequired:"+fullIndexRequired);
         currentlyIndexing = true;
         indexComplete = false;
 
@@ -112,6 +113,8 @@ public class SongListBuildIndex {
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the sql table
+            boolean needToSaveAgain = false;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("needToSaveAgain",false);
             String folderMatch = "";
             if (specificFolder!=null) {
                 folderMatch = " WHERE " + SQLite.COLUMN_FOLDER + " = '"+specificFolder+"'";
@@ -122,7 +125,6 @@ public class SongListBuildIndex {
 
             Cursor cursor = db.rawQuery(altquery, null);
 
-            Log.d(TAG,"altQuery:"+altquery+"   count:"+cursor.getCount());
             if (cursor.getCount()>0) {
                 // Get the total song number
                 int totalSongs = cursor.getCount();
@@ -187,6 +189,30 @@ public class SongListBuildIndex {
                             }
 
                             if (needToUpdate || fullIndexRequired) {
+                                // Only check this until we find a song (or if we are actually fixing them)
+                                if (!needToSaveAgain || checkForUUIDLastMod) {
+                                    boolean newUUID = false;
+                                    boolean newLastModified = false;
+                                    // If the file doesn't have a uuid or lastModifiedDate in it (older file), add one
+                                    if (mainActivityInterface.getIndexingSong().getUuid() == null || mainActivityInterface.getIndexingSong().getUuid().isEmpty()) {
+                                        mainActivityInterface.getIndexingSong().setUuid(String.valueOf(UUID.randomUUID()));
+                                        Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a UUID");
+                                        needToSaveAgain = true;
+                                        newUUID = true;
+                                    }
+                                    if (mainActivityInterface.getIndexingSong().getLastModified() == null || mainActivityInterface.getIndexingSong().getLastModified().isEmpty()) {
+                                        mainActivityInterface.getIndexingSong().setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
+                                        Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a last modified date");
+                                        needToSaveAgain = true;
+                                        newLastModified = true;
+                                    }
+
+                                    // Only update the files if we have specificically asked to do so
+                                    if (needToSaveAgain && checkForUUIDLastMod && (newUUID || newLastModified)) {
+                                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getIndexingSong(), false);
+                                    }
+                                }
+
                                 // Update the database entry
                                 mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
                                         mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
@@ -214,15 +240,17 @@ public class SongListBuildIndex {
             indexRequired = false;
             setIndexComplete(true);
             fullIndexRequired = false;
+            if (checkForUUIDLastMod) {
+                needToSaveAgain = false;
+            }
+            setCheckForUUIDLastMod(false);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("needToSaveAgain",needToSaveAgain);
             mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
 
-
-            Log.d(TAG,"About to check missing keys");
             mainActivityInterface.getSetActions().checkMissingKeys();
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",true);
             returnString.append(c.getString(R.string.index_songs_end)).append("\n");
-            // GE Causing a errpr
-            //mainActivityInterface.refreshSong();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -239,8 +267,6 @@ public class SongListBuildIndex {
 
         // Any songs with rogue endings would've been logged, so fix if needed
         mainActivityInterface.getLoadSong().fixSongs();
-        // Update the set lists which might be using song titles (that need the index)
-        //mainActivityInterface.updateSetList();
 
         // Get a timestamp of this update into preferences
         mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());

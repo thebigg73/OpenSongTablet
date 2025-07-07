@@ -82,7 +82,8 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
                 R.attr.useMonospace,
                 com.google.android.material.R.attr.suffixText,
                 com.google.android.material.R.attr.helperText,
-                android.R.attr.layout_gravity};
+                android.R.attr.layout_gravity,
+                R.attr.removeStyle};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
@@ -98,9 +99,11 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         CharSequence suffixText = a.getText(11);
         CharSequence helperText = a.getText(12);
         int gravity = a.getInt(13, Gravity.TOP);
+        boolean removeStyle = a.getBoolean(14, false);
 
         editText = findViewById(R.id.editText);
         textInputLayout = findViewById(R.id.holderLayout);
+        editText.setTextInputLayoutFocusedRectEnabled(false);
 
         editText.setId(View.generateViewId());
         textInputLayout.setId(View.generateViewId());

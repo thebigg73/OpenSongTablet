@@ -25,7 +25,7 @@
                 android:valueFrom="1"
                 android:valueTo="16"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
             <TableRow style="@style/DividerLine" />
 
 
@@ -38,7 +38,7 @@
                 android:valueFrom="0"
                 android:valueTo="1000"
                 app:adjustable="true"
-                app:stepSize="100" />
+                android:stepSize="100" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
@@ -168,7 +168,7 @@
                     android:valueFrom="1"
                     android:valueTo="128"
                     app:adjustable="true"
-                    app:stepSize="1" />
+                    android:stepSize="1" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/aerosSong"
@@ -179,7 +179,7 @@
                     android:valueFrom="1"
                     android:valueTo="128"
                     app:adjustable="true"
-                    app:stepSize="1" />
+                    android:stepSize="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -257,7 +257,7 @@
                 android:valueTo="100"
                 android:visibility="gone"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -278,7 +278,7 @@
                 android:valueTo="100"
                 android:visibility="gone"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -299,7 +299,7 @@
                 android:valueTo="300"
                 android:visibility="gone"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -320,7 +320,7 @@
                 android:valueTo="127"
                 android:visibility="gone"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
             <TableRow style="@style/DividerLine" />
 
             <LinearLayout

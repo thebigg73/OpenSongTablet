@@ -1,10 +1,12 @@
 package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +17,15 @@ import androidx.appcompat.widget.TooltipCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsSyncBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class SyncNearbyFragment extends Fragment {
@@ -38,10 +41,16 @@ public class SyncNearbyFragment extends Fragment {
     private String browse_host_files_string="", sets_string="", profiles_string="", songs_string="",
             set_current_string="", set_is_empty_string="", processing_string="",
             nearby_files_copied_string="", nearby_files_skipped_string="",
-            nearby_files_failed_string="", no_response_string="";
+            nearby_files_failed_string="", no_response_string="", sync_waiting_for_info_string="",
+            sync_info_received_string="", new_songs_string="", updated_songs_string="",
+            new_files_string="", updated_files_string="";
     private int currentFile=0;
-    private BrowseHostAdapter browseHostAdapter;
-    private ArrayList<HostItem> checkedItems = new ArrayList<>();
+    private boolean syncSongPrepared = false;
+    private boolean syncSetPrepared = false;
+    private boolean syncProfilePrepared = false;
+    private NearbySyncAdapter nearbySyncAdapter;
+    private NearbyJson nearbyJson;
+    private ArrayList<NearbySyncItem> checkedItems = new ArrayList<>();
     private boolean waitingForFiles = false, overwrite = false;
     private String requestedFolder, requestedSubfolder, requestedFilename, folder;
     private String nearbyCurrentSet=null;
@@ -49,20 +58,18 @@ public class SyncNearbyFragment extends Fragment {
     private final ArrayList<String> filesSkipped = new ArrayList<>();
     private final ArrayList<String> filesFailed = new ArrayList<>();
     private SyncViewPagerAdapter syncViewPagerAdapter;
-    private SyncSongFragment syncSongFragment;
-    private SyncSetFragment syncSetFragment;
-    private SyncProfileFragment syncProfileFragment;
+    private SyncItemsFragment syncSongFragment, syncSetFragment, syncProfileFragment;
     private ArrayList<String> connectedDeviceCodes = new ArrayList<>();
     private ArrayList<String> connectedDeviceNames = new ArrayList<>();
     private boolean timeout = false;
-    private Handler timeoutHandler = new Handler();
+    private final Handler timeoutHandler = new Handler();
     private Runnable timeoutRunnable = new Runnable() {
         @Override
         public void run() {
             if (timeout) {
                 showProgress(false);
                 if (myView != null) {
-                    myView.chooseConnected.setText("");
+                    myView.chooseConnected.post(() -> myView.chooseConnected.setText(""));
                     mainActivityInterface.getShowToast().doIt(no_response_string);
                 }
                 timeout = false;
@@ -75,13 +82,11 @@ public class SyncNearbyFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        mainActivityInterface.getNearbyConnections().setNearbySyncFragment(this);
+        mainActivityInterface.getNearbyActions().setSyncNearbyFragment(this);
     }
 
-    @Nullable
-    @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
         myView = SettingsSyncBinding.inflate(inflater, container, false);
         return myView.getRoot();
     }
@@ -91,15 +96,13 @@ public class SyncNearbyFragment extends Fragment {
         prepareStrings();
         setupViews();
         setupListeners();
-        mainActivityInterface.getNearbyConnections().setNearbySyncFragment(this);
-        // Now request the files from the host and wait for a response
-        //mainActivityInterface.getNearbyConnections().sendRequestHostItems();
+        mainActivityInterface.getNearbyActions().setSyncNearbyFragment(this);
         super.onResume();
     }
 
     @Override
     public void onDestroy() {
-        mainActivityInterface.getNearbyConnections().setNearbySyncFragment(null);
+        mainActivityInterface.getNearbyActions().setSyncNearbyFragment(null);
         mainActivityInterface.setWhattodo("");
         super.onDestroy();
     }
@@ -118,6 +121,10 @@ public class SyncNearbyFragment extends Fragment {
             no_response_string = getString(R.string.sync_server_noresponse_error);
             String title_string = getString(R.string.sync);
             String web_help = getString(R.string.website_sync);
+            sync_waiting_for_info_string = getString(R.string.sync_waiting_for_info);
+            sync_info_received_string = getString(R.string.sync_info_received);
+            new_files_string = getString(R.string.sync_new_files_available);
+            updated_files_string = getString(R.string.sync_updated_files_available);
 
             /*switch (mainActivityInterface.getWhattodo()) {
                 case "browsesets":
@@ -157,14 +164,13 @@ public class SyncNearbyFragment extends Fragment {
                 syncViewPagerAdapter.createFragment(0);
             }
             if (syncSongFragment == null) {
-                syncSongFragment = (SyncSongFragment) syncViewPagerAdapter.menuFragments[0];
+                syncSongFragment = (SyncItemsFragment) syncViewPagerAdapter.menuFragments[0];
             }
             if (syncSetFragment == null) {
-                syncSetFragment = (SyncSetFragment) syncViewPagerAdapter.createFragment(1);
+                syncSetFragment = (SyncItemsFragment) syncViewPagerAdapter.createFragment(1);
             }
             if (syncProfileFragment == null) {
-                syncProfileFragment = (SyncProfileFragment) syncViewPagerAdapter.createFragment(2);
-
+                syncProfileFragment = (SyncItemsFragment) syncViewPagerAdapter.createFragment(2);
             }
 
             // Give a reference back to this fragment
@@ -197,34 +203,42 @@ public class SyncNearbyFragment extends Fragment {
 
         // Get a note of the connected devices into the exposedDropdown
         if (getContext()!=null) {
-            // Go through the connected devices and split the names/codes
-            for (String endpoint:mainActivityInterface.getNearbyConnections().getConnectedEndpoints()) {
-                if (!endpoint.contains("__")) {
-                    endpoint = "UNKNOWN__" + endpoint;
-                }
-                String[] endpointSplit = endpoint.split("__");
-                connectedDeviceCodes.add(endpointSplit[0]);
-                connectedDeviceNames.add(endpointSplit[1]);
+            // Go through the connected devices and get the device names
+            for (int i=0;i<mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size(); i++) {
+                connectedDeviceCodes.add(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().keyAt(i));
+                connectedDeviceNames.add(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().valueAt(i));
             }
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.chooseConnected, R.layout.view_exposed_dropdown_item, connectedDeviceNames);
             myView.chooseConnected.setAdapter(exposedDropDownArrayAdapter);
             myView.chooseConnected.setText("");
         }
 
-        myView.syncTabs.setVisibility(View.GONE);
+        myView.syncTabs.setVisibility(View.VISIBLE);
         myView.syncPager.setVisibility(View.VISIBLE);
 
         showProgress(false);
     }
 
     private void setupListeners() {
-        //myView.nearbyBrowseSelectAll.setOnClickListener(view -> browseHostAdapter.selectAll(myView.nearbyBrowseSelectAll.isChecked()));
-        /*myView.importNearbyFiles.setOnClickListener(view -> {
-            myView.hostProgressTextView.setVisibility(View.VISIBLE);
-            startGetFiles();
+        // If we change / select a connected device
+        // TODO remove these after testing
+        myView.buildInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"build info");
+                mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSyncInfo("testDevice");
+            }
         });
-        myView.importNearbyCurrentSet.setOnClickListener(view -> doImportCurrentSet());
-    */
+        // TODO remove after testing
+        myView.readInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"read info");
+                dealWithNearbyInfoReceived();
+            }
+        });
+
+
 
         myView.chooseConnected.addTextChangedListener(new TextWatcher() {
             @Override
@@ -240,11 +254,9 @@ public class SyncNearbyFragment extends Fragment {
                     // Wait for info from the required device.  Have a 10 sec timeout
                     try {
                         int pos = connectedDeviceNames.indexOf(editable.toString());
-                        if (mainActivityInterface.getNearbyConnections().getConnectedEndpoints().size()>=pos) {
+                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size()>=pos) {
                             showProgress(true);
-                            timeout = true;
-                            timeoutHandler.postDelayed(timeoutRunnable, 10000);
-                            mainActivityInterface.getNearbyConnections().sendRequestHostItems(editable.toString());
+                            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSyncInfoRequest(editable.toString());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -254,10 +266,73 @@ public class SyncNearbyFragment extends Fragment {
         });
     }
 
-    private void showProgress(boolean show) {
+    public void showProgress(boolean show) {
         if (myView!=null) {
-            myView.hostProgressBar.setVisibility(show ? View.VISIBLE:View.GONE);
-            myView.dimBackground.setVisibility(show ? View.VISIBLE:View.GONE);
+            timeoutHandler.removeCallbacks(timeoutRunnable);
+            timeout = false;
+            if (show) {
+                timeout = true;
+                timeoutHandler.postDelayed(timeoutRunnable, 10000);
+            }
+            mainActivityInterface.getMainHandler().post(() -> {
+                myView.hostProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+                myView.dimBackground.setVisibility(show ? View.VISIBLE : View.GONE);
+            });
+        }
+    }
+
+    // Listening from NearbyConnections
+    public void dealWithNearbyInfoReceived() {
+        showProgress(true);
+        mainActivityInterface.getThreadPoolExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                // The nearbyJson file has been received and copied to Received/NearbyShareableList.json
+                // Read it in an build the list of items received
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",mainActivityInterface.getNearbyActions().sharableObjectFile);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                nearbyJson = MainActivity.gson.fromJson(
+                        mainActivityInterface.getStorageAccess().readTextFileToString(inputStream), NearbyJson.class);
+
+                // Update each fragment
+                syncSongPrepared = false;
+                syncSetPrepared = false;
+                syncProfilePrepared = false;
+                syncSongFragment.prepareRecycler();
+                syncSetFragment.prepareRecycler();
+                syncProfileFragment.prepareRecycler();
+            }
+        });
+    }
+
+    public void announceNotPrepared(String what) {
+        switch (what) {
+            case "songs":
+                syncSongPrepared = false;
+                break;
+            case "sets":
+                syncSetPrepared = false;
+                break;
+            case "profiles":
+                syncProfilePrepared = false;
+                break;
+        }
+        showProgress(true);
+    }
+    public void announcePrepared(String what) {
+        switch (what) {
+            case "songs":
+                syncSongPrepared = true;
+                break;
+            case "sets":
+                syncSetPrepared = true;
+                break;
+            case "profiles":
+                syncProfilePrepared = true;
+                break;
+        }
+        if (syncSongPrepared && syncSetPrepared && syncProfilePrepared) {
+            showProgress(false);
         }
     }
 
@@ -306,7 +381,7 @@ public class SyncNearbyFragment extends Fragment {
         filesSkipped.clear();
         filesFailed.clear();
 
-        checkedItems = browseHostAdapter.getCheckedItems();
+        checkedItems = nearbySyncAdapter.getCheckedItems();
         currentFile = 0;
         waitingForFiles = true;
         //overwrite = myView.nearbyOverwrite.getChecked();
@@ -317,7 +392,7 @@ public class SyncNearbyFragment extends Fragment {
     }
 
     private void getFile() {
-        if (currentFile<checkedItems.size()) {
+        /*if (currentFile<checkedItems.size()) {
             // Tell the user what we are doing
             requestedFolder = checkedItems.get(currentFile).getFolder().trim();
             requestedSubfolder = checkedItems.get(currentFile).getSubfolder().trim();
@@ -326,7 +401,7 @@ public class SyncNearbyFragment extends Fragment {
             updateProgressText(currentFile,checkedItems.size(),requestedFilename);
             // Initiate the nearby request with a short delay
             mainActivityInterface.getMainHandler().postDelayed(() ->
-            mainActivityInterface.getNearbyConnections().requestHostFile(
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().requestHostFile(
                     requestedFolder, requestedSubfolder, requestedFilename),50);
         } else {
             // We have finished!
@@ -342,7 +417,7 @@ public class SyncNearbyFragment extends Fragment {
             // Show the results in an info bottom sheet
             InformationBottomSheet informationBottomSheet = new InformationBottomSheet(browse_host_files_string,stringBuilder.toString(),null,null);
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InformationBottomSheet");
-        }
+        }*/
     }
 
     private StringBuilder getStringBuilder() {
@@ -412,5 +487,10 @@ public class SyncNearbyFragment extends Fragment {
         } else {
             mainActivityInterface.getShowToast().doIt(set_is_empty_string);
         }
+    }
+
+
+    public NearbyJson getNearbyJson() {
+        return nearbyJson;
     }
 }

@@ -127,7 +127,7 @@
             android:text="@string/size"
             android:valueFrom="10"
             android:valueTo="100"
-            app:stepSize="1" />
+            android:stepSize="1" />
 
         <TableRow
             android:id="@+id/logoDivider"
@@ -142,7 +142,7 @@
             android:text="@string/crossfade_time"
             android:valueFrom="200"
             android:valueTo="3000"
-            app:stepSize="200" />
+            android:stepSize="200" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/rotateDisplay"
@@ -151,7 +151,7 @@
             android:text="@string/rotate_display"
             android:valueFrom="0"
             android:valueTo="270"
-            app:stepSize="90" />
+            android:stepSize="90" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/horizontalMargin"
@@ -160,7 +160,7 @@
             android:text="@string/set_x_margin"
             android:valueFrom="-50"
             android:valueTo="50"
-            app:stepSize="1" />
+            android:stepSize="1" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/verticalMargin"
@@ -170,7 +170,7 @@
             android:text="@string/set_y_margin"
             android:valueFrom="-50"
             android:valueTo="50"
-            app:stepSize="1" />
+            android:stepSize="1" />
 
         <TableRow style="@style/DividerLine" />
 
@@ -306,7 +306,7 @@
                 android:text="@string/size"
                 android:valueFrom="6"
                 android:valueTo="16"
-                app:stepSize="1" />
+                android:stepSize="1" />
         </LinearLayout>
 
         <TableRow style="@style/DividerLine" />

@@ -94,7 +94,7 @@ public class PerformanceFragment extends Fragment {
         autoHideHighlighterHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
-        if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
+        if (mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongPayload()) {
             mainActivityInterface.getShowToast().doIt(nearby_large_file_string);
         }
         sendSongDelay = 3000;
@@ -111,7 +111,7 @@ public class PerformanceFragment extends Fragment {
     private final Handler resetSendSongAfterDelayHandler = new Handler();
     private final Runnable resetSendSongAfterDelayRunnable = () -> {
         sendSongDelay = 0;
-        mainActivityInterface.getNearbyConnections().setSendSongDelayActive(false);
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().setSendSongDelayActive(false);
     };
 
     // Attaching and destroying
@@ -504,7 +504,7 @@ public class PerformanceFragment extends Fragment {
         // We only load a song if there is a change of song file, or we manually force it, or receive from the host
         if (!processingTestView && myView!=null && (songChange || myView.inlineSetList.getForceReload()
                 || mainActivityInterface.getTranspose().getForceReload() ||
-            mainActivityInterface.getNearbyConnections().getForceReload()) || mainActivityInterface.getForceReload()) {
+            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getForceReload()) || mainActivityInterface.getForceReload()) {
 
             // Clear any force reload flags
             firstSongLoad = false;
@@ -513,7 +513,7 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.setForceReload(false);
                 myView.inlineSetList.setForceReload(false);
                 mainActivityInterface.getTranspose().setForceReload(false);
-                mainActivityInterface.getNearbyConnections().setForceReload(false);
+                mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().setForceReload(false);
 
                 mainActivityInterface.setHighlightChangeAllowed(false);
 
@@ -636,12 +636,12 @@ public class PerformanceFragment extends Fragment {
                             mainActivityInterface.getPresenterSettings().setCurrentSection(0);
                         }
 
-                        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                                mainActivityInterface.getNearbyConnections().getIsHost()) {
+                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
+                                mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
                             // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
                             // sendSongDelay will be 0 for the first song
                             // IV - Always empty then add to queue (known state)
-                            mainActivityInterface.getNearbyConnections().setSendSongDelayActive(sendSongDelay != 0);
+                            mainActivityInterface.getNearbyActions().getNearbySendPayloads().setSendSongDelayActive(sendSongDelay != 0);
                             sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
                             sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
                             // IV - Always empty then add to queue (known state)
@@ -1356,13 +1356,13 @@ public class PerformanceFragment extends Fragment {
         }
 
         // IV - Consume any later pending client section change received from Host (-ve value)
-        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                !mainActivityInterface.getNearbyConnections().getIsHost()) {
-            int hostPendingSection = mainActivityInterface.getNearbyConnections().getHostPendingSection();
+        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
+                !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
+            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getHostPendingSection();
             if (hostPendingSection != 0) {
-                mainActivityInterface.getNearbyConnections().doSectionChange(hostPendingSection);
+                mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().doSectionChange(hostPendingSection);
             }
-            mainActivityInterface.getNearbyConnections().resetHostPendingSection();
+            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetHostPendingSection();
         }
 
         mainActivityInterface.setHighlightChangeAllowed(true);
@@ -1739,15 +1739,15 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.showActionBar();
                     mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
                     // Check for updating send nearby to
-                    if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                            mainActivityInterface.getNearbyConnections().getIsHost() &&
+                    if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
+                            mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() &&
                             !mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale", "W").equals("Y")) {
                         // Get the scroll height
                         int height = myView.zoomLayout.getMaxScrollY();
                         // Get the scroll position
                         int scrollPos = myView.zoomLayout.getScrollY();
                         if (height > 0) {
-                            mainActivityInterface.getNearbyConnections().sendScrollToPayload((float) scrollPos / (float) height);
+                            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendScrollToPayload((float) scrollPos / (float) height);
                         }
                     }
                 }

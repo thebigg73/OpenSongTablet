@@ -32,7 +32,7 @@
                 android:id="@+id/pageSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:stepSize="1"
+                android:stepSize="1"
                 android:valueFrom="1"
                 android:valueTo="10"/>
 

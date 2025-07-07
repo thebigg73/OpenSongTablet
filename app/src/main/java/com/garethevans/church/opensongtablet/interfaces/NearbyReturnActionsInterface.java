@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.interfaces;
 import com.google.android.material.button.MaterialButton;
 
 public interface NearbyReturnActionsInterface {
+    // TODO clear up what we don't need anymore
     void toggleAutoscroll();
     void selectSection(int i);
     void doScrollByProportion(float scrollProportion);

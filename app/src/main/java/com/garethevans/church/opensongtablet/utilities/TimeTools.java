@@ -11,6 +11,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -122,7 +123,23 @@ public class TimeTools {
     }
 
     public String getNowIsoTime() {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.UK).format(new Date());
+        // return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.UK).format(new Date());
+        return Instant.ofEpochMilli(System.currentTimeMillis()).toString();
+    }
+
+    public long getMillisFromIsoTime(String isoTimeStamp) {
+        long millis = 0;
+        if (isoTimeStamp != null && !isoTimeStamp.isEmpty()) {
+            try {
+            millis = OffsetDateTime.parse(isoTimeStamp).toInstant().toEpochMilli();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return millis;
+    }
+    public String getIsoTimeFromMillis(long millis) {
+        return Instant.ofEpochMilli(millis).toString();
     }
 
     public String getIsoTimeFromSongFileMetadata(Song thisSong) {

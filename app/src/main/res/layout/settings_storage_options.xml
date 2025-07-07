@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,9 +19,10 @@
                 android:id="@+id/storageManage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/storage_local"
                 android:hint="@string/storage_settings"
-                app:size="large"/>
+                android:text="@string/storage_local"
+                app:size="large" />
+
             <TableRow style="@style/DividerLine" />
 
             <LinearLayout
@@ -29,13 +31,15 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="gone">
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/syncWithConnected"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/sync"
                     android:hint="@string/sync_info"
-                    app:size="large"/>
+                    android:text="@string/sync"
+                    app:size="large" />
+
                 <TableRow
                     android:id="@+id/syncWithConnectedLine"
                     style="@style/DividerLine" />
@@ -45,10 +49,26 @@
                 android:id="@+id/openChords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/openchords"
                 android:hint="@string/openchords_info"
-                app:size="large"/>
+                android:text="@string/openchords"
+                app:size="large" />
             <TableRow style="@style/DividerLine" />
+
+            <LinearLayout
+                android:id="@+id/updateSongsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/updateSongs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/synchronise_need_update_info"
+                android:text="@string/synchronise_need_update"
+                app:size="large" />
+            <TableRow style="@style/DividerLine" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

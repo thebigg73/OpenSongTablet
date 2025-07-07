@@ -205,7 +205,7 @@
    <string name="close">වසන්න</string>
    <string name="color_choose">වර්ණ තේරීම</string>
    <string name="column_force">තීරු බිඳීම් අතින් අභිබවා යන්න</string>
-   <string name="song_select_warning_more">SongSelect සීමා කිරීම් හේතුවෙන්, ඔබට දැන් ඔබගේ ගීත ගොනුව අතින් බාගත කර එය යෙදුමට ආයාත කිරීමට සිදුවේ.  ගොනුව බාගත කිරීමෙන් පසු, ඔබව මෙම පිටුවට ආපසු පැමිණෙන අතර, බාගත කළ ගොනුව OpenSongApp වෙත ආයාත කිරීමට \\'ආයාත බාගැනීම\\' බොත්තම ක්ලික් කළ හැක.</string>
+   <string name="song_select_warning_more">SongSelect සීමා කිරීම් හේතුවෙන්, ඔබට දැන් ඔබගේ ගීත ගොනුව අතින් බාගත කර එය යෙදුමට ආයාත කිරීමට සිදුවේ.  ගොනුව බාගත කිරීමෙන් පසු, ඔබව මෙම පිටුවට ආපසු පැමිණෙන අතර, බාගත කළ ගොනුව OpenSongApp වෙත ආයාත කිරීමට \'ආයාත බාගැනීම\' බොත්තම ක්ලික් කළ හැක.</string>
    <string name="import_download">ආයාත බාගත කිරීම</string>
    <string name="column_force_info" tools:ignore="TypographyDashes">ස්වයං පරිමාණය කිරීමේදී නව තීරු බිඳීමක් බල කිරීමට ගීතයේ නව පිටු කේතය (!--) භාවිතා කරන්න</string>
    <string name="column_force_insert">තීරු කඩනය ඇතුළු කරන්න</string>

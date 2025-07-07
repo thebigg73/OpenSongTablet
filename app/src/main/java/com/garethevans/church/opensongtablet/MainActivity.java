@@ -121,7 +121,7 @@ import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
-import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
+import com.garethevans.church.opensongtablet.nearby.NearbyActions;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsFragment;
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MakePDF makePDF;
     private Metronome metronome;
     private Midi midi;
-    private NearbyConnections nearbyConnections;
+    private NearbyActions nearbyActions;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private OCR ocr;
     private OpenChordsAPI openChordsAPI;
@@ -452,17 +452,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 songListBuildIndex.setIndexComplete(savedInstanceState.getBoolean("indexComplete", false));
                 songListBuildIndex.setFullIndexRequired(!songListBuildIndex.getIndexComplete());
-
-                nearbyConnections = getNearbyConnections();
-                nearbyConnections.setIsHost(savedInstanceState.getBoolean("isHost", false));
-                nearbyConnections.setUsingNearby(savedInstanceState.getBoolean("usingNearby", false));
-                nearbyConnections.setDiscoveredEndpoints(savedInstanceState.getStringArrayList("discoveredEndpoints"));
-                nearbyConnections.setConnectedEndpoints(savedInstanceState.getStringArrayList("connectedEndpoints"));
+                nearbyActions = getNearbyActions();
+                nearbyActions.getNearbyConnectionManagement().setIsHost(savedInstanceState.getBoolean("isHost", false));
+                nearbyActions.getNearbyConnectionManagement().setUsingNearby(savedInstanceState.getBoolean("usingNearby", false));
+                nearbyActions.getNearbyConnectionManagement().setDiscoveredEndpoints(savedInstanceState.getStringArrayList("discoveredEndpoints"));
+                nearbyActions.getNearbyConnectionManagement().setConnectedEndpoints(savedInstanceState.getStringArrayList("connectedEndpoints"));
                 // If we were using Nearby, try to start it again
-                if (nearbyConnections.getUsingNearby() && nearbyConnections.getIsHost()) {
-                    nearbyConnections.doTempAdvertise();
-                } else if (nearbyConnections.getUsingNearby() && !nearbyConnections.getIsHost()) {
-                    nearbyConnections.doTempDiscover();
+                if (nearbyActions.getNearbyConnectionManagement().getUsingNearby() &&
+                        nearbyActions.getNearbyConnectionManagement().getIsHost()) {
+                    nearbyActions.getNearbyConnectionManagement().doTempAdvertise();
+                } else if (nearbyActions.getNearbyConnectionManagement().getUsingNearby() &&
+                        !nearbyActions.getNearbyConnectionManagement().getIsHost()) {
+                    nearbyActions.getNearbyConnectionManagement().doTempDiscover();
                 }
 
                 // Make sure the song title is there
@@ -774,7 +775,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Connections and alerts
         checkInternet = getCheckInternet();
-        getNearbyConnections();
+        getNearbyActions();
         webDownload = getWebDownload();
         alertChecks = getAlertChecks();
         alertChecks.setAlreadySeen(rebooted);
@@ -1697,34 +1698,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Nearby stuff
     private void setupNearby() {
         // Set up the Nearby connection service
-        if (nearbyConnections!=null) {
-            nearbyConnections.getUserNickname();
+        if (nearbyActions!=null) {
+            nearbyActions.getNearbyConnectionManagement().getUserNickname();
 
             // Establish a known state for Nearby
-            nearbyConnections.turnOffNearby();
+            nearbyActions.getNearbyConnectionManagement().turnOffNearby();
         }
     }
 
     @Override
-    public NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface) {
-        // Return a reference to nearbyConnections
-        if (nearbyConnections == null) {
-            nearbyConnections = new NearbyConnections(this,this);
+    public NearbyActions getNearbyActions() {
+        // Return a reference to nearbyActions
+        if (nearbyActions == null) {
+            nearbyActions = new NearbyActions(this,this);
         }
-        return nearbyConnections;
-    }
-
-    @Override
-    public NearbyConnections getNearbyConnections() {
-        if (nearbyConnections == null) {
-            nearbyConnections = new NearbyConnections(this,this);
-        }
-        return nearbyConnections;
+        return nearbyActions;
     }
 
     @Override
     public void nearbyEnableConnectionButtons() {
-        if (settingsOpen && nearbyConnections.getConnectionsOpen() && nearbyConnectionsFragment != null) {
+        if (settingsOpen && getNearbyActions().getNearbyConnectionManagement().getConnectionsOpen()
+                && nearbyConnectionsFragment != null) {
             try {
                 nearbyConnectionsFragment.enableConnectionButtons();
             } catch (Exception e) {
@@ -1735,7 +1729,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void nearbyUpdateCountdownText(boolean advertise, MaterialButton materialButton) {
-        if (settingsOpen && nearbyConnections.getConnectionsOpen() && nearbyConnectionsFragment != null) {
+        if (settingsOpen && getNearbyActions().getNearbyConnectionManagement().getConnectionsOpen() &&
+                nearbyConnectionsFragment != null) {
             try {
                 nearbyConnectionsFragment.updateCountdownText(advertise, materialButton);
             } catch (Exception e) {
@@ -1747,34 +1742,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void startDiscovery() {
-        nearbyConnections.startDiscovery();
+        getNearbyActions().getNearbyConnectionManagement().startDiscovery();
     }
 
     @Override
     public void startAdvertising() {
-        nearbyConnections.startAdvertising();
+        getNearbyActions().getNearbyConnectionManagement().startAdvertising();
     }
 
     @Override
     public void stopDiscovery() {
-        nearbyConnections.stopDiscovery();
+        getNearbyActions().getNearbyConnectionManagement().stopDiscovery();
     }
 
     @Override
     public void stopAdvertising() {
-        nearbyConnections.stopAdvertising();
+        getNearbyActions().getNearbyConnectionManagement().stopAdvertising();
     }
 
     @Override
     public void turnOffNearby() {
-        nearbyConnections.turnOffNearby();
+        getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
     }
 
     @Override
     public void updateConnectionsLog() {
         // Send the command to the Nearby Connections fragment (if it exists!)
         try {
-            if (nearbyConnectionsFragment != null && nearbyConnections.getConnectionsOpen()) {
+            if (nearbyConnectionsFragment != null &&
+                    nearbyActions.getNearbyConnectionManagement().getConnectionsOpen()) {
                 try {
                     nearbyConnectionsFragment.updateConnectionsLog();
                 } catch (Exception e) {
@@ -1786,10 +1782,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-    @Override
-    public void doSendPayloadBytes(String infoPayload, boolean clientSend) {
-        nearbyConnections.doSendPayloadBytes(infoPayload, clientSend);
-    }
     @Override
     public void showNearbyAlertPopUp(String message) {
         if (performanceValid()) {
@@ -3402,6 +3394,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean allowToast = true;
 
             switch (what) {
+                case "addUUIDLastMod":
+                    // This checks songs for missing UUID or lastModified values
+                    // If the aren't found, they get added and the song saved again
+                    getSongListBuildIndex().setCheckForUUIDLastMod(true);
+                    getSongListBuildIndex().setFullIndexRequired(true);
+                    getSongListBuildIndex().setIndexRequired(true);
+                    getSongListBuildIndex().buildBasicFromFiles();
+                    indexSongs();
+                    navHome();
+                    break;
+
                 case "deleteSong":
                     getStorageAccess().updateFileActivityLog(TAG + " confirmedAction deleteFile Songs/" + song.getFolder() + "/" + song.getFilename());
                     result = getStorageAccess().doDeleteFile("Songs",
@@ -3558,19 +3561,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "NearbyAdvertise":
                     // We have accepted our advertise settings, so continue
-                    getNearbyConnections().setUsingNearby(true);
-                    if (getNearbyConnections().getNearbyTemporaryAdvertise()) {
-                        getNearbyConnections().doTempAdvertise();
+                    getNearbyActions().getNearbyConnectionManagement().setUsingNearby(true);
+                    if (getNearbyActions().getNearbyConnectionManagement().getNearbyTemporaryAdvertise()) {
+                        getNearbyActions().getNearbyConnectionManagement().doTempAdvertise();
                     } else {
-                        getNearbyConnections().startAdvertising();
+                        getNearbyActions().getNearbyConnectionManagement().startAdvertising();
                     }
                     allowToast = false;
                     break;
 
                 case "NearbyDiscover":
                     // We have accepted our discover settings, so continue
-                    getNearbyConnections().setUsingNearby(true);
-                    getNearbyConnections().doTempDiscover();
+                    getNearbyActions().getNearbyConnectionManagement().setUsingNearby(true);
+                    getNearbyActions().getNearbyConnectionManagement().doTempDiscover();
                     allowToast = false;
                     break;
 
@@ -4364,7 +4367,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 performanceShowSection(i);
             }
         } else {
-            nearbyConnections.setPendingSection(i);
+            getNearbyActions().getNearbyReceivePayloads().setPendingSection(i);
         }
     }
 
@@ -4372,6 +4375,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void loadSong(boolean updateSongMenu) {
         // If we are not in a settings window, load the song
         // Otherwise it will happen when the user closes the settings fragments
+        Log.d(TAG,"loadSong()  settingsOpen:"+settingsOpen);
         if (!settingsOpen) {
             doSongLoad(song.getFolder(), song.getFilename(), true);
             // Update the song menu filters to match the incoming song if required
@@ -4544,14 +4548,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // If we were using nearby, keep a reference of known devices and a call to restart it
-        if (getNearbyConnections().getUsingNearby() && getNearbyConnections().hasValidConnections()) {
+        if (getNearbyActions().getNearbyConnectionManagement().getUsingNearby() &&
+                getNearbyActions().getNearbyConnectionManagement().hasValidConnections()) {
             // Note we were using
-            outState.putBoolean("usingNearby", nearbyConnections.getUsingNearby());
+            outState.putBoolean("usingNearby", getNearbyActions().getNearbyConnectionManagement().getUsingNearby());
             // Are we a host or client?
-            outState.putBoolean("isHost", nearbyConnections.getIsHost());
+            outState.putBoolean("isHost", getNearbyActions().getNearbyConnectionManagement().getIsHost());
             // What connections did we have
-            outState.putStringArrayList("discoveredEndpoints", nearbyConnections.getDiscoveredEndpoints());
-            outState.putStringArrayList("connectedEndpoints", nearbyConnections.getConnectedEndpoints());
+            outState.putStringArrayList("discoveredEndpoints", getNearbyActions().getNearbyConnectionManagement().getBundleDiscoveredDevices());
+            outState.putStringArrayList("connectedEndpoints", getNearbyActions().getNearbyConnectionManagement().getBundleConnectedDevices());
         }
 
         super.onSaveInstanceState(outState);
@@ -4648,43 +4653,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onDestroy() {
         // If we were running a local WiFi host, turn it off
-        if (localWiFiHost!=null) {
-            localWiFiHost.stopLocalWifi();
-        }
+        getLocalWiFiHost().stopLocalWifi();
 
         // If we were running a local webServer, turn it off
-        if (webServer!=null) {
-            webServer.stop();
-        }
+        getWebServer().stop();
 
         // Clear any toasts
         getShowToast().kill();
 
         // Turn off nearby
-        if (nearbyConnections!=null) {
-            nearbyConnections.turnOffNearby();
-        }
+        getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
+
+        // Empty the export folder
+        getStorageAccess().wipeFolder("Export","");
 
         // Stop and clear the metronome
-        if (metronome!=null) {
-            metronome.releaseSoundPool();
-        }
+        getMetronome().releaseSoundPool();
 
         // Reset the dealt with intent
         try {
-            if (preferences!=null) {
-                getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", false);
-            }
+            getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", false);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // If we had a bluetooth MIDI device, cancel the connection and unpair
         // Also stop any MIDI clock
-        if (midi!=null) {
-            midi.stopMidiClock();
-            midi.tryDisconnectBluetoothLE();
-        }
+        getMidi().stopMidiClock();
+        getMidi().tryDisconnectBluetoothLE();
 
         // Keep a reference to connections if needed as bundle
 

@@ -343,13 +343,13 @@ public class PerformanceGestures {
                     nearbySettings();
                 } else {
                     // If we are already set up to be a host from preferences and allowing connections when not in the settings
-                    if (!mainActivityInterface.getNearbyConnections().getNearbyHostMenuOnly() &&
-                            (mainActivityInterface.getNearbyConnections().getIsHost() ||
-                            mainActivityInterface.getNearbyConnections().getNearbyPreferredHost())) {
+                    if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyHostMenuOnly() &&
+                            (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() ||
+                            mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyPreferredHost())) {
                         nearbyAdvertise();
-                    } else if (mainActivityInterface.getNearbyConnections().getNearbyHostMenuOnly() &&
-                            (mainActivityInterface.getNearbyConnections().getIsHost() ||
-                                    mainActivityInterface.getNearbyConnections().getNearbyPreferredHost())) {
+                    } else if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyHostMenuOnly() &&
+                            (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() ||
+                                    mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyPreferredHost())) {
                         // We want to act as the host, but because we need to be on the settings page, do that
                         nearbySettings();
                         String text = c.getString(R.string.nearby_host_menu_only) + ": " + c.getString(R.string.on);
@@ -931,7 +931,7 @@ public class PerformanceGestures {
                 }
                 recyclerView.smoothScrollBy(0, height);
                 // We will also send this to nearby devices if we are a host
-                mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+                mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendScrollByPayload(scrollDown,
                         mainActivityInterface.getGestures().getScrollDistance());
             }
 
@@ -941,7 +941,7 @@ public class PerformanceGestures {
                     mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
 
             // We will also send this to nearby devices if we are a host
-            mainActivityInterface.getNearbyConnections().sendScrollByPayload(scrollDown,
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendScrollByPayload(scrollDown,
                     mainActivityInterface.getGestures().getScrollDistance());
         }
 
@@ -1130,19 +1130,19 @@ public class PerformanceGestures {
     // Increase the autoscroll speed
     public void speedUpAutoscroll() {
         mainActivityInterface.getAutoscroll().speedUpAutoscroll();
-        mainActivityInterface.getNearbyConnections().increaseAutoscrollPayload();
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().autoscrollIncrease);
     }
 
     // Decrease the autoscroll speed
     public void slowDownAutoscroll() {
         mainActivityInterface.getAutoscroll().slowDownAutoscroll();
-        mainActivityInterface.getNearbyConnections().decreaseAutoscrollPayload();
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().autoscrollDecrease);
     }
 
     // Pause autoscrolling
     public void pauseAutoscroll() {
         mainActivityInterface.getAutoscroll().pauseAutoscroll();
-        mainActivityInterface.getNearbyConnections().sendAutoscrollPausePayload();
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().autoscrollPause);
     }
 
     // Open links
@@ -1157,25 +1157,25 @@ public class PerformanceGestures {
     public void nearbyAdvertise() {
         // Advertise device to others
         // Stop advertising/discovering if we were already doing that
-        mainActivityInterface.getNearbyConnections().stopAdvertising();
-        mainActivityInterface.getNearbyConnections().stopDiscovery();
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().stopAdvertising();
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().stopDiscovery();
 
-        mainActivityInterface.getNearbyConnections().setUsingNearby(true);
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().setUsingNearby(true);
 
         // Advertise device
         // The advertise will check the user's settings and display a warning popup first time
-        mainActivityInterface.getNearbyConnections().startAdvertising();
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().startAdvertising();
     }
     public void nearbyDiscover() {
         // Run a 10 second discovery attempt
         // Stop advertising/discovering if we were already doing that
-        mainActivityInterface.getNearbyConnections().stopAdvertising();
-        mainActivityInterface.getNearbyConnections().stopDiscovery();
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().stopAdvertising();
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().stopDiscovery();
 
-        mainActivityInterface.getNearbyConnections().setUsingNearby(true);
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().setUsingNearby(true);
 
         // Temp discovery will run for 10 secs after showing a warning/popup the first time
-        mainActivityInterface.getNearbyConnections().doTempDiscover();
+        mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().doTempDiscover();
     }
 
     // PDF page chooser
@@ -1363,8 +1363,8 @@ public class PerformanceGestures {
     }
     public void midiAction(int which) {
         mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));
-        if (mainActivityInterface.getNearbyConnections().getNearbyMessageMIDIAction()) {
-            mainActivityInterface.getNearbyConnections().sendMessage(which);
+        if (mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessageMIDIAction()) {
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendMessage(which);
         }
     }
     public void sysexStart() {
@@ -1408,7 +1408,7 @@ public class PerformanceGestures {
 
     // Nearby messages
     public void nearbyMessage(int which) {
-        mainActivityInterface.getNearbyConnections().sendMessage(which);
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendMessage(which);
     }
 
     // The second screen

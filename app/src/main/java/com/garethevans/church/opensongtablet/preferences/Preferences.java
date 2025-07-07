@@ -514,6 +514,7 @@ public class Preferences extends Activity {
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)
+    // nearbyFileSharing                boolean     Should we allow connected devices to get our files (def:true)
     // nearbyHostMenuOnly               boolean     Should the host only listen for clients when the nearby menu is open (def:false)
     // nearbyHostPassthrough            boolean     Allows a host to pass on messages received from other hosts rather than blocking (def:true);
     // nearbyKeepHostFiles              boolean     Keep files received from host (will overwrite your songs!) (def:false)
@@ -529,6 +530,7 @@ public class Preferences extends Activity {
     // nearbyStartOnBoot                boolean     Should the nearby connection start on boot (using host if previously set, or default as client) (def:false)
     // nearbyStrategy                   String      Which strategy to use for Nearby connections: cluster, star, single (def:cluster)
     // nearbyTemporaryAdvertise         boolean     When acting as a Nearby host, should we only advertise for 10s (def:false)
+    // needToSaveAgain                  boolean     If songs don't have uuid or lastModified date, we show the option to update them in the storage options.  Determined during full index (def:false).
     // nextInSet                        boolean     Should the next song in the set be shown (def:true)
     // onscreenAutoscrollHide           boolean     Performance/Stage autoscroll info text at the top - should it autohide after a delay (def:true)
     // onscreenCapoHide                 boolean     Performance/Stage capo info text at the top - should it autohide after a delay (def:true)

@@ -280,6 +280,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return new ArrayList<>();
         }
     }
+    public String[] getSongCreationInfo(String folder, String filename) {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getSongCreationInfo(db, folder, filename);
+        } catch (OutOfMemoryError | Exception e) {
+            return new String[] {"","","false"};
+        }
+    }
 }
 
 

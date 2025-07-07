@@ -980,7 +980,7 @@
    <string name="song_sections_info">Sekce nalezené v textu vaší písně jsou uvedeny níže. Kliknutím na tlačítka je přidáte do objednávky prezentace.</string>
    <string name="song_sections_project">Kliknutím na sekci skladby ji odešlete na připojené displeje</string>
    <string name="song_select_warning">Tato stránka vyžaduje platný účet.  Ke spuštění požadovaného stahování musíte použít tlačítko stahování na webové stránce SongSelect.  Soubor bude po stažení importován do složky OpenSong/Songs/.</string>
-   <string name="song_select_warning_more">Kvůli omezením SongSelect si nyní budete muset ručně stáhnout soubor skladby a poté jej importovat do aplikace.  Po stažení souboru se vrátíte na tuto stránku a můžete kliknout na tlačítko \\'Importovat stažení\\' a importovat stažený soubor do OpenSongApp.</string>
+   <string name="song_select_warning_more">Kvůli omezením SongSelect si nyní budete muset ručně stáhnout soubor skladby a poté jej importovat do aplikace.  Po stažení souboru se vrátíte na tuto stránku a můžete kliknout na tlačítko \'Importovat stažení\' a importovat stažený soubor do OpenSongApp.</string>
    <string name="song_specific">Skladba specifická</string>
    <string name="song_swipe_toggle">Přepnout švihnout pro pohyb mezi skladbami zap / vyp</string>
    <string name="song_title">Název skladby</string>

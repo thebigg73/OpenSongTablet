@@ -1604,4 +1604,27 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="multilingual_scale">Scale multilingual lyric lines</string>
+    <string name="multilingual">Multilingual</string>
+    <string name="synchronise_need_update">Update your song files (required for synchronisation)</string>
+    <string name="synchronise_need_update_info">Some of your song files do not have UUID or last modified date information stored in them.  To allow safe synchronisation, you should run this step.</string>
+    <string name="synchronise_need_update_warning">This process will fully rebuild your song index and will edit and save songs that need either a unique UUID identifier or a last modified date added to them.  This process is SLOW if lots of files are affected and you should not exit the app until this has been completed.  Because this process edits your song files, it is critical that you have already made a backup before you run this step</string>
+    <string name="sync_waiting_for_info">The requested device is preparing synchronisation information for you</string>
+    <string name="sync_info_received">Synchronisation information received successfully</string>
+    <string name="sync_allow">Allow connected devices to sync</string>
+    <string name="sync_allow_info">Connected devices will be able to browse your songs and sets and downloaded them to their devices</string>
+    <string name="connection_host_needs_update">A connected device has sent information in an old format.  Please ask them to update their app.</string>
+    <string name="sync_device_denied">The connected device has switched off file synchronisation.  They can change this in the connect devices settings</string>
+    <string name="sync_device_processing">The connected device is processing the request</string>
+    <string name="sync_file_status">Status</string>
+    <string name="sync_new_files_available">New files available</string>
+    <string name="sync_updated_files_available">Updated files available</string>
+    <string name="sync_newer">Updated</string>
+    <string name="sync_older">Older</string>
+    <string name="sync_missing">New item</string>
+    <string name="sync_uuid_mismatch">UUID mismatch</string>
+    <string name="sync_same">Up to date</string>
+    <string name="sync_show_new_updated_only">Show new/updated only</string>
+    <string name="sync_show_new_updated_info">Hide all items that are already up to date</string>
+    <string name="nearby_get_profiles">Get profiles</string>
 </resources>

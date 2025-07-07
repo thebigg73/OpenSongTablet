@@ -7,9 +7,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class SyncViewPagerAdapter extends FragmentStateAdapter {
-    public final Fragment[] menuFragments = {new SyncSongFragment(),
-            new SyncSetFragment(), new SyncProfileFragment()};
-    private int openMenu = 1;
+    public final Fragment[] menuFragments = {new SyncItemsFragment("songs"),
+            new SyncItemsFragment("sets"), new SyncItemsFragment("profiles")};
 
     public SyncViewPagerAdapter(@NonNull FragmentManager fragmentManager, Lifecycle lifecycle) {
         super(fragmentManager,lifecycle);
@@ -18,7 +17,6 @@ public class SyncViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        openMenu = 1;
         return menuFragments[position];
     }
 
@@ -27,13 +25,4 @@ public class SyncViewPagerAdapter extends FragmentStateAdapter {
         return 3;
     }
 
-    public boolean isSongMenu() {
-        return openMenu==1;
-    }
-    public boolean isSetMenu() {
-        return openMenu==2;
-    }
-    public boolean isProfileMenu() {
-        return openMenu==3;
-    }
 }

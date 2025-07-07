@@ -164,7 +164,7 @@
                         android:value="60"
                         android:valueFrom="20"
                         android:valueTo="100"
-                        app:stepSize="5" />
+                        android:stepSize="5" />
 
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                         android:id="@+id/linesPerSlide"
@@ -176,7 +176,7 @@
                         android:value="8"
                         android:valueFrom="2"
                         android:valueTo="16"
-                        app:stepSize="1" />
+                        android:stepSize="1" />
 
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                         android:id="@+id/content"

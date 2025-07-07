@@ -260,7 +260,7 @@ public class Variations {
 
         // IV - When a received song - use the stored received song filename
         if (setItemInfo.songfilename.equals("ReceivedSong")) {
-            setItemInfo.songfilename = mainActivityInterface.getNearbyConnections().getReceivedSongFilename();
+            setItemInfo.songfilename = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getReceivedSongFilename();
         }
 
         // Build a new filename based on the folder name
@@ -339,6 +339,7 @@ public class Variations {
             String targetFilename = getKeyVariationFilename(songToTranspose.getFolder(), songToTranspose.getFilename(), setKey);
             Uri targetUri = getKeyVariationUri(targetFilename);
 
+            Log.d(TAG,"targetUri:"+targetUri+"\nfolder:"+folderVariations+"  filename+"+targetFilename);
             if (!mainActivityInterface.getStorageAccess().uriExists(targetUri) || requireUpdate) {
                 // We need to create the new key variation file for writing to
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,

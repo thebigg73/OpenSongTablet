@@ -41,7 +41,7 @@ public class PresenterFragment extends Fragment {
     private final Handler sendSongAfterDelayHandler = new Handler();
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
-        if (mainActivityInterface.getNearbyConnections().sendSongPayload()) {
+        if (mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongPayload()) {
             mainActivityInterface.getShowToast().doIt(nearby_large_file_string);
         }
         sendSongDelay = 3000;
@@ -49,7 +49,7 @@ public class PresenterFragment extends Fragment {
     private final Handler resetSendSongAfterDelayHandler = new Handler();
     private final Runnable resetSendSongAfterDelayRunnable = () -> {
         sendSongDelay = 0;
-        mainActivityInterface.getNearbyConnections().setSendSongDelayActive(false);
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().setSendSongDelayActive(false);
     };
 
     @Override
@@ -289,12 +289,12 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setCurrentSection(0);
         }
 
-        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                mainActivityInterface.getNearbyConnections().getIsHost()) {
+        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
+                mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
             // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
             // sendSongDelay will be 0 for the first song
             // IV - Always empty then add to queue (known state)
-            mainActivityInterface.getNearbyConnections().setSendSongDelayActive(sendSongDelay != 0);
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().setSendSongDelayActive(sendSongDelay != 0);
             sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
             sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
             // IV - Always empty then add to queue (known state)
@@ -303,13 +303,13 @@ public class PresenterFragment extends Fragment {
         }
 
         // IV - Consume any later pending client section change received from Host (-ve value)
-        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                !mainActivityInterface.getNearbyConnections().getIsHost()) {
-            int hostPendingSection = mainActivityInterface.getNearbyConnections().getHostPendingSection();
+        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
+                !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
+            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getHostPendingSection();
             if (hostPendingSection != 0) {
-                mainActivityInterface.getNearbyConnections().doSectionChange(hostPendingSection);
+                mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().doSectionChange(hostPendingSection);
             }
-            mainActivityInterface.getNearbyConnections().resetHostPendingSection();
+            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetHostPendingSection();
         }
 
         // State we haven't started the projection (for the song info bar check)

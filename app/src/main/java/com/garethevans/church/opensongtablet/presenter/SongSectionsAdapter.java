@@ -276,9 +276,9 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             mainActivityInterface.getSong().setCurrentSection(thisPos);
         }
         // IV - Send the section change to Nearby clients
-        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
-                mainActivityInterface.getNearbyConnections().getIsHost()) {
-            mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
+        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
+                mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongSectionPayload();
         }
     }
 

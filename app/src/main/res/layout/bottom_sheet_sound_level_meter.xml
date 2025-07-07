@@ -193,7 +193,7 @@
                         android:value="100"
                         android:valueFrom="10"
                         android:valueTo="1000"
-                        app:stepSize="10"/>
+                        android:stepSize="10"/>
 
                 </LinearLayout>
             </LinearLayout>

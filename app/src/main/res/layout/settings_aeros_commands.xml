@@ -25,7 +25,7 @@
                 android:valueFrom="1"
                 android:valueTo="16"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
             <TableRow style="@style/DividerLine" />
 
 
@@ -38,7 +38,7 @@
                 android:valueFrom="0"
                 android:valueTo="1000"
                 app:adjustable="true"
-                app:stepSize="100" />
+                android:stepSize="100" />
             <TableRow style="@style/DividerLine" />
 
         </LinearLayout>

@@ -10,6 +10,20 @@
             style="@style/DefaultView"
             android:orientation="vertical">
 
+            <!--TODO remove after testing -->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buildInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BUILD INFO"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/readInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="READ INFO"/>
+
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/chooseConnected"
                 android:layout_width="match_parent"
@@ -33,7 +47,7 @@
                 android:paddingBottom="8dp"
                 android:layout_gravity="top"
                 android:background="@color/colorAltPrimary"
-                android:contentDescription="@string/sync_querying_remote"/>
+                android:contentDescription="@string/sync"/>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/syncPager"
@@ -46,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/scrim"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/hostProgressBar"
@@ -54,7 +68,8 @@
         android:layout_height="@dimen/progress_bar_size"
         android:minHeight="@dimen/progress_bar_size"
         android:minWidth="@dimen/progress_bar_size"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/hostProgressTextView"
@@ -65,17 +80,5 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:visibility="gone"/>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/importNearbyFiles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:padding="16dp"
-        android:text="@string/nearby_get_songs"
-        app:icon="@drawable/download"
-        android:visibility="visible"/>
-
 
 </FrameLayout>

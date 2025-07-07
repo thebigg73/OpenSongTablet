@@ -86,15 +86,15 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setViews() {
-        myView.nearbyMessageMIDIAction.setChecked(mainActivityInterface.getNearbyConnections().getNearbyMessageMIDIAction());
+        myView.nearbyMessageMIDIAction.setChecked(mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessageMIDIAction());
         myView.nearbyMessage.setText(nearby_message_string+" "+which);
-        myView.nearbyMessage.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(which));
-        myView.nearbyMessage.setVisibility(mainActivityInterface.getNearbyConnections().getNearbyMessageMIDIAction() ? View.VISIBLE:View.GONE);
+        myView.nearbyMessage.setHint(mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessage(which));
+        myView.nearbyMessage.setVisibility(mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessageMIDIAction() ? View.VISIBLE:View.GONE);
     }
     private void setListeners() {
         myView.nearbyMessageMIDIAction.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getNearbyConnections().setNearbyMessageMIDIAction(b);
-            myView.nearbyMessage.setText(mainActivityInterface.getNearbyConnections().getNearbyMessage(which));
+            mainActivityInterface.getNearbyActions().getNearbyMessages().setNearbyMessageMIDIAction(b);
+            myView.nearbyMessage.setText(mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessage(which));
             myView.nearbyMessage.setVisibility(b ? View.VISIBLE:View.GONE);
         });
         myView.nearbyMessage.setOnClickListener(view -> {
@@ -149,7 +149,7 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
             currentCode = mainActivityInterface.getMidi().getMidiAction(whichButton);
             myView.currentCode.setHint(currentCode);
             myView.nearbyMessage.setText(nearby_message_string+" "+whichButton);
-            myView.nearbyMessage.setHint(mainActivityInterface.getNearbyConnections().getNearbyMessage(whichButton));
+            myView.nearbyMessage.setHint(mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessage(whichButton));
         }
     }
 
@@ -165,7 +165,7 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
         // Received from the TextInputBottomSheet via the MainActivity
         if (message!=null && which!=-1) {
             // Update the preference
-            mainActivityInterface.getNearbyConnections().setNearbyMessage(which,message);
+            mainActivityInterface.getNearbyActions().getNearbyMessages().setNearbyMessage(which,message);
             myView.nearbyMessage.setHint(message);
         }
     }

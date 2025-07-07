@@ -190,6 +190,7 @@ public class WindowFlags {
     }
 
     public int getSoftKeyboardHeight() {
+        Log.d(TAG,"softKeyboardHeight:"+softKeyboardHeight);
         return softKeyboardHeight;
     }
 
@@ -257,14 +258,6 @@ public class WindowFlags {
         }
         if (displayCutoutCompat != null) {
             switch (firstBootRotation) {
-                case 0:
-                default:
-                    cutoutTop = displayCutoutCompat.getSafeInsetTop();
-                    cutoutLeft = displayCutoutCompat.getSafeInsetLeft();
-                    cutoutRight = displayCutoutCompat.getSafeInsetRight();
-                    cutoutBottom = displayCutoutCompat.getSafeInsetBottom();
-                    break;
-
                 case 1:
                     cutoutTop = displayCutoutCompat.getSafeInsetLeft();
                     cutoutLeft = displayCutoutCompat.getSafeInsetBottom();
@@ -284,6 +277,14 @@ public class WindowFlags {
                     cutoutLeft = displayCutoutCompat.getSafeInsetTop();
                     cutoutRight = displayCutoutCompat.getSafeInsetBottom();
                     cutoutBottom = displayCutoutCompat.getSafeInsetLeft();
+                    break;
+
+                case 0:
+                default:
+                    cutoutTop = displayCutoutCompat.getSafeInsetTop();
+                    cutoutLeft = displayCutoutCompat.getSafeInsetLeft();
+                    cutoutRight = displayCutoutCompat.getSafeInsetRight();
+                    cutoutBottom = displayCutoutCompat.getSafeInsetBottom();
                     break;
             }
 

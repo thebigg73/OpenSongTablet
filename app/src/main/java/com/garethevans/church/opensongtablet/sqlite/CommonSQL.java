@@ -1123,6 +1123,31 @@ public class CommonSQL {
         return shareableSongs;
     }
 
+    public String[] getSongCreationInfo(SQLiteDatabase db, String folder, String filename) {
+        String songId = getAnySongId(folder, filename);
+        String[] selectionArgs = new String[]{songId};
+        String sql = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_LAST_MODIFIED + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
+        String[] returnInfo = new String[] {"","","false"};
+
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        // Get the first item (the matching songID)
+        try {
+            if (cursor.moveToFirst()) {
+                returnInfo[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
+                returnInfo[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LAST_MODIFIED));
+                returnInfo[2] = "true";  // We have this file
+                returnInfo[0] = returnInfo[0]==null ? "" : returnInfo[0];
+                returnInfo[1] = returnInfo[1]==null ? "" : returnInfo[1];
+            }
+
+            closeCursor(cursor);
+        } catch (Exception e) {
+            Log.e(TAG,"error:"+e);
+        }
+
+        return returnInfo;
+    }
 
         // TODO delete stuff from the non-opensong database where the file has gone
 }

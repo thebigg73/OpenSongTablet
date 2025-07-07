@@ -203,7 +203,7 @@
    <string name="chorus_background">Kor bakgrund</string>
    <string name="clipboard_info">När du hittar låttexten / ackorden du vill importera markerar du dem och klickar på alternativet Kopiera i Urklipp.</string>
    <string name="close">Stänga</string>
-   <string name="song_select_warning_more">På grund av SongSelect-begränsningar måste du nu ladda ner din låtfil manuellt och sedan importera den till appen.  När du har laddat ner filen kommer du tillbaka till den här sidan och kan klicka på knappen \\'Importera nedladdning\\' för att importera den nedladdade filen till OpenSongApp.</string>
+   <string name="song_select_warning_more">På grund av SongSelect-begränsningar måste du nu ladda ner din låtfil manuellt och sedan importera den till appen.  När du har laddat ner filen kommer du tillbaka till den här sidan och kan klicka på knappen \'Importera nedladdning\' för att importera den nedladdade filen till OpenSongApp.</string>
    <string name="import_download">Importera nedladdning</string>
    <string name="color_choose">Färgväljare</string>
    <string name="column_force">Åsidosätt kolumnbrytningar manuellt</string>

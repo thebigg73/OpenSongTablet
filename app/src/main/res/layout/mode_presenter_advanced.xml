@@ -43,7 +43,7 @@
                 android:text="@string/size"
                 android:valueFrom="8"
                 android:valueTo="48"
-                app:stepSize="1"
+                android:stepSize="1"
                 app:adjustable="true"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -62,7 +62,7 @@
                 android:text="@string/presenter_song_section_text_size"
                 android:valueFrom="12"
                 android:valueTo="24"
-                app:stepSize="2"
+                android:stepSize="2"
                 app:adjustable="true"/>
 
             <TableRow style="@style/DividerLine" />

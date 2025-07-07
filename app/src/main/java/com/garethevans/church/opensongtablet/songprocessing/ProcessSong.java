@@ -2441,14 +2441,18 @@ public class ProcessSong {
                 "green", "lightGray", "magenta", "orange", "purple", "red", "white", "yellow" };
 
         if (line.contains("<") || line.contains("&lt;")) {
+            String originalline = line;
             for (String color : colorsRecognised) {
                 line = line.replace("<" + color + ">", "");
                 line = line.replace("<@" + color + ">", "");
                 line = line.replace("&lt;" + color + "&gt;", "");
                 line = line.replace("&lt;@" + color + "&gt;", "");
             }
-            line = line.replace("<", "");
-            line = line.replace("&lt;", "");
+            if (!originalline.equals(line)) {
+                // We have fixed color tags, so remove the final <
+                line = line.replace("<", "");
+                line = line.replace("&lt;", "");
+            }
         }
 
         return line;

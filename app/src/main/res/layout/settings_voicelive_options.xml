@@ -23,7 +23,7 @@
                 android:valueFrom="1"
                 android:valueTo="16"
                 app:adjustable="true"
-                app:stepSize="1" />
+                android:stepSize="1" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch

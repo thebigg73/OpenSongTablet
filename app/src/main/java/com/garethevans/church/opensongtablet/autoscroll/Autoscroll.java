@@ -93,7 +93,7 @@ public class Autoscroll {
         this.songHeight = songHeight;
         alreadyFiguredOut = false;
         autoscrollView.setOnClickListener(view -> {
-            mainActivityInterface.getNearbyConnections().sendAutoscrollPausePayload();
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().autoscrollPause);
             isPaused = !isPaused;
         });
         autoscrollView.setOnLongClickListener(view -> {
@@ -503,10 +503,7 @@ public class Autoscroll {
             }
 
             // If we are connected as a host, send to client devices
-            if (mainActivityInterface.getNearbyConnections().getIsHost() &&
-            mainActivityInterface.getNearbyConnections().getUsingNearby()) {
-                mainActivityInterface.getNearbyConnections().sendAutoscrollPayload("autoscroll_start");
-            }
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().autoscrollStart);
         }
     }
     public void stopAutoscroll() {
@@ -515,10 +512,7 @@ public class Autoscroll {
         // Now end
         endAutoscroll();
         // If we are connected as a host, send to client devices
-        if (mainActivityInterface.getNearbyConnections().getIsHost() &&
-                mainActivityInterface.getNearbyConnections().getUsingNearby()) {
-            mainActivityInterface.getNearbyConnections().sendAutoscrollPayload("autoscroll_stop");
-        }
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().autoscrollStop);
     }
     private void endAutoscroll() {
         if (usingZoomLayout && myZoomLayout!=null) {

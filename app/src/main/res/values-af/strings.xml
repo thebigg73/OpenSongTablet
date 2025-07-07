@@ -981,7 +981,7 @@
     <string name="song_sections_info">Die afdelings wat in jou liedjie se lirieke gevind word, word hieronder getoon. Klik op die knoppies om dit by die aanbiedingsbestelling te voeg.</string>
     <string name="song_sections_project">Klik op \'n liedjie-afdeling om dit na die gekoppelde skerms te stuur</string>
     <string name="song_select_warning">Hierdie webwerf benodig \'n geldige rekening.  U moet die aflaai-knoppie op die SongSelect-webblad gebruik om die nodige aflaai te aktiveer.  Die lêer sal in u OpenSong/Songs/ -lêergids ingevoer word nadat dit afgelaai is.</string>
-    <string name="song_select_warning_more">As gevolg van SongSelect-beperkings, sal jy nou jou liedjielêer met die hand moet aflaai en dit dan in die toepassing invoer.  Nadat jy die lêer afgelaai het, sal jy na hierdie bladsy teruggekeer word en kan jy op die \\'Import download\\'-knoppie klik om die afgelaaide lêer in OpenSongApp in te voer.</string>
+    <string name="song_select_warning_more">As gevolg van SongSelect-beperkings, sal jy nou jou liedjielêer met die hand moet aflaai en dit dan in die toepassing invoer.  Nadat jy die lêer afgelaai het, sal jy na hierdie bladsy teruggekeer word en kan jy op die \'Import download\'-knoppie klik om die afgelaaide lêer in OpenSongApp in te voer.</string>
     <string name="song_specific">Liedjie spesifiek</string>
     <string name="song_swipe_toggle">Toggle krap tussen liedjies op / af te beweeg</string>
     <string name="song_title">Song title</string>
