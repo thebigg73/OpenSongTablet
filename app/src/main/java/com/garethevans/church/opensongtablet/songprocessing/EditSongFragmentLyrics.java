@@ -40,6 +40,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private int cursorPos=0;
     private boolean addUndoStep = true;
     private String success_string="";
+    private Bitmap bmp = null;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -83,7 +84,6 @@ public class EditSongFragmentLyrics extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = EditSongLyricsBinding.inflate(inflater, container, false);
-
         return myView.getRoot();
     }
 
@@ -159,16 +159,19 @@ public class EditSongFragmentLyrics extends Fragment {
         if (getContext()!=null && mainActivityInterface.getTempSong().getFiletype()!=null) {
             if (mainActivityInterface.getTempSong().getFiletype().equals("PDF")) {
                 // Load in a preview if the version of Android is high enough
-                Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(
-                        mainActivityInterface.getTempSong().getFolder(),
-                        mainActivityInterface.getTempSong().getFilename(),
-                        0, 200, 200, "N", true);
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (myView!=null) {
-                        myView.previewImage.setVisibility(View.VISIBLE);
-                        Glide.with(getContext()).load(bmp).into(myView.previewImage);
-                    }
-                });
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(
+                            mainActivityInterface.getTempSong().getFolder(),
+                            mainActivityInterface.getTempSong().getFilename(),
+                            0, 200, 200, "N", true);
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        if (myView!=null) {
+                            myView.previewImage.setVisibility(View.VISIBLE);
+                            Glide.with(getContext()).load(bmp).into(myView.previewImage);
+                        }
+                    });
+                }
+
 
             } else if (mainActivityInterface.getTempSong().getFiletype().equals("IMG")) {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",
