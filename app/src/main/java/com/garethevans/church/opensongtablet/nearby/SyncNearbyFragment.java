@@ -22,48 +22,64 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsSyncBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class SyncNearbyFragment extends Fragment {
     // This fragment is used to request, then display a list of files available on the host device
     // It is only accessible on devices that are connected and are not running as hosts themselves
     // This fragment can be called from the SetActionsFragment, ProfileActionsFragment and SongActionsFragment
 
-    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "BrowseHostFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsSyncBinding myView;
     @SuppressWarnings("FieldCanBeLocal")
-    private String browse_host_files_string="", sets_string="", profiles_string="", songs_string="",
-            set_current_string="", set_is_empty_string="", processing_string="",
-            nearby_files_copied_string="", nearby_files_skipped_string="",
-            nearby_files_failed_string="", no_response_string="", sync_waiting_for_info_string="",
-            sync_info_received_string="", new_songs_string="", updated_songs_string="",
-            new_files_string="", updated_files_string="";
-    private int currentFile=0;
+    private String browse_host_files_string = "", sets_string = "", profiles_string = "", songs_string = "",
+            set_current_string = "", set_is_empty_string = "", processing_string = "",
+            nearby_files_copied_string = "", nearby_files_skipped_string = "",
+            nearby_files_failed_string = "", no_response_string = "", sync_waiting_for_info_string = "",
+            sync_info_received_string = "", new_songs_string = "", updated_songs_string = "",
+            new_files_string = "", updated_files_string = "", chosenDevice = "", sync_extracting_string="";
     private boolean syncSongPrepared = false;
     private boolean syncSetPrepared = false;
     private boolean syncProfilePrepared = false;
-    private NearbySyncAdapter nearbySyncAdapter;
     private NearbyJson nearbyJson;
     private ArrayList<NearbySyncItem> checkedItems = new ArrayList<>();
     private boolean waitingForFiles = false, overwrite = false;
     private String requestedFolder, requestedSubfolder, requestedFilename, folder;
-    private String nearbyCurrentSet=null;
+    private String nearbyCurrentSet = null;
     private final ArrayList<String> filesCopied = new ArrayList<>();
     private final ArrayList<String> filesSkipped = new ArrayList<>();
     private final ArrayList<String> filesFailed = new ArrayList<>();
     private SyncViewPagerAdapter syncViewPagerAdapter;
     private SyncItemsFragment syncSongFragment, syncSetFragment, syncProfileFragment;
-    private ArrayList<String> connectedDeviceCodes = new ArrayList<>();
-    private ArrayList<String> connectedDeviceNames = new ArrayList<>();
+    private final ArrayList<String> connectedDeviceCodes = new ArrayList<>();
+    private final ArrayList<String> connectedDeviceNames = new ArrayList<>();
     private boolean timeout = false;
+    private final Handler progressTextClearHandler = new Handler();
+    private final Runnable progressTextClearRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView!=null) {
+                    myView.hostProgressTextView.setText("");
+                    myView.hostProgressTextView.setVisibility(View.GONE);
+                    showProgress(false);
+                }
+            });
+        }
+    };
     private final Handler timeoutHandler = new Handler();
-    private Runnable timeoutRunnable = new Runnable() {
+    private final Runnable timeoutRunnable = new Runnable() {
         @Override
         public void run() {
             if (timeout) {
@@ -86,7 +102,7 @@ public class SyncNearbyFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSyncBinding.inflate(inflater, container, false);
         return myView.getRoot();
     }
@@ -97,6 +113,8 @@ public class SyncNearbyFragment extends Fragment {
         setupViews();
         setupListeners();
         mainActivityInterface.getNearbyActions().setSyncNearbyFragment(this);
+        // Empty the export folder
+        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
         super.onResume();
     }
 
@@ -108,7 +126,7 @@ public class SyncNearbyFragment extends Fragment {
     }
 
     private void prepareStrings() {
-        if (getContext()!=null && mainActivityInterface!=null && myView!=null) {
+        if (getContext() != null && mainActivityInterface != null && myView != null) {
             browse_host_files_string = getString(R.string.connections_browse_host);
             sets_string = getString(R.string.set_lists);
             profiles_string = getString(R.string.profile);
@@ -125,29 +143,7 @@ public class SyncNearbyFragment extends Fragment {
             sync_info_received_string = getString(R.string.sync_info_received);
             new_files_string = getString(R.string.sync_new_files_available);
             updated_files_string = getString(R.string.sync_updated_files_available);
-
-            /*switch (mainActivityInterface.getWhattodo()) {
-                case "browsesets":
-                default:
-                    folder = "Sets";
-                    title_string = browse_host_files_string + ": " + set_string;
-                    web_help = getString(R.string.website_browse_host_files_set);
-                    break;
-                case "browseprofiles":
-                    folder = "Profiles";
-                    title_string = browse_host_files_string + ": " + profile_string;
-                    web_help = getString(R.string.website_profiles);
-                    break;
-                case "browsesongs":
-                    folder = "Songs";
-                    title_string = browse_host_files_string + ": " + song_string;
-                    web_help = getString(R.string.website_browse_host_files_songs);
-                    break;
-                case "browsecurrentset":
-                    folder = "CurrentSet";
-                    title_string = browse_host_files_string + ": " + set_current_string;
-                    web_help = getString(R.string.website_browse_host_files_set);
-            }*/
+            sync_extracting_string = getString(R.string.sync_extracting);
             set_is_empty_string = getString(R.string.set_is_empty);
             mainActivityInterface.updateToolbar(title_string);
             mainActivityInterface.updateToolbarHelp(web_help);
@@ -158,7 +154,7 @@ public class SyncNearbyFragment extends Fragment {
         // Show the progress bar
         showProgress(true);
 
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             if (syncViewPagerAdapter == null) {
                 syncViewPagerAdapter = new SyncViewPagerAdapter(getActivity().getSupportFragmentManager(), this.getLifecycle());
                 syncViewPagerAdapter.createFragment(0);
@@ -202,9 +198,9 @@ public class SyncNearbyFragment extends Fragment {
         }
 
         // Get a note of the connected devices into the exposedDropdown
-        if (getContext()!=null) {
+        if (getContext() != null) {
             // Go through the connected devices and get the device names
-            for (int i=0;i<mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size(); i++) {
+            for (int i = 0; i < mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size(); i++) {
                 connectedDeviceCodes.add(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().keyAt(i));
                 connectedDeviceNames.add(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().valueAt(i));
             }
@@ -213,61 +209,68 @@ public class SyncNearbyFragment extends Fragment {
             myView.chooseConnected.setText("");
         }
 
-        myView.syncTabs.setVisibility(View.VISIBLE);
-        myView.syncPager.setVisibility(View.VISIBLE);
+        showContentInfo(false);
 
         showProgress(false);
     }
 
     private void setupListeners() {
-        // If we change / select a connected device
-        // TODO remove these after testing
-        myView.buildInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG,"build info");
-                mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSyncInfo("testDevice");
-            }
-        });
-        // TODO remove after testing
-        myView.readInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG,"read info");
-                dealWithNearbyInfoReceived();
-            }
-        });
-
-
-
         myView.chooseConnected.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                showContentInfo(false);
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 // Only proceed if the device name isn't empty
-                if (editable!=null && !editable.toString().isEmpty()) {
+                if (editable != null && !editable.toString().isEmpty()) {
                     // Wait for info from the required device.  Have a 10 sec timeout
                     try {
+                        chosenDevice = editable.toString();
                         int pos = connectedDeviceNames.indexOf(editable.toString());
-                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size()>=pos) {
+                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size() >= pos) {
                             showProgress(true);
                             mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSyncInfoRequest(editable.toString());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    chosenDevice = "";
                 }
+            }
+        });
+
+        myView.checkForUpdates.setOnClickListener(view -> {
+
+            showContentInfo(false);
+            if (myView.chooseConnected.getText() != null) {
+                try {
+                    chosenDevice = myView.chooseConnected.getText().toString();
+                    if (!chosenDevice.isEmpty()) {
+                        // Wait for info from the required device.  Have a 10 sec timeout
+                        int pos = connectedDeviceNames.indexOf(chosenDevice);
+                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().size() >= pos) {
+                            showProgress(true);
+                            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSyncInfoRequest(chosenDevice);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                chosenDevice = "";
             }
         });
     }
 
     public void showProgress(boolean show) {
-        if (myView!=null) {
+        if (myView != null) {
             timeoutHandler.removeCallbacks(timeoutRunnable);
             timeout = false;
             if (show) {
@@ -282,25 +285,23 @@ public class SyncNearbyFragment extends Fragment {
     }
 
     // Listening from NearbyConnections
-    public void dealWithNearbyInfoReceived() {
+    public void dealWithNearbyInfoReceived(NearbyJson nearbyJson) {
+        Log.d(TAG,"info received");
         showProgress(true);
+        this.nearbyJson = nearbyJson;
         mainActivityInterface.getThreadPoolExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                // The nearbyJson file has been received and copied to Received/NearbyShareableList.json
-                // Read it in an build the list of items received
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",mainActivityInterface.getNearbyActions().sharableObjectFile);
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-                nearbyJson = MainActivity.gson.fromJson(
-                        mainActivityInterface.getStorageAccess().readTextFileToString(inputStream), NearbyJson.class);
-
                 // Update each fragment
-                syncSongPrepared = false;
-                syncSetPrepared = false;
-                syncProfilePrepared = false;
-                syncSongFragment.prepareRecycler();
-                syncSetFragment.prepareRecycler();
-                syncProfileFragment.prepareRecycler();
+                if (myView!=null) {
+                    showContentInfo(true);
+                    syncSongPrepared = false;
+                    syncSetPrepared = false;
+                    syncProfilePrepared = false;
+                    syncSongFragment.prepareRecycler();
+                    syncSetFragment.prepareRecycler();
+                    syncProfileFragment.prepareRecycler();
+                }
             }
         });
     }
@@ -319,6 +320,7 @@ public class SyncNearbyFragment extends Fragment {
         }
         showProgress(true);
     }
+
     public void announcePrepared(String what) {
         switch (what) {
             case "songs":
@@ -336,154 +338,31 @@ public class SyncNearbyFragment extends Fragment {
         }
     }
 
-    public void setNearbyCurrentSet(String nearbyCurrentSet) {
-        this.nearbyCurrentSet = nearbyCurrentSet;
-    }
-    public void displayHostItems(String[] hostItems) {
-        // We can now update the arrayAdapter on the main UI
-        mainActivityInterface.getMainHandler().post(() -> {
-            //myView.hostFilesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            //browseHostAdapter = new BrowseHostAdapter(getContext(),hostItems,folder);
-            //myView.hostFilesRecycler.setAdapter(browseHostAdapter);
-            //myView.dimBackground.setVisibility(View.GONE);
-            //myView.hostProgressBar.setVisibility(View.GONE);
-
-            /*if (nearbyCurrentSet!=null && !nearbyCurrentSet.isEmpty()) {
-                myView.importNearbyCurrentSet.setVisibility(View.VISIBLE);
-            }
-            if (hostItems.length>0) {
-                myView.importNearbyFiles.setVisibility(View.VISIBLE);
-            }*/
-            //myView.nearbyBrowseSelectAll.setVisibility(View.VISIBLE);
-        });
-
-    }
-
-    public boolean getOverwrite() {
-        return overwrite;
-    }
-
-    public void addFilesCopied(String filelocation) {
-        filesCopied.add(filelocation);
-    }
-
-    public void addFilesSkipped(String filelocation) {
-        filesSkipped.add(filelocation);
-    }
-
-    public void addFilesFailed(String filelocation) {
-        filesFailed.add(filelocation);
-    }
-
-    private void startGetFiles() {
-        // Get the checked items from the array
-        filesCopied.clear();
-        filesSkipped.clear();
-        filesFailed.clear();
-
-        checkedItems = nearbySyncAdapter.getCheckedItems();
-        currentFile = 0;
-        waitingForFiles = true;
-        //overwrite = myView.nearbyOverwrite.getChecked();
-        // Get the first file if chosen
-        if (!checkedItems.isEmpty()) {
-            getFile();
-        }
-    }
-
-    private void getFile() {
-        /*if (currentFile<checkedItems.size()) {
-            // Tell the user what we are doing
-            requestedFolder = checkedItems.get(currentFile).getFolder().trim();
-            requestedSubfolder = checkedItems.get(currentFile).getSubfolder().trim();
-            requestedFilename = checkedItems.get(currentFile).getFilename().trim();
-            currentFile += 1;
-            updateProgressText(currentFile,checkedItems.size(),requestedFilename);
-            // Initiate the nearby request with a short delay
-            mainActivityInterface.getMainHandler().postDelayed(() ->
-            mainActivityInterface.getNearbyActions().getNearbySendPayloads().requestHostFile(
-                    requestedFolder, requestedSubfolder, requestedFilename),50);
-        } else {
-            // We have finished!
-            myView.hostProgressTextView.setText("");
-            myView.hostProgressTextView.setVisibility(View.GONE);
-            waitingForFiles = false;
-
-            StringBuilder stringBuilder = getStringBuilder();
-
-            // Update the song menu
-            mainActivityInterface.updateSongList();
-
-            // Show the results in an info bottom sheet
-            InformationBottomSheet informationBottomSheet = new InformationBottomSheet(browse_host_files_string,stringBuilder.toString(),null,null);
-            informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InformationBottomSheet");
-        }*/
-    }
-
-    private StringBuilder getStringBuilder() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(nearby_files_copied_string).append(":\n");
-        for (String copied:filesCopied) {
-            stringBuilder.append(copied).append("\n");
-        }
-        stringBuilder.append("\n");
-        stringBuilder.append(nearby_files_skipped_string).append(":\n");
-        for (String skipped:filesSkipped) {
-            stringBuilder.append(skipped).append("\n");
-        }
-        stringBuilder.append("\n");
-        stringBuilder.append(nearby_files_failed_string).append(":\n");
-        for (String failed:filesFailed) {
-            stringBuilder.append(failed).append("\n");
-        }
-        stringBuilder.append("\n");
-        return stringBuilder;
-    }
 
     public void updateProgressText(int current, int total, String filename) {
         // Must do this on the UI
         mainActivityInterface.getMainHandler().post(() -> {
-            if (myView!=null) {
-                String current_string = processing_string + "\n" + current + "/" + total + ": "+filename;
+            if (myView != null) {
+                String current_string = processing_string + "\n" + current + "/" + total + ": " + filename;
                 myView.hostProgressTextView.setText(current_string);
             }
         });
     }
 
-    public String getRequestedFolder() {
-        return requestedFolder;
-    }
-    public String getRequestedSubfolder() {
-        return requestedSubfolder;
-    }
-    public String getRequestedFilename() {
-        return requestedFilename;
-    }
-
-    public boolean getWaitingForFiles() {
-        return waitingForFiles;
-    }
-
-    // Called from NearbyConnections once a file has been received
-    public void continueGetFiles() {
-        // When the payload has been received and dealt with, move on to the next file
-        getFile();
-    }
-
     private void doImportCurrentSet() {
-        if (nearbyCurrentSet!=null && !nearbyCurrentSet.isEmpty()) {
+        if (nearbyCurrentSet != null && !nearbyCurrentSet.isEmpty()) {
             // Initialise the current set
             mainActivityInterface.getCurrentSet().setSetCurrent(nearbyCurrentSet);
             mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits("");
             // Wait before continuing (to ensure the current set preference is saved)
             mainActivityInterface.getMainHandler().postDelayed(() -> {
                 mainActivityInterface.getSetActions().parseCurrentSet();
-                if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                if (mainActivityInterface.getCurrentSet().getCurrentSetSize() > 0) {
                     mainActivityInterface.getShowToast().success();
                 } else {
                     mainActivityInterface.getShowToast().error();
                 }
-            },500);
+            }, 500);
         } else {
             mainActivityInterface.getShowToast().doIt(set_is_empty_string);
         }
@@ -492,5 +371,211 @@ public class SyncNearbyFragment extends Fragment {
 
     public NearbyJson getNearbyJson() {
         return nearbyJson;
+    }
+
+    public String getChosenDevice() {
+        return chosenDevice;
+    }
+
+
+    private void showContentInfo(boolean showContentInfo) {
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null) {
+                myView.syncTabs.setVisibility(showContentInfo ? View.VISIBLE : View.GONE);
+                myView.syncPager.setVisibility(showContentInfo ? View.VISIBLE : View.GONE);
+            }
+        });
+    }
+    public void doExtractFromZip(Uri zipUri, String what) {
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            ArrayList<ShareableObject> songObjectsReceived = new ArrayList<>();
+            if (what.equals("songs")) {
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Received","",mainActivityInterface.getNearbyActions().sharableObjectFile);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+                if (inputStream!=null) {
+                    // Get a record of the requested songs uuids and lastModified values
+                    NearbyJson hostSongsJson = MainActivity.gson.fromJson(
+                            mainActivityInterface.getStorageAccess().readTextFileToString(inputStream), NearbyJson.class);
+                    if (hostSongsJson.getShareableSongObjects() != null) {
+                        songObjectsReceived = hostSongsJson.getShareableSongObjects();
+                    }
+                }
+                // Keep a note that we need to fully reindex
+                mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
+                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+            }
+            // Count the items
+            ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(mainActivityInterface.getStorageAccess().getInputStream(zipUri)));
+            int totalItemCount = countZipItems(zipInputStream);
+
+            // Prepare to extract (the previous stream gets closed)
+            zipInputStream = new ZipInputStream(new BufferedInputStream(mainActivityInterface.getStorageAccess().getInputStream(zipUri)));
+
+            // Go through each entry and copy to the desired location
+            ZipEntry ze;
+            byte[] buffer = new byte[1024];
+            long starttime = System.currentTimeMillis();
+            Log.d(TAG,"START now:" + starttime);
+            int thisItem = 0;
+            try {
+                while ((ze = zipInputStream.getNextEntry()) != null) {
+                    if (!ze.isDirectory()) {
+                        thisItem++;
+                        String folderToUse = null;
+                        String subfolderToUse = "";
+                        String filenameToUse = ze.getName();
+                        updateProgressText(sync_extracting_string + " ("+ thisItem + "/"+ totalItemCount + "):\n" + filenameToUse);
+
+                        if (filenameToUse.startsWith("/")) {
+                            filenameToUse = filenameToUse.substring(1);
+                        }
+
+                        switch (what) {
+                            case "songs":
+                                folderToUse = "Songs";
+                                subfolderToUse = mainActivityInterface.getMainfoldername();
+                                if (ze.getName().contains("/")) {
+                                    subfolderToUse = ze.getName().substring(0, ze.getName().lastIndexOf("/"));
+                                    filenameToUse = filenameToUse.replace(subfolderToUse + "/", "");
+                                }
+                                break;
+                            case "sets":
+                                folderToUse = "Sets";
+                                subfolderToUse = "";
+                                break;
+                            case "profiles":
+                                folderToUse = "Profiles";
+                                subfolderToUse = "";
+                                break;
+                        }
+
+                        if (folderToUse != null && subfolderToUse != null) {
+                            Uri uriForNewItem = mainActivityInterface.getStorageAccess().getUriForItem(folderToUse, subfolderToUse, filenameToUse);
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriForNewItem, null, folderToUse, subfolderToUse, filenameToUse);
+                            OutputStream outputStreamForNewItem = mainActivityInterface.getStorageAccess().getOutputStream(uriForNewItem);
+                            // Write the file
+                            int count;
+                            StringBuilder errors = new StringBuilder();
+                            //Log.d(TAG, "outputStreamForNewItem:" + outputStreamForNewItem);
+                            //Log.d(TAG, "ze:" + ze.getName() + "  " + ze.getSize() + "kB  " + ze.getCompressedSize());
+                            try {
+                                if (outputStreamForNewItem != null && myView != null) {
+                                    while ((count = zipInputStream.read(buffer)) != -1) {
+                                        //Log.d(TAG, "Writing the buffer");
+                                        outputStreamForNewItem.write(buffer, 0, count);
+                                    }
+                                    if (what.equals("songs")) {
+                                        // Update or create an entry in the songs database
+                                        Song existingSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(subfolderToUse,filenameToUse);
+                                        if (existingSong == null) {
+                                            existingSong = new Song();
+                                            existingSong.setFilename(filenameToUse);
+                                            existingSong.setFolder(folderToUse);
+                                            mainActivityInterface.getSQLiteHelper().createSong(folderToUse,filenameToUse);
+                                        }
+                                        // Try to get the UUID and the lastModified values of the song we've received
+                                        for (ShareableObject songObject : songObjectsReceived) {
+                                            if (songObject.getFilename().equals(filenameToUse) && songObject.getFolder().equals(subfolderToUse)) {
+                                                existingSong.setUuid(songObject.getUuid());
+                                                existingSong.setLastModified(songObject.getLastModified());
+                                                break;
+                                            }
+                                        }
+                                        mainActivityInterface.getSQLiteHelper().updateSong(existingSong);
+                                    }
+                                } else if (myView==null) {
+                                    // The user closed the window, so stop
+                                    ze = null;
+                                } else {
+                                    Log.d(TAG, "error = " + ze.getName());
+                                    errors.append(ze.getName()).append("\n");
+                                    mainActivityInterface.getStorageAccess().updateCrashLog(ze.getName() + " - error synchronising file");
+                                }
+                            } catch (Exception e) {
+                                mainActivityInterface.getStorageAccess().updateCrashLog("Synchronising item: " + ze.getName() + "\n" + e);
+                                e.printStackTrace();
+                            } finally {
+                                if (outputStreamForNewItem!=null) {
+                                    try {
+                                        outputStreamForNewItem.close();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "Zip file finished!");
+            }
+            try {
+                zipInputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            long endtime = System.currentTimeMillis();
+            Log.d(TAG,"END now: "+endtime);
+            Log.d(TAG,"total time for buffer size "+buffer.length+"B:"+(endtime - starttime)+"ms");
+            // Now refresh the matching items
+            announceNotPrepared(what);
+            switch (what) {
+                case "songs":
+                    syncSongFragment.prepareRecycler();
+                    break;
+                case "sets":
+                    syncSetFragment.prepareRecycler();
+                    break;
+                case "profiles":
+                    syncProfileFragment.prepareRecycler();
+                    break;
+            }
+        });
+    }
+
+    private int countZipItems(ZipInputStream zipInputStream) {
+        int totalZipItems = 0;
+        if (zipInputStream != null) {
+            try {
+                while (zipInputStream.getNextEntry() != null) {
+                    totalZipItems++;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                zipInputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d(TAG,"totalZipItems:"+totalZipItems);
+        return totalZipItems;
+    }
+
+    public void updateProgressText(String progressText) {
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                progressTextClearHandler.removeCallbacks(progressTextClearRunnable);
+                myView.dimBackground.setVisibility(View.VISIBLE);
+                myView.hostProgressBar.setVisibility(View.VISIBLE);
+                myView.hostProgressTextView.setVisibility(View.VISIBLE);
+                myView.hostProgressTextView.setText(progressText);
+                progressTextClearHandler.postDelayed(progressTextClearRunnable,2000);
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
+        progressTextClearHandler.removeCallbacks(progressTextClearRunnable);
+        // Empty the export folder
+        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
+        // Rebuild the song index
+        if (mainActivityInterface.getSongListBuildIndex().getFullIndexRequired()) {
+            mainActivityInterface.indexSongs();
+        }
     }
 }

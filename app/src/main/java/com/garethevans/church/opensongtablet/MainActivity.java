@@ -123,6 +123,7 @@ import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
 import com.garethevans.church.opensongtablet.nearby.NearbyActions;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
+import com.garethevans.church.opensongtablet.nearby.SyncNearbyFragment;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsFragment;
 import com.garethevans.church.opensongtablet.pads.Pad;
@@ -3394,6 +3395,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean allowToast = true;
 
             switch (what) {
+                case "syncNearbyZip":
+                    // If we are about to import files from a zip file and overwrite our files
+                    if (arguments!=null && arguments.size()==2) {
+                        Uri zipUri = Uri.parse(arguments.get(0));
+                        String which = arguments.get(1);
+                        ((SyncNearbyFragment) callingFragment).doExtractFromZip(zipUri, which);
+                    }
+                    allowToast = false;
+                    break;
                 case "addUUIDLastMod":
                     // This checks songs for missing UUID or lastModified values
                     // If the aren't found, they get added and the song saved again

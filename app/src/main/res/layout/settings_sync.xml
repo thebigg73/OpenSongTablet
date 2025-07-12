@@ -10,33 +10,32 @@
             style="@style/DefaultView"
             android:orientation="vertical">
 
-            <!--TODO remove after testing -->
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buildInfo"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BUILD INFO"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/readInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="READ INFO"/>
-
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:gravity="bottom
+">
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/chooseConnected"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:hint="@string/sync_choose_device"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/checkForUpdates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:text="@string/sync_check_for_updates"/>
+                android:contentDescription="@string/sync_check_for_updates"
+                android:src="@drawable/refresh"
+                app:fabSize="mini"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+            </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/syncTabs"
@@ -78,7 +77,7 @@
         android:minHeight="@dimen/progress_bar_size"
         android:background="@drawable/rounded_box"
         android:gravity="center"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal|bottom"
         android:visibility="gone"/>
 
 </FrameLayout>

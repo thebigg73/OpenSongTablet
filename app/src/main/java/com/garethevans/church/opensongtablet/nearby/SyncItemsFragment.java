@@ -48,8 +48,8 @@ public class SyncItemsFragment extends Fragment {
         prepareStrings();
         myView.itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        myView.showAll.setVisibility(what.equals("songs") ? View.VISIBLE:View.GONE);
-        myView.showAll.setChecked(what.equals("songs"));
+        myView.showNewUpdate.setVisibility(what.equals("songs") ? View.VISIBLE:View.GONE);
+        myView.showNewUpdate.setChecked(what.equals("songs"));
 
         myView.downloadItems.setVisibility(View.GONE);
 
@@ -87,9 +87,10 @@ public class SyncItemsFragment extends Fragment {
                 nearbySyncAdapter.selectAll(b);
             }
         });
-        myView.showAll.setOnCheckedChangeListener((compoundButton, b) -> {
+        myView.showNewUpdate.setOnCheckedChangeListener((compoundButton, b) -> {
             prepareRecycler();
         });
+        myView.downloadItems.setOnClickListener(view -> requestTheseItems());
     }
 
     public void setItemsSelected(int count, int totalItems) {
@@ -119,7 +120,29 @@ public class SyncItemsFragment extends Fragment {
     public String getWhat() {
         return what;
     }
-    public boolean getShowAll() {
-        return !myView.showAll.getChecked();
+    public boolean getShowNewUpdate() {
+        return myView.showNewUpdate.getChecked();
+    }
+
+    public void requestTheseItems() {
+        if (syncNearbyFragment!=null && syncNearbyFragment.getNearbyJson()!=null) {
+            syncNearbyFragment.announceNotPrepared(what);
+            String filename;
+            switch (what) {
+                case "sets":
+                    filename = mainActivityInterface.getNearbyActions().requestSetsFile;
+                    break;
+                case "profiles":
+                    filename = mainActivityInterface.getNearbyActions().requestProfilesFile;
+                    break;
+                case "songs":
+                default:
+                    filename = mainActivityInterface.getNearbyActions().requestSongsFile;
+                    break;
+            }
+            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSyncContentRequest(
+                    syncNearbyFragment.getNearbyJson().getDeviceSending(), filename,
+                    nearbySyncAdapter.getRequestedItems(filename));
+        }
     }
 }

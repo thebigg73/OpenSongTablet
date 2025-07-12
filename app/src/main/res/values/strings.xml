@@ -1622,9 +1622,11 @@
     <string name="sync_newer">Updated</string>
     <string name="sync_older">Older</string>
     <string name="sync_missing">New item</string>
+    <string name="sync_exists">Exists</string>
     <string name="sync_uuid_mismatch">UUID mismatch</string>
     <string name="sync_same">Up to date</string>
     <string name="sync_show_new_updated_only">Show new/updated only</string>
     <string name="sync_show_new_updated_info">Hide all items that are already up to date</string>
     <string name="nearby_get_profiles">Get profiles</string>
+    <string name="sync_extracting">Extracting item</string>
 </resources>

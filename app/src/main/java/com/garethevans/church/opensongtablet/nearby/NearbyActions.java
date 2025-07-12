@@ -44,12 +44,19 @@ public class NearbyActions {
 
     // Synchronisation identifiers in bytes payloads
     public String syncRequestInfo = "___syncinforequest___";
+    public String syncProcessingInfo = "___syncprocessinginfo___";
     public String syncReturnedInfo = "___syncreturnedinfo___";
     public String syncRequestContent = "___synccontent___";
-    public String syncProcessingInfo = "___syncprocessinginfo___";
     public String syncProcessingContent = "___syncprocessingcontent___";
+    public String syncReturnedContent = "___syncreturnedcontent___";
     public String syncRequestDenied = "___syncrequestdenied___";
     public String sharableObjectFile = "nearbyShareableList.json";
+    public String requestSongsFile = "nearbyRequestSongs.json";
+    public String requestSetsFile = "nearbyRequestSets.json";
+    public String requestProfilesFile = "nearbyRequestProfiles.json";
+    public String contentZipSongs = "syncSongsContent.zip";
+    public String contentZipSets = "syncSetsContent.zip";
+    public String contentZipProfiles = "syncProfilesContent.zip";
 
     public NearbyActions(Activity activity, Context c) {
         this.activity = activity;
@@ -84,13 +91,13 @@ public class NearbyActions {
     }
     public NearbyReceivePayloads getNearbyReceivePayloads() {
         if (nearbyReceivePayloads == null) {
-            nearbyReceivePayloads = new NearbyReceivePayloads(activity, c, this);
+            nearbyReceivePayloads = new NearbyReceivePayloads(c, this);
         }
         return nearbyReceivePayloads;
     }
     public NearbyTransferRecords getNearbyTransferRecords() {
         if (nearbyTransferRecords == null) {
-            nearbyTransferRecords = new NearbyTransferRecords();
+            nearbyTransferRecords = new NearbyTransferRecords(c);
         }
         return nearbyTransferRecords;
     }

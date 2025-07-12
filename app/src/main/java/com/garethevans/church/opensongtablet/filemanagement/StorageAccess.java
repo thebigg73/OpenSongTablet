@@ -48,6 +48,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class StorageAccess {
 
@@ -2557,6 +2559,38 @@ public class StorageAccess {
             return "";
         } else {
             return text;
+        }
+    }
+
+    public void addItemToZip(ZipOutputStream zipOutputStream, String folder, String subfolder, String filename) {
+        // Get the uri for this item
+        byte[] tempBuff = new byte[1024];
+        Uri fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, filename);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
+        String zipEntryId;
+        if (folder.equals("Songs")) {
+            if (subfolder.equals(mainActivityInterface.getMainfoldername()) ||
+                    subfolder.isEmpty()) {
+                zipEntryId = filename;
+            } else {
+                zipEntryId = subfolder + "/" + filename;
+            }
+        } else {
+            zipEntryId = filename;
+        }
+        ZipEntry ze = new ZipEntry(zipEntryId);
+        try {
+            if (zipOutputStream != null) {
+                zipOutputStream.putNextEntry(ze);
+                int len;
+                while ((len = inputStream.read(tempBuff)) >= 0) {
+                    zipOutputStream.write(tempBuff, 0, len);
+                }
+                zipOutputStream.closeEntry();
+                inputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

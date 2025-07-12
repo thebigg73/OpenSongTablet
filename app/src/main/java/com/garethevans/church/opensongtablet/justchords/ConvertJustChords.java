@@ -140,6 +140,7 @@ public class ConvertJustChords {
         if (thisSong.getAbc()!=null && !thisSong.getAbc().isEmpty()) {
             alllyrics = abc_start + "\n" + thisSong.getAbc().replaceAll("\\n","\n") + "\n" + abc_end + "\n" + alllyrics;
         }
+        alllyrics = alllyrics.replace("||","");
         String[] lyriclines = alllyrics.split("\n");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line: lyriclines) {

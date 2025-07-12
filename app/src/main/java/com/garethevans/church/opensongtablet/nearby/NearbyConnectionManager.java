@@ -436,7 +436,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
         stopDiscovery();
         isHost = false;
         usingNearby = false;
-        nearbyActions.getNearbyReceivePayloads().setIncomingPrevious("");
         connectedDevices.clear();
     }
 
@@ -626,11 +625,8 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                                             nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_connected) + " " + endpointName);
 
                                             // IV - Already connected so replay last incoming song
-                                            String incomingPrevious = nearbyActions.getNearbyReceivePayloads().getIncomingPrevious();
-                                            if (incomingPrevious!= null && !incomingPrevious.isEmpty()) {
-                                                nearbyActions.getNearbyReceivePayloads().setIncomingPrevious(null);
-                                                nearbyActions.getNearbyReceivePayloads().payloadOpenSong(incomingPrevious);
-                                            }
+                                            nearbyActions.getNearbyReceivePayloads().loadLastSong();
+
                                             // We can stop discovery now
                                             stopDiscovery();
                                         } else {
