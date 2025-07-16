@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:saveEnabled="false"
+    android:isScrollContainer="true"
     app:textInputLayoutFocusedRectEnabled="false"
     android:orientation="vertical">
 
@@ -21,6 +22,7 @@
     android:saveEnabled="false"
     android:focusable="false"
     android:focusableInTouchMode="false"
+    android:isScrollContainer="true"
     app:textInputLayoutFocusedRectEnabled="false"
     tools:hint="Hint">
 

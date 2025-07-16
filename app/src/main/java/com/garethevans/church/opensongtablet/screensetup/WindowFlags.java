@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
@@ -51,7 +50,7 @@ public class WindowFlags {
     private final WindowInsetsControllerCompat windowInsetsControllerCompat;
     private WindowInsetsCompat insetsCompat;
     private DisplayCutoutCompat displayCutoutCompat;
-    private Insets systemGestures, navBars, statusBars, systemBars, mandatoryInset;
+    private Insets navBars, statusBars;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String TAG = "WindowFlags";
     private final float density;
@@ -59,18 +58,17 @@ public class WindowFlags {
             statusHeight = 0, navHeight = 0,
             roundedLeft = 0, roundedRight = 0, roundedBottom = 0, roundedTop = 0,
             marginToolbarLeft, marginToolbarRight,
-            navLeft, navRight,
             currentRotation, firstBootRotation, cutoutTop, cutoutBottom, currentRoundedTop = 0,
             cutoutLeft, cutoutRight, softKeyboardHeight = 0, currentTopCutoutHeight = 0;
     private String navBarPosition = "b";
     private int[] totalMargins = new int[4];
     private boolean immersiveMode, ignoreCutouts, navBarKeepSpace,
             showStatus, showStatusInCutout, showNav, currentTopHasCutout, ignoreRoundedCorners,
-            isNavAtBottom, gestureNavigation;
+            gestureNavigation;
     private final int typeStatusBars = WindowInsetsCompat.Type.statusBars(),
             typeNavBars = WindowInsetsCompat.Type.navigationBars(),
             typeIme = WindowInsetsCompat.Type.ime(),
-            typeGestures = WindowInsetsCompat.Type.systemGestures(),
+            //typeGestures = WindowInsetsCompat.Type.systemGestures(),
             typeSystemBars = WindowInsetsCompat.Type.systemBars(),
             smallestScreenWidthDp;
 
@@ -113,11 +111,8 @@ public class WindowFlags {
         this.insetsCompat = insetsCompat;
         firstBootRotation = w.getDecorView().getDisplay().getRotation();
         displayCutoutCompat = insetsCompat.getDisplayCutout();
-        systemGestures = insetsCompat.getInsetsIgnoringVisibility(typeGestures);
-        mandatoryInset = insetsCompat.getInsets(WindowInsetsCompat.Type.mandatorySystemGestures());
         navBars = insetsCompat.getInsetsIgnoringVisibility(typeNavBars);
         statusBars = insetsCompat.getInsetsIgnoringVisibility(typeStatusBars);
-        systemBars = insetsCompat.getInsetsIgnoringVisibility(typeSystemBars);
 
         // Set the defaults that don't change on rotation/actions
         setSystemBarHeights();
@@ -140,9 +135,6 @@ public class WindowFlags {
 
     public void edgeToEdge() {
         // This sets the app as edge to edge (better than fullscreen)
-        //WindowCompat.setDecorFitsSystemWindows(w, false);
-        /*w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -155,9 +147,6 @@ public class WindowFlags {
     }
 
     private void setSystemBarHeights() {
-        navLeft = systemGestures.left;
-        navRight = systemGestures.right;
-
         statusHeight = statusBars.top;
 
         // The nav bar position depends on current rotation
@@ -186,11 +175,9 @@ public class WindowFlags {
     // This is set from the mainActivity and is used to move views up
     public void setSoftKeyboardHeight(int softKeyboardHeight) {
         this.softKeyboardHeight = softKeyboardHeight;
-        Log.d(TAG,"keyboardHeight:"+softKeyboardHeight);
     }
 
     public int getSoftKeyboardHeight() {
-        Log.d(TAG,"softKeyboardHeight:"+softKeyboardHeight);
         return softKeyboardHeight;
     }
 
@@ -339,17 +326,13 @@ public class WindowFlags {
     public int getCurrentRoundedTop() {
         return currentRoundedTop;
     }
+
+    /** @noinspection SuspiciousNameCombination*/
     private void setCurrentTopHasCutout() {
         // We have already decided where the cutouts are (actual T, B, L, R)
         // These were calculated from the firstBootRotation when insets were calculated
         // Because the screen can be rotated, we need to see it the cutout is now at the top of the view
         switch (currentRotation) {
-            case 0:
-            default:
-                currentTopHasCutout = cutoutTop > 0;
-                currentTopCutoutHeight = cutoutTop;
-                currentRoundedTop = roundedTop;
-                break;
 
             case 1:
                 currentTopHasCutout = cutoutLeft > 0;
@@ -368,6 +351,14 @@ public class WindowFlags {
                 currentTopCutoutHeight = cutoutRight;
                 currentRoundedTop = roundedRight;
                 break;
+
+            case 0:
+            default:
+                currentTopHasCutout = cutoutTop > 0;
+                currentTopCutoutHeight = cutoutTop;
+                currentRoundedTop = roundedTop;
+                break;
+
         }
     }
 
@@ -544,17 +535,6 @@ public class WindowFlags {
         }
 
         switch (currentRotation) {
-            case 0: // 0 degrees.
-            default:
-                marginL = customMarginLeft + roundL;
-                cutoutL = cutoutLeft;
-                marginR = customMarginRight + roundR;
-                cutoutR = cutoutRight;
-                marginT = customMarginTop + roundT;
-                cutoutT = cutoutTop;
-                marginB = customMarginBottom + roundB; // + nav;
-                cutoutB = cutoutBottom;
-                break;
             case 1: // 270 degrees (one step anticlockwise)
                 marginL = customMarginTop + roundT;
                 cutoutL = cutoutTop;
@@ -584,6 +564,17 @@ public class WindowFlags {
                 cutoutT = cutoutLeft;
                 marginB = customMarginRight + roundR;
                 cutoutB = cutoutRight;
+                break;
+            case 0: // 0 degrees.
+            default:
+                marginL = customMarginLeft + roundL;
+                cutoutL = cutoutLeft;
+                marginR = customMarginRight + roundR;
+                cutoutR = cutoutRight;
+                marginT = customMarginTop + roundT;
+                cutoutT = cutoutTop;
+                marginB = customMarginBottom + roundB; // + nav;
+                cutoutB = cutoutBottom;
                 break;
         }
 
@@ -635,10 +626,6 @@ public class WindowFlags {
     public void setIgnoreRoundedCorners(boolean ignoreRoundedCorners) {
         this.ignoreRoundedCorners = ignoreRoundedCorners;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreRoundedCorners",ignoreRoundedCorners);
-    }
-
-    public boolean isKeyboardShowing() {
-        return insetsCompat.isVisible(WindowInsetsCompat.Type.ime());
     }
 
 }
