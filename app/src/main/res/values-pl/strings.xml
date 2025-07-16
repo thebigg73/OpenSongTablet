@@ -216,6 +216,7 @@
     <string name="connected_display">Podłączony wyświetlacz</string>
     <string name="connected_display_description">Ustawienia wyjścia Chromecast/HDMI</string>
     <string name="connection_autoscroll_info">Nasłuchuj poleceń zatrzymania i uruchomienia automatycznego przewijania</string>
+    <string name="connection_host_needs_update">Podłączone urządzenie wysłało informacje w starym formacie. Poproś o aktualizację aplikacji.</string>
     <string name="connection_match_to_pdf_song">Preferuj pasujący plik PDF</string>
     <string name="connection_match_to_pdf_song_info">Zamiast próbować załadować pasujące pliki OpenSong, spróbuj załadować pliki PDF o tej samej nazwie (ale kończące się na .pdf)</string>
     <string name="connection_scroll_info">Nasłuchuj poleceń przewijania w górę i w dół</string>
@@ -657,6 +658,8 @@
     <string name="modulation">Modulacja</string>
     <string name="move_from">Przenieś z</string>
     <string name="move_to_folder">Przenieś do folderu</string>
+    <string name="multilingual">Wielojęzyczny</string>
+    <string name="multilingual_scale">Skala wielojęzycznych linii lirycznych</string>
     <string name="music">Muzyka</string>
     <string name="music_score">Nuty</string>
     <string name="music_score_info">Edytuj nuty</string>
@@ -668,6 +671,7 @@
     <string name="nearby_files_failed">Pliki nie powiodły się:</string>
     <string name="nearby_files_skipped">Pominięte pliki:</string>
     <string name="nearby_found_files">Na urządzeniu hosta znaleziono następujące pliki.  Wybierz pliki do pobrania.  Jeśli postęp pobierania zostanie zatrzymany lub utknie, możesz spróbować ponownie</string>
+    <string name="nearby_get_profiles">Uzyskaj profile</string>
     <string name="nearby_get_setlist">Pobierz setlistę</string>
     <string name="nearby_get_songs">Zdobądź piosenki</string>
     <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
@@ -1029,6 +1033,8 @@
     <string name="swipe_distance">Odległość przeciągnięcia</string>
     <string name="swipe_info">Dostosuj gesty, aby poruszać się między piosenkami</string>
     <string name="sync">Synchronizuj podłączone urządzenia</string>
+    <string name="sync_allow">Zezwól na synchronizację podłączonych urządzeń</string>
+    <string name="sync_allow_info">Podłączone urządzenia będą mogły przeglądać Twoje utwory i zestawy oraz pobierać je na swoje urządzenia</string>
     <string name="sync_check_for_updates">Sprawdź aktualizacje</string>
     <string name="sync_check_for_updates_info">Zapytaj ponownie folder zdalny i sprawdź różnice z elementami lokalnymi</string>
     <string name="sync_checking_local_item">Sprawdzanie przedmiotu lokalnego</string>
@@ -1040,8 +1046,13 @@
     <string name="sync_delete_remote_not_in_local">Usuń stare zdalne elementy</string>
     <string name="sync_delete_remote_not_in_local_info">Następujące elementy istnieją w folderze zdalnym, ale nie ma ich w folderze lokalnym.  Można je usunąć, jeśli nie są już potrzebne</string>
     <string name="sync_deleting_local_items">Usuwanie elementu lokalnego przed pobraniem elementów zdalnych</string>
+    <string name="sync_device_denied">Podłączone urządzenie wyłączyło synchronizację plików. Można to zmienić w ustawieniach podłączonego urządzenia.</string>
+    <string name="sync_device_processing">Podłączone urządzenie przetwarza żądanie</string>
     <string name="sync_download_from_openchords">Pobierz z serwera OpenChords</string>
     <string name="sync_download_new_items">Pobierz nowe elementy</string>
+    <string name="sync_exists">Istnieje</string>
+    <string name="sync_extracting">Wyodrębnianie elementu</string>
+    <string name="sync_file_status">Status</string>
     <string name="sync_folder_name_change">Problem z nazwą folderu</string>
     <string name="sync_folder_name_change_info">Nazwa wybranego folderu lokalnego różni się od nazwy folderu zdalnego</string>
     <string name="sync_force_changes">Wymuś zmiany</string>
@@ -1077,13 +1088,16 @@
     <string name="sync_local_items_older">Lokalne produkty, które wymagają aktualizacji</string>
     <string name="sync_local_set_deleted">Zestaw lokalny usunięty</string>
     <string name="sync_local_song_deleted">Lokalny utwór został usunięty</string>
+    <string name="sync_missing">Nowy przedmiot</string>
     <string name="sync_new_local_folder">Utwórz nowy folder lokalny</string>
     <string name="sync_new_local_folder_info">Po pobraniu elementów z folderu zdalnego zostanie utworzony nowy folder lokalny</string>
     <string name="sync_new_remote_folder">Utwórz nowy folder zdalny</string>
     <string name="sync_new_remote_folder_info">Spowoduje to utworzenie nowego folderu zdalnego podczas przesyłania elementów do folderu zdalnego.  Będziesz musiał udostępnić nowy link innym użytkownikom</string>
+    <string name="sync_newer">Zaktualizowano</string>
     <string name="sync_newer_items_local_replaced">Te elementy w folderze lokalnym są nowsze, ale zostaną zastąpione elementami zdalnymi</string>
     <string name="sync_newer_items_remote_replaced">Te elementy w folderze zdalnym są nowsze, ale zostaną zastąpione elementami lokalnymi</string>
     <string name="sync_no_changes_required">Elementy są już zsynchronizowane</string>
+    <string name="sync_older">Starszy</string>
     <string name="sync_preparing_item">Przygotowywanie elementu do przesłania</string>
     <string name="sync_pull_download">Pociągnij (pobierz)</string>
     <string name="sync_pull_info">Pobierz pliki z folderu zdalnego do folderu lokalnego</string>
@@ -1096,6 +1110,7 @@
     <string name="sync_remote_items_older">Elementy zdalne, które wymagają aktualizacji</string>
     <string name="sync_remote_set_deleted">Zestaw zdalny usunięty</string>
     <string name="sync_remote_song_deleted">Zdalny utwór został usunięty</string>
+    <string name="sync_same">Aktualny</string>
     <string name="sync_server_no_matching_folder">Ten folder nie istnieje na serwerze zdalnym</string>
     <string name="sync_server_noresponse_error">Serwer nie odpowiedział</string>
     <string name="sync_set_downloaded">Pobrano/pobrano nową setlistę</string>
@@ -1104,6 +1119,8 @@
     <string name="sync_set_update_downloaded">Zaktualizowana setlista pobrana/pobrana</string>
     <string name="sync_set_update_uploaded">Zaktualizowana setlista przesłana/przesłana</string>
     <string name="sync_set_uploaded">Nowa setlista została wysłana/przesłana</string>
+    <string name="sync_show_new_updated_info">Ukryj wszystkie elementy, które są już aktualne</string>
+    <string name="sync_show_new_updated_only">Pokaż tylko nowe/zaktualizowane</string>
     <string name="sync_song_downloaded">Nowa piosenka pobrana/pobrana</string>
     <string name="sync_song_force_downloaded">Wymuszenie/pobranie utworu</string>
     <string name="sync_song_update_downloaded">Zaktualizowano pobrany/pobrany utwór</string>
@@ -1119,7 +1136,11 @@
     <string name="sync_upload_new_items">Prześlij nowe elementy</string>
     <string name="sync_upload_to_openchords">Prześlij na serwer OpenChords</string>
     <string name="sync_uploading_changes">Przesyłanie zmian do folderu zdalnego</string>
+    <string name="sync_uuid_mismatch">Niezgodność UUID</string>
     <string name="sync_view_history">Wyświetl historię synchronizacji</string>
+    <string name="synchronise_need_update">Zaktualizuj pliki utworów (wymagane do synchronizacji)</string>
+    <string name="synchronise_need_update_info">Niektóre pliki utworów nie zawierają identyfikatora UUID ani daty ostatniej modyfikacji. Aby umożliwić bezpieczną synchronizację, wykonaj ten krok.</string>
+    <string name="synchronise_need_update_warning">Ten proces całkowicie odbuduje indeks utworów oraz umożliwi edycję i zapisanie utworów, do których należy dodać unikalny identyfikator UUID lub datę ostatniej modyfikacji. Proces ten jest POWOLNY, jeśli dotyczy wielu plików i nie należy zamykać aplikacji, dopóki ten proces się nie zakończy. Ponieważ ten proces edytuje pliki utworów, niezwykle ważne jest, aby przed wykonaniem tego kroku wykonać kopię zapasową.</string>
     <string name="tabs_scale">Skaluj tekst tabulatora (gitara, perkusja itp.)</string>
     <string name="tag">Etykieta</string>
     <string name="tag_add_remove">Wyróżnione piosenki zawierają wybraną etykietę. Kliknij dowolną piosenkę, aby dodać/usunąć wybraną etykietę.</string>

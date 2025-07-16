@@ -216,6 +216,7 @@
     <string name="connected_display">接続されたディスプレイ</string>
     <string name="connected_display_description">Chromecast / HDMI出力に固有の設定</string>
     <string name="connection_autoscroll_info">自動スクロールの停止および開始コマンドをリッスンします</string>
+    <string name="connection_host_needs_update">接続されたデバイスから古い形式の情報が送信されました。アプリのアップデートを依頼してください。</string>
     <string name="connection_match_to_pdf_song">一致するPDFファイルを優先する</string>
     <string name="connection_match_to_pdf_song_info">一致するOpenSongファイルを読み込もうとするのではなく、同じ名前(ただし.pdfで終わる)のPDFファイルを読み込んでみてください</string>
     <string name="connection_scroll_info">上下にスクロールするコマンドを聞く</string>
@@ -657,6 +658,8 @@
     <string name="modulation">変調</string>
     <string name="move_from">から移動</string>
     <string name="move_to_folder">フォルダへ移動</string>
+    <string name="multilingual">多言語</string>
+    <string name="multilingual_scale">多言語の歌詞のスケール</string>
     <string name="music">音楽</string>
     <string name="music_score">楽譜</string>
     <string name="music_score_info">スコアノートを編集する</string>
@@ -668,6 +671,7 @@
     <string name="nearby_files_failed">ファイルが失敗しました:</string>
     <string name="nearby_files_skipped">スキップされたファイル:</string>
     <string name="nearby_found_files">次のファイルがホスト デバイス上で見つかりました。  ダウンロードするファイルを選択します。  ダウンロードの進行が停止または停止した場合は、もう一度試してください。</string>
+    <string name="nearby_get_profiles">プロフィールを取得する</string>
     <string name="nearby_get_setlist">セットリストを取得する</string>
     <string name="nearby_get_songs">曲を入手する</string>
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
@@ -1029,6 +1033,8 @@
     <string name="swipe_distance">スワイプ距離</string>
     <string name="swipe_info">ジェスチャーを調整して曲間を移動する</string>
     <string name="sync">接続されたデバイスを同期する</string>
+    <string name="sync_allow">接続されたデバイスの同期を許可する</string>
+    <string name="sync_allow_info">接続されたデバイスは、あなたの曲やセットを閲覧し、デバイスにダウンロードすることができます</string>
     <string name="sync_check_for_updates">アップデートをチェックする</string>
     <string name="sync_check_for_updates_info">リモート フォルダーを再度クエリし、ローカル アイテムとの相違点を確認します。</string>
     <string name="sync_checking_local_item">ローカルアイテムを確認中</string>
@@ -1040,8 +1046,13 @@
     <string name="sync_delete_remote_not_in_local">古いリモート項目を削除する</string>
     <string name="sync_delete_remote_not_in_local_info">次のアイテムはリモート フォルダーに存在しますが、ローカル フォルダーには存在しません。  不要になった場合は削除できます</string>
     <string name="sync_deleting_local_items">リモートアイテムを取得する前にローカルアイテムを削除する</string>
+    <string name="sync_device_denied">接続されたデバイスはファイル同期をオフにしています。接続デバイスの設定で変更できます。</string>
+    <string name="sync_device_processing">接続されたデバイスがリクエストを処理中です</string>
     <string name="sync_download_from_openchords">OpenChordsサーバーからダウンロード</string>
     <string name="sync_download_new_items">新しいアイテムをダウンロードする</string>
+    <string name="sync_exists">存在する</string>
+    <string name="sync_extracting">アイテムを抽出しています</string>
+    <string name="sync_file_status">状態</string>
     <string name="sync_folder_name_change">フォルダー名の問題</string>
     <string name="sync_folder_name_change_info">選択したローカル フォルダーの名前がリモート フォルダー名と異なります</string>
     <string name="sync_force_changes">変更を強制する</string>
@@ -1077,13 +1088,16 @@
     <string name="sync_local_items_older">更新が必要なローカル項目</string>
     <string name="sync_local_set_deleted">ローカルセットが削除されました</string>
     <string name="sync_local_song_deleted">ローカルソングが削除されました</string>
+    <string name="sync_missing">新商品</string>
     <string name="sync_new_local_folder">新しいローカルフォルダーを作成する</string>
     <string name="sync_new_local_folder_info">リモート フォルダーからアイテムをプルすると、新しいローカル フォルダーが作成されます</string>
     <string name="sync_new_remote_folder">新しいリモートフォルダーを作成する</string>
     <string name="sync_new_remote_folder_info">これにより、項目をリモート フォルダーにプッシュすると、新しいリモート フォルダーが作成されます。  新しいリンクを他のユーザーと共有する必要があります</string>
+    <string name="sync_newer">更新</string>
     <string name="sync_newer_items_local_replaced">ローカル フォルダー内のこれらのアイテムは新しいですが、リモート アイテムに置き換えられます。</string>
     <string name="sync_newer_items_remote_replaced">リモート フォルダー内のこれらのアイテムは新しいですが、ローカル アイテムに置き換えられます。</string>
     <string name="sync_no_changes_required">アイテムはすでに同期されています</string>
+    <string name="sync_older">古い</string>
     <string name="sync_preparing_item">アイテムのアップロードを準備しています</string>
     <string name="sync_pull_download">プル（ダウンロード）</string>
     <string name="sync_pull_info">リモート フォルダーからローカル フォルダーにファイルをダウンロードする</string>
@@ -1096,6 +1110,7 @@
     <string name="sync_remote_items_older">更新が必要なリモート項目</string>
     <string name="sync_remote_set_deleted">リモートセットが削除されました</string>
     <string name="sync_remote_song_deleted">リモートソングが削除されました</string>
+    <string name="sync_same">最新の</string>
     <string name="sync_server_no_matching_folder">このフォルダーはリモートサーバー上に存在しません</string>
     <string name="sync_server_noresponse_error">サーバーから応答がありませんでした</string>
     <string name="sync_set_downloaded">新しいセットリストがプル/ダウンロードされました</string>
@@ -1104,6 +1119,8 @@
     <string name="sync_set_update_downloaded">更新されたセットリストがプル/ダウンロードされました</string>
     <string name="sync_set_update_uploaded">更新されたセットリストがプッシュ/アップロードされました</string>
     <string name="sync_set_uploaded">新しいセットリストがプッシュ/アップロードされました</string>
+    <string name="sync_show_new_updated_info">すでに最新のアイテムをすべて非表示にする</string>
+    <string name="sync_show_new_updated_only">新着/更新のみ表示</string>
     <string name="sync_song_downloaded">新しい曲がプル/ダウンロードされました</string>
     <string name="sync_song_force_downloaded">曲の強制プル/ダウンロード</string>
     <string name="sync_song_update_downloaded">更新された曲がプル/ダウンロードされました</string>
@@ -1119,7 +1136,11 @@
     <string name="sync_upload_new_items">新しいアイテムをアップロードする</string>
     <string name="sync_upload_to_openchords">OpenChordsサーバーにアップロードする</string>
     <string name="sync_uploading_changes">リモートフォルダーへの変更のアップロード</string>
+    <string name="sync_uuid_mismatch">UUIDの不一致</string>
     <string name="sync_view_history">同期履歴を表示する</string>
+    <string name="synchronise_need_update">曲ファイルを更新します（同期に必要）</string>
+    <string name="synchronise_need_update_info">一部の曲ファイルにはUUIDまたは最終更新日情報が保存されていません。安全な同期を行うには、この手順を実行する必要があります。</string>
+    <string name="synchronise_need_update_warning">このプロセスでは、曲のインデックスを完全に再構築し、一意のUUID識別子または最終更新日の追加が必要な曲を編集して保存します。多くのファイルが影響を受ける場合、このプロセスは遅くなります。完了するまでアプリを終了しないでください。このプロセスでは曲ファイルが編集されるため、この手順を実行する前に必ずバックアップを作成してください。</string>
     <string name="tabs_scale">音階タブのテキスト(ギター、ドラムなど)</string>
     <string name="tag">荷札</string>
     <string name="tag_add_remove">強調表示された曲には、選択したタグが含まれています。任意の曲をクリックして、選択したタグを追加/削除します。</string>

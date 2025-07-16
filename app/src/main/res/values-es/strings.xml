@@ -216,6 +216,7 @@
     <string name="connected_display">Pantalla conectada</string>
     <string name="connected_display_description">Configuración específica para la salida Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Escuche los comandos de inicio y parada de desplazamiento automático</string>
+    <string name="connection_host_needs_update">Un dispositivo conectado envió información en un formato antiguo. Solicite que actualice su aplicación.</string>
     <string name="connection_match_to_pdf_song">Preferir un archivo PDF coincidente</string>
     <string name="connection_match_to_pdf_song_info">En lugar de intentar cargar archivos OpenSong coincidentes, intente cargar archivos PDF con el mismo nombre (pero que terminen con .pdf)</string>
     <string name="connection_scroll_info">Escuche los comandos de desplazamiento hacia arriba y hacia abajo</string>
@@ -657,6 +658,8 @@
     <string name="modulation">Modulación</string>
     <string name="move_from">Moverse desde</string>
     <string name="move_to_folder">Mover a la carpeta</string>
+    <string name="multilingual">Plurilingüe</string>
+    <string name="multilingual_scale">Escala de líneas líricas multilingües</string>
     <string name="music">Música</string>
     <string name="music_score">Partitura musical</string>
     <string name="music_score_info">Editar notas de partitura</string>
@@ -668,6 +671,7 @@
     <string name="nearby_files_failed">Los archivos fallaron:</string>
     <string name="nearby_files_skipped">Archivos omitidos:</string>
     <string name="nearby_found_files">Se han encontrado los siguientes archivos en el dispositivo host.  Elija los archivos para descargar.  Si el progreso de la descarga se detiene o se atasca, puedes intentarlo de nuevo</string>
+    <string name="nearby_get_profiles">Obtener perfiles</string>
     <string name="nearby_get_setlist">Obtener lista de canciones</string>
     <string name="nearby_get_songs">Obtener canciones</string>
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
@@ -1029,6 +1033,8 @@
     <string name="swipe_distance">Distancia de desplazamiento</string>
     <string name="swipe_info">Ajusta los gestos para moverte entre canciones</string>
     <string name="sync">Sincronizar dispositivos conectados</string>
+    <string name="sync_allow">Permitir que los dispositivos conectados se sincronicen</string>
+    <string name="sync_allow_info">Los dispositivos conectados podrán explorar tus canciones y sets y descargarlos a sus dispositivos.</string>
     <string name="sync_check_for_updates">Buscar actualizaciones</string>
     <string name="sync_check_for_updates_info">Consulta la carpeta remota nuevamente y verifica las diferencias con los elementos locales.</string>
     <string name="sync_checking_local_item">Comprobando el artículo local</string>
@@ -1040,8 +1046,13 @@
     <string name="sync_delete_remote_not_in_local">Eliminar elementos remotos antiguos</string>
     <string name="sync_delete_remote_not_in_local_info">Los siguientes elementos existen en la carpeta remota, pero no en la carpeta local.  Estos se pueden eliminar si ya no son necesarios.</string>
     <string name="sync_deleting_local_items">Eliminar elemento local antes de obtener elementos remotos</string>
+    <string name="sync_device_denied">El dispositivo conectado ha desactivado la sincronización de archivos. Puede cambiar esto en la configuración de los dispositivos conectados.</string>
+    <string name="sync_device_processing">El dispositivo conectado está procesando la solicitud.</string>
     <string name="sync_download_from_openchords">Descargar desde el servidor OpenChords</string>
     <string name="sync_download_new_items">Descargar nuevos elementos</string>
+    <string name="sync_exists">Existe</string>
+    <string name="sync_extracting">Extrayendo elemento</string>
+    <string name="sync_file_status">Estado</string>
     <string name="sync_folder_name_change">Problema con el nombre de la carpeta</string>
     <string name="sync_folder_name_change_info">El nombre de la carpeta local elegida es diferente del nombre de la carpeta remota</string>
     <string name="sync_force_changes">Forzar cambios</string>
@@ -1077,13 +1088,16 @@
     <string name="sync_local_items_older">Artículos locales que necesitan ser actualizados.</string>
     <string name="sync_local_set_deleted">Conjunto local eliminado</string>
     <string name="sync_local_song_deleted">Canción local eliminada</string>
+    <string name="sync_missing">Nuevo artículo</string>
     <string name="sync_new_local_folder">Crear nueva carpeta local</string>
     <string name="sync_new_local_folder_info">Se creará una nueva carpeta local cuando extraiga elementos de la carpeta remota</string>
     <string name="sync_new_remote_folder">Crear nueva carpeta remota</string>
     <string name="sync_new_remote_folder_info">Esto creará una nueva carpeta remota cuando envíe elementos a la carpeta remota.  Deberá compartir el nuevo enlace con sus otros usuarios.</string>
+    <string name="sync_newer">Actualizado</string>
     <string name="sync_newer_items_local_replaced">Estos elementos en la carpeta local son más nuevos, pero serán reemplazados por los elementos remotos.</string>
     <string name="sync_newer_items_remote_replaced">Estos elementos en la carpeta remota son más nuevos, pero serán reemplazados por los elementos locales.</string>
     <string name="sync_no_changes_required">Los elementos ya están sincronizados.</string>
+    <string name="sync_older">Más viejo</string>
     <string name="sync_preparing_item">Preparando el elemento para cargar</string>
     <string name="sync_pull_download">Tirar (descargar)</string>
     <string name="sync_pull_info">Descargue archivos de la carpeta remota a su carpeta local</string>
@@ -1096,6 +1110,7 @@
     <string name="sync_remote_items_older">Elementos remotos que necesitan actualización</string>
     <string name="sync_remote_set_deleted">Conjunto remoto eliminado</string>
     <string name="sync_remote_song_deleted">Canción remota eliminada</string>
+    <string name="sync_same">A hoy</string>
     <string name="sync_server_no_matching_folder">Esta carpeta no existe en el servidor remoto.</string>
     <string name="sync_server_noresponse_error">No hubo respuesta del servidor.</string>
     <string name="sync_set_downloaded">Nueva lista de canciones extraída/descargada</string>
@@ -1104,6 +1119,8 @@
     <string name="sync_set_update_downloaded">Lista de canciones actualizada extraída/descargada</string>
     <string name="sync_set_update_uploaded">Setlist actualizado enviado/subido</string>
     <string name="sync_set_uploaded">Nueva lista de canciones enviada/subida</string>
+    <string name="sync_show_new_updated_info">Ocultar todos los elementos que ya están actualizados</string>
+    <string name="sync_show_new_updated_only">Mostrar solo nuevos/actualizados</string>
     <string name="sync_song_downloaded">Nueva canción extraída/descargada</string>
     <string name="sync_song_force_downloaded">Fuerza de canción extraída/descargada</string>
     <string name="sync_song_update_downloaded">Canción actualizada extraída/descargada</string>
@@ -1119,7 +1136,11 @@
     <string name="sync_upload_new_items">Subir nuevos elementos</string>
     <string name="sync_upload_to_openchords">Subir al servidor OpenChords</string>
     <string name="sync_uploading_changes">Subir cambios a la carpeta remota</string>
+    <string name="sync_uuid_mismatch">Desajuste de UUID</string>
     <string name="sync_view_history">Ver historial de sincronización</string>
+    <string name="synchronise_need_update">Actualiza tus archivos de canciones (necesario para la sincronización)</string>
+    <string name="synchronise_need_update_info">Algunos archivos de tus canciones no tienen UUID ni fecha de última modificación almacenada. Para una sincronización segura, debes realizar este paso.</string>
+    <string name="synchronise_need_update_warning">Este proceso reconstruirá completamente tu índice de canciones y editará y guardará las canciones que requieran un identificador UUID único o una fecha de última modificación. Este proceso es lento si afecta a muchos archivos, por lo que no debes salir de la aplicación hasta que se complete. Dado que este proceso edita tus archivos de canciones, es fundamental que hayas creado una copia de seguridad antes de ejecutar este paso.</string>
     <string name="tabs_scale">Texto de la tablatura de escala (guitarra, batería, etc.)</string>
     <string name="tag">Etiqueta</string>
     <string name="tag_add_remove">Las canciones destacadas contienen la etiqueta elegida. Haga clic en cualquier canción para agregar/eliminar la etiqueta elegida.</string>

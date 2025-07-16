@@ -216,6 +216,7 @@
     <string name="connected_display">Gekoppelde skerm</string>
     <string name="connected_display_description">Instellings spesifiek vir Chromecast / HDMI-uitvoer</string>
     <string name="connection_autoscroll_info">Luister vir stop- en begin-opdragte met outomatiese blaai</string>
+    <string name="connection_host_needs_update">\'n Gekoppelde toestel het inligting in \'n ou formaat gestuur.  Vra hulle asseblief om hul toepassing op te dateer.</string>
     <string name="connection_match_to_pdf_song">Verkies om die PDF-lêer te pas</string>
     <string name="connection_match_to_pdf_song_info">Eerder as om bypassende OpenSong-lêers te probeer laai, probeer om PDF-lêers met dieselfde naam te laai (maar eindig met .pdf)</string>
     <string name="connection_scroll_info">Luister vir blaai op en af opdragte</string>
@@ -657,6 +658,8 @@
     <string name="modulation">Modulasie</string>
     <string name="move_from">Beweeg van</string>
     <string name="move_to_folder">Skuif na vouer</string>
+    <string name="multilingual">Veeltalig</string>
+    <string name="multilingual_scale">Skaal veeltalige lirieke lyne</string>
     <string name="music">Musiek</string>
     <string name="music_score">Musiek telling</string>
     <string name="music_score_info">Wysig telling notas</string>
@@ -668,6 +671,7 @@
     <string name="nearby_files_failed">Lêers het misluk:</string>
     <string name="nearby_files_skipped">Lêers oorgeslaan:</string>
     <string name="nearby_found_files">Die volgende lêers is op die gasheertoestel gevind.  Kies die lêers om af te laai.  As die aflaaivordering vasstaan ​​of vashaak, kan jy weer probeer</string>
+    <string name="nearby_get_profiles">Kry profiele</string>
     <string name="nearby_get_setlist">Kry stellys</string>
     <string name="nearby_get_songs">Kry liedjies</string>
     <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
@@ -1029,6 +1033,8 @@
     <string name="swipe_distance">Swipe afstand</string>
     <string name="swipe_info">Pas gebare aan om tussen liedjies te beweeg</string>
     <string name="sync">Sinkroniseer gekoppelde toestelle</string>
+    <string name="sync_allow">Laat gekoppelde toestelle toe om te sinkroniseer</string>
+    <string name="sync_allow_info">Gekoppelde toestelle sal deur jou liedjies en stelle kan blaai en dit na hul toestelle afgelaai kan word</string>
     <string name="sync_check_for_updates">Kyk vir opdaterings</string>
     <string name="sync_check_for_updates_info">Doen weer navraag oor die afgeleë vouer en kyk vir verskille met plaaslike items</string>
     <string name="sync_checking_local_item">Kontroleer tans plaaslike item</string>
@@ -1040,8 +1046,13 @@
     <string name="sync_delete_remote_not_in_local">Vee ou afgeleë items uit</string>
     <string name="sync_delete_remote_not_in_local_info">Die volgende items bestaan in die afgeleë vouer, maar is nie in die plaaslike vouer nie.  Dit kan verwyder word as dit nie meer nodig is nie</string>
     <string name="sync_deleting_local_items">Vee plaaslike item uit voordat u afgeleë items kry</string>
+    <string name="sync_device_denied">Die gekoppelde toestel het lêersinkronisering afgeskakel.  Hulle kan dit verander in die koppeltoestel-instellings</string>
+    <string name="sync_device_processing">Die gekoppelde toestel verwerk tans die versoek</string>
     <string name="sync_download_from_openchords">Laai af vanaf OpenChords-bediener</string>
     <string name="sync_download_new_items">Laai nuwe items af</string>
+    <string name="sync_exists">Bestaan</string>
+    <string name="sync_extracting">Onttrek item</string>
+    <string name="sync_file_status">Status</string>
     <string name="sync_folder_name_change">Voernaamkwessie</string>
     <string name="sync_folder_name_change_info">Die naam van die plaaslike vouer wat gekies is, verskil van die naam van die afgeleë vouer</string>
     <string name="sync_force_changes">Dwing veranderinge af</string>
@@ -1077,13 +1088,16 @@
     <string name="sync_local_items_older">Plaaslike items wat opgedateer moet word</string>
     <string name="sync_local_set_deleted">Plaaslike stel is uitgevee</string>
     <string name="sync_local_song_deleted">Plaaslike liedjie is uitgevee</string>
+    <string name="sync_missing">Nuwe item</string>
     <string name="sync_new_local_folder">Skep nuwe plaaslike gids</string>
     <string name="sync_new_local_folder_info">\'n Nuwe plaaslike vouer sal geskep word wanneer jy items uit die afgeleë vouer trek</string>
     <string name="sync_new_remote_folder">Skep nuwe afgeleë vouer</string>
     <string name="sync_new_remote_folder_info">Dit sal \'n nuwe afgeleë vouer skep wanneer jy items na die afgeleë vouer toe stoot.  Jy sal die nuwe skakel met jou ander gebruikers moet deel</string>
+    <string name="sync_newer">Opgedateer</string>
     <string name="sync_newer_items_local_replaced">Hierdie items in die plaaslike vouer is nuwer, maar sal deur die afgeleë items vervang word</string>
     <string name="sync_newer_items_remote_replaced">Hierdie items in die afgeleë vouer is nuwer, maar sal deur die plaaslike items vervang word</string>
     <string name="sync_no_changes_required">Items is reeds gesinchroniseer</string>
+    <string name="sync_older">Ouer</string>
     <string name="sync_preparing_item">Berei tans item voor vir oplaai</string>
     <string name="sync_pull_download">Trek (laai af)</string>
     <string name="sync_pull_info">Laai lêers van die afgeleë vouer af na jou plaaslike vouer</string>
@@ -1096,6 +1110,7 @@
     <string name="sync_remote_items_older">Afgeleë items wat opgedateer moet word</string>
     <string name="sync_remote_set_deleted">Afstandstel is uitgevee</string>
     <string name="sync_remote_song_deleted">Afgeleë liedjie is uitgevee</string>
+    <string name="sync_same">Op datum</string>
     <string name="sync_server_no_matching_folder">Hierdie vouer bestaan nie op die afgeleë bediener nie</string>
     <string name="sync_server_noresponse_error">Daar was geen reaksie vanaf die bediener nie</string>
     <string name="sync_set_downloaded">Nuwe stellys getrek/afgelaai</string>
@@ -1104,6 +1119,8 @@
     <string name="sync_set_update_downloaded">Opgedateerde stellys getrek/afgelaai</string>
     <string name="sync_set_update_uploaded">Opgedateerde stellys gestoot/opgelaai</string>
     <string name="sync_set_uploaded">Nuwe stellys gestoot/opgelaai</string>
+    <string name="sync_show_new_updated_info">Versteek alle items wat reeds op datum is</string>
+    <string name="sync_show_new_updated_only">Wys slegs nuwe/bygewerkte</string>
     <string name="sync_song_downloaded">Nuwe liedjie getrek/afgelaai</string>
     <string name="sync_song_force_downloaded">Liedjie krag getrek/aflaai</string>
     <string name="sync_song_update_downloaded">Opgedateerde liedjie getrek/afgelaai</string>
@@ -1119,7 +1136,11 @@
     <string name="sync_upload_new_items">Laai nuwe items op</string>
     <string name="sync_upload_to_openchords">Laai op na OpenChords-bediener</string>
     <string name="sync_uploading_changes">Laai tans veranderinge op na die afgeleë vouer</string>
+    <string name="sync_uuid_mismatch">UUID nie ooreenstem nie</string>
     <string name="sync_view_history">Bekyk sinchronisasiegeskiedenis</string>
+    <string name="synchronise_need_update">Dateer jou liedjielêers op (vereis vir sinchronisasie)</string>
+    <string name="synchronise_need_update_info">Sommige van jou liedjielêers het nie UUID of inligting oor die laaste gewysigde datum daarin gestoor nie.  Om veilige sinchronisasie toe te laat, moet jy hierdie stap uitvoer.</string>
+    <string name="synchronise_need_update_warning">Hierdie proses sal jou liedjie-indeks ten volle herbou en sal liedjies wysig en stoor wat óf \'n unieke UUID-identifiseerder benodig óf \'n laaste gewysigde datum wat daarby gevoeg is.  Hierdie proses is STADIG as baie lêers geraak word en jy moet nie die toepassing verlaat voordat dit voltooi is nie.  Omdat hierdie proses jou liedjielêers wysig, is dit van kritieke belang dat jy reeds \'n rugsteun gemaak het voordat jy hierdie stap uitvoer</string>
     <string name="tabs_scale">Skaal oortjie teks (kitaar, tromme, ens.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Gemerkte liedjies bevat die gekose merker. Klik op enige liedjie om die gekose merker by te voeg/verwyder.</string>

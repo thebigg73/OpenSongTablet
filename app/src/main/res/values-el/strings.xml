@@ -216,6 +216,7 @@
     <string name="connected_display">Συνδεδεμένη οθόνη</string>
     <string name="connected_display_description">Ρυθμίσεις ειδικά για έξοδο Chromecast / HDMI</string>
     <string name="connection_autoscroll_info">Ακούστε τις εντολές διακοπής και έναρξης αυτόματης κύλισης</string>
+    <string name="connection_host_needs_update">Μια συνδεδεμένη συσκευή έχει στείλει πληροφορίες σε παλιά μορφή.  Ζητήστε τους να ενημερώσουν την εφαρμογή τους.</string>
     <string name="connection_match_to_pdf_song">Προτιμήστε το αντίστοιχο αρχείο PDF</string>
     <string name="connection_match_to_pdf_song_info">Αντί να προσπαθήσετε να φορτώσετε αρχεία OpenSong που ταιριάζουν, δοκιμάστε να φορτώσετε αρχεία PDF με το ίδιο όνομα (αλλά με .pdf)</string>
     <string name="connection_scroll_info">Ακούστε τις εντολές κύλισης προς τα πάνω και προς τα κάτω</string>
@@ -657,6 +658,8 @@
     <string name="modulation">Διαμόρφωση</string>
     <string name="move_from">Μετακινούμαι από</string>
     <string name="move_to_folder">Μετακίνησε στο φάκελο</string>
+    <string name="multilingual">Πολύγλωσσος</string>
+    <string name="multilingual_scale">Κλιμακώστε τις πολύγλωσσες λυρικές γραμμές</string>
     <string name="music">ΜΟΥΣΙΚΗ</string>
     <string name="music_score">Μουσικό σκορ</string>
     <string name="music_score_info">Επεξεργασία σημειώσεων βαθμολογίας</string>
@@ -668,6 +671,7 @@
     <string name="nearby_files_failed">Τα αρχεία απέτυχαν:</string>
     <string name="nearby_files_skipped">Αρχεία που παραβλέφθηκαν:</string>
     <string name="nearby_found_files">Τα ακόλουθα αρχεία έχουν βρεθεί στη συσκευή υποδοχής.  Επιλέξτε τα αρχεία για λήψη.  Εάν η πρόοδος λήψης σταματήσει ή κολλήσει, μπορείτε να δοκιμάσετε ξανά</string>
+    <string name="nearby_get_profiles">Λάβετε προφίλ</string>
     <string name="nearby_get_setlist">Λήψη setlist</string>
     <string name="nearby_get_songs">Λάβετε τραγούδια</string>
     <string name="nearby_host_menu_only">Ακούστε νέους πελάτες μόνο όταν αυτή η σελίδα είναι ορατή</string>
@@ -1029,6 +1033,8 @@
     <string name="swipe_distance">Σύρετε την απόσταση</string>
     <string name="swipe_info">Προσαρμόστε τις χειρονομίες για να μετακινηθείτε μεταξύ των τραγουδιών</string>
     <string name="sync">Συγχρονίστε τις συνδεδεμένες συσκευές</string>
+    <string name="sync_allow">Να επιτρέπεται ο συγχρονισμός των συνδεδεμένων συσκευών</string>
+    <string name="sync_allow_info">Οι συνδεδεμένες συσκευές θα μπορούν να περιηγηθούν στα τραγούδια και τα σύνολα σας και να τα κατεβάσουν στις συσκευές τους</string>
     <string name="sync_check_for_updates">Ελέγξτε για ενημερώσεις</string>
     <string name="sync_check_for_updates_info">Ρωτήστε ξανά τον απομακρυσμένο φάκελο και ελέγξτε για διαφορές με τα τοπικά στοιχεία</string>
     <string name="sync_checking_local_item">Έλεγχος τοπικού στοιχείου</string>
@@ -1040,8 +1046,13 @@
     <string name="sync_delete_remote_not_in_local">Διαγράψτε παλιά απομακρυσμένα στοιχεία</string>
     <string name="sync_delete_remote_not_in_local_info">Τα ακόλουθα στοιχεία υπάρχουν στον απομακρυσμένο φάκελο, αλλά δεν βρίσκονται στον τοπικό φάκελο.  Αυτά μπορούν να αφαιρεθούν εάν δεν είναι πλέον απαραίτητα</string>
     <string name="sync_deleting_local_items">Διαγραφή τοπικού στοιχείου πριν από τη λήψη απομακρυσμένων στοιχείων</string>
+    <string name="sync_device_denied">Η συνδεδεμένη συσκευή έχει απενεργοποιήσει το συγχρονισμό αρχείων.  Μπορούν να το αλλάξουν αυτό στις ρυθμίσεις συσκευών σύνδεσης</string>
+    <string name="sync_device_processing">Η συνδεδεμένη συσκευή επεξεργάζεται το αίτημα</string>
     <string name="sync_download_from_openchords">Λήψη από τον διακομιστή OpenChords</string>
     <string name="sync_download_new_items">Λήψη νέων στοιχείων</string>
+    <string name="sync_exists">Υπάρχει</string>
+    <string name="sync_extracting">Εξαγωγή αντικειμένου</string>
+    <string name="sync_file_status">Κατάσταση</string>
     <string name="sync_folder_name_change">Πρόβλημα ονόματος φακέλου</string>
     <string name="sync_folder_name_change_info">Το όνομα του επιλεγμένου τοπικού φακέλου είναι διαφορετικό από το όνομα του απομακρυσμένου φακέλου</string>
     <string name="sync_force_changes">Αναγκαστική αλλαγή</string>
@@ -1077,13 +1088,16 @@
     <string name="sync_local_items_older">Τοπικά στοιχεία που χρειάζονται ενημέρωση</string>
     <string name="sync_local_set_deleted">Το τοπικό σύνολο διαγράφηκε</string>
     <string name="sync_local_song_deleted">Το τοπικό τραγούδι διαγράφηκε</string>
+    <string name="sync_missing">Νέο στοιχείο</string>
     <string name="sync_new_local_folder">Δημιουργία νέου τοπικού φακέλου</string>
     <string name="sync_new_local_folder_info">Ένας νέος τοπικός φάκελος θα δημιουργηθεί όταν τραβάτε στοιχεία από τον απομακρυσμένο φάκελο</string>
     <string name="sync_new_remote_folder">Δημιουργία νέου απομακρυσμένου φακέλου</string>
     <string name="sync_new_remote_folder_info">Αυτό θα δημιουργήσει έναν νέο απομακρυσμένο φάκελο όταν πιέζετε στοιχεία στον απομακρυσμένο φάκελο.  Θα χρειαστεί να μοιραστείτε τον νέο σύνδεσμο με τους άλλους χρήστες σας</string>
+    <string name="sync_newer">Ενημερώθηκε</string>
     <string name="sync_newer_items_local_replaced">Αυτά τα στοιχεία στον τοπικό φάκελο είναι νεότερα, αλλά θα αντικατασταθούν από τα απομακρυσμένα στοιχεία</string>
     <string name="sync_newer_items_remote_replaced">Αυτά τα στοιχεία στον απομακρυσμένο φάκελο είναι νεότερα, αλλά θα αντικατασταθούν από τα τοπικά στοιχεία</string>
     <string name="sync_no_changes_required">Τα στοιχεία είναι ήδη συγχρονισμένα</string>
+    <string name="sync_older">Πιο παλιά</string>
     <string name="sync_preparing_item">Προετοιμασία στοιχείου για μεταφόρτωση</string>
     <string name="sync_pull_download">Τραβήξτε (λήψη)</string>
     <string name="sync_pull_info">Λήψη αρχείων από τον απομακρυσμένο φάκελο στον τοπικό σας φάκελο</string>
@@ -1096,6 +1110,7 @@
     <string name="sync_remote_items_older">Απομακρυσμένα στοιχεία που χρειάζονται ενημέρωση</string>
     <string name="sync_remote_set_deleted">Το απομακρυσμένο σύνολο διαγράφηκε</string>
     <string name="sync_remote_song_deleted">Το απομακρυσμένο τραγούδι διαγράφηκε</string>
+    <string name="sync_same">Σύγχρονος</string>
     <string name="sync_server_no_matching_folder">Αυτός ο φάκελος δεν υπάρχει στον απομακρυσμένο διακομιστή</string>
     <string name="sync_server_noresponse_error">Δεν υπήρξε απάντηση από τον διακομιστή</string>
     <string name="sync_set_downloaded">Έγινε/λήψη νέας λίστας setlist</string>
@@ -1104,6 +1119,8 @@
     <string name="sync_set_update_downloaded">Έγινε/λήψη ενημερωμένης λίστας setlist</string>
     <string name="sync_set_update_uploaded">Το ενημερωμένο setlist προωθήθηκε/μεταφορτώθηκε</string>
     <string name="sync_set_uploaded">Πραγματοποιήθηκε ώθηση/μεταφόρτωση νέου setlist</string>
+    <string name="sync_show_new_updated_info">Απόκρυψη όλων των στοιχείων που είναι ήδη ενημερωμένα</string>
+    <string name="sync_show_new_updated_only">Εμφάνιση μόνο νέων/ενημερωμένων</string>
     <string name="sync_song_downloaded">Τράβηξε/κατέβασε νέο τραγούδι</string>
     <string name="sync_song_force_downloaded">Τραγούδι δύναμη τράβηξε/λήψη</string>
     <string name="sync_song_update_downloaded">Έγινε λήψη/λήψη του ενημερωμένου τραγουδιού</string>
@@ -1119,7 +1136,11 @@
     <string name="sync_upload_new_items">Ανεβάστε νέα στοιχεία</string>
     <string name="sync_upload_to_openchords">Μεταφόρτωση στον διακομιστή OpenChords</string>
     <string name="sync_uploading_changes">Μεταφόρτωση αλλαγών στον απομακρυσμένο φάκελο</string>
+    <string name="sync_uuid_mismatch">Αναντιστοιχία UUID</string>
     <string name="sync_view_history">Προβολή ιστορικού συγχρονισμού</string>
+    <string name="synchronise_need_update">Ενημερώστε τα αρχεία τραγουδιών σας (απαιτείται για συγχρονισμό)</string>
+    <string name="synchronise_need_update_info">Ορισμένα από τα αρχεία τραγουδιών σας δεν έχουν αποθηκευμένες πληροφορίες UUID ή ημερομηνία τελευταίας τροποποίησης.  Για να επιτρέψετε τον ασφαλή συγχρονισμό, θα πρέπει να εκτελέσετε αυτό το βήμα.</string>
+    <string name="synchronise_need_update_warning">Αυτή η διαδικασία θα δημιουργήσει πλήρως το ευρετήριο τραγουδιών σας και θα επεξεργαστεί και θα αποθηκεύσει τραγούδια που χρειάζονται είτε ένα μοναδικό αναγνωριστικό UUID είτε μια ημερομηνία τελευταίας τροποποίησης που προστέθηκε σε αυτά.  Αυτή η διαδικασία είναι ΑΡΓΗ εάν επηρεάζονται πολλά αρχεία και δεν πρέπει να βγείτε από την εφαρμογή μέχρι να ολοκληρωθεί.  Επειδή αυτή η διαδικασία επεξεργάζεται τα αρχεία τραγουδιών σας, είναι σημαντικό να έχετε ήδη δημιουργήσει αντίγραφο ασφαλείας πριν εκτελέσετε αυτό το βήμα</string>
     <string name="tabs_scale">Κλιμάκωση κειμένου καρτέλας (κιθάρα, ντραμς κ.λπ.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Τα επισημασμένα τραγούδια περιέχουν την επιλεγμένη ετικέτα. Κάντε κλικ σε οποιοδήποτε τραγούδι για να προσθέσετε/αφαιρέσετε την επιλεγμένη ετικέτα.</string>

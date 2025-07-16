@@ -1229,4 +1229,25 @@
     <string name="sync_choose_device">Uređaj za sinhronizaciju sa</string>
     <string name="song_select_warning_more">Zbog ograničenja SongSelect-a, sada ćete morati ručno da preuzmete datoteku pesme, a zatim je uvezete u aplikaciju.  Nakon preuzimanja datoteke, bićete vraćeni na ovu stranicu i možete kliknuti na dugme \"Uvoz preuzimanja\" da biste uvezli preuzetu datoteku u OpenSongApp.</string>
     <string name="import_download">Uvoz preuzimanje</string>
+    <string name="multilingual_scale">Skala višejezične lirske linije</string>
+    <string name="multilingual">Višejezičke</string>
+    <string name="synchronise_need_update">Ažurirajte datoteke pesama (potrebno za sinhronizaciju)</string>
+    <string name="synchronise_need_update_info">Neke od vaših datoteka pesama nemaju UUID ili informacije o poslednjoj modifikaciji datuma sačuvane u njima.  Da biste omogućili sigurnu sinhronizaciju, trebalo bi da pokrenete ovaj korak.</string>
+    <string name="synchronise_need_update_warning">Ovaj proces će u potpunosti obnoviti vaš indeks pesama i urediće i sačuvati pesme kojima je potreban ili jedinstveni UUID identifikator ili datum poslednje izmene.  Ovaj proces je spor ako je pogođeno mnogo datoteka i ne bi trebalo da izađete iz aplikacije dok se ovo ne završi.  Jer ovaj proces uređuje datoteke pesama, od presudnog je značaja da ste već napravili rezervnu kopiju pre nego što pokrenete ovaj korak</string>
+    <string name="sync_allow">Dozvolite povezanim uređajima za sinhronizaciju</string>
+    <string name="sync_allow_info">Povezani uređaji će moći da pretražuju vaše pesme i setove i preuzeti ih na svoje uređaje</string>
+    <string name="connection_host_needs_update">Povezani uređaj je poslao informacije u starom formatu.  Zamolite ih da ažuriraju svoju aplikaciju.</string>
+    <string name="sync_device_denied">Povezani uređaj je isključio sinhronizaciju datoteka.  Oni mogu da promene ovo u podešavanjima za povezivanje uređaja</string>
+    <string name="sync_device_processing">Povezani uređaj obrađuje zahtev</string>
+    <string name="sync_file_status">Status</string>
+    <string name="sync_newer">Updated</string>
+    <string name="sync_older">Stariji</string>
+    <string name="sync_missing">Nova stavka</string>
+    <string name="sync_exists">Postoji</string>
+    <string name="sync_uuid_mismatch">UUID neusklađenost</string>
+    <string name="sync_same">U toku</string>
+    <string name="sync_show_new_updated_only">Prikaži samo novo / ažurirano</string>
+    <string name="sync_show_new_updated_info">Sakrij sve stavke koje su već ažurirane</string>
+    <string name="nearby_get_profiles">Nabavite profile</string>
+    <string name="sync_extracting">Vađenje stavke</string>
 </resources>

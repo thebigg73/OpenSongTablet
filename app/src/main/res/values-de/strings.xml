@@ -216,6 +216,7 @@
     <string name="connected_display">Verbundene Anzeige</string>
     <string name="connected_display_description">Spezifische Einstellungen für den Chromecast / HDMI-Ausgang</string>
     <string name="connection_autoscroll_info">Warten Sie auf Autoscroll-Stopp- und Startbefehle</string>
+    <string name="connection_host_needs_update">Ein verbundenes Gerät hat Informationen in einem veralteten Format gesendet. Bitten Sie das Gerät, seine App zu aktualisieren.</string>
     <string name="connection_match_to_pdf_song">Passende PDF-Datei bevorzugen</string>
     <string name="connection_match_to_pdf_song_info">Anstatt zu versuchen, passende OpenSong-Dateien zu laden, versuchen Sie, PDF-Dateien mit demselben Namen zu laden (aber mit .pdf zu enden)</string>
     <string name="connection_scroll_info">Hören Sie auf Befehle zum Hoch- und Herunterscrollen</string>
@@ -657,6 +658,8 @@
     <string name="modulation">Modulation</string>
     <string name="move_from">Abziehen</string>
     <string name="move_to_folder">In den Ordner verschieben</string>
+    <string name="multilingual">Mehrsprachig</string>
+    <string name="multilingual_scale">Mehrsprachige Liedtextzeilen skalieren</string>
     <string name="music">Musik</string>
     <string name="music_score">Musikpartitur</string>
     <string name="music_score_info">Partiturnotizen bearbeiten</string>
@@ -668,6 +671,7 @@
     <string name="nearby_files_failed">Dateien fehlgeschlagen:</string>
     <string name="nearby_files_skipped">Übersprungene Dateien:</string>
     <string name="nearby_found_files">Die folgenden Dateien wurden auf dem Hostgerät gefunden.  Wählen Sie die Dateien zum Herunterladen aus.  Wenn der Download-Fortschritt ins Stocken gerät oder hängen bleibt, können Sie es erneut versuchen</string>
+    <string name="nearby_get_profiles">Profile abrufen</string>
     <string name="nearby_get_setlist">Holen Sie sich die Setlist</string>
     <string name="nearby_get_songs">Holen Sie sich Lieder</string>
     <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
@@ -1029,6 +1033,8 @@
     <string name="swipe_distance">Wisch-Weite</string>
     <string name="swipe_info">Passen Sie Gesten an, um zwischen Songs zu wechseln</string>
     <string name="sync">Synchronisieren Sie angeschlossene Geräte</string>
+    <string name="sync_allow">Synchronisierung verbundener Geräte zulassen</string>
+    <string name="sync_allow_info">Verbundene Geräte können Ihre Songs und Sets durchsuchen und auf ihre Geräte herunterladen</string>
     <string name="sync_check_for_updates">Suchen Sie nach Updates</string>
     <string name="sync_check_for_updates_info">Fragen Sie den Remote-Ordner erneut ab und prüfen Sie, ob es Unterschiede zu lokalen Elementen gibt</string>
     <string name="sync_checking_local_item">Überprüfen des lokalen Artikels</string>
@@ -1040,8 +1046,13 @@
     <string name="sync_delete_remote_not_in_local">Löschen Sie alte Remote-Elemente</string>
     <string name="sync_delete_remote_not_in_local_info">Die folgenden Elemente sind im Remote-Ordner vorhanden, befinden sich jedoch nicht im lokalen Ordner.  Diese können entfernt werden, wenn sie nicht mehr benötigt werden</string>
     <string name="sync_deleting_local_items">Lokales Element löschen, bevor Remote-Elemente abgerufen werden</string>
+    <string name="sync_device_denied">Das verbundene Gerät hat die Dateisynchronisierung deaktiviert. Dies kann in den Einstellungen des verbundenen Geräts geändert werden.</string>
+    <string name="sync_device_processing">Das verbundene Gerät verarbeitet die Anfrage</string>
     <string name="sync_download_from_openchords">Vom OpenChords-Server herunterladen</string>
     <string name="sync_download_new_items">Laden Sie neue Artikel herunter</string>
+    <string name="sync_exists">Existiert</string>
+    <string name="sync_extracting">Artikel extrahieren</string>
+    <string name="sync_file_status">Status</string>
     <string name="sync_folder_name_change">Problem mit dem Ordnernamen</string>
     <string name="sync_folder_name_change_info">Der Name des ausgewählten lokalen Ordners unterscheidet sich vom Namen des Remote-Ordners</string>
     <string name="sync_force_changes">Änderungen erzwingen</string>
@@ -1077,13 +1088,16 @@
     <string name="sync_local_items_older">Lokale Elemente, die aktualisiert werden müssen</string>
     <string name="sync_local_set_deleted">Lokaler Satz gelöscht</string>
     <string name="sync_local_song_deleted">Lokaler Song gelöscht</string>
+    <string name="sync_missing">Neuer Artikel</string>
     <string name="sync_new_local_folder">Erstellen Sie einen neuen lokalen Ordner</string>
     <string name="sync_new_local_folder_info">Wenn Sie Elemente aus dem Remote-Ordner abrufen, wird ein neuer lokaler Ordner erstellt</string>
     <string name="sync_new_remote_folder">Erstellen Sie einen neuen Remote-Ordner</string>
     <string name="sync_new_remote_folder_info">Dadurch wird ein neuer Remote-Ordner erstellt, wenn Sie Elemente in den Remote-Ordner verschieben.  Sie müssen den neuen Link mit Ihren anderen Benutzern teilen</string>
+    <string name="sync_newer">Aktualisiert</string>
     <string name="sync_newer_items_local_replaced">Diese Elemente im lokalen Ordner sind neuer, werden jedoch durch die Remote-Elemente ersetzt</string>
     <string name="sync_newer_items_remote_replaced">Diese Elemente im Remote-Ordner sind neuer, werden jedoch durch die lokalen Elemente ersetzt</string>
     <string name="sync_no_changes_required">Elemente sind bereits synchronisiert</string>
+    <string name="sync_older">Älter</string>
     <string name="sync_preparing_item">Artikel wird für den Upload vorbereitet</string>
     <string name="sync_pull_download">Ziehen (Download)</string>
     <string name="sync_pull_info">Laden Sie Dateien aus dem Remote-Ordner in Ihren lokalen Ordner herunter</string>
@@ -1096,6 +1110,7 @@
     <string name="sync_remote_items_older">Remote-Elemente, die aktualisiert werden müssen</string>
     <string name="sync_remote_set_deleted">Remote-Set gelöscht</string>
     <string name="sync_remote_song_deleted">Remote-Song gelöscht</string>
+    <string name="sync_same">Aktuell</string>
     <string name="sync_server_no_matching_folder">Dieser Ordner ist auf dem Remote-Server nicht vorhanden</string>
     <string name="sync_server_noresponse_error">Es gab keine Antwort vom Server</string>
     <string name="sync_set_downloaded">Neue Setlist abgerufen/heruntergeladen</string>
@@ -1104,6 +1119,8 @@
     <string name="sync_set_update_downloaded">Aktualisierte Setlist abgerufen/heruntergeladen</string>
     <string name="sync_set_update_uploaded">Aktualisierte Setlist gepusht/hochgeladen</string>
     <string name="sync_set_uploaded">Neue Setlist gepusht/hochgeladen</string>
+    <string name="sync_show_new_updated_info">Alle Elemente ausblenden, die bereits aktuell sind</string>
+    <string name="sync_show_new_updated_only">Nur neue/aktualisierte anzeigen</string>
     <string name="sync_song_downloaded">Neuer Song gezogen/heruntergeladen</string>
     <string name="sync_song_force_downloaded">Song zwangsweise gezogen/heruntergeladen</string>
     <string name="sync_song_update_downloaded">Aktualisierter Song abgerufen/heruntergeladen</string>
@@ -1119,7 +1136,11 @@
     <string name="sync_upload_new_items">Laden Sie neue Artikel hoch</string>
     <string name="sync_upload_to_openchords">Auf den OpenChords-Server hochladen</string>
     <string name="sync_uploading_changes">Änderungen werden in den Remote-Ordner hochgeladen</string>
+    <string name="sync_uuid_mismatch">UUID stimmt nicht überein</string>
     <string name="sync_view_history">Synchronisierungsverlauf anzeigen</string>
+    <string name="synchronise_need_update">Aktualisieren Sie Ihre Songdateien (erforderlich für die Synchronisierung)</string>
+    <string name="synchronise_need_update_info">Einige Ihrer Songdateien enthalten keine UUID oder Informationen zum letzten Änderungsdatum. Führen Sie diesen Schritt aus, um eine sichere Synchronisierung zu gewährleisten.</string>
+    <string name="synchronise_need_update_warning">Dieser Vorgang erstellt Ihren Songindex vollständig neu und bearbeitet und speichert Songs, die entweder eine eindeutige UUID-Kennung oder ein Datum der letzten Änderung benötigen. Dieser Vorgang ist LANGSAM, wenn viele Dateien betroffen sind. Sie sollten die App daher erst beenden, wenn dieser Vorgang abgeschlossen ist. Da dieser Vorgang Ihre Songdateien bearbeitet, ist es wichtig, dass Sie vor diesem Schritt ein Backup erstellt haben.</string>
     <string name="tabs_scale">Skalen-Tab-Text (Gitarre, Schlagzeug usw.)</string>
     <string name="tag">Markierung</string>
     <string name="tag_add_remove">Hervorgehobene Songs enthalten das ausgewählte Tag. Klicken Sie auf ein beliebiges Lied, um das ausgewählte Tag hinzuzufügen/zu entfernen.</string>
