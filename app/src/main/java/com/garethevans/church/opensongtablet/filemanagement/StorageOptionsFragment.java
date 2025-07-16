@@ -65,12 +65,10 @@ public class StorageOptionsFragment extends Fragment {
     }
 
     private void setupViews() {
-        // TODO Still to implement this
         // If we aren't at least using nearby connections, hide the sync menu item
-        if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getUsingNearby()
-        && !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().isEmpty()) {
-            // TODO reinstate after testing
-            //myView.syncWithConnectedLayout.setVisibility(View.GONE);
+        if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getUsingNearby() ||
+                mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevices().isEmpty()) {
+            myView.syncWithConnectedLayout.setVisibility(View.GONE);
         } else {
             myView.syncWithConnectedLayout.setVisibility(View.VISIBLE);
         }

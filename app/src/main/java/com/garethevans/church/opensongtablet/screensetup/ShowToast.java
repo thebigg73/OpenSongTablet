@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,12 +15,15 @@ import android.widget.PopupWindow;
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
+
 public class ShowToast {
 
     private final View anchor;
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "ShowToast";
     private PopupWindow popupWindow;
+    private ArrayList<PopupWindow> popupWindows = new ArrayList<>();
     private MaterialTextView textToast;
     private final Context c;
     private Handler handlerShow;
@@ -34,7 +38,9 @@ public class ShowToast {
             try {
                 currentMessage = "";
                 popupWindow.dismiss();
+                kill();
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.d(TAG, "Couldn't dismiss popupWindow");
             }
         }
@@ -59,10 +65,19 @@ public class ShowToast {
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.view_toast, null, false);
         popupWindow.setContentView(view);
         popupWindow.setFocusable(false);
-        popupWindow.setBackgroundDrawable(null);
+        //popupWindow.setBackgroundDrawable(null);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable()); // Necessary for outside touch to work
+        popupWindow.setOutsideTouchable(true);
         textToast = view.findViewById(R.id.textToast);
+
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
-        popupWindow.getContentView().getRootView().setOnClickListener(v -> popupWindow.dismiss());
+        popupWindow.getContentView().getRootView().setOnClickListener(v -> {
+            popupWindow.dismiss();
+        });
+        popupWindow.setOnDismissListener(() -> {
+            Log.d(TAG,"Popupdismissed listener");
+            popupWindows.remove(popupWindow);
+        });
     }
 
     public void doIt(final String message) {
@@ -71,7 +86,11 @@ public class ShowToast {
             if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
                 // Kill any existing
                 new Handler(Looper.getMainLooper()).post(() -> {
+                    popupWindows.add(popupWindow);
+
                     kill();
+
+                    popupWindows.add(popupWindow);
 
                     currentMessage = message;
                     // Toasts with custom layouts are deprecated and look ugly!
@@ -196,5 +215,23 @@ public class ShowToast {
                 e.printStackTrace();
             }
         }
+
+        // Try killing any logged popups
+        clearAllPopups();
+    }
+
+    // Try clear all popupWindows
+    public void clearAllPopups() {
+        Log.d(TAG,"clearAllPopups("+popupWindows.size());
+        for (int i = 0; i < popupWindows.size(); i++) {
+            try {
+                PopupWindow popupWindowTemp = popupWindows.get(i);
+                popupWindowTemp.dismiss();
+                popupWindows.remove(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //popupWindows.clear();
     }
 }

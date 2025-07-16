@@ -134,7 +134,6 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.advertiseButton.setBackgroundTintList(offColor);
         myView.discoverButton.setBackgroundTintList(offColor);
 
-        // TODO fix this for auto start options
         // Set the default values for off/host/client
         updateOffHostClient(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost(),
                 mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getUsingNearby());

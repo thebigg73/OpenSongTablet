@@ -4369,6 +4369,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void selectSection(int i) {
         // Only do this if we are not in a settings fragment
+        Log.d(TAG,"select section:"+i);
         if (!settingsOpen) {
             if (presenterValid()) {
                 presenterFragment.selectSection(i);
@@ -4943,8 +4944,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void performanceShowSection(int position) {
         // This gets a section from from the user selecting either a PDF page or a Stage Mode section
         // Send it back to Performance Mode to deal with the outcome (scroll to, update display, etc)
+        Log.d(TAG, "TODO can remove as currently performanceShowSection(" + position+") is doing nothing");
         if (performanceValid()) {
-            performanceFragment.performanceShowSection(position);
+            //performanceFragment.performanceShowSection(position);
         }
     }
 

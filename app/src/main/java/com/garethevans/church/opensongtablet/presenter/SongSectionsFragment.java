@@ -341,7 +341,8 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void scrollToPosition(int position) {
-        if (myView!=null) {
+        if (myView!=null && myView.recyclerView.getAdapter()!=null &&
+        myView.recyclerView.getAdapter().getItemCount()>position && position>=0) {
             myView.recyclerView.post(() -> myView.recyclerView.smoothScrollToPosition(position));
         }
     }

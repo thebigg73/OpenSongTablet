@@ -47,10 +47,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
     private final String TAG = "NearbyConnectionManager";
 
-    // Constant strings
-    private final String endpointSplit = "__";
-
-
     // General variables
     private boolean usingNearby = false;                // If Nearby connections are initiated (not necessarily connected)
     private boolean isHost = false;                     // Are we acting as a host
@@ -62,8 +58,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     private boolean nearbyHostMenuOnly;                 // Do we only advertise when showing the Nearby connections page
     private Strategy nearbyStrategy = Strategy.P2P_CLUSTER;  // Which strategy to use when connecting
     private String deviceId;                            // The ID of this device
-    //private ArrayList<String> connectedEndpoints;       // CODE_DeviceName - currently connected
-    //private ArrayList<String> discoveredEndpoints;      // CODE__DeviceName - permission already given
     private boolean connectionsOpen = false;            // Do we have the connections fragment page open?
     private int countdown = 0;                          // How many seconds until we stop advertising/discovering
     private Timer timer;
@@ -80,8 +74,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     private boolean tempAdvertiseShowStart = true;      // Show the start advertise text
     private boolean tempAdvertiseShowStop = false;      // Show the stop advertise text
     private int countAdvertise = 0;                     // How many times we have attempted advertising (so we don't keep trying indefinitely)
-    private String requestingDevice = "";               // A note of any device requesting file information from us
-
 
     // Discovering variables
     private boolean discoverInfoRequired = true;        // Alert to let the user know what settings will be used when discovering
@@ -155,6 +147,8 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             // We want to be a client
             doTempDiscover();
         }
+
+        firstBoot = false;
     }
 
 
@@ -821,20 +815,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             }
         }
     }
-    private void removeRecognisedDiscoveredDevice(String endpointId, String endpointName) {
-        if (discoveredDevices.containsKey(endpointId)) {
-            discoveredDevices.remove(endpointId);
-        } else if (discoveredDevices.containsValue(endpointName)) {
-            for (int i = 0; i < discoveredDevices.size(); i++) {
-                String value = discoveredDevices.valueAt(i);
-                if (value.equals(endpointName)) {
-                    String id = discoveredDevices.keyAt(i);
-                    discoveredDevices.remove(id);
-                    break;
-                }
-            }
-        }
-    }
 
 
     public boolean hasValidConnections() {
@@ -941,12 +921,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     public boolean getUsingNearby() {
         return usingNearby;
     }
-    public boolean getIsDiscovering() {
-        return isDiscovering;
-    }
-    public boolean getTempDiscoverShowStart() {
-        return tempDiscoverShowStart;
-    }
     public boolean getIsHost() {
         return isHost;
     }
@@ -955,9 +929,6 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     }
     public SimpleArrayMap<String,String> getConnectedDevices() {
         return connectedDevices;
-    }
-    public SimpleArrayMap<String,String> getDiscoveredDevices() {
-        return discoveredDevices;
     }
 
     public ArrayList<String> getBundleDiscoveredDevices() {
@@ -1002,21 +973,10 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     public boolean getNearbyFileSharing() {
         return nearbyFileSharing;
     }
-    public String getRequestingDevice() {
-        return requestingDevice;
-    }
-
-
 
     // The setters
     public void setUsingNearby(boolean usingNearby) {
         this.usingNearby = usingNearby;
-    }
-    public void setIsDiscovering(boolean isDiscovering) {
-        this.isDiscovering = isDiscovering;
-    }
-    public void setTempDiscoverShowStart(boolean tempDiscoverShowStart) {
-        this.tempDiscoverShowStart = tempDiscoverShowStart;
     }
     public void setIsHost(boolean isHost) {
         this.isHost = isHost;
@@ -1093,8 +1053,5 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     public void setNearbyFileSharing(boolean nearbyFileSharing) {
         this.nearbyFileSharing = nearbyFileSharing;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyFileSharing",nearbyFileSharing);
-    }
-    public void setRequestingDevice(String requestingDevice) {
-        this.requestingDevice = requestingDevice;
     }
 }

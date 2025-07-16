@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.collection.SimpleArrayMap;
 
@@ -27,7 +28,6 @@ public class NearbyTransferRecords {
     private final SimpleArrayMap<Long, Boolean> incomingDealtWith = new SimpleArrayMap<>();
     // Outgoing payloads (what has been sent)
     private final SimpleArrayMap<Long, Payload> outgoingPayloads = new SimpleArrayMap<>();
-    private final SimpleArrayMap<Long, NearbyJson> outgoingFileInformation = new SimpleArrayMap<>();
 
     // The URI of the last file received
     private Uri lastFileReceivedURI = null;
@@ -55,7 +55,6 @@ public class NearbyTransferRecords {
         incomingDealtWith.put(id, dealtWith);
     }
 
-
     // Check if we have already sent these payloads/nearbyJsons
     public boolean getNotAlreadySentPayload(Payload payload) {
         return !outgoingPayloads.containsKey(payload.getId());
@@ -63,7 +62,11 @@ public class NearbyTransferRecords {
 
     // Add the payloads/nearbyJsons to our arrays
     public void addAlreadyReceivedPayload(Payload payload) {
-        incomingPayloads.put(payload.getId(), payload);
+        try {
+            incomingPayloads.put(payload.getId(), payload);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void addAlreadyReceivedFileInformation(NearbyJson nearbyJson) {
         incomingFileInformation.put(nearbyJson.getId(), nearbyJson);
@@ -71,10 +74,6 @@ public class NearbyTransferRecords {
     public void addAlreadySentPayload(Payload payload) {
         outgoingPayloads.put(payload.getId(), payload);
     }
-    public void addAlreadySentFileInformation(NearbyJson nearbyJson) {
-        outgoingFileInformation.put(nearbyJson.getId(), nearbyJson);
-    }
-
 
     // Remove the incoming payloads/nearbyJsons from our arrays to recover memory (dealt with)
     // These are done as delayed handlers (10 seconds)
@@ -116,19 +115,6 @@ public class NearbyTransferRecords {
             }
         },delayToRemove);
     }
-    public void removeAlreadySentFileInformation(Long id) {
-        if (id!=null) {
-            mainActivityInterface.getMainHandler().postDelayed(() -> {
-                try {
-                    if (outgoingFileInformation.containsKey(id)) {
-                        outgoingFileInformation.remove(id);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }, delayToRemove);
-        }
-    }
     public void removeAlreadyDealtWith(long id) {
         mainActivityInterface.getMainHandler().postDelayed(() -> {
             try {
@@ -142,6 +128,7 @@ public class NearbyTransferRecords {
     }
 
     public void setLastFileReceivedURI(Uri lastFileReceivedURI) {
+        Log.d(TAG,"Setting the last file received Uri as:"+lastFileReceivedURI);
         this.lastFileReceivedURI = lastFileReceivedURI;
     }
     public Uri getLastFileReceivedURI() {

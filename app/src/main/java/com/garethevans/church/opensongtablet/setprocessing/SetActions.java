@@ -1505,6 +1505,8 @@ public class SetActions {
 
         return setObject;
     }
+
+
     public SetObject createSetObjectFromFilename(String setFilename) {
         // We need to parse the set xml and populate the object
         SetObject setObject = new SetObject();

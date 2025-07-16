@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -208,23 +209,25 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             float finalAlpha = alpha;
             cardView.post(()-> {
                 try {
-                    cardView.setVisibility(View.INVISIBLE);
-                    cardView.setAlpha(finalAlpha);
-                    cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    cardView.getLayoutParams().height = (int) (height * scale);
-                    ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
-                    cardView.setVisibility(View.VISIBLE);
-                    cardView.setOnClickListener(view -> {
-                        if (fakeClick) {
-                            fakeClick = false;
-                        } else {
-                            sectionSelected(pos);
-                        }
-                    });
-                    cardView.setOnLongClickListener(view -> {
-                        // Do nothing, but consume the event
-                        return true;
-                    });
+                    if (mainActivityInterface.getSectionColors()!=null && mainActivityInterface.getSectionColors().size()>section) {
+                        cardView.setVisibility(View.INVISIBLE);
+                        cardView.setAlpha(finalAlpha);
+                        cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        cardView.getLayoutParams().height = (int) (height * scale);
+                        ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
+                        cardView.setVisibility(View.VISIBLE);
+                        cardView.setOnClickListener(view -> {
+                            if (fakeClick) {
+                                fakeClick = false;
+                            } else {
+                                sectionSelected(pos);
+                            }
+                        });
+                        cardView.setOnLongClickListener(view -> {
+                            // Do nothing, but consume the event
+                            return true;
+                        });
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -269,6 +272,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         onTouchAction();
 
         try {
+            Log.d(TAG,"currentSection:"+currentSection);
+            if (currentSection<0 && !sectionInfos.isEmpty()) {
+                currentSection = 0;
+            }
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 if (sectionInfos.size()>currentSection) {
                     sectionInfos.get(currentSection).alpha = alphaoff;
@@ -282,6 +289,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     notifyItemChanged(position, alphaChange);
 
                     // Send a nearby notification (the client will ignore if not required or not ready)
+                    Log.d(TAG,"hasValidConnections():"+mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections());
+                    Log.d(TAG,"isHost():"+mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost());
                     if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
                             mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
                         mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongSectionPayload();

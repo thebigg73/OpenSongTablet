@@ -443,11 +443,6 @@ public class StorageAccess {
         }
     }
 
-    public DocumentFile getSongsDF() {
-        return songsDF;
-    }
-
-
     // Deal with parsing, creating, editing file and folder names
     // This gets the File location for the app as a String (for appending).  PreLollipop only
     public String[] niceUriTree(Uri uri) {
@@ -2562,10 +2557,35 @@ public class StorageAccess {
         }
     }
 
+    public void addItemToZip(ZipOutputStream zipOutputStream, Uri uri, String filename) {
+        if (uri!=null) {
+            byte[] tempBuff = new byte[1024];
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
+            ZipEntry ze = new ZipEntry(filename);
+            try {
+                if (zipOutputStream != null) {
+                    zipOutputStream.putNextEntry(ze);
+                    int len;
+                    while ((len = inputStream.read(tempBuff)) >= 0) {
+                        zipOutputStream.write(tempBuff, 0, len);
+                    }
+                    zipOutputStream.closeEntry();
+                    inputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void addItemToZip(ZipOutputStream zipOutputStream, String folder, String subfolder, String filename) {
         // Get the uri for this item
         byte[] tempBuff = new byte[1024];
-        Uri fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, filename);
+        Uri fileUriToCopy;
+        if (filename.equals(mainActivityInterface.getNearbyActions().currentSetFile)) {
+            fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", mainActivityInterface.getNearbyActions().currentSetFile);
+        } else {
+            fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, filename);
+        }
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
         String zipEntryId;
         if (folder.equals("Songs")) {

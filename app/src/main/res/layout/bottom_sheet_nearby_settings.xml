@@ -77,7 +77,6 @@
                     android:text="@string/connections_mode_single"
                     app:backgroundTint="@color/colorAltPrimary" />
             </LinearLayout>
-
             <TableRow style="@style/DividerLine" />
 
             <LinearLayout

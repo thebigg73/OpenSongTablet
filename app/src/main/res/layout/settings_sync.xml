@@ -46,12 +46,14 @@
                 android:paddingBottom="8dp"
                 android:layout_gravity="top"
                 android:background="@color/colorAltPrimary"
-                android:contentDescription="@string/sync"/>
+                android:contentDescription="@string/sync"
+                android:visibility="gone"/>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/syncPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
 
         </LinearLayout>
     <FrameLayout

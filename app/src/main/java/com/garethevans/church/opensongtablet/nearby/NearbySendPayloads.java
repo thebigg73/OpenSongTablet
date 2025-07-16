@@ -7,7 +7,9 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.MainActivity;
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.Payload;
 
@@ -17,6 +19,7 @@ import java.util.zip.ZipOutputStream;
 public class NearbySendPayloads {
 
     // This class deals with sending Payloads
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "NearbySendPayloads";
     private final Activity activity;
     private final Context c;
@@ -86,7 +89,6 @@ public class NearbySendPayloads {
        These are our device requesting information from another device */
     // This device is requesting file information from a connected device
     public void sendSyncInfoRequest(String deviceToAction) {
-        Log.d(TAG,"sendSyncInfoRequest("+deviceToAction+")");
         NearbyJson nearbyJson = new NearbyJson();
         nearbyJson.setWhat(nearbyActions.syncRequestInfo);
         nearbyJson.setDeviceSending(nearbyActions.getNearbyConnectionManagement().getDeviceId());
@@ -96,12 +98,10 @@ public class NearbySendPayloads {
     public void sendSyncContentRequest(String deviceToAction, String filename, NearbyJson nearbyJson) {
         // We have chosen which files we want and have them bundled in the json
         // Now create a json string object and save to a file in the Export folder
-        Log.d(TAG,"sendSyncContentRequest()");
         String jsonString = MainActivity.gson.toJson(nearbyJson);
-        Log.d(TAG, "jsonString.size():" + (jsonString.getBytes().length / 1000f) + "kb)");
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", filename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",filename);
-        Log.d(TAG,"write content file:"+mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", filename, jsonString));
+        mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", filename, jsonString);
         ParcelFileDescriptor pfd;
         try {
             pfd = new ParcelFileDescriptor(c.getContentResolver().openFileDescriptor(uri, "r"));
@@ -142,8 +142,19 @@ public class NearbySendPayloads {
 
         // Now add the sets
         ArrayList<ShareableObject> shareableSetObjects = new ArrayList<>();
-        ArrayList<String> sets = mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
 
+        // If our current set isn't empty, add a reference
+        if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+            ShareableObject currentSet = new ShareableObject();
+            // The current set isn't a file, so just make it easy to identify!
+            currentSet.setFilename(nearbyActions.currentSetFile);
+            currentSet.setFolder(nearbyActions.currentSetFile);
+            currentSet.setTitle(c.getString(R.string.set_current));
+            shareableSetObjects.add(currentSet);
+        }
+
+        // Now get any saved set files
+        ArrayList<String> sets = mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
         for (String set : sets) {
             ShareableObject shareableObject = new ShareableObject();
             shareableObject.setFilename(set);
@@ -195,7 +206,6 @@ public class NearbySendPayloads {
     }
     // This device is asking a connected device to send a zip file back to us by sending a json of selected items back to them
     public void sendSyncDenied(String requestingDevice) {
-        Log.d(TAG,"sendSyncDenied("+requestingDevice+")");
         NearbyJson nearbyJson = new NearbyJson();
         nearbyJson.setWhat(nearbyActions.syncRequestDenied);
         nearbyJson.setDeviceSending(nearbyActions.getNearbyConnectionManagement().getDeviceId());
@@ -203,7 +213,6 @@ public class NearbySendPayloads {
         sendPayloadToSelected(requestingDevice, Payload.fromBytes(MainActivity.gson.toJson(nearbyJson).getBytes()));
     }
     public void sendSyncProcessingInfo(String requestingDevice) {
-        Log.d(TAG,"sendSyncProcessingInfo()");
         NearbyJson nearbyJson = new NearbyJson();
         if (nearbyActions.getNearbyConnectionManagement().getNearbyFileSharing()) {
             nearbyJson.setWhat(nearbyActions.syncProcessingInfo);
@@ -232,10 +241,28 @@ public class NearbySendPayloads {
                 e.printStackTrace();
             }
 
+            // If we have requested any non OpenSong song (pdf, image), we need the database entries
+            boolean needNonOpenSongDatabase = false;
+
             // Now go through each item requested in turn and add it
             if (nearbyRequestJson.getShareableSetObjects() != null && !nearbyRequestJson.getShareableSetObjects().isEmpty()) {
                 for (ShareableObject shareableObject : nearbyRequestJson.getShareableSetObjects()) {
-                    mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream, "Sets", "", shareableObject.getFilename());
+                    Log.d(TAG,"shareableObject.getFilename():"+shareableObject.getFilename());
+                    Log.d(TAG,"nearbyActions.currentSetFile:"+nearbyActions.currentSetFile);
+                    Log.d(TAG,"shareableObject.getTitle():"+shareableObject.getTitle());
+                    if ((shareableObject.getFilename()).equals(nearbyActions.currentSetFile)) {
+                        // Make a json file for the current set
+                        String currentSetXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
+                        Log.d(TAG,"currentSetXML:"+currentSetXML);
+                        Uri currentSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.currentSetFile);
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
+                                currentSetUri, null, "Export", "", nearbyActions.currentSetFile);
+                        mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", nearbyActions.currentSetFile, currentSetXML);
+                        mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream, "Export", "", nearbyActions.currentSetFile);
+
+                    } else {
+                        mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream, "Sets", "", shareableObject.getFilename());
+                    }
                 }
             } else if (nearbyRequestJson.getShareableProfileObjects() != null && !nearbyRequestJson.getShareableProfileObjects().isEmpty()) {
                 for (ShareableObject shareableObject : nearbyRequestJson.getShareableProfileObjects()) {
@@ -244,6 +271,20 @@ public class NearbySendPayloads {
             } else if (nearbyRequestJson.getShareableSongObjects() != null && !nearbyRequestJson.getShareableSongObjects().isEmpty()) {
                 for (ShareableObject shareableObject : nearbyRequestJson.getShareableSongObjects()) {
                     mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream, "Songs", shareableObject.getFolder(), shareableObject.getFilename());
+                    // If this is an image or PDF, we need to attach a song object as a json file
+                    if (mainActivityInterface.getStorageAccess().isIMGorPDF(shareableObject.getFilename())) {
+                        Song thisNonOSSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(shareableObject.getFolder(),shareableObject.getFilename());
+                        Log.d(TAG,"this file requires the database:"+thisNonOSSong.getUuid()+"  "+thisNonOSSong.getLastModified()+ "  " + thisNonOSSong.getNotes());
+                        String newFilename = thisNonOSSong.getFolder().replace("/","_____")+"_____"+thisNonOSSong.getFilename()+".json";
+                        Log.d(TAG,"newFilename:"+newFilename);
+                        String songJson = MainActivity.gson.toJson(thisNonOSSong);
+                        Log.d(TAG,"songJson:"+songJson);
+                        // Create a file for this content
+                        Uri thisNonOSSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Export","", newFilename);
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,thisNonOSSongUri,null,"Export","",newFilename);
+                        mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename,songJson);
+                        mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream,"Export","",newFilename);
+                    }
                 }
             }
 
@@ -271,13 +312,10 @@ public class NearbySendPayloads {
                 nearbyContentJson.setDeviceSending(nearbyActions.getNearbyConnectionManagement().getDeviceId());
                 nearbyContentJson.setDeviceToAction(nearbyRequestJson.getDeviceSending());
 
-
                 // Send the info bytes so we can prepare the user with the filename
-                Log.d(TAG, "About to send file info id:" + nearbyContentJson.getId() + "  filename:" + filename + "  to:" + nearbyRequestJson.getDeviceSending());
                 sendPayloadToSelected(nearbyRequestJson.getDeviceSending(), Payload.fromBytes(MainActivity.gson.toJson(nearbyContentJson).getBytes()));
 
                 // Send the actual file
-                Log.d(TAG, "About to send the file id:" + payloadFile.getId() + "  filename:" + filename + "  to:" + nearbyRequestJson.getDeviceSending());
                 sendPayloadToSelected(nearbyRequestJson.getDeviceSending(), payloadFile);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -286,37 +324,26 @@ public class NearbySendPayloads {
     }
     public void sendPayloadToSelected(String whichDevice, Payload payload) {
         // Only send if we haven't already sent it
-        String type="BYTES";
-        if (payload.getType()==Payload.Type.FILE) {
-            type = "FILE";
-        }
-        Log.d(TAG, "sendPayloadToSelected("+whichDevice+", "+payload+")");
         if (nearbyActions.getNearbyTransferRecords().getNotAlreadySentPayload(payload)) {
             // Add a record of this and set it to delete after delay (to clear memory)
             nearbyActions.getNearbyTransferRecords().addAlreadySentPayload(payload);
             nearbyActions.getNearbyTransferRecords().removeAlreadySentPayload(payload.getId());
-            Log.d(TAG, " - not sent, so sending");
 
             // Here we send a request only to the requested device
             for (int i=0; i<nearbyActions.getNearbyConnectionManagement().getConnectedDevices().size(); i++) {
                 String id = nearbyActions.getNearbyConnectionManagement().getConnectedDevices().keyAt(i);
                 String name = nearbyActions.getNearbyConnectionManagement().getConnectedDevices().valueAt(i);
                 if (id.equals(whichDevice) || name.equals(whichDevice)) {
-                    Log.d(TAG, "Sending payload:" + payload + "  (type:"+type+")  to device:" + id +" ("+name+")");
                     Nearby.getConnectionsClient(activity).sendPayload(id, payload);
                     break;
                 }
             }
-        } else {
-            Log.d(TAG,"We've already sent the payload with id:"+payload.getId());
         }
     }
 
     // Song delay information
-    public boolean getSendSongDelayActive() {
-        return this.sendSongDelayActive;
-    }
     public void setSendSongDelayActive(boolean value) {
+        Log.d(TAG,"setSendSongDelayActive("+value+")");
         this.sendSongDelayActive = value;
     }
 
@@ -328,9 +355,11 @@ public class NearbySendPayloads {
         // We will send the current section as a pending section change (encode as -ve offset by 1) for action on next song load on the client
         NearbyJson nearbyJsonToSend = new NearbyJson();
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            nearbyJsonToSend.setWhat(nearbyActions.sectionTag + "-" + (1 + mainActivityInterface.getSong().getPdfPageCurrent()));
+            nearbyJsonToSend.setSection(mainActivityInterface.getSong().getPdfPageCurrent());
+            nearbyJsonToSend.setWhat(nearbyActions.sectionTag);
         } else {
-            nearbyJsonToSend.setWhat(nearbyActions.sectionTag + "-" + (1 + mainActivityInterface.getSong().getCurrentSection()));
+            nearbyJsonToSend.setWhat(nearbyActions.sectionTag);
+            nearbyJsonToSend.setSection(mainActivityInterface.getSong().getCurrentSection());
         }
         // Send the json to trigger the current song sections
         sendToConnected(Payload.fromBytes(MainActivity.gson.toJson(nearbyJsonToSend).getBytes()));
@@ -387,6 +416,7 @@ public class NearbySendPayloads {
 
     // Send the current section being viewed in the song
     public void sendSongSectionPayload() {
+        Log.d(TAG,"sendSongSectionPayload()");
         if (nearbyActions.getNearbyConnectionManagement().sendAsHost()) {
             // IV - Send if we are not delaying - a delayed song send sends the current section
             if (!sendSongDelayActive) {
@@ -396,22 +426,14 @@ public class NearbySendPayloads {
                 } else {
                     simpleCommand = nearbyActions.sectionTag + (mainActivityInterface.getSong().getCurrentSection());
                 }
+                Log.d(TAG,"simpleCommand:"+simpleCommand);
                 sendCommandIfHost(simpleCommand);
             }
         }
     }
 
-
-
-
-
-
     // This is the logic that sends the required payload to all connected devices
     public void sendToConnected(Payload payload) {
-        String type = "FILE";
-        if (payload.getType()==Payload.Type.BYTES) {
-            type = "BYTES";
-        }
         // Only send if we haven't sent it already
         if (nearbyActions.getNearbyTransferRecords().getNotAlreadySentPayload(payload)) {
             // Add a record of this and set it to delete after delay (to clear memory)
@@ -419,13 +441,8 @@ public class NearbySendPayloads {
             nearbyActions.getNearbyTransferRecords().removeAlreadySentPayload(payload.getId());
             for (int i=0; i<nearbyActions.getNearbyConnectionManagement().getConnectedDevices().size(); i++) {
                 String id = nearbyActions.getNearbyConnectionManagement().getConnectedDevices().keyAt(i);
-                String name = nearbyActions.getNearbyConnectionManagement().getConnectedDevices().valueAt(i);
                 Nearby.getConnectionsClient(activity).sendPayload(id, payload);
-
-                Log.d(TAG,"sending the payload with id:"+payload.getId()+" (type:"+type+") to device "+id+" ("+name+")");
             }
-        } else {
-            Log.d(TAG, "We've already sent the payload with id:"+payload.getId());
         }
     }
 

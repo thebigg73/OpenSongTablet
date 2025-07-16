@@ -40,7 +40,6 @@ public class NearbyActions {
     public String endpointSplit = "__";
     public String sets = "___sets___";
     public String messageTag = "___message___";
-    public final String serviceId = "com.garethevans.church.opensongtablet";
 
     // Synchronisation identifiers in bytes payloads
     public String syncRequestInfo = "___syncinforequest___";
@@ -57,6 +56,7 @@ public class NearbyActions {
     public String contentZipSongs = "syncSongsContent.zip";
     public String contentZipSets = "syncSetsContent.zip";
     public String contentZipProfiles = "syncProfilesContent.zip";
+    public String currentSetFile = "currentSet.xml";
 
     public NearbyActions(Activity activity, Context c) {
         this.activity = activity;
@@ -73,7 +73,7 @@ public class NearbyActions {
 
     public NearbyLogs getNearbyLogs() {
         if (nearbyLogs == null) {
-            nearbyLogs = new NearbyLogs(activity, c, this);
+            nearbyLogs = new NearbyLogs(c);
         }
         return nearbyLogs;
     }

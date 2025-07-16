@@ -305,11 +305,11 @@ public class PresenterFragment extends Fragment {
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
                 !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
-            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getHostPendingSection();
+            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getPendingSection();
             if (hostPendingSection != 0) {
                 mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().doSectionChange(hostPendingSection);
             }
-            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetHostPendingSection();
+            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetPendingSection();
         }
 
         // State we haven't started the projection (for the song info bar check)

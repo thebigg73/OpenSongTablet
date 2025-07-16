@@ -30,7 +30,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
     // Database Version
-    private static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 8;
 
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);

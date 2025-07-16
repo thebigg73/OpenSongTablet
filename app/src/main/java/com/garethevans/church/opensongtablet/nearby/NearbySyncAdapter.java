@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder> {
@@ -27,11 +27,10 @@ public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder>
     private ArrayList<ShareableObject> shareableObjects = new ArrayList<>();
     private final SyncNearbyFragment syncNearbyFragment;
     private final SyncItemsFragment syncItemsFragment;
-    private final String sync_newer, sync_older, sync_missing, sync_same, sync_uuid_mismatch, sync_exists;
-    private final Context c;
+    private final String sync_newer, sync_older, sync_missing, sync_same, sync_uuid_mismatch,
+            sync_exists, current_set_string;
 
     NearbySyncAdapter(Context c, SyncNearbyFragment syncNearbyFragment, SyncItemsFragment syncItemsFragment) {
-        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         setHasStableIds(false);
         this.syncNearbyFragment = syncNearbyFragment;
@@ -42,6 +41,7 @@ public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder>
         sync_same = c.getString(R.string.sync_same);
         sync_uuid_mismatch = c.getString(R.string.sync_uuid_mismatch);
         sync_exists = c.getString(R.string.sync_exists);
+        current_set_string = c.getString(R.string.set_current);
         prepareItems();
     }
 
@@ -125,15 +125,20 @@ public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder>
                             category = bits[0];
                             title = bits[1];
                         }
+                        if (title.equals(mainActivityInterface.getNearbyActions().currentSetFile)) {
+                            title = current_set_string;
+                            filename = mainActivityInterface.getNearbyActions().currentSetFile;
+                            category = "";
+                        }
                         nearbySyncItem.setTitle(title);
                         nearbySyncItem.setFolder(category);
 
                         // For sets we just show them all, with no comparision text other than new files
                         Uri itemUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", filename);
-                        exists = mainActivityInterface.getStorageAccess().uriExists(itemUri);
+                        if (!filename.equals(mainActivityInterface.getNearbyActions().currentSetFile)) {
+                            exists = mainActivityInterface.getStorageAccess().uriExists(itemUri);
+                        }
                         matchingUuid = true;  // Assume that matching filenames are the same item
-
-
                         break;
                     }
                     case "profiles": {
@@ -174,6 +179,7 @@ public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder>
 
                 // Add this set item to the array if new/updated or wanting to show all
                 if (!syncItemsFragment.getShowNewUpdate() || !exists || newer) {
+                    Log.d(TAG,"filename:"+nearbySyncItem.getFilename());
                     nearbySyncItems.add(nearbySyncItem);
                 }
             }
@@ -237,29 +243,6 @@ public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder>
     @Override
     public int getItemCount() {
         return nearbySyncItems.size();
-    }
-
-    public void changeSortOrder() {
-        // Now do the sorting based on the user preference
-        String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
-        switch (setsSortOrder) {
-            case "az":
-                Collections.sort(nearbySyncItems, (NearbySyncItem a, NearbySyncItem z) -> a.getTitle().compareTo(z.getTitle()));
-                break;
-            case "za":
-                Collections.sort(nearbySyncItems, (NearbySyncItem a, NearbySyncItem z) -> z.getTitle().compareTo(a.getTitle()));
-                break;
-        }
-    }
-
-    public ArrayList<NearbySyncItem> getCheckedItems() {
-        ArrayList<NearbySyncItem> checkedItems = new ArrayList<>();
-        for (NearbySyncItem nearbySyncItem : nearbySyncItems) {
-            if (nearbySyncItem.getSelected()) {
-                checkedItems.add(nearbySyncItem);
-            }
-        }
-        return checkedItems;
     }
 
     public void selectAll(boolean select) {

@@ -1358,11 +1358,11 @@ public class PerformanceFragment extends Fragment {
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
                 !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
-            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getHostPendingSection();
+            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getPendingSection();
             if (hostPendingSection != 0) {
                 mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().doSectionChange(hostPendingSection);
             }
-            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetHostPendingSection();
+            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetPendingSection();
         }
 
         mainActivityInterface.setHighlightChangeAllowed(true);
@@ -1800,20 +1800,25 @@ public class PerformanceFragment extends Fragment {
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     public void performanceShowSection(int position) {
+        Log.d(TAG,"performanceShowSection("+position+")");
         // Scroll the recyclerView to the position as long as we aren't in an autoscroll
-        if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
-            //myView.recyclerView.smoothScrollBy(0,500);
+        if (myView!=null && recyclerLayoutManager!=null && stageSectionAdapter!=null &&
+                recyclerLayoutManager.getChildCount()>position && stageSectionAdapter.getItemCount()>position && position>=0) {
+            if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+                //myView.recyclerView.smoothScrollBy(0,500);
 
-            // IV - Use a snap to top scroller if scrolling to the top of the screen
-            if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f) == 1.0f) {
-                myView.recyclerView.smoothScrollTo(getContext(),recyclerLayoutManager, position);
-            } else {
-                myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
+                Log.d(TAG, "performanceShowSection(" + position + ")");
+                // IV - Use a snap to top scroller if scrolling to the top of the screen
+                if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f) == 1.0f) {
+                    myView.recyclerView.smoothScrollTo(getContext(), recyclerLayoutManager, position);
+                } else {
+                    myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
+                }
             }
+            mainActivityInterface.getPresenterSettings().setCurrentSection(position);
+            displayInterface.updateDisplay("showSection");
+            mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout, myView.recyclerView);
         }
-        mainActivityInterface.getPresenterSettings().setCurrentSection(position);
-        displayInterface.updateDisplay("showSection");
-        mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
     }
 
     // If a nearby host initiated a section change
@@ -1823,8 +1828,10 @@ public class PerformanceFragment extends Fragment {
                 pdfPageAdapter.sectionSelected(position);
         } else if (mainActivityInterface.getMode().equals(mode_stage)) {
             mainActivityInterface.getMainHandler().postDelayed(()-> {
-                stageSectionAdapter.clickOnSection(position);
-                performanceShowSection(position);
+                if (stageSectionAdapter!=null && stageSectionAdapter.getItemCount()>position && myView!=null && myView.recyclerView!=null) {
+                    stageSectionAdapter.clickOnSection(position);
+                    performanceShowSection(position);
+                }
             },50);
         }
     }

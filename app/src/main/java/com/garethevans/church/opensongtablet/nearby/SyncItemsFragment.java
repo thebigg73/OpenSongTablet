@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet.nearby;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,10 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SyncItemsFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SyncItemsFragment";
     private SyncNearbyFragment syncNearbyFragment;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "SyncSongFragment";
     private SettingsSyncItemsBinding myView;
     private NearbySyncAdapter nearbySyncAdapter;
     private String nearby_get_songs_string="";
@@ -58,6 +61,14 @@ public class SyncItemsFragment extends Fragment {
         return myView.getRoot();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (myView!=null) {
+            myView.itemsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        }
+    }
+
     private void prepareStrings() {
         if (getContext()!=null) {
             nearby_get_songs_string = getString(R.string.nearby_get_songs);
@@ -66,13 +77,16 @@ public class SyncItemsFragment extends Fragment {
         }
     }
 
-    public void prepareRecycler() {
-        if (getContext()!=null) {
+    public void prepareRecycler(Context c) {
+        if (c!=null) {
+            mainActivityInterface = (MainActivityInterface) c;
             syncNearbyFragment.announceNotPrepared(what);
+            Log.d(TAG,"announceNotPrepared("+what+")");
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                nearbySyncAdapter = new NearbySyncAdapter(getContext(), syncNearbyFragment, this);
+                nearbySyncAdapter = new NearbySyncAdapter(c, syncNearbyFragment, this);
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (myView != null) {
+                        Log.d(TAG,"what:"+what+"  setting adapter");
                         myView.itemsRecyclerView.setAdapter(nearbySyncAdapter);
                     }
                     syncNearbyFragment.announcePrepared(what);
@@ -87,9 +101,7 @@ public class SyncItemsFragment extends Fragment {
                 nearbySyncAdapter.selectAll(b);
             }
         });
-        myView.showNewUpdate.setOnCheckedChangeListener((compoundButton, b) -> {
-            prepareRecycler();
-        });
+        myView.showNewUpdate.setOnCheckedChangeListener((compoundButton, b) -> prepareRecycler(getContext()));
         myView.downloadItems.setOnClickListener(view -> requestTheseItems());
     }
 
@@ -121,7 +133,13 @@ public class SyncItemsFragment extends Fragment {
         return what;
     }
     public boolean getShowNewUpdate() {
-        return myView.showNewUpdate.getChecked();
+        // Show
+        if (myView!=null) {
+            return myView.showNewUpdate.getChecked();
+        } else {
+            // If we are dealing with songs, default to new/updated
+            return what.equals("songs");
+        }
     }
 
     public void requestTheseItems() {
