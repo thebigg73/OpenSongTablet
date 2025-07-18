@@ -62,6 +62,11 @@ public class PresenterAlert extends MaterialTextView {
             }
             mainActivityInterface.getCustomAnimation().faderAnimation(this,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),start,end);
+            if (end == 0f) {
+                postDelayed(() -> setVisibility(View.GONE),mainActivityInterface.getPresenterSettings().getPresoTransitionTime());
+                viewHeight = 0;
+                requestLayout();
+            }
         }
     }
 

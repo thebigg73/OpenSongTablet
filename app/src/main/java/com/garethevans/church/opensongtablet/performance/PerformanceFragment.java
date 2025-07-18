@@ -244,7 +244,6 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.loadSongFromSet(Math.max(mainActivityInterface.getCurrentSet().getIndexSongInSet(), 0));
 
             }
-            Log.d(TAG,"TRY TO SHOW THE SET MENU");
             mainActivityInterface.chooseMenu(true);
             mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.closeDrawer(false),2000);
 
@@ -451,7 +450,7 @@ public class PerformanceFragment extends Fragment {
         // IV - Set a boolean indicating song change
         songChange = !mainActivityInterface.getSong().getFilename().equals(filename) ||
                 !mainActivityInterface.getSong().getFolder().equals(folder) ||
-                firstSongLoad;
+                firstSongLoad || mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getForceReload();
         mainActivityInterface.setHighlightChangeAllowed(true);
 
         boolean needToTryAgain = false;
@@ -484,7 +483,6 @@ public class PerformanceFragment extends Fragment {
             firstSongLoad = true;
             if (needToPauseTryAgain) {
                 mainActivityInterface.getMainHandler().postDelayed(() -> {
-                    Log.d(TAG,"trying to load the song again");
                     if (processingTestView) {
                         processingTestView = false;
                         try {
@@ -626,18 +624,11 @@ public class PerformanceFragment extends Fragment {
                         // Clear any screenshot files
                         mainActivityInterface.setScreenshotFile(null);
 
-                        // IV - Reset current values to 0
-                        if (mainActivityInterface.getSong() != null &&
-                                mainActivityInterface.getSong().getFiletype() != null &&
-                                mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                            mainActivityInterface.getSong().setPdfPageCurrent(0);
-                        } else if (mainActivityInterface.getSong() != null) {
-                            mainActivityInterface.getSong().setCurrentSection(0);
-                            mainActivityInterface.getPresenterSettings().setCurrentSection(0);
-                        }
+                        mainActivityInterface.getSong().setCurrentSection(0);
+                        mainActivityInterface.getSong().setPdfPageCurrent(0);
+                        mainActivityInterface.getPresenterSettings().setCurrentSection(0);
 
-                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
-                                mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
+                        if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().sendAsHost()) {
                             // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
                             // sendSongDelay will be 0 for the first song
                             // IV - Always empty then add to queue (known state)
@@ -1099,7 +1090,7 @@ public class PerformanceFragment extends Fragment {
                 }
 
                 // Set a post listener for the view
-                view.post(() -> {
+                view.postDelayed(() -> {
                     viewsDrawn[viewNum] = true;
                     // Check if the array is only true
                     boolean isReady = true;
@@ -1115,10 +1106,11 @@ public class PerformanceFragment extends Fragment {
                             songIsReadyToDisplay();
                         }
                     }
-                });
+                },100);
 
                 // Add the view.  The post above gets called once drawn
                 myView.testPane.addView(view);
+
             }
         }
     }
@@ -1130,7 +1122,6 @@ public class PerformanceFragment extends Fragment {
                 myView.pageHolder.getLayoutParams().width = availableWidth;
                 myView.pageHolder.getLayoutParams().height = availableHeight;
                 myView.songSheetTitle.setVisibility(View.VISIBLE);
-
 
                 // All views have now been drawn, so measure the arraylist views
                 for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
@@ -1193,12 +1184,14 @@ public class PerformanceFragment extends Fragment {
                                 myView.recyclerView.toggleScale();
 
                                 mainActivityInterface.getMainHandler().postDelayed(() -> {
-                                    myView.recyclerView.startAnimation(animSlideIn);
+                                    if (myView!=null) {
+                                        myView.recyclerView.startAnimation(animSlideIn);
 
-                                    dealWithStuffAfterReady(false);
+                                        dealWithStuffAfterReady(false);
 
-                                    // Get a null screenshot
-                                    getScreenshot(0, 0, 0);
+                                        // Get a null screenshot
+                                        getScreenshot(0, 0, 0);
+                                    }
                                 }, Math.max(0, QOSAdjustment));
                             }
                         }
@@ -1355,15 +1348,11 @@ public class PerformanceFragment extends Fragment {
             endProcessing();
         }
 
-        // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
                 !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
-            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getPendingSection();
-            if (hostPendingSection != 0) {
-                mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().doSectionChange(hostPendingSection);
-            }
-            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetPendingSection();
+            selectSection(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getPendingSection());
         }
+        mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetPendingSection();
 
         mainActivityInterface.setHighlightChangeAllowed(true);
 
@@ -1799,40 +1788,53 @@ public class PerformanceFragment extends Fragment {
     }
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
+    private boolean alreadyChoosingSections = false;
     public void performanceShowSection(int position) {
-        Log.d(TAG,"performanceShowSection("+position+")");
-        // Scroll the recyclerView to the position as long as we aren't in an autoscroll
-        if (myView!=null && recyclerLayoutManager!=null && stageSectionAdapter!=null &&
-                recyclerLayoutManager.getChildCount()>position && stageSectionAdapter.getItemCount()>position && position>=0) {
-            if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
-                //myView.recyclerView.smoothScrollBy(0,500);
-
-                Log.d(TAG, "performanceShowSection(" + position + ")");
-                // IV - Use a snap to top scroller if scrolling to the top of the screen
-                if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f) == 1.0f) {
-                    myView.recyclerView.smoothScrollTo(getContext(), recyclerLayoutManager, position);
-                } else {
-                    myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
+        if (!alreadyChoosingSections) {
+            alreadyChoosingSections = true;
+            // Scroll the recyclerView to the position as long as we aren't in an autoscroll
+            if (myView != null && recyclerLayoutManager != null && stageSectionAdapter != null &&
+                    stageSectionAdapter.getItemCount() > position && position >= 0) {
+                if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+                    // IV - Use a snap to top scroller if scrolling to the top of the screen
+                    if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f) == 1.0f) {
+                        myView.recyclerView.smoothScrollTo(getContext(), recyclerLayoutManager, position);
+                    } else {
+                        myView.recyclerView.doSmoothScrollTo(recyclerLayoutManager, position);
+                    }
                 }
+                mainActivityInterface.getPresenterSettings().setCurrentSection(position);
+                try {
+                    displayInterface.updateDisplay("showSection");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout, myView.recyclerView);
             }
-            mainActivityInterface.getPresenterSettings().setCurrentSection(position);
-            displayInterface.updateDisplay("showSection");
-            mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout, myView.recyclerView);
+
+
         }
+        // Allow scroll to section in 500ms
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            alreadyChoosingSections = false;
+        }, 500);
     }
 
     // If a nearby host initiated a section change
     public void selectSection(int position) {
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() &&
+            mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections()) {
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 pdfPageAdapter.sectionSelected(position);
-        } else if (mainActivityInterface.getMode().equals(mode_stage)) {
-            mainActivityInterface.getMainHandler().postDelayed(()-> {
-                if (stageSectionAdapter!=null && stageSectionAdapter.getItemCount()>position && myView!=null && myView.recyclerView!=null) {
-                    stageSectionAdapter.clickOnSection(position);
-                    performanceShowSection(position);
-                }
-            },50);
+            } else if (mainActivityInterface.getMode().equals(mode_stage)) {
+                mainActivityInterface.getMainHandler().postDelayed(() -> {
+                    if (stageSectionAdapter != null && stageSectionAdapter.getItemCount() > position && position >= 0 && myView != null && myView.recyclerView != null) {
+                        stageSectionAdapter.clickOnSection(position);
+                        performanceShowSection(position);
+                    }
+                }, 50);
+            }
         }
     }
 

@@ -768,6 +768,8 @@ public class PerformanceGestures {
 
     // Next song
     public void nextSong() {
+        Log.d(TAG,"nextSong()");
+
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(true)) {
             scroll(true);
         } else {

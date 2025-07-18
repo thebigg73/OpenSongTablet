@@ -247,13 +247,9 @@ public class NearbySendPayloads {
             // Now go through each item requested in turn and add it
             if (nearbyRequestJson.getShareableSetObjects() != null && !nearbyRequestJson.getShareableSetObjects().isEmpty()) {
                 for (ShareableObject shareableObject : nearbyRequestJson.getShareableSetObjects()) {
-                    Log.d(TAG,"shareableObject.getFilename():"+shareableObject.getFilename());
-                    Log.d(TAG,"nearbyActions.currentSetFile:"+nearbyActions.currentSetFile);
-                    Log.d(TAG,"shareableObject.getTitle():"+shareableObject.getTitle());
                     if ((shareableObject.getFilename()).equals(nearbyActions.currentSetFile)) {
                         // Make a json file for the current set
                         String currentSetXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
-                        Log.d(TAG,"currentSetXML:"+currentSetXML);
                         Uri currentSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.currentSetFile);
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                                 currentSetUri, null, "Export", "", nearbyActions.currentSetFile);
@@ -274,11 +270,8 @@ public class NearbySendPayloads {
                     // If this is an image or PDF, we need to attach a song object as a json file
                     if (mainActivityInterface.getStorageAccess().isIMGorPDF(shareableObject.getFilename())) {
                         Song thisNonOSSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(shareableObject.getFolder(),shareableObject.getFilename());
-                        Log.d(TAG,"this file requires the database:"+thisNonOSSong.getUuid()+"  "+thisNonOSSong.getLastModified()+ "  " + thisNonOSSong.getNotes());
                         String newFilename = thisNonOSSong.getFolder().replace("/","_____")+"_____"+thisNonOSSong.getFilename()+".json";
-                        Log.d(TAG,"newFilename:"+newFilename);
                         String songJson = MainActivity.gson.toJson(thisNonOSSong);
-                        Log.d(TAG,"songJson:"+songJson);
                         // Create a file for this content
                         Uri thisNonOSSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Export","", newFilename);
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,thisNonOSSongUri,null,"Export","",newFilename);
@@ -343,30 +336,24 @@ public class NearbySendPayloads {
 
     // Song delay information
     public void setSendSongDelayActive(boolean value) {
-        Log.d(TAG,"setSendSongDelayActive("+value+")");
         this.sendSongDelayActive = value;
+        //this.sendSongDelayActive = false;
     }
 
     // Deal with sending the current song
     public boolean sendSongPayload() {
+        setSendSongDelayActive(false);
         // HOST: Cancel previous song transfers - a new song is being sent
         // nearbyActions.getNearbyTransferRecords().cancelTransferIds();
         // New method sends bytes as a json
         // We will send the current section as a pending section change (encode as -ve offset by 1) for action on next song load on the client
         NearbyJson nearbyJsonToSend = new NearbyJson();
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            nearbyJsonToSend.setSection(mainActivityInterface.getSong().getPdfPageCurrent());
-            nearbyJsonToSend.setWhat(nearbyActions.sectionTag);
-        } else {
-            nearbyJsonToSend.setWhat(nearbyActions.sectionTag);
-            nearbyJsonToSend.setSection(mainActivityInterface.getSong().getCurrentSection());
-        }
-        // Send the json to trigger the current song sections
-        sendToConnected(Payload.fromBytes(MainActivity.gson.toJson(nearbyJsonToSend).getBytes()));
-
         boolean sendingFile = false;
-        nearbyJsonToSend = new NearbyJson();
         nearbyJsonToSend.setWhat(nearbyActions.songTag);
+
+        // Add the current section we are using
+        addSongSection(nearbyJsonToSend, mainActivityInterface.getSong());
+
         nearbyJsonToSend.setFolder(mainActivityInterface.getSong().getFolder());
         nearbyJsonToSend.setFilename(mainActivityInterface.getSong().getFilename());
         nearbyJsonToSend.setSwipeDirection(mainActivityInterface.getDisplayPrevNext().getSwipeDirection());
@@ -381,6 +368,7 @@ public class NearbySendPayloads {
         if (xml!=null && xml.getBytes().length < 30000 && mainActivityInterface.getSong().getFiletype().equals("XML") &&
                 mainActivityInterface.getSong().getFilename() != null &&
                 !mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong())) {
+            // Simply send the song as BYTES
             nearbyJsonToSend.setXml(mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
             sendToConnected(Payload.fromBytes(MainActivity.gson.toJson(nearbyJsonToSend).getBytes()));
 
@@ -414,20 +402,27 @@ public class NearbySendPayloads {
         return sendingFile;
     }
 
+
+    private void addSongSection(NearbyJson nearbyJson, Song song) {
+        if (song.getFiletype().equals("PDF") || mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",song.getFilename())) {
+            nearbyJson.setSection(song.getPdfPageCurrent());
+        } else {
+            nearbyJson.setSection(song.getCurrentSection());
+        }
+        nearbyActions.getNearbyReceivePayloads().setPendingSection(nearbyJson.getSection()==null ? 0:nearbyJson.getSection());
+    }
+
     // Send the current section being viewed in the song
     public void sendSongSectionPayload() {
-        Log.d(TAG,"sendSongSectionPayload()");
         if (nearbyActions.getNearbyConnectionManagement().sendAsHost()) {
-            // IV - Send if we are not delaying - a delayed song send sends the current section
+            NearbyJson nearbyJson = new NearbyJson();
+            nearbyJson.setWhat(nearbyActions.sectionTag);
+            nearbyJson.setDeviceSending(nearbyActions.getNearbyConnectionManagement().getDeviceId());
+            addSongSection(nearbyJson, mainActivityInterface.getSong());
             if (!sendSongDelayActive) {
-                String simpleCommand;
-                if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                    simpleCommand = nearbyActions.sectionTag + (mainActivityInterface.getSong().getPdfPageCurrent());
-                } else {
-                    simpleCommand = nearbyActions.sectionTag + (mainActivityInterface.getSong().getCurrentSection());
-                }
-                Log.d(TAG,"simpleCommand:"+simpleCommand);
-                sendCommandIfHost(simpleCommand);
+                sendToConnected(Payload.fromBytes(MainActivity.gson.toJson(nearbyJson).getBytes()));
+            } else {
+                sendSongDelayActive = false;
             }
         }
     }

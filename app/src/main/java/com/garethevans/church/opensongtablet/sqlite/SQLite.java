@@ -70,7 +70,6 @@ public class SQLite {
     // The table columns
     public static final String DATABASE_NAME = "Songs.db";
     public static final String NON_OS_DATABASE_NAME = "NonOpenSongSongs.db";
-    public static final String SYNC_NO_OS_DATABASE_NAME = "SyncNonOpenSongSongs.db";
     public static final String TABLE_NAME = "songs";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SONGID = "songid";

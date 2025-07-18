@@ -44,7 +44,7 @@ public class NearbyReceivePayloads {
     private boolean nearbyReceiveHostSongSections;
     private boolean forceReload = false;
     private String receivedSongFilename;
-    private int pendingSection = 0;
+    private int pendingSection = 0;         // When a song is received, we also get the section
     private NearbyJson lastSongInfo = null;
     private Payload lastSongPayload = null;
 
@@ -115,7 +115,9 @@ public class NearbyReceivePayloads {
             Log.d(TAG, "processPayload(" + endpointId + ", " + type + ", " + payloadReceived + ")");
             if (type.equals("FILE") || !nearbyActions.getNearbyTransferRecords().getAlreadyReceivedPayload(payloadReceived)) {
                 // If we are a host, but passing info through, or a client on cluster mode.  Resend this if we haven't already - check
-                Log.d(TAG,"FILE fully received with id:"+payloadReceived.getId());
+                if (type.equals("FILE")) {
+                    Log.d(TAG,"FILE fully received with id:"+payloadReceived.getId());
+                }
                 if ((nearbyActions.getNearbyConnectionManagement().getIsHost() &&
                         nearbyActions.getNearbyConnectionManagement().getNearbyHostPassthrough()) ||
                         nearbyActions.getNearbyConnectionManagement().getNearbyStrategy() == Strategy.P2P_CLUSTER) {
@@ -169,25 +171,10 @@ public class NearbyReceivePayloads {
                                         scrollToProportion(nearbyJson);
                                     } else if (what.startsWith(nearbyActions.messageTag)) {
                                         messageDisplay(nearbyJson);
-                                    } else if (what.startsWith(nearbyActions.sectionTag)) {
-                                        nearbyJson.setWhat(nearbyActions.sectionTag);
-                                        String remainder = what.replace(nearbyActions.sectionTag, "").replaceAll("\\D","");
-                                        int section;
-                                        Log.d(TAG,"remainder:"+remainder);
-                                        if (remainder.isEmpty()) {
-                                            section = 0;
-                                            nearbyJson.setSection(0);
-                                        } else {
-                                            section = Integer.parseInt(remainder);
-                                            nearbyJson.setSection(section);
-                                        }
-                                        Log.d(TAG,"Section:"+section);
-                                        if (section>=0) {
-                                            setPendingSection(section);
-                                            selectSection(nearbyJson);
-                                        }
-
+                                    } else if (what.equals(nearbyActions.sectionTag)) {
+                                        selectSection(nearbyJson);
                                     } else if (what.equals(nearbyActions.songTag)) {
+                                        Log.d(TAG,"received "+nearbyActions.songTag);
                                         if (!nearbyReceiveHostFiles) {
                                             // Use our song library and use the information sent
                                             loadSongFromMyLibrary(nearbyJson);
@@ -325,7 +312,7 @@ public class NearbyReceivePayloads {
     }
 
     // Change sections
-    private void selectSection(NearbyJson nearbyJson) {
+    public void selectSection(NearbyJson nearbyJson) {
         Log.d(TAG,"nearbyJson.getWhat():"+nearbyJson.getWhat());
         Log.d(TAG,"nearbyJson.getSection():"+nearbyJson.getSection());
         if (!nearbyActions.getNearbyConnectionManagement().getIsHost() && nearbyJson.getSection() != null &&
@@ -342,9 +329,9 @@ public class NearbyReceivePayloads {
             Log.d(TAG,"onSectionAlready:"+onSectionAlready);
             Log.d(TAG,"totalSections:"+totalSections);
             Log.d(TAG,"nearbyReturnsInterface:"+nearbyReturnActionsInterface);
-            if (!onSectionAlready && nearbyReturnActionsInterface != null
+            if ((!onSectionAlready || mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) && nearbyReturnActionsInterface != null
                     && totalSections > nearbyJson.getSection()) {
-                if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF")||mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",mainActivityInterface.getSong().getFilename())) {
                     mainActivityInterface.getSong().setPdfPageCurrent(nearbyJson.getSection());
                 } else {
                     mainActivityInterface.getSong().setCurrentSection(nearbyJson.getSection());
@@ -354,28 +341,11 @@ public class NearbyReceivePayloads {
             }
         }
     }
-    public void doSectionChange(int mysection) {
-        boolean onSectionAlready;
-        int totalSections;
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            onSectionAlready = mainActivityInterface.getSong().getPdfPageCurrent() == mysection;
-            totalSections = mainActivityInterface.getSong().getPdfPageCount();
-        } else {
-            onSectionAlready = mainActivityInterface.getSong().getCurrentSection() == mysection;
-            totalSections = mainActivityInterface.getSong().getPresoOrderSongSections().size();
-        }
-        if (!onSectionAlready && nearbyReturnActionsInterface != null && totalSections > mysection) {
-            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                mainActivityInterface.getSong().setPdfPageCurrent(mysection);
-            } else {
-                mainActivityInterface.getSong().setCurrentSection(mysection);
-            }
-            nearbyReturnActionsInterface.selectSection(mysection);
-        }
-    }
 
     // Load songs - either using the info, or the file sent
     private void loadSongFromMyLibrary(NearbyJson nearbyJson) {
+        Log.d(TAG,"loadSongFromMyLibrary()");
+
         setForceReload(true);
         // We just want to trigger loading the song on our device (if we have it).
         // If not, we get notified it doesn't exits
@@ -383,6 +353,7 @@ public class NearbyReceivePayloads {
             if (nearbyJson.getFolder() != null && nearbyJson.getFilename() != null) {
                 mainActivityInterface.getSong().setFolder(nearbyJson.getFolder());
                 mainActivityInterface.getSong().setFilename(nearbyJson.getFilename());
+                setSongSection(mainActivityInterface.getSong(),nearbyJson.getSection());
                 if (nearbyJson.getSwipeDirection() != null) {
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(nearbyJson.getSwipeDirection());
                 } else {
@@ -410,14 +381,7 @@ public class NearbyReceivePayloads {
                     needToTempTranspose = false;
                 }
 
-                if (!needToTempTranspose) {
-                    // Now load the song if we are displaying the performance/stage/presenter fragment
-                    if (nearbyJson.getSection() != null) {
-                        mainActivityInterface.getSong().setCurrentSection(nearbyJson.getSection());
-                    }
-                    mainActivityInterface.getSong().setCurrentSection(getPendingSection());
-
-                } else {
+                if (needToTempTranspose) {
                     Song quickSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                             mainActivityInterface.getSong().getFolder(),
                             mainActivityInterface.getSong().getFilename());
@@ -428,11 +392,13 @@ public class NearbyReceivePayloads {
                     mainActivityInterface.getStorageAccess().saveThisSongFile(quickSong);
                     mainActivityInterface.getSong().setFolder(quickSong.getFolder());
                     mainActivityInterface.getSong().setFilename(quickSong.getFilename());
-                    mainActivityInterface.getSong().setCurrentSection(getPendingSection());
+                    // Set the song section
+                    setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
                 }
                 if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
                     mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
+                Log.d(TAG,"about to call load song:"+mainActivityInterface.getSong().getFolder()+" / "+mainActivityInterface.getSong().getFilename());
                 nearbyReturnActionsInterface.loadSong(true);
             }
         }
@@ -469,11 +435,8 @@ public class NearbyReceivePayloads {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " write the file content: " + newLocation + " with: " + nearbyJson.getXml());
 
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(nearbyJson.getXml(), outputStream)) {
-                    if (nearbyJson.getSection() != null) {
-                        mainActivityInterface.getSong().setCurrentSection(nearbyJson.getSection());
-                    } else {
-                        mainActivityInterface.getSong().setCurrentSection(-1);
-                    }
+                    // Set the song section
+                    setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
                     if (nearbyJson.getSwipeDirection() != null) {
                         mainActivityInterface.getDisplayPrevNext().setSwipeDirection(nearbyJson.getSwipeDirection());
                     } else {
@@ -560,7 +523,8 @@ public class NearbyReceivePayloads {
                 // Now set the song to load
                 mainActivityInterface.getSong().setFolder(folderToUseForSongLoad);
                 mainActivityInterface.getSong().setFilename(filename);
-                mainActivityInterface.getSong().setCurrentSection(getPendingSection());
+                // Set the song section
+                setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection(nearbyJson.getSwipeDirection());
                 setForceReload(true);
                 if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
@@ -577,6 +541,15 @@ public class NearbyReceivePayloads {
         }
     }
 
+    private void setSongSection(Song song, Integer getSection) {
+        // If null, set to 0, the first section
+        pendingSection = getSection==null ? 0 : getSection;
+        if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",song.getFilename())) {
+            song.setPdfPageCurrent(pendingSection);
+        } else {
+            song.setCurrentSection(pendingSection);
+        }
+    }
 
     // A check that both BYTES file info and FILE content has been received
     private void checkForFileReceived(Long payloadId) {
@@ -674,7 +647,7 @@ public class NearbyReceivePayloads {
                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
                 Log.d(TAG,"file is copied - the content is:"+mainActivityInterface.getStorageAccess().readTextFileToString(inputStream));
                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
-                NearbyJson nearbyJson = null;
+                NearbyJson nearbyJson;
                 try {
                     nearbyJson = MainActivity.gson.fromJson(
                             mainActivityInterface.getStorageAccess().readTextFileToString(inputStream), NearbyJson.class);
@@ -803,20 +776,16 @@ public class NearbyReceivePayloads {
 
     // Host pending sections (for delayed load)
     public int getPendingSection() {
-        // IV -  Decode and return the required section number
-        // A pendingSection value of 0 returns -1 and means no pending.
-        // A negative pendingSection value is unencoded to give the section requested by the host
-        //return -(1 + pendingSection);
+        Log.d(TAG,"getPendingSection() called, returning "+pendingSection);
         return pendingSection;
     }
     public void resetPendingSection() {
-        // IV - Reset to indicate no host pending section to process
-        this.pendingSection = -1;
+        Log.d(TAG,"resetPendingSection() called (setting it to 0)");
+        this.pendingSection = 0;
     }
     public void setPendingSection(int sectionNumber) {
-        // IV - Encode and store a pending section number as -ve offset by 1
+        Log.d(TAG,"setPendingSection("+sectionNumber+")");
         this.pendingSection = sectionNumber;
-        //this.pendingSection = -(sectionNumber + 1);
     }
 
 

@@ -912,7 +912,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     }
 
 
-    boolean sendAsHost() {
+    public boolean sendAsHost() {
         return hasValidConnections() && isHost;
     }
 

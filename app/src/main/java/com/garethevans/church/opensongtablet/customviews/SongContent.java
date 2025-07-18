@@ -44,10 +44,18 @@ public class SongContent extends LinearLayout {
         songContent_img.setId(View.generateViewId());
     }
     public void clearViews() {
-        songContent_col1.removeAllViews();
-        songContent_col2.removeAllViews();
-        songContent_col3.removeAllViews();
-        songContent_img.setImageBitmap(null);
+        if (songContent_col1!=null) {
+            songContent_col1.removeAllViews();
+        }
+        if (songContent_col2!=null) {
+            songContent_col2.removeAllViews();
+        }
+        if (songContent_col3!=null) {
+            songContent_col3.removeAllViews();
+        }
+        if (songContent_img!=null) {
+            songContent_img.setImageBitmap(null);
+        }
     }
 
     public LinearLayout getCol1() {

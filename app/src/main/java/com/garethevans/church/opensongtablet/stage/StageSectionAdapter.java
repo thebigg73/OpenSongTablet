@@ -50,7 +50,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         this.mainActivityInterface = mainActivityInterface;
         this.c = c;
         this.displayInterface = displayInterface;
-        //density = c.getResources().getDisplayMetrics().density;
         maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50f);
         stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
         sectionInfos = new ArrayList<>();
@@ -265,6 +264,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     }
 
     public void sectionSelected(int position) {
+        Log.d(TAG,"sectionSelected from adapter:"+position);
         // Whatever the previously selected item was, change the alpha to the alphaOff value
         // Only do this alpha change in stage mode
 
@@ -272,7 +272,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         onTouchAction();
 
         try {
-            Log.d(TAG,"currentSection:"+currentSection);
             if (currentSection<0 && !sectionInfos.isEmpty()) {
                 currentSection = 0;
             }
@@ -289,10 +288,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     notifyItemChanged(position, alphaChange);
 
                     // Send a nearby notification (the client will ignore if not required or not ready)
-                    Log.d(TAG,"hasValidConnections():"+mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections());
-                    Log.d(TAG,"isHost():"+mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost());
-                    if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
-                            mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
+                    if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().sendAsHost()) {
                         mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongSectionPayload();
                     }
                 }

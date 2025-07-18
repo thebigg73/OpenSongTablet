@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info ="";
 
+    private ImageView screenMirror;
     // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
     //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
     //private static final String KEY_PAGER_ID = "pager_id";
@@ -2106,7 +2107,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         try {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
-            ImageView screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
+            screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
             screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
             screenMirror.setOnClickListener(view -> {
                 if (!getShowCase().singleShowCase(this, screenMirror, null, cast_info_string, true, "castInfo")) {
@@ -3182,6 +3183,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Check if the song is in the set
         //getSetActions().indexSongInSet(songinfo[0],songinfo[1],songinfo[2]);
         mainLooper.postDelayed(() -> {
+            Log.d(TAG,"whichMode:"+whichMode);
             if (whichMode.equals(presenter)) {
                 if (presenterValid()) {
                     presenterFragment.doSongLoad(folder, filename);
@@ -3988,6 +3990,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void pdfScrollToPage(int pageNumber) {
+        Log.d(TAG,"pdfScrollToPage("+pageNumber+")");
         performanceShowSection(pageNumber);
     }
 
@@ -4369,7 +4372,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void selectSection(int i) {
         // Only do this if we are not in a settings fragment
-        Log.d(TAG,"select section:"+i);
         if (!settingsOpen) {
             if (presenterValid()) {
                 presenterFragment.selectSection(i);
@@ -4377,6 +4379,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 performanceFragment.selectSection(i);
                 performanceShowSection(i);
             }
+            updateDisplay("showSection");
         } else {
             getNearbyActions().getNearbyReceivePayloads().setPendingSection(i);
         }
@@ -4386,7 +4389,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void loadSong(boolean updateSongMenu) {
         // If we are not in a settings window, load the song
         // Otherwise it will happen when the user closes the settings fragments
-        Log.d(TAG,"loadSong()  settingsOpen:"+settingsOpen);
         if (!settingsOpen) {
             doSongLoad(song.getFolder(), song.getFilename(), true);
             // Update the song menu filters to match the incoming song if required
@@ -4583,8 +4585,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             startActivity(intent);
         }
 
-        Log.d(TAG,"bootUpCompleted:"+bootUpCompleted);
-        Log.d(TAG,"importUri:"+importUri);
         if (bootUpCompleted) {
             // Just check the actionbar and navigation work
             // Set up the action bar
@@ -4759,21 +4759,50 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         updateCastIcon();
     }
 
-    private void updateCastIcon() {
-        if (globalMenuItem != null) {
-            if (settingsOpen || !getAlertChecks().getHasPlayServices()) {
-                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
-            } else {
-                Drawable drawable;
-                if (secondaryDisplays != null && connectedDisplays.length > 0) {
-                    drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast_connected, getTheme());
-                } else {
-                    drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme());
+    private boolean updatingIcon = false;
+    private final Runnable doCastUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!updatingIcon) {
+                updatingIcon = true;
+                Log.d(TAG, "globalMenuItem:" + globalMenuItem);
+                if (globalMenuItem != null) {
+                    if (settingsOpen || !getAlertChecks().getHasPlayServices()) {
+                        globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+                    } else {
+                        VectorDrawableCompat drawable;
+                        if (secondaryDisplays != null && connectedDisplays.length > 0) {
+                            Log.d(TAG, "using cast connected");
+                            drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast_connected, getTheme());
+                        } else {
+                            Log.d(TAG, "using cast disconnected");
+                            drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme());
+                        }
+                        Log.d(TAG, "drawable:" + drawable);
+                        if (drawable != null) {
+                            try {
+                                Log.d(TAG, "updating icon to :" + drawable + "  on view:" + globalMenuItem.findItem(R.id.mirror_menu_item));
+                                globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
+                                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);
+                            } catch (Exception e) {
+                                Log.d(TAG, "Error adjusting cast icon");
+                            }
+                        }
+                    }
                 }
-                globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
-                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);
             }
         }
+    };
+    private final Runnable allowCastUpdateRunnable = () -> updatingIcon = false;
+    private final Handler doCastUpdateHandler = new Handler(Looper.getMainLooper());
+    private void updateCastIcon() {
+        // Clear previous actions
+        doCastUpdateHandler.removeCallbacks(doCastUpdateRunnable);
+        doCastUpdateHandler.removeCallbacks(allowCastUpdateRunnable);
+
+        // Update the action (will check if not already doing this within 1 sec)
+        doCastUpdateHandler.post(doCastUpdateRunnable);
+        doCastUpdateHandler.postDelayed(allowCastUpdateRunnable, 1000);
     }
 
     private void setupDisplays() {
@@ -4783,7 +4812,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
                 if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
                     try {
-                        secondaryDisplay.dismiss();
+                        getMainHandler().post(() -> {
+                            secondaryDisplay.dismiss();
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -4794,10 +4825,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         secondaryDisplays = null;
         if (connectedDisplays.length > 0) {
             secondaryDisplays = new SecondaryDisplay[connectedDisplays.length];
-            for (int c = 0; c < connectedDisplays.length; c++) {
-                secondaryDisplays[c] = new SecondaryDisplay(this, connectedDisplays[c]);
-                secondaryDisplays[c].show();
-            }
+            getMainHandler().post(() -> {
+                for (int c = 0; c < connectedDisplays.length; c++) {
+                    secondaryDisplays[c] = new SecondaryDisplay(this, connectedDisplays[c]);
+                    secondaryDisplays[c].show();
+
+                }
+            });
         }
 
         // Update cast icon
@@ -4816,95 +4850,106 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateDisplay(String what) {
-        // Update cast icon
-        updateCastIcon();
-        if (secondaryDisplays != null) {
-            for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
-                if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
-                    try {
-                        switch (what) {
-                            // The song info bar
-                            case "initialiseInfoBarRequired":
-                                secondaryDisplay.initialiseInfoBarRequired();
-                                break;
-                            case "setSongInfo":
-                                secondaryDisplay.setSongInfo();
-                                break;
-                            case "setInfoStyles":
-                                secondaryDisplay.setInfoStyles();
-                                break;
-                            case "changeInfoAlignment":
-                                secondaryDisplay.changeInfoAlignment();
-                                break;
-                            case "checkSongInfoShowHide":
-                                secondaryDisplay.checkSongInfoShowHide();
-                                break;
 
-                            // Song content
-                            case "setSongContent":
-                                secondaryDisplay.setSongContent();
-                                break;
+        // Make sure everything here happens on the main UI thread
+        getMainHandler().post(() -> {
+            // Update cast icon
+            updateCastIcon();
+            if (secondaryDisplays != null) {
+                for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
+                    if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
+                        try {
+                            switch (what) {
+                                // The song info bar
+                                case "initialiseInfoBarRequired":
+                                    secondaryDisplay.initialiseInfoBarRequired();
+                                    break;
+                                case "setSongInfo":
+                                    secondaryDisplay.setSongInfo();
+                                    break;
+                                case "setInfoStyles":
+                                    secondaryDisplay.setInfoStyles();
+                                    break;
+                                case "changeInfoAlignment":
+                                    secondaryDisplay.changeInfoAlignment();
+                                    break;
+                                case "checkSongInfoShowHide":
+                                    secondaryDisplay.checkSongInfoShowHide();
+                                    break;
 
-                            case "contentAlignment":
-                            case "showSection":
-                                secondaryDisplay.showSection(song.getCurrentSection());
-                                break;
-                            case "editView":
-                                secondaryDisplay.editView();
-                                break;
-                            case "newSongLoaded":
-                                secondaryDisplay.setIsNewSong();
-                                break;
+                                // Song content
+                                case "setSongContent":
+                                    secondaryDisplay.setSongContent();
+                                    break;
 
-                            // The alert bar
-                            case "showAlert":
-                                secondaryDisplay.showAlert();
-                                break;
-                            case "updateAlert":
-                                secondaryDisplay.updateAlert();
-                                break;
+                                case "contentAlignment":
+                                case "showSection":
+                                    Log.d(TAG, "secondaryDisplay:" + secondaryDisplay);
+                                    if (song.getFiletype() != null && song.getFiletype().equals("PDF")) {
+                                        Log.d(TAG, "updateDisplay() with song.getPdfPageCurrent:" + song.getPdfPageCurrent());
+                                        secondaryDisplay.showSection(song.getPdfPageCurrent());
+                                    } else {
+                                        Log.d(TAG, "updateDisplay() with song.getCurrentSection():" + song.getCurrentSection());
+                                        secondaryDisplay.showSection(song.getCurrentSection());
+                                    }
+                                    break;
+                                case "editView":
+                                    secondaryDisplay.editView();
+                                    break;
+                                case "newSongLoaded":
+                                    secondaryDisplay.setIsNewSong();
+                                    break;
 
-                            // The screen setup
-                            case "measureAvailableSizes":
-                                secondaryDisplay.measureAvailableSizes();
-                                //secondaryDisplay.viewsAreReady();
-                                break;
-                            case "setScreenSizes":
-                                secondaryDisplay.setScreenSizes();
-                                break;
-                            case "changeBackground":
-                                secondaryDisplay.changeBackground();
-                                break;
-                            case "changeRotation":
-                                secondaryDisplay.changeRotation();
-                                break;
-                            case "setSongContentPrefs":
-                                secondaryDisplay.setSongContentPrefs();
-                                break;
+                                // The alert bar
+                                case "showAlert":
+                                    secondaryDisplay.showAlert();
+                                    break;
+                                case "updateAlert":
+                                    secondaryDisplay.updateAlert();
+                                    break;
 
-                            // The logo
-                            case "changeLogo":
-                                secondaryDisplay.changeLogo();
-                                break;
-                            case "showLogo":
-                                secondaryDisplay.showLogo(presenterSettings.getLogoOn(), false);
-                                break;
+                                // The screen setup
+                                case "measureAvailableSizes":
+                                    secondaryDisplay.measureAvailableSizes();
+                                    //secondaryDisplay.viewsAreReady();
+                                    break;
+                                case "setScreenSizes":
+                                    secondaryDisplay.setScreenSizes();
+                                    break;
+                                case "changeBackground":
+                                    secondaryDisplay.changeBackground();
+                                    break;
+                                case "changeRotation":
+                                    secondaryDisplay.changeRotation();
+                                    break;
+                                case "setSongContentPrefs":
+                                    secondaryDisplay.setSongContentPrefs();
+                                    break;
 
-                            // Black and blank screen
-                            case "showBlackscreen":
-                                secondaryDisplay.showBlackScreen();
-                                break;
-                            case "showBlankscreen":
-                                secondaryDisplay.showBlankScreen();
-                                break;
+                                // The logo
+                                case "changeLogo":
+                                    secondaryDisplay.changeLogo();
+                                    break;
+                                case "showLogo":
+                                    secondaryDisplay.showLogo(presenterSettings.getLogoOn(), false);
+                                    break;
 
+                                // Black and blank screen
+                                case "showBlackscreen":
+                                    secondaryDisplay.showBlackScreen();
+                                    break;
+                                case "showBlankscreen":
+                                    secondaryDisplay.showBlankScreen();
+                                    break;
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
             }
-        }
+        });
     }
 
     @Override
@@ -4931,7 +4976,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (secondaryDisplay != null && secondaryDisplay.isShowing() &&
                         position < sections) {
                     try {
-                        secondaryDisplay.showSection(position);
+                        getMainHandler().post(() -> {
+                                secondaryDisplay.showSection(position);
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -4944,9 +4991,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void performanceShowSection(int position) {
         // This gets a section from from the user selecting either a PDF page or a Stage Mode section
         // Send it back to Performance Mode to deal with the outcome (scroll to, update display, etc)
-        Log.d(TAG, "TODO can remove as currently performanceShowSection(" + position+") is doing nothing");
         if (performanceValid()) {
-            //performanceFragment.performanceShowSection(position);
+            performanceFragment.performanceShowSection(position);
         }
     }
 
