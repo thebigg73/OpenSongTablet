@@ -302,17 +302,6 @@ public class PresenterFragment extends Fragment {
             resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
         }
 
-        // IV - Consume any later pending client section change received from Host (-ve value)
-        /*if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections() &&
-                !mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost()) {
-            int hostPendingSection = mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getPendingSection();
-            if (hostPendingSection != 0) {
-                mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().doSectionChange(hostPendingSection);
-            }
-            mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().resetPendingSection();
-        }
-
-*/
         // State we haven't started the projection (for the song info bar check)
         mainActivityInterface.getPresenterSettings().setStartedProjection(false);
 
@@ -427,7 +416,6 @@ public class PresenterFragment extends Fragment {
     }
 
     public void selectSection(int section) {
-        Log.d(TAG,"selectSection("+section+")");
         try {
             if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount() > section) {
                 songSectionsFragment.selectSection(section);
@@ -435,7 +423,7 @@ public class PresenterFragment extends Fragment {
                 mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
             }
         } catch (Exception e) {
-            // Continue
+            e.printStackTrace();
         }
     }
 

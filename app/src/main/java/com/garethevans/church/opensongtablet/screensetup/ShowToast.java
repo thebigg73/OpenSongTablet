@@ -23,7 +23,7 @@ public class ShowToast {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "ShowToast";
     private PopupWindow popupWindow;
-    private ArrayList<PopupWindow> popupWindows = new ArrayList<>();
+    private final ArrayList<PopupWindow> popupWindows = new ArrayList<>();
     private MaterialTextView textToast;
     private final Context c;
     private Handler handlerShow;
@@ -71,13 +71,8 @@ public class ShowToast {
         textToast = view.findViewById(R.id.textToast);
 
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
-        popupWindow.getContentView().getRootView().setOnClickListener(v -> {
-            popupWindow.dismiss();
-        });
-        popupWindow.setOnDismissListener(() -> {
-            Log.d(TAG,"Popupdismissed listener");
-            popupWindows.remove(popupWindow);
-        });
+        popupWindow.getContentView().getRootView().setOnClickListener(v -> popupWindow.dismiss());
+        popupWindow.setOnDismissListener(() -> popupWindows.remove(popupWindow));
     }
 
     public void doIt(final String message) {
@@ -222,7 +217,6 @@ public class ShowToast {
 
     // Try clear all popupWindows
     public void clearAllPopups() {
-        Log.d(TAG,"clearAllPopups("+popupWindows.size());
         for (int i = 0; i < popupWindows.size(); i++) {
             try {
                 PopupWindow popupWindowTemp = popupWindows.get(i);

@@ -396,15 +396,15 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             case Gravity.LEFT:
             case Gravity.TOP:
                 return 0;
+            case Gravity.END:
+            case Gravity.RIGHT:
+            case Gravity.BOTTOM:
+                return 2;
             case Gravity.CENTER:
             case Gravity.CENTER_HORIZONTAL:
             case Gravity.CENTER_VERTICAL:
             default:
                 return 1;
-            case Gravity.END:
-            case Gravity.RIGHT:
-            case Gravity.BOTTOM:
-                return 2;
         }
     }
     private int sliderPositionToGravity(boolean vertical, int position) {
@@ -417,6 +417,14 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     Log.d(TAG,"start");
                     return Gravity.START;
                 }
+            case 2:
+                if (vertical) {
+                    Log.d(TAG,"bottom");
+                    return Gravity.BOTTOM;
+                } else {
+                    Log.d(TAG,"end");
+                    return Gravity.END;
+                }
             case 1:
             default:
                 if (vertical) {
@@ -425,14 +433,6 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 } else {
                     Log.d(TAG,"center horizontal");
                     return Gravity.CENTER_HORIZONTAL;
-                }
-            case 2:
-                if (vertical) {
-                    Log.d(TAG,"bottom");
-                    return Gravity.BOTTOM;
-                } else {
-                    Log.d(TAG,"end");
-                    return Gravity.END;
                 }
         }
     }

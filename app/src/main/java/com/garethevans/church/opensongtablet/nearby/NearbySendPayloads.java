@@ -241,9 +241,6 @@ public class NearbySendPayloads {
                 e.printStackTrace();
             }
 
-            // If we have requested any non OpenSong song (pdf, image), we need the database entries
-            boolean needNonOpenSongDatabase = false;
-
             // Now go through each item requested in turn and add it
             if (nearbyRequestJson.getShareableSetObjects() != null && !nearbyRequestJson.getShareableSetObjects().isEmpty()) {
                 for (ShareableObject shareableObject : nearbyRequestJson.getShareableSetObjects()) {

@@ -693,10 +693,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         Log.d(TAG,"new intent:"+intent+"  "+intent.getData());
         // Send the action to be called from the opening fragment to fix backstack!
         if (presenterValid()) {
-            Log.d(TAG,"sending to presenter fragment");
             presenterFragment.tryToImportIntent();
         } else if (performanceValid()) {
-            Log.d(TAG,"sending to performance fragment");
             performanceFragment.tryToImportIntent();
         }
         super.onNewIntent(intent);
@@ -3183,7 +3181,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Check if the song is in the set
         //getSetActions().indexSongInSet(songinfo[0],songinfo[1],songinfo[2]);
         mainLooper.postDelayed(() -> {
-            Log.d(TAG,"whichMode:"+whichMode);
             if (whichMode.equals(presenter)) {
                 if (presenterValid()) {
                     presenterFragment.doSongLoad(folder, filename);
@@ -3990,7 +3987,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void pdfScrollToPage(int pageNumber) {
-        Log.d(TAG,"pdfScrollToPage("+pageNumber+")");
         performanceShowSection(pageNumber);
     }
 
@@ -4765,23 +4761,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         public void run() {
             if (!updatingIcon) {
                 updatingIcon = true;
-                Log.d(TAG, "globalMenuItem:" + globalMenuItem);
                 if (globalMenuItem != null) {
                     if (settingsOpen || !getAlertChecks().getHasPlayServices()) {
                         globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
                     } else {
                         VectorDrawableCompat drawable;
                         if (secondaryDisplays != null && connectedDisplays.length > 0) {
-                            Log.d(TAG, "using cast connected");
                             drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast_connected, getTheme());
                         } else {
-                            Log.d(TAG, "using cast disconnected");
                             drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme());
                         }
-                        Log.d(TAG, "drawable:" + drawable);
                         if (drawable != null) {
                             try {
-                                Log.d(TAG, "updating icon to :" + drawable + "  on view:" + globalMenuItem.findItem(R.id.mirror_menu_item));
                                 globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
                                 globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);
                             } catch (Exception e) {
@@ -4884,12 +4875,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                                 case "contentAlignment":
                                 case "showSection":
-                                    Log.d(TAG, "secondaryDisplay:" + secondaryDisplay);
                                     if (song.getFiletype() != null && song.getFiletype().equals("PDF")) {
-                                        Log.d(TAG, "updateDisplay() with song.getPdfPageCurrent:" + song.getPdfPageCurrent());
                                         secondaryDisplay.showSection(song.getPdfPageCurrent());
                                     } else {
-                                        Log.d(TAG, "updateDisplay() with song.getCurrentSection():" + song.getCurrentSection());
                                         secondaryDisplay.showSection(song.getCurrentSection());
                                     }
                                     break;

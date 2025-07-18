@@ -75,8 +75,8 @@ public class SyncNearbyFragment extends Fragment {
                 if (myView != null) {
                     mainActivityInterface.getShowToast().doIt(no_response_string);
                 }
-                timeout = false;
             }
+            timeout = false;
         }
     };
 
@@ -338,9 +338,6 @@ public class SyncNearbyFragment extends Fragment {
             // Prepare to extract (the previous stream gets closed)
             zipInputStream = new ZipInputStream(new BufferedInputStream(mainActivityInterface.getStorageAccess().getInputStream(zipUri)));
 
-            // If we have requested any non OpenSong song (pdf, image), we need the database entries
-            ArrayList<String> nonOpenSongSongIds = new ArrayList<>();
-
             // Go through each entry and copy to the desired location
             ZipEntry ze;
             byte[] buffer = new byte[1024];
@@ -363,7 +360,6 @@ public class SyncNearbyFragment extends Fragment {
                             filenameToUse = filenameToUse.substring(1);
                         }
 
-                        boolean isDatabase = false;
                         switch (what) {
                             case "songs":
                                 folderToUse = "Songs";
@@ -373,10 +369,6 @@ public class SyncNearbyFragment extends Fragment {
                                     filenameToUse = filenameToUse.replace(subfolderToUse + "/", "");
                                 }
                                 Log.d(TAG,"filenameToUse:"+filenameToUse);
-                                if (mainActivityInterface.getStorageAccess().isIMGorPDF(filenameToUse)) {
-                                    Log.d(TAG,"Adding a record of "+subfolderToUse+"_"+filenameToUse +" to the songs to update from the database");
-                                    nonOpenSongSongIds.add(subfolderToUse+"_"+filenameToUse+".json");
-                                }
                                 break;
                             case "sets":
                                 folderToUse = "Sets";
@@ -503,25 +495,7 @@ public class SyncNearbyFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            // Next, if we received a NonOpenSong database, we need to extract that stuff too for PDF/Images
-            if (!nonOpenSongSongIds.isEmpty() && getContext()!=null) {
-                Log.d(TAG,"Now try to get database content for non OpenSong songs");
-                /*try (SyncNonOpenSongDB syncNonOpenSongDB = new SyncNonOpenSongDB(getContext())) {
-                    syncNonOpenSongDB.getDB();
-                    mainActivityInterface.getMainHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mainActivityInterface.getThreadPoolExecutor().execute(()-> syncNonOpenSongDB.updateMyDBForMatchingSongIds(nonOpenSongSongIds));
-                            endSync(what);
-                        }
-                    },800);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
-                endSync(what);
-            } else {
-                endSync(what);
-            }
+            endSync(what);
 
         });
     }

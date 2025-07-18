@@ -112,12 +112,8 @@ public class NearbyReceivePayloads {
             if (payloadReceived.getType() == Payload.Type.BYTES) {
                 type = "BYTES";
             }
-            Log.d(TAG, "processPayload(" + endpointId + ", " + type + ", " + payloadReceived + ")");
             if (type.equals("FILE") || !nearbyActions.getNearbyTransferRecords().getAlreadyReceivedPayload(payloadReceived)) {
                 // If we are a host, but passing info through, or a client on cluster mode.  Resend this if we haven't already - check
-                if (type.equals("FILE")) {
-                    Log.d(TAG,"FILE fully received with id:"+payloadReceived.getId());
-                }
                 if ((nearbyActions.getNearbyConnectionManagement().getIsHost() &&
                         nearbyActions.getNearbyConnectionManagement().getNearbyHostPassthrough()) ||
                         nearbyActions.getNearbyConnectionManagement().getNearbyStrategy() == Strategy.P2P_CLUSTER) {
@@ -143,13 +139,10 @@ public class NearbyReceivePayloads {
                             if (nearbyJson.getId() == null) {
                                 nearbyJson.setId(payloadReceived.getId());
                             }
-                            Log.d(TAG,"BYTES fully received with id:"+nearbyJson.getId());
-
                             // Only deal with this if this is for our device to action (or isn't set - for all)
                             if (nearbyJson.getDeviceToAction() == null ||
                                     nearbyJson.getDeviceToAction().equals(nearbyActions.getNearbyConnectionManagement().getDeviceId())) {
                                 String what = nearbyJson.getWhat();
-                                Log.d(TAG, "received what:" + what);
                                 // Deal with payload bytes messages
                                 // (some only actioned if we aren't the host or we specified are asked to process them)
                                 if (what != null && (!nearbyActions.getNearbyConnectionManagement().getIsHost() ||
@@ -174,7 +167,6 @@ public class NearbyReceivePayloads {
                                     } else if (what.equals(nearbyActions.sectionTag)) {
                                         selectSection(nearbyJson);
                                     } else if (what.equals(nearbyActions.songTag)) {
-                                        Log.d(TAG,"received "+nearbyActions.songTag);
                                         if (!nearbyReceiveHostFiles) {
                                             // Use our song library and use the information sent
                                             loadSongFromMyLibrary(nearbyJson);
@@ -184,7 +176,6 @@ public class NearbyReceivePayloads {
                                         }
                                     } else if (what.equals(nearbyActions.fileTag)) {
                                         // This has the info needed for the file
-                                        Log.d(TAG, "we have the information to receive the file");
                                         nearbyActions.getNearbyTransferRecords().addAlreadyReceivedFileInformation(nearbyJson);
                                         // If we are receiving the host files, we need to wait for the file as well
                                         // Because the file might arrive before the bytes, check and process if needed
@@ -194,7 +185,6 @@ public class NearbyReceivePayloads {
                                             checkForFileReceived(nearbyJson.getId());
                                         } else {
                                             // We can just load our version of the song
-                                            Log.d(TAG, "just load our version - " + nearbyJson.getFilename());
                                             loadSongFromMyLibrary(nearbyJson);
                                             lastSongPayload = null;
                                             lastSongInfo = nearbyJson;
@@ -245,7 +235,6 @@ public class NearbyReceivePayloads {
                     // Deal with payload files
                 } else if (payloadReceived.getType() == Payload.Type.FILE) {
                     // Check if the FILE and BYTES info have both arrived.  If so, process the file
-                    Log.d(TAG, "checkForFileReceived(" + payloadReceived.getId() + ")");
                     checkForFileReceived(payloadReceived.getId());
                 }
             }
@@ -313,8 +302,6 @@ public class NearbyReceivePayloads {
 
     // Change sections
     public void selectSection(NearbyJson nearbyJson) {
-        Log.d(TAG,"nearbyJson.getWhat():"+nearbyJson.getWhat());
-        Log.d(TAG,"nearbyJson.getSection():"+nearbyJson.getSection());
         if (!nearbyActions.getNearbyConnectionManagement().getIsHost() && nearbyJson.getSection() != null &&
                 nearbyJson.getSection()>=0) {
             boolean onSectionAlready;
@@ -326,9 +313,6 @@ public class NearbyReceivePayloads {
                 onSectionAlready = mainActivityInterface.getSong().getCurrentSection() == nearbyJson.getSection();
                 totalSections = mainActivityInterface.getSong().getPresoOrderSongSections().size();
             }
-            Log.d(TAG,"onSectionAlready:"+onSectionAlready);
-            Log.d(TAG,"totalSections:"+totalSections);
-            Log.d(TAG,"nearbyReturnsInterface:"+nearbyReturnActionsInterface);
             if ((!onSectionAlready || mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) && nearbyReturnActionsInterface != null
                     && totalSections > nearbyJson.getSection()) {
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF")||mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",mainActivityInterface.getSong().getFilename())) {
@@ -336,7 +320,6 @@ public class NearbyReceivePayloads {
                 } else {
                     mainActivityInterface.getSong().setCurrentSection(nearbyJson.getSection());
                 }
-                Log.d(TAG,"selectSection:"+nearbyJson.getSection());
                 nearbyReturnActionsInterface.selectSection(nearbyJson.getSection());
             }
         }
@@ -344,8 +327,6 @@ public class NearbyReceivePayloads {
 
     // Load songs - either using the info, or the file sent
     private void loadSongFromMyLibrary(NearbyJson nearbyJson) {
-        Log.d(TAG,"loadSongFromMyLibrary()");
-
         setForceReload(true);
         // We just want to trigger loading the song on our device (if we have it).
         // If not, we get notified it doesn't exits
@@ -398,7 +379,6 @@ public class NearbyReceivePayloads {
                 if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
                     mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
-                Log.d(TAG,"about to call load song:"+mainActivityInterface.getSong().getFolder()+" / "+mainActivityInterface.getSong().getFilename());
                 nearbyReturnActionsInterface.loadSong(true);
             }
         }
@@ -559,7 +539,6 @@ public class NearbyReceivePayloads {
 
         if (filePayload != null && fileInfo != null && nearbyActions.getNearbyTransferRecords().getLastFileReceivedURI()!=null) {
             // Both have arrived!!!
-            Log.d(TAG, "BOTH HAVE ARRIVED: filePayload.getId():" + filePayload.getId() + "  fileInfo.getId():" + fileInfo.getId());
             // Add a record that we have dealt with them and set calls to remove the records after a delay
             nearbyActions.getNearbyTransferRecords().addIncomingDealtWith(payloadId, true);
             nearbyActions.getNearbyTransferRecords().removeAlreadyDealtWith(payloadId);
@@ -568,8 +547,6 @@ public class NearbyReceivePayloads {
                 nearbyActions.getNearbyTransferRecords().removeAlreadyReceivedPayload(fileInfo.getId());
             }
 
-            Log.d(TAG, "fileInfo.getWhat():" + fileInfo.getWhat());
-            Log.d(TAG,"lastFileReceivedUri:"+nearbyActions.getNearbyTransferRecords().getLastFileReceivedURI());
             if (fileInfo.getWhat() != null) {
                 if (fileInfo.getWhat().equals(nearbyActions.fileTag)) {
                     lastSongPayload = filePayload;
@@ -592,12 +569,7 @@ public class NearbyReceivePayloads {
     // Deal with synchronisation actions
     private void dealWithSyncRequestInfo(NearbyJson nearbyJson) {
         // This device has been asked for information on available sync items
-        Log.d(TAG, "dealWithSyncRequestInfo()");
-        Log.d(TAG, "nearbyJson.getId():" + nearbyJson.getId());
         String requestingDevice = nearbyJson.getDeviceSending();
-        Log.d(TAG, "requestingDevice:" + requestingDevice);
-        Log.d(TAG, "deviceToAction" + nearbyJson.getDeviceToAction());
-        Log.d(TAG, "deviceId():" + nearbyActions.getNearbyConnectionManagement().getDeviceId());
         // Only action this if we haven't already done so
         if (nearbyJson.getId() == null || !nearbyActions.getNearbyTransferRecords().getAlreadyReceivedFileInformation(nearbyJson)) {
             if (nearbyJson.getId() != null) {
@@ -610,9 +582,7 @@ public class NearbyReceivePayloads {
 
     private void dealWithSyncRequestProcessingInfo(NearbyJson nearbyJson) {
         // Check we haven't dealt with this already
-        Log.d(TAG, "dealWithSyncRequestProcessingInfo()");
         if (nearbyJson.getId() == null || !nearbyActions.getNearbyTransferRecords().getAlreadyReceivedFilePayload(nearbyJson.getId())) {
-            Log.d(TAG, "we haven't received this before!");
             if (nearbyJson.getId() != null) {
                 nearbyActions.getNearbyTransferRecords().addAlreadyReceivedFileInformation(nearbyJson);
             }
@@ -635,9 +605,7 @@ public class NearbyReceivePayloads {
     private void dealWithSyncInfoReturned(Uri payloadFileUri, long payloadFileId, NearbyJson fileInfo, Long payloadId) {
         // The connected device has sent us information!
         // We can clear the received info
-        Log.d(TAG, "dealWithSyncInfoReturned()");
         if (payloadFileUri != null) {
-            Log.d(TAG,"payloadFileUri:" + payloadFileUri);
             // Copy the file to our storage Received
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(payloadFileUri);
             Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", fileInfo.getFilename());
@@ -645,15 +613,11 @@ public class NearbyReceivePayloads {
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
             if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
-                Log.d(TAG,"file is copied - the content is:"+mainActivityInterface.getStorageAccess().readTextFileToString(inputStream));
                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
                 NearbyJson nearbyJson;
                 try {
                     nearbyJson = MainActivity.gson.fromJson(
                             mainActivityInterface.getStorageAccess().readTextFileToString(inputStream), NearbyJson.class);
-                    if (nearbyJson.getShareableSongObjects() != null) {
-                        Log.d(TAG, "number of songs:" + nearbyJson.getShareableSongObjects().size());
-                    }
                 } catch (Exception e) {
                     Log.d(TAG,"There was an error with the json");
                     nearbyJson = null;
@@ -673,7 +637,6 @@ public class NearbyReceivePayloads {
     }
 
     private void dealWithSyncRequestForContent(Uri payloadFileUri, long payloadFileId, NearbyJson fileInfo, Long payloadId) {
-        Log.d(TAG,"dealWithSyncRequestForContent()");
         // The connected device has sent us a request for some files (song, sets or profiles)
         // We can clear the received info
         // Remove the record of this as we are now dealing with it
@@ -683,7 +646,6 @@ public class NearbyReceivePayloads {
 
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (payloadFileUri != null) {
-                Log.d(TAG, "payloadFileUri:" + payloadFileUri);
                 // Copy the file to our storage Received
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(payloadFileUri);
                 Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", fileInfo.getFilename());
@@ -719,9 +681,6 @@ public class NearbyReceivePayloads {
                                 filenameToUse = nearbyActions.contentZipSongs;
                             }
                         }
-                        Log.d(TAG,"fileInfo.getFilename():"+fileInfo.getFilename());
-                        Log.d(TAG,"nearbyJson.getWhat():"+nearbyJson.getWhat()+"  filenameToUse:"+filenameToUse);
-                        Log.d(TAG,"We are about to make the content zip....");
                         nearbyActions.getNearbySendPayloads().sendSyncContent(nearbyJson,filenameToUse);
                     }
                 }
@@ -736,7 +695,6 @@ public class NearbyReceivePayloads {
 
     private void dealWithSyncContentReturned(Uri payloadFileUri, long payloadFileId, NearbyJson fileInfo, Long payloadId) {
         // We have received a zip file.  We copy it to our Received folder
-        Log.d(TAG, "dealWithSyncContentReturned()");
         if (payloadFileUri != null) {
             // Copy the file to our storage Received
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(payloadFileUri);
@@ -776,15 +734,12 @@ public class NearbyReceivePayloads {
 
     // Host pending sections (for delayed load)
     public int getPendingSection() {
-        Log.d(TAG,"getPendingSection() called, returning "+pendingSection);
         return pendingSection;
     }
     public void resetPendingSection() {
-        Log.d(TAG,"resetPendingSection() called (setting it to 0)");
         this.pendingSection = 0;
     }
     public void setPendingSection(int sectionNumber) {
-        Log.d(TAG,"setPendingSection("+sectionNumber+")");
         this.pendingSection = sectionNumber;
     }
 
@@ -859,7 +814,6 @@ public class NearbyReceivePayloads {
                 loadSongFromReceivedFile(lastSongPayload,lastSongInfo.getFolder(), lastSongInfo.getFilename(), lastSongInfo);
             } else {
                 // We can just load our version of the song
-                Log.d(TAG, "just load our version - " + lastSongInfo.getFilename());
                 loadSongFromMyLibrary(lastSongInfo);
             }
         }
