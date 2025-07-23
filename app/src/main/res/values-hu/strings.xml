@@ -660,6 +660,15 @@
     <string name="move_to_folder">Áthelyezés mappába</string>
     <string name="multilingual">Többnyelvű</string>
     <string name="multilingual_scale">Többnyelvű lírai vonalak skálázása</string>
+    <string name="multitrack_convert">Fájlok konvertálása</string>
+    <string name="multitrack_folder_choose_other">Válasszon mappát</string>
+    <string name="multitrack_folder_found">Többsávos dalmappa található</string>
+    <string name="multitrack_folder_not_found">A többsávos dalmappa nem található</string>
+    <string name="multitrack_folder_not_valid">A többsávos dalmappa nem tartalmaz érvényes hangfájlokat</string>
+    <string name="multitrack_player">Többsávos lejátszó</string>
+    <string name="multitrack_player_info">Több hangsáv lejátszása egy mappából</string>
+    <string name="multitrack_requires_conversion">Egyes hangfájlok használatuk előtt átalakítást igényelnek</string>
+    <string name="multitrack_requires_conversion_info">A MultiTracks használatához a mappában lévő összes hangfájlnak 16 bites sztereó WAV PCM fájlnak kell lennie.  Az alkalmazás megpróbálhatja konvertálni ezeket a fájlokat az Ön helyett.</string>
     <string name="music">Zene</string>
     <string name="music_score">Kotta</string>
     <string name="music_score_info">Pontszámjegyzetek szerkesztése</string>

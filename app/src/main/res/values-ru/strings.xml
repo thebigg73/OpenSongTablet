@@ -660,6 +660,15 @@
     <string name="move_to_folder">Переместить в папку</string>
     <string name="multilingual">Многоязычный</string>
     <string name="multilingual_scale">Масштабные многоязычные текстовые строки</string>
+    <string name="multitrack_convert">Конвертировать файлы</string>
+    <string name="multitrack_folder_choose_other">Выберите папку</string>
+    <string name="multitrack_folder_found">Найдена папка с многодорожечной песней</string>
+    <string name="multitrack_folder_not_found">Папка с многодорожечной песней не найдена</string>
+    <string name="multitrack_folder_not_valid">В папке с многодорожечной песней нет допустимых аудиофайлов.</string>
+    <string name="multitrack_player">Многодорожечный проигрыватель</string>
+    <string name="multitrack_player_info">Воспроизведение нескольких аудиодорожек из папки</string>
+    <string name="multitrack_requires_conversion">Некоторые аудиофайлы требуют конвертации перед использованием.</string>
+    <string name="multitrack_requires_conversion_info">Для использования MultiTracks все аудиофайлы в папке должны быть в формате WAV PCM (16-битное стерео). Приложение может попытаться конвертировать эти файлы автоматически.</string>
     <string name="music">Музыка</string>
     <string name="music_score">Партитура</string>
     <string name="music_score_info">Редактировать партитуру</string>

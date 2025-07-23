@@ -660,6 +660,15 @@
     <string name="move_to_folder">Μετακίνησε στο φάκελο</string>
     <string name="multilingual">Πολύγλωσσος</string>
     <string name="multilingual_scale">Κλιμακώστε τις πολύγλωσσες λυρικές γραμμές</string>
+    <string name="multitrack_convert">Μετατροπή αρχείων</string>
+    <string name="multitrack_folder_choose_other">Επιλέξτε φάκελο</string>
+    <string name="multitrack_folder_found">Βρέθηκε ο φάκελος τραγουδιού πολλαπλών κομματιών</string>
+    <string name="multitrack_folder_not_found">Δεν βρέθηκε ο φάκελος πολλών τραγουδιών</string>
+    <string name="multitrack_folder_not_valid">Ο φάκελος πολλών τραγουδιών δεν έχει έγκυρα αρχεία ήχου</string>
+    <string name="multitrack_player">Παίκτης πολλαπλών τροχιών</string>
+    <string name="multitrack_player_info">Αναπαραγωγή πολλαπλών κομματιών ήχου από έναν φάκελο</string>
+    <string name="multitrack_requires_conversion">Ορισμένα αρχεία ήχου απαιτούν μετατροπή για να μπορέσουν να χρησιμοποιηθούν</string>
+    <string name="multitrack_requires_conversion_info">Για να χρησιμοποιήσετε το MultiTracks, όλα τα αρχεία ήχου του φακέλου πρέπει να είναι στερεοφωνικά αρχεία WAV PCM 16 bit.  Η εφαρμογή μπορεί να επιχειρήσει να μετατρέψει αυτά τα αρχεία για εσάς.</string>
     <string name="music">ΜΟΥΣΙΚΗ</string>
     <string name="music_score">Μουσικό σκορ</string>
     <string name="music_score_info">Επεξεργασία σημειώσεων βαθμολογίας</string>

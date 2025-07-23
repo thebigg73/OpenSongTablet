@@ -660,6 +660,15 @@
     <string name="move_to_folder">Flytta till mapp</string>
     <string name="multilingual">Flerspråkig</string>
     <string name="multilingual_scale">Skala flerspråkiga lyriska linjer</string>
+    <string name="multitrack_convert">Konvertera filer</string>
+    <string name="multitrack_folder_choose_other">Välj mapp</string>
+    <string name="multitrack_folder_found">Mapp för flera spår hittades</string>
+    <string name="multitrack_folder_not_found">Mapp för flera spår hittades inte</string>
+    <string name="multitrack_folder_not_valid">Mappen för flera spår har inte giltiga ljudfiler</string>
+    <string name="multitrack_player">Flerspårsspelare</string>
+    <string name="multitrack_player_info">Spela flera ljudspår från en mapp</string>
+    <string name="multitrack_requires_conversion">Vissa ljudfiler kräver konvertering innan de kan användas</string>
+    <string name="multitrack_requires_conversion_info">För att använda MultiTracks måste alla ljudfiler i mappen vara 16-bitars stereo WAV PCM-filer.  Appen kan försöka konvertera dessa filer åt dig.</string>
     <string name="music">Musik</string>
     <string name="music_score">Noter</string>
     <string name="music_score_info">Redigera notanteckningar</string>

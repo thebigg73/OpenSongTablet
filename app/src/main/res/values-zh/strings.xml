@@ -660,6 +660,15 @@
     <string name="move_to_folder">移到文件夹</string>
     <string name="multilingual">多种语言</string>
     <string name="multilingual_scale">扩展多语言歌词</string>
+    <string name="multitrack_convert">转换文件</string>
+    <string name="multitrack_folder_choose_other">选择文件夹</string>
+    <string name="multitrack_folder_found">找到多轨歌曲文件夹</string>
+    <string name="multitrack_folder_not_found">未找到多轨歌曲文件夹</string>
+    <string name="multitrack_folder_not_valid">多轨歌曲文件夹中没有有效的音频文件</string>
+    <string name="multitrack_player">多轨播放器</string>
+    <string name="multitrack_player_info">播放文件夹中的多个音轨</string>
+    <string name="multitrack_requires_conversion">某些音频文件需要转换后才能使用</string>
+    <string name="multitrack_requires_conversion_info">要使用 MultiTracks，文件夹中的所有音频文件都必须是 16 位立体声 WAV PCM 文件。该应用可以尝试为您转换这些文件。</string>
     <string name="music">音乐</string>
     <string name="music_score">谱子</string>
     <string name="music_score_info">编辑乐谱注释</string>

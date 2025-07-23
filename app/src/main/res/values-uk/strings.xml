@@ -660,6 +660,15 @@
     <string name="move_to_folder">Перемістити в папку</string>
     <string name="multilingual">Багатомовний</string>
     <string name="multilingual_scale">Масштаб багатомовних ліричних рядків</string>
+    <string name="multitrack_convert">Перетворення файлів</string>
+    <string name="multitrack_folder_choose_other">Виберіть папку</string>
+    <string name="multitrack_folder_found">Знайдено папку з багатоканальними піснями</string>
+    <string name="multitrack_folder_not_found">Теку з багатоканальними піснями не знайдено</string>
+    <string name="multitrack_folder_not_valid">Папка з багатоканальними піснями не містить дійсних аудіофайлів</string>
+    <string name="multitrack_player">Мультитрековий плеєр</string>
+    <string name="multitrack_player_info">Відтворення кількох звукових доріжок з папки</string>
+    <string name="multitrack_requires_conversion">Деякі аудіофайли потребують конвертації, перш ніж їх можна буде використовувати</string>
+    <string name="multitrack_requires_conversion_info">Щоб використовувати MultiTracks, усі аудіофайли в папці мають бути 16-бітними стереофайлами WAV PCM.  Програма може спробувати конвертувати ці файли для вас.</string>
     <string name="music">музика</string>
     <string name="music_score">Рейтинг</string>
     <string name="music_score_info">Редагувати нотатки</string>

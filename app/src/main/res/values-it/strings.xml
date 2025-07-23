@@ -660,6 +660,15 @@
     <string name="move_to_folder">Sposta nella cartella</string>
     <string name="multilingual">Multilingue</string>
     <string name="multilingual_scale">Scala le linee dei testi multilingue</string>
+    <string name="multitrack_convert">Convertire i file</string>
+    <string name="multitrack_folder_choose_other">Scegli cartella</string>
+    <string name="multitrack_folder_found">Trovata cartella di brani multitraccia</string>
+    <string name="multitrack_folder_not_found">Cartella del brano multitraccia non trovata</string>
+    <string name="multitrack_folder_not_valid">La cartella dei brani multitraccia non contiene file audio validi</string>
+    <string name="multitrack_player">Lettore multitraccia</string>
+    <string name="multitrack_player_info">Riproduci più tracce audio da una cartella</string>
+    <string name="multitrack_requires_conversion">Alcuni file audio richiedono la conversione prima di poter essere utilizzati</string>
+    <string name="multitrack_requires_conversion_info">Per utilizzare MultiTracks, tutti i file audio nella cartella devono essere file WAV PCM stereo a 16 bit. L\'app può provare a convertire questi file per te.</string>
     <string name="music">Musica</string>
     <string name="music_score">Spartito</string>
     <string name="music_score_info">Modifica le note sullo spartito</string>

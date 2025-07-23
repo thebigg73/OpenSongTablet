@@ -660,6 +660,15 @@
     <string name="move_to_folder">ෆෝල්ඩරය වෙත මාරු</string>
     <string name="multilingual">බහුභාෂා</string>
     <string name="multilingual_scale">බහුභාෂා ගීත රේඛා පරිමාණය කරන්න</string>
+    <string name="multitrack_convert">ගොනු පරිවර්තනය කරන්න</string>
+    <string name="multitrack_folder_choose_other">ෆෝල්ඩරය තෝරන්න</string>
+    <string name="multitrack_folder_found">Multitrack ගීත ෆෝල්ඩරය හමු විය</string>
+    <string name="multitrack_folder_not_found">Multitrack ගීත ෆෝල්ඩරය හමු නොවීය</string>
+    <string name="multitrack_folder_not_valid">Multitrack ගීත ෆෝල්ඩරයේ වලංගු ශ්‍රව්‍ය ගොනු නොමැත</string>
+    <string name="multitrack_player">බහු ධාවන වාදකය</string>
+    <string name="multitrack_player_info">ෆෝල්ඩරයකින් බහු ශ්‍රව්‍ය පීලි වාදනය කරන්න</string>
+    <string name="multitrack_requires_conversion">සමහර ශ්‍රව්‍ය ගොනු භාවිතා කිරීමට පෙර ඒවා පරිවර්තනය කිරීම අවශ්‍ය වේ</string>
+    <string name="multitrack_requires_conversion_info">MultiTracks භාවිතා කිරීමට, ෆෝල්ඩරයේ ඇති සියලුම ශ්‍රව්‍ය ගොනු 16-bit ස්ටීරියෝ WAV PCM ගොනු විය යුතුය.  යෙදුමට මෙම ගොනු ඔබ වෙනුවෙන් පරිවර්තනය කිරීමට උත්සාහ කළ හැක.</string>
     <string name="music">සංගීත</string>
     <string name="music_score">සංගීත ලකුණු</string>
     <string name="music_score_info">ලකුණු සටහන් සංස්කරණය කරන්න</string>

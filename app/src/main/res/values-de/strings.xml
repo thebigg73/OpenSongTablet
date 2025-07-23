@@ -660,6 +660,15 @@
     <string name="move_to_folder">In den Ordner verschieben</string>
     <string name="multilingual">Mehrsprachig</string>
     <string name="multilingual_scale">Mehrsprachige Liedtextzeilen skalieren</string>
+    <string name="multitrack_convert">Dateien konvertieren</string>
+    <string name="multitrack_folder_choose_other">Ordner auswählen</string>
+    <string name="multitrack_folder_found">Mehrspur-Songordner gefunden</string>
+    <string name="multitrack_folder_not_found">Mehrspur-Songordner nicht gefunden</string>
+    <string name="multitrack_folder_not_valid">Der Multitrack-Songordner enthält keine gültigen Audiodateien</string>
+    <string name="multitrack_player">Mehrspur-Player</string>
+    <string name="multitrack_player_info">Mehrere Audiotitel aus einem Ordner abspielen</string>
+    <string name="multitrack_requires_conversion">Einige Audiodateien müssen konvertiert werden, bevor sie verwendet werden können</string>
+    <string name="multitrack_requires_conversion_info">Um MultiTracks verwenden zu können, müssen alle Audiodateien im Ordner 16-Bit-Stereo-WAV-PCM-Dateien sein. Die App kann versuchen, diese Dateien für Sie zu konvertieren.</string>
     <string name="music">Musik</string>
     <string name="music_score">Musikpartitur</string>
     <string name="music_score_info">Partiturnotizen bearbeiten</string>

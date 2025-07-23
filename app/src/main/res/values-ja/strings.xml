@@ -660,6 +660,15 @@
     <string name="move_to_folder">フォルダへ移動</string>
     <string name="multilingual">多言語</string>
     <string name="multilingual_scale">多言語の歌詞のスケール</string>
+    <string name="multitrack_convert">ファイルを変換する</string>
+    <string name="multitrack_folder_choose_other">フォルダを選択</string>
+    <string name="multitrack_folder_found">マルチトラックの曲フォルダが見つかりました</string>
+    <string name="multitrack_folder_not_found">マルチトラックソングフォルダが見つかりません</string>
+    <string name="multitrack_folder_not_valid">マルチトラックソングフォルダに有効なオーディオファイルがありません</string>
+    <string name="multitrack_player">マルチトラックプレーヤー</string>
+    <string name="multitrack_player_info">フォルダから複数のオーディオトラックを再生する</string>
+    <string name="multitrack_requires_conversion">一部のオーディオファイルは使用する前に変換する必要があります</string>
+    <string name="multitrack_requires_conversion_info">MultiTracksを使用するには、フォルダ内のすべてのオーディオファイルが16ビットステレオWAVまたはPCMファイルである必要があります。アプリはこれらのファイルを自動的に変換します。</string>
     <string name="music">音楽</string>
     <string name="music_score">楽譜</string>
     <string name="music_score_info">スコアノートを編集する</string>

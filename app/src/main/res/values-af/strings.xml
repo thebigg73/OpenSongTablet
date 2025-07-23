@@ -660,6 +660,15 @@
     <string name="move_to_folder">Skuif na vouer</string>
     <string name="multilingual">Veeltalig</string>
     <string name="multilingual_scale">Skaal veeltalige lirieke lyne</string>
+    <string name="multitrack_convert">Skakel lêers om</string>
+    <string name="multitrack_folder_choose_other">Kies gids</string>
+    <string name="multitrack_folder_found">Multitrack-liedjie-lêergids gevind</string>
+    <string name="multitrack_folder_not_found">Multitrack-liedjievouer nie gevind nie</string>
+    <string name="multitrack_folder_not_valid">Multitrack-liedjievouer het nie geldige oudiolêers nie</string>
+    <string name="multitrack_player">Multitrack speler</string>
+    <string name="multitrack_player_info">Speel verskeie oudiosnitte vanaf \'n gids</string>
+    <string name="multitrack_requires_conversion">Sommige oudiolêers vereis omskakeling voordat dit gebruik kan word</string>
+    <string name="multitrack_requires_conversion_info">Om Multitracks te gebruik, moet alle oudiolêers in die vouer 16-bis stereo WAV PCM-lêers wees.  Die toepassing kan probeer om hierdie lêers vir jou om te skakel.</string>
     <string name="music">Musiek</string>
     <string name="music_score">Musiek telling</string>
     <string name="music_score_info">Wysig telling notas</string>

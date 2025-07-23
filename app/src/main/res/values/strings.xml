@@ -252,6 +252,7 @@
     <string name="connected_display">Connected display</string>
     <string name="connected_display_description">Settings specific to Chromecast/HDMI output</string>
     <string name="connection_autoscroll_info">Listen for autoscroll stop and start commands</string>
+    <string name="connection_host_needs_update">A connected device has sent information in an old format.  Please ask them to update their app.</string>
     <string name="connection_match_to_pdf_song">Prefer matching PDF file</string>
     <string name="connection_match_to_pdf_song_info">Rather than try to load matching OpenSong files, try to load PDF files with the same name (but ending with .pdf)</string>
     <string name="connection_scroll_info">Listen for scroll up and down commands</string>
@@ -825,6 +826,17 @@
     <string name="modulation">Modulation</string>
     <string name="move_from">Move from</string>
     <string name="move_to_folder">Move to folder</string>
+    <string name="multilingual">Multilingual</string>
+    <string name="multilingual_scale">Scale multilingual lyric lines</string>
+    <string name="multitrack_convert">Convert files</string>
+    <string name="multitrack_folder_choose_other">Choose folder</string>
+    <string name="multitrack_folder_found">Multitrack song folder found</string>
+    <string name="multitrack_folder_not_found">Multitrack song folder not found</string>
+    <string name="multitrack_folder_not_valid">Multitrack song folder does not have valid audio files</string>
+    <string name="multitrack_player">Multitrack player</string>
+    <string name="multitrack_player_info">Play multiple audio tracks from a folder</string>
+    <string name="multitrack_requires_conversion">Some audio files require conversion before they can be used</string>
+    <string name="multitrack_requires_conversion_info">To use MultiTracks, all audio files in the folder need to be 16-bit stereo WAV PCM files.  The app can attempt to convert these files for you.</string>
     <string name="music">Music</string>
     <string name="music_score">Music score</string>
     <string name="music_score_info">Edit score notes</string>
@@ -836,6 +848,7 @@
     <string name="nearby_files_failed">Files failed:</string>
     <string name="nearby_files_skipped">Files skipped:</string>
     <string name="nearby_found_files">The following files have been found on the host device.  Choose the files to download.  If the download progress stalls or gets stuck, you can try again</string>
+    <string name="nearby_get_profiles">Get profiles</string>
     <string name="nearby_get_setlist">Get setlist</string>
     <string name="nearby_get_songs">Get songs</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
@@ -1213,6 +1226,8 @@
     <string name="swipe_distance">Swipe distance</string>
     <string name="swipe_info">Adjust gestures to move between songs</string>
     <string name="sync">Synchronise connected devices</string>
+    <string name="sync_allow">Allow connected devices to sync</string>
+    <string name="sync_allow_info">Connected devices will be able to browse your songs and sets and downloaded them to their devices</string>
     <string name="sync_check_for_updates">Check for updates</string>
     <string name="sync_check_for_updates_info">Query the remote folder again and check for differences with local items</string>
     <string name="sync_checking_local_item">Checking local item</string>
@@ -1224,8 +1239,13 @@
     <string name="sync_delete_remote_not_in_local">Delete old remote items</string>
     <string name="sync_delete_remote_not_in_local_info">The following items exist in the remote folder, but are not in the local folder.  These can be removed if they are no longer required</string>
     <string name="sync_deleting_local_items">Deleting local item before getting remote items</string>
+    <string name="sync_device_denied">The connected device has switched off file synchronisation.  They can change this in the connect devices settings</string>
+    <string name="sync_device_processing">The connected device is processing the request</string>
     <string name="sync_download_from_openchords">Download from OpenChords server</string>
     <string name="sync_download_new_items">Download new items</string>
+    <string name="sync_exists">Exists</string>
+    <string name="sync_extracting">Extracting item</string>
+    <string name="sync_file_status">Status</string>
     <string name="sync_folder_name_change">Folder name issue</string>
     <string name="sync_folder_name_change_info">The name of the local folder chosen is different from the remote folder name</string>
     <string name="sync_force_changes">Force changes</string>
@@ -1261,13 +1281,16 @@
     <string name="sync_local_items_older">Local items that need updated</string>
     <string name="sync_local_set_deleted">Local set deleted</string>
     <string name="sync_local_song_deleted">Local song deleted</string>
+    <string name="sync_missing">New item</string>
     <string name="sync_new_local_folder">Create new local folder</string>
     <string name="sync_new_local_folder_info">A new local folder will be created when you pull items from the remote folder</string>
     <string name="sync_new_remote_folder">Create new remote folder</string>
     <string name="sync_new_remote_folder_info">This will create a new remote folder when you push items to the remote folder.  You will need to share the new link with your other users</string>
+    <string name="sync_newer">Updated</string>
     <string name="sync_newer_items_local_replaced">These items in the local folder are newer, but will be replaced by the remote items</string>
     <string name="sync_newer_items_remote_replaced">These items in the remote folder are newer, but will be replaced by the local items</string>
     <string name="sync_no_changes_required">Items are already synchronised</string>
+    <string name="sync_older">Older</string>
     <string name="sync_preparing_item">Preparing item for upload</string>
     <string name="sync_pull_download">Pull (download)</string>
     <string name="sync_pull_info">Download files from the remote folder to your local folder</string>
@@ -1280,6 +1303,7 @@
     <string name="sync_remote_items_older">Remote items that need updated</string>
     <string name="sync_remote_set_deleted">Remote set deleted</string>
     <string name="sync_remote_song_deleted">Remote song deleted</string>
+    <string name="sync_same">Up to date</string>
     <string name="sync_server_no_matching_folder">This folder does not exist on the remote server</string>
     <string name="sync_server_noresponse_error">There was no response from the server</string>
     <string name="sync_set_downloaded">New setlist pulled/downloaded</string>
@@ -1288,6 +1312,8 @@
     <string name="sync_set_update_downloaded">Updated setlist pulled/downloaded</string>
     <string name="sync_set_update_uploaded">Updated setlist pushed/uploaded</string>
     <string name="sync_set_uploaded">New setlist pushed/uploaded</string>
+    <string name="sync_show_new_updated_info">Hide all items that are already up to date</string>
+    <string name="sync_show_new_updated_only">Show new/updated only</string>
     <string name="sync_song_downloaded">New song pulled/downloaded</string>
     <string name="sync_song_force_downloaded">Song force pulled/download</string>
     <string name="sync_song_update_downloaded">Updated song pulled/downloaded</string>
@@ -1303,7 +1329,11 @@
     <string name="sync_upload_new_items">Upload new items</string>
     <string name="sync_upload_to_openchords">Upload to OpenChords server</string>
     <string name="sync_uploading_changes">Uploading changes to the remote folder</string>
+    <string name="sync_uuid_mismatch">UUID mismatch</string>
     <string name="sync_view_history">View synchronisation history</string>
+    <string name="synchronise_need_update">Update your song files (required for synchronisation)</string>
+    <string name="synchronise_need_update_info">Some of your song files do not have UUID or last modified date information stored in them.  To allow safe synchronisation, you should run this step.</string>
+    <string name="synchronise_need_update_warning">This process will fully rebuild your song index and will edit and save songs that need either a unique UUID identifier or a last modified date added to them.  This process is SLOW if lots of files are affected and you should not exit the app until this has been completed.  Because this process edits your song files, it is critical that you have already made a backup before you run this step</string>
     <string name="tabs_scale">Scale tab text (guitar, drums, etc.)</string>
     <string name="tag">Tag</string>
     <string name="tag_add_remove">Highlighted songs contain the chosen tag.  Click on any song to add/remove the chosen tag.</string>
@@ -1504,6 +1534,7 @@
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
     <string name="website_aeros" translatable="false">https://www.opensongapp.com/user-manual/utilities/aeros</string>
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
+    <string name="website_audio_player" translatable="false">https://www.opensongapp.com/user-manual/utilities/audio-player</string>
     <string name="website_audio_recorder" translatable="false">https://www.opensongapp.com/user-manual/utilities/audio-recorder</string>
     <string name="website_autoscroll" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/autoscroll</string>
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
@@ -1557,6 +1588,7 @@
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-settings</string>
     <string name="website_midi_shorthand" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-shorthand</string>
     <string name="website_midi_song" translatable="false">https://www.opensongapp.com/user-manual/midi/song-midi-messages</string>
+    <string name="website_multitrack" translatable="false">https://www.opensongapp.com/user-manual/utilities/multitrack</string>
     <string name="website_music_score" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/music-score</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
     <string name="website_ocr" translatable="false">https://www.opensongapp.com/user-manual/songs/ocr</string>
@@ -1604,25 +1636,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="multilingual_scale">Scale multilingual lyric lines</string>
-    <string name="multilingual">Multilingual</string>
-    <string name="synchronise_need_update">Update your song files (required for synchronisation)</string>
-    <string name="synchronise_need_update_info">Some of your song files do not have UUID or last modified date information stored in them.  To allow safe synchronisation, you should run this step.</string>
-    <string name="synchronise_need_update_warning">This process will fully rebuild your song index and will edit and save songs that need either a unique UUID identifier or a last modified date added to them.  This process is SLOW if lots of files are affected and you should not exit the app until this has been completed.  Because this process edits your song files, it is critical that you have already made a backup before you run this step</string>
-    <string name="sync_allow">Allow connected devices to sync</string>
-    <string name="sync_allow_info">Connected devices will be able to browse your songs and sets and downloaded them to their devices</string>
-    <string name="connection_host_needs_update">A connected device has sent information in an old format.  Please ask them to update their app.</string>
-    <string name="sync_device_denied">The connected device has switched off file synchronisation.  They can change this in the connect devices settings</string>
-    <string name="sync_device_processing">The connected device is processing the request</string>
-    <string name="sync_file_status">Status</string>
-    <string name="sync_newer">Updated</string>
-    <string name="sync_older">Older</string>
-    <string name="sync_missing">New item</string>
-    <string name="sync_exists">Exists</string>
-    <string name="sync_uuid_mismatch">UUID mismatch</string>
-    <string name="sync_same">Up to date</string>
-    <string name="sync_show_new_updated_only">Show new/updated only</string>
-    <string name="sync_show_new_updated_info">Hide all items that are already up to date</string>
-    <string name="nearby_get_profiles">Get profiles</string>
-    <string name="sync_extracting">Extracting item</string>
 </resources>

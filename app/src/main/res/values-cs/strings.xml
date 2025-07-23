@@ -660,6 +660,15 @@
     <string name="move_to_folder">Přesunout do složky</string>
     <string name="multilingual">Vícejazyčný</string>
     <string name="multilingual_scale">Měřítko vícejazyčných lyrických linek</string>
+    <string name="multitrack_convert">Převést soubory</string>
+    <string name="multitrack_folder_choose_other">Vyberte složku</string>
+    <string name="multitrack_folder_found">Byla nalezena složka vícestopých skladeb</string>
+    <string name="multitrack_folder_not_found">Složka vícestopých skladeb nebyla nalezena</string>
+    <string name="multitrack_folder_not_valid">Složka vícestopých skladeb neobsahuje platné zvukové soubory</string>
+    <string name="multitrack_player">Vícestopý přehrávač</string>
+    <string name="multitrack_player_info">Přehrávejte více zvukových stop ze složky</string>
+    <string name="multitrack_requires_conversion">Některé zvukové soubory vyžadují před použitím konverzi</string>
+    <string name="multitrack_requires_conversion_info">Chcete-li používat MultiTracks, všechny zvukové soubory ve složce musí být 16bitové stereo WAV PCM soubory.  Aplikace se může pokusit tyto soubory převést za vás.</string>
     <string name="music">Hudba</string>
     <string name="music_score">Hudební skóre</string>
     <string name="music_score_info">Upravte poznámky ke skóre</string>

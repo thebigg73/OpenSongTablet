@@ -660,6 +660,15 @@
     <string name="move_to_folder">Przenieś do folderu</string>
     <string name="multilingual">Wielojęzyczny</string>
     <string name="multilingual_scale">Skala wielojęzycznych linii lirycznych</string>
+    <string name="multitrack_convert">Konwertuj pliki</string>
+    <string name="multitrack_folder_choose_other">Wybierz folder</string>
+    <string name="multitrack_folder_found">Znaleziono folder z utworami wielościeżkowymi</string>
+    <string name="multitrack_folder_not_found">Nie znaleziono folderu z utworami wielościeżkowymi</string>
+    <string name="multitrack_folder_not_valid">Folder z utworami wielościeżkowymi nie zawiera prawidłowych plików audio</string>
+    <string name="multitrack_player">Odtwarzacz wielotorowy</string>
+    <string name="multitrack_player_info">Odtwarzaj wiele ścieżek audio z folderu</string>
+    <string name="multitrack_requires_conversion">Niektóre pliki audio wymagają konwersji przed użyciem</string>
+    <string name="multitrack_requires_conversion_info">Aby korzystać z MultiTracks, wszystkie pliki audio w folderze muszą być 16-bitowymi plikami stereo WAV PCM. Aplikacja może spróbować przekonwertować te pliki za Ciebie.</string>
     <string name="music">Muzyka</string>
     <string name="music_score">Nuty</string>
     <string name="music_score_info">Edytuj nuty</string>

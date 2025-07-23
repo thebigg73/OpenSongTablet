@@ -660,6 +660,15 @@
     <string name="move_to_folder">Mover para a pasta</string>
     <string name="multilingual">Multilíngue</string>
     <string name="multilingual_scale">Escala de linhas líricas multilíngues</string>
+    <string name="multitrack_convert">Converter arquivos</string>
+    <string name="multitrack_folder_choose_other">Escolha a pasta</string>
+    <string name="multitrack_folder_found">Pasta de música multitrack encontrada</string>
+    <string name="multitrack_folder_not_found">Pasta de música multitrack não encontrada</string>
+    <string name="multitrack_folder_not_valid">A pasta de músicas multitrack não possui arquivos de áudio válidos</string>
+    <string name="multitrack_player">Reprodutor multipista</string>
+    <string name="multitrack_player_info">Reproduzir várias faixas de áudio de uma pasta</string>
+    <string name="multitrack_requires_conversion">Alguns arquivos de áudio requerem conversão antes de poderem ser usados</string>
+    <string name="multitrack_requires_conversion_info">Para usar o MultiTracks, todos os arquivos de áudio na pasta precisam ser arquivos WAV PCM estéreo de 16 bits. O aplicativo pode tentar converter esses arquivos para você.</string>
     <string name="music">Música</string>
     <string name="music_score">Pontuação da música</string>
     <string name="music_score_info">Editar notas de partitura</string>

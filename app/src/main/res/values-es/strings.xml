@@ -660,6 +660,15 @@
     <string name="move_to_folder">Mover a la carpeta</string>
     <string name="multilingual">Plurilingüe</string>
     <string name="multilingual_scale">Escala de líneas líricas multilingües</string>
+    <string name="multitrack_convert">Convertir archivos</string>
+    <string name="multitrack_folder_choose_other">Elegir carpeta</string>
+    <string name="multitrack_folder_found">Se encontró una carpeta de canciones multipista</string>
+    <string name="multitrack_folder_not_found">No se encontró la carpeta de canciones multipista</string>
+    <string name="multitrack_folder_not_valid">La carpeta de canciones multipista no tiene archivos de audio válidos</string>
+    <string name="multitrack_player">Reproductor multipista</string>
+    <string name="multitrack_player_info">Reproducir varias pistas de audio desde una carpeta</string>
+    <string name="multitrack_requires_conversion">Algunos archivos de audio requieren conversión antes de poder usarse</string>
+    <string name="multitrack_requires_conversion_info">Para usar MultiTracks, todos los archivos de audio de la carpeta deben ser archivos WAV PCM estéreo de 16 bits. La aplicación puede intentar convertirlos automáticamente.</string>
     <string name="music">Música</string>
     <string name="music_score">Partitura musical</string>
     <string name="music_score_info">Editar notas de partitura</string>

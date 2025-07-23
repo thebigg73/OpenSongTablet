@@ -1250,4 +1250,13 @@
     <string name="sync_show_new_updated_info">Sakrij sve stavke koje su već ažurirane</string>
     <string name="nearby_get_profiles">Nabavite profile</string>
     <string name="sync_extracting">Vađenje stavke</string>
+    <string name="multitrack_folder_found">Pronađena fascikla sa više numera</string>
+    <string name="multitrack_folder_not_found">Multitrack pesma folder nije pronađen</string>
+    <string name="multitrack_folder_not_valid">Multitrack pesma folder nema važeće audio fajlove</string>
+    <string name="multitrack_folder_choose_other">Izaberite fasciklu</string>
+    <string name="multitrack_player">Multitrack igrač</string>
+    <string name="multitrack_player_info">Igrajte više audio zapisa iz foldera</string>
+    <string name="multitrack_requires_conversion">Neki audio fajlovi zahtevaju konverziju pre nego što se mogu koristiti</string>
+    <string name="multitrack_requires_conversion_info">Da biste koristili MultiTracks, sve audio datoteke u folderu moraju biti 16-bitne stereo VAV PCM datoteke.  Aplikacija može pokušati da konvertuje ove datoteke za vas.</string>
+    <string name="multitrack_convert">Pretvaranje datoteka</string>
 </resources>

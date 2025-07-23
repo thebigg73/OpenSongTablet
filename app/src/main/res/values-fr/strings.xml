@@ -660,6 +660,15 @@
     <string name="move_to_folder">Déplacer vers un dossier</string>
     <string name="multilingual">Multilingue</string>
     <string name="multilingual_scale">Échelle de lignes lyriques multilingues</string>
+    <string name="multitrack_convert">Convertir des fichiers</string>
+    <string name="multitrack_folder_choose_other">Choisir un dossier</string>
+    <string name="multitrack_folder_found">Dossier de chansons multipistes trouvé</string>
+    <string name="multitrack_folder_not_found">Dossier de chansons multipistes introuvable</string>
+    <string name="multitrack_folder_not_valid">Le dossier de chansons multipistes ne contient pas de fichiers audio valides</string>
+    <string name="multitrack_player">Lecteur multipiste</string>
+    <string name="multitrack_player_info">Lire plusieurs pistes audio à partir d\'un dossier</string>
+    <string name="multitrack_requires_conversion">Certains fichiers audio nécessitent une conversion avant de pouvoir être utilisés</string>
+    <string name="multitrack_requires_conversion_info">Pour utiliser MultiTracks, tous les fichiers audio du dossier doivent être des fichiers WAV PCM stéréo 16 bits. L\'application peut tenter de convertir ces fichiers pour vous.</string>
     <string name="music">Musique</string>
     <string name="music_score">Score de musique</string>
     <string name="music_score_info">Modifier les notes de partition</string>
