@@ -55,7 +55,7 @@ public class MultiTrackPopUp {
     private ArrayList<String> audioFiles, filesNeedingConversion;
     private boolean minimised=false, trackInfoExists;
     private final VectorDrawableCompat maximiseDrawable, minimiseDrawable;
-    private final String folder_found, folder_not_found, folder_not_valid;
+    private final String folder_found, folder_not_found, folder_not_valid, web_help;
     private int trackLengthSecs;
     private final float multiTrackAlpha;
 
@@ -69,6 +69,7 @@ public class MultiTrackPopUp {
         folder_found = c.getString(R.string.multitrack_folder_found);
         folder_not_found = c.getString(R.string.multitrack_folder_not_found);
         folder_not_valid = c.getString(R.string.multitrack_folder_not_valid);
+        web_help = c.getString(R.string.website_multitrack);
 
         // Prepare the alpha values - Tries to drop to minimum value of 0.7f or pageButtonAlpha when minimised
         float pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
@@ -81,6 +82,7 @@ public class MultiTrackPopUp {
         // This is called when a song is about to load
         myView = ViewMultitrackBinding.bind(LayoutInflater.from(c).inflate(R.layout.view_multitrack, null));
         myView.dialogHeading.showMinimiseButton(true);
+        myView.dialogHeading.setWebHelp(mainActivityInterface, web_help);
 
         if (popupWindow!=null && popupWindow.isShowing()) {
             destroyPopup();
