@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.multitrack;
 
 import android.media.AudioTrack;
-import android.util.Log;
 
 public class AudioTrackPositionTracker {
 
@@ -35,7 +34,6 @@ public class AudioTrackPositionTracker {
     }
 
     public void setSeekOffsetMs(long ms) {
-        Log.d(TAG,"setSeekOffsetMs:"+ms);
         this.seekOffsetMs = ms;
     }
 
@@ -48,10 +46,7 @@ public class AudioTrackPositionTracker {
         if (audioTrack!=null) {
             frames = audioTrack.getPlaybackHeadPosition();
         }
-        Log.d(TAG,"getPlaybackPositionMs()");
-        long position = seekOffsetMs + ((frames * 1000L) / sampleRate);
-        Log.d(TAG,"seekOffsetMs:"+seekOffsetMs+"  position:"+position);
-        return position;
+        return seekOffsetMs + ((frames * 1000L) / sampleRate);
     }
 
     public long getSkipBytes() {
