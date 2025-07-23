@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAudioPlayerBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -37,6 +38,7 @@ public class AudioPlayerBottomSheet extends BottomSheetDialogFragment {
     private int[] songTime;
     private boolean isPlaying=false, isPaused=false, isDragging=false,
             playingBeforeDrag=false;
+    private String web_help="";
     ScheduledExecutorService scheduledExecutorService;
     Runnable runnable;
 
@@ -78,6 +80,20 @@ public class AudioPlayerBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        prepareStrings();
+        if (myView!=null && mainActivityInterface!=null) {
+            myView.dialogHeading.setWebHelp(mainActivityInterface,web_help);
+        }
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            web_help = getContext().getString(R.string.website_audio_player);
+        }
+    }
     private void setupViews() {
         // Disable everything until the mediaPlayer is prepared
         setEnabled(false,false,false,false);
