@@ -1154,8 +1154,14 @@ public class PerformanceFragment extends Fragment {
                     myView.zoomLayout.setVisibility(View.GONE);
                     myView.highlighterView.setVisibility(View.GONE);
                     if (getContext() != null) {
-                        stageSectionAdapter = new StageSectionAdapter(getContext(), mainActivityInterface,
-                                displayInterface, myView.inlineSetList.getInlineSetWidth());
+                        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
+                                mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                            pdfPageAdapter = new PDFPageAdapter(getContext(), mainActivityInterface,
+                                    displayInterface, availableWidth, availableHeight, myView.inlineSetList.getInlineSetWidth());
+                        } else {
+                            stageSectionAdapter = new StageSectionAdapter(getContext(), mainActivityInterface,
+                                    displayInterface, myView.inlineSetList.getInlineSetWidth());
+                        }
                     }
 
                     myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1164,12 +1170,20 @@ public class PerformanceFragment extends Fragment {
                             if (myView!=null) {
                                 myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                                widthBeforeScale = stageSectionAdapter.getWidth();
-                                widthAfterScale = widthBeforeScale;
-                                heightBeforeScale = stageSectionAdapter.getHeight();
-                                heightAfterScale = heightBeforeScale;
-
-                                recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight, 1f);
+                                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
+                                        mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                                    widthBeforeScale = pdfPageAdapter.getWidth();
+                                    widthAfterScale = widthBeforeScale;
+                                    heightBeforeScale = pdfPageAdapter.getHeight();
+                                    heightAfterScale = heightBeforeScale;
+                                    recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), pdfPageAdapter.getHeights(), availableWidth, availableHeight, 1f);
+                                } else {
+                                    widthBeforeScale = stageSectionAdapter.getWidth();
+                                    widthAfterScale = widthBeforeScale;
+                                    heightBeforeScale = stageSectionAdapter.getHeight();
+                                    heightAfterScale = heightBeforeScale;
+                                    recyclerLayoutManager.setSizes(stageSectionAdapter.getWidths(), stageSectionAdapter.getHeights(), availableWidth, availableHeight, 1f);
+                                }
                                 myView.recyclerView.setHasFixedSize(false);
                                 myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
                                 myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(), 0, 0, 0);
@@ -1198,7 +1212,11 @@ public class PerformanceFragment extends Fragment {
                     });
                     myView.recyclerView.post(() -> {
                         try {
-                            myView.recyclerView.setAdapter(stageSectionAdapter);
+                            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                                myView.recyclerView.setAdapter(pdfPageAdapter);
+                            } else {
+                                myView.recyclerView.setAdapter(stageSectionAdapter);
+                            }
                         } catch (Exception e) {
                             mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                             e.printStackTrace();
@@ -1790,11 +1808,14 @@ public class PerformanceFragment extends Fragment {
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     private boolean alreadyChoosingSections = false;
     public void performanceShowSection(int position) {
+        Log.d(TAG,"performanceShowSection:"+position);
         if (!alreadyChoosingSections) {
             alreadyChoosingSections = true;
             // Scroll the recyclerView to the position as long as we aren't in an autoscroll
-            if (myView != null && recyclerLayoutManager != null && stageSectionAdapter != null &&
-                    stageSectionAdapter.getItemCount() > position && position >= 0) {
+            if (myView != null && recyclerLayoutManager != null &&
+                    ((stageSectionAdapter != null && stageSectionAdapter.getItemCount() > position) ||
+                            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && pdfPageAdapter !=null && pdfPageAdapter.getItemCount() > position)) &&
+                    position >= 0) {
                 if (!mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
                     // IV - Use a snap to top scroller if scrolling to the top of the screen
                     if (mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale", 0.8f) == 1.0f) {
@@ -1825,8 +1846,11 @@ public class PerformanceFragment extends Fragment {
         if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() &&
             mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections()) {
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                    pdfPageAdapter!=null && pdfPageAdapter.getItemCount()>position && position>=0) {
                 pdfPageAdapter.sectionSelected(position);
+                pdfPageAdapter.clickOnSection(position);
+                performanceShowSection(position);
             } else if (mainActivityInterface.getMode().equals(mode_stage)) {
                 mainActivityInterface.getMainHandler().postDelayed(() -> {
                     if (stageSectionAdapter != null && stageSectionAdapter.getItemCount() > position && position >= 0 && myView != null && myView.recyclerView != null) {
