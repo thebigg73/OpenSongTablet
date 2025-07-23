@@ -71,7 +71,7 @@ public class StorageAccess {
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
-            "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
+            "Multitrack", "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations", "Backups", "Import"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache", "Variations/_cache"};
