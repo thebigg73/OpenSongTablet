@@ -261,6 +261,7 @@ public class PedalActions {
         addString("bible",c.getString(R.string.bible_verse));
         addString("audiorecorder",c.getString(R.string.audio_recorder));
         addString("audioplayer",c.getString(R.string.audio_player));
+        addString("multitrack",c.getString(R.string.multitrack_player));
 
         addString("","");
 

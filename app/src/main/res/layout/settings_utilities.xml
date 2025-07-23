@@ -78,6 +78,15 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/mutitrackPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/multitrack_player"
+                android:hint="@string/multitrack_player_info"
+                app:size="large"/>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/databaseOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

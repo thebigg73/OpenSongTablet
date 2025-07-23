@@ -121,6 +121,8 @@ import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
+import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
+import com.garethevans.church.opensongtablet.multitrack.MultiTrackPopUp;
 import com.garethevans.church.opensongtablet.nearby.NearbyActions;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.nearby.SyncNearbyFragment;
@@ -256,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MakePDF makePDF;
     private Metronome metronome;
     private Midi midi;
+    private MultiTrackPlayer multiTrackPlayer;
     private NearbyActions nearbyActions;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private OCR ocr;
@@ -293,8 +296,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // The audio recorder permissions
     private ActivityResultLauncher<String> audioPermissionLauncher;
     private ActivityResultLauncher<Intent> selectFileLauncher;
+    private ActivityResultLauncher<Intent> selectFolderLauncher;
     private boolean requireAudioRecorder = false;
     private AudioRecorderPopUp audioRecorderPopUp;
+    private MultiTrackPopUp multiTrackPopUp;
 
     // The navigation controls
     private NavHostFragment navHostFragment;
@@ -412,6 +417,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             }
         });
+        selectFolderLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        if (multiTrackPopUp!=null) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                multiTrackPopUp.processAlternativeFolderUri(result.getData());
+                            }
+                        }
+                    }
+                });
+
+
 
         // Set up the onBackPressed intercepter as onBackPressed is deprecated
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
@@ -836,6 +854,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         swipes = getSwipes();
         timeTools = getTimeTools();
         displayPrevNext = getDisplayPrevNext();
+        multiTrackPlayer = getMultiTrackPlayer();
 
         // Other file actions
         ccliLog = getCCLILog();
@@ -1831,6 +1850,48 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 audioRecorderPopUp.floatRecorder(myView.fragmentView);
             }
         }
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void displayMultiTrack() {
+        // Only allow for API 21 and above
+        getMainHandler().post(() -> {
+            Log.d(TAG, "displayMultitrack()");
+            Log.d(TAG, "myView:" + myView);
+
+            // Note that we need to decide on the audio encoding
+            getMultiTrackPlayer().setAudioInfoSetForSong(false);
+
+            if (myView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (multiTrackPopUp != null) {
+                    // Close the popup
+                    try {
+                        multiTrackPopUp.destroyPopup();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    multiTrackPopUp = null;
+
+                } else {
+                    // Create and open the popup
+                    multiTrackPopUp = new MultiTrackPopUp(this);
+                    multiTrackPopUp.floatMultiTrack(myView.fragmentView);
+                }
+            }
+            Log.d(TAG,"multiTrackPopUp:"+multiTrackPopUp);
+        });
+    }
+    @Override
+    public void nullMultitrackPopUp() {
+        multiTrackPopUp = null;
+    }
+    @Override
+    public MultiTrackPlayer getMultiTrackPlayer() {
+        if (multiTrackPlayer==null) {
+            multiTrackPlayer = new MultiTrackPlayer(this);
+        }
+        return multiTrackPlayer;
     }
 
     // Instructions sent from fragments for MainActivity to deal with
@@ -2868,6 +2929,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void selectFile(Intent intent) {
         if (selectFileLauncher!=null) {
             selectFileLauncher.launch(intent);
+        }
+    }
+    @Override
+    public void selectFolder(Intent intent) {
+        if (selectFolderLauncher!=null) {
+            selectFolderLauncher.launch(intent);
         }
     }
 
@@ -4688,6 +4755,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Also stop any MIDI clock
         getMidi().stopMidiClock();
         getMidi().tryDisconnectBluetoothLE();
+
+        getMultiTrackPlayer().closeMultitrack();
 
         // Keep a reference to connections if needed as bundle
 

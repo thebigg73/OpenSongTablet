@@ -48,6 +48,7 @@ import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
+import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
 import com.garethevans.church.opensongtablet.nearby.NearbyActions;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
 import com.garethevans.church.opensongtablet.pads.Pad;
@@ -132,7 +133,7 @@ public interface MainActivityInterface {
     void setSong(Song song);
     void setTempSong(Song tempSong);
     String getMainfoldername();
-
+    MultiTrackPlayer getMultiTrackPlayer();
 
     // Capo
     void dealWithCapo();
@@ -288,6 +289,7 @@ public interface MainActivityInterface {
 
     // General tools
     void selectFile(Intent intent);
+    void selectFolder(Intent intent);
     CustomAnimation getCustomAnimation();
     Transpose getTranspose();
     AlertChecks getAlertChecks();
@@ -371,4 +373,6 @@ public interface MainActivityInterface {
     void setRequireAudioRecorder();
     void removeAudioRecorderPopUp();
     void displayAudioRecorder();
+    void displayMultiTrack();
+    void nullMultitrackPopUp();
 }

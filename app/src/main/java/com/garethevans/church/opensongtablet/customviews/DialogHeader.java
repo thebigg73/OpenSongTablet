@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     private final TextView textView;
-    private final FloatingActionButton webHelp, closeButtonDialog;
+    private final FloatingActionButton webHelp, closeButtonDialog, minimiseButtonDialog;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
@@ -25,12 +25,14 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         inflate(context, R.layout.view_dialog_header, this);
 
         closeButtonDialog = findViewById(R.id.closeButtonDialog);
+        minimiseButtonDialog = findViewById(R.id.minimiseButtonDialog);
         textView = findViewById(R.id.textView);
         webHelp = findViewById(R.id.webHelp);
 
         textView.setId(generateViewId());
         webHelp.setId(generateViewId());
         closeButtonDialog.setId(generateViewId());
+        minimiseButtonDialog.setId(generateViewId());
 
         closeButtonDialog.setClickable(true);
         closeButtonDialog.setOnClickListener(this);
@@ -71,7 +73,15 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         }
     }
 
+    public void showMinimiseButton(boolean show) {
+        minimiseButtonDialog.setVisibility(show ? View.VISIBLE:View.GONE);
+    }
+
     public FloatingActionButton getCloseButton() {
         return closeButtonDialog;
+    }
+
+    public FloatingActionButton getMinimiseButton() {
+        return minimiseButtonDialog;
     }
 }

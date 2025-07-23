@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="64dp"
+    android:minHeight="340dp"
+    android:orientation="horizontal">
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorAltSecondary"/>
+
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorAltPrimary"
+    android:minHeight="340dp"
+    android:padding="0dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:clipToPadding="false"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:clipChildren="false">
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/panSlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:value="1"
+            android:valueFrom="0"
+            android:valueTo="2"
+            android:stepSize="1"
+            android:contentDescription="@string/pan"
+            app:trackColor="@color/colorSecondary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="11dp"
+            android:paddingEnd="11dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="L"
+                android:textSize="@dimen/text_small"
+                tools:ignore="HardcodedText,TextContrastCheck" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="C"
+                android:textSize="@dimen/text_small"
+                tools:ignore="HardcodedText,TextContrastCheck" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="R"
+                android:textSize="@dimen/text_small"
+                tools:ignore="HardcodedText,TextContrastCheck" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="64dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center">
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/volumeSlider"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/midi_value"
+            android:rotation="270"
+            android:stepSize="1"
+            android:value="100"
+            android:valueFrom="0"
+            android:valueTo="100" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/trackData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="64dp"
+        android:orientation="vertical"
+        android:layout_margin="1dp"
+        android:padding="0dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/trackNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title"
+            android:textSize="@dimen/text_small" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/trackVolumeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/volume"
+            android:textSize="@dimen/text_xsmall"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/muteButton"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="M"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/colorAltPrimary"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/soloButton"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="S"
+                android:textSize="@dimen/text_small"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/colorAltPrimary"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorAltSecondary"/>
+</LinearLayout>

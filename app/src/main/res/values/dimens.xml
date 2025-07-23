@@ -34,6 +34,8 @@
     <dimen name="text_medium">14.0sp</dimen>
     <dimen name="text_small">12.0sp</dimen>
     <dimen name="text_xsmall">10.0sp</dimen>
+    <dimen name="text_xxsmall">8.0sp</dimen>
+    <dimen name="text_xxxsmall">6.0sp</dimen>
 
     <!-- For the hot zones -->
     <dimen name="hot_zone_width">96dp</dimen>

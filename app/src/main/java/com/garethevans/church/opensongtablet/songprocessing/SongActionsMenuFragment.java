@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +52,11 @@ public class SongActionsMenuFragment extends Fragment {
         // Add the current song title to the menu
         addCurrentSong();
 
+        // Set views
+        setupViews();
+
         // Set Listeners
-        setListeners();
+        setupListeners();
 
         return myView.getRoot();
     }
@@ -63,6 +67,12 @@ public class SongActionsMenuFragment extends Fragment {
             search_index_wait_string = getString(R.string.index_songs_wait);
         }
     }
+
+    private void setupViews() {
+        // Hide the multitrack player if not running Lollipop or later
+        myView.mutitrackPlayer.setVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? View.VISIBLE:View.GONE);
+    }
+
     private void addCurrentSong() {
         String currentSong = mainActivityInterface.getSong().getTitle();
         if (currentSong!=null && !currentSong.isEmpty()) {
@@ -84,7 +94,7 @@ public class SongActionsMenuFragment extends Fragment {
         // myView.graceTime.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("graceTime",true));
     }
 
-    private void setListeners() {
+    private void setupListeners() {
         myView.backupButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_backup),0));
         myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.edit.setOnClickListener(v -> actionAllowed(R.id.editsong_graph));
@@ -151,6 +161,7 @@ public class SongActionsMenuFragment extends Fragment {
         myView.youTube.setOnClickListener(v -> searchSong("YouTube"));
         myView.youTubeMusic.setOnClickListener(v -> searchSong("YouTubeMusic"));
         myView.spotify.setOnClickListener(v -> searchSong("Spotify"));
+        myView.mutitrackPlayer.setOnClickListener(v -> mainActivityInterface.displayMultiTrack());
         // GE - hidden this option, but reserving the right to reinstate even just for me
         // myView.graceTime.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("graceTime",b));
     }

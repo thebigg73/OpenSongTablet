@@ -452,7 +452,32 @@ public class StorageAccess {
             return niceUriTree_File(uri, new String[]{"", ""});
         }
     }
+    public String niceUriString(Uri uri) {
+        String path = "";
+        try {
+            path = uri.getPath();
+            // When not an internal path (more patterns may be needed) indicate as external
+            if (!path.contains("/tree/primary")) {
+                path = c.getString(R.string.storage_ext);
+            }
 
+            // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
+            // This is due to the content using a document contract
+            if (path.contains("primary:")) {
+                path = path.substring(path.lastIndexOf("primary"));
+            }
+
+            if (path.contains(":") && !path.endsWith(":")) {
+                path = "/" + path.substring(path.lastIndexOf(":") + 1);
+            } else {
+                path = "/" + path;
+            }
+            path = path.replace("//", "/");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
     private String[] niceUriTree_SAF(Uri uri, String[] storageDetails) {
         // storageDetails is currently empty, but will be [0]=extra info  [1]=nice location
         if (storageDetails == null) {
@@ -929,13 +954,37 @@ public class StorageAccess {
     }
 
     private boolean uriExists_SAF(Uri uri) {
-        try {
-            InputStream is = c.getContentResolver().openInputStream(uri);
-            if (is != null) {
-                is.close();
+        if (uri!=null && !uri.getPath().isEmpty() && c!=null && c.getContentResolver()!=null) {
+            DocumentFile documentFile = null;
+            try {
+                documentFile = DocumentFile.fromSingleUri(c, uri);
+            } catch (Exception e) {
+                Log.d(TAG, uri + " not a singleUri");
             }
-            return true;
-        } catch (Exception e) {
+
+            if (documentFile != null) {
+                try {
+                    return documentFile.exists();
+                } catch (Exception e) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+
+            /*try {
+                InputStream is = c.getContentResolver().openInputStream(uri);
+                if (is != null) {
+                    is.close();
+                }
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+            */
+
+        } else {
             return false;
         }
     }
@@ -1253,7 +1302,7 @@ public class StorageAccess {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private boolean docContractCreate(Uri uri, String mimeType, String name) {
+    public boolean docContractCreate(Uri uri, String mimeType, String name) {
         if (uri != null && name != null && !name.isEmpty()) {
             try {
                 //updateFileActivityLog("\ndocContractCreate() called.  uri:"+uri+"  mimeType:"+mimeType+"  name:"+name);

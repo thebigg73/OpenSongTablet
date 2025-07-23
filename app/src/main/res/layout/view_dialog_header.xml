@@ -28,6 +28,18 @@
         app:fabSize="mini"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/minimiseButtonDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/minimise"
+        android:contentDescription="@string/hide"
+        app:backgroundTint="@color/transparent"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        android:visibility="gone"
+        app:fabSize="mini"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/closeButtonDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -611,7 +611,11 @@ public class PerformanceGestures {
             case "audioplayer":
                 audioPlayer();
                 break;
+            case "multitrack":
+                multiTrack();
+                break;
 
+            // Projection
             case "showlogo":
             case "showLogo":
                 showLogo();
@@ -1080,6 +1084,11 @@ public class PerformanceGestures {
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         mainActivityInterface.setWhattodo("audioplayer");
         mainActivityInterface.selectFile(intent);
+    }
+
+    // Show the multitrack player
+    public void multiTrack() {
+        mainActivityInterface.displayMultiTrack();
     }
 
     // Show the abc notation

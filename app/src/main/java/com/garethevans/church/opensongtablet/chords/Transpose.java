@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -905,28 +904,31 @@ public class Transpose {
 
     // For dealing with songs loaded from sets (checking key with current song)
     public int getTransposeTimes(String from, String to) {
-        int startPos = -1;
-        int endPos = -1;
-        // Get rid of minors for transpose times - not required
-        from = from.replace("m","");
-        to = to.replace("m","");
-        // Go through the keys until the start position is found
-        // Then keep going and find the end position
-        for (int x=0; x<keyText.length; x++) {
-            if (startPos<0 && keyText[x].equals(from)) {
-                startPos = keyNum[x];
+        if (from!=null && to!=null) {
+            int startPos = -1;
+            int endPos = -1;
+            // Get rid of minors for transpose times - not required
+            from = from.replace("m", "");
+            to = to.replace("m", "");
+            // Go through the keys until the start position is found
+            // Then keep going and find the end position
+            for (int x = 0; x < keyText.length; x++) {
+                if (startPos < 0 && keyText[x].equals(from)) {
+                    startPos = keyNum[x];
+                }
+                if (startPos > -1 && endPos < 0 && keyText[x].equals(to)) {
+                    endPos = keyNum[x];
+                }
             }
-            if (startPos>-1 && endPos<0 && keyText[x].equals(to)) {
-                endPos = keyNum[x];
+            // Return the transpose times (for +1 direction).  If bigger than 6, the app actually does -1
+            if (startPos > -1 && endPos > -1 && endPos > startPos) {
+                return endPos - startPos;
+            } else {
+                // Some issue - no transpose!
+                return 0;
             }
         }
-        // Return the transpose times (for +1 direction).  If bigger than 6, the app actually does -1
-        if (startPos>-1 && endPos>-1 && endPos>startPos) {
-            return endPos - startPos;
-        } else {
-            // Some issue - no transpose!
-            return 0;
-        }
+        return 0;
     }
 
     // Commonly used array for chord format names and display values

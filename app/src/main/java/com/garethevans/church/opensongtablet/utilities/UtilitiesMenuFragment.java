@@ -46,6 +46,9 @@ public class UtilitiesMenuFragment extends Fragment {
 
         prepareStrings();
 
+        // Set up views
+        setupViews();
+
         // Set up listeners
         setupListeners();
 
@@ -61,6 +64,12 @@ public class UtilitiesMenuFragment extends Fragment {
             deeplink_database_utilities = getString(R.string.deeplink_database_utilities);
         }
     }
+
+    private void setupViews() {
+        // Hide the multitrack player if not running Lollipop or later
+        myView.mutitrackPlayer.setVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? View.VISIBLE:View.GONE);
+    }
+
 
     private void setupListeners() {
         myView.soundMeter.setOnClickListener(v -> {
@@ -101,6 +110,7 @@ public class UtilitiesMenuFragment extends Fragment {
             mainActivityInterface.setWhattodo("audioplayer");
             mainActivityInterface.selectFile(intent);
         });
+        myView.mutitrackPlayer.setOnClickListener(v -> mainActivityInterface.displayMultiTrack());
     }
 
 }
