@@ -39,8 +39,8 @@ android {
         targetSdkVersion 35
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 419
-        versionName '6.4.7'
+        versionCode 420
+        versionName '6.4.8'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -130,11 +130,11 @@ dependencies {
     implementation 'com.gu.android:toolargetool:0.3.2'                                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
     implementation 'androidx.exifinterface:exifinterface:1.4.1'                         // To get image exif data (orientation for camera)
-    //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
-    implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     implementation 'com.google.code.gson:gson:2.11.0'                                   // GSon for JSON conversion of Song/Set objects
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
+    implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
 
     // To include jar libraries
