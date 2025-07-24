@@ -4872,9 +4872,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
                 if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
                     try {
-                        getMainHandler().post(() -> {
-                            secondaryDisplay.dismiss();
-                        });
+                        getMainHandler().post(secondaryDisplay::dismiss);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -5033,9 +5031,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (secondaryDisplay != null && secondaryDisplay.isShowing() &&
                         position < sections) {
                     try {
-                        getMainHandler().post(() -> {
-                                secondaryDisplay.showSection(position);
-                        });
+                        getMainHandler().post(() -> secondaryDisplay.showSection(position));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

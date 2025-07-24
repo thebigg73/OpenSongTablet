@@ -2,9 +2,16 @@ package com.garethevans.church.opensongtablet.multitrack;
 
 public class WavHeader {
     public int sampleRate;
-    public int channels;
-    public int bitsPerSample;
-    public long dataStartOffset;
+    public int numChannels;
+    public int bitsPerChannel;
+    public int bytesPerChannel;
+    public int byteRate;
+    public int blockAlign;
+    public int dataStartOffset;
+    public int dataSize;
     public int audioFormat;
-    public int bytesPerSample;
+
+    public int getDurationMs() {
+        return (int)((dataSize * 1000L) / byteRate);
+    }
 }

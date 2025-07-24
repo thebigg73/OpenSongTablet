@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -29,8 +28,6 @@ import com.garethevans.church.opensongtablet.customviews.TrackSlider;
 import com.garethevans.church.opensongtablet.databinding.ViewMultitrackBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.slider.LabelFormatter;
-import com.google.android.material.slider.Slider;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,7 +54,6 @@ public class MultiTrackPopUp {
     private boolean minimised=false, trackInfoExists;
     private final VectorDrawableCompat maximiseDrawable, minimiseDrawable;
     private final String folder_found, folder_not_found, folder_not_valid, web_help;
-    private int trackLengthSecs;
     private final float multiTrackAlpha;
 
 
@@ -194,6 +190,12 @@ public class MultiTrackPopUp {
 
     public void destroyPopup() {
         try {
+            audioProcessor = null;
+            mainActivityInterface.getMultiTrackPlayer().setTrackProgressView(null);
+            mainActivityInterface.getMultiTrackPlayer().saveMultitrackSettings();
+            mainActivityInterface.getMultiTrackPlayer().closeMultitrack();
+            mainActivityInterface.nullMultitrackPopUp();
+
             if (popupWindow != null) {
                 popupWindow.dismiss();
                 popupWindow = null;
@@ -207,12 +209,6 @@ public class MultiTrackPopUp {
             if (myView!=null) {
                 myView = null;
             }
-            audioProcessor = null;
-            mainActivityInterface.getMultiTrackPlayer().setTrackProgressView(null);
-            mainActivityInterface.getMultiTrackPlayer().saveMultitrackSettings();
-            mainActivityInterface.getMultiTrackPlayer().closeMultitrack();
-            mainActivityInterface.nullMultitrackPopUp();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -316,9 +312,7 @@ public class MultiTrackPopUp {
         int bytesPerSample = 2;
 
         long totalFrames = fileSize / (bytesPerSample * channels);
-        trackLengthSecs = Math.round(((totalFrames * 1000f) / (float)sampleRate)/1000f);
-
-        setUpTransportBar();
+        int trackLengthSecs = Math.round(((totalFrames * 1000f) / (float) sampleRate) / 1000f);
 
         myView.seekBar.setHint(mainActivityInterface.getTimeTools().timeFormatFixer(0) + " / " +
                 mainActivityInterface.getTimeTools().timeFormatFixer(trackLengthSecs));
@@ -342,6 +336,17 @@ public class MultiTrackPopUp {
                 audioTrackValues.setTrackPan("C");
                 trackInfos.add(audioTrackValues);
             }
+            // Also add on the master track
+            AudioTrackValues masterTrackValues = new AudioTrackValues();
+            masterTrackValues.setTrackName(mainActivityInterface.getMultiTrackPlayer().getMasterTrackIdentifier());
+            masterTrackValues.setTrackUri(null);
+            masterTrackValues.setTrackMute(false);
+            masterTrackValues.setTrackSolo(false);
+            masterTrackValues.setTrackVolume(100);
+            masterTrackValues.setTrackPan("C");
+            trackInfos.add(masterTrackValues);
+
+            // Put them all in the json object
             trackInfoJson.setAudioTrackValues(trackInfos);
 
             // Write this file to the folder
@@ -352,10 +357,11 @@ public class MultiTrackPopUp {
         }
 
         // Prepare the track information
-        mainActivityInterface.getMultiTrackPlayer().initialiseArrays(audioProcessor.getMultiTrackFolderUri(),trackInfoJson.getAudioTrackValues(),trackLengthSecs);
+        mainActivityInterface.getMultiTrackPlayer().initialiseArrays(audioProcessor.getMultiTrackFolderUri(),trackInfoJson.getAudioTrackValues(), trackLengthSecs);
         mainActivityInterface.getMultiTrackPlayer().setTrackProgressView(myView.seekBar);
 
         // Prepare the sliders
+        ArrayList<TrackSlider> trackSliders = new ArrayList<>();
         for (int i=0;i<audioFiles.size();i++) {
             String trackName = mainActivityInterface.getMultiTrackPlayer().getTrackName(i);
             int trackVolume = mainActivityInterface.getMultiTrackPlayer().getTrackVolume(i);
@@ -375,6 +381,7 @@ public class MultiTrackPopUp {
                                 trackSolo);
 
                         myView.sliders.addView(trackSlider);
+                        trackSliders.add(trackSlider);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -382,9 +389,20 @@ public class MultiTrackPopUp {
             });
         }
 
-        // Now we pass the audio off to the multitrack player to get ready
+        // Now add the master gain control
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null) {
+                TrackSlider masterSlider = new TrackSlider(c, mainActivityInterface.getMultiTrackPlayer(),
+                        -1, mainActivityInterface.getMultiTrackPlayer().getMasterTrackIdentifier(),
+                        mainActivityInterface.getMultiTrackPlayer().getTrackMaster().getTrackVolumeInt(),
+                        mainActivityInterface.getMultiTrackPlayer().getTrackMaster().getTrackPanString(), false, false);
+                myView.sliders.addView(masterSlider);
 
+                // Now we pass the audio off to the multitrack player to get ready
+                mainActivityInterface.getMultiTrackPlayer().setTrackSliders(trackSliders, masterSlider);
 
+            }
+        });
 
         // Now show what we have
         showProgressBar(false);
@@ -415,44 +433,6 @@ public class MultiTrackPopUp {
             }
             checkForMultiTracks();
         });
-    }
-
-    private void setUpTransportBar() {
-        myView.seekBar.setValueFrom(0);
-        if (trackLengthSecs==0) {
-            // Just in case!
-            trackLengthSecs=100;
-        }
-        myView.seekBar.setValueTo(trackLengthSecs);
-        myView.seekBar.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return mainActivityInterface.getTimeTools().timeFormatFixer((int)value);
-            }
-        });
-        myView.seekBar.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            boolean wasPlaying = false;
-            @Override
-            public void onStartTrackingTouch(@NonNull Slider slider) {
-                // Make sure the audio is paused
-                mainActivityInterface.getMultiTrackPlayer().pause();
-                wasPlaying = mainActivityInterface.getMultiTrackPlayer().getIsPlaying();
-            }
-
-            @Override
-            public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getMultiTrackPlayer().setSeekPosition((int)slider.getValue());
-                mainActivityInterface.getMultiTrackPlayer().movePlayheadPositionSecs((int)slider.getValue());
-                if (wasPlaying) {
-                    mainActivityInterface.getMultiTrackPlayer().play();
-                }
-
-            }
-        });
-
-        myView.seekBar.addOnChangeListener((slider, value, fromUser) -> myView.seekBar.setHint(mainActivityInterface.getTimeTools().timeFormatFixer((int)value) + " / " +
-                mainActivityInterface.getTimeTools().timeFormatFixer(trackLengthSecs)));
     }
 
     private void showMultiTrackLayout(final boolean show) {
@@ -542,4 +522,3 @@ public class MultiTrackPopUp {
     }
 
 }
-

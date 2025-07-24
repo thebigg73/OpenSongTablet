@@ -11,19 +11,20 @@ public class AudioTrackPositionTracker {
     private int frameSize;
     private int channels;
     private long seekOffsetMs = 0;
-    private int bytesPerSample;
+    private int bytesPerChannel;
     private boolean audioInfoSetForSong = false;
 
-    public AudioTrackPositionTracker(AudioTrack audioTrack, int sampleRate, int channels, int bytesPerSample) {
+    public AudioTrackPositionTracker(AudioTrack audioTrack, int sampleRate, int channels, int bytesPerChannel) {
         this.audioTrack = audioTrack;
         this.sampleRate = sampleRate;
         this.channels = channels;
-        this.bytesPerSample = bytesPerSample;
-        this.frameSize = channels * bytesPerSample;
+        this.bytesPerChannel = bytesPerChannel;
+        this.frameSize = channels * bytesPerChannel;
     }
 
     public void setAudioTrack(AudioTrack audioTrack) {
         this.audioTrack = audioTrack;
+        audioTrack.setPlaybackHeadPosition(0);
     }
 
     public boolean getAudioInfoSetForSong() {
@@ -35,10 +36,6 @@ public class AudioTrackPositionTracker {
 
     public void setSeekOffsetMs(long ms) {
         this.seekOffsetMs = ms;
-    }
-
-    public long getSeekOffsetMs() {
-        return seekOffsetMs;
     }
 
     public long getPlaybackPositionMs() {
@@ -64,15 +61,22 @@ public class AudioTrackPositionTracker {
         this.frameSize = frameSize;
     }
     private void updateFrameSize() {
-        frameSize = channels * bytesPerSample;
+        frameSize = channels * bytesPerChannel;
     }
 
-    public void setBytesPerSample(int bytesPerSample) {
-        this.bytesPerSample = bytesPerSample;
+    public void setBytesPerChannel(int bytesPerChannel) {
+        this.bytesPerChannel = bytesPerChannel;
     }
 
     public void setChannels(int channels) {
         this.channels = channels;
         updateFrameSize();
+    }
+    public int getChannels() {
+        return channels;
+    }
+
+    public int getSampleRate() {
+        return sampleRate;
     }
 }

@@ -21,6 +21,7 @@ import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.slider.LabelFormatter;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
@@ -31,7 +32,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetTransposeBinding myView;
     private MainActivityInterface mainActivityInterface;
     private int fromFormat, toFormat, prefFormat, transposeTimes, position;
-    private String startKey, newKey, setFolder, songFolder;
+    private String startKey, newKey, setFolder, songFolder, transposeDirection;
     private String string_Key="", string_Transpose="", string_WebsiteChordsTranspose="",
         string_ChordFormatPreferredInfo="", string_DeeplinkChordSettings="", string_CopyOf="",
         string_Standard="", string_DetectedAppearance="", string_variation="**Variation",
@@ -162,7 +163,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         // If we have a key set and an original key set and they are different, show the transpose original
         checkTransposeOriginal();
 
-        myView.transposeSlider.setValue(0);
+        // Make the transpose slider start in the middle
+        myView.transposeSlider.setValue(6);
 
         // Get the key of the song if set
         if (editSong && mainActivityInterface.getTempSong()!=null) {
@@ -242,30 +244,48 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         }
     }
     private void setListeners() {
+        // Set the label formatter (when dragging)
+        myView.transposeSlider.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                // Use the number of semitones
+                if (value<6) {
+                    return "-" + (int)(6-value);
+                } else if (value>6) {
+                    return "+" + (int)(value-6);
+                } else {
+                    return String.valueOf(0);
+                }
+            }
+        });
+
+        // Change the positions
         //0=-6, 1=-5, 2=-4, 3=-3, 4=-2, 5=-1, 6=0, 7=1, 8=2, 9=3, 10=4, 11=5, 12=6
         myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
             // Update the text
             String thisNewKey;
             if (startKey==null || startKey.isEmpty() || startKey.equals("0")) {
-                if (value>0) {
-                    thisNewKey = "+" + (int)value;
+                if (value>6) {
+                    thisNewKey = "+" + (int)(value-6);
+                } else if (value<6) {
+                    thisNewKey = "-" + (int) (6-value);
                 } else {
-                    thisNewKey = String.valueOf((int) value);
+                    thisNewKey = "0";
                 }
                 myView.keyChangeTextView.setText(thisNewKey);
                 newKey = "";
             } else {
                 // We need to get the transposed key
                 String keyToNum = mainActivityInterface.getTranspose().keyToNumber(startKey);
-                if (value<0) {
-                    newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"-1",(int)Math.abs(value));
-                } else if (value>0) {
-                    newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"+1",(int)Math.abs(value));
+                if (value<6) {
+                    newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"-1",(int)Math.abs(6-value));
+                } else if (value>6) {
+                    newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"+1",(int)Math.abs(value-6));
                 } else {
                     newKey = startKey;
                 }
                 newKey = mainActivityInterface.getTranspose().numberToKey(newKey);
-                Log.d(TAG,"startKey:"+startKey+"  newKey:"+newKey);
                 myView.keyChangeTextView.setText(getTransposeKey(newKey));
                 checkTransposeOriginal();
             }
@@ -282,9 +302,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("transposeInSet",isChecked);
         });
-        myView.transposeVariation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            myView.transposeSetItem.setVisibility(isChecked && position>=0 ? View.GONE:View.VISIBLE);
-        });
+        myView.transposeVariation.setOnCheckedChangeListener((buttonView, isChecked) -> myView.transposeSetItem.setVisibility(isChecked && position>=0 ? View.GONE:View.VISIBLE));
 
         myView.doTransposeButton.setOnClickListener(v -> doTranspose());
 
@@ -385,14 +403,31 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getSong().setDesiredChordFormat(toFormat);
     }
 
+    private void figureOutTransposeTimes() {
+        // Use the slider position
+        transposeTimes = 0;
+        transposeDirection = "+1";
+        if (myView.transposeSlider.getValue()>6) {
+            transposeTimes = (int) (myView.transposeSlider.getValue() - 6);
+            transposeDirection = "+1";
+        } else if (myView.transposeSlider.getValue()<6) {
+            transposeTimes = (int) (6 - myView.transposeSlider.getValue());
+            transposeDirection = "-1";
+        } else {
+            transposeTimes = 0;
+            transposeDirection = "+1";
+        }
+    }
+
     private void doTranspose() {
         getValues();
+        figureOutTransposeTimes();  // This sets the transpose times and direction
+
         transposeSet = position>=0 && myView.transposeSetItem.getChecked() &&
                 myView.transposeSetItem.getVisibility()==View.VISIBLE;
         transposeVariation = myView.transposeVariation.getChecked();
         transposeCapo = myView.transposeCapo.getChecked();
         transposeCopy = myView.transposeCopy.getChecked();
-        transposeTimes = (int) myView.transposeSlider.getValue();
         assumePreferred = myView.assumePreferred.getChecked();
 
         // Need to decide what file gets transposed
@@ -400,31 +435,12 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             // Set the force reload flag
             mainActivityInterface.getTranspose().setForceReload(true);
 
-            String transposeDirection;
-
-            // Simplify slider to minimum number of transpose steps
-            // Why transpose up 11 times, when you can just transpose down once.
-            // Giving the option as it makes it easier for the user to select new key
-            if (transposeTimes > 6) {
-                // 7>-5  8>-4 9>-3 10>-2 11>-1 12>0
-                transposeTimes = transposeTimes - 12;
-            } else if (transposeTimes < -6) {
-                // -7>5 -8>4 -9>3 -10>2 -11>1 -12>0
-                transposeTimes = 12 + transposeTimes;
-            }
-
-            Log.d(TAG,"transposeTimes before simplify:"+transposeTimes);
-            if (transposeTimes >= 0) {
-                transposeDirection = "+1";
-            } else {
-                transposeDirection = "-1";
-            }
-
+            // Check it is a positive number
             transposeTimes = Math.abs(transposeTimes);
 
             Log.d(TAG,"transposeTimes after simplify:"+transposeTimes + " direction:"+transposeDirection);
-
             Log.d(TAG,"songFolder:"+songFolder+"   setFolder:"+setFolder);
+
             if (songFolder==null) {
                 songFolder = mainActivityInterface.getMainfoldername();
             }

@@ -29,22 +29,22 @@ public class AudioTrackValues {
         this.trackUri = trackUri;
     }
 
-    public Integer getTrackVolume() {
+    public @Nullable Integer getTrackVolume() {
         return trackVolume;
     }
-    public String getTrackPan() {
+    public @Nullable String getTrackPan() {
         return trackPan;
     }
-    public Boolean getTrackMute() {
+    public @Nullable Boolean getTrackMute() {
         return trackMute;
     }
-    public Boolean getTrackSolo() {
+    public @Nullable Boolean getTrackSolo() {
         return trackSolo;
     }
-    public String getTrackName() {
+    public @Nullable String getTrackName() {
         return trackName;
     }
-    public String getTrackUri() {
+    public @Nullable String getTrackUri() {
         return trackUri;
     }
 }

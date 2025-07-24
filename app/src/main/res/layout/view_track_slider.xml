@@ -1,166 +1,287 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:minWidth="64dp"
+    android:minWidth="96dp"
     android:minHeight="340dp"
     android:orientation="horizontal">
+
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorAltSecondary"/>
-
-<LinearLayout android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/colorAltPrimary"
-    android:minHeight="340dp"
-    android:padding="0dp">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:clipToPadding="false"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:clipChildren="false">
-
-        <com.google.android.material.slider.Slider
-            android:id="@+id/panSlider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:value="1"
-            android:valueFrom="0"
-            android:valueTo="2"
-            android:stepSize="1"
-            android:contentDescription="@string/pan"
-            app:trackColor="@color/colorSecondary" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="11dp"
-            android:paddingEnd="11dp">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="L"
-                android:textSize="@dimen/text_small"
-                tools:ignore="HardcodedText,TextContrastCheck" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="C"
-                android:textSize="@dimen/text_small"
-                tools:ignore="HardcodedText,TextContrastCheck" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="R"
-                android:textSize="@dimen/text_small"
-                tools:ignore="HardcodedText,TextContrastCheck" />
-
-        </LinearLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="64dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center">
-
-        <com.google.android.material.slider.Slider
-            android:id="@+id/volumeSlider"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/midi_value"
-            android:rotation="270"
-            android:stepSize="1"
-            android:value="100"
-            android:valueFrom="0"
-            android:valueTo="100" />
-    </FrameLayout>
+        android:background="@color/colorAltSecondary" />
 
     <LinearLayout
-        android:id="@+id/trackData"
-        android:layout_width="wrap_content"
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="64dp"
+        android:background="@color/colorAltPrimary"
+        android:minWidth="96dp"
+        android:minHeight="340dp"
         android:orientation="vertical"
-        android:layout_margin="1dp"
         android:padding="0dp">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/trackNameTextView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/title"
-            android:textSize="@dimen/text_small" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/trackVolumeTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/volume"
-            android:textSize="@dimen/text_xsmall"/>
+            <com.google.android.material.slider.Slider
+                android:id="@+id/panSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/pan"
+                android:stepSize="1"
+                android:value="1"
+                android:valueFrom="0"
+                android:valueTo="2"
+                app:trackColor="@color/colorSecondary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="11dp"
+                android:paddingEnd="11dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="L"
+                    android:textSize="@dimen/text_small"
+                    tools:ignore="HardcodedText,TextContrastCheck" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="C"
+                    android:textSize="@dimen/text_small"
+                    tools:ignore="HardcodedText,TextContrastCheck" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="R"
+                    android:textSize="@dimen/text_small"
+                    tools:ignore="HardcodedText,TextContrastCheck" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center">
+
+            <View
+                android:id="@+id/levelIndicator"
+                android:layout_width="24dp"
+                android:layout_height="176dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/slider_volume_bar" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/volumeSlider"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/midi_value"
+                android:rotation="270"
+                android:stepSize="1"
+                android:value="100"
+                android:valueFrom="0"
+                android:valueTo="100"
+                tools:ignore="VisualLintBounds" />
+
+        </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/trackData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="1dp"
+            android:minWidth="64dp"
+            android:orientation="vertical"
+            android:padding="0dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/muteButton"
-                android:layout_width="48dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/trackNameTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:padding="0dp"
-                android:text="M"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/colorAltPrimary"
-                tools:ignore="HardcodedText" />
+                android:text="@string/title"
+                android:textSize="@dimen/text_small" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/soloButton"
-                android:layout_width="48dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/trackVolumeTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:padding="0dp"
-                android:text="S"
-                android:textSize="@dimen/text_small"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/colorAltPrimary"
-                tools:ignore="HardcodedText" />
+                android:text="@string/volume"
+                android:textSize="@dimen/text_xsmall" />
+
+            <!-- The boost buttons are for the Master track only -->
+            <LinearLayout
+                android:id="@+id/masterBoostButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:minWidth="64dp"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/boost1Box"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_box" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/masterBoost1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="0dp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="x1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_small"
+                        tools:ignore="HardcodedText" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/boost2Box"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_box" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/masterBoost2"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_margin="0dp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="x2"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_small"
+                        tools:ignore="HardcodedText" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/boost3Box"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_box" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/masterBoost3"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_margin="0dp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="x3"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_small"
+                        tools:ignore="HardcodedText" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- The mute and solo buttons are not for the Master track -->
+            <LinearLayout
+                android:id="@+id/muteAndSoloButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/muteBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_box" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/muteButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_margin="0dp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="M"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_small"
+                        tools:ignore="HardcodedText" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/soloBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_box" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/soloButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_margin="0dp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="S"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_small"
+                        tools:ignore="HardcodedText" />
+                </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorAltSecondary"/>
+        android:background="@color/colorAltSecondary" />
 </LinearLayout>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="VisualLintLongText">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
@@ -91,13 +93,19 @@
                         android:id="@+id/slidersScrollView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="32dp">
+                        android:minHeight="32dp"
+                        android:contentDescription="@string/multitrack_player"
+                        android:scrollbarAlwaysDrawHorizontalTrack="true"
+                        android:fadeScrollbars="false"
+                        android:scrollbarStyle="outsideOverlay"
+                        android:scrollbarSize="12dp">
 
                         <LinearLayout
                             android:id="@+id/sliders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp"/>
                     </HorizontalScrollView>
 
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
@@ -107,7 +115,8 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        tools:ignore="DisableBaselineAlignment">
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -133,7 +142,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:contentDescription="@string/pause"
-                            android:src="@drawable/pause" />
+                            android:src="@drawable/pause"
+                            tools:ignore="ImageContrastCheck" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -147,7 +157,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:contentDescription="@string/stop"
-                            android:src="@drawable/stop" />
+                            android:src="@drawable/stop"
+                            tools:ignore="ImageContrastCheck" />
                     </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>
