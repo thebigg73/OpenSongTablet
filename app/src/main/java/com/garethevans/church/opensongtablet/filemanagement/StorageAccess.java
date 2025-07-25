@@ -954,6 +954,17 @@ public class StorageAccess {
     }
 
     private boolean uriExists_SAF(Uri uri) {
+        boolean file=false;
+        if (uri!=null && uri.getScheme()!=null && uri.getScheme().startsWith("file")) {
+            Log.d(TAG,"FILE");
+            // Must be in the user storage
+            file = true;
+        }
+        if (file) {
+            File f = new File(uri.getPath());
+            Log.d(TAG,"file.exists():"+f.exists());
+            return f.exists();
+        }
         if (uri!=null && !uri.getPath().isEmpty() && c!=null && c.getContentResolver()!=null) {
             DocumentFile documentFile = null;
             try {
@@ -966,14 +977,13 @@ public class StorageAccess {
                 try {
                     return documentFile.exists();
                 } catch (Exception e) {
-                    return false;
+                   Log.d(TAG,"Still an issue, try the final method");
                 }
             } else {
                 return false;
             }
 
-
-            /*try {
+            try {
                 InputStream is = c.getContentResolver().openInputStream(uri);
                 if (is != null) {
                     is.close();
@@ -982,7 +992,7 @@ public class StorageAccess {
             } catch (Exception e) {
                 return false;
             }
-            */
+
 
         } else {
             return false;
@@ -2165,7 +2175,7 @@ public class StorageAccess {
                 return listSongs_File(mainfolder, showAllIncludingBad);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d(TAG,"No songs or folder isn't ready yet");
             return noSongs;
         }
     }
