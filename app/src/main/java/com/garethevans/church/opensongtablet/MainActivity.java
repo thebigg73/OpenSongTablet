@@ -710,9 +710,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         fileOpenIntent = intent;
         Log.d(TAG,"new intent:"+intent+"  "+intent.getData());
         // Send the action to be called from the opening fragment to fix backstack!
-        if (presenterValid()) {
+        if (settingsOpen) {
+            if (whichMode.equals(mode_presenter)) {
+                dealWithIntent(R.id.presenterFragment);
+            } else if (whichMode.equals(mode_performance)) {
+                dealWithIntent(R.id.performanceFragment);
+            }
+        } else if (presenterValid()) {
             presenterFragment.tryToImportIntent();
         } else if (performanceValid()) {
+            Log.d(TAG,"performance valid - sending there");
             performanceFragment.tryToImportIntent();
         }
         super.onNewIntent(intent);
@@ -723,22 +730,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         boolean dealtWith = getPreferences().getMyPreferenceBoolean("intentAlreadyDealtWith",false);
         Log.d(TAG,"intentAlreadyDealtWith:"+dealtWith);
         getThreadPoolExecutor().execute(() -> {
-            if (!dealtWith && fileOpenIntent != null && (fileOpenIntent.getDataString() != null || fileOpenIntent.getData()!=null)) {
-                if (fileOpenIntent.getDataString()!=null && fileOpenIntent.getDataString().startsWith(getOpenChordsAPI().getAppFolderTrigger())) {
-                    // This should trigger the GET request to sync OpenChords
-                    try {
-                        getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
-                        String uuid = fileOpenIntent.getData().toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
-                        getOpenChordsAPI().setOpenChordsFolderUuid(uuid);
-                        getOpenChordsAPI().setReceivedFolderLink(true);
-                        setWhattodo("openchordsintent");
-                        navigateToFragment(getString(R.string.deeplink_openchords),0);
+            if (fileOpenIntent != null && fileOpenIntent.getDataString()!=null && fileOpenIntent.getDataString().startsWith(getOpenChordsAPI().getAppFolderTrigger())) {
+                // This should trigger the GET request to sync OpenChords
+                try {
+                    getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
+                    String uuid = fileOpenIntent.getData().toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
+                    getOpenChordsAPI().setOpenChordsFolderUuid(uuid);
+                    getOpenChordsAPI().setReceivedFolderLink(true);
+                    setWhattodo("openchordsintent");
+                    getMainHandler().post(() -> navigateToFragment(getString(R.string.deeplink_openchords), 0));
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                } else if (getStorageAccess().getFileSizeFromUri(fileOpenIntent.getData()) > 0) {
+            } else if (!dealtWith && fileOpenIntent != null && (fileOpenIntent.getDataString() != null || fileOpenIntent.getData()!=null)) {
+                if (getStorageAccess().getFileSizeFromUri(fileOpenIntent.getData()) > 0) {
                     getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
                     importUri = fileOpenIntent.getData();
                     Log.d(TAG, "intent received:" + importUri);
@@ -1665,7 +1672,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (navController!=null && myView!=null) {
             whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
             if (navController.getCurrentDestination() != null) {
-                navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
+                try {
+                    navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
+                } catch (Exception e) {
+                    Log.d(TAG,"Can't pop the backstack");
+                    e.printStackTrace();
+                }
             }
             if (whichMode.equals(mode_presenter)) {
                 navigateToFragment(deeplink_presenter, 0);
