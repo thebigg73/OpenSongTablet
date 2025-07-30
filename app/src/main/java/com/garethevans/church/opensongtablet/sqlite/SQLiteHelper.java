@@ -166,6 +166,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return thisSong;
         }
     }
+    public Song getSongByUuid(String uuid) {
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getSongFromUuid(db,uuid);
+        } catch (OutOfMemoryError | Exception e) {
+            return null;
+        }
+    }
     public ArrayList<Song> getSongsByFilters(boolean searchByFolder, boolean searchByArtist,
                                              boolean searchByKey, boolean searchByTag,
                                              boolean searchByFilter, boolean searchByTitle,

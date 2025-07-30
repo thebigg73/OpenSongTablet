@@ -131,6 +131,7 @@ public class CommonSQL {
     }
 
     public void updateSong(SQLiteDatabase db, Song thisSong) {
+        Log.d(TAG,"About to update song:"+thisSong.getFilename()+" with uuid:"+thisSong.getUuid());
         // Values have already been set to sqLite, just need updated in the table
         // We use an object reference to song as this could be from indexingSong or actual song
         String correctId = getAnySongId(thisSong.getFolder(),thisSong.getFilename());
@@ -517,6 +518,32 @@ public class CommonSQL {
         return thisSong;
     }
 
+    public Song getSongFromUuid(SQLiteDatabase db, String uuid) {
+        if (uuid!=null && !uuid.isEmpty()) {
+            String[] selectionArgs = new String[]{uuid};
+            String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_UUID + "= ? ";
+            Song thisSong = new Song();
+
+            Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+            // Get the first item (the matching Uuid)
+            try {
+                if (cursor.moveToFirst()) {
+                    setSongValues(thisSong, cursor);
+
+                } else {
+                    thisSong = null;
+                }
+
+                closeCursor(cursor);
+            } catch (Exception e) {
+                Log.e(TAG,"error:"+e);
+            }
+            return thisSong;
+        } else {
+            return null;
+        }
+    }
     private void setSongValues(Song thisSong, Cursor cursor) {
         thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
         thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));

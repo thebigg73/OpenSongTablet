@@ -1509,11 +1509,11 @@ public class SetActions {
 
     public SetObject createSetObjectFromFilename(String setFilename) {
         // We need to parse the set xml and populate the object
-        SetObject setObject = new SetObject();
-        setObject.setSetName(setFilename);
+        SetObject setObject = null;
 
         Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setFilename);
-        if (mainActivityInterface.getStorageAccess().uriExists(setUri)) {
+        setObject = new SetObject();
+        setObject.setSetName(setFilename);if (mainActivityInterface.getStorageAccess().uriExists(setUri) && mainActivityInterface.getStorageAccess().getFileSizeFromUri(setUri)>0) {
             try {
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);

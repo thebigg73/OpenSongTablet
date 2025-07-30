@@ -708,6 +708,7 @@ public class StorageAccess {
         if (filename==null) {
             filename = "";
         }
+        filename = filename.replace("|","¦");
         filename = filename.replaceAll("[*?<>&!#$+\":{}@\\\\]", " "); // Removes bad characters - leave ' and / though
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         // Don't allow the name OpenSong
@@ -956,45 +957,52 @@ public class StorageAccess {
     private boolean uriExists_SAF(Uri uri) {
         boolean file=false;
         if (uri!=null && uri.getScheme()!=null && uri.getScheme().startsWith("file")) {
-            Log.d(TAG,"FILE");
             // Must be in the user storage
             file = true;
         }
         if (file) {
             File f = new File(uri.getPath());
-            Log.d(TAG,"file.exists():"+f.exists());
             return f.exists();
         }
         if (uri!=null && !uri.getPath().isEmpty() && c!=null && c.getContentResolver()!=null) {
+
+            /*
+            REMOVED THIS AS IT SPITS ERRORS WHEN CHECKING ANYTHING ON DOCUMENTFILE
             DocumentFile documentFile = null;
+            DocumentFile documentFileFromTreeUri = null;
             try {
                 documentFile = DocumentFile.fromSingleUri(c, uri);
+                documentFileFromTreeUri = DocumentFile.fromTreeUri(c, uri);
             } catch (Exception e) {
                 Log.d(TAG, uri + " not a singleUri");
             }
 
+            if (documentFile!=null && documentFileFromTreeUri!=null) {
+                Log.d(TAG, "documentFile:" + documentFile.getUri() + " documentFileFromTreeUri:" + documentFileFromTreeUri.getUri());
+                Log.d(TAG,"can read the document file:"+documentFile.canRead() + " can write:"+documentFile.canWrite());
+            }
+
             if (documentFile != null) {
                 try {
-                    return documentFile.exists();
+                    if (documentFile.exists()) {
+                        return true;
+                    } else {
+                        Log.d(TAG,"documentFile.exists is false");
+                    }
                 } catch (Exception e) {
                    Log.d(TAG,"Still an issue, try the final method");
                 }
             } else {
                 return false;
-            }
+            }*/
 
-            try {
-                InputStream is = c.getContentResolver().openInputStream(uri);
-                if (is != null) {
-                    is.close();
-                }
+            try (InputStream is = c.getContentResolver().openInputStream(uri)) {
                 return true;
             } catch (Exception e) {
                 return false;
             }
-
-
         } else {
+            Log.d(TAG,"null uri, so can't possibly exist");
             return false;
         }
     }
@@ -1186,6 +1194,7 @@ public class StorageAccess {
         return filename.replace('\u00A0',' ').
                 replace("\u2007"," ").
                 replace("\u202F"," ").
+                replace("&nbsp;"," ").
                 trim();
     }
 
@@ -1381,11 +1390,12 @@ public class StorageAccess {
                                                   String folder, String subfolder, String filename) {
         // deleteOld will remove any existing file before creating a new one (avoids artefacts) - xml files only
         // We will only delete when the file isn't empty or null, otherwise folders are cleared!
-
+        // Whenever this us used, we don't need to check for the uriExists() before hand
         if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
             if (uriExists(uri) && deleteOld && filename != null && !filename.isEmpty()) {
                 // Delete it to avoid overwrite errors that leaves old stuff at the end of the file
+                Log.d(TAG,"trying to delete old file");
                 deleteFile_SAF(uri);
             }
 
@@ -1503,6 +1513,7 @@ public class StorageAccess {
                 // All good (this also closes the output stream).  Return true
                 return true;
             } else {
+                Log.d(TAG,"output stream or string was null - "+ outputStream + "  " + s);
                 return false;
             }
         } catch (Exception e) {
@@ -1912,8 +1923,6 @@ public class StorageAccess {
         // Now get an InputStream from the oldUri and an OutputStream for the newUri
         InputStream inputStream = getInputStream(oldUri);
         OutputStream outputStream = getOutputStream(newUri);
-        Log.d(TAG,"inputStream:"+inputStream);
-        Log.d(TAG,"outputStream:"+outputStream);
         // Copy the file, which also closes the streams and on success, delete the old file
         if (copyFile(inputStream, outputStream)) {
             // Likely the inputStream or outputStream wasn't null, so delete the old file!

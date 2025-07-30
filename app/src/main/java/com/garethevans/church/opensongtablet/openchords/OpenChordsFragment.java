@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,11 +124,12 @@ public class OpenChordsFragment extends Fragment {
                 myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
                         getOpenSongFolderNameFromUUID(
                                 mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
-
+                Log.d(TAG,"here via the intent");
             } else {
                 // Just set it to our preference
                 myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName());
             }
+
             folderChangedProgrammatically = false;
 
             // Set up the QR code
@@ -175,6 +177,10 @@ public class OpenChordsFragment extends Fragment {
                         queryOpenChordsServer();
                     }
                     myView.folderMessage.setText("");
+                } else if (myView!=null && myView.folderToSync.getText() != null && getContext()!=null) {
+                    String folderName = myView.folderToSync.getText().toString();
+                    Log.d(TAG, "server returned folder sent back from server:" + folderName);
+                    mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderName(folderName);
                 }
                 mainActivityInterface.getOpenChordsAPI().setIsServerResponse(false);
                 folderChangedProgrammatically = false;
@@ -278,7 +284,8 @@ public class OpenChordsFragment extends Fragment {
             // If the server has a different folder title than our one
             // We should prompt the user to either update the server one or rename our folder
             // If the user decides to change the local folder, we need to query again
-            if (keepLocalFolderName==null && myView.folderToSync.getText() != null && !myView.folderToSync.getText().toString().isEmpty() &&
+            Log.d(TAG,"keepLocalFolderName:"+keepLocalFolderName+"  myView.folderToSync.getText():"+myView.folderToSync.getText().toString()+"  titleToShow:"+titleToShow);
+            if (keepLocalFolderName==null && myView.folderToSync.getText() != null && titleToShow!=null && !titleToShow.isEmpty() && !myView.folderToSync.getText().toString().isEmpty() &&
                     !myView.folderToSync.getText().toString().equals(titleToShow)) {
                 OpenChordsFolderNameChangeBottomSheet openChordsFolderNameChangeBottomSheet = new OpenChordsFolderNameChangeBottomSheet(this,myView.folderToSync.getText().toString());
                 openChordsFolderNameChangeBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "OpenChordsFolderNameChangeBottomSheet");
@@ -286,7 +293,10 @@ public class OpenChordsFragment extends Fragment {
 
             } else {
                 // Either the folder names are the same, or we didn't have a folder set (i.e. intent)
-                myView.folderToSync.setText(titleToShow);
+                if (titleToShow!=null && !titleToShow.isEmpty()) {
+                    Log.d(TAG, "titleToShow:" + titleToShow + "  myView.folderToSync.getText():" + myView.folderToSync.getText().toString());
+                    myView.folderToSync.setText(titleToShow);
+                }
                 folderChangedProgrammatically = false;
                 mainActivityInterface.getOpenChordsAPI().setIsServerResponse(false);
                 changeButtonsEnable(true);
