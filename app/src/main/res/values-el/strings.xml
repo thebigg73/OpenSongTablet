@@ -1259,4 +1259,5 @@
     <string name="width">Πλάτος</string>
     <string name="words_and_music_by">Λέξεις και μουσική από</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="sync_content_error">Παρουσιάστηκε πρόβλημα με τις πληροφορίες που ελήφθησαν. Παρακαλώ προσπαθήστε ξανά</string>
 </resources>

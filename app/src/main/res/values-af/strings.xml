@@ -1259,4 +1259,5 @@
     <string name="width">Breedte</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="sync_content_error">Daar was \'n probleem met die inligting wat ontvang is. Probeer asb. weer</string>
 </resources>

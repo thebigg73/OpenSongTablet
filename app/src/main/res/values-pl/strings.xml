@@ -1259,4 +1259,5 @@
     <string name="width">Szerokość</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="sync_content_error">Wystąpił problem z otrzymanymi informacjami. Spróbuj ponownie</string>
 </resources>

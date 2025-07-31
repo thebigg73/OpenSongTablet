@@ -1260,4 +1260,5 @@
     <string name="width">宽度</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="sync_content_error">收到的信息有问题。请重试</string>
 </resources>

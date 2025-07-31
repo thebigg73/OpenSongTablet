@@ -1259,4 +1259,5 @@
     <string name="width">Ширина</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="sync_content_error">Виникла проблема з отриманою інформацією. Будь ласка, спробуйте ще раз</string>
 </resources>

@@ -1259,4 +1259,5 @@
     <string name="width">Szélesség</string>
     <string name="words_and_music_by">Szavak és zene</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="sync_content_error">Probléma volt a kapott információkkal. Kérjük, próbálja újra</string>
 </resources>

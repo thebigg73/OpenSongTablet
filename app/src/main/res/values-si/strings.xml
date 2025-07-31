@@ -1259,4 +1259,5 @@
     <string name="width">පළල</string>
     <string name="words_and_music_by">වචන සහ සංගීතය විසින්</string>
     <string name="zoom_level">විශාලන මට්ටම</string>
+    <string name="sync_content_error">ලැබුණු තොරතුරු සමඟ ගැටළුවක් ඇති විය. කරුණාකර නැවත උත්සාහ කරන්න.</string>
 </resources>

@@ -1233,6 +1233,7 @@
     <string name="sync_checking_local_item">Checking local item</string>
     <string name="sync_choose_device">Device to synchronise with</string>
     <string name="sync_comparing_local_and_remote">Checking local and remote folders for changes…</string>
+    <string name="sync_content_error">There was a problem with the information received.  Please try again</string>
     <string name="sync_creating_new_item">Creating new item</string>
     <string name="sync_delete_local_not_in_remote">Delete old local items</string>
     <string name="sync_delete_local_not_in_remote_info">The following items exist in the local folder, but are not in the remote folder.  These can be removed if they are no longer required</string>
@@ -1636,5 +1637,4 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="sync_content_error">There was a problem with the information received.  Please try again</string>
 </resources>

@@ -1259,4 +1259,5 @@
     <string name="width">Šířka</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="sync_content_error">Vyskytl se problém s obdrženými informacemi. Zkuste to prosím znovu</string>
 </resources>

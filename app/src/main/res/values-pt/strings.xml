@@ -1259,4 +1259,5 @@
     <string name="width">Largura</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="sync_content_error">Houve um problema com as informações recebidas. Por favor, tente novamente</string>
 </resources>

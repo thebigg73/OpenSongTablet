@@ -1259,4 +1259,5 @@
     <string name="multitrack_requires_conversion">Neki audio fajlovi zahtevaju konverziju pre nego što se mogu koristiti</string>
     <string name="multitrack_requires_conversion_info">Da biste koristili MultiTracks, sve audio datoteke u folderu moraju biti 16-bitne stereo VAV PCM datoteke.  Aplikacija može pokušati da konvertuje ove datoteke za vas.</string>
     <string name="multitrack_convert">Pretvaranje datoteka</string>
+    <string name="sync_content_error">Postojao je problem sa primljenim informacijama. Molimo vas da pokušate ponovo</string>
 </resources>

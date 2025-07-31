@@ -1259,4 +1259,5 @@
     <string name="width">Bredd</string>
     <string name="words_and_music_by">Ord och musik av</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="sync_content_error">Det uppstod ett problem med den mottagna informationen. Försök igen</string>
 </resources>
