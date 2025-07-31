@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdk 35
+    compileSdk 36
     buildTypes {
         release {
             minifyEnabled false
@@ -39,8 +39,8 @@ android {
         targetSdkVersion 35
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        versionCode 421
-        versionName '6.4.9'
+        versionCode 422
+        versionName '6.5.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -55,8 +55,8 @@ android {
             mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.2'
+            classpath 'com.android.tools.build:gradle:8.11.1'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.3'
         }
     }
 
@@ -102,7 +102,7 @@ dependencies {
     implementation 'com.google.android.play:app-update:2.1.0'                           // For updated resources
     implementation 'com.google.android.play:review-ktx:2.0.2'
     // For updated resources
-    implementation 'androidx.browser:browser:1.8.0'                                     // To open custom tab browser intents
+    implementation 'androidx.browser:browser:1.9.0'                                     // To open custom tab browser intents
     implementation 'androidx.recyclerview:recyclerview-selection:1.2.0'                 // RecyclerView (obviously)
     implementation 'androidx.recyclerview:recyclerview:1.4.0'                           // RecyclerView (obviously)
     implementation 'androidx.gridlayout:gridlayout:1.1.0'                               // GridLayout (obviously)
@@ -110,9 +110,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.9.2'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.9.2'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.2'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment:2.9.3'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui:2.9.3'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.3'     // The navigation fragment control
     implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.9.1'                               // Allows annotations in code
@@ -130,9 +130,9 @@ dependencies {
     implementation 'com.gu.android:toolargetool:0.3.2'                                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
     implementation 'androidx.exifinterface:exifinterface:1.4.1'                         // To get image exif data (orientation for camera)
-    implementation 'com.google.code.gson:gson:2.11.0'                                   // GSon for JSON conversion of Song/Set objects
-    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.13.1'                                   // GSon for JSON conversion of Song/Set objects
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
     //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
