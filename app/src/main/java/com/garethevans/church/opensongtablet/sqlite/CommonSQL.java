@@ -131,7 +131,6 @@ public class CommonSQL {
     }
 
     public void updateSong(SQLiteDatabase db, Song thisSong) {
-        Log.d(TAG,"About to update song:"+thisSong.getFilename()+" with uuid:"+thisSong.getUuid());
         // Values have already been set to sqLite, just need updated in the table
         // We use an object reference to song as this could be from indexingSong or actual song
         String correctId = getAnySongId(thisSong.getFolder(),thisSong.getFilename());

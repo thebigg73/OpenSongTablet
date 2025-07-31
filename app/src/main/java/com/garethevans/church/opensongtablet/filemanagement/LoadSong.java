@@ -580,7 +580,7 @@ public class LoadSong {
                                 thisSong.setFiletype("XML");
 
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.d(TAG,thisSong.getFilename()+" isn't XML - caught exception when trying to read XML");
                                 if (thisSong.getFiletype().equals("XML") &&
                                         thisSong.getFilename() != null &&
                                         !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {

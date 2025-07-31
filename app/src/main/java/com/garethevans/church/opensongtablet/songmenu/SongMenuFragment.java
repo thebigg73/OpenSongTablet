@@ -933,10 +933,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void setSongListSearchByFolder(boolean songListSearchByFolder) {
         this.songListSearchByFolder = songListSearchByFolder;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder",songListSearchByFolder);
+        if (mainActivityInterface!=null && getContext()!=null) {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder", songListSearchByFolder);
+        }
     }
     private void getSongListSearchByFolder() {
-        songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder",false);
+        if (mainActivityInterface!=null && getContext()!=null) {
+            songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder", false);
+        }
     }
 
     private void setSongListSearchByFolderValue(String songListSearchByFolderValue) {

@@ -4750,9 +4750,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Turn off nearby
         getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
 
-        // Empty the export folder
-        getStorageAccess().wipeFolder("Export","");
-
         // Stop and clear the metronome
         getMetronome().releaseSoundPool();
 
@@ -4769,6 +4766,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMidi().tryDisconnectBluetoothLE();
 
         getMultiTrackPlayer().closeMultitrack();
+
+        // Clear out the export and received folders
+        getStorageAccess().wipeFolder("Export","");
+        getStorageAccess().wipeFolder("Received","");
 
         // Keep a reference to connections if needed as bundle
 
