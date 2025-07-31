@@ -48,7 +48,8 @@
         android:layout_height="wrap_content"
         android:text="@string/sync_pull_download"
         app:icon="@drawable/download"
-        android:layout_gravity="bottom|end"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"/>
 </FrameLayout>
 
 
