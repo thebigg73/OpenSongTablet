@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsSyncItemsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class SyncItemsFragment extends Fragment {
 
@@ -51,6 +57,9 @@ public class SyncItemsFragment extends Fragment {
         prepareStrings();
         myView.itemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        myView.folderFilter.setVisibility(what.equals("songs") ? View.VISIBLE:View.GONE);
+        prepareFolderDropDown();
+
         myView.showNewUpdate.setVisibility(what.equals("songs") ? View.VISIBLE:View.GONE);
         myView.showNewUpdate.setChecked(what.equals("songs"));
 
@@ -77,19 +86,32 @@ public class SyncItemsFragment extends Fragment {
         }
     }
 
+    private void prepareFolderDropDown() {
+        if (what.equals("songs") && getContext()!=null) {
+            ArrayList<String> foldersAvailable = mainActivityInterface.getSQLiteHelper().getFolders();
+            Collections.sort(foldersAvailable);
+            // Add a blank option at the top
+            foldersAvailable.add(0,"");
+            ExposedDropDownArrayAdapter adapter = new ExposedDropDownArrayAdapter(getContext(),myView.folderFilter,R.layout.view_exposed_dropdown_item,foldersAvailable);
+            myView.folderFilter.setAdapter(adapter);
+        }
+    }
+
     public void prepareRecycler(Context c) {
         if (c!=null) {
             mainActivityInterface = (MainActivityInterface) c;
             syncNearbyFragment.announceNotPrepared(what);
             Log.d(TAG,"announceNotPrepared("+what+")");
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                nearbySyncAdapter = new NearbySyncAdapter(c, syncNearbyFragment, this);
+                nearbySyncAdapter = new NearbySyncAdapter(c, syncNearbyFragment, this, what);
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (myView != null) {
-                        Log.d(TAG,"what:"+what+"  setting adapter");
+                        if (myView.folderFilter.getText() != null) {
+                            nearbySyncAdapter.chooseFolder(myView.folderFilter.getText().toString());
+                        }
                         myView.itemsRecyclerView.setAdapter(nearbySyncAdapter);
+                        nearbySyncAdapter.prepareItems();
                     }
-                    syncNearbyFragment.announcePrepared(what);
                 });
             });
         }
@@ -103,6 +125,21 @@ public class SyncItemsFragment extends Fragment {
         });
         myView.showNewUpdate.setOnCheckedChangeListener((compoundButton, b) -> prepareRecycler(getContext()));
         myView.downloadItems.setOnClickListener(view -> requestTheseItems());
+        myView.folderFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Send the folderChosen to the arrayAdapter
+                prepareRecycler(getContext());
+                //syncNearbyFragment.announceNotPrepared(what);
+                //nearbySyncAdapter.chooseFolder(myView.folderFilter.getText().toString());
+            }
+        });
     }
 
     public void setItemsSelected(int count, int totalItems) {

@@ -1636,4 +1636,5 @@
     <string name="youtube" translatable="false">YouTube</string>
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="sync_content_error">There was a problem with the information received.  Please try again</string>
 </resources>

@@ -43,7 +43,7 @@ public class SyncNearbyFragment extends Fragment {
     private SettingsSyncBinding myView;
     @SuppressWarnings("FieldCanBeLocal")
     private String  sets_string = "", profiles_string = "", songs_string = "",
-            no_response_string = "", info_string="",
+            no_response_string = "", info_string="", content_error_string = "",
             chosenDevice = "", sync_extracting_string="";
     private boolean syncSongPrepared = false;
     private boolean syncSetPrepared = false;
@@ -119,6 +119,7 @@ public class SyncNearbyFragment extends Fragment {
             profiles_string = getString(R.string.profile);
             songs_string = getString(R.string.songs);
             no_response_string = getString(R.string.sync_server_noresponse_error);
+            content_error_string  = getString(R.string.sync_content_error);
             String title_string = getString(R.string.sync);
             String web_help = getString(R.string.website_sync);
             sync_extracting_string = getString(R.string.sync_extracting);
@@ -252,7 +253,7 @@ public class SyncNearbyFragment extends Fragment {
             timeout = false;
             if (show) {
                 timeout = true;
-                timeoutHandler.postDelayed(timeoutRunnable, 10000);
+                timeoutHandler.postDelayed(timeoutRunnable, 15000);
             }
             mainActivityInterface.getMainHandler().post(() -> {
                 myView.hostProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -297,6 +298,7 @@ public class SyncNearbyFragment extends Fragment {
     }
 
     public void announcePrepared(String what) {
+        Log.d(TAG,"what:"+what+"  prepared");
         switch (what) {
             case "songs":
                 syncSongPrepared = true;
@@ -308,6 +310,7 @@ public class SyncNearbyFragment extends Fragment {
                 syncProfilePrepared = true;
                 break;
         }
+        Log.d(TAG,"syncSongPrepared:"+syncSongPrepared+"  syncSetPrepared:"+syncSetPrepared+"  syncProfilePrepared:"+syncProfilePrepared);
         if (syncSongPrepared && syncSetPrepared && syncProfilePrepared) {
             showProgress(false);
         }
@@ -344,8 +347,11 @@ public class SyncNearbyFragment extends Fragment {
             long starttime = System.currentTimeMillis();
             Log.d(TAG,"START now:" + starttime);
             int thisItem = 0;
+
+            // Each item reminds the progress bar to stay visible
             try {
                 while ((ze = zipInputStream.getNextEntry()) != null) {
+                    announceNotPrepared(what);
                     if (!ze.isDirectory()) {
                         thisItem++;
                         String folderToUse = null;
@@ -404,7 +410,6 @@ public class SyncNearbyFragment extends Fragment {
                             try {
                                 if (outputStreamForNewItem != null && myView != null) {
                                     while ((count = zipInputStream.read(buffer)) != -1) {
-                                        Log.d(TAG,"writing some content...");
                                         outputStreamForNewItem.write(buffer, 0, count);
                                     }
 
@@ -429,15 +434,10 @@ public class SyncNearbyFragment extends Fragment {
                                         Log.d(TAG,"songSubfolder:"+songSubfolder+"  songFilename:"+songFilename);
                                         String content = mainActivityInterface.getStorageAccess().readTextFileToString(
                                                 mainActivityInterface.getStorageAccess().getInputStream(uriForNewItem));
-                                        Log.d(TAG,"content from json:"+content);
                                         Song thisNonOSSong = MainActivity.gson.fromJson(content, Song.class);
                                         Log.d(TAG,"thisNonOSSong:"+thisNonOSSong);
                                         if (thisNonOSSong!=null) {
-                                            Log.d(TAG,"thisNonOSSong.getFolder():"+thisNonOSSong.getFolder());
-                                            Log.d(TAG,"thisNonOSSong.getFilename():"+thisNonOSSong.getFilename());
                                             Log.d(TAG,"thisNonOSSong.getUuid():"+thisNonOSSong.getUuid());
-                                            Log.d(TAG,"thisNonOSSong.getLastModified():"+thisNonOSSong.getLastModified());
-                                            Log.d(TAG,"thisNonOSSong.getNotes():"+thisNonOSSong.getNotes());
 
                                             // Now update this item in our databases
                                             if (mainActivityInterface.getSQLiteHelper().getSpecificSong(thisNonOSSong.getFolder(), thisNonOSSong.getFilename())==null) {
@@ -455,11 +455,9 @@ public class SyncNearbyFragment extends Fragment {
 
                                     } else if (filenameToUse.equals(mainActivityInterface.getNearbyActions().currentSetFile)) {
                                         // Load this set object into our current set
-                                        Log.d(TAG, "Clearing current set");
                                         mainActivityInterface.getSetActions().clearCurrentSet();
                                         ArrayList<Uri> setsToLoad = new ArrayList<>();
                                         setsToLoad.add(uriForNewItem);
-                                        Log.d(TAG, "attempting to load in set item:" + uriForNewItem);
                                         mainActivityInterface.getSetActions().loadSets(setsToLoad, mainActivityInterface.getCurrentSet(), "");
                                         mainActivityInterface.getSetActions().parseCurrentSet();
                                     }
@@ -563,8 +561,15 @@ public class SyncNearbyFragment extends Fragment {
         super.onDestroyView();
         myView = null;
         progressTextClearHandler.removeCallbacks(progressTextClearRunnable);
-        // Empty the export folder
+        // Empty the export folder and the received folder for json and zip file
         mainActivityInterface.getStorageAccess().wipeFolder("Export","");
+        ArrayList<String> receivedItems = mainActivityInterface.getStorageAccess().listFilesInFolder("Received","");
+        for (int i=0; i<receivedItems.size(); i++) {
+            if (receivedItems.get(i).endsWith(".json") || receivedItems.get(i).endsWith(".zip")) {
+                mainActivityInterface.getStorageAccess().doDeleteFile("Received", "", receivedItems.get(i));
+            }
+        }
+        mainActivityInterface.getStorageAccess().wipeFolder("Received","");
         // Rebuild the song index
         if (mainActivityInterface.getSongListBuildIndex().getFullIndexRequired()) {
             mainActivityInterface.indexSongs();

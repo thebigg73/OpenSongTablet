@@ -97,7 +97,9 @@ public class NearbySendPayloads {
     }
     public void sendSyncContentRequest(String deviceToAction, String filename, NearbyJson nearbyJson) {
         // We have chosen which files we want and have them bundled in the json
-        // Now create a json string object and save to a file in the Export folder
+        // Now create a json string object and save to a file in the Export folder after clearing it
+        // Empty the export folder
+        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
         String jsonString = MainActivity.gson.toJson(nearbyJson);
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", filename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",filename);
@@ -180,6 +182,8 @@ public class NearbySendPayloads {
         nearbyJson.setShareableProfileObjects(shareableProfileObjects);
 
         // Now create a json string object and save to a file in the Export folder
+        // Empty the export folder
+        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
         String jsonString = MainActivity.gson.toJson(nearbyJson);
         mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", nearbyActions.sharableObjectFile, jsonString);
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.sharableObjectFile);
@@ -231,6 +235,8 @@ public class NearbySendPayloads {
         if (nearbyRequestJson!=null) {
             // A connected device has chosen some of our files
             // We need to package them up in a zip file and send them over
+            // Empty the export folder
+            mainActivityInterface.getStorageAccess().wipeFolder("Export","");
             Uri shareZip = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", filename);
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                     shareZip, null, "Export", "", filename);
@@ -248,6 +254,8 @@ public class NearbySendPayloads {
                         // Make a json file for the current set
                         String currentSetXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
                         Uri currentSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.currentSetFile);
+                        // Empty the export folder
+                        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                                 currentSetUri, null, "Export", "", nearbyActions.currentSetFile);
                         mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", nearbyActions.currentSetFile, currentSetXML);
@@ -270,6 +278,8 @@ public class NearbySendPayloads {
                         String newFilename = thisNonOSSong.getFolder().replace("/","_____")+"_____"+thisNonOSSong.getFilename()+".json";
                         String songJson = MainActivity.gson.toJson(thisNonOSSong);
                         // Create a file for this content
+                        // Empty the export folder
+                        mainActivityInterface.getStorageAccess().wipeFolder("Export","");
                         Uri thisNonOSSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Export","", newFilename);
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,thisNonOSSongUri,null,"Export","",newFilename);
                         mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename,songJson);
@@ -343,7 +353,6 @@ public class NearbySendPayloads {
         // HOST: Cancel previous song transfers - a new song is being sent
         // nearbyActions.getNearbyTransferRecords().cancelTransferIds();
         // New method sends bytes as a json
-        // We will send the current section as a pending section change (encode as -ve offset by 1) for action on next song load on the client
         NearbyJson nearbyJsonToSend = new NearbyJson();
         boolean sendingFile = false;
         nearbyJsonToSend.setWhat(nearbyActions.songTag);

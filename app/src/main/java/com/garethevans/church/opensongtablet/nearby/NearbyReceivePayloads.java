@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -240,7 +239,6 @@ public class NearbyReceivePayloads {
             }
         });
     }
-
 
     // Autoscroll actions
     private void autoscrollStart() {
@@ -619,7 +617,7 @@ public class NearbyReceivePayloads {
                     nearbyJson = MainActivity.gson.fromJson(
                             mainActivityInterface.getStorageAccess().readTextFileToString(inputStream), NearbyJson.class);
                 } catch (Exception e) {
-                    Log.d(TAG,"There was an error with the json");
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_content_error));
                     nearbyJson = null;
                     e.printStackTrace();
                 }
