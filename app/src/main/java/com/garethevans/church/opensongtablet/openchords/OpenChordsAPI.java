@@ -1655,10 +1655,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setSetLists(setsForUpload);
         uploadFolderObject.setTags(tagsForUpload);
 
-        String json = gson.toJson(uploadFolderObject);
+        //String json = gson.toJson(uploadFolderObject);
         // Replace unneccessary items
-        json = removeUnnecessaryBitsFromJson(json);
-        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
+        //json = removeUnnecessaryBitsFromJson(json);
+        //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
 
         updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
 
@@ -1937,10 +1937,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             uploadFolderObject.setSetLists(serverSetLists);
             uploadFolderObject.setTags(serverTags);
 
-            String json = gson.toJson(uploadFolderObject);
+            //String json = gson.toJson(uploadFolderObject);
             // Replace unneccessary items
-            json = removeUnnecessaryBitsFromJson(json);
-            mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
+            //json = removeUnnecessaryBitsFromJson(json);
+            //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
 
             updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
             doQueryCall(uploadFolderObject);
@@ -2035,10 +2035,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 uploadFolderObject.setSetLists(setsForUpload);
                 uploadFolderObject.setTags(serverTags);
 
-                String json = gson.toJson(uploadFolderObject);
+                //String json = gson.toJson(uploadFolderObject);
                 // Replace unneccessary items
-                json = removeUnnecessaryBitsFromJson(json);
-                mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
+                //json = removeUnnecessaryBitsFromJson(json);
+                //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
 
                 updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
                 doQueryCall(uploadFolderObject);
@@ -2148,10 +2148,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
         updateConflictItem("lastForcePush");
 
-        String json = gson.toJson(uploadFolderObject);
+        //String json = gson.toJson(uploadFolderObject);
         // Replace unneccessary items
-        json = removeUnnecessaryBitsFromJson(json);
-        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "forcePush.json", json);
+        //json = removeUnnecessaryBitsFromJson(json);
+        //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "forcePush.json", json);
 
         Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
         call.enqueue(new Callback<OpenChordsFolderObject>() {
