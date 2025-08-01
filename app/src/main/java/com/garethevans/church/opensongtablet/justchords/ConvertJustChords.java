@@ -255,7 +255,10 @@ public class ConvertJustChords {
                 }
                 // Get a setXML file
                 mainActivityInterface.getCurrentSet().setSetCurrentLastName(mainActivityInterface.getImportFilename().replace(extension,""));
+
+                mainActivityInterface.getSetActions().setUseThisLastModifiedDate(mainActivityInterface.getTimeTools().getNowIsoTime());
                 String setXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
+                mainActivityInterface.getSetActions().setUseThisLastModifiedDate(null);
 
                 // Save the set file
                 File setFile = new File(extractFolder,mainActivityInterface.getImportFilename().replace(extension,"")+".osts");

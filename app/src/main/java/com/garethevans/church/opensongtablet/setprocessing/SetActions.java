@@ -1582,7 +1582,6 @@ public class SetActions {
         if (setObject.getLastModified()==null || setObject.getLastModified().isEmpty()) {
             // First try to get the file metadata
             setObject.setLastModified(mainActivityInterface.getTimeTools().getIsoTimeFromFileMetadata("Sets","",setFilename));
-            Log.d(TAG,"lastModified:"+setObject.getLastModified());
         }
         return setObject;
     }
@@ -1703,7 +1702,7 @@ public class SetActions {
     public OpenChordsSetListItem getOpenChordsSetListItemForSong(SetSlideGroupObject setSlideGroupObject) {
         OpenChordsSetListItem openChordsSetListItem = null;
         OpenChordsSetListSongItem openChordsSetListSongItem;
-
+        String prefKey = setSlideGroupObject.getPrefKey();
         String folder = setSlideGroupObject.getPath();
         String filename = setSlideGroupObject.getName();
         if (folder==null || folder.isEmpty() || folder.equals("/")) {
@@ -1720,6 +1719,9 @@ public class SetActions {
                     tempSong.setUuid(String.valueOf(UUID.randomUUID()));
                 }
                 openChordsSetListSongItem.setSongId(tempSong.getUuid());
+                if (prefKey!=null && !prefKey.isEmpty()) {
+                    openChordsSetListSongItem.setTranspose(prefKey);
+                }
                 openChordsSetListItem.setId(tempSong.getUuid());
                 openChordsSetListItem.setSongItem(openChordsSetListSongItem);
                 if (tempSong.getLastModified() == null || tempSong.getLastModified().isEmpty()) {

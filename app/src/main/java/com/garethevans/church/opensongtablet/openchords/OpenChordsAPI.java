@@ -463,11 +463,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     private void findSongsNeedingUpdated() {
         // We have already logged the missing files, so now we deal with matches/updates
-        String lastDownloadSongChanges = getLastModified("lastDownloadSongChanges");
-        long lastDownloadSongChangesMillis = 0;
-        if (lastDownloadSongChanges != null && !lastDownloadSongChanges.equals(c.getString(R.string.is_not_set))) {
-            lastDownloadSongChangesMillis = Instant.parse(lastDownloadSongChanges).toEpochMilli();
-        }
         for (int i = 0; i < serverSongsCompareObjects.size(); i++) {
             OpenChordsCompareObject serverObject = serverSongsCompareObjects.get(i);
             for (int j = 0; j < localSongsCompareObjects.size(); j++) {
@@ -527,11 +522,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     private void findSetsNeedingUpdated() {
         // We have already logged the missing files, so now we deal with matches/updates
-        String lastDownloadSetChanges = getLastModified("lastDownloadSetChanges");
-        long lastDownloadSetChangesMillis = 0;
-        if (lastDownloadSetChanges != null && !lastDownloadSetChanges.equals(c.getString(R.string.is_not_set))) {
-            lastDownloadSetChangesMillis = Instant.parse(lastDownloadSetChanges).toEpochMilli();
-        }
         for (int i = 0; i < serverSetListsCompareObjects.size(); i++) {
             OpenChordsCompareObject serverObject = serverSetListsCompareObjects.get(i);
             for (int j = 0; j < localSetListsCompareObjects.size(); j++) {
@@ -540,12 +530,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         (localObject.getTitle() != null && localObject.getTitle().equals(serverObject.getTitle()))) {
                     // This is a match, now decide if it needs updated or not
                     boolean serverObjectHasLastModified = true;
-                    long serverObjectLastModified = 0;
                     if (serverObject.getLastModified() == null || serverObject.getLastModified().isEmpty()) {
                         serverObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
                         serverObjectHasLastModified = false;
-                        serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
                     }
+                    long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
+
                     boolean localObjectHasLastModified = true;
                     if (localObject.getLastModified() == null || localObject.getLastModified().isEmpty()) {
                         localObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
@@ -555,6 +545,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     if (serverObjectLastModified == 0) {
                         serverObjectLastModified = localObjectLastModified;
                     }
+
                     if (!serverObjectHasLastModified && localObjectHasLastModified) {
                         // The server version doesn't have a last modified date, but the local does, we need to update the server
                         setListsOnServerOlder.add(localObject);
@@ -961,14 +952,20 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 String itemCustomData = serverSetListItem.getCustomData();
                 String itemLastUpdated = serverSetListItem.getLastUpdated();
                 String itemNotes = serverSetListItem.getNotes();
+
                 // Get the filename from the id
                 boolean found = false;
                 String filename = null;
                 String key = null;
                 String title = null;
+                String prefKey = null;
+                if (openChordsSetListSongItem!=null) {
+                    prefKey = openChordsSetListSongItem.getTranspose();
+                }
 
                 if (itemType != null && itemType.equals("song")) {
                     for (int j = 0; j < serverSongs.size(); j++) {
+
                         OpenChordsSong openChordsSong = serverSongs.get(j);
                         if (openChordsSong.getId() != null && openChordsSong.getId().equalsIgnoreCase(serverSetListItem.getId()) &&
                                 openChordsSong.getTitle() != null) {
@@ -1006,6 +1003,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                                 break;
                             }
                         }
+                    }
+
+                    if (prefKey!=null && !prefKey.isEmpty() && !prefKey.equals(key)) {
+                        key = prefKey;
                     }
 
                     if (serverFolder!=null && serverFolder.getTitle()!=null && !serverFolder.getTitle().isEmpty() &&
@@ -1170,6 +1171,11 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public OpenChordsSetList convertOpenSongSetToOpenChordsSetList(String filename) {
         // This is a newer method that parsers the set into a setObject first
         if (filename!=null) {
+            // The set should start with OpenChords__, but we need to check there aren't 2 of them!
+            if (filename.startsWith(getOpenSongSetCategoryStart())) {
+                filename = filename.replaceFirst(getOpenSongSetCategoryStart(), "");
+                filename = getOpenSongSetCategoryStart() + filename;
+            }
             SetObject setObject = mainActivityInterface.getSetActions().createSetObjectFromFilename(filename);
 
             if (setObject != null) {
@@ -1183,7 +1189,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 }
                 openChordsSetList.setLastUpdated(setObject.getLastModified());
                 openChordsSetList.setNotes(jsonNullIfEmpty(setObject.getNotes()));
-                openChordsSetList.setTitle(jsonNullIfEmpty(setObject.getSetName()));
+                String title = jsonNullIfEmpty(setObject.getSetName());
+                if (title!=null) {
+                    // Don't include the OpenChords category in the title here
+                    title = title.replace(getOpenSongSetCategoryStart(),"");
+                }
+                openChordsSetList.setTitle(title);
                 // Now we need to go through the set items and add them
                 ArrayList<OpenChordsSetListItem> openChordsSetListItems = null;
                 if (setObject.getSlideGroups() != null) {
@@ -2000,8 +2011,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     for (int j = 0; j < serverSetLists.size(); j++) {
                         OpenChordsSetList serverSetList = serverSetLists.get(j);
                         // If this set exists on the local, we keep it
-                        if ((localSetList.getId() != null && localSetList.getId().equals(serverSetList.getId())) ||
-                                (localSetList.getTitle() != null && localSetList.getTitle().equals(serverSetList.getTitle()))) {
+                        if ((localSetList.getId() != null && localSetList.getId().equals(serverSetList.getId()))) {
                             setsForUpload.add(serverSetList);
                         } else {
                             setsToBackup.add(serverSetList);

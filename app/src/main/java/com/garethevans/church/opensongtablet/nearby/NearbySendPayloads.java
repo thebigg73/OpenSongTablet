@@ -252,7 +252,10 @@ public class NearbySendPayloads {
                 for (ShareableObject shareableObject : nearbyRequestJson.getShareableSetObjects()) {
                     if ((shareableObject.getFilename()).equals(nearbyActions.currentSetFile)) {
                         // Make a json file for the current set
+                        mainActivityInterface.getSetActions().setUseThisLastModifiedDate(mainActivityInterface.getTimeTools().getNowIsoTime());
                         String currentSetXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
+                        mainActivityInterface.getSetActions().setUseThisLastModifiedDate(null);
+
                         Uri currentSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.currentSetFile);
                         // Empty the export folder
                         mainActivityInterface.getStorageAccess().wipeFolder("Export","");

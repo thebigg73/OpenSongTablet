@@ -505,7 +505,10 @@ public class ImportFileFragment extends Fragment {
                                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, false);
                             }
                             // Save this as an actual set file
+                            mainActivityInterface.getSetActions().setUseThisLastModifiedDate(mainActivityInterface.getTimeTools().getNowIsoTime());
                             String xml = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
+                            mainActivityInterface.getSetActions().setUseThisLastModifiedDate(null);
+
                             copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", newSetName);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
                             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Sets","",newSetName);

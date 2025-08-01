@@ -3578,7 +3578,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "saveset":
                     // Overwriting the last loaded set with the current one via bottom sheet
                     // This is only called if we are editing a previously saved set
+                    getSetActions().setUseThisLastModifiedDate(getTimeTools().getNowIsoTime());
                     String xml = getSetActions().createSetXML(getCurrentSet());
+                    getSetActions().setUseThisLastModifiedDate(null);
+
                     String setString = getSetActions().getSetAsPreferenceString();
                     result = getStorageAccess().doStringWriteToFile("Sets", "", currentSet.getSetCurrentLastName(), xml);
                     if (result) {

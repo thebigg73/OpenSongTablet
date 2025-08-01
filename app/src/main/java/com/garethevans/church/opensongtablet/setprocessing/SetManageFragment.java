@@ -500,7 +500,10 @@ public class SetManageFragment extends Fragment {
                             "Sets", "", newSetFilename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newSetUri);
 
+                    mainActivityInterface.getSetActions().setUseThisLastModifiedDate(mainActivityInterface.getTimeTools().getNowIsoTime());
                     String setXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
+                    mainActivityInterface.getSetActions().setUseThisLastModifiedDate(null);
+
                     String setAsPref = mainActivityInterface.getSetActions().getSetAsPreferenceString();
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveSet writeFileFromString Sets/" + newSetFilename + " with: " + setXML);
                     if (mainActivityInterface.getStorageAccess().writeFileFromString(setXML, outputStream)) {
