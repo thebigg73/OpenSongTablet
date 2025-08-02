@@ -5,59 +5,92 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.textview.MaterialTextView;
-
-import java.util.ArrayList;
 
 public class ShowToast {
 
-    private final View anchor;
+    // New method uses a hiddent textview that floats over the main layout
+    private final MaterialTextView toastBox;
+
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "ShowToast";
-    private PopupWindow popupWindow;
-    private final ArrayList<PopupWindow> popupWindows = new ArrayList<>();
-    private MaterialTextView textToast;
     private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private Handler handlerShow;
     private Handler handlerHide;
-    private Runnable runnableShow;
-    private long messageEndTime = 0;
     private final long showTime = 2500;
     private String currentMessage = "";
-    private final Runnable runnableHide = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                currentMessage = "";
-                popupWindow.dismiss();
-                kill();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d(TAG, "Couldn't dismiss popupWindow");
-            }
-        }
-    };
+    private final Runnable runnableHide;
+    private final Runnable runnableShow;
     private final String success, error;
 
-    public ShowToast(Context c, View anchor) {
-        this.anchor = anchor;
+    public ShowToast(Context c, MaterialTextView toastBox) {
+        this.toastBox = toastBox;
         this.c = c;
         success = c.getString(R.string.success);
         error = c.getString(R.string.error);
-        initialisePopupWindow();
+        mainActivityInterface = (MainActivityInterface) c;
+        handlerShow = mainActivityInterface.getMainHandler();
+        handlerHide = mainActivityInterface.getMainHandler();
+        runnableHide = () -> {
+            currentMessage = "";
+            if (toastBox != null) {
+                toastBox.post(() -> {
+                    try {
+                        toastBox.setText("");
+                        toastBox.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        };
+        runnableShow = () -> {
+            if (toastBox!=null) {
+                toastBox.post(() -> {
+                    try {
+                        toastBox.setText(currentMessage);
+                        toastBox.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        };
     }
 
-    // Initialise popupWindow
-    private void initialisePopupWindow() {
-        popupWindow = new PopupWindow(c);
+    public void doIt(final String message) {
+        // Only proceed if the message is valid and isn't currently shown
+        if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
+            currentMessage = message;
+
+            if (handlerShow==null) {
+                handlerShow = mainActivityInterface.getMainHandler();
+            }
+            if (handlerHide==null) {
+                handlerHide = mainActivityInterface.getMainHandler();
+            }
+
+            // Remove any pending runnables to show/hide
+            handlerShow.removeCallbacks(runnableShow);
+            handlerHide.removeCallbacks(runnableHide);
+
+            // Show the new message
+            handlerShow.post(runnableShow);
+            handlerHide.postDelayed(runnableHide, showTime);
+        }
+    }
+    public void doItBottomSheet(final String message, View bsAnchor) {
+        // Because the BottomSheet fragment sits above all views, the normal toastBox gets coveree
+        // We need to use a popup window here
+        PopupWindow popupWindow = new PopupWindow(c);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             popupWindow.setElevation(32);
         }
@@ -65,167 +98,47 @@ public class ShowToast {
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.view_toast, null, false);
         popupWindow.setContentView(view);
         popupWindow.setFocusable(false);
-        //popupWindow.setBackgroundDrawable(null);
+        //noinspection deprecation
         popupWindow.setBackgroundDrawable(new BitmapDrawable()); // Necessary for outside touch to work
         popupWindow.setOutsideTouchable(true);
-        textToast = view.findViewById(R.id.textToast);
-
+        MaterialTextView textToast = view.findViewById(R.id.textToast);
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
         popupWindow.getContentView().getRootView().setOnClickListener(v -> popupWindow.dismiss());
-        popupWindow.setOnDismissListener(() -> popupWindows.remove(popupWindow));
-    }
 
-    public void doIt(final String message) {
-        try {
-            // Only proceed if the message is valid and isn't currently shown
-            if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
-                // Kill any existing
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    popupWindows.add(popupWindow);
+        Handler popupHandlerShow = mainActivityInterface.getMainHandler();
+        Handler popupHandlerHide = mainActivityInterface.getMainHandler();
 
-                    kill();
-
-                    popupWindows.add(popupWindow);
-
-                    currentMessage = message;
-                    // Toasts with custom layouts are deprecated and look ugly!
-                    // Use a more customisable popup window
-
-                    // If a message is already showing, then wait
-                    long delayTime;
-                    long currTime = System.currentTimeMillis();
-                    if (currTime > messageEndTime) {
-                        // Good to go now
-                        delayTime = 0;
-                        messageEndTime = currTime + showTime;
-                    } else {
-                        delayTime = messageEndTime - currTime + 500;
-                    }
-
-                    runnableShow = () -> {
-                        if (textToast != null && popupWindow != null) {
-                            try {
-                                textToast.setText(message);
-                                messageEndTime = System.currentTimeMillis() + showTime;
-                                handlerHide = new Handler(Looper.getMainLooper());
-                                handlerHide.postDelayed(runnableHide, showTime);
-                                popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    handlerShow = new Handler(Looper.getMainLooper());
-                    handlerShow.postDelayed(runnableShow, delayTime);
-                });
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // If there is a normal toastBox, hide it for now (any runnable will properly remove)
+        if (toastBox!=null) {
+            toastBox.post(() -> {
+                toastBox.setText("");
+                toastBox.setVisibility(View.GONE);
+            });
         }
+
+        // Show the popup toast message above the bottom sheet
+        popupHandlerShow.post(() -> {
+            textToast.setText(message);
+            popupWindow.showAtLocation(bsAnchor, Gravity.CENTER, 0, 0);
+        });
+        popupHandlerHide.postDelayed(popupWindow::dismiss,showTime);
     }
 
     public void success() {
         doIt(success);
     }
-
     public void error() {
         doIt(error);
     }
 
-    public void doItBottomSheet(final String message, View bsAnchor) {
-        try {
-            // Only proceed if the message is valid and isn't currently shown
-            if (message != null && !message.isEmpty() && !message.equals(currentMessage)) {
-                currentMessage = message;
-                // Toasts with custom layouts are deprecated and look ugly!
-                // Use a more customisable popup window
-
-                // If a message is already showing, then wait
-                long delayTime;
-                long currTime = System.currentTimeMillis();
-                if (currTime > messageEndTime) {
-                    // Good to go now
-                    delayTime = 0;
-                    messageEndTime = currTime + showTime;
-                } else {
-                    delayTime = messageEndTime - currTime + 500;
-                }
-
-                runnableShow = () -> {
-                    if (textToast != null && popupWindow != null) {
-                        try {
-                            textToast.setText(message);
-                            popupWindow.showAtLocation(bsAnchor, Gravity.CENTER, 0, 0);
-                            messageEndTime = System.currentTimeMillis() + showTime;
-                            handlerHide = new Handler(Looper.getMainLooper());
-                            handlerHide.postDelayed(runnableHide, showTime);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                handlerShow = new Handler(Looper.getMainLooper());
-                handlerShow.postDelayed(runnableShow, delayTime);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void kill() {
-        try {
-            currentMessage = "";
-            // Remove any pending runnables to show/hide
-            if (handlerShow != null) {
-                handlerShow.removeCallbacks(runnableShow);
-            }
-            if (handlerHide != null) {
-                handlerHide.removeCallbacks(runnableHide);
-            }
-
-            // Just hide the popup window
-            if (popupWindow != null && popupWindow.isShowing()) {
-                // Close the popup using the onclick method
-                textToast.performClick();
-                if (popupWindow.isShowing()) {
-                    try {
-                        popupWindow.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d(TAG, "Couldn't kill showToast");
-
+        currentMessage = "";
+        if (toastBox!=null) {
+            toastBox.post(() -> {
+                toastBox.setText("");
+                toastBox.setVisibility(View.GONE);
+            });
         }
-
-        if (popupWindow != null) {
-            try {
-                popupWindow.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Try killing any logged popups
-        clearAllPopups();
     }
 
-    // Try clear all popupWindows
-    public void clearAllPopups() {
-        for (int i = 0; i < popupWindows.size(); i++) {
-            try {
-                PopupWindow popupWindowTemp = popupWindows.get(i);
-                popupWindowTemp.dismiss();
-                popupWindows.remove(i);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        //popupWindows.clear();
-    }
 }

@@ -3931,7 +3931,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         // Check we have a toast helper
         if (showToast == null) {
-            showToast = new ShowToast(this, myView.getRoot());
+            showToast = new ShowToast(this, myView.toastBox);
         }
         // Sent the helper reference
         return showToast;

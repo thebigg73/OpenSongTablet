@@ -204,6 +204,8 @@ public class PageButtons {
         longText = new ArrayList<>();
         drawableIds = new ArrayList<>();
 
+        prepareOption("?","","","",R.drawable.help);
+
         // Set actions
         prepareOption("?","--- " + c.getString(R.string.set_lists) + " ---","","",R.drawable.help);
         prepareOption("set",c.getString(R.string.set_current),c.getString(R.string.show),"",R.drawable.list_number);
