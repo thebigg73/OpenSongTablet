@@ -218,6 +218,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
 
     private void setListeners() {
         myView.okButton.setOnClickListener(v -> {
+            Log.d(TAG,"click");
             // Grab the new value
             if (simpleEditText) {
                 prefVal = myView.prefEditText.getText().toString();

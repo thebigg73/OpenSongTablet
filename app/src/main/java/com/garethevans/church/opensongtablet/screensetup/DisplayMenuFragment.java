@@ -46,6 +46,13 @@ public class DisplayMenuFragment extends Fragment {
 
         // Set menu listeners
         setListeners();
+
+        // Check if we need to automatically click an item
+        if (mainActivityInterface.getWhattodo().equals("hardwareAcceleration")) {
+            mainActivityInterface.setWhattodo("");
+            myView.hardwareAcceleration.setChecked(!myView.hardwareAcceleration.getChecked());
+        }
+
         return myView.getRoot();
     }
 

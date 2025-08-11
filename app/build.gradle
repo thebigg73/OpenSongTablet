@@ -55,7 +55,7 @@ android {
             mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:8.11.1'
+            classpath 'com.android.tools.build:gradle:8.12.0'
             classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.3'
         }
     }
@@ -118,7 +118,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.9.1'                               // Allows annotations in code
     annotationProcessor 'androidx.annotation:annotation:1.9.1'                          // Allows annotations in code
     implementation 'androidx.core:core:1.16.0'
-    implementation 'org.apache.commons:commons-compress:1.27.1'                         // For creating and editing compressed files (osb, backup)
+    implementation 'org.apache.commons:commons-compress:1.28.0'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
     implementation 'com.github.bumptech.glide:glide:4.16.0'                             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'                     // For better setting of images
@@ -133,7 +133,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.13.1'                                   // GSon for JSON conversion of Song/Set objects
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
-    //noinspection GradleDependency - Updating this above 1.5.0 breaks it!!!
+    //noinspection NewerVersionAvailable,GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
 

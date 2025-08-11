@@ -82,6 +82,12 @@ public class BBCommandsFragment extends Fragment {
             setupViews();
             checkBeatBuddyValues();
             checkTempoTimeSig();
+
+            // Sent here to trigger the bottom sheet
+            if (mainActivityInterface.getWhattodo().equals("beatbuddySongs")) {
+                mainActivityInterface.setWhattodo("");
+                buildBBDefaultSongs();
+            }
         });
 
         return myView.getRoot();

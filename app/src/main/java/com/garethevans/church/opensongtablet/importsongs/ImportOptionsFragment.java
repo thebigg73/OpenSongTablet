@@ -75,6 +75,21 @@ public class ImportOptionsFragment extends Fragment {
         // Set the listeners
         setListeners();
 
+        // Check if we get here to trigger an action (menu search)
+        if (mainActivityInterface.getWhattodo().equals("camera")) {
+            mainActivityInterface.setWhattodo("");
+            myView.importCamera.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("ios")) {
+            mainActivityInterface.setWhattodo("");
+            myView.importiOS.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("church")) {
+            mainActivityInterface.setWhattodo("");
+            myView.importChurch.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("band")) {
+            mainActivityInterface.setWhattodo("");
+            myView.importBand.performClick();
+        }
+
         return myView.getRoot();
     }
 

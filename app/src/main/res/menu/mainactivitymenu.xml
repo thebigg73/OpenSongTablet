@@ -11,16 +11,24 @@
         app:actionViewClass="android.widget.ImageButton"
         android:visible="false"/>
 
+    <item android:id="@+id/search_menu_item"
+        android:title="@string/search"
+        android:icon="@drawable/search"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.ImageButton"
+        android:orderInCategory="2"
+        android:visible="false"/>
+
     <item android:id="@+id/mirror_menu_item"
         android:title="@string/chromecast"
         app:showAsAction="ifRoom"
         android:icon="@drawable/cast"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         app:actionViewClass="android.widget.ImageButton"/>
 
     <item android:id="@+id/settings_menu_item"
         android:title="@string/settings"
         android:icon="@drawable/close"
         app:showAsAction="ifRoom"
-        android:orderInCategory="3"/>
+        android:orderInCategory="4"/>
 </menu>

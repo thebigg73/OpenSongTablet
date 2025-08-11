@@ -52,6 +52,17 @@ public class UtilitiesMenuFragment extends Fragment {
         // Set up listeners
         setupListeners();
 
+        // Check for automatic actions (search menu)
+        if (mainActivityInterface.getWhattodo().equals("audioPlayer")) {
+            mainActivityInterface.setWhattodo("");
+            myView.audioPlayer.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("audioRecorder")) {
+            mainActivityInterface.setWhattodo("");
+            myView.audioRecorder.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("multitrack")) {
+            mainActivityInterface.setWhattodo("");
+            myView.mutitrackPlayer.performClick();
+        }
         return myView.getRoot();
     }
 

@@ -58,6 +58,23 @@ public class SongActionsMenuFragment extends Fragment {
         // Set Listeners
         setupListeners();
 
+        // If we need to perform one of these actions, do it
+        if (mainActivityInterface.getWhattodo().equals("duplicateSong")) {
+            mainActivityInterface.setWhattodo("");
+            myView.duplicate.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("deleteSong")) {
+            mainActivityInterface.setWhattodo("");
+            myView.delete.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("youTube")) {
+            mainActivityInterface.setWhattodo("");
+            myView.youTube.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("youTubeMusic")) {
+            mainActivityInterface.setWhattodo("");
+            myView.youTubeMusic.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("spotify")) {
+            mainActivityInterface.setWhattodo("");
+            myView.spotify.performClick();
+        }
         return myView.getRoot();
     }
 

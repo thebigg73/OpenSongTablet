@@ -136,6 +136,9 @@
             <action
                 android:id="@+id/action_preferencesFragment_to_syncNearbyFragment"
                 app:destination="@id/syncNearbyFragment" />
+            <action
+                android:id="@+id/action_preferencesFragment_to_searchMenuFragment"
+                app:destination="@id/searchMenuFragment" />
 
         </fragment>
 
@@ -268,6 +271,9 @@
             android:name="com.garethevans.church.opensongtablet.ccli.SettingsCCLI"
             android:label="settings_ccli"
             tools:layout="@layout/settings_ccli" >
+            <deepLink
+                android:id="@+id/deepLinkCCLI"
+                app:uri="@string/deeplink_ccli"/>
             <action
                 android:id="@+id/action_settingsCCLI_to_CCLILogFragment"
                 app:destination="@id/settingsCCLILog" />
@@ -289,6 +295,9 @@
                 android:name="com.garethevans.church.opensongtablet.screensetup.DisplayMenuFragment"
                 android:label="settings_display"
                 tools:layout="@layout/settings_display">
+                <deepLink
+                    android:id="@+id/deepLinkDisplay"
+                    app:uri="@string/deeplink_display" />
                 <action
                     android:id="@+id/action_displayMenuFragment_to_themeSetupFragment"
                     app:destination="@id/themeSetupFragment" />
@@ -369,12 +378,20 @@
                 android:id="@+id/menuSettingsFragment"
                 android:name="com.garethevans.church.opensongtablet.screensetup.MenuSettingsFragment"
                 android:label="MenuSettingsFragment"
-                tools:layout="@layout/settings_menu"/>
+                tools:layout="@layout/settings_menu">
+                <deepLink
+                    android:id="@+id/deepLinkMenu"
+                    app:uri="@string/deeplink_menu_settings" />
+            </fragment>
             <fragment
                 android:id="@+id/displayExtraFragment"
                 android:name="com.garethevans.church.opensongtablet.screensetup.DisplayExtraFragment"
                 android:label="DisplayExtraFragment"
-                tools:layout="@layout/settings_display_extra"/>
+                tools:layout="@layout/settings_display_extra">
+                <deepLink
+                    android:id="@+id/deepLinkDisplayExtra"
+                    app:uri="@string/deeplink_display_extra" />
+            </fragment>
             <fragment
                 android:id="@+id/displayScalingFragment"
                 android:name="com.garethevans.church.opensongtablet.screensetup.DisplayScalingFragment"
@@ -520,6 +537,9 @@
                 android:name="com.garethevans.church.opensongtablet.appdata.AboutAppFragment"
                 android:label="settings_about"
                 tools:layout="@layout/settings_about">
+                <deepLink
+                    android:id="@+id/deepLinkAbout"
+                    app:uri="@string/deeplink_about" />
                 <action
                     android:id="@+id/action_aboutAppFragment_to_languageFragment"
                     app:destination="@id/languageFragment" />
@@ -536,7 +556,11 @@
                 android:id="@+id/languageFragment"
                 android:name="com.garethevans.church.opensongtablet.appdata.LanguageFragment"
                 android:label="settings_language"
-                tools:layout="@layout/settings_language" />
+                tools:layout="@layout/settings_language">
+                <deepLink
+                    android:id="@+id/deepLinkLanguage"
+                    app:uri="@string/deeplink_language" />
+            </fragment>
 
 
             <!-- Share logs -->
@@ -859,7 +883,11 @@
             android:id="@+id/modeFragment"
             android:name="com.garethevans.church.opensongtablet.appdata.ModeFragment"
             android:label="ModeFragment"
-            tools:layout="@layout/settings_mode"/>
+            tools:layout="@layout/settings_mode">
+            <deepLink
+                android:id="@+id/deepLinkAppMode"
+                app:uri="@string/deeplink_app_mode" />
+        </fragment>
         <navigation
             android:id="@+id/set_graph"
             app:startDestination="@id/setActionsFragment">
@@ -926,7 +954,11 @@
                     android:id="@+id/bibleDownloadFragment"
                     android:name="com.garethevans.church.opensongtablet.bible.BibleDownloadFragment"
                     android:label="BibleDownloadFragment"
-                    tools:layout="@layout/bible_download"/>
+                    tools:layout="@layout/bible_download">
+                    <deepLink
+                        android:id="@+id/deepLinkBibleDownload"
+                        app:uri="@string/deeplink_bible_download"/>
+                </fragment>
             </navigation>
             <fragment
                 android:id="@+id/customSlideFragment"
@@ -954,6 +986,9 @@
                 android:name="com.garethevans.church.opensongtablet.utilities.UtilitiesMenuFragment"
                 android:label="UtilitiesMenuFragment"
                 tools:layout="@layout/settings_utilities">
+                <deepLink
+                    android:id="@+id/deepLinkUtilities"
+                    app:uri="@string/deeplink_utilities" />
                 <action
                     android:id="@+id/action_utilitiesMenuFragment_to_soundLevelBottomSheet"
                     app:destination="@id/soundLevelBottomSheet" />
@@ -1051,6 +1086,15 @@
                     app:uri="@string/deeplink_database_utilities" />
             </fragment>
         </navigation>
+        <fragment
+            android:id="@+id/searchMenuFragment"
+            android:name="com.garethevans.church.opensongtablet.appdata.SearchMenuFragment"
+            android:label="SearchMenuFragment"
+            tools:layout="@layout/settings_search_menu">
+            <deepLink
+                android:id="@+id/deepLinkSearch"
+                app:uri="@string/deeplink_search_menu" />
+        </fragment>
         <fragment
             android:id="@+id/webServerFragment"
             android:name="com.garethevans.church.opensongtablet.webserver.WebServerFragment"

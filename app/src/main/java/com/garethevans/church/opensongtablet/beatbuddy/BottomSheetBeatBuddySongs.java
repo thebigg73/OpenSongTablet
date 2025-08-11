@@ -51,7 +51,7 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
         dismiss();
     }
 
-    BottomSheetBeatBuddySongs(BBCommandsFragment callingFragment, BBSQLite bbsqLite) {
+    public BottomSheetBeatBuddySongs(BBCommandsFragment callingFragment, BBSQLite bbsqLite) {
         this.callingFragment = callingFragment;
         this.bbsqLite = bbsqLite;
     }

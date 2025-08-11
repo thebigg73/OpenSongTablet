@@ -40,6 +40,8 @@
         android:scrollHorizontally="true"
         android:isScrollContainer="true"
         app:textInputLayoutFocusedRectEnabled="false"
+        android:focusable="true"
+        android:textIsSelectable="true"
         tools:text="The text" />
 </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

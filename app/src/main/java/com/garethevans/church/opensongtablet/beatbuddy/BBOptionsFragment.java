@@ -57,6 +57,15 @@ public class BBOptionsFragment extends Fragment {
         checkDatabase();
 
         setupListeners();
+
+        // Check for automatic clicks
+        if (mainActivityInterface.getWhattodo().equals("beatBuddyAuto")) {
+            mainActivityInterface.setWhattodo("");
+            myView.beatBuddyAutoLookup.setChecked(!myView.beatBuddyAutoLookup.getChecked());
+        } else if (mainActivityInterface.getWhattodo().equals("beatBuddyReset")) {
+            mainActivityInterface.setWhattodo("");
+            myView.resetDatabase.performClick();
+        }
         return myView.getRoot();
     }
 
