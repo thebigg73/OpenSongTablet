@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -323,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
     private int prevNumConnectedDisplays = 0;
-    private ImageView screenHelp;
+    private ImageView screenHelp,searchMenu;
     private final Handler mainLooper = new Handler(Looper.getMainLooper());
 
     // Variables used
@@ -569,11 +570,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Reset the unhandled exception handler
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
 
-            // Now turn off the app
+            // Now turn off the app while alerting the user
             try {
+                Toast.makeText(this, this.getString(R.string.crash_alert), Toast.LENGTH_LONG).show();
                 throw e;
             } catch (Throwable ex) {
-                System.exit(1);
+                this.finish();
+                //System.exit(1);  Wrongly caused app to try to restart - bad UX
             }
         });
     }
@@ -904,6 +907,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         if (globalMenuItem!=null) {
             globalMenuItem.findItem(R.id.settings_menu_item).setVisible(!disable);
+            globalMenuItem.findItem(R.id.search_menu_item).setVisible(!disable);
         }
         return screenHelp;
     }
@@ -1355,10 +1359,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // IV - To smooth build, we add elements right to left
                     if (settingsOpen) {
                         globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
+                        globalMenuItem.findItem(R.id.search_menu_item).setVisible(true);
                         // IV - Other elements are added by the called fragment
                     } else {
                         // IV - Top level of menu - song details are added by song load
                         globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.settings_outline);
+                        globalMenuItem.findItem(R.id.search_menu_item).setVisible(false);
                         updateCastIcon();
                         if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
@@ -2205,12 +2211,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             });
             screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
             screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.help_outline, getTheme()));
+            /*
+            */
             globalMenuItem = menu;
             // IV - Set 'settings'/'close' icon is set depending on settingOpen
             globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
             updateCastIcon();
+            searchMenu = (ImageView) menu.findItem(R.id.search_menu_item).getActionView();
+            if (searchMenu!=null) {
+                searchMenu.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.search, getTheme()));
+                searchMenu.setOnClickListener(view -> {
+                    Log.d(TAG,"CLICKED");
+                    navigateToFragment(getString(R.string.deeplink_search_menu), 0);
+                });
+                searchMenu.setVisibility(settingsOpen ? View.VISIBLE : View.GONE);
+            }
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

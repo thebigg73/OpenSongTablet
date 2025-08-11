@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ShareLogsFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ShareLogsFragment";
     private MainActivityInterface mainActivityInterface;
     private SettingsShareLogsBinding myView;
     private String log_string="", website_string="";
@@ -105,6 +108,10 @@ public class ShareLogsFragment extends Fragment {
         Intent intent = mainActivityInterface.getExportActions().setShareIntent(whichName,type,whichFile,null);
         intent.putExtra(Intent.EXTRA_SUBJECT, whichName);
         intent.putExtra(Intent.EXTRA_TITLE, whichName);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"crashlog@opensongapp.com"});
+
+        intent.putExtra(Intent.ACTION_SENDTO, "crashlog@opensongapp.com");
+        Log.d(TAG,"whichName:"+whichName+"  crashLog_string:"+crashLog_string);
         if (whichName.equals(crashLog_string)) {
             intent.putExtra(Intent.ACTION_SENDTO,"crashlog@opensongapp.com");
         }
