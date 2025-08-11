@@ -28,8 +28,7 @@
     android:keepScreenOn="true"
     android:focusableInTouchMode="false"
     android:focusable="false"
-    android:contentDescription="@null"
-    android:descendantFocusability="blocksDescendants">
+    android:contentDescription="@null">
 
     <androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
