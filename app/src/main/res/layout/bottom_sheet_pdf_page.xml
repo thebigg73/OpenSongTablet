@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/FullscreenBottomSheet">
+    android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeader"

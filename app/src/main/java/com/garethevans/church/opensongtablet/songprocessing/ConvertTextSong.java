@@ -149,9 +149,12 @@ public class ConvertTextSong {
 
                 // To try and identify chords, experience shows that the average length is
                 // less than 2.4 or that the percentage used is less than 25%
-                // Won't identify chord lines that have 1 chord like F#m7b5!!!
+                // Or if it contains some 7th chord endings or #
 
-                if (avlength < 2.4 || percentageused < 25) {
+                // I will up the average length to 3.25 and percentage used to 35%
+                // This will help catch quick change chords
+                boolean containsSomeChords = l.contains("m7") || l.contains("maj7") || l.contains("#");
+                if (avlength <= 3.25 || percentageused < 35 || containsSomeChords) {
                     // Likely a chord line, so add a "."
                     l = "." + l;
                 } else {
