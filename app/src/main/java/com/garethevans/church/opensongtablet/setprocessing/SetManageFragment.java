@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -22,6 +23,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBindi
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
@@ -141,8 +143,8 @@ public class SetManageFragment extends Fragment {
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
             search_index_wait_string = getString(R.string.index_songs_wait);
-            activeColor = getContext().getResources().getColor(R.color.colorSecondary);
-            inactiveColor = getContext().getResources().getColor(R.color.colorAltPrimary);
+            activeColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
+            inactiveColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(getContext(),R.color.dark_primary));
             nothing_selected_string= getString(R.string.nothing_selected);
         }
     }

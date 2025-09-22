@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -29,6 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -122,7 +124,7 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
 
             for (String heading : mainActivityInterface.getTempSong().getSongSectionHeadings()) {
                 MaterialButton button = new MaterialButton(requireContext());
-                button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
+                button.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(button.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(button.getContext(),R.color.dark_secondary))));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.setMargins(12, 6, 6, 12);
                 params.setGravity(Gravity.CENTER_HORIZONTAL);

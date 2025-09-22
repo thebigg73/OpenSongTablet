@@ -11,13 +11,13 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorAltSecondary" />
+        android:background="?attr/colorSecondaryVariant" />
 
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAltPrimary"
+        android:background="?attr/colorSurface"
         android:minWidth="96dp"
         android:minHeight="340dp"
         android:orientation="vertical"
@@ -43,7 +43,7 @@
                 android:value="1"
                 android:valueFrom="0"
                 android:valueTo="2"
-                app:trackColor="@color/colorSecondary" />
+                app:trackColor="?attr/colorSecondary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -283,5 +283,5 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorAltSecondary" />
+        android:background="?attr/colorSecondaryVariant" />
 </LinearLayout>

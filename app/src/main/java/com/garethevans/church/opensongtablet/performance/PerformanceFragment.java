@@ -43,6 +43,7 @@ import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
+import com.google.android.material.color.MaterialColors;
 
 import org.apache.commons.io.FileUtils;
 
@@ -315,7 +316,7 @@ public class PerformanceFragment extends Fragment {
             myView.mypage.setBackgroundColor(newColor);
         } else {
             // Presenter mode, just use primary color
-            myView.mypage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            myView.mypage.setBackgroundColor(MaterialColors.getColor(myView.mypage,com.google.android.material.R.attr.colorPrimary));
             myView.waterMark.setVisibility(View.GONE);
         }
         mainActivityInterface.updateOnScreenInfo("setpreferences");

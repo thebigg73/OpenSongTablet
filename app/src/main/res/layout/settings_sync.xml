@@ -45,7 +45,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:layout_gravity="top"
-                android:background="@color/colorAltPrimary"
+                android:background="?attr/colorSurface"
                 android:contentDescription="@string/sync"
                 android:visibility="gone"/>
 
@@ -60,7 +60,7 @@
         android:id="@+id/dimBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/scrim"
+        android:background="?attr/scrimBackground"
         android:visibility="gone" />
 
     <ProgressBar

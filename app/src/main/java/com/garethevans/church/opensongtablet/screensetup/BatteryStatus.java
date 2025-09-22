@@ -11,11 +11,16 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.BatteryManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 
 public class BatteryStatus extends BroadcastReceiver {
 
@@ -56,7 +61,6 @@ public class BatteryStatus extends BroadcastReceiver {
         getBatteryStatus();
     }
 
-
     public void updateBatteryPrefs() {
         setBatteryTextOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryTextOn",true));
         setBatteryTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("batteryTextSize",9.0f));
@@ -72,6 +76,8 @@ public class BatteryStatus extends BroadcastReceiver {
             batteryImage.setVisibility(View.GONE);
             batteryCharge.setVisibility(View.GONE);
         }
+        batteryImage.requestLayout();
+        batteryCharge.requestLayout();
     }
     public void setBatteryDialOn(boolean batteryDialOn) {
         this.batteryDialOn = batteryDialOn;
@@ -142,21 +148,22 @@ public class BatteryStatus extends BroadcastReceiver {
             Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
             Bitmap bmp = Bitmap.createBitmap(size, size, conf);
 
-            BitmapDrawable drawable = new BitmapDrawable(c.getResources(), bmp);
+            //BitmapDrawable drawable = new BitmapDrawable(c.getResources(), bmp);
 
             // If less than 15% battery, draw the circle in red
-            int color = 0xffffffff;
+            int color = MaterialColors.getColor(c, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(c,R.color.dark_color));
             if (charge > 10 && charge < 16) {
-                color = 0xffff6600;
+                color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorSecondaryVariant);
             } else if (charge <= 10) {
-                color = 0xffff0000;
+                color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorError);
             }
 
-            int bgcolor = 0xff666666;
+            int bgcolor = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorSecondary);
             if (isCharging) {
                 bgcolor = 0xff88ff88;
             }
 
+            Log.d(TAG,"charge:"+charge+"  isCharging: "+isCharging+" color: "+Integer.toHexString(color)+" bgcolor: "+Integer.toHexString(bgcolor));
             Paint bPaint = new Paint();
             bPaint.setDither(true);
             bPaint.setColor(bgcolor);
@@ -190,6 +197,8 @@ public class BatteryStatus extends BroadcastReceiver {
             Canvas canvas = new Canvas(bmp);
             canvas.drawPath(circle2, bPaint);
             canvas.drawPath(circle, mPaint);
+
+            BitmapDrawable drawable = new BitmapDrawable(c.getResources(), bmp);
 
             return drawable;
         } else {

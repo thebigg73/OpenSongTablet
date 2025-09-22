@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
@@ -21,6 +22,7 @@ import com.garethevans.church.opensongtablet.databinding.BottomSheetEditLyricsCo
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -209,7 +211,7 @@ public class LyricsChordCopyBottomSheet extends BottomSheetDialogFragment {
             ExposedDropDownArrayAdapter copyToAdapter = new ExposedDropDownArrayAdapter(getContext(),
                     myView.copyTo, R.layout.view_exposed_dropdown_item, toSections);
             myView.copyTo.setAdapter(copyToAdapter);
-            myView.copyIntoAfter.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
+            myView.copyIntoAfter.setBackgroundColor(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary)));
         }
         fixText(myView.extractFromAll);
         fixText(myView.copyIntoBefore);

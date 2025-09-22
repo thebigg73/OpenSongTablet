@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.color.MaterialColors;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -446,7 +447,7 @@ public class CCLILog {
     private void colorRowColor(TableRow tableRow) {
         colorRow = !colorRow;
         if (colorRow) {
-            tableRow.setBackgroundColor(ColorStateList.valueOf(c.getResources().getColor(R.color.colorSecondary)).getDefaultColor());
+            tableRow.setBackgroundColor(ColorStateList.valueOf(MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary))).getDefaultColor());
         }
     }
 

@@ -73,7 +73,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/alphabetical" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/level2Index"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                 android:valueTo="24.0" />
             <TableRow style="@style/DividerLine"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/largePopups"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

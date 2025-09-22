@@ -2,9 +2,12 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,11 +18,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -42,7 +48,7 @@ public class MyToolbar extends MaterialToolbar {
     private final TextClock clock;
     private final TextView tempo;
     private final ImageView setIcon, batteryimage;
-    private final FrameLayout songandauthor;
+    private final ConstraintLayout songandauthor;
     private final LinearLayout metronomeLayout;
     private final ArrayList<View> beatView;
     private final com.google.android.material.textview.MaterialTextView batterycharge;
@@ -70,11 +76,27 @@ public class MyToolbar extends MaterialToolbar {
         };
         updateClock();
     }
+    public MyToolbar(@NonNull Context context) {
+        this(context, null);
+    }
+
     public MyToolbar(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        View v = inflate(context, R.layout.view_toolbar_constraint, this);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        View v = LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_toolbar_constraint, this, true);
+
+        this.setContentInsetsRelative(0,0);
+        this.setContentInsetStartWithNavigation(0);
+        this.setTitleTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
+        this.setSubtitleTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
+        this.setPadding(0,0,0,0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.setElevation(0f);
+        }
+
         setIcon = v.findViewById(R.id.setIcon);
         title = v.findViewById(R.id.songtitle_ab);
+        title.setTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
         key = v.findViewById(R.id.songkey_ab);
         capo = v.findViewById(R.id.songcapo_ab);
         author = v.findViewById(R.id.songauthor_ab);
@@ -198,11 +220,14 @@ public class MyToolbar extends MaterialToolbar {
             mainActivityInterface.updateToolbarHelp("");
         }
 
+        Log.d(TAG,"newtitle:"+newtitle+"  title:"+title);
         if (newtitle == null) {
             // We are in the Performance/Stage mode
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f);
 
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
+                // Songs have the gravity bottom for the content
+                title.setGravity(Gravity.BOTTOM);
                 title.setTextSize(mainsize);
                 String text = mainActivityInterface.getSong().getTitle();
                 if (mainActivityInterface.getVariations().getIsNormalOrKeyVariation(
@@ -231,9 +256,11 @@ public class MyToolbar extends MaterialToolbar {
                     mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                     hideView(setIcon,true);
                 }
+                Log.d(TAG,"show the title");
                 hideView(title, false);
             } else {
                 hideView(setIcon,true);
+                Log.d(TAG,"hide the title");
                 hideView(title, true);
             }
             if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
@@ -321,9 +348,12 @@ public class MyToolbar extends MaterialToolbar {
             if (title != null) {
                 title.setOnClickListener(null);
                 title.setOnLongClickListener(null);
+                // Settings titles move to center gravity
+                title.setGravity(Gravity.CENTER_VERTICAL);
                 title.setTextSize(18.0f);
                 title.setText(newtitle);
             }
+            Log.d(TAG,"show title");
             hideView(title, false);
             hideView(author, true);
             hideView(key, true);
@@ -362,10 +392,12 @@ public class MyToolbar extends MaterialToolbar {
     public void hideView(View v, boolean hide) {
         if (v!=null) {
             v.setVisibility(hide ? View.GONE : View.VISIBLE);
+            v.requestLayout();
         }
     }
 
     public void hideSongDetails(boolean hide) {
+        Log.d(TAG,"hideSongDetails("+hide+")");
         hideView(setIcon,hide);
         hideView(title,hide);
         hideView(author,hide);
@@ -453,6 +485,9 @@ public class MyToolbar extends MaterialToolbar {
         showClock(visible);
     }
 
+    public FrameLayout getBatteryholder() {
+        return batteryholder;
+    }
     public ImageView getBatteryimage() {
         return batteryimage;
     }
@@ -468,6 +503,7 @@ public class MyToolbar extends MaterialToolbar {
         // Only show if that is our preference
         clock.setTextSize(clockTextSize);
         clock.setVisibility(show && clockOn ? View.VISIBLE:View.GONE);
+        clock.requestLayout();
     }
 
     @Override
@@ -513,7 +549,6 @@ public class MyToolbar extends MaterialToolbar {
             View view = beatView.get(x);
             view.post(() -> {
                 view.setBackgroundColor(Color.TRANSPARENT);
-                //view.setVisibility(View.GONE);
             });
         }
         metronomeLayout.post(() -> metronomeLayout.setVisibility(View.GONE));

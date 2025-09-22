@@ -1795,4 +1795,5 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="restart_auto">The app will restart when you leave this page to apply a light or dark theme to your menus</string>
 </resources>

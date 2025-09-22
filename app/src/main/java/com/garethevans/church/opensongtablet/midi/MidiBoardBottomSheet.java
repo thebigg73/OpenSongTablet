@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
@@ -86,8 +87,8 @@ public class MidiBoardBottomSheet extends BottomSheetDialogFragment {
             string_midi_board = c.getString(R.string.midi_board);
             string_midi_board_website = c.getString(R.string.website_midi_board);
             string_title = c.getString(R.string.title);
-            colorActive = ContextCompat.getColor(c, R.color.colorSecondary);
-            colorInactive = ContextCompat.getColor(c, R.color.colorAltPrimary);
+            colorActive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(c,R.color.dark_secondary));
+            colorInactive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(c,R.color.dark_primary));
         }
     }
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="@color/colorAltPrimary">
+    style="@style/SongMenuItem">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +17,9 @@
             android:id="@+id/cardview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
             android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            app:backgroundTint="@color/transparent">
 
             <LinearLayout
                 android:id="@+id/songClickSpace"
@@ -29,21 +31,25 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/cardview_title"
-                    style="@style/cardView_Title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    tools:text="Song Title"
+                    style="@style/cardView_Title"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/cardview_author"
-                    style="@style/cardView_Subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    tools:text="Song subtitle"
+                    style="@style/cardView_Subtitle"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/cardview_foldernamepair"
-                    style="@style/cardView_Subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    tools:text="Foldername pair"
+                    style="@style/cardView_Subtitle"/>
+
 
             </LinearLayout>
 
@@ -62,7 +68,7 @@
                 android:paddingEnd="0dp"
                 android:checked="true"
                 android:minWidth="48dp"
-                android:minHeight="48dp"/>
+                android:minHeight="48dp" />
             </FrameLayout>
         </LinearLayout>
 
@@ -73,4 +79,4 @@
             android:layout_marginStart="0dp"/>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

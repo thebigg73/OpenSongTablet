@@ -10,7 +10,5 @@
     android:gravity="center_vertical"
     android:padding="8dp"
     android:text="@string/folder"
-    android:textColor="@color/black"
     app:drawableStartCompat="@drawable/folder_open"
-    app:drawableTint="@color/darkgrey"
     android:background="?android:attr/selectableItemBackground"/>

@@ -24,7 +24,7 @@
             android:layout_margin="16dp"
             android:gravity="center"
             android:text="@string/record"
-            app:backgroundTint="@color/colorAltSecondary"
+            app:backgroundTint="?attr/colorSecondaryVariant"
             app:icon="@drawable/record" />
 
         <LinearLayout
@@ -67,7 +67,7 @@
                         android:contentDescription="@string/preview"
                         android:src="@drawable/play"
                         app:fabSize="mini"
-                        app:backgroundTint="@color/colorAltSecondary" />
+                        app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -83,7 +83,7 @@
                         android:contentDescription="@string/delete"
                         android:src="@drawable/delete"
                         app:fabSize="mini"
-                        app:backgroundTint="@color/colorAltSecondary" />
+                        app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -99,7 +99,7 @@
                         android:contentDescription="@string/save"
                         android:src="@drawable/save"
                         app:fabSize="mini"
-                        app:backgroundTint="@color/colorAltSecondary" />
+                        app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>

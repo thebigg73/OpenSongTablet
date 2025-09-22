@@ -55,8 +55,8 @@
                     android:contentDescription="@string/media"
                     android:enabled="false"
                     android:padding="0dp"
-                    android:tint="@color/colorAltSecondary"
-                    app:backgroundTint="@color/colorAltPrimary"
+                    android:tint="?attr/colorSecondaryVariant"
+                    app:backgroundTint="?attr/colorSurface"
                     app:fabCustomSize="16dp"
                     app:srcCompat="@drawable/play"
                     app:useCompatPadding="false" />
@@ -227,7 +227,7 @@
             app:drawableR="@drawable/align_right"
             app:label="@string/song_alignment_information" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/hideInfoBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -320,7 +320,7 @@
             android:valueFrom="10"
             android:valueTo="100" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/showChords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -328,7 +328,7 @@
             android:hint="@string/show_chords_info"
             android:text="@string/show_chords" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/presoLyricsBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -352,7 +352,7 @@
             app:drawableL="@drawable/align_top"
             app:drawableR="@drawable/align_bottom" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/blockShadow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -371,7 +371,7 @@
 
         <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/defaultPresentationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

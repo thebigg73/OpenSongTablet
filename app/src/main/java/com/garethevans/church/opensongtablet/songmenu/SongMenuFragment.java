@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -383,12 +385,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void fixColor(Button button, boolean active) {
         try {
-            int activecolor = getResources().getColor(R.color.colorSecondary);
-            int inactivecolor = getResources().getColor(R.color.transparent);
-            if (active) {
-                button.setBackgroundColor(activecolor);
-            } else {
-                button.setBackgroundColor(inactivecolor);
+            if (getContext()!=null) {
+                int activecolor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(), R.color.dark_secondary));
+                int inactivecolor = getResources().getColor(R.color.transparent);
+                if (active) {
+                    button.setBackgroundColor(activecolor);
+                } else {
+                    button.setBackgroundColor(inactivecolor);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

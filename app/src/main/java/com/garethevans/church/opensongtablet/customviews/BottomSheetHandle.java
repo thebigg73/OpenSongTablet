@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -23,7 +25,8 @@ public class BottomSheetHandle extends FrameLayout {
 
     public BottomSheetHandle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_bottom_sheet_handle, this);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_bottom_sheet_handle, this, true);
         handle = findViewById(R.id.handle);
         handle.setId(View.generateViewId());
         handle.setFocusable(true);

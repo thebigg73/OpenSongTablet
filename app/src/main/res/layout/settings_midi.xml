@@ -111,7 +111,7 @@
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,21 +140,21 @@
                 android:stepSize="1"
                 app:adjustable="true"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiInputAutoscroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/autoscroll"
                 android:hint="@string/midi_input_channel_song_autoscroll_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiInputMetronome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/metronome"
                 android:hint="@string/midi_input_channel_song_metronome_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiInputPad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                 android:hint="@string/midi_input_channel_song_pad_info"/>
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoSendMidi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

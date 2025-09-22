@@ -26,7 +26,7 @@
                 android:valueFrom="20"
                 android:valueTo="100" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/pageButtonMini"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:text="@string/small_buttons"
                 android:hint="@string/small_buttons_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/pageButtonHide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

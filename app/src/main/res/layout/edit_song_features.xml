@@ -199,7 +199,7 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/helperText"
                 style="@style/helperText"
                 android:layout_width="match_parent"

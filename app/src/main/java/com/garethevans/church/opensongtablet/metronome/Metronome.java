@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -823,7 +824,7 @@ public class Metronome {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 tapButton.setEnabled(false);
                 tapButton.setText(c.getString(R.string.reset));
-                tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorPrimary));
+                tapButton.setBackgroundColor(MaterialColors.getColor(tapButton,com.google.android.material.R.attr.colorPrimary));
                 // Waited too long, reset count
                 total_calc_bpm = 0;
                 total_counts = 0;
@@ -839,7 +840,7 @@ public class Metronome {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 tapButton.setEnabled(true);
                 tapButton.setText(c.getString(R.string.tap_tempo));
-                tapButton.setBackgroundColor(c.getResources().getColor(R.color.colorSecondary));
+                tapButton.setBackgroundColor(MaterialColors.getColor(c,com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary)));
             }));
             // Start the metronome if we are in the metronome fragment where divisions isn't null
             if (divisionsView!=null) {

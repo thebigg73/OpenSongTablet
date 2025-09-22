@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:buttonTint="?attr/colorOnPrimary"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_item"
@@ -29,7 +30,8 @@
             android:drawablePadding="16dp"
             android:padding="4dp"
             android:text="@string/number_1"
-            app:drawableStartCompat="@drawable/music_note" />
+            app:drawableStartCompat="@drawable/music_note"
+            app:drawableTint="?attr/colorOnPrimary"/>
 
         <FrameLayout
             android:id="@+id/fileOrTitle"
@@ -49,6 +51,7 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="0dp"
                 android:text="@string/title"
+                android:textColor="?attr/colorOnPrimary"
                 android:visibility="visible"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -61,6 +64,7 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="0dp"
                 android:text="@string/filename"
+                android:textColor="?attr/colorOnPrimary"
                 android:visibility="gone"/>
 
         </FrameLayout>
@@ -89,13 +93,15 @@
             android:paddingTop="0dp"
             android:paddingEnd="4dp"
             android:paddingBottom="4dp"
-            android:text="@string/mainfoldername" />
+            android:text="@string/mainfoldername"
+            android:textColor="?attr/colorOnPrimary" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_exists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/darkred"
+            android:background="?attr/colorError"
+            android:textColor="?attr/colorOnError"
             android:text="@string/included_songs_already_have"
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
@@ -103,4 +109,4 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

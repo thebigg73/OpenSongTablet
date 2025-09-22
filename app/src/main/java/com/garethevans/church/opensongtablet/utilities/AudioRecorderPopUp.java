@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.customviews.DialogHeader;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -60,7 +61,7 @@ public class AudioRecorderPopUp {
         posY = (int) ((float) mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) * 1.2f);
         recordStart = ContextCompat.getDrawable(c, R.drawable.record);
         recordStop = ContextCompat.getDrawable(c, R.drawable.stop);
-        colorInactive = ContextCompat.getColor(c, R.color.colorAltSecondary);
+        colorInactive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondaryVariant,ContextCompat.getColor(c,R.color.dark_secondary_variant));
         colorActive = ContextCompat.getColor(c, R.color.red);
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
         recordingAlpha = Math.min(pageButtonAlpha, 0.7f);

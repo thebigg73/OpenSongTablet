@@ -4,19 +4,18 @@ package com.garethevans.church.opensongtablet.controls;
 // It supports the main page buttons on the song window, but also the edit buttons fragment
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -80,14 +79,15 @@ public class PageButtons {
         custom6.hide();
         custom7.hide();
         custom8.hide();
-        custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom4.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom5.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom7.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        custom8.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
+        //custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom4.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom5.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom7.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //custom8.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         int size = FloatingActionButton.SIZE_NORMAL;
         if (pageButtonMini) {
             size = FloatingActionButton.SIZE_MINI;
@@ -95,7 +95,7 @@ public class PageButtons {
 
         // The main button
         actionButton.setSize(size);
-        actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
 
         custom1.setSize(size);
         custom2.setSize(size);
@@ -145,16 +145,18 @@ public class PageButtons {
         }
     }
     public void updateColors() {
-        pageButtonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
-        pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
-        pageButtonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
+        pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
+        pageButtonAlpha = 1f;
+        //pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
+        //pageButtonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
+        //pageButtonIconColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorOnPrimary,c.getResources().getColor(R.color.dark_text_icon));
         if (actionButton!=null && actionButton.getRotation()==0) {
-            actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+            //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
         if (fabs!=null) {
             for (MyFAB fab : fabs) {
                 if (fab!=null) {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+                    //fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
                 }
             }
         }
@@ -398,12 +400,12 @@ public class PageButtons {
                 pageButtonText.add(text.get(pos));
                 pageButtonShortText.add(shortText.get(pos));
                 pageButtonLongText.add(longText.get(pos));
-                pageButtonDrawable.add(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(pos),null));
+                pageButtonDrawable.add(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(pos),c.getTheme()));
             } else {
                 pageButtonText.add("");
                 pageButtonShortText.add("");
                 pageButtonLongText.add("");
-                pageButtonDrawable.add(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
+                pageButtonDrawable.add(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),c.getTheme()));
             }
 
             // Set the visibility.  By default the first 7 are visible
@@ -439,7 +441,7 @@ public class PageButtons {
         pageButtonsLayout.setAlpha(pageButtonAlpha);
 
         // Tint the button
-        fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        //fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
 
         // If this is the main page button, set it's drawable
         Drawable drawable = fab.getDrawable();
@@ -447,15 +449,16 @@ public class PageButtons {
             //drawable = ContextCompat.getDrawable(c, R.drawable.plus);
             drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.plus,c.getTheme());
             if (drawable!=null) {
-                DrawableCompat.setTint(drawable, pageButtonIconColor);
+                //DrawableCompat.setTint(drawable, pageButtonIconColor);
                 fab.setImageDrawable(drawable);
             }
         }
 
         if (buttonNum>=0 && buttonNum<=pageButtonNum) {
             Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
-            buttonDrawable.mutate();
-            DrawableCompat.setTint(buttonDrawable, pageButtonIconColor);
+            //Drawable buttonDrawable = VectorDrawableCompat.create(c.getResources(),drawableIds.get(buttonNum),c.getTheme());
+            //buttonDrawable.mutate();
+            //DrawableCompat.setTint(buttonDrawable, pageButtonIconColor);
             fab.setImageDrawable(buttonDrawable);
             fab.setTag(pageButtonAction.get(buttonNum));
             if (pageButtonVisibility.get(buttonNum) && actionButton.getRotation()!=0) {

@@ -5,9 +5,11 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
@@ -39,6 +41,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -135,6 +139,7 @@ import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
+import com.garethevans.church.opensongtablet.preferences.AdjustTheme;
 import com.garethevans.church.opensongtablet.preferences.AppPermissions;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -183,6 +188,7 @@ import com.garethevans.church.opensongtablet.voicelive.VoiceLive;
 import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -226,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
+    private AdjustTheme adjustTheme;
     private Aeros aeros;
     private AlertChecks alertChecks;
     private AppPermissions appPermissions;
@@ -374,6 +381,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setCorrectTheme();
         super.onCreate(savedInstanceState);
 
         EdgeToEdge.enable(this);
@@ -532,6 +540,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
     }
 
+    public void setCorrectTheme() {
+
+        // Get the system option
+        if (themeColors==null) {
+            getMyThemeColors().getDefaultTheme();
+        }
+        String theme = getMyThemeColors().getThemeName();
+        switch (theme) {
+            case "light":
+            case "custom2":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "dark":
+            case "custom1":
+            default:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
+    }
+
     @Override
     public boolean getWaitingOnBootUpFragment() {
         return waitingOnBootUpFragment;
@@ -612,7 +640,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
         this.recreate();
-    }
+        }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -811,6 +839,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // For user preferences
         myFonts = getMyFonts();
         themeColors = getMyThemeColors();
+        adjustTheme = getAdjustTheme();
         profileActions = getProfileActions();
         appPermissions = getAppPermissions();
 
@@ -925,9 +954,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (myView!=null && windowFlags!=null) {
             mainLooper.post(() -> {
                 if (settingsOpen || whichMode.equals(mode_presenter)) {
-                    myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    //myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 } else {
-                    myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+                    //myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
                 }
 
                 // Get the user margins (additional)
@@ -1687,10 +1716,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (whichMode.equals(mode_presenter)) {
                 navigateToFragment(deeplink_presenter, 0);
-                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                //myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 navigateToFragment(deeplink_performance, 0);
-                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+                //myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
             }
         }
     }
@@ -2167,7 +2196,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
-                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                //myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             }
         }
         return super.onOptionsItemSelected(item);
@@ -2186,6 +2215,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
             screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
             screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
+            screenMirror.setBackgroundColor(Color.TRANSPARENT);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                screenMirror.setImageTintList(ColorStateList.valueOf(MaterialColors.getColor(screenMirror, com.google.android.material.R.attr.colorOnPrimary)));
+            }
             screenMirror.setOnClickListener(view -> {
                 if (!getShowCase().singleShowCase(this, screenMirror, null, cast_info_string, true, "castInfo")) {
                     try {
@@ -2210,22 +2243,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             });
             screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
-            screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.help_outline, getTheme()));
-            /*
-            */
+            Drawable helpDrawable = AppCompatResources.getDrawable(this,R.drawable.help_outline);
+            screenHelp.setImageDrawable(helpDrawable);
+            screenHelp.setPadding(16,0,16,0);
+
+            searchMenu = (ImageView) menu.findItem(R.id.search_menu_item).getActionView();
+            Drawable searchDrawable = AppCompatResources.getDrawable(this, R.drawable.search);
+            searchMenu.setImageDrawable(searchDrawable);
+            searchMenu.setPadding(16,0,16,0);
+
+            searchMenu.setOnClickListener(view -> {
+                Log.d(TAG,"CLICKED");
+                navigateToFragment(getString(R.string.deeplink_search_menu), 0);
+            });
+            searchMenu.setVisibility(settingsOpen ? View.VISIBLE : View.GONE);
+
             globalMenuItem = menu;
             // IV - Set 'settings'/'close' icon is set depending on settingOpen
             globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
             updateCastIcon();
-            searchMenu = (ImageView) menu.findItem(R.id.search_menu_item).getActionView();
-            if (searchMenu!=null) {
-                searchMenu.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.search, getTheme()));
-                searchMenu.setOnClickListener(view -> {
-                    Log.d(TAG,"CLICKED");
-                    navigateToFragment(getString(R.string.deeplink_search_menu), 0);
-                });
-                searchMenu.setVisibility(settingsOpen ? View.VISIBLE : View.GONE);
-            }
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -3105,6 +3142,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             themeColors = new ThemeColors(this);
         }
         return themeColors;
+    }
+
+    @Override
+    public AdjustTheme getAdjustTheme() {
+        if (adjustTheme==null) {
+            adjustTheme =  new AdjustTheme(this);
+        }
+        return adjustTheme;
     }
 
     @Override
@@ -4294,11 +4339,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                         if (myCustomCloseIcon!=null) {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary)).build()).setShowTitle(true).
+                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimary)).build()).setShowTitle(true).
                                     setCloseButtonIcon(myCustomCloseIcon).setUrlBarHidingEnabled(true).build();
                         } else {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary)).build()).setShowTitle(true).
+                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimary)).build()).setShowTitle(true).
                                     setUrlBarHidingEnabled(true).build();
                         }
                         customTabsIntent.launchUrl(MainActivity.this, Uri.parse(location));

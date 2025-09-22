@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -22,7 +24,9 @@ public class MaterialRadioButtonItem extends LinearLayout {
 
     public MaterialRadioButtonItem(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_material_radiobutton,this);
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_material_radiobutton,this);
+        //inflate(context, R.layout.view_material_radiobutton,this);
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +23,20 @@ import java.util.ArrayList;
 
 public class ThemeSetupFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ThemeSetupFragment";
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private SettingsThemeBinding myView;
 
     private String myTheme, theme_string="", website_themes_string="", presenter_mode_string="",
             stage_mode_string="", theme_dark_string="", theme_light_string="",
-            theme_custom1_string="", theme_custom2_string="", reset_colours_string="";
+            theme_custom1_string="", theme_custom2_string="", reset_colours_string="",
+            recreate_string="";
     private ArrayList<String> themes;
     private String webAddress;
+    private boolean recreateActivity = false;
+    private String initialTheme;
 
     @Override
     public void onResume() {
@@ -76,6 +82,8 @@ public class ThemeSetupFragment extends Fragment {
             theme_custom1_string = getString(R.string.theme_custom1);
             theme_custom2_string = getString(R.string.theme_custom2);
             reset_colours_string = getString(R.string.reset_colours);
+            recreate_string = getString(R.string.restart_auto);
+            initialTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         }
     }
     private void setUpTheme() {
@@ -126,6 +134,12 @@ public class ThemeSetupFragment extends Fragment {
                 updateButtons();
                 // Also update secondary screen
                 displayInterface.updateDisplay("setSongContentPrefs");
+
+                // Force a recreate on exiting this fragment
+                checkNeedsRestart();
+                if (recreateActivity) {
+                    mainActivityInterface.getShowToast().doIt(recreate_string);
+                }
             }
 
             @Override
@@ -223,5 +237,20 @@ public class ThemeSetupFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
+        if (recreateActivity) {
+            mainActivityInterface.recreateActivity();
+        }
+    }
+
+    private void checkNeedsRestart() {
+        // Compare the initial theme with the new one
+        // dark and custom1 are dark based, light and custom2 are light based
+        String currentTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
+        Log.d(TAG,"initialTheme:"+initialTheme+"  currentTheme:"+currentTheme);
+        if (initialTheme.equals("dark") || initialTheme.equals("custom1")) {
+            recreateActivity = currentTheme.equals("light") || currentTheme.equals("custom2");
+        } else {
+            recreateActivity = currentTheme.equals("dark") || currentTheme.equals("custom1");
+        }
     }
 }

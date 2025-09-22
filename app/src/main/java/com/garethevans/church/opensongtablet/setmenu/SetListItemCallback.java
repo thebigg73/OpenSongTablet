@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
+import com.google.android.material.color.MaterialColors;
 
 public class SetListItemCallback extends ItemTouchHelper.Callback {
 
@@ -154,7 +155,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
                 SetListItemViewHolder myViewHolder =
                         (SetListItemViewHolder) viewHolder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ((SetListItemViewHolder) viewHolder).cardView.post(() -> ((SetListItemViewHolder) viewHolder).cardView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorSecondary))));
+                    ((SetListItemViewHolder) viewHolder).cardView.post(() -> ((SetListItemViewHolder) viewHolder).cardView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_secondary)))));
                 }
                 setItemTouchInterface.onRowSelected(myViewHolder);
             }
@@ -171,7 +172,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         super.clearView(recyclerView, viewHolder);
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewHolder.itemView.post(() -> viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorAltPrimary))));
+            viewHolder.itemView.post(() -> viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSurface, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_primary)))));
         }
         // Check we rehighlight the set item
         if (recyclerView.getAdapter()!=null) {

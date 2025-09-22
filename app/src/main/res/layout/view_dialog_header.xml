@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp"
     android:orientation="horizontal">
 
@@ -12,7 +13,9 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        style="@style/largeText"/>
+        style="@style/largeText"
+        android:textColor="?attr/colorOnPrimary"
+        tools:text="Title"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/webHelp"

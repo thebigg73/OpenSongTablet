@@ -89,7 +89,6 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         prepareStrings(context);
     }
 
-
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override

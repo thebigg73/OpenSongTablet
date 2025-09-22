@@ -67,13 +67,13 @@ public class ModeFragment extends Fragment {
         switch (mainActivityInterface.getPreferences().getMyPreferenceString(
                 "whichMode","Performance")) {
             case "Performance":
-                myView.performanceMode.showCheckMark(true);
+                myView.performanceMode.showCheckmark(true);
                 break;
             case "Presenter":
-                myView.presenterMode.showCheckMark(true);
+                myView.presenterMode.showCheckmark(true);
                 break;
             case "Stage":
-                myView.stageMode.showCheckMark(true);
+                myView.stageMode.showCheckmark(true);
                 break;
         }
     }

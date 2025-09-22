@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSheet"
-    style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -99,7 +98,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/opensong"
-                    app:backgroundTint="@color/colorSecondary" />
+                    app:backgroundTint="?attr/colorSecondary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/choPro"
@@ -109,7 +108,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/chordpro"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorPrimary" />
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
@@ -132,7 +131,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/minus_1"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorSurface" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/textSizeUp"
@@ -142,7 +141,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/plus_1"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorSurface" />
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
@@ -165,7 +164,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/minus_1"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorSurface" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/transposeUp"
@@ -175,7 +174,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/plus_1"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorSurface" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

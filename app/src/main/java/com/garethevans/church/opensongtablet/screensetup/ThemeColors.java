@@ -1,12 +1,17 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ThemeColors {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "ThemeColors";
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
 
     // This object holds the user theme colours
@@ -54,6 +59,7 @@ public class ThemeColors {
     private int abcPopupColor, abcPopupTextColor;
 
     public ThemeColors(Context c) {
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
     }
     // Set the values with updates
@@ -273,8 +279,29 @@ public class ThemeColors {
         return abcPopupTextColor;
     }
 
+    public void getDefaultTheme() {
+        int nightModeFlags = c.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+
+        String fallback = "dark";
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                // Dark mode is active
+                fallback = "dark";
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Light mode is active
+                fallback = "light";
+                break;
+            case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                // Mode is unknown (very rare)
+                fallback = "dark";
+        }
+        Log.d(TAG,"fallback:"+fallback);
+        themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme",fallback);
+    }
     public void getDefaultColors() {
-        themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
+        getDefaultTheme();
         switch (themeName) {
             case "light":
                 setThemeLight();

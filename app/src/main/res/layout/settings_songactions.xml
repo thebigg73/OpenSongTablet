@@ -206,7 +206,7 @@
             <TableRow style="@style/DividerLine" />
 
             <!-- GE Hidden, but reserving the right to reinstate, even just for me!
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/graceTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

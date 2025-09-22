@@ -1,47 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:saveEnabled="false"
     android:isScrollContainer="true"
-    app:textInputLayoutFocusedRectEnabled="false"
-    android:orientation="vertical">
+    app:textInputLayoutFocusedRectEnabled="false">
 
-<com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/holderLayout"
-    style="@style/EditTextLayoutOutline"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="start"
-    android:gravity="start"
-    android:labelFor="@+id/editText"
-    android:textColorHint="@color/vlightgrey"
-    app:hintTextColor="@color/vlightgrey"
-    android:saveEnabled="false"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
-    android:isScrollContainer="true"
-    app:textInputLayoutFocusedRectEnabled="false"
-    tools:hint="Hint">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editText"
-        style="@style/EditTextLayout"
-        android:textSize="@dimen/text_medium"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/holderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_margin="0dp"
-        android:background="@null"
-        android:gravity="start"
-        android:padding="16dp"
-        android:scrollHorizontally="true"
-        android:isScrollContainer="true"
-        app:textInputLayoutFocusedRectEnabled="false"
-        android:focusable="true"
-        android:textIsSelectable="true"
-        tools:text="The text" />
-</com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+        android:labelFor="@+id/editText"
+        tools:hint="Hint"
+        style="@style/EditTextLayoutOutline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EditTextLayout"
+            android:background="@null"
+            tools:text="The text" />
+    </com.google.android.material.textfield.TextInputLayout>
+</FrameLayout>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:paddingTop="4dp"
     android:paddingBottom="4dp">
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="@color/white"
+            android:textColor="?android:attr/textColor"
             tools:text="Main text" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="@color/vlightgrey"
+            android:textColor="?android:attr/textColorHint"
             tools:text="@string/info_text" />
     </LinearLayout>
 
@@ -41,5 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingStart="16dp"
-        android:paddingEnd="0dp"/>
+        android:paddingEnd="0dp"
+        android:enabled="true"
+        android:checked="true" />
 </LinearLayout>

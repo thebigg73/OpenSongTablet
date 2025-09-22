@@ -12,7 +12,7 @@
         android:id="@+id/mainTools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorSecondary"
+        android:background="?attr/colorSecondary"
         android:orientation="horizontal"
         android:padding="4dp">
 
@@ -56,7 +56,7 @@
         android:id="@+id/toolSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAltPrimary"
+        android:background="?attr/colorSurface"
         android:orientation="vertical"
         android:paddingStart="8dp"
         android:paddingTop="8dp"

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -42,7 +41,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/boardPage2"
                     style="@style/MiddleButton"
-                    app:backgroundTint="@color/colorAltPrimary"
+                    app:backgroundTint="?attr/colorSurface"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:padding="0dp"
@@ -54,7 +53,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/boardPage3"
                     style="@style/RightButton"
-                    app:backgroundTint="@color/colorAltPrimary"
+                    app:backgroundTint="?attr/colorSurface"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:padding="0dp"

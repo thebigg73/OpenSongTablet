@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMetronomeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
@@ -309,7 +310,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 myView.tapTempo.setEnabled(false);
                 myView.tapTempo.setText(reset_string);
-                myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorPrimary));
                 // Waited too long, reset count
                 total_calc_bpm = 0;
                 total_counts = 0;
@@ -325,7 +326,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                         myView.tapTempo.setEnabled(true);
                         myView.tapTempo.setText(tap_tempo_string);
-                        myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
+                        myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorSecondary));
             }));
             // Start the metronome
             mainActivityInterface.getMetronome().startMetronome();

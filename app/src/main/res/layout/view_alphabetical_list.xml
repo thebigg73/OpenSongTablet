@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="0dp"
     android:gravity="center"
-    android:textColor="#aaaaaa"
+    android:textColor="?android:attr/textColorSecondary"
     android:minHeight="48dp"
     android:minWidth="48dp"
     tools:text="A"

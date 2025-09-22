@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:gravity="center" />
+            android:gravity="center"
+            tools:text="Left text"/>
 
         <com.google.android.material.slider.Slider
             android:id="@+id/slider"
@@ -36,9 +37,9 @@
             android:valueTo="1"
             app:labelBehavior="gone"
             android:stepSize="1"
-            app:thumbColor="@color/colorAltSecondary"
+            app:thumbColor="?attr/colorSecondaryVariant"
             app:thumbRadius="8dp"
-            app:trackColor="@color/colorSecondary"
+            app:trackColor="?attr/colorSecondary"
             app:trackHeight="8dp" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -47,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:gravity="center" />
+            android:gravity="center"
+            tools:text="Right text"/>
 
     </LinearLayout>
 </LinearLayout>

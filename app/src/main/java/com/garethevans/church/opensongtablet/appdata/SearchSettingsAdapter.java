@@ -42,7 +42,6 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         displayedItems = new ArrayList<>(allItems);
     }
 
-
     // IMPORTANT: THIS IS ALL THE MENU OPTIONS - MUST BE KEPT UP TO DATE FOR SEARCH
     private void setupItems() {
         // Main settings menus
@@ -1152,7 +1151,6 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
             return false;
         }
     }
-
 
     @NonNull
     @Override

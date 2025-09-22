@@ -38,7 +38,7 @@
             </LinearLayout>
 
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/invertPDF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

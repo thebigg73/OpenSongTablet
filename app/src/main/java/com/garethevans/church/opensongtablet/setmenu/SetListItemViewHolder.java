@@ -7,20 +7,20 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
 
 public class SetListItemViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener,
         GestureDetector.OnGestureListener{
     // Identify the views
-    final CardView cardView;
+    final MaterialCardView cardView;
     final MaterialTextView cardItem, cardTitle, cardFilename, cardFolder;
     final RelativeLayout cardLayout;
     final FloatingActionButton cardEdit;

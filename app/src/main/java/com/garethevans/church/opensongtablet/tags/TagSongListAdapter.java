@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
         mainActivityInterface = (MainActivityInterface) c;
         this.recyclerView = recyclerView;
         highlightOff = c.getResources().getColor(R.color.transparent);
-        highlightOn = c.getResources().getColor(R.color.colorSecondary);
+        highlightOn = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(c,R.color.dark_secondary));
     }
 
     @NonNull

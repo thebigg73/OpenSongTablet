@@ -13,12 +13,14 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
@@ -43,6 +45,7 @@ public class InlineSetList extends RecyclerView {
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
     private String no_set_string;
     private String divider_string;
+    View view;
     public InlineSetList(@NonNull Context context) {
         super(context);
         llm = new LinearLayoutManager(context);
@@ -373,9 +376,9 @@ public class InlineSetList extends RecyclerView {
         private final int onColor, offColor, menuColor, grey;
 
         InlineSetListAdapter(Context context) {
-            onColor = context.getResources().getColor(R.color.colorSecondary);
-            offColor = context.getResources().getColor(R.color.colorAltPrimary);
-            menuColor = context.getResources().getColor(R.color.colorPrimary);
+            onColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(context,R.color.dark_secondary));
+            offColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimaryVariant,ContextCompat.getColor(context,R.color.dark_primary));
+            menuColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimary,ContextCompat.getColor(context,R.color.dark_primary));
             grey = context.getResources().getColor(R.color.grey);
         }
 

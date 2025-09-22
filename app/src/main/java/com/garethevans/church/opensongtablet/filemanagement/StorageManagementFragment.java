@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -113,6 +114,7 @@ public class StorageManagementFragment extends Fragment {
                 lp.gravity = Gravity.CENTER_HORIZONTAL;
                 textView.setLayoutParams(lp);
                 textView.setText(folder);
+                textView.setTextColor(Color.WHITE);
                 textView.setGravity(Gravity.CENTER_HORIZONTAL);
                 textView.setPadding(48, 48, 48, 48);
                 textView.setBackgroundColor(getResources().getColor(R.color.blue));

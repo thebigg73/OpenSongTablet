@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -21,6 +22,7 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 
 public class MidiActionBottomSheet extends BottomSheetDialogFragment {
 
@@ -80,8 +82,8 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
             website_midi_actions = getString(R.string.website_midi_actions);
             nearby_message_string = getString(R.string.nearby_message);
             // Also set the colours
-            on = getResources().getColor(R.color.colorSecondary);
-            off = getResources().getColor(R.color.colorAltPrimary);
+            on = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
+            off = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(getContext(),R.color.dark_primary));
         }
     }
 

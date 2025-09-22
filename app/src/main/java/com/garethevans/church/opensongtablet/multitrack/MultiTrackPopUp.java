@@ -27,6 +27,7 @@ import com.garethevans.church.opensongtablet.customviews.FloatWindow;
 import com.garethevans.church.opensongtablet.customviews.TrackSlider;
 import com.garethevans.church.opensongtablet.databinding.ViewMultitrackBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
@@ -113,7 +114,7 @@ public class MultiTrackPopUp {
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
                 R.drawable.popup_bg, null);
         if (drawable!=null) {
-            drawable.setColor(ContextCompat.getColor(c, R.color.colorAltPrimary));
+            drawable.setColor(MaterialColors.getColor(c, com.google.android.material.R.attr.colorSurface, ContextCompat.getColor(c,R.color.dark_primary)));
         }
         popupWindow.setBackgroundDrawable(null);
         floatWindow.setAlpha(1f);

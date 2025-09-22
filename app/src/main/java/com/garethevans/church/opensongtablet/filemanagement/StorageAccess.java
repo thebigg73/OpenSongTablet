@@ -2109,26 +2109,30 @@ public class StorageAccess {
     private boolean createFolder_SAF(Uri dirUri, String newFolder, boolean showToast) {
         String message;
         boolean outcome;
-        try {
-            Uri createduri = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, newFolder);
-            if (createduri!=null && !createduri.equals(dirUri)) {
-                message = c.getString(R.string.success);
-                outcome = true;
-            } else {
+        if (dirUri!=null && newFolder!=null) {
+            try {
+                Uri createduri = DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, newFolder);
+                if (createduri != null && !createduri.equals(dirUri)) {
+                    message = c.getString(R.string.success);
+                    outcome = true;
+                } else {
+                    message = c.getString(R.string.create_folder_error);
+                    outcome = false;
+                }
+            } catch (Exception e) {
+                updateCrashLogAttempts++;
+                e.printStackTrace();
                 message = c.getString(R.string.create_folder_error);
+                //updateCrashLog(e.toString());
                 outcome = false;
             }
-        } catch (Exception e) {
-            updateCrashLogAttempts ++;
-            e.printStackTrace();
-            message = c.getString(R.string.create_folder_error);
-            //updateCrashLog(e.toString());
-            outcome = false;
+            if (showToast) {
+                mainActivityInterface.getShowToast().doIt(message);
+            }
+            return outcome;
+        } else {
+            return false;
         }
-        if (showToast) {
-            mainActivityInterface.getShowToast().doIt(message);
-        }
-        return outcome;
     }
     private boolean createFolder_File(Uri root, String newName, boolean showToast) {
         File f = new File(root.getPath(), newName);

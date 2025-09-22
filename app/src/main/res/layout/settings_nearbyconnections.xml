@@ -43,6 +43,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/off"
                         style="@style/LeftButton"
+                        app:backgroundTint="?attr/colorSecondary"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -51,7 +52,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/host"
                         style="@style/MiddleButton"
-                        app:backgroundTint="@color/colorAltPrimary"
+                        app:backgroundTint="?attr/colorPrimaryVariant"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -60,7 +61,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/client"
                         style="@style/RightButton"
-                        app:backgroundTint="@color/colorAltPrimary"
+                        app:backgroundTint="?attr/colorPrimaryVariant"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -68,14 +69,14 @@
                 </LinearLayout>
                 <TableRow style="@style/DividerLine" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/nearbyStartOnBoot"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/connections_start_on_boot"
                     android:hint="@string/connections_start_on_boot_info" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/temporaryAdvertise"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,7 +109,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/advertiseButton"
                         style="@style/LeftButton"
-                        app:backgroundTint="@color/colorAltPrimary"
+                        app:backgroundTint="?attr/colorSurface"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -118,7 +119,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/discoverButton"
                         style="@style/RightButton"
-                        app:backgroundTint="@color/colorAltPrimary"
+                        app:backgroundTint="?attr/colorSurface"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -133,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            android:background="@color/scrim" />
+            android:background="?attr/scrimBackground" />
     </RelativeLayout>
 
     <!-- The bottom dialog -->

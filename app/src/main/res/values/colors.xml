@@ -1,23 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="dark_primary">#141b22</color>              <!-- dark primary -->
+    <color name="dark_secondary">#294959</color>            <!-- FABs, etc -->
+    <color name="dark_secondary_variant">#365c6e</color>    <!-- variant (more emphasised) -->
+    <color name="dark_surface">#183441</color>              <!-- Bottom sheets, component backgrounds -->
+    <color name="dark_surface_variant">#203640</color>      <!-- variant (more emphasised) -->"
+    <color name="dark_error">#AA0000</color>                <!-- dark red -->
+    <color name="dark_hint">#adb6bf</color>                 <!-- very light grey -->
+    <color name="dark_color">#f1faff</color>                <!-- text and icon color -->
+    <color name="dark_primary_container"></color>
+    <color name="light_primary">#ffffff</color>             <!-- light primary -->
+    <color name="light_secondary">#E3EDF2</color>           <!-- FABs, etc -->
+    <color name="light_secondary_variant">#a3c0d0</color>   <!-- variant (more emphasised) -->
+    <color name="light_surface">#fafaff</color>             <!-- Bottom sheets, component backgrounds -->
+    <color name="light_surface_variant">#E2D9DA</color>     <!-- variant (more emphasised) -->"
+    <color name="light_error">#F46262</color>               <!-- light red -->
+    <color name="light_hint">#8e969f</color>                <!-- grey -->
+    <color name="light_color">#141b22</color>               <!-- text and icon color -->
 
-    <!--Main display background colour for fragments-->
-    <color name="colorPrimary">#141B22</color>
-
-    <!--The colour used for accent elements (FABS, etc)-->
-    <color name="colorSecondary">#294959</color>
-    <color name="colorAltSecondary">#5F7F8F</color>
-
-    <!--The background colour of popup dialogs and the toolbar-->
-    <color name="colorAltPrimary">#232333</color>
+    <!-- The tuner -->
+    <color name="dark_tuner_off">@color/dark_secondary</color>
+    <color name="dark_tuner_green">@color/green</color>
+    <color name="dark_tuner_red">@color/red</color>
+    <color name="light_tuner_off">@color/light_secondary</color>
+    <color name="light_tuner_green">#88FF88</color>
+    <color name="light_tuner_red">#FF8888</color>
 
     <!--Showcase overlay colour-->
-    <color name="showcaseColor">#ee141B22</color>
+    <color name="showcaseColor">#EE141B22</color>
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#888888</color>
 
     <!--Obviously named colours used as needed-->
     <color name="transparent">#00000000</color>
-    <color name="scrim">#CC000000</color>
     <color name="black">#000000</color>
     <color name="blue">#0000aa</color>
     <color name="red">#ff0000</color>

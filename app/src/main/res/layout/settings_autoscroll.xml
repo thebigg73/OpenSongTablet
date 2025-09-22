@@ -90,7 +90,7 @@
                 app:textLeft="@string/use_default"
                 app:textRight="@string/ask"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoscrollPreDelayCountdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:layout_marginBottom="16dp"
                 android:text="@string/autoscroll_autostart" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/onscreenAutoscrollHide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

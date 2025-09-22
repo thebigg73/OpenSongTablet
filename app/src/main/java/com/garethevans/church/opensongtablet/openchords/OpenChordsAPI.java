@@ -20,6 +20,7 @@ import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetObject;
 import com.garethevans.church.opensongtablet.setprocessing.SetSlideGroupObject;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.color.MaterialColors;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
@@ -1119,7 +1120,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     OpenChordsTag newTag = new OpenChordsTag();
                     newTag.setId(newUUID);
                     newTag.setTitle(localTag.trim());
-                    newTag.setColor(mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(ContextCompat.getColor(c, R.color.colorPrimary)));
+                    newTag.setColor(mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(MaterialColors.getColor(c,com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(c,R.color.dark_primary))));
                     newTagsForUpload.add(newTag);
                 }
             }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.color.MaterialColors;
 
 public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
 
@@ -60,8 +61,8 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (prevColor==null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorPrimary)));
-                prevColor = ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorPrimary));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimary,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary))));
+                prevColor = ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimary,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary)));
             } else {
                 viewHolder.itemView.setBackgroundTintList(prevColor);
             }
@@ -76,7 +77,7 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
                 prevColor = viewHolder.itemView.getBackgroundTintList();
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorSecondary)));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_secondary))));
             }
         }
     }

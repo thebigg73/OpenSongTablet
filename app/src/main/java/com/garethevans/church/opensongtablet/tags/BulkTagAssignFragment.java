@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.SettingsTagManageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.google.android.material.color.MaterialColors;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -103,8 +105,10 @@ public class BulkTagAssignFragment extends Fragment {
         setupTagsToAddRemove();
 
         // Set the filterButton colours
-        activecolor = getResources().getColor(R.color.colorSecondary);
-        inactivecolor = getResources().getColor(R.color.transparent);
+        if (getContext()!=null) {
+            activecolor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(), R.color.dark_secondary));
+            inactivecolor = getResources().getColor(R.color.transparent);
+        }
         // This bit also prepares the songList
         fixButtons();
 

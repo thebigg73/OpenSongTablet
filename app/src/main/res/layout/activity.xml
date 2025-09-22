@@ -22,27 +22,30 @@
     android:id="@+id/main_page_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAltPrimary"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:keepScreenOn="true"
     android:focusableInTouchMode="false"
     android:focusable="false"
-    android:contentDescription="@null">
+    android:contentDescription="@null"
+    android:background="?android:attr/windowBackground">
+    <!-- android:background="@color/colorAltPrimary" -->
 
-    <androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAltPrimary"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:keepScreenOn="true"
         android:focusableInTouchMode="false"
         android:focusable="false"
         android:contentDescription="@null"
-        android:descendantFocusability="blocksDescendants">
+        android:descendantFocusability="blocksDescendants"
+        android:background="?android:attr/windowBackground">
+        <!--android:background="@color/colorAltPrimary"-->
 
-    <FrameLayout
+        <FrameLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,15 +56,17 @@
             android:id="@+id/myAppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ActionBar"
-            android:visibility="gone">
+            android:theme="?attr/actionBarStyle"
+            android:visibility="gone"
+            android:background="?attr/colorPrimary">
 
             <com.garethevans.church.opensongtablet.customviews.MyToolbar
                 android:id="@+id/myToolbar"
-                android:background="@color/colorAltPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom" />
+            <!--android:background="@color/colorAltPrimary"-->
+
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -86,7 +91,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:navGraph="@navigation/navigation"
-                android:background="@color/colorPrimary"/>
+                android:background="?android:attr/windowBackground" />
 
             <com.garethevans.church.opensongtablet.customviews.OnScreenInfo
                 android:id="@+id/onScreenInfo"
@@ -138,11 +143,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorAltPrimary"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        tools:ignore="VisualLintBounds">
+        tools:ignore="VisualLintBounds"
+        android:background="?android:attr/windowBackground">
+        <!--android:background="@color/colorAltPrimary"-->
+
 
         <RelativeLayout
             android:id="@+id/cutoutRelativeLayout"
@@ -153,8 +160,8 @@
                 android:id="@+id/cutoutView"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorAltPrimary" />
-
+                android:background="?attr/colorPrimary" />
+<!-- android:background="@color/colorAltPrimary" -->
             <include
                 android:id="@+id/menu_top"
                 layout="@layout/menu_top"
@@ -166,7 +173,8 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="?attr/backgroundColor" />
     </LinearLayout>
 
 
@@ -176,12 +184,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="32dp"
-        android:text="@string/nearby_message"
         android:background="@drawable/rounded_box"
-        android:textColor="@color/white"
+        app:backgroundTint="?attr/colorSecondary"
         android:layout_gravity="center"
         app:elevation="128dp"
         android:visibility="gone"/>
+    <!-- android:textColor="@color/white" -->
 
 </FrameLayout>
 
