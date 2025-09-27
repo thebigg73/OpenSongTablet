@@ -63,7 +63,7 @@ public class AudioRecorderPopUp {
         recordStop = ContextCompat.getDrawable(c, R.drawable.stop);
         colorInactive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondaryVariant,ContextCompat.getColor(c,R.color.dark_secondary_variant));
         colorActive = ContextCompat.getColor(c, R.color.red);
-        pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
+        pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
         recordingAlpha = Math.min(pageButtonAlpha, 0.7f);
         mediaPlayerOnPrepared();
     }

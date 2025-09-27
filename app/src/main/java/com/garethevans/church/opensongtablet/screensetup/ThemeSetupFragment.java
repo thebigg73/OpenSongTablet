@@ -182,12 +182,9 @@ public class ThemeSetupFragment extends Fragment {
         myView.presoShadowButton.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
 
         myView.metronomeButton.setColor(mainActivityInterface.getMyThemeColors().getMetronomeColor());
-        myView.pagebuttonButton.setColor(mainActivityInterface.getMyThemeColors().getPageButtonsColor());
         myView.stickytextButton.setColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
         myView.stickybackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
         myView.hotZoneButton.setColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
-        myView.extratextButton.setColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
-        myView.extrabackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getExtraInfoBgColor());
         myView.abctextButton.setColor(mainActivityInterface.getMyThemeColors().getAbcPopupTextColor());
         myView.abcbackgroundButton.setColor(mainActivityInterface.getMyThemeColors().getAbcPopupColor());
     }

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.stickynotes;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +77,11 @@ public class StickyNotesFragment extends Fragment {
         myView.timeSlider.setValue((float)time);
         myView.timeSlider.setLabelFormatter(value -> ((int)value)+"s");
         setTimeHint(time);
-        int alpha = Math.round(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitAlpha()*100.0f);
+        int stickyBgColor = mainActivityInterface.getMyThemeColors().getStickyBackgroundColor();
+        int alpha = Color.alpha(stickyBgColor);
+        int rgb   = stickyBgColor & 0x00FFFFFF;
+
+        //int alpha = Math.round(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitAlpha()*100.0f);
         if (alpha<50) {
             alpha = 50;
         }
@@ -146,15 +151,16 @@ public class StickyNotesFragment extends Fragment {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 float val = slider.getValue()/100f;
-                int color = ColorUtils.setAlphaComponent(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitColor(),(int)(val*255f));
+                int stickyBgColor = mainActivityInterface.getMyThemeColors().getStickyBackgroundColor();
+                int rgb   = stickyBgColor & 0x00FFFFFF;
+
+                int color = ColorUtils.setAlphaComponent(rgb,(int)(val*255f));
                 mainActivityInterface.getMyThemeColors().setStickyTextColor(color);
                 String theme = mainActivityInterface.getMyThemeColors().getThemeName();
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"_stickyBackgroundColor",color);
-                mainActivityInterface.getMyThemeColors().splitColorAndAlpha();
             }
         });
         myView.alphaSlider.addOnChangeListener((slider, value, fromUser) -> setAlphaHint(value));

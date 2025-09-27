@@ -71,6 +71,9 @@
         <!-- Animations -->
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
+        <!-- Menu items -->
+        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+
         <item name="popupMenuBackground">@drawable/exposed_popup</item>
     </style>
 </resources>

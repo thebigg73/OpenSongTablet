@@ -8,7 +8,7 @@
     <color name="dark_hint">#adb6bf</color>                 <!-- very light grey -->
     <color name="dark_color">#f1faff</color>                <!-- text and icon color -->
     <color name="dark_primary_container"></color>
-    <color name="light_primary">#ffffff</color>             <!-- light primary -->
+    <color name="light_primary">#FFFFFF</color>             <!-- light primary -->
     <color name="light_secondary">#E3EDF2</color>           <!-- FABs, etc -->
     <color name="light_secondary_variant">#a3c0d0</color>   <!-- variant (more emphasised) -->
     <color name="light_surface">#fafaff</color>             <!-- Bottom sheets, component backgrounds -->

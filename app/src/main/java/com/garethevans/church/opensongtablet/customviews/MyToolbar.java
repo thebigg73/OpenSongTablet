@@ -87,6 +87,8 @@ public class MyToolbar extends MaterialToolbar {
 
         this.setContentInsetsRelative(0,0);
         this.setContentInsetStartWithNavigation(0);
+        this.setContentInsetEndWithActions(0);
+
         this.setTitleTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
         this.setSubtitleTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
         this.setPadding(0,0,0,0);
@@ -268,8 +270,10 @@ public class MyToolbar extends MaterialToolbar {
                 author.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize",11.0f));
                 author.setText(mainActivityInterface.getSong().getAuthor());
                 hideView(author, false);
+                title.setGravity(Gravity.BOTTOM);
             } else if (author!=null) {
                 hideView(author, true);
+                title.setGravity(Gravity.CENTER_VERTICAL);
             }
             if (key != null && mainActivityInterface.getSong().getKey() != null &&
                     !mainActivityInterface.getSong().getKey().isEmpty()) {

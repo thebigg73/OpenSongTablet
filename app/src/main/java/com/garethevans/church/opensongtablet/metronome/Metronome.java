@@ -308,7 +308,7 @@ public class Metronome {
         visualMetronome = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("metronomeShowVisual", false);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
-        metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, Color.BLACK, 0.3f);
+        metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, MaterialColors.getColor(c,com.google.android.material.R.attr.colorSurface,Color.BLACK), 0.3f);
     }
     public void setVisualMetronome(boolean visualMetronome) {
         this.visualMetronome = visualMetronome;

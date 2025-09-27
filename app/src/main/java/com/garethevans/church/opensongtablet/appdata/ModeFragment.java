@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,10 @@ public class ModeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(choose_app_mode);
-        mainActivityInterface.updateToolbarHelp(webAddress);
+        Log.d(TAG,"webAddress:"+webAddress);
+        if (webAddress!=null) {
+            mainActivityInterface.updateToolbarHelp(webAddress);
+        }
     }
 
     @Override

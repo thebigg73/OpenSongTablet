@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -80,14 +81,6 @@ public class PageButtons {
         custom7.hide();
         custom8.hide();
         pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
-        //custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom4.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom5.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom7.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        //custom8.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         int size = FloatingActionButton.SIZE_NORMAL;
         if (pageButtonMini) {
             size = FloatingActionButton.SIZE_MINI;
@@ -145,21 +138,9 @@ public class PageButtons {
         }
     }
     public void updateColors() {
-        pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
-        pageButtonAlpha = 1f;
-        //pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
-        //pageButtonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
-        //pageButtonIconColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorOnPrimary,c.getResources().getColor(R.color.dark_text_icon));
-        if (actionButton!=null && actionButton.getRotation()==0) {
-            //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-        }
-        if (fabs!=null) {
-            for (MyFAB fab : fabs) {
-                if (fab!=null) {
-                    //fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
-                }
-            }
-        }
+        //pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
+        pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
+        Log.d(TAG,"pageButtonAlpha:"+pageButtonAlpha);
         if (pageButtonsLayout!=null) {
             pageButtonsLayout.setAlpha(pageButtonAlpha);
         }
@@ -481,7 +462,7 @@ public class PageButtons {
                 fab.setOnClickListener(null);
             }
         } else if (buttonNum>=0) {
-            fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
+            fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),c.getTheme()));
             fab.setTag("");
             fab.show();
             fab.setOnClickListener(null);
@@ -524,7 +505,7 @@ public class PageButtons {
         pageButtonLongText.set(button,longText.get(pos));
     }
     public void setPageButtonDrawable(Context c, int button, int pos) {
-        pageButtonDrawable.set(button,ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(pos),null));
+        pageButtonDrawable.set(button,ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(pos),c.getTheme()));
     }
     public void setPageButtonVisibility(int button, boolean visible) {
         pageButtonVisibility.set(button,visible);

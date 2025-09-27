@@ -27,6 +27,9 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -475,14 +478,31 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         serverObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
                         serverObjectHasLastModified = false;
                     }
-                    long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
+
+                    // Ensure the last modified is in UTC
+                    // Parse the input string
+                    OffsetDateTime odtServer = OffsetDateTime.parse(serverObject.getLastModified());
+                    OffsetDateTime utcTimeServer = odtServer.withOffsetSameInstant(ZoneOffset.UTC);
+                    long serverObjectLastModified = Instant.parse(utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+
+                    //long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
+                    Log.d(TAG,"server lastModified:"+serverObject.getLastModified() + "  utc version:"+utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+
                     boolean localObjectHasLastModified = true;
                     if (localObject.getLastModified() == null || localObject.getLastModified().isEmpty() ||
                             localObject.getLastModified().equals(c.getString(R.string.is_not_set))) {
                         localObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
                         localObjectHasLastModified = false;
                     }
-                    long localObjectLastModified = Instant.parse(localObject.getLastModified()).toEpochMilli();
+                    // Ensure the last modified is in UTC
+                    // Parse the input string
+                    OffsetDateTime odtLocal = OffsetDateTime.parse(serverObject.getLastModified());
+                    OffsetDateTime utcTimeLocal = odtLocal.withOffsetSameInstant(ZoneOffset.UTC);
+                    long localObjectLastModified = Instant.parse(utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+                    Log.d(TAG,"local lastModified:"+serverObject.getLastModified() + "  utc version:"+utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+                    //long localObjectLastModified = Instant.parse(localObject.getLastModified()).toEpochMilli();
 
                     boolean useLocalLastModified = !serverObjectHasLastModified && localObjectHasLastModified;
                     boolean useServerLastModified = serverObjectHasLastModified && !localObjectHasLastModified;
@@ -535,14 +555,20 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         serverObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
                         serverObjectHasLastModified = false;
                     }
-                    long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
+                    OffsetDateTime odtServer = OffsetDateTime.parse(serverObject.getLastModified());
+                    OffsetDateTime utcTimeServer = odtServer.withOffsetSameInstant(ZoneOffset.UTC);
+                    long serverObjectLastModified = Instant.parse(utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+                    //long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
 
                     boolean localObjectHasLastModified = true;
                     if (localObject.getLastModified() == null || localObject.getLastModified().isEmpty()) {
                         localObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
                         localObjectHasLastModified = false;
                     }
-                    long localObjectLastModified = Instant.parse(localObject.getLastModified()).toEpochMilli();
+                    OffsetDateTime odtLocal = OffsetDateTime.parse(serverObject.getLastModified());
+                    OffsetDateTime utcTimeLocal = odtLocal.withOffsetSameInstant(ZoneOffset.UTC);
+                    long localObjectLastModified = Instant.parse(utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+                    //long localObjectLastModified = Instant.parse(localObject.getLastModified()).toEpochMilli();
                     if (serverObjectLastModified == 0) {
                         serverObjectLastModified = localObjectLastModified;
                     }

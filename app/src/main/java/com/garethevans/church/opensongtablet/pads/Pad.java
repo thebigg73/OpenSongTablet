@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.pads;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -38,7 +37,6 @@ public class Pad {
     private final MaterialTextView padTime;
     private final MaterialTextView padTotalTime;
     private int padLength;
-    private int colorOn;
     private float pad1VolDrop, pad2VolDrop;
     private boolean padsActivated = false;
     private CharSequence padPauseTime;
@@ -75,7 +73,6 @@ public class Pad {
         // IV - managePads will fade all running pads
         // managePads will start the new pad if/when a pad player is free
         padsActivated = true;
-        colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         managePads();
     }
 
@@ -521,6 +518,7 @@ public class Pad {
         String total = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(padLength);
         padTotalTime.setText(total);
         padTotalTime.setVisibility(View.VISIBLE);
+        padTime.setVisibility(View.VISIBLE);
         pad.setVisibility(View.VISIBLE);
 
         // IV - Schedule a new timer when the timer not already running
@@ -538,11 +536,6 @@ public class Pad {
                             // IV - If paused
                             if (pad1Pause || pad2Pause) {
                                 padTime.setText(padPauseTime);
-                                if (padTime.getCurrentTextColor() == Color.TRANSPARENT) {
-                                    padTime.setTextColor(colorOn);
-                                } else {
-                                    padTime.setTextColor(Color.TRANSPARENT);
-                                }
                                 // IV - If running normally
                             } else {
                                 String text = "0:00";
@@ -557,7 +550,6 @@ public class Pad {
                                     // Nothing to do
                                 }
                                 padTime.setText(text);
-                                padTime.setTextColor(colorOn);
                             }
                         }
                     });

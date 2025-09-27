@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.autoscroll;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -81,7 +80,6 @@ public class Autoscroll {
         this.myZoomLayout = myZoomLayout;
         this.myRecyclerView = myRecyclerView;
         if (mainActivityInterface!=null) {
-            colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
             this.myRecyclerView.initialiseRecyclerView(mainActivityInterface);
         }
     }
@@ -258,7 +256,7 @@ public class Autoscroll {
             }
 
             if (!isPaused) {
-                autoscrollTimeText.setTextColor(colorOn);
+                //autoscrollTimeText.setTextColor(colorOn);
                 currentTimeString = mainActivityInterface.getTimeTools().timeFormatFixer((int)((float)scrollTime/1000f));
                 if (scrollTime < songDelay*1000f) {
                     // This is predelay, so set the alpha down
@@ -388,9 +386,9 @@ public class Autoscroll {
             } else {
                 autoscrollTimeText.post(() -> {
                     if (showOn) {
-                        autoscrollTimeText.setTextColor(colorOn);
+                        autoscrollTimeText.setVisibility(View.VISIBLE);
                     } else {
-                        autoscrollTimeText.setTextColor(Color.TRANSPARENT);
+                        autoscrollTimeText.setVisibility(View.INVISIBLE);
                     }
                 });
             }

@@ -259,7 +259,6 @@ public class Preferences extends Activity {
     // custom1_presoAlertColor          int         The color for the presentation alert text in the custom1 theme
     // custom1_presoCapoColor           int         The color for the presentation capo text in the custom1 theme
     // custom1_metronomeColor           int         The color for the metronome background in the custom1 theme
-    // custom1_pageButtonsColor         int         The color for the page buttons info text in the custom1 theme
     // custom1_stickyTextColor          int         The color for the sticky note text info text in the custom1 theme
     // custom1_stickyBackgroundColor    int         The color for the sticky note background info text in the custom1 theme
     // custom1_extraInfoTextColor       int         The color for the extra info text in the custom1 theme
@@ -290,7 +289,6 @@ public class Preferences extends Activity {
     // custom2_presoAlertColor          int         The color for the presentation alert text in the custom2 theme
     // custom2_presoCapoColor           int         The color for the presentation capo text in the custom2 theme
     // custom2_metronomeColor           int         The color for the metronome background in the custom2 theme
-    // custom2_pageButtonsColor         int         The color for the page buttons info text in the custom2 theme
     // custom2_stickyTextColor          int         The color for the sticky note text info text in the custom2 theme
     // custom2_stickyBackgroundColor    int         The color for the sticky note background info text in the custom2 theme
     // custom2_extraInfoTextColor       int         The color for the extra info text in the custom2 theme
@@ -347,7 +345,6 @@ public class Preferences extends Activity {
     // dark_presoAlertColor             int         The color for the presentation alert text in the dark theme
     // dark_presoCapoColor              int         The color for the presentation capo text in the dark theme
     // dark_metronomeColor              int         The color for the metronome background in the dark theme
-    // dark_pageButtonsColor            int         The color for the page buttons info text in the dark theme
     // dark_stickyTextColor             int         The color for the sticky note text info text in the dark theme
     // dark_stickyBackgroundColor       int         The color for the sticky note background info text in the dark theme
     // dark_extraInfoTextColor          int         The color for the extra info text in the dark theme
@@ -459,7 +456,6 @@ public class Preferences extends Activity {
     // light_presoAlertColor            int         The color for the presentation alert text in the light theme
     // light_presoCapoColor             int         The color for the presentation capo text in the light theme
     // light_metronomeColor             int         The color for the metronome background in the light theme
-    // light_pageButtonsColor           int         The color for the page buttons info text in the light theme
     // light_stickyTextColor            int         The color for the sticky note text info text in the light theme
     // light_stickyBackgroundColor      int         The color for the sticky note background info text in the light theme
     // light_extraInfoTextColor         int         The color for the extra info text in the light theme
@@ -545,6 +541,7 @@ public class Preferences extends Activity {
     // pageButton1...                   String      The action for page button 1,2,3... (def for 1=inlineset, 2=transpose, the rest empty)
     // pageButtonShow1...               boolean     Should the button be visible. User can temporarily hide (or change the num)
     // pageButtonMini                   boolean     Should the page buttons be mini (def:false)
+    // pageButtonAlpha                  float       The opacity of the page buttons (def:0.75f)
     // pdfSize                          String      The size for printing PDF (def:A4)
     // pdfTheme                         String      The theme to use when exporting PDF files or printing (def:default)
     // pedal1Code                       int         The keyboard int code assigned to pedal 1 (default is 21 - left arrow)

@@ -1,7 +1,11 @@
 package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,6 +14,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
@@ -56,13 +61,16 @@ public class NearbyAlertPopUp {
         floatWindow.setLayoutParams(layoutParams);
         floatWindow.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.popup_sticky,null);
+                R.drawable.popup_sticky,c.getTheme());
+
         if (drawable!=null) {
-            drawable.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitColor());
+            drawable.setColor(mainActivityInterface.getMyThemeColors().getColorOnly(
+                    mainActivityInterface.getMyThemeColors().getStickyBackgroundColor()));
         }
         popupWindow.setBackgroundDrawable(null);
-        floatWindow.setAlpha(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitAlpha());
         floatWindow.setBackground(drawable);
+        floatWindow.setAlpha(mainActivityInterface.getMyThemeColors().getAlphaFloatFromColor(
+                mainActivityInterface.getMyThemeColors().getStickyBackgroundColor()));
         floatWindow.setPadding(16,16,16,16);
 
         // Add the close button
@@ -72,8 +80,21 @@ public class NearbyAlertPopUp {
         buttonParams.gravity = Gravity.END;
         closeButton.setLayoutParams(buttonParams);
         closeButton.setSize(FloatingActionButton.SIZE_MINI);
-        closeButton.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.close,null));
+        Drawable closeIcon = ResourcesCompat.getDrawable(c.getResources(),R.drawable.close,c.getTheme());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            closeButton.setElevation(0);
+            closeButton.setCompatElevation(0f);     // removes shadow across states
+            ViewCompat.setElevation(closeButton, 0f);
+            if (closeIcon!=null) {
+                closeButton.setStateListAnimator(null);
+                closeIcon.setTint(mainActivityInterface.getMyThemeColors().getStickyTextColor());
+            }
+        }
+        closeButton.setImageDrawable(closeIcon);
+        closeButton.setBackgroundColor(Color.TRANSPARENT);
+        closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+
         floatWindow.addView(closeButton);
 
         // Now the TextView for the sticky notes

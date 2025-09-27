@@ -1,13 +1,12 @@
 package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -390,26 +389,17 @@ public class DisplayPrevNext {
     }
 
     public void updateColors() {
-        float buttonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
-        int buttonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
-        int buttonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
+        float buttonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
         mainActivityInterface.getMainHandler().post(() -> {
-            prev.setIconTint(ColorStateList.valueOf(buttonIconColor));
-            next.setIconTint(ColorStateList.valueOf(buttonIconColor));
             Drawable leftArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_left, c.getTheme());
             Drawable rightArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_right, c.getTheme());
             if (leftArrow != null) {
-                DrawableCompat.setTint(leftArrow, buttonIconColor);
                 prevFAB.setImageDrawable(leftArrow);
             }
             if (rightArrow != null) {
-                DrawableCompat.setTint(rightArrow, buttonIconColor);
                 nextFAB.setImageDrawable(rightArrow);
             }
-            prev.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-            next.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-            prevFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
-            nextFAB.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            Log.d(TAG,"buttonAlpha:"+buttonAlpha);
             layout.setAlpha(buttonAlpha);
         });
     }

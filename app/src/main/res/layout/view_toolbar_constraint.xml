@@ -25,7 +25,7 @@
 
         <View
             android:id="@+id/beat2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
@@ -115,6 +115,7 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/songandauthor"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         app:layout_constrainedWidth="true"

@@ -8,27 +8,24 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/help_outline"
         android:orderInCategory="1"
-        app:actionViewClass="android.widget.ImageView"
-        android:visible="true" />
+        android:visible="false" />
 
     <item android:id="@+id/search_menu_item"
         android:title="@string/search"
         android:icon="@drawable/search"
         app:showAsAction="ifRoom"
-        app:actionViewClass="android.widget.ImageView"
         android:orderInCategory="2"
         android:visible="true"/>
 
     <item android:id="@+id/mirror_menu_item"
         android:title="@string/chromecast"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/cast"
-        android:orderInCategory="3"
-        app:actionViewClass="android.widget.ImageButton" />
+        android:orderInCategory="3" />
 
     <item android:id="@+id/settings_menu_item"
         android:title="@string/settings"
-        android:icon="@drawable/close"
+        android:icon="@drawable/settings_outline"
         app:showAsAction="always"
         android:orderInCategory="4"/>
 </menu>

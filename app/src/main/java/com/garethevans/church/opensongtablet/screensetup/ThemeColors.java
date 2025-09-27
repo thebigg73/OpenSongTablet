@@ -39,17 +39,9 @@ public class ThemeColors {
     private int presoCapoColor;
     private int presoShadowColor;
     private int metronomeColor;
-    private int pageButtonsColor;
-    private float pageButtonsSplitAlpha;
-    private int pageButtonsSplitColor;
+    private float pageButtonAlpha;
     private int stickyTextColor;
     private int stickyBackgroundColor;
-    private int stickyBackgroundSplitColor;
-    private float stickyBackgroundSplitAlpha;
-    private int extraInfoBgColor;
-    private int extraInfoBgSplitColor;
-    private float extraInfoBgSplitAlpha;
-    private int extraInfoTextColor;
     private int highlightChordColor;
     private int highlightHeadingColor;
     private int hotZoneColor;
@@ -61,6 +53,7 @@ public class ThemeColors {
     public ThemeColors(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        pageButtonAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("pageButtonAlpha",0.75f);
     }
     // Set the values with updates
     public void setThemeName(String themeName) {
@@ -129,8 +122,8 @@ public class ThemeColors {
     public void setPresoShadowColor(int i) {
         this.presoShadowColor = i;
     }
-    public void setPageButtonsColor(int i) {
-        this.pageButtonsColor = i;
+    public void setPageButtonAlpha(float f) {
+        this.pageButtonAlpha = f;
     }
     public void setMetronomeColor(int i) {
         this.metronomeColor = i;
@@ -140,12 +133,6 @@ public class ThemeColors {
     }
     public void setStickyBackgroundColor(int i) {
         this.stickyBackgroundColor = i;
-    }
-    public void setExtraInfoBgColor(int i) {
-        this.extraInfoBgColor = i;
-    }
-    public void setExtraInfoTextColor(int i) {
-        this.extraInfoTextColor = i;
     }
     public void setHighlightChordColor(int i) {
         this.highlightChordColor = i;
@@ -227,14 +214,8 @@ public class ThemeColors {
     public int getPresoShadowColor() {
         return presoShadowColor;
     }
-    public int getPageButtonsColor() {
-        return pageButtonsColor;
-    }
-    public float getPageButtonsSplitAlpha() {
-        return pageButtonsSplitAlpha;
-    }
-    public int getPageButtonsSplitColor() {
-        return pageButtonsSplitColor;
+    public float getPageButtonAlpha() {
+        return pageButtonAlpha;
     }
     public int getMetronomeColor() {
         return metronomeColor;
@@ -242,26 +223,8 @@ public class ThemeColors {
     public int getStickyBackgroundColor() {
         return stickyBackgroundColor;
     }
-    public int getStickyBackgroundSplitColor() {
-        return stickyBackgroundSplitColor;
-    }
-    public float getStickyBackgroundSplitAlpha() {
-        return stickyBackgroundSplitAlpha;
-    }
     public int getStickyTextColor() {
         return stickyTextColor;
-    }
-    public int getExtraInfoBgColor() {
-        return extraInfoBgColor;
-    }
-    public int getExtraInfoBgSplitColor() {
-        return extraInfoBgSplitColor;
-    }
-    public float getExtraInfoBgSplitAlpha() {
-        return extraInfoBgSplitAlpha;
-    }
-    public int getExtraInfoTextColor() {
-        return extraInfoTextColor;
     }
     public int getHighlightChordColor() {
         return highlightChordColor;
@@ -317,10 +280,10 @@ public class ThemeColors {
                 setThemeDark();
                 break;
         }
+        pageButtonAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("pageButtonAlpha",0.75f);
         // Update the theme colours for the PDF/Print outputs when exporting
         updatePDFTheme(mainActivityInterface.getPreferences().getMyPreferenceString("pdfTheme","default"),false);
 
-        splitColorAndAlpha();
     }
 
     public void updatePDFTheme(String pdfTheme, boolean savePref) {
@@ -354,7 +317,6 @@ public class ThemeColors {
         // Some colours are the same regardless of mode
         theme = theme + "_";
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"metronomeColor",             darkishred);
-        mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"pageButtonsColor",           pageButtonColor);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyTextColor",            black);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"stickyBackgroundColor",      lightyellow);
         mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"extraInfoBgColor",           grey);
@@ -450,11 +412,8 @@ public class ThemeColors {
     private void setThemeDark() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("dark_invertPDF",             true));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_metronomeColor",               darkishred));
-        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyTextColor",             black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyBackgroundColor", stickybg));
-        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_extraInfoBgColor",           pageButtonColor));
-        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_extraInfoTextColor",       white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsTextColor",             white));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_multilingualTextColor", vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_lyricsCapoColor",             red));
@@ -483,11 +442,8 @@ public class ThemeColors {
     private void setThemeLight() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("light_invertPDF",             false));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_metronomeColor",               darkishred));
-        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyTextColor",             black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyBackgroundColor", stickybg));
-        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_extraInfoBgColor",           pageButtonColor));
-        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_extraInfoTextColor",       white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsTextColor",             black));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_multilingualTextColor", grey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_lyricsCapoColor",             red));
@@ -516,11 +472,8 @@ public class ThemeColors {
     private void setThemeCustom1() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom1_invertPDF",           true));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_metronomeColor",             darkishred));
-        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyTextColor",           black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyBackgroundColor",stickybg));
-        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_extraInfoBgColor",         pageButtonColor));
-        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_extraInfoTextColor",     white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsTextColor",           white));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_multilingualTextColor",vlightgrey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_lyricsCapoColor",           red));
@@ -549,11 +502,8 @@ public class ThemeColors {
     private void setThemeCustom2() {
         setInvertPDF(mainActivityInterface.getPreferences().getMyPreferenceBoolean("custom2_invertPDF",           false));
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_metronomeColor",             darkishred));
-        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyTextColor",           black));
         setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyBackgroundColor",stickybg));
-        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_extraInfoBgColor",         pageButtonColor));
-        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_extraInfoTextColor",     white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsTextColor",           black));
         setMultilingualTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_multilingualTextColor",grey));
         setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_lyricsCapoColor",           red));
@@ -793,16 +743,10 @@ public class ThemeColors {
                 return getPresoShadowColor();
             case "metronomeColor":
                 return getMetronomeColor();
-            case "pageButtonsColor":
-                return getPageButtonsColor();
             case "stickyTextColor":
                 return getStickyTextColor();
             case "stickyBackgroundColor":
                 return getStickyBackgroundColor();
-            case "extraInfoBgColor":
-                return getExtraInfoBgColor();
-            case "extraInfoTextColor":
-                return getExtraInfoTextColor();
             case "highlightChordColor":
                 return getHighlightChordColor();
             case "highlightHeadingColor":
@@ -827,7 +771,6 @@ public class ThemeColors {
     }
 
     // Default colours
-    private final int pageButtonColor = 0xdd294959;  // Lower opacity secondary
     private final int darkblue = 0xff0000dd;
     private final int vdarkblue = 0xff000022;
     private final int vlightcyan = 0xffeeffff;
@@ -922,36 +865,6 @@ public class ThemeColors {
         return color;
     }
 
-    public void splitColorAndAlpha() {
-        // The colour will include alpha.  Strip this out
-        int alpha = Math.round(Color.alpha(pageButtonsColor));
-        int red = Color.red(pageButtonsColor);
-        int green = Color.green(pageButtonsColor);
-        int blue = Color.blue(pageButtonsColor);
-        pageButtonsSplitColor = Color.argb(255, red, green, blue);
-        pageButtonsSplitAlpha = alpha / 255f;
-        // Update page buttons and extra info
-        mainActivityInterface.getPageButtons().updateColors();
-        mainActivityInterface.getDisplayPrevNext().updateColors();
-        mainActivityInterface.updateOnScreenInfo("alpha");
-
-        // Repeat for the extra info
-        alpha = Math.round(Color.alpha(extraInfoBgColor));
-        red = Color.red(extraInfoBgColor);
-        green = Color.green(extraInfoBgColor);
-        blue = Color.blue(extraInfoBgColor);
-        extraInfoBgSplitColor = Color.argb(255,red,green,blue);
-        extraInfoBgSplitAlpha = alpha / 255f;
-
-        // Repeat for the sticky notes
-        alpha = Math.round(Color.alpha(stickyBackgroundColor));
-        red = Color.red(stickyBackgroundColor);
-        green = Color.green(stickyBackgroundColor);
-        blue = Color.blue(stickyBackgroundColor);
-        stickyBackgroundSplitColor = Color.argb(255,red,green,blue);
-        stickyBackgroundSplitAlpha = alpha / 255f;
-    }
-
     public String getNonAlphaHexColorFromInt(int color) {
         String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
         hex=hex.toUpperCase();
@@ -966,23 +879,23 @@ public class ThemeColors {
         return Color.argb(alpha, red, green, blue);
     }
 
-    public int changePageButtonAlpha(float alpha) {
-        int red = Color.red(pageButtonsColor);
-        int green = Color.green(pageButtonsColor);
-        int blue = Color.blue(pageButtonsColor);
-        pageButtonsColor = Color.argb((Math.round(alpha*255f)),red,green,blue);
-        pageButtonsSplitAlpha = alpha;
-        pageButtonsSplitColor = Color.argb(255,red,green,blue);
-        return pageButtonsColor;
-    }
-
     public String getHexFromIntNoAlpha(int intValue) {
         // Returns an 8 character hex code for int=0-255;
-        int red = Color.red(intValue);
-        int green = Color.green(intValue);
-        int blue = Color.blue(intValue);
-
         return String.format("%08X", (intValue));
+    }
+
+    public int getColorOnly(int colorWithAlpha) {
+        int red = Color.red(colorWithAlpha);
+        int green = Color.green(colorWithAlpha);
+        int blue = Color.blue(colorWithAlpha);
+        return Color.argb(255,red,green,blue);
+    }
+
+    public int getAlphaIntFromColor(int colorWithAlpha) {
+        return Color.alpha(colorWithAlpha);
+    }
+    public float getAlphaFloatFromColor(int colorWithAlpha) {
+        return Color.alpha(colorWithAlpha)/255f;
     }
 
     public float[] getAbcColorAndAlphaSplit() {
@@ -991,6 +904,6 @@ public class ThemeColors {
         int red = Color.red(abcPopupColor);
         int green = Color.green(abcPopupColor);
         int blue = Color.blue(abcPopupColor);
-        return new float[] {Color.argb(255,red,green,blue),(float)(alpha / 255f)};
+        return new float[] {Color.argb(255,red,green,blue), alpha / 255f};
     }
 }

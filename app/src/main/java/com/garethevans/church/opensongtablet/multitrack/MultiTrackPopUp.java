@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -62,15 +61,15 @@ public class MultiTrackPopUp {
     public MultiTrackPopUp(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-        maximiseDrawable = VectorDrawableCompat.create(c.getResources(), R.drawable.maximise, null);
-        minimiseDrawable = VectorDrawableCompat.create(c.getResources(), R.drawable.minimise, null);
+        maximiseDrawable = VectorDrawableCompat.create(c.getResources(), R.drawable.maximise, c.getTheme());
+        minimiseDrawable = VectorDrawableCompat.create(c.getResources(), R.drawable.minimise, c.getTheme());
         folder_found = c.getString(R.string.multitrack_folder_found);
         folder_not_found = c.getString(R.string.multitrack_folder_not_found);
         folder_not_valid = c.getString(R.string.multitrack_folder_not_valid);
         web_help = c.getString(R.string.website_multitrack);
 
         // Prepare the alpha values - Tries to drop to minimum value of 0.7f or pageButtonAlpha when minimised
-        float pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
+        float pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
         multiTrackAlpha = Math.min(pageButtonAlpha, 0.7f);
     }
 
@@ -112,7 +111,7 @@ public class MultiTrackPopUp {
         floatWindow.setLayoutParams(layoutParams);
         floatWindow.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.popup_bg, null);
+                R.drawable.popup_bg, c.getTheme());
         if (drawable!=null) {
             drawable.setColor(MaterialColors.getColor(c, com.google.android.material.R.attr.colorSurface, ContextCompat.getColor(c,R.color.dark_primary)));
         }
@@ -253,9 +252,6 @@ public class MultiTrackPopUp {
                 audioFiles = audioProcessor.getAudioFiles();
                 trackInfoExists = audioProcessor.getTrackInfoExists();
                 filesNeedingConversion = audioProcessor.getFilesNeedingConversion();
-
-                Log.d(TAG,"audioFiles:"+audioFiles);
-                Log.d(TAG,"filesNeedingConversion:"+filesNeedingConversion);
 
                 if (!audioFiles.isEmpty()) {
                     // We have audio files.  Now decide if we are good to go, or if we need to convert them
