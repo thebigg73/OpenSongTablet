@@ -133,15 +133,11 @@ public class LoadSong {
             thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
         }
 
-        Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
-        Log.d(TAG,"thisSong.getFolder():"+thisSong.getFolder());
         if (thisSong.getFilename().equals("importUri")) {
-            Log.d(TAG,"importFilename:"+mainActivityInterface.getImportFilename());
             uri = mainActivityInterface.getImportUri();
             if (uri==null) {
                 uri = Uri.parse(thisSong.getEncoding());
             }
-            Log.d(TAG,"uri of song:"+uri);
 
         } else {
             // Get the uri for the song - we know it exists as we found it!

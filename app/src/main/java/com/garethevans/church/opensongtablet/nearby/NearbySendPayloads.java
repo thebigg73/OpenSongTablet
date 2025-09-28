@@ -347,7 +347,6 @@ public class NearbySendPayloads {
     // Song delay information
     public void setSendSongDelayActive(boolean value) {
         this.sendSongDelayActive = value;
-        //this.sendSongDelayActive = false;
     }
 
     // Deal with sending the current song

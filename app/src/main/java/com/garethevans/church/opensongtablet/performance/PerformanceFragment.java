@@ -269,9 +269,6 @@ public class PerformanceFragment extends Fragment {
         // Pass a reference of the zoom layout to the next/prev so we can stop fling scrolls
         mainActivityInterface.getDisplayPrevNext().setZoomLayout(myView.zoomLayout);
 
-        // TODO
-        // mainActivityInterface.getNearbyConnections().createShareableObjectsForRequester("gareth");
-
         return myView.getRoot();
     }
 
@@ -316,7 +313,7 @@ public class PerformanceFragment extends Fragment {
             myView.mypage.setBackgroundColor(newColor);
         } else {
             // Presenter mode, just use primary color
-            myView.mypage.setBackgroundColor(MaterialColors.getColor(myView.mypage,com.google.android.material.R.attr.colorPrimary));
+            myView.mypage.setBackgroundColor(MaterialColors.getColor(myView.mypage,com.google.android.material.R.attr.colorPrimaryFixed));
             myView.waterMark.setVisibility(View.GONE);
         }
         mainActivityInterface.updateOnScreenInfo("setpreferences");
@@ -549,18 +546,19 @@ public class PerformanceFragment extends Fragment {
                     // Stop the highlighter autohide if required
                     autoHideHighlighterHandler.removeCallbacks(autoHideHighlighterRunnable);
 
-
                     String keyInSet = null;
                     boolean stillToCreateVariation;
 
-                    if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
+                    int indexInSet = mainActivityInterface.getSetActions().indexSongInSet(folder,filename,null);
+                    if (indexInSet>-1) {
+                        mainActivityInterface.getCurrentSet().setIndexSongInSet(indexInSet);
                         keyInSet = mainActivityInterface.getCurrentSet().getSetItemInfo(mainActivityInterface.getCurrentSet().getIndexSongInSet()).songkey;
                         // Compare with the indexed value
                         String keyInSong = mainActivityInterface.getSQLiteHelper().getKey(folder,filename);
                         if (keyInSong!=null && !keyInSong.isEmpty() && !keyInSet.isEmpty() && !keyInSong.equals(keyInSet)) {
                             // This is a key variation!
                             folder = mainActivityInterface.getVariations().getKeyVariationsFolder();
-                            filename = mainActivityInterface.getVariations().getKeyVariationFilename(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),keyInSet);
+                            filename = mainActivityInterface.getVariations().getKeyVariationFilename(folder,filename,keyInSet);
                             // Check if the file needs to be created
                             Uri uriToCheck = mainActivityInterface.getVariations().getKeyVariationUri(filename);
                             stillToCreateVariation = !mainActivityInterface.getStorageAccess().uriExists(uriToCheck);
@@ -604,6 +602,8 @@ public class PerformanceFragment extends Fragment {
                             if (useExisting) {
                                 songToUse = mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false);
                             } else {
+                                Log.d(TAG,"!useExisting");
+                                Log.d(TAG,"keyInSetFinal:"+keyInSetFinal);
                                 songToUse = mainActivityInterface.getVariations().makeKeyVariation(mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false), keyInSetFinal, true, true);
                             }
                         } else {

@@ -18,6 +18,7 @@
 
         <!-- Primary Material Colors -->
         <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryFixed">@color/dark_primary</item>
         <item name="colorPrimaryVariant">@color/dark_surface</item>
         <item name="colorOnPrimary">@color/dark_color</item>
         <item name="colorSecondary">@color/dark_secondary</item>
@@ -28,6 +29,7 @@
         <item name="colorOnSurface">@color/dark_color</item>
         <item name="colorError">@color/dark_error</item>
         <item name="colorOnError">@color/white</item>
+        <item name="errorTextColor">@color/dark_error</item>
         <item name="colorAccent">@color/dark_secondary_variant</item>
         <item name="colorPrimaryContainer">@color/dark_primary_container</item>
 
@@ -77,5 +79,7 @@
 
         <item name="popupMenuBackground">@drawable/exposed_popup</item>
 
+        <!-- Default dialog (for Nearby) -->
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
     </style>
 </resources>

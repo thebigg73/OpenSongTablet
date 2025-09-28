@@ -377,9 +377,9 @@ public class InlineSetList extends RecyclerView {
 
         InlineSetListAdapter(Context context) {
             onColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(context,R.color.dark_secondary));
-            offColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimaryVariant,ContextCompat.getColor(context,R.color.dark_primary));
-            menuColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimary,ContextCompat.getColor(context,R.color.dark_primary));
-            grey = context.getResources().getColor(R.color.grey);
+            offColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimaryFixed,ContextCompat.getColor(context,R.color.dark_primary));
+            menuColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimaryFixed,ContextCompat.getColor(context,R.color.dark_primary));
+            grey = MaterialColors.getColor(context,com.google.android.material.R.attr.hintTextColor,ContextCompat.getColor(context,R.color.lightgrey));
         }
 
         @Override

@@ -285,10 +285,12 @@ public class SetActions {
 
         // Firstly get the key if null and is in the filename
         if (mainActivityInterface.getVariations().getIsKeyVariation(folder,filename)) {
+            Log.d(TAG,"find the key from variations logic");
             String[] bits = mainActivityInterface.getVariations().getPreVariationInfo(folder, filename, key);
             folder = bits[0];
             filename = bits[1];
             key = bits[2];
+            Log.d(TAG,"found key:"+key);
         }
 
         if (key==null) {

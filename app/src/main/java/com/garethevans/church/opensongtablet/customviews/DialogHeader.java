@@ -17,6 +17,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "DialogHeader";
     private final TextView textView;
     private final FloatingActionButton webHelp, closeButtonDialog, minimiseButtonDialog;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
@@ -62,7 +64,10 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         // If we pass in a valid web address, we show the web help page
         if (webAddress!=null && !webAddress.isEmpty()) {
             webHelp.setVisibility(View.VISIBLE);
-            webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
+            webHelp.setOnClickListener(v-> {
+                mainActivityInterface.openDocument(webAddress);
+
+            });
         } else {
             webHelp.setVisibility(View.GONE);
         }

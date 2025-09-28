@@ -155,7 +155,7 @@ public class BatteryStatus extends BroadcastReceiver {
             if (charge > 10 && charge < 16) {
                 color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorSecondaryVariant);
             } else if (charge <= 10) {
-                color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorError);
+                color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.errorTextColor);
             }
 
             int bgcolor = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorSecondary);

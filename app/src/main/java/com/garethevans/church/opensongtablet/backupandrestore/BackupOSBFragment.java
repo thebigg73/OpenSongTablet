@@ -295,7 +295,6 @@ public class BackupOSBFragment extends Fragment {
                     ArrayList<String> bits = mainActivityInterface.getProcessSong().getInfoFromHighlighterFilename(file);
                     String thisFolder = bits.get(0).replace("_","/");
                     String fileName = bits.get(1);
-                    Log.d(TAG, "thisFolder: "+thisFolder+"  fileName="+fileName);
                     // The folder is the first bit of the filename
                     if (file.contains("_")) {
 

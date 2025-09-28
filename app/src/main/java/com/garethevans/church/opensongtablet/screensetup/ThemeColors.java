@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -243,7 +242,7 @@ public class ThemeColors {
     }
 
     public void getDefaultTheme() {
-        int nightModeFlags = c.getResources().getConfiguration().uiMode
+        int nightModeFlags = c.getApplicationContext().getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
 
         String fallback = "dark";
@@ -260,7 +259,6 @@ public class ThemeColors {
                 // Mode is unknown (very rare)
                 fallback = "dark";
         }
-        Log.d(TAG,"fallback:"+fallback);
         themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme",fallback);
     }
     public void getDefaultColors() {

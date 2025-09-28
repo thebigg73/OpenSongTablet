@@ -37,7 +37,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             background_string="", verse_background_string="", chorus_background_string="",
             prechorus_background_string="", bridge_background_string="", tag_background_string="",
             custom_background_string="", comment_background_string="", info_text_string="",
-            text_string="", chords_string="", metronome_string="", page_buttons_string="",
+            text_string="", chords_string="", metronome_string="",
             alert_string="", block_text_shadow_string="", highlight_string="", title_string="",
             hot_zone_string="", multilingual_color_string="";
     private final String whichColor, fragName;
@@ -123,7 +123,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             text_string = getString(R.string.text);
             chords_string = getString(R.string.chords);
             metronome_string = getString(R.string.metronome);
-            page_buttons_string = getString(R.string.page_buttons);
             hot_zone_string = getString(R.string.hot_zones);
             alert_string = getString(R.string.alert);
             block_text_shadow_string = getString(R.string.block_text_shadow);
@@ -374,7 +373,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 break;
             case "lyricsBackgroundColor":
             case "stickyBackgroundColor":
-            case "extraInfoBgColor":
             case "backgroundColor":
             case "abcPopupColor":
                 title = background_string;
@@ -404,7 +402,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 title = info_text_string;
                 break;
             case "presoFontColor":
-            case "extraInfoTextColor":
             case "stickyTextColor":
             case "abcPopupTextColor":
                 title = text_string;
@@ -414,9 +411,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
                 break;
             case "metronomeColor":
                 title = metronome_string;
-                break;
-            case "pageButtonsColor":
-                title = page_buttons_string;
                 break;
             case "presoAlertColor":
                 title = alert_string;

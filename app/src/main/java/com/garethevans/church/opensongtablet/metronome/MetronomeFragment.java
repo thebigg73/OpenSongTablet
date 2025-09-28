@@ -310,7 +310,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 myView.tapTempo.setEnabled(false);
                 myView.tapTempo.setText(reset_string);
-                myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorPrimary));
+                myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorPrimaryFixed));
                 // Waited too long, reset count
                 total_calc_bpm = 0;
                 total_counts = 0;

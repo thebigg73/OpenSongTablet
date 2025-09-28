@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.preferences;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsProfilesBinding;
@@ -102,12 +99,13 @@ public class ProfileFragment extends Fragment {
         // Reset the preferences and start again
         if (getContext()!=null) {
             mainActivityInterface.getProfileActions().resetPreferences();
-            NavOptions navOptions = new NavOptions.Builder()
+            System.exit(1);
+            /*NavOptions navOptions = new NavOptions.Builder()
                     .setPopUpTo(R.id.setStorageLocationFragment, true)
                     .build();
             NavHostFragment.findNavController(this)
                     .navigate(Uri.parse(getString(R.string.deeplink_set_storage)), navOptions);
-        }
+        */}
     }
 
     @Override

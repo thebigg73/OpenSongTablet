@@ -61,8 +61,8 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (prevColor==null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimary,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary))));
-                prevColor = ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimary,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary)));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimaryFixed,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary))));
+                prevColor = ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimaryFixed,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary)));
             } else {
                 viewHolder.itemView.setBackgroundTintList(prevColor);
             }

@@ -57,7 +57,6 @@ import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
-import com.garethevans.church.opensongtablet.preferences.AdjustTheme;
 import com.garethevans.church.opensongtablet.preferences.AppPermissions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
@@ -122,7 +121,6 @@ public interface MainActivityInterface {
     ProfileActions getProfileActions();
     MyFonts getMyFonts();
     ThemeColors getMyThemeColors();
-    AdjustTheme getAdjustTheme();
     AppPermissions getAppPermissions();
     void prepareStrings();
 

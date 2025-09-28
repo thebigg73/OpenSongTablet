@@ -97,7 +97,7 @@ public class ThemeSetupFragment extends Fragment {
         if (getContext()!=null) {
             arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.themeName, R.layout.view_exposed_dropdown_item, themes);
         }
-        myTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
+        myTheme = mainActivityInterface.getMyThemeColors().getThemeName();
         switch (myTheme) {
             case "light":
                 myView.themeName.setText(themes.get(1));
@@ -209,12 +209,9 @@ public class ThemeSetupFragment extends Fragment {
         myView.chordHighlighting.setOnClickListener(v -> chooseColor("highlightChordColor"));
         myView.titleHighlighting.setOnClickListener(v -> chooseColor("highlightHeadingColor"));
         myView.metronomeButton.setOnClickListener(v-> chooseColor("metronomeColor"));
-        myView.pagebuttonButton.setOnClickListener(v-> chooseColor("pageButtonsColor"));
         myView.stickytextButton.setOnClickListener(v-> chooseColor("stickyTextColor"));
         myView.stickybackgroundButton.setOnClickListener(v-> chooseColor("stickyBackgroundColor"));
         myView.hotZoneButton.setOnClickListener(v-> chooseColor("hotZoneColor"));
-        myView.extratextButton.setOnClickListener(v-> chooseColor("extraInfoTextColor"));
-        myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
         myView.presoCapoButton.setOnClickListener(v -> chooseColor("presoCapoColor"));
         myView.presoMultilingualButton.setOnClickListener(v -> chooseColor("presoMultilingualColor"));

@@ -3,10 +3,12 @@ package com.garethevans.church.opensongtablet.stickynotes;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -42,37 +46,44 @@ public class StickyPopUp {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
     }
+    private boolean doingShowSticky = false;
     public void floatSticky(View viewHolder, boolean forceShow) {
-        // Force show is if we manually clicked on the sticky notes page button
-        // If the popup is showing already, dismiss it
-        // This is called when a song is about to load
-        if (popupWindow!=null && popupWindow.isShowing()) {
-            try {
-                popupWindow.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
+        // Make sure there is a delay to avoid double action
+        if (!doingShowSticky) {
+            doingShowSticky = true;
+            // Force show is if we manually clicked on the sticky notes page button
+            // If the popup is showing already, dismiss it
+            // This is called when a song is about to load
+            if (popupWindow != null && popupWindow.isShowing()) {
+                try {
+                    popupWindow.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // If no sticky notes exist for the song, navigate to the edit sticky note fragment
+            } else if (mainActivityInterface.getSong().getNotes() == null || mainActivityInterface.getSong().getNotes().isEmpty()) {
+                mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sticky_notes), 0);
+
+                // Let's display the popup sticky note
+            } else {
+                Log.d(TAG, "Try to show the sticky");
+                // Set up the views
+                getPositionAndSize();
+                setupViews();
+                setListeners();
+                popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
+
+                // If we want to autohide the sticky note, set a post delayed handler
+                // Not when we manually opened it though
+                if (!forceShow) {
+                    dealWithAutohide();
+                }
+
+                // Deal with the moveable element (from the top bar)
+                setupDrag();
             }
-
-        // If no sticky notes exist for the song, navigate to the edit sticky note fragment
-        } else if (mainActivityInterface.getSong().getNotes()==null || mainActivityInterface.getSong().getNotes().isEmpty()) {
-            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sticky_notes),0);
-
-        // Let's display the popup sticky note
-        } else {
-            // Set up the views
-            getPositionAndSize();
-            setupViews();
-            setListeners();
-            popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
-
-            // If we want to autohide the sticky note, set a post delayed handler
-            // Not when we manually opened it though
-            if (!forceShow) {
-                dealWithAutohide();
-            }
-
-            // Deal with the moveable element (from the top bar)
-            setupDrag();
+            mainActivityInterface.getMainHandler().postDelayed(() -> doingShowSticky = false, 500);
         }
     }
 
@@ -106,17 +117,19 @@ public class StickyPopUp {
         buttonParams.gravity = Gravity.END;
         closeButton.setLayoutParams(buttonParams);
         closeButton.setSize(FloatingActionButton.SIZE_MINI);
-        Drawable closeIcon = ResourcesCompat.getDrawable(c.getResources(),R.drawable.close,c.getTheme());
+        Drawable closeIcon =  ContextCompat.getDrawable(c,R.drawable.close);
+        if (closeIcon!=null) {
+            closeIcon = DrawableCompat.wrap(closeIcon).mutate();          // 🔑 mutate to avoid affecting other instances
+            closeIcon.setColorFilter(mainActivityInterface.getMyThemeColors().getStickyTextColor(), PorterDuff.Mode.SRC_IN);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             closeButton.setElevation(0);
             closeButton.setCompatElevation(0f);     // removes shadow across states
             ViewCompat.setElevation(closeButton, 0f);
-            if (closeIcon!=null) {
-                closeButton.setStateListAnimator(null);
-                closeIcon.setTint(mainActivityInterface.getMyThemeColors().getStickyTextColor());
-            }
+            closeButton.setStateListAnimator(null);
         }
+
         closeButton.setImageDrawable(closeIcon);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));

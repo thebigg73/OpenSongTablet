@@ -55,8 +55,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     private void setColors(Context viewContext) {
         onColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewContext,R.color.dark_secondary));
-        offColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(viewContext,R.color.dark_primary));
-        menuColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(viewContext,R.color.dark_primary));
+        offColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(viewContext,R.color.dark_primary));
+        menuColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(viewContext,R.color.dark_primary));
         hintColor = MaterialColors.getColor(viewContext, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(viewContext,R.color.dark_hint));
         textColor = MaterialColors.getColor(viewContext, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(viewContext,R.color.dark_color));
         colorSet = true;
@@ -277,11 +277,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // Set the colour of the chosen view
     private void setColor(SetListItemViewHolder holder, int cardColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //holder.cardView.setBackgroundTintList(ColorStateList.valueOf(cardColor));
             holder.cardView.setCardBackgroundColor(cardColor);
             holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
-            Log.d(TAG,"filename:"+holder.cardFilename.getText());
-            Log.d(TAG,"color:"+cardColor);
         } else {
             holder.cardView.setBackgroundColor(cardColor);
         }

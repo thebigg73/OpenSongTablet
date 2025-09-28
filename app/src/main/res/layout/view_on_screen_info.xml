@@ -22,7 +22,7 @@
         android:layout_gravity="end"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/autoscrollIcon"

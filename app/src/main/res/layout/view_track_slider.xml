@@ -44,7 +44,7 @@
                 android:valueFrom="0"
                 android:valueTo="2"
                 app:trackColor="?attr/colorSecondary"
-                app:thumbColor="?attr/colorSurface"/>
+                app:thumbColor="?attr/colorSecondaryVariant"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,7 +91,7 @@
 
             <View
                 android:id="@+id/levelIndicator"
-                android:layout_width="24dp"
+                android:layout_width="16dp"
                 android:layout_height="176dp"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginTop="12dp"
@@ -112,7 +112,7 @@
                 tools:ignore="VisualLintBounds"
                 app:trackColor="?attr/colorSurface"
                 app:trackColorInactive="?attr/colorSurface"
-                app:thumbColor="?attr/colorSecondary" />
+                app:thumbColor="?attr/colorSecondaryVariant" />
 
         </FrameLayout>
 

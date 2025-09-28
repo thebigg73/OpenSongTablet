@@ -58,14 +58,17 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        prepareStrings(getContext());
-        if (countdownNumber != 10) {
-            // We were in progress of counting down, so resume
-            countdownNumber = 10;
+        if (getContext()!=null) {
+            prepareStrings(getContext());
+            if (countdownNumber != 10) {
+                // We were in progress of counting down, so resume
+                countdownNumber = 10;
+            }
+            setTimer();
+            myView.dialogHeading.setText(indexing_string);
+            myView.dialogHeading.setWebHelp(mainActivityInterface, indexing_web);
+            Log.d(TAG,"indexing_web:"+indexing_web);
         }
-        setTimer();
-        myView.dialogHeading.setText(indexing_string);
-        myView.dialogHeading.setWebHelp(mainActivityInterface, indexing_web);
     }
 
     @NonNull
@@ -98,6 +101,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         prepareStrings(getContext());
         setupListeners();
         myView.dialogHeading.setClose(this);
+        myView.dialogHeading.setWebHelp(mainActivityInterface,indexing_web);
 
         String text = indexing_string + " (" + quick_string + ")";
         myView.quickIndexButton.setText(text);
@@ -152,7 +156,7 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
             try {
                 dismiss();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d(TAG,"Can't close the bottom sheet");
             }
         });
     }

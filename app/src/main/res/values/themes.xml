@@ -18,6 +18,7 @@
 
         <!-- Primary Material Colors -->
         <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryFixed">@color/light_primary</item>
         <item name="colorPrimaryVariant">@color/light_surface</item>
         <item name="colorOnPrimary">@color/light_color</item>
         <item name="colorSecondary">@color/light_secondary</item>
@@ -28,6 +29,7 @@
         <item name="colorOnSurface">@color/light_color</item>
         <item name="colorError">@color/light_error</item>
         <item name="colorOnError">@color/white</item>
+        <item name="errorTextColor">@color/light_error</item>
         <item name="colorAccent">@color/light_secondary_variant</item>
 
         <!-- Backgrounds -->
@@ -75,5 +77,8 @@
         <item name="actionButtonStyle">@style/ActionButtonStyle</item>
 
         <item name="popupMenuBackground">@drawable/exposed_popup</item>
+
+        <!-- Default dialog (for Nearby) -->
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
     </style>
 </resources>

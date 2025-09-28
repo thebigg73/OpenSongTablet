@@ -824,7 +824,7 @@ public class Metronome {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 tapButton.setEnabled(false);
                 tapButton.setText(c.getString(R.string.reset));
-                tapButton.setBackgroundColor(MaterialColors.getColor(tapButton,com.google.android.material.R.attr.colorPrimary));
+                tapButton.setBackgroundColor(MaterialColors.getColor(tapButton,com.google.android.material.R.attr.colorPrimaryFixed));
                 // Waited too long, reset count
                 total_calc_bpm = 0;
                 total_counts = 0;

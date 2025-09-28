@@ -250,12 +250,6 @@
                     android:text="@string/metronome"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
-                    android:id="@+id/pagebuttonButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/page_buttons"/>
-
-                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/hotZoneButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -317,36 +311,6 @@
 
                 <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
                     android:id="@+id/abcbackgroundButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/background"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/section_box"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="@string/extra" />
-
-                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
-                    android:id="@+id/extratextButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/text"/>
-
-                <com.garethevans.church.opensongtablet.customviews.ThemeItemColor
-                    android:id="@+id/extrabackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/background"/>

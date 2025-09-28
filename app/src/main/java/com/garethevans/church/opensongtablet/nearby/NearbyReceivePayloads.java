@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -29,6 +30,7 @@ public class NearbyReceivePayloads {
     // If they are bigger than 32kb, then we get a simplified version with file info, then the file
 
     // We only deal with received payloads if we haven't already received them and if we didn't send them
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "NearbyReceivePayloads";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -106,6 +108,7 @@ public class NearbyReceivePayloads {
 
     private void processPayload(String endpointId, Payload payloadReceived) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            Log.d(TAG,"Received payload from endpointId:"+endpointId);
             // Only process this if we haven't already received this payload
             String type = "FILE";
             if (payloadReceived.getType() == Payload.Type.BYTES) {
@@ -377,7 +380,10 @@ public class NearbyReceivePayloads {
                 if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
                     mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
-                nearbyReturnActionsInterface.loadSong(true);
+                // Only load the song if we aren't in a settings window
+                if (!mainActivityInterface.getSettingsOpen()) {
+                    nearbyReturnActionsInterface.loadSong(true);
+                }
             }
         }
     }
@@ -431,7 +437,9 @@ public class NearbyReceivePayloads {
                     if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
                         mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                     }
-                    nearbyReturnActionsInterface.loadSong(true);
+                    if (!mainActivityInterface.getSettingsOpen()) {
+                        nearbyReturnActionsInterface.loadSong(true);
+                    }
                 }
             } else {
                 // No XML sent as we are awaiting a file.  Check for arrival
@@ -508,7 +516,9 @@ public class NearbyReceivePayloads {
                 if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
                     mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
-                nearbyReturnActionsInterface.loadSong(true);
+                if (!mainActivityInterface.getSettingsOpen()) {
+                    nearbyReturnActionsInterface.loadSong(true);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -610,7 +620,6 @@ public class NearbyReceivePayloads {
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, outputUri, null, "Received", "", fileInfo.getFilename());
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
             if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
-                inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
                 NearbyJson nearbyJson;
                 try {

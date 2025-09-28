@@ -136,7 +136,6 @@ import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
-import com.garethevans.church.opensongtablet.preferences.AdjustTheme;
 import com.garethevans.church.opensongtablet.preferences.AppPermissions;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -229,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     // The helpers sorted alphabetically
     private ABCNotation abcNotation;
-    private AdjustTheme adjustTheme;
     private Aeros aeros;
     private AlertChecks alertChecks;
     private AppPermissions appPermissions;
@@ -837,7 +835,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // For user preferences
         myFonts = getMyFonts();
         themeColors = getMyThemeColors();
-        adjustTheme = getAdjustTheme();
         profileActions = getProfileActions();
         appPermissions = getAppPermissions();
 
@@ -1911,9 +1908,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void displayMultiTrack() {
         // Only allow for API 21 and above
         getMainHandler().post(() -> {
-            Log.d(TAG, "displayMultitrack()");
-            Log.d(TAG, "myView:" + myView);
-
             // Note that we need to decide on the audio encoding
             getMultiTrackPlayer().setAudioInfoSetForSong(false);
 
@@ -1933,7 +1927,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     multiTrackPopUp.floatMultiTrack(myView.fragmentView);
                 }
             }
-            Log.d(TAG,"multiTrackPopUp:"+multiTrackPopUp);
         });
     }
     @Override
@@ -2049,7 +2042,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // For stability, run this on a delayed handler
             getMainHandler().postDelayed(() -> {
                 this.webHelpAddress = webHelpAddress;
-                Log.d(TAG, "webHelpAddress:" + webHelpAddress);
                 if (menuScreenHelp != null) {
                     menuScreenHelp.setVisible(webHelpAddress != null && !webHelpAddress.isEmpty());
                     if (menuScreenHelp.isVisible() && !isCurrentFragment(R.id.setStorageLocationFragment)) {
@@ -2297,12 +2289,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (close) {
             myView.drawerLayout.post(() -> {
                 myView.drawerLayout.closeDrawer(GravityCompat.START);
-                Log.d(TAG,"trying to close the drawer");
             });
             menuOpen = false;
         } else {
             myView.drawerLayout.post(() -> {
-                Log.d(TAG,"trying to open the drawer");
                 myView.drawerLayout.openDrawer(GravityCompat.START);
             });
             menuOpen = true;
@@ -3147,14 +3137,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             themeColors = new ThemeColors(this);
         }
         return themeColors;
-    }
-
-    @Override
-    public AdjustTheme getAdjustTheme() {
-        if (adjustTheme==null) {
-            adjustTheme =  new AdjustTheme(this);
-        }
-        return adjustTheme;
     }
 
     @Override
@@ -4344,11 +4326,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                         if (myCustomCloseIcon!=null) {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimary)).build()).setShowTitle(true).
+                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimaryFixed)).build()).setShowTitle(true).
                                     setCloseButtonIcon(myCustomCloseIcon).setUrlBarHidingEnabled(true).build();
                         } else {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimary)).build()).setShowTitle(true).
+                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimaryFixed)).build()).setShowTitle(true).
                                     setUrlBarHidingEnabled(true).build();
                         }
                         customTabsIntent.launchUrl(MainActivity.this, Uri.parse(location));

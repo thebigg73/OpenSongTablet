@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -301,7 +300,6 @@ public class NearbyConnectionsFragment extends Fragment {
 
     private void updateOffHostClient(boolean isHost, boolean isClient) {
         // Turn all off
-        Log.d(TAG,"updateOffHostClient(isHost:"+isHost+",usingNearby:"+isClient);
         myView.off.setBackgroundTintList(offColor);
         myView.host.setBackgroundTintList(offColor);
         myView.client.setBackgroundTintList(offColor);

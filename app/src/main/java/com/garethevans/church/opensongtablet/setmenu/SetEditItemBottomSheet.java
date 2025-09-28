@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,9 +162,6 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.getMainHandler().post(() -> {
                 if (myView != null) {
                     myView.editFolder.setUserEditing(false);
-
-                    Log.d(TAG,"setItemInfo:"+setItemInfo.songfolder+"  /  "+setItemInfo.songfilename);
-                    Log.d(TAG,"isAnyVariation:"+isAnyVariation+"  isKeyVariation:"+isKeyVariation+"  isNormalVariation:"+isNormalVariation);
 
                     myView.editVariation.setChecked(isAnyVariation);
 

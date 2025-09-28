@@ -1146,7 +1146,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     OpenChordsTag newTag = new OpenChordsTag();
                     newTag.setId(newUUID);
                     newTag.setTitle(localTag.trim());
-                    newTag.setColor(mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(MaterialColors.getColor(c,com.google.android.material.R.attr.colorPrimary, ContextCompat.getColor(c,R.color.dark_primary))));
+                    newTag.setColor(mainActivityInterface.getMyThemeColors().getHexFromIntNoAlpha(MaterialColors.getColor(c,com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(c,R.color.dark_primary))));
                     newTagsForUpload.add(newTag);
                 }
             }

@@ -222,7 +222,6 @@ public class MyToolbar extends MaterialToolbar {
             mainActivityInterface.updateToolbarHelp("");
         }
 
-        Log.d(TAG,"newtitle:"+newtitle+"  title:"+title);
         if (newtitle == null) {
             // We are in the Performance/Stage mode
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f);
@@ -258,11 +257,9 @@ public class MyToolbar extends MaterialToolbar {
                     mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                     hideView(setIcon,true);
                 }
-                Log.d(TAG,"show the title");
                 hideView(title, false);
             } else {
                 hideView(setIcon,true);
-                Log.d(TAG,"hide the title");
                 hideView(title, true);
             }
             if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
@@ -270,10 +267,16 @@ public class MyToolbar extends MaterialToolbar {
                 author.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize",11.0f));
                 author.setText(mainActivityInterface.getSong().getAuthor());
                 hideView(author, false);
-                title.setGravity(Gravity.BOTTOM);
+                if (title!=null) {
+                    title.setGravity(Gravity.BOTTOM|Gravity.START);
+                    setIcon.setScaleType(ImageView.ScaleType.FIT_END);
+                }
             } else if (author!=null) {
                 hideView(author, true);
-                title.setGravity(Gravity.CENTER_VERTICAL);
+                if (title!=null) {
+                    title.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+                    setIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                }
             }
             if (key != null && mainActivityInterface.getSong().getKey() != null &&
                     !mainActivityInterface.getSong().getKey().isEmpty()) {
@@ -353,11 +356,10 @@ public class MyToolbar extends MaterialToolbar {
                 title.setOnClickListener(null);
                 title.setOnLongClickListener(null);
                 // Settings titles move to center gravity
-                title.setGravity(Gravity.CENTER_VERTICAL);
+                title.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
                 title.setTextSize(18.0f);
                 title.setText(newtitle);
             }
-            Log.d(TAG,"show title");
             hideView(title, false);
             hideView(author, true);
             hideView(key, true);
@@ -401,7 +403,6 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void hideSongDetails(boolean hide) {
-        Log.d(TAG,"hideSongDetails("+hide+")");
         hideView(setIcon,hide);
         hideView(title,hide);
         hideView(author,hide);
@@ -548,7 +549,6 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void hideMetronomeBar() {
-        Log.d(TAG,"hideMetronomeBar()");
         for (int x=1; x<=16; x++) {
             View view = beatView.get(x);
             view.post(() -> {
@@ -559,7 +559,6 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     public void makeAllBeatsTransparent() {
-        Log.d(TAG,"makeAllBeatsTransparent()");
         for (int x=1; x<=16; x++) {
             View view = beatView.get(x);
             view.post(() -> view.setBackgroundColor(Color.TRANSPARENT));

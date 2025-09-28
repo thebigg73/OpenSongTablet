@@ -259,6 +259,6 @@ public class ProfileActions {
     public void resetPreferences() {
         SharedPreferences.Editor editor = mainActivityInterface.getPreferences().getSharedPref().edit();
         editor.clear();
-        editor.apply();
+        editor.commit();
     }
 }

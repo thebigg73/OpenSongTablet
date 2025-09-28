@@ -479,4 +479,16 @@
     </style>
 
 
+    <style name="MyAlertDialogTheme"
+        parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Optional customizations -->
+        <item name="colorPrimary">?attr/colorOnPrimary</item>
+        <item name="colorOnPrimary">?attr/colorOnSurface</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MyDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MyDialogButton</item>
+    </style>
+
+    <style name="MyDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
 </resources>
