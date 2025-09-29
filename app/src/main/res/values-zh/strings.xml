@@ -967,6 +967,7 @@
     <string name="reset_text">如果您在使用该应用时遇到问题，请尝试使用下面的按钮重置您的设置。 这将清除您的设置，但不会删除您的歌曲。</string>
     <string name="respect_copyright">尊重版权-始终合法使用</string>
     <string name="restart">重新开始</string>
+    <string name="restart_auto">当您离开此页面以将浅色或深色主题应用于菜单时，该应用程序将重新启动</string>
     <string name="restart_required">请重新启动应用程序以应用更改</string>
     <string name="restore">恢复</string>
     <string name="restore_sets">恢复集</string>

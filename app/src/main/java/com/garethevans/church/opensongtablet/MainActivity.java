@@ -2292,9 +2292,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             });
             menuOpen = false;
         } else {
-            myView.drawerLayout.post(() -> {
-                myView.drawerLayout.openDrawer(GravityCompat.START);
-            });
+            myView.drawerLayout.post(() -> myView.drawerLayout.openDrawer(GravityCompat.START));
             menuOpen = true;
         }
         // Hide the keyboard

@@ -967,6 +967,7 @@
     <string name="reset_text">Se você tiver dificuldades com o aplicativo, tente redefinir suas configurações usando o botão abaixo. Isso limpará suas configurações, mas não excluirá suas músicas.</string>
     <string name="respect_copyright">Respeite os direitos autorais - use sempre legalmente</string>
     <string name="restart">Reiniciar</string>
+    <string name="restart_auto">O aplicativo será reiniciado quando você sair desta página para aplicar um tema claro ou escuro aos seus menus</string>
     <string name="restart_required">Reinicie o aplicativo para aplicar as alterações</string>
     <string name="restore">Restaurar</string>
     <string name="restore_sets">Restaurar conjuntos</string>

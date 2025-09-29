@@ -967,6 +967,7 @@
     <string name="reset_text">アプリで問題がある場合は、下のボタンを使用して設定をリセットしてみてください。 これで設定はクリアされますが、曲は削除されません。</string>
     <string name="respect_copyright">著作権を尊重する-常に合法的に使用する</string>
     <string name="restart">再起動</string>
+    <string name="restart_auto">このページを離れるとアプリが再起動し、メニューに明るいテーマまたは暗いテーマを適用します</string>
     <string name="restart_required">アプリを再起動して変更を適用してください</string>
     <string name="restore">戻す</string>
     <string name="restore_sets">セットを復元する</string>

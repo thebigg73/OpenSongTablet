@@ -967,6 +967,7 @@
     <string name="reset_text">Se hai problemi con l\'app, prova a reimpostare il percorso di archiviazione. Questo cancellerà le tue impostazioni ma non cancellerà i tuoi brani.</string>
     <string name="respect_copyright">Rispetta il copyright: usa sempre legalmente</string>
     <string name="restart">Riavviare</string>
+    <string name="restart_auto">L\'app si riavvierà quando esci da questa pagina per applicare un tema chiaro o scuro ai tuoi menu</string>
     <string name="restart_required">Riavvia l\'app per applicare le modifiche</string>
     <string name="restore">Ripristinare</string>
     <string name="restore_sets">Ripristina una scaletta</string>

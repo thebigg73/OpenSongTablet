@@ -967,6 +967,7 @@
     <string name="reset_text">Pokud máte s aplikací potíže, vyzkoušejte resetování pomocí tlačítka níže. Tímto se vymažou vaše nastavení, ale vaše skladby nebudou smazány.</string>
     <string name="respect_copyright">Respektujte autorská práva - vždy používejte legálně</string>
     <string name="restart">Restartujte</string>
+    <string name="restart_auto">Aplikace se restartuje, když opustíte tuto stránku a použijete světlý nebo tmavý motiv na své nabídky</string>
     <string name="restart_required">Chcete-li použít změny, restartujte aplikaci</string>
     <string name="restore">Obnovit</string>
     <string name="restore_sets">Obnovit sady</string>

@@ -201,15 +201,15 @@ public class MetronomeFragment extends Fragment {
 
         // Get the metronome pan value
         switch (mainActivityInterface.getMetronome().getMetronomePan()) {
-            case "C":
-            default:
-                myView.metronomePan.setSliderPos(1);
-                break;
             case "L":
                 myView.metronomePan.setSliderPos(0);
                 break;
             case "R":
                 myView.metronomePan.setSliderPos(2);
+                break;
+            case "C":
+            default:
+                myView.metronomePan.setSliderPos(1);
                 break;
         }
 
@@ -340,12 +340,12 @@ public class MetronomeFragment extends Fragment {
             case 0:
                 pan = "L";
                 break;
+            case 2:
+                pan = "R";
+                break;
             case 1:
             default:
                 pan = "C";
-                break;
-            case 2:
-                pan = "R";
                 break;
         }
         mainActivityInterface.getMetronome().setMetronomePan(pan);

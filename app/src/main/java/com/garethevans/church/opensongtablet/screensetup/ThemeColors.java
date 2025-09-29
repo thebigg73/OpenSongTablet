@@ -3,8 +3,10 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.view.View;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 
 public class ThemeColors {
 
@@ -904,4 +906,25 @@ public class ThemeColors {
         int blue = Color.blue(abcPopupColor);
         return new float[] {Color.argb(255,red,green,blue), alpha / 255f};
     }
+
+    // For the set menus
+    public int getSetActiveColor(View view) {
+        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorSecondary);
+    }
+    public int getSetInactiveColor(View view) {
+        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimaryVariant);
+    }
+    public int getSetDraggedColor(View view) {
+        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorSecondaryVariant);
+    }
+    public int getSetBackgroundColor(View view) {
+        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimaryFixed);
+    }
+    public int getColorOnSurface(View view) {
+        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorOnSurface);
+    }
+    public int getHintTextColor(View view) {
+        return MaterialColors.getColor(view, com.google.android.material.R.attr.hintTextColor);
+    }
+
 }

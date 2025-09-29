@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +82,7 @@ public class ThemeSetupFragment extends Fragment {
             theme_custom2_string = getString(R.string.theme_custom2);
             reset_colours_string = getString(R.string.reset_colours);
             recreate_string = getString(R.string.restart_auto);
-            initialTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
+            initialTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","");
         }
     }
     private void setUpTheme() {
@@ -97,6 +96,7 @@ public class ThemeSetupFragment extends Fragment {
         if (getContext()!=null) {
             arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.themeName, R.layout.view_exposed_dropdown_item, themes);
         }
+        // myTheme defaults to the current light/dark mode on the device if not set
         myTheme = mainActivityInterface.getMyThemeColors().getThemeName();
         switch (myTheme) {
             case "light":
@@ -240,11 +240,10 @@ public class ThemeSetupFragment extends Fragment {
         // Compare the initial theme with the new one
         // dark and custom1 are dark based, light and custom2 are light based
         String currentTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
-        Log.d(TAG,"initialTheme:"+initialTheme+"  currentTheme:"+currentTheme);
-        if (initialTheme.equals("dark") || initialTheme.equals("custom1")) {
-            recreateActivity = currentTheme.equals("light") || currentTheme.equals("custom2");
-        } else {
-            recreateActivity = currentTheme.equals("dark") || currentTheme.equals("custom1");
+        if (currentTheme.equals("dark") || currentTheme.equals("custom1")) {
+            recreateActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.isEmpty();
+        } else if (currentTheme.equals("light") || currentTheme.equals("custom2")) {
+            recreateActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.isEmpty();
         }
     }
 }

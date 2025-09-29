@@ -967,6 +967,7 @@
     <string name="reset_text">As jy probleme ondervind met die program, probeer om jou instellings te herstel deur die onderstaande knoppie te gebruik.  Dit sal jou instellings skoonmaak, maar sal nie jou liedjies uitvee nie.</string>
     <string name="respect_copyright">Respekteer kopiereg - gebruik dit altyd wettig</string>
     <string name="restart">Begin oor</string>
+    <string name="restart_auto">Die toepassing sal herbegin wanneer jy hierdie bladsy verlaat om \'n ligte of donker tema op jou spyskaarte toe te pas</string>
     <string name="restart_required">Herbegin asseblief die toepassing om die veranderinge toe te pas</string>
     <string name="restore">Herstel</string>
     <string name="restore_sets">Herstel stelle</string>

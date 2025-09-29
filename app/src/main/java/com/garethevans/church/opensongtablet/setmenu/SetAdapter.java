@@ -3,15 +3,12 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +16,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -29,38 +25,32 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // Rather than use an array list stored here, use the currentSet object array
     // Only the set adapter should change the indexSongInSet
 
-    private final MainActivityInterface mainActivityInterface;
-    private int onColor, offColor, menuColor, textColor, hintColor;
-    private float titleSize, subtitleSizeFile;
-    private boolean useTitle,colorSet=false;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SetAdapter";
+
+    private final MainActivityInterface mainActivityInterface;
+    private float titleSize, subtitleSizeFile;
+    private boolean useTitle;
     private ItemTouchHelper itemTouchHelper;
     private final RecyclerView recyclerView;
-    private final String highlightItem="highlightItem", unhighlightitem="unhighlightitem",
+    private final String highlightItem="highlightItem", unhighlightItem="unhighlightItem",
             updateNumber="updateNumber";
-    private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private boolean updatingHighlight = false, removingHighlight = false;
     private boolean highlightChangeAllowed =true;
     private final String divider_string;
+    private final int textColor, hintTextColor;
+
     //Initialise the class
     public SetAdapter(Context c, RecyclerView recyclerView) {
         mainActivityInterface = (MainActivityInterface) c;
         this.recyclerView = recyclerView;
-        //setItemTouchInterface = (SetItemTouchInterface) c;
         // Get the size of the text to use
         getUpdatedPreferences();
         divider_string = c.getString(R.string.divider);
+        textColor = mainActivityInterface.getMyThemeColors().getColorOnSurface(recyclerView);
+        hintTextColor = mainActivityInterface.getMyThemeColors().getHintTextColor(recyclerView);
     }
 
-    private void setColors(Context viewContext) {
-        onColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewContext,R.color.dark_secondary));
-        offColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(viewContext,R.color.dark_primary));
-        menuColor = MaterialColors.getColor(viewContext,com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(viewContext,R.color.dark_primary));
-        hintColor = MaterialColors.getColor(viewContext, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(viewContext,R.color.dark_hint));
-        textColor = MaterialColors.getColor(viewContext, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(viewContext,R.color.dark_color));
-        colorSet = true;
-    }
     // If we change load in a profile, this is called
     public void getUpdatedPreferences() {
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
@@ -75,7 +65,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     public RecyclerView getRecyclerView() {
         return recyclerView;
     }
-
 
     @NonNull
     @Override
@@ -100,9 +89,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         String foldername = si.songfolder;
         String newfoldername = si.songfoldernice;
 
-        if (!colorSet) {
-            setColors(holder.itemView.getContext());
-        }
         // If this is a variation, we can prettify the output (remove the reference to the original folder)
         if (mainActivityInterface.getVariations().getIsNormalOrKeyVariation(foldername,filename)) {
             filename = filename.substring(filename.lastIndexOf("_")).replace("_","");
@@ -141,33 +127,22 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             mainActivityInterface.getCurrentSet().setIndexSongInSet(position);
         }
 
-        // If this is the current set item, highlight it
+        int thisTextColor = textColor;
+        // Divider
         if (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                 si.songfolder.contains("**"+mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                 si.songfolder.contains("**Divider")) {
-            setColor(holder, menuColor);
-            setFABColor(holder.cardEdit,onColor);
-            holder.cardFilename.setTextColor(hintColor);
-            holder.cardTitle.setTextColor(hintColor);
-            holder.cardFolder.setTextColor(hintColor);
-            holder.cardItem.setTextColor(hintColor);
+            thisTextColor = hintTextColor;
+            setColor(holder,mainActivityInterface.getMyThemeColors().getSetBackgroundColor(holder.cardView));
+            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardEdit));
 
         } else if (currentSetItem) {
-            setColor(holder,onColor);
-            setFABColor(holder.cardEdit,offColor);
-            holder.cardFilename.setTextColor(textColor);
-            holder.cardTitle.setTextColor(textColor);
-            holder.cardFolder.setTextColor(textColor);
-            holder.cardItem.setTextColor(textColor);
+            setColor(holder,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardView));
+            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardEdit));
 
         } else {
-            setColor(holder,offColor);
-            setFABColor(holder.cardEdit,onColor);
-            holder.cardFilename.setTextColor(textColor);
-            holder.cardTitle.setTextColor(textColor);
-            holder.cardFolder.setTextColor(textColor);
-            holder.cardItem.setTextColor(textColor);
-
+            setColor(holder,mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardView));
+            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardEdit));
         }
 
         holder.cardItem.setTextSize(titleSize);
@@ -176,6 +151,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardTitle.setTextSize(titleSize);
         holder.cardFilename.setTextSize(titleSize);
         holder.cardFolder.setTextSize(subtitleSizeFile);
+        holder.cardFilename.setTextColor(thisTextColor);
+        holder.cardTitle.setTextColor(thisTextColor);
+        holder.cardFolder.setTextColor(thisTextColor);
+        holder.cardItem.setTextColor(thisTextColor);
 
         holder.cardFilename.setVisibility(useTitle ? View.GONE:View.VISIBLE);
         holder.cardTitle.setVisibility(useTitle ? View.VISIBLE:View.GONE);
@@ -212,10 +191,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     public void onBindViewHolder(@NonNull SetListItemViewHolder holder, int position, @NonNull List<Object> payloads) {
         position = holder.getAbsoluteAdapterPosition();
 
-        if (!colorSet) {
-            setColors(holder.itemView.getContext());
-        }
-
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         } else {
@@ -229,37 +204,34 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                 }
 
                 String folder = mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder;
-                if (payload.equals(highlightItem) || payload.equals(unhighlightitem) || payload.equals(updateNumber)) {
+                int thisTextColor = textColor;
+
+                if (payload.equals(highlightItem) || payload.equals(unhighlightItem) || payload.equals(updateNumber)) {
                     // We want to update the highlight colour to on/off
-                    if (folder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
-                            folder.contains("**Divider") ||
-                            folder.contains("**"+divider_string)) {
-                        setColor(holder, menuColor);
-                        holder.cardFilename.setTextColor(hintColor);
-                        holder.cardFilename.setTextColor(hintColor);
-                        holder.cardFolder.setTextColor(hintColor);
-                        holder.cardItem.setTextColor(hintColor);
-                        setFABColor(holder.cardEdit, onColor);
 
-                    } else if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
-                        setColor(holder, onColor);
-                        setFABColor(holder.cardEdit, offColor);
-                        holder.cardFilename.setTextColor(textColor);
-                        holder.cardFilename.setTextColor(textColor);
-                        holder.cardFolder.setTextColor(textColor);
-                        holder.cardItem.setTextColor(textColor);
+                    if (payload.equals(highlightItem)) {
+                        setColor(holder, mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardView));
+                        setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardEdit));
 
+                    } else if (payload.equals(unhighlightItem)) {
+                        if (folder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
+                                folder.contains("**Divider") ||
+                                folder.contains("**"+divider_string)) {
+                            thisTextColor = hintTextColor;
+                            setColor(holder, mainActivityInterface.getMyThemeColors().getSetBackgroundColor(holder.cardView));
 
-                    } else {
-                        setColor(holder, offColor);
-                        setFABColor(holder.cardEdit,onColor);
-                        holder.cardFilename.setTextColor(textColor);
-                        holder.cardFilename.setTextColor(textColor);
-                        holder.cardFolder.setTextColor(textColor);
-                        holder.cardItem.setTextColor(textColor);
+                        } else {
+                            setColor(holder, mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardView));
+                        }
+                        setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardEdit));
+                        holder.cardFilename.setTextColor(thisTextColor);
+                        holder.cardFilename.setTextColor(thisTextColor);
+                        holder.cardFolder.setTextColor(thisTextColor);
+                        holder.cardItem.setTextColor(thisTextColor);
                     }
                 }
             }
+
             // Set the listener for the edit button as the position may have changed
             int finalPosition = position;
             holder.cardEdit.setOnClickListener(view -> {
@@ -332,13 +304,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     }
 
     public void removeHighlight(int position) {
-        if (!removingHighlight && highlightChangeAllowed) {
+         if (!removingHighlight && highlightChangeAllowed) {
             removingHighlight = true;
             if (recyclerView != null && !recyclerView.isComputingLayout()) {
                 mainActivityInterface.getMainHandler().post(() -> {
                     try {
-                        notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), unhighlightitem);
-                        notifyItemChanged(position, unhighlightitem);
+                        notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(), unhighlightItem);
+                        notifyItemChanged(position, unhighlightItem);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -500,7 +472,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                 (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                 si.songfolder.contains("**Divider") ||
                         si.songfolder.contains("**"+divider_string))) {
-            Log.d(TAG,"Divider, so do nothing");
+            // Do nothing!
+            Log.d(TAG,"Divider - do nothing");
         } else {
             mainActivityInterface.loadSongFromSet(position);
         }
@@ -513,8 +486,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
     public void recoverCurrentSetPosition() {
         // Get the set position as we might have moved things around
-        uiHandler.post(() -> {
-            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),highlightItem);
+        mainActivityInterface.getMainHandler().post(() -> {
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),unhighlightItem);
             notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
         });
     }
@@ -524,7 +497,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         this.highlightChangeAllowed = highlightChangeAllowed;
         // If we are allowed to change the highlight, do it
         if (highlightChangeAllowed) {
-            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),unhighlightitem);
+            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),unhighlightItem);
             notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
         }
     }

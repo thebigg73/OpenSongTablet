@@ -301,7 +301,8 @@ public class SetMenuFragment extends Fragment {
                 setAdapter.removeHighlight(previousPosition);
             }
             if (selectedPosition>-1) {
-                setAdapter.updateHighlight(selectedPosition);
+                mainActivityInterface.getMainHandler().postDelayed(() -> setAdapter.updateHighlight(selectedPosition),500);
+                //setAdapter.updateHighlight(selectedPosition);
             }
         }
     }

@@ -1158,6 +1158,7 @@
     <string name="reset_text">If you are having difficulties with the app, try clearing your preferences. This will not delete your songs.</string>
     <string name="respect_copyright">Respect copyright - always use legally</string>
     <string name="restart">Restart</string>
+    <string name="restart_auto">The app will restart when you leave this page to apply a light or dark theme to your menus</string>
     <string name="restart_required">Please restart the app to apply the changes</string>
     <string name="restore">Restore</string>
     <string name="restore_sets">Restore sets</string>
@@ -1795,5 +1796,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="restart_auto">The app will restart when you leave this page to apply a light or dark theme to your menus</string>
 </resources>

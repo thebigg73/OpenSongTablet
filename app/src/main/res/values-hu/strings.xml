@@ -967,6 +967,7 @@
     <string name="reset_text">Ha nehézségekbe ütközik az alkalmazással, próbálja meg újraindítani a beállításokat az alábbi gomb segítségével. Ez törli a beállításokat, de nem törli a dalokat.</string>
     <string name="respect_copyright">Tisztelet a szerzői jogoknak - mindig legálisan használja</string>
     <string name="restart">Újrakezd</string>
+    <string name="restart_auto">Az alkalmazás újraindul, amikor elhagyja ezt az oldalt, hogy világos vagy sötét témát alkalmazzon a menükre</string>
     <string name="restart_required">A módosítások alkalmazásához indítsa újra az alkalmazást</string>
     <string name="restore">Visszaállítás</string>
     <string name="restore_sets">Készletek visszaállítása</string>

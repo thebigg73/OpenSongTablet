@@ -13,14 +13,12 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
@@ -45,7 +43,6 @@ public class InlineSetList extends RecyclerView {
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
     private String no_set_string;
     private String divider_string;
-    View view;
     public InlineSetList(@NonNull Context context) {
         super(context);
         llm = new LinearLayoutManager(context);
@@ -60,7 +57,6 @@ public class InlineSetList extends RecyclerView {
         setItemAnimator(null);
     }
 
-
     // Get the user preferences and set up the adapter
     public void initialisePreferences(Context c, MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
@@ -69,7 +65,7 @@ public class InlineSetList extends RecyclerView {
         width = (int) (mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth", 0.20f) * screenWidth);
         adjustTextSize();
         showInlinePresenter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter", true);
-        inlineSetListAdapter = new InlineSetListAdapter(c);
+        inlineSetListAdapter = new InlineSetListAdapter();
         setAdapter(inlineSetListAdapter);
         setVisibility(View.GONE);
         mode_presenter_string = c.getString(R.string.mode_presenter);
@@ -372,16 +368,6 @@ public class InlineSetList extends RecyclerView {
     // The adapter class that draws the inline set
     private class InlineSetListAdapter extends RecyclerView.Adapter<InlineSetItemViewHolder> {
 
-        // All the helpers we need to access are in the MainActivity
-        private final int onColor, offColor, menuColor, grey;
-
-        InlineSetListAdapter(Context context) {
-            onColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(context,R.color.dark_secondary));
-            offColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimaryFixed,ContextCompat.getColor(context,R.color.dark_primary));
-            menuColor = MaterialColors.getColor(context,com.google.android.material.R.attr.colorPrimaryFixed,ContextCompat.getColor(context,R.color.dark_primary));
-            grey = MaterialColors.getColor(context,com.google.android.material.R.attr.hintTextColor,ContextCompat.getColor(context,R.color.lightgrey));
-        }
-
         @Override
         public int getItemCount() {
             if (mainActivityInterface!=null) {
@@ -400,6 +386,8 @@ public class InlineSetList extends RecyclerView {
                 } else {
                     // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
                     for (Object payload : payloads) {
+                        int textColor = mainActivityInterface.getMyThemeColors().getColorOnSurface(holder.cardView);
+
                         if (payload.equals(updateNumber)) {
                             SetItemInfo si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
                             si.songitem = position + 1;
@@ -424,11 +412,10 @@ public class InlineSetList extends RecyclerView {
                             if (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                                     si.songfolder.contains("**Divider") ||
                                     si.songfolder.contains("**"+divider_string)) {
-                                holder.vSongTitle.setTextColor(grey);
+                                textColor = mainActivityInterface.getMyThemeColors().getHintTextColor(holder.cardView);
                                 holder.vSongTitle.setText(textsn);
-                                holder.vSongFilename.setTextColor(grey);
                                 holder.vSongFilename.setText(textfn);
-                                setColor(holder,menuColor);
+                                setColor(holder,mainActivityInterface.getMyThemeColors().getSetBackgroundColor(holder.cardView));
                             } else {
                                 holder.vSongTitle.setText(textsn);
                                 holder.vSongFilename.setText(textfn);
@@ -440,15 +427,18 @@ public class InlineSetList extends RecyclerView {
                             // We want to update the highlight colour to on/off
                             String songfolder = mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder;
                             if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
-                                setColor(holder, onColor);
+                                setColor(holder, mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardView));
                             } else if (songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                                 songfolder.contains("**Divider") ||
                                 songfolder.contains("**"+divider_string)) {
-                                setColor(holder, menuColor);
+                                setColor(holder, mainActivityInterface.getMyThemeColors().getSetBackgroundColor(holder.cardView));
                             } else {
-                                setColor(holder, offColor);
+                                setColor(holder, mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardView));
                             }
                         }
+
+                        holder.vSongFilename.setTextColor(textColor);
+                        holder.vSongTitle.setTextColor(textColor);
                     }
                 }
             }
@@ -456,7 +446,8 @@ public class InlineSetList extends RecyclerView {
 
         private void setColor(InlineSetItemViewHolder holder, int cardColor) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                holder.cardView.setBackgroundTintList(ColorStateList.valueOf(cardColor));
+                holder.cardView.setCardBackgroundColor(cardColor);
+                holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
             } else {
                 holder.cardView.setBackgroundColor(cardColor);
             }
@@ -465,12 +456,14 @@ public class InlineSetList extends RecyclerView {
         @Override
         public void onBindViewHolder(@NonNull InlineSetItemViewHolder setitemViewHolder, int position) {
             if (mainActivityInterface != null) {
+                int textColor = mainActivityInterface.getMyThemeColors().getColorOnSurface(setitemViewHolder.cardView);
+
                 position = setitemViewHolder.getAbsoluteAdapterPosition();
                 SetItemInfo si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
                 if (position == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
-                    setColor(setitemViewHolder, onColor);
+                    setColor(setitemViewHolder, mainActivityInterface.getMyThemeColors().getSetActiveColor(setitemViewHolder.cardView));
                 } else {
-                    setColor(setitemViewHolder, offColor);
+                    setColor(setitemViewHolder, mainActivityInterface.getMyThemeColors().getSetInactiveColor(setitemViewHolder.cardView));
                 }
 
                 si.songitem = position + 1;
@@ -499,11 +492,10 @@ public class InlineSetList extends RecyclerView {
                 if (si.songfolder.contains(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                         si.songfolder.contains("**Divider") ||
                         si.songfolder.contains("**"+divider_string)) {
-                    setitemViewHolder.vSongTitle.setTextColor(grey);
+                    textColor = mainActivityInterface.getMyThemeColors().getHintTextColor(setitemViewHolder.cardView);
                     setitemViewHolder.vSongTitle.setText(textfn);
-                    setitemViewHolder.vSongFilename.setTextColor(grey);
                     setitemViewHolder.vSongFilename.setText(textsn);
-                    setColor(setitemViewHolder,menuColor);
+                    setColor(setitemViewHolder,mainActivityInterface.getMyThemeColors().getSetBackgroundColor(setitemViewHolder.cardView));
 
                 } else {
                     setitemViewHolder.vSongTitle.setText(textsn);
@@ -523,6 +515,9 @@ public class InlineSetList extends RecyclerView {
                     }
                     return true;
                 });
+
+                setitemViewHolder.vSongFilename.setTextColor(textColor);
+                setitemViewHolder.vSongTitle.setTextColor(textColor);
             }
         }
 
@@ -559,18 +554,6 @@ public class InlineSetList extends RecyclerView {
             vSongFilename.setTextSize(textSize);
             vSongFolder = v.findViewById(R.id.cardview_folder);
             vSongFolder.setVisibility(View.GONE);
-            /*v.setOnClickListener((view) -> {
-                // Load the song and that sends the updates to the setMenuFragment and inlineSetList
-                if (mainActivityInterface!=null) {
-                    mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.loadSongFromSet(getAbsoluteAdapterPosition()));
-                    }
-            });
-            v.setOnLongClickListener(v1 -> {
-                if (mainActivityInterface!=null) {
-                    scrollToItem(mainActivityInterface.getCurrentSet().getIndexSongInSet());
-                }
-                return true;
-            });*/
         }
     }
 
