@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -43,6 +42,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:padding="0dp"
+                        style="@style/FilledButton"
                         android:layout_margin="4dp"
                         android:layout_height="wrap_content" />
 
@@ -113,10 +113,10 @@
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:textSize="@dimen/text_xlarge"
-                    android:textColor="@color/colorAltSecondary"
+                    android:textColor="?attr/tunerColor"
                     tools:text="440Hz"
-                    android:layout_height="wrap_content"/>
-
+                    android:layout_height="wrap_content"
+                    android:minHeight="24dp"/>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                         android:layout_height="180dp"
                         android:layout_gravity="center|top"
                         android:contentDescription="@string/tuner_info"
-                        app:tint="@color/colorAltSecondary"
+                        app:tint="?attr/tunerColor"
                         android:src="@drawable/tuner_meter"/>
                     <ImageView
                         android:id="@+id/needle"
@@ -136,7 +136,7 @@
                         android:transformPivotX="12dp"
                         android:transformPivotY="168dp"
                         android:layout_gravity="center"
-                        app:tint="@color/colorSecondary"
+                        app:tint="?attr/tunerColor"
                         android:src="@drawable/tuner_needle"/>
                 </FrameLayout>
 
@@ -165,7 +165,7 @@
                         android:padding="2dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandFlat2"
@@ -185,7 +185,7 @@
                         android:padding="2dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
 
                     <FrameLayout
                         android:layout_width="0dp"
@@ -199,7 +199,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/tuner"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -212,7 +212,8 @@
                             android:gravity="center"
                             android:textSize="@dimen/text_xxlarge"
                             android:layout_marginTop="12dp"
-                            tools:text="A"/>
+                            tools:text="A"
+                            android:textColor="?attr/colorOnPrimary"/>
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tunerFreq"
                             android:layout_width="match_parent"
@@ -220,7 +221,8 @@
                             android:gravity="center"
                             android:textSize="@dimen/text_small"
                             android:layout_marginBottom="12dp"
-                            tools:text="440Hz"/>
+                            tools:text="440Hz"
+                            android:textColor="?attr/colorOnPrimary"/>
                         </LinearLayout>
                     </FrameLayout>
                     <ImageView
@@ -231,7 +233,7 @@
                         android:padding="2dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandSharp2"
@@ -241,7 +243,7 @@
                         android:padding="2dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandSharp3"
@@ -251,7 +253,7 @@
                         android:padding="2dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandSharp4"
@@ -261,7 +263,7 @@
                         android:padding="2dp"
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        app:srcCompat="@drawable/tuner_block_off" />
                 </LinearLayout>
 
                 <LinearLayout

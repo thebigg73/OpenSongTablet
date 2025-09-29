@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -78,6 +79,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     private AudioProcessor audioProcessor;
     @SuppressWarnings("FieldCanBeLocal")
     private Thread audioThread;
+    private Drawable bg = null;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -164,6 +166,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         // Initialise audio (and permisisons)
         checkPermissions();
 
+
         return myView.getRoot();
     }
 
@@ -175,7 +178,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             permissions_refused_string = getString(R.string.permissions_refused);
             settings_string = getString(R.string.settings);
             needleInTuneColor = ContextCompat.getColor(getContext(), R.color.green);
-            needleNotInTuneColor = ContextCompat.getColor(getContext(), R.color.colorSecondary);
+            needleNotInTuneColor = ContextCompat.getColor(getContext(),R.color.dark_secondary);
             toneGenerator = new ToneGenerator(getContext());
         }
     }
@@ -284,10 +287,6 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
             case 1:
                 centsInTune = 1;
                 break;
-            case 2:
-            default:
-                centsInTune = 2;
-                break;
             case 3:
                 centsInTune = 3;
                 break;
@@ -296,6 +295,10 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
                 break;
             case 5:
                 centsInTune = 5;
+                break;
+            case 2:
+            default:
+                centsInTune = 2;
                 break;
         }
     }
@@ -597,11 +600,11 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     private void setTunerBlocks(ImageView view, boolean isOn, boolean green) {
         if (getContext() != null) {
             if (green && isOn) {
-                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_in_tune, null));
+                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_in_tune, getContext().getTheme()));
             } else if (isOn) {
-                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_block_on, null));
+                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_block_on, getContext().getTheme()));
             } else {
-                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_block_off, null));
+                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_block_off, getContext().getTheme()));
             }
         }
     }

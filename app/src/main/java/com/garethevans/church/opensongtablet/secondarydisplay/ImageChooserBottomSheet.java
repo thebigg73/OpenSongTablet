@@ -37,6 +37,7 @@ import com.garethevans.church.opensongtablet.screensetup.ChooseColorBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 
 public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
@@ -117,7 +118,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             mode_presenter_string = getString(R.string.mode_presenter);
-            colorSelected = ContextCompat.getColor(getContext(),R.color.colorSecondary);
+            colorSelected = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
             colorUnselected = Color.TRANSPARENT;
 
         }
@@ -236,7 +237,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
     private void setSelectedBackgroundHighlight() {
         if (getContext()!=null) {
-            colorSelected = ContextCompat.getColor(getContext(), R.color.colorSecondary);
+            colorSelected = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
         }
         colorUnselected = Color.TRANSPARENT;
         myView.colorBackground.setBackgroundColor(colorUnselected);

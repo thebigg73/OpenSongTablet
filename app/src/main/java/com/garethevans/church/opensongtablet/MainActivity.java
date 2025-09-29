@@ -39,6 +39,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -183,6 +184,7 @@ import com.garethevans.church.opensongtablet.voicelive.VoiceLive;
 import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -324,7 +326,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
     private int prevNumConnectedDisplays = 0;
-    private ImageView screenHelp,searchMenu;
     private final Handler mainLooper = new Handler(Looper.getMainLooper());
 
     // Variables used
@@ -362,7 +363,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info ="";
 
-    private ImageView screenMirror;
+    private MenuItem menuScreenMirror, menuScreenHelp, menuSearch, menuSettings;
+    private String webHelpAddress = null;
+
     // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
     //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
     //private static final String KEY_PAGER_ID = "pager_id";
@@ -374,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setCorrectTheme();
         super.onCreate(savedInstanceState);
 
         EdgeToEdge.enable(this);
@@ -532,6 +536,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
     }
 
+    public void setCorrectTheme() {
+
+        // Get the system option
+        if (themeColors==null) {
+            getMyThemeColors().getDefaultTheme();
+        }
+        String theme = getMyThemeColors().getThemeName();
+        switch (theme) {
+            case "light":
+            case "custom2":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "dark":
+            case "custom1":
+            default:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
+    }
+
     @Override
     public boolean getWaitingOnBootUpFragment() {
         return waitingOnBootUpFragment;
@@ -612,7 +636,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
         this.recreate();
-    }
+        }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -905,11 +929,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(!disable);
         }
-        if (globalMenuItem!=null) {
-            globalMenuItem.findItem(R.id.settings_menu_item).setVisible(!disable);
-            globalMenuItem.findItem(R.id.search_menu_item).setVisible(!disable);
+        if (disable) {
+            hideActionBar();
         }
-        return screenHelp;
+
+        if (menuSearch!=null) {
+            menuSearch.setVisible(!disable);
+        }
+        if (menuSettings!=null) {
+            menuSettings.setVisible(!disable);
+        }
+        if (menuScreenHelp!=null) {
+            return (ImageView) menuScreenHelp.getActionView();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -924,12 +958,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateMargins() {
         if (myView!=null && windowFlags!=null) {
             mainLooper.post(() -> {
-                if (settingsOpen || whichMode.equals(mode_presenter)) {
-                    myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                } else {
-                    myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-                }
-
                 // Get the user margins (additional)
                 int[] margins = windowFlags.getMargins();
 
@@ -1349,22 +1377,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (getBatteryStatus() != null) {
                         batteryStatus.showBatteryStuff(false);
                     }
-                    updateToolbarHelp(null);
-                    globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
-
+                    if (menuScreenMirror!=null) {
+                        menuScreenMirror.setVisible(false);
+                    }
                     // IV - We set settingsOpen based on the new navDestination
                     settingsOpen = !((navDestination.getId() == R.id.performanceFragment ||
                             navDestination.getId() == R.id.presenterFragment));
 
                     // IV - To smooth build, we add elements right to left
+
+                    checkOptionsMenu();
+
                     if (settingsOpen) {
-                        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.close);
-                        globalMenuItem.findItem(R.id.search_menu_item).setVisible(true);
+                        if (menuSettings!=null) {
+                            menuSettings.setIcon(R.drawable.close);
+                        }
                         // IV - Other elements are added by the called fragment
                     } else {
                         // IV - Top level of menu - song details are added by song load
-                        globalMenuItem.findItem(R.id.settings_menu_item).setIcon(R.drawable.settings_outline);
-                        globalMenuItem.findItem(R.id.search_menu_item).setVisible(false);
+                        if (menuSettings!=null) {
+                            menuSettings.setIcon(R.drawable.settings_outline);
+                        }
                         updateCastIcon();
                         if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
@@ -1687,10 +1720,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (whichMode.equals(mode_presenter)) {
                 navigateToFragment(deeplink_presenter, 0);
-                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                //myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 navigateToFragment(deeplink_performance, 0);
-                myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+                //myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
             }
         }
     }
@@ -1875,9 +1908,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void displayMultiTrack() {
         // Only allow for API 21 and above
         getMainHandler().post(() -> {
-            Log.d(TAG, "displayMultitrack()");
-            Log.d(TAG, "myView:" + myView);
-
             // Note that we need to decide on the audio encoding
             getMultiTrackPlayer().setAudioInfoSetForSong(false);
 
@@ -1897,7 +1927,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     multiTrackPopUp.floatMultiTrack(myView.fragmentView);
                 }
             }
-            Log.d(TAG,"multiTrackPopUp:"+multiTrackPopUp);
         });
     }
     @Override
@@ -1956,7 +1985,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Do this with a delay
                 if (myView!=null) {
                     try {
-                        getCustomAnimation().fadeActionButton(myView.actionFAB, getMyThemeColors().getPageButtonsSplitAlpha());
+                        getCustomAnimation().fadeActionButton(myView.actionFAB, getMyThemeColors().getPageButtonAlpha());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -2001,29 +2030,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             });
         }
     }
-
+    private boolean updatingToolbarHelp = false;
     @Override
-    public void updateToolbarHelp(String webAddress) {
+    public void updateToolbarHelp(String webHelpAddress) {
         // If a webAddress is supplied, setup and reveal the help button
         // or for a null or empty web address,hide the help button
-        if (globalMenuItem != null) {
-            if (!(webAddress == null || webAddress.isEmpty())) {
-                // IV - Post the icon and click action after a short delay - testing shows the delay is needed to ensure stability
-                globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
-                mainLooper.postDelayed(() -> {
-                    if (globalMenuItem != null) {
-                        screenHelp = (ImageView) globalMenuItem.findItem(R.id.help_menu_item).getActionView();
-                        screenHelp.setOnClickListener(v -> openDocument(webAddress));
-                        globalMenuItem.findItem(R.id.help_menu_item).setVisible(true);
-                        // For the first run, show the showcase as well
-                        if (!isCurrentFragment(R.id.setStorageLocationFragment)) {
-                            showCase.singleShowCase(this, screenHelp, null, getString(R.string.help), false, "webHelp");
-                        }
+
+        // Only allow this to happen a max of once per 200ms (false repeats)
+        if (!updatingToolbarHelp) {
+            updatingToolbarHelp = true;
+            // For stability, run this on a delayed handler
+            getMainHandler().postDelayed(() -> {
+                this.webHelpAddress = webHelpAddress;
+                if (menuScreenHelp != null) {
+                    menuScreenHelp.setVisible(webHelpAddress != null && !webHelpAddress.isEmpty());
+                    if (menuScreenHelp.isVisible() && !isCurrentFragment(R.id.setStorageLocationFragment)) {
+                        showCase.singleShowCase(this, menuScreenHelp.getActionView(), null, getString(R.string.help), false, "webHelp");
                     }
-                }, 50);
-            } else {
-                globalMenuItem.findItem(R.id.help_menu_item).setVisible(false);
-            }
+                }
+                updatingToolbarHelp = false;
+            }, 200);
         }
     }
 
@@ -2036,9 +2062,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
-        if (globalMenuItem == null) {
-            invalidateOptionsMenu();
-        }
+        checkOptionsMenu();
+
         initialiseArrayLists();
 
         String whichShowcase;
@@ -2155,22 +2180,65 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return true;
     }
 
+    private void checkOptionsMenu() {
+        if (menuSettings==null || menuSearch==null || menuScreenHelp==null || menuScreenMirror==null) {
+            invalidateOptionsMenu();
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // GE had to add onResume string update otherwise this call failed if user changed languages
-        if (settings.equals(item.toString())) {
+        if (item.getItemId()==R.id.settings_menu_item) {
+            // Either open or close the settings menu
             if (settingsOpen) {
                 if (navController.getCurrentDestination()!=null &&
-                navController.getCurrentDestination().getId()==R.id.preferencesFragment) {
+                        navController.getCurrentDestination().getId()==R.id.preferencesFragment) {
                     popTheBackStack(R.id.preferencesFragment,true);
                 }
+                item.setIcon(R.drawable.settings_outline);
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
-                myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                item.setIcon(R.drawable.close);
             }
+            return true;
+
+        } else if (item.getItemId()==R.id.help_menu_item) {
+            if (webHelpAddress!=null && !webHelpAddress.isEmpty()) {
+                openDocument(webHelpAddress);
+            }
+            return true;
+
+        } else if (item.getItemId()==R.id.search_menu_item) {
+            navigateToFragment(getString(R.string.deeplink_search_menu), 0);
+            return true;
+
+        } else if (item.getItemId()==R.id.mirror_menu_item) {
+            if (!getShowCase().singleShowCase(this, menuScreenMirror.getActionView(), null, cast_info_string, true, "castInfo")) {
+                try {
+                    startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
+                } catch (ActivityNotFoundException e) {
+                    Log.d(TAG, "android.settings.WIFI_DISPLAY_SETTINGS not an option");
+                    try {
+                        startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
+                    } catch (Exception e2) {
+                        Log.d(TAG, "com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
+                            } else {
+                                startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                            }
+                        } catch (Exception e3) {
+                            getShowToast().doIt(error);
+                        }
+                    }
+                }
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -2183,49 +2251,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         try {
             // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
-            screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
-            screenMirror.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.cast, getTheme()));
-            screenMirror.setOnClickListener(view -> {
-                if (!getShowCase().singleShowCase(this, screenMirror, null, cast_info_string, true, "castInfo")) {
-                    try {
-                        startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
-                    } catch (ActivityNotFoundException e) {
-                        Log.d(TAG, "android.settings.WIFI_DISPLAY_SETTINGS not an option");
-                        try {
-                            startActivity(new Intent("com.samsung.wfd.LAUNCH_WFD_PICKER_DLG"));
-                        } catch (Exception e2) {
-                            Log.d(TAG, "com.samsung.wfd.LAUNCH_WFD_PICKER_DLG not an option");
-                            try {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    startActivity(new Intent(Settings.ACTION_CAST_SETTINGS));
-                                } else {
-                                    startActivity(new Intent("android.settings.CAST_SETTINGS"));
-                                }
-                            } catch (Exception e3) {
-                                getShowToast().doIt(error);
-                            }
-                        }
-                    }
-                }
-            });
-            screenHelp = (ImageView) menu.findItem(R.id.help_menu_item).getActionView();
-            screenHelp.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.help_outline, getTheme()));
-            /*
-            */
             globalMenuItem = menu;
-            // IV - Set 'settings'/'close' icon is set depending on settingOpen
-            globalMenuItem.findItem(R.id.settings_menu_item).setIcon(settingsOpen ? R.drawable.close : R.drawable.settings_outline);
+            getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
+            menuSearch = menu.findItem(R.id.search_menu_item);
+            menuScreenHelp = menu.findItem(R.id.help_menu_item);
+            menuScreenMirror = menu.findItem(R.id.mirror_menu_item);
+            menuSettings = menu.findItem(R.id.settings_menu_item);
+
             updateCastIcon();
-            searchMenu = (ImageView) menu.findItem(R.id.search_menu_item).getActionView();
-            if (searchMenu!=null) {
-                searchMenu.setImageDrawable(VectorDrawableCompat.create(getResources(), R.drawable.search, getTheme()));
-                searchMenu.setOnClickListener(view -> {
-                    Log.d(TAG,"CLICKED");
-                    navigateToFragment(getString(R.string.deeplink_search_menu), 0);
-                });
-                searchMenu.setVisibility(settingsOpen ? View.VISIBLE : View.GONE);
-            }
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -2255,14 +2289,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (close) {
             myView.drawerLayout.post(() -> {
                 myView.drawerLayout.closeDrawer(GravityCompat.START);
-                Log.d(TAG,"trying to close the drawer");
             });
             menuOpen = false;
         } else {
-            myView.drawerLayout.post(() -> {
-                Log.d(TAG,"trying to open the drawer");
-                myView.drawerLayout.openDrawer(GravityCompat.START);
-            });
+            myView.drawerLayout.post(() -> myView.drawerLayout.openDrawer(GravityCompat.START));
             menuOpen = true;
         }
         // Hide the keyboard
@@ -4294,11 +4324,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                         if (myCustomCloseIcon!=null) {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary)).build()).setShowTitle(true).
+                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimaryFixed)).build()).setShowTitle(true).
                                     setCloseButtonIcon(myCustomCloseIcon).setUrlBarHidingEnabled(true).build();
                         } else {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary)).build()).setShowTitle(true).
+                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimaryFixed)).build()).setShowTitle(true).
                                     setUrlBarHidingEnabled(true).build();
                         }
                         customTabsIntent.launchUrl(MainActivity.this, Uri.parse(location));
@@ -4864,9 +4894,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         public void run() {
             if (!updatingIcon) {
                 updatingIcon = true;
-                if (globalMenuItem != null) {
+                if (menuScreenMirror != null) {
                     if (settingsOpen || !getAlertChecks().getHasPlayServices()) {
-                        globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(false);
+                        menuScreenMirror.setVisible(false);
                     } else {
                         VectorDrawableCompat drawable;
                         if (secondaryDisplays != null && connectedDisplays.length > 0) {
@@ -4876,8 +4906,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         }
                         if (drawable != null) {
                             try {
-                                globalMenuItem.findItem(R.id.mirror_menu_item).setIcon(drawable);
-                                globalMenuItem.findItem(R.id.mirror_menu_item).setVisible(true);
+                                menuScreenMirror.setIcon(drawable);
+                                menuScreenMirror.setVisible(true);
                             } catch (Exception e) {
                                 Log.d(TAG, "Error adjusting cast icon");
                             }

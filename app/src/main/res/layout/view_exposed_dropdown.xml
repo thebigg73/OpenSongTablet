@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout android:id="@+id/textLayout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exposedFrame"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/ExposedDropDown"
-    tools:hint="Hint"
-    android:labelFor="@+id/textView"
-    android:saveEnabled="false"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
 
-    <AutoCompleteTextView
-        android:id="@+id/textView"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/holderView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dropDownHeight="@dimen/exposed_dropdown_height"
-        android:textAppearance="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:padding="16dp"
-        android:background="@null"
-        android:inputType="none"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:saveEnabled="false"
-        tools:text="Text"/>
-</com.google.android.material.textfield.TextInputLayout>
+        android:labelFor="@+id/textView"
+        style="@style/ExposedDropDownLayoutOutline"
+        tools:hint="Hint">
+
+        <AutoCompleteTextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="16dp"
+            android:inputType="none"
+            android:textIsSelectable="false"
+            tools:text="text"/>
+
+       <!-- style="@style/EditTextLayout" -->
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+</FrameLayout>

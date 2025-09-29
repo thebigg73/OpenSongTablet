@@ -22,7 +22,7 @@
         android:textColor="@color/black"
         android:textSize="22sp"
         app:drawableStartCompat="@drawable/logo"
-        app:drawableTint="@color/colorPrimary"/>
+        app:drawableTint="@color/dark_primary"/>
 
     <TableRow style="@style/DividerLine" />
 

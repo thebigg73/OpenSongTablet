@@ -71,7 +71,7 @@
         android:id="@+id/scrim"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/scrim"
+        android:background="?attr/scrimBackground"
         android:visibility="gone"
         app:elevation="32dp">
 

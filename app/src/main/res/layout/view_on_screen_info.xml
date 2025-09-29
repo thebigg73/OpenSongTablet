@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/info"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -30,7 +31,7 @@
             android:scaleX="0.75"
             android:scaleY="0.75"
             app:drawableStartCompat="@drawable/autoscroll"
-            android:clickable="false"/>
+            android:clickable="false" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/autoscrollTime"
@@ -38,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:clickable="false"/>
+            android:clickable="false"
+            tools:text="0:00"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/autoscrollTotalTime"
@@ -46,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:clickable="false"/>
+            android:clickable="false"
+            tools:text=" / 3:00"/>
     </LinearLayout>
 
     <!-- Pad -->

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,10 @@ public class ModeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(choose_app_mode);
-        mainActivityInterface.updateToolbarHelp(webAddress);
+        Log.d(TAG,"webAddress:"+webAddress);
+        if (webAddress!=null) {
+            mainActivityInterface.updateToolbarHelp(webAddress);
+        }
     }
 
     @Override
@@ -67,13 +71,13 @@ public class ModeFragment extends Fragment {
         switch (mainActivityInterface.getPreferences().getMyPreferenceString(
                 "whichMode","Performance")) {
             case "Performance":
-                myView.performanceMode.showCheckMark(true);
+                myView.performanceMode.showCheckmark(true);
                 break;
             case "Presenter":
-                myView.presenterMode.showCheckMark(true);
+                myView.presenterMode.showCheckmark(true);
                 break;
             case "Stage":
-                myView.stageMode.showCheckMark(true);
+                myView.stageMode.showCheckmark(true);
                 break;
         }
     }

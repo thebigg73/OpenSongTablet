@@ -4,13 +4,16 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,14 +34,18 @@ public class MyMaterialSlider extends LinearLayout {
     private float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MyMaterialSlider(Context context) {
-        super(context);
-        inflate(context, R.layout.view_material_slider, this);
-        getViews();
+        //super(context);
+        this(context, null);
+        //inflate(context, R.layout.view_material_slider, this);
+        //getViews();
     }
 
     public MyMaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_material_slider, this);
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_slider, this, true);
+
+        //inflate(context, R.layout.view_material_slider, this);
         getViews();
         getAttributes(context, attrs);
     }
@@ -118,6 +125,7 @@ public class MyMaterialSlider extends LinearLayout {
         if (stepSize>-1) {
             slider.setStepSize(stepSize);
         }
+        Log.d(TAG,"value:"+value);
         if (value>-1) {
             setValue(value);
         }

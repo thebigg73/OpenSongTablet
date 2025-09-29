@@ -30,12 +30,18 @@
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:orientation="horizontal">
+               android:baselineAligned="false"
+               android:orientation="horizontal"
+               android:paddingBottom="32dp"
+               android:clipToPadding="false"
+               android:clipChildren="false">
 
                <FrameLayout
                    android:layout_width="0dp"
                    android:layout_weight="1"
-                   android:layout_height="wrap_content">
+                   android:layout_height="wrap_content"
+                   android:clipChildren="false"
+                   android:clipToPadding="false">
                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                        android:id="@+id/audioPlay"
                        android:layout_width="wrap_content"

@@ -34,14 +34,29 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
     }
 
     public void prepareSetManageInfos() {
+        // Get a count of the original items (if any)
+        if (setManageFragment!=null) {
+            // Disable everything until we are done!
+            setManageFragment.enableChanges(false);
+        }
+        int oldSize = getItemCount();
+        Log.d(TAG,"oldSize:"+oldSize);
+
+        if (oldSize > 0) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                        foundSets = new ArrayList<>();
+                        notifyItemRangeRemoved(0, oldSize);
+                    });
+        }
+
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             ArrayList<String> setsToUse = mainActivityInterface.getSetActions().getRequiredSets(whatView.equals("renameset"));
 
-            // Get a count of the original items (if any)
-            int oldSize = getItemCount();
             foundSets = new ArrayList<>();
 
-            for (String setToUse : setsToUse) {
+            for (int i=0; i<setsToUse.size(); i++) {
+                Log.d(TAG,"setsToUse:"+setsToUse.get(i));
+                String setToUse = setsToUse.get(i);
                 FoundSet foundSet = new FoundSet();
 
                 // Add the filename as it is
@@ -85,11 +100,21 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
 
             // Notify the adapter of the changes
             mainActivityInterface.getMainHandler().post(() -> {
-                if (oldSize > 0) {
-                    notifyItemRangeRemoved(0, oldSize);
-                }
                 notifyItemRangeInserted(0, getItemCount());
+                if (setManageFragment!=null) {
+                    // Disable everything until we are done!
+                    setManageFragment.enableChanges(true);
+                }
             });
+        });
+    }
+
+    public void justSortCurrent() {
+        changeSortOrder();
+
+        // Notify the adapter of the changes
+        mainActivityInterface.getMainHandler().post(() -> {
+            notifyItemRangeInserted(0, getItemCount());
         });
     }
 

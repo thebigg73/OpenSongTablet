@@ -19,7 +19,7 @@
             android:text=""
             android:visibility="gone"/>
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/showNewUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

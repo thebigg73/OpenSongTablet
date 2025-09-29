@@ -967,6 +967,7 @@
     <string name="reset_text">Om du har problem med appen kan du försöka återställa inställningarna med knappen nedan. Detta kommer att rensa dina inställningar, men kommer inte att ta bort dina låtar.</string>
     <string name="respect_copyright">Respektera upphovsrätten - använd alltid lagligt</string>
     <string name="restart">Omstart</string>
+    <string name="restart_auto">Appen startas om när du lämnar den här sidan för att tillämpa ett ljust eller mörkt tema på dina menyer</string>
     <string name="restart_required">Starta om appen för att tillämpa ändringarna</string>
     <string name="restore">Återställ</string>
     <string name="restore_sets">Återställ uppsättningar</string>

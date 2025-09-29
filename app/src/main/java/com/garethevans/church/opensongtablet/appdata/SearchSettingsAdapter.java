@@ -42,7 +42,6 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         displayedItems = new ArrayList<>(allItems);
     }
 
-
     // IMPORTANT: THIS IS ALL THE MENU OPTIONS - MUST BE KEPT UP TO DATE FOR SEARCH
     private void setupItems() {
         // Main settings menus
@@ -462,7 +461,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                 // Online song
                 new SettingItem(c.getString(R.string.online) + " ("+song+")",c.getString(R.string.online_services),
                         Arrays.asList(song,songs,online,import_string,ultimate,guitar,ug,ultimateguitar,songselect,chordie,select,download,get),
-                        c.getString(R.string.deeplink_song_actions),
+                        c.getString(R.string.deeplink_import_online),
                         settings+"/"+songactions+"/"+addsongs+"/"+c.getString(R.string.online)),
 
                 // Add song as file
@@ -948,7 +947,10 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
             SettingItem settingItem = displayedItems.get(position);
             // Get the deeplink.
             // Try any action or bottom sheet first
+            Log.d(TAG,"title:"+settingItem.title);
+            Log.d(TAG,"titleLower:"+settingItem.titleLower);
             Log.d(TAG,"deeplink:"+settingItem.deeplink);
+            Log.d(TAG,"description:"+settingItem.description);
             if (!dealWithAction(settingItem) && !dealWithBottomSheet(settingItem)) {
                 if (settingItem.deeplink != null && !settingItem.deeplink.isEmpty()) {
                     mainActivityInterface.navigateToFragment(settingItem.deeplink, 0);
@@ -1152,7 +1154,6 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
             return false;
         }
     }
-
 
     @NonNull
     @Override

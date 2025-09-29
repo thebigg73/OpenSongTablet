@@ -97,7 +97,7 @@ public class PageButtonFragment extends Fragment {
             myView.pageButtonHide.setChecked(mainActivityInterface.getPageButtons().getPageButtonHide());
             myView.pageButtonHide.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPageButtons().setPageButtonHide(isChecked));
 
-            int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
+            int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonAlpha()*100);
             if (opacity<myView.opacity.getValueFrom()) {
                 opacity = (int)myView.opacity.getValueFrom();
             }
@@ -112,10 +112,8 @@ public class PageButtonFragment extends Fragment {
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     float value = myView.opacity.getValue() /100f;
-                    int newColor = mainActivityInterface.getMyThemeColors().changePageButtonAlpha(value);
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(
-                            mainActivityInterface.getMyThemeColors().getThemeName()+"_pageButtonsColor",
-                            newColor);
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat("pageButtonAlpha",value);
+                    mainActivityInterface.getMyThemeColors().setPageButtonAlpha(value);
                 }
             });
             // We will programatically draw the page buttons and their options based on our preferences

@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.snackbar.Snackbar;
 
 public class SetMenuFragment extends Fragment {
@@ -121,7 +122,7 @@ public class SetMenuFragment extends Fragment {
 
                 if (getContext()!=null) {
                     try {
-                        snackbar.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.colorSecondary)));
+                        snackbar.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary))));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -300,7 +301,8 @@ public class SetMenuFragment extends Fragment {
                 setAdapter.removeHighlight(previousPosition);
             }
             if (selectedPosition>-1) {
-                setAdapter.updateHighlight(selectedPosition);
+                mainActivityInterface.getMainHandler().postDelayed(() -> setAdapter.updateHighlight(selectedPosition),500);
+                //setAdapter.updateHighlight(selectedPosition);
             }
         }
     }

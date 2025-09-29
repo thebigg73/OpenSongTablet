@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
+import com.google.android.material.color.MaterialColors;
 
 public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
 
@@ -37,7 +38,7 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
         super.clearView(recyclerView, viewHolder);
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorAltPrimary)));
+            viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSurface, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_primary))));
         }
     }
 
@@ -48,7 +49,7 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
         // If lollipop+, change the tint of the cardview item
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorSecondary)));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_secondary))));
             }
         }
     }

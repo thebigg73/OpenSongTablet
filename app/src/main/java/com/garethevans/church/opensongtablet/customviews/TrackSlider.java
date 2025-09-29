@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -98,8 +99,8 @@ public class TrackSlider extends LinearLayout {
         boost2Box.setId(View.generateViewId());
         boost3Box.setId(View.generateViewId());
 
-        buttonTextOnColor = getResources().getColor(R.color.yellow);
-        buttonTextOffColor = getResources().getColor(R.color.white);
+        buttonTextOnColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, ContextCompat.getColor(context,R.color.black));
+        buttonTextOffColor = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.black));
 
         int maxHeight = Math.round(176 * context.getResources().getDisplayMetrics().density);
         levelIndicator.setPivotX(0);
@@ -125,7 +126,7 @@ public class TrackSlider extends LinearLayout {
             masterBoostButtons.setVisibility(View.VISIBLE);
             // Set the background color to red
             trackName = context.getString(R.string.mainfoldername);
-            mainLayout.setBackgroundColor(ContextCompat.getColor(context,R.color.vvdarkred));
+            mainLayout.setBackgroundColor(MaterialColors.getColor(mainLayout, com.google.android.material.R.attr.colorSecondary));
             muteButton.setEnabled(false);
             soloButton.setEnabled(false);
         } else {
@@ -231,14 +232,13 @@ public class TrackSlider extends LinearLayout {
     public void updateButtons() {
         muteButton.setTextColor(trackMute ? buttonTextOnColor : buttonTextOffColor);
         soloButton.setTextColor(trackSolo ? buttonTextOnColor : buttonTextOffColor);
-        boost1Box.setVisibility(boost==1 ? View.VISIBLE:View.INVISIBLE);
-        boost2Box.setVisibility(boost==2 ? View.VISIBLE:View.INVISIBLE);
-        boost3Box.setVisibility(boost==3 ? View.VISIBLE:View.INVISIBLE);
+        masterBoost1.setTextColor(boost==1 ? buttonTextOnColor : buttonTextOffColor);
+        masterBoost2.setTextColor(boost==2 ? buttonTextOnColor : buttonTextOffColor);
+        masterBoost3.setTextColor(boost==3 ? buttonTextOnColor : buttonTextOffColor);
         muteBox.setVisibility(trackMute ? View.VISIBLE:View.INVISIBLE);
         soloBox.setVisibility(trackSolo ? View.VISIBLE:View.INVISIBLE);
         volumeSlider.setEnabled(!trackMute);
     }
-
     public String getTrackName() {
         return trackName;
     }

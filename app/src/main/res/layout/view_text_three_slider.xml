@@ -22,8 +22,9 @@
         android:valueFrom="0"
         android:valueTo="2"
         android:stepSize="1"
+        style="@style/MySliderStyle"
         app:labelBehavior="gone"
-        app:trackColor="@color/colorSecondary" />
+        app:trackColor="?attr/colorSecondary" />
 
     <LinearLayout
         android:id="@+id/textLine"

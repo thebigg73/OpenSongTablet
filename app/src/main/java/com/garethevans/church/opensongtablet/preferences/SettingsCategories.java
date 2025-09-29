@@ -21,6 +21,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class SettingsCategories extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "SettingsCategories";
     private SettingsCategoriesBinding myView;
     private MainActivityInterface mainActivityInterface;
     ActivityResultLauncher<String[]> nearbyConnectionsPermission;

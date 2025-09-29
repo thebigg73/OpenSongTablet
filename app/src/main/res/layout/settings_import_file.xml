@@ -30,7 +30,7 @@
                 android:layout_marginBottom="16dp"
                 android:hint="@string/folder" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/setLoadFirst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
         android:id="@+id/importProgressScrim"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/scrim"
+        android:background="?attr/scrimBackground"
         android:visibility="gone"/>
     <ProgressBar
         android:id="@+id/progress"

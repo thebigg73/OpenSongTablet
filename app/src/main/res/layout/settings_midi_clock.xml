@@ -15,14 +15,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiClockSend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_clock_master"
                 android:hint="@string/midi_clock_master_info" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiClockShortBurst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                 app:adjustable="true" />
             <TableRow style="@style/DividerLine" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/midiClickTrackSend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

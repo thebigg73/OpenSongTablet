@@ -265,7 +265,7 @@ public class MultiTrackPlayer {
                     if (wavHeader.dataStartOffset>=0 && wavHeader.sampleRate>0) {
                         audioTrackPositionTracker.setSeekOffsetMs((wavHeader.dataStartOffset * 1000L) / wavHeader.sampleRate);
                     }
-                    if (wavHeader.getDurationMs()>=0) {
+                    if (wavHeader.getDurationMs()>0) {
                         trackLengthSecs = (int)Math.round(((double) wavHeader.getDurationMs() / 1000));
                         if (trackProgressView!=null) {
                             mainActivityInterface.getMainHandler().post(() -> {

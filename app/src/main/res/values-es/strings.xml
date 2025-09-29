@@ -967,6 +967,7 @@
     <string name="reset_text">Si tiene dificultades con la aplicación, intente restablecer la configuración con el botón de abajo. Esto borrará su configuración, pero no eliminará sus canciones.</string>
     <string name="respect_copyright">Respete los derechos de autor: utilice siempre legalmente</string>
     <string name="restart">Reiniciar</string>
+    <string name="restart_auto">La aplicación se reiniciará cuando salga de esta página para aplicar un tema claro u oscuro a sus menús</string>
     <string name="restart_required">Reinicie la aplicación para aplicar los cambios.</string>
     <string name="restore">Restaurar</string>
     <string name="restore_sets">Restaurar conjuntos</string>

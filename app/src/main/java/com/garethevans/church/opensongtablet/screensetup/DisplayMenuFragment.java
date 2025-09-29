@@ -69,12 +69,8 @@ public class DisplayMenuFragment extends Fragment {
     }
     private void setDefaults() {
         // Get the app theme
-        String themeName;
-        switch (mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark")) {
-            case "dark":
-            default:
-                themeName = theme_dark_string;
-                break;
+        String themeName = mainActivityInterface.getMyThemeColors().getThemeName();
+        switch (themeName) {
             case "light":
                 themeName = theme_light_string;
                 break;
@@ -83,6 +79,10 @@ public class DisplayMenuFragment extends Fragment {
                 break;
             case "custom2":
                 themeName = theme_custom2_string;
+                break;
+            case "dark":
+            default:
+                themeName = theme_dark_string;
                 break;
         }
         myView.themeButton.setHint(themeName);

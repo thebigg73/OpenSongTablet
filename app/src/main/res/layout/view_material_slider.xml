@@ -12,14 +12,15 @@
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
         tools:text="@string/title" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/infoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/vlightgrey"
-        tools:text="@string/title" />
+        android:textColor="?android:attr/textColorHint"
+        tools:text="Hint" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,15 +54,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/MySliderStyle"
             android:contentDescription="@string/filter_by_this_value"
-            android:padding="16dp"
-            />
-
-        <!-- android:stepSize="1"
-            android:valueFrom="0"
-            android:valueTo="100"
-            android:value="50"
-            style="@style/Slider" -->
+            android:padding="16dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/valueText"
@@ -80,6 +75,7 @@
             android:minWidth="24dp"
             android:minHeight="24dp"
             android:visibility="gone">
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/plus"
             android:layout_width="wrap_content"
@@ -97,7 +93,7 @@
         android:id="@+id/bottomHint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/vlightgrey"
+        android:textColor="?attr/hintTextColor"
         android:gravity="center_horizontal"
         tools:text="Hint"
         android:visibility="gone"/>

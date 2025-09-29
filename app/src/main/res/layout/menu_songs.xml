@@ -90,7 +90,7 @@
                 android:layout_margin="12dp"
                 toolsNs:text="0%"
                 android:background="@drawable/rectangle"
-                app:backgroundTint="@color/colorSecondary"
+                app:backgroundTint="?attr/colorSecondary"
                 android:padding="12dp"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/timer"

@@ -12,6 +12,10 @@ public class WavHeader {
     public int audioFormat;
 
     public int getDurationMs() {
-        return (int)((dataSize * 1000L) / byteRate);
+        if (byteRate==0 || dataSize==0) {
+            return 0;
+        } else {
+            return (int) ((dataSize * 1000L) / byteRate);
+        }
     }
 }

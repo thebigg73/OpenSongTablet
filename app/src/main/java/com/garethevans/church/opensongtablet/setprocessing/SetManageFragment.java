@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -22,6 +23,7 @@ import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBindi
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
@@ -37,6 +39,7 @@ public class SetManageFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private ArrayList<String> categories;
     private ExposedDropDownArrayAdapter categoriesAdapter;
+    private boolean allowChanges = true;
 
     // What action we should be doing
     private String whattodo;
@@ -141,8 +144,8 @@ public class SetManageFragment extends Fragment {
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
             search_index_wait_string = getString(R.string.index_songs_wait);
-            activeColor = getContext().getResources().getColor(R.color.colorSecondary);
-            inactiveColor = getContext().getResources().getColor(R.color.colorAltPrimary);
+            activeColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
+            inactiveColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(getContext(),R.color.dark_primary));
             nothing_selected_string= getString(R.string.nothing_selected);
         }
     }
@@ -351,17 +354,17 @@ public class SetManageFragment extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (myView.setCategory.getUserEditing()) {
+                    if (myView.setCategory.getUserEditing() && allowChanges) {
                         // Only do this if we are expecting to change (not in rename mode)
                         mainActivityInterface.getPreferences().setMyPreferenceString("whichSetCategory",myView.setCategory.getText().toString());
-                        setManageAdapter.prepareSetManageInfos();
+                        mainActivityInterface.getMainHandler().post(() -> setManageAdapter.prepareSetManageInfos());
                     }
                 }
             });
 
             myView.newCategory.setOnClickListener(v -> {
                 // Open up the Bottomsheet dialog fragment and get the name
-                if (getActivity() != null) {
+                if (getActivity() != null && allowChanges) {
                     TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
                             "SetManageFragment", new_category_string,
                             new_category_string, null, null, null, true);
@@ -374,24 +377,36 @@ public class SetManageFragment extends Fragment {
             inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
             changeSortIconColor(setsSortOrder);
             myView.sortAZ.setOnClickListener(view -> {
-                mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "az");
-                changeSortIconColor("az");
-                setManageAdapter.prepareSetManageInfos();
+                if (allowChanges) {
+                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "az");
+                    changeSortIconColor("az");
+                    setManageAdapter.changeSortOrder();
+                    //setManageAdapter.prepareSetManageInfos();
+                }
             });
             myView.sortZA.setOnClickListener(view -> {
-                mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "za");
-                changeSortIconColor("za");
-                setManageAdapter.prepareSetManageInfos();
+                if (allowChanges) {
+                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "za");
+                    changeSortIconColor("za");
+                    setManageAdapter.changeSortOrder();
+                    //setManageAdapter.prepareSetManageInfos();
+                }
             });
             myView.sortOldest.setOnClickListener(view -> {
-                mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "oldest");
-                changeSortIconColor("oldest");
-                setManageAdapter.prepareSetManageInfos();
+                if (allowChanges) {
+                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "oldest");
+                    changeSortIconColor("oldest");
+                    setManageAdapter.changeSortOrder();
+                    //setManageAdapter.prepareSetManageInfos();
+                }
             });
             myView.sortNewest.setOnClickListener(view -> {
-                mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "newest");
-                changeSortIconColor("newest");
-                setManageAdapter.prepareSetManageInfos();
+                if (allowChanges) {
+                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "newest");
+                    changeSortIconColor("newest");
+                    setManageAdapter.changeSortOrder();
+                    //setManageAdapter.prepareSetManageInfos();
+                }
             });
         });
     }
@@ -769,5 +784,10 @@ public class SetManageFragment extends Fragment {
         super.onDestroy();
         myView = null;
         setManageAdapter = null;
+    }
+
+    public void enableChanges(boolean allowChanges) {
+        myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
+        this.allowChanges = allowChanges;
     }
 }

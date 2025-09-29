@@ -11,13 +11,13 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorAltSecondary" />
+        android:background="?attr/colorSecondaryVariant" />
 
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAltPrimary"
+        android:background="?attr/colorSurface"
         android:minWidth="96dp"
         android:minHeight="340dp"
         android:orientation="vertical"
@@ -43,7 +43,8 @@
                 android:value="1"
                 android:valueFrom="0"
                 android:valueTo="2"
-                app:trackColor="@color/colorSecondary" />
+                app:trackColor="?attr/colorSecondary"
+                app:thumbColor="?attr/colorSecondaryVariant"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,7 +91,7 @@
 
             <View
                 android:id="@+id/levelIndicator"
-                android:layout_width="24dp"
+                android:layout_width="16dp"
                 android:layout_height="176dp"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginTop="12dp"
@@ -108,7 +109,10 @@
                 android:value="100"
                 android:valueFrom="0"
                 android:valueTo="100"
-                tools:ignore="VisualLintBounds" />
+                tools:ignore="VisualLintBounds"
+                app:trackColor="?attr/colorSurface"
+                app:trackColorInactive="?attr/colorSurface"
+                app:thumbColor="?attr/colorSecondaryVariant" />
 
         </FrameLayout>
 
@@ -155,7 +159,8 @@
                         android:id="@+id/boost1Box"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_box" />
+                        android:background="@drawable/rounded_box"
+                        app:backgroundTint="?attr/colorSurface"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/masterBoost1"
@@ -165,7 +170,6 @@
                         android:gravity="center"
                         android:padding="0dp"
                         android:text="x1"
-                        android:textColor="@color/white"
                         android:textSize="@dimen/text_small"
                         tools:ignore="HardcodedText" />
                 </FrameLayout>
@@ -179,7 +183,8 @@
                         android:id="@+id/boost2Box"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_box" />
+                        android:background="@drawable/rounded_box"
+                        app:backgroundTint="?attr/colorSurface"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/masterBoost2"
@@ -189,7 +194,6 @@
                         android:gravity="center"
                         android:padding="0dp"
                         android:text="x2"
-                        android:textColor="@color/white"
                         android:textSize="@dimen/text_small"
                         tools:ignore="HardcodedText" />
                 </FrameLayout>
@@ -203,7 +207,8 @@
                         android:id="@+id/boost3Box"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_box" />
+                        android:background="@drawable/rounded_box"
+                        app:backgroundTint="?attr/colorSurface"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/masterBoost3"
@@ -213,7 +218,6 @@
                         android:gravity="center"
                         android:padding="0dp"
                         android:text="x3"
-                        android:textColor="@color/white"
                         android:textSize="@dimen/text_small"
                         tools:ignore="HardcodedText" />
                 </FrameLayout>
@@ -247,7 +251,6 @@
                         android:gravity="center"
                         android:padding="0dp"
                         android:text="M"
-                        android:textColor="@color/white"
                         android:textSize="@dimen/text_small"
                         tools:ignore="HardcodedText" />
                 </FrameLayout>
@@ -271,7 +274,6 @@
                         android:gravity="center"
                         android:padding="0dp"
                         android:text="S"
-                        android:textColor="@color/white"
                         android:textSize="@dimen/text_small"
                         tools:ignore="HardcodedText" />
                 </FrameLayout>
@@ -283,5 +285,5 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/colorAltSecondary" />
+        android:background="?attr/colorSecondaryVariant" />
 </LinearLayout>

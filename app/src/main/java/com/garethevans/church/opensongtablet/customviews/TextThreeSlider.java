@@ -5,14 +5,15 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -31,8 +32,8 @@ public class TextThreeSlider extends LinearLayout {
     private final LinearLayout imageLine;
     private final Slider slider;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
-    private final int white = getResources().getColor(R.color.white);
-    private final int lightgrey = getResources().getColor(R.color.lightgrey);
+    private final int active;
+    private final int inactive;
 
     public TextThreeSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -45,6 +46,8 @@ public class TextThreeSlider extends LinearLayout {
         small = context.getResources().getDimension(R.dimen.text_small);
         xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
+        active = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(context,R.color.dark_color));
+        inactive = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.dark_hint));
         textLine = findViewById(R.id.textLine);
         imageLine = findViewById(R.id.imageLine);
         label = findViewById(R.id.label);
@@ -192,9 +195,9 @@ public class TextThreeSlider extends LinearLayout {
     }
 
     public void updateAlphas() {
-        textLeft.setTextColor(slider.getValue()==0 ? white:lightgrey);
-        textCenter.setTextColor(slider.getValue()==1 ? white:lightgrey);
-        textRight.setTextColor(slider.getValue()==2 ? white:lightgrey);
+        textLeft.setTextColor(slider.getValue()==0 ? active:inactive);
+        textCenter.setTextColor(slider.getValue()==1 ? active:inactive);
+        textRight.setTextColor(slider.getValue()==2 ? active:inactive);
         imageLeft.setAlpha(slider.getValue()==0 ? 1f:0.4f);
         imageCenter.setAlpha(slider.getValue()==1 ? 1f:0.4f);
         imageRight.setAlpha(slider.getValue()==2 ? 1f:0.4f);

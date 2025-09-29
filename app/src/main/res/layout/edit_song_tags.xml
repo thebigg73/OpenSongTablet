@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/beat_buddy" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/useImported"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.collection.SimpleArrayMap;
 
 import com.garethevans.church.opensongtablet.R;
@@ -29,6 +28,7 @@ import com.google.android.gms.nearby.connection.DiscoveryOptions;
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -484,7 +484,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                     Log.d(TAG, "Device wasn't previously connected: " + endpointId + " ("+endpointName+").  Get connection permission");
                     // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
                     if (connectionsOpen || !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false)) {
-                        new AlertDialog.Builder(c)
+                        new MaterialAlertDialogBuilder(activity, R.style.MyAlertDialogTheme)
                                 .setTitle(c.getString(R.string.connections_accept) + " " + endpointName)
                                 .setMessage(c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationDigits())
                                 .setPositiveButton(

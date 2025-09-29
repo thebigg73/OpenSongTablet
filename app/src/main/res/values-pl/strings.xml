@@ -967,6 +967,7 @@
     <string name="reset_text">Jeśli masz problemy z aplikacją, spróbuj zresetować swoje ustawienia za pomocą przycisku poniżej. Nie spowoduje to usunięcia twoich piosenek.</string>
     <string name="respect_copyright">Szanuj prawa autorskie - zawsze korzystaj legalnie</string>
     <string name="restart">Uruchom ponownie</string>
+    <string name="restart_auto">Aplikacja uruchomi się ponownie, gdy opuścisz tę stronę, aby zastosować jasny lub ciemny motyw do swoich menu</string>
     <string name="restart_required">Uruchom ponownie aplikację, aby zastosować zmiany</string>
     <string name="restore">Przywróć</string>
     <string name="restore_sets">Przywróć zestawy</string>

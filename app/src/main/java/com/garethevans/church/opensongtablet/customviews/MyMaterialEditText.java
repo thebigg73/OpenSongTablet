@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -18,24 +19,27 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class MyMaterialEditText extends LinearLayout implements View.OnTouchListener {
+public class MyMaterialEditText extends FrameLayout implements View.OnTouchListener {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyMaterialEditText";
     private final TextInputEditText editText;
@@ -53,10 +57,15 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
         super(context);
         editText = new TextInputEditText(context);
         textInputLayout = new TextInputLayout(context);
+        textInputLayout.addView(editText,
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        this.addView(textInputLayout,
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
         restoreState = true;
 
-        editText.setId(View.generateViewId());
-        textInputLayout.setId(View.generateViewId());
+        //editText.setId(View.generateViewId());
+        //textInputLayout.setId(View.generateViewId());
 
         try {
             window = ((Activity) context).getWindow();
@@ -67,7 +76,11 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_material_edittext, this);
+        // Ensure inflation happens with the current app theme
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_edittext, this, true);
+
+        //inflate(context, R.layout.view_material_edittext, this);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,
@@ -114,10 +127,10 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
 
         // Set the text
         if (text != null) {
-            editText.setText(text);
+            setText(text.toString());
         }
         if (hint != null) {
-            textInputLayout.setHint(hint);
+            setHint(hint.toString());
         }
         if (digits != null) {
             editText.setKeyListener(DigitsKeyListener.getInstance(digits.toString()));
@@ -198,8 +211,8 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     }
 
     public void setText(String text) {
-        if (text == null || text.isEmpty()) {
-            editText.setText(null);
+        if (text.isEmpty()) {
+            text = null;
         }
         editText.setText(text);
     }
@@ -213,6 +226,8 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
 
     public void setHint(String hintText) {
         textInputLayout.setHint(hintText);
+        textInputLayout.setHintTextColor(ColorStateList.valueOf(MaterialColors.getColor(editText, com.google.android.material.R.attr.hintTextColor)));
+
     }
 
     public void setOnEditorActionListener(TextView.OnEditorActionListener editorActionListener) {
@@ -400,5 +415,16 @@ public class MyMaterialEditText extends LinearLayout implements View.OnTouchList
     }
     public void setError(String error) {
         textInputLayout.setError(error);
+    }
+
+    public void setTextColor(int color) {
+        editText.setTextColor(color);
+    }
+    public void setHintColor(int color) {
+        textInputLayout.setHintTextColor(ColorStateList.valueOf(color));
+    }
+
+    public void setGravity(int gravity) {
+        editText.setGravity(gravity);
     }
 }

@@ -4,27 +4,32 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textview.MaterialTextView;
 
-public class MaterialSwitch extends LinearLayout {
+public class MyMaterialSwitch extends LinearLayout {
 
     private final MaterialTextView textView, hintView;
     private final SwitchMaterial switchMaterial;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
 
-    public MaterialSwitch(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
+    public MyMaterialSwitch(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        inflate(context, R.layout.view_material_switch, this);
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_switch, this, true);
+
+        //inflate(context, R.layout.view_material_switch, this);
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);

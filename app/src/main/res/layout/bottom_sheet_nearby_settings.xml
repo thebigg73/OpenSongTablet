@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheet"
-    style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
@@ -33,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:backgroundTint="@color/colorAltPrimary">
+            app:backgroundTint="?attr/colorSurface">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
@@ -65,7 +64,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/connections_mode_star"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorSurface" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/singleMode"
@@ -75,7 +74,7 @@
                     android:layout_weight="0.5"
                     android:padding="8dp"
                     android:text="@string/connections_mode_single"
-                    app:backgroundTint="@color/colorAltPrimary" />
+                    app:backgroundTint="?attr/colorSurface" />
             </LinearLayout>
             <TableRow style="@style/DividerLine" />
 
@@ -85,14 +84,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/nearbyHostMenuOnly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/nearby_host_menu_only_info"
                     android:text="@string/nearby_host_menu_only" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/hostPassthrough"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,42 +107,42 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/receiveHostFiles"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/connections_receive_host_info"
                     android:text="@string/connections_receive_host" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/keepHostFiles"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/connections_keephostsongs_info"
                     android:text="@string/connections_keephostsongs" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/receiveHostSections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/connections_song_sections_info"
                     android:text="@string/song_sections" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/receiveAutoscroll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/connection_autoscroll_info"
                     android:text="@string/autoscroll" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/receiveScroll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/connection_scroll_info"
                     android:text="@string/scroll" />
 
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/matchToPDFSong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -152,7 +151,7 @@
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/nearbyFileSharing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -166,12 +165,12 @@
                 android:text="@string/nearby_messages"
                 android:hint="@string/nearby_messages_info"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/nearbyMessageSticky"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nearby_messages_sticky"
-                android:text="@string/nearby_messages_sticky_info"
+                android:text="@string/nearby_messages_sticky"
+                android:hint="@string/nearby_messages_sticky_info"
                 android:layout_marginBottom="8dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView

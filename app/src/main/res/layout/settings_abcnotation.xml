@@ -58,7 +58,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/settings" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoshowMusicScore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 app:adjustable="true"/>
             <TableRow style="@style/DividerLine"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/abcIncludeTab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@color/colorSecondary"
+                    android:background="?attr/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
                     android:fontFamily="monospace"
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@color/colorSecondary"
+                    android:background="?attr/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
                     android:fontFamily="monospace"
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@color/colorSecondary"
+                    android:background="?attr/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
                     android:fontFamily="monospace"
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@color/colorSecondary"
+                    android:background="?attr/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
                     android:fontFamily="monospace"
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@color/colorSecondary"
+                    android:background="?attr/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
                     android:fontFamily="monospace"
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:background="@color/colorSecondary"
+                    android:background="?attr/colorSecondary"
                     android:padding="8dp"
                     android:layout_margin="2dp"
                     android:fontFamily="monospace"
@@ -196,7 +196,7 @@
             </LinearLayout>
             <TableRow style="@style/DividerLine"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoTranspose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

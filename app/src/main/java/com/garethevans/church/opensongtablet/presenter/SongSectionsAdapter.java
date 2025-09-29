@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +45,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
         this.songSectionsFragment = songSectionsFragment;
-        onColor = ContextCompat.getColor(c, R.color.colorSecondary);
-        offColor = ContextCompat.getColor(c, R.color.colorAltPrimary);
+        onColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(c,R.color.dark_secondary));
+        offColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(c,R.color.dark_primary));
     }
 
     public void buildSongSections() {

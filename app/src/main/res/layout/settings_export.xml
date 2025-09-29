@@ -203,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_xlarge"
                     android:text="@string/song_files_separate" />
-                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/includeSongs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -340,7 +340,7 @@
                 android:textSize="@dimen/text_xlarge"
                 android:text="@string/settings" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/exportTextAsMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -368,7 +368,7 @@
                 android:stepSize="5"
                 android:value="75" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/forceSinglePage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -407,7 +407,7 @@
         android:id="@+id/scrim"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/scrim"
+        android:background="?attr/scrimBackground"
         android:visibility="gone" />
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView

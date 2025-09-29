@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -106,7 +107,7 @@
                             android:layout_gravity="center"
                             android:background="@drawable/circle"
                             android:padding="8dp"
-                            app:backgroundTint="@color/colorAltSecondary"
+                            app:backgroundTint="?attr/colorSecondary"
                             tools:text="0" />
                     </LinearLayout>
                     <TableRow style="@style/DividerLine" />
@@ -138,7 +139,7 @@
                             android:layout_gravity="center"
                             android:background="@drawable/circle"
                             android:padding="8dp"
-                            app:backgroundTint="@color/colorAltSecondary"
+                            app:backgroundTint="?attr/colorSecondary"
                             tools:text="0" />
                     </LinearLayout>
                     <TableRow style="@style/DividerLine" />
@@ -174,7 +175,7 @@
             android:id="@+id/scrimOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/scrim"
+            android:background="?attr/scrimBackground"
             android:visibility="gone" />
 
         <LinearLayout
@@ -190,13 +191,14 @@
                 android:layout_height="@dimen/progress_bar_size"
                 android:layout_gravity="center" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="400dp"
                 android:minHeight="128dp"
                 android:padding="16dp"
                 android:background="@drawable/popup_bg"
+                app:backgroundTint="?attr/colorSecondary"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -206,6 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/text_large"
                 android:text="@string/processing" />
                 <com.google.android.material.textview.MaterialTextView
@@ -215,9 +218,9 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="@dimen/text_medium"
-                    android:textColor="@color/vlightgrey"
+                    android:textColor="?android:textColorSecondary"
                     android:text="@string/wait" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </LinearLayout>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -29,7 +29,7 @@
         android:minWidth="64dp"
         android:padding="8dp"
         android:orientation="vertical"
-        android:background="@color/colorSecondary">
+        android:background="?attr/colorSecondary">
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/sliderValue"
         android:layout_width="match_parent"

@@ -1,16 +1,13 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -99,25 +96,23 @@ public class OnScreenInfo extends LinearLayout {
     }
 
     public void updateAlpha(Context c, MainActivityInterface mainActivityInterface) {
-        Drawable drawable = ContextCompat.getDrawable(c,R.drawable.rounded_dialog_node);
+        Drawable drawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.rounded_dialog_node,c.getTheme());
         if (drawable!=null) {
-            drawable.setColorFilter(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitColor(),
-                    PorterDuff.Mode.SRC_ATOP);
             info.setBackground(drawable);
         }
-        info.setAlpha(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitAlpha());
-        int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
-        padTime.setTextColor(textColor);
-        padTotalTime.setTextColor(textColor);
-        capoInfo.setTextColor(textColor);
-        autoscrollTime.setTextColor(textColor);
-        autoscrollTotalTime.setTextColor(textColor);
-        TextViewCompat.setCompoundDrawableTintList(autoscrollIcon, ColorStateList.valueOf(textColor));
-        TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
-        TextViewCompat.setCompoundDrawableTintList(padIcon, ColorStateList.valueOf(textColor));
-        TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
-        TextViewCompat.setCompoundDrawableTintList(capoIcon, ColorStateList.valueOf(textColor));
-        TextViewCompat.setCompoundDrawableTintList(capoInfo, ColorStateList.valueOf(textColor));
+        info.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonAlpha());
+        //int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
+        //padTime.setTextColor(textColor);
+        //padTotalTime.setTextColor(textColor);
+        //capoInfo.setTextColor(textColor);
+        //autoscrollTime.setTextColor(textColor);
+        //autoscrollTotalTime.setTextColor(textColor);
+        //TextViewCompat.setCompoundDrawableTintList(autoscrollIcon, ColorStateList.valueOf(textColor));
+        //TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
+        //TextViewCompat.setCompoundDrawableTintList(padIcon, ColorStateList.valueOf(textColor));
+        //TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
+        //TextViewCompat.setCompoundDrawableTintList(capoIcon, ColorStateList.valueOf(textColor));
+        //TextViewCompat.setCompoundDrawableTintList(capoInfo, ColorStateList.valueOf(textColor));
     }
 
     public void dealWithCapo(Context c, MainActivityInterface mainActivityInterface) {

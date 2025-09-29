@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base Light Theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Font -->
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato</item>
+
+        <!-- Text colors -->
+        <item name="android:textColor">@color/light_color</item>
+        <item name="android:textColorPrimary">@color/light_color</item>
+        <item name="android:textColorSecondary">@color/light_hint</item>
+        <item name="android:textColorHighlight">@color/light_secondary_variant</item>
+        <item name="android:textColorHint">@color/light_hint</item>
+        <item name="hintTextColor">@color/light_hint</item>
+        <item name="color">@color/light_color</item>"
+
+        <!-- Primary Material Colors -->
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryFixed">@color/light_primary</item>
+        <item name="colorPrimaryVariant">@color/light_surface</item>
+        <item name="colorOnPrimary">@color/light_color</item>
+        <item name="colorSecondary">@color/light_secondary</item>
+        <item name="colorSecondaryVariant">@color/light_secondary_variant</item>
+        <item name="colorOnSecondary">@color/light_color</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorSurfaceVariant">@color/light_surface_variant</item>"
+        <item name="colorOnSurface">@color/light_color</item>
+        <item name="colorError">@color/light_error</item>
+        <item name="colorOnError">@color/white</item>
+        <item name="errorTextColor">@color/light_error</item>
+        <item name="colorAccent">@color/light_secondary_variant</item>
+
+        <!-- Backgrounds -->
+        <item name="android:windowBackground">@color/light_primary</item>
+        <item name="colorBackgroundFloating">@color/light_secondary</item>
+        <item name="cardBackgroundColor">@color/light_primary</item>
+        <item name="backgroundColor">@color/light_primary</item>
+
+        <!-- Controls -->
+        <item name="colorControlActivated">@color/light_secondary</item>
+        <item name="colorControlNormal">@color/light_color</item>
+        <item name="colorControlHighlight">@color/light_secondary</item>
+        <item name="colorButtonNormal">@color/light_secondary</item>
+
+        <!-- Button & FAB overrides -->
+        <item name="materialIconButtonFilledStyle">@style/FilledButton</item>
+        <item name="materialButtonStyle">@style/FilledButton</item>
+        <item name="materialButtonOutlinedStyle">@style/OutlinedButton</item>
+        <item name="floatingActionButtonStyle">@style/FABStyle</item>
+        <item name="extendedFloatingActionButtonStyle">@style/ExtendedFABStyle</item>
+
+        <!-- MyMaterialTextView -->
+        <item name="myMaterialTextViewStyle">@style/Widget.MyApp.MyMaterialTextView</item>
+
+        <!-- Bottom Sheets -->
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+
+        <!-- Switches -->
+        <item name="materialSwitchStyle">@style/MySwitchStyle</item>
+        <item name="switchStyle">@style/MySwitchStyle</item>
+
+        <!-- Checkboxes -->
+        <item name="checkboxStyle">@style/MyCheckboxStyle</item>
+
+        <!-- Tuner -->
+        <item name="tunerColor">@color/light_secondary</item>
+        <item name="tunerOff">@color/light_tuner_off</item>
+        <item name="tunerGreen">@color/light_tuner_green</item>
+        <item name="tunerRed">@color/light_tuner_red</item>
+
+        <!-- Animations -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
+        <!-- Menu items -->
+        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+
+        <item name="popupMenuBackground">@drawable/exposed_popup</item>
+
+        <!-- Default dialog (for Nearby) -->
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
+    </style>
+</resources>

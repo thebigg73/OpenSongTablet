@@ -967,6 +967,7 @@
     <string name="reset_text">Ako imate problema sa aplikacijom, pokušajte ponovo da podesite postavke pomoću dugmeta u nastavku. Ovo će obrisati vaše postavke, ali neće izbrisati vaše pjesme.</string>
     <string name="respect_copyright">Poštujte autorska prava - uvek ih koristite legalno</string>
     <string name="restart">Ponovo pokrenuti</string>
+    <string name="restart_auto">Aplikacija će se ponovo pokrenuti kada napustite ovu stranicu da biste primenili svetlu ili tamnu temu na svoje menije</string>
     <string name="restart_required">Ponovo pokrenite aplikaciju da biste primenili promene</string>
     <string name="restore">Restore</string>
     <string name="restore_sets">Vrati skupove</string>

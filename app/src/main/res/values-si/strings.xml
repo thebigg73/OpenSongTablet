@@ -967,6 +967,7 @@
     <string name="reset_text">ඔබට යෙදුම සමඟ දුෂ්කරතා තිබේ නම්, ඔබේ මනාපයන් ඉවත් කිරීමට උත්සාහ කරන්න. මෙය ඔබගේ ගීත මකා නොදමනු ඇත.</string>
     <string name="respect_copyright">ප්‍රකාශන හිමිකමට ගරු කරන්න - සැමවිටම නීත්‍යානුකූලව භාවිතා කරන්න</string>
     <string name="restart">යළි අරඹන්න</string>
+    <string name="restart_auto">ඔබ මෙම පිටුවෙන් ඉවත් වී ඔබේ මෙනු වලට ආලෝක හෝ අඳුරු තේමාවක් යෙදීමට යන විට යෙදුම නැවත ආරම්භ වේ.</string>
     <string name="restart_required">වෙනස්කම් යෙදීමට කරුණාකර යෙදුම නැවත ආරම්භ කරන්න</string>
     <string name="restore">ප්‍රතිෂ්ඨාපනය කරන්න</string>
     <string name="restore_sets">කට්ටල ප්රතිෂ්ඨාපනය කරන්න</string>

@@ -480,7 +480,6 @@ public class ImportOSBFragment extends Fragment {
                                             false, final_file_uri, null, "Settings", "", SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
-                                    Log.d(TAG, "filefolder:" + filefolder + "  ze.getName():" + ze.getName());
                                     stringBuilder.append("\n").append(TAG).append(" Create Songs/").append(filefolder).append("/").append(filename);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             true, file_uri, null, "Songs", filefolder, filename);

@@ -967,6 +967,7 @@
     <string name="reset_text">Wenn Sie Probleme mit der App haben, versuchen Sie, Ihre Einstellungen über die Schaltfläche unten zurückzusetzen. Dadurch werden Ihre Einstellungen gelöscht, Ihre Songs jedoch nicht gelöscht.</string>
     <string name="respect_copyright">Respektieren Sie das Urheberrecht - verwenden Sie es immer legal</string>
     <string name="restart">Neu starten</string>
+    <string name="restart_auto">Die App wird neu gestartet, wenn Sie diese Seite verlassen, um ein helles oder dunkles Design auf Ihre Menüs anzuwenden</string>
     <string name="restart_required">Bitte starten Sie die App neu, um die Änderungen zu übernehmen</string>
     <string name="restore">Wiederherstellen</string>
     <string name="restore_sets">Sätze wiederherstellen</string>

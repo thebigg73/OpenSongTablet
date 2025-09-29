@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetEditSongLyricsBinding;
@@ -19,6 +20,7 @@ import com.garethevans.church.opensongtablet.midi.InlineMidiBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 
 public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
 
@@ -73,9 +75,10 @@ public class LyricsOptionsBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         // The button colors
-        colorOn = getResources().getColor(R.color.colorSecondary);
-        colorOff = getResources().getColor(R.color.colorAltPrimary);
-
+        if (getContext()!=null) {
+            colorOn = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(), R.color.dark_secondary));
+            colorOff = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(getContext(),R.color.dark_primary));
+        }
         // Prepare views
         prepareViews();
 

@@ -967,6 +967,7 @@
     <string name="reset_text">Si vous rencontrez des difficultés avec l\'application, essayez de réinitialiser vos paramètres à l\'aide du bouton ci-dessous. Cela effacera vos paramètres, mais ne supprimera pas vos chansons.</string>
     <string name="respect_copyright">Respectez les droits d\'auteur - utilisez toujours légalement</string>
     <string name="restart">Redémarrer</string>
+    <string name="restart_auto">L’application redémarrera lorsque vous quitterez cette page pour appliquer un thème clair ou sombre à vos menus</string>
     <string name="restart_required">Veuillez redémarrer l\'application pour appliquer les modifications</string>
     <string name="restore">Restaurer</string>
     <string name="restore_sets">Ensembles de restauration</string>

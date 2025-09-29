@@ -14,7 +14,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/showInlineSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 <TableRow style="@style/DividerLine"/>
             </LinearLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/showInlineSetPresenter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

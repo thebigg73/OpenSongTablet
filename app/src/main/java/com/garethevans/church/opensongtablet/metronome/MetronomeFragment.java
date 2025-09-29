@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMetronomeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
@@ -200,15 +201,15 @@ public class MetronomeFragment extends Fragment {
 
         // Get the metronome pan value
         switch (mainActivityInterface.getMetronome().getMetronomePan()) {
-            case "C":
-            default:
-                myView.metronomePan.setSliderPos(1);
-                break;
             case "L":
                 myView.metronomePan.setSliderPos(0);
                 break;
             case "R":
                 myView.metronomePan.setSliderPos(2);
+                break;
+            case "C":
+            default:
+                myView.metronomePan.setSliderPos(1);
                 break;
         }
 
@@ -309,7 +310,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 myView.tapTempo.setEnabled(false);
                 myView.tapTempo.setText(reset_string);
-                myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorPrimaryFixed));
                 // Waited too long, reset count
                 total_calc_bpm = 0;
                 total_counts = 0;
@@ -325,7 +326,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                         myView.tapTempo.setEnabled(true);
                         myView.tapTempo.setText(tap_tempo_string);
-                        myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
+                        myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorSecondary));
             }));
             // Start the metronome
             mainActivityInterface.getMetronome().startMetronome();
@@ -339,12 +340,12 @@ public class MetronomeFragment extends Fragment {
             case 0:
                 pan = "L";
                 break;
+            case 2:
+                pan = "R";
+                break;
             case 1:
             default:
                 pan = "C";
-                break;
-            case 2:
-                pan = "R";
                 break;
         }
         mainActivityInterface.getMetronome().setMetronomePan(pan);

@@ -44,4 +44,11 @@
     <!-- Bigger progress bar -->
     <dimen name="progress_bar_size">128dp</dimen>
 
+    <!-- For the bottom sheet -->
+    <dimen name="bottom_sheet_corner">16dp</dimen>
+    <dimen name="bottom_sheet_elevation">16dp</dimen>
+
+    <!-- To allow scrollviews to let their content clear any buttons, navigation at the bottom -->
+    <dimen name="extra_scroll_space">120dp</dimen>
+
 </resources>

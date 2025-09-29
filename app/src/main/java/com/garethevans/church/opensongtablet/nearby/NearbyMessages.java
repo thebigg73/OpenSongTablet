@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -9,6 +8,7 @@ public class NearbyMessages {
 
     // This class deals with the nearby messages.  Sending is done via the NearbySendPayloads class
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "NearbyMessages";
     private final MainActivityInterface mainActivityInterface;
 
@@ -35,7 +35,6 @@ public class NearbyMessages {
 
     // Nearby messages
     public String getNearbyMessage(int which) {
-        Log.d(TAG,"getNearbyMessage("+which+")");
         switch (which) {
             case 1:
                 return nearbyMessage1;
@@ -58,7 +57,6 @@ public class NearbyMessages {
     }
 
     public void setNearbyMessage(int which, String nearbyMessage) {
-        Log.d(TAG,"setNearbyMessage("+which+","+nearbyMessage+")");
         switch (which) {
             case 1:
                 nearbyMessage1 = nearbyMessage;
@@ -91,12 +89,10 @@ public class NearbyMessages {
     }
 
     public boolean getNearbyMessageMIDIAction() {
-        Log.d(TAG,"getNearbyMessageMidiAction()");
         return nearbyMessageMIDIAction;
     }
 
     public void setNearbyMessageMIDIAction(boolean nearbyMessageMIDIAction) {
-        Log.d(TAG,"setNearbyMessageMIDIAction("+nearbyMessageMIDIAction+")");
         this.nearbyMessageMIDIAction = nearbyMessageMIDIAction;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyMessageMIDIAction", nearbyMessageMIDIAction);
     }

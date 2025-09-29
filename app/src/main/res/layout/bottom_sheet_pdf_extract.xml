@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        style="@style/FullscreenBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/saveSearchable"
@@ -72,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/lyrics"
                     android:inputType="textMultiLine"
+                    app:useMonospace="true"
                     android:minLines="20" />
             </LinearLayout>
         </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>

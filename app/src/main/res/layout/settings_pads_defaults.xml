@@ -39,7 +39,7 @@
                 app:textL="@string/pan_left"
                 app:textR="@string/pan_right" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/crossFadePad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 android:valueTo="12"
                 android:stepSize="0.1"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/onscreenPadHide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

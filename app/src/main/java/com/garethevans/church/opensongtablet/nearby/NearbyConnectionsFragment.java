@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -74,8 +74,10 @@ public class NearbyConnectionsFragment extends Fragment {
 
         webAddress = website_nearby_string;
 
-        onColor = ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary));
-        offColor = ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary));
+        if (getContext()!=null) {
+            onColor = ColorStateList.valueOf(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, getResources().getColor(R.color.dark_secondary)));
+            offColor = ColorStateList.valueOf(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryVariant, getResources().getColor(R.color.dark_primary)));
+        }
 
         // Set the helpers
         setHelpers();
@@ -298,7 +300,6 @@ public class NearbyConnectionsFragment extends Fragment {
 
     private void updateOffHostClient(boolean isHost, boolean isClient) {
         // Turn all off
-        Log.d(TAG,"updateOffHostClient(isHost:"+isHost+",usingNearby:"+isClient);
         myView.off.setBackgroundTintList(offColor);
         myView.host.setBackgroundTintList(offColor);
         myView.client.setBackgroundTintList(offColor);

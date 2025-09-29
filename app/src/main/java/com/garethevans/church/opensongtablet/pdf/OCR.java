@@ -9,11 +9,11 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.SparseIntArray;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
@@ -29,12 +29,14 @@ public class OCR {
     private int pageCount;
     private String filename = null;
     private final MainActivityInterface mainActivityInterface;
-    private final String TAG = "OCR", blockSplitStart = "__BLOCKSTART_", blockSplitEnd = "_BLOCKEND__";
+    private final String TAG = "OCR", blockSplitStart = "__BLOCKSTART_", blockSplitEnd = "_BLOCKEND_",
+            blockSplitStartFinal = "_BLOCKSTARTFINAL__", blockSplitEndFinal = "_BLOCKENDFINAL__";
     private int pageHeightRunning = 0, maxTop = 0, totalLineHeight = 0, totalLineCount = 0;
 
     public OCR(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void getTextFromPDF(String folder, String filename, boolean useCropped) {
         // This uses most bits of the ProcessSong methods used to display the pdf as an image
         // However we will iterate through each page and send the bitmap off for ocr recognition
@@ -56,15 +58,9 @@ public class OCR {
         // Get the page count
         pageCount = mainActivityInterface.getProcessSong().getPDFPageCount(pdfRenderer);
 
-        Log.d(TAG,"uri"+uri);
-        Log.d(TAG,"parcelFileDescriptor="+parcelFileDescriptor);
-        Log.d(TAG,"pdfRenderer="+pdfRenderer);
-        Log.d(TAG,"pageCount="+pageCount);
-
         if (parcelFileDescriptor!=null && pdfRenderer!=null && pageCount>0) {
             // Good to continue!
 
-            Log.d(TAG,"not null!");
             PdfRenderer.Page currentPage;
             Bitmap bmp;
 
@@ -78,23 +74,16 @@ public class OCR {
                 // Get a scaled Bitmap size
                 ArrayList<Integer> bmpSize = mainActivityInterface.getProcessSong().getBitmapScaledSize(pdfSize,1200,1600,"Y");
 
-                Log.d(TAG,"bmpWidth="+bmpSize.get(0));
-                Log.d(TAG,"bmpHeight="+bmpSize.get(1));
-
                 // Get a scaled bitmap for these sizes
                 bmp = mainActivityInterface.getProcessSong().createBitmapFromPage(bmpSize,currentPage,false, useCropped);
 
                 // Send this page off for processing.  The onSuccessListener knows when it is done
                 extractTextFromBitmap(bmp, i);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    currentPage.close();
-                }
+                currentPage.close();
             }
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    pdfRenderer.close();
-                }
+                pdfRenderer.close();
                 parcelFileDescriptor.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -124,7 +113,6 @@ public class OCR {
         pdfPages = new ArrayList<>();
         pageCount = 1;
         Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromUri(uri,0,0);
-        Log.d(TAG,"bmp="+bmp);
         if (bmp!=null) {
             extractTextFromBitmap(bmp, 0);
         }
@@ -147,15 +135,17 @@ public class OCR {
                     Rect lineFrame = line.getBoundingBox();
                     int top = pageHeightToAdd;
                     int left = 0;
+                    int right = 0;
                     if (lineFrame!=null) {
                         top = lineFrame.top + pageHeightToAdd;
                         left = lineFrame.left;
+                        right = lineFrame.right;
                         totalLineCount++;
                         totalLineHeight += lineFrame.bottom - lineFrame.top;
                     }
 
                     String currLine = stringSparseArray.get(top,"");
-                    String newLine = (currLine+blockSplitStart+left+blockSplitEnd+lineText).trim();
+                    String newLine = (currLine+blockSplitStart+left+blockSplitStartFinal+blockSplitEnd+right+blockSplitEndFinal+lineText);
                     stringSparseArray.put(top,newLine);
                     maxTop = Math.max(maxTop,top);
                 }
@@ -188,6 +178,8 @@ public class OCR {
             }
 
             StringBuilder textFromLinesArray = new StringBuilder();
+            int minHPos = 1000;
+
             for (int x=0; x<maxTop; x++) {
                 StringBuilder thisLine = new StringBuilder();
                 if (tidiedLines.get(x,null)!=null) {
@@ -195,19 +187,66 @@ public class OCR {
                     // We need to do this to add them back in the correct order
                     String[] blocks = tidiedLines.get(x).split(blockSplitStart);
                     SparseArray<String> horizontalArray = new SparseArray<>();
+                    SparseIntArray horizontalEndPosArray = new SparseIntArray();
                     int maxHPos = 0;
                     for (String block : blocks) {
                         // Get the horizontal pos
                         if (block.contains(blockSplitEnd)) {
-                            int hpos = Integer.parseInt(block.substring(0, block.indexOf(blockSplitEnd)).replaceAll("\\D", ""));
-                            String blockText = block.substring(block.indexOf(blockSplitEnd) + blockSplitEnd.length());
-                            horizontalArray.put(hpos, blockText);
-                            maxHPos = Math.max(hpos, maxHPos);
+                            String startHPos_String = block.substring(0,block.indexOf(blockSplitStartFinal)).replace(blockSplitStart,"").replace(blockSplitStartFinal,"").replaceAll("\\D","");
+                            String endHPos_String   = block.substring(block.indexOf(blockSplitEnd),  block.indexOf(blockSplitEndFinal))  .replace(blockSplitEnd,  "").replace(blockSplitEndFinal,  "").replaceAll("\\D","");
+                            int hposStart = 0;
+                            int hposEnd = 0;
+                            if (!startHPos_String.isEmpty()) {
+                                hposStart = Integer.parseInt(startHPos_String);
+                                if (hposStart>-1 && hposStart<minHPos) {
+                                    minHPos = hposStart;
+                                }
+                            }
+                            if (!endHPos_String.isEmpty()) {
+                                hposEnd = Integer.parseInt(endHPos_String);
+                            }
+
+                            String blockText = block.substring(block.indexOf(blockSplitEndFinal) + blockSplitEndFinal.length());
+
+                            horizontalArray.put(hposStart, blockText);
+                            horizontalEndPosArray.put(hposStart, hposEnd);
+                            maxHPos = Math.max(hposStart, maxHPos);
+
                         }
                     }
+
+                    int lastHPosEnd = 0;
+
                     for (int z = 0; z < maxHPos+1; z++) {
                         if (horizontalArray.get(z, null) != null) {
-                            thisLine.append(horizontalArray.get(z)).append(" ");
+                            String textBlock = horizontalArray.get(z);
+                            int endPos = horizontalEndPosArray.get(z);
+
+                            if (z<minHPos) {
+                                minHPos = z;
+                            }
+
+                            int numChars = textBlock.length();
+
+                            float spacePerChar;
+                            if (endPos!=0) {
+                                spacePerChar = (endPos-z)/(float)numChars;
+                                // How far away from the last position are we starting?
+                                // This tries to guess extra spaces needed
+                                if (z>lastHPosEnd && lastHPosEnd>=minHPos) {
+                                    float extraSpace = z-lastHPosEnd;
+                                    int numberOfSpaces = Math.round(extraSpace/spacePerChar);
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    for (int y=0; y<numberOfSpaces; y++) {
+                                        stringBuilder.append(" ");
+                                    }
+                                    textBlock = stringBuilder + textBlock;
+                                }
+                            }
+
+                            lastHPosEnd = endPos;
+
+                            thisLine.append(textBlock).append(" ");
                         }
                     }
                     textFromLinesArray.append(thisLine).append("\n");
@@ -224,58 +263,14 @@ public class OCR {
                 runCompleteTask();
             }
         });
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                pdfPages.add(currpage,"");
-                Log.d(TAG,"Error on page "+currpage);
-                if (pdfPages.size()==pageCount) {
-                    // We're done
-                    runCompleteTask();
-                }
+        task.addOnFailureListener(e -> {
+            pdfPages.add(currpage,"");
+            Log.d(TAG,"Error on page "+currpage);
+            if (pdfPages.size()==pageCount) {
+                // We're done
+                runCompleteTask();
             }
         });
-
-
-        /*recognizer.process(image).addOnSuccessListener(visionText -> {
-
-            String resultText = visionText.getText();
-            for (Text.TextBlock block : visionText.getTextBlocks()) {
-                String blockText = block.getText();
-                Log.d(TAG,"blockText:"+blockText);
-                Point[] blockCornerPoints = block.getCornerPoints();
-                Rect blockFrame = block.getBoundingBox();
-                for (Text.Line line : block.getLines()) {
-                    String lineText = line.getText();
-                    Log.d(TAG,"lineText:"+lineText);
-                    Point[] lineCornerPoints = line.getCornerPoints();
-                    Rect lineFrame = line.getBoundingBox();
-                    for (Text.Element element : line.getElements()) {
-                        String elementText = element.getText();
-                        Log.d(TAG,"elementText:"+elementText);
-                        Point[] elementCornerPoints = element.getCornerPoints();
-                        Rect elementFrame = element.getBoundingBox();
-                        for (Text.Symbol symbol : element.getSymbols()) {
-                            String symbolText = symbol.getText();
-                            Point[] symbolCornerPoints = symbol.getCornerPoints();
-                            Rect symbolFrame = symbol.getBoundingBox();
-                        }
-                    }
-                }
-            }
-                            pdfPages.add(currpage,visionText.getText());
-                            if (pdfPages.size()==pageCount) {
-                                // We're done
-                                runCompleteTask();
-                            }
-                        }).addOnFailureListener(e -> {
-                            pdfPages.add(currpage,"");
-                            Log.d(TAG,"Error on page "+currpage);
-                            if (pdfPages.size()==pageCount) {
-                                // We're done
-                                runCompleteTask();
-                            }
-                        });*/
     }
 
     private void runCompleteTask() {

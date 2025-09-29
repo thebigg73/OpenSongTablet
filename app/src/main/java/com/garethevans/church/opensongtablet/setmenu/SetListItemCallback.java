@@ -10,10 +10,12 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +33,11 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
     private final int intrinsicWidth;
     private final int intrinsicHeight;
     private boolean dragging;
+    private int originalColorForDragging = -1;
 
     private final SetItemTouchInterface setItemTouchInterface;
     private final MainActivityInterface mainActivityInterface;
-    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "SetListItemCallback";
 
     SetListItemCallback(Context c, SetAdapter setAdapter) {
@@ -44,7 +47,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         try {
             backgroundColor = ContextCompat.getColor(c, R.color.vdarkred);
         } catch (Exception e) {
-            if (c!=null) {
+            if (c != null) {
                 backgroundColor = c.getResources().getColor(R.color.vdarkred);
             } else {
                 backgroundColor = Color.parseColor("#660000");
@@ -58,7 +61,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (deleteDrawable!=null) {
+        if (deleteDrawable != null) {
             intrinsicWidth = deleteDrawable.getIntrinsicWidth();
             intrinsicHeight = deleteDrawable.getIntrinsicHeight();
         } else {
@@ -85,7 +88,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         // Here we pass the flags for the directions of drag and swipe
         final int dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         final int swipeFlags = ItemTouchHelper.END;
-        return makeMovementFlags(dragFlag,swipeFlags);
+        return makeMovementFlags(dragFlag, swipeFlags);
     }
 
     @Override
@@ -142,7 +145,8 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
 
     @Override
-    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {}
+    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+    }
 
 
     @Override
@@ -153,8 +157,10 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
             if (viewHolder instanceof SetListItemViewHolder) {
                 SetListItemViewHolder myViewHolder =
                         (SetListItemViewHolder) viewHolder;
+                originalColorForDragging = ((SetListItemViewHolder) viewHolder).cardView.getCardBackgroundColor().getDefaultColor();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ((SetListItemViewHolder) viewHolder).cardView.post(() -> ((SetListItemViewHolder) viewHolder).cardView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorSecondary))));
+                    ((SetListItemViewHolder) viewHolder).cardView.setCardBackgroundColor(mainActivityInterface.getMyThemeColors().getSetDraggedColor(viewHolder.itemView));
+                    ((SetListItemViewHolder) viewHolder).cardView.setCardBackgroundColor(ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getSetDraggedColor(viewHolder.itemView)));
                 }
                 setItemTouchInterface.onRowSelected(myViewHolder);
             }
@@ -166,24 +172,27 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         // This method gets triggered when the user interaction stops with the RecyclerView row
+        Log.d(TAG, "clearView");
         dragging = false;
         // Called when dragged item is released
         super.clearView(recyclerView, viewHolder);
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewHolder.itemView.post(() -> viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorAltPrimary))));
+            viewHolder.itemView.post(() -> {
+                ((CardView) viewHolder.itemView).setCardBackgroundColor(originalColorForDragging);
+                ((CardView) viewHolder.itemView).setCardBackgroundColor(originalColorForDragging);
+            });
         }
         // Check we rehighlight the set item
-        if (recyclerView.getAdapter()!=null) {
+        if (recyclerView.getAdapter() != null) {
             SetAdapter setAdapter = (SetAdapter) recyclerView.getAdapter();
             int currentPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-            if (currentPosition>=0 && currentPosition<setAdapter.getItemCount()) {
-                viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition,500);
-                viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition,800);
+            if (currentPosition >= 0 && currentPosition < setAdapter.getItemCount()) {
+                viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition, 500);
+                viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition, 800);
             }
         }
         // Update the prev/next
         mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
     }
-
 }

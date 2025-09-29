@@ -967,6 +967,7 @@
     <string name="reset_text">Якщо у вас виникли проблеми з додатком, спробуйте скинути настройки за допомогою кнопки нижче. Це очистить ваші настройки, але не видалить ваші пісні.</string>
     <string name="respect_copyright">Поважайте авторські права - завжди використовуйте легально</string>
     <string name="restart">Omstart</string>
+    <string name="restart_auto">Програма перезапуститься, коли ви покинете цю сторінку, щоб застосувати світлу або темну тему до свого меню</string>
     <string name="restart_required">Перезапустіть програму, щоб застосувати зміни</string>
     <string name="restore">Відновлення</string>
     <string name="restore_sets">Відновлення наборів</string>

@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -200,8 +199,6 @@ public class CurrentSet {
         setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
         setItemInfo.songitem = (getCurrentSetSize()+1);
 
-        Log.d(TAG,"adding filename:"+filename);
-        Log.d(TAG,"size():"+getCurrentSetSize());
         // Add to the set
         setItemInfos.add(setItemInfo);
 

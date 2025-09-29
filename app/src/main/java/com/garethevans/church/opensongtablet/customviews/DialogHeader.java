@@ -12,17 +12,20 @@ import androidx.annotation.Nullable;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    private final String TAG = "DialogHeader";
     private final TextView textView;
     private final FloatingActionButton webHelp, closeButtonDialog, minimiseButtonDialog;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_dialog_header, this);
+        inflate(context,R.layout.view_dialog_header,this);
 
         closeButtonDialog = findViewById(R.id.closeButtonDialog);
         minimiseButtonDialog = findViewById(R.id.minimiseButtonDialog);
@@ -42,7 +45,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
         CharSequence text = a.getText(0);
         if (text!=null) {
-            textView.setText(text);
+            setText(text.toString());
         }
 
         a.recycle();
@@ -50,6 +53,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     public void setText(String titleText) {
         textView.setText(titleText);
+        textView.setTextColor(MaterialColors.getColor(textView.getContext(), com.google.android.material.R.attr.colorOnPrimary, getResources().getColor(R.color.dark_color)));
     }
 
     public void setClose(BottomSheetDialogFragment thisFragment) {
@@ -60,7 +64,10 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         // If we pass in a valid web address, we show the web help page
         if (webAddress!=null && !webAddress.isEmpty()) {
             webHelp.setVisibility(View.VISIBLE);
-            webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
+            webHelp.setOnClickListener(v-> {
+                mainActivityInterface.openDocument(webAddress);
+
+            });
         } else {
             webHelp.setVisibility(View.GONE);
         }
