@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -485,6 +486,7 @@ public class BBImportFragment extends Fragment {
             mainActivityInterface.getShowToast().doIt(error_string);
             mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(false);
         } else {
+            Log.d(TAG,"Success so far");
             bbsqLite.clearMySongs();
             bbsqLite.clearMyDrums();
             bbsqLite.addMySongs(song_codes,song_nums,song_names,folder_codes,folder_nums,folder_names);
