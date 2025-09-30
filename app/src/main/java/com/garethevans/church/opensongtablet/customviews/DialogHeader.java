@@ -52,8 +52,16 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
     }
 
     public void setText(String titleText) {
-        textView.setText(titleText);
-        textView.setTextColor(MaterialColors.getColor(textView.getContext(), com.google.android.material.R.attr.colorOnPrimary, getResources().getColor(R.color.dark_color)));
+        if (textView != null) {
+            textView.post(() -> {
+                try {
+                    textView.setText(titleText);
+                    textView.setTextColor(MaterialColors.getColor(textView.getContext(), com.google.android.material.R.attr.colorOnPrimary, getResources().getColor(R.color.dark_color)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public void setClose(BottomSheetDialogFragment thisFragment) {
@@ -63,25 +71,50 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
     public void setWebHelp(MainActivityInterface mainActivityInterface, String webAddress) {
         // If we pass in a valid web address, we show the web help page
         if (webAddress!=null && !webAddress.isEmpty()) {
-            webHelp.setVisibility(View.VISIBLE);
-            webHelp.setOnClickListener(v-> {
-                mainActivityInterface.openDocument(webAddress);
-
-            });
+            if (webHelp!=null) {
+                webHelp.post(() -> {
+                    try {
+                        webHelp.setVisibility(View.VISIBLE);
+                        webHelp.setOnClickListener(v -> mainActivityInterface.openDocument(webAddress));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
         } else {
-            webHelp.setVisibility(View.GONE);
+            if (webHelp!=null) {
+                webHelp.post(() -> {
+                    try {
+                        webHelp.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
         }
     }
 
     @Override
     public void onClick(View v) {
         if (bottomSheetDialogFragment != null) {
-            bottomSheetDialogFragment.dismiss();
+            try {
+                bottomSheetDialogFragment.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void showMinimiseButton(boolean show) {
-        minimiseButtonDialog.setVisibility(show ? View.VISIBLE:View.GONE);
+        if (minimiseButtonDialog!=null) {
+            minimiseButtonDialog.post(() -> {
+                try {
+                    minimiseButtonDialog.setVisibility(show ? View.VISIBLE : View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public FloatingActionButton getCloseButton() {

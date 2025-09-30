@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -24,8 +22,9 @@ public class MaterialRadioButtonItem extends LinearLayout {
 
     public MaterialRadioButtonItem(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
-        LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_material_radiobutton,this);
+        inflate(context, R.layout.view_material_radiobutton,this);
+        //ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        //LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_material_radiobutton,this);
         //inflate(context, R.layout.view_material_radiobutton,this);
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
@@ -59,25 +58,73 @@ public class MaterialRadioButtonItem extends LinearLayout {
     }
 
     public void setText(String text) {
-        if (text==null || text.isEmpty()) {
-            textView.setVisibility(View.GONE);
-        } else {
-            textView.setVisibility(View.VISIBLE);
+        if (textView!=null) {
+            if (text == null || text.isEmpty()) {
+                textView.post(() -> {
+                    try {
+                        textView.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                textView.post(() -> {
+                    try {
+                        textView.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            textView.post(() -> {
+                try {
+                    textView.setText(text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
-        textView.setText(text);
     }
 
     public void setHint(String hint) {
-        if (hint==null || hint.isEmpty()) {
-            hintView.setVisibility(View.GONE);
-        } else {
-            hintView.setVisibility(View.VISIBLE);
+        if (hintView!=null) {
+            if (hint == null || hint.isEmpty()) {
+                hintView.post(() -> {
+                    try {
+                        hintView.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                hintView.post(() -> {
+                    try {
+                        hintView.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            hintView.post(() -> {
+                try {
+                    hintView.setText(hint);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
-        hintView.setText(hint);
     }
 
     public void setChecked(boolean checked) {
-        radioButton.setChecked(checked);
+        if (radioButton!=null) {
+            radioButton.post(() -> {
+                try {
+                    radioButton.setChecked(checked);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public boolean isChecked() {

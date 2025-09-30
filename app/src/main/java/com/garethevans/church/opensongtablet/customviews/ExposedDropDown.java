@@ -110,7 +110,6 @@ public class ExposedDropDown extends FrameLayout {
         return context;
     }
 
-
     private class MyTouchListener implements OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
         @Override
@@ -200,11 +199,33 @@ public class ExposedDropDown extends FrameLayout {
         return autoCompleteTextView.getText();
     }
 
-    public void setText(String text) { autoCompleteTextView.setText(text); }
+    public void setText(String text) {
+        if (autoCompleteTextView != null) {
+            autoCompleteTextView.post(() -> {
+                try {
+                    autoCompleteTextView.setText(text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
 
-    public void setHint(String hint) { textInputLayout.setHint(hint); }
+    public void setHint(String hint) {
+        if (textInputLayout!=null) {
+            textInputLayout.post(() -> {
+                try {
+                    textInputLayout.setHint(hint);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
 
-    public void addTextChangedListener(TextWatcher textWatcher) { autoCompleteTextView.addTextChangedListener(textWatcher); }
+    public void addTextChangedListener(TextWatcher textWatcher) {
+        autoCompleteTextView.addTextChangedListener(textWatcher);
+    }
 
     public boolean getUserEditing() { return userEditing; }
 

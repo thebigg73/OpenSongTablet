@@ -91,15 +91,12 @@ public class MyMaterialTextView extends LinearLayout {
                 imageView.setVisibility(VISIBLE);
             }
 
-            int showCheckbox = ta.getInt(R.styleable.MyMaterialTextView_showCheckBox, 2);
-            if (showCheckbox == 1) {
+            boolean showCheckbox = ta.getBoolean(R.styleable.MyMaterialTextView_showCheckBox, false);
+            if (showCheckbox) {
                 checkBoxHolder.setVisibility(VISIBLE);
-            } else if (showCheckbox == 0) {
-                checkBoxHolder.setVisibility(INVISIBLE);
-            } else if (showCheckbox == 2 ){
+            } else {
                 checkBoxHolder.setVisibility(GONE);
             }
-
             ta.recycle();
         }
     }
@@ -107,21 +104,25 @@ public class MyMaterialTextView extends LinearLayout {
     // Public setters
     public void setText(CharSequence text) {
         if (textView!=null) {
-            try {
-                textView.setText(text);
-            } catch (Exception e) {
-                Log.d(TAG, "Couldn't set text:" + text);
-            }
+            textView.post(() -> {
+                try {
+                    textView.setText(String.valueOf(text));
+                } catch (Exception e) {
+                    Log.d(TAG, "Couldn't set text:" + text);
+                }
+            });
         }
     }
 
     public void setHint(CharSequence hint) {
         if (hintView!=null) {
-            try {
-                hintView.setText(hint);
-            } catch (Exception e) {
-                Log.d(TAG, "Couldn't set hint:" + hint);
-            }
+            hintView.post(() -> {
+                try {
+                    hintView.setText(String.valueOf(hint));
+                } catch (Exception e) {
+                    Log.d(TAG, "Couldn't set hint:" + hint);
+                }
+            });
         }
     }
 
