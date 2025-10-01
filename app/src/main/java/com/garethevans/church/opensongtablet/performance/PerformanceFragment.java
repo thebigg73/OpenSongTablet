@@ -1837,9 +1837,7 @@ public class PerformanceFragment extends Fragment {
 
         }
         // Allow scroll to section in 500ms
-        mainActivityInterface.getMainHandler().postDelayed(() -> {
-            alreadyChoosingSections = false;
-        }, 500);
+        mainActivityInterface.getMainHandler().postDelayed(() -> alreadyChoosingSections = false, 500);
     }
 
     // If a nearby host initiated a section change

@@ -106,7 +106,7 @@ public class MyMaterialTextView extends LinearLayout {
         if (textView!=null) {
             textView.post(() -> {
                 try {
-                    textView.setText(String.valueOf(text));
+                    textView.setText(String.valueOf(text==null ? "":text));
                 } catch (Exception e) {
                     Log.d(TAG, "Couldn't set text:" + text);
                 }
@@ -118,7 +118,7 @@ public class MyMaterialTextView extends LinearLayout {
         if (hintView!=null) {
             hintView.post(() -> {
                 try {
-                    hintView.setText(String.valueOf(hint));
+                    hintView.setText(String.valueOf(hint==null ? "":hint));
                 } catch (Exception e) {
                     Log.d(TAG, "Couldn't set hint:" + hint);
                 }
