@@ -166,12 +166,15 @@ public class BBSQLite extends SQLiteOpenHelper {
         return getCount(TABLE_NAME_DEFAULT_DRUMS);
     }
     public int getCount(String what) {
-        SQLiteDatabase db = getDB();
-        String query = "SELECT " + COLUMN_ID + " FROM " + what +";";
-        Cursor cursor = db.rawQuery(query, null);
-        int count = cursor.getCount();
-        closeCursor(cursor);
-        db.close();
+        int count = 0;
+        try (SQLiteDatabase db = getDB()) {
+            String query = "SELECT " + COLUMN_ID + " FROM " + what + ";";
+            Cursor cursor = db.rawQuery(query, null);
+            count = cursor.getCount();
+            closeCursor(cursor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return count;
     }
 
@@ -224,6 +227,8 @@ public class BBSQLite extends SQLiteOpenHelper {
         try (SQLiteDatabase db = getDB()) {
             emptyTable(db);
             onCreate(db);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1055,15 +1060,17 @@ public class BBSQLite extends SQLiteOpenHelper {
     public String lookupValue(String getColumn,
                               String querySearch, String[] args) {
 
-        SQLiteDatabase db = getDB();
-        Cursor cursor = db.rawQuery(querySearch, args);
         String value = "";
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            value = cursor.getString(cursor.getColumnIndexOrThrow(getColumn));
+        try (SQLiteDatabase db = getDB()) {
+            Cursor cursor = db.rawQuery(querySearch, args);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                value = cursor.getString(cursor.getColumnIndexOrThrow(getColumn));
+            }
+            closeCursor(cursor);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        closeCursor(cursor);
-        db.close();
         return value;
     }
     public String getFolderNameForNumber(int number) {
@@ -1078,44 +1085,50 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     public int getNumberFromKit(String kitname) {
         int foundKit = -1;
-        String queryKit;
-        if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-            queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_MY_DRUMS + " ";
-        } else {
-            queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_DEFAULT_DRUMS + " ";
-        }
-        String[] args = new String[]{kitname};
-        queryKit += "WHERE " + COLUMN_KIT_NAME + "=?";
-        SQLiteDatabase db = getDB();
-        Cursor cursor = db.rawQuery(queryKit, args);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            foundKit = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT_NUM));
-        }
-        if (cursor!=null) {
-            cursor.close();
+        try (SQLiteDatabase db = getDB()) {
+            String queryKit;
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_MY_DRUMS + " ";
+            } else {
+                queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_DEFAULT_DRUMS + " ";
+            }
+            String[] args = new String[]{kitname};
+            queryKit += "WHERE " + COLUMN_KIT_NAME + "=?";
+            Cursor cursor = db.rawQuery(queryKit, args);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                foundKit = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT_NUM));
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return foundKit;
     }
 
     public String getDrumKitForNumber(int number) {
         String kitName = "";
-        String queryKit;
-        if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-            queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_MY_DRUMS + " ";
-        } else {
-            queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_DEFAULT_DRUMS + " ";
-        }
-        String[] args = new String[]{String.valueOf(number)};
-        queryKit += "WHERE " + COLUMN_KIT_NUM + "=?";
-        SQLiteDatabase db = getDB();
-        Cursor cursor = db.rawQuery(queryKit, args);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            kitName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KIT_NAME));
-        }
-        if (cursor!=null) {
-            cursor.close();
+        try (SQLiteDatabase db = getDB()) {
+            String queryKit;
+            if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_MY_DRUMS + " ";
+            } else {
+                queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_DEFAULT_DRUMS + " ";
+            }
+            String[] args = new String[]{String.valueOf(number)};
+            queryKit += "WHERE " + COLUMN_KIT_NUM + "=?";
+            Cursor cursor = db.rawQuery(queryKit, args);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                kitName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KIT_NAME));
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return kitName;
     }
