@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -55,6 +56,7 @@ public class ThemeColors {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         pageButtonAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("pageButtonAlpha",0.75f);
+        getDefaultTheme();
     }
     // Set the values with updates
     public void setThemeName(String themeName) {
@@ -261,7 +263,13 @@ public class ThemeColors {
                 // Mode is unknown (very rare)
                 fallback = "dark";
         }
-        themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme",fallback);
+        themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","");
+        // If there wasn't a value set, set it now
+        if (themeName.isEmpty()) {
+            Log.d(TAG,"no theme was currently set, so setting it to "+fallback);
+            themeName = fallback;
+            mainActivityInterface.getPreferences().setMyPreferenceString("appTheme",themeName);
+        }
     }
     public void getDefaultColors() {
         getDefaultTheme();
