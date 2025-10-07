@@ -57,7 +57,10 @@ public class SearchMenuFragment extends Fragment {
             searchSettingsAdapter = new SearchSettingsAdapter(getContext(),this);
             myView.displayedItems.setAdapter(searchSettingsAdapter);
             myView.searchBox.setEnabled(true);
-            myView.searchBox.requestFocus();
+            myView.searchBox.post(() -> {
+                myView.searchBox.requestFocus();
+                mainActivityInterface.getWindowFlags().showKeyboard();
+            });
         }
     }
 

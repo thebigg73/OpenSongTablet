@@ -135,7 +135,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String display = c.getString(R.string.display);
         String doc = "doc"; // *
         String docx = "docx"; // *
-        String donate = c.getString(R.string.donate);
+        //String donate = c.getString(R.string.donate);
         String doremi = "doremi"; // *
         String download = c.getString(R.string.download);
         String draw = c.getString(R.string.draw);
@@ -886,7 +886,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 // About
                 new SettingItem(c.getString(R.string.about),c.getString(R.string.about_description),
-                        Arrays.asList(about,version,web,review,help,user,guide,manual,forum,github,website,rate_string,rating,language,logs,crash,usage,paypal,donate,contribute),
+                        Arrays.asList(about,version,web,review,help,user,guide,manual,forum,github,website,rate_string,rating,language,logs,crash,usage,paypal,contribute),
                         c.getString(R.string.deeplink_about),
                         settings+"/"+about),
 
@@ -927,10 +927,13 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                         settings+"/"+about+"/"+github),
 
                 // Paypal
+                /*
+                Removed after Google deemed this non compliant
                 new SettingItem (paypal,c.getString(R.string.paypal_description),
                         Arrays.asList(paypal,donate,contribute,website),
                         "action_paypal",
                         settings+"/"+about+"/"+paypal),
+                */
 
                 // App logs
                 new SettingItem (c.getString(R.string.log),c.getString(R.string.log_info),

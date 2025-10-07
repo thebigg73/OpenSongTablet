@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -36,6 +38,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -2246,6 +2249,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         invalidateOptionsMenu();
     }
 
+    private int getColorFromAttr(Context ctx, int attr) {
+        TypedValue tv = new TypedValue();
+        ctx.getTheme().resolveAttribute(attr, tv, true);
+        if (tv.resourceId != 0) {
+            return ContextCompat.getColor(ctx, tv.resourceId);
+        }
+        return tv.data;
+    }
+
+    private void tintMenuIcons(Menu menu, @ColorInt int color) {
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            Drawable icon = item.getIcon();
+            if (icon != null) {
+                icon = DrawableCompat.wrap(icon.mutate());
+                DrawableCompat.setTint(icon, color);
+                item.setIcon(icon);
+            }
+        }
+        Drawable nav = myView.myToolbar.getNavigationIcon();
+        if (nav != null) {
+            nav = DrawableCompat.wrap(nav.mutate());
+            DrawableCompat.setTint(nav, color);
+            myView.myToolbar.setNavigationIcon(nav);
+        }
+    }
+
     @SuppressLint("PrivateResource")
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
@@ -2253,6 +2283,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Inflate the menu; this adds items to the action bar if it is present.
             globalMenuItem = menu;
             getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
+            int tint = getColorFromAttr(this, com.google.android.material.R.attr.colorOnPrimary);
+            tintMenuIcons(menu, tint);
+
             menuSearch = menu.findItem(R.id.search_menu_item);
             menuScreenHelp = menu.findItem(R.id.help_menu_item);
             menuScreenMirror = menu.findItem(R.id.mirror_menu_item);

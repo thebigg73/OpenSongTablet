@@ -21,7 +21,7 @@ public class AboutAppFragment extends Fragment {
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String about="", website="", user_guide="", website_address="", website_latest="",
-            website_forum="", website_rate="", packageName="", website_paypal="", continue_string="",
+            website_forum="", website_rate="", packageName="", continue_string="",
             website_github="", deeplink_logs="", forum_string="", forum_desktop_string="";
 
     @Override
@@ -61,7 +61,6 @@ public class AboutAppFragment extends Fragment {
             website_latest = getString(R.string.website_latest);
             website_forum = getString(R.string.website_forum);
             website_rate = getString(R.string.website_rate);
-            website_paypal = getString(R.string.website_paypal);
             website_github =  getString(R.string.website_github);
             deeplink_logs = getString(R.string.deeplink_logs);
             continue_string = getString(R.string.continue_text);
@@ -91,8 +90,7 @@ public class AboutAppFragment extends Fragment {
             informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"Forum");
         });
         myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_rate+packageName));
-        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_paypal));
-        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_github));
+        myView.githubButton.setOnClickListener(v -> mainActivityInterface.openDocument(website_github));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
         myView.logsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_logs,0));
     }

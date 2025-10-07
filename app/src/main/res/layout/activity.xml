@@ -39,14 +39,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
-                android:theme="?attr/actionBarStyle"
                 android:visibility="gone">
+<!--android:theme="?attr/actionBarStyle"-->
 
                 <com.garethevans.church.opensongtablet.customviews.MyToolbar
                     android:id="@+id/myToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom" />
+                    android:layout_gravity="bottom"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"/>
             </com.google.android.material.appbar.AppBarLayout>
 
             <!--The main fragments get loaded up here-->
