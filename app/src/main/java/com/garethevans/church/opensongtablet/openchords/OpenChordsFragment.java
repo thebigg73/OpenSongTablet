@@ -41,6 +41,14 @@ public class OpenChordsFragment extends Fragment {
     private Handler checkQueryHandler = new Handler();
     private Runnable checkQueryRunnable;
     private String keepLocalFolderName;
+    private boolean alreadyQuerying = false;
+    private Handler alreadyQueryingHandler;
+    private Runnable alreadyQueryingReset = new Runnable() {
+        @Override
+        public void run() {
+            alreadyQuerying = false;
+        }
+    };
 
     @Override
     public void onResume() {
@@ -53,6 +61,7 @@ public class OpenChordsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        alreadyQueryingHandler = mainActivityInterface.getMainHandler();
         mainActivityInterface.getOpenChordsAPI().setOpenChordsFragment(this);
     }
 
@@ -103,6 +112,8 @@ public class OpenChordsFragment extends Fragment {
                         checkQueryHandler.postDelayed(checkQueryRunnable, 100);
                     }
                 } else {
+                    alreadyQueryingHandler.removeCallbacks(alreadyQueryingReset);
+                    alreadyQuerying = false;
                     queryOpenChordsServer();
                 }
             };
@@ -309,9 +320,9 @@ public class OpenChordsFragment extends Fragment {
         });
     }
 
-    private boolean alreadyQuerying = false;
     public void queryOpenChordsServer() {
         if (!alreadyQuerying) {
+            alreadyQueryingHandler.removeCallbacks(alreadyQueryingReset);
             alreadyQuerying = true;
             checkQueryHandler.removeCallbacks(checkQueryRunnable);
             // Use the folder chosen to query the server and get the results
@@ -354,8 +365,8 @@ public class OpenChordsFragment extends Fragment {
                 }
             });
         });
-        mainActivityInterface.getMainHandler().postDelayed(() -> alreadyQuerying=false,1000);
-    }
+        alreadyQueryingHandler.postDelayed(alreadyQueryingReset,1000);
+}
 
     public void updateProgress(String progress) {
         if (myView != null && progress!=null) {
