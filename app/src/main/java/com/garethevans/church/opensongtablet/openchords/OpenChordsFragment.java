@@ -72,6 +72,7 @@ public class OpenChordsFragment extends Fragment {
         setupViews();
         setupListeners();
 
+        Log.d(TAG,"uuid:"+mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid());
         // Now query the server based on the folder uuid we have in the OpenChordsAPI
         queryOpenChordsServer();
 
@@ -116,10 +117,11 @@ public class OpenChordsFragment extends Fragment {
                             mainActivityInterface.getOpenChordsAPI().getValidFolders());
             myView.folderToSync.setAdapter(exposedDropDownArrayAdapter);
             folderChangedProgrammatically = true;
-            if (mainActivityInterface.getOpenChordsAPI().getReceivedFolderLink()) {
+            if (mainActivityInterface.getWhattodo().equals("openchordsintent")) {
                 // We got here via an intent
                 // Look for a local folder that matches the intent uuid
                 // If not, set it to null
+                mainActivityInterface.setWhattodo("");
                 folderChangedProgrammatically = true;
                 myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
                         getOpenSongFolderNameFromUUID(
@@ -163,9 +165,12 @@ public class OpenChordsFragment extends Fragment {
                                 "openChordsFolderName",folderName);
                         // Update the API with our folderName and the uuid of the matching folder
                         mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderName(folderName);
-                        mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderUuid(
-                                mainActivityInterface.getOpenChordsAPI().
-                                        getOpenSongFolderUuidFromName(folderName));
+                        if (mainActivityInterface.getOpenChordsAPI().
+                                getOpenSongFolderUuidFromName(folderName)!=null) {
+                            mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderUuid(
+                                    mainActivityInterface.getOpenChordsAPI().
+                                            getOpenSongFolderUuidFromName(folderName));
+                        }
                         // Assume we want to get the foldername from the server
                         keepLocalFolderName = null;
                         mainActivityInterface.getOpenChordsAPI().setLocalFolderName(null);
@@ -304,26 +309,30 @@ public class OpenChordsFragment extends Fragment {
         });
     }
 
+    private boolean alreadyQuerying = false;
     public void queryOpenChordsServer() {
-        checkQueryHandler.removeCallbacks(checkQueryRunnable);
-        // Use the folder chosen to query the server and get the results
-        mainActivityInterface.getMainHandler().post(() -> {
-            myView.folderMessage.setText("");
-            if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-                changeButtonsEnable(false);
-                checkQueryHandler.postDelayed(checkQueryRunnable, 100);
-
-            } else {
-                if (myView != null && myView.folderToSync.getText() != null) {
+        if (!alreadyQuerying) {
+            alreadyQuerying = true;
+            checkQueryHandler.removeCallbacks(checkQueryRunnable);
+            // Use the folder chosen to query the server and get the results
+            mainActivityInterface.getMainHandler().post(() -> {
+                myView.folderMessage.setText("");
+                if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                     changeButtonsEnable(false);
-                    updateProgress(sync_querying_remote_string + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        myView.folderMessage.setText("");
-                        mainActivityInterface.getOpenChordsAPI().getFolderContentsFromUUID();
-                    }, 100);
+                    checkQueryHandler.postDelayed(checkQueryRunnable, 100);
+
+                } else {
+                    if (myView != null && myView.folderToSync.getText() != null) {
+                        changeButtonsEnable(false);
+                        updateProgress(sync_querying_remote_string + "\n");
+                        mainActivityInterface.getMainHandler().postDelayed(() -> {
+                            myView.folderMessage.setText("");
+                            mainActivityInterface.getOpenChordsAPI().getFolderContentsFromUUID();
+                        }, 100);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     // We are sent here after hearing back from the server
@@ -345,6 +354,7 @@ public class OpenChordsFragment extends Fragment {
                 }
             });
         });
+        mainActivityInterface.getMainHandler().postDelayed(() -> alreadyQuerying=false,1000);
     }
 
     public void updateProgress(String progress) {

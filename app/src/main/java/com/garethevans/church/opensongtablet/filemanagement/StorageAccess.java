@@ -1810,8 +1810,10 @@ public class StorageAccess {
     }
     private boolean deleteFile_SAF(Uri uri) {
         try {
-            DocumentFile df = DocumentFile.fromSingleUri(c, uri);
+            DocumentFile df = DocumentFile.fromTreeUri(c, uri);
+            //DocumentFile df = DocumentFile.fromSingleUri(c, uri);
             if (df != null) {
+                Log.d(TAG,"df.getUri() to delete:"+df.getUri());
                 if (df.exists()) {
                     return df.delete();
                 } else {

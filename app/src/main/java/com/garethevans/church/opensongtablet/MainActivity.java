@@ -762,9 +762,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getThreadPoolExecutor().execute(() -> {
             if (fileOpenIntent != null && fileOpenIntent.getDataString()!=null && fileOpenIntent.getDataString().startsWith(getOpenChordsAPI().getAppFolderTrigger())) {
                 // This should trigger the GET request to sync OpenChords
+                Log.d(TAG,"openchords link received\n"+ fileOpenIntent.getData());
                 try {
                     getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
                     String uuid = fileOpenIntent.getData().toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
+                    Log.d(TAG,"uuid:"+uuid);
                     getOpenChordsAPI().setOpenChordsFolderUuid(uuid);
                     getOpenChordsAPI().setReceivedFolderLink(true);
                     setWhattodo("openchordsintent");

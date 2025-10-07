@@ -150,10 +150,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public void initialiseOpenChordsFolderAndUuid() {
         // If we got here via an intent, we should look for a local folder matching the intent uuid
         if (receivedFolderLink) {
+            Log.d(TAG,"initialiseOpenChordsFolderAndUuid(): receivedFolderLink=true");
             // Look to see if we have a folder that matches the uuid already
             // The uuid was set in the intent already, so don't update that
             // Set our foldername to null or the matching folder
+            Log.d(TAG,"openChordsFolderUuid:"+openChordsFolderUuid);
             openChordsFolderName = getOpenSongFolderNameFromUUID(openChordsFolderUuid);
+            Log.d(TAG,"openChordsFolderName:"+openChordsFolderName +"   openChordsFolderUuid:"+openChordsFolderUuid);
             // If this isn't null, then we have a matching folder, so we can set that name
             // If it is null, we will get the new folder name from the server later
             if (openChordsFolderName != null) {
@@ -180,6 +183,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     // This is set true if we received an intent to get an OpenChords folder
     // It is set false after we query the server (regardless of outcome)
     public boolean getReceivedFolderLink() {
+        Log.d(TAG,"receivedFolderLink:"+receivedFolderLink);
         return receivedFolderLink;
     }
 
@@ -233,6 +237,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         if (retrofitInterface==null) {
             rebuildRetrofitInterface();
         }
+        Log.d(TAG,"getOpenChordsFolder("+openChordsFolderUuid+")");
         Call<OpenChordsFolderObject> call = retrofitInterface.getOpenChordsFolder(openChordsFolderUuid);
         call.enqueue(this);
     }
@@ -278,6 +283,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     public void setOpenChordsFolderUuid(String openChordsFolderUuid) {
+        Log.d(TAG,"Setting UUID:"+openChordsFolderUuid);
         this.openChordsFolderUuid = openChordsFolderUuid;
     }
 
@@ -710,6 +716,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (response.code() == 401) {
                 // We need to get the auth token again
+                Log.d(TAG,"response.code()=401");
                 getJwtToken();
 
             } else {
@@ -843,6 +850,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull Throwable throwable) {
+        Log.d(TAG,"throwable:"+throwable);
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
         if (openChordsFragment != null) {
             openChordsFragment.openChordsFolderNotFound();
