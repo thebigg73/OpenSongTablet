@@ -28,6 +28,7 @@
     <string name="actions">Aksies</string>
     <string name="actions_current_song">Aksies vir huidige liedjie</string>
     <string name="add">Voeg by</string>
+    <string name="add_all_songs_to_set">Dit sal alle liedjies wat in die liedjiekieslys gewys word, by jou stel voeg</string>
     <string name="add_custom_slide">Voeg gepaste skyfie by om in te stel</string>
     <string name="add_reusable">Slaan as \'n herbruikbare slide</string>
     <string name="add_song_to_set">Elkeen kan toegewys word aan liedjies soos metronomieë, transponeer, boekies, ens.</string>

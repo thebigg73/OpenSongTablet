@@ -425,4 +425,19 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     public void updateSongMenuSortTitles(boolean songMenuSortTitles) {
         this.songMenuSortTitles = songMenuSortTitles;
     }
+
+    public void addAllSongsToSet() {
+        // This is called when the user clicks on the 'Set' text in the song menu
+        if (songMenuSongs!=null && getItemCount()>0) {
+            for (int i=0; i<getItemCount(); i++) {
+                Song song = songMenuSongs.getFoundSongs().get(i);
+
+                // Only proceed if this song isn't already in the set
+                if (!mainActivityInterface.getSetActions().isSongInSet(song)) {
+                    mainActivityInterface.getCurrentSet().addItemToSet(song);
+                    notifyItemChanged(i, "checkOn");
+                }
+            }
+        }
+    }
 }

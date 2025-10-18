@@ -28,6 +28,7 @@
     <string name="actions">Дії</string>
     <string name="actions_current_song">Дії для поточної пісні</string>
     <string name="add">додати</string>
+    <string name="add_all_songs_to_set">Це додасть усі пісні, показані в меню пісень, до вашого набору</string>
     <string name="add_custom_slide">Додати слайд користувача (з вмістом)</string>
     <string name="add_reusable">Зберегти слайд для повторного використання</string>
     <string name="add_song_to_set">Додати пісню в список</string>

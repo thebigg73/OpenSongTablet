@@ -220,6 +220,20 @@ public class SetActions {
         return inSet;
     }
 
+    public boolean isSongInSet(Song song) {
+        boolean inSet = false;
+        // To avoid concurrent modification, don't use enhanced for loop
+        //for (SetItemInfo setItemInfo : mainActivityInterface.getCurrentSet().getSetItemInfos()) {
+        for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItemInfos().size(); x++) {
+            SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
+            if (song.getFolder().equals(setItemInfo.songfolder) && song.getFilename().equals(setItemInfo.songfilename)) {
+                inSet = true;
+                break;
+            }
+        }
+        return inSet;
+    }
+
     public void clearCurrentSet() {
         mainActivityInterface.getCurrentSet().initialiseTheSet();
         mainActivityInterface.getCurrentSet().setSetCurrent("");

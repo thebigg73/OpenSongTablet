@@ -28,6 +28,7 @@
     <string name="actions">Azioni</string>
     <string name="actions_current_song">Azioni per il brano corrente</string>
     <string name="add">Aggiungere</string>
+    <string name="add_all_songs_to_set">Questo aggiungerà tutti i brani mostrati nel menu del brano al tuo set</string>
     <string name="add_custom_slide">Aggiungi diapositiva/note</string>
     <string name="add_reusable">Salvare come diapositiva riutilizzabile</string>
     <string name="add_song_to_set">Aggiungi il brano corrente alla scaletta</string>

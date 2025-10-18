@@ -28,6 +28,7 @@
     <string name="actions">Un appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.</string>
     <string name="actions_current_song">Actions pour la chanson en cours</string>
     <string name="add">Ajouter</string>
+    <string name="add_all_songs_to_set">Cela ajoutera toutes les chansons affichées dans le menu des chansons à votre ensemble</string>
     <string name="add_custom_slide">Ajouter une diapositive personnalisée à définir</string>
     <string name="add_reusable">Enregistrer comme une diapositive réutilisables</string>
     <string name="add_song_to_set">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>

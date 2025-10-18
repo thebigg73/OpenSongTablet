@@ -28,6 +28,7 @@
     <string name="actions">行动</string>
     <string name="actions_current_song">当前歌曲的操作</string>
     <string name="add">添加</string>
+    <string name="add_all_songs_to_set">这会将歌曲菜单中显示的所有歌曲添加到您的集合中</string>
     <string name="add_custom_slide">添加自定义幻灯片进行设置</string>
     <string name="add_reusable">保存为可重复使用的幻灯片</string>
     <string name="add_song_to_set">可以为每个歌曲分配节拍，移调，打击垫等歌曲操作。</string>

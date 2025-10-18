@@ -28,6 +28,7 @@
     <string name="actions">Akce</string>
     <string name="actions_current_song">Akce pro aktuální skladbu</string>
     <string name="add">Přidat</string>
+    <string name="add_all_songs_to_set">Tím přidáte do svého setu všechny skladby zobrazené v nabídce skladeb</string>
     <string name="add_custom_slide">Přidejte vlastní snímek, který chcete nastavit</string>
     <string name="add_reusable">Uložit jako opakovaně použitelný snímek</string>
     <string name="add_song_to_set">Každému z nich lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.</string>

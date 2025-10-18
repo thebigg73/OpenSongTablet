@@ -28,6 +28,7 @@
     <string name="actions">Handlingar</string>
     <string name="actions_current_song">Åtgärder för aktuell låt</string>
     <string name="add">Tillägga</string>
+    <string name="add_all_songs_to_set">Detta kommer att lägga till alla låtar som visas i låtmenyn till din uppsättning</string>
     <string name="add_custom_slide">Lägg till anpassad bild för att ställa in</string>
     <string name="add_reusable">Spara som en återanvändbar bild</string>
     <string name="add_song_to_set">Lägg till aktuell sång för att ställa in</string>

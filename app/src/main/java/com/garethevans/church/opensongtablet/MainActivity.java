@@ -3889,6 +3889,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     allowToast = false;
                     break;
+
+                case "addallsongstoset":
+                    if (callingFragment!=null && songMenuFragment!=null) {
+                        try {
+                            songMenuFragment.addAllSongsToSet();
+                            result = true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
             }
 
             if (allowToast && result && getResources() != null) {

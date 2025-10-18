@@ -28,6 +28,7 @@
     <string name="actions">ක්රියාවන්</string>
     <string name="actions_current_song">වත්මන් ගීතය සඳහා ක්‍රියා</string>
     <string name="add">එකතු කරන්න</string>
+    <string name="add_all_songs_to_set">මෙය ගීත මෙනුවේ පෙන්වා ඇති සියලුම ගීත ඔබේ කට්ටලයට එකතු කරනු ඇත.</string>
     <string name="add_custom_slide">සැකසීමට අභිරුචි විනිවිදක එක් කරන්න</string>
     <string name="add_reusable">නැවත භාවිත කළ හැකි ස්ලයිඩයක් ලෙස සුරකින්න</string>
     <string name="add_song_to_set">සැකසීමට වත්මන් ගීතය එක් කරන්න</string>

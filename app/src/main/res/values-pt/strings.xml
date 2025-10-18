@@ -28,6 +28,7 @@
     <string name="actions">Ações</string>
     <string name="actions_current_song">Ações para a música atual</string>
     <string name="add">Adicionar</string>
+    <string name="add_all_songs_to_set">Isso adicionará todas as músicas mostradas no menu de músicas ao seu conjunto</string>
     <string name="add_custom_slide">Adicionar diapositivo / nota</string>
     <string name="add_reusable">Salvar como um slide reutilizável</string>
     <string name="add_song_to_set">Adicionar música atual para definir</string>

@@ -28,6 +28,7 @@
     <string name="actions">アクション</string>
     <string name="actions_current_song">現在の曲のアクション</string>
     <string name="add">追加</string>
+    <string name="add_all_songs_to_set">これにより、曲メニューに表示されているすべての曲がセットに追加されます</string>
     <string name="add_custom_slide">スライド/メモを追加</string>
     <string name="add_reusable">再利用可能なスライドとして保存</string>
     <string name="add_song_to_set">設定するには現在の曲を追加</string>

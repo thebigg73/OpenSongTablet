@@ -28,6 +28,7 @@
     <string name="actions">Akcije</string>
     <string name="actions_current_song">Radnje za trenutnu pesmu</string>
     <string name="add">Dodati</string>
+    <string name="add_all_songs_to_set">Ovo će dodati sve pesme prikazane u meniju pesama na vaš set</string>
     <string name="add_custom_slide">Dodati prilagođeni slajd na set listu</string>
     <string name="add_reusable">Snimi kao slajd za ponovno korišćenje</string>
     <string name="add_song_to_set">Dodati trenutnu pesmu na set listu</string>

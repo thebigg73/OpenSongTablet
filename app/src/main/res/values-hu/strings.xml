@@ -28,6 +28,7 @@
     <string name="actions">Hozzászólások</string>
     <string name="actions_current_song">Műveletek az aktuális dalhoz</string>
     <string name="add">Hozzáadás</string>
+    <string name="add_all_songs_to_set">Ezzel hozzáadja a dal menüben látható összes dalt a készlethez</string>
     <string name="add_custom_slide">Add slide / megjegyzés</string>
     <string name="add_reusable">Mentés másként újrafelhasználható dia</string>
     <string name="add_song_to_set">Add jelenlegi dal beállítani</string>

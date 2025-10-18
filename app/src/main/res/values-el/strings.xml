@@ -28,6 +28,7 @@
     <string name="actions">Ενέργειες</string>
     <string name="actions_current_song">Ενέργειες για το τρέχον τραγούδι</string>
     <string name="add">Προσθέτω</string>
+    <string name="add_all_songs_to_set">Αυτό θα προσθέσει όλα τα τραγούδια που εμφανίζονται στο μενού τραγουδιού στο σετ σας</string>
     <string name="add_custom_slide">Add custom slide to set</string>
     <string name="add_reusable">Save as a reusable slide</string>
     <string name="add_song_to_set">Πρόσθεσε το τρέχων τραγουδι σε λιστα</string>

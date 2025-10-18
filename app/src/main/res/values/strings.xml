@@ -29,6 +29,7 @@
     <string name="actions">Actions</string>
     <string name="actions_current_song">Actions for current song</string>
     <string name="add">Add</string>
+    <string name="add_all_songs_to_set">This will add all songs shown in the song menu to your set</string>
     <string name="add_custom_slide">Add custom slide to set</string>
     <string name="add_reusable">Save as a reusable slide</string>
     <string name="add_song_to_set">Add current song to set</string>
@@ -1796,6 +1797,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="pedal_enable_accessibility">If your Bluetooth pedal is not working in OpenSongApp, you can try letting Android know that the app uses an accessibility service.</string>
-    <string name="accessibility_service_description">Enables Bluetooth pedal control for page turning, etc.</string>
 </resources>

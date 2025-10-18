@@ -28,6 +28,7 @@
     <string name="actions">Akcje</string>
     <string name="actions_current_song">Działania dla bieżącej piosenki</string>
     <string name="add">Dodać</string>
+    <string name="add_all_songs_to_set">Spowoduje to dodanie wszystkich utworów wyświetlanych w menu utworów do twojego zestawu</string>
     <string name="add_custom_slide">Dodaj slajd do zestawu</string>
     <string name="add_reusable">Zapisz jako slajd wielokrotnego użytku</string>
     <string name="add_song_to_set">Dodaj bieżącą piosenkę do zestawu</string>

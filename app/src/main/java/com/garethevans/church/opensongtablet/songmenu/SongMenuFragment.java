@@ -29,6 +29,7 @@ import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             new_folder_info_string="", filter_by_artist_string="", filter_by_edit_string="",
             filter_by_key_string="", filter_by_tag_string="", tag_song_info_string="",
             filter_by_this_value_string="", filter_by_title_string="", deeplink_tags_string="",
-            deeplink_manage_storage_string="";
+            deeplink_manage_storage_string="", add_all_songs_to_set_string="", songs_string="";
     private String[] key_choice_string={};
     private boolean songMenuSortTitles;
     private final Handler waitBeforeSearchHandler = new Handler();
@@ -142,6 +143,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             filter_by_title_string = getString(R.string.filter_by_title);
             deeplink_manage_storage_string = getString(R.string.deeplink_manage_storage);
             deeplink_tags_string = getString(R.string.deeplink_tags);
+            add_all_songs_to_set_string = getString(R.string.add_all_songs_to_set);
+            songs_string = getString(R.string.songs);
         }
     }
 
@@ -520,6 +523,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.filters.manageTags.setOnClickListener(v -> {
             myView.songListRecyclerView.stopScroll();
             mainActivityInterface.navigateToFragment(deeplink_tags_string,0);
+        });
+        myView.songTitleStuff.setCheckTitle.setOnClickListener(v -> {
+            if (songListAdapter!=null) {
+                AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("addallsongstoset", add_all_songs_to_set_string + " (" + String.valueOf(songListAdapter.getItemCount() + " " + songs_string + ")"), null, "SongMenuFragment", this, null);
+                areYouSureBottomSheet.show(getParentFragmentManager(), "AreYouSureBottomSheet");
+            }
         });
     }
 
@@ -996,6 +1005,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void addAllSongsToSet() {
+        songListAdapter.addAllSongsToSet();
     }
 
     public void updateTheme() {

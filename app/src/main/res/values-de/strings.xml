@@ -28,6 +28,7 @@
     <string name="actions">Aktionen</string>
     <string name="actions_current_song">Aktionen für den aktuellen Song</string>
     <string name="add">Hinzufügen</string>
+    <string name="add_all_songs_to_set">Dadurch werden alle Songs, die im Song-Menü angezeigt werden, zu deinem Set hinzugefügt</string>
     <string name="add_custom_slide">Folie / Notiz</string>
     <string name="add_reusable">Als wiederverwendbare Folie speichern</string>
     <string name="add_song_to_set">Song zum aktuellen Set zufügen</string>
