@@ -60,6 +60,9 @@ public class ImportBulkFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsImportBulkBinding.inflate(inflater, container, false);
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         prepareLauncher();
         return myView.getRoot();
     }

@@ -16,9 +16,9 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabButtons"
-            style="@style/menuTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/transparent"
             android:contentDescription="@string/edit_song"/>
 
         <androidx.viewpager2.widget.ViewPager2
@@ -29,7 +29,7 @@
             android:layout_weight="1" />
 
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/saveChanges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -13,9 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="200dp">
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pad_custom_info"/>

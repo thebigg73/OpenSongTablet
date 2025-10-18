@@ -13,257 +13,274 @@
         <com.garethevans.church.opensongtablet.customviews.DialogHeader
             android:id="@+id/dialogHeader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/extra_scroll_space">
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/instrument"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/instrument"
-                    android:padding="16dp"/>
+                    android:layout_marginBottom="8dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:layout_marginBottom="8dp">
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/note0"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="0dp"
-                        style="@style/FilledButton"
+                        android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_weight="1"
+                        android:padding="0dp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/note1"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_weight="1"
+                        android:padding="0dp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/note2"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_weight="1"
+                        android:padding="0dp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/note3"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_weight="1"
+                        android:padding="0dp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/note4"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_weight="1"
+                        android:padding="0dp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/note5"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:padding="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_weight="1"
+                        android:padding="0dp" />
                 </LinearLayout>
 
-                <TableRow style="@style/DividerLine"/>
+                <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/aHz"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="@string/a_hz"
-                        android:padding="16dp"/>
+                        android:layout_marginEnd="8dp"/>
+
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/accuracy"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="@string/accuracy"
-                        android:padding="16dp"/>
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/desiredFreq"
                     android:layout_width="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="@dimen/text_xlarge"
-                    android:textColor="?attr/tunerColor"
-                    tools:text="440Hz"
                     android:layout_height="wrap_content"
-                    android:minHeight="24dp"/>
+                    android:layout_gravity="center"
+                    android:minHeight="24dp"
+                    android:textSize="@dimen/text_xlarge"
+                    tools:text="440Hz" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp">
+
                     <ImageView
+                        android:id="@+id/scale"
                         android:layout_width="296dp"
                         android:layout_height="180dp"
                         android:layout_gravity="center|top"
                         android:contentDescription="@string/tuner_info"
-                        app:tint="?attr/tunerColor"
-                        android:src="@drawable/tuner_meter"/>
-                    <ImageView
+                        android:src="@drawable/tuner_meter" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyImageView
                         android:id="@+id/needle"
                         android:layout_width="24dp"
                         android:layout_height="180dp"
-                        android:contentDescription="@string/tuner"
-                        android:transformPivotX="12dp"
-                        android:transformPivotY="168dp"
                         android:layout_gravity="center"
-                        app:tint="?attr/tunerColor"
-                        android:src="@drawable/tuner_needle"/>
+                        android:contentDescription="@string/tuner"
+                        android:src="@drawable/tuner_needle"
+                        android:transformPivotX="12dp"
+                        android:transformPivotY="168dp" />
                 </FrameLayout>
 
                 <LinearLayout
                     android:id="@+id/tuner"
                     android:layout_width="match_parent"
                     android:layout_height="96dp"
-                    android:orientation="horizontal"
-                    android:layout_margin="16dp">
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/bandFlat4"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="38dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandFlat3"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="42dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandFlat2"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="50dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off"/>
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandFlat1"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="72dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_weight="3"
                         android:layout_height="96dp"
-                        android:padding="2dp"
-                        android:layout_gravity="center_vertical">
-                    <ImageView
-                        android:id="@+id/bandInTune"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/tuner"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:padding="2dp">
+
+                        <ImageView
+                            android:id="@+id/bandInTune"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/tuner"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/tuner_block_off" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:orientation="vertical">
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tunerNote"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textSize="@dimen/text_xxlarge"
-                            android:layout_marginTop="12dp"
-                            tools:text="A"
-                            android:textColor="?attr/colorOnPrimary"/>
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tunerFreq"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textSize="@dimen/text_small"
-                            android:layout_marginBottom="12dp"
-                            tools:text="440Hz"
-                            android:textColor="?attr/colorOnPrimary"/>
+
+                            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                                android:id="@+id/tunerNote"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:textSize="@dimen/text_xxlarge"
+                                tools:text="A" />
+
+                            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                                android:id="@+id/tunerFreq"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:gravity="center"
+                                android:textSize="@dimen/text_small"
+                                tools:text="440Hz" />
                         </LinearLayout>
                     </FrameLayout>
+
                     <ImageView
                         android:id="@+id/bandSharp1"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="72dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandSharp2"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="50dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandSharp3"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="42dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
 
                     <ImageView
                         android:id="@+id/bandSharp4"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="38dp"
-                        android:padding="2dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
                         android:contentDescription="@string/tuner"
-                        app:srcCompat="@drawable/tuner_block_off" />
+                        android:padding="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tuner_block_off" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -271,15 +288,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="vertical">
-                    <TableRow style="@style/DividerLine"/>
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:paddingBottom="@dimen/extra_scroll_space">
+
 
                     <include
-                    android:id="@+id/piano"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    layout="@layout/view_chord_piano"
-                    android:layout_margin="0dp" />
+                        android:id="@+id/piano"
+                        layout="@layout/view_chord_piano"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp" />
 
                 </LinearLayout>
             </LinearLayout>

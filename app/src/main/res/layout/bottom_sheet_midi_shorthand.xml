@@ -13,14 +13,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/songActionsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/midiName"
@@ -28,9 +29,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:hint="@string/title"/>
-            <TableRow
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
                 android:id="@+id/midiNameDivider"
-                style="@style/DividerLine"/>
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,22 +88,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal">
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/midiTest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/midi_test"
                     android:layout_margin="8dp"/>
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/midiAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:text="@string/midi_add"/>
             </LinearLayout>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_list_item"
@@ -112,9 +114,10 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                 android:id="@+id/addCommandButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

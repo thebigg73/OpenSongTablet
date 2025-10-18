@@ -13,24 +13,26 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/storage_help" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/storageInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/storage_quicktip" />
         </LinearLayout>
     </ScrollView>

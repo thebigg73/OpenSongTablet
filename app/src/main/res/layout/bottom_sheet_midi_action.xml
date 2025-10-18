@@ -14,13 +14,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:layout_width="match_parent"
@@ -32,49 +33,50 @@
                 android:layout_height="wrap_content"
                 app:rowCount="2"
                 app:columnCount="4">
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action1"
                     android:text="1"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action2"
                     android:text="2"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action3"
                     android:text="3"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action4"
                     android:text="4"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action5"
                     android:text="5"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action6"
                     android:text="6"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action7"
                     android:text="7"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/action8"
                     android:text="8"
                     android:layout_margin="4dp"
                     tools:ignore="HardcodedText" />
             </androidx.gridlayout.widget.GridLayout>
 
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/nearbyMessageMIDIAction"
@@ -102,14 +104,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/midi_code_current"/>
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/editMidi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginStart="16dp"
-                android:text="@string/edit"
-                app:icon="@drawable/pen"/>
+                <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+                    android:id="@+id/editMidi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/edit"
+                    app:icon="@drawable/pen"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

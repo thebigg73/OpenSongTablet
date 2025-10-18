@@ -3,6 +3,7 @@
     <color name="dark_primary_variant">#1A222C</color>      <!-- dark primary variant -->
     <color name="dark_secondary">#294959</color>            <!-- FABs, etc -->
     <color name="dark_secondary_variant">#365c6e</color>    <!-- variant (more emphasised) -->
+    <color name="dark_secondary_fixed">#3C667A</color>      <!-- variant (even more emphasised) -->
     <color name="dark_surface">#183441</color>              <!-- Bottom sheets, component backgrounds -->
     <color name="dark_surface_variant">#203640</color>      <!-- variant (more emphasised) -->"
     <color name="dark_error">#AA0000</color>                <!-- dark red -->
@@ -12,6 +13,7 @@
     <color name="light_primary_variant">#FAFAFF</color>     <!-- light primary variant -->
     <color name="light_secondary">#E3EDF2</color>           <!-- FABs, etc -->
     <color name="light_secondary_variant">#a3c0d0</color>   <!-- variant (more emphasised) -->
+    <color name="light_secondary_fixed">#88A1AF</color>     <!-- variant (even more emphasised) -->
     <color name="light_surface">#fafaff</color>             <!-- Bottom sheets, component backgrounds -->
     <color name="light_surface_variant">#E2D9DA</color>     <!-- variant (more emphasised) -->"
     <color name="light_error">#F46262</color>               <!-- light red -->

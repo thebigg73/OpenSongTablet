@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/extra_scroll_space_large">
 
         <!-- Background -->
         <LinearLayout
@@ -47,7 +48,7 @@
                     android:layout_margin="4dp"
                     android:contentDescription="@string/background" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/videoBackgroundIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,7 +59,7 @@
                     android:tint="?attr/colorSecondaryVariant"
                     app:backgroundTint="?attr/colorSurface"
                     app:fabCustomSize="16dp"
-                    app:srcCompat="@drawable/play"
+                    android:src="@drawable/play"
                     app:useCompatPadding="false" />
 
                 <View
@@ -79,9 +80,9 @@
             android:valueFrom="0"
             android:valueTo="100" />
 
-        <TableRow
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
             android:id="@+id/presoBackgroundDivider"
-            style="@style/DividerLine" />
+            style="@style/MyDividerLine" />
 
         <!-- Logo -->
         <LinearLayout
@@ -129,9 +130,9 @@
             android:valueTo="100"
             android:stepSize="1" />
 
-        <TableRow
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
             android:id="@+id/logoDivider"
-            style="@style/DividerLine" />
+            style="@style/MyDividerLine" />
 
         <!-- Display settings -->
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
@@ -171,8 +172,8 @@
             android:valueFrom="-50"
             android:valueTo="50"
             android:stepSize="1" />
-
-        <TableRow style="@style/DividerLine" />
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
 
         <!-- The song information bar -->
         <LinearLayout
@@ -271,7 +272,7 @@
                 android:valueFrom="6"
                 android:valueTo="22" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/clockOn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -284,14 +285,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/clock24hr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:text="@string/time_format" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/clockSeconds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -308,8 +309,8 @@
                 android:valueTo="16"
                 android:stepSize="1" />
         </LinearLayout>
-
-        <TableRow style="@style/DividerLine" />
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
             android:id="@+id/maxFontSize"
@@ -368,8 +369,8 @@
             android:text="@string/opacity"
             android:valueFrom="10"
             android:valueTo="100" />
-
-        <TableRow style="@style/DividerLine" />
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/defaultPresentationText"

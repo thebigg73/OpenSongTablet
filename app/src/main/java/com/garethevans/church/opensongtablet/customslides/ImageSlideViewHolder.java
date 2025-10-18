@@ -6,8 +6,8 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class ImageSlideViewHolder extends RecyclerView.ViewHolder {
 
@@ -15,7 +15,7 @@ public class ImageSlideViewHolder extends RecyclerView.ViewHolder {
     View v;
     ImageView imageSlideImage;
     ImageView imageSlideHighlight;
-    MaterialTextView imageSlideNumText;
+    MyMaterialSimpleTextView imageSlideNumText;
 
     public ImageSlideViewHolder(MainActivityInterface mainActivityInterface, View v) {
         super(v);

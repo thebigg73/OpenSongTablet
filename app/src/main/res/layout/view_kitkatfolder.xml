@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textview.MaterialTextView
+<com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainText"
@@ -10,5 +10,4 @@
     android:gravity="center_vertical"
     android:padding="8dp"
     android:text="@string/folder"
-    app:drawableStartCompat="@drawable/folder_open"
-    android:background="?android:attr/selectableItemBackground"/>
+    app:drawableStartCompat="@drawable/folder_open" />

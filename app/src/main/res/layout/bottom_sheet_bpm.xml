@@ -62,7 +62,7 @@
                 app:layout_columnWeight="1"
                 android:text="@string/tempo"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/keyButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -70,7 +70,7 @@
                 app:layout_gravity="center_horizontal"
                 android:text="@string/copy_of"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/durationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -78,7 +78,7 @@
                 app:layout_gravity="center_horizontal"
                 android:text="@string/copy_of"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/tempoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

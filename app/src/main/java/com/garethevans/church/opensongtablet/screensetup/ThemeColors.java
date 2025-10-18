@@ -1,13 +1,19 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
 
 public class ThemeColors {
 
@@ -51,6 +57,7 @@ public class ThemeColors {
             pdfBridgeColor, pdfCommentColor, pdfPreChorusColor, pdfTagColor, pdfChordsColor,
             pdfCustomColor, pdfHighlightChordColor, pdfHighlightHeadingColor;
     private int abcPopupColor, abcPopupTextColor;
+    private int appCompatDelegate = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
     public ThemeColors(Context c) {
         this.c = c;
@@ -58,6 +65,7 @@ public class ThemeColors {
         pageButtonAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("pageButtonAlpha",0.75f);
         getDefaultTheme();
     }
+
     // Set the values with updates
     public void setThemeName(String themeName) {
         this.themeName = themeName;
@@ -269,29 +277,45 @@ public class ThemeColors {
             Log.d(TAG,"no theme was currently set, so setting it to "+fallback);
             themeName = fallback;
             mainActivityInterface.getPreferences().setMyPreferenceString("appTheme",themeName);
+            mainActivityInterface.getPalette().savePref(c,fallback.equals("dark"));
         }
     }
+
     public void getDefaultColors() {
         getDefaultTheme();
         switch (themeName) {
             case "light":
                 setThemeLight();
+                //setSytemDayNight(false);
                 break;
             case "custom1":
                 setThemeCustom1();
+                //setSytemDayNight(true);
                 break;
             case "custom2":
                 setThemeCustom2();
+                //setSytemDayNight(false);
                 break;
             case "dark":
             default:
                 setThemeDark();
+                //setSytemDayNight(true);
                 break;
         }
         pageButtonAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat("pageButtonAlpha",0.75f);
         // Update the theme colours for the PDF/Print outputs when exporting
         updatePDFTheme(mainActivityInterface.getPreferences().getMyPreferenceString("pdfTheme","default"),false);
+    }
 
+    /*public void setSytemDayNight(boolean useDark) {
+        AppCompatActivity activity = (AppCompatActivity) c;
+        appCompatDelegate = useDark ? AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_NO;
+        AppCompatDelegate.setDefaultNightMode(useDark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+        activity.getDelegate().applyDayNight();
+    }*/
+
+    public int getAppCompatDelegate() {
+        return appCompatDelegate;
     }
 
     public void updatePDFTheme(String pdfTheme, boolean savePref) {
@@ -917,22 +941,33 @@ public class ThemeColors {
 
     // For the set menus
     public int getSetActiveColor(View view) {
-        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorSecondary);
+        return mainActivityInterface.getPalette().secondary;
     }
     public int getSetInactiveColor(View view) {
-        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimaryVariant);
+        return mainActivityInterface.getPalette().primaryVariant;
     }
     public int getSetDraggedColor(View view) {
-        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorSecondaryVariant);
+        return mainActivityInterface.getPalette().secondaryVariant;
     }
     public int getSetBackgroundColor(View view) {
-        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorPrimaryFixed);
+        return mainActivityInterface.getPalette().primary;
     }
     public int getColorOnSurface(View view) {
-        return MaterialColors.getColor(view, com.google.android.material.R.attr.colorOnSurface);
+        return mainActivityInterface.getPalette().onSurface;
     }
     public int getHintTextColor(View view) {
-        return MaterialColors.getColor(view, com.google.android.material.R.attr.hintTextColor);
+        return mainActivityInterface.getPalette().hintColor;
+    }
+
+
+    public void tintProgressBar(ProgressBar progressBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            progressBar.setIndeterminateTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        } else {
+            Drawable indeterminateDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+            DrawableCompat.setTint(indeterminateDrawable, mainActivityInterface.getPalette().secondary);
+            progressBar.setIndeterminateDrawable(indeterminateDrawable);
+        }
     }
 
 }

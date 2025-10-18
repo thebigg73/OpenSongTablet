@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,22 +13,21 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class OnScreenInfo extends LinearLayout {
 
     private final LinearLayout info;
     private final LinearLayout capo;
-    private final MaterialTextView capoIcon;
-    private final MaterialTextView capoInfo;
+    private final MyMaterialSimpleTextView capoIcon;
+    private final MyMaterialSimpleTextView capoInfo;
     private final LinearLayout autoscroll;
-    private final MaterialTextView autoscrollIcon;
-    private final MaterialTextView autoscrollTime;
-    private final MaterialTextView autoscrollTotalTime;
+    private final MyMaterialSimpleTextView autoscrollIcon;
+    private final MyMaterialSimpleTextView autoscrollTime;
+    private final MyMaterialSimpleTextView autoscrollTotalTime;
     private final LinearLayout pad;
-    private final MaterialTextView padIcon;
-    private final MaterialTextView padTime;
-    private final MaterialTextView padTotalTime;
+    private final MyMaterialSimpleTextView padIcon;
+    private final MyMaterialSimpleTextView padTime;
+    private final MyMaterialSimpleTextView padTotalTime;
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
     // IV - Needs to be longer to be seen after song load
     private final int delayTime = 5000;
@@ -73,8 +74,15 @@ public class OnScreenInfo extends LinearLayout {
 
     public OnScreenInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
         inflate(context, R.layout.view_on_screen_info, this);
         info = findViewById(R.id.info);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        } else {
+            info.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        }
         capo = findViewById(R.id.capo);
         capoIcon = findViewById(R.id.capoIcon);
         capoInfo = findViewById(R.id.capoInfo);
@@ -176,10 +184,10 @@ public class OnScreenInfo extends LinearLayout {
     public LinearLayout getAutoscroll() {
         return autoscroll;
     }
-    public MaterialTextView getAutoscrollTime() {
+    public MyMaterialSimpleTextView getAutoscrollTime() {
         return autoscrollTime;
     }
-    public MaterialTextView getAutoscrollTotalTime() {
+    public MyMaterialSimpleTextView getAutoscrollTotalTime() {
         return autoscrollTotalTime;
     }
 

@@ -1,11 +1,9 @@
 package com.garethevans.church.opensongtablet.utilities;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,7 +17,6 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -32,13 +29,11 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTunerBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +45,7 @@ import be.tarsos.dsp.io.android.AudioDispatcherFactory;
 import be.tarsos.dsp.pitch.PitchDetectionHandler;
 import be.tarsos.dsp.pitch.PitchProcessor;
 
-public class TunerBottomSheet extends BottomSheetDialogFragment {
+public class TunerBottomSheet extends BottomSheetCommon {
 
     @SuppressWarnings("unused,FieldCanBeLocal")
     private final String TAG = "TunerBottomSheet";
@@ -79,7 +74,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
     private AudioProcessor audioProcessor;
     @SuppressWarnings("FieldCanBeLocal")
     private Thread audioThread;
-    private Drawable bg = null;
+    private int themeOff, themeGreen, themeRed;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -131,27 +126,12 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         };
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetTunerBinding.inflate(inflater, container, false);
 
         prepareStrings();
-
 
         myView.dialogHeader.setText(tuner_string);
         myView.dialogHeader.setClose(this);
@@ -166,19 +146,34 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         // Initialise audio (and permisisons)
         checkPermissions();
 
-
         return myView.getRoot();
     }
 
     private void prepareStrings() {
         if (getContext() != null) {
+            // Initialise the tunerBlocks
+            themeOff = mainActivityInterface.getPalette().secondary;
+            themeRed = androidx.core.graphics.ColorUtils.blendARGB(mainActivityInterface.getPalette().primary, Color.RED, 0.5f);
+            themeGreen = androidx.core.graphics.ColorUtils.blendARGB(mainActivityInterface.getPalette().primary, Color.GREEN, 0.5f);
+
+            setTunerBlocks(myView.bandFlat1,false,false);
+            setTunerBlocks(myView.bandFlat2,false,false);
+            setTunerBlocks(myView.bandFlat3,false,false);
+            setTunerBlocks(myView.bandFlat4,false,false);
+            setTunerBlocks(myView.bandSharp1,false,false);
+            setTunerBlocks(myView.bandSharp2,false,false);
+            setTunerBlocks(myView.bandSharp3,false,false);
+            setTunerBlocks(myView.bandSharp4,false,false);
+            setTunerBlocks(myView.bandInTune,false,false);
+            myView.scale.setColorFilter(mainActivityInterface.getPalette().hintColor);
+
             tuner_string = getString(R.string.tuner);
             website_tuner_string = getString(R.string.website_tuner);
             microphone_string = getString(R.string.microphone);
             permissions_refused_string = getString(R.string.permissions_refused);
             settings_string = getString(R.string.settings);
             needleInTuneColor = ContextCompat.getColor(getContext(), R.color.green);
-            needleNotInTuneColor = ContextCompat.getColor(getContext(),R.color.dark_secondary);
+            needleNotInTuneColor = mainActivityInterface.getPalette().secondaryVariant;
             toneGenerator = new ToneGenerator(getContext());
         }
     }
@@ -366,7 +361,7 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
-    private void setUpTuningButton(MaterialButton button, boolean visible, String note) {
+    private void setUpTuningButton(MyMaterialButton button, boolean visible, String note) {
         if (myView != null) {
             if (visible) {
                 button.setVisibility(View.VISIBLE);
@@ -597,14 +592,15 @@ public class TunerBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
+
     private void setTunerBlocks(ImageView view, boolean isOn, boolean green) {
         if (getContext() != null) {
             if (green && isOn) {
-                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_in_tune, getContext().getTheme()));
+                view.setColorFilter(themeGreen);
             } else if (isOn) {
-                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_block_on, getContext().getTheme()));
+                view.setColorFilter(themeRed);
             } else {
-                view.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.tuner_block_off, getContext().getTheme()));
+                view.setColorFilter(themeOff);
             }
         }
     }

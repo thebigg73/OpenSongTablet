@@ -13,11 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsSongactionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -155,7 +155,7 @@ public class SongActionsMenuFragment extends Fragment {
             if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                 String progressText = "";
                 if (mainActivityInterface.getSongMenuFragment()!=null) {
-                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                     if (progressView!=null && progressView.getText()!=null) {
                         progressText = " " + progressView.getText().toString();
                     }

@@ -1,32 +1,34 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.color.MaterialColors;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.slider.Slider;
 
 public class TextSlider extends LinearLayout {
 
-    private final TextView textLeft;
-    private final TextView textRight;
+    private final MyMaterialSimpleTextView textLeft;
+    private final MyMaterialSimpleTextView textRight;
     private final Slider slider;
-    private final TextView heading;
-    int activeColor;
-    int inactiveColor;
+    private final MyMaterialSimpleTextView heading;
+    private Palette palette;
+    //int activeColor;
+    //int inactiveColor;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public TextSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_text_slider, this);
+
+        palette = new Palette(context);
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
@@ -35,8 +37,8 @@ public class TextSlider extends LinearLayout {
         small = context.getResources().getDimension(R.dimen.text_small);
         xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
-        activeColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(context,R.color.dark_color));
-        inactiveColor = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.dark_hint));
+        //activeColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(context,R.color.dark_color));
+        //inactiveColor = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.dark_hint));
         textLeft = findViewById(R.id.textLeft);
         textRight = findViewById(R.id.textRight);
         slider = findViewById(R.id.slider);
@@ -63,6 +65,11 @@ public class TextSlider extends LinearLayout {
         slider.setStepSize(1);
         slider.setValue(position);
         highlightSelectedText(position);
+
+        // Define colors for different states of the slider
+        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+
         slider.addOnChangeListener((slider, value, fromUser) -> highlightSelectedText(value));
         textLeft.setOnClickListener(view -> slider.setValue(0));
         textRight.setOnClickListener(view -> slider.setValue(1));
@@ -71,11 +78,11 @@ public class TextSlider extends LinearLayout {
 
     private void highlightSelectedText(float position) {
         if (position == 0) {
-            textLeft.setTextColor(activeColor);
-            textRight.setTextColor(inactiveColor);
+            textLeft.setTextColor(palette.textColor);
+            textRight.setTextColor(palette.hintColor);
         } else {
-            textLeft.setTextColor(inactiveColor);
-            textRight.setTextColor(activeColor);
+            textLeft.setTextColor(palette.hintColor);
+            textRight.setTextColor(palette.textColor);
         }
     }
 

@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/voiceLiveChannel"
@@ -24,7 +25,8 @@
                 android:valueTo="16"
                 app:adjustable="true"
                 android:stepSize="1" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/voiceLiveOverrideChannel"
@@ -32,7 +34,8 @@
                 android:layout_height="match_parent"
                 android:text="@string/voicelive_override_midi"
                 android:hint="@string/voicelive_override_midi_info" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/voiceLiveSendKey"
@@ -40,9 +43,10 @@
                 android:layout_height="match_parent"
                 android:text="@string/voicelive_autosend_key"
                 android:hint="@string/voicelive_autosend_key_info" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/voicelive_preferred_major_scale"/>
@@ -55,7 +59,7 @@
                 app:textR="@string/voicelive_maj3"
                 android:layout_marginBottom="32dp"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/voicelive_preferred_minor_scale"/>

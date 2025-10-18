@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,27 +8,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMidiShorthandBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
+public class MidiShortHandBottomSheet extends BottomSheetCommon {
 
     // This bottom sheet allows the user to build MIDI shorthand code from dropdowns
 
@@ -80,27 +76,6 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         getValues(context);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-
-        dialog.setOnShowListener(dialog1 -> {
-            try {
-                BottomSheetDialog d = (BottomSheetDialog) dialog1;
-                FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                if (bottomSheet != null) {
-                    BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                    BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        return dialog;
     }
 
     // Default contructor for fragment called if there is an issue or badly called
@@ -417,7 +392,7 @@ public class MidiShortHandBottomSheet extends BottomSheetDialogFragment {
         if (getContext()!=null) {
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
             midiMessagesAdapter.setFromSongMessages(false);
-            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter,true);
+            ItemTouchHelper.Callback callback = new MidiItemTouchHelper(getContext(),midiMessagesAdapter,true);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             midiMessagesAdapter.setTouchHelper(itemTouchHelper);
             llm = new LinearLayoutManager(getContext());

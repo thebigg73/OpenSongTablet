@@ -12,7 +12,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +21,6 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.SettingsTagManageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
-import com.google.android.material.color.MaterialColors;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -65,6 +63,9 @@ public class BulkTagAssignFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsTagManageBinding.inflate(inflater, container, false);
 
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         prepareStrings();
 
         setupViews();
@@ -106,7 +107,7 @@ public class BulkTagAssignFragment extends Fragment {
 
         // Set the filterButton colours
         if (getContext()!=null) {
-            activecolor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(), R.color.dark_secondary));
+            activecolor = mainActivityInterface.getPalette().secondary;
             inactivecolor = getResources().getColor(R.color.transparent);
         }
         // This bit also prepares the songList

@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/highlight" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/pdfPageNumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

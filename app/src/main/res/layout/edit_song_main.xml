@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/title"
@@ -46,8 +47,8 @@
                 android:layout_marginBottom="8dp"
                 android:hint="@string/copyright"
                 app:endIconMode="clear_text" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,8 +78,8 @@
                     android:hint="@string/filename"
                     app:endIconMode="clear_text" />
             </LinearLayout>
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/songNotes"
@@ -95,9 +96,10 @@
                 app:autoSizeStepGranularity="1sp"
                 app:autoSizeTextType="uniform"
                 app:endIconMode="clear_text" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

@@ -13,12 +13,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <LinearLayout
                 android:id="@+id/changeLocationLayout"
@@ -31,12 +33,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/storage_reset"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/storage_change"
                     custom:mydrawable="@drawable/database" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -50,12 +50,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/backup_osb"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/backup"
                     custom:mydrawable="@drawable/database_export" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -69,12 +67,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/new_folder_info"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/new_folder"
                     custom:mydrawable="@drawable/folder_new" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -88,12 +84,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/folder_rename"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/rename"
                     custom:mydrawable="@drawable/folder_edit" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -107,12 +101,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/folder_move_contents_info"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/folder_move_contents"
                     custom:mydrawable="@drawable/folder_move" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -126,12 +118,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/openchords_info"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/openchords"
                     custom:mydrawable="@drawable/openchords_folder" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -145,12 +135,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/delete_folder_info"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/delete"
                     custom:mydrawable="@drawable/delete" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -164,12 +152,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/export_song_directory_info"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:text="@string/export_song_directory"
                     custom:mydrawable="@drawable/list_bullet" />
-
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

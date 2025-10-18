@@ -50,9 +50,6 @@
     <style name="IconOnlyButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
-        <item name="iconTint">?attr/colorOnPrimary</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="strokeColor">?attr/colorSecondary</item>
         <item name="android:padding">8dp</item>
     </style>
 
@@ -104,17 +101,15 @@
 
     <!-- Default view for all fragments -->
     <style name="DefaultView">
-        <!--<item name="android:background">?attr/colorPrimary</item>-->
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
     </style>
 
     <!-- Divider line to separate items in lists -->
-    <style name="DividerLine">
+    <style name="MyDividerLine">
         <item name="android:layout_height">2dp</item>
         <!-- Use the android attribute so we don't get into recursive issues -->
-        <item name="android:background">?android:attr/textColorHint</item>
         <item name="android:alpha">0.2</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginStart">0dp</item>
@@ -299,19 +294,19 @@
         <item name="android:saveEnabled">false</item>
         <item name="android:isScrollContainer">true</item>
         <item name="textInputLayoutFocusedRectEnabled">false</item>
-        <item name="hintTextColor">?attr/hintTextColor</item>
+        <!--<item name="hintTextColor">?attr/hintTextColor</item>-->
         <item name="hintEnabled">true</item>
-        <item name="endIconTint">?attr/hintTextColor</item>
+        <!--<item name="endIconTint">?attr/hintTextColor</item>-->
         <item name="elevationOverlayEnabled">false</item>
 
         <!-- The box around the text -->
         <item name="boxBackgroundMode">outline</item>
-        <item name="boxStrokeColor">?attr/hintTextColor</item>
+        <!--<item name="boxStrokeColor">?attr/hintTextColor</item>-->
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxBackgroundColor">@color/transparent</item>
 
-        <item name="materialThemeOverlay">@style/TextInputOverlay</item>
+        <!--<item name="materialThemeOverlay">@style/TextInputOverlay</item>-->
     </style>
     <style name="AutoCompleteTextView">
 
@@ -351,24 +346,20 @@
 
         <!-- The box background -->
         <item name="boxBackgroundMode">outline</item>
-        <item name="boxBackgroundColor">@color/transparent</item>
-        <item name="boxStrokeColor">?attr/hintTextColor</item>
+        <!--<item name="boxBackgroundColor">@color/transparent</item>-->
+        <!--<item name="boxStrokeColor">?attr/hintTextColor</item>-->
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="android:textSize">@dimen/text_medium</item>
         <!-- The highlights -->
-        <item name="colorControlActivated">?attr/colorAccent</item>
-        <item name="colorControlNormal">?attr/colorAccent</item>
+        <!--<item name="colorControlActivated">?attr/colorAccent</item>-->
+        <!--<item name="colorControlNormal">?attr/colorAccent</item>-->
     </style>
 
     <!-- Menu tabs -->
     <style name="menuTabs" parent="@style/Widget.MaterialComponents.TabLayout">
-        <item name="tabTextColor">?attr/colorOnPrimary</item>
-        <item name="tabSelectedTextColor">?attr/colorOnPrimary</item>
-        <item name="tabIndicatorColor">?attr/colorSecondary</item>
         <item name="tabIndicatorHeight">8dp</item>
         <item name="tabIndicatorFullWidth">true</item>
-        <item name="tabIconTint">?attr/colorOnPrimary</item>
         <item name="tabPaddingTop">16dp</item>
         <item name="tabPaddingBottom">12dp</item>
         <item name="tabMode">fixed</item>
@@ -416,13 +407,12 @@
     <!-- Helper text -->
     <style name="helperText">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?attr/hintTextColor</item>
     </style>
 
     <!-- Progress bar -->
     <style name="progressBarOnPrimary" parent="">
-        <item name="android:background">?attr/colorPrimary</item>
-        <item name="android:alpha">0.8</item>
+        <item name="android:background">@color/black</item>
+        <item name="android:alpha">0.4</item>
     </style>
 
     <!-- MyMaterialTextView -->
@@ -490,5 +480,32 @@
 
     <style name="MyDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+
+    <!-- Manual themes for BottomSheets -->
+    <style name="MyManualBottomSheetTheme.Light" parent="BottomSheetDialogTheme">
+        <item name="colorSurface">@color/light_primary_variant</item>
+        <item name="colorOnSurface">@color/light_color</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="bottomSheetStyle">@style/MyManualBottomSheetStyle</item>
+    </style>
+
+    <style name="MyManualBottomSheetTheme.Dark" parent="BottomSheetDialogTheme">
+        <item name="colorSurface">@color/dark_primary_variant</item>
+        <item name="colorOnSurface">@color/dark_color</item>
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="bottomSheetStyle">@style/MyManualBottomSheetStyle</item>
+    </style>
+    <style name="MyManualBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+    <style name="BottomSheetPadding" parent="">
+        <item name="android:paddingBottom">80dp</item>
+    </style>
+
+    <style name="ScrimBackground" parent="">
+        <item name="android:background">@color/black</item>
+        <item name="android:alpha">0.4</item>
     </style>
 </resources>

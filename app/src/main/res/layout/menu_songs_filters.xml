@@ -65,11 +65,11 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/manageFolders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/set_edit"
+            android:src="@drawable/set_edit"
             android:contentDescription="@string/new_folder_info"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
@@ -100,11 +100,11 @@
         android:paddingBottom="2dp"
         android:layout_gravity="bottom" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/manageTags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/set_edit"
+            android:src="@drawable/set_edit"
             android:contentDescription="@string/tag_song_info"
             android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"

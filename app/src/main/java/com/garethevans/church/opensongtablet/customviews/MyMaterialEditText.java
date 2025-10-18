@@ -1,11 +1,13 @@
 package com.garethevans.church.opensongtablet.customviews;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,25 +21,28 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.lang.reflect.Field;
 
 public class MyMaterialEditText extends FrameLayout implements View.OnTouchListener {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -48,6 +53,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private int endIconMode;
     private Window window;
     private WindowInsetsCompat windowInsetsCompat;
+    private boolean isKeyboardVisible = false;
+    private Handler keyboardHandler = new Handler(Looper.getMainLooper());
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -77,10 +84,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         // Ensure inflation happens with the current app theme
-        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
-        LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_edittext, this, true);
+        //ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        //LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_edittext, this, true);
 
-        //inflate(context, R.layout.view_material_edittext, this);
+        inflate(context, R.layout.view_material_edittext, this);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,
@@ -195,8 +202,42 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //setLongClickKeyboard();
+
+        setPalette(new Palette(context));
+
+        // Check for keyboard visibility when focused
+        // Track IME visibility
+        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
+            isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            return insets;
+        });
+
+        setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                keyboardHandler.postDelayed(() -> {
+                    if (!isKeyboardVisible) {
+                        Log.d("MyEditText", "Keyboard not open after 1 second");
+                        showKeyboard();
+                    }
+                }, 1000);
+            } else {
+                //keyboardHandler.removeCallbacksAndMessages(null);
+                isKeyboardVisible = false;
+                Log.d("MyEditText", "Focus lost");
+            }
+        });
     }
+
+    public void showKeyboard() {
+        Log.d(TAG,"Manually forcing the keyboard");
+        requestFocus();
+        post(() -> {
+            InputMethodManager imm =
+                    (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+        });
+    }
+
 
     public void setEndIconMode(int endIconMode) {
         this.endIconMode = endIconMode;
@@ -211,7 +252,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
 
     public void setText(String text) {
-        if (text.isEmpty()) {
+        if (text!=null && text.isEmpty()) {
             text = null;
         }
         editText.setText(text);
@@ -230,7 +271,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
     }
 
-    public void setOnEditorActionListener(TextView.OnEditorActionListener editorActionListener) {
+    public void setOnEditorActionListener(MyMaterialSimpleTextView.OnEditorActionListener editorActionListener) {
         editText.setOnEditorActionListener(editorActionListener);
     }
 
@@ -427,4 +468,83 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     public void setGravity(int gravity) {
         editText.setGravity(gravity);
     }
+
+    public void setPalette(Palette palette) {
+        textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        editText.setHintTextColor(palette.hintColor);
+        editText.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setBoxStrokeWidth(2);
+        textInputLayout.setBoxStrokeColor(palette.hintColor);
+        editText.setTextColor(palette.textColor);
+        editText.setHighlightColor(palette.secondary);
+        tintDrawables(palette);
+    }
+
+    private void tintDrawables(Palette palette) {
+        Drawable handleLeft = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
+        Drawable handleRight = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
+        Drawable handleMiddle = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
+        Drawable cursorBar = AppCompatResources.getDrawable(getContext(), R.drawable.text_cursor);
+
+        Drawable left=null, right=null, middle=null, cursor=null;
+        if (handleLeft!=null && handleRight!=null && handleMiddle!=null && cursorBar!=null) {
+            left = DrawableCompat.wrap(handleLeft);
+            right = DrawableCompat.wrap(handleRight);
+            middle = DrawableCompat.wrap(handleMiddle);
+            cursor = DrawableCompat.wrap(cursorBar);
+            DrawableCompat.setTint(left, palette.secondary);
+            DrawableCompat.setTint(right, palette.secondary);
+            DrawableCompat.setTint(middle, palette.secondary);
+            DrawableCompat.setTint(cursor, palette.secondary);
+        }
+
+        if (left!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Set them
+                editText.setTextSelectHandleLeft(handleLeft);
+                editText.setTextSelectHandleRight(handleRight);
+                editText.setTextSelectHandle(handleMiddle);
+                editText.setTextCursorDrawable(cursor);
+            } else {
+                try {
+                    // Access private Editor field
+                    @SuppressLint("PrivateApi") Field fEditor = MyMaterialSimpleTextView.class.getDeclaredField("mEditor");
+                    fEditor.setAccessible(true);
+                    Object editor = fEditor.get(editText);
+
+                    @SuppressLint("PrivateApi") Field fCursorDrawableRes = MyMaterialSimpleTextView.class.getDeclaredField("mCursorDrawableRes");
+                    fCursorDrawableRes.setAccessible(true);
+                    int mCursorDrawableRes = fCursorDrawableRes.getInt(editText);
+
+                    cursor = AppCompatResources.getDrawable(editText.getContext(), mCursorDrawableRes);
+                    if (cursor != null) {
+                        DrawableCompat.setTint(cursor, palette.secondary);
+                    }
+                    Drawable[] drawables = {cursor, cursor};
+
+                    // Replace handle fields
+                    if (editor!=null) {
+                        Field fSelectHandleLeft = editor.getClass().getDeclaredField("mSelectHandleLeft");
+                        Field fSelectHandleRight = editor.getClass().getDeclaredField("mSelectHandleRight");
+                        Field fSelectHandleCenter = editor.getClass().getDeclaredField("mSelectHandleCenter");
+                        Field fCursorDrawable = editor.getClass().getDeclaredField("mCursorDrawable");
+
+                        fCursorDrawable.setAccessible(true);
+                        fSelectHandleLeft.setAccessible(true);
+                        fSelectHandleRight.setAccessible(true);
+                        fSelectHandleCenter.setAccessible(true);
+                        fSelectHandleLeft.set(editor, left);
+                        fSelectHandleRight.set(editor, right);
+                        fSelectHandleCenter.set(editor, middle);
+                        fCursorDrawable.set(editor, drawables);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 }

@@ -13,13 +13,14 @@
     <ScrollView
         android:id="@+id/cleanDBScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/uselessSongInfo"
@@ -28,15 +29,15 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/persistent_database_clean_useless" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/uselessSongDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/delete"/>
-            <TableRow
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
                 android:id="@+id/uselessSongSeparator"
-                style="@style/DividerLine"/>
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/usefulSongInfo"
@@ -45,16 +46,17 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/persistent_database_clean_useful" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/usefulSongDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/delete"/>
-            <TableRow android:id="@+id/usefulSongSeparator"
-                style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:id="@+id/usefulSongSeparator"
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/congratulations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

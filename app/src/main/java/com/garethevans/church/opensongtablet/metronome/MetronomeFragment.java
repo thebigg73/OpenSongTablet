@@ -495,6 +495,9 @@ public class MetronomeFragment extends Fragment {
                 case "metronomeTickSound":
                 case "metronomeTockSound":
                     position = soundNames.indexOf(exposedDropDown.getText().toString());
+                    if (position==-1) {
+                        position = 0;
+                    }
                     if (preference.equals("metronomeTickSound")) {
                         mainActivityInterface.getMetronome().updateTickSound(soundFiles.get(position));
                     } else {

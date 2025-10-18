@@ -103,9 +103,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="64dp"
-            android:paddingBottom="64dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <LinearLayout
                 android:id="@+id/setOptionsLayout"
@@ -114,7 +113,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,10 +138,11 @@
                     app:showCheckBox="true"
                     android:layout_marginBottom="16dp"
                     android:visibility="visible"/>
-                <TableRow style="@style/DividerLine"
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"
                     android:layout_marginTop="16dp"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -194,10 +194,11 @@
                     android:hint="@string/image_file_info"
                     app:showCheckBox="true"
                     android:layout_marginBottom="16dp"/>
-                <TableRow style="@style/DividerLine"
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"
                     android:layout_marginTop="16dp"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -229,7 +230,7 @@
                     app:showCheckBox="true"
                     android:layout_marginBottom="16dp"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/setExportInfo"
                     style="@style/largeText"
                     android:layout_width="match_parent"
@@ -330,10 +331,11 @@
                     android:layout_marginBottom="16dp"/>
 
             </LinearLayout>
-            <TableRow style="@style/DividerLine"
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"
                 android:layout_marginTop="16dp"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -379,24 +381,24 @@
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/shareButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:contentDescription="@string/export"
         android:text="@string/share"
         app:icon="@drawable/share"
         app:useCompatPadding="true" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
         android:layout_toStartOf="@id/shareButton"
         android:contentDescription="@string/print"
         android:text="@string/print"

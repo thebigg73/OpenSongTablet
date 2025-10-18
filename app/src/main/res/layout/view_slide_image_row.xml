@@ -19,15 +19,15 @@
             android:contentDescription="@string/image" />
     </FrameLayout>
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/uriEncoded"
         android:visibility="gone"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/delete"
+        android:src="@drawable/delete"
         app:backgroundTint="?attr/colorError"
         app:useCompatPadding="true"
         android:contentDescription="@string/delete" />

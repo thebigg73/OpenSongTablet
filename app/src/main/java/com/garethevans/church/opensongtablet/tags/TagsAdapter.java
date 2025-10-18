@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,9 +12,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -95,10 +95,10 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Set item views based on your views and data model
         CheckBox tagName = holder.tagName;
-        TextView matchingSongs = holder.matchingSongs;
+        MyMaterialSimpleTextView matchingSongs = holder.matchingSongs;
         tagName.setText(tags.get(position));
         matchingSongs.setText(songsWithTags.get(position));
-        FloatingActionButton tagDelete = holder.tagDelete;
+        MyFloatingActionButton tagDelete = holder.tagDelete;
         tagDelete.setOnClickListener(view -> {
             String textToFind = holder.tagName.getText().toString();
             positionToRemove = tags.indexOf(textToFind);
@@ -116,8 +116,8 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public CheckBox tagName;
-        public TextView matchingSongs;
-        public FloatingActionButton tagDelete;
+        public MyMaterialSimpleTextView matchingSongs;
+        public MyFloatingActionButton tagDelete;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);

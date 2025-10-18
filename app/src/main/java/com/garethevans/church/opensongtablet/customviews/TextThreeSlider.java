@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -10,21 +11,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.color.MaterialColors;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.textview.MaterialTextView;
 
 public class TextThreeSlider extends LinearLayout {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "TextThreeSlider";
-    private final MaterialTextView label;
-    private final MaterialTextView textLeft;
-    private final MaterialTextView textRight;
-    private final MaterialTextView textCenter;
+    private final MyMaterialSimpleTextView label;
+    private final MyMaterialSimpleTextView textLeft;
+    private final MyMaterialSimpleTextView textRight;
+    private final MyMaterialSimpleTextView textCenter;
     private final ImageView imageLeft;
     private final ImageView imageRight;
     private final ImageView imageCenter;
@@ -46,8 +46,9 @@ public class TextThreeSlider extends LinearLayout {
         small = context.getResources().getDimension(R.dimen.text_small);
         xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
-        active = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(context,R.color.dark_color));
-        inactive = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.dark_hint));
+        Palette palette = new Palette(context);
+        active = palette.onPrimary;
+        inactive = palette.hintColor;
         textLine = findViewById(R.id.textLine);
         imageLine = findViewById(R.id.imageLine);
         label = findViewById(R.id.label);
@@ -89,6 +90,16 @@ public class TextThreeSlider extends LinearLayout {
 
         // To cope with KitKat not liking vector assets
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            if (leftDrawable!=null) {
+                DrawableCompat.setTint(leftDrawable, palette.textColor);
+            }
+            if (rightDrawable!=null) {
+                DrawableCompat.setTint(rightDrawable, palette.textColor);
+            }
+            if (centerDrawable!=null) {
+                DrawableCompat.setTint(centerDrawable, palette.textColor);
+            }
+
             imageLeft.setImageDrawable(leftDrawable);
             imageRight.setImageDrawable(rightDrawable);
             imageCenter.setImageDrawable(centerDrawable);
@@ -101,6 +112,9 @@ public class TextThreeSlider extends LinearLayout {
         imageCenter.setOnClickListener(view -> setSliderPos(1));
         imageRight.setOnClickListener(view -> setSliderPos(2));
 
+        // Define colors for different states of the slider
+        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
         slider.addOnChangeListener((slider, value, fromUser) -> updateAlphas());
         slider.setValue(position);
         a.recycle();
@@ -131,7 +145,7 @@ public class TextThreeSlider extends LinearLayout {
     public void addOnChangeListener(Slider.OnChangeListener onChangeListener) {
         slider.addOnChangeListener(onChangeListener);
     }
-    private void textOrNull(MaterialTextView textView, CharSequence charSequence) {
+    private void textOrNull(MyMaterialSimpleTextView textView, CharSequence charSequence) {
         String text = null;
         if (charSequence!=null) {
             text = charSequence.toString();

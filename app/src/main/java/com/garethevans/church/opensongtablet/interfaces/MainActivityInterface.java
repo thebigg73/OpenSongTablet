@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,6 +63,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
@@ -230,6 +232,8 @@ public interface MainActivityInterface {
     Swipes getSwipes();
     void enableSwipe(String which, boolean canSwipe);
     HotZones getHotZones();
+    boolean onKeyUp(int keyCode, KeyEvent keyEvent);
+    boolean onKeyDown(int keyCode, KeyEvent keyEvent);
 
     // Navigation
     void navHome();
@@ -304,6 +308,8 @@ public interface MainActivityInterface {
     void setAlreadyBackPressed(boolean alreadyBackPressed);
     int[] getAvailableSizes();
     void setAvailableSizes(int availableWidth, int availableHeight);
+    Palette getPalette();
+    void refreshToolbarMenu();
 
     // CCLI
     CCLILog getCCLILog();

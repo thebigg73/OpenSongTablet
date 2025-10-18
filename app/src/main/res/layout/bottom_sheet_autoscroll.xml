@@ -15,15 +15,16 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                 android:id="@+id/startStopAutoscroll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
                     app:suffixText="m"
                     android:layout_gravity="start"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text=":"
@@ -90,20 +91,20 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/linkAudio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/autoscroll_link_audio" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/autoscrollSettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/settings"/>
 
             <!-- TODO Bring this back if I decide it is used enough -->
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/learnAutoscroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

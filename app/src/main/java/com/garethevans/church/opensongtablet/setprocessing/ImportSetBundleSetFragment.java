@@ -21,7 +21,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
 
 import java.io.OutputStream;
 
@@ -75,8 +74,8 @@ public class ImportSetBundleSetFragment extends Fragment {
             import_set = getString(R.string.set_import);
             exists_string = getString(R.string.file_exists);
             import_drawable = ContextCompat.getDrawable(getContext(), R.drawable.set_add);
-            activeColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
-            inactiveColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(getContext(),R.color.dark_primary));
+            activeColor = mainActivityInterface.getPalette().secondary;
+            inactiveColor = mainActivityInterface.getPalette().primaryVariant;
         }
     }
 

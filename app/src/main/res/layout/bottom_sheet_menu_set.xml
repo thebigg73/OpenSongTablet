@@ -16,13 +16,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:isScrollContainer="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/extra_scroll_space">
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/createSet"

@@ -1,20 +1,17 @@
 package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DisplayPrevNext {
@@ -27,7 +24,7 @@ public class DisplayPrevNext {
     private final String TAG = "DisplayPrevNext";
     private final RelativeLayout layout;
     private MyZoomLayout zoomLayout;
-    private final ExtendedFloatingActionButton prev, next;
+    private final MyExtendedFloatingActionButton prev, next;
     private final MyFAB prevFAB, nextFAB;
     private boolean showPrev, prevVisible = false;
     private boolean showNext, nextVisible = false;
@@ -67,7 +64,7 @@ public class DisplayPrevNext {
     };
 
     public DisplayPrevNext (Context c, RelativeLayout layout,
-                            ExtendedFloatingActionButton prev, ExtendedFloatingActionButton next,
+                            MyExtendedFloatingActionButton prev, MyExtendedFloatingActionButton next,
                             MyFAB prevFAB, MyFAB nextFAB) {
         this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
@@ -391,15 +388,11 @@ public class DisplayPrevNext {
     public void updateColors() {
         float buttonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
         mainActivityInterface.getMainHandler().post(() -> {
-            Drawable leftArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_left, c.getTheme());
-            Drawable rightArrow = VectorDrawableCompat.create(c.getResources(), R.drawable.arrow_right, c.getTheme());
-            if (leftArrow != null) {
-                prevFAB.setImageDrawable(leftArrow);
-            }
-            if (rightArrow != null) {
-                nextFAB.setImageDrawable(rightArrow);
-            }
             Log.d(TAG,"buttonAlpha:"+buttonAlpha);
+            nextFAB.setPalette(mainActivityInterface.getPalette());
+            prevFAB.setPalette(mainActivityInterface.getPalette());
+            prev.setPalette(mainActivityInterface.getPalette());
+            next.setPalette(mainActivityInterface.getPalette());
             layout.setAlpha(buttonAlpha);
         });
     }

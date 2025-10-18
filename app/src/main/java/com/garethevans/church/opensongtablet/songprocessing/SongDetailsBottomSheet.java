@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetSongDetailsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
+public class SongDetailsBottomSheet extends BottomSheetCommon {
 
     private BottomSheetSongDetailsBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -31,20 +34,6 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,6 +41,9 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
 
         myView.dialogHeading.setText(getString(R.string.information));
         myView.dialogHeading.setClose(this);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
 
         // Set up views
         setupViews();

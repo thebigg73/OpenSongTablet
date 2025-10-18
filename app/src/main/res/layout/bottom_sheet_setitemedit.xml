@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/edit_set_item"
-        android:paddingBottom="4dp">
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/setItemEditLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/editVariation"
@@ -28,10 +28,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/variation_info"
                 android:text="@string/variation" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -41,6 +41,7 @@
                 android:id="@+id/editFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:hint="@string/folder" />
 
             <LinearLayout

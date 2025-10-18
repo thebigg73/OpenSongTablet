@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainpage"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,7 +18,8 @@
             android:id="@+id/page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/firstRunWebHelp"
@@ -27,11 +29,11 @@
                 android:layout_gravity="end"
                 android:visibility="gone"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/firstRun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/first_run" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
@@ -39,33 +41,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/current_location"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="4dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/current_location" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/setStorage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
-                android:padding="16dp"
                 android:text="@string/storage_change"
                 app:backgroundTint="@color/red" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/findStorage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
-                android:padding="16dp"
                 android:text="@string/find_existing"
                 app:backgroundTint="@color/darkyellow" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/previousStorageTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +70,7 @@
                 android:text="@string/no_previous_found"
                 android:visibility="gone" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/previousStorageHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,7 +91,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/startApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,13 +104,13 @@
         android:visibility="visible"
         app:backgroundTint="@color/green" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/infoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/information"
-        app:srcCompat="@drawable/information"
+        android:src="@drawable/information"
         app:useCompatPadding="true" />
 </RelativeLayout>

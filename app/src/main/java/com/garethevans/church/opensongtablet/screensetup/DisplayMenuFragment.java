@@ -39,6 +39,8 @@ public class DisplayMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayBinding.inflate(inflater,container,false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
         prepareStrings();
 
         // Set defaults

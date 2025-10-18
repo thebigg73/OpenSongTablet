@@ -14,13 +14,9 @@ import android.os.BatteryManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
 
 public class BatteryStatus extends BroadcastReceiver {
 
@@ -32,7 +28,7 @@ public class BatteryStatus extends BroadcastReceiver {
     private int batteryDialThickness;
     private final int toolbarHeight;
     private boolean batteryTextOn, batteryDialOn;
-    private final TextView batteryCharge;
+    private final MyMaterialSimpleTextView batteryCharge;
     private final ImageView batteryImage;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
@@ -41,7 +37,7 @@ public class BatteryStatus extends BroadcastReceiver {
         void setUpBatteryMonitor();
     }
 
-    public BatteryStatus(Context c, ImageView batteryImage, TextView batteryCharge, int toolbarHeight) {
+    public BatteryStatus(Context c, ImageView batteryImage, MyMaterialSimpleTextView batteryCharge, int toolbarHeight) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         this.batteryImage = batteryImage;
@@ -95,6 +91,7 @@ public class BatteryStatus extends BroadcastReceiver {
         batteryCharge.setTextSize(batteryTextSize);
     }
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
@@ -123,6 +120,7 @@ public class BatteryStatus extends BroadcastReceiver {
 
                 batteryCharge.setTextSize(batteryTextSize);
                 batteryCharge.setText(chargeText);
+                batteryCharge.setTextColor(mainActivityInterface.getPalette().textColor);
             });
         }
 
@@ -151,14 +149,14 @@ public class BatteryStatus extends BroadcastReceiver {
             //BitmapDrawable drawable = new BitmapDrawable(c.getResources(), bmp);
 
             // If less than 15% battery, draw the circle in red
-            int color = MaterialColors.getColor(c, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(c,R.color.dark_color));
+            int color = mainActivityInterface.getPalette().textColor;
             if (charge > 10 && charge < 16) {
-                color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorSecondaryVariant);
+                color = mainActivityInterface.getPalette().hintColor;
             } else if (charge <= 10) {
-                color = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.errorTextColor);
+                color = mainActivityInterface.getPalette().errorColor;
             }
 
-            int bgcolor = MaterialColors.getColor(batteryImage, com.google.android.material.R.attr.colorSecondary);
+            int bgcolor = mainActivityInterface.getPalette().secondary;
             if (isCharging) {
                 bgcolor = 0xff88ff88;
             }

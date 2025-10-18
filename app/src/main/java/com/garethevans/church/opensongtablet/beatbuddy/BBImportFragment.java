@@ -64,6 +64,9 @@ public class BBImportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsBeatbuddyImportBinding.inflate(inflater, container, false);
 
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.importBBProgress);
+
         prepareStrings();
 
         // Check if previous file exists

@@ -13,7 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/padCurrent"
@@ -22,7 +23,8 @@
                 android:text="@string/pad"
                 android:hint="@string/actions_current_song"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/padCustom"
@@ -31,7 +33,8 @@
                 android:text="@string/custom"
                 android:hint="@string/pad_custom_short"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/padSettings"
@@ -40,17 +43,18 @@
                 android:text="@string/settings"
                 android:hint="@string/pad_settings_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/startStopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/start_stop_pad"
-        app:srcCompat="@drawable/play"
+        android:src="@drawable/play"
         app:useCompatPadding="false" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

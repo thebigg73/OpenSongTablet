@@ -8,13 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.textview.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 
 public class SetManageViewHolder extends RecyclerView.ViewHolder {
 
     public final LinearLayout itemLayout;
     public final CheckBox checkBox;
-    public final MaterialTextView modifiedDate, itemName;
+    public final MyMaterialSimpleTextView modifiedDate, itemName;
 
     public SetManageViewHolder(@NonNull View itemView) {
         super(itemView);

@@ -18,9 +18,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/searchOnline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,7 +82,7 @@
                     android:layout_weight="1"
                     android:hint="@string/pad" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/loop"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -92,8 +93,8 @@
                     android:layout_weight="1"
                     android:text="@string/loop" />
             </LinearLayout>
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -125,7 +126,7 @@
                     android:hint="@string/time_signature" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/tapTempo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,8 +134,8 @@
                 android:layout_marginBottom="16dp"
                 android:padding="16dp"
                 android:text="@string/tap_tempo" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/preferredInstrument"
@@ -143,9 +144,10 @@
                 android:layout_marginBottom="8dp"
                 android:hint="@string/instrument"
                 android:text="@string/use_default"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -169,7 +171,7 @@
                     android:inputType="number"
                     app:suffixText="m" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -196,10 +198,10 @@
                     android:inputType="number"
                     app:suffixText="s" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/helperText"
                 style="@style/helperText"
                 android:layout_width="match_parent"
@@ -234,7 +236,7 @@
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

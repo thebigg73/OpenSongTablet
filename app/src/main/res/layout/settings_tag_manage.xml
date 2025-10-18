@@ -1,110 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
 
-    <include
-        android:id="@+id/filterButtons"
-        layout="@layout/menu_filter_buttons"/>
-
-    <LinearLayout
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <include
-                android:id="@+id/filters"
-                layout="@layout/menu_songs_filters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp" />
-        </ScrollView>
-        <TableRow style="@style/DividerLine" />
+        <include
+            android:id="@+id/filterButtons"
+            layout="@layout/menu_filter_buttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:minHeight="600dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tag_to_use"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_height="wrap_content">
+
+                <include
+                    android:id="@+id/filters"
+                    layout="@layout/menu_songs_filters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp" />
+            </ScrollView>
+
+            <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/thisTag"
-                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/tag"
-                android:padding="16dp" />
+                android:minHeight="600dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/addNewTag"
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tag_to_use" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/thisTag"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/tag" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/addNewTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/new_category"
+                        android:src="@drawable/plus"
+                        app:fabSize="mini" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/searchThisTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/search"
+                        android:src="@drawable/filter_on"
+                        app:fabSize="mini" />
+                </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+                    android:id="@+id/renameThisTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/plus"
-                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/rename"
+                    android:text="@string/rename"
+                    android:visibility="visible"
                     app:fabSize="mini"
-                    android:contentDescription="@string/new_category"/>
+                    app:icon="@drawable/set_edit" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/searchThisTag"
-                    android:layout_width="wrap_content"
+                <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/filter_on"
-                    app:fabSize="mini"
-                    android:contentDescription="@string/search"/>
+                    android:padding="16dp"
+                    android:text="@string/tag_add_remove" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/songList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp" />
+
             </LinearLayout>
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/renameThisTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                app:icon="@drawable/set_edit"
-                android:text="@string/rename"
-                app:fabSize="mini"
-                android:contentDescription="@string/rename"
-                android:visibility="visible"/>
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tag_add_remove"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/songList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

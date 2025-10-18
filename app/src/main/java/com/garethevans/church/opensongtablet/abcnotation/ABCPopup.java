@@ -2,7 +2,12 @@ package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -11,18 +16,22 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
 import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 // Virtually identical to the sticky popup, but with its own positions
 public class ABCPopup {
     private PopupWindow popupWindow;
-    private FloatingActionButton closeButton;
+    private MyFloatingActionButton closeButton;
     private FloatWindow floatWindow;
     private int posX;
     private int posY;
@@ -112,14 +121,27 @@ public class ABCPopup {
         floatWindow.setPadding(16,16,16,16);
 
         // Add the close button
-        closeButton = new FloatingActionButton(c);
+        closeButton = new MyFloatingActionButton(c);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         buttonParams.gravity = Gravity.END;
         closeButton.setLayoutParams(buttonParams);
         closeButton.setSize(FloatingActionButton.SIZE_MINI);
-        closeButton.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.close,null));
+        Drawable closeIcon =  ContextCompat.getDrawable(c,R.drawable.close);
+        if (closeIcon!=null) {
+            closeIcon = DrawableCompat.wrap(closeIcon).mutate();          // 🔑 mutate to avoid affecting other instances
+            closeIcon.setColorFilter(mainActivityInterface.getMyThemeColors().getStickyTextColor(), PorterDuff.Mode.SRC_IN);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            closeButton.setElevation(0);
+            closeButton.setCompatElevation(0f);     // removes shadow across states
+            ViewCompat.setElevation(closeButton, 0f);
+            closeButton.setStateListAnimator(null);
+        }
+        closeButton.setImageDrawable(closeIcon);
+        closeButton.setBackgroundColor(Color.TRANSPARENT);
+        closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+
         floatWindow.addView(closeButton);
 
         // Now the WebView for the music score

@@ -13,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/beatBuddyChannel"
@@ -26,8 +26,8 @@
                 android:valueTo="16"
                 app:adjustable="true"
                 android:stepSize="1" />
-            <TableRow style="@style/DividerLine" />
-
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/midiDelay"
@@ -39,7 +39,8 @@
                 android:valueTo="1000"
                 app:adjustable="true"
                 android:stepSize="100" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/beatBuddyUseImported"
@@ -47,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/imported_values"
                 android:hint="@string/beat_buddy_import_project_info"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/beat_buddy_dynamic_messages"
@@ -64,7 +65,8 @@
                 android:text="@string/beat_buddy_auto"
                 android:hint="@string/beat_buddy_auto_info"
                 app:size="large" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,9 +124,10 @@
                     android:layout_marginBottom="8dp"
                     android:hint="@string/time_signature" />
             </LinearLayout>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/midi_messages_static"
@@ -137,7 +140,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/midi_auto"
                 android:hint="@string/midi_messages"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/includeSong"
@@ -211,7 +215,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/songFolderError"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -220,7 +224,7 @@
                     android:textSize="@dimen/text_small"
                     android:visibility="gone" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/songNumberError"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -230,15 +234,15 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/songBrowser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:text="@string/search" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/includeVolume"
@@ -258,8 +262,8 @@
                 android:visibility="gone"
                 app:adjustable="true"
                 android:stepSize="1" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/includeHPVolume"
@@ -279,8 +283,8 @@
                 android:visibility="gone"
                 app:adjustable="true"
                 android:stepSize="1" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/includeTempo"
@@ -300,8 +304,8 @@
                 android:visibility="gone"
                 app:adjustable="true"
                 android:stepSize="1" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/includeDrumKit"
@@ -321,7 +325,8 @@
                 android:visibility="gone"
                 app:adjustable="true"
                 android:stepSize="1" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -329,7 +334,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/testSongCode"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -337,7 +342,7 @@
                     android:text="@string/midi_test"
                     app:icon="@drawable/information" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/addMidiCommands"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

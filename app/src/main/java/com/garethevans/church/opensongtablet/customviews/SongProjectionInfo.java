@@ -25,7 +25,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongProjectionInfo extends LinearLayoutCompat {
 
     private final LinearLayout castSongInfo, contentLayout;
-    private final TextView songTitle, songAuthor, songCopyright, songCCLI, capoIcon;
+    private final MyMaterialSimpleTextView songTitle, songAuthor, songCopyright, songCCLI, capoIcon;
     private final TextClock textClock;
     private final ImageView miniLogo;
     private int viewHeight = 0;
@@ -114,7 +114,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             capoIcon.setVisibility(View.VISIBLE);
         }
     }
-    private void setText(TextView textView, String text) {
+    private void setText(MyMaterialSimpleTextView textView, String text) {
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
         } else {
@@ -198,7 +198,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         updateClockSettings(mainActivityInterface);
     }
 
-    public String getTextViewString(TextView textView) {
+    public String getTextViewString(MyMaterialSimpleTextView textView) {
         if (textView.getText()!=null) {
             return textView.getText().toString();
         } else {
@@ -217,7 +217,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         return viewIsSet(songTitle) && viewIsSet(songAuthor) && viewIsSet(songCopyright) && viewIsSet(songCCLI);
     }
 
-    private boolean viewIsSet(TextView textView) {
+    private boolean viewIsSet(MyMaterialSimpleTextView textView) {
         return textView.getText()!=null || textView.getVisibility()==View.GONE;
     }
 

@@ -8,13 +8,12 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.textview.MaterialTextView;
 
 public class MyCheckbox extends LinearLayout {
 
     private CheckBox checkBox;
-    private MaterialTextView textView;
-    private MaterialTextView extraText;
+    private MyMaterialSimpleTextView textView;
+    private MyMaterialSimpleTextView extraText;
 
     public MyCheckbox(Context context) {
         super(context);

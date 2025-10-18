@@ -1,24 +1,25 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.color.MaterialColors;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
 
     private final PresentationOrderAdapter presentationOrderAdapter;
     private ColorStateList prevColor;
+    private final MainActivityInterface mainActivityInterface;
 
-    PresoOrderItemTouchHelper(PresentationOrderAdapter presentationOrderAdapter) {
+    PresoOrderItemTouchHelper(Context c, PresentationOrderAdapter presentationOrderAdapter) {
         this.presentationOrderAdapter = presentationOrderAdapter;
+        mainActivityInterface = (MainActivityInterface) c;
     }
 
     @Override
@@ -61,8 +62,8 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (prevColor==null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimaryFixed,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary))));
-                prevColor = ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(),com.google.android.material.R.attr.colorPrimaryFixed,viewHolder.itemView.getContext().getResources().getColor(R.color.dark_primary)));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+                prevColor = ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant);
             } else {
                 viewHolder.itemView.setBackgroundTintList(prevColor);
             }
@@ -77,7 +78,7 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
                 prevColor = viewHolder.itemView.getBackgroundTintList();
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_secondary))));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             }
         }
     }

@@ -53,7 +53,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
@@ -82,9 +82,10 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/file_type" />
@@ -110,7 +111,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/export"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,7 +122,7 @@
         app:icon="@drawable/share"
         app:useCompatPadding="true" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/print"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -136,7 +137,7 @@
         android:id="@+id/scrim"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/scrimBackground"
+        style="@style/ScrimBackground"
         android:visibility="gone"
         app:elevation="64dp" />
 

@@ -67,6 +67,9 @@ public class ImportOptionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsImportBinding.inflate(inflater,container,false);
 
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         prepareStrings();
 
         // Set up launcher

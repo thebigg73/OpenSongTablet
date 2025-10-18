@@ -1,28 +1,24 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMidiSliderSettingsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class MidiControllerBottomSheet extends BottomSheetDialogFragment {
+public class MidiControllerBottomSheet extends BottomSheetCommon {
 
     // This bottom sheet allows the user to select the MIDI controller to assign to the MIDI board slider
 
@@ -42,27 +38,6 @@ public class MidiControllerBottomSheet extends BottomSheetDialogFragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         getValues(context);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-
-        dialog.setOnShowListener(dialog1 -> {
-            try {
-                BottomSheetDialog d = (BottomSheetDialog) dialog1;
-                FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                if (bottomSheet != null) {
-                    BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                    BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        return dialog;
     }
 
     // Default contructor for fragment called if there is an issue or badly called

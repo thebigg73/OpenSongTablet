@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,12 +11,12 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.button.MaterialButton;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 
 public class ThemeItemColor extends LinearLayout {
 
     private final View colorSwatch;
-    private final MaterialButton labelText;
+    private final MyMaterialButton labelText;
 
     public ThemeItemColor(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -36,6 +37,8 @@ public class ThemeItemColor extends LinearLayout {
         typedArray.recycle();
 
         labelText.setClickable(false);
+
+        setPalette(new Palette(context));
     }
 
     public void setText(String text) {
@@ -44,5 +47,10 @@ public class ThemeItemColor extends LinearLayout {
 
     public void setColor(int color) {
         colorSwatch.setBackgroundColor(color);
+    }
+
+    public void setPalette(Palette palette) {
+        labelText.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        labelText.setTextColor(palette.textColor);
     }
 }

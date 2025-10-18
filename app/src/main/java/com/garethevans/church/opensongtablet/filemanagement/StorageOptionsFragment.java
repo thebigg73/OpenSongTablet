@@ -43,6 +43,8 @@ public class StorageOptionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsStorageOptionsBinding.inflate(inflater, container, false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        
         prepareStrings();
         mainActivityInterface.updateToolbar(storage_string);
 

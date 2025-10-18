@@ -25,7 +25,7 @@
         android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:textColor="?attr/colorOnPrimary"
             tools:text="Main text" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/hintView"
             android:textSize="@dimen/text_small"
             android:layout_width="match_parent"

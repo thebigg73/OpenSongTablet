@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:labelFor="@+id/textView"
-        style="@style/ExposedDropDownLayoutOutline"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         tools:hint="Hint">
-
+<!--style="@style/ExposedDropDownLayoutOutline"-->
         <AutoCompleteTextView
             android:id="@+id/textView"
             android:layout_width="match_parent"

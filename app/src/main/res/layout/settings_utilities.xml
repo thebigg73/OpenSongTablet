@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/soundMeter"
@@ -21,7 +22,8 @@
                 android:text="@string/sound_level_meter"
                 android:hint="@string/sound_level_meter_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/tuner"
@@ -30,7 +32,8 @@
                 android:text="@string/tuner"
                 android:hint="@string/tuner_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/aeros"
@@ -39,7 +42,8 @@
                 android:text="@string/aeros"
                 android:hint="@string/aeros_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/beatBuddy"
@@ -48,7 +52,8 @@
                 android:text="@string/beat_buddy"
                 android:hint="@string/beat_buddy_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/voiceLive"
@@ -57,7 +62,8 @@
                 android:text="@string/voicelive"
                 android:hint="@string/voicelive_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/audioRecorder"
@@ -66,7 +72,8 @@
                 android:text="@string/audio_recorder"
                 android:hint="@string/audio_recorder_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/audioPlayer"
@@ -75,7 +82,8 @@
                 android:text="@string/audio_player"
                 android:hint="@string/audio_player_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/mutitrackPlayer"
@@ -84,7 +92,8 @@
                 android:text="@string/multitrack_player"
                 android:hint="@string/multitrack_player_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/databaseOptions"
@@ -93,7 +102,8 @@
                 android:text="@string/database_management"
                 android:hint="@string/database_management_info"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
         </LinearLayout>
     </ScrollView>

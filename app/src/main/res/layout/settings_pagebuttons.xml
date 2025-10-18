@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="200dp">
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/opacity"
@@ -41,10 +41,10 @@
                 android:layout_marginBottom="16dp"
                 android:text="@string/autohide_page_button"
                 android:hint="@string/info_text_autohide_info"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button1Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,10 +98,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button2Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -155,10 +155,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button3Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,10 +212,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button4Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -269,10 +269,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button5Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -326,10 +326,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button6Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -383,10 +383,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button7Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -440,10 +440,10 @@
                     android:paddingBottom="8dp"
                     android:text="@string/action_long_press" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/button8Active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

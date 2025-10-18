@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="128dp">
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <LinearLayout
                 android:id="@+id/songsLayout"
@@ -29,13 +29,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/songs"
                     android:textSize="@dimen/text_xxlarge" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/songsNoChangesRequired"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sync_items_not_on_local" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/newSongsAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sync_local_items_older" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/updateSongsAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -84,8 +84,8 @@
                         android:text="@string/sync_update_local_items"
                         app:icon="@drawable/sync" />
 
-                    <TableRow
-                        style="@style/DividerLine"
+                    <com.garethevans.church.opensongtablet.customviews.MyDivider
+                        style="@style/MyDividerLine"
                         android:layout_marginTop="32dp" />
                 </LinearLayout>
 
@@ -101,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sync_delete_local_not_in_remote_info" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/deleteSongsAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -119,13 +119,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/set_lists"
                     android:textSize="@dimen/text_xxlarge" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/setsNoChangesRequired"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sync_items_not_on_local" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/newSetsAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sync_local_items_older" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/updateSetsAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sync_delete_local_not_in_remote_info" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/deleteSetsAction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

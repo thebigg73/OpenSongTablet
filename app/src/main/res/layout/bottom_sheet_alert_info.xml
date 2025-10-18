@@ -17,7 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <LinearLayout
                 android:id="@+id/appUpdated"
@@ -25,13 +26,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="@string/latest_updates" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/showUpdates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,8 +40,9 @@
                     android:padding="16dp"
                     android:text="@string/information" />
 
-                <TableRow android:id="@+id/updatedDivider"
-                    style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    android:id="@+id/updatedDivider"
+                    style="@style/MyDividerLine" />
             </LinearLayout>
 
             <LinearLayout
@@ -49,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
@@ -60,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/ignorePlayServices"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -69,7 +71,7 @@
                         android:padding="16dp"
                         android:text="@string/ignore_warning" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/playServicesInfo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -79,8 +81,9 @@
                         android:text="@string/play_services_how" />
                 </LinearLayout>
 
-                <TableRow android:id="@+id/playServicesDivider"
-                    style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    android:id="@+id/playServicesDivider"
+                    style="@style/MyDividerLine" />
             </LinearLayout>
 
             <LinearLayout
@@ -89,44 +92,44 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/backupDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:text="@string/promptbackup" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/backupNow_Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:text="@string/backup_now" />
 
-                <TableRow android:id="@+id/backupDivider"
-                    style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    android:id="@+id/backupDivider"
+                    style="@style/MyDividerLine" />
             </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/badSongsMoved"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.textview.MaterialTextView
+            <LinearLayout
+                android:id="@+id/badSongsMoved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/bad_songs_found"/>
+                android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/importMultiple"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/import_bulk" />
-        </LinearLayout>
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/bad_songs_found" />
 
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
+                    android:id="@+id/importMultiple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/import_bulk" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

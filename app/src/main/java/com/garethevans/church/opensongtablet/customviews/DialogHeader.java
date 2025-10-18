@@ -5,22 +5,20 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "DialogHeader";
-    private final TextView textView;
-    private final FloatingActionButton webHelp, closeButtonDialog, minimiseButtonDialog;
+    private final MyMaterialSimpleTextView textView;
+    private final MyFloatingActionButton webHelp, closeButtonDialog, minimiseButtonDialog;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
@@ -49,6 +47,8 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         }
 
         a.recycle();
+
+        setPalette(new Palette(context));
     }
 
     public void setText(String titleText) {
@@ -56,7 +56,6 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
             textView.post(() -> {
                 try {
                     textView.setText(titleText);
-                    textView.setTextColor(MaterialColors.getColor(textView.getContext(), com.google.android.material.R.attr.colorOnPrimary, getResources().getColor(R.color.dark_color)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -117,11 +116,20 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    public FloatingActionButton getCloseButton() {
+    public MyFloatingActionButton getCloseButton() {
         return closeButtonDialog;
     }
 
-    public FloatingActionButton getMinimiseButton() {
+    public MyFloatingActionButton getMinimiseButton() {
         return minimiseButtonDialog;
+    }
+
+    public void setPalette(Palette palette) {
+        if (palette!=null) {
+            textView.setTextColor(palette.textColor);
+            closeButtonDialog.setColorFilter(palette.textColor);
+            minimiseButtonDialog.setColorFilter(palette.textColor);
+            webHelp.setColorFilter(palette.textColor);
+        }
     }
 }

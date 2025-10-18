@@ -34,7 +34,8 @@
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="8dp" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <CheckBox
                 android:id="@+id/selectAllCheckBox"
@@ -43,7 +44,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/select_all" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -57,8 +59,8 @@
                     android:orientation="vertical" />
             </ScrollView>
         </LinearLayout>
-
-        <TableRow style="@style/DividerLine" />
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
 
         <LinearLayout
             android:id="@+id/bottomStuff"
@@ -76,7 +78,7 @@
                 android:padding="16dp"
                 android:text="@string/move_to_folder" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/progressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center_vertical">
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/songtitleTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:layout_alignParentStart="true"/>
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/songCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:visibility="visible" />
     </RelativeLayout>
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/setCheckTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

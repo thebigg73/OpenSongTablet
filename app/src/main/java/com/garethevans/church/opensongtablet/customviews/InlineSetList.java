@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
@@ -535,10 +534,10 @@ public class InlineSetList extends RecyclerView {
 
     private class InlineSetItemViewHolder extends RecyclerView.ViewHolder {
 
-        final MaterialTextView vItem;
-        final MaterialTextView vSongTitle;
-        final MaterialTextView vSongFilename;
-        final MaterialTextView vSongFolder;
+        final MyMaterialSimpleTextView vItem;
+        final MyMaterialSimpleTextView vSongTitle;
+        final MyMaterialSimpleTextView vSongFilename;
+        final MyMaterialSimpleTextView vSongFolder;
         final RelativeLayout vCard;
         final CardView cardView;
 

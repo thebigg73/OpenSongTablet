@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 
 public interface EditSongFragmentInterface {
-    ExtendedFloatingActionButton getSaveButton();
+    MyExtendedFloatingActionButton getSaveButton();
 }

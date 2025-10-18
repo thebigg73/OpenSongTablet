@@ -26,10 +26,11 @@
             <com.garethevans.church.opensongtablet.customviews.MyFAB
                 android:id="@+id/custom1Button"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
                 app:fab_padding="16dp"
                 android:contentDescription="@string/quicklaunch_button1"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFAB
                 android:id="@+id/custom2Button"

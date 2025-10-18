@@ -705,16 +705,25 @@ public class Midi {
         // This unbonds so pairing is reinitialised next time
         if (bluetoothDevice!=null) {
             try {
+                /*
+                I think this removed all devices
                 Method m = bluetoothDevice.getClass()
                         .getMethod("removeBond", (Class[]) null);
                 m.invoke(bluetoothDevice, (Object[]) null);
+                */
+
+
+                Method m = bluetoothDevice.getClass()
+                        .getMethod("removeBond");
+                boolean result = (boolean) m.invoke(bluetoothDevice);
+                Log.d(TAG, "removeBond() via reflection result = " + result);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
             bluetoothDevice = null;
         }
-
     }
+
     public void tryPairBluetoothLE() {
 
         // This bonds so pairing is requested
@@ -728,7 +737,6 @@ public class Midi {
         }
 
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener() {
@@ -1079,8 +1087,20 @@ public class Midi {
         return bluetoothManager;
     }
 
+    private boolean isAirTurn(BluetoothDevice device) {
+        boolean isAirTurn = false;
+        if (device!=null) {
+            String deviceName = device.getName();
+            if (deviceName != null) {
+                isAirTurn = deviceName.toLowerCase().contains("airturn");
+            }
+        }
+        return isAirTurn;
+    }
+
     // Scan for already connected Bluetooth MIDI devices
     public void setupBluetoothManager() {
+        Log.d(TAG,"disconnecting MIDI devices");
         if (activity!=null && Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
             Object obj = activity.getSystemService(Context.BLUETOOTH_SERVICE);
             if (obj!=null) {
@@ -1106,7 +1126,7 @@ public class Midi {
                         ParcelUuid[] uuids = device.getUuids();
                         if (uuids != null) {
                             for (ParcelUuid uuid : uuids) {
-                                if (uuid.toString().equalsIgnoreCase(uuidBle)) {
+                                if (uuid.toString().equalsIgnoreCase(uuidBle) && !isAirTurn(device)) {
                                     // This is a MIDI device!
                                     if (midiDevice == null &&
                                             device.getBondState() == BluetoothDevice.BOND_BONDED) {

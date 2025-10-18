@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import androidx.core.graphics.BitmapCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
@@ -317,7 +317,7 @@ public class ChordDisplayProcessing {
         // Set the chord name
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
-        TextView chordNameTextView = getChordName(chordName);
+        MyMaterialSimpleTextView chordNameTextView = getChordName(chordName);
         if (chordNameTextView!=null && chordString!=null) {
             chordNameTextView.setTag("chordNameTextView");
 
@@ -360,14 +360,14 @@ public class ChordDisplayProcessing {
             for (int fret = 0; fret < maxFrets; fret++) {
                 if (fret == 0) {
                     // We should show the string markers (x, o or "")
-                    TextView spacer = new TextView(c);
+                    MyMaterialSimpleTextView spacer = new MyMaterialSimpleTextView(c);
                     setColumnIndex(spacer, 0);
                     if (!fretLabel) {
                         spacer.setVisibility(View.GONE);
                     }
                     chordTable.addView(spacer);
                     for (int pos = 0; pos < 6; pos++) {
-                        @SuppressLint("InflateParams") TextView markerTextView = inflater.inflate(R.layout.view_string_marker, null).findViewById(R.id.stringMarker);
+                        @SuppressLint("InflateParams") MyMaterialSimpleTextView markerTextView = inflater.inflate(R.layout.view_string_marker, null).findViewById(R.id.stringMarker);
                         markerTextView.setGravity(Gravity.CENTER_HORIZONTAL);
                         markerTextView.setText(getStringTopMarker(markerTextView, stringPosArray, pos));
                         setColumnIndex(markerTextView, pos + 1);
@@ -381,7 +381,7 @@ public class ChordDisplayProcessing {
                 guitarFret.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
                 // Start with the fret label if any
-                TextView markerTextView = (TextView) inflater.inflate(R.layout.view_string_marker, null);
+                MyMaterialSimpleTextView markerTextView = (MyMaterialSimpleTextView) inflater.inflate(R.layout.view_string_marker, null);
                 if (fret == 0 && fretLabel) {
                     markerTextView.setText(fretMarker);
                 } else if (fretLabel) {
@@ -474,9 +474,9 @@ public class ChordDisplayProcessing {
             if (v!=null) {
                 // Set the chord text colour to match the theme
                 if (capochords) {
-                    ((TextView) v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
+                    ((MyMaterialSimpleTextView) v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
                 } else {
-                    ((TextView) v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+                    ((MyMaterialSimpleTextView) v.findViewWithTag("chordNameTextView")).setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
                 }
                 v.setPadding(0,0,0,0);
                 v.getChildAt(0).setPadding(0,0,0,0);
@@ -543,17 +543,18 @@ public class ChordDisplayProcessing {
         return linearLayout;
     }
 
-    private TextView getChordName(String chordName) {
+    private MyMaterialSimpleTextView getChordName(String chordName) {
         chordName = chordName.replace("$", "");
         if (isValidChord(chordName)) {
             chordName = mainActivityInterface.getTranspose().convertToPreferredChord(chordName);
-            TextView textView = new TextView(c);
+            MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             textView.setLayoutParams(layoutParams2);
             textView.setGravity(Gravity.CENTER);
             textView.setTextSize(24);
             textView.setText(chordName);
+            textView.setTextColor(mainActivityInterface.getPalette().textColor);
             return textView;
         } else {
             return null;
@@ -568,7 +569,7 @@ public class ChordDisplayProcessing {
         return chordTable;
     }
 
-    private String getStringTopMarker(TextView textView, ArrayList<Integer> stringPosArray, int position) {
+    private String getStringTopMarker(MyMaterialSimpleTextView textView, ArrayList<Integer> stringPosArray, int position) {
         if (stringPosArray.size()>position) {
             if (stringPosArray.get(position) == -1) {
                 return "x";
@@ -615,7 +616,7 @@ public class ChordDisplayProcessing {
         // Set the chord name
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
-        TextView chordNameTextView = getChordName(chordName);
+        MyMaterialSimpleTextView chordNameTextView = getChordName(chordName);
         if (chordNameTextView!=null && chordString!=null) {
             chordNameTextView.setTag("chordNameTextView");
             chordLayout.addView(chordNameTextView);

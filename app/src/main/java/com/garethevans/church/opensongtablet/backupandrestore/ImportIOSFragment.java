@@ -74,6 +74,9 @@ public class ImportIOSFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsImportIosBinding.inflate(inflater, container, false);
 
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         prepareStrings();
 
         webAddress = website_import_onsongbackup;

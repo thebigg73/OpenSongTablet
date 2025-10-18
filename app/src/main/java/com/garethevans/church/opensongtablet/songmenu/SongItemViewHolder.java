@@ -4,17 +4,17 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 
 public class SongItemViewHolder extends RecyclerView.ViewHolder {
 
-    final TextView itemTitle;
-    final TextView itemAuthor;
-    final TextView itemFolderNamePair;
+    final MyMaterialSimpleTextView itemTitle;
+    final MyMaterialSimpleTextView itemAuthor;
+    final MyMaterialSimpleTextView itemFolderNamePair;
     final CheckBox itemChecked;
     final FrameLayout itemCheckedFrame;
     final LinearLayout itemCard;

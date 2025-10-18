@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/headerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,10 +23,10 @@
         android:textSize="22sp"
         app:drawableStartCompat="@drawable/logo"
         app:drawableTint="@color/dark_primary"/>
+    <com.garethevans.church.opensongtablet.customviews.MyDivider
+        style="@style/MyDividerLine"/>
 
-    <TableRow style="@style/DividerLine" />
-
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/locationText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:stretchMode="columnWidth"
             android:padding="12dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

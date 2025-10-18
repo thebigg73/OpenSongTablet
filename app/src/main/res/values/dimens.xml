@@ -49,6 +49,10 @@
     <dimen name="bottom_sheet_elevation">16dp</dimen>
 
     <!-- To allow scrollviews to let their content clear any buttons, navigation at the bottom -->
-    <dimen name="extra_scroll_space">120dp</dimen>
+    <dimen name="extra_scroll_space">16dp</dimen>
+    <dimen name="extra_scroll_space_large">100dp</dimen>
+    <dimen name="divider_height">2dp</dimen>
+    <dimen name="divider_padding">32dp</dimen>
+    <dimen name="box_padding">32dp</dimen>
 
 </resources>

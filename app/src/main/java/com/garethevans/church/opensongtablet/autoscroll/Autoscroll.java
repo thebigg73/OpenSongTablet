@@ -9,13 +9,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.customviews.OnScreenInfo;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -40,7 +40,7 @@ public class Autoscroll {
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView myRecyclerView;
-    private final MaterialTextView autoscrollTimeText, autoscrollTotalTimeText;
+    private final MyMaterialSimpleTextView autoscrollTimeText, autoscrollTotalTimeText;
     private ScheduledExecutorService scheduledExecutorService;
     private Runnable scrollRunnable;
     private ScheduledFuture<?> task;
@@ -49,8 +49,8 @@ public class Autoscroll {
     private int inlinePauseStartTime, inlinePauseEndTime;
 
     // Initialise the autoscroll class from MainActivity and receive the time box vierws
-    public Autoscroll(Context c, OnScreenInfo onScreenInfo, MaterialTextView autoscrollTimeText,
-                      MaterialTextView autoscrollTotalTimeText, LinearLayout autoscrollView) {
+    public Autoscroll(Context c, OnScreenInfo onScreenInfo, MyMaterialSimpleTextView autoscrollTimeText,
+                      MyMaterialSimpleTextView autoscrollTotalTimeText, LinearLayout autoscrollView) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         this.onScreenInfo = onScreenInfo;
@@ -170,7 +170,7 @@ public class Autoscroll {
 
 
     // This is called from both the Autoscroll settings and bottom sheet to activate the link audio button
-    public void checkLinkAudio(MaterialButton fromLinkButton, MyMaterialEditText minText, MyMaterialEditText secText,
+    public void checkLinkAudio(MyMaterialButton fromLinkButton, MyMaterialEditText minText, MyMaterialEditText secText,
                                MyMaterialEditText delayText, final int delay) {
         // If link audio is set and time is valid get it and set the button action
         if (mainActivityInterface.getSong().getLinkaudio()!=null &&

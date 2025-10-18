@@ -12,9 +12,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/infoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,9 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/rootFolder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,14 +40,14 @@
                     android:padding="12dp"
                     android:text="@string/app_name" />
 
-                <ImageView
+                <com.garethevans.church.opensongtablet.customviews.MyImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/scroll_down"
                     app:srcCompat="@drawable/arrow_down" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/mainFolder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
                     android:padding="12dp"
                     android:text="@string/mainfoldername" />
 
-                <ImageView
+                <com.garethevans.church.opensongtablet.customviews.MyImageView
                     android:id="@+id/subFolderArrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

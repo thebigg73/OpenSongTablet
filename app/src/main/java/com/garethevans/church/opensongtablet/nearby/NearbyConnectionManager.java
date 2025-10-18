@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyConnectionsManagementInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
@@ -27,7 +28,6 @@ import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
 import com.google.android.gms.nearby.connection.Strategy;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -868,7 +868,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
         // Timer for stop of discovery and advertise (only one can happen at a time)
         countdown = 10;
     }
-    public void setTimer(boolean advertise, MaterialButton materialButton) {
+    public void setTimer(boolean advertise, MyMaterialButton materialButton) {
         clearTimer();
         timerTask = new TimerTask() {
             @Override

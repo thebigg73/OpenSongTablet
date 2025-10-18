@@ -11,19 +11,19 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textview.MaterialTextView;
 
 public class SetListItemViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener,
         GestureDetector.OnGestureListener{
     // Identify the views
     final MaterialCardView cardView;
-    final MaterialTextView cardItem, cardTitle, cardFilename, cardFolder;
+    final MyMaterialSimpleTextView cardItem, cardTitle, cardFilename, cardFolder;
     final RelativeLayout cardLayout;
-    final FloatingActionButton cardEdit;
+    final MyFloatingActionButton cardEdit;
     private final ItemTouchHelper itemTouchHelper;
     private final SetItemTouchInterface setItemTouchInterface;
     private final MainActivityInterface mainActivityInterface;

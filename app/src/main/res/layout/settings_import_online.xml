@@ -31,14 +31,14 @@
             android:layout_marginTop="16dp"
             android:hint="@string/website" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/songSelectInfo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/song_select_warning_more"/>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
             android:id="@+id/importDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,26 +53,26 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/chordinatorCredit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/chordinator"/>
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/chordinatorCredit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/chordinator"/>
 
-            <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/chordinatorInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/chordinator_info"/>
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/chordinatorInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/chordinator_info"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/clipboardInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/clipboard_info"/>
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/clipboardInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/clipboard_info"/>
         </LinearLayout>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
@@ -83,7 +83,7 @@
             android:text="@string/web_view_desktop"
             android:hint="@string/web_view_desktop_info"/>
 
-        <com.google.android.material.button.MaterialButton
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
             android:id="@+id/searchButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,29 +107,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/backButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/back"
-                    app:srcCompat="@drawable/arrow_left"
+                    android:src="@drawable/arrow_left"
                     app:fabSize="mini"
                     app:useCompatPadding="false" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/closeSearch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|end"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/close"
-                    app:srcCompat="@drawable/close"
+                    android:src="@drawable/close"
                     app:fabSize="mini"
                     app:useCompatPadding="false" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,11 +137,11 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/save"
                     app:fabSize="mini"
-                    app:srcCompat="@drawable/download"
+                    android:src="@drawable/download"
                     app:useCompatPadding="false"
                     tools:ignore="DuplicateClickableBoundsCheck" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/grabText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/text_extract_check"
                     app:fabSize="mini"
-                    app:srcCompat="@drawable/search"
+                    android:src="@drawable/search"
                     app:useCompatPadding="false"
                     tools:ignore="RedundantDescriptionCheck" />
             </FrameLayout>
@@ -159,10 +159,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <WebView
+                <com.garethevans.church.opensongtablet.customviews.SafeWebView
                     android:id="@+id/webView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    style="@style/ThemeOverlay.MaterialComponents"/>
             </FrameLayout>
         </LinearLayout>
 
@@ -189,13 +190,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="96dp">
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
             android:id="@+id/saveFilename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@null"
             app:endIconMode="clear_text"
             android:hint="@string/filename" />
 
@@ -207,18 +207,18 @@
             android:layout_marginTop="16dp"
             android:hint="@string/choose_folder" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/preview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:textSize="@dimen/text_small"
-            android:fontFamily="monospace"
-            android:textColor="@color/lightgrey" />
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:textSize="@dimen/text_small"
+                android:fontFamily="monospace"
+                android:textColor="@color/lightgrey" />
 
         </LinearLayout>
         </ScrollView>
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
             android:id="@+id/saveSong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

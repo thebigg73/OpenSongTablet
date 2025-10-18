@@ -9,13 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsPreviewBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -92,7 +92,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
         if (myView!=null) {
             myView.sideIndex.removeAllViews();
             for (String ab : alphaList) {
-                TextView textView = new TextView(getContext());
+                MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(getContext());
                 textView.setTextSize(20.0f);
                 textView.setText(ab);
                 textView.setPadding(32, 32, 32, 32);

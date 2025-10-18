@@ -16,13 +16,14 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingBottom="@dimen/extra_scroll_space">
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/instrument"
@@ -30,9 +31,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/instrument"
                     android:paddingTop="0dp"
-                    android:paddingBottom="16dp" />
+                    android:paddingBottom="16dp"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/capoChords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,4 +49,12 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -43,6 +45,8 @@ public class LanguageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsLanguageBinding.inflate(inflater, container, false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
         prepareStrings();
 
         // Build the radio group
@@ -62,11 +66,26 @@ public class LanguageFragment extends Fragment {
     private void buildRadioGroup() {
         String languageCode = mainActivityInterface.getPreferences().getMyPreferenceString("language", "en");
         int id;
+        // Define colors for different states
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_checked},   // checked
+                new int[]{-android.R.attr.state_checked}   // unchecked
+        };
+
+        int[] colors = new int[]{
+                mainActivityInterface.getPalette().onPrimary, // checked color
+                mainActivityInterface.getPalette().hintColor  // unchecked color
+        };
+
+        ColorStateList colorStateList = new ColorStateList(states, colors);
+
         for (int x=0; x<languages.length; x++) {
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setText(languages[x].toUpperCase());
+            radioButton.setTextColor(mainActivityInterface.getPalette().textColor);
             radioButton.setId(View.generateViewId());
             radioButton.setTag(languageCodes[x]);
+            CompoundButtonCompat.setButtonTintList(radioButton, colorStateList);
 
             radioButton.setPadding(24,24,24,24);
             myView.languageGroup.addView(radioButton);

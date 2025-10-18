@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:hint="@string/theme_choose" />
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFAB
                     android:id="@+id/resetTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -36,7 +37,6 @@
                     android:contentDescription="@string/reset_colours"
                     app:srcCompat="@drawable/quantum_ic_refresh_white_24"/>
             </LinearLayout>
-
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/invertPDF"
@@ -55,7 +55,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
@@ -103,7 +103,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
@@ -175,7 +175,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/presenterStageMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
@@ -266,7 +266,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
@@ -296,7 +296,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"

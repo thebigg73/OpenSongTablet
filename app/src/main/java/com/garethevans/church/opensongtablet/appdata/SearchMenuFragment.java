@@ -38,6 +38,8 @@ public class SearchMenuFragment extends Fragment {
     public @org.jetbrains.annotations.Nullable View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsSearchMenuBinding.inflate(inflater, container, false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
         prepareStrings();
         setupViews();
         setupListeners();

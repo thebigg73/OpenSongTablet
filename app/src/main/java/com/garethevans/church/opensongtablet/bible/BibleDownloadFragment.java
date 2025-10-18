@@ -61,6 +61,9 @@ public class BibleDownloadFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BibleDownloadBinding.inflate(inflater, container, false);
 
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         prepareStrings();
 
         webAddress = website_bible_download_string;

@@ -18,7 +18,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/extra_scroll_space_large">
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/deviceButton"
@@ -26,7 +27,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/connections_device_name"
                     android:text="@string/connections_device_name" />
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:layout_width="match_parent"
@@ -40,7 +42,7 @@
                     android:orientation="horizontal"
                     android:minHeight="64dp">
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/off"
                         style="@style/LeftButton"
                         app:backgroundTint="?attr/colorSecondary"
@@ -49,7 +51,7 @@
                         android:layout_weight="1"
                         android:text="@string/off" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/host"
                         style="@style/MiddleButton"
                         app:backgroundTint="?attr/colorPrimaryVariant"
@@ -58,7 +60,7 @@
                         android:layout_weight="1"
                         android:text="@string/connections_actashost" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/client"
                         style="@style/RightButton"
                         app:backgroundTint="?attr/colorPrimaryVariant"
@@ -67,7 +69,8 @@
                         android:layout_weight="1"
                         android:text="@string/connections_actasclient" />
                 </LinearLayout>
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/nearbyStartOnBoot"
@@ -96,7 +99,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/connections_connected" />
 
-                    <TableRow style="@style/DividerLine" />
+                    <com.garethevans.church.opensongtablet.customviews.MyDivider
+                        style="@style/MyDividerLine"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -106,7 +110,7 @@
                     android:minHeight="128dp"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/advertiseButton"
                         style="@style/LeftButton"
                         app:backgroundTint="?attr/colorSurface"
@@ -116,7 +120,7 @@
                         android:padding="4dp"
                         android:text="@string/connections_advertise" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/discoverButton"
                         style="@style/RightButton"
                         app:backgroundTint="?attr/colorSurface"

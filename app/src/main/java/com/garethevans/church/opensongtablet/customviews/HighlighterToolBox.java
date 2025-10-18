@@ -15,7 +15,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
     private float downRawX, downRawY;
     private float dX, dY;
     private LinearLayout toolSettings, colorsLayout;
-    private FloatingActionButton currentTool, saveButton, penFAB, highlighterFAB, eraserFAB,
+    private MyFloatingActionButton currentTool, saveButton, penFAB, highlighterFAB, eraserFAB,
             undoFAB, redoFAB, deleteFAB, blackFAB, whiteFAB, yellowFAB, redFAB, greenFAB, blueFAB;
     private ImageView dragIcon;
     private MyMaterialSlider sizeSlider;
@@ -48,8 +48,14 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
 
         inflate(context, R.layout.view_highlighter_toolbar,this);
 
+        Palette palette = new Palette(context);
+
+        LinearLayout mainTools = findViewById(R.id.mainTools);
+        mainTools.setBackgroundColor(palette.surface);
+
         dragIcon = findViewById(R.id.dragIcon);
         toolSettings = findViewById(R.id.toolSettings);
+        toolSettings.setBackgroundColor(palette.surface);
         currentTool = findViewById(R.id.currentTool);
         saveButton = findViewById(R.id.saveButton);
         penFAB = findViewById(R.id.penFAB);

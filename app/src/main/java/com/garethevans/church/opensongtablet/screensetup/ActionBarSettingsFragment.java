@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch;
 import com.garethevans.church.opensongtablet.databinding.SettingsActionbarBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class ActionBarSettingsFragment extends Fragment {
 
@@ -166,7 +166,7 @@ public class ActionBarSettingsFragment extends Fragment {
         });
     }
 
-    private void showOrHideView(boolean show, boolean setSwitch, SwitchMaterial switchMaterial, LinearLayout linearLayout) {
+    private void showOrHideView(boolean show, boolean setSwitch, MyMaterialSwitch switchMaterial, LinearLayout linearLayout) {
         if (show) {
             linearLayout.setVisibility(View.VISIBLE);
         } else {

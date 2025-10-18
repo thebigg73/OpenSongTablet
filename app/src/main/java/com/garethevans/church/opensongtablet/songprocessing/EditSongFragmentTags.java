@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,11 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.beatbuddy.BBSQLite;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.tags.TagsBottomSheet;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 
@@ -35,8 +34,6 @@ public class EditSongFragmentTags extends Fragment {
     private TagsBottomSheet tagsBottomSheet;
     private PresentationOrderBottomSheet presentationOrderBottomSheet;
     private String search_index_wait_string="", midi_channel_string="";
-    private int lightgrey = Color.parseColor("#E0E0E0");
-    private int red = Color.parseColor("#FF0000");
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,7 +55,6 @@ public class EditSongFragmentTags extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = EditSongTagsBinding.inflate(inflater, container, false);
-
         return myView.getRoot();
     }
 
@@ -76,8 +72,6 @@ public class EditSongFragmentTags extends Fragment {
     private void prepareStrings() {
         if (getContext()!=null) {
             search_index_wait_string = getString(R.string.index_songs_wait);
-            lightgrey = getContext().getResources().getColor(R.color.lightgrey);
-            red = getContext().getResources().getColor(R.color.red);
             midi_channel_string = getContext().getString(R.string.midi_channel);
         }
     }
@@ -99,6 +93,7 @@ public class EditSongFragmentTags extends Fragment {
                     myView.user2.setText(mainActivityInterface.getTempSong().getUser2());
                     myView.user3.setText(mainActivityInterface.getTempSong().getUser3());
                     myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum());
+                    myView.midiIndex.setText(mainActivityInterface.getTempSong().getMidiindex());
                     myView.presorder.setFocusable(false);
                     myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
                     myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
@@ -123,7 +118,7 @@ public class EditSongFragmentTags extends Fragment {
             } else {
                 String progressText = "";
                 if (mainActivityInterface.getSongMenuFragment()!=null) {
-                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                     if (progressView!=null && progressView.getText()!=null) {
                         progressText = " " + progressView.getText().toString();
                     }
@@ -144,6 +139,7 @@ public class EditSongFragmentTags extends Fragment {
         myView.user2.addTextChangedListener(new MyTextWatcher("user2"));
         myView.user3.addTextChangedListener(new MyTextWatcher("user3"));
         myView.hymnnum.addTextChangedListener(new MyTextWatcher("hymnnum"));
+        myView.midiIndex.addTextChangedListener(new MyTextWatcher("midiindex"));
 
         myView.useImported.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
@@ -251,6 +247,7 @@ public class EditSongFragmentTags extends Fragment {
                         if (val<0 || val>16000) {
                             newMidiIndexString = "";
                             myView.midiIndexInfo.setHint(null);
+                            myView.midiIndexInfo.setTextColor(mainActivityInterface.getPalette().textColor);
                         } else {
                             // Check that no other song has this MIDI index already
                             foundSong = mainActivityInterface.getSQLiteHelper().getSongFromMidiIndex(val);
@@ -262,8 +259,9 @@ public class EditSongFragmentTags extends Fragment {
 
                     if (foundSong!=null) {
                         // Song exists, so show a warning
-                        myView.midiIndexInfo.setHint(val+" = "+foundSong.getFolder() + "/" + foundSong.getFilename());
-                        myView.midiIndexInfo.setHintColor(red);
+                        String message = val+" = "+foundSong.getFolder() + "/" + foundSong.getFilename();
+                        myView.midiIndexInfo.setHint(message);
+                        myView.midiIndexInfo.setTextColor(mainActivityInterface.getPalette().errorColor);
                     } else if (val>=0 && val<16000){
                         // All good with this song code
                         // Get the MIDI code from the midi index
@@ -275,7 +273,7 @@ public class EditSongFragmentTags extends Fragment {
                                 mainActivityInterface.getMidi().getMidiInputChannelSong() +
                                 " MSB:" + msbVal + " PC:" + pcVal;
                         myView.midiIndexInfo.setHint(midiCode);
-                        myView.midiIndexInfo.setHintColor(lightgrey);
+                        myView.midiIndexInfo.setTextColor(mainActivityInterface.getPalette().textColor);
                     }
                     mainActivityInterface.getTempSong().setMidiindex(editable.toString());
             }

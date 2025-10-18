@@ -11,13 +11,12 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.radiobutton.MaterialRadioButton;
-import com.google.android.material.textview.MaterialTextView;
 
 public class MaterialRadioButtonItem extends LinearLayout {
 
     private final MaterialRadioButton radioButton;
-    private final MaterialTextView textView;
-    private final MaterialTextView hintView;
+    private final MyMaterialSimpleTextView textView;
+    private final MyMaterialSimpleTextView hintView;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MaterialRadioButtonItem(Context context, @Nullable AttributeSet attrs) {
@@ -140,4 +139,5 @@ public class MaterialRadioButtonItem extends LinearLayout {
         hintView.setEnabled(enabled);
         radioButton.setEnabled(enabled);
     }
+
 }

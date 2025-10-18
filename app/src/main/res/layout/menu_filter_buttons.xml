@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Filter buttons -->
-<com.google.android.material.button.MaterialButtonToggleGroup android:id="@+id/searchButtonGroup"
+<com.garethevans.church.opensongtablet.customviews.MyMaterialButtonToggleGroup
+    android:id="@+id/searchButtonGroup"
     style="@style/menuToggle"
     android:layout_width="match_parent"
     android:layout_height="42dp"
@@ -13,7 +14,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/titleButton"
         style="@style/IconOnlyButton"
         android:layout_width="0dp"
@@ -23,7 +24,7 @@
         app:iconSize="24dp"
         android:contentDescription="@string/filter_by_title"/>
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/filterButton"
         style="@style/IconOnlyButton"
         android:layout_width="0dp"
@@ -33,7 +34,7 @@
         app:iconSize="24dp"
         android:contentDescription="@string/filter_by_this_value"/>
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/keyButton"
         style="@style/IconOnlyButton"
         android:layout_width="0dp"
@@ -43,7 +44,7 @@
         app:iconSize="24dp"
         android:contentDescription="@string/filter_by_key"/>
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/artistButton"
         style="@style/IconOnlyButton"
         android:layout_width="0dp"
@@ -52,7 +53,7 @@
         app:icon="@drawable/artist"
         app:iconSize="24dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/folderButton"
         style="@style/IconOnlyButton"
         android:layout_width="0dp"
@@ -61,7 +62,7 @@
         app:icon="@drawable/folder_search"
         app:iconSize="24dp" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
         android:id="@+id/tagButton"
         style="@style/IconOnlyButton"
         android:layout_width="0dp"
@@ -69,4 +70,5 @@
         android:layout_weight="1"
         app:icon="@drawable/tag"
         app:iconSize="24dp" />
-</com.google.android.material.button.MaterialButtonToggleGroup>
+
+</com.garethevans.church.opensongtablet.customviews.MyMaterialButtonToggleGroup>

@@ -2,18 +2,16 @@ package com.garethevans.church.opensongtablet.ccli;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.color.MaterialColors;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -221,7 +219,7 @@ public class CCLILog {
         }
     }
 
-    public void getLogFileSize(Uri uri, TextView logFileSize) {
+    public void getLogFileSize(Uri uri, MyMaterialSimpleTextView logFileSize) {
         // Set the uri if it isn't already done
         float file_size_kb = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
         file_size_kb = Math.round(file_size_kb * 100);
@@ -396,7 +394,7 @@ public class CCLILog {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         tableRow.setLayoutParams(layoutParams);
         for (String val : vals) {
-            TextView textView = new TextView(c);
+            MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
             textView.setSingleLine(false);
             TableRow.LayoutParams layoutParams2 = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
@@ -447,7 +445,7 @@ public class CCLILog {
     private void colorRowColor(TableRow tableRow) {
         colorRow = !colorRow;
         if (colorRow) {
-            tableRow.setBackgroundColor(ColorStateList.valueOf(MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary))).getDefaultColor());
+            tableRow.setBackgroundColor(mainActivityInterface.getPalette().secondary);
         }
     }
 

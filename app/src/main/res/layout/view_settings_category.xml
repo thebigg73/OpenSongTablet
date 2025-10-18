@@ -16,7 +16,7 @@
             android:id="@+id/categoryIcon"
             style="@style/SettingsCardIcon" />
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/categoryTitle"
             style="@style/SettingsCardTitle" />
 

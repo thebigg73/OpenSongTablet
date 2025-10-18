@@ -34,7 +34,6 @@ import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
@@ -43,6 +42,7 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
@@ -1193,7 +1193,7 @@ public class ProcessSong {
             int startpos = 0;
             for (int endpos : pos) {
                 if (endpos != 0 && endpos>startpos && endpos<lines[t].length() + 1) {
-                    TextView textView = newTextView(presentation, linetype, typeface, size, color);
+                    MyMaterialSimpleTextView textView = newTextView(presentation, linetype, typeface, size, color);
                     ImageView chordLayout = null;
                     LinearLayout chordLineLayout = null;
                     String str = lines[t].substring(startpos, endpos);
@@ -2001,11 +2001,11 @@ public class ProcessSong {
         webViewCountSecondary = 0;
     }*/
 
-    private TextView lineText(Song thisSong, String linetype,
+    private MyMaterialSimpleTextView lineText(Song thisSong, String linetype,
                               String string, Typeface typeface, float size, int color,
                               int highlightHeadingColor, int highlightChordColor,
                               boolean presentation, boolean boldText) {
-        TextView textView = newTextView(presentation, linetype, typeface, size, color);
+        MyMaterialSimpleTextView textView = newTextView(presentation, linetype, typeface, size, color);
 
         boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
@@ -2654,7 +2654,7 @@ public class ProcessSong {
 
                                     } else {
                                         // Just show a text view for now until I can fix this for PDF/presentation/export
-                                        TextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
+                                        MyMaterialSimpleTextView tv = lineText(song, "comment", ";"+c.getString(R.string.abc_not_available), typeface, size, textColor,
                                                 mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                                 mainActivityInterface.getMyThemeColors().getHighlightChordColor(),
                                                 true,isChorusBold);
@@ -2696,7 +2696,7 @@ public class ProcessSong {
                                         // IV - Remove typical word splits, white space and trim - beautify!
                                         line = fixLyricsOnlySpace(line);
                                     }
-                                    TextView tv = lineText(song, linetype, line, typeface,
+                                    MyMaterialSimpleTextView tv = lineText(song, linetype, line, typeface,
                                             size, textColor,
                                             mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                             mainActivityInterface.getMyThemeColors().getHighlightChordColor(), performancePresentation, isChorusBold);
@@ -2895,8 +2895,8 @@ public class ProcessSong {
         return linearLayout;
     }
 
-    private TextView newTextView(boolean presentation, String linetype, Typeface typeface, float size, int color) {
-        TextView textView = getTextView(linetype, size);
+    private MyMaterialSimpleTextView newTextView(boolean presentation, String linetype, Typeface typeface, float size, int color) {
+        MyMaterialSimpleTextView textView = getTextView(linetype, size);
         textView.setGravity(Gravity.CENTER_VERTICAL);
         textView.setTextSize(size);
         textView.setTypeface(typeface);
@@ -2920,8 +2920,8 @@ public class ProcessSong {
         return textView;
     }
 
-    private TextView getTextView(String linetype, float size) {
-        TextView textView = new TextView(c);
+    private MyMaterialSimpleTextView getTextView(String linetype, float size) {
+        MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             int trimval;
             if (linetype.equals("chord") || linetype.equals("capoline")) {

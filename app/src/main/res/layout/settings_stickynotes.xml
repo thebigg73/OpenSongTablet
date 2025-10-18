@@ -4,46 +4,48 @@
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/edit"
-        style="@style/largeText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/edit"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/extra_scroll_space_large">
 
-    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-        android:id="@+id/stickyNotes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:imeOptions="actionNone"
-        android:inputType="textMultiLine"
-        android:minLines="6"
-        android:lines="6"
-        app:endIconMode="clear_text"
-        android:hint="@string/song_notes"/>
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/edit"
+            style="@style/largeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/edit" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/saveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_marginTop="8dp" />
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+            android:id="@+id/stickyNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="@string/song_notes"
+            android:imeOptions="actionNone"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:minLines="6"
+            app:endIconMode="clear_text" />
 
-    <TableRow style="@style/DividerLine" />
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/save" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/settingsGlobal"
                 style="@style/largeText"
                 android:layout_width="match_parent"
@@ -51,7 +53,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/settings" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoShowSticky"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,18 +64,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/autohide_time"
+                android:value="0"
                 android:valueFrom="0"
-                android:valueTo="100"
-                android:value="0"/>
+                android:valueTo="100" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/alphaSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/alpha"
+                android:value="80"
                 android:valueFrom="50"
-                android:valueTo="100"
-                android:value="80"/>
+                android:valueTo="100" />
 
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
@@ -81,22 +83,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/text_size"
+                android:value="14"
                 android:valueFrom="8"
-                android:valueTo="32"
-                android:value="14"/>
+                android:valueTo="32" />
 
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/stickyWidth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:stepSize="100"
                 android:text="@string/width"
-                android:valueFrom="100"
-                android:valueTo="1200"
                 android:value="400"
-                android:stepSize="100"/>
+                android:valueFrom="100"
+                android:valueTo="1200" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/settingsLocal"
                 style="@style/largeText"
                 android:layout_width="match_parent"
@@ -104,7 +106,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/settings" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -115,11 +117,11 @@
                 android:id="@+id/settingsOverrideStickySlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="0dp"
                 android:layout_marginTop="0dp"
-                app:textL="@string/override_none"
+                android:paddingTop="0dp"
                 app:textC="@string/override_on"
-                app:textR="@string/override_off"/>
+                app:textL="@string/override_none"
+                app:textR="@string/override_off" />
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 </ScrollView>

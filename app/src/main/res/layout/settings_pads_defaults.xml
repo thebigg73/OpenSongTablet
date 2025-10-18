@@ -13,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/padVolume"
@@ -70,13 +70,13 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/startStopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/start_stop_pad"
-        app:srcCompat="@drawable/play"
+        android:src="@drawable/play"
         app:useCompatPadding="false" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -32,13 +32,18 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.webkit.WebSettingsCompat;
+import androidx.webkit.WebViewFeature;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
+import com.garethevans.church.opensongtablet.screensetup.ThemeKeeper;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.IOException;
@@ -90,11 +95,17 @@ public class ImportOnlineFragment extends Fragment {
     private boolean webViewDesktop;
     private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream","application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
 
+    // Remember the mode before WebView creation
+    private int currentMode;
+
     @Override
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(import_basic_string + " " + online_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
+        int currentMode = AppCompatDelegate.getDefaultNightMode();
+        AppCompatDelegate.setDefaultNightMode(currentMode);
+        Log.d(TAG,"onResume() currentMode:"+currentMode);
     }
 
     @Override
@@ -107,6 +118,9 @@ public class ImportOnlineFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsImportOnlineBinding.inflate(inflater, container, false);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
 
         prepareStrings();
 
@@ -162,6 +176,9 @@ public class ImportOnlineFragment extends Fragment {
 
     private void setupViews() {
         webView = myView.webView;
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+        }
         myView.searchLayout.setVisibility(View.VISIBLE);
         myView.webLayout.setVisibility(View.GONE);
         myView.saveLayout.setVisibility(View.GONE);
@@ -244,7 +261,9 @@ public class ImportOnlineFragment extends Fragment {
         myView.searchButton.setOnClickListener(v -> checkConnection());
         myView.closeSearch.setOnClickListener(v -> changeLayouts(true, false, false));
         myView.backButton.setOnClickListener(v -> goBackBrowser());
-        myView.grabText.setOnClickListener(v -> extractContent());
+        myView.grabText.setOnClickListener(v -> {
+            extractContent();
+        });
         myView.saveButton.setOnClickListener(v -> processContent());
         myView.webViewDesktop.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("webViewDesktop",b);
@@ -290,6 +309,18 @@ public class ImportOnlineFragment extends Fragment {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     super.onPageFinished(view, url);
+                    // Restore your manually set night mode
+                    if (mainActivityInterface.getMyThemeColors().getThemeName().equals("dark")||
+                    mainActivityInterface.getMyThemeColors().getThemeName().equals("custom1")) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    }
+                    try {
+                        ((AppCompatActivity) requireActivity()).getDelegate().applyDayNight();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     // Run a check for the desired content
                     extractContent();
                 }
@@ -340,6 +371,13 @@ public class ImportOnlineFragment extends Fragment {
                     }
                 }
             });
+
+            // Try to fix the app theme
+            webView.postDelayed(() -> {
+                Log.d(TAG,"Try to retheme");
+                mainActivityInterface.getMyThemeColors().getDefaultColors();
+                ThemeKeeper.save(getContext(),mainActivityInterface.getMyThemeColors().getAppCompatDelegate());
+            },1000);
         }
     }
 
@@ -463,6 +501,14 @@ public class ImportOnlineFragment extends Fragment {
             webString = "";
 
             webView.post(() -> {
+                // After creation, reapply the app's mode - two attempts
+                try {
+                    AppCompatDelegate.setDefaultNightMode(currentMode);
+                    ((AppCompatActivity) requireActivity()).getDelegate().applyDayNight();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mainActivityInterface.getMyThemeColors().getDefaultColors();
                 try {
                     String script;
                     if (source.equals("SongSelect")) {
@@ -485,6 +531,8 @@ public class ImportOnlineFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
             });
         });
     }
@@ -626,6 +674,20 @@ public class ImportOnlineFragment extends Fragment {
         }
     }
     private void processContent() {
+        if (mainActivityInterface.getMyThemeColors().getThemeName().equals("dark")||
+                mainActivityInterface.getMyThemeColors().getThemeName().equals("custom1")) {
+            Log.d(TAG,"setting to dark mode");
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            Log.d(TAG,"setting to light mode");
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        try {
+            ((AppCompatActivity) requireActivity()).getDelegate().applyDayNight();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         showDownloadProgress(true);
         switch (source) {
             case "Google":

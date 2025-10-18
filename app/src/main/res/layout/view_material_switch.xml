@@ -16,23 +16,22 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="?android:attr/textColor"
-            tools:text="Main text" />
+            tools:text="Main text"
+            android:textSize="@dimen/text_medium"/>
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/hintView"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="?android:attr/textColorHint"
             tools:text="@string/info_text" />
     </LinearLayout>
 

@@ -14,15 +14,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoShowHighlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/autoshow_highlight" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/timeToDisplayHighlighter"
@@ -35,7 +36,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/warning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,13 +45,14 @@
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/edit"
-        app:srcCompat="@drawable/pen"
+        android:src="@drawable/pen"
+        android:layout_margin="16dp"
         app:useCompatPadding="true" />
 </RelativeLayout>

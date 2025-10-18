@@ -1,35 +1,31 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.textview.MaterialTextView;
 
 public class MyMaterialSwitch extends LinearLayout {
 
-    private final MaterialTextView textView, hintView;
+    private final MyMaterialSimpleTextView textView, hintView;
     private final SwitchMaterial switchMaterial;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MyMaterialSwitch(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
-        LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_switch, this, true);
-
-        //inflate(context, R.layout.view_material_switch, this);
+        inflate(context, R.layout.view_material_switch, this);
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
@@ -73,6 +69,42 @@ public class MyMaterialSwitch extends LinearLayout {
 
         textView.setOnClickListener(v -> setChecked(!getChecked()));
         hintView.setOnClickListener(v -> setChecked(!getChecked()));
+
+        setPalette(new Palette(context));
+    }
+
+    public void setPalette(Palette palette) {
+        textView.setTextColor(palette.textColor);
+        hintView.setTextColor(palette.hintColor);
+
+        ColorStateList thumbColors = new ColorStateList(
+                new int[][] {
+                        new int[] { android.R.attr.state_enabled, android.R.attr.state_checked },   // enabled & checked
+                        new int[] { android.R.attr.state_enabled },                                  // enabled & unchecked
+                        new int[] { -android.R.attr.state_enabled }                                  // disabled
+                },
+                new int[] {
+                        palette.secondaryFixed,
+                        palette.secondary,
+                        palette.primaryVariant
+                }
+        );
+        switchMaterial.setThumbTintList(thumbColors);
+
+        ColorStateList trackColors = new ColorStateList(
+                new int[][] {
+                        new int[] { android.R.attr.state_enabled, android.R.attr.state_checked },   // enabled & checked
+                        new int[] { android.R.attr.state_enabled },                                  // enabled & unchecked
+                        new int[] { -android.R.attr.state_enabled }                                  // disabled
+                },
+                new int[] {
+                        palette.secondary,
+                        palette.secondaryVariant,
+                        palette.primaryVariant
+                }
+        );
+        switchMaterial.setTrackTintList(trackColors);
+
     }
 
     public void setSize(String size) {
@@ -164,4 +196,9 @@ public class MyMaterialSwitch extends LinearLayout {
             hintView.setTextSize(12f);
         }
     }
+
+    public boolean isChecked() {
+        return switchMaterial.isChecked();
+    }
+
 }

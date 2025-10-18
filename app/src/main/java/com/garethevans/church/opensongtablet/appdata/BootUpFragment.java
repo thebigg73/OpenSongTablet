@@ -52,11 +52,11 @@ public class BootUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        //mainActivityInterface.getShowCase().resetShowcase(getContext(),null);
+        myView = BootupLogoBinding.inflate(inflater, container, false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
         prepareStrings();
 
-        myView = BootupLogoBinding.inflate(inflater, container, false);
         mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
 
         mainActivityInterface.registerFragment(this,"BootUpFragment");

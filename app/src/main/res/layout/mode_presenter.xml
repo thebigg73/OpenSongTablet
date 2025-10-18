@@ -9,11 +9,11 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/presenterTabs"
-        style="@style/menuTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
+        style="@style/menuTabs"
         android:soundEffectsEnabled="false"
+        android:background="@color/transparent"
         android:contentDescription="@string/presenter_mode"/>
 
     <LinearLayout
@@ -41,11 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:background="?attr/colorSurface"
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/showLogoSide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +52,7 @@
                 android:padding="0dp"
                 android:text="@string/show_logo" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/blackScreenSide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +60,7 @@
                 android:padding="0dp"
                 android:text="@string/black_screen" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/blankScreenSide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1">
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                     android:id="@+id/panicSide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +96,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="?attr/colorSurface"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -107,7 +105,7 @@
             android:padding="16dp"
             android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/showLogo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +113,7 @@
                 android:padding="0dp"
                 android:text="@string/show_logo" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/blackScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,7 +121,7 @@
                 android:padding="0dp"
                 android:text="@string/black_screen" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/blankScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,7 +130,7 @@
                 android:text="@string/blank_screen" />
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
             android:id="@+id/panicBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

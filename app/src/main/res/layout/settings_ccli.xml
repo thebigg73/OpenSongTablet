@@ -13,7 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/ccliAutomatic"
@@ -21,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ccli_automatic"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliChurch"
@@ -30,7 +32,8 @@
                 android:hint="@string/ccli_church"
                 android:text="@string/ccli_church"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliLicence"
@@ -39,7 +42,8 @@
                 android:hint="@string/ccli_licence"
                 android:text="@string/ccli_licence"
                 app:size="large" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliView"
@@ -48,7 +52,8 @@
                 android:hint="@string/ccli_log"
                 android:text="@string/ccli_view"
                 app:size="large" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliExportCSV"
@@ -57,7 +62,8 @@
                 android:hint="@string/csv"
                 android:text="@string/export"
                 app:size="large" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/ccliDelete"
@@ -66,7 +72,8 @@
                 android:hint="@string/ccli_reset"
                 android:text="@string/delete"
                 app:size="large" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

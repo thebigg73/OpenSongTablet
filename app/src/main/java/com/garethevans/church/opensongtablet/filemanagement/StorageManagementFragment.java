@@ -9,13 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.StorageFolderDisplayBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -52,6 +52,7 @@ public class StorageManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
         prepareStrings();
 
         webAddress = website_storage_overview_string;
@@ -108,7 +109,7 @@ public class StorageManagementFragment extends Fragment {
 
         if (getContext()!=null) {
             for (String folder : availableFolders) {
-                TextView textView = new TextView(getContext());
+                MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(getContext());
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.setMargins(24, 0, 24, 24);
                 lp.gravity = Gravity.CENTER_HORIZONTAL;
