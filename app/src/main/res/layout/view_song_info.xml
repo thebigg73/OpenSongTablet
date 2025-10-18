@@ -63,8 +63,8 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false" />
 
-        <TextClock
-            android:id="@+id/textClock"
+        <com.garethevans.church.opensongtablet.customviews.SafeTextClock
+        android:id="@+id/textClock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:includeFontPadding="false" />

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -308,4 +307,5 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     public void setPadding(int left, int top, int right, int bottom) {
         castSongInfo.setPadding(left,top,right,bottom);
     }
+
 }

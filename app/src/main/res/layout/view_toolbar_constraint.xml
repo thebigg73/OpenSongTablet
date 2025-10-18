@@ -301,7 +301,7 @@
             app:layout_constraintVertical_weight="0.5"
             tools:text="100%" />
 
-        <TextClock
+        <com.garethevans.church.opensongtablet.customviews.SafeTextClock
             android:id="@+id/digitalclock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
