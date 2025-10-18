@@ -2113,11 +2113,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Only proceed if it has changed
         if ((this.webHelpAddress==null && webHelpAddress!=null) ||
                 (this.webHelpAddress!=null && webHelpAddress==null) ||
-                (this.webHelpAddress!=null && !this.webHelpAddress.equals(webHelpAddress))) {
+                (!Objects.equals(this.webHelpAddress, webHelpAddress))) {
             // If a webAddress is supplied, setup and reveal the help button
             // or for a null or empty web address,hide the help button
             // Only allow this to happen after 200ms and only once (false repeats)
-            // There is another check 500ms after opening the fragment
+            // There is another check 800ms after opening the fragment
             if (!updatingToolbarHelp) {
                 this.webHelpAddress = webHelpAddress;
                 updatingToolbarHelp = true;
@@ -2262,19 +2262,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void checkToolbarMenuIcons() {
-        // To be run 500ms after the fragment has opened.
+        // To be run 800ms after the fragment has opened.
         // The fragment should have already set a webHelpAddress 200ms after opening if required
         // This is a secondary check as the fragment won't send null/empty values.
         updatingToolbarHandler.removeCallbacks(updatingToolbarRunnable);
         updatingToolbarHelp = false;
-        updatingToolbarHandler.postDelayed(updatingToolbarRunnable, 500);
-
-        Log.d(TAG,"calling checkToolbarMenuIcons() updatingToolbarHelp:"+updatingToolbarHelp);
-        if (!updatingToolbarHelp) {
-            Log.d(TAG,"checkToolbarMenuIcons().  webHelpAddress:"+webHelpAddress);
-            // For stability, run this on a delayed handler of 500ms
-            getMainHandler().postDelayed(updatingToolbarRunnable,500);
-        }
+        updatingToolbarHandler.postDelayed(updatingToolbarRunnable, 800);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
