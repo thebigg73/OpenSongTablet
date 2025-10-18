@@ -8,16 +8,13 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 public class ScrollViewWithFAB extends ScrollView {
 
-    private FloatingActionButton fab = null;
-    private FloatingActionButton fab2 = null;
-    private FloatingActionButton fab3 = null;
-    private ExtendedFloatingActionButton extendedFab = null;
-    private ExtendedFloatingActionButton extendedFab2 = null;
+    private MyFloatingActionButton fab = null;
+    private MyFloatingActionButton fab2 = null;
+    private MyFloatingActionButton fab3 = null;
+    private MyExtendedFloatingActionButton extendedFab = null;
+    private MyExtendedFloatingActionButton extendedFab2 = null;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ScrollViewWithFAB";
 
@@ -81,20 +78,20 @@ public class ScrollViewWithFAB extends ScrollView {
         return super.performClick();
     }
 
-    public void setFabToAnimate(FloatingActionButton fab) {
+    public void setFabToAnimate(MyFloatingActionButton fab) {
         this.fab = fab;
     }
-    public void setFab2ToAnimate(FloatingActionButton fab2) {
+    public void setFab2ToAnimate(MyFloatingActionButton fab2) {
         this.fab2 = fab2;
     }
-    public void setFab3ToAnimate(FloatingActionButton fab3) {
+    public void setFab3ToAnimate(MyFloatingActionButton fab3) {
         this.fab3 = fab3;
     }
 
-    public void setExtendedFabToAnimate(ExtendedFloatingActionButton extendedFab) {
+    public void setExtendedFabToAnimate(MyExtendedFloatingActionButton extendedFab) {
         this.extendedFab = extendedFab;
     }
-    public void setExtendedFab2ToAnimate(ExtendedFloatingActionButton extendedFab2) {
+    public void setExtendedFab2ToAnimate(MyExtendedFloatingActionButton extendedFab2) {
         this.extendedFab2 = extendedFab2;
     }
 

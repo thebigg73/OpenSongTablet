@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
@@ -23,11 +22,10 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.TrackSlider;
 import com.garethevans.church.opensongtablet.databinding.ViewMultitrackBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,7 +38,7 @@ public class MultiTrackPopUp {
     private final String TAG = "MultiTrackPopUp";
 
     private PopupWindow popupWindow;
-    private FloatingActionButton closeButton;
+    private MyFloatingActionButton closeButton;
     private FloatWindow floatWindow;
     private int posX;
     private int posY;
@@ -113,7 +111,7 @@ public class MultiTrackPopUp {
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
                 R.drawable.popup_bg, c.getTheme());
         if (drawable!=null) {
-            drawable.setColor(MaterialColors.getColor(c, com.google.android.material.R.attr.colorSurface, ContextCompat.getColor(c,R.color.dark_primary)));
+            drawable.setColor(mainActivityInterface.getPalette().surface);
         }
         popupWindow.setBackgroundDrawable(null);
         floatWindow.setAlpha(1f);
@@ -121,6 +119,10 @@ public class MultiTrackPopUp {
         floatWindow.setPadding(16,16,16,16);
 
         myView.progressText.setMyGravity(Gravity.CENTER_HORIZONTAL);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         showProgressBar(true);
         showMultiTrackLayout(false);
         showFolderBar(false);
@@ -436,6 +438,7 @@ public class MultiTrackPopUp {
         // Do this on the main UI thread
         mainActivityInterface.getMainHandler().post(() -> {
            if (myView!=null) {
+               myView.sliders.setBackgroundColor(mainActivityInterface.getPalette().surface);
                myView.multiTrackLayout.setVisibility(show ? View.VISIBLE:View.GONE);
            }
         });

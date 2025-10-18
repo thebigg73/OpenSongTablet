@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/churchDetails"
@@ -20,10 +21,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/ccli_licence"
                 android:text="@string/ccli_church" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <TextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/logSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

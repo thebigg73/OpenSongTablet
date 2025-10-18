@@ -4,7 +4,7 @@
     android:id="@+id/pagesplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundColor"
+    android:background="@color/transparent"
     android:padding="16dp">
 
     <ImageView
@@ -19,7 +19,7 @@
         android:visibility="visible"
         app:srcCompat="@drawable/splash_logo" />
 
-    <TextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/currentAction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

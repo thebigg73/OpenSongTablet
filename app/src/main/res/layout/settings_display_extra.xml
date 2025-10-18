@@ -14,10 +14,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <!--Extra info-->
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/infoText"
                 style="@style/largeText"
                 android:layout_width="match_parent"
@@ -112,10 +113,11 @@
                 android:checked="false"
                 android:text="@string/pad_hide"
                 android:hint="@string/info_text_autohide_info"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <!--Bold chords and headings, lyrics box-->
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -192,11 +194,11 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/pdf_horizontal"
                 android:hint="@string/pdf_horizontal_info"/>
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <!--Section trimming and spaces-->
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,11 +275,11 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/section_box"
                 android:hint="@string/section_box_info"/>-->
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <!--Section filtering-->
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -308,7 +310,7 @@
                     android:text="@string/show"
                     android:hint="@string/filter_mode_info"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -325,7 +327,7 @@
                     android:imeOptions="actionNone"
                     android:inputType="textMultiLine" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/filterSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -333,8 +335,8 @@
                     android:text="@string/save" />
             </LinearLayout>
 
-            <TableRow
-                style="@style/DividerLine"
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"
                 android:layout_marginBottom="400dp" />
         </LinearLayout>
     </ScrollView>

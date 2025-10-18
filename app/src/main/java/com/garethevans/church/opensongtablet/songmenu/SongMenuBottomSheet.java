@@ -1,25 +1,21 @@
 package com.garethevans.church.opensongtablet.songmenu;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.textview.MaterialTextView;
 
-public class SongMenuBottomSheet extends BottomSheetDialogFragment {
+public class SongMenuBottomSheet extends BottomSheetCommon {
 
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongMenuBottomSheet";
@@ -50,20 +46,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
     }
 
     @Nullable
@@ -157,7 +139,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
                 String progressText = "";
                 if (mainActivityInterface.getSongMenuFragment()!=null) {
-                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                     if (progressView!=null && progressView.getText()!=null) {
                         progressText = " " + progressView.getText().toString();
                     }
@@ -178,7 +160,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
                 String progressText = "";
                 if (mainActivityInterface.getSongMenuFragment()!=null) {
-                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                     if (progressView!=null && progressView.getText()!=null) {
                         progressText = " " + progressView.getText().toString();
                     }

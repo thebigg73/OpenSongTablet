@@ -13,9 +13,9 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
             android:clipChildren="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/chordsInSong"
@@ -31,8 +31,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/custom_chords_needed" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/instrument"
@@ -56,7 +56,7 @@
                     android:layout_weight="1"
                     android:hint="@string/customchords_name" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/deleteChord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,18 +64,18 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:contentDescription="@string/delete"
-                    app:srcCompat="@drawable/delete"
+                    android:src="@drawable/delete"
                     android:text="@string/delete"
                     app:fabSize="normal" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/newChord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:contentDescription="@string/new_something"
-                    app:srcCompat="@drawable/plus"
+                    android:src="@drawable/plus"
                     app:fabSize="normal" />
             </LinearLayout>
 
@@ -106,7 +106,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/playChord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
         android:text="@string/listen"
         app:icon="@drawable/play" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

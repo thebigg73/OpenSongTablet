@@ -2,6 +2,9 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -11,11 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,11 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,6 +100,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = MenuSongsBinding.inflate(inflater, container, false);
+
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
 
         songMenuSongs = new ViewModelProvider(this).get(SongMenuSongs.class);
 
@@ -380,19 +387,26 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         fixColor(myView.filterButtons.tagButton, songListSearchByTag);
         fixColor(myView.filterButtons.filterButton, songListSearchByFilter);
         fixColor(myView.filterButtons.titleButton, songListSearchByTitle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            myView.filterButtons.searchButtonGroup.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
+        } else {
+            myView.filterButtons.searchButtonGroup.setBackgroundColor(mainActivityInterface.getPalette().primary);
+        }
         prepareSearch();
     }
 
-    private void fixColor(Button button, boolean active) {
+    private void fixColor(MyMaterialButton button, boolean active) {
         try {
             if (getContext()!=null) {
-                int activecolor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(), R.color.dark_secondary));
+                int activecolor = mainActivityInterface.getPalette().secondary;
                 int inactivecolor = getResources().getColor(R.color.transparent);
                 if (active) {
                     button.setBackgroundColor(activecolor);
                 } else {
                     button.setBackgroundColor(inactivecolor);
                 }
+                button.setIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().onPrimary));
+                button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -610,7 +624,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         if (mainActivityInterface!=null && getContext()!=null) {
             try {
                 myView.songmenualpha.sideIndex.removeAllViews();
-                TextView textView;
+                MyMaterialSimpleTextView textView;
                 final Map<String, Integer> map = songListAdapter.getAlphaIndex(songMenuSongs.getFoundSongs());
                 Set<String> setString = map.keySet();
                 List<String> indexList = new ArrayList<>(setString);
@@ -618,14 +632,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 for (int p = 0; p < indexList.size(); p++) {
                     String index = indexList.get(p);
                     if (getActivity() != null) {
-                        textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
+                        textView = (MyMaterialSimpleTextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                         if (textView != null) {
                             textView.setTextSize(i);
                             textView.setMinimumWidth(i * 5);
                             textView.setText(index);
                             int finalP = p;
                             textView.setOnClickListener(view -> {
-                                TextView selectedIndex = (TextView) view;
+                                MyMaterialSimpleTextView selectedIndex = (MyMaterialSimpleTextView) view;
                                 try {
                                     if (selectedIndex.getText() != null &&
                                             songListLayoutManager != null) {
@@ -675,19 +689,19 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void displayIndex2() {
         try {
             myView.songmenualpha.sideIndex.removeAllViews();
-            TextView textView;
+            MyMaterialSimpleTextView textView;
             final Map<String, Integer> map2 = songListAdapter.getAlphaIndex2();
             Set<String> setString = map2.keySet();
             List<String> indexList = new ArrayList<>(setString);
             for (String index : indexList) {
-                textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
+                textView = (MyMaterialSimpleTextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
                 if (textView != null) {
                     int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f);
                     textView.setTextSize(i);
                     textView.setMinimumWidth(i * 5);
                     textView.setText(index.trim());
                     textView.setOnClickListener(view -> {
-                        TextView selectedIndex = (TextView) view;
+                        MyMaterialSimpleTextView selectedIndex = (MyMaterialSimpleTextView) view;
                         try {
                             if (selectedIndex.getText() != null &&
                                     songListLayoutManager != null) {
@@ -898,7 +912,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
-    public MaterialTextView getProgressText() {
+    public MyMaterialSimpleTextView getProgressText() {
         return myView.progressText;
     }
 
@@ -922,13 +936,30 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void updateSongCount() {
         if (myView!=null) {
+            myView.songTitleStuff.getRoot().post(() -> {
+                if (myView!=null) {
+                    myView.songTitleStuff.setCheckTitle.setTextColor(mainActivityInterface.getPalette().textColor);
+                    myView.songTitleStuff.songCount.setTextColor(mainActivityInterface.getPalette().textColor);
+                    myView.songTitleStuff.songtitleTitle.setTextColor(mainActivityInterface.getPalette().textColor);
+                }
+            });
             myView.songTitleStuff.songCount.post(() -> {
                 if (myView!=null) {
                     myView.songTitleStuff.songCount.setVisibility(View.GONE);
                     if (songMenuSongs.getFoundSongs() != null) {
                         myView.songTitleStuff.songCount.setVisibility(View.VISIBLE);
                         String count = String.valueOf(songMenuSongs.getCount());
+                        myView.songTitleStuff.songCount.setTextColor(mainActivityInterface.getPalette().textColor);
                         myView.songTitleStuff.songCount.setText(count);
+                        if (getContext()!=null) {
+                            Drawable songCountBlob = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_box);
+                            if (songCountBlob!=null) {
+                                DrawableCompat.setTint(songCountBlob, mainActivityInterface.getPalette().secondary);
+                                myView.songTitleStuff.songCount.setBackgroundDrawable(songCountBlob);
+                                int padding = Math.round(8 * getContext().getResources().getDisplayMetrics().density);
+                                myView.songTitleStuff.songCount.setPadding(padding,padding,padding,padding);
+                            }
+                        }
                     }
                 }
             });
@@ -965,5 +996,36 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateTheme() {
+        // First the filter buttons
+        myView.filterButtons.searchButtonGroup.setPalette(mainActivityInterface.getPalette());
+        fixButtons();
+        updateSongCount();
+        //myView.menuSongs.setBackgroundColor(mainActivityInterface.getPalette().background);
+        /*myView.songTitleStuff.songtitleTitle.setTextColor(mainActivityInterface.getPalette().textColor);
+        myView.songTitleStuff.setCheckTitle.setTextColor(mainActivityInterface.getPalette().textColor);
+        myView.songTitleStuff.songCount.setTextColor(mainActivityInterface.getPalette().textColor);
+        if (getContext()!=null) {
+            Drawable songCountBlob = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_box);
+            if (songCountBlob!=null) {
+                DrawableCompat.setTint(songCountBlob, mainActivityInterface.getPalette().secondary);
+                myView.songTitleStuff.songCount.setBackgroundDrawable(songCountBlob);
+            }
+        }*/
+
+        /*for (int i = 0; i < myView.filterButtons.searchButtonGroup.getChildCount(); i++) {
+            View child = myView.filterButtons.searchButtonGroup.getChildAt(i);
+            if (child instanceof MyMaterialButton) {
+                Log.d(TAG,"materialButton found in song menu");
+                MyMaterialButton button = (MyMaterialButton) child;
+                button.setPalette(mainActivityInterface.getPalette());
+                button.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
+                // Set stroke color and width
+                button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                //button.setStrokeWidth(borderWidth);
+            }
+        }*/
     }
 }

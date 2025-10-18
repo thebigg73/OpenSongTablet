@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.appdata;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,23 +7,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetBootupIndexingBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
+public class BootUpIndexBottomSheet extends BottomSheetCommon {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "BootUpIndexBottomSheet";
@@ -71,19 +67,28 @@ public class BootUpIndexBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
-    @NonNull
+    /*@NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(dialog1 -> {
             FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
             if (bottomSheet != null) {
+                Drawable bg = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_dialog);
+                if (bg!=null) {
+                    DrawableCompat.setTint(bg,mainActivityInterface.getPalette().surface);
+                    bottomSheet.setBackground(bg);
+                }
+                *//*if (bottomSheet.getBackground() instanceof GradientDrawable) {
+                    GradientDrawable materialBg = (GradientDrawable) bottomSheet.getBackground();
+                    materialBg.setColorFilter(mainActivityInterface.getPalette().background, PorterDuff.Mode.SRC_IN);
+                }*//*
                 BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
                 BottomSheetBehavior.from(bottomSheet).setDraggable(false);
             }
         });
         return dialog;
-    }
+    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {

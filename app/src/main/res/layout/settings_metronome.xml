@@ -14,9 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:paddingBottom="100dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,7 +23,7 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,7 +37,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -53,7 +52,7 @@
                         android:hint="@string/beats"
                         android:text="@string/beats" />
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="bottom"
@@ -81,7 +80,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/tapTempo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +89,8 @@
                     android:padding="16dp"
                     android:text="@string/tap_tempo" />
             </LinearLayout>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -114,14 +114,14 @@
                     android:text="@string/metronome_autostart"
                     android:hint="@string/metronome_autostart_info"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/visualMetronome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/visual_metronome"
                     android:layout_marginBottom="16dp"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/audioMetronome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,14 +164,15 @@
                     app:textC="@string/pan_center"
                     app:textR="@string/pan_right"
                     app:chosen="1"/>
-                <TableRow style="@style/DividerLine" />
+                    <com.garethevans.church.opensongtablet.customviews.MyDivider
+                        style="@style/MyDividerLine"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/beat_tick" />
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/beat_tick" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/tickSound"
@@ -190,14 +191,15 @@
                     android:value="80"
                     android:valueFrom="0"
                     android:valueTo="100" />
-                <TableRow style="@style/DividerLine" />
+                    <com.garethevans.church.opensongtablet.customviews.MyDivider
+                        style="@style/MyDividerLine"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/beat_tock"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp" />
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/beat_tock"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="8dp" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/tockSound"
@@ -221,12 +223,12 @@
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/startStopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:contentDescription="@string/start"
-        app:srcCompat="@drawable/play"
+        android:src="@drawable/play"
         app:useCompatPadding="true" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

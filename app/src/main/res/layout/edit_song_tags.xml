@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/tags"
@@ -32,9 +33,9 @@
                 android:inputType="text|textMultiLine"
                 android:minLines="2" />
 
-            <TableRow
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
                 android:id="@+id/focusLine"
-                style="@style/DividerLine"
+                style="@style/MyDividerLine"
                 android:focusable="true" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
@@ -45,7 +46,8 @@
                 android:layout_marginBottom="8dp"
                 android:hint="@string/edit_song_aka"
                 app:endIconMode="clear_text" />
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,17 +63,24 @@
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.5"
                     android:hint="@string/midi_index"
+                    android:digits="true"
+                    android:inputType="number"
                     app:endIconMode="clear_text" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                     android:id="@+id/midiIndexInfo"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
-                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:layout_marginTop="4dp"
+                    android:textSize="@dimen/text_small"
                     android:text="@string/midi_index_code"/>
             </LinearLayout>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -157,10 +166,10 @@
                     android:layout_weight="0.5"
                     android:hint="@string/presentation_order" />
             </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine" />
-
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/beat_buddy" />

@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -8,23 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMidiActionBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.color.MaterialColors;
 
-public class MidiActionBottomSheet extends BottomSheetDialogFragment {
+public class MidiActionBottomSheet extends BottomSheetCommon {
 
     private MainActivityInterface mainActivityInterface;
     private BottomSheetMidiActionBinding myView;
@@ -37,20 +31,6 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
     }
 
     @Nullable
@@ -82,8 +62,8 @@ public class MidiActionBottomSheet extends BottomSheetDialogFragment {
             website_midi_actions = getString(R.string.website_midi_actions);
             nearby_message_string = getString(R.string.nearby_message);
             // Also set the colours
-            on = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
-            off = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(getContext(),R.color.dark_primary));
+            on = mainActivityInterface.getPalette().secondary;
+            off = mainActivityInterface.getPalette().primaryVariant;
         }
     }
 

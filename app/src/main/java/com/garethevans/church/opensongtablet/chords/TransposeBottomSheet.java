@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.chords;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,22 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.slider.LabelFormatter;
 
-public class TransposeBottomSheet extends BottomSheetDialogFragment {
+public class TransposeBottomSheet extends BottomSheetCommon {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "TransposeBottomSheet";
@@ -67,27 +62,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         string_DetectedAppearance = getString(R.string.chordformat_1);
         string_variation = "**"+context.getString(R.string.variation);
         originalkey_string = getString(R.string.key_original);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-
-        dialog.setOnShowListener(dialog1 -> {
-            try {
-                BottomSheetDialog d = (BottomSheetDialog) dialog1;
-                FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                if (bottomSheet != null) {
-                    BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                    BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        return dialog;
     }
 
     @Override

@@ -15,9 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsCategoriesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class SettingsCategories extends Fragment {
 
@@ -50,6 +50,9 @@ public class SettingsCategories extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCategoriesBinding.inflate(inflater, container, false);
+
+        // Set the background color
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
 
         prepareStrings();
 
@@ -167,7 +170,7 @@ public class SettingsCategories extends Fragment {
             } else {
                 String progressText = "";
                 if (mainActivityInterface.getSongMenuFragment()!=null) {
-                    MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                    MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                     if (progressView!=null && progressView.getText()!=null) {
                         progressText = " " + progressView.getText().toString();
                     }

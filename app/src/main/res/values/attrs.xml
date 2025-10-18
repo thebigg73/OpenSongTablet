@@ -10,7 +10,7 @@
         <attr name="fab_padding" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="MaterialEditText">
+    <declare-styleable name="MyMaterialEditText">
         <attr name="android:text"/>
         <attr name="android:hint"/>
         <attr name="android:digits"/>

@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -23,13 +22,15 @@ import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class StickyPopUp {
 
     private PopupWindow popupWindow;
-    private FloatingActionButton closeButton;
+    private MyFloatingActionButton closeButton;
     private FloatWindow floatWindow;
     private int posX;
     private int posY;
@@ -111,7 +112,7 @@ public class StickyPopUp {
         floatWindow.setPadding(16,16,16,16);
 
         // Add the close button
-        closeButton = new FloatingActionButton(c);
+        closeButton = new MyFloatingActionButton(c);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         buttonParams.gravity = Gravity.END;
@@ -137,7 +138,7 @@ public class StickyPopUp {
         floatWindow.addView(closeButton);
 
         // Now the TextView for the sticky notes
-        TextView stickyNotes = new TextView(c);
+        MyMaterialSimpleTextView stickyNotes = new MyMaterialSimpleTextView(c);
         stickyNotes.setLayoutParams(new LinearLayout.LayoutParams(stickyWidth,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         stickyNotes.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());

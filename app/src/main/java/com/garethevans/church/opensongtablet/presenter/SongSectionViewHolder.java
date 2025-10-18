@@ -8,16 +8,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textview.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 
 public class SongSectionViewHolder extends RecyclerView.ViewHolder {
 
     final CardView item;
-    final MaterialTextView heading;
-    final MaterialTextView content;
+    final MyMaterialSimpleTextView heading;
+    final MyMaterialSimpleTextView content;
     final ImageView image;
-    final FloatingActionButton edit;
+    final MyFloatingActionButton edit;
 
     public SongSectionViewHolder(@NonNull View itemView) {
         super(itemView);

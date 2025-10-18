@@ -3,8 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="460dp"
     android:minWidth="64dp"
-    android:padding="0dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="0dp">
 
     <FrameLayout
         android:layout_width="64dp"
@@ -27,31 +27,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="64dp"
-        android:padding="8dp"
         android:orientation="vertical"
-        android:background="?attr/colorSecondary">
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/sliderValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/midi_value"
-        android:textSize="18sp" />
+        android:padding="8dp">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/sliderName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/title" />
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/sliderValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/midi_value"
+            android:textSize="18sp" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/sliderMidi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/midi"
-        android:textColor="@color/vlightgrey" />
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/sliderName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/sliderMidi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/midi" />
     </LinearLayout>
 
 </LinearLayout>

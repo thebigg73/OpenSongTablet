@@ -10,9 +10,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:baselineAligned="false"
-    android:paddingBottom="4dp"
+    android:paddingBottom="12dp"
     android:layout_alignParentBottom="true"
-    android:minHeight="48dp"
+    android:minHeight="64dp"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -22,11 +22,11 @@
         android:layout_weight="1"
         android:paddingTop="12dp">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
             android:id="@+id/prevButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom"
+            android:layout_gravity="center_vertical|bottom"
             android:textAllCaps="false"
             android:text="@string/previous"
             android:ellipsize="middle"
@@ -51,7 +51,7 @@
         android:layout_weight="1"
         android:paddingTop="12dp">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
     <LinearLayout
         android:id="@+id/nextPrevInfoFABLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:paddingBottom="4dp"
         android:minHeight="48dp"
@@ -94,7 +94,7 @@
         android:id="@+id/prevButtonFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|bottom"
+        android:layout_gravity="start|center_vertical"
         app:srcCompat="@drawable/arrow_left"
         app:fab_padding="12dp"/>
     </FrameLayout>

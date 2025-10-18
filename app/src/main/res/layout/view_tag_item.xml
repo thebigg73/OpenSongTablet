@@ -22,7 +22,7 @@
             android:layout_toStartOf="@+id/tagDelete"
             tools:text="Tag" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/matchingSongs"
             style="@style/cardView_Subtitle"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_marginStart="16dp"
             tools:text="Songs found" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/tagDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +43,6 @@
             android:layout_alignParentEnd="true"
             app:fabSize="mini"
             android:contentDescription="@string/delete"
-            app:srcCompat="@drawable/delete" />
+            android:src="@drawable/delete" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

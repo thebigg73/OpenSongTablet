@@ -10,14 +10,12 @@
 
     <View
         android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="?attr/colorSecondaryVariant" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
         android:minWidth="96dp"
         android:minHeight="340dp"
         android:orientation="vertical"
@@ -42,9 +40,7 @@
                 android:stepSize="1"
                 android:value="1"
                 android:valueFrom="0"
-                android:valueTo="2"
-                app:trackColor="?attr/colorSecondary"
-                app:thumbColor="?attr/colorSecondaryVariant"/>
+                android:valueTo="2"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,7 +51,7 @@
                 android:paddingStart="11dp"
                 android:paddingEnd="11dp">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -63,7 +59,7 @@
                     android:textSize="@dimen/text_small"
                     tools:ignore="HardcodedText,TextContrastCheck" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -72,7 +68,7 @@
                     android:textSize="@dimen/text_small"
                     tools:ignore="HardcodedText,TextContrastCheck" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -125,7 +121,7 @@
             android:orientation="vertical"
             android:padding="0dp">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/trackNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +129,7 @@
                 android:text="@string/title"
                 android:textSize="@dimen/text_small" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/trackVolumeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,7 +158,7 @@
                         android:background="@drawable/rounded_box"
                         app:backgroundTint="?attr/colorSurface"/>
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/masterBoost1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -186,7 +182,7 @@
                         android:background="@drawable/rounded_box"
                         app:backgroundTint="?attr/colorSurface"/>
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/masterBoost2"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -210,7 +206,7 @@
                         android:background="@drawable/rounded_box"
                         app:backgroundTint="?attr/colorSurface"/>
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/masterBoost3"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -242,8 +238,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_box" />
 
-
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/muteButton"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -266,7 +261,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_box" />
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/soloButton"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"

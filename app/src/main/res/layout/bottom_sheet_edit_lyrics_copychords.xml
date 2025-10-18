@@ -15,14 +15,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/copyChordsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +44,8 @@
                 android:ellipsize="end"/>
 
             </LinearLayout>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,21 +73,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/after"
-                        android:background="?attr/colorSecondary"
                         android:ellipsize="end"/>
                 </LinearLayout>
             </LinearLayout>
-            <TableRow style="@style/DividerLine"/>
-
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
         </LinearLayout>
     </ScrollView>
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/applyChanges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         app:icon="@drawable/text_accept"
         android:text="@string/apply_changes"
+        android:layout_margin="16dp"
         android:contentDescription="@string/copy_chord" />
 </LinearLayout>

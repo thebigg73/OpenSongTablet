@@ -83,14 +83,13 @@
             android:focusable="false"
             android:focusableInTouchMode="false">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/progressText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 toolsNs:text="0%"
                 android:background="@drawable/rectangle"
-                app:backgroundTint="?attr/colorSecondary"
                 android:padding="12dp"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/timer"

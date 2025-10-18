@@ -6,10 +6,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,7 +19,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -26,9 +27,10 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -56,15 +58,13 @@ public class ExposedDropDown extends FrameLayout {
     }
 
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, com.google.android.material.R.attr.textInputStyle);
-    }
+         super(context, attrs);
+        //ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        //LayoutInflater.from(themeWrapper).inflate(R.layout.view_exposed_dropdown, this, true);
 
-    @SuppressLint("ClickableViewAccessibility")
-    public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs);
-        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
-        LayoutInflater.from(themeWrapper).inflate(R.layout.view_exposed_dropdown, this, true);
+        inflate(context, R.layout.view_exposed_dropdown, this);
 
+        //window = ((Activity) context).getWindow();
         this.c = context;
 
         textInputLayout = findViewById(R.id.holderView);
@@ -95,12 +95,13 @@ public class ExposedDropDown extends FrameLayout {
             setHint(hint.toString());
         }
 
+        autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_medium));
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
         textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
-
-        textInputLayout.setEndIconTintList(ColorStateList.valueOf(MaterialColors.getColor(autoCompleteTextView, com.google.android.material.R.attr.colorOnPrimary)));
+        //textInputLayout.setEndIconTintList(ColorStateList.valueOf(MaterialColors.getColor(autoCompleteTextView, com.google.android.material.R.attr.colorOnPrimary)));
         textInputLayout.setEndIconOnClickListener(v -> doClickAction());
 
+        setPalette(new Palette(context));
     }
 
     private Context unwrap(Context context) {
@@ -235,4 +236,38 @@ public class ExposedDropDown extends FrameLayout {
         autoCompleteTextView.setAdapter(arrayAdapter);
     }
 
+    public void setPalette(Palette palette) {
+
+            autoCompleteTextView.setTextColor(palette.textColor);
+            // Tint the popup background
+            Drawable drawable = DrawableCompat.wrap(autoCompleteTextView.getDropDownBackground()).mutate();
+            DrawableCompat.setTint(drawable, palette.secondary);
+            autoCompleteTextView.setDropDownBackgroundDrawable(drawable);
+            autoCompleteTextView.invalidate();
+
+
+        textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+            textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
+
+            textInputLayout.setEndIconTintList(ColorStateList.valueOf(palette.textColor));
+
+            textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
+            textInputLayout.setBoxStrokeWidth(2);
+
+            // Focused stroke color
+            textInputLayout.setBoxStrokeColor(palette.hintColor);
+
+            // Default (unfocused) stroke color
+            try {
+                Field defaultStrokeField = TextInputLayout.class.getDeclaredField("defaultStrokeColor");
+                defaultStrokeField.setAccessible(true);
+                defaultStrokeField.setInt(textInputLayout, palette.hintColor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Force redraw of the outline
+            textInputLayout.invalidate();
+
+    }
 }

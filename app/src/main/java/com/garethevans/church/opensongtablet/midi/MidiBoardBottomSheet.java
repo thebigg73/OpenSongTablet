@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
@@ -8,32 +7,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMidiBoardBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 
-public class MidiBoardBottomSheet extends BottomSheetDialogFragment {
+public class MidiBoardBottomSheet extends BottomSheetCommon {
 
     private MainActivityInterface mainActivityInterface;
     private BottomSheetMidiBoardBinding myView;
     private final String TAG = "MidiBoardBottomSheet";
     private int boardNum = 1, colorActive=-1, colorInactive=-1, whichButtonToEdit=-1, whichSliderToEdit=-1;
     private String boardTitle = "";
-    private ArrayList<MaterialButton> boardButtonView = new ArrayList<>();
+    private ArrayList<MyMaterialButton> boardButtonView = new ArrayList<>();
     private ArrayList<String> boardButtonName, boardButtonMIDI, boardSliderName;
     private ArrayList<Integer> boardSliderChannel, boardSliderCC, boardSliderVal;
     private String string_midi_board, string_midi_board_website, string_title;
@@ -43,27 +36,6 @@ public class MidiBoardBottomSheet extends BottomSheetDialogFragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         getValues(context);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-
-        dialog.setOnShowListener(dialog1 -> {
-            try {
-                BottomSheetDialog d = (BottomSheetDialog) dialog1;
-                FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                if (bottomSheet != null) {
-                    BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                    BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        return dialog;
     }
 
     @Override
@@ -87,8 +59,8 @@ public class MidiBoardBottomSheet extends BottomSheetDialogFragment {
             string_midi_board = c.getString(R.string.midi_board);
             string_midi_board_website = c.getString(R.string.website_midi_board);
             string_title = c.getString(R.string.title);
-            colorActive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(c,R.color.dark_secondary));
-            colorInactive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorPrimaryVariant, ContextCompat.getColor(c,R.color.dark_primary));
+            colorActive = mainActivityInterface.getPalette().secondary;
+            colorInactive = mainActivityInterface.getPalette().primaryVariant;
         }
     }
 

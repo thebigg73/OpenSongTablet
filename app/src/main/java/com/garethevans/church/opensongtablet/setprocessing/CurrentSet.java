@@ -9,11 +9,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class CurrentSet {
     private int indexSongInSet, prevIndexSongInSet=-1;
     private ImageView asteriskView;
     private MyMaterialTextView setTitleView;
-    private ExtendedFloatingActionButton saveButtonView;
+    private MyExtendedFloatingActionButton saveButtonView;
     private final MainActivityInterface mainActivityInterface;
     private String uuid;
     private String lastModified;
@@ -268,7 +268,7 @@ public class CurrentSet {
     // Update the title in the set menu (add asterisk for changes)
     public void initialiseSetTitleViews(ImageView asteriskView,
                                         MyMaterialTextView setTitleView,
-                                        ExtendedFloatingActionButton saveButtonView) {
+                                        MyExtendedFloatingActionButton saveButtonView) {
         this.asteriskView = asteriskView;
         this.setTitleView = setTitleView;
         this.saveButtonView = saveButtonView;

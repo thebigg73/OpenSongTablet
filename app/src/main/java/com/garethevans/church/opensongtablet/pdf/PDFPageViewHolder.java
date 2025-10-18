@@ -6,8 +6,8 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class PDFPageViewHolder extends RecyclerView.ViewHolder {
 
@@ -15,7 +15,7 @@ public class PDFPageViewHolder extends RecyclerView.ViewHolder {
     public View v;
     public ImageView pdfPageImage;
     public ImageView pdfPageHighlight;
-    public MaterialTextView pdfPageNumText;
+    public MyMaterialSimpleTextView pdfPageNumText;
 
     public PDFPageViewHolder(MainActivityInterface mainActivityInterface, View v) {
         super(v);

@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -34,8 +34,8 @@ public class Pad {
     private final Handler pad1FadeTimerHandler = new Handler();
     private final Handler pad2FadeTimerHandler = new Handler();
     private final LinearLayout pad;
-    private final MaterialTextView padTime;
-    private final MaterialTextView padTotalTime;
+    private final MyMaterialSimpleTextView padTime;
+    private final MyMaterialSimpleTextView padTotalTime;
     private int padLength;
     private float pad1VolDrop, pad2VolDrop;
     private boolean padsActivated = false;

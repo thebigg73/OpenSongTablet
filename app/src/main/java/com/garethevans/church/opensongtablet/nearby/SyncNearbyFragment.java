@@ -91,6 +91,10 @@ public class SyncNearbyFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSyncBinding.inflate(inflater, container, false);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.hostProgressBar);
+
         prepareStrings();
         setupViews();
         setupListeners();

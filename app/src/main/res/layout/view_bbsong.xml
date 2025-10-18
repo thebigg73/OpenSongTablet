@@ -10,33 +10,34 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/bb_folder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_medium"
         tools:text="@string/folder" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/bb_song"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_medium"
         tools:text="@string/song" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/bb_timesig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_medium"
         tools:text="@string/time_signature" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/bb_kit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_medium"
         tools:text="@string/drum_kit" />
 
-    <TableRow style="@style/DividerLine" />
+    <com.garethevans.church.opensongtablet.customviews.MyDivider
+        style="@style/MyDividerLine"/>
 </LinearLayout>

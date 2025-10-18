@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsChordsCustomBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
@@ -381,12 +381,12 @@ public class CustomChordsFragment extends Fragment {
         // Set the string markers (and space) for the first row
         if (getContext()!=null) {
             TableRow markers = new TableRow(getContext());
-            TextView textViewSpacer = new TextView(getContext());
+            MyMaterialSimpleTextView textViewSpacer = new MyMaterialSimpleTextView(getContext());
             textViewSpacer.setId(View.generateViewId());
             markers.addView(textViewSpacer);
 
             for (int markerpos = 1; markerpos < numberOfStrings() + 1; markerpos++) {
-                TextView marker = getLayoutInflater().inflate(R.layout.view_string_marker, markers).
+                MyMaterialSimpleTextView marker = getLayoutInflater().inflate(R.layout.view_string_marker, markers).
                         findViewById(R.id.stringMarker);
                 marker.setTag("stringMarker" + markerpos);
                 marker.setText("o");
@@ -400,7 +400,7 @@ public class CustomChordsFragment extends Fragment {
             for (int fret = 1; fret < 6; fret++) {
                 TableRow frets = new TableRow(getContext());
                 frets.setId(View.generateViewId());
-                TextView textView;
+                MyMaterialSimpleTextView textView;
                 if (fret == 1) {
                     textView = getLayoutInflater().inflate(R.layout.view_chord_fret_marker, frets).
                             findViewById(R.id.fretMarker);
@@ -409,7 +409,7 @@ public class CustomChordsFragment extends Fragment {
                     textView.setOnClickListener(v -> increaseFretNumber());
 
                 } else {
-                    textView = new TextView(getContext());
+                    textView = new MyMaterialSimpleTextView(getContext());
                     frets.addView(textView);
                     textView.setTag("spacerFret" + fret);
                 }
@@ -438,7 +438,7 @@ public class CustomChordsFragment extends Fragment {
     }
     private void setMarkerText(String tag, String text) {
         if (myView.guitarChordLayout.findViewWithTag(tag)!=null) {
-            ((TextView) myView.guitarChordLayout.findViewWithTag(tag)).setText(text);
+            ((MyMaterialSimpleTextView) myView.guitarChordLayout.findViewWithTag(tag)).setText(text);
         }
     }
     private void vtoGuitar() {
@@ -475,7 +475,7 @@ public class CustomChordsFragment extends Fragment {
             }
         });
     }
-    private TextView getFretMarker() {
+    private MyMaterialSimpleTextView getFretMarker() {
         return myView.guitarChordLayout.findViewWithTag("fretMarker");
     }
     private String getFretMarkerText() {
@@ -506,7 +506,7 @@ public class CustomChordsFragment extends Fragment {
                         hideNotesOnString(i);
                     } else if (notes.length >= i && notes[i - 1] != null &&
                             myView.guitarChordLayout.findViewWithTag("stringMarker"+i)!=null) {
-                        ((TextView)myView.guitarChordLayout.findViewWithTag("stringMarker" + i)).setText("");
+                        ((MyMaterialSimpleTextView)myView.guitarChordLayout.findViewWithTag("stringMarker" + i)).setText("");
                         if (!notes[i - 1].isEmpty()) {
                             try {
                                 int fret = Integer.parseInt(notes[i - 1]);
@@ -533,7 +533,7 @@ public class CustomChordsFragment extends Fragment {
         int string = Integer.parseInt(tag.replace("stringMarker",""));
 
         // Get the current value
-        String currVal = ((TextView)myView.guitarChordLayout.findViewWithTag(tag)).getText().toString();
+        String currVal = ((MyMaterialSimpleTextView)myView.guitarChordLayout.findViewWithTag(tag)).getText().toString();
         if (currVal.equals("x")) {
             currVal = "o";
         } else {
@@ -567,7 +567,7 @@ public class CustomChordsFragment extends Fragment {
         // The user has clicked on a string position, so clear any others
         String stringMarkerTag = "stringMarker"+string;
         if (myView.guitarChordLayout.findViewWithTag(stringMarkerTag)!=null) {
-            ((TextView) myView.guitarChordLayout.findViewWithTag(stringMarkerTag)).setText("");
+            ((MyMaterialSimpleTextView) myView.guitarChordLayout.findViewWithTag(stringMarkerTag)).setText("");
         }
         for (int i=1; i<6; i++) {
             String stringTag = "fret"+i+"_stringOn"+string;
@@ -597,7 +597,7 @@ public class CustomChordsFragment extends Fragment {
             // First get the fret for each string
             StringBuilder stringBuilder = new StringBuilder();
             for (int string = 1; string < numberOfStrings() + 1; string++) {
-                String marker = ((TextView) myView.guitarChordLayout.findViewWithTag("stringMarker" + string)).
+                String marker = ((MyMaterialSimpleTextView) myView.guitarChordLayout.findViewWithTag("stringMarker" + string)).
                         getText().toString();
                 if (marker.equals("x")) {
                     stringBuilder.append(marker);

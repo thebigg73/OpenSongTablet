@@ -7,12 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.textview.MaterialTextView;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 
 public class BBSongViewHolder extends RecyclerView.ViewHolder {
 
     LinearLayout bb_layout;
-    MaterialTextView bb_folder, bb_song, bb_timesig, bb_kit;
+    MyMaterialSimpleTextView bb_folder, bb_song, bb_timesig, bb_kit;
 
     public BBSongViewHolder(@NonNull View itemView) {
         super(itemView);

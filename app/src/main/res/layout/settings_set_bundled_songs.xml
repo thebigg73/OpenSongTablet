@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/included_songs_warning"
-        android:padding="16dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/includedSongs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="128dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/included_songs_warning" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/includedSongs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/extra_scroll_space_large" />
+
+    </LinearLayout>
+
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/importSelectedSongs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:text="@string/included_songs_import"
-        app:icon="@drawable/file_add"/>
+        app:icon="@drawable/file_add" />
 
     <FrameLayout
         android:id="@+id/scrimImportBundle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/scrimBackground"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
         android:id="@+id/progressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
         android:background="@drawable/rounded_box"
+        android:gravity="center"
         android:padding="32dp"
         android:text="@string/processing"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

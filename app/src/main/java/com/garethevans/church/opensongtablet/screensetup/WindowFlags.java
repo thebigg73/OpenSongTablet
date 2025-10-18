@@ -191,7 +191,7 @@ public class WindowFlags {
 
     public void showKeyboard() {
         // Show after a few millisecs
-        if (!insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+        if (insetsCompat!=null && !insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.postDelayed(() -> windowInsetsControllerCompat.show(typeIme), 1000);
         }
@@ -235,6 +235,14 @@ public class WindowFlags {
             windowInsetsControllerCompat.hide(typeSystemBars);
             windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
         }
+
+        // Status bar should match the app theme (light/dark)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            w.setStatusBarColor(mainActivityInterface.getPalette().primary);
+        }
+
+        // true = dark icons (for light backgrounds), false = light icons
+        windowInsetsControllerCompat.setAppearanceLightStatusBars(!mainActivityInterface.getPalette().dark);
     }
 
     // Display cutouts

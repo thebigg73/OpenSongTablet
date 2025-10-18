@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/runHotspot"
@@ -36,7 +37,7 @@
                         android:layout_weight="1"
                         android:contentDescription="@string/web_server" />
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/hotspotInfo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -45,8 +46,9 @@
                         android:textSize="@dimen/text_medium"
                         android:layout_weight="1" />
                 </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-            <TableRow style="@style/DividerLine"/>
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/webServer"
                 android:layout_width="match_parent"

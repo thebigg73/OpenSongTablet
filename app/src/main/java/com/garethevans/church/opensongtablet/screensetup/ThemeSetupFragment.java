@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,9 @@ public class ThemeSetupFragment extends Fragment {
     private String myTheme, theme_string="", website_themes_string="", presenter_mode_string="",
             stage_mode_string="", theme_dark_string="", theme_light_string="",
             theme_custom1_string="", theme_custom2_string="", reset_colours_string="",
-            recreate_string="";
+            recreate_string="", this_deeplink="";
     private ArrayList<String> themes;
     private String webAddress;
-    private boolean recreateActivity = false;
     private String initialTheme;
 
     @Override
@@ -54,6 +54,8 @@ public class ThemeSetupFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
+
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
 
         prepareStrings();
         webAddress = website_themes_string;
@@ -83,8 +85,10 @@ public class ThemeSetupFragment extends Fragment {
             reset_colours_string = getString(R.string.reset_colours);
             recreate_string = getString(R.string.restart_auto);
             initialTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","");
+            this_deeplink = getString(R.string.deeplink_theme);
         }
     }
+
     private void setUpTheme() {
         themes = new ArrayList<>();
         themes.add(theme_dark_string);
@@ -129,17 +133,27 @@ public class ThemeSetupFragment extends Fragment {
                 } else if (s!=null && s.toString().equals(themes.get(3))) {
                     myTheme = "custom2";
                 }
+
+                if (getContext()!=null) {
+                    mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
+                    mainActivityInterface.getToolbar().changeTheme();
+                    mainActivityInterface.getBatteryStatus().getBatteryStatus();
+                }
+
                 mainActivityInterface.getPreferences().setMyPreferenceString("appTheme",myTheme);
+
                 updateColors();
                 updateButtons();
                 // Also update secondary screen
                 displayInterface.updateDisplay("setSongContentPrefs");
 
-                // Force a recreate on exiting this fragment
-                checkNeedsRestart();
-                if (recreateActivity) {
-                    mainActivityInterface.getShowToast().doIt(recreate_string);
+                if (checkNeedsRefresh()) {
+                    // Try to redraw the current views
+                    invalidateViews();
                 }
+
+                initialTheme = myTheme;
+
             }
 
             @Override
@@ -230,20 +244,61 @@ public class ThemeSetupFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        myView = null;
-        if (recreateActivity) {
-            mainActivityInterface.recreateActivity();
+        if (getContext()!=null) {
+            mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
         }
+        myView = null;
     }
 
-    private void checkNeedsRestart() {
+    private boolean checkNeedsRefresh() {
         // Compare the initial theme with the new one
         // dark and custom1 are dark based, light and custom2 are light based
+        boolean refreshActivity = false;
         String currentTheme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
+        Log.d(TAG,"currentTheme:"+currentTheme+"  initialTheme:"+initialTheme);
         if (currentTheme.equals("dark") || currentTheme.equals("custom1")) {
-            recreateActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.isEmpty();
+            refreshActivity = initialTheme.equals("light") || initialTheme.equals("custom2") || initialTheme.isEmpty();
         } else if (currentTheme.equals("light") || currentTheme.equals("custom2")) {
-            recreateActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.isEmpty();
+            refreshActivity = initialTheme.equals("dark") || initialTheme.equals("custom1") || initialTheme.isEmpty();
         }
+        Log.d(TAG,"refreshActivity:"+refreshActivity);
+        return refreshActivity;
     }
+
+    private void invalidateViews() {
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+            myView.invertPDF.setPalette(mainActivityInterface.getPalette());
+            myView.resetTheme.setPalette(mainActivityInterface.getPalette());
+            myView.themeName.setPalette(mainActivityInterface.getPalette());
+            myView.lyricsButton.setPalette(mainActivityInterface.getPalette());
+            myView.chordsButton.setPalette(mainActivityInterface.getPalette());
+            myView.capoButton.setPalette(mainActivityInterface.getPalette());
+            myView.multilingualButton.setPalette(mainActivityInterface.getPalette());
+            myView.pageButton.setPalette(mainActivityInterface.getPalette());
+            myView.verseButton.setPalette(mainActivityInterface.getPalette());
+            myView.chorusButton.setPalette(mainActivityInterface.getPalette());
+            myView.prechorusButton.setPalette(mainActivityInterface.getPalette());
+            myView.bridgeButton.setPalette(mainActivityInterface.getPalette());
+            myView.tagButton.setPalette(mainActivityInterface.getPalette());
+            myView.commentButton.setPalette(mainActivityInterface.getPalette());
+            myView.customButton.setPalette(mainActivityInterface.getPalette());
+            myView.titleHighlighting.setPalette(mainActivityInterface.getPalette());
+            myView.chordHighlighting.setPalette(mainActivityInterface.getPalette());
+            myView.presoButton.setPalette(mainActivityInterface.getPalette());
+            myView.presoChordButton.setPalette(mainActivityInterface.getPalette());
+            myView.presoCapoButton.setPalette(mainActivityInterface.getPalette());
+            myView.presoMultilingualButton.setPalette(mainActivityInterface.getPalette());
+            myView.presoInfoButton.setPalette(mainActivityInterface.getPalette());
+            myView.presoAlertButton.setPalette(mainActivityInterface.getPalette());
+            myView.presoShadowButton.setPalette(mainActivityInterface.getPalette());
+            myView.metronomeButton.setPalette(mainActivityInterface.getPalette());
+            myView.hotZoneButton.setPalette(mainActivityInterface.getPalette());
+            myView.stickytextButton.setPalette(mainActivityInterface.getPalette());
+            myView.stickybackgroundButton.setPalette(mainActivityInterface.getPalette());
+            myView.abctextButton.setPalette(mainActivityInterface.getPalette());
+            myView.abcbackgroundButton.setPalette(mainActivityInterface.getPalette());
+        });
+    }
+
 }

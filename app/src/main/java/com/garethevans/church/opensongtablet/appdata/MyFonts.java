@@ -5,12 +5,12 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.core.provider.FontRequest;
 import androidx.core.provider.FontsContractCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -140,7 +140,7 @@ public class MyFonts {
         }
     }
 
-    public void getGoogleFont(String fontName, String which, TextView textView, Handler handler) {
+    public void getGoogleFont(String fontName, String which, MyMaterialSimpleTextView textView, Handler handler) {
         FontRequest fontRequest = getFontRequest(fontName);
         FontsContractCompat.FontRequestCallback fontRequestCallback = getFontRequestCallback(fontName,which,textView);
         FontsContractCompat.requestFont(c,fontRequest,fontRequestCallback,handler);
@@ -154,7 +154,7 @@ public class MyFonts {
 
     private FontsContractCompat.FontRequestCallback getFontRequestCallback(final String fontName,
                                                                            final String which,
-                                                                           final TextView textView) {
+                                                                           final MyMaterialSimpleTextView textView) {
         return new FontsContractCompat.FontRequestCallback() {
             @Override
             public void onTypefaceRetrieved(Typeface typeface) {
@@ -175,7 +175,7 @@ public class MyFonts {
         };
     }
 
-    private void doSetDesiredFont(String which, Typeface typeface, String fontName,TextView textView) {
+    private void doSetDesiredFont(String which, Typeface typeface, String fontName,MyMaterialSimpleTextView textView) {
         // Set the desired font
         switch (which) {
             case "fontLyric":

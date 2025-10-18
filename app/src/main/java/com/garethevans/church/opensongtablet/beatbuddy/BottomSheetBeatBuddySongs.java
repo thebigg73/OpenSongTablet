@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.beatbuddy;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,25 +9,22 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetBeatBuddySongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
+public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
 
     // This class is used to allow users to browse the default songs on the device
 
@@ -62,20 +58,6 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
-    }
-
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -83,6 +65,9 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
         myView = BottomSheetBeatBuddySongsBinding.inflate(inflater, container, false);
 
         myView.dialogHeading.setClose(this);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBarSongs);
 
         setListeners();
 
@@ -153,7 +138,6 @@ public class BottomSheetBeatBuddySongs extends BottomSheetDialogFragment {
         myView.drumKit.setVisibility(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported() ? View.GONE:View.VISIBLE);
         getFoundSongs();
     }
-
 
     private void getFoundSongs() {
         if (bbsqLite!=null) {

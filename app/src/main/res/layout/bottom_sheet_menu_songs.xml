@@ -12,12 +12,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <LinearLayout
                 android:id="@+id/songSpecificActions"
@@ -39,7 +41,7 @@
                 android:layout_marginBottom="8dp">
 
                 <TableRow>
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/songLoad"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -50,7 +52,7 @@
                         android:drawableStart="@drawable/save"
                         android:text="@string/load"/>
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/songShare"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -63,7 +65,7 @@
                 </TableRow>
 
                 <TableRow>
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/songEdit"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -74,7 +76,7 @@
                         android:drawableStart="@drawable/pen"
                         android:text="@string/edit_song"/>
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/songActions"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -86,7 +88,7 @@
                         android:text="@string/actions"/>
                 </TableRow>
                 <TableRow>
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/addToSet"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -96,7 +98,7 @@
                         android:drawablePadding="8dp"
                         android:drawableStart="@drawable/plus"
                         android:text="@string/add_song_to_set"/>
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/addVariationToSet"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -108,10 +110,11 @@
                         android:text="@string/variation_make"/>
                 </TableRow>
             </TableLayout>
-            <TableRow style="@style/DividerLine"/>
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/otherOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

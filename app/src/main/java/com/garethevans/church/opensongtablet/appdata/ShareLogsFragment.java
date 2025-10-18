@@ -48,6 +48,8 @@ public class ShareLogsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsShareLogsBinding.inflate(inflater,container,false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
         prepareStrings();
 
         writeLog = mainActivityInterface.getStorageAccess().getUriForItem(settings_string, "", writeLog_string);

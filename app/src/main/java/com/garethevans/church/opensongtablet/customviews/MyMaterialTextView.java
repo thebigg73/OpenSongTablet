@@ -9,9 +9,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,22 +18,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textview.MaterialTextView;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 
 public class MyMaterialTextView extends LinearLayout {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyMaterialTextView";
-    private MaterialTextView textView;
-    private MaterialTextView hintView;
+    private MyMaterialSimpleTextView textView;
+    private MyMaterialSimpleTextView hintView;
     private ImageView checkMark, imageView;
     private CheckBox checkBox;
     private FrameLayout checkBoxHolder;
-    private FloatingActionButton endActionButton;
+    private MyFloatingActionButton endActionButton;
     private float xxlarge, xlarge, large, medium, small, xsmall;
 
     public MyMaterialTextView(Context context) {
@@ -52,8 +48,7 @@ public class MyMaterialTextView extends LinearLayout {
     }
 
     private void initialise(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        ContextThemeWrapper contextWrapper = new ContextThemeWrapper(context, context.getTheme());
-        LayoutInflater.from(contextWrapper).inflate(R.layout.view_material_textview, this, true);
+        inflate(context,R.layout.view_material_textview, this);
 
         xxlarge = context.getResources().getDimension(R.dimen.text_xxlarge);
         xlarge = context.getResources().getDimension(R.dimen.text_xlarge);
@@ -70,17 +65,21 @@ public class MyMaterialTextView extends LinearLayout {
         checkBox = findViewById(R.id.checkBox);
 
         if (attrs != null) {
-            // Read framework attrs (android:text, android:hint)
-            int[] baseAttrs = new int[]{android.R.attr.text, android.R.attr.hint};
-            TypedArray taBase = context.obtainStyledAttributes(attrs, baseAttrs, defStyleAttr, 0);
-
-            String mainText = taBase.getString(0);
-            if (mainText != null) textView.setText(mainText);
-
-            String hintText = taBase.getString(1);
-            if (hintText != null) hintView.setText(hintText);
-
-            taBase.recycle();
+            // Look for android:textColor in the XML explicitly
+            String textValue = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "text");
+            String hintValue = attrs.getAttributeValue("http://schemas.android.com/apk/res/android","hint");
+            if (textValue != null) {
+                // Attribute exists in XML, safe to read
+                TypedArray a = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.text});
+                textView.setText(a.getString(0));
+                a.recycle();
+            }
+            if (hintValue != null) {
+                // Attribute exists in XML, safe to read
+                TypedArray a2 = getContext().obtainStyledAttributes(attrs, new int[]{android.R.attr.hint});
+                hintView.setText(a2.getString(0));
+                a2.recycle();
+            }
 
             // Read custom attrs (your attrs.xml defines these)
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialTextView, defStyleAttr, 0);
@@ -98,18 +97,61 @@ public class MyMaterialTextView extends LinearLayout {
                 checkBoxHolder.setVisibility(GONE);
             }
             ta.recycle();
+
+        } else {
+            textView.setVisibility(View.GONE);
+            hintView.setVisibility(View.GONE);
         }
+
+        /*if (attrs != null) {
+            // Read framework attrs (android:text, android:hint)
+            int[] baseAttrs = new int[]{android.R.attr.text, android.R.attr.hint};
+            TypedArray taBase = context.obtainStyledAttributes(attrs, baseAttrs, defStyleAttr, 0);
+
+            String mainText = taBase.getString(0);
+            //setText(mainText);
+            *//*if (mainText != null) {
+                textView.setText(mainText);
+            } else {
+                textView.setVisibility(View.GONE);
+            }*//*
+
+            String hintText = taBase.getString(1);
+            setHint(hintText);
+            *//*if (hintText != null) hintView.setText(hintText);
+*//*
+            taBase.recycle();
+
+
+        } else {
+
+        }*/
+
+        setPalette(new Palette(context));
     }
 
     // Public setters
+    public void setText(String text) {
+        if (textView!=null) {
+            textView.post(() -> {
+                textView.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
+                textView.setText(text);
+            });
+        }
+    }
+    public void setHint(String text) {
+        if (hintView!=null) {
+            hintView.post(() -> {
+                hintView.setVisibility(text == null || text.isEmpty() ? GONE : VISIBLE);
+                hintView.setText(text);
+            });
+        }
+    }
+
     public void setText(CharSequence text) {
         if (textView!=null) {
             textView.post(() -> {
-                try {
-                    textView.setText(String.valueOf(text==null ? "":text));
-                } catch (Exception e) {
-                    Log.d(TAG, "Couldn't set text:" + text);
-                }
+                setText(text==null ? "" : String.valueOf(text));
             });
         }
     }
@@ -117,12 +159,16 @@ public class MyMaterialTextView extends LinearLayout {
     public void setHint(CharSequence hint) {
         if (hintView!=null) {
             hintView.post(() -> {
+                setHint(hint==null ? "" : String.valueOf(hint));
+            });
+            /*hintView.post(() -> {
+                hintView.setVisibility(hint!=null ? VISIBLE : GONE);
                 try {
                     hintView.setText(String.valueOf(hint==null ? "":hint));
                 } catch (Exception e) {
                     Log.d(TAG, "Couldn't set hint:" + hint);
                 }
-            });
+            });*/
         }
     }
 
@@ -146,7 +192,7 @@ public class MyMaterialTextView extends LinearLayout {
     }
 
 
-    public MaterialTextView getTextView() {
+    public MyMaterialSimpleTextView getTextView() {
         return textView;
     }
 
@@ -218,4 +264,14 @@ public class MyMaterialTextView extends LinearLayout {
             imageView.setVisibility(View.VISIBLE);
         } else imageView.setVisibility(View.GONE);
     }
+
+    public void setPalette(Palette palette) {
+        if (palette != null) {
+            textView.setTextColor(palette.textColor);
+            hintView.setTextColor(palette.hintColor);
+            checkMark.setColorFilter(palette.textColor);
+        }
+    }
+
+
 }

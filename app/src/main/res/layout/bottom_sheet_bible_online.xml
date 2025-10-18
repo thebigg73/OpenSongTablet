@@ -23,13 +23,13 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/webBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/back"
-            app:srcCompat="@drawable/arrow_left"
+            android:src="@drawable/arrow_left"
             app:fabSize="mini" />
 
         <FrameLayout
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                 android:id="@+id/webGrabText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,13 +47,13 @@
                 app:icon="@drawable/download" />
         </FrameLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/webClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/back"
-            app:srcCompat="@drawable/close"
+            android:src="@drawable/close"
             app:backgroundTint="@color/red"
             app:fabSize="mini" />
     </LinearLayout>
@@ -72,7 +72,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/extra_scroll_space">
 
                 <LinearLayout
                     android:id="@+id/searchOptions"
@@ -100,13 +101,13 @@
                         android:hint="@string/bible_translation"
                         app:helperText="@string/optional" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                         android:id="@+id/downloadWiFiOnly"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/download_wifi_only" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/doSearch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -146,7 +147,7 @@
                         android:layout_gravity="start"
                         android:hint="@string/bible_translation" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                         android:id="@+id/verseNumbers"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -197,7 +198,7 @@
         android:layout_height="@dimen/progress_bar_size"
         android:layout_centerInParent="true" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/addToSet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

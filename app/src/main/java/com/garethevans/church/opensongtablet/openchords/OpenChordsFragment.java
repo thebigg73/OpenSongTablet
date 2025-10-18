@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.openchords;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -13,14 +14,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsOpenchordsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class OpenChordsFragment extends Fragment {
     // This class is where we trigger sync with the OpenChords server
@@ -70,6 +73,11 @@ public class OpenChordsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsOpenchordsBinding.inflate(inflater, container, false);
 
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         changeButtonsEnable(false);
         updateProgress(wait_string+"\n");
         prepareStrings();
@@ -90,6 +98,23 @@ public class OpenChordsFragment extends Fragment {
 
     private void prepareStrings() {
         if (getContext() != null) {
+            if (mainActivityInterface.getPalette().textColor == R.color.dark_color) {
+                myView.openChordsLogo.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white_blue));
+            } else {
+                Drawable drawable = AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white);
+                if (drawable!=null) {
+                    DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().textColor);
+                    myView.openChordsLogo.setImageDrawable(drawable);
+                }
+                myView.openChordsLogo.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white));
+            }
+
+            Drawable popup = AppCompatResources.getDrawable(getContext(), R.drawable.popup_bg);
+            if (popup!=null) {
+                DrawableCompat.setTint(popup,mainActivityInterface.getPalette().secondary);
+            }
+            myView.fakeToastLayout.setBackground(popup);
+
             openchords_string = getString(R.string.openchords);
             webAddress = getString(R.string.website_openchords);
             openchords_folder_doesnt_exist_string = getString(R.string.openchords_folder_doesnt_exist);
@@ -104,7 +129,7 @@ public class OpenChordsFragment extends Fragment {
                     // Keep the user posted
                     String progressText = index_songs_wait_string;
                     if (mainActivityInterface.getSongMenuFragment() != null) {
-                        MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                        MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                         if (progressView != null && progressView.getText() != null) {
                             progressText += "\n" + progressView.getText().toString();
                         }

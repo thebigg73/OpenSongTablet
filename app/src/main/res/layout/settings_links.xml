@@ -13,7 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/linkYouTube"
@@ -22,7 +23,8 @@
                 android:hint="@string/link_youtube"
                 android:text="@string/link_youtube"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/linkOnline"
@@ -31,7 +33,8 @@
                 android:hint="@string/link_web"
                 android:text="@string/link_web"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/linkAudio"
@@ -40,16 +43,18 @@
                 android:hint="@string/link_audio"
                 android:text="@string/link_audio"
                 app:size="large"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
             android:id="@+id/linkOther"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/link_file"
             android:text="@string/link_file"
             app:size="large"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

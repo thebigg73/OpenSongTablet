@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.view.Gravity;
@@ -10,14 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class ShowToast {
 
     // New method uses a hiddent textview that floats over the main layout
-    private final MaterialTextView toastBox;
+    private final MyMaterialSimpleTextView toastBox;
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "ShowToast";
@@ -31,7 +35,7 @@ public class ShowToast {
     private final Runnable runnableShow;
     private final String success, error;
 
-    public ShowToast(Context c, MaterialTextView toastBox) {
+    public ShowToast(Context c, MyMaterialSimpleTextView toastBox) {
         this.toastBox = toastBox;
         this.c = c;
         success = c.getString(R.string.success);
@@ -56,7 +60,15 @@ public class ShowToast {
             if (toastBox!=null) {
                 toastBox.post(() -> {
                     try {
+                        Drawable drawable = ContextCompat.getDrawable(c, R.drawable.rectangle);
+                        if (drawable!=null) {
+                            DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().secondary);
+                        }
+                        toastBox.setBackground(drawable);
                         toastBox.setText(currentMessage);
+                        int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
+                        toastBox.setPadding(padding,padding,padding,padding);
+                        toastBox.setTextColor(mainActivityInterface.getPalette().textColor);
                         toastBox.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -101,7 +113,7 @@ public class ShowToast {
         //noinspection deprecation
         popupWindow.setBackgroundDrawable(new BitmapDrawable()); // Necessary for outside touch to work
         popupWindow.setOutsideTouchable(true);
-        MaterialTextView textToast = view.findViewById(R.id.textToast);
+        MyMaterialSimpleTextView textToast = view.findViewById(R.id.textToast);
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
         popupWindow.getContentView().getRootView().setOnClickListener(v -> popupWindow.dismiss());
 

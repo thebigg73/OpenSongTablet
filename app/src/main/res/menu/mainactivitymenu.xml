@@ -5,7 +5,7 @@
 
     <item android:id="@+id/help_menu_item"
         android:title="@string/help"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/help_outline"
         android:orderInCategory="1"
         android:visible="false" />
@@ -13,13 +13,13 @@
     <item android:id="@+id/search_menu_item"
         android:title="@string/search"
         android:icon="@drawable/search"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:orderInCategory="2"
         android:visible="true"/>
 
     <item android:id="@+id/mirror_menu_item"
         android:title="@string/chromecast"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/cast"
         android:orderInCategory="3" />
 

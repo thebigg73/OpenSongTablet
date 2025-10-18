@@ -1,18 +1,21 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
-import com.google.android.material.color.MaterialColors;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.textview.MaterialTextView;
 
 public class TrackSlider extends LinearLayout {
 
@@ -23,8 +26,8 @@ public class TrackSlider extends LinearLayout {
 
     private Slider volumeSlider;
     private Slider panSlider;
-    private MaterialTextView trackVolumeTextView;
-    private MaterialTextView muteButton, soloButton, masterBoost1, masterBoost2, masterBoost3;
+    private MyMaterialSimpleTextView trackVolumeTextView;
+    private MyMaterialSimpleTextView muteButton, soloButton, masterBoost1, masterBoost2, masterBoost3;
     private String trackName="", trackPan="C";
     private int trackNumber=-1, trackVolume=0;
     private boolean trackMute, trackSolo;
@@ -33,6 +36,7 @@ public class TrackSlider extends LinearLayout {
     private MultiTrackPlayer multiTrackPlayer;
     private View levelIndicator;
     private View muteBox, soloBox, boost1Box, boost2Box, boost3Box;
+    private Palette palette;
 
     // Track -1 is the master slider
     public TrackSlider(Context context) {
@@ -61,12 +65,14 @@ public class TrackSlider extends LinearLayout {
     private void setupViews(Context context) {
         inflate(context, R.layout.view_track_slider, this);
 
+        palette = new Palette(context);
+
         LinearLayout mainLayout = findViewById(R.id.mainLayout);
         LinearLayout masterBoostButtons = findViewById(R.id.masterBoostButtons);
         LinearLayout muteAndSoloButtons = findViewById(R.id.muteAndSoloButtons);
         volumeSlider = findViewById(R.id.volumeSlider);
         panSlider = findViewById(R.id.panSlider);
-        MaterialTextView trackNameTextView = findViewById(R.id.trackNameTextView);
+        MyMaterialSimpleTextView trackNameTextView = findViewById(R.id.trackNameTextView);
         trackVolumeTextView = findViewById(R.id.trackVolumeTextView);
         muteButton = findViewById(R.id.muteButton);
         soloButton = findViewById(R.id.soloButton);
@@ -99,8 +105,8 @@ public class TrackSlider extends LinearLayout {
         boost2Box.setId(View.generateViewId());
         boost3Box.setId(View.generateViewId());
 
-        buttonTextOnColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, ContextCompat.getColor(context,R.color.black));
-        buttonTextOffColor = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.black));
+        buttonTextOnColor = palette.textColor;
+        buttonTextOffColor = palette.hintColor;
 
         int maxHeight = Math.round(176 * context.getResources().getDisplayMetrics().density);
         levelIndicator.setPivotX(0);
@@ -126,7 +132,7 @@ public class TrackSlider extends LinearLayout {
             masterBoostButtons.setVisibility(View.VISIBLE);
             // Set the background color to red
             trackName = context.getString(R.string.mainfoldername);
-            mainLayout.setBackgroundColor(MaterialColors.getColor(mainLayout, com.google.android.material.R.attr.colorSecondary));
+            mainLayout.setBackgroundColor(palette.secondary);
             muteButton.setEnabled(false);
             soloButton.setEnabled(false);
         } else {
@@ -140,7 +146,23 @@ public class TrackSlider extends LinearLayout {
             masterBoost3.setEnabled(false);
         }
         trackNameTextView.setText(trackName);
+        panSlider.setTrackTintList(ColorStateList.valueOf(palette.primaryVariant));
+        panSlider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        panSlider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        volumeSlider.setTrackTintList(ColorStateList.valueOf(palette.primaryVariant));
+        volumeSlider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        volumeSlider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
 
+        Drawable box = AppCompatResources.getDrawable(context,R.drawable.rounded_box);
+        if (box!=null) {
+            DrawableCompat.setTint(box.mutate(), palette.secondary);
+            muteBox.setBackground(box);
+            soloBox.setBackground(box);
+            boost1Box.setBackground(box);
+            boost2Box.setBackground(box);
+            boost3Box.setBackground(box);
+        }
+        levelIndicator.setBackgroundColor(palette.secondary);
         updateButtons();
     }
 

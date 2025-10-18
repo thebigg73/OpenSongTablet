@@ -16,7 +16,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class PageButtons {
         custom6.hide();
         custom7.hide();
         custom8.hide();
-        pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
+        pageButtonColor = mainActivityInterface.getPalette().secondary;
         int size = FloatingActionButton.SIZE_NORMAL;
         if (pageButtonMini) {
             size = FloatingActionButton.SIZE_MINI;
@@ -147,7 +146,11 @@ public class PageButtons {
     }
 
     public MyFAB getFAB(int x) {
-        return fabs.get(x);
+        if (fabs!=null) {
+            return fabs.get(x);
+        } else {
+            return null;
+        }
     }
     private final AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
 
@@ -418,54 +421,55 @@ public class PageButtons {
 
     // This will redesign the button for the page
     public void setPageButton(MyFAB fab, int buttonNum, boolean editing) {
-        // The alpha is set on the linear layout, not the individual buttons
-        pageButtonsLayout.setAlpha(pageButtonAlpha);
+        if (pageButtonsLayout!=null) {
+            // The alpha is set on the linear layout, not the individual buttons
+            pageButtonsLayout.setAlpha(pageButtonAlpha);
 
-        // Tint the button
-        //fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+            // Tint the button
+            //fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
 
-        // If this is the main page button, set it's drawable
-        Drawable drawable = fab.getDrawable();
-        if (drawable==null && buttonNum==-1) {
-            //drawable = ContextCompat.getDrawable(c, R.drawable.plus);
-            drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.plus,c.getTheme());
-            if (drawable!=null) {
-                //DrawableCompat.setTint(drawable, pageButtonIconColor);
-                fab.setImageDrawable(drawable);
+            // If this is the main page button, set it's drawable
+            Drawable drawable = fab.getDrawable();
+            if (drawable == null && buttonNum == -1) {
+                //drawable = ContextCompat.getDrawable(c, R.drawable.plus);
+                drawable = VectorDrawableCompat.create(c.getResources(), R.drawable.plus, c.getTheme());
+                if (drawable != null) {
+                    //DrawableCompat.setTint(drawable, pageButtonIconColor);
+                    fab.setImageDrawable(drawable);
+                    fab.setPalette(mainActivityInterface.getPalette());
+                }
             }
-        }
 
-        if (buttonNum>=0 && buttonNum<=pageButtonNum) {
-            Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
-            //Drawable buttonDrawable = VectorDrawableCompat.create(c.getResources(),drawableIds.get(buttonNum),c.getTheme());
-            //buttonDrawable.mutate();
-            //DrawableCompat.setTint(buttonDrawable, pageButtonIconColor);
-            fab.setImageDrawable(buttonDrawable);
-            fab.setTag(pageButtonAction.get(buttonNum));
-            if (pageButtonVisibility.get(buttonNum) && actionButton.getRotation()!=0) {
+            if (buttonNum >= 0 && buttonNum <= pageButtonNum) {
+                Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
+                fab.setImageDrawable(buttonDrawable);
+                fab.setPalette(mainActivityInterface.getPalette());
+                fab.setTag(pageButtonAction.get(buttonNum));
+                if (pageButtonVisibility.get(buttonNum) && actionButton.getRotation() != 0) {
+                    fab.show();
+                } else if (!editing) {
+                    // Don't hide buttons on the pagebuttonsfragment (editing page)
+                    fab.hide();
+                }
+                if (!editing) {
+                    fab.setOnClickListener(v -> {
+                        int pos = actions.indexOf(pageButtonAction.get(buttonNum));
+                        sendPageAction(pos, false);
+                    });
+                    fab.setOnLongClickListener(v -> {
+                        int pos = actions.indexOf(pageButtonAction.get(buttonNum));
+                        sendPageAction(pos, true);
+                        return true;
+                    });
+                } else {
+                    fab.setOnClickListener(null);
+                }
+            } else if (buttonNum >= 0) {
+                fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), drawableIds.get(0), c.getTheme()));
+                fab.setTag("");
                 fab.show();
-            } else if (!editing) {
-                // Don't hide buttons on the pagebuttonsfragment (editing page)
-                fab.hide();
-            }
-            if (!editing) {
-                fab.setOnClickListener(v -> {
-                    int pos = actions.indexOf(pageButtonAction.get(buttonNum));
-                    sendPageAction(pos,false);
-                });
-                fab.setOnLongClickListener(v -> {
-                    int pos = actions.indexOf(pageButtonAction.get(buttonNum));
-                    sendPageAction(pos,true);
-                    return true;
-                });
-            } else {
                 fab.setOnClickListener(null);
             }
-        } else if (buttonNum>=0) {
-            fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),c.getTheme()));
-            fab.setTag("");
-            fab.show();
-            fab.setOnClickListener(null);
         }
     }
 

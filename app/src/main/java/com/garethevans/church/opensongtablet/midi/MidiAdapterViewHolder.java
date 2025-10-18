@@ -5,20 +5,20 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
 
 public class MidiAdapterViewHolder  extends RecyclerView.ViewHolder  implements
         View.OnTouchListener, GestureDetector.OnGestureListener{
 
-    final TextView vItem;
-    final TextView vMidiReadable;
-    final TextView vMidiCommand;
+    final MyMaterialSimpleTextView vItem;
+    final MyMaterialSimpleTextView vMidiReadable;
+    final MyMaterialSimpleTextView vMidiCommand;
     final RelativeLayout vCard;
     private final ItemTouchHelper itemTouchHelper;
     private final MidiItemTouchInterface midiItemTouchInterface;

@@ -21,7 +21,7 @@
             android:visibility="gone"
             app:buttonTint="?attr/colorOnPrimary"/>
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/cardview_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,8 +30,7 @@
             android:drawablePadding="16dp"
             android:padding="4dp"
             android:text="@string/number_1"
-            app:drawableStartCompat="@drawable/music_note"
-            app:drawableTint="?attr/colorOnPrimary"/>
+            app:drawableStartCompat="@drawable/music_note" />
 
         <FrameLayout
             android:id="@+id/fileOrTitle"
@@ -41,7 +40,7 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/cardview_edit">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/cardview_songtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +53,7 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:visibility="visible"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/cardview_songfilename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +68,7 @@
 
         </FrameLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/cardview_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +79,7 @@
             android:contentDescription="@string/edit"
             android:visibility="gone"/>
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/cardview_folder"
             android:layout_width="match_parent"
             android:layout_toEndOf="@+id/cardview_item"
@@ -96,7 +95,7 @@
             android:text="@string/mainfoldername"
             android:textColor="?attr/colorOnPrimary" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/cardview_exists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

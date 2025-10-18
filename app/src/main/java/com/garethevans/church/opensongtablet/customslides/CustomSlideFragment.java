@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -33,11 +32,12 @@ import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsCustomSlideBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -298,7 +298,7 @@ public class CustomSlideFragment extends Fragment {
                 String tag = Base64.encodeToString(data, Base64.DEFAULT);
                 @SuppressLint("InflateParams") TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.view_slide_image_row,null,false);
                 row.setTag(tag);
-                TextView filename = row.findViewById(R.id.uriEncoded);
+                MyMaterialSimpleTextView filename = row.findViewById(R.id.uriEncoded);
                 filename.setText(uri.toString());
                 ImageView thumbnail = row.findViewById(R.id.image);
                 Bitmap ThumbImage;
@@ -319,7 +319,7 @@ public class CustomSlideFragment extends Fragment {
                     thumbnail.setImageDrawable(bd);
                 }
 
-                FloatingActionButton delete = row.findViewById(R.id.delete);
+                MyFloatingActionButton delete = row.findViewById(R.id.delete);
                 delete.setTag(tag + "_delete");
                 delete.setOnClickListener(v -> {
                     String rowtag = v.getTag().toString();

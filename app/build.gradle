@@ -57,7 +57,7 @@ android {
             mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:8.12.3'
+            classpath 'com.android.tools.build:gradle:8.13.0'
             classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.5'
         }
     }
@@ -139,6 +139,8 @@ dependencies {
     //noinspection NewerVersionAvailable,GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
+
+    implementation 'androidx.webkit:webkit:1.14.0'
 
     // To include jar libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])

@@ -498,7 +498,7 @@ public class BBCommandsFragment extends Fragment {
         myView.currentSongMessages.post(() -> {
             if (midiMessagesAdapter!=null && myView!=null) {
                 myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext()));
-                ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter,true);
+                ItemTouchHelper.Callback callback = new MidiItemTouchHelper(getContext(),midiMessagesAdapter,true);
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                 midiMessagesAdapter.setTouchHelper(itemTouchHelper);
                 myView.currentSongMessages.setAdapter(midiMessagesAdapter);

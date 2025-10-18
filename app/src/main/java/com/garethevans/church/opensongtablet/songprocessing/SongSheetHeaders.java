@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SongSheetHeaders {
@@ -51,7 +51,7 @@ public class SongSheetHeaders {
         songSheetHTML = "";
 
         if (title!=null && !title.isEmpty()) {
-            TextView textView = getSongSheetTexts(title,typeface,textColor,defFontSize);
+            MyMaterialSimpleTextView textView = getSongSheetTexts(title,typeface,textColor,defFontSize);
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
             linearLayout.addView(textView);
@@ -71,7 +71,7 @@ public class SongSheetHeaders {
         String keyCapoTempo = getKeyCapoTempo(thisSong);
 
         if (!keyCapoTempo.isEmpty()) {
-            TextView textView = getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling);
+            MyMaterialSimpleTextView textView = getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling);
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
             linearLayout.addView(textView);
@@ -90,8 +90,8 @@ public class SongSheetHeaders {
         return linearLayout;
     }
 
-    public TextView getSongSheetTexts(String content, Typeface typeface, int color, float size) {
-        TextView textView = new TextView(c);
+    public MyMaterialSimpleTextView getSongSheetTexts(String content, Typeface typeface, int color, float size) {
+        MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
         textView.setTypeface(typeface);
         textView.setTextColor(color);
         textView.setTextSize(size);

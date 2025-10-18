@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/parentView"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/parentView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
         android:id="@+id/lyricsScrollView"
@@ -19,9 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/ocr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,7 +33,7 @@
                 app:icon="@drawable/ocr"
                 app:iconTint="@color/white" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/imageEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,30 +77,30 @@
         android:orientation="horizontal"
         app:layout_anchorGravity="bottom">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/undoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="12dp"
             android:contentDescription="@string/back"
-            app:srcCompat="@drawable/undo" />
+            android:src="@drawable/undo" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/redoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="12dp"
             android:contentDescription="@string/next"
-            app:srcCompat="@drawable/redo" />
+            android:src="@drawable/redo" />
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,6 +110,6 @@
         android:layout_marginBottom="12dp"
         android:contentDescription="@string/extra_settings"
         app:layout_anchorGravity="bottom"
-        app:srcCompat="@drawable/menu" />
+        android:src="@drawable/menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

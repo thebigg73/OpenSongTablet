@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -12,54 +12,58 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/showInlineSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/set_inline"
-                android:hint="@string/set_inline_info"/>
-            <TableRow style="@style/DividerLine"/>
+                android:hint="@string/set_inline_info"
+                android:text="@string/set_inline" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
 
             <LinearLayout
                 android:id="@+id/sliderLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
-                android:id="@+id/widthSlider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/width"
-                android:valueFrom="10"
-                android:valueTo="95"
-                android:value="30"
-                android:stepSize="5" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
+                    android:id="@+id/widthSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stepSize="5"
+                    android:text="@string/width"
+                    android:value="30"
+                    android:valueFrom="10"
+                    android:valueTo="95" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/textSizeSlider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:stepSize="1"
                     android:text="@string/text_size"
-                    android:valueFrom="8"
-                    android:valueTo="24"
                     android:value="14"
-                    android:stepSize="1" />
+                    android:valueFrom="8"
+                    android:valueTo="24" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/disableLeftHotZone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/hot_zone_left_disabled"
-                    android:visibility="gone"/>
-                <com.google.android.material.textview.MaterialTextView
+                    android:visibility="gone" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/disableCenterHotZone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/hot_zone_center_disabled"
-                    android:visibility="gone"/>
-                <TableRow style="@style/DividerLine"/>
+                    android:visibility="gone" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
@@ -67,37 +71,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/set_inline"
-                android:hint="@string/set_inline_info"/>
+                android:hint="@string/set_inline_info"
+                android:text="@string/set_inline" />
+
             <LinearLayout
                 android:id="@+id/sliderLayoutPresenter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/widthSliderPresenter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:stepSize="5"
                     android:text="@string/width"
-                    android:valueFrom="10"
-                    android:valueTo="95"
                     android:value="30"
-                    android:stepSize="5" />
+                    android:valueFrom="10"
+                    android:valueTo="95" />
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                     android:id="@+id/textSizeSliderPresenter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:stepSize="1"
                     android:text="@string/text_size"
-                    android:valueFrom="8"
-                    android:valueTo="24"
                     android:value="14"
-                    android:stepSize="1" />
+                    android:valueFrom="8"
+                    android:valueTo="24" />
 
-                <TableRow style="@style/DividerLine"/>
+                <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

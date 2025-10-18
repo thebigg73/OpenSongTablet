@@ -55,6 +55,9 @@ public class MoveContentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = (StorageMoveBinding.inflate(inflater, container, false));
 
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
         prepareStrings();
 
         if (getArguments()!=null && getArguments().containsKey("subdir")) {

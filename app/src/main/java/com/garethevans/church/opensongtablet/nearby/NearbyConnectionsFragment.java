@@ -14,13 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyconnectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -75,8 +74,8 @@ public class NearbyConnectionsFragment extends Fragment {
         webAddress = website_nearby_string;
 
         if (getContext()!=null) {
-            onColor = ColorStateList.valueOf(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, getResources().getColor(R.color.dark_secondary)));
-            offColor = ColorStateList.valueOf(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryVariant, getResources().getColor(R.color.dark_primary)));
+            onColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
+            offColor = ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant);
         }
 
         // Set the helpers
@@ -606,7 +605,7 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
 
-    public void updateCountdownText(boolean advertise, MaterialButton materialButton) {
+    public void updateCountdownText(boolean advertise, MyMaterialButton materialButton) {
         String text;
         if (advertise) {
             text = connections_advertising_string + "\n" + mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getCountdown();

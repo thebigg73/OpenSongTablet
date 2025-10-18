@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,11 +18,10 @@ import androidx.core.content.ContextCompat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.DialogHeader;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
+import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,9 +39,9 @@ public class AudioRecorderPopUp {
     private final float pageButtonAlpha, recordingAlpha;
     private final MediaPlayer mediaPlayer = new MediaPlayer();
     private PopupWindow popupWindow;
-    private FloatingActionButton closeButton, previewButton, deleteButton, saveButton;
+    private MyFloatingActionButton closeButton, previewButton, deleteButton, saveButton;
     private LinearLayout dealWithAudioLayout;
-    private ExtendedFloatingActionButton recordButton;
+    private MyExtendedFloatingActionButton recordButton;
     private FloatWindow floatWindow;
     private MediaRecorder mediaRecorder;
     private boolean isRecording = false, isPlaying = false, mediaPlayerIsPrepared = false;
@@ -61,8 +61,8 @@ public class AudioRecorderPopUp {
         posY = (int) ((float) mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) * 1.2f);
         recordStart = ContextCompat.getDrawable(c, R.drawable.record);
         recordStop = ContextCompat.getDrawable(c, R.drawable.stop);
-        colorInactive = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondaryVariant,ContextCompat.getColor(c,R.color.dark_secondary_variant));
-        colorActive = ContextCompat.getColor(c, R.color.red);
+        colorInactive = mainActivityInterface.getPalette().secondaryVariant;
+        colorActive = mainActivityInterface.getPalette().errorColor;
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
         recordingAlpha = Math.min(pageButtonAlpha, 0.7f);
         mediaPlayerOnPrepared();
@@ -98,6 +98,12 @@ public class AudioRecorderPopUp {
         floatWindow.setAlpha(pageButtonAlpha);
 
         View myView = View.inflate(c, R.layout.view_audio_recorder_popup, null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        } else {
+            myView.findViewById(R.id.layout).setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        }
         floatWindow.addView(myView);
 
         DialogHeader dialogHeader = myView.findViewById(R.id.dialogHeader);

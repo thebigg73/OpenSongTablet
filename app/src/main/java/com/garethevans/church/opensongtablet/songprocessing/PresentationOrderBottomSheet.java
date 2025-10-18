@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -11,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,18 +20,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetEditSongOrderBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.RecyclerInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
-public class PresentationOrderBottomSheet extends BottomSheetDialogFragment implements RecyclerInterface {
+public class PresentationOrderBottomSheet extends BottomSheetCommon implements RecyclerInterface {
     private BottomSheetEditSongOrderBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final Fragment callingFragment;
@@ -59,20 +53,6 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
     }
 
     @Override
@@ -106,7 +86,7 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
             myView.currentSections.setLayoutManager(new LinearLayoutManager(requireContext()));
             myView.currentSections.setAdapter(presentationOrderAdapter);
-            ItemTouchHelper.Callback callback = new PresoOrderItemTouchHelper(presentationOrderAdapter);
+            ItemTouchHelper.Callback callback = new PresoOrderItemTouchHelper(getContext(),presentationOrderAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(myView.currentSections);
 
@@ -123,8 +103,8 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
             mainActivityInterface.getTempSong().setSongSectionHeadings(sectionHeadings);
 
             for (String heading : mainActivityInterface.getTempSong().getSongSectionHeadings()) {
-                MaterialButton button = new MaterialButton(requireContext());
-                button.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(button.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(button.getContext(),R.color.dark_secondary))));
+                MyMaterialButton button = new MyMaterialButton(requireContext());
+                button.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.setMargins(12, 6, 6, 12);
                 params.setGravity(Gravity.CENTER_HORIZONTAL);

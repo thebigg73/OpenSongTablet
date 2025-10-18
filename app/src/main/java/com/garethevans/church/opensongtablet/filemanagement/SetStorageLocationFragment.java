@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -26,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.StorageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -287,7 +287,7 @@ public class SetStorageLocationFragment extends Fragment {
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
             View snackbarView = snackbar.getView();
-            TextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            MyMaterialSimpleTextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
             snackTextView.setMaxLines(4);
             snackbar.show();
         }
@@ -360,7 +360,7 @@ public class SetStorageLocationFragment extends Fragment {
                                 Log.d(TAG, "check:" + check + "  locations.get(" + x + "):" + locations.get(x));
                                 if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
                                     check.append("¬").append(locations.get(x)).append("¬");
-                                    TextView tv = new TextView(getContext());
+                                    MyMaterialSimpleTextView tv = new MyMaterialSimpleTextView(getContext());
                                     tv.setText(locations.get(x));
                                     myView.previousStorageLocations.addView(tv);
                                 }

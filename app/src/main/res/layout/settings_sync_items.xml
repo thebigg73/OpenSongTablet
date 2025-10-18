@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:orientation="vertical">
 
     <LinearLayout
@@ -42,14 +43,14 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/downloadItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sync_pull_download"
         app:icon="@drawable/download"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"/>
+        android:layout_marginBottom="16dp"/>
 </FrameLayout>
 
 

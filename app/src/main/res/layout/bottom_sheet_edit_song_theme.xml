@@ -32,13 +32,13 @@
             app:endIconMode="clear_text"
             android:padding="16dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/insertTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/new_something"
-            app:srcCompat="@drawable/plus"
+            android:src="@drawable/plus"
             app:fabSize="mini"
             app:useCompatPadding="true" />
     </LinearLayout>

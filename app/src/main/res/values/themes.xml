@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base Light Theme -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Font -->
         <item name="fontFamily">@font/lato</item>
         <item name="android:fontFamily">@font/lato</item>
@@ -69,6 +69,9 @@
         <item name="tunerOff">@color/light_tuner_off</item>
         <item name="tunerGreen">@color/light_tuner_green</item>
         <item name="tunerRed">@color/light_tuner_red</item>
+
+        <!-- Actionbar -->
+        <item name="android:windowContentOverlay">@null</item>
 
         <!-- Animations -->
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>

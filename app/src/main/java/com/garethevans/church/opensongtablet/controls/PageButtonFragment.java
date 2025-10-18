@@ -11,13 +11,13 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.customviews.MyFAB;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -32,7 +32,7 @@ public class PageButtonFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private ArrayList<MyFAB> myButtons;
     private ArrayList<LinearLayout> myLayouts;
-    private ArrayList<SwitchCompat> mySwitches;
+    private ArrayList<MyMaterialSwitch> mySwitches;
     private ArrayList<ExposedDropDown> exposedDropDowns;
     private ArrayList<MyMaterialTextView> shortTexts;
     private ArrayList<MyMaterialTextView> longTexts;

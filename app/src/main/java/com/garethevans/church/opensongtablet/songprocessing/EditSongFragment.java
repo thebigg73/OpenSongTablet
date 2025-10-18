@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 import com.garethevans.church.opensongtablet.databinding.EditSongBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 // When we edit a song, we create a write the current song to tempSong in MainActivity
@@ -66,6 +67,8 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = EditSongBinding.inflate(inflater, container, false);
+
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
 
         prepareStrings();
         webAddress = website_edit_song_string;
@@ -175,6 +178,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                                 myView.viewpager.setOffscreenPageLimit(1);
                                 myView.viewpager.registerOnPageChangeCallback(callback);
 
+                                myView.tabButtons.setBackgroundColor(mainActivityInterface.getPalette().background);
+                                myView.tabButtons.setTabTextColors(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+                                myView.tabButtons.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
                                 new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
                                     switch (position) {
                                         case 0:
@@ -253,7 +259,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         myView = null;
     }
 
-    public ExtendedFloatingActionButton getSaveButton() {
+    public MyExtendedFloatingActionButton getSaveButton() {
         return myView.saveChanges;
     }
 }

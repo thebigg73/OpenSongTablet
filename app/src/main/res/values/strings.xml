@@ -1796,4 +1796,6 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="pedal_enable_accessibility">If your Bluetooth pedal is not working in OpenSongApp, you can try letting Android know that the app uses an accessibility service.</string>
+    <string name="accessibility_service_description">Enables Bluetooth pedal control for page turning, etc.</string>
 </resources>

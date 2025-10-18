@@ -16,8 +16,8 @@ import androidx.core.graphics.ColorUtils;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
@@ -308,7 +308,7 @@ public class Metronome {
         visualMetronome = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean("metronomeShowVisual", false);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
-        metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, MaterialColors.getColor(c,com.google.android.material.R.attr.colorSurface,Color.BLACK), 0.3f);
+        metronomeFlashOnColorDarker = ColorUtils.blendARGB(metronomeFlashOnColor, mainActivityInterface.getPalette().surface, 0.3f);
     }
     public void setVisualMetronome(boolean visualMetronome) {
         this.visualMetronome = visualMetronome;
@@ -807,7 +807,7 @@ public class Metronome {
 
     }
 
-    public void initialiseTapTempo(MaterialButton tapButton, ExposedDropDown timeSigView,
+    public void initialiseTapTempo(MyMaterialButton tapButton, ExposedDropDown timeSigView,
                                    ExposedDropDown beatsView, ExposedDropDown divisionsView,
                                    ExposedDropDown tempoView) {
         this.timeSigView = timeSigView;
@@ -840,7 +840,7 @@ public class Metronome {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 tapButton.setEnabled(true);
                 tapButton.setText(c.getString(R.string.tap_tempo));
-                tapButton.setBackgroundColor(MaterialColors.getColor(c,com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary)));
+                tapButton.setBackgroundColor(mainActivityInterface.getPalette().secondary);
             }));
             // Start the metronome if we are in the metronome fragment where divisions isn't null
             if (divisionsView!=null) {

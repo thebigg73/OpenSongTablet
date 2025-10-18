@@ -12,9 +12,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,9 +20,9 @@ import java.util.TimerTask;
 public class MaterialMediaControl extends LinearLayout {
     private final Context c;
     private MainActivityInterface mainActivityInterface;
-    private MaterialTextView playbackTime, playbackLength;
+    private MyMaterialSimpleTextView playbackTime, playbackLength;
     private Slider playbackSlider;
-    private FloatingActionButton playbackStartStop;
+    private MyFloatingActionButton playbackStartStop;
     private MediaPlayer mediaPlayer;
     private Timer timer;
     private TimerTask timerTask;

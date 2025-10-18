@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -81,8 +83,11 @@ public class PresenterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        myView = ModePresenterBinding.inflate(inflater,container,false);
 
+        myView = ModePresenterBinding.inflate(inflater,container,false);
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        myView.sideBit.setBackgroundColor(mainActivityInterface.getPalette().surface);
+        myView.bottomBit.setBackgroundColor(mainActivityInterface.getPalette().surface);
         prepareStrings();
 
         // Get the orientation
@@ -226,6 +231,9 @@ public class PresenterFragment extends Fragment {
 
             myView.viewPager.setAdapter(pageAdapter);
             myView.viewPager.setUserInputEnabled(false);
+            myView.presenterTabs.setTabTextColors(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            myView.presenterTabs.setBackgroundColor(mainActivityInterface.getPalette().background);
+            myView.presenterTabs.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
             new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
@@ -369,12 +377,12 @@ public class PresenterFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.showLogo.setOnCheckedChangeListener(new MyCheckChangeListener());
-        myView.showLogoSide.setOnCheckedChangeListener(new MyCheckChangeListener());
-        myView.blackScreen.setOnCheckedChangeListener(new MyCheckChangeListener());
-        myView.blackScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener());
-        myView.blankScreen.setOnCheckedChangeListener(new MyCheckChangeListener());
-        myView.blankScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener());
+        myView.showLogo.setOnCheckedChangeListener(new MyCheckChangeListener(myView.showLogo));
+        myView.showLogoSide.setOnCheckedChangeListener(new MyCheckChangeListener(myView.showLogoSide));
+        myView.blackScreen.setOnCheckedChangeListener(new MyCheckChangeListener(myView.blackScreen));
+        myView.blackScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener(myView.blackScreenSide));
+        myView.blankScreen.setOnCheckedChangeListener(new MyCheckChangeListener(myView.blankScreen));
+        myView.blankScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener(myView.blankScreenSide));
 
         myView.panicBottom.setOnClickListener(view -> {
             myView.showLogo.setChecked(true);
@@ -400,15 +408,21 @@ public class PresenterFragment extends Fragment {
 
     private class MyCheckChangeListener implements CompoundButton.OnCheckedChangeListener {
 
+        MyMaterialSwitch myMaterialSwitch;
+
+        MyCheckChangeListener(MyMaterialSwitch myMaterialSwitch) {
+            this.myMaterialSwitch = myMaterialSwitch;
+        }
+
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            if ((landscape && compoundButton==myView.showLogoSide) || compoundButton==myView.showLogo) {
+            if ((landscape && myMaterialSwitch==myView.showLogoSide) || myMaterialSwitch==myView.showLogo) {
                 mainActivityInterface.getPresenterSettings().setLogoOn(b);
                 displayInterface.updateDisplay("showLogo");
-            } else if ((landscape && compoundButton==myView.blankScreenSide) || compoundButton==myView.blankScreen) {
+            } else if ((landscape && myMaterialSwitch==myView.blankScreenSide) || myMaterialSwitch==myView.blankScreen) {
                 mainActivityInterface.getPresenterSettings().setBlankscreenOn(b);
                 displayInterface.updateDisplay("showBlankscreen");
-                } else if ((landscape && compoundButton==myView.blackScreenSide) || compoundButton==myView.blackScreen) {
+                } else if ((landscape && myMaterialSwitch==myView.blackScreenSide) || myMaterialSwitch==myView.blackScreen) {
                 mainActivityInterface.getPresenterSettings().setBlackscreenOn(b);
                 displayInterface.updateDisplay("showBlackscreen");
             }

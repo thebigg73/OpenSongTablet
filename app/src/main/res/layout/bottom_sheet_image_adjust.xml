@@ -19,19 +19,21 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/extra_scroll_space">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/rotateImageLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -41,7 +43,7 @@
                         android:contentDescription="@string/pan_left"
                         android:src="@drawable/rotate_left" />
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/rotateImageRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -51,7 +53,7 @@
                         android:contentDescription="@string/pan_right"
                         android:src="@drawable/rotate_right" />
 
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                         android:id="@+id/saveChanges"
                         tools:ignore="RelativeOverlap"
                         android:layout_width="wrap_content"

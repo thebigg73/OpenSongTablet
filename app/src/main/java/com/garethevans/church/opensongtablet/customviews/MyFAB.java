@@ -13,9 +13,11 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MyFAB extends FrameLayout {
@@ -24,6 +26,7 @@ public class MyFAB extends FrameLayout {
     private final RelativeLayout myFABHolder;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyFAB";
+    private Palette palette;
 
     public MyFAB(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -65,6 +68,8 @@ public class MyFAB extends FrameLayout {
         });
 
         setAnimationListeners();
+
+        setPalette(new Palette(context));
     }
 
     private void setAnimationListeners() {
@@ -85,7 +90,7 @@ public class MyFAB extends FrameLayout {
     }
 
     final FloatingActionButton.OnVisibilityChangedListener addVisibilityChanged = new FloatingActionButton.OnVisibilityChangedListener() {
-        public void onShown(final FloatingActionButton fab) {
+        public void onShown(final MyFloatingActionButton fab) {
             super.onShown(fab);
             myFABHolder.setVisibility(View.VISIBLE);
         }
@@ -127,9 +132,11 @@ public class MyFAB extends FrameLayout {
     }
 
     public void setImageDrawable(int drawableInt) {
-        //Drawable drawable = ContextCompat.getDrawable(getContext(),drawableInt);
         Drawable drawable = VectorDrawableCompat.create(getResources(),drawableInt, getContext().getTheme());
-        myFAB.setImageDrawable(drawable);
+        if (drawable!=null) {
+            DrawableCompat.setTint(drawable, palette.onPrimary);
+            myFAB.setImageDrawable(drawable);
+        }
     }
 
     public Drawable getDrawable() {
@@ -139,5 +146,14 @@ public class MyFAB extends FrameLayout {
     public void setVisibility(int visibility) {
         myFAB.setVisibility(visibility);
         myFABHolder.setVisibility(visibility);
+    }
+
+    public void setPalette(Palette palette) {
+        myFAB.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+
+        // Tint the icon
+        Drawable drawable = DrawableCompat.wrap(myFAB.getDrawable()).mutate();
+        DrawableCompat.setTint(drawable, palette.onPrimary);
+        myFAB.setImageDrawable(drawable);
     }
 }

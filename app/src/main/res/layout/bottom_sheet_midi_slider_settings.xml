@@ -13,13 +13,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/midiName"
@@ -49,7 +50,7 @@
                     android:layout_marginStart="8dp"
                     android:hint="@string/midi_controller" />
             </LinearLayout>
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                 android:id="@+id/doSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

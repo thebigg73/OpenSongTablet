@@ -7,26 +7,21 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 
@@ -41,17 +36,17 @@ public class MyToolbar extends MaterialToolbar {
     private MainActivityInterface mainActivityInterface;
     private ActionBar actionBar;
     private final FrameLayout batteryholder;
-    private final TextView title;
-    private final TextView author;
-    private final TextView key;
-    private final TextView capo;
+    private final MyMaterialSimpleTextView title;
+    private final MyMaterialSimpleTextView author;
+    private final MyMaterialSimpleTextView key;
+    private final MyMaterialSimpleTextView capo;
     private final TextClock clock;
-    private final TextView tempo;
+    private final MyMaterialSimpleTextView tempo;
     private final ImageView setIcon, batteryimage;
     private final ConstraintLayout songandauthor;
     private final LinearLayout metronomeLayout;
     private final ArrayList<View> beatView;
-    private final com.google.android.material.textview.MaterialTextView batterycharge;
+    private final MyMaterialSimpleTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
     private int actionBarHideTime = 1200, additionalTopPadding = 0;
@@ -67,6 +62,8 @@ public class MyToolbar extends MaterialToolbar {
     public void initialiseToolbar(Context c, ActionBar actionBar) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        changeTheme();
+        actionBar.setElevation(0);
         this.actionBar = actionBar;
         delayActionBarHide = new Handler();
         hideActionBarRunnable = () -> {
@@ -82,15 +79,13 @@ public class MyToolbar extends MaterialToolbar {
 
     public MyToolbar(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
-        View v = LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_toolbar_constraint, this, true);
+
+        View v = inflate(context,R.layout.view_toolbar_constraint,this);
 
         this.setContentInsetsRelative(0,0);
         this.setContentInsetStartWithNavigation(0);
         this.setContentInsetEndWithActions(0);
 
-        this.setTitleTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
-        this.setSubtitleTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
         this.setPadding(0,0,0,0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.setElevation(0f);
@@ -98,7 +93,6 @@ public class MyToolbar extends MaterialToolbar {
 
         setIcon = v.findViewById(R.id.setIcon);
         title = v.findViewById(R.id.songtitle_ab);
-        title.setTextColor(MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, Color.WHITE));
         key = v.findViewById(R.id.songkey_ab);
         capo = v.findViewById(R.id.songcapo_ab);
         author = v.findViewById(R.id.songauthor_ab);
@@ -500,7 +494,7 @@ public class MyToolbar extends MaterialToolbar {
         return clock;
     }
 
-    public MaterialTextView getBatterycharge() {
+    public MyMaterialSimpleTextView getBatterycharge() {
         return batterycharge;
     }
 
@@ -589,5 +583,20 @@ public class MyToolbar extends MaterialToolbar {
             },bufferFix);
 
     }
-    
+
+    public void changeTheme() {
+        this.setTitleTextColor(mainActivityInterface.getPalette().textColor);
+        this.setSubtitleTextColor(mainActivityInterface.getPalette().textColor);
+        this.setBackgroundColor(mainActivityInterface.getPalette().primary);
+        this.setElevation(0);
+        title.setTextColor(mainActivityInterface.getPalette().textColor);
+        author.setTextColor(mainActivityInterface.getPalette().textColor);
+        key.setTextColor(mainActivityInterface.getPalette().textColor);
+        capo.setTextColor(mainActivityInterface.getPalette().textColor);
+        tempo.setTextColor(mainActivityInterface.getPalette().textColor);
+        clock.setTextColor(mainActivityInterface.getPalette().textColor);
+        setIcon.setColorFilter(mainActivityInterface.getPalette().textColor);
+        mainActivityInterface.refreshToolbarMenu();
+    }
+
 }

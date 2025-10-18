@@ -13,8 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="200dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -22,19 +22,19 @@
                 android:layout_margin="0dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/connections_connect" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/enableBluetooth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/midi_bluetooth" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                     android:id="@+id/searchDevices"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.textview.MaterialTextView
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/devicesText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -65,12 +65,13 @@
 
                     <ProgressBar
                         android:id="@+id/progressBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/progress_bar_size"
+                        android:layout_height="@dimen/progress_bar_size"
                         android:layout_below="@+id/devicesText"
                         android:layout_centerInParent="true" />
                 </RelativeLayout>
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <LinearLayout
@@ -94,21 +95,22 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/testMidiDevice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
                         android:text="@string/midi_test" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/disconnectMidiDevice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
                         android:text="@string/midi_disconnect" />
                 </LinearLayout>
-                <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
@@ -160,7 +162,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoscroll"
                 android:hint="@string/midi_input_channel_song_pad_info"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/autoSendMidi"
@@ -168,7 +171,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/midi_auto"
                 android:hint="@string/midi_messages"/>
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/midiDelay"

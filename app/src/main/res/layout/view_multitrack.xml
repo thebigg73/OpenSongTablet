@@ -47,7 +47,7 @@
                         android:layout_marginEnd="16dp"
                         android:text="@string/multitrack_folder_found" />
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/folderButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                         android:text="@string/multitrack_requires_conversion"
                         android:hint="@string/multitrack_requires_conversion_info"/>
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/conversionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                             android:id="@+id/audioPlay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                             android:id="@+id/audioPause"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                             android:id="@+id/audioStop"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

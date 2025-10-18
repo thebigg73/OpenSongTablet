@@ -96,8 +96,9 @@ public class SwipeFragment extends Fragment {
         });
 
         // Set up the drawing area - attach the drawNotes to the desired view
+        myView.drawingArea.setBackgroundColor(mainActivityInterface.getPalette().secondary);
         mainActivityInterface.setDrawNotes(myView.drawingArea);
-        mainActivityInterface.getDrawNotes().setCurrentPaint(20,0xffffffff);
+        mainActivityInterface.getDrawNotes().setCurrentPaint(20,mainActivityInterface.getPalette().textColor);
         mainActivityInterface.getDrawNotes().delayClear = true;
 
         // Measure the view and set the sizes based on this and user preferences

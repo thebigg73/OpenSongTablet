@@ -7,7 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/extra_scroll_space_large">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
             android:id="@+id/autohideActionBar"
@@ -23,9 +24,10 @@
             android:valueFrom="1000"
             android:valueTo="5000"
             android:stepSize="200" />
-        <TableRow style="@style/DividerLine"/>
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -65,11 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/show_tempo"/>
-
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
         </LinearLayout>
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/battery"
@@ -82,7 +84,7 @@
             android:padding="0dp"
             android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/batteryDialOnOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +101,7 @@
                 android:stepSize="1"
                 android:padding="0dp"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/batteryTextOnOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,10 +117,11 @@
                 android:valueTo="10"
                 android:stepSize="1"
                 android:padding="0dp"/>
-            <TableRow style="@style/DividerLine"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
         </LinearLayout>
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/time"
@@ -131,7 +134,7 @@
             android:padding="0dp"
             android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/clockTextOnOff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,14 +147,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/clock24hrOnOff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:text="@string/time_format" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/clockSeconds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

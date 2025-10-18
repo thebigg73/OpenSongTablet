@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="?attr/backgroundColor">
+    android:background="@color/transparent">
 
     <ImageView
         android:id="@+id/backButton"
@@ -14,8 +14,7 @@
         android:layout_gravity="top"
         android:contentDescription="@string/close"
         android:padding="16dp"
-        app:srcCompat="@drawable/arrow_left"
-        app:tint="?attr/colorOnPrimary"/>
+        app:srcCompat="@drawable/arrow_left"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
@@ -35,7 +34,6 @@
         android:contentDescription="@string/help"
         android:foregroundGravity="right"
         android:padding="16dp"
-        app:srcCompat="@drawable/help_outline"
-        app:tint="?attr/colorOnPrimary"/>
+        app:srcCompat="@drawable/help_outline"/>
 </LinearLayout>
 

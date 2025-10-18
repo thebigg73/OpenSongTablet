@@ -29,21 +29,21 @@
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical">
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/cardview_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Song Title"
                     style="@style/cardView_Title"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/cardview_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Song subtitle"
                     style="@style/cardView_Subtitle"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/cardview_foldernamepair"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,7 +72,8 @@
             </FrameLayout>
         </LinearLayout>
 
-        <TableRow style="@style/DividerLine"
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="12dp"

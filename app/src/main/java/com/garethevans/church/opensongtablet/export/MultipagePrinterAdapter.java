@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.filemanagement.ExportSongListBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -216,10 +216,10 @@ public class MultipagePrinterAdapter extends PrintDocumentAdapter {
                     }
                 } else {
                     // Not allowed PDFs
-                    TextView textView = new TextView(c);
+                    MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c);
                     textView.setText(c.getString(R.string.not_allowed));
                     if (exportFragment!=null) {
-                        exportFragment.getHiddenSections().addView(new TextView(c));
+                        exportFragment.getHiddenSections().addView(new MyMaterialSimpleTextView(c));
                     }
                 }
             } else {

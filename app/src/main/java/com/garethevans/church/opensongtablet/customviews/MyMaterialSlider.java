@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -10,13 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.garethevans.church.opensongtablet.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
@@ -25,9 +25,9 @@ public class MyMaterialSlider extends LinearLayout {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "MyMaterialSlider";
     private Slider slider;
-    private TextView titleTextView, infoTextView;
-    private TextView valueTextView, bottomHintView;
-    private FloatingActionButton minusFAB, plusFAB;
+    private MyMaterialSimpleTextView titleTextView, infoTextView;
+    private MyMaterialSimpleTextView valueTextView, bottomHintView;
+    private MyFloatingActionButton minusFAB, plusFAB;
     private FrameLayout minusHolder, plusHolder;
     private float stepSize;
     private boolean adjustButtons;
@@ -80,6 +80,8 @@ public class MyMaterialSlider extends LinearLayout {
         <attr name="infoText" format="string"/>"
         <attr name="adjustable" format="boolean"/>
          */
+
+        Palette palette = new Palette(context);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialSlider);
         String text = a.getString(R.styleable.MyMaterialSlider_android_text);
         String hint = a.getString(R.styleable.MyMaterialSlider_android_hint);
@@ -87,8 +89,8 @@ public class MyMaterialSlider extends LinearLayout {
         float valueTo = a.getFloat(R.styleable.MyMaterialSlider_android_valueTo,10.0f);
         stepSize = a.getFloat(R.styleable.MyMaterialSlider_android_stepSize,1.0f);
         float value = a.getFloat(R.styleable.MyMaterialSlider_android_value,0.0f);
-        int trackColor = a.getColor(R.styleable.MyMaterialSlider_trackColor,0);
-        int thumbColor = a.getColor(R.styleable.MyMaterialSlider_thumbColor,0);
+        int trackColor = a.getColor(R.styleable.MyMaterialSlider_trackColor,palette.secondary);
+        int thumbColor = a.getColor(R.styleable.MyMaterialSlider_thumbColor,palette.secondaryVariant);
         int trackHeight = a.getDimensionPixelSize(R.styleable.MyMaterialSlider_trackHeight,0);
         int thumbRadius = a.getDimensionPixelSize(R.styleable.MyMaterialSlider_thumbRadius,0);
         String infoText = a.getString(R.styleable.MyMaterialSlider_infoText);
@@ -146,6 +148,8 @@ public class MyMaterialSlider extends LinearLayout {
             slider.setThumbStrokeWidth(thumbRadius);
         }
         setAdjustableButtons(adjustButtons);
+
+        setPalette(palette);
     }
 
     // The getters
@@ -312,4 +316,12 @@ public class MyMaterialSlider extends LinearLayout {
         requestLayout();
     }
 
+    public void setPalette(Palette palette) {
+        titleTextView.setTextColor(palette.textColor);
+        bottomHintView.setTextColor(palette.hintColor);
+        infoTextView.setTextColor(palette.hintColor);
+        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        slider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+    }
 }

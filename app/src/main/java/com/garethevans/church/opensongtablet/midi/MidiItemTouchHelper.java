@@ -1,18 +1,17 @@
 package com.garethevans.church.opensongtablet.midi;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
-import com.google.android.material.color.MaterialColors;
 
 public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
 
@@ -20,11 +19,13 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
 
     private final String TAG = "SetListItemTouchHelper";
     private boolean canSwipe, canDrag;
+    private final MainActivityInterface mainActivityInterface;
 
-    public MidiItemTouchHelper(MidiMessagesAdapter midiMessagesAdapter, boolean canEdit) {
+    public MidiItemTouchHelper(Context c, MidiMessagesAdapter midiMessagesAdapter, boolean canEdit) {
         canDrag = canEdit;
         canSwipe = canEdit;
         this.midiItemTouchInterface = midiMessagesAdapter;
+        mainActivityInterface = (MainActivityInterface) c;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
         super.clearView(recyclerView, viewHolder);
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSurface, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_primary))));
+            viewHolder.itemView.setBackgroundColor(mainActivityInterface.getPalette().surface);
         }
     }
 
@@ -49,7 +50,7 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
         // If lollipop+, change the tint of the cardview item
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(viewHolder.itemView.getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(viewHolder.itemView.getContext(),R.color.dark_secondary))));
+                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             }
         }
     }

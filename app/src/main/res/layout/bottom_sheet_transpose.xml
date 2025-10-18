@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        android:layout_marginBottom="16dp"
         android:layout_below="@+id/dialogHeading"
         android:scrollbars="vertical"
         android:clipChildren="false"
@@ -28,10 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="128dp"
-            android:layout_marginBottom="128dp">
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/keyChangeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,12 +45,10 @@
                 android:text="@null"
                 android:valueFrom="-12"
                 android:valueTo="12"
-                app:thumbColor="?attr/colorSecondaryVariant"
-                app:thumbRadius="24dp"
-                app:trackColor="?attr/colorSecondary"
+                app:thumbRadius="16dp"
                 app:trackHeight="8dp" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:id="@+id/capoChange"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,8 +95,8 @@
                     android:layout_weight="1"
                     android:hint="@string/chordformat_desired" />
             </LinearLayout>
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/chordsFormat"
@@ -109,8 +105,8 @@
                 android:hint="@string/pref_key_text"
                 android:text="@string/chord_settings"
                 app:mydrawable="@drawable/settings_outline" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/transposeCapo"
@@ -143,8 +139,8 @@
                 android:hint="@string/transpose_copy"
                 android:text="@string/duplicate_song"
                 android:visibility="gone" />
-
-            <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/transposeOriginal"
@@ -154,9 +150,9 @@
                 android:text="@string/key_original"
                 android:visibility="gone" />
 
-            <TableRow
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
                 android:id="@+id/transposeOriginalDivider"
-                style="@style/DividerLine" />
+                style="@style/MyDividerLine" />
 
         </LinearLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
@@ -170,7 +166,7 @@
         android:padding="16dp"
         android:layout_marginBottom="16dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/convertToFlats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -180,7 +176,7 @@
             android:src="@drawable/flat"
             tools:ignore="HardcodedText" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/convertToSharps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -197,7 +193,7 @@
             android:layout_weight="1"
             android:minWidth="280dp">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
                 android:id="@+id/doTransposeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

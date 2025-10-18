@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,18 +14,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -88,10 +87,22 @@ public class SetManageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSetsManageBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            prepareStrings();
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.actualProgressBar);
 
-            whattodo = mainActivityInterface.getWhattodo();
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        prepareStrings();
+        whattodo = mainActivityInterface.getWhattodo();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            myView.actualProgressBar.setIndeterminateTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        }
+        showProgress(true);
+
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+
+            // Decide what we are doing
+            changeViews();
 
             // Check if we are importing a set.  If so, extract the filename/uri
             checkForImporting();
@@ -99,11 +110,14 @@ public class SetManageFragment extends Fragment {
             // Create the setManageAdapter;
             setManageAdapter = new SetManageAdapter(getContext(),this,whattodo);
 
-            // Decide what we are doing
-            changeViews();
-
             // Prepare the set category dropdown
             prepareSetCategory();
+
+            // Check the toolbar title and tip
+            mainActivityInterface.getMainHandler().post(() -> {
+                mainActivityInterface.updateToolbar(toolBarTitle);
+                mainActivityInterface.updateToolbarHelp(webAddress);
+            });
 
             // Set listeners
             setListener();
@@ -111,11 +125,7 @@ public class SetManageFragment extends Fragment {
             // Prepare the recyclerView
             prepareSetItems();
 
-            // Check the toolbar title and tip
-            mainActivityInterface.getMainHandler().post(() -> {
-                mainActivityInterface.updateToolbar(toolBarTitle);
-                mainActivityInterface.updateToolbarHelp(webAddress);
-            });
+            showProgress(false);
         });
 
         return myView.getRoot();
@@ -144,8 +154,8 @@ public class SetManageFragment extends Fragment {
             error_string = getString(R.string.error);
             deeplink_export_string = getString(R.string.deeplink_export);
             search_index_wait_string = getString(R.string.index_songs_wait);
-            activeColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary));
-            inactiveColor = MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorPrimaryFixed, ContextCompat.getColor(getContext(),R.color.dark_primary));
+            activeColor = mainActivityInterface.getPalette().secondary;
+            inactiveColor = mainActivityInterface.getPalette().primaryVariant;
             nothing_selected_string= getString(R.string.nothing_selected);
         }
     }
@@ -632,7 +642,7 @@ public class SetManageFragment extends Fragment {
                     progressText = "";
                     mainActivityInterface.getMainHandler().post(() -> {
                         if (mainActivityInterface.getSongMenuFragment() != null) {
-                            MaterialTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                            MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
                             if (progressView != null && progressView.getText() != null) {
                                 progressText = " " + progressView.getText().toString();
                             }
@@ -787,7 +797,21 @@ public class SetManageFragment extends Fragment {
     }
 
     public void enableChanges(boolean allowChanges) {
-        myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
-        this.allowChanges = allowChanges;
+        if (myView!=null) {
+            myView.progressBar.post(() -> {
+                myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
+                myView.loadorsaveButton.setEnabled(allowChanges);
+            });
+            this.allowChanges = allowChanges;
+        }
     }
+
+    public void showProgress(boolean showProgress) {
+        if (myView!=null) {
+            myView.progressBar.post(() -> {
+                myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
+            });
+        }
+    }
+
 }

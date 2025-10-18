@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
-import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
+import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.google.android.material.snackbar.Snackbar;
 
 public class SetMenuFragment extends Fragment {
@@ -54,6 +52,11 @@ public class SetMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = MenuSetsBinding.inflate(inflater, container, false);
+
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
+        // Tint the progressBar as the secondary color
+        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
 
         if (getContext()!=null) {
             mainActivityInterface = (MainActivityInterface) getContext();
@@ -122,7 +125,7 @@ public class SetMenuFragment extends Fragment {
 
                 if (getContext()!=null) {
                     try {
-                        snackbar.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(getContext(), com.google.android.material.R.attr.colorSecondary, ContextCompat.getColor(getContext(),R.color.dark_secondary))));
+                        snackbar.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

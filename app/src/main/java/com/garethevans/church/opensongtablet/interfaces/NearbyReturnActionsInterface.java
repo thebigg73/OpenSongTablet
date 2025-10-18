@@ -1,6 +1,6 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
-import com.google.android.material.button.MaterialButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 
 public interface NearbyReturnActionsInterface {
     // TODO clear up what we don't need anymore
@@ -12,5 +12,5 @@ public interface NearbyReturnActionsInterface {
     void goToPreviousPage();
     void goToNextPage();
     void nearbyEnableConnectionButtons();
-    void nearbyUpdateCountdownText(boolean advertise, MaterialButton materialButton);
+    void nearbyUpdateCountdownText(boolean advertise, MyMaterialButton materialButton);
 }

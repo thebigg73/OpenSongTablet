@@ -8,17 +8,17 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textview.MaterialTextView;
 
 public class ImportSetItemViewHolder extends RecyclerView.ViewHolder {
 
     final CardView cardView;
-    final MaterialTextView cardItem, cardTitle, cardFilename, cardFolder, cardExists;
+    final MyMaterialSimpleTextView cardItem, cardTitle, cardFilename, cardFolder, cardExists;
     final MaterialCheckBox cardCheckBox;
     final RelativeLayout cardLayout;
-    final FloatingActionButton cardEdit;
+    final MyFloatingActionButton cardEdit;
 
     public ImportSetItemViewHolder(@NonNull View itemView) {
         super(itemView);

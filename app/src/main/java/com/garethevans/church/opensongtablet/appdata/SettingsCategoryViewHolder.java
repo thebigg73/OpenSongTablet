@@ -2,15 +2,15 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 
 public class SettingsCategoryViewHolder extends RecyclerView.ViewHolder {
 
-    public final TextView title;
+    public final MyMaterialSimpleTextView title;
     public final ImageView icon;
 
     public SettingsCategoryViewHolder(View itemView) {

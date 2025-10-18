@@ -3,15 +3,19 @@ package com.garethevans.church.opensongtablet.songmenu;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -98,14 +102,22 @@ public class SongListBuildIndex {
 
     // This scans the files (quick and full).
     // Quick scan only updates newer files than the database
-    public String fullIndex(MaterialTextView progressText, String specificFolder) {
+    public String fullIndex(MyMaterialSimpleTextView progressText, String specificFolder) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
         indexComplete = false;
 
         progressText.post(() -> {
+            Drawable drawable = AppCompatResources.getDrawable(c,R.drawable.rectangle);
+            if (drawable!=null) {
+                DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().secondary);
+            }
+            progressText.setBackground(drawable);
+            int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
+            progressText.setPadding(padding,padding,padding,padding);
             progressText.setText("0%");
+            progressText.setTextColor(mainActivityInterface.getPalette().textColor);
             progressText.setVisibility(View.VISIBLE);
         });
 

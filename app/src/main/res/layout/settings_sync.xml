@@ -4,58 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        style="@style/DefaultView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/DefaultView"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:gravity="bottom
+"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp"
-                android:gravity="bottom
-">
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/chooseConnected"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:hint="@string/sync_choose_device"/>
+                android:layout_weight="1"
+                android:hint="@string/sync_choose_device" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/checkForUpdates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/sync_check_for_updates"
-                android:src="@drawable/refresh"
-                app:fabSize="mini"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
-            </LinearLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/syncTabs"
-                style="@style/menuTabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_gravity="top"
-                android:background="?attr/colorSurface"
-                android:contentDescription="@string/sync"
-                android:visibility="gone"/>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/syncPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"/>
-
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/sync_check_for_updates"
+                android:src="@drawable/refresh"
+                app:fabSize="mini" />
         </LinearLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/syncTabs"
+            style="@style/menuTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="?attr/colorSurface"
+            android:contentDescription="@string/sync"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/syncPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/dimBackground"
         android:layout_width="match_parent"
@@ -67,19 +69,17 @@
         android:id="@+id/hostProgressBar"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
-        android:minHeight="@dimen/progress_bar_size"
-        android:minWidth="@dimen/progress_bar_size"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/hostProgressTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/progress_bar_size"
+        android:layout_gravity="center_horizontal|bottom"
         android:background="@drawable/rounded_box"
         android:gravity="center"
-        android:layout_gravity="center_horizontal|bottom"
-        android:visibility="gone"/>
+        android:minHeight="@dimen/progress_bar_size"
+        android:visibility="gone" />
 
 </FrameLayout>

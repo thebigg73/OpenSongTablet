@@ -7,21 +7,21 @@
     android:padding="16dp"
     android:orientation="horizontal">
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         style="@style/largeText"
-        android:textColor="?attr/colorOnPrimary"
         tools:text="Title"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/webHelp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/help_outline"
+        android:src="@drawable/help_outline"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="0dp"
         android:contentDescription="@string/help"
         app:backgroundTint="@color/transparent"
@@ -31,11 +31,12 @@
         android:visibility="gone"
         app:fabSize="mini"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/minimiseButtonDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/minimise"
+        android:src="@drawable/minimise"
+        android:layout_gravity="center_vertical"
         android:contentDescription="@string/hide"
         app:backgroundTint="@color/transparent"
         app:borderWidth="0dp"
@@ -44,11 +45,13 @@
         android:visibility="gone"
         app:fabSize="mini"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/closeButtonDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/close"
+        android:src="@drawable/close"
+        android:layout_gravity="center_vertical"
+        android:background="@null"
         android:contentDescription="@string/close"
         app:backgroundTint="@color/transparent"
         app:borderWidth="0dp"

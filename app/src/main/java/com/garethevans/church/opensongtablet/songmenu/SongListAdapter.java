@@ -150,6 +150,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
                     // Set the display name
                     songItemViewHolder.itemTitle.setTextSize(titleSize);
+                    songItemViewHolder.itemTitle.setTextColor(mainActivityInterface.getPalette().textColor);
                     songItemViewHolder.itemTitle.setText(displayname);
 
                     if (subtitleSizeFile == 7) {
@@ -159,6 +160,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                         // Set the path
                         songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
                         songItemViewHolder.itemFolderNamePair.setTextSize(subtitleSizeFile);
+                        songItemViewHolder.itemFolderNamePair.setTextColor(mainActivityInterface.getPalette().hintColor);
                         songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
                     }
 
@@ -168,12 +170,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     } else {
                         // Set the author if present
                         songItemViewHolder.itemAuthor.setTextSize(subtitleSizeAuthor);
+                        songItemViewHolder.itemAuthor.setTextColor(mainActivityInterface.getPalette().hintColor);
+
                         if (author.isEmpty()) {
                             songItemViewHolder.itemAuthor.setVisibility(View.GONE);
                         } else {
                             // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
                             // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
                             songItemViewHolder.itemAuthor.setText(author);
+                            songItemViewHolder.itemAuthor.setTextColor(mainActivityInterface.getPalette().hintColor);
                             songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
                         }
                     }

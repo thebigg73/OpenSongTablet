@@ -13,13 +13,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,7 +136,7 @@
                 android:valueFrom="0"
                 android:valueTo="255" />
 
-            <com.google.android.material.button.MaterialButton
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/saveColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -48,7 +48,7 @@ public class PedalsFragment extends Fragment {
     private StringBuilder keyEvents = new StringBuilder();
     private int currentListening, currentPedalCode, keyUpCount=0;
     private int[] defKeyCodes;
-    private TextView[] buttonCodes, buttonMidis;
+    private MyMaterialSimpleTextView[] buttonCodes, buttonMidis;
     private RelativeLayout[] buttonHeaders;
     private ExposedDropDown[] shortTexts, longTexts;
 
@@ -75,6 +75,10 @@ public class PedalsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPedalBinding.inflate(inflater, container, false);
+
+        // TODO remove
+        //PedalDebugOverlay pedalDebug = new PedalDebugOverlay(getActivity());
+        //pedalDebug.show();
 
         prepareStrings();
 
@@ -167,10 +171,10 @@ public class PedalsFragment extends Fragment {
     }
 
     private void grabViews() {
-        buttonCodes = new TextView[]{null, myView.button1Code, myView.button2Code, myView.button3Code, myView.button4Code,
+        buttonCodes = new MyMaterialSimpleTextView[]{null, myView.button1Code, myView.button2Code, myView.button3Code, myView.button4Code,
                 myView.button5Code, myView.button6Code, myView.button7Code, myView.button8Code};
 
-        buttonMidis = new TextView[]{null, myView.button1Midi, myView.button2Midi, myView.button3Midi, myView.button4Midi,
+        buttonMidis = new MyMaterialSimpleTextView[]{null, myView.button1Midi, myView.button2Midi, myView.button3Midi, myView.button4Midi,
                 myView.button5Midi, myView.button6Midi, myView.button7Midi, myView.button8Midi};
 
         buttonHeaders = new RelativeLayout[]{null, myView.button1Header, myView.button2Header,
@@ -184,6 +188,15 @@ public class PedalsFragment extends Fragment {
         longTexts = new ExposedDropDown[]{null, myView.longButton1Text, myView.longButton2Text,
                 myView.longButton3Text, myView.longButton4Text, myView.longButton5Text,
                 myView.longButton6Text, myView.longButton7Text, myView.longButton8Text};
+
+        myView.button1Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button2Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button3Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button4Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button5Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button6Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button7Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        myView.button8Header.setBackgroundColor(mainActivityInterface.getPalette().secondary);
     }
 
     private String charFromInt(int i) {
