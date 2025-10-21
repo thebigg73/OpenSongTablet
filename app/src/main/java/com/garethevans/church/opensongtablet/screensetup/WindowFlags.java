@@ -1,16 +1,20 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Size;
+import android.view.Display;
 import android.view.RoundedCorner;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.view.WindowMetrics;
 
 import androidx.core.graphics.Insets;
 import androidx.core.view.DisplayCutoutCompat;
@@ -636,4 +640,34 @@ public class WindowFlags {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreRoundedCorners",ignoreRoundedCorners);
     }
 
+    public Size getUsableScreenSize() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Insets insets = insetsCompat.getInsetsIgnoringVisibility(
+                    WindowInsetsCompat.Type.navigationBars()
+                            | WindowInsetsCompat.Type.displayCutout()
+                            | WindowInsetsCompat.Type.statusBars());
+
+            int insetsWidth = insets.left + insets.right;
+            int insetsHeight = insets.top + insets.bottom;
+
+            WindowMetrics windowMetrics = w.getWindowManager().getCurrentWindowMetrics();
+
+            int width = windowMetrics.getBounds().width() - insetsWidth;
+            int height = windowMetrics.getBounds().height() - insetsHeight;
+
+            return new Size(width, height);
+        } else {
+            // fallback for older Android versions
+            android.graphics.Point size = new android.graphics.Point();
+            w.getWindowManager().getDefaultDisplay().getSize(size);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                return new Size(size.x, size.y);
+            } else {
+                Display display = w.getWindowManager().getDefaultDisplay();
+                int width = display.getWidth();   // deprecated but works on old devices
+                int height = display.getHeight();
+                return new Size(width, height);
+            }
+        }
+    }
 }

@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class ExportFragment extends Fragment {
@@ -107,6 +108,9 @@ public class ExportFragment extends Fragment {
 
         mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);
+
+        // Tint the progress text box
+        mainActivityInterface.getMyThemeColors().tintPopup(myView.progressText);
 
         // Get a note of the currently loaded song so we can force it back onDestroy()
         currentSongFolder = mainActivityInterface.getSong().getFolder();
@@ -1412,6 +1416,7 @@ public class ExportFragment extends Fragment {
         // Get the sizes from the performance fragment if possible (due to different paddings)
         int availableWidth;
         int availableHeight;
+        int[] viewPadding = mainActivityInterface.getViewMargins();
         if (mainActivityInterface.getMode().equals(mode_performance_string)
                 && mainActivityInterface.getAvailableSizes()!=null) {
             int[] sizes = mainActivityInterface.getAvailableSizes();
@@ -1421,11 +1426,12 @@ public class ExportFragment extends Fragment {
             int[] screenSizes = mainActivityInterface.getDisplayMetrics();
             int screenWidth = screenSizes[0];
             int screenHeight = screenSizes[1];
-            int[] viewPadding = mainActivityInterface.getViewMargins();
             availableWidth = screenWidth - viewPadding[0] - viewPadding[1];
             availableHeight = screenHeight - viewPadding[2] - viewPadding[3];
         }
 
+        myView.scaledSongContent.getLayoutParams().width=availableWidth;
+        myView.scaledSongContent.getLayoutParams().height=availableHeight;
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.scaledSongContent.getViewTreeObserver();
         sectionsVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
