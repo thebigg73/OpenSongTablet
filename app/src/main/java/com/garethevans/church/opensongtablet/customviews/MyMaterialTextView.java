@@ -1,12 +1,14 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.CompoundButtonCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
@@ -270,6 +273,12 @@ public class MyMaterialTextView extends LinearLayout {
             textView.setTextColor(palette.textColor);
             hintView.setTextColor(palette.hintColor);
             checkMark.setColorFilter(palette.textColor);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                checkBox.setButtonTintList(ColorStateList.valueOf(palette.hintColor));
+            } else {
+                CompoundButtonCompat.setButtonTintList(checkBox, ColorStateList.valueOf(palette.hintColor));
+            }
         }
     }
 

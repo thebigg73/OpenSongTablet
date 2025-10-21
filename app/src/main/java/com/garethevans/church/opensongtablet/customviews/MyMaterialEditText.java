@@ -32,9 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
@@ -54,7 +52,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private Window window;
     private WindowInsetsCompat windowInsetsCompat;
     private boolean isKeyboardVisible = false;
-    private Handler keyboardHandler = new Handler(Looper.getMainLooper());
+    private final Handler keyboardHandler = new Handler(Looper.getMainLooper());
+    private View.OnFocusChangeListener externalFocusChangeListener;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -127,6 +126,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
         editText.setId(View.generateViewId());
         textInputLayout.setId(View.generateViewId());
+        textInputLayout.setFocusable(false);
+        textInputLayout.setFocusableInTouchMode(false);
 
         // Left align
         editText.setGravity(Gravity.START);
@@ -205,39 +206,43 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
         setPalette(new Palette(context));
 
-        // Check for keyboard visibility when focused
+        // === Keyboard handling fixes (Kindle, pre-Lollipop, etc.) ===
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                // Small delay to let window settle (important for Fire OS)
+                keyboardHandler.postDelayed(this::showKeyboard, 120);
+            } else {
+                isKeyboardVisible = false;
+            }
+        });
+
+        // Optional: long-press fallback for problematic devices
+        editText.setOnLongClickListener(v -> {
+            Log.d(TAG, "Long-press: toggling keyboard");
+            showKeyboard();
+            return true;
+        });
+
         // Track IME visibility
         ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
             isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            windowInsetsCompat = insets;
             return insets;
         });
 
-        setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                keyboardHandler.postDelayed(() -> {
-                    if (!isKeyboardVisible) {
-                        Log.d("MyEditText", "Keyboard not open after 1 second");
-                        showKeyboard();
-                    }
-                }, 1000);
-            } else {
-                //keyboardHandler.removeCallbacksAndMessages(null);
-                isKeyboardVisible = false;
-                Log.d("MyEditText", "Focus lost");
-            }
-        });
     }
 
     public void showKeyboard() {
-        Log.d(TAG,"Manually forcing the keyboard");
-        requestFocus();
+        Log.d(TAG, "Manually forcing keyboard (using editText)");
+        editText.requestFocus();
         post(() -> {
-            InputMethodManager imm =
-                    (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+            InputMethodManager imm = (InputMethodManager)
+                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+            }
         });
     }
-
 
     public void setEndIconMode(int endIconMode) {
         this.endIconMode = endIconMode;
@@ -245,8 +250,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
 
     private Context unwrap(Context context) {
-        while (!(context instanceof Activity) && context != null) {
+        int depth = 0;
+        while (context instanceof ContextWrapper && !(context instanceof Activity) && depth < 10) {
             context = ((ContextWrapper) context).getBaseContext();
+            depth++;
         }
         return context;
     }
@@ -392,59 +399,27 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         editText.setOnClickListener(onClickListener);
     }
 
-    public void setOnFocusChangeListener(OnFocusChangeListener onFocusChangeListener) {
-        editText.setOnFocusChangeListener(onFocusChangeListener);
+    @Override
+    public void setOnFocusChangeListener(OnFocusChangeListener listener) {
+        this.externalFocusChangeListener = listener;
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            handleFocusChange(hasFocus);
+            if (externalFocusChangeListener != null) {
+                externalFocusChangeListener.onFocusChange(v, hasFocus);
+            }
+        });
+    }
+
+    private void handleFocusChange(boolean hasFocus) {
+        if (hasFocus) {
+            keyboardHandler.postDelayed(this::showKeyboard, 120);
+        } else {
+            isKeyboardVisible = false;
+        }
     }
 
     public void setTypeface(Typeface typeface) {
         editText.setTypeface(typeface);
-    }
-
-    private void setLongClickKeyboard() {
-        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
-            windowInsetsCompat = insets;
-            return insets;
-        });
-        // Sets long clicking on the text view to open the keyboard (forced)
-        if (window!=null) {
-
-            WindowInsetsControllerCompat windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                editText.setShowSoftInputOnFocus(true);
-            }
-            editText.setOnFocusChangeListener((view, b) -> {
-                Handler handler = new Handler(Looper.getMainLooper());
-                if (b) {
-                    handler.postDelayed(() -> {
-                        if (windowInsetsCompat!=null && !windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
-                            windowInsetsControllerCompat.show(WindowInsetsCompat.Type.ime());
-                            Log.d(TAG, "Showing keyboard");
-                        }
-                    }, 500);
-                }/* else {
-                    handler.postDelayed(() -> {
-                        if (windowInsetsCompat!=null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
-                            windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
-                        }
-                        Log.d(TAG,"Hide keyboard");
-                    }, 500);
-                }*/
-            });
-            editText.setOnLongClickListener(view -> {
-                // Show after a few millisecs
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(() -> {
-                    windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
-                    Log.d(TAG,"Hiding keyboard");
-                }, 500);
-                handler.postDelayed(() -> {
-                    windowInsetsControllerCompat.show(WindowInsetsCompat.Type.ime());
-                    Log.d(TAG,"Showing keyboard");
-                }, 1000);
-                return false;
-            });
-        }
     }
 
     public Layout getLayout() {
@@ -482,6 +457,19 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
 
     private void tintDrawables(Palette palette) {
+        if (Build.MANUFACTURER.toLowerCase().contains("amazon")) {
+            textInputLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
+            Drawable drawable = AppCompatResources.getDrawable(getContext(), R.drawable.keyboard);
+            if (drawable!=null) {
+                DrawableCompat.setTint(drawable,palette.textColor);
+            }
+            textInputLayout.setEndIconDrawable(drawable); // your keyboard icon
+            textInputLayout.setEndIconOnClickListener(v -> {
+                Log.d(TAG, "End icon pressed: showing keyboard");
+                showKeyboard();
+            });
+        }
+
         Drawable handleLeft = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
         Drawable handleRight = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
         Drawable handleMiddle = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
@@ -509,11 +497,13 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             } else {
                 try {
                     // Access private Editor field
-                    @SuppressLint("PrivateApi") Field fEditor = MyMaterialSimpleTextView.class.getDeclaredField("mEditor");
+                    //@SuppressLint("PrivateApi") Field fEditor = MyMaterialSimpleTextView.class.getDeclaredField("mEditor");
+                    @SuppressLint("PrivateApi") Field fEditor = editText.getClass().getDeclaredField("mEditor");
                     fEditor.setAccessible(true);
                     Object editor = fEditor.get(editText);
 
-                    @SuppressLint("PrivateApi") Field fCursorDrawableRes = MyMaterialSimpleTextView.class.getDeclaredField("mCursorDrawableRes");
+                    //@SuppressLint("PrivateApi") Field fCursorDrawableRes = MyMaterialSimpleTextView.class.getDeclaredField("mCursorDrawableRes");
+                    @SuppressLint("PrivateApi") Field fCursorDrawableRes = editText.getClass().getDeclaredField("mCursorDrawableRes");
                     fCursorDrawableRes.setAccessible(true);
                     int mCursorDrawableRes = fCursorDrawableRes.getInt(editText);
 
