@@ -154,7 +154,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         if (getContext()!=null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 // UI
-                mainActivityInterface.getMainHandler().post(() -> myView.songListRecyclerView.removeAllViews());
+                if (mainActivityInterface!=null) {
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        if (myView!=null) {
+                            myView.songListRecyclerView.removeAllViews();
+                        }
+                    });
+                }
 
                 // Non UI
                 try {

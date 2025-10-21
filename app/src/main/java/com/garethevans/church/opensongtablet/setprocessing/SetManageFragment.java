@@ -89,7 +89,6 @@ public class SetManageFragment extends Fragment {
 
         // Tint the progressBar as the secondary color
         mainActivityInterface.getMyThemeColors().tintProgressBar(myView.actualProgressBar);
-
         myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
         prepareStrings();
         whattodo = mainActivityInterface.getWhattodo();
@@ -799,8 +798,10 @@ public class SetManageFragment extends Fragment {
     public void enableChanges(boolean allowChanges) {
         if (myView!=null) {
             myView.progressBar.post(() -> {
-                myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
-                myView.loadorsaveButton.setEnabled(allowChanges);
+                if (myView!=null) {
+                    myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
+                    myView.loadorsaveButton.setEnabled(allowChanges);
+                }
             });
             this.allowChanges = allowChanges;
         }

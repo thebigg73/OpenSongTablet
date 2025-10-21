@@ -372,14 +372,11 @@
 
     <!-- Popup window for toast, etc -->
     <style name="popupWindow">
-        <item name="contentPadding">24dp</item>
+        <item name="contentPadding">@dimen/box_padding</item>
         <item name="cardCornerRadius">16dp</item>
         <item name="android:layout_margin">16dp</item>
         <item name="elevation">16dp</item>
         <item name="android:background">@drawable/popup_bg</item>
-        <item name="android:popupBackground">?attr/colorSecondary</item>
-        <item name="backgroundTint">?attr/colorSecondary</item>
-        <item name="cardBackgroundColor">?attr/colorSecondary</item>
     </style>
 
     <!-- Exposed dropdowns -->

@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:saveEnabled="false"
-    android:isScrollContainer="true"
     app:textInputLayoutFocusedRectEnabled="false">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -22,6 +20,11 @@
             android:layout_height="wrap_content"
             style="@style/EditTextLayout"
             android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:cursorVisible="true"
+            android:enabled="true"
             tools:text="The text" />
     </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>

@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ThemeColors {
@@ -970,4 +973,14 @@ public class ThemeColors {
         }
     }
 
+    public void tintPopup(MyMaterialTextView myMaterialTextView) {
+        Drawable drawable = AppCompatResources.getDrawable(c, R.drawable.popup_bg);
+        if (drawable!=null) {
+            DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().secondary);
+        }
+        myMaterialTextView.setBackground(drawable);
+        int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
+        myMaterialTextView.setPadding(padding,padding,padding,padding);
+
+    }
 }

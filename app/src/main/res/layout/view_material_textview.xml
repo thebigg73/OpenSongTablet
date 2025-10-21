@@ -70,8 +70,7 @@
             android:layout_height="wrap_content"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:text="@null"
-            app:buttonTint="?attr/colorOnPrimary"/>
+            android:text="@null"/>
 
     </FrameLayout>
 
