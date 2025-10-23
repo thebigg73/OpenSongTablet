@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -74,8 +78,8 @@ public class NearbyConnectionsFragment extends Fragment {
         webAddress = website_nearby_string;
 
         if (getContext()!=null) {
-            onColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
-            offColor = ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant);
+            onColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant);
+            offColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
         }
 
         // Set the helpers
@@ -118,6 +122,21 @@ public class NearbyConnectionsFragment extends Fragment {
             connections_advertising_string = getString(R.string.connections_advertising);
             connections_searching_string = getString(R.string.connections_searching);
             nearby_message_string = getString(R.string.nearby_message);
+
+            Drawable drawable = AppCompatResources.getDrawable(getContext(),R.drawable.bottomsheetbutton);
+            if (drawable!=null) {
+                DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().primaryVariant);
+            }
+            myView.bottomSheet.bottomSheetTab.setBackground(drawable);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                myView.bottomSheet.bottomSheet.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            }
+
+            Drawable drawableBs = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_dialog);
+            if (drawableBs!=null) {
+                DrawableCompat.setTint(drawableBs,mainActivityInterface.getPalette().primaryVariant);
+            }
+            myView.bottomSheet.scrollView.setBackground(drawableBs);
         }
     }
     private void setHelpers() {
@@ -313,6 +332,8 @@ public class NearbyConnectionsFragment extends Fragment {
 
         if (isHost) {
             myView.host.setBackgroundTintList(onColor);
+            myView.off.setBackgroundTintList(offColor);
+            myView.client.setBackgroundTintList(offColor);
             myView.bottomSheet.hostOptions.setVisibility(View.VISIBLE);
             myView.connectedTo.setHint(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
@@ -325,6 +346,8 @@ public class NearbyConnectionsFragment extends Fragment {
 
         } else if (isClient) {
             myView.client.setBackgroundTintList(onColor);
+            myView.off.setBackgroundTintList(offColor);
+            myView.host.setBackgroundTintList(offColor);
             myView.bottomSheet.clientOptions.setVisibility(View.VISIBLE);
             myView.connectedTo.setHint(mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
@@ -334,6 +357,8 @@ public class NearbyConnectionsFragment extends Fragment {
 
         } else {
             myView.off.setBackgroundTintList(onColor);
+            myView.host.setBackgroundTintList(offColor);
+            myView.client.setBackgroundTintList(offColor);
             myView.temporaryAdvertise.setVisibility(View.GONE);
         }
 
@@ -579,7 +604,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     // Called from MainActivity after TextInputDialogFragment save
     public void updateValue(String which, String value) {
-        if (which.equals("deviceName")) {
+        if (which.equals("deviceId")) {
             myView.deviceButton.post(() -> myView.deviceButton.setHint(value));
             mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().setDeviceId(value);
         }

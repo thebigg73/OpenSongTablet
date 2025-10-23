@@ -10,7 +10,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:layout_insetEdge="bottom">
 
-    <ImageView
+    <com.garethevans.church.opensongtablet.customviews.MyImageView
         android:id="@+id/bottomSheetTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +21,7 @@
         app:srcCompat="@drawable/menu" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/rounded_dialog"

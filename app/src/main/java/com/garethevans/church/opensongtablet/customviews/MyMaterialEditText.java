@@ -217,11 +217,11 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         });
 
         // Optional: long-press fallback for problematic devices
-        editText.setOnLongClickListener(v -> {
+        /*editText.setOnLongClickListener(v -> {
             Log.d(TAG, "Long-press: toggling keyboard");
             showKeyboard();
             return true;
-        });
+        });*/
 
         // Track IME visibility
         ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
@@ -484,7 +484,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             DrawableCompat.setTint(left, palette.secondary);
             DrawableCompat.setTint(right, palette.secondary);
             DrawableCompat.setTint(middle, palette.secondary);
-            DrawableCompat.setTint(cursor, palette.secondary);
+            DrawableCompat.setTint(cursor, palette.hintColor);
         }
 
         if (left!=null) {

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.CustomAlertDialog;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyConnectionsManagementInterface;
@@ -28,7 +29,6 @@ import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
 import com.google.android.gms.nearby.connection.Strategy;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -484,22 +484,20 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                     Log.d(TAG, "Device wasn't previously connected: " + endpointId + " ("+endpointName+").  Get connection permission");
                     // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
                     if (connectionsOpen || !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false)) {
-                        new MaterialAlertDialogBuilder(activity, R.style.MyAlertDialogTheme)
-                                .setTitle(c.getString(R.string.connections_accept) + " " + endpointName)
-                                .setMessage(c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationDigits())
-                                .setPositiveButton(
-                                        c.getString(R.string.okay),
-                                        (DialogInterface dialog, int which) -> {
-                                            nearbyActions.getNearbyReceivePayloads().setForceReload(true);
-                                            delayAcceptConnection(endpointId,endpointName);
-                                        })
-                                .setNegativeButton(
-                                        c.getString(R.string.cancel),
-                                        (DialogInterface dialog, int which) ->
-                                                // The user canceled, so we should reject the connection.
-                                                Nearby.getConnectionsClient(activity).rejectConnection(endpointId))
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
+
+                        CustomAlertDialog.showStyledDialog(
+                                c, mainActivityInterface,
+                                c.getString(R.string.connections_accept) + " " + endpointName,
+                                c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationDigits(),
+                                (DialogInterface d, int which) -> {
+                                    nearbyActions.getNearbyReceivePayloads().setForceReload(true);
+                                    delayAcceptConnection(endpointId,endpointName);
+                                },
+                                (DialogInterface d, int which) ->
+                                        // The user canceled, so we should reject the connection.
+                                        Nearby.getConnectionsClient(activity).rejectConnection(endpointId),
+                                R.drawable.alert
+                        );
                     } else {
                         // The user is not accepting new connections, so we should reject the connection.
                         Log.d(TAG, "reject connection to " + endpointId + " ("+endpointName+").  User not accepting new connections");
