@@ -166,6 +166,10 @@ public class ProfileActions {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
         }
 
+        // Reset the current version of the app to this one so we don't force a reindex of songs
+        int currentVersion = mainActivityInterface.getVersionNumber().getVersionCode();
+        mainActivityInterface.getPreferences().setMyPreferenceInt("lastUsedVersion",currentVersion);
+
         getUpdatedPreferences();
         return true;
     }
