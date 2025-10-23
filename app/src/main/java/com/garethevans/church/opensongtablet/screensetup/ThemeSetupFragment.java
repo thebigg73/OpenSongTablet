@@ -36,6 +36,7 @@ public class ThemeSetupFragment extends Fragment {
     private ArrayList<String> themes;
     private String webAddress;
     private String initialTheme;
+    private ExposedDropDownArrayAdapter arrayAdapter;
 
     @Override
     public void onResume() {
@@ -55,7 +56,7 @@ public class ThemeSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
-        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        //myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
 
         prepareStrings();
         webAddress = website_themes_string;
@@ -96,8 +97,8 @@ public class ThemeSetupFragment extends Fragment {
         themes.add(theme_custom1_string);
         themes.add(theme_custom2_string);
 
-        ExposedDropDownArrayAdapter arrayAdapter = null;
-        if (getContext()!=null) {
+        arrayAdapter = null;
+        if (getContext() != null) {
             arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.themeName, R.layout.view_exposed_dropdown_item, themes);
         }
         // myTheme defaults to the current light/dark mode on the device if not set
@@ -117,54 +118,58 @@ public class ThemeSetupFragment extends Fragment {
                 myView.themeName.setText(themes.get(0));
                 break;
         }
-        myView.themeName.setAdapter(arrayAdapter);
-        myView.themeName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s!=null && s.toString().equals(themes.get(0))) {
-                    myTheme = "dark";
-                } else if (s!=null && s.toString().equals(themes.get(1))) {
-                    myTheme = "light";
-                } else if (s!=null && s.toString().equals(themes.get(2))) {
-                    myTheme = "custom1";
-                } else if (s!=null && s.toString().equals(themes.get(3))) {
-                    myTheme = "custom2";
-                }
+        myView.themeName.postDelayed(() -> {
+                    myView.themeName.setAdapter(arrayAdapter);
+                    myView.themeName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
 
-                if (getContext()!=null) {
-                    mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
-                    mainActivityInterface.getToolbar().changeTheme();
-                    mainActivityInterface.getBatteryStatus().getBatteryStatus();
-                }
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (s != null && s.toString().equals(themes.get(0))) {
+                                myTheme = "dark";
+                            } else if (s != null && s.toString().equals(themes.get(1))) {
+                                myTheme = "light";
+                            } else if (s != null && s.toString().equals(themes.get(2))) {
+                                myTheme = "custom1";
+                            } else if (s != null && s.toString().equals(themes.get(3))) {
+                                myTheme = "custom2";
+                            }
 
-                mainActivityInterface.getPreferences().setMyPreferenceString("appTheme",myTheme);
+                            if (getContext() != null) {
+                                mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
+                                mainActivityInterface.getToolbar().changeTheme();
+                                mainActivityInterface.getBatteryStatus().getBatteryStatus();
+                            }
 
-                updateColors();
-                updateButtons();
-                // Also update secondary screen
-                displayInterface.updateDisplay("setSongContentPrefs");
+                            mainActivityInterface.getPreferences().setMyPreferenceString("appTheme", myTheme);
 
-                if (checkNeedsRefresh()) {
-                    // Try to redraw the current views
-                    invalidateViews();
-                }
+                            updateColors();
+                            updateButtons();
+                            // Also update secondary screen
+                            displayInterface.updateDisplay("setSongContentPrefs");
 
-                initialTheme = myTheme;
+                            if (checkNeedsRefresh()) {
+                                // Try to redraw the current views
+                                invalidateViews();
+                            }
+                            initialTheme = myTheme;
+                        }
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                        }
+                    });
+                },200);
 
         updateColors();
         updateButtons();
     }
 
     public void updateColors() {
+        Log.d(TAG,"updateColors()");
         mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 
