@@ -1,11 +1,11 @@
 package com.garethevans.church.opensongtablet.customviews;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -470,7 +470,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             });
         }
 
-        Drawable handleLeft = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
+        tintEditTextCursorAndHandles(palette);
+        /*Drawable handleLeft = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
         Drawable handleRight = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
         Drawable handleMiddle = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
         Drawable cursorBar = AppCompatResources.getDrawable(getContext(), R.drawable.text_cursor);
@@ -480,11 +481,17 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             left = DrawableCompat.wrap(handleLeft);
             right = DrawableCompat.wrap(handleRight);
             middle = DrawableCompat.wrap(handleMiddle);
-            cursor = DrawableCompat.wrap(cursorBar);
+            cursor = DrawableCompat.wrap(cursorBar).mutate();
+
             DrawableCompat.setTint(left, palette.secondary);
             DrawableCompat.setTint(right, palette.secondary);
             DrawableCompat.setTint(middle, palette.secondary);
-            DrawableCompat.setTint(cursor, palette.hintColor);
+            cursor.setColorFilter(palette.hintColor, PorterDuff.Mode.SRC_IN);
+
+            //DrawableCompat.setTint(cursor, palette.textColor);
+            //DrawableCompat.setTintMode(cursor, PorterDuff.Mode.SRC_IN); // force direct color replace
+            //DrawableCompat.setTintList(cursor, null);
+            //cursor.clearColorFilter();
         }
 
         if (left!=null) {
@@ -505,12 +512,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                     //@SuppressLint("PrivateApi") Field fCursorDrawableRes = MyMaterialSimpleTextView.class.getDeclaredField("mCursorDrawableRes");
                     @SuppressLint("PrivateApi") Field fCursorDrawableRes = editText.getClass().getDeclaredField("mCursorDrawableRes");
                     fCursorDrawableRes.setAccessible(true);
-                    int mCursorDrawableRes = fCursorDrawableRes.getInt(editText);
+                    //int mCursorDrawableRes = fCursorDrawableRes.getInt(editText);
 
-                    cursor = AppCompatResources.getDrawable(editText.getContext(), mCursorDrawableRes);
-                    if (cursor != null) {
-                        DrawableCompat.setTint(cursor, palette.hintColor);
-                    }
                     Drawable[] drawables = {cursor, cursor};
 
                     // Replace handle fields
@@ -533,8 +536,94 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
+    private void tintEditTextCursorAndHandles(Palette palette) {
+        try {
+            // Load and mutate drawables
+            Drawable handleLeft = AppCompatResources.getDrawable(editText.getContext(), R.drawable.text_select_left_handle);
+            Drawable handleRight = AppCompatResources.getDrawable(editText.getContext(), R.drawable.text_select_right_handle);
+            Drawable handleMiddle = AppCompatResources.getDrawable(editText.getContext(), R.drawable.text_select_handle_middle);
+            Drawable cursor = AppCompatResources.getDrawable(editText.getContext(), R.drawable.text_cursor);
+
+            if (handleLeft != null) {
+                handleLeft = handleLeft.mutate();
+            }
+            if (handleRight != null) {
+                handleRight = handleRight.mutate();
+            }
+            if (handleMiddle != null) {
+                handleMiddle = handleMiddle.mutate();
+            }
+            if (cursor != null) {
+                cursor = cursor.mutate();
+            }
+
+            // Apply palette colors
+            if (handleLeft != null) {
+                handleLeft.setColorFilter(palette.secondary, PorterDuff.Mode.SRC_IN);
+            }
+            if (handleRight != null) {
+                handleRight.setColorFilter(palette.secondary, PorterDuff.Mode.SRC_IN);
+            }
+            if (handleMiddle != null) {
+                handleMiddle.setColorFilter(palette.secondary, PorterDuff.Mode.SRC_IN);
+            }
+            if (cursor != null) {
+                cursor.setColorFilter(palette.hintColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Direct API
+                if (handleLeft != null) {
+                    editText.setTextSelectHandleLeft(handleLeft);
+                }
+                if (handleRight != null) {
+                    editText.setTextSelectHandleRight(handleRight);
+                }
+                if (handleMiddle != null) {
+                    editText.setTextSelectHandle(handleMiddle);
+                }
+                if (cursor != null) {
+                    editText.setTextCursorDrawable(cursor);
+                }
+            } else {
+                // Reflection for older versions
+                Field fEditor = editText.getClass().getDeclaredField("mEditor");
+                fEditor.setAccessible(true);
+                Object editor = fEditor.get(editText);
+
+                if (editor != null) {
+                    Field fCursorDrawable = editor.getClass().getDeclaredField("mCursorDrawable");
+                    fCursorDrawable.setAccessible(true);
+                    if (cursor != null) {
+                        Drawable[] cursors = {cursor, cursor};
+                        fCursorDrawable.set(editor, cursors);
+                    }
+
+                    Field fSelectHandleLeft = editor.getClass().getDeclaredField("mSelectHandleLeft");
+                    Field fSelectHandleRight = editor.getClass().getDeclaredField("mSelectHandleRight");
+                    Field fSelectHandleCenter = editor.getClass().getDeclaredField("mSelectHandleCenter");
+
+                    fSelectHandleLeft.setAccessible(true);
+                    fSelectHandleRight.setAccessible(true);
+                    fSelectHandleCenter.setAccessible(true);
+
+                    if (handleLeft != null) {
+                        fSelectHandleLeft.set(editor, handleLeft);
+                    }
+                    if (handleRight != null) {
+                        fSelectHandleRight.set(editor, handleRight);
+                    }
+                    if (handleMiddle != null) {
+                        fSelectHandleCenter.set(editor, handleMiddle);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
