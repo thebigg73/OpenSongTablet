@@ -509,7 +509,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
                     cursor = AppCompatResources.getDrawable(editText.getContext(), mCursorDrawableRes);
                     if (cursor != null) {
-                        DrawableCompat.setTint(cursor, palette.secondary);
+                        DrawableCompat.setTint(cursor, palette.hintColor);
                     }
                     Drawable[] drawables = {cursor, cursor};
 
