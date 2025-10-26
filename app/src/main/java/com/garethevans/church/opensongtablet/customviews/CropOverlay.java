@@ -94,7 +94,6 @@ public class CropOverlay extends View {
                 bottom + colorballs.get(2).getWidthOfBall() / 2f, paint);
 
         //draw the corners
-        //BitmapDrawable bitmap = new BitmapDrawable();
         // draw the balls on the canvas
         paint.setColor(Color.BLUE);
         paint.setTextSize(18);

@@ -136,7 +136,9 @@ public class BatteryStatus extends BroadcastReceiver {
 
     public void setBatteryImage() {
         BitmapDrawable bmp = batteryImage((int) (charge * 100f));
-        batteryImage.setImageDrawable(bmp);
+        if (bmp!=null) {
+            batteryImage.setImageDrawable(bmp);
+        }
     }
 
     public BitmapDrawable batteryImage(int charge) {
@@ -146,7 +148,10 @@ public class BatteryStatus extends BroadcastReceiver {
             Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
             Bitmap bmp = Bitmap.createBitmap(size, size, conf);
 
-            //BitmapDrawable drawable = new BitmapDrawable(c.getResources(), bmp);
+            if (bmp == null) {
+                Log.e(TAG, "Bitmap.createBitmap returned null");
+                return null;
+            }
 
             // If less than 15% battery, draw the circle in red
             int color = mainActivityInterface.getPalette().textColor;
@@ -196,9 +201,8 @@ public class BatteryStatus extends BroadcastReceiver {
             canvas.drawPath(circle2, bPaint);
             canvas.drawPath(circle, mPaint);
 
-            BitmapDrawable drawable = new BitmapDrawable(c.getResources(), bmp);
+            return new BitmapDrawable(c.getResources(), bmp);
 
-            return drawable;
         } else {
             return null;
         }

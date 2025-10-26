@@ -83,7 +83,6 @@ public class Metronome {
                 }
             }
             try {
-                Log.d(TAG,"sendMidiTick()");
                 mainActivityInterface.getMidi().sendMidiTick();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -99,7 +98,6 @@ public class Metronome {
                 }
             }
             try {
-                Log.d(TAG,"sendMidiTock()");
                 mainActivityInterface.getMidi().sendMidiTock();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -641,7 +639,6 @@ public class Metronome {
                         if (tickBeats.contains(beatVisual)) {
                             try {
                                 if (!audioMetronome) {
-                                    Log.d(TAG,"sendMidiTick()");
                                     mainActivityInterface.getMidi().sendMidiTick();
                                 }
                                 mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColor, bufferFix);
@@ -651,7 +648,6 @@ public class Metronome {
                         } else {
                             try {
                                 if (!audioMetronome) {
-                                    Log.d(TAG,"sendMidiTock()");
                                     mainActivityInterface.getMidi().sendMidiTock();
                                 }
                                 mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColorDarker, bufferFix);
@@ -698,7 +694,6 @@ public class Metronome {
             final long bufferFix = buffer - latency;
 
             boolean doStop = false;
-            Log.d(TAG,"beat:"+beat + "  beats:"+beats);
             if (beat > beats) {
                 beat = 1;
                 if (metronomeChanged) {
@@ -717,23 +712,16 @@ public class Metronome {
 
                     @Override
                     public void run() {
-                        Log.d(TAG,"beat:"+beat + "  beats:"+beats + "max required:"+beatsRequired);
                         if (beat > beats) {
                             beat = 1;
                         }
 
                         if (tickBeats.contains(beat)) {
-                            tickHandler.postDelayed(() -> {
-                                Log.d(TAG, "sendMidiTick()");
-                                mainActivityInterface.getMidi().sendMidiTick();
-                            }, bufferFix);
+                            tickHandler.postDelayed(() -> mainActivityInterface.getMidi().sendMidiTick(), bufferFix);
 
 
                         } else {
-                            tockHandler.postDelayed(() -> {
-                                Log.d(TAG, "sendMidiTock()");
-                                mainActivityInterface.getMidi().sendMidiTock();
-                            }, bufferFix);
+                            tockHandler.postDelayed(() -> mainActivityInterface.getMidi().sendMidiTock(), bufferFix);
                         }
 
                         beat++;

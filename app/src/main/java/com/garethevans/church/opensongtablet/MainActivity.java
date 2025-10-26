@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -22,7 +21,6 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -64,7 +62,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
@@ -229,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             (Runtime.getRuntime().availableProcessors() * 8),          // Max pool size (including queued)
             1000,                                                      // Time for idle thread to remain
             TimeUnit.MILLISECONDS,                                     // Unit
-            new ArrayBlockingQueue<>(10)                     // Blocking queue
+            new ArrayBlockingQueue<>(10)                       // Blocking queue
     );
 
     // The helpers sorted alphabetically
@@ -254,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CurrentSet currentSet;
     private CustomAnimation customAnimation;
     private CustomSlide customSlide;
-    //private CustomToolBar customToolBar;
     private DisplayPrevNext displayPrevNext;
     private DrawNotes drawNotes;
     private Drummer drummer;
@@ -334,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Display[] connectedDisplays;
     private int prevNumConnectedDisplays = 0;
     private final Handler mainLooper = new Handler(Looper.getMainLooper());
-    private Handler updatingToolbarHandler = new Handler(Looper.getMainLooper());
+    private final Handler updatingToolbarHandler = new Handler(Looper.getMainLooper());
     private Runnable updatingToolbarRunnable;
 
     // Variables used
@@ -366,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             action_button_info = "", song_sections = "", logo_info = "", blank_screen_info = "",
             black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
-            song_actions = "", settings = "", deeplink_preferences = "", song_string = "", set_string = "",
+            song_actions = "", deeplink_preferences = "", song_string = "", set_string = "",
             search_index_start = "", search_index_end = "", deeplink_metronome = "",
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
@@ -375,10 +371,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MenuItem menuScreenMirror, menuScreenHelp, menuSearch, menuSettings;
     private String webHelpAddress = null;
 
-    // ViewPager2 messes up id on restarts causing issues on restoreinstancestate
-    //public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
-    //private static final String KEY_PAGER_ID = "pager_id";
-    //private Bundle savedInstanceState;
+    private Drawable searchIcon, helpIcon, settingsIcon, closeIcon, castIconOff, castIconOn,
+            navIconBack, navIconMenu;
 
     // Used if implementing Oboe using C++ injection
     /* static {System.loadLibrary("lowlatencyaudio");} */
@@ -386,8 +380,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //AppCompatDelegate.setDefaultNightMode(ThemeKeeper.load(this));
-        //setCorrectTheme();
         // Use a manual dark / light theme (Android's breaks when using WebView!)
         getPalette();
         // Get current theme mode from SharedPreferences or wherever you store it
@@ -498,7 +490,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             });
 
             if (savedInstanceState != null) {
-                //ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
                 Log.d(TAG,"TooLargeTool is logging:"+TooLargeTool.bundleBreakdown(savedInstanceState));
                 bootUpCompleted = savedInstanceState.getBoolean("bootUpCompleted", false);
                 rebooted = true;
@@ -565,26 +556,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
     }
 
-    public void setCorrectTheme() {
-        // Get the system option
-        if (themeColors==null) {
-            getMyThemeColors().getDefaultTheme();
-        }
-        String theme = getMyThemeColors().getThemeName();
-        switch (theme) {
-            case "light":
-            case "custom2":
-                //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                break;
-            case "dark":
-            case "custom1":
-            default:
-                //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                break;
-        }
-        //getDelegate().applyDayNight();
-    }
-
     @Override
     public Palette getPalette() {
         if (palette == null) {
@@ -598,20 +569,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return waitingOnBootUpFragment;
     }
 
-
-    /**
-     * ViewCompat.generateViewId stores the current ID in a static variable.
-     * When the process is killed, the variable gets reset.
-     * This makes sure that we do not get ID collisions
-     * and therefore errors when trying to restore state from another view.
-
-    //@SuppressWarnings("StatementWithEmptyBody")
-    private void ensureGeneratedViewIdGreaterThan(int minimum) {
-        while (ViewCompat.generateViewId() <= minimum) {
-            // Generate new IDs
-        }
-    }*/
-
     private void setUpCrashCollector() {
         // Set up a default crash capture, but keep a reference to the original handler
         uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -624,10 +581,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crash log file
             getStorageAccess().updateCrashLog(sw.toString());
 
-            // Switch off hardware acceleration if crash happens to try to alleviate the issue
-            // Decided for now to leave this off
-            //getPreferences().setMyPreferenceBoolean("hardwareAcceleration",false);
-
             // Reset the unhandled exception handler
             Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
 
@@ -637,7 +590,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 throw e;
             } catch (Throwable ex) {
                 this.finish();
-                //System.exit(1);  Wrongly caused app to try to restart - bad UX
             }
         });
     }
@@ -748,7 +700,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menu_set_info = getString(R.string.menu_set_info);
             add_songs = getString(R.string.add_songs);
             song_actions = getString(R.string.song_actions);
-            settings = getString(R.string.settings);
             deeplink_preferences = getString(R.string.deeplink_preferences);
             song_string = getString(R.string.song);
             set_string = getString(R.string.set);
@@ -1123,7 +1074,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             return insets;
         });
 
-        myView.myToolbar.initialiseToolbar(this, getSupportActionBar());
+        if (getSupportActionBar()!=null) {
+            myView.myToolbar.initialiseToolbar(this, getSupportActionBar());
+        }
         initialisePageButtons();
         tintDrawerLayout();
 
@@ -1389,6 +1342,72 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
+    private void checkMenuIconsAreNotNull() {
+        if (closeIcon==null) {
+            Drawable tempCloseIcon = AppCompatResources.getDrawable(this, R.drawable.close);
+            if (tempCloseIcon != null) {
+                closeIcon = DrawableCompat.wrap(tempCloseIcon);
+                DrawableCompat.setTint(closeIcon, getPalette().textColor);
+            }
+        }
+
+        if (settingsIcon==null) {
+            Drawable tempSettingsIcon = AppCompatResources.getDrawable(this, R.drawable.settings_outline);
+            if (tempSettingsIcon != null) {
+                settingsIcon = DrawableCompat.wrap(tempSettingsIcon);
+                DrawableCompat.setTint(settingsIcon, getPalette().textColor);
+            }
+        }
+
+        if (castIconOff==null) {
+            Drawable tempCastIconOff = AppCompatResources.getDrawable(this, R.drawable.cast);
+            if (tempCastIconOff != null) {
+                castIconOff = DrawableCompat.wrap(tempCastIconOff);
+                DrawableCompat.setTint(castIconOff, getPalette().textColor);
+            }
+        }
+
+        if (castIconOn==null) {
+            Drawable tempCastIconOn = AppCompatResources.getDrawable(this, R.drawable.cast_connected);
+            if (tempCastIconOn != null) {
+                castIconOn = DrawableCompat.wrap(tempCastIconOn);
+                DrawableCompat.setTint(castIconOn, getPalette().textColor);
+            }
+        }
+
+        if (searchIcon==null) {
+            Drawable tempSearchIcon = AppCompatResources.getDrawable(this, R.drawable.search);
+            if (tempSearchIcon != null) {
+                searchIcon = DrawableCompat.wrap(tempSearchIcon);
+                DrawableCompat.setTint(searchIcon, getPalette().textColor);
+            }
+        }
+
+        if (helpIcon==null) {
+            Drawable tempHelpIcon = AppCompatResources.getDrawable(this, R.drawable.help_outline);
+            if (tempHelpIcon != null) {
+                helpIcon = DrawableCompat.wrap(tempHelpIcon);
+                DrawableCompat.setTint(helpIcon, getPalette().textColor);
+            }
+        }
+
+        if (navIconBack==null) {
+            Drawable tempNavIconBack = AppCompatResources.getDrawable(this, R.drawable.arrow_left);
+            if (tempNavIconBack != null) {
+                navIconBack = DrawableCompat.wrap(tempNavIconBack);
+                DrawableCompat.setTint(navIconBack, getPalette().textColor);
+            }
+        }
+
+        if (navIconMenu==null) {
+            Drawable tempNavIconMenu = AppCompatResources.getDrawable(this,R.drawable.menu);
+            if (tempNavIconMenu!=null) {
+                navIconMenu = DrawableCompat.wrap(tempNavIconMenu);
+                DrawableCompat.setTint(navIconMenu, getPalette().textColor);
+            }
+        }
+    }
+
     // Navigation logic
     private void setupNavigation() {
         if (navHostFragment==null || navController==null) {
@@ -1445,33 +1464,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                     checkOptionsMenu();
 
-                    Drawable navicon;
-                    if (settingsOpen) {
-                        navicon = DrawableCompat.wrap(AppCompatResources.getDrawable(this,R.drawable.arrow_left));
-                    } else {
-                        navicon = DrawableCompat.wrap(AppCompatResources.getDrawable(this,R.drawable.menu));
-                    }
-                    DrawableCompat.setTint(navicon, getPalette().textColor);
-                    myView.myToolbar.setNavigationIcon(navicon);
+                    checkMenuIconsAreNotNull();
 
-                    if (settingsOpen) {
-                        Log.d(TAG,"changing to a close");
-                        Log.d(TAG,"menuSettings:"+menuSettings);
-                        if (menuSettings!=null) {
-                            Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(this,R.drawable.close));
-                            DrawableCompat.setTint(icon, getPalette().textColor);
-                            menuSettings.setIcon(icon);
-                        }
+                    myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack:navIconMenu);
+
+                    if (settingsOpen && menuSettings!=null) {
+                        menuSettings.setIcon(closeIcon);
+
                         // IV - Other elements are added by the called fragment
-                    } else {
+                    } else if (!settingsOpen) {
                         // IV - Top level of menu - song details are added by song load
-                        Log.d(TAG,"changing to a settings");
-                        Log.d(TAG,"menuSettings:"+menuSettings);
-                        if (menuSettings!=null) {
-                            Drawable icon = DrawableCompat.wrap(AppCompatResources.getDrawable(this,R.drawable.settings_outline));
-                            DrawableCompat.setTint(icon, getPalette().textColor);
-                            menuSettings.setIcon(icon);
-                        }
+                        menuSettings.setIcon(settingsIcon);
                         updateCastIcon();
                         if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
@@ -1796,10 +1799,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (whichMode.equals(mode_presenter)) {
                 navigateToFragment(deeplink_presenter, 0);
-                //myView.fragmentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
             } else {
                 navigateToFragment(deeplink_performance, 0);
-                //myView.fragmentView.setBackgroundColor(themeColors.getLyricsBackgroundColor());
             }
         }
     }
@@ -2278,11 +2280,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         navController.getCurrentDestination().getId()==R.id.preferencesFragment) {
                     popTheBackStack(R.id.preferencesFragment,true);
                 }
-                //item.setIcon(R.drawable.settings_outline);
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
-                //item.setIcon(R.drawable.close);
             }
             return true;
 
@@ -2330,15 +2330,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         tintDrawerLayout();
     }
 
-    private int getColorFromAttr(Context ctx, int attr) {
-        TypedValue tv = new TypedValue();
-        ctx.getTheme().resolveAttribute(attr, tv, true);
-        if (tv.resourceId != 0) {
-            return ContextCompat.getColor(ctx, tv.resourceId);
-        }
-        return tv.data;
-    }
-
     private void tintMenuIcons(Menu menu, @ColorInt int color) {
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
@@ -2354,27 +2345,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void refreshToolbarMenu() {
         // This is called when we change the theme when running the app
         getWindow().setBackgroundDrawable(new ColorDrawable(getPalette().background));
+        // Rebuild the menu icons
+        navIconMenu = null;
+        navIconBack = null;
+        settingsIcon = null;
+        closeIcon = null;
+        searchIcon = null;
+        helpIcon = null;
+        castIconOff = null;
+        castIconOn = null;
+        checkMenuIconsAreNotNull();
         invalidateOptionsMenu();
         tintDrawerLayout();
         updatePageButtonLayout();
         myView.actionFAB.setPalette(getPalette());
         getDisplayPrevNext().updateColors();
         setUpSongMenuTabs();
-    }
-
-    public void colorNavigationIcon() {
-        Drawable navicon = null;
-        Drawable arrowLeftDrawable = AppCompatResources.getDrawable(this,R.drawable.arrow_left);
-        Drawable menuDrawable = AppCompatResources.getDrawable(this,R.drawable.menu);
-        if (settingsOpen && arrowLeftDrawable!=null) {
-            navicon = DrawableCompat.wrap(arrowLeftDrawable);
-        } else if (menuDrawable!=null) {
-            navicon = DrawableCompat.wrap(menuDrawable);
-        }
-        if (navicon!=null) {
-            DrawableCompat.setTint(navicon, getPalette().onPrimary);
-            myView.myToolbar.setNavigationIcon(navicon);
-        }
     }
 
     @SuppressLint("PrivateResource")
@@ -2386,11 +2372,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
             int tint = getPalette().onPrimary;
 
-            Drawable closeIcon = DrawableCompat.wrap(AppCompatResources.getDrawable(this, R.drawable.close));
-            Drawable settingsIcon = DrawableCompat.wrap(AppCompatResources.getDrawable(this, R.drawable.settings_outline));
-            Drawable castIcon = DrawableCompat.wrap(AppCompatResources.getDrawable(this, R.drawable.cast));
-            Drawable searchIcon = DrawableCompat.wrap(AppCompatResources.getDrawable(this, R.drawable.search));
-            Drawable helpIcon = DrawableCompat.wrap(AppCompatResources.getDrawable(this, R.drawable.help_outline));
+            checkMenuIconsAreNotNull();
 
             menuSearch = menu.findItem(R.id.search_menu_item);
             menuScreenHelp = menu.findItem(R.id.help_menu_item);
@@ -2399,23 +2381,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             menuScreenMirror = menu.findItem(R.id.mirror_menu_item);
             menuSettings = menu.findItem(R.id.settings_menu_item);
 
-            if (settingsOpen) {
+            if (settingsOpen && closeIcon!=null) {
                 menuSettings.setIcon(closeIcon);
-            } else {
+
+            } else if (settingsIcon!=null){
                 menuSettings.setIcon(settingsIcon);
             }
-            menuSearch.setIcon(searchIcon);
-            menuScreenHelp.setIcon(helpIcon);
-            menuScreenMirror.setIcon(castIcon);
+            if (searchIcon!=null) {
+                menuSearch.setIcon(searchIcon);
+            }
+            if (helpIcon!=null) {
+                menuScreenHelp.setIcon(helpIcon);
+            }
+            if (castIconOff!=null) {
+                menuScreenMirror.setIcon(castIconOff);
+            }
 
             menuScreenHelp.setVisible(!settingsOpen);
             menuScreenMirror.setVisible(!settingsOpen);
 
             tintMenuIcons(menu, tint);
 
-            colorNavigationIcon();
-
+            myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack : navIconMenu);
             updateCastIcon();
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -2443,9 +2432,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void closeDrawer(boolean close) {
         if (close) {
-            myView.drawerLayout.post(() -> {
-                myView.drawerLayout.closeDrawer(GravityCompat.START);
-            });
+            myView.drawerLayout.post(() -> myView.drawerLayout.closeDrawer(GravityCompat.START));
             menuOpen = false;
         } else {
             myView.drawerLayout.post(() -> myView.drawerLayout.openDrawer(GravityCompat.START));
@@ -3467,7 +3454,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // Check if the song is in the set
-        //getSetActions().indexSongInSet(songinfo[0],songinfo[1],songinfo[2]);
         mainLooper.postDelayed(() -> {
             if (whichMode.equals(presenter)) {
                 if (presenterValid()) {
@@ -4349,9 +4335,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (screenshotFile==null) {
             getScreenshotFile();
         }
-        if (bitmap==null) {
+        if (bitmap==null && screenshotFile!=null) {
             Log.d(TAG,"Deleting old screenshot:"+screenshotFile.delete());
-        } else {
+        } else if (screenshotFile!=null) {
             try {
                 FileOutputStream out = new FileOutputStream(screenshotFile);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -4950,7 +4936,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Clear out any temporarily copied intent files
         File tempLoc = getStorageAccess().getAppSpecificFile("Import","","");
-        //File tempLoc = new File(getExternalFilesDir("Import"), "Intent");
         File[] files = tempLoc.listFiles();
         if (files != null) {
             for (File file : files) {
@@ -5072,31 +5057,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (settingsOpen || !getAlertChecks().getHasPlayServices()) {
                         menuScreenMirror.setVisible(false);
                     } else {
-                        Drawable castDrawable;
-                        Drawable notCasting = AppCompatResources.getDrawable(getApplicationContext(),R.drawable.cast);
-                        Drawable isCasting = AppCompatResources.getDrawable(getApplicationContext(),R.drawable.cast_connected);
-
-                        VectorDrawableCompat drawable;
-                        if (secondaryDisplays != null && connectedDisplays.length > 0 && isCasting!=null) {
-                            castDrawable = DrawableCompat.wrap(isCasting);
-                            //drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast_connected, null);
-                        } else if (notCasting!=null) {
-                            castDrawable = DrawableCompat.wrap(notCasting);
-                            //drawable = VectorDrawableCompat.create(getResources(), R.drawable.cast, null);
-                        } else {
-                            castDrawable = null;
-                        }
-                        if (castDrawable != null) {
-                            try {
-
-                                DrawableCompat.setTint(castDrawable,getPalette().onPrimary);
-                                //getMainHandler().postDelayed(() -> menuScreenMirror.setIcon(castDrawable), 100);
-                                //menuScreenMirror.setIcon(castDrawable);
-                                menuScreenMirror.setVisible(true);
-                            } catch (Exception e) {
-                                Log.d(TAG, "Error adjusting cast icon");
-                            }
-                        }
+                        menuScreenMirror.setIcon(secondaryDisplays != null && connectedDisplays.length > 0 ? castIconOn:castIconOff);
+                        menuScreenMirror.setVisible(true);
                     }
                 }
             }
@@ -5215,7 +5177,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 // The screen setup
                                 case "measureAvailableSizes":
                                     secondaryDisplay.measureAvailableSizes();
-                                    //secondaryDisplay.viewsAreReady();
                                     break;
                                 case "setScreenSizes":
                                     secondaryDisplay.setScreenSizes();

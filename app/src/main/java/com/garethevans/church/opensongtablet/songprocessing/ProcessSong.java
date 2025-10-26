@@ -4226,13 +4226,18 @@ public class ProcessSong {
             try {
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                 BitmapFactory.Options options = new BitmapFactory.Options();
+                Bitmap newBitmap = null;
                 if (w > 0 && h > 0) {
                     options.outWidth = w;
                     options.outHeight = h;
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                    Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, w,
-                            h, true);
-                    inputStream.close();
+                    if (inputStream!=null) {
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                        if (bitmap!=null) {
+                            newBitmap = Bitmap.createScaledBitmap(bitmap, w,
+                                    h, true);
+                        }
+                        inputStream.close();
+                    }
                     return newBitmap;
                 } else {
                     return BitmapFactory.decodeStream(inputStream, null, options);

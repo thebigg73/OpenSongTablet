@@ -1666,18 +1666,24 @@ public class PerformanceFragment extends Fragment {
                 && w!=0 && h!=0) {
             try {
                 Bitmap bitmap = Bitmap.createBitmap(w, h + topPadding, bmpFormat);
-                Canvas canvas = new Canvas(bitmap);
-                if (myView != null) {
-                    myView.songView.layout(0, topPadding, w, h + topPadding);
-                    myView.songView.draw(canvas);
-                    Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, topPadding, w, h);
-                    bitmap.recycle();
-                    mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                        mainActivityInterface.setScreenshotFile(croppedBitmap);
-                        croppedBitmap.recycle();
-                    });
+                if (bitmap!=null) {
+                    Canvas canvas = new Canvas(bitmap);
+                    if (myView != null) {
+                        myView.songView.layout(0, topPadding, w, h + topPadding);
+                        myView.songView.draw(canvas);
+                        Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, topPadding, w, h);
+                        bitmap.recycle();
+                        if (croppedBitmap!=null) {
+                            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                                mainActivityInterface.setScreenshotFile(croppedBitmap);
+                                croppedBitmap.recycle();
+                            });
+                        }
+                    }
                 }
             } catch (OutOfMemoryError e) {
+                Log.d(TAG,"Out of memory:");
+                e.printStackTrace();
                 // Change the resolution of the bitmap to a lower option
                 bmpFormat = Bitmap.Config.RGB_565;
                 mainActivityInterface.setScreenshotFile(null);
