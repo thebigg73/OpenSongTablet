@@ -19,7 +19,6 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMetronomeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class MetronomeFragment extends Fragment {
             sound_wood_string="", tempo_string="", bpm_string="", on_string="", reset_string="",
             not_set_string="";
     private String webAddress;
+    private boolean tapping = false;
 
     @Override
     public void onResume() {
@@ -67,14 +67,8 @@ public class MetronomeFragment extends Fragment {
 
         webAddress = website_metronome_string;
 
-        // Set up the values for the exposeddropdowns
+        // Set up the views and populate them
         initialiseDropDowns();
-
-        // Set up initial preferences
-        setupPreferences();
-
-        // Set up listeners
-        setupListeners();
 
         return myView.getRoot();
     }
@@ -102,68 +96,74 @@ public class MetronomeFragment extends Fragment {
     }
 
     private void initialiseDropDowns() {
-        // Get the available sounds by filename and description
-        soundFiles = new ArrayList<>();
-        soundNames = new ArrayList<>();
-        String low = sound_low_string;
-        String high = sound_high_string;
-        addSoundItem("","");
-        addSoundItem("bass_drum",sound_bass_drum_string);
-        addSoundItem("bell_high", sound_bell_string+" ("+high+")");
-        addSoundItem("bell_low", sound_bell_string+" ("+low+")");
-        addSoundItem("click_1_high", sound_click_string+" 1 ("+high+")");
-        addSoundItem("click_1_low", sound_click_string+" 1 ("+low+")");
-        addSoundItem("click_2_high", sound_click_string+" 2 ("+high+")");
-        addSoundItem("click_2_low", sound_click_string+" 2 ("+low+")");
-        addSoundItem("digital_high", sound_digital_string+" ("+high+")");
-        addSoundItem("digital_low", sound_digital_string+" ("+low+")");
-        addSoundItem("hat_high", sound_hihat_string+" ("+high+")");
-        addSoundItem("hat_low", sound_hihat_string+" ("+low+")");
-        addSoundItem("stick_high", sound_stick_string+" ("+high+")");
-        addSoundItem("stick_low", sound_stick_string+" ("+low+")");
-        addSoundItem("wood_high", sound_wood_string+" ("+high+")");
-        addSoundItem("wood_low", sound_wood_string+" ("+low+")");
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Get the available sounds by filename and description
+            soundFiles = new ArrayList<>();
+            soundNames = new ArrayList<>();
+            String low = sound_low_string;
+            String high = sound_high_string;
+            addSoundItem("", "");
+            addSoundItem("bass_drum", sound_bass_drum_string);
+            addSoundItem("bell_high", sound_bell_string + " (" + high + ")");
+            addSoundItem("bell_low", sound_bell_string + " (" + low + ")");
+            addSoundItem("click_1_high", sound_click_string + " 1 (" + high + ")");
+            addSoundItem("click_1_low", sound_click_string + " 1 (" + low + ")");
+            addSoundItem("click_2_high", sound_click_string + " 2 (" + high + ")");
+            addSoundItem("click_2_low", sound_click_string + " 2 (" + low + ")");
+            addSoundItem("digital_high", sound_digital_string + " (" + high + ")");
+            addSoundItem("digital_low", sound_digital_string + " (" + low + ")");
+            addSoundItem("hat_high", sound_hihat_string + " (" + high + ")");
+            addSoundItem("hat_low", sound_hihat_string + " (" + low + ")");
+            addSoundItem("stick_high", sound_stick_string + " (" + high + ")");
+            addSoundItem("stick_low", sound_stick_string + " (" + low + ")");
+            addSoundItem("wood_high", sound_wood_string + " (" + high + ")");
+            addSoundItem("wood_low", sound_wood_string + " (" + low + ")");
 
-        // Get the timesignatures
-        ArrayList<String> signatureBeats = new ArrayList<>();
-        signatureBeats.add("");
-        for (int x=1; x<17; x++) {
-            signatureBeats.add(String.valueOf(x));
-        }
-        ArrayList<String> signatureDivisions = new ArrayList<>();
-        signatureDivisions.add("");
-        signatureDivisions.add("1");
-        signatureDivisions.add("2");
-        signatureDivisions.add("4");
-        signatureDivisions.add("8");
+            // Get the timesignatures
+            ArrayList<String> signatureBeats = new ArrayList<>();
+            signatureBeats.add("");
+            for (int x = 1; x < 17; x++) {
+                signatureBeats.add(String.valueOf(x));
+            }
+            ArrayList<String> signatureDivisions = new ArrayList<>();
+            signatureDivisions.add("");
+            signatureDivisions.add("1");
+            signatureDivisions.add("2");
+            signatureDivisions.add("4");
+            signatureDivisions.add("8");
 
-        // Get the tempos
-        ArrayList<String> tempos = new ArrayList<>();
-        tempos.add("");
-        for (int x=40; x<300; x++) {
-            tempos.add(String.valueOf(x));
-        }
-        String tempoBpm = tempo_string + " (" + bpm_string + ")";
-        myView.songTempo.setText(tempoBpm);
-        myView.songTempo.setHint(tempoBpm);
+            // Get the tempos
+            ArrayList<String> tempos = new ArrayList<>();
+            tempos.add("");
+            for (int x = 40; x < 300; x++) {
+                tempos.add(String.valueOf(x));
+            }
+            String tempoBpm = tempo_string + " (" + bpm_string + ")";
+            myView.songTempo.setText(tempoBpm);
+            myView.songTempo.setHint(tempoBpm);
 
-        // Set the adapters
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
-            ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
-            ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
-            ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
-            ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
+            // Set the adapters
+            if (getContext() != null) {
+                ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
+                ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
+                ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
+                ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
+                ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
 
-            // Add them to the views
-            myView.signatureBeats.setAdapter(signatureBeatAdapter);
-            myView.signatureDivisions.setAdapter(signatureDivisionAdapter);
-            myView.songTempo.setAdapter(tempoAdapter);
-            myView.tickSound.setAdapter(tickAdapter);
-            myView.tockSound.setAdapter(tockAdapter);
-        }
+                // Add them to the views
+                mainActivityInterface.getMainHandler().post(() -> {
+                    myView.signatureBeats.setAdapter(signatureBeatAdapter);
+                    myView.signatureDivisions.setAdapter(signatureDivisionAdapter);
+                    myView.songTempo.setAdapter(tempoAdapter);
+                    myView.tickSound.setAdapter(tickAdapter);
+                    myView.tockSound.setAdapter(tockAdapter);
+                });
+            }
 
-        mainActivityInterface.getMetronome().newSongLoaded();
+            mainActivityInterface.getMetronome().newSongLoaded();
+
+            setupPreferences();
+        });
     }
 
     private void addSoundItem(String filename, String description) {
@@ -172,76 +172,90 @@ public class MetronomeFragment extends Fragment {
     }
 
     private void setupPreferences() {
-        // Get the song values
-        // If we don't have a tempo or time signature, make it 100bpm and 4/4 by default and update the song
-        boolean updateSong = false;
-        if (mainActivityInterface.getSong().getTempo()==null || mainActivityInterface.getSong().getTempo().isEmpty()) {
-            mainActivityInterface.getSong().setTempo("100");
-            updateSong = true;
-        }
-        String timeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true);
-        if (!mainActivityInterface.getSong().getTimesig().equals(timeSig)) {
-            mainActivityInterface.getSong().setTimesig(timeSig);
-            updateSong = true;
-        }
-        if (updateSong) {
-            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
-            mainActivityInterface.getMetronome().initialiseMetronome();
-            mainActivityInterface.getShowToast().doIt(not_set_string);
-            mainActivityInterface.getMetronome().stopMetronome();
-            setStartStopIcon(false);
-        }
-        myView.songTempo.setText(mainActivityInterface.getSong().getTempo());
-        ArrayList<String> timeSignature = mainActivityInterface.getMetronome().processTimeSignature();
-        myView.signatureBeats.setText(timeSignature.get(0));
-        myView.signatureDivisions.setText(timeSignature.get(1));
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Get the song values
+            // If we don't have a tempo or time signature, make it 100bpm and 4/4 by default and update the song
+            boolean updateSong = false;
+            if (mainActivityInterface.getSong().getTempo() == null || mainActivityInterface.getSong().getTempo().isEmpty()) {
+                mainActivityInterface.getSong().setTempo("100");
+                updateSong = true;
+            }
+            String timeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(), true);
+            if (!mainActivityInterface.getSong().getTimesig().equals(timeSig)) {
+                mainActivityInterface.getSong().setTimesig(timeSig);
+                updateSong = true;
+            }
 
-        // The autostart metronome feature
-        myView.metronomeAutoStart.setChecked(mainActivityInterface.getMetronome().getMetronomeAutoStart());
+            if (updateSong) {
+                mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                mainActivityInterface.getMetronome().initialiseMetronome();
+                mainActivityInterface.getShowToast().doIt(not_set_string);
+                mainActivityInterface.getMetronome().stopMetronome();
+                setStartStopIcon(false);
+            }
 
-        // Get the metronome pan value
-        switch (mainActivityInterface.getMetronome().getMetronomePan()) {
-            case "L":
-                myView.metronomePan.setSliderPos(0);
-                break;
-            case "R":
-                myView.metronomePan.setSliderPos(2);
-                break;
-            case "C":
-            default:
-                myView.metronomePan.setSliderPos(1);
-                break;
-        }
+            ArrayList<String> timeSignature = mainActivityInterface.getMetronome().processTimeSignature();
 
-        // Set the visual metronome
-        myView.visualMetronome.setChecked(mainActivityInterface.getMetronome().getVisualMetronome());
+            // Set the default values on the UI
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView!=null) {
+                    myView.songTempo.setHint(tempo_string + " (" + bpm_string + ")");
+                    myView.songTempo.setText(mainActivityInterface.getSong().getTempo());
+                    myView.signatureBeats.setText(timeSignature.get(0));
+                    myView.signatureDivisions.setText(timeSignature.get(1));
 
-        // Set the audio metronome
-        myView.audioMetronome.setChecked(mainActivityInterface.getMetronome().getAudioMetronome());
-        myView.audioSettings.setVisibility(mainActivityInterface.getMetronome().getAudioMetronome() ? View.VISIBLE:View.GONE);
+                    // The autostart metronome feature
+                    myView.metronomeAutoStart.setChecked(mainActivityInterface.getMetronome().getMetronomeAutoStart());
+                }
 
-        // Get the max bars required
-        myView.maxBars.setValue(mainActivityInterface.getMetronome().getBarsRequired());
-        myView.maxBars.setHint(getMaxBars(mainActivityInterface.getMetronome().getBarsRequired()));
+                // Get the metronome pan value
+                switch (mainActivityInterface.getMetronome().getMetronomePan()) {
+                    case "L":
+                        myView.metronomePan.setSliderPos(0);
+                        break;
+                    case "R":
+                        myView.metronomePan.setSliderPos(2);
+                        break;
+                    case "C":
+                    default:
+                        myView.metronomePan.setSliderPos(1);
+                        break;
+                }
 
-        // Get the metronome tick and tock sounds
-        myView.tickSound.setText(soundNames.get(soundFiles.indexOf(mainActivityInterface.getMetronome().getTickSound())));
-        myView.tockSound.setText(soundNames.get(soundFiles.indexOf(mainActivityInterface.getMetronome().getTockSound())));
+                // Set the visual metronome
+                myView.visualMetronome.setChecked(mainActivityInterface.getMetronome().getVisualMetronome());
 
-        // Get the volumes of the metronome sounds
-        myView.tickVolume.setValue((int)(mainActivityInterface.getMetronome().getTickVolume()*100.0f));
-        myView.tockVolume.setValue((int)(mainActivityInterface.getMetronome().getTockVolume()*100.0f));
-        myView.tickVolume.setHint(getVolPercentage(mainActivityInterface.getMetronome().getTickVolume()*100.0f));
-        myView.tockVolume.setHint(getVolPercentage(mainActivityInterface.getMetronome().getTockVolume()*100.0f));
+                // Set the audio metronome
+                myView.audioMetronome.setChecked(mainActivityInterface.getMetronome().getAudioMetronome());
+                myView.audioSettings.setVisibility(mainActivityInterface.getMetronome().getAudioMetronome() ? View.VISIBLE : View.GONE);
 
-        myView.tickVolume.setLabelFormatter(value -> ((int)value)+"%");
-        myView.tockVolume.setLabelFormatter(value -> ((int)value)+"%");
+                // Get the max bars required
+                myView.maxBars.setValue(mainActivityInterface.getMetronome().getBarsRequired());
+                myView.maxBars.setHint(getMaxBars(mainActivityInterface.getMetronome().getBarsRequired()));
 
-        // Set the midiClickTrack option
-        myView.midiClickTrackSwitch.setChecked(mainActivityInterface.getMidi().getMidiClickTrackSend());
+                // Get the metronome tick and tock sounds
+                myView.tickSound.setText(soundNames.get(soundFiles.indexOf(mainActivityInterface.getMetronome().getTickSound())));
+                myView.tockSound.setText(soundNames.get(soundFiles.indexOf(mainActivityInterface.getMetronome().getTockSound())));
 
-        // Set the stop or start icon
-        setStartStopIcon(mainActivityInterface.getMetronome().getIsRunning());
+                // Get the volumes of the metronome sounds
+                myView.tickVolume.setValue((int) (mainActivityInterface.getMetronome().getTickVolume() * 100.0f));
+                myView.tockVolume.setValue((int) (mainActivityInterface.getMetronome().getTockVolume() * 100.0f));
+                myView.tickVolume.setHint(getVolPercentage(mainActivityInterface.getMetronome().getTickVolume() * 100.0f));
+                myView.tockVolume.setHint(getVolPercentage(mainActivityInterface.getMetronome().getTockVolume() * 100.0f));
+
+                myView.tickVolume.setLabelFormatter(value -> ((int) value) + "%");
+                myView.tockVolume.setLabelFormatter(value -> ((int) value) + "%");
+
+                // Set the midiClickTrack option
+                myView.midiClickTrackSwitch.setChecked(mainActivityInterface.getMidi().getMidiClickTrackSend());
+
+                // Set the stop or start icon
+                setStartStopIcon(mainActivityInterface.getMetronome().getIsRunning());
+
+                // Set up the listeners
+                setupListeners();
+            });
+        });
     }
 
     private String getVolPercentage(float vol) {
@@ -257,80 +271,93 @@ public class MetronomeFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.songTempo.addTextChangedListener(new MyTextWatcher("songTempo", myView.songTempo));
-        myView.signatureBeats.addTextChangedListener(new MyTextWatcher("songTimeSignature_beats", myView.signatureBeats));
-        myView.signatureDivisions.addTextChangedListener(new MyTextWatcher("songTimeSignature_divisions", myView.signatureDivisions));
-        myView.metronomePan.addOnChangeListener((slider, value, fromUser) -> updateMetronomePan());
-        myView.tickSound.addTextChangedListener(new MyTextWatcher("metronomeTickSound", myView.tickSound));
-        myView.tockSound.addTextChangedListener(new MyTextWatcher("metronomeTockSound", myView.tockSound));
-        myView.tickVolume.addOnSliderTouchListener(new MySliderTouchListener("metronomeTickVol"));
-        myView.tickVolume.addOnChangeListener(new MySliderChangeListener("metronomeTickVol"));
-        myView.tockVolume.addOnSliderTouchListener(new MySliderTouchListener("metronomeTockVol"));
-        myView.tockVolume.addOnChangeListener(new MySliderChangeListener("metronomeTockVol"));
-        myView.maxBars.addOnSliderTouchListener(new MySliderTouchListener("metronomeLength"));
-        myView.maxBars.addOnChangeListener(new MySliderChangeListener("metronomeLength"));
-        myView.midiClickTrackSwitch.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMidi().setMidiClickTrackSend(b));
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Initialise the tapTempo values
+            total_calc_bpm = 0;
+            total_counts = 0;
+            tapTempoRunnableCheck = () -> {
+                // This is called after 2 seconds when a tap is initiated
+                // Any previous instance is of course cancelled first
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+                    myView.tapTempo.setEnabled(false);
+                    myView.tapTempo.setText(reset_string);
+                    myView.tapTempo.setBackgroundColor(mainActivityInterface.getPalette().primary);
+                    // Waited too long, reset count
+                    tapping = false;
+                    total_calc_bpm = 0;
+                    total_counts = 0;
+                }));
+                if (tapTempoHandlerReset!=null) {
+                    tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
+                }
+                tapTempoHandlerReset = new Handler();
+                tapTempoHandlerReset.postDelayed(tapTempoRunnableReset,500);
+            };
+            tapTempoRunnableReset = () -> {
+                // Reset the tap tempo timer
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
+                    myView.tapTempo.setEnabled(true);
+                    myView.tapTempo.setText(tap_tempo_string);
+                    myView.tapTempo.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+                }));
+                // Start the metronome after saving the new tap tempo
+                String tempo = myView.songTempo.getText().toString();
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    tapping = false;
+                    mainActivityInterface.getSong().setTempo(tempo);
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                    mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getMetronome().startMetronome());
+                });
+            };
 
-        myView.scrollView.setFabToAnimate(myView.startStopButton);
+            // Set up a recurring task to check the isRunning status and update the button as required
+            isRunningTimer = new Timer();
+            isRunningTask = new TimerTask() {
+                public void run() {
+                    isRunningHandler.post(() -> setStartStopIcon(mainActivityInterface.getMetronome().getIsRunning()));
+                }
+            };
+            isRunningTimer.schedule(isRunningTask,0,1000);
 
+            // Now set the button listeners on the main UI
+            mainActivityInterface.getMainHandler().post(() -> {
+                myView.songTempo.addTextChangedListener(new MyTextWatcher("songTempo", myView.songTempo));
+                myView.signatureBeats.addTextChangedListener(new MyTextWatcher("songTimeSignature_beats", myView.signatureBeats));
+                myView.signatureDivisions.addTextChangedListener(new MyTextWatcher("songTimeSignature_divisions", myView.signatureDivisions));
+                myView.metronomePan.addOnChangeListener((slider, value, fromUser) -> updateMetronomePan());
+                myView.tickSound.addTextChangedListener(new MyTextWatcher("metronomeTickSound", myView.tickSound));
+                myView.tockSound.addTextChangedListener(new MyTextWatcher("metronomeTockSound", myView.tockSound));
+                myView.tickVolume.addOnSliderTouchListener(new MySliderTouchListener("metronomeTickVol"));
+                myView.tickVolume.addOnChangeListener(new MySliderChangeListener("metronomeTickVol"));
+                myView.tockVolume.addOnSliderTouchListener(new MySliderTouchListener("metronomeTockVol"));
+                myView.tockVolume.addOnChangeListener(new MySliderChangeListener("metronomeTockVol"));
+                myView.maxBars.addOnSliderTouchListener(new MySliderTouchListener("metronomeLength"));
+                myView.maxBars.addOnChangeListener(new MySliderChangeListener("metronomeLength"));
+                myView.midiClickTrackSwitch.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMidi().setMidiClickTrackSend(b));
 
-        myView.startStopButton.setOnClickListener(button -> {
-            // Change the button based on what the metronome wasn't doing as it will be in a mo!
-            setStartStopIcon(!mainActivityInterface.getMetronome().getIsRunning());
-            mainActivityInterface.getMetronome().startMetronome();
+                myView.scrollView.setFabToAnimate(myView.startStopButton);
+
+                myView.startStopButton.setOnClickListener(button -> {
+                    // Change the button based on what the metronome wasn't doing as it will be in a mo!
+                    setStartStopIcon(!mainActivityInterface.getMetronome().getIsRunning());
+                    mainActivityInterface.getMetronome().startMetronome();
+                });
+                myView.visualMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                    mainActivityInterface.getMetronome().setVisualMetronome(isChecked);
+                    mainActivityInterface.getMetronome().stopMetronome();
+                });
+                myView.audioMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                    mainActivityInterface.getMetronome().setAudioMetronome(isChecked);
+                    myView.audioSettings.setVisibility(isChecked ? View.VISIBLE:View.GONE);
+                    mainActivityInterface.getMetronome().stopMetronome();
+                });
+                myView.metronomeAutoStart.setOnCheckedChangeListener((compoundButton, isChecked) ->
+                        mainActivityInterface.getMetronome().setMetronomeAutoStart(isChecked));
+                myView.tapTempo.setOnClickListener(button -> tapTempo());
+            });
+
         });
-        myView.visualMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            mainActivityInterface.getMetronome().setVisualMetronome(isChecked);
-            mainActivityInterface.getMetronome().stopMetronome();
-        });
-        myView.audioMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            mainActivityInterface.getMetronome().setAudioMetronome(isChecked);
-            myView.audioSettings.setVisibility(isChecked ? View.VISIBLE:View.GONE);
-            mainActivityInterface.getMetronome().stopMetronome();
-        });
-        myView.metronomeAutoStart.setOnCheckedChangeListener((compoundButton, isChecked) ->
-                mainActivityInterface.getMetronome().setMetronomeAutoStart(isChecked));
-        myView.tapTempo.setOnClickListener(button -> tapTempo());
 
-        // Set up a recurring task to check the isRunning status and update the button as required
-        isRunningTimer = new Timer();
-        isRunningTask = new TimerTask() {
-            public void run() {
-                isRunningHandler.post(() -> setStartStopIcon(mainActivityInterface.getMetronome().getIsRunning()));
-            }
-        };
-        isRunningTimer.schedule(isRunningTask,0,1000);
-
-        // Initialise the tapTempo values
-        total_calc_bpm = 0;
-        total_counts = 0;
-        tapTempoRunnableCheck = () -> {
-            // This is called after 2 seconds when a tap is initiated
-            // Any previous instance is of course cancelled first
-            mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
-                myView.tapTempo.setEnabled(false);
-                myView.tapTempo.setText(reset_string);
-                myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorPrimaryFixed));
-                // Waited too long, reset count
-                total_calc_bpm = 0;
-                total_counts = 0;
-            }));
-            if (tapTempoHandlerReset!=null) {
-                tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
-            }
-            tapTempoHandlerReset = new Handler();
-            tapTempoHandlerReset.postDelayed(tapTempoRunnableReset,500);
-        };
-        tapTempoRunnableReset = () -> {
-            // Reset the tap tempo timer
-            mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
-                        myView.tapTempo.setEnabled(true);
-                        myView.tapTempo.setText(tap_tempo_string);
-                        myView.tapTempo.setBackgroundColor(MaterialColors.getColor(myView.tapTempo,com.google.android.material.R.attr.colorSecondary));
-            }));
-            // Start the metronome
-            mainActivityInterface.getMetronome().startMetronome();
-        };
     }
 
     private void updateMetronomePan() {
@@ -386,6 +413,7 @@ public class MetronomeFragment extends Fragment {
     }
 
     private void tapTempo() {
+        tapping = true;
         // This function checks the previous tap_tempo time and calculates the bpm
         // Variables for tap tempo
 
@@ -468,9 +496,11 @@ public class MetronomeFragment extends Fragment {
             int position;
             switch (preference) {
                 case "songTempo":
-                    mainActivityInterface.getSong().setTempo(exposedDropDown.getText().toString());
-                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
-                    restartMetronome();
+                    if (!tapping) {
+                        mainActivityInterface.getSong().setTempo(exposedDropDown.getText().toString());
+                        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(), false);
+                        restartMetronome();
+                    }
                     break;
                 case "songTimeSignature_beats":
                 case "songTimeSignature_divisions":

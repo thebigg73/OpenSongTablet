@@ -18,7 +18,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -824,7 +823,7 @@ public class Metronome {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getMainHandler().post(() -> {
                 tapButton.setEnabled(false);
                 tapButton.setText(c.getString(R.string.reset));
-                tapButton.setBackgroundColor(MaterialColors.getColor(tapButton,com.google.android.material.R.attr.colorPrimaryFixed));
+                tapButton.setBackgroundColor(mainActivityInterface.getPalette().primary);
                 // Waited too long, reset count
                 total_calc_bpm = 0;
                 total_counts = 0;
