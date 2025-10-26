@@ -44,6 +44,7 @@ public class ExposedDropDown extends FrameLayout {
     private boolean sizeSet = false;
     private boolean dealingWithAlready = false;
     private ArrayList<String> arrayList = null;
+    private Palette palette;
 
     private WindowInsetsCompat windowInsetsCompat;
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
@@ -58,10 +59,7 @@ public class ExposedDropDown extends FrameLayout {
     }
 
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
-         super(context, attrs);
-        //ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
-        //LayoutInflater.from(themeWrapper).inflate(R.layout.view_exposed_dropdown, this, true);
-
+        super(context, attrs);
         inflate(context, R.layout.view_exposed_dropdown, this);
 
         //window = ((Activity) context).getWindow();
@@ -98,10 +96,10 @@ public class ExposedDropDown extends FrameLayout {
         autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_medium));
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
         textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
-        //textInputLayout.setEndIconTintList(ColorStateList.valueOf(MaterialColors.getColor(autoCompleteTextView, com.google.android.material.R.attr.colorOnPrimary)));
         textInputLayout.setEndIconOnClickListener(v -> doClickAction());
 
-        setPalette(new Palette(context));
+        palette = new Palette(context);
+        setPalette();
     }
 
     private Context unwrap(Context context) {
@@ -236,7 +234,7 @@ public class ExposedDropDown extends FrameLayout {
         autoCompleteTextView.setAdapter(arrayAdapter);
     }
 
-    public void setPalette(Palette palette) {
+    public void setPalette() {
 
             autoCompleteTextView.setTextColor(palette.textColor);
             // Tint the popup background
@@ -269,5 +267,10 @@ public class ExposedDropDown extends FrameLayout {
             // Force redraw of the outline
             textInputLayout.invalidate();
 
+    }
+
+    public void setPalette(Palette palette) {
+        this.palette = palette;
+        setPalette();
     }
 }

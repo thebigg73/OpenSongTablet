@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
@@ -25,12 +25,14 @@ public abstract class BottomSheetCommon extends BottomSheetDialogFragment {
      */
 
     protected boolean dark = true;
+    private MainActivityInterface mainActivityInterface;
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_NAME="theme_choice", DARK="dark";
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        mainActivityInterface = (MainActivityInterface) getContext();
         if (getContext() != null) {
             dark = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                     .getBoolean(DARK, false);
@@ -60,9 +62,8 @@ public abstract class BottomSheetCommon extends BottomSheetDialogFragment {
                                 .build()
                 );
 
-                // Set fill color to match your theme
-                int color = MaterialColors.getColor(bottomSheet, com.google.android.material.R.attr.colorSurface);
-                shapeDrawable.setFillColor(ColorStateList.valueOf(color));
+                // Set fill color to match the theme
+                shapeDrawable.setFillColor(ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant));
 
                 // Apply it
                 //ViewCompat.setBackground(bottomSheet, shapeDrawable);

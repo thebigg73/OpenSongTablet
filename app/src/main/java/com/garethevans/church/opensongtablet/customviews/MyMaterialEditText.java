@@ -36,7 +36,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -54,6 +53,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private boolean isKeyboardVisible = false;
     private final Handler keyboardHandler = new Handler(Looper.getMainLooper());
     private View.OnFocusChangeListener externalFocusChangeListener;
+    private Palette palette;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -61,6 +61,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
     public MyMaterialEditText(Context context) {
         super(context);
+        palette = new Palette(context);
         editText = new TextInputEditText(context);
         textInputLayout = new TextInputLayout(context);
         textInputLayout.addView(editText,
@@ -82,6 +83,8 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        palette = new Palette(context);
+
         // Ensure inflation happens with the current app theme
         //ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
         //LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_edittext, this, true);
@@ -204,7 +207,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             e.printStackTrace();
         }
 
-        setPalette(new Palette(context));
+        setPalette();
 
         // === Keyboard handling fixes (Kindle, pre-Lollipop, etc.) ===
         editText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -215,13 +218,6 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 isKeyboardVisible = false;
             }
         });
-
-        // Optional: long-press fallback for problematic devices
-        /*editText.setOnLongClickListener(v -> {
-            Log.d(TAG, "Long-press: toggling keyboard");
-            showKeyboard();
-            return true;
-        });*/
 
         // Track IME visibility
         ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
@@ -274,8 +270,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
     public void setHint(String hintText) {
         textInputLayout.setHint(hintText);
-        textInputLayout.setHintTextColor(ColorStateList.valueOf(MaterialColors.getColor(editText, com.google.android.material.R.attr.hintTextColor)));
-
+        textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
     }
 
     public void setOnEditorActionListener(MyMaterialSimpleTextView.OnEditorActionListener editorActionListener) {
@@ -444,7 +439,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         editText.setGravity(gravity);
     }
 
-    public void setPalette(Palette palette) {
+    public void setPalette() {
         textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
         editText.setHintTextColor(palette.hintColor);
         editText.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
@@ -453,10 +448,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         textInputLayout.setBoxStrokeColor(palette.hintColor);
         editText.setTextColor(palette.textColor);
         editText.setHighlightColor(palette.secondary);
-        tintDrawables(palette);
+        tintDrawables();
     }
 
-    private void tintDrawables(Palette palette) {
+    private void tintDrawables() {
         if (Build.MANUFACTURER.toLowerCase().contains("amazon")) {
             textInputLayout.setEndIconMode(TextInputLayout.END_ICON_CUSTOM);
             Drawable drawable = AppCompatResources.getDrawable(getContext(), R.drawable.keyboard);
@@ -471,72 +466,6 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         }
 
         tintEditTextCursorAndHandles(palette);
-        /*Drawable handleLeft = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
-        Drawable handleRight = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
-        Drawable handleMiddle = AppCompatResources.getDrawable(getContext(), R.drawable.text_select_left_handle);
-        Drawable cursorBar = AppCompatResources.getDrawable(getContext(), R.drawable.text_cursor);
-
-        Drawable left=null, right=null, middle=null, cursor=null;
-        if (handleLeft!=null && handleRight!=null && handleMiddle!=null && cursorBar!=null) {
-            left = DrawableCompat.wrap(handleLeft);
-            right = DrawableCompat.wrap(handleRight);
-            middle = DrawableCompat.wrap(handleMiddle);
-            cursor = DrawableCompat.wrap(cursorBar).mutate();
-
-            DrawableCompat.setTint(left, palette.secondary);
-            DrawableCompat.setTint(right, palette.secondary);
-            DrawableCompat.setTint(middle, palette.secondary);
-            cursor.setColorFilter(palette.hintColor, PorterDuff.Mode.SRC_IN);
-
-            //DrawableCompat.setTint(cursor, palette.textColor);
-            //DrawableCompat.setTintMode(cursor, PorterDuff.Mode.SRC_IN); // force direct color replace
-            //DrawableCompat.setTintList(cursor, null);
-            //cursor.clearColorFilter();
-        }
-
-        if (left!=null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // Set them
-                editText.setTextSelectHandleLeft(handleLeft);
-                editText.setTextSelectHandleRight(handleRight);
-                editText.setTextSelectHandle(handleMiddle);
-                editText.setTextCursorDrawable(cursor);
-            } else {
-                try {
-                    // Access private Editor field
-                    //@SuppressLint("PrivateApi") Field fEditor = MyMaterialSimpleTextView.class.getDeclaredField("mEditor");
-                    @SuppressLint("PrivateApi") Field fEditor = editText.getClass().getDeclaredField("mEditor");
-                    fEditor.setAccessible(true);
-                    Object editor = fEditor.get(editText);
-
-                    //@SuppressLint("PrivateApi") Field fCursorDrawableRes = MyMaterialSimpleTextView.class.getDeclaredField("mCursorDrawableRes");
-                    @SuppressLint("PrivateApi") Field fCursorDrawableRes = editText.getClass().getDeclaredField("mCursorDrawableRes");
-                    fCursorDrawableRes.setAccessible(true);
-                    //int mCursorDrawableRes = fCursorDrawableRes.getInt(editText);
-
-                    Drawable[] drawables = {cursor, cursor};
-
-                    // Replace handle fields
-                    if (editor!=null) {
-                        Field fSelectHandleLeft = editor.getClass().getDeclaredField("mSelectHandleLeft");
-                        Field fSelectHandleRight = editor.getClass().getDeclaredField("mSelectHandleRight");
-                        Field fSelectHandleCenter = editor.getClass().getDeclaredField("mSelectHandleCenter");
-                        Field fCursorDrawable = editor.getClass().getDeclaredField("mCursorDrawable");
-
-                        fCursorDrawable.setAccessible(true);
-                        fSelectHandleLeft.setAccessible(true);
-                        fSelectHandleRight.setAccessible(true);
-                        fSelectHandleCenter.setAccessible(true);
-                        fSelectHandleLeft.set(editor, left);
-                        fSelectHandleRight.set(editor, right);
-                        fSelectHandleCenter.set(editor, middle);
-                        fCursorDrawable.set(editor, drawables);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
     }
 
     private void tintEditTextCursorAndHandles(Palette palette) {

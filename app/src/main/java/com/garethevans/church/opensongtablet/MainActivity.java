@@ -193,7 +193,6 @@ import com.garethevans.church.opensongtablet.variations.Variations;
 import com.garethevans.church.opensongtablet.voicelive.VoiceLive;
 import com.garethevans.church.opensongtablet.webserver.LocalWiFiHost;
 import com.garethevans.church.opensongtablet.webserver.WebServer;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -4503,7 +4502,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                     setCloseButtonIcon(myCustomCloseIcon).setUrlBarHidingEnabled(true).build();
                         } else {
                             customTabsIntent = new CustomTabsIntent.Builder().setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder()
-                                            .setToolbarColor(MaterialColors.getColor(myView.myToolbar, com.google.android.material.R.attr.colorPrimaryFixed)).build()).setShowTitle(true).
+                                            .setToolbarColor(getPalette().primary).build()).setShowTitle(true).
                                     setUrlBarHidingEnabled(true).build();
                         }
                         customTabsIntent.launchUrl(MainActivity.this, Uri.parse(location));

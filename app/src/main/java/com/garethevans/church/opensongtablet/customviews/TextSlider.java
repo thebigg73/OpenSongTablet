@@ -37,8 +37,6 @@ public class TextSlider extends LinearLayout {
         small = context.getResources().getDimension(R.dimen.text_small);
         xsmall = context.getResources().getDimension(R.dimen.text_xsmall);
 
-        //activeColor = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnPrimary, ContextCompat.getColor(context,R.color.dark_color));
-        //inactiveColor = MaterialColors.getColor(context, com.google.android.material.R.attr.hintTextColor, ContextCompat.getColor(context,R.color.dark_hint));
         textLeft = findViewById(R.id.textLeft);
         textRight = findViewById(R.id.textRight);
         slider = findViewById(R.id.slider);
