@@ -175,19 +175,25 @@ public class DisplayPrevNext {
     }
 
     public void getPositions() {
+        Log.d(TAG,"getPositions()");
         int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        Log.d(TAG,"setPosition:"+setPosition);
         if (setPosition<0) {
             setPosition = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
             mainActivityInterface.getCurrentSet().setIndexSongInSet(setPosition);
+            Log.d(TAG,"setPosition:"+setPosition);
         }
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
 
         // Set the local variables for prevIndex, nextIndex and if we are using the set or song menu
         setIndexes(setPosition, songPosition);
+
+        Log.d(TAG,"prevIndex:"+prevIndex+"  nextIndex:"+nextIndex);
     }
 
     private void setIndexes(int setPosition, int songPosition) {
         if (setPosition>=0) {
+            Log.d(TAG,"in set");
             moveNextInMenu = false;
             movePrevInMenu = false;
             prevIndex = -1;
@@ -223,6 +229,7 @@ public class DisplayPrevNext {
             }
 
         } else {
+            Log.d(TAG,"not in set...");
             moveNextInSet = false;
             movePrevInSet = false;
             if (songPosition>0) {
@@ -240,6 +247,7 @@ public class DisplayPrevNext {
                 moveNextInMenu = false;
             }
 
+            Log.d(TAG,"prevIndex:"+prevIndex+"  nextIndex:"+nextIndex);
         }
     }
 

@@ -263,7 +263,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     String finalFolderNamePair = folderNamePair;
 
                     songItemViewHolder.itemChecked.setOnClickListener(v -> {
+                        Log.d(TAG,"finalFolderNamePair:"+finalFolderNamePair);
+                        boolean isChecked = songItemViewHolder.itemChecked.isChecked();
+                        Log.d(TAG,"isChecked:"+isChecked);
                         if (mainActivityInterface.getSetActions().isSongInSet(finalFolderNamePair)) {
+                            Log.d(TAG,"This song was in the set, so remove it");
                             // This was in the set, so remove it
                             songItemViewHolder.itemChecked.setChecked(false);
                             for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
@@ -308,6 +312,31 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                 mainActivityInterface.updateInlineSetVisibility();
                             }
                         }
+
+                        // If we are already viewing this item, we need to notify that we are currently in the set
+                        // This involves indexing and then updating the toolbar
+                        // Because the above actions are asynchronous, delay the process below by 1 sec to ensure the set has saved
+                        mainActivityInterface.getMainHandler().postDelayed(() -> {
+                            if (mainActivityInterface.getSong().getFolder().equals(itemFolder) &&
+                                    mainActivityInterface.getSong().getFilename().equals(itemFilename)) {
+                                // Index this song in the set
+                                Log.d(TAG, "This song is currently loaded");
+                                if (isChecked) {
+                                    int i = mainActivityInterface.getSetActions().indexSongInSet(song);
+                                    mainActivityInterface.getCurrentSet().setIndexSongInSet(i);
+                                    Log.d(TAG, "This song is loaded and in the set (position " + i);
+                                } else {
+                                    Log.d(TAG, "This song was in the set, but no more, setting position to -1");
+                                    mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+                                }
+
+                                // Updating the toolbar with null updates the set tick as it checks the song
+                                mainActivityInterface.updateToolbar(null);
+
+                                // Rebuild the prev/next
+                                mainActivityInterface.getDisplayPrevNext().setPrevNext();
+                            }
+                        },1000);
                     });
                 }
             } catch (Exception e) {
