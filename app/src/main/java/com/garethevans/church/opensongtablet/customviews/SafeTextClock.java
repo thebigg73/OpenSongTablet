@@ -34,7 +34,6 @@ public class SafeTextClock extends TextClock {
         detached = false;
         try {
             super.onAttachedToWindow();
-            Log.d(TAG, "TextClock attached");
         } catch (Exception e) {
             Log.w(TAG, "Attach failed (possibly already registered)", e);
         }
@@ -45,7 +44,6 @@ public class SafeTextClock extends TextClock {
         detached = true;
         try {
             super.onDetachedFromWindow();
-            Log.d(TAG, "TextClock detached");
         } catch (IllegalArgumentException e) {
             Log.w(TAG, "Receiver already unregistered — ignoring", e);
         }
@@ -58,7 +56,6 @@ public class SafeTextClock extends TextClock {
         if (visibility == VISIBLE) {
             // App or window became visible again — re-attach the receiver
             if (detached) {
-                Log.d(TAG, "Window visible again — re-attaching TextClock receiver");
                 try {
                     super.onAttachedToWindow();
                     detached = false;
@@ -69,7 +66,6 @@ public class SafeTextClock extends TextClock {
         } else {
             // App or window hidden — detach safely
             if (!detached) {
-                Log.d(TAG, "Window hidden — cleaning up TextClock receiver");
                 try {
                     super.onDetachedFromWindow();
                     detached = true;
