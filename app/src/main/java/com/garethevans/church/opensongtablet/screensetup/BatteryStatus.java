@@ -166,7 +166,6 @@ public class BatteryStatus extends BroadcastReceiver {
                 bgcolor = 0xff88ff88;
             }
 
-            Log.d(TAG,"charge:"+charge+"  isCharging: "+isCharging+" color: "+Integer.toHexString(color)+" bgcolor: "+Integer.toHexString(bgcolor));
             Paint bPaint = new Paint();
             bPaint.setDither(true);
             bPaint.setColor(bgcolor);

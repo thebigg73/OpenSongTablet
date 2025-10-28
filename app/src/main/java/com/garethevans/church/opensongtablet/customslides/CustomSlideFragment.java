@@ -301,7 +301,7 @@ public class CustomSlideFragment extends Fragment {
                 MyMaterialSimpleTextView filename = row.findViewById(R.id.uriEncoded);
                 filename.setText(uri.toString());
                 ImageView thumbnail = row.findViewById(R.id.image);
-                Bitmap ThumbImage;
+                Bitmap thumbImage;
                 BitmapDrawable bd;
 
                 if (uri.getPath().startsWith("../OpenSong/")) {
@@ -314,9 +314,11 @@ public class CustomSlideFragment extends Fragment {
                     }
                 } else {
                     InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
-                    ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), dpToPx(200), dpToPx(150));
-                    bd = new BitmapDrawable(getResources(), ThumbImage);
-                    thumbnail.setImageDrawable(bd);
+                    thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), dpToPx(200), dpToPx(150));
+                    if (thumbImage != null) {
+                        bd = new BitmapDrawable(getResources(), thumbImage);
+                        thumbnail.setImageDrawable(bd);
+                    }
                 }
 
                 MyFloatingActionButton delete = row.findViewById(R.id.delete);
