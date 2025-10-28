@@ -208,9 +208,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                             mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                         } else {
                             // Look for the song index based on the folder, filename and key of the song
-                            Log.d(TAG,"songListAdapter item clicked looking for:"+song.getFolder()+"/"+song.getFilename());
                             mainActivityInterface.getSetActions().indexSongInSet(song);
-                            Log.d(TAG,"indexSongInSet():"+mainActivityInterface.getCurrentSet().getIndexSongInSet());
                             if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
                                 // Use the variation if required
                                 SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(mainActivityInterface.getCurrentSet().getIndexSongInSet());
@@ -263,11 +261,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                     String finalFolderNamePair = folderNamePair;
 
                     songItemViewHolder.itemChecked.setOnClickListener(v -> {
-                        Log.d(TAG,"finalFolderNamePair:"+finalFolderNamePair);
                         boolean isChecked = songItemViewHolder.itemChecked.isChecked();
-                        Log.d(TAG,"isChecked:"+isChecked);
                         if (mainActivityInterface.getSetActions().isSongInSet(finalFolderNamePair)) {
-                            Log.d(TAG,"This song was in the set, so remove it");
                             // This was in the set, so remove it
                             songItemViewHolder.itemChecked.setChecked(false);
                             for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
@@ -315,20 +310,19 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
                         // If we are already viewing this item, we need to notify that we are currently in the set
                         // This involves indexing and then updating the toolbar
-                        // Because the above actions are asynchronous, delay the process below by 1 sec to ensure the set has saved
+                        // Because the above actions are asynchronous, delay the process below by 250ms to ensure the set has saved
                         mainActivityInterface.getMainHandler().postDelayed(() -> {
                             if (mainActivityInterface.getSong().getFolder().equals(itemFolder) &&
                                     mainActivityInterface.getSong().getFilename().equals(itemFilename)) {
-                                // Index this song in the set
-                                Log.d(TAG, "This song is currently loaded");
+                                // Index this song in the set - it is the last item
                                 if (isChecked) {
-                                    int i = mainActivityInterface.getSetActions().indexSongInSet(song);
+                                    int i = mainActivityInterface.getCurrentSet().getCurrentSetSize() - 1;
                                     mainActivityInterface.getCurrentSet().setIndexSongInSet(i);
-                                    Log.d(TAG, "This song is loaded and in the set (position " + i);
                                 } else {
-                                    Log.d(TAG, "This song was in the set, but no more, setting position to -1");
                                     mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                                 }
+
+                                mainActivityInterface.updateSetList();
 
                                 // Updating the toolbar with null updates the set tick as it checks the song
                                 mainActivityInterface.updateToolbar(null);
@@ -336,7 +330,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                                 // Rebuild the prev/next
                                 mainActivityInterface.getDisplayPrevNext().setPrevNext();
                             }
-                        },1000);
+                        },250);
                     });
                 }
             } catch (Exception e) {

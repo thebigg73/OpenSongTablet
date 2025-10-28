@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.DocumentsContract;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,7 +80,6 @@ public class PerformanceGestures {
 
 
     public void doAction(String action, boolean isLongPress) {
-        //Log.d(TAG,"action:"+action+"  longpress:"+isLongPress);
         // Get the action we are trying to run
         switch(action) {
             case "pageButtons":
@@ -664,7 +662,6 @@ public class PerformanceGestures {
         if (mainActivityInterface!=null && mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
-            Log.d(TAG,"checkPositionInSet:"+mainActivityInterface.getCurrentSet().getIndexSongInSet());
             if (mainActivityInterface.getVariations().getIsNormalVariation(mainActivityInterface.getSong())) {
                 mainActivityInterface.setWhattodo("editActualVariation");
             } else if (mainActivityInterface.getVariations().getIsKeyVariation(mainActivityInterface.getSong())) {
@@ -698,6 +695,12 @@ public class PerformanceGestures {
         // Update the set list
         mainActivityInterface.updateSetList();
         mainActivityInterface.updateCheckForThisSong(mainActivityInterface.getSong());
+
+        // Updating the toolbar with null updates the set tick as it checks the song
+        mainActivityInterface.updateToolbar(null);
+
+        // Rebuild the prev/next
+        mainActivityInterface.getDisplayPrevNext().setPrevNext();
     }
 
     // Add to set as a variation
@@ -772,8 +775,6 @@ public class PerformanceGestures {
 
     // Next song
     public void nextSong() {
-        Log.d(TAG,"nextSong()");
-
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(true)) {
             scroll(true);
         } else {
@@ -795,8 +796,6 @@ public class PerformanceGestures {
 
     // Next song
     public void prevSong() {
-        Log.d(TAG,"mainActivityInterface.getPedalActions().getPedalScrollBeforeMove():"+mainActivityInterface.getPedalActions().getPedalScrollBeforeMove());
-        Log.d(TAG,"canScroll:"+canScroll(false));
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(false)) {
             scroll(false);
         } else {
@@ -811,7 +810,6 @@ public class PerformanceGestures {
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.first_song));
                 }
             } else {
-                Log.d(TAG,"trying to move to previous");
                 mainActivityInterface.getDisplayPrevNext().moveToPrev();
             }
         }
@@ -1442,8 +1440,6 @@ public class PerformanceGestures {
         boolean changeBlackscreen = getBlackscreenOn!=setBlackscreenOn;
         boolean changeBlankscreen = getBlankscreenOn!=setBlankscreenOn;
 
-        Log.d(TAG,"currently  logoOn:"+getLogoOn+"  blackscreenOn:"+getBlackscreenOn+"  blankscreenOn:"+getBlankscreenOn);
-        Log.d(TAG,"trying for logoOn:"+setLogoOn+"  blackscreenOn:"+setBlackscreenOn+"  blankscreenOn:"+setBlankscreenOn);
         // We don't want black and blank screen set to on when the logo is showing
         // We don't want the logo to show when the black or blank screen is on
         if (getLogoOn && (setBlackscreenOn || setBlankscreenOn)) {
