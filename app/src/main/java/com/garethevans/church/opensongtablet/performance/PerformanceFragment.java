@@ -1212,9 +1212,10 @@ public class PerformanceFragment extends Fragment {
                     });
                     myView.recyclerView.post(() -> {
                         try {
-                            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                                    mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                                 myView.recyclerView.setAdapter(pdfPageAdapter);
-                            } else {
+                            } else if (!mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                                 myView.recyclerView.setAdapter(stageSectionAdapter);
                             }
                         } catch (Exception e) {
@@ -1222,7 +1223,6 @@ public class PerformanceFragment extends Fragment {
                             e.printStackTrace();
                         }
                     });
-
 
                 } else {
                     // We are in Performance mode, so use the songView
