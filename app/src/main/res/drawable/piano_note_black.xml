@@ -6,7 +6,9 @@
     <size android:width="@dimen/piano_black_width"
         android:height="@dimen/piano_black_height"/>
     <padding android:top="1dp"/>
-</shape>-->
+</shape>
+@color/grey for tinting
+-->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/keyRectangle">
         <shape android:shape="rectangle">

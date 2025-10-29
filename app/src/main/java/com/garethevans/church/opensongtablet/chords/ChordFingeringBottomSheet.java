@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -218,7 +217,6 @@ public class ChordFingeringBottomSheet extends BottomSheetCommon {
     private void showProgress(boolean show) {
         if (myView!=null) {
             myView.getRoot().post(() -> {
-                Log.d(TAG,"showing progress bar:"+show);
                 myView.progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             });
         }
