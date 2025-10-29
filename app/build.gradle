@@ -1,23 +1,24 @@
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-android'
 
 android {
     namespace = "com.garethevans.church.opensongtablet"
-    compileSdkVersion 36
+    compileSdkVersion = 36
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled = false
+            shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         beta {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled = false
+            shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled = false
+            shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -28,20 +29,24 @@ android {
 
     compileOptions {
         // Flag to enable support for the new language APIs
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled = true
 
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
         applicationId = "com.garethevans.church.opensongtablet"
         minSdkVersion 19
         targetSdkVersion 35
-        multiDexEnabled true
+        multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode 429
-        versionName '6.5.7'
+        versionCode = 430
+        versionName = '6.5.8'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -51,32 +56,16 @@ android {
 
     }
 
-    buildscript {
-        repositories {
-            google()
-            mavenCentral()
-        }
-        dependencies {
-            classpath 'com.android.tools.build:gradle:8.13.0'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.5'
-        }
-    }
-
-    repositories {
-        google()
-        mavenCentral()
-        maven {
-            url "https://jitpack.io"
-        }
-    }
-
     buildFeatures {
-        viewBinding true
-        prefab true
+        viewBinding = true
+        prefab = true
         buildConfig = true
     }
 
-    namespace 'com.garethevans.church.opensongtablet'
+    kotlin {
+        jvmToolchain(17)
+    }
+
     /*externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
@@ -85,10 +74,20 @@ android {
     }*/
 }
 
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url = "https://jitpack.io"
+    }
+}
+
 dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
+    implementation 'androidx.core:core-ktx:1.17.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'                    // To allow Java time/date utilities on <Android 8
-    implementation 'androidx.activity:activity:1.11.0'                                  // Required for activity and permission requests
-    implementation 'androidx.fragment:fragment:1.8.9'                                   // Using fragments and navigation
+    implementation 'androidx.activity:activity-ktx:1.11.0'                                  // Required for activity and permission requests
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'                                   // Using fragments and navigation
     implementation 'com.google.android.material:material:1.13.0'                        // Required for material design goodness
     implementation 'com.google.android.gms:play-services-cast:22.2.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:22.2.0'         // For casting obviously!
@@ -113,14 +112,13 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment:2.9.5'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui:2.9.5'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.5'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.5'                            // The navigation fragment control
     implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.5'     // The navigation fragment control
-    implementation 'androidx.preference:preference:1.2.1'                               // The app preferences
+    implementation 'androidx.preference:preference-ktx:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.9.1'                               // Allows annotations in code
     annotationProcessor 'androidx.annotation:annotation:1.9.1'                          // Allows annotations in code
-    implementation 'androidx.core:core:1.17.0'
     implementation 'org.apache.commons:commons-compress:1.28.0'                         // For creating and editing compressed files (osb, backup)
     implementation files('libs/TarsosDSP-Android-2.4.jar')                              // For the pitch detection in the tuner
     implementation 'com.github.bumptech.glide:glide:5.0.5'                              // For better setting of images
@@ -134,8 +132,8 @@ dependencies {
     //implementation 'com.google.oboe:oboe:1.7.0'                                       // Low latency audio
     implementation 'androidx.exifinterface:exifinterface:1.4.1'                         // To get image exif data (orientation for camera)
     implementation 'com.google.code.gson:gson:2.13.2'                                   // GSon for JSON conversion of Song/Set objects
-    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
-    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'                              // Retrofit for web access
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'                        // Retrofit for web access
     //noinspection NewerVersionAvailable,GradleDependency - Updating this above 1.5.0 breaks it!!!
     implementation 'org.zwobble.mammoth:mammoth:1.5.0'  // Don't UPDATE                 // To extract text from docx files
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
