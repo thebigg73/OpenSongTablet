@@ -320,7 +320,6 @@ public class ChordDisplayProcessing {
         MyMaterialSimpleTextView chordNameTextView = getChordName(chordName);
         if (chordNameTextView!=null && chordString!=null) {
             chordNameTextView.setTag("chordNameTextView");
-
             chordLayout.addView(chordNameTextView);
 
             // Get chord table layout
@@ -554,7 +553,7 @@ public class ChordDisplayProcessing {
             textView.setGravity(Gravity.CENTER);
             textView.setTextSize(24);
             textView.setText(chordName);
-            textView.setTextColor(mainActivityInterface.getPalette().textColor);
+            textView.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
             return textView;
         } else {
             return null;
@@ -652,16 +651,16 @@ public class ChordDisplayProcessing {
         if (imageView!=null) {
             if (on && note.contains("#")) {
                 //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black_on);
-                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_black_on,c.getTheme());
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_black_on,null);
             } else if (!on && note.contains("#")) {
                 //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black);
-                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_black,c.getTheme());
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_black,null);
             } else if (on && !note.contains("#")) {
                 //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white_on);
-                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_white_on,c.getTheme());
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_white_on,null);
             } else {
                 //drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white);
-                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_white,c.getTheme());
+                drawable = VectorDrawableCompat.create(c.getResources(),R.drawable.piano_note_white,null);
             }
             imageView.setImageDrawable(drawable);
         }

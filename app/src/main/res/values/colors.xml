@@ -28,6 +28,9 @@
     <color name="light_tuner_green">#88FF88</color>
     <color name="light_tuner_red">#FF8888</color>
 
+    <!-- Piano on notes -->
+    <color name="piano_on_color">#66AAFF</color>
+
     <!--Showcase overlay colour-->
     <color name="showcaseColor">#EE141B22</color>
 

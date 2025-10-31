@@ -39,6 +39,7 @@ import androidx.annotation.RequiresApi;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.signature.ObjectKey;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
@@ -1383,7 +1384,7 @@ public class ProcessSong {
         if (capochord) {
             capobit = "capo_";
         }
-        String filename = capobit+ str.replace("/", "_").trim().replaceAll("[^a-z0-9#]+/gi", "") + ".png";
+        String filename = (capobit+ str.replace("/", "_").trim().replaceAll("[^a-z0-9#]+/gi", "").replace("(","").replace(")","") + ".png").replace("..png",".png");
         if (!filename.equals(".png") && !filename.equals("capo_.png")) {
             File chordFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Chords", "", filename);
 
@@ -1399,7 +1400,8 @@ public class ProcessSong {
                     imageView = new ImageView(c);
                     imageView.setScaleType(ImageView.ScaleType.FIT_START);
                     imageView.setPadding(0, 0, 16, 0);
-                    Glide.with(c).load(chordFile).override(imageWidth, imageHeight).dontTransform().format(DecodeFormat.PREFER_ARGB_8888).into(imageView);
+                    // Added signature to force only using the cache if it hasn't changed
+                    Glide.with(c).load(chordFile).signature(new ObjectKey(chordFile.getAbsoluteFile().lastModified())).override(imageWidth, imageHeight).dontTransform().format(DecodeFormat.PREFER_ARGB_8888).into(imageView);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
