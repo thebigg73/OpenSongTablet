@@ -821,6 +821,7 @@
     <string name="override_on">Spectacle de force</string>
     <string name="override_scale_explanation">Si la taille de la police de autoscale est inférieure à la taille minimale souhaitée, voulez-vous l\'application pour passer outre à une méthode de mise à l\'échelle différente? L\'utilisation de ces options peuvent vous forcer à faire défiler horizontalement et verticalement dans une chanson.</string>
     <string name="override_sticky">Remplacer l\'affichage automatique des notes autocollantes pour cette chanson</string>
+    <string name="override_preview">Remplacer l\'affichage de l\'aperçu de la ligne suivante pour cette chanson</string>
     <string name="override_widthautoscale">Largeur remplacer seulement mise à l\'échelle ne autoscale</string>
     <string name="overwrite">Ecraser l\'élément existant</string>
     <string name="overwrite_info">Tous les fichiers correspondants que vous possédez déjà seront écrasés par les fichiers hôtes</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Afficher les paroles trouvées dans la chanson</string>
     <string name="show_next_in_set">Montrer la chanson suivante de la liste</string>
     <string name="show_next_prev_in_song_menu">Afficher également précédent/suivant pour les chansons qui ne font pas partie d\'un ensemble (à l\'aide du menu des chansons)</string>
+    <string name="show_next_line_preview">Afficher l\'aperçu de la ligne suivante</string>
+    <string name="show_next_line_preview_hint">Afficher la première ligne de la section suivante en bas de l\'écran</string>
     <string name="show_prev_song">Afficher la chanson précédente dans le set</string>
     <string name="show_songs">Afficher les chansons</string>
     <string name="show_tempo">Afficher le tempo dans le titre</string>

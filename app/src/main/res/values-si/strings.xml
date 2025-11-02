@@ -821,6 +821,7 @@
     <string name="override_on">බල සංදර්ශන</string>
     <string name="override_scale_explanation">ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය අපේක්ෂිත අවම අකුරු ප්‍රමාණයට වඩා අඩු නම්, ඔබට යෙදුම වෙනස් පරිමාණ ක්‍රමයකට ප්‍රතික්‍ෂේප කිරීමට අවශ්‍යද?  මෙම විකල්ප භාවිතා කිරීමෙන් ගීතයක තිරස් අතට සහ සිරස් අතට අනුචලනය කිරීමට ඔබට බල කළ හැක</string>
     <string name="override_sticky">මෙම ගීතය සඳහා ස්වයංක්‍රීය ඇලෙන සුළු සටහන් සංදර්ශකය අභිබවා යන්න</string>
+    <string name="override_preview">මෙම ගීතය සඳහා මීළඟ පේළියේ පෙරදසුන් සංදර්ශකය අභිබවා යන්න</string>
     <string name="override_widthautoscale">ප්‍රතික්‍ෂේප කරන්න පළල ස්වයංක්‍රීය පරිමාණයකින් තොරව පරිමාණය කිරීම පමණි</string>
     <string name="overwrite">පවතින අයිතමය උඩින් ලියන්න</string>
     <string name="overwrite_info">ඔබ සතුව දැනටමත් ඇති ඕනෑම ගැළපෙන ගොනු ධාරක ගොනු මගින් නැවත ලියනු ලැබේ</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">ගීතයේ ඇති පද සංදර්ශන කරන්න</string>
     <string name="show_next_in_set">සෙට් එකේ ඊළඟ සින්දුව පෙන්වන්න</string>
     <string name="show_next_prev_in_song_menu">කට්ටලයක නැති ගීත සඳහා පෙර/ඊළඟ පෙන්වන්න (ගීත මෙනුව භාවිතයෙන්)</string>
+    <string name="show_next_line_preview">ඊළඟ පේළියේ පූර්ව දසුන පෙන්වන්න</string>
+    <string name="show_next_line_preview_hint">තිරයේ පතුලේ ඊළඟ කොටසේ පළමු පේළිය ප්‍රදර්ශනය කරන්න</string>
     <string name="show_prev_song">කට්ටලයේ පෙර ගීතය පෙන්වන්න</string>
     <string name="show_songs">ගීත පෙන්වන්න</string>
     <string name="show_tempo">මාතෘකාවේ tempo පෙන්වන්න</string>

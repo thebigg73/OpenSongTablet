@@ -120,13 +120,23 @@ public class EditSongFragmentFeatures extends Fragment {
         // The capo
         setupCapo();
 
-        // Check for overrides
+        // Check for ABC overrides
         if (mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getTempSong())) {
             myView.overrideAbcSlider.setSliderPos(2);
         } else if (mainActivityInterface.getProcessSong().getHasAbcOnOverride(mainActivityInterface.getTempSong())) {
             myView.overrideAbcSlider.setSliderPos(1);
         } else {
             myView.overrideAbcSlider.setSliderPos(0);
+        }
+
+        // Check for preview overrides
+        String previewOverride = mainActivityInterface.getTempSong().getPreviewoverride();
+        if (previewOverride != null && previewOverride.equals("force_off")) {
+            myView.overridePreviewSlider.setSliderPos(2);
+        } else if (previewOverride != null && previewOverride.equals("force_on")) {
+            myView.overridePreviewSlider.setSliderPos(1);
+        } else {
+            myView.overridePreviewSlider.setSliderPos(0);
         }
 
         // The pad file
@@ -387,7 +397,7 @@ public class EditSongFragmentFeatures extends Fragment {
 
             myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getMetronome().tapTempo());
 
-            // The sticky notes override
+            // The ABC override
             myView.overrideAbcSlider.addOnChangeListener((slider, value, fromUser) -> {
                 // All options should clear existing override value
                 mainActivityInterface.getProcessSong().removeAbcOverrides(mainActivityInterface.getTempSong(), true);
@@ -405,6 +415,21 @@ public class EditSongFragmentFeatures extends Fragment {
                             mainActivityInterface.getTempSong(), false);
                 }
                 myView.overrideAbcSlider.updateAlphas();
+            });
+
+            // The preview override
+            myView.overridePreviewSlider.addOnChangeListener((slider, value, fromUser) -> {
+                if (value==1) {
+                    // Force preview ON
+                    mainActivityInterface.getTempSong().setPreviewoverride("force_on");
+                } else if (value==2) {
+                    // Force preview OFF
+                    mainActivityInterface.getTempSong().setPreviewoverride("force_off");
+                } else {
+                    // Use global setting (no override)
+                    mainActivityInterface.getTempSong().setPreviewoverride("");
+                }
+                myView.overridePreviewSlider.updateAlphas();
             });
 
             myView.preferredInstrument.addTextChangedListener(new MyTextWatcher("preferredinstrument"));

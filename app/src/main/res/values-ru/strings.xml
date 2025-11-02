@@ -821,6 +821,7 @@
     <string name="override_on">Принудительно показать</string>
     <string name="override_scale_explanation">Если размер автомасштабируемго шрифта меньше требуемого минимального размера шрифта, вы хотите, чтобы приложение применяло другой метод масштабирования? Это может заставить вас прокручивать песню по горизонтали и вертикали</string>
     <string name="override_sticky">Переопределить автоматическое отображение заметок для этой песни</string>
+    <string name="override_preview">Переопределить отображение предварительного просмотра следующей строки для этой песни</string>
     <string name="override_widthautoscale">Принудительное отключение автомасштабирования вместо автомасштабирования по ширине</string>
     <string name="overwrite">Переписать существующую</string>
     <string name="overwrite_info">Любые соответствующие файлы, которые у вас уже есть, будут перезаписаны файлами хоста.</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Показать текст, записанный в песне</string>
     <string name="show_next_in_set">Показ следующей песни в сетлисте</string>
     <string name="show_next_prev_in_song_menu">Показывать кнопки \'предыдущий/следующий\' также и для песен, которых нет в сетлисте (двигаться по индексу песенника)</string>
+    <string name="show_next_line_preview">Показать предварительный просмотр следующей строки</string>
+    <string name="show_next_line_preview_hint">Показать первую строку следующего раздела внизу экрана</string>
     <string name="show_prev_song">Показать предыдущую песню в сетлисте</string>
     <string name="show_songs">Показать песни</string>
     <string name="show_tempo">Показывать темп в названии</string>

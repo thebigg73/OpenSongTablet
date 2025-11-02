@@ -821,6 +821,7 @@
     <string name="override_on">Show erzwingen</string>
     <string name="override_scale_explanation">Wenn die Schriftgröße bei automatischer Skalierung kleiner ist als die gewünschte Mindestschriftgröße, möchten Sie, dass die App dann auf eine andere Skalierungsmethode umschaltet? Diese Option kann dazu führen, dass Sie horizontal und vertikal in einem Song scrollen müssen.</string>
     <string name="override_sticky">Überschreiben Sie die automatische Anzeige von Haftnotizen für dieses Lied</string>
+    <string name="override_preview">Überschreiben Sie die Vorschau der nächsten Zeile für dieses Lied</string>
     <string name="override_widthautoscale">Automatische Skalierung auf Breite ignorieren und nicht automatisch skalieren</string>
     <string name="overwrite">Existierendes Element überschreiben</string>
     <string name="overwrite_info">Alle übereinstimmenden Dateien, die Sie bereits haben, werden durch die Hostdateien überschrieben</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Im Song gefundene Liedtexte anzeigen</string>
     <string name="show_next_in_set">Nächsten Song im Set anzeigen</string>
     <string name="show_next_prev_in_song_menu">Auch vorherige/nächste für Songs anzeigen, die nicht in einem Set enthalten sind (über das Song-Menü)</string>
+    <string name="show_next_line_preview">Vorschau der nächsten Zeile anzeigen</string>
+    <string name="show_next_line_preview_hint">Zeige die erste Zeile des nächsten Abschnitts am unteren Bildschirmrand an</string>
     <string name="show_prev_song">Vorherigen Song im Set anzeigen</string>
     <string name="show_songs">Lieder zeigen</string>
     <string name="show_tempo">Tempo im Titel anzeigen</string>

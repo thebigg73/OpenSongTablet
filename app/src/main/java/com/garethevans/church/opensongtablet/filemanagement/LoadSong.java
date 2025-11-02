@@ -505,6 +505,9 @@ public class LoadSong {
                                     case "preferred_instrument":
                                         thisSong.setPreferredInstrument(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                         break;
+                                    case "previewoverride":
+                                        thisSong.setPreviewoverride(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
                                     case "aka":
                                         thisSong.setAka(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                         break;

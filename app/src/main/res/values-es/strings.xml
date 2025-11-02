@@ -821,6 +821,7 @@
     <string name="override_on">espectáculo de fuerza</string>
     <string name="override_scale_explanation">Si el tamaño de la fuente autoescala es menor que el tamaño mínimo de la letra deseada, ¿desea la aplicación para anular a un método de escala diferente? El uso de estas opciones le puede obligar a desplazarse horizontal y verticalmente en una canción.</string>
     <string name="override_sticky">Anular la visualización automática de notas adhesivas para esta canción</string>
+    <string name="override_preview">Anular vista previa de la siguiente línea para esta canción</string>
     <string name="override_widthautoscale">Ancho de anulación únicamente el escalado a ninguna autoescala</string>
     <string name="overwrite">Sobrescribir elemento existente</string>
     <string name="overwrite_info">Cualquier archivo coincidente que ya tenga será sobrescrito por los archivos del host.</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Mostrar la letra encontrada en la canción</string>
     <string name="show_next_in_set">Mostrar siguiente canción en conjunto</string>
     <string name="show_next_prev_in_song_menu">También muestra anterior/siguiente para canciones que no están en un conjunto (usando el menú de canciones)</string>
+    <string name="show_next_line_preview">Mostrar vista previa de la siguiente línea</string>
+    <string name="show_next_line_preview_hint">Mostrar la primera línea de la siguiente sección en la parte inferior de la pantalla</string>
     <string name="show_prev_song">Mostrar la canción anterior en el conjunto</string>
     <string name="show_songs">Mostrar canciones</string>
     <string name="show_tempo">Mostrar tempo en el título</string>

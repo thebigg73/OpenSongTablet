@@ -236,6 +236,14 @@
             android:hint="@string/info_text_autohide_info"
             android:text="@string/info_text_autohide" />
 
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+            android:id="@+id/showNextLinePreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/show_next_line_preview_hint"
+            android:text="@string/show_next_line_preview" />
+
         <LinearLayout
             android:id="@+id/infoSizes"
             android:layout_width="match_parent"

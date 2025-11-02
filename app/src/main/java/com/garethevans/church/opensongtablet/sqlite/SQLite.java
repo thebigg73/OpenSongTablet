@@ -55,6 +55,7 @@ public class SQLite {
     padfile
     padloop
     preferredinstrument (preferred_instrument)
+    previewoverride
     presentationorder (presentation)
     songid
     theme
@@ -91,6 +92,7 @@ public class SQLite {
     public static final String COLUMN_KEY = "key";
     public static final String COLUMN_KEY_ORIGINAL = "keyoriginal";
     public static final String COLUMN_PREFERRED_INSTRUMENT = "preferredinstrument";
+    public static final String COLUMN_PREVIEWOVERRIDE = "previewoverride";
     public static final String COLUMN_TIMESIG = "timesig";
     public static final String COLUMN_AKA = "aka";
     public static final String COLUMN_AUTOSCROLL_DELAY = "autoscrolldelay";
@@ -138,6 +140,7 @@ public class SQLite {
                     + COLUMN_KEY + " TEXT,"
                     + COLUMN_KEY_ORIGINAL + " TEXT,"
                     + COLUMN_PREFERRED_INSTRUMENT + " TEXT,"
+                    + COLUMN_PREVIEWOVERRIDE + " TEXT,"
                     + COLUMN_TIMESIG + " TEXT,"
                     + COLUMN_AKA + " TEXT,"
                     + COLUMN_AUTOSCROLL_DELAY + " TEXT,"

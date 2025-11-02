@@ -167,6 +167,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_KEY, thisSong.getKey());
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_PREFERRED_INSTRUMENT, thisSong.getPreferredInstrument());
+        values.put(SQLite.COLUMN_PREVIEWOVERRIDE, thisSong.getPreviewoverride());
         values.put(SQLite.COLUMN_TIMESIG, mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false));
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
@@ -564,6 +565,7 @@ public class CommonSQL {
         thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
         thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
         thisSong.setPreferredInstrument(getValue(cursor, SQLite.COLUMN_PREFERRED_INSTRUMENT));
+        thisSong.setPreviewoverride(getValue(cursor, SQLite.COLUMN_PREVIEWOVERRIDE));
         thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
         thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
         thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));

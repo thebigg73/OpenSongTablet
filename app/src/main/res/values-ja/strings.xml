@@ -821,6 +821,7 @@
     <string name="override_on">強制ショー</string>
     <string name="override_scale_explanation">オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。</string>
     <string name="override_sticky">この曲の自動付箋表示をオーバーライドする</string>
+    <string name="override_preview">この曲の次の行のプレビュー表示を上書きする</string>
     <string name="override_widthautoscale">オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。オーバーライド幅のみなしオートスケールへのスケーリング</string>
     <string name="overwrite">既存のアイテムを上書き</string>
     <string name="overwrite_info">すでに存在する一致するファイルはホスト ファイルによって上書きされます</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">曲に含まれる歌詞を表示する</string>
     <string name="show_next_in_set">セット内の次の曲を表示します</string>
     <string name="show_next_prev_in_song_menu">セットにない曲の前/次も表示（曲メニューを使用）</string>
+    <string name="show_next_line_preview">次の行のプレビューを表示</string>
+    <string name="show_next_line_preview_hint">次のセクションの最初の行を画面下部に表示します</string>
     <string name="show_prev_song">セット内の前の曲を表示する</string>
     <string name="show_songs">曲を表示する</string>
     <string name="show_tempo">タイトルにテンポを表示する</string>

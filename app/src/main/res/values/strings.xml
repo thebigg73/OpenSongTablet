@@ -1006,6 +1006,7 @@
     <string name="override_on">Force show</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_sticky">Override automatic sticky note display for this song</string>
+    <string name="override_preview">Override next line preview display for this song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
     <string name="overwrite_info">Any matching files you already have will be overwritten by the host files</string>
@@ -1266,6 +1267,8 @@
     <string name="show_lyrics_info">Display lyrics found in the song</string>
     <string name="show_next_in_set">Show next song in set</string>
     <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
+    <string name="show_next_line_preview">Show next line preview</string>
+    <string name="show_next_line_preview_hint">Display the first line of the next section at the bottom of the screen</string>
     <string name="show_prev_song">Show previous song in set</string>
     <string name="show_songs">Show songs</string>
     <string name="show_tempo">Show tempo in the title</string>
