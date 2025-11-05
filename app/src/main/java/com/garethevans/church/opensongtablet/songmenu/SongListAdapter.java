@@ -6,12 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -339,7 +339,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         }
     }
 
-    void bindCheckBox(CheckBox checkBox, String folderNamePair) {
+    void bindCheckBox(MyMaterialCheckbox checkBox, String folderNamePair) {
         // Is this item in the set?
         try {
             checkBox.setChecked(mainActivityInterface.getSetActions().isSongInSet(folderNamePair));

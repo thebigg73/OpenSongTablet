@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.databinding.StorageMoveBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -102,9 +102,8 @@ public class MoveContentFragment extends Fragment {
                 if (getActivity()!=null && getContext()!=null) {
                     getActivity().runOnUiThread(() -> {
                         for (String f : files) {
-                            CheckBox cb = new CheckBox(getContext());
+                            MyMaterialCheckbox cb = new MyMaterialCheckbox(getContext());
                             cb.setText(f);
-                            cb.setPadding(12, 12, 12, 12);
                             myView.folderContentsLayout.addView(cb);
                         }
                     });
@@ -178,7 +177,7 @@ public class MoveContentFragment extends Fragment {
         filesChosen = new ArrayList<>();
 
         for (int x = 0; x < files.size(); x++) {
-            if (((CheckBox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
+            if (((MyMaterialCheckbox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
                 filesChosen.add(files.get(x));
                 Log.d(TAG, "Adding " + files.get(x));
             }
@@ -336,7 +335,7 @@ public class MoveContentFragment extends Fragment {
             if (getActivity()!=null) {
                 getActivity().runOnUiThread(() -> {
                     for (int x = 0; x < getNumCheckBoxes(); x++) {
-                        ((CheckBox) myView.folderContentsLayout.getChildAt(x)).setChecked(isChecked);
+                        ((MyMaterialCheckbox) myView.folderContentsLayout.getChildAt(x)).setChecked(isChecked);
                     }
                 });
             }

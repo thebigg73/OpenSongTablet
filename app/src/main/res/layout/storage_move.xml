@@ -37,7 +37,7 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 
-            <CheckBox
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
                 android:id="@+id/selectAllCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

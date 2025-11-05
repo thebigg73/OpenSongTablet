@@ -27,7 +27,7 @@
             android:text="@string/sync_show_new_updated_only"
             android:hint="@string/sync_show_new_updated_info"/>
 
-        <CheckBox
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
             android:id="@+id/selectAllItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

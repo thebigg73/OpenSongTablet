@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/song_name_already_taken"/>
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
                     android:id="@+id/overwrite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

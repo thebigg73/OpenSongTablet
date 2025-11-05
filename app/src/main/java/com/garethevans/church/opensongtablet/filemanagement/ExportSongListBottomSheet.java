@@ -20,11 +20,11 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetExportSongListBinding;
 import com.garethevans.church.opensongtablet.export.MultipagePrinterAdapter;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 
@@ -86,7 +86,7 @@ public class ExportSongListBottomSheet extends BottomSheetCommon {
         ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         if (getContext()!=null) {
             for (String folder : folders) {
-                MaterialCheckBox checkBox = getMaterialCheckBox(folder,getContext());
+                MyMaterialCheckbox checkBox = getMaterialCheckBox(folder,getContext());
                 myView.songFolders.addView(checkBox);
             }
         }
@@ -112,8 +112,8 @@ public class ExportSongListBottomSheet extends BottomSheetCommon {
         });
     }
 
-    private MaterialCheckBox getMaterialCheckBox(String folder, Context c) {
-        MaterialCheckBox checkBox = new MaterialCheckBox(c);
+    private MyMaterialCheckbox getMaterialCheckBox(String folder, Context c) {
+        MyMaterialCheckbox checkBox = new MyMaterialCheckbox(c);
         checkBox.setText(folder);
         checkBox.setChecked(false);
         checkBox.setOnCheckedChangeListener((compoundButton, b) -> {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
@@ -94,7 +94,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Set item views based on your views and data model
-        CheckBox tagName = holder.tagName;
+        MyMaterialCheckbox tagName = holder.tagName;
         MyMaterialSimpleTextView matchingSongs = holder.matchingSongs;
         tagName.setText(tags.get(position));
         matchingSongs.setText(songsWithTags.get(position));
@@ -115,7 +115,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public CheckBox tagName;
+        public MyMaterialCheckbox tagName;
         public MyMaterialSimpleTextView matchingSongs;
         public MyFloatingActionButton tagDelete;
 
@@ -127,7 +127,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         }
     }
 
-    void bindCheckBox(CheckBox checkBox, int position) {
+    void bindCheckBox(MyMaterialCheckbox checkBox, int position) {
         // use the sparse boolean array to check
         checkBox.setChecked(checked.get(position));
         // Don't use checkchange listener as this happens when recyclerview draws on scroll

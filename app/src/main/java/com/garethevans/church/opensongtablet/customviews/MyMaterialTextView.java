@@ -274,10 +274,20 @@ public class MyMaterialTextView extends LinearLayout {
             hintView.setTextColor(palette.hintColor);
             checkMark.setColorFilter(palette.textColor);
 
+            ColorStateList colorStateList = new ColorStateList(
+                    new int[][]{
+                            new int[]{android.R.attr.state_checked}, // checked
+                            new int[]{-android.R.attr.state_checked}  // unchecked
+                    },
+                    new int[]{
+                            palette.textColor, // Checked color
+                            palette.hintColor  // Unchecked color
+                    }
+            );
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                checkBox.setButtonTintList(ColorStateList.valueOf(palette.hintColor));
+                checkBox.setButtonTintList(colorStateList);
             } else {
-                CompoundButtonCompat.setButtonTintList(checkBox, ColorStateList.valueOf(palette.hintColor));
+                CompoundButtonCompat.setButtonTintList(checkBox, colorStateList);
             }
         }
     }

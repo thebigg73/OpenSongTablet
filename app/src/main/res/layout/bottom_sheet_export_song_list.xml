@@ -90,19 +90,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/file_type" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
                     android:id="@+id/exportText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
                     android:id="@+id/exportCsv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/csv" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
                     android:id="@+id/exportPDF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

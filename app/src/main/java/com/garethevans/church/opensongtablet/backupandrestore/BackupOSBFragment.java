@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
@@ -110,7 +110,7 @@ public class BackupOSBFragment extends Fragment {
             // Create a new checkbox entry (default to ticked) for each one
             mainActivityInterface.getMainHandler().post(() -> {
                 for (String folder:folders) {
-                    CheckBox checkBox = new CheckBox(getContext());
+                    MyMaterialCheckbox checkBox = new MyMaterialCheckbox(getContext());
                     checkBox.setText(folder);
                     checkBox.setTag(folder);
                     checkBox.setChecked(true);
@@ -136,7 +136,7 @@ public class BackupOSBFragment extends Fragment {
         myView.selectAll.setChecked(true);
         myView.selectAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
             for (int x=0; x<myView.foundFoldersListView.getChildCount(); x++) {
-                CheckBox checkBox = (CheckBox) myView.foundFoldersListView.getChildAt(x);
+                MyMaterialCheckbox checkBox = (MyMaterialCheckbox) myView.foundFoldersListView.getChildAt(x);
                 checkBox.setChecked(isChecked);
             }
         });
@@ -155,7 +155,7 @@ public class BackupOSBFragment extends Fragment {
     private void getCheckedFolders() {
         checkedFolders = new ArrayList<>();
         for (int x=0; x<myView.foundFoldersListView.getChildCount();x++) {
-            CheckBox checkBox = (CheckBox) myView.foundFoldersListView.getChildAt(x);
+            MyMaterialCheckbox checkBox = (MyMaterialCheckbox) myView.foundFoldersListView.getChildAt(x);
             if (checkBox!=null && checkBox.isChecked() && checkBox.getTag()!=null) {
                 checkedFolders.add(checkBox.getTag().toString());
             }

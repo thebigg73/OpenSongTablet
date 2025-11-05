@@ -84,7 +84,7 @@
                 android:paddingBottom="8dp"
                 android:text="@string/choose_folders" />
 
-            <com.google.android.material.checkbox.MaterialCheckBox
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
                 android:id="@+id/selectAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

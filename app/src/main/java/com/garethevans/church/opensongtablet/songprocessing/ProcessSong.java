@@ -3048,7 +3048,11 @@ public class ProcessSong {
         int col1_1Width = getMaxValue(sectionWidths, 0, sectionWidths.size());
         int col1_1Height = getTotal(sectionHeights, 0, sectionHeights.size()) + totalSectionSpace;
         if (mainActivityInterface.getStorageAccess().isIMGorPDF(thisSong.getFilename())) {
-            col1_1Height = sectionHeights.get(0);
+            if (!sectionHeights.isEmpty()) {
+                col1_1Height = sectionHeights.get(0);
+            } else {
+                col1_1Height = 0;
+            }
         }
         float col1_1XScale = (float) availableWidth / (float) col1_1Width;
         float col1_1YScale = (float) availableHeight / (float) col1_1Height;

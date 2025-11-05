@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
-import com.google.android.material.checkbox.MaterialCheckBox;
 
 public class ImportSetItemViewHolder extends RecyclerView.ViewHolder {
 
     final CardView cardView;
     final MyMaterialSimpleTextView cardItem, cardTitle, cardFilename, cardFolder, cardExists;
-    final MaterialCheckBox cardCheckBox;
+    final MyMaterialCheckbox cardCheckBox;
     final RelativeLayout cardLayout;
     final MyFloatingActionButton cardEdit;
 

@@ -1,13 +1,13 @@
 package com.garethevans.church.opensongtablet.songmenu;
 
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 
 public class SongItemViewHolder extends RecyclerView.ViewHolder {
@@ -15,7 +15,7 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder {
     final MyMaterialSimpleTextView itemTitle;
     final MyMaterialSimpleTextView itemAuthor;
     final MyMaterialSimpleTextView itemFolderNamePair;
-    final CheckBox itemChecked;
+    final MyMaterialCheckbox itemChecked;
     final FrameLayout itemCheckedFrame;
     final LinearLayout itemCard;
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
+    style="@style/SongMenuItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/SongMenuItem">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,38 +16,38 @@
             android:id="@+id/cardview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:baselineAligned="false"
+            android:orientation="horizontal"
             app:backgroundTint="@color/transparent">
 
             <LinearLayout
                 android:id="@+id/songClickSpace"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical">
+                android:orientation="vertical">
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/cardview_title"
+                    style="@style/cardView_Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Song Title"
-                    style="@style/cardView_Title"/>
+                    tools:text="Song Title" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/cardview_author"
+                    style="@style/cardView_Subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Song subtitle"
-                    style="@style/cardView_Subtitle"/>
+                    tools:text="Song subtitle" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:id="@+id/cardview_foldernamepair"
+                    style="@style/cardView_Subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Foldername pair"
-                    style="@style/cardView_Subtitle"/>
+                    tools:text="Foldername pair" />
 
 
             </LinearLayout>
@@ -60,24 +59,24 @@
                 android:minWidth="48dp"
                 android:minHeight="48dp">
 
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/cardview_setcheck"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp"
-                android:checked="true"
-                android:minWidth="48dp"
-                android:minHeight="48dp" />
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
+                    android:id="@+id/cardview_setcheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp" />
             </FrameLayout>
         </LinearLayout>
 
         <com.garethevans.church.opensongtablet.customviews.MyDivider
             style="@style/MyDividerLine"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginStart="0dp"/>
+            android:layout_marginBottom="2dp" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

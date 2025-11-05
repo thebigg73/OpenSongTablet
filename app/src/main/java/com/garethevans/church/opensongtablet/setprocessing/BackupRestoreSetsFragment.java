@@ -11,13 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsBackupsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -218,11 +218,11 @@ public class BackupRestoreSetsFragment extends Fragment {
 
     private void addSetCheckBoxes(ArrayList<String> set) {
         for (String setItem:set) {
-            CheckBox checkBox = new CheckBox(getContext());
+            MyMaterialCheckbox checkBox = new MyMaterialCheckbox(getContext());
             checkBox.setText(niceSetItem(setItem));
             checkBox.setTag(setItem);
             checkBox.setChecked(true);
-            checkBox.setPadding(16, 32, 16, 32);
+            //checkBox.setPadding(16, 32, 16, 32);
             myView.foundSetsListView.addView(checkBox);
         }
     }
@@ -372,7 +372,7 @@ public class BackupRestoreSetsFragment extends Fragment {
     private void getChosenSets() {
         chosenSets = new ArrayList<>();
         for (int x=0; x<myView.foundSetsListView.getChildCount(); x++) {
-            if (((CheckBox) myView.foundSetsListView.getChildAt(x)).isChecked()) {
+            if (((MyMaterialCheckbox) myView.foundSetsListView.getChildAt(x)).isChecked()) {
                 chosenSets.add(myView.foundSetsListView.getChildAt(x).getTag().toString());
             }
         }
