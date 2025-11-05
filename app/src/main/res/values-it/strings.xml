@@ -1393,6 +1393,8 @@
     <string name="volume_value">Valore di volume corrente</string>
     <string name="wah">Wah</string>
     <string name="wait">Attendere</string>
+    <string name="wearOS">Invia beat a Wear OS</string>
+    <string name="wearOS_info">Il metronomo audio o visivo deve essere acceso e il dispositivo Wear OS deve essere associato</string>
     <string name="web">Rete</string>
     <string name="web_server">Web Server</string>
     <string name="web_server_hint">Consenti agli utenti senza OpenSongApp di visualizzare i tuoi brani utilizzando un browser web</string>

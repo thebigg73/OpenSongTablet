@@ -1393,6 +1393,8 @@
     <string name="volume_value">Громкость</string>
     <string name="wah">Вау</string>
     <string name="wait">Подождите....</string>
+    <string name="wearOS">Отправка битов на Wear OS</string>
+    <string name="wearOS_info">Необходимо включить аудио- или визуальный метроном и подключить к нему устройство Wear OS.</string>
     <string name="web">Интернет</string>
     <string name="web_server">Веб-сервер</string>
     <string name="web_server_hint">Разрешить пользователям, не имеющим OpenSongApp, просматривать ваши песни с помощью веб-браузера</string>

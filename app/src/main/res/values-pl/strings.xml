@@ -1393,6 +1393,8 @@
     <string name="volume_value">Bieżąca wartość głośności</string>
     <string name="wah">Waha</string>
     <string name="wait">Czekaj…</string>
+    <string name="wearOS">Wysyłaj bity do Wear OS</string>
+    <string name="wearOS_info">Metronom dźwiękowy lub wizualny musi być włączony, a urządzenie Wear OS musi być sparowane</string>
     <string name="web">Sieć</string>
     <string name="web_server">Serwer WWW</string>
     <string name="web_server_hint">Zezwalaj użytkownikom bez OpenSongApp na wyświetlanie piosenek za pomocą przeglądarki internetowej</string>

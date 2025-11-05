@@ -1393,6 +1393,8 @@
     <string name="volume_value">Aktuellt volymvärde</string>
     <string name="wah">Va</string>
     <string name="wait">Vänta....</string>
+    <string name="wearOS">Skicka taktslag till Wear OS</string>
+    <string name="wearOS_info">Ljud- eller bildmetronomen måste vara påslagen och Wear OS-enheten måste vara parad</string>
     <string name="web">Web</string>
     <string name="web_server">Webbserver</string>
     <string name="web_server_hint">Tillåt användare utan OpenSongApp att visa dina låtar med en webbläsare</string>

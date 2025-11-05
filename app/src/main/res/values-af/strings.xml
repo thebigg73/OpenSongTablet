@@ -1393,6 +1393,8 @@
     <string name="volume_value">Huidige volume-waarde</string>
     <string name="wah">Wah</string>
     <string name="wait">Wag ....</string>
+    <string name="wearOS">Stuur ritmes na Wear OS</string>
+    <string name="wearOS_info">Oudio- of visuele metronoom moet aangeskakel wees en Wear OS-toestel moet gekoppel wees</string>
     <string name="web">Web</string>
     <string name="web_server">Webbediener</string>
     <string name="web_server_hint">Laat gebruikers sonder OpenSongApp toe om u liedjies met behulp van \'n webblaaier te sien</string>

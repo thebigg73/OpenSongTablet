@@ -1393,6 +1393,8 @@
     <string name="volume_value">වත්මන් පරිමාව අගය</string>
     <string name="wah">වාහ්</string>
     <string name="wait">ඉන්න....</string>
+    <string name="wearOS">Wear OS වෙත බීට් යවන්න</string>
+    <string name="wearOS_info">ශ්‍රව්‍ය හෝ දෘශ්‍ය මෙට්‍රොනොමය ක්‍රියාත්මක කළ යුතු අතර Wear OS උපාංගය යුගල කළ යුතුය.</string>
     <string name="web">වෙබ්</string>
     <string name="web_server">වෙබ් සේවාදායකය</string>
     <string name="web_server_hint">OpenSongApp නොමැති පරිශීලකයින්ට වෙබ් බ්‍රවුසරයක් භාවිතයෙන් ඔබේ ගීත බැලීමට ඉඩ දෙන්න</string>

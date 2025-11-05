@@ -1393,6 +1393,8 @@
     <string name="volume_value">現在のボリューム値</string>
     <string name="wah">わあ</string>
     <string name="wait">待って....</string>
+    <string name="wearOS">Wear OSにビートを送信する</string>
+    <string name="wearOS_info">オーディオまたはビジュアルメトロノームをオンにし、Wear OSデバイスをペアリングする必要があります</string>
     <string name="web">ウェブ</string>
     <string name="web_server">ウェブサーバー</string>
     <string name="web_server_hint">OpenSongApp を持たないユーザーがウェブブラウザを使用して曲を表示できるようにする</string>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Συμπεριλάβετε ταμπλατούρα</string>
+    <string name="wearOS">Στείλτε ήχους στο Wear OS</string>
+    <string name="wearOS_info">Ο ηχητικός ή οπτικός μετρονόμος πρέπει να είναι ενεργοποιημένος και η συσκευή Wear OS πρέπει να είναι συζευγμένη</string>
     <string name="abc_include_tab_info">Εμφάνιση ταμπλατούρας οργάνων κάτω από την παρτιτούρα</string>
     <string name="abc_inline_text">Ενσωματωμένο κείμενο ABC</string>
     <string name="abc_inline_text_info">Αντιγράψτε τον παραπάνω κώδικα σε μια γραμμή ενσωματωμένης σημειογραφίας ABC που μπορεί να επικολληθεί στους στίχους του τραγουδιού</string>

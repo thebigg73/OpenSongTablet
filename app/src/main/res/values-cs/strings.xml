@@ -1393,6 +1393,8 @@
     <string name="volume_value">Aktuální hodnota objemu</string>
     <string name="wah">Wah</string>
     <string name="wait">Počkejte…</string>
+    <string name="wearOS">Odesílat beaty do Wear OS</string>
+    <string name="wearOS_info">Zvukový nebo vizuální metronom musí být zapnutý a zařízení Wear OS musí být spárováno</string>
     <string name="web">Web</string>
     <string name="web_server">Webový server</string>
     <string name="web_server_hint">Umožněte uživatelům bez OpenSongApp prohlížet vaše skladby pomocí webového prohlížeče</string>

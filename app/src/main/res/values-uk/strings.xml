@@ -1393,6 +1393,8 @@
     <string name="volume_value">Поточне значення гучності</string>
     <string name="wah">вау</string>
     <string name="wait">Зачекайте ....</string>
+    <string name="wearOS">Надсилати ритми до Wear OS</string>
+    <string name="wearOS_info">Аудіо- або візуальний метроном має бути ввімкнено, а пристрій Wear OS має бути підключено</string>
     <string name="web">Інтернет</string>
     <string name="web_server">Веб-сервер</string>
     <string name="web_server_hint">Дозвольте користувачам без OpenSongApp переглядати ваші пісні за допомогою веб-браузера</string>

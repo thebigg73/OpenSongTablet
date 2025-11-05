@@ -1394,6 +1394,8 @@
     <string name="volume_value">当前音量值</string>
     <string name="wah">哇</string>
     <string name="wait">等待....</string>
+    <string name="wearOS">向 Wear OS 发送节拍</string>
+    <string name="wearOS_info">必须开启音频或视频节拍器，并且必须配对 Wear OS 设备。</string>
     <string name="web">网络</string>
     <string name="web_server">网页服务器</string>
     <string name="web_server_hint">允许没有OpenSongApp的用户使用网络浏览器查看您的歌曲</string>

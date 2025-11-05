@@ -1393,6 +1393,8 @@
     <string name="volume_value">Aktuális hangerő értéke</string>
     <string name="wah">Wah</string>
     <string name="wait">Várni ....</string>
+    <string name="wearOS">Ütemek küldése a Wear OS-re</string>
+    <string name="wearOS_info">Be kell kapcsolni az audio- vagy vizuális metronómot, és párosítani kell a Wear OS eszközt.</string>
     <string name="web">Web</string>
     <string name="web_server">Webkiszolgáló</string>
     <string name="web_server_hint">Lehetővé teszi az OpenSongApp nélküli felhasználók számára, hogy webböngészővel tekintsék meg dalait</string>

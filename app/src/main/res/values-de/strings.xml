@@ -1393,6 +1393,8 @@
     <string name="volume_value">Aktuelle Lautstärke</string>
     <string name="wah">Wah</string>
     <string name="wait">Warten....</string>
+    <string name="wearOS">Beats an Wear OS senden</string>
+    <string name="wearOS_info">Audio- oder visuelles Metronom muss eingeschaltet sein und das Wear OS-Gerät muss gekoppelt sein.</string>
     <string name="web">Web</string>
     <string name="web_server">Webserver</string>
     <string name="web_server_hint">Erlauben Sie Benutzern ohne OpenSongApp, Ihre Songs über einen Webbrowser anzuzeigen</string>
