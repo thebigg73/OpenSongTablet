@@ -70,6 +70,10 @@ public class MetronomeFragment extends Fragment {
         // Set up the views and populate them
         initialiseDropDowns();
 
+        // Check if we can show the wearOS switch
+        mainActivityInterface.getMetronome().setMetronomeFragment(this);
+        mainActivityInterface.getMetronome().checkWearOSValid();
+
         return myView.getRoot();
     }
 
@@ -139,8 +143,11 @@ public class MetronomeFragment extends Fragment {
                 tempos.add(String.valueOf(x));
             }
             String tempoBpm = tempo_string + " (" + bpm_string + ")";
-            myView.songTempo.setText(tempoBpm);
-            myView.songTempo.setHint(tempoBpm);
+            myView.songTempo.post(() -> {
+                //myView.songTempo.setText(tempoBpm);
+                //myView.songTempo.setHint(tempoBpm);
+            });
+
 
             // Set the adapters
             if (getContext() != null) {
@@ -206,6 +213,8 @@ public class MetronomeFragment extends Fragment {
 
                     // The autostart metronome feature
                     myView.metronomeAutoStart.setChecked(mainActivityInterface.getMetronome().getMetronomeAutoStart());
+
+                    myView.wearOS.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("wearOSMetronome",false));
                 }
 
                 // Get the metronome pan value
@@ -354,6 +363,12 @@ public class MetronomeFragment extends Fragment {
                 myView.metronomeAutoStart.setOnCheckedChangeListener((compoundButton, isChecked) ->
                         mainActivityInterface.getMetronome().setMetronomeAutoStart(isChecked));
                 myView.tapTempo.setOnClickListener(button -> tapTempo());
+
+                myView.wearOS.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                    mainActivityInterface.getPreferences().setMyPreferenceBoolean("wearOSMetronome", isChecked);
+                    mainActivityInterface.getMetronome().checkWearOSValid();
+                });
+
             });
 
         });
@@ -616,6 +631,8 @@ public class MetronomeFragment extends Fragment {
             tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
             tapTempoHandlerReset = null;
         }
+
+        mainActivityInterface.getMetronome().setMetronomeFragment(null);
     }
 
     // Returned values from the textinput
@@ -634,4 +651,8 @@ public class MetronomeFragment extends Fragment {
         }
     }
 
+    // Show or hide the wearOS switch
+    public void updateWearOS(boolean show) {
+        myView.wearOS.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 }

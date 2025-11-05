@@ -60,7 +60,7 @@ public class Metronome {
     private final Runnable tickRunnable;
     private final Runnable tockRunnable;
     private ArrayList<Integer> tickBeats;
-    private boolean metronomeChanged = false;
+    private boolean metronomeChanged = false, wearOSValid=false, sendToWear=true;
 
     private ExposedDropDown beatsView, divisionsView, timeSigView, tempoView;
     private long old_time = 0L;
@@ -68,9 +68,11 @@ public class Metronome {
     private Handler tapTempoHandlerCheck, tapTempoHandlerReset;
     private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
     private final String sampleRateAsset;
+    private MetronomeFragment metronomeFragment = null;
 
+    private WearConnectionHelper wearConnectionHelper;
     public Metronome(Activity activity) {
-        c = activity;
+        this.c = activity;
         mainActivityInterface = (MainActivityInterface) c;
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
         tickRunnable = () -> {
@@ -78,6 +80,13 @@ public class Metronome {
                 try {
                     soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 0, 0, 1);
                     //soundPool.stop(tockClip);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (wearOSValid && sendToWear) {
+                try {
+                    wearConnectionHelper.sendBeat(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -93,6 +102,13 @@ public class Metronome {
                 try {
                     soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 0, 0, 1);
                     //soundPool.stop(tickClip);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (wearOSValid && sendToWear) {
+                try {
+                    wearConnectionHelper.sendBeat(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -527,6 +543,7 @@ public class Metronome {
         this.metronomeChanged = metronomeChanged;
     }
     public boolean metronomeValid() {
+        checkWearOSValid();
         return validTempo && validTimeSig;
     }
     public boolean getIsRunning() {
@@ -640,6 +657,9 @@ public class Metronome {
                             try {
                                 if (!audioMetronome) {
                                     mainActivityInterface.getMidi().sendMidiTick();
+                                    if (wearOSValid && sendToWear) {
+                                        wearConnectionHelper.sendBeat(true);
+                                    }
                                 }
                                 mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColor, bufferFix);
                             } catch (Exception e) {
@@ -649,6 +669,9 @@ public class Metronome {
                             try {
                                 if (!audioMetronome) {
                                     mainActivityInterface.getMidi().sendMidiTock();
+                                    if (wearOSValid && sendToWear) {
+                                        wearConnectionHelper.sendBeat(false);
+                                    }
                                 }
                                 mainActivityInterface.getToolbar().highlightBeat(thisBeat, metronomeFlashOnColorDarker, bufferFix);
                             } catch (Exception e) {
@@ -908,6 +931,36 @@ public class Metronome {
     }
     public boolean getMetronomeAutoStart() {
         return metronomeAutoStart;
+    }
+
+    // To send the vibrate to the WearOS device if paired
+    public void checkWearOSValid() {
+        if (c!=null) {
+            if (wearConnectionHelper==null) {
+                wearConnectionHelper = new WearConnectionHelper(c);
+            }
+            wearConnectionHelper.checkWearConnection(connected -> {
+                if (connected) {
+                    Log.d("Metronome", "Wear device connected!");
+                    // enable vibrate toggle as long as it is switched on
+                    wearOSValid = mainActivityInterface.getPreferences().getMyPreferenceBoolean("wearOSMetronome", false);
+                    if (metronomeFragment!=null) {
+                        metronomeFragment.updateWearOS(true);
+                    }
+                } else {
+                    Log.d("Metronome", "No Wear API or no device connected");
+                    // disable or hide vibrate option
+                    wearOSValid = false;
+                    if (metronomeFragment!=null) {
+                        metronomeFragment.updateWearOS(false);
+                    }
+                }
+            });
+        }
+    }
+
+    public void setMetronomeFragment(MetronomeFragment metronomeFragment) {
+        this.metronomeFragment = metronomeFragment;
     }
 
     // Called onDestroy
