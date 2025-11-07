@@ -245,41 +245,104 @@ public class WebServer extends NanoHTTPD {
     public String getIP() {
         ip = "http://0.0.0.0:8080/";
         if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
+            // METHOD 1: Try WifiManager first (most reliable for WiFi)
             try {
-                Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                        .getNetworkInterfaces();
-                while (enumNetworkInterfaces.hasMoreElements()) {
-                    NetworkInterface networkInterface = enumNetworkInterfaces
-                            .nextElement();
-                    Enumeration<InetAddress> enumInetAddress = networkInterface
-                            .getInetAddresses();
-                    while (enumInetAddress.hasMoreElements()) {
-                        InetAddress inetAddress = enumInetAddress.nextElement();
-
-                        if (inetAddress.getHostAddress() != null &&
-                                !inetAddress.getHostAddress().contains(":")) {
-
-                            if (!inetAddress.getHostAddress().contains("127.0")) {
-                                ip = "http://" + inetAddress.getHostAddress() + ":8080/";
-                                break;
-                            }
+                WifiManager wifiMan = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                if (wifiMan != null && wifiMan.isWifiEnabled()) {
+                    WifiInfo wifiInf = wifiMan.getConnectionInfo();
+                    if (wifiInf != null) {
+                        int ipAddress = wifiInf.getIpAddress();
+                        // ipAddress of 0 means not connected to WiFi
+                        if (ipAddress != 0) {
+                            ip = "http://" + String.format("%d.%d.%d.%d",
+                                (ipAddress & 0xff),
+                                (ipAddress >> 8 & 0xff),
+                                (ipAddress >> 16 & 0xff),
+                                (ipAddress >> 24 & 0xff)) + ":8080/";
                         }
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                ip = "http://0.0.0.0:8080/";
             }
 
-            // Last chance method of getting the IP address!
+            // METHOD 2: If WifiManager failed, enumerate network interfaces
+            // but filter out mobile networks and prioritize WiFi interfaces
             if (ip.equals("http://0.0.0.0:8080/")) {
                 try {
-                    WifiManager wifiMan = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                    WifiInfo wifiInf = wifiMan.getConnectionInfo();
-                    int ipAddress = wifiInf.getIpAddress();
-                    ip = "http://" + String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff)) + ":8080/";
+                    String wifiIp = null;
+                    String fallbackIp = null;
+
+                    Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                            .getNetworkInterfaces();
+                    while (enumNetworkInterfaces.hasMoreElements()) {
+                        NetworkInterface networkInterface = enumNetworkInterfaces
+                                .nextElement();
+                        String interfaceName = networkInterface.getName().toLowerCase();
+
+                        // Skip mobile/cellular interfaces explicitly
+                        if (interfaceName.startsWith("rmnet") ||    // Qualcomm mobile
+                            interfaceName.startsWith("ccmni") ||    // MediaTek mobile
+                            interfaceName.startsWith("pdp") ||      // Legacy mobile
+                            interfaceName.startsWith("dummy") ||    // Dummy interfaces
+                            interfaceName.startsWith("p2p")) {      // WiFi Direct (not local network)
+                            continue;
+                        }
+
+                        Enumeration<InetAddress> enumInetAddress = networkInterface
+                                .getInetAddresses();
+                        while (enumInetAddress.hasMoreElements()) {
+                            InetAddress inetAddress = enumInetAddress.nextElement();
+
+                            if (inetAddress.getHostAddress() != null &&
+                                    !inetAddress.getHostAddress().contains(":") &&
+                                    !inetAddress.getHostAddress().contains("127.0")) {
+
+                                String ipAddr = inetAddress.getHostAddress();
+
+                                // Filter out carrier-grade NAT addresses (100.64.0.0/10)
+                                // These are commonly used by mobile networks
+                                if (ipAddr.startsWith("100.")) {
+                                    String[] parts = ipAddr.split("\\.");
+                                    if (parts.length == 4) {
+                                        try {
+                                            int secondOctet = Integer.parseInt(parts[1]);
+                                            // Skip 100.64.x.x through 100.127.x.x
+                                            if (secondOctet >= 64 && secondOctet <= 127) {
+                                                continue;
+                                            }
+                                        } catch (NumberFormatException ignored) {
+                                        }
+                                    }
+                                }
+
+                                // Prioritize WiFi interfaces (wlan) and Ethernet (eth)
+                                if (interfaceName.startsWith("wlan") || interfaceName.startsWith("eth")) {
+                                    wifiIp = "http://" + ipAddr + ":8080/";
+                                    break;
+                                } else {
+                                    // Save as fallback (e.g., tethering, VPN)
+                                    if (fallbackIp == null) {
+                                        fallbackIp = "http://" + ipAddr + ":8080/";
+                                    }
+                                }
+                            }
+                        }
+
+                        // If we found a WiFi IP, use it
+                        if (wifiIp != null) {
+                            break;
+                        }
+                    }
+
+                    // Prefer WiFi, then fallback, then default
+                    if (wifiIp != null) {
+                        ip = wifiIp;
+                    } else if (fallbackIp != null) {
+                        ip = fallbackIp;
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
