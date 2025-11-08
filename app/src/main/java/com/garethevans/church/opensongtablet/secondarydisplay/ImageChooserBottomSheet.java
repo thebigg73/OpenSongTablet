@@ -267,25 +267,29 @@ public class ImageChooserBottomSheet extends BottomSheetCommon {
                                 switch (pickThis) {
                                     case "img1":
                                         mainActivityInterface.getPresenterSettings().setBackgroundImage1(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundImage1",uri.toString());
+                                        String localised1 = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundImage1",localised1);
                                         updatePreview(myView.image1, uri, false);
                                         myView.image1.performClick();
                                         break;
                                     case "img2":
                                         mainActivityInterface.getPresenterSettings().setBackgroundImage2(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundImage2",uri.toString());
+                                        String localised2 = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundImage2",localised2);
                                         updatePreview(myView.image2, uri, false);
                                         myView.image2.performClick();
                                         break;
                                     case "vid1":
                                         mainActivityInterface.getPresenterSettings().setBackgroundVideo1(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundVideo1",uri.toString());
+                                        String localised3 = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundVideo1",localised3);
                                         updatePreview(myView.video1, uri, false);
                                         myView.video1.performClick();
                                         break;
                                     case "vid2":
                                         mainActivityInterface.getPresenterSettings().setBackgroundVideo2(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundVideo2",uri.toString());
+                                        String localised4 = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundVideo2",localised4);
                                         updatePreview(myView.video2, uri, false);
                                         myView.video2.performClick();
                                         break;
