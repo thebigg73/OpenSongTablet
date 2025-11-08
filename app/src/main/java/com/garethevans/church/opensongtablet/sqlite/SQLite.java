@@ -113,7 +113,6 @@ public class SQLite {
     public static final String COLUMN_LINK_AUDIO = "linkaudio";
     public static final String COLUMN_LINK_OTHER = "linkother";
     public static final String COLUMN_PRESENTATIONORDER = "presentationorder";
-    public static final String COLUMN_PREVIEWOVERRIDE = "previewoverride";
     public static final String COLUMN_FILETYPE = "filetype";
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_LAST_MODIFIED = "lastmodified";
