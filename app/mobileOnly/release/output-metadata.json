@@ -4,16 +4,16 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.garethevans.church.opensongtablet.wear",
-  "variantName": "release",
+  "applicationId": "com.garethevans.church.opensongtablet.mobile",
+  "variantName": "mobileOnlyRelease",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1,
-      "versionName": "1.0",
-      "outputFile": "wear-release.apk"
+      "versionCode": 431,
+      "versionName": "6.5.9-mobile",
+      "outputFile": "app-mobileOnly-release.apk"
     }
   ],
   "elementType": "File",
@@ -22,16 +22,16 @@
       "minApi": 28,
       "maxApi": 30,
       "baselineProfiles": [
-        "baselineProfiles/1/wear-release.dm"
+        "baselineProfiles/1/app-mobileOnly-release.dm"
       ]
     },
     {
       "minApi": 31,
       "maxApi": 2147483647,
       "baselineProfiles": [
-        "baselineProfiles/0/wear-release.dm"
+        "baselineProfiles/0/app-mobileOnly-release.dm"
       ]
     }
   ],
-  "minSdkVersionForDexing": 21
+  "minSdkVersionForDexing": 19
 }

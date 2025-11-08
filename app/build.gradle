@@ -2,10 +2,83 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-android'
 
+// --- Load local.properties ---
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(new FileInputStream(localPropsFile))
+}
+
 android {
     namespace = "com.garethevans.church.opensongtablet"
     compileSdkVersion = 36
+
+    // --- Signing configuration ---
+    signingConfigs {
+        release {
+            if (localProps.containsKey("MYAPP_STORE_FILE")) {
+                storeFile file(localProps["MYAPP_STORE_FILE"])
+                storePassword localProps["MYAPP_STORE_PASSWORD"]
+                keyAlias localProps["MYAPP_KEY_ALIAS"]
+                keyPassword localProps["MYAPP_KEY_PASSWORD"]
+            } else {
+                println("⚠️ No signing info found in local.properties — release build will not be signed.")
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId = "com.garethevans.church.opensongtablet"
+        minSdkVersion 19
+        targetSdkVersion 35
+        multiDexEnabled = true
+        vectorDrawables.useSupportLibrary = true
+        versionCode = 431
+        versionName = '6.5.9'
+        /*externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_shared"
+                cppFlags ''
+            }
+        }*/
+
+    }
+
+
+    // --- Product flavors for dual build targets ---
+    flavorDimensions "distribution"
+
+    productFlavors {
+        mobileOnly {
+            dimension "distribution"
+        }
+        withWear {
+            dimension "distribution"
+        }
+    }
+
+
     buildTypes {
+        release {
+            minifyEnabled = false
+            shrinkResources = false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        beta {
+            initWith release
+            matchingFallbacks = ['release']
+        }
+        debug {
+            minifyEnabled = false
+            shrinkResources = false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+
+    /*buildTypes {
         release {
             minifyEnabled = false
             shrinkResources = false
@@ -22,7 +95,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+*/
     packagingOptions {
         resources.excludes.add("META-INF/*")
     }
@@ -39,22 +112,7 @@ android {
         jvmTarget = "1.8"
     }
 
-    defaultConfig {
-        applicationId = "com.garethevans.church.opensongtablet"
-        minSdkVersion 19
-        targetSdkVersion 35
-        multiDexEnabled = true
-        vectorDrawables.useSupportLibrary = true
-        versionCode = 430
-        versionName = '6.5.8'
-        /*externalNativeBuild {
-            cmake {
-                arguments "-DANDROID_STL=c++_shared"
-                cppFlags ''
-            }
-        }*/
 
-    }
 
     buildFeatures {
         viewBinding = true
@@ -83,6 +141,9 @@ repositories {
 }
 
 dependencies {
+    // Only include wearable APK in the withWear flavor
+    withWearWearApp project(":wear")
+
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
     implementation 'androidx.core:core-ktx:1.17.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'                    // To allow Java time/date utilities on <Android 8
@@ -112,9 +173,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'                   // Constraint layouts with FAB
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                      // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.5'                      // The navigation fragment control
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.5'                            // The navigation fragment control
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.5'     // The navigation fragment control
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.6'                      // The navigation fragment control
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.6'                            // The navigation fragment control
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.6'     // The navigation fragment control
     implementation 'androidx.preference:preference-ktx:1.2.1'                               // The app preferences
     implementation 'androidx.multidex:multidex:2.0.1'                                   // Allow splitting of file for older devices
     implementation 'androidx.annotation:annotation:1.9.1'                               // Allows annotations in code
@@ -139,6 +200,8 @@ dependencies {
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'             // LeakCanary to help identify memory leaks
 
     implementation 'androidx.webkit:webkit:1.14.0'
+
+    implementation 'com.google.android.gms:play-services-wearable:19.0.0'
 
     // To include jar libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])

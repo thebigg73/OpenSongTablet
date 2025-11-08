@@ -328,7 +328,7 @@
         <!-- Max lines = 1 and set Enter to complete entry -->
         <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
-        <item name="android:imeOptions">actionDone</item>
+        <item name="android:imeOptions">actionDone|flagNoExtractUi</item>
         <item name="android:overScrollMode">always</item>
         <item name="android:scrollbarStyle">insideInset</item>
         <item name="android:scrollbars">vertical</item>
