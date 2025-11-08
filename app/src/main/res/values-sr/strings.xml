@@ -1075,8 +1075,8 @@
     <string name="show_lyrics_info">Prikažite tekstove pronađene u pesmi</string>
     <string name="show_next_in_set">Prikaži sledeću pesmu u set listi</string>
     <string name="show_next_prev_in_song_menu">Takođe prikaži prethodnu/sledeću za pesme koje nisu u setu (pomoću menija pesama)</string>
-    <string name="show_next_line_preview">Прикажи преглед следеће линије</string>
-    <string name="show_next_line_preview_hint">Приказује прву линију следеће секције на дну екрана</string>
+    <string name="show_next_line_preview">Prikaži pregled sledećeg reda</string>
+    <string name="show_next_line_preview_hint">Prikaži prvi red sledećeg odeljka na dnu ekrana</string>
     <string name="show_prev_song">Prikaži prethodnu pesmu u setu</string>
     <string name="show_songs">Prikaži pesme</string>
     <string name="show_tempo">Pokažite tempo u naslovu</string>
