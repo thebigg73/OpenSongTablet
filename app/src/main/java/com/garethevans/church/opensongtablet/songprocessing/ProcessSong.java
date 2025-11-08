@@ -1666,10 +1666,12 @@ public class ProcessSong {
                         lines[z] = "__REMOVED__";
                     } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
                         int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
-                        if (verse[vnum].isEmpty()) {
+                        if (verse.length>vnum && verse[vnum].isEmpty()) {
                             verse[vnum] = "[V" + vnum + "]\n";
                         }
-                        verse[vnum] += " " + lines[z].substring(1) + "\n";
+                        if (verse.length>vnum) {
+                            verse[vnum] += " " + lines[z].substring(1) + "\n";
+                        }
                         lines[z] = "__REMOVED__";
                     }
                 } else if (gettingchorus) {
