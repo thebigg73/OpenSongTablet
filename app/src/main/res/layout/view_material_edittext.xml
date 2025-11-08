@@ -25,6 +25,7 @@
             android:clickable="true"
             android:cursorVisible="true"
             android:enabled="true"
-            tools:text="The text" />
+            tools:text="The text"
+            android:imeOptions="flagNoExtractUi"/>
     </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>

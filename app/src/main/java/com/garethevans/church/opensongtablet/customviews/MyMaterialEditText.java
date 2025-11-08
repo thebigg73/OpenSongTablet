@@ -113,7 +113,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         int lines = a.getInt(3, 1);
         int minLines = a.getInt(4, 1);
         int maxLines = a.getInt(5, 1);
-        int imeOptions = a.getInt(6, EditorInfo.IME_ACTION_DONE);
+        int imeOptions = a.getInt(6, EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         int inputType = a.getInt(7, InputType.TYPE_CLASS_TEXT);
         restoreState = a.getBoolean(8, true);
         endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
@@ -161,7 +161,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         // Now figure out the inputType to use
         if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-            imeOptions = imeOptions & EditorInfo.IME_ACTION_DONE;
+            imeOptions = imeOptions & (EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         //    editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         } else if (inputType == InputType.TYPE_CLASS_NUMBER) {
             editText.setInputType(inputType);
@@ -216,6 +216,9 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 keyboardHandler.postDelayed(this::showKeyboard, 120);
             } else {
                 isKeyboardVisible = false;
+            }
+            if (useMonospace) {
+                editText.setTypeface(Typeface.MONOSPACE);
             }
         });
 
