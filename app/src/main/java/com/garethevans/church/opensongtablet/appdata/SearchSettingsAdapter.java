@@ -467,7 +467,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                 // Add song as file
                 new SettingItem(file + " ("+song+")",c.getString(R.string.import_other),
                         Arrays.asList(song,songs,import_string,file,word,doc,docx,text,txt,chordpro,chopro,onsong,pdf,onsong),
-                        c.getString(R.string.deeplink_import_file),
+                        "action_importFile",
                         settings+"/"+songactions+"/"+addsongs+"/"+file),
 
                 // Multiple files
@@ -973,6 +973,11 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                     mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_import),0);
                     break;
 
+                case "action_importFile":
+                    mainActivityInterface.setWhattodo("file");
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_import),0);
+                    break;
+
                 case "action_importIos":
                     mainActivityInterface.setWhattodo("ios");
                     mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_import),0);
@@ -1086,6 +1091,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                 case "action_paypal":
                     mainActivityInterface.openDocument(c.getString(R.string.website_paypal));
                     break;
+
             }
 
             return true;

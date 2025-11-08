@@ -131,7 +131,7 @@ public class ImportFileFragment extends Fragment {
             newSong.setFilename(mainActivityInterface.getImportFilename());
             isIMGorPDF = mainActivityInterface.getStorageAccess().isIMGorPDF(newSong);
             requiredExtension = "";
-            if (mainActivityInterface.getImportFilename().contains(".") && isIMGorPDF) {
+            if (mainActivityInterface.getImportFilename()!=null && mainActivityInterface.getImportFilename().contains(".") && isIMGorPDF) {
                 requiredExtension = mainActivityInterface.getImportFilename().substring(mainActivityInterface.getImportFilename().lastIndexOf("."));
                 basename = mainActivityInterface.getImportFilename();
             }
@@ -264,7 +264,7 @@ public class ImportFileFragment extends Fragment {
                 myView.imageView.post(()-> Glide.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
                 newSong.setFiletype("IMG");
             }
-        } else {
+        } else if (mainActivityInterface.getImportFilename()!=null){
             // Because ost files aren't normally allowed (BAD extension) in the song folder
             // This would cause the file to be read as text if it has this extension
             // We set a pass go variable for now so that isn't checked again when reading the import

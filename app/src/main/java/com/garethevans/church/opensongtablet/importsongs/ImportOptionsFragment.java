@@ -79,18 +79,26 @@ public class ImportOptionsFragment extends Fragment {
         setListeners();
 
         // Check if we get here to trigger an action (menu search)
-        if (mainActivityInterface.getWhattodo().equals("camera")) {
-            mainActivityInterface.setWhattodo("");
-            myView.importCamera.performClick();
-        } else if (mainActivityInterface.getWhattodo().equals("ios")) {
-            mainActivityInterface.setWhattodo("");
-            myView.importiOS.performClick();
-        } else if (mainActivityInterface.getWhattodo().equals("church")) {
-            mainActivityInterface.setWhattodo("");
-            myView.importChurch.performClick();
-        } else if (mainActivityInterface.getWhattodo().equals("band")) {
-            mainActivityInterface.setWhattodo("");
-            myView.importBand.performClick();
+        if (mainActivityInterface.getWhattodo()!=null) {
+            if (mainActivityInterface.getWhattodo().equals("camera")) {
+                mainActivityInterface.setWhattodo("");
+                myView.importCamera.performClick();
+            } else if (mainActivityInterface.getWhattodo().equals("ios")) {
+                mainActivityInterface.setWhattodo("");
+                myView.importiOS.performClick();
+            } else if (mainActivityInterface.getWhattodo().equals("church")) {
+                mainActivityInterface.setWhattodo("");
+                myView.importChurch.performClick();
+            } else if (mainActivityInterface.getWhattodo().equals("band")) {
+                mainActivityInterface.setWhattodo("");
+                myView.importBand.performClick();
+            } else if (mainActivityInterface.getWhattodo().equals("file")) {
+                mainActivityInterface.setWhattodo("");
+                myView.importFile.performClick();
+            } else if (mainActivityInterface.getWhattodo().equals("bulk")) {
+                mainActivityInterface.setWhattodo("");
+                myView.importBulk.performClick();
+            }
         }
 
         return myView.getRoot();
