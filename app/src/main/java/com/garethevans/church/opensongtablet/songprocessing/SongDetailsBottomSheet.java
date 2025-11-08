@@ -86,7 +86,9 @@ public class SongDetailsBottomSheet extends BottomSheetCommon {
         } else {
             myView.notes.setHint(val);
         }
-        myView.lyrics.setHintMonospace();
+        if (getContext()!=null) {
+            myView.lyrics.setHintMonospace(getContext());
+        }
         myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
 
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") ||

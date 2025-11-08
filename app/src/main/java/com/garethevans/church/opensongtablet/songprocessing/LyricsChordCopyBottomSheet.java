@@ -105,7 +105,9 @@ public class LyricsChordCopyBottomSheet extends BottomSheetCommon {
     }
 
     private void fixText(MyMaterialTextView textView) {
-        textView.setHintMonospace();
+        if (getContext()!=null) {
+            textView.setHintMonospace(getContext());
+        }
         textView.setHorizontalScroll(true);
     }
 

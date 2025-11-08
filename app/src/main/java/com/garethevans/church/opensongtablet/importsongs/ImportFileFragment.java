@@ -315,7 +315,9 @@ public class ImportFileFragment extends Fragment {
             }
             myView.content.post(()-> {
                         myView.content.setText(newSong.getTitle());
-                        myView.content.setHintMonospace();
+                        if (getContext()!=null) {
+                            myView.content.setHintMonospace(getContext());
+                        }
                         myView.content.setHint(newSong.getLyrics());
                     });
             // Because we have loaded the song (sort of), we need to reset the mainActivity.getSong()
