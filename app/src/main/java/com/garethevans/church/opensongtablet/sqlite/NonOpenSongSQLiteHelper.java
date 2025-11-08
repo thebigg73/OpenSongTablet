@@ -30,7 +30,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
     // Database Version
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
 
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
@@ -58,9 +58,10 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         // The version we use has to be in local app storage unfortunately.  We can copy this though
         SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(appDBFile,null);
         if (db2.getVersion()!=DATABASE_VERSION) {
-            // Check we have the columns we need!
             db2.setVersion(DATABASE_VERSION);
             mainActivityInterface.getCommonSQL().updateTable(db2);
+            db2.setVersion(DATABASE_VERSION);
+
         }
         return db2;
     }
@@ -85,6 +86,15 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             copied = copyUserDatabase();
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+": Create new "+SQLite.NON_OS_DATABASE_NAME+" at OpenSong/Settings/ and copy to appCache - success: "+copied);
         }
+
+        // Check we have the columns we need (match to the latest version)!
+        SQLiteDatabase tempDB = getDB();
+        if (tempDB.getVersion()!=DATABASE_VERSION) {
+            Log.d(TAG,"tempDB.getVersion():"+tempDB.getVersion());
+            addMissingColumns(tempDB.getPath(),tempDB.getVersion());
+            tempDB.close();
+        }
+
     }
 
     public boolean copyUserDatabase() {
@@ -134,8 +144,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db2, int oldVersion, int newVersion) {
         // Do nothing here as we manually update the table to match
         //db2.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
-        Log.d(TAG,"onUpgrade path:"+db2.getPath());
-        addMissingColumns(db2.getPath(),oldVersion);
+        mainActivityInterface.getCommonSQL().updateTable(db2);
+        db2.setVersion(DATABASE_VERSION);
     }
     public void initialise() {
         // If the database doesn't exist, create it
@@ -248,41 +258,47 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     }
 
     private void addMissingColumns(String dbPath,int oldVersion) {
-        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
-            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
-            if (cursor.getColumnIndex(SQLite.COLUMN_ABC_TRANSPOSE) == -1) {
-                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_ABC_TRANSPOSE + " TEXT");
+        // When a new song feature is added (from XML), update this to add the column to the database
+        if (oldVersion<4) {
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_KEY_ORIGINAL) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_KEY_ORIGINAL + " TEXT");
+                }
+                cursor.close();
             }
-            cursor.close();
         }
-        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
-            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
-            if (cursor.getColumnIndex(SQLite.COLUMN_KEY_ORIGINAL) == -1) {
-                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_KEY_ORIGINAL + " TEXT");
+        if (oldVersion<6) {
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_SONG) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_SONG + " TEXT");
+                }
+                cursor.close();
             }
-            cursor.close();
-        }
-        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
-            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
-            if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_SONG) == -1) {
-                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_SONG + " TEXT");
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_KIT) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_KIT + " TEXT");
+                }
+                cursor.close();
             }
-            cursor.close();
-        }
-        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
-            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
-            if (cursor.getColumnIndex(SQLite.COLUMN_BEATBUDDY_KIT) == -1) {
-                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_BEATBUDDY_KIT + " TEXT");
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_ABC_TRANSPOSE) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_ABC_TRANSPOSE + " TEXT");
+                }
+                cursor.close();
             }
-            cursor.close();
-        }
-        try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
-            Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
-            if (cursor.getColumnIndex(SQLite.COLUMN_PREFERRED_INSTRUMENT) == -1) {
-                tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_PREFERRED_INSTRUMENT + " TEXT");
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_PREFERRED_INSTRUMENT) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_PREFERRED_INSTRUMENT + " TEXT");
+                }
+                cursor.close();
             }
-            cursor.close();
         }
+
         if (oldVersion<7) {
             try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
                 Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
@@ -297,6 +313,15 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
                 if (cursor.getColumnIndex(SQLite.COLUMN_LAST_MODIFIED) == -1) {
                     tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_LAST_MODIFIED + " TEXT");
+                }
+                cursor.close();
+            }
+        }
+        if (oldVersion<9) {
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_PREVIEWOVERRIDE) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_PREVIEWOVERRIDE + " TEXT");
                 }
                 cursor.close();
             }
