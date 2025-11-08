@@ -821,6 +821,7 @@
     <string name="override_on">Siłowe przedstawienie</string>
     <string name="override_scale_explanation">Jeśli rozmiar czcionki autoskalowania jest mniejszy niż preferowany minimalny rozmiar czcionki, czy chcesz zastosować inną metodę skalowania? Korzystanie z tych opcji może zmusić cię do przewijania piosenki w pionie i w poziomie.</string>
     <string name="override_sticky">Zastąp automatyczne wyświetlanie notatki samoprzylepnej dla tego utworu</string>
+    <string name="override_preview">Zastąp wyświetlanie podglądu następnego wiersza dla tego utworu</string>
     <string name="override_widthautoscale">Zmień tryb skalowania \'tylko szerokość\' na brak automatycznego skalowania</string>
     <string name="overwrite">Zastąp istniejący element</string>
     <string name="overwrite_info">Wszelkie pasujące pliki, które już posiadasz, zostaną zastąpione plikami hosta</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Wyświetl teksty znalezione w piosence</string>
     <string name="show_next_in_set">Pokaż następną piosenkę w zestawie</string>
     <string name="show_next_prev_in_song_menu">Pokaż również poprzednie/następne piosenki spoza zestawu (przy użyciu menu piosenki)</string>
+    <string name="show_next_line_preview">Pokaż podgląd następnej linii</string>
+    <string name="show_next_line_preview_hint">Wyświetl pierwszą linię następnej sekcji na dole ekranu</string>
     <string name="show_prev_song">Pokaż poprzednią piosenkę w zestawie</string>
     <string name="show_songs">Pokaż piosenki</string>
     <string name="show_tempo">Pokaż tempo w tytule</string>

@@ -821,6 +821,7 @@
     <string name="override_on">Silová show</string>
     <string name="override_scale_explanation">Je-li velikost písma Autoscale je nižší než požadovaná minimální velikosti písma, chcete aplikaci přepsat na jinou metodu škálování? Pomocí těchto voleb vás může nutit posouvat horizontálně i vertikálně v písni.</string>
     <string name="override_sticky">Přepsat automatické zobrazení poznámek pro tuto skladbu</string>
+    <string name="override_preview">Přepsat zobrazení náhledu dalšího řádku pro tuto skladbu</string>
     <string name="override_widthautoscale">Šířka Přepis pouze škálování žádné škálování</string>
     <string name="overwrite">Přepsat existující položku</string>
     <string name="overwrite_info">Všechny odpovídající soubory, které již máte, budou přepsány hostitelskými soubory</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Zobrazit text nalezený v písni</string>
     <string name="show_next_in_set">Zobrazit další skladbu v sadě</string>
     <string name="show_next_prev_in_song_menu">Zobrazit také předchozí/následující pro skladby, které nejsou v sadě (pomocí nabídky skladeb)</string>
+    <string name="show_next_line_preview">Zobrazit náhled dalšího řádku</string>
+    <string name="show_next_line_preview_hint">Zobrazit první řádek další sekce ve spodní části obrazovky</string>
     <string name="show_prev_song">Zobrazit předchozí skladbu v sadě</string>
     <string name="show_songs">Zobrazit skladby</string>
     <string name="show_tempo">Wys tempo v názvu</string>

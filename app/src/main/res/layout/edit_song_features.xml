@@ -254,6 +254,24 @@
                 app:textC="@string/override_on"
                 app:textR="@string/override_off"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/override_preview" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/overridePreviewSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="32dp"
+                app:textL="@string/override_none"
+                app:textC="@string/override_on"
+                app:textR="@string/override_off"/>
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/customChords"
                 android:layout_width="match_parent"

@@ -40,6 +40,7 @@ public class Song implements Serializable {
     private String key="";
     private String keyoriginal="";
     private String preferredInstrument = "";
+    private String previewoverride="";
     private String timesig="";
     private String tempo="";
     private String aka="";
@@ -150,6 +151,9 @@ public class Song implements Serializable {
     }
     public String getPreferredInstrument() {
         return preferredInstrument;
+    }
+    public String getPreviewoverride() {
+        return previewoverride;
     }
     public String getTimesig() {return timesig;}
     public String getTempo() {
@@ -318,6 +322,9 @@ public class Song implements Serializable {
     public void setPreferredInstrument(String preferredInstrument) {
         this.preferredInstrument = preferredInstrument;
     }
+    public void setPreviewoverride(String previewoverride) {
+        this.previewoverride = previewoverride;
+    }
     public void setTimesig(String timesig) {
         this.timesig = timesig;
     }
@@ -447,6 +454,7 @@ public class Song implements Serializable {
         this.key = toCopy.key;
         this.keyoriginal = toCopy.keyoriginal;
         this.preferredInstrument = toCopy.preferredInstrument;
+        this.previewoverride = toCopy.previewoverride;
         this.timesig = toCopy.timesig;
         this.tempo = toCopy.tempo;
         this.aka = toCopy.aka;

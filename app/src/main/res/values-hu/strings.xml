@@ -821,6 +821,7 @@
     <string name="override_on">Erőshow</string>
     <string name="override_scale_explanation">Ha az automatikus átméretezés betűméret kisebb, mint a kívánt minimális betűméret, akarsz az alkalmazást, hogy felülbírálja a különböző méretezési módszer? Ezen opciók lehet kényszeríteni, hogy görgetni függőlegesen és vízszintesen egy dalt.</string>
     <string name="override_sticky">Az automatikus cetlik megjelenítés felülbírálása ehhez a dalhoz</string>
+    <string name="override_preview">A következő sor előnézet megjelenítésének felülbírálása ehhez a dalhoz</string>
     <string name="override_widthautoscale">Felülírása szélessége csak skálázott nem autoscale</string>
     <string name="overwrite">Felülírja a meglévő elem</string>
     <string name="overwrite_info">A már meglévő egyező fájlokat felülírják a gazdagép fájlok</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">A dalban található szövegek megjelenítése</string>
     <string name="show_next_in_set">Mutasd következő számot set</string>
     <string name="show_next_prev_in_song_menu">Előző/következő megjelenítése a készletben nem szereplő daloknál is (a dalmenü használatával)</string>
+    <string name="show_next_line_preview">Következő sor előnézetének megjelenítése</string>
+    <string name="show_next_line_preview_hint">Jelenítse meg a következő szakasz első sorát a képernyő alján</string>
     <string name="show_prev_song">Előző dal megjelenítése a készletben</string>
     <string name="show_songs">Dalok megjelenítése</string>
     <string name="show_tempo">Tempó megjelenítése a címben</string>

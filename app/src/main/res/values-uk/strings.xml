@@ -821,6 +821,7 @@
     <string name="override_on">Шоу сили</string>
     <string name="override_scale_explanation">Якщо розмір шрифту Автомасштаб менше необхідного мінімального розміру шрифту, ви хочете, щоб додаток переобумовленої метод масштабування? Це може змусити вас прокручувати пісню по горизонталі і вертикалі.</string>
     <string name="override_sticky">Скасувати автоматичне відображення нотаток для цієї пісні</string>
+    <string name="override_preview">Скасувати відображення попереднього перегляду наступного рядка для цієї пісні</string>
     <string name="override_widthautoscale">Автомасштабування по ширині</string>
     <string name="overwrite">Переписати існуючий</string>
     <string name="overwrite_info">Будь-які відповідні файли, які у вас уже є, будуть перезаписані файлами хосту</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Показати текст пісні</string>
     <string name="show_next_in_set">Показати наступну пісню в списку</string>
     <string name="show_next_prev_in_song_menu">Також показувати попередню/наступну для пісень, яких немає у наборі (за допомогою меню пісень)</string>
+    <string name="show_next_line_preview">Показати попередній перегляд наступного рядка</string>
+    <string name="show_next_line_preview_hint">Показати перший рядок наступного розділу внизу екрана</string>
     <string name="show_prev_song">Показати попередню пісню в наборі</string>
     <string name="show_songs">Показати пісні</string>
     <string name="show_tempo">Покажіть темп у заголовку</string>

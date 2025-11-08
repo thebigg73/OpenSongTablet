@@ -821,6 +821,7 @@
     <string name="override_on">Force show</string>
     <string name="override_scale_explanation">Om autoscale-teckensnittstorleken är mindre än önskad minsta teckensnittstorlek, vill du att appen ska åsidosättas till en annan skaleringsmetod? Användning av dessa alternativ kan tvinga dig att rulla horisontellt och vertikalt i en låt</string>
     <string name="override_sticky">Åsidosätt automatisk visning av klisterlappar för den här låten</string>
+    <string name="override_preview">Åsidosätt förhandsgranskning av nästa rad för den här låten</string>
     <string name="override_widthautoscale">Åsidosätt bredd endast skalning utan autoskala</string>
     <string name="overwrite">Skriv om befintligt objekt</string>
     <string name="overwrite_info">Alla matchande filer du redan har kommer att skrivas över av värdfilerna</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Visa text som finns i låten</string>
     <string name="show_next_in_set">Visa nästa låt i uppsättningen</string>
     <string name="show_next_prev_in_song_menu">Visa även föregående/nästa för låtar som inte finns i en uppsättning (med sångmenyn)</string>
+    <string name="show_next_line_preview">Visa förhandsgranskning av nästa rad</string>
+    <string name="show_next_line_preview_hint">Visa den första raden av nästa avsnitt längst ned på skärmen</string>
     <string name="show_prev_song">Visa föregående låt i set</string>
     <string name="show_songs">Visa låtar</string>
     <string name="show_tempo">Visa tempo i titeln</string>

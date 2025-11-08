@@ -217,6 +217,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
 
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
+        myView.showNextLinePreview.setChecked(mainActivityInterface.getPresenterSettings().getShowNextLinePreview());
 
         myView.titleTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
         myView.authorTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
@@ -298,6 +299,12 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.hideInfoBar.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("hideInfoBar",b);
             mainActivityInterface.getPresenterSettings().setHideInfoBar(b);
+            refreshSection();
+        });
+
+        myView.showNextLinePreview.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("showNextLinePreview",b);
+            mainActivityInterface.getPresenterSettings().setShowNextLinePreview(b);
             refreshSection();
         });
 

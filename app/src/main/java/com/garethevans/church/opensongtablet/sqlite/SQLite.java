@@ -92,6 +92,7 @@ public class SQLite {
     public static final String COLUMN_KEY = "key";
     public static final String COLUMN_KEY_ORIGINAL = "keyoriginal";
     public static final String COLUMN_PREFERRED_INSTRUMENT = "preferredinstrument";
+    public static final String COLUMN_PREVIEWOVERRIDE = "previewoverride";
     public static final String COLUMN_TIMESIG = "timesig";
     public static final String COLUMN_AKA = "aka";
     public static final String COLUMN_AUTOSCROLL_DELAY = "autoscrolldelay";

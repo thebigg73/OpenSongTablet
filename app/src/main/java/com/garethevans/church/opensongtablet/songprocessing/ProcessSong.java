@@ -208,6 +208,7 @@ public class ProcessSong {
         thisSong.setKey(fixNullValues(thisSong.getKey()));
         thisSong.setKeyOriginal(fixNullValues(thisSong.getKeyOriginal()));
         thisSong.setPreferredInstrument(fixNullValues(thisSong.getPreferredInstrument()));
+        thisSong.setPreviewoverride(fixNullValues(thisSong.getPreviewoverride()));
         thisSong.setAka(fixNullValues(thisSong.getAka()));
         thisSong.setMidi(fixNullValues(thisSong.getMidi()));
         thisSong.setMidiindex(fixNullValues(thisSong.getMidiindex()));
@@ -248,6 +249,10 @@ public class ProcessSong {
         // If we have set a preferred instrument for chord diagrams, add this to the xml file (no point if empty)
         if (thisSong.getPreferredInstrument()!=null && !thisSong.getPreferredInstrument().isEmpty()) {
             myNEWXML += "  <preferred_instrument>" + parseToHTMLEntities(thisSong.getPreferredInstrument().trim()) + "</preferred_instrument>\n";
+        }
+        // If we have set a preview override, add this to the xml file (no point if empty)
+        if (thisSong.getPreviewoverride()!=null && !thisSong.getPreviewoverride().isEmpty()) {
+            myNEWXML += "  <previewoverride>" + parseToHTMLEntities(thisSong.getPreviewoverride().trim()) + "</previewoverride>\n";
         }
         myNEWXML += "  <aka>" + parseToHTMLEntities(thisSong.getAka()).trim() + "</aka>\n";
         myNEWXML += "  <midi>" + parseToHTMLEntities(thisSong.getMidi()).trim() + "</midi>\n";

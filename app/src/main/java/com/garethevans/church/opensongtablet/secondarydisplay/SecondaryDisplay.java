@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
@@ -16,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Surface;
@@ -35,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -914,6 +917,28 @@ public class SecondaryDisplay extends Presentation {
                         setSongInLayout(mainActivityInterface.getSong(),
                                 false, true);
 
+                // Add preview lines if feature is enabled
+                // Check for per-song override first, then global setting
+                // Only for Presenter/Stage modes, not Performance mode (which shows all sections)
+                // Exclude PDF, IMG files and image slide collections
+                boolean showPreview;
+                String override = mainActivityInterface.getSong().getPreviewoverride();
+                if (override != null && override.equals("force_on")) {
+                    showPreview = true;
+                } else if (override != null && override.equals("force_off")) {
+                    showPreview = false;
+                } else {
+                    showPreview = mainActivityInterface.getPresenterSettings().getShowNextLinePreview();
+                }
+
+                if (showPreview &&
+                    !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                    !mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                    !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
+                    !mainActivityInterface.getSong().getFolder().contains("**Image")) {
+                    addPreviewLinesToViews();
+                }
+
                 Log.d(TAG, "webView count:" + mainActivityInterface.getAbcNotation().getInlineAbcObjects().size());
                 // Draw them to the screen test layout for measuring
                 waitingOnViewsToDraw = secondaryViews.size();
@@ -1498,5 +1523,84 @@ public class SecondaryDisplay extends Presentation {
             }
             crossFadeBackgrounds();
         }
+    }
+
+    // Next line preview feature methods
+    private void addPreviewLinesToViews() {
+        ArrayList<String> sections = mainActivityInterface.getSong().getPresoOrderSongSections();
+
+        for (int i = 0; i < secondaryViews.size() - 1; i++) {  // -1 to skip last section
+            View currentView = secondaryViews.get(i);
+            if (currentView instanceof LinearLayout) {
+                LinearLayout layout = (LinearLayout) currentView;
+                String nextSectionPreview = getFirstLyricLine(sections.get(i + 1));
+
+                if (!nextSectionPreview.isEmpty()) {
+                    MyMaterialSimpleTextView previewTextView = createPreviewTextView(nextSectionPreview);
+                    layout.addView(previewTextView);
+                }
+            }
+        }
+    }
+
+    private String getFirstLyricLine(String section) {
+        if (section == null || section.trim().isEmpty()) {
+            return "";
+        }
+
+        String[] lines = section.split("\n");
+        for (String line : lines) {
+            line = line.trim();
+            // Skip empty lines
+            if (line.isEmpty()) {
+                continue;
+            }
+            // Skip heading lines [Verse 1], [Chorus], etc.
+            if (line.startsWith("[") && line.endsWith("]")) {
+                continue;
+            }
+            // Skip comment lines (starting with {)
+            if (line.startsWith("{")) {
+                continue;
+            }
+            // Skip chord-only lines (first non-space character is .)
+            if (line.startsWith(".")) {
+                continue;
+            }
+            // This is the first lyric line
+            return line;
+        }
+        return "";
+    }
+
+    private MyMaterialSimpleTextView createPreviewTextView(String text) {
+        MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(c, null);
+
+        // Match current lyric styling
+        textView.setText(text);
+        textView.setTextColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
+        // Use the same base font size as lyrics (will be scaled with the view)
+        textView.setTextSize(mainActivityInterface.getProcessSong().getDefFontSize());
+
+        // Apply transparency (0.5 = 50% transparent)
+        textView.setAlpha(0.5f);
+
+        // Match lyric alignment
+        textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
+
+        // Apply typeface
+        if (mainActivityInterface.getPresenterSettings().getPresoLyricsBold()) {
+            textView.setTypeface(mainActivityInterface.getMyFonts().getPresoFont(), Typeface.BOLD);
+        } else {
+            textView.setTypeface(mainActivityInterface.getMyFonts().getPresoFont(), Typeface.NORMAL);
+        }
+
+        // Layout params - use MATCH_PARENT width for proper alignment
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        return textView;
     }
 }

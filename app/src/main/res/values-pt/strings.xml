@@ -821,6 +821,7 @@
     <string name="override_on">Forçar show</string>
     <string name="override_scale_explanation">Se o tamanho da fonte autoscale é menor do que o tamanho da fonte mínimo desejado, você quer o aplicativo para substituir a um método de escalonamento diferente? Utilizando estas opções pode forçá-lo a rolar horizontalmente e verticalmente em uma canção.</string>
     <string name="override_sticky">Substituir a exibição automática de notas adesivas para esta música</string>
+    <string name="override_preview">Substituir a exibição de visualização da próxima linha para esta música</string>
     <string name="override_widthautoscale">Width override única escala para não autoscale</string>
     <string name="overwrite">Substituir item existente</string>
     <string name="overwrite_info">Todos os arquivos correspondentes que você já possui serão substituídos pelos arquivos host</string>
@@ -1074,6 +1075,8 @@
     <string name="show_lyrics_info">Exibir letras encontradas na música</string>
     <string name="show_next_in_set">Mostre a próxima canção em conjunto</string>
     <string name="show_next_prev_in_song_menu">Também mostrar anterior/seguinte para músicas que não estão em um conjunto (usando o menu de músicas)</string>
+    <string name="show_next_line_preview">Mostrar pré-visualização da próxima linha</string>
+    <string name="show_next_line_preview_hint">Exibir a primeira linha da próxima seção na parte inferior da tela</string>
     <string name="show_prev_song">Mostrar música anterior no set</string>
     <string name="show_songs">Mostrar músicas</string>
     <string name="show_tempo">Mostrar andamento no título</string>
