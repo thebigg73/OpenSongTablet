@@ -108,7 +108,7 @@ public class MyFonts {
         changeFont("fontPreso",fontPreso,presoFontHandler);
         changeFont("fontPresoInfo",fontPresoInfo,presoInfoFontHandler);
         changeFont("fontSticky",fontSticky,stickyFontHandler);
-        setMonoFont(Typeface.createFromAsset(c.getAssets(),"font/RobotoMono.ttf"));
+        setMonoFont(loadFontSafely("font/RobotoMono.ttf"));
     }
 
     public void changeFont(String which, String fontName, Handler handler) {
@@ -132,7 +132,7 @@ public class MyFonts {
             }
         } else if (!mainActivityInterface.getAlertChecks().getHasPlayServices()) {
             // Use the bundled lato font
-            Typeface typeface = Typeface.createFromAsset(c.getAssets(),"font/Lato.ttf");
+            Typeface typeface = loadFontSafely("font/lato.ttf");
             doSetDesiredFont(which, typeface, fontName, null);
 
         } else {
@@ -165,7 +165,7 @@ public class MyFonts {
             @Override
             public void onTypefaceRequestFailed(int reason) {
                 // Default to Lato
-                Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/Lato.ttf");
+                Typeface typeface = loadFontSafely("font/lato.ttf");
                 setDesiredFont(typeface,"Lato");
             }
 
@@ -215,8 +215,52 @@ public class MyFonts {
         }
     }
 
+    /**
+     * Defensive font loader that handles case-sensitivity issues across different filesystems.
+     * Uses case-insensitive matching to find the font file in one pass.
+     *
+     * @param fontPath The desired font path (e.g., "font/Lato.ttf" or "font/lato.ttf")
+     * @return Typeface object, never null (falls back to SANS_SERIF on failure)
+     */
+    private Typeface loadFontSafely(String fontPath) {
+        // Try original path first (fast path for correct case)
+        try {
+            return Typeface.createFromAsset(c.getAssets(), fontPath);
+        } catch (Exception e) {
+            Log.w(TAG, "Font not found at: " + fontPath + ", searching case-insensitively...");
+        }
+
+        // Extract directory and filename
+        int lastSlash = fontPath.lastIndexOf("/");
+        String directory = lastSlash >= 0 ? fontPath.substring(0, lastSlash) : "";
+        String targetFilename = lastSlash >= 0 ? fontPath.substring(lastSlash + 1) : fontPath;
+
+        // List all files in the directory and find case-insensitive match
+        try {
+            String[] files = c.getAssets().list(directory);
+            if (files != null) {
+                for (String file : files) {
+                    if (file.equalsIgnoreCase(targetFilename)) {
+                        // Found a case-insensitive match
+                        String actualPath = directory.isEmpty() ? file : directory + "/" + file;
+                        Typeface typeface = Typeface.createFromAsset(c.getAssets(), actualPath);
+                        Log.i(TAG, "Found font '" + targetFilename + "' as '" + file + "' (case mismatch resolved)");
+                        return typeface;
+                    }
+                }
+            }
+            Log.e(TAG, "Font '" + targetFilename + "' not found in directory '" + directory + "'");
+        } catch (Exception e) {
+            Log.e(TAG, "Error searching for font: " + fontPath, e);
+        }
+
+        // All attempts failed - fall back to system default
+        Log.e(TAG, "Could not load font " + fontPath + ". Using system default SANS_SERIF.");
+        return Typeface.SANS_SERIF;
+    }
+
     public Typeface getAppDefault() {
-        return Typeface.createFromAsset(c.getAssets(), "font/Lato.ttf");
+        return loadFontSafely("font/lato.ttf");
     }
     @SuppressWarnings("Redundant")
     public ArrayList<String> getFontsFromGoogle() {
