@@ -179,7 +179,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
 
         if (useMonospace) {
-            Typeface mono = Typeface.createFromAsset(context.getAssets(), "font/Inconsolata-Regular.ttf");
+            Typeface mono = Typeface.createFromAsset(context.getAssets(), "font/Inconsolata.ttf");
             editText.setTypeface(mono);
         }
         if (suffixText != null) {
@@ -219,7 +219,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 isKeyboardVisible = false;
             }
             if (useMonospace) {
-                Typeface mono = Typeface.createFromAsset(context.getAssets(), "font/Inconsolata-Regular.ttf");
+                Typeface mono = Typeface.createFromAsset(context.getAssets(), "font/Inconsolata.ttf");
                 editText.setTypeface(mono);
             }
         });
