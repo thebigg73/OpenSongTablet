@@ -518,7 +518,14 @@ public class SecondaryDisplay extends Presentation {
         if (mainActivityInterface.getPresenterSettings().getBlackscreenOn()) {
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.pageHolder, time, 1f, 0f);
             mainActivityInterface.getPresenterSettings().setStartedProjection(false);
+
+            // Set visibility to GONE after fade animation completes to ensure view is fully hidden
+            // time/2 matches the fade-down duration in CustomAnimation.faderAnimation()
+            myView.pageHolder.postDelayed(() -> {
+                myView.pageHolder.setVisibility(View.GONE);
+            }, time/2);
         } else {
+            myView.pageHolder.setVisibility(View.VISIBLE);
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.pageHolder, time, 0f, 1f);
             recoverSongContent();
         }
@@ -533,6 +540,15 @@ public class SecondaryDisplay extends Presentation {
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1, time, 1f, 0f);
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 1f, 0f);
             mainActivityInterface.getPresenterSettings().setStartedProjection(false);
+
+            // Set visibility to GONE after fade animation completes to ensure views are fully hidden
+            // time/2 matches the fade-down duration in CustomAnimation.faderAnimation()
+            myView.songContent1.postDelayed(() -> {
+                myView.songContent1.setVisibility(View.GONE);
+                myView.songContent2.setVisibility(View.GONE);
+                myView.songProjectionInfo1.setVisibility(View.GONE);
+                myView.songProjectionInfo2.setVisibility(View.GONE);
+            }, time/2);
         } else {
             recoverSongContent();
         }
@@ -545,16 +561,20 @@ public class SecondaryDisplay extends Presentation {
             int time = mainActivityInterface.getPresenterSettings().getPresoTransitionTime();
 
             if (myView.songContent1.getIsDisplaying()) {
+                myView.songContent1.setVisibility(View.VISIBLE);
                 mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1, time, 0f, 1f);
             }
             if (myView.songContent2.getIsDisplaying()) {
+                myView.songContent2.setVisibility(View.VISIBLE);
                 mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2, time, 0f, 1f);
             }
             if (infoBarRequired) {
                 if (myView.songProjectionInfo1.getIsDisplaying()  && myView.songProjectionInfo1.getHeight() > 0) {
+                    myView.songProjectionInfo1.setVisibility(View.VISIBLE);
                     mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1, time, 0f, 1f);
                 }
                 if (myView.songProjectionInfo2.getIsDisplaying() && myView.songProjectionInfo2.getHeight() > 0) {
+                    myView.songProjectionInfo2.setVisibility(View.VISIBLE);
                     mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2, time, 0f, 1f);
                 }
                 // IV - If hiding info bar, consider starting a hide timer
