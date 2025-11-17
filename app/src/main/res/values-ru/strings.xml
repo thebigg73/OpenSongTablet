@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Показывать кнопки \'предыдущий/следующий\' также и для песен, которых нет в сетлисте (двигаться по индексу песенника)</string>
     <string name="show_next_line_preview">Показать предварительный просмотр следующей строки</string>
     <string name="show_next_line_preview_hint">Показать первую строку следующего раздела внизу экрана</string>
+    <string name="preview_line_spacing">Интервал строки предварительного просмотра</string>
+    <string name="preview_line_transparency">Прозрачность строки предварительного просмотра</string>
     <string name="show_prev_song">Показать предыдущую песню в сетлисте</string>
     <string name="show_songs">Показать песни</string>
     <string name="show_tempo">Показывать темп в названии</string>

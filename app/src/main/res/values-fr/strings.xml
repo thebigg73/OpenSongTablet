@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Afficher également précédent/suivant pour les chansons qui ne font pas partie d\'un ensemble (à l\'aide du menu des chansons)</string>
     <string name="show_next_line_preview">Afficher l\'aperçu de la ligne suivante</string>
     <string name="show_next_line_preview_hint">Afficher la première ligne de la section suivante en bas de l\'écran</string>
+    <string name="preview_line_spacing">Espacement des lignes d\'aperçu</string>
+    <string name="preview_line_transparency">Transparence de la ligne d\'aperçu</string>
     <string name="show_prev_song">Afficher la chanson précédente dans le set</string>
     <string name="show_songs">Afficher les chansons</string>
     <string name="show_tempo">Afficher le tempo dans le titre</string>

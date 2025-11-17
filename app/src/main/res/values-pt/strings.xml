@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Também mostrar anterior/seguinte para músicas que não estão em um conjunto (usando o menu de músicas)</string>
     <string name="show_next_line_preview">Mostrar pré-visualização da próxima linha</string>
     <string name="show_next_line_preview_hint">Exibir a primeira linha da próxima seção na parte inferior da tela</string>
+    <string name="preview_line_spacing">Espaçamento da linha de visualização</string>
+    <string name="preview_line_transparency">Transparência da linha de visualização</string>
     <string name="show_prev_song">Mostrar música anterior no set</string>
     <string name="show_songs">Mostrar músicas</string>
     <string name="show_tempo">Mostrar andamento no título</string>

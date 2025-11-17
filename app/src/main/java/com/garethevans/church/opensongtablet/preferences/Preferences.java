@@ -640,6 +640,8 @@ public class Preferences extends Activity {
     // setLoadFirst                     boolean     Should the first item in a set be called when loading (def:true)
     // setsSortOrder                    String      Which order to sort the set list (def:az - other options za, newest, oldest);
     // showNextLinePreview              boolean     Show preview of first line from next section on connected displays (def:false)
+    // showNextLinePreviewSpacing       float       Spacing multiplier before preview line (relative to font size) (def:0.5f)
+    // showNextLinePreviewTransparency  int         Transparency level of preview line: 0=opaque, 1=25%, 2=50% (def:2)
     // songAuthorSize                   float       The size of the song author text in the action bar (def:11.0f)
     // songAutoScale                    String      Choice of autoscale mode (Y)es, (W)idth only or (N)one (def:W)
     // songAutoScaleColumnMaximise      boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size (def:true)

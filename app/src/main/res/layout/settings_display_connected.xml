@@ -244,6 +244,28 @@
             android:hint="@string/show_next_line_preview_hint"
             android:text="@string/show_next_line_preview" />
 
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
+            android:id="@+id/previewLineSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/preview_line_spacing"
+            android:value="0.5"
+            android:valueFrom="0.0"
+            android:valueTo="2.0"
+            android:stepSize="0.25" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
+            android:id="@+id/previewLineTransparency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/preview_line_transparency"
+            android:value="2"
+            android:valueFrom="0"
+            android:valueTo="2"
+            android:stepSize="1" />
+
         <LinearLayout
             android:id="@+id/infoSizes"
             android:layout_width="match_parent"

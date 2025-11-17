@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">කට්ටලයක නැති ගීත සඳහා පෙර/ඊළඟ පෙන්වන්න (ගීත මෙනුව භාවිතයෙන්)</string>
     <string name="show_next_line_preview">ඊළඟ පේළියේ පූර්ව දසුන පෙන්වන්න</string>
     <string name="show_next_line_preview_hint">තිරයේ පතුලේ ඊළඟ කොටසේ පළමු පේළිය ප්‍රදර්ශනය කරන්න</string>
+    <string name="preview_line_spacing">පෙරදසුන් රේඛා පරතරය</string>
+    <string name="preview_line_transparency">පෙරදසුන් රේඛා විනිවිදභාවය</string>
     <string name="show_prev_song">කට්ටලයේ පෙර ගීතය පෙන්වන්න</string>
     <string name="show_songs">ගීත පෙන්වන්න</string>
     <string name="show_tempo">මාතෘකාවේ tempo පෙන්වන්න</string>

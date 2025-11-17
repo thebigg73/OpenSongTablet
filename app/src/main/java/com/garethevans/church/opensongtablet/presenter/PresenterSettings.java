@@ -27,7 +27,8 @@ public class PresenterSettings {
     private String backgroundToUse, presoAlertText, ccliLicence;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
             presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize,
-            presoClockSize,presenterViewContentSize;
+            presoClockSize,presenterViewContentSize, showNextLinePreviewSpacing;
+    private int showNextLinePreviewTransparency;
     private SongSectionsAdapter songSectionsAdapter;
 
 
@@ -306,6 +307,18 @@ public class PresenterSettings {
     public boolean getShowNextLinePreview() {
         return showNextLinePreview;
     }
+    public float getShowNextLinePreviewSpacing() {
+        return showNextLinePreviewSpacing;
+    }
+    public void setShowNextLinePreviewSpacing(float showNextLinePreviewSpacing) {
+        this.showNextLinePreviewSpacing = showNextLinePreviewSpacing;
+    }
+    public int getShowNextLinePreviewTransparency() {
+        return showNextLinePreviewTransparency;
+    }
+    public void setShowNextLinePreviewTransparency(int showNextLinePreviewTransparency) {
+        this.showNextLinePreviewTransparency = showNextLinePreviewTransparency;
+    }
     public float getPresenterViewContentSize() {
         return presenterViewContentSize;
     }
@@ -370,6 +383,8 @@ public class PresenterSettings {
         setPresoClockSeconds(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoClockSeconds",true));
         setDefaultPresentationText(mainActivityInterface.getPreferences().getMyPreferenceBoolean("defaultPresentationText",true));
         setShowNextLinePreview(mainActivityInterface.getPreferences().getMyPreferenceBoolean("showNextLinePreview",false));
+        setShowNextLinePreviewSpacing(mainActivityInterface.getPreferences().getMyPreferenceFloat("showNextLinePreviewSpacing",0.5f));
+        setShowNextLinePreviewTransparency(mainActivityInterface.getPreferences().getMyPreferenceInt("showNextLinePreviewTransparency",2));
     }
     public void getAlertPreferences() {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));

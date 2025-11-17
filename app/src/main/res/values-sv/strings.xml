@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Visa även föregående/nästa för låtar som inte finns i en uppsättning (med sångmenyn)</string>
     <string name="show_next_line_preview">Visa förhandsgranskning av nästa rad</string>
     <string name="show_next_line_preview_hint">Visa den första raden av nästa avsnitt längst ned på skärmen</string>
+    <string name="preview_line_spacing">Förhandsgranska radavstånd</string>
+    <string name="preview_line_transparency">Förhandsgranska radtransparens</string>
     <string name="show_prev_song">Visa föregående låt i set</string>
     <string name="show_songs">Visa låtar</string>
     <string name="show_tempo">Visa tempo i titeln</string>

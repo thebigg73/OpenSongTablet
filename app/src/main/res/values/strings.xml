@@ -1269,6 +1269,8 @@
     <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
     <string name="show_next_line_preview">Show next line preview</string>
     <string name="show_next_line_preview_hint">Display the first line of the next section at the bottom of the screen</string>
+    <string name="preview_line_spacing">Preview line spacing</string>
+    <string name="preview_line_transparency">Preview line transparency</string>
     <string name="show_prev_song">Show previous song in set</string>
     <string name="show_songs">Show songs</string>
     <string name="show_tempo">Show tempo in the title</string>

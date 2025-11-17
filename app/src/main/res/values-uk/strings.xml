@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Також показувати попередню/наступну для пісень, яких немає у наборі (за допомогою меню пісень)</string>
     <string name="show_next_line_preview">Показати попередній перегляд наступного рядка</string>
     <string name="show_next_line_preview_hint">Показати перший рядок наступного розділу внизу екрана</string>
+    <string name="preview_line_spacing">Інтервал рядка попереднього перегляду</string>
+    <string name="preview_line_transparency">Прозорість рядка попереднього перегляду</string>
     <string name="show_prev_song">Показати попередню пісню в наборі</string>
     <string name="show_songs">Показати пісні</string>
     <string name="show_tempo">Покажіть темп у заголовку</string>

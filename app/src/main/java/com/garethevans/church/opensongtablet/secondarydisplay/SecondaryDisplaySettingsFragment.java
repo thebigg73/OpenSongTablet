@@ -218,6 +218,9 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
         myView.showNextLinePreview.setChecked(mainActivityInterface.getPresenterSettings().getShowNextLinePreview());
+        myView.previewLineSpacing.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing());
+        myView.previewLineTransparency.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency());
+        updatePreviewLineSettings();
 
         myView.titleTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
         myView.authorTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
@@ -306,7 +309,14 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("showNextLinePreview",b);
             mainActivityInterface.getPresenterSettings().setShowNextLinePreview(b);
             refreshSection();
+            updatePreviewLineSettings();
         });
+
+        myView.previewLineSpacing.addOnChangeListener(new SliderChangeListener("showNextLinePreviewSpacing"));
+        myView.previewLineSpacing.addOnSliderTouchListener(new SliderTouchListener("showNextLinePreviewSpacing"));
+
+        myView.previewLineTransparency.addOnChangeListener(new SliderChangeListener("showNextLinePreviewTransparency"));
+        myView.previewLineTransparency.addOnSliderTouchListener(new SliderTouchListener("showNextLinePreviewTransparency"));
 
         myView.titleTextSize.addOnChangeListener(new SliderChangeListener("presoTitleTextSize"));
         myView.titleTextSize.addOnSliderTouchListener(new SliderTouchListener("presoTitleTextSize"));
@@ -390,6 +400,14 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.clock24hr.setVisibility(visibility);
         myView.clockSeconds.setVisibility(visibility);
         myView.clockTextSize.setVisibility(visibility);
+    }
+    private void updatePreviewLineSettings() {
+        int visibility = View.GONE;
+        if (mainActivityInterface.getPresenterSettings().getShowNextLinePreview()) {
+            visibility = View.VISIBLE;
+        }
+        myView.previewLineSpacing.setVisibility(visibility);
+        myView.previewLineTransparency.setVisibility(visibility);
     }
     private float floatToDecPlaces(float floatNum) {
         floatNum = floatNum * (float)Math.pow(10, 2);
@@ -571,6 +589,20 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPresenterSettings().setPresoCopyrightTextSize(slider.getValue());
                     displayInterface.updateDisplay("setInfoStyles");
                     break;
+                case "showNextLinePreviewSpacing":
+                    // The slider goes from 0.0 to 2.0
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
+                            prefName,slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setShowNextLinePreviewSpacing(slider.getValue());
+                    refreshSection();
+                    break;
+                case "showNextLinePreviewTransparency":
+                    // The slider goes from 0 to 2 (0=opaque, 1=25%, 2=50%)
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
+                            prefName,(int)slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setShowNextLinePreviewTransparency((int)slider.getValue());
+                    refreshSection();
+                    break;
             }
         }
     }
@@ -659,6 +691,16 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                 case "presoCopyrightTextSize":
                     // The slider goes from 6 to 22
                     myView.copyrightTextSize.setHint(((int)slider.getValue())+"sp");
+                    break;
+                case "showNextLinePreviewSpacing":
+                    // The slider goes from 0.0 to 2.0
+                    myView.previewLineSpacing.setHint(String.format("%.2fx", slider.getValue()));
+                    break;
+                case "showNextLinePreviewTransparency":
+                    // The slider goes from 0 to 2 (0=opaque, 1=25%, 2=50%)
+                    int transparencyValue = (int)slider.getValue();
+                    String[] transparencyLabels = {"0%", "25%", "50%"};
+                    myView.previewLineTransparency.setHint(transparencyLabels[transparencyValue]);
                     break;
             }
         }
