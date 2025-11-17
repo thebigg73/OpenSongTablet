@@ -220,6 +220,12 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.showNextLinePreview.setChecked(mainActivityInterface.getPresenterSettings().getShowNextLinePreview());
         myView.previewLineSpacing.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing());
         myView.previewLineTransparency.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency());
+        myView.previewLineSpacing.setLabelFormatter(value -> floatToDecPlaces(value)+"x");
+        myView.previewLineTransparency.setLabelFormatter(value -> ((int)(value))+"%");
+        myView.previewLineSpacing.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing());
+        myView.previewLineSpacing.setHint(floatToDecPlaces(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing()) + "x");
+        myView.previewLineTransparency.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency());
+        myView.previewLineTransparency.setHint(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency() + "%");
         updatePreviewLineSettings();
 
         myView.titleTextSize.setValue(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
@@ -597,7 +603,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     refreshSection();
                     break;
                 case "showNextLinePreviewTransparency":
-                    // The slider goes from 0 to 2 (0=opaque, 1=25%, 2=50%)
+                    // The slider goes from 0 to 75%
                     mainActivityInterface.getPreferences().setMyPreferenceInt(
                             prefName,(int)slider.getValue());
                     mainActivityInterface.getPresenterSettings().setShowNextLinePreviewTransparency((int)slider.getValue());
@@ -697,10 +703,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     myView.previewLineSpacing.setHint(String.format("%.2fx", slider.getValue()));
                     break;
                 case "showNextLinePreviewTransparency":
-                    // The slider goes from 0 to 2 (0=opaque, 1=25%, 2=50%)
-                    int transparencyValue = (int)slider.getValue();
-                    String[] transparencyLabels = {"0%", "25%", "50%"};
-                    myView.previewLineTransparency.setHint(transparencyLabels[transparencyValue]);
+                    // The slider goes from 0% to 75%
+                    myView.previewLineTransparency.setHint((int)slider.getValue()+"%");
                     break;
             }
         }

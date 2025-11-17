@@ -384,7 +384,7 @@ public class PresenterSettings {
         setDefaultPresentationText(mainActivityInterface.getPreferences().getMyPreferenceBoolean("defaultPresentationText",true));
         setShowNextLinePreview(mainActivityInterface.getPreferences().getMyPreferenceBoolean("showNextLinePreview",false));
         setShowNextLinePreviewSpacing(mainActivityInterface.getPreferences().getMyPreferenceFloat("showNextLinePreviewSpacing",0.5f));
-        setShowNextLinePreviewTransparency(mainActivityInterface.getPreferences().getMyPreferenceInt("showNextLinePreviewTransparency",2));
+        setShowNextLinePreviewTransparency(mainActivityInterface.getPreferences().getMyPreferenceInt("showNextLinePreviewTransparency",50));
     }
     public void getAlertPreferences() {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));

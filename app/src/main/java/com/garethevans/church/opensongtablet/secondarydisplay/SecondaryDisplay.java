@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Surface;
@@ -1602,9 +1601,9 @@ public class SecondaryDisplay extends Presentation {
         // Use the same base font size as lyrics (will be scaled with the view)
         textView.setTextSize(mainActivityInterface.getProcessSong().getDefFontSize());
 
-        // Apply configurable transparency: 0=opaque (1.0f), 1=25% (0.75f), 2=50% (0.5f)
+        // Apply configurable transparency: 0% - 75%
         int transparencyLevel = mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency();
-        float alpha = 1.0f - (transparencyLevel * 0.25f);
+        float alpha = 1.0f - (transparencyLevel/100f);
         textView.setAlpha(alpha);
 
         // Match lyric alignment

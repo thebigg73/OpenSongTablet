@@ -261,10 +261,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="@string/preview_line_transparency"
-            android:value="2"
+            android:value="50"
             android:valueFrom="0"
-            android:valueTo="2"
-            android:stepSize="1" />
+            android:valueTo="75"
+            android:stepSize="25" />
 
         <LinearLayout
             android:id="@+id/infoSizes"
