@@ -218,13 +218,13 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
         myView.showNextLinePreview.setChecked(mainActivityInterface.getPresenterSettings().getShowNextLinePreview());
+
         myView.previewLineSpacing.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing());
-        myView.previewLineTransparency.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency());
         myView.previewLineSpacing.setLabelFormatter(value -> floatToDecPlaces(value)+"x");
-        myView.previewLineTransparency.setLabelFormatter(value -> ((int)(value))+"%");
-        myView.previewLineSpacing.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing());
         myView.previewLineSpacing.setHint(floatToDecPlaces(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing()) + "x");
+
         myView.previewLineTransparency.setValue(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency());
+        myView.previewLineTransparency.setLabelFormatter(value -> ((int)(value))+"%");
         myView.previewLineTransparency.setHint(mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency() + "%");
         updatePreviewLineSettings();
 
