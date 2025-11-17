@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.garethevans.church.opensongtablet.mobile",
+  "applicationId": "com.garethevans.church.opensongtablet",
   "variantName": "mobileOnlyRelease",
   "elements": [
     {
@@ -12,7 +12,7 @@
       "filters": [],
       "attributes": [],
       "versionCode": 431,
-      "versionName": "6.5.9-mobile",
+      "versionName": "6.5.9",
       "outputFile": "app-mobileOnly-release.apk"
     }
   ],

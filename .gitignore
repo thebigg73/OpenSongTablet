@@ -4,6 +4,7 @@ app/src/main/assets/keys.properties
 # Built application files
 *.apk
 *.ap_
+*.aab
 
 # Files for the Dalvik VM
 *.dex
@@ -47,3 +48,6 @@ captures/
 
 # CSS files
 app/.cxx/
+
+# Baseline profiles
+*.dm

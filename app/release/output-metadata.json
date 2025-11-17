@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.garethevans.church.opensongtablet.wear",
+  "applicationId": "com.garethevans.church.opensongtablet",
   "variantName": "release",
   "elements": [
     {
