@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Zobrazit také předchozí/následující pro skladby, které nejsou v sadě (pomocí nabídky skladeb)</string>
     <string name="show_next_line_preview">Zobrazit náhled dalšího řádku</string>
     <string name="show_next_line_preview_hint">Zobrazit první řádek další sekce ve spodní části obrazovky</string>
+    <string name="preview_line_spacing">Rozestup řádků náhledu</string>
+    <string name="preview_line_transparency">Průhlednost řádku náhledu</string>
     <string name="show_prev_song">Zobrazit předchozí skladbu v sadě</string>
     <string name="show_songs">Zobrazit skladby</string>
     <string name="show_tempo">Wys tempo v názvu</string>

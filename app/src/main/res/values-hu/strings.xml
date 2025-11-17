@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Előző/következő megjelenítése a készletben nem szereplő daloknál is (a dalmenü használatával)</string>
     <string name="show_next_line_preview">Következő sor előnézetének megjelenítése</string>
     <string name="show_next_line_preview_hint">Jelenítse meg a következő szakasz első sorát a képernyő alján</string>
+    <string name="preview_line_spacing">Előnézeti sor távolsága</string>
+    <string name="preview_line_transparency">Előnézeti sor átlátszósága</string>
     <string name="show_prev_song">Előző dal megjelenítése a készletben</string>
     <string name="show_songs">Dalok megjelenítése</string>
     <string name="show_tempo">Tempó megjelenítése a címben</string>

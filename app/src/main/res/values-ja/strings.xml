@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">セットにない曲の前/次も表示（曲メニューを使用）</string>
     <string name="show_next_line_preview">次の行のプレビューを表示</string>
     <string name="show_next_line_preview_hint">次のセクションの最初の行を画面下部に表示します</string>
+    <string name="preview_line_spacing">プレビュー行の間隔</string>
+    <string name="preview_line_transparency">プレビュー行の透明度</string>
     <string name="show_prev_song">セット内の前の曲を表示する</string>
     <string name="show_songs">曲を表示する</string>
     <string name="show_tempo">タイトルにテンポを表示する</string>

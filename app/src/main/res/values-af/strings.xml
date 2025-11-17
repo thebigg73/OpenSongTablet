@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Wys ook vorige/volgende vir liedjies wat nie in \'n stel is nie (gebruik liedjie-kieslys)</string>
     <string name="show_next_line_preview">Wys volgende reël voorskou</string>
     <string name="show_next_line_preview_hint">Vertoon die eerste reël van die volgende afdeling aan die onderkant van die skerm</string>
+    <string name="preview_line_spacing">Voorskou lyn spasiëring</string>
+    <string name="preview_line_transparency">Voorskou lyn deursigtigheid</string>
     <string name="show_prev_song">Wys vorige liedjie in stel</string>
     <string name="show_songs">Wys liedjies</string>
     <string name="show_tempo">Wys tempo in die titel</string>

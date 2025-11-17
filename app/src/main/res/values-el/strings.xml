@@ -1079,6 +1079,8 @@
     <string name="show_next_prev_in_song_menu">Εμφάνιση επίσης προηγούμενου/επόμενου για τραγούδια που δεν ανήκουν σε σύνολο (χρησιμοποιώντας το μενού τραγουδιών)</string>
     <string name="show_next_line_preview">Εμφάνιση προεπισκόπησης επόμενης γραμμής</string>
     <string name="show_next_line_preview_hint">Εμφάνιση της πρώτης γραμμής της επόμενης ενότητας στο κάτω μέρος της οθόνης</string>
+    <string name="preview_line_spacing">Απόσταση γραμμής προεπισκόπησης</string>
+    <string name="preview_line_transparency">Διαφάνεια γραμμής προεπισκόπησης</string>
     <string name="show_prev_song">Εμφάνιση προηγούμενου τραγουδιού στο σετ</string>
     <string name="show_songs">Εμφάνιση τραγουδιών</string>
     <string name="show_tempo">Εμφάνιση ρυθμού στον τίτλο</string>

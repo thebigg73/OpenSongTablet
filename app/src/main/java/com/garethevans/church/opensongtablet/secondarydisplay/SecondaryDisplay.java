@@ -1602,8 +1602,10 @@ public class SecondaryDisplay extends Presentation {
         // Use the same base font size as lyrics (will be scaled with the view)
         textView.setTextSize(mainActivityInterface.getProcessSong().getDefFontSize());
 
-        // Apply transparency (0.5 = 50% transparent)
-        textView.setAlpha(0.5f);
+        // Apply configurable transparency: 0=opaque (1.0f), 1=25% (0.75f), 2=50% (0.5f)
+        int transparencyLevel = mainActivityInterface.getPresenterSettings().getShowNextLinePreviewTransparency();
+        float alpha = 1.0f - (transparencyLevel * 0.25f);
+        textView.setAlpha(alpha);
 
         // Match lyric alignment
         textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
@@ -1616,10 +1618,19 @@ public class SecondaryDisplay extends Presentation {
         }
 
         // Layout params - use MATCH_PARENT width for proper alignment
-        textView.setLayoutParams(new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
+        );
+
+        // Use text-size-relative spacing (configurable multiplier of font size)
+        // This scales with the text size, so it looks proportional at all sizes
+        float spacingMultiplier = mainActivityInterface.getPresenterSettings().getShowNextLinePreviewSpacing();
+        int topMarginPx = (int) (mainActivityInterface.getProcessSong().getDefFontSize() * spacingMultiplier
+            * c.getResources().getDisplayMetrics().scaledDensity);
+        layoutParams.setMargins(0, topMarginPx, 0, 0);
+
+        textView.setLayoutParams(layoutParams);
 
         return textView;
     }

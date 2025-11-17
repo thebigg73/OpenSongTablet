@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Visualizza anche precedente/successivo per i brani non in scaletta (utilizzando il menu dei brani)</string>
     <string name="show_next_line_preview">Mostra anteprima riga successiva</string>
     <string name="show_next_line_preview_hint">Visualizza la prima riga della sezione successiva nella parte inferiore dello schermo</string>
+    <string name="preview_line_spacing">Spaziatura linea di anteprima</string>
+    <string name="preview_line_transparency">Trasparenza linea di anteprima</string>
     <string name="show_prev_song">Visualizza il brano precedente in scaletta</string>
     <string name="show_songs">Visualizza i brani</string>
     <string name="show_tempo">Visualizza il tempo nella barra del titolo</string>

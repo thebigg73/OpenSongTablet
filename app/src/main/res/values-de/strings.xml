@@ -1077,6 +1077,8 @@
     <string name="show_next_prev_in_song_menu">Auch vorherige/nächste für Songs anzeigen, die nicht in einem Set enthalten sind (über das Song-Menü)</string>
     <string name="show_next_line_preview">Vorschau der nächsten Zeile anzeigen</string>
     <string name="show_next_line_preview_hint">Zeige die erste Zeile des nächsten Abschnitts am unteren Bildschirmrand an</string>
+    <string name="preview_line_spacing">Vorschau-Zeilenabstand</string>
+    <string name="preview_line_transparency">Vorschau-Zeilentransparenz</string>
     <string name="show_prev_song">Vorherigen Song im Set anzeigen</string>
     <string name="show_songs">Lieder zeigen</string>
     <string name="show_tempo">Tempo im Titel anzeigen</string>
