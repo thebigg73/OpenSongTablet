@@ -295,6 +295,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                             myView.filters.keySearch, R.layout.view_exposed_dropdown_item, key_choice_string);
                     mainActivityInterface.getMainHandler().post(() -> {
                         if (myView!=null) {
+                            myView.filters.keySearch.setText("");
+                            myView.filters.artistSearch.setText("");
+                            myView.filters.tagSearch.setText("");
+                            myView.filters.filterSearch.setText("");
+                            myView.filters.titleSearch.setText("");
                             myView.filters.keySearch.setAdapter(keyArrayAdapter);
                             myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
                             myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
