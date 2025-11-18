@@ -34,7 +34,7 @@ android {
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
         versionCode = 431
-        versionName = '6.5.9'
+        versionName = '6.6.0'
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
@@ -60,7 +60,7 @@ android {
         release {
             minifyEnabled = false
             shrinkResources = false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         beta {
@@ -70,7 +70,7 @@ android {
         debug {
             minifyEnabled = false
             shrinkResources = false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
