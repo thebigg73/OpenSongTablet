@@ -472,9 +472,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     getWindow().getDecorView().setDefaultFocusHighlightEnabled(false);
                 }
+                // Apply background AFTER attachment
+                myView.mainPageFrame.post(() -> {
+                    myView.mainPageFrame.setBackgroundColor(getPalette().background);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // Try to deal with window focus
+            myView.mainPageFrame.setFocusable(false);
+            myView.mainPageFrame.setFocusableInTouchMode(false);
+            myView.mainPageFrame.setClickable(false);
+            myView.mainPageFrame.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+            myView.mainPageFrame.setOnFocusChangeListener((view, b) -> {
+                if (view.hasFocus()) {
+                    try {
+                        myView.mainPageFrame.getFocusDummy().post(() -> {
+                                    myView.mainPageFrame.getFocusDummy().requestFocus();
+                                    myView.mainPageFrame.getFocusDummy().requestFocusFromTouch();
+                                });
+                        Log.d(TAG, "clear the focus");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         // Get the user locale and prepare the strings

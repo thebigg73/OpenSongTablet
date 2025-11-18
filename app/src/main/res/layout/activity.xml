@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.garethevans.church.opensongtablet.customviews.NoFocusFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_page_frame"
@@ -11,7 +12,17 @@
     android:contentDescription="@null"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    android:descendantFocusability="beforeDescendants">
+
+    <View
+        android:id="@+id/focusDummy"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:visibility="invisible"
+        android:importantForAccessibility="no" />
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -124,8 +135,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/transparent"
-            android:clickable="true"
-            android:focusable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:orientation="vertical"
             tools:ignore="VisualLintBounds">
             <!--android:background="@color/colorAltPrimary"-->
@@ -165,4 +176,4 @@
         android:padding="32dp"
         android:visibility="gone"
         app:elevation="128dp" />
-</FrameLayout>
+</com.garethevans.church.opensongtablet.customviews.NoFocusFrameLayout>

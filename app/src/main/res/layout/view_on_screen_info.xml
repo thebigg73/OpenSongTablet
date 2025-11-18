@@ -20,8 +20,8 @@
         android:layout_margin="2dp"
         android:padding="4dp"
         android:layout_gravity="end"
-        android:clickable="true"
-        android:focusable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:visibility="gone">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -61,8 +61,7 @@
         android:layout_margin="2dp"
         android:padding="4dp"
         android:layout_gravity="end"
-        android:clickable="true"
-        android:focusable="true"
+        android:focusable="false"
         android:visibility="gone">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -100,8 +99,7 @@
         android:layout_margin="2dp"
         android:padding="4dp"
         android:layout_gravity="end"
-        android:clickable="true"
-        android:focusable="true"
+        android:focusable="false"
         android:visibility="gone">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView

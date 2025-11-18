@@ -18,8 +18,8 @@
             android:id="@+id/resizeForKeyboardLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialButton

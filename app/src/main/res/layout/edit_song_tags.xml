@@ -12,16 +12,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/tag_song"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusable="false"
+        android:focusableInTouchMode="false">
 
         <LinearLayout
             android:id="@+id/resizeForKeyboardLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:paddingBottom="@dimen/extra_scroll_space_large">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
@@ -36,7 +36,8 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 android:id="@+id/focusLine"
                 style="@style/MyDividerLine"
-                android:focusable="true" />
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/aka"
