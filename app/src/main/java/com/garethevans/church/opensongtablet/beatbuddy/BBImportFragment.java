@@ -139,6 +139,10 @@ public class BBImportFragment extends Fragment {
                         Uri finalSdCard = sdCard;
                         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                             String drumKits = getConfigCSVText(finalSdCard,"DRUMSETS");
+                            String hdDrumKits = getConfigCSVText(finalSdCard,"DRUMSETSHD");
+                            if (hdDrumKits!=null && !hdDrumKits.isEmpty()) {
+                                drumKits = drumKits + "\n" + hdDrumKits;
+                            }
                             String songFolders = getConfigCSVText(finalSdCard,"SONGS");
                             if (songFolders!=null && drumKits!=null) {
                                 makeCSVFILE(drumKits, songFolders, finalSdCard);
@@ -288,6 +292,7 @@ public class BBImportFragment extends Fragment {
                     .append("\"MIDI_CODE\"\n");
 
             String[] kits = drumkits.split("\n");
+            int rollingKitNum = 1;
             for (String kit : kits) {
                 // Split by the comma to get the code and then num and name
                 String[] kitinfo = kit.split(",");
@@ -297,6 +302,9 @@ public class BBImportFragment extends Fragment {
                     if (kitbits.length >= 2) {
                         String kitCode = kitinfo[0];
                         int kitNum = Integer.parseInt(kitbits[0].replaceAll("\\D", ""));
+                        if (kitCode.toLowerCase().contains(".drmx")) {
+                            kitNum = rollingKitNum;
+                        }
                         String kitName = kitbits[1];
                         String midiCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum).trim();
                         kit_nums.add(kitNum);
@@ -311,6 +319,7 @@ public class BBImportFragment extends Fragment {
                         String thisKit = kit_string+": "+kitNum+". "+kitName+" ("+kitCode+")";
                         stringBuilder.append(thisKit).append("\n");
                     }
+                    rollingKitNum ++;
                 }
             }
         }
@@ -354,14 +363,25 @@ public class BBImportFragment extends Fragment {
         if (getContext() != null) {
             DocumentFile dfSdCard = DocumentFile.fromTreeUri(getContext(), sdCard);
             if (dfSdCard != null) {
+                boolean hdDrumSet = folder.equals("DRUMSETSHD");
+                if (hdDrumSet) {
+                    folder = "DRUMSETS";
+                }
                 DocumentFile dfFolder = dfSdCard.findFile(folder);
                 if (dfFolder != null) {
                     if (subfolder!=null && !subfolder.isEmpty()) {
                         dfFolder = dfFolder.findFile(subfolder);
                     }
                     if (dfFolder != null) {
-                        DocumentFile dfLower = dfFolder.findFile("config.csv");
-                        DocumentFile dfUpper = dfFolder.findFile("CONFIG.CSV");
+                        DocumentFile dfLower;
+                        DocumentFile dfUpper;
+                        if (hdDrumSet) {
+                            dfLower = dfFolder.findFile("drmxconfig.csv");
+                            dfUpper = dfFolder.findFile("DRMXCONFIG.CSV");
+                        } else {
+                            dfLower = dfFolder.findFile("config.csv");
+                            dfUpper = dfFolder.findFile("CONFIG.CSV");
+                        }
                         Uri lowerUri = null;
                         Uri upperUri = null;
                         if (dfLower != null) {
