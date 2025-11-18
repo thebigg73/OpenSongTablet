@@ -5,6 +5,7 @@ app/src/main/assets/keys.properties
 *.apk
 *.ap_
 *.aab
+*.dm
 
 # Files for the Dalvik VM
 *.dex
