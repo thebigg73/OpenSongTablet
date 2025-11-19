@@ -142,6 +142,7 @@ public class ThemeSetupFragment extends Fragment {
                                 mainActivityInterface.getPalette().savePref(getContext(), myTheme.equals("dark") || myTheme.equals("custom1"));
                                 mainActivityInterface.getToolbar().changeTheme();
                                 mainActivityInterface.getBatteryStatus().getBatteryStatus();
+                                mainActivityInterface.tintBackgroundToTheme();
                             }
 
                             mainActivityInterface.getPreferences().setMyPreferenceString("appTheme", myTheme);
@@ -169,7 +170,7 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     public void updateColors() {
-        Log.d(TAG,"updateColors()");
+        Log.d(TAG,"updateColors()  myTheme:"+myTheme+"  initialTheme:"+initialTheme);
         mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 

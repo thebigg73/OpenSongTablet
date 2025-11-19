@@ -472,10 +472,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     getWindow().getDecorView().setDefaultFocusHighlightEnabled(false);
                 }
-                // Apply background AFTER attachment
-                myView.mainPageFrame.post(() -> {
-                    myView.mainPageFrame.setBackgroundColor(getPalette().background);
-                });
+                // Tint the background to the theme
+                tintBackgroundToTheme();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -583,6 +581,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             });
         });
+    }
+
+    @Override
+    public void tintBackgroundToTheme() {
+        // Apply background AFTER attachment
+        if (myView!=null) {
+            myView.mainPageFrame.post(() -> {
+                myView.mainPageFrame.setBackgroundColor(getPalette().background);
+            });
+        }
     }
 
     @Override

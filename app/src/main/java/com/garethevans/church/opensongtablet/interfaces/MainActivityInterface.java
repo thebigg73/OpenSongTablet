@@ -310,6 +310,7 @@ public interface MainActivityInterface {
     void setAvailableSizes(int availableWidth, int availableHeight);
     Palette getPalette();
     void refreshToolbarMenu();
+    void tintBackgroundToTheme();
 
     // CCLI
     CCLILog getCCLILog();
