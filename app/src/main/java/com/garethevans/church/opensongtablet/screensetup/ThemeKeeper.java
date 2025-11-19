@@ -16,10 +16,12 @@ public final class ThemeKeeper {
     public static void save(Context context, int mode) {
         lastMode = mode;
         AppCompatDelegate.setDefaultNightMode(mode);
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                .edit()
-                .putInt(KEY_MODE, mode)
-                .apply();
+        if (context!=null) {
+            context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                    .edit()
+                    .putInt(KEY_MODE, mode)
+                    .apply();
+        }
     }
 
     public static int load(Context context) {

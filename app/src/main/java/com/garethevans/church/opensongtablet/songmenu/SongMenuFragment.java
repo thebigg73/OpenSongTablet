@@ -187,11 +187,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
                     // Back on the UI
                     mainActivityInterface.getMainHandler().post(() -> {
-                        myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
-                        myView.songListRecyclerView.setHasFixedSize(false);
-                        myView.songListRecyclerView.setOnClickListener(null);
-                        myView.songListRecyclerView.setAdapter(songListAdapter);
-                        adapterReady = true;
+                        if (myView!=null) {
+                            myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
+                            myView.songListRecyclerView.setHasFixedSize(false);
+                            myView.songListRecyclerView.setOnClickListener(null);
+                            myView.songListRecyclerView.setAdapter(songListAdapter);
+                            adapterReady = true;
+                        }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1024,32 +1026,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     public void updateTheme() {
         // First the filter buttons
-        myView.filterButtons.searchButtonGroup.setPalette(mainActivityInterface.getPalette());
-        fixButtons();
-        updateSongCount();
-        //myView.menuSongs.setBackgroundColor(mainActivityInterface.getPalette().background);
-        /*myView.songTitleStuff.songtitleTitle.setTextColor(mainActivityInterface.getPalette().textColor);
-        myView.songTitleStuff.setCheckTitle.setTextColor(mainActivityInterface.getPalette().textColor);
-        myView.songTitleStuff.songCount.setTextColor(mainActivityInterface.getPalette().textColor);
-        if (getContext()!=null) {
-            Drawable songCountBlob = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_box);
-            if (songCountBlob!=null) {
-                DrawableCompat.setTint(songCountBlob, mainActivityInterface.getPalette().secondary);
-                myView.songTitleStuff.songCount.setBackgroundDrawable(songCountBlob);
-            }
-        }*/
-
-        /*for (int i = 0; i < myView.filterButtons.searchButtonGroup.getChildCount(); i++) {
-            View child = myView.filterButtons.searchButtonGroup.getChildAt(i);
-            if (child instanceof MyMaterialButton) {
-                Log.d(TAG,"materialButton found in song menu");
-                MyMaterialButton button = (MyMaterialButton) child;
-                button.setPalette(mainActivityInterface.getPalette());
-                button.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
-                // Set stroke color and width
-                button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
-                //button.setStrokeWidth(borderWidth);
-            }
-        }*/
+        if (myView!=null && mainActivityInterface!=null) {
+            myView.filterButtons.searchButtonGroup.setPalette(mainActivityInterface.getPalette());
+            fixButtons();
+            updateSongCount();
+        }
     }
 }

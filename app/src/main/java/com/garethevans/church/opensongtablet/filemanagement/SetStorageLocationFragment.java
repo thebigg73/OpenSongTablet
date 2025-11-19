@@ -30,6 +30,7 @@ import com.garethevans.church.opensongtablet.databinding.StorageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -287,7 +288,7 @@ public class SetStorageLocationFragment extends Fragment {
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
             View snackbarView = snackbar.getView();
-            MyMaterialSimpleTextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            MaterialTextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
             snackTextView.setMaxLines(4);
             snackbar.show();
         }
