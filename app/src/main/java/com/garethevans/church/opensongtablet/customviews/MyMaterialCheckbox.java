@@ -35,27 +35,28 @@ public class MyMaterialCheckbox extends MaterialCheckBox {
     }
 
     private void setColors() {
-        setUseMaterialThemeColors(false);
-        setTextColor(palette.textColor);
+        // 1. Define the ColorStateList using your palette colors
         ColorStateList colorStateList = new ColorStateList(
                 new int[][]{
-                        new int[]{android.R.attr.state_checked}, // checked
-                        new int[]{-android.R.attr.state_checked}  // unchecked
+                        new int[]{android.R.attr.state_checked}, // Checked state
+                        new int[]{-android.R.attr.state_checked} // Unchecked state
                 },
                 new int[]{
-                        palette.textColor, // Checked color
-                        palette.hintColor  // Unchecked color
+                        palette.textColor, // Checked color (Active/Filled)
+                        palette.hintColor  // Unchecked color (Inactive/Outline)
                 }
         );
 
-        CompoundButtonCompat.setButtonTintList(this, colorStateList);
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setButtonTintList(colorStateList);
-        } else {
-            CompoundButtonCompat.setButtonTintList(this, colorStateList);
-        }*/
-
-        // Disable default Material theme tint override
+        // 2. Disable Material theme override BEFORE setting the tint.
+        // This is crucial to prevent the theme from overriding your custom colors.
         setUseMaterialThemeColors(false);
+
+        // 3. Apply the tint using the compatibility layer for consistency.
+        // The AppCompat version of setButtonTintList is preferred when available.
+        // Assuming 'this' refers to your CheckBox instance:
+        CompoundButtonCompat.setButtonTintList(this, colorStateList);
+
+        // 4. Set the text color separately (this is fine)
+        setTextColor(palette.textColor);
     }
 }
