@@ -146,6 +146,7 @@ public class OCR {
 
                     String currLine = stringSparseArray.get(top,"");
                     String newLine = (currLine+blockSplitStart+left+blockSplitStartFinal+blockSplitEnd+right+blockSplitEndFinal+lineText);
+                    Log.d(TAG,"top:"+top+"  newLine:"+newLine);
                     stringSparseArray.put(top,newLine);
                     maxTop = Math.max(maxTop,top);
                 }
@@ -180,76 +181,81 @@ public class OCR {
             StringBuilder textFromLinesArray = new StringBuilder();
             int minHPos = 1000;
 
-            for (int x=0; x<maxTop; x++) {
+            for (int x=0; x<maxTop+1; x++) {
                 StringBuilder thisLine = new StringBuilder();
-                if (tidiedLines.get(x,null)!=null) {
-                    // This line has each section with the left position inside
-                    // We need to do this to add them back in the correct order
-                    String[] blocks = tidiedLines.get(x).split(blockSplitStart);
-                    SparseArray<String> horizontalArray = new SparseArray<>();
-                    SparseIntArray horizontalEndPosArray = new SparseIntArray();
-                    int maxHPos = 0;
-                    for (String block : blocks) {
-                        // Get the horizontal pos
-                        if (block.contains(blockSplitEnd)) {
-                            String startHPos_String = block.substring(0,block.indexOf(blockSplitStartFinal)).replace(blockSplitStart,"").replace(blockSplitStartFinal,"").replaceAll("\\D","");
-                            String endHPos_String   = block.substring(block.indexOf(blockSplitEnd),  block.indexOf(blockSplitEndFinal))  .replace(blockSplitEnd,  "").replace(blockSplitEndFinal,  "").replaceAll("\\D","");
-                            int hposStart = 0;
-                            int hposEnd = 0;
-                            if (!startHPos_String.isEmpty()) {
-                                hposStart = Integer.parseInt(startHPos_String);
-                                if (hposStart>-1 && hposStart<minHPos) {
-                                    minHPos = hposStart;
-                                }
-                            }
-                            if (!endHPos_String.isEmpty()) {
-                                hposEnd = Integer.parseInt(endHPos_String);
-                            }
-
-                            String blockText = block.substring(block.indexOf(blockSplitEndFinal) + blockSplitEndFinal.length());
-
-                            horizontalArray.put(hposStart, blockText);
-                            horizontalEndPosArray.put(hposStart, hposEnd);
-                            maxHPos = Math.max(hposStart, maxHPos);
-
-                        }
-                    }
-
-                    int lastHPosEnd = 0;
-
-                    for (int z = 0; z < maxHPos+1; z++) {
-                        if (horizontalArray.get(z, null) != null) {
-                            String textBlock = horizontalArray.get(z);
-                            int endPos = horizontalEndPosArray.get(z);
-
-                            if (z<minHPos) {
-                                minHPos = z;
-                            }
-
-                            int numChars = textBlock.length();
-
-                            float spacePerChar;
-                            if (endPos!=0) {
-                                spacePerChar = (endPos-z)/(float)numChars;
-                                // How far away from the last position are we starting?
-                                // This tries to guess extra spaces needed
-                                if (z>lastHPosEnd && lastHPosEnd>=minHPos) {
-                                    float extraSpace = z-lastHPosEnd;
-                                    int numberOfSpaces = Math.round(extraSpace/spacePerChar);
-                                    StringBuilder stringBuilder = new StringBuilder();
-                                    for (int y=0; y<numberOfSpaces; y++) {
-                                        stringBuilder.append(" ");
+                try {
+                    if (tidiedLines.get(x, null) != null) {
+                        // This line has each section with the left position inside
+                        // We need to do this to add them back in the correct order
+                        String[] blocks = tidiedLines.get(x).split(blockSplitStart);
+                        SparseArray<String> horizontalArray = new SparseArray<>();
+                        SparseIntArray horizontalEndPosArray = new SparseIntArray();
+                        int maxHPos = 0;
+                        for (String block : blocks) {
+                            // Get the horizontal pos
+                            if (block.contains(blockSplitEnd)) {
+                                String startHPos_String = block.substring(0, block.indexOf(blockSplitStartFinal)).replace(blockSplitStart, "").replace(blockSplitStartFinal, "").replaceAll("\\D", "");
+                                String endHPos_String = block.substring(block.indexOf(blockSplitEnd), block.indexOf(blockSplitEndFinal)).replace(blockSplitEnd, "").replace(blockSplitEndFinal, "").replaceAll("\\D", "");
+                                int hposStart = 0;
+                                int hposEnd = 0;
+                                if (!startHPos_String.isEmpty()) {
+                                    hposStart = Integer.parseInt(startHPos_String);
+                                    if (hposStart > -1 && hposStart < minHPos) {
+                                        minHPos = hposStart;
                                     }
-                                    textBlock = stringBuilder + textBlock;
                                 }
+                                if (!endHPos_String.isEmpty()) {
+                                    hposEnd = Integer.parseInt(endHPos_String);
+                                }
+
+                                String blockText = block.substring(block.indexOf(blockSplitEndFinal) + blockSplitEndFinal.length());
+
+                                horizontalArray.put(hposStart, blockText);
+                                horizontalEndPosArray.put(hposStart, hposEnd);
+                                maxHPos = Math.max(hposStart, maxHPos);
+
                             }
-
-                            lastHPosEnd = endPos;
-
-                            thisLine.append(textBlock).append(" ");
                         }
+
+                        int lastHPosEnd = 0;
+
+                        for (int z = 0; z < maxHPos + 1; z++) {
+                            if (horizontalArray.get(z, null) != null) {
+                                String textBlock = horizontalArray.get(z);
+                                int endPos = horizontalEndPosArray.get(z);
+
+                                if (z < minHPos) {
+                                    minHPos = z;
+                                }
+
+                                int numChars = textBlock.length();
+
+                                float spacePerChar;
+                                if (endPos != 0) {
+                                    spacePerChar = (endPos - z) / (float) numChars;
+                                    // How far away from the last position are we starting?
+                                    // This tries to guess extra spaces needed
+                                    if (z > lastHPosEnd && lastHPosEnd >= minHPos) {
+                                        float extraSpace = z - lastHPosEnd;
+                                        int numberOfSpaces = Math.round(extraSpace / spacePerChar);
+                                        StringBuilder stringBuilder = new StringBuilder();
+                                        for (int y = 0; y < numberOfSpaces; y++) {
+                                            stringBuilder.append(" ");
+                                        }
+                                        textBlock = stringBuilder + textBlock;
+                                    }
+                                }
+
+                                lastHPosEnd = endPos;
+
+                                thisLine.append(textBlock).append(" ");
+                            }
+                        }
+                        Log.d(TAG, "thisLine:" + thisLine);
+                        textFromLinesArray.append(thisLine).append("\n");
                     }
-                    textFromLinesArray.append(thisLine).append("\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             try {
