@@ -140,9 +140,28 @@ public class BBImportFragment extends Fragment {
                         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                             String drumKits = getConfigCSVText(finalSdCard,"DRUMSETS");
                             String hdDrumKits = getConfigCSVText(finalSdCard,"DRUMSETSHD");
+                            String bb2looseDrums = getConfigCSVText(finalSdCard,"LOOSEDRUMS");
+
+                            Log.d(TAG,"drumKits:"+drumKits);
+                            Log.d(TAG,"hdDrumKits:"+hdDrumKits);
+                            Log.d(TAG,"bb2looseDrums:"+bb2looseDrums);
+
                             if (hdDrumKits!=null && !hdDrumKits.isEmpty()) {
                                 drumKits = drumKits + "\n" + hdDrumKits;
                             }
+
+                            if (bb2looseDrums!=null && !bb2looseDrums.isEmpty()) {
+                                // This has the actual order for BB2 pedals
+                                // We will use these, but we need to add a number into the list
+                                String[] looseKits = bb2looseDrums.split("\n");
+                                StringBuilder newKits = new StringBuilder();
+                                for (int x=0; x<looseKits.length; x++) {
+                                    newKits.append(looseKits[x].replace(",",","+(x+1)+". "));
+                                    newKits.append("\n");
+                                }
+                                drumKits = newKits.toString();
+                            }
+
                             String songFolders = getConfigCSVText(finalSdCard,"SONGS");
                             if (songFolders!=null && drumKits!=null) {
                                 makeCSVFILE(drumKits, songFolders, finalSdCard);
@@ -363,8 +382,9 @@ public class BBImportFragment extends Fragment {
         if (getContext() != null) {
             DocumentFile dfSdCard = DocumentFile.fromTreeUri(getContext(), sdCard);
             if (dfSdCard != null) {
-                boolean hdDrumSet = folder.equals("DRUMSETSHD");
-                if (hdDrumSet) {
+                boolean hdDrumSet = folder.equals("DRUMSETSHD");   // BB2
+                boolean looseDrums = folder.equals("LOOSEDRUMS"); // BB2
+                if (hdDrumSet || looseDrums) {
                     folder = "DRUMSETS";
                 }
                 DocumentFile dfFolder = dfSdCard.findFile(folder);
@@ -378,6 +398,9 @@ public class BBImportFragment extends Fragment {
                         if (hdDrumSet) {
                             dfLower = dfFolder.findFile("drmxconfig.csv");
                             dfUpper = dfFolder.findFile("DRMXCONFIG.CSV");
+                        } else if (looseDrums) {
+                            dfLower = dfFolder.findFile("loose_drums.csv");
+                            dfUpper = dfFolder.findFile("LOOSE_DRUMS.CSV");
                         } else {
                             dfLower = dfFolder.findFile("config.csv");
                             dfUpper = dfFolder.findFile("CONFIG.CSV");
