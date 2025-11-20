@@ -711,7 +711,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                         settings+"/"+managesets+"/"+export),
 
                 // Import set
-                new SettingItem(import_string,c.getString(R.string.set_share_info),
+                new SettingItem(import_string + " ("+set+")",c.getString(R.string.import_from_file),
                         Arrays.asList(set,sets,setlist,setlists,file,import_string,get,load),
                         "action_importSet",
                         settings+"/"+managesets+"/"+import_string),
@@ -976,6 +976,11 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                 case "action_importFile":
                     mainActivityInterface.setWhattodo("file");
                     mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_import),0);
+                    break;
+
+                case "action_importSet":
+                    mainActivityInterface.setWhattodo("importset");
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets),0);
                     break;
 
                 case "action_importIos":

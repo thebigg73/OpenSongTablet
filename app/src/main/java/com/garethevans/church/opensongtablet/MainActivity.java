@@ -760,7 +760,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
         fileOpenIntent = intent;
-        Log.d(TAG, "new intent:" + intent + "  " + intent.getData());
         // Send the action to be called from the opening fragment to fix backstack!
         if (settingsOpen) {
             if (whichMode.equals(mode_presenter)) {

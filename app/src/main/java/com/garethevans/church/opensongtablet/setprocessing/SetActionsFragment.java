@@ -52,6 +52,11 @@ public class SetActionsFragment extends Fragment {
         initialiseLauncher();
         setupListeners();
 
+        if (mainActivityInterface.getWhattodo()!=null &&
+                mainActivityInterface.getWhattodo().equals("importset")) {
+            mainActivityInterface.setWhattodo("");
+            myView.importSet.performClick();
+        }
         return myView.getRoot();
     }
 

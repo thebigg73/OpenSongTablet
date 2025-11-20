@@ -63,32 +63,8 @@ public class BootUpIndexBottomSheet extends BottomSheetCommon {
             setTimer();
             myView.dialogHeading.setText(indexing_string);
             myView.dialogHeading.setWebHelp(mainActivityInterface, indexing_web);
-            Log.d(TAG,"indexing_web:"+indexing_web);
         }
     }
-
-    /*@NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialog1 -> {
-            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                Drawable bg = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_dialog);
-                if (bg!=null) {
-                    DrawableCompat.setTint(bg,mainActivityInterface.getPalette().surface);
-                    bottomSheet.setBackground(bg);
-                }
-                *//*if (bottomSheet.getBackground() instanceof GradientDrawable) {
-                    GradientDrawable materialBg = (GradientDrawable) bottomSheet.getBackground();
-                    materialBg.setColorFilter(mainActivityInterface.getPalette().background, PorterDuff.Mode.SRC_IN);
-                }*//*
-                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
-                BottomSheetBehavior.from(bottomSheet).setDraggable(false);
-            }
-        });
-        return dialog;
-    }*/
 
     @Override
     public void onAttach(@NonNull Context context) {

@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 
@@ -139,7 +138,6 @@ public class PageButtons {
     public void updateColors() {
         //pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
-        Log.d(TAG,"pageButtonAlpha:"+pageButtonAlpha);
         if (pageButtonsLayout!=null) {
             pageButtonsLayout.setAlpha(pageButtonAlpha);
         }
