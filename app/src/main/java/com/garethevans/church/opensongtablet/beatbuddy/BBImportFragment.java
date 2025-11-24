@@ -27,6 +27,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BBImportFragment extends Fragment {
 
@@ -151,15 +152,7 @@ public class BBImportFragment extends Fragment {
                             }
 
                             if (bb2looseDrums!=null && !bb2looseDrums.isEmpty()) {
-                                // This has the actual order for BB2 pedals
-                                // We will use these, but we need to add a number into the list
-                                String[] looseKits = bb2looseDrums.split("\n");
-                                StringBuilder newKits = new StringBuilder();
-                                for (int x=0; x<looseKits.length; x++) {
-                                    newKits.append(looseKits[x].replace(",",","+(x+1)+". "));
-                                    newKits.append("\n");
-                                }
-                                drumKits = newKits.toString();
+                                drumKits = bb2looseDrums;
                             }
 
                             String songFolders = getConfigCSVText(finalSdCard,"SONGS");
@@ -313,11 +306,14 @@ public class BBImportFragment extends Fragment {
             String[] kits = drumkits.split("\n");
             int rollingKitNum = 1;
             for (String kit : kits) {
+                Log.d(TAG,"kit:"+kit);
                 // Split by the comma to get the code and then num and name
                 String[] kitinfo = kit.split(",");
                 if (kitinfo.length >= 2) {
+                    Log.d(TAG,"kitinfo:"+ Arrays.toString(kitinfo));
                     kitinfo[1] = kitinfo[1].replace(". ","___");
                     String[] kitbits = kitinfo[1].split("___");
+                    Log.d(TAG,"kitbits:"+ Arrays.toString(kitbits));
                     if (kitbits.length >= 2) {
                         String kitCode = kitinfo[0];
                         int kitNum = Integer.parseInt(kitbits[0].replaceAll("\\D", ""));
