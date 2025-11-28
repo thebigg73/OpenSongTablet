@@ -441,7 +441,6 @@ public class PerformanceFragment extends Fragment {
     }
 
 
-
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
         // IV - Set a boolean indicating song change
@@ -449,6 +448,15 @@ public class PerformanceFragment extends Fragment {
                 !mainActivityInterface.getSong().getFolder().equals(folder) ||
                 firstSongLoad || mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getForceReload();
         mainActivityInterface.setHighlightChangeAllowed(true);
+
+        if (filename==null || filename.isEmpty() ||
+                mainActivityInterface.getSong().getFilename()==null || mainActivityInterface.getSong().getFilename().isEmpty()) {
+            songChange = true;
+            filename = "Welcome to OpenSongApp";
+            folder = mainfoldername;
+            mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
+            mainActivityInterface.getSong().setFolder(mainfoldername);
+        }
 
         boolean needToTryAgain = false;
         boolean needToPauseTryAgain = false;

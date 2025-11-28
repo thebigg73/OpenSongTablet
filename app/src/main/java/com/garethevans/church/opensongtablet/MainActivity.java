@@ -587,9 +587,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void tintBackgroundToTheme() {
         // Apply background AFTER attachment
         if (myView!=null) {
-            myView.mainPageFrame.post(() -> {
-                myView.mainPageFrame.setBackgroundColor(getPalette().background);
-            });
+            myView.mainPageFrame.post(() -> myView.mainPageFrame.setBackgroundColor(getPalette().background));
         }
     }
 
@@ -4950,6 +4948,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (metronome != null) {
                 metronome.initialiseMetronome();
             }
+
         }
 
         try {
