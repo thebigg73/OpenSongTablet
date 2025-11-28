@@ -253,7 +253,7 @@ public class VoiceLive {
     public String getMessageFromShortHand(int midiChannelSent, String shorthand) {
         // A list of suitable shorthand MIDI messages are found on the Midi.java class
         // VL signifies they are for the voicelive
-        Log.d(TAG,"shorthand:"+shorthand);
+        Log.d(TAG,"shorthand:"+shorthand+"  midiChannelSent:"+midiChannelSent);
         if (shorthand.startsWith("VL")) {
             // Get rid of the VoiceLive VL part
             shorthand = shorthand.substring(2);
@@ -264,7 +264,8 @@ public class VoiceLive {
 
             // Get any numerical value from the message
             int num = -1;
-            if (!shorthand.replaceAll("\\D","").isEmpty()) {
+            boolean isHarmonyScale = shorthand.contains("VHS");
+            if (!shorthand.replaceAll("\\D","").isEmpty() && !isHarmonyScale) {
                 num = Integer.parseInt(shorthand.replaceAll("\\D",""));
                 shorthand = shorthand.replace(String.valueOf(num),"");
             }
@@ -284,6 +285,7 @@ public class VoiceLive {
             if (shorthand.startsWith("VHS")) {
                 String harmonyText = shorthand.replace("VHS","").toUpperCase();
                 shorthand = shorthand.replace(harmonyText,"");
+                Log.d(TAG,"harmonyText:"+harmonyText+"  shorthand:"+shorthand);
                 if (harmonyText.startsWith("MAJ")) {
                     Integer harmony = majorHarmonies.get(harmonyText);
                     harmonyNum = harmony!=null ? harmony:-1;
@@ -295,6 +297,7 @@ public class VoiceLive {
                 } else {
                     harmonyNum = customHarmonies;
                 }
+                Log.d(TAG,"harmonyNum:"+harmonyNum);
             }
 
             // If it now starts with 'G' it is guitar, if 'V' it is vocal,
@@ -359,6 +362,7 @@ public class VoiceLive {
                 case "VHH":
                     return getHarmonyHoldMessage(midiChannelSent,on);
                 case "NX":
+                case "N":
                     return getAllNotesOffMessage(midiChannelSent);
                 case "P":
                     if (num>-1) {
@@ -435,6 +439,7 @@ public class VoiceLive {
     }
 
     public String getVocalHarmonyScaleMessage(int midiChannelSent, int harmonyNum) {
+        Log.d(TAG,"getVocalHarmonyScaleMessage("+midiChannelSent+","+harmonyNum+")");
         return mainActivityInterface.getMidi().buildMidiString("CC", midiChannelToUse(midiChannelSent), CC_VocalHarmonyScale, harmonyNum);
     }
 

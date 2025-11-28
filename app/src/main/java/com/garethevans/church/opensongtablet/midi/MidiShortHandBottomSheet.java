@@ -54,7 +54,8 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
             vocal_vocoder_synth_string, vocal_choir_string, vocal_double_string,
             vocal_hard_tune_string, vocal_modulation_string, vocal_transducer_string,
             vocal_reverb_string, vocal_delay_string, vocal_hit_string,
-            step_string, notes_off_string, preset_string, off_string, on_string;
+            step_string, notes_off_string, preset_string, off_string, on_string,
+            string_voicelive_midi_channel;
 
     @SuppressWarnings("FieldCanBeLocal")
     private ArrayList<String> midiChannel, midiCommand, midiCommandDescription, midiValue0_100,
@@ -179,6 +180,7 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
 
             // VoiceLive generic strings
             String voicelive_string = getString(R.string.voicelive);
+            string_voicelive_midi_channel = voicelive_string + " MIDI " + c.getString(R.string.midi_channel);
             String guitar_string = "(" + getString(R.string.guitar) + ")";
             String vocal_string = "(" + getString(R.string.vocal) + ")";
             String harmony_string = getString(R.string.harmony);
@@ -486,7 +488,10 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
-        myView.addCommandButton.setOnClickListener(view -> doSave());
+        myView.addCommandButton.setOnClickListener(view -> {
+            Log.d(TAG,"addCommandButton onClick");
+            doSave();
+        });
         myView.midiTest.setOnClickListener(view -> {
             updateMIDIString();
             String hexSequence = mainActivityInterface.getMidi().checkForShortHandMIDI(midiCode);
@@ -494,14 +499,32 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
             mainActivityInterface.getMidi().sendMidiHexSequence(hexSequence);
         });
         myView.midiAdd.setOnClickListener(view -> {
+            Log.d(TAG,"midiAdd onClick");
             updateMIDIString();
             MidiInfo midiInfo = new MidiInfo();
+            Log.d(TAG,"midiCode:"+midiCode);
+            boolean isVoiceLive = false;
+            if (midiCode!=null && midiCode.contains(":VL")) {
+                String tempChannel = myView.midiChannel.getText().toString();
+                if (!tempChannel.replaceAll("\\D","").isEmpty()) {
+                    int newChannel = Integer.parseInt(tempChannel.replaceAll("\\D",""));
+                    mainActivityInterface.getShowToast().doItBottomSheet(string_voicelive_midi_channel+": " + newChannel,myView.getRoot());
+                    mainActivityInterface.getVoiceLive().setVoiceLiveChannel(newChannel);
+                    isVoiceLive = true;
+                }
+            }
             String hexCode = mainActivityInterface.getMidi().checkForShortHandMIDI(midiCode);
+            Log.d(TAG,"hexCode:"+hexCode);
             String readable = mainActivityInterface.getMidi().getReadableStringFromHex(hexCode);
             midiInfo.midiCommand = midiCode;
             midiInfo.readableCommand = readable;
             midiInfos.add(midiInfo);
             midiMessagesAdapter.addToEnd(midiInfo);
+            if (isVoiceLive) {
+                // Refresh the list of items fixing the override MIDI channels
+                midiCurrent = midiCurrent + "\n" + midiCode;
+                buildList();
+            }
         });
     }
 
@@ -704,7 +727,10 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
             }
             String midiCommandDesc = myView.midiCommand.getText().toString();
             int index = midiCommandDescription.indexOf(midiCommandDesc);
-            String midiCommandShorthand = midiCommand.get(index);
+            String midiCommandShorthand = "";
+            if (midiCommand!=null && midiCommand.size()>index && index>=0) {
+                midiCommandShorthand = midiCommand.get(index);
+            }
             midiCode += midiCommandShorthand;
             // Get the next value if required
             if (usingVal1) {

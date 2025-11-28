@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.midi;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +69,11 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         } else if (!readableCommand.trim().isEmpty()) {
             holder.vMidiReadable.setVisibility(View.VISIBLE);
         }
+        holder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        holder.vCard.setBackgroundColor(mainActivityInterface.getPalette().secondary);
+        holder.vItem.setTextColor(mainActivityInterface.getPalette().textColor);
+        holder.vMidiCommand.setTextColor(mainActivityInterface.getPalette().textColor);
+        holder.vMidiReadable.setTextColor(mainActivityInterface.getPalette().textColor);
         holder.vMidiReadable.setText(readableCommand);
         holder.vMidiCommand.setText(midiCommand);
     }

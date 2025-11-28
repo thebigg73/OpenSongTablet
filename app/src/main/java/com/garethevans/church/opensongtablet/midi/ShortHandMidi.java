@@ -126,11 +126,11 @@ public class ShortHandMidi {
                     for (String bit : bits) {
                         if (bit.contains("MIDI")) {
                             midiChannel = valueToHexSingle(valueFromString(bit, "MIDI"));
-                        } else if (bit.contains("NO")) {
+                        } else if (bit.contains("NO") && !bit.contains("VL")) {
                             commandPart1 = "0x9";
                             commandPart2 = valueToHex(valueFromString(bit, "NO"));
 
-                        } else if (bit.contains("NX")) {
+                        } else if (bit.contains("NX") && !bit.contains("VL")) {
                             commandPart1 = "0x8";
                             commandPart2 = valueToHex(valueFromString(bit, "NX"));
 
@@ -162,6 +162,7 @@ public class ShortHandMidi {
                             commandPart1 = mainActivityInterface.getVoiceLive().getMessageFromShortHand(channel,bit);
                             commandPart2 = "VoiceLive";
                             commandPart3 = "";
+                            Log.d(TAG,"commandPart1:"+commandPart1+"  commandPart2:"+commandPart2);
 
                         } else if (bit.contains("BBTX")) {
                             commandPart1 = "0xB";

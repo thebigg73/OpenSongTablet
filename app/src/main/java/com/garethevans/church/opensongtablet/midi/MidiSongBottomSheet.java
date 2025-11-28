@@ -83,7 +83,7 @@ public class MidiSongBottomSheet extends BottomSheetCommon {
         if (getContext()!=null) {
             midiMessagesAdapter = new MidiMessagesAdapter(getContext());
             midiMessagesAdapter.setFromSongMessages(false);
-             llm = new LinearLayoutManager(getContext());
+            llm = new LinearLayoutManager(getContext());
             llm.setOrientation(RecyclerView.VERTICAL);
             myView.recyclerView.post(() -> {
                 myView.recyclerView.setLayoutManager(llm);
