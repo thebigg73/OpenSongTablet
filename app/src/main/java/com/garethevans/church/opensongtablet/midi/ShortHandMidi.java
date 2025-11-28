@@ -158,11 +158,9 @@ public class ShortHandMidi {
                             if (!midiChannel.replaceAll("\\D","").isEmpty()) {
                                 channel = Integer.parseInt(midiChannel.replaceAll("\\D",""));
                             }
-                            Log.d(TAG,"channel: "+channel+"  bit:"+bit);
                             commandPart1 = mainActivityInterface.getVoiceLive().getMessageFromShortHand(channel,bit);
                             commandPart2 = "VoiceLive";
                             commandPart3 = "";
-                            Log.d(TAG,"commandPart1:"+commandPart1+"  commandPart2:"+commandPart2);
 
                         } else if (bit.contains("BBTX")) {
                             commandPart1 = "0xB";

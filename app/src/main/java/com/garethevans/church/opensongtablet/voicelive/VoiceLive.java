@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.voicelive;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -221,7 +220,6 @@ public class VoiceLive {
         // Get the MSB code
         String msbCode = mainActivityInterface.getMidi().buildMidiString("MSB", midiChannelToUse(midiChannelSent), 0, 0);
 
-        Log.d(TAG,"msbCode:"+msbCode);
         // Get the LSB code
         String lsbCode;
         String programCode;
@@ -244,16 +242,12 @@ public class VoiceLive {
             programCode = mainActivityInterface.getMidi().buildMidiString("PC", midiChannelToUse(midiChannelSent), 0, presetNumber - 1);
         }
 
-        Log.d(TAG,"lsbCode:"+lsbCode);
-        Log.d(TAG,"programCode:"+programCode);
-
         return msbCode + "\n" + lsbCode + "\n" + programCode;
     }
 
     public String getMessageFromShortHand(int midiChannelSent, String shorthand) {
         // A list of suitable shorthand MIDI messages are found on the Midi.java class
         // VL signifies they are for the voicelive
-        Log.d(TAG,"shorthand:"+shorthand+"  midiChannelSent:"+midiChannelSent);
         if (shorthand.startsWith("VL")) {
             // Get rid of the VoiceLive VL part
             shorthand = shorthand.substring(2);
@@ -270,7 +264,6 @@ public class VoiceLive {
                 shorthand = shorthand.replace(String.valueOf(num),"");
             }
 
-            Log.d(TAG,"num:"+num);
             // Get any key from the message
             int keyNum = -1;
             if (shorthand.startsWith("VHK")) {
@@ -285,7 +278,6 @@ public class VoiceLive {
             if (shorthand.startsWith("VHS")) {
                 String harmonyText = shorthand.replace("VHS","").toUpperCase();
                 shorthand = shorthand.replace(harmonyText,"");
-                Log.d(TAG,"harmonyText:"+harmonyText+"  shorthand:"+shorthand);
                 if (harmonyText.startsWith("MAJ")) {
                     Integer harmony = majorHarmonies.get(harmonyText);
                     harmonyNum = harmony!=null ? harmony:-1;
@@ -297,7 +289,6 @@ public class VoiceLive {
                 } else {
                     harmonyNum = customHarmonies;
                 }
-                Log.d(TAG,"harmonyNum:"+harmonyNum);
             }
 
             // If it now starts with 'G' it is guitar, if 'V' it is vocal,
@@ -439,7 +430,6 @@ public class VoiceLive {
     }
 
     public String getVocalHarmonyScaleMessage(int midiChannelSent, int harmonyNum) {
-        Log.d(TAG,"getVocalHarmonyScaleMessage("+midiChannelSent+","+harmonyNum+")");
         return mainActivityInterface.getMidi().buildMidiString("CC", midiChannelToUse(midiChannelSent), CC_VocalHarmonyScale, harmonyNum);
     }
 

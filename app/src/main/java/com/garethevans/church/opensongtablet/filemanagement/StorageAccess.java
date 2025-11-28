@@ -1002,7 +1002,7 @@ public class StorageAccess {
                 return false;
             }
         } else {
-            Log.d(TAG,"null uri, so can't possibly exist");
+            // Null uri, so probably doesn't exist yet
             return false;
         }
     }
