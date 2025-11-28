@@ -844,7 +844,7 @@ public class ProcessSong {
         // OpenSong desktop introduced multilingual support using 'L' at the end of a section heading
         // Check for a suitable section heading, and if so, remove the L and change every second line
         // to be identified as a multilingual line
-        String[] possibleSectionIdentifiers = new String[] {"[VL]", "[VC]", "[VT]", "[VB]", "[VP]",
+        String[] possibleSectionIdentifiers = new String[] {"[VL]", "[CL]", "[TL]", "[BL]", "[PL]",
                 "[V1L]", "[V2L]", "[V3L]", "[V4L]", "[V5L]", "[V6L]", "[V7L]", "[V8L]", "[V9L]",
                 "[C1L]", "[C2L]", "[C3L]", "[C4L]", "[C5L]", "[C6L]", "[C7L]", "[C8L]", "[C9L]",
                 "[T1L]", "[T2L]", "[T3L]", "[T4L]", "[T5L]", "[T6L]", "[T7L]", "[T8L]", "[T9L]",
