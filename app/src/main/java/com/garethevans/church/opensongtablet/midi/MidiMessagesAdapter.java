@@ -48,7 +48,6 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
                 notifyItemInserted(x);
             }
         }
-        Log.d(TAG,"midiInfos.size(): "+midiInfos.size());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
