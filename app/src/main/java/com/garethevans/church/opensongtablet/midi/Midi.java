@@ -22,11 +22,9 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1365,89 +1363,6 @@ public class Midi {
 
     public boolean getMidiClockRunning() {
         return midiClockRunning;
-    }
-
-    // This will be used to adjust the tempo of MIDI files
-    public File changeTempo(Uri inputUri, String fileName, int newBPM) {
-        File outputFile = null;
-        InputStream inputStream = null;
-        ByteArrayOutputStream buffer = null;
-        byte[] fileBytes = null;
-        try {
-            // 1. Read the entire file into a byte array
-            inputStream = mainActivityInterface.getStorageAccess().getInputStream(inputUri);
-            buffer = new ByteArrayOutputStream();
-
-            byte[] data = new byte[8192];
-            int nRead;
-
-            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                buffer.write(data, 0, nRead);
-            }
-
-            buffer.flush();
-            fileBytes = buffer.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (Exception ignore) {
-                }
-                if (buffer != null) {
-                    try {
-                        buffer.close();
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        }
-
-        if (fileBytes != null) {
-            // 2. Calculate the new microseconds per quarter note value
-            int newUsPerQn = 60_000_000 / newBPM;
-
-            // 3. Convert the integer to 3 big-endian bytes
-            byte t1 = (byte) ((newUsPerQn >> 16) & 0xFF);
-            byte t2 = (byte) ((newUsPerQn >> 8) & 0xFF);
-            byte t3 = (byte) (newUsPerQn & 0xFF);
-
-            // 4. Search for the tempo event (FF 51 03)
-            // Note: This simple search assumes there is only one tempo change event and it's early in the file.
-            int tempoMarkerPosition = -1;
-
-            for (int i = 0; i < fileBytes.length - 3; i++) {
-                // FF 51 03
-                if (fileBytes[i] == (byte) 0xFF &&
-                        fileBytes[i + 1] == (byte) 0x51 &&
-                        fileBytes[i + 2] == (byte) 0x03) {
-
-                    // Position is now at the start of the 3 tempo bytes [T1][T2][T3]
-                    tempoMarkerPosition = i + 3;
-                    break;
-                }
-            }
-
-            if (tempoMarkerPosition != -1) {
-                // 5. Replace the three tempo bytes
-                fileBytes[tempoMarkerPosition] = t1;
-                fileBytes[tempoMarkerPosition + 1] = t2;
-                fileBytes[tempoMarkerPosition + 2] = t3;
-
-                // 6. Write the modified array into an outputFile
-                outputFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Midi", "", fileName + ".mid");
-                try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-                    fos.write(fileBytes);
-                } catch (Exception e) {
-                    outputFile = null;
-                    e.printStackTrace();
-                }
-            } else {
-                Log.d(TAG, "Error: Set Tempo Meta-Event (FF 51 03) not found in the MIDI file.");
-            }
-        }
-        return outputFile;
     }
 
 }

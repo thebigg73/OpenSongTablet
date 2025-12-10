@@ -175,6 +175,8 @@ public class SongActionsMenuFragment extends Fragment {
             }
         });
 
+        // Currently hidden in the view
+        myView.drummer.setOnClickListener(v -> mainActivityInterface.navigateToFragment(getString(R.string.deeplink_drummer),0));
         myView.youTube.setOnClickListener(v -> searchSong("YouTube"));
         myView.youTubeMusic.setOnClickListener(v -> searchSong("YouTubeMusic"));
         myView.spotify.setOnClickListener(v -> searchSong("Spotify"));

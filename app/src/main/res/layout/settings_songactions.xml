@@ -216,6 +216,19 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 
+            <!-- Currently hidden as not ready
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/drummer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Drummer"
+                android:hint="Use drum machine"
+                app:size="large"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+                -->
+
+
             <!-- GE Hidden, but reserving the right to reinstate, even just for me!
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/graceTime"

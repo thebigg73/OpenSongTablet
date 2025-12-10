@@ -639,6 +639,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_bulkTagAssignFragment"
                     app:destination="@id/bulkTagAssignFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_drummerFragment"
+                    app:destination="@id/drummerFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -705,6 +708,15 @@
                 <action
                     android:id="@+id/action_linksFragment_to_linksBottomSheet"
                     app:destination="@id/linksBottomSheet" />
+            </fragment>
+            <fragment
+                android:id="@+id/drummerFragment"
+                android:name="com.garethevans.church.opensongtablet.drummer.DrummerFragment"
+                android:label="DrummerFragment"
+                tools:layout="@layout/settings_drummer">
+                <deepLink
+                    android:id="@+id/deepLinkDrummer"
+                    app:uri="@string/deeplink_drummer"/>
             </fragment>
             <dialog
                 android:id="@+id/linksBottomSheet"

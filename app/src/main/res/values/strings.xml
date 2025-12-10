@@ -1804,4 +1804,5 @@
     <string name="zoom_level">Zoom level</string>
     <string name="wearOS">Send beats to Wear OS</string>
     <string name="wearOS_info">Audio or visual metronome must be switched on and Wear OS device must be paired</string>
+    <string name="deeplink_drummer" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummer</string>
 </resources>
