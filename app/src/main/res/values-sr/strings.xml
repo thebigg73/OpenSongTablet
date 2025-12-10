@@ -819,9 +819,9 @@
     <string name="override_none">Koristi podrazumevanu aplikaciju</string>
     <string name="override_off">Sila sakrij</string>
     <string name="override_on">Sila šou</string>
+    <string name="override_preview">Premosti prikaz pregleda sledeće linije za ovu pesmu</string>
     <string name="override_scale_explanation">Ako je veličina fonta manja od minimalne željene veličine, da li želite da aplikacij koristi drugu metodu skaliranja? Korišćenje ove opcije Vas može primorati na skrolovanje pesme horizontalno i vertikalno</string>
     <string name="override_sticky">Premosti automatski prikaz lepljive beleške za ovu pesmu</string>
-    <string name="override_preview">Premosti prikaz pregleda sledeće linije za ovu pesmu</string>
     <string name="override_widthautoscale">Prebacivanje autozumiranja sa širine na mod bez autozumiranja</string>
     <string name="overwrite">Prepisati preko postojeće stavke</string>
     <string name="overwrite_info">Sve odgovarajuće datoteke koje već imate će biti prepisane od strane host fajlova</string>
@@ -921,6 +921,8 @@
     <string name="prev_next_autohide">Automatsko sakrivanje prethodnog/sledećeg dugmeta</string>
     <string name="prev_next_text">Koristite dugmad za prethodni / sledeći tekst</string>
     <string name="preview">Pregled</string>
+    <string name="preview_line_spacing">Razmak linije pregleda</string>
+    <string name="preview_line_transparency">Providnost linije pregleda</string>
     <string name="previous">Prethodno</string>
     <string name="print">Print</string>
     <string name="processing">Datoteke se obrađuju</string>
@@ -1074,11 +1076,9 @@
     <string name="show_lyrics">Prikazivanje teksta</string>
     <string name="show_lyrics_info">Prikažite tekstove pronađene u pesmi</string>
     <string name="show_next_in_set">Prikaži sledeću pesmu u set listi</string>
-    <string name="show_next_prev_in_song_menu">Takođe prikaži prethodnu/sledeću za pesme koje nisu u setu (pomoću menija pesama)</string>
     <string name="show_next_line_preview">Prikaži pregled sledećeg reda</string>
     <string name="show_next_line_preview_hint">Prikaži prvi red sledećeg odeljka na dnu ekrana</string>
-    <string name="preview_line_spacing">Razmak linije pregleda</string>
-    <string name="preview_line_transparency">Providnost linije pregleda</string>
+    <string name="show_next_prev_in_song_menu">Takođe prikaži prethodnu/sledeću za pesme koje nisu u setu (pomoću menija pesama)</string>
     <string name="show_prev_song">Prikaži prethodnu pesmu u setu</string>
     <string name="show_songs">Prikaži pesme</string>
     <string name="show_tempo">Pokažite tempo u naslovu</string>
@@ -1398,6 +1398,8 @@
     <string name="volume_value">Trenutna jačina zvuka</string>
     <string name="wah">Wah</string>
     <string name="wait">Sačekajte....</string>
+    <string name="wearOS">Pošalji otkucaje na Vear OS</string>
+    <string name="wearOS_info">Audio ili vizuelni metronom mora biti uključen i Vear OS uređaj mora biti uparen</string>
     <string name="web">Web</string>
     <string name="web_server">Web server</string>
     <string name="web_server_hint">Dozvoljavanje korisnicima bez OpenSongApp-a da pregledaju vaše pesme pomoću veb pregledača</string>

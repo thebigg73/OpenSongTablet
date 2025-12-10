@@ -819,9 +819,9 @@
     <string name="override_none">Gebruik app verstek</string>
     <string name="override_off">Dwing wegsteek</string>
     <string name="override_on">Force show</string>
+    <string name="override_preview">Ignoreer volgende lyn voorskou vertoning vir hierdie liedjie</string>
     <string name="override_scale_explanation">As die autoscale lettergrootte is minder as die verlangde minimum lettergrootte, wil jy die jeug om te ignoreer om \'n ander skaal metode? Die gebruik van hierdie opsies kan jou dwing om horisontaal en vertikaal blaai in \'n lied.</string>
     <string name="override_sticky">Ignoreer outomatiese plaknootvertoning vir hierdie liedjie</string>
-    <string name="override_preview">Ignoreer volgende lyn voorskou vertoning vir hierdie liedjie</string>
     <string name="override_widthautoscale">Ignoreer breedte net skalering geen autoscale</string>
     <string name="overwrite">Oorskryf bestaande item</string>
     <string name="overwrite_info">Enige bypassende lêers wat jy reeds het, sal deur die gasheerlêers oorgeskryf word</string>
@@ -921,6 +921,8 @@
     <string name="prev_next_autohide">Versteek vorige / volgende knoppies outomaties</string>
     <string name="prev_next_text">Gebruik teks vorige / volgende knoppies</string>
     <string name="preview">Voorskou</string>
+    <string name="preview_line_spacing">Voorskou lyn spasiëring</string>
+    <string name="preview_line_transparency">Voorskou lyn deursigtigheid</string>
     <string name="previous">Vorige</string>
     <string name="print">Druk</string>
     <string name="processing">Lêers word verwerk</string>
@@ -1074,11 +1076,9 @@
     <string name="show_lyrics">Wys lyrics</string>
     <string name="show_lyrics_info">Vertoon lirieke wat in die liedjie gevind word</string>
     <string name="show_next_in_set">Wys volgende liedjie in stel</string>
-    <string name="show_next_prev_in_song_menu">Wys ook vorige/volgende vir liedjies wat nie in \'n stel is nie (gebruik liedjie-kieslys)</string>
     <string name="show_next_line_preview">Wys volgende reël voorskou</string>
     <string name="show_next_line_preview_hint">Vertoon die eerste reël van die volgende afdeling aan die onderkant van die skerm</string>
-    <string name="preview_line_spacing">Voorskou lyn spasiëring</string>
-    <string name="preview_line_transparency">Voorskou lyn deursigtigheid</string>
+    <string name="show_next_prev_in_song_menu">Wys ook vorige/volgende vir liedjies wat nie in \'n stel is nie (gebruik liedjie-kieslys)</string>
     <string name="show_prev_song">Wys vorige liedjie in stel</string>
     <string name="show_songs">Wys liedjies</string>
     <string name="show_tempo">Wys tempo in die titel</string>

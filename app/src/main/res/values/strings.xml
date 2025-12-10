@@ -403,6 +403,7 @@
     <string name="deeplink_database_utilities" translatable="false">https://www.opensongapp.com/?p=settings/utilities/database</string>
     <string name="deeplink_display" translatable="false">https://www.opensongapp.com/?p=display</string>
     <string name="deeplink_display_extra" translatable="false">https://www.opensongapp.com/?p=settings/display/extra</string>
+    <string name="deeplink_drummer" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummer</string>
     <string name="deeplink_edit" translatable="false">https://www.opensongapp.com/?p=settings/edit</string>
     <string name="deeplink_export" translatable="false">https://www.opensongapp.com/?p=settings/actions/export</string>
     <string name="deeplink_fonts" translatable="false">https://www.opensongapp.com/?p=settings/display/fonts</string>
@@ -1004,9 +1005,9 @@
     <string name="override_none">Use app default</string>
     <string name="override_off">Force hide</string>
     <string name="override_on">Force show</string>
+    <string name="override_preview">Override next line preview display for this song</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_sticky">Override automatic sticky note display for this song</string>
-    <string name="override_preview">Override next line preview display for this song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
     <string name="overwrite_info">Any matching files you already have will be overwritten by the host files</string>
@@ -1112,6 +1113,8 @@
     <string name="prev_next_autohide">Autohide previous / next buttons</string>
     <string name="prev_next_text">Use text previous / next buttons</string>
     <string name="preview">Preview</string>
+    <string name="preview_line_spacing">Preview line spacing</string>
+    <string name="preview_line_transparency">Preview line transparency</string>
     <string name="previous">Previous</string>
     <string name="print">Print</string>
     <string name="processing">Files are being processed</string>
@@ -1266,11 +1269,9 @@
     <string name="show_lyrics">Show lyrics</string>
     <string name="show_lyrics_info">Display lyrics found in the song</string>
     <string name="show_next_in_set">Show next song in set</string>
-    <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
     <string name="show_next_line_preview">Show next line preview</string>
     <string name="show_next_line_preview_hint">Display the first line of the next section at the bottom of the screen</string>
-    <string name="preview_line_spacing">Preview line spacing</string>
-    <string name="preview_line_transparency">Preview line transparency</string>
+    <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
     <string name="show_prev_song">Show previous song in set</string>
     <string name="show_songs">Show songs</string>
     <string name="show_tempo">Show tempo in the title</string>
@@ -1683,6 +1684,8 @@
     <string name="volume_value">Current volume value</string>
     <string name="wah">Wah</string>
     <string name="wait">Wait....</string>
+    <string name="wearOS">Send beats to Wear OS</string>
+    <string name="wearOS_info">Audio or visual metronome must be switched on and Wear OS device must be paired</string>
     <string name="web">Web</string>
     <string name="web_server">Web server</string>
     <string name="web_server_hint">Allow users without OpenSongApp to view your songs using a web browser</string>
@@ -1802,7 +1805,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="wearOS">Send beats to Wear OS</string>
-    <string name="wearOS_info">Audio or visual metronome must be switched on and Wear OS device must be paired</string>
-    <string name="deeplink_drummer" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummer</string>
 </resources>
