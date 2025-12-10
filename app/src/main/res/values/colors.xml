@@ -11,9 +11,11 @@
     <color name="dark_color">#f1faff</color>                <!-- text and icon color -->
     <color name="light_primary">#FFFFFF</color>             <!-- light primary -->
     <color name="light_primary_variant">#FAFAFF</color>     <!-- light primary variant -->
-    <color name="light_secondary">#E5F3F6</color>           <!-- FABs, etc -->
-    <color name="light_secondary_variant">#D7E9ED</color>   <!-- variant (more emphasised) -->
-    <color name="light_secondary_fixed">#C8DBE0</color>     <!-- variant (even more emphasised) -->
+    <!--<color name="light_secondary">#E5F3F6</color>-->           <!-- FABs, etc -->
+    <color name="light_secondary">#CEDFE4</color>           <!-- FABs, etc -->
+    <color name="light_secondary_variant">#B0C5CA</color>   <!-- variant (more emphasised) -->
+    <!--<color name="light_secondary_fixed">#C8DBE0</color>-->     <!-- variant (even more emphasised) -->
+    <color name="light_secondary_fixed">#94AAB1</color>     <!-- variant (even more emphasised) -->
     <color name="light_surface">#fafaff</color>             <!-- Bottom sheets, component backgrounds -->
     <color name="light_surface_variant">#E2D9DA</color>     <!-- variant (more emphasised) -->"
     <color name="light_error">#F46262</color>               <!-- light red -->

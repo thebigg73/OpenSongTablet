@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.garethevans.church.opensongtablet.wear'
+    namespace = 'com.garethevans.church.opensongtablet.wear'
     compileSdk 35
 
     defaultConfig {
@@ -31,7 +31,7 @@ android {
     }
     useLibrary('wear-sdk')
     buildFeatures {
-        compose true
+        compose = true
     }
 }
 

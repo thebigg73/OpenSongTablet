@@ -5038,6 +5038,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getStorageAccess().wipeFolder("Export", "");
         getStorageAccess().wipeFolder("Received", "");
 
+        // If we were using the drummer, release the mediaPlayers
+        getDrummer().endDrummer();
+
         // Keep a reference to connections if needed as bundle
 
         super.onDestroy();
