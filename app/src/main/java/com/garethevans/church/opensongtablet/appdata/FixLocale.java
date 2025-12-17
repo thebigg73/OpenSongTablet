@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
-import android.content.res.Configuration;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -64,22 +66,29 @@ public class FixLocale {
             }
 
             // Load the appropriate translations
-            Configuration configuration = new Configuration();
-            Locale.setDefault(userLocale);
-            configuration.setLocale(userLocale);
-            c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
+            // The old method no longer works on newer devices
+            //Configuration configuration = new Configuration();
+            //Locale.setDefault(userLocale);
+            //configuration.setLocale(userLocale);
+            //c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
+            LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(language);
+            AppCompatDelegate.setApplicationLocales(appLocale);
+
             wasset = true;
         } catch (Exception e) {
             e.printStackTrace();
             userLocale = new Locale("en");
+            language = "en";
         }
 
         if (!wasset) {
             try {
-                Configuration configuration = new Configuration();
-                Locale.setDefault(userLocale);
-                configuration.setLocale(userLocale);
-                c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
+                //Configuration configuration = new Configuration();
+                //Locale.setDefault(userLocale);
+                //configuration.setLocale(userLocale);
+                //c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
+                LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(language);
+                AppCompatDelegate.setApplicationLocales(appLocale);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -111,7 +111,8 @@
         android:requestLegacyExternalStorage="false"
         android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true"
-        android:hardwareAccelerated="false">
+        android:hardwareAccelerated="false"
+        android:localeConfig="@xml/locales_config">
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
