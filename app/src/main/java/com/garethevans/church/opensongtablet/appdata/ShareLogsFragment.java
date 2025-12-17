@@ -103,7 +103,10 @@ public class ShareLogsFragment extends Fragment {
     private void checkCrashLogExists() {
         boolean crashLogExists = mainActivityInterface.getStorageAccess().crashLogExists();
         myView.crashLogReset.setEnabled(crashLogExists);
+        myView.crashLogReset.setAlpha(crashLogExists ? 1f:0.5f);
         myView.crashLogShare.setEnabled(crashLogExists);
+        myView.crashLogShare.setAlpha(crashLogExists ? 1f:0.5f);
+
     }
 
     private void shareFile(String whichName, String type, Uri whichFile) {
