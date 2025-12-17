@@ -15,6 +15,10 @@ import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.play.agesignals.AgeSignalsManager;
+import com.google.android.play.agesignals.AgeSignalsManagerFactory;
+import com.google.android.play.agesignals.AgeSignalsRequest;
+import com.google.android.play.agesignals.model.AgeSignalsVerificationStatus;
 
 
 public class AppPermissions {
@@ -23,10 +27,13 @@ public class AppPermissions {
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String TAG = "Permissions";
     private String permissionsLog = "";
+    private boolean ageVerificationPass = true;
+    private final MainActivityInterface mainActivityInterface;
 
     public AppPermissions(Context context) {
         // This class is used to keep all the permissions in the same place
         this.context = context;
+        mainActivityInterface = (MainActivityInterface) context;
     }
 
     // Location
@@ -220,4 +227,69 @@ public class AppPermissions {
         permissionsLog = "";
     }
 
+
+    public void checkAgeVerification() {
+        // From 1st Jan 2026 Texas requires that apps check age from Google Play API
+        if (hasGooglePlay()) {
+            // 1. Initialize the manager - use a fake one if testing
+            AgeSignalsManager ageSignalsManager = AgeSignalsManagerFactory.create(context);
+            //FakeAgeSignalsManager ageSignalsManager = new FakeAgeSignalsManager();
+
+            // 2. Set fake age data if testing
+            /*AgeSignalsResult testResult = AgeSignalsResult.builder()
+                    .setUserStatus(AgeSignalsVerificationStatus.SUPERVISED)
+                    .setAgeLower(13)
+                    .setAgeUpper(15)
+                    .build();
+            ageSignalsManager.setNextAgeSignalsResult(testResult);
+            */
+
+            // Create the request
+            AgeSignalsRequest request = AgeSignalsRequest.builder().build();
+
+            // 3. Initiate the handshake
+            ageSignalsManager.checkAgeSignals(request)
+                    .addOnSuccessListener(result -> {
+                        Log.d(TAG,"Handshake result:"+result);
+                        // Handshake Successful
+                        if (result != null) {
+                            int status = result.userStatus();
+
+                            if (status == AgeSignalsVerificationStatus.VERIFIED) {
+                                // User is 18+. Standard app experience.
+                                Log.d(TAG, "User is 18+, so no restrictions");
+                                ageVerificationPass = true;
+
+                            } else if (status == AgeSignalsVerificationStatus.SUPERVISED) {
+                                // User is a minor in Texas.
+                                Log.d(TAG,"User is a minor so disable any features");
+                                ageVerificationPass = false;
+
+                            } else if (status == AgeSignalsVerificationStatus.UNKNOWN) {
+                                // User is in a regulated region (Texas) but Play hasn't verified them.
+                                // Best practice: Treat as minor or prompt to verify in Play Store.
+                                Log.d(TAG,"User is in a regulated region but Play hasn't verified them");
+                                prompUserToVerifyInPlayStore();
+                                ageVerificationPass = false;
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handshake Failed (e.g. no internet or service unavailable)
+                        Log.d(TAG, "AgeAPI handshake failed: " + e.getMessage());
+                        ageVerificationPass = true;
+                    });
+        }
+    }
+
+
+    private void prompUserToVerifyInPlayStore() {
+        Log.d(TAG,"Tell the user to verify their age in the PlayStore");
+        // This is the official deep-link/URL for Google Account Age Verification
+        mainActivityInterface.openDocument("https://myaccount.google.com/age-verification");
+    }
+
+    public boolean ageVerificationPass() {
+        return ageVerificationPass;
+    }
 }

@@ -138,7 +138,8 @@ public class SettingsCategories extends Fragment {
     private void setPermissions() {
         nearbyConnectionsPermission = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
             if (mainActivityInterface.getAppPermissions().hasGooglePlay() &&
-                    mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
+                    mainActivityInterface.getAppPermissions().hasNearbyPermissions() &&
+                    mainActivityInterface.getAppPermissions().ageVerificationPass()) {
                 mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
 
             } else {

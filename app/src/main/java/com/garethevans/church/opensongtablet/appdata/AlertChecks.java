@@ -9,6 +9,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class AlertChecks {
 
     // This class deals with checking if the app should show alerts
+    // It also includes the age verification checks for Texas from Jan 2026
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "AlertChecks";
     private final Context c;

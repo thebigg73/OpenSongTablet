@@ -129,6 +129,10 @@ dependencies {
     // Only include wearable APK in the withWear flavor
     withWearWearApp project(":wear")
 
+    // Age verification API for recent law changes in Texas
+    implementation 'com.google.android.play:age-signals:0.0.2' // Or latest version
+    implementation 'com.google.android.gms:play-services-tasks:18.4.0'
+
     // Kotlin requirements
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
 
