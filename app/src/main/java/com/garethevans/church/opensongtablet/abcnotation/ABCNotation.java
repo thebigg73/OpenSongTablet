@@ -21,7 +21,7 @@ public class ABCNotation {
 
     private String songTitle, songKey, songAbc, songTimeSig, abcInstrumentTab;
     private int songAbcTranspose;
-    private float abcPopupWidth;
+    private float abcPopupWidth=0.5f;
     private boolean abcAutoTranspose;
     private boolean autoshowMusicScore;
     private boolean abcIncludeTab;
@@ -58,7 +58,7 @@ public class ABCNotation {
     // If we change load in a profile, this is called
     public void getUpdatedPreferences() {
         abcAutoTranspose = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcAutoTranspose",true);
-        abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",abcPopupWidth);
+        abcPopupWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("abcPopupWidth",0.5f);
         autoshowMusicScore = mainActivityInterface.getPreferences().getMyPreferenceBoolean("autoshowMusicScore",false);
         abcIncludeTab = mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcIncludeTab",false);
         abcInstrumentTab = mainActivityInterface.getPreferences().getMyPreferenceString("abcInstrumentTab","guitar");

@@ -91,18 +91,18 @@ public class ABCPopup {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void setupViews() {
-        Log.d(TAG,"ABC PopUpViews");
+        Log.d(TAG, "ABC PopUpViews");
         // The popup
         popupWindow = new PopupWindow(c);
 
         // Check if the user wants to autotranspose the abc to the song key.  If so do it
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcTransposeAuto",true)) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("abcTransposeAuto", true)) {
             mainActivityInterface.getAbcNotation().getABCTransposeFromSongKey();
         }
 
         float[] splitColors = mainActivityInterface.getMyThemeColors().getAbcColorAndAlphaSplit();
 
-        Log.d(TAG,"color:"+splitColors[0]+"  alpha:"+splitColors[1]);
+        Log.d(TAG, "color:" + splitColors[0] + "  alpha:" + splitColors[1]);
         // The main layout (FloatWindow) is just a custom linearlayout where I've overridden the performclick
         floatWindow = new FloatWindow(c);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -111,14 +111,14 @@ public class ABCPopup {
         floatWindow.setLayoutParams(layoutParams);
         floatWindow.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
-                R.drawable.popup_sticky,null);
-        if (drawable!=null) {
-            drawable.setColor((int)splitColors[0]);
+                R.drawable.popup_sticky, null);
+        if (drawable != null) {
+            drawable.setColor((int) splitColors[0]);
         }
         popupWindow.setBackgroundDrawable(null);
         floatWindow.setBackground(drawable);
         floatWindow.setAlpha(splitColors[1]);
-        floatWindow.setPadding(16,16,16,16);
+        floatWindow.setPadding(16, 16, 16, 16);
 
         // Add the close button
         closeButton = new MyFloatingActionButton(c);
@@ -127,8 +127,8 @@ public class ABCPopup {
         buttonParams.gravity = Gravity.END;
         closeButton.setLayoutParams(buttonParams);
         closeButton.setSize(FloatingActionButton.SIZE_MINI);
-        Drawable closeIcon =  ContextCompat.getDrawable(c,R.drawable.close);
-        if (closeIcon!=null) {
+        Drawable closeIcon = ContextCompat.getDrawable(c, R.drawable.close);
+        if (closeIcon != null) {
             closeIcon = DrawableCompat.wrap(closeIcon).mutate();          // 🔑 mutate to avoid affecting other instances
             closeIcon.setColorFilter(mainActivityInterface.getMyThemeColors().getStickyTextColor(), PorterDuff.Mode.SRC_IN);
         }
@@ -139,13 +139,12 @@ public class ABCPopup {
             closeButton.setStateListAnimator(null);
         }
         closeButton.setImageDrawable(closeIcon);
-        closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
 
         floatWindow.addView(closeButton);
 
         // Now the WebView for the music score
-        inlineAbcObject = new InlineAbcObject(c,null,0,
+        inlineAbcObject = new InlineAbcObject(c, null, 0,
                 mainActivityInterface.getMyThemeColors().getColorInt("transparent"));
         inlineAbcObject.setAbcItem(0);
         inlineAbcObject.setIsPopup(true);
@@ -160,17 +159,16 @@ public class ABCPopup {
         inlineAbcObject.setInlineAbcWebView(inlineAbcWebView);
         inlineAbcWebView.setVisibility(View.VISIBLE);
         inlineAbcWebView.setAllowTouch(true);
-
         floatWindow.addView(inlineAbcWebView);
         floatWindow.setAlpha(splitColors[1]);
         popupWindow.setContentView(floatWindow);
         popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
         inlineAbcObject.getInlineAbcWebView();
         mainActivityInterface.getMainHandler().postDelayed(() -> {
-            if (inlineAbcObject!=null) {
+            if (inlineAbcObject != null) {
                 inlineAbcObject.updateContent();
             }
-        },1000);
+        }, 1000);
     }
 
     private void setListeners() {
