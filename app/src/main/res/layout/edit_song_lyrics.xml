@@ -69,13 +69,36 @@
         </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
+    <!-- The custom bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_anchorGravity="bottom"
+        android:orientation="vertical">
+        <HorizontalScrollView
+            android:id="@+id/imeBarScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" >
+
+    <LinearLayout
+        android:id="@+id/imeBar"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:padding="8dp"/>
+        </HorizontalScrollView>
+
     <LinearLayout
         android:id="@+id/undoRedo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:orientation="horizontal"
-        app:layout_anchorGravity="bottom">
+        android:layout_above="@id/imeBarScrollView">
 
         <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/undoButton"
@@ -104,12 +127,14 @@
         android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:contentDescription="@string/extra_settings"
-        app:layout_anchorGravity="bottom"
+        android:layout_above="@id/imeBarScrollView"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/menu" />
+    </RelativeLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

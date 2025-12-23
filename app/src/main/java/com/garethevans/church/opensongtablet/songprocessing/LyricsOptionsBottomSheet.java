@@ -108,13 +108,26 @@ public class LyricsOptionsBottomSheet extends BottomSheetCommon {
         });
         myView.insertGuitarTab.setOnClickListener(v -> {
             try {
+                String bitToAdd;
                 if (openingFragment != null) {
-                    String bitToAdd = "\n;e |--------|\n" +
-                            ";B |--------|\n" +
-                            ";G |--------|\n" +
-                            ";D |--------|\n" +
-                            ";A |--------|\n" +
-                            ";E |--------|";
+                    if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+                        bitToAdd = "\n;e |--------|\n" +
+                                ";B |--------|\n" +
+                                ";G |--------|\n" +
+                                ";D |--------|\n" +
+                                ";A |--------|\n" +
+                                ";E |--------|";
+                    } else {
+                        bitToAdd = "\n{sot}\n" +
+                                "e |--------|\n" +
+                                "B |--------|\n" +
+                                "G |--------|\n" +
+                                "D |--------|\n" +
+                                "A |--------|\n" +
+                                "E |--------|\n" +
+                                "{eot}";
+                    }
+
                     openingFragment.insertSection(bitToAdd,1);
                     this.dismiss();
                 }

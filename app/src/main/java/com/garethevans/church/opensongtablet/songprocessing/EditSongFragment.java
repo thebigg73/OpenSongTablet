@@ -252,6 +252,11 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         });
     }
 
+    public void moveSaveButtonUp(boolean moveUp) {
+        // If we have our custom text ribbon, we need to move the save button up
+        myView.saveChanges.setTranslationY(moveUp ? -48:0);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -1106,4 +1106,33 @@ public class Transpose {
     public boolean getForceReload() {
         return forceReload;
     }
+
+    public String[] getChordsInKey(String key) {
+        if (key == null || key.isEmpty()) {
+            key = "C";
+        }
+
+        // Get base chords in minor or major (key of Am/A)
+        String originalChords = key.endsWith("m") ? "Am Bm C Dm Em F G" : "A Bm C#m D E F#m";
+        String startKey = key.endsWith("m") ? "Am" : "A";
+
+        // Create a temp song that we will transpose these to the desired song key
+        Song tempSong = new Song();
+        tempSong.setLyrics("." + originalChords);
+        tempSong.setKey(startKey);
+        tempSong.setDetectedChordFormat(1);
+        int preferredFormat = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat", 1);
+        tempSong.setDesiredChordFormat(preferredFormat);
+
+        // Now transpose it - this deals with the formatting
+        int transposeTimes = getTransposeTimes(startKey, key);
+        tempSong = doTranspose(tempSong, "+1", transposeTimes, 1, preferredFormat);
+
+        // Now get the chords split by a space and return them
+        String lyrics = tempSong.getLyrics();
+        if (lyrics == null) {
+            lyrics = "";
+        }
+        return lyrics.replace(".", "").split(" ");
+    }
 }
