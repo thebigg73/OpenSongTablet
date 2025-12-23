@@ -745,9 +745,11 @@ public class SetManageFragment extends Fragment {
 
         String finalWhat = what;
         mainActivityInterface.getMainHandler().post(() -> {
-            myView.setName.setText(setName);
-            if (whattodo.equals("loadset") || whattodo.equals("renameset") || whattodo.equals("exportset")) {
-                myView.setItemSelected.setHint(finalWhat);
+            if (myView!=null) {
+                myView.setName.setText(setName);
+                if (whattodo.equals("loadset") || whattodo.equals("renameset") || whattodo.equals("exportset")) {
+                    myView.setItemSelected.setHint(finalWhat);
+                }
             }
         });
     }

@@ -286,6 +286,10 @@ public class StorageAccess {
         uriTreeDF = DocumentFile.fromFile(rootFolder);
         songsDF = DocumentFile.fromFile(new File(rootFolder, "Songs"));
         copyAssets();
+
+        // Check and remove any zero byte/corrupt files
+        removeZeroLengthFiles();
+
         return "Success";
     }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -398,6 +402,10 @@ public class StorageAccess {
 
             // Now copy the assets if they aren't already there
             copyAssets();
+
+            // Check and remove any zero byte/corrupt files
+            removeZeroLengthFiles();
+
             return "Success";
         } else {
             // Update the log
@@ -2688,6 +2696,25 @@ public class StorageAccess {
         }
     }
 
+    public void removeZeroLengthFiles() {
+        Log.d(TAG,"removeZeroLengthFiles()");
+        // Just in case we have any zero length/corrupt files, remove them
+        ArrayList<String> songIds = listSongs(true);
+        for (String songId:songIds) {
+            String oldsubfolder = "";
+            String oldfilename = songId;
+            if (songId.contains("/")) {
+                oldsubfolder = songId.substring(0, songId.lastIndexOf("/"));
+                oldfilename = songId.replace(oldsubfolder + "/", "");
+            }
+            Uri uriToCheck = getUriForItem("Songs", oldsubfolder, oldfilename);
+            if (getFileSizeFromUri(uriToCheck) == 0) {
+                updateFileActivityLog("(Songs) "+oldsubfolder+"/"+oldfilename+" is zero bytes/corrupt.  Move to Import folder for now");
+                copyFromTo("Songs",oldsubfolder,oldsubfolder,"Import","",oldfilename);
+                deleteFile(uriToCheck);
+            }
+        }
+    }
     public void setFileWriteLog(boolean fileWriteLog) {
         this.fileWriteLog = fileWriteLog;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("fileWriteLog",fileWriteLog);
