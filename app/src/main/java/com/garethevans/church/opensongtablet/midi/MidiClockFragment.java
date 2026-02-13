@@ -101,11 +101,9 @@ public class MidiClockFragment extends Fragment {
     }
 
     private void setupViews() {
-        myView.midiClockSend.setChecked(mainActivityInterface.getMidi().getMidiClockSend());
-        myView.midiClockShortBurst.setChecked(mainActivityInterface.getMidi().getMidiClockShortBurst());
-        myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || mainActivityInterface.getMidi().getMidiClockSend() ? View.VISIBLE:View.GONE);
-        myView.midiClockLatency.setValue(mainActivityInterface.getMidi().getMidiClockLatency());
-        myView.midiClockLatency.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClockLatency()));
+        myView.midiClockSend.setChecked(mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClock());
+        myView.midiClockShortBurst.setChecked(mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode());
+        myView.midiClockStartStop.setChecked(mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockStartStop());
         myView.midiClickTrackChannel.setLabelFormatter(new LabelFormatter() {
             @NonNull
             @Override
@@ -113,8 +111,8 @@ public class MidiClockFragment extends Fragment {
                 return String.valueOf((int)value);
             }
         });
-        myView.midiClickTrackSend.setChecked(mainActivityInterface.getMidi().getMidiClickTrackSend());
-        myView.midiClickTrackLayout.setVisibility(mainActivityInterface.getMidi().getMidiClickTrackSend() ? View.VISIBLE:View.GONE);
+        myView.midiClickTrackSend.setChecked(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeMidi());
+        myView.midiClickTrackLayout.setVisibility(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeMidi() ? View.VISIBLE:View.GONE);
         myView.midiClickTrackChannel.setValue(mainActivityInterface.getMidi().getMidiClickTrackChannel());
         myView.midiClickTrackChannel.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClickTrackChannel()));
         myView.midiClickTrackChannel.setLabelFormatter(new LabelFormatter() {
@@ -161,47 +159,34 @@ public class MidiClockFragment extends Fragment {
             }
         });
         // Get the max bars required
-        myView.maxBars.setValue(mainActivityInterface.getMetronome().getBarsRequired());
-        myView.maxBars.setHint(getMaxBars(mainActivityInterface.getMetronome().getBarsRequired()));
+        myView.maxBars.setValue(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeLength());
+        myView.maxBars.setHint(getMaxBars(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeLength()));
 
         myView.midiClickTest.setIcon(play_icon);
     }
 
     private void setListeners() {
         myView.midiClockSend.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getMidi().calculateMidiClock(mainActivityInterface.getMetronome().getTempo());
-            if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
-                mainActivityInterface.getMidi().setMidiClockSend(b);
-            } else {
-                mainActivityInterface.getShowToast().doIt(no_device_string);
-                myView.midiClockSend.setChecked(false);
-                mainActivityInterface.getMidi().setMidiClockSend(false);
-            }
-            if (myView.midiClockSend.getChecked()) {
-                myView.midiClockShortBurst.setChecked(false);
-            }
-            // Tell the user
-            if (mainActivityInterface.getMidi().getMidiClockSend()) {
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(b);
+            mainActivityInterface.getDrumViewModel().getMidiClock().setIsRunning(b);
+            if (b) {
+                mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
+                mainActivityInterface.getDrumViewModel().startTimerEngine();
                 mainActivityInterface.getShowToast().doIt(midi_clock_string+": "+start_string);
             } else {
                 mainActivityInterface.getShowToast().doIt(midi_clock_string+": "+stop_string);
+                mainActivityInterface.getDrumViewModel().stopTimerEngine();
             }
-            myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || mainActivityInterface.getMidi().getMidiClockSend() ? View.VISIBLE:View.GONE);
         });
         myView.midiClockShortBurst.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getMidi().setMidiClockShortBurst(b);
-            if (b) {
-                myView.midiClockSend.setChecked(false);
-                mainActivityInterface.getMidi().sendMidiClockShortBurst();
-            }
-            myView.midiClockLatency.setVisibility(mainActivityInterface.getMidi().getMidiClockSend() || b ? View.VISIBLE:View.GONE);
-        });
-        myView.midiClockLatency.addOnChangeListener((slider, value, fromUser) -> {
-            mainActivityInterface.getMidi().setMidiClockLatency((int)value);
-            myView.midiClockLatency.setHint(String.valueOf((int)value));
+            mainActivityInterface.getDrumViewModel().stopMidiClock();
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClockBurstMode(b);
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(myView.midiClockSend.isChecked());
+            mainActivityInterface.getDrumViewModel().getMidiClock().setIsRunning(myView.midiClockSend.isChecked());
         });
         myView.midiClickTrackSend.setOnCheckedChangeListener(((compoundButton, b) -> {
-            mainActivityInterface.getMidi().setMidiClickTrackSend(b);
+            mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeMidi(b);
+
             myView.midiClickTrackLayout.setVisibility(b ? View.VISIBLE:View.GONE);
         }));
         myView.midiClickTrackChannel.addOnChangeListener((slider, value, fromUser) -> {
@@ -252,7 +237,7 @@ public class MidiClockFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             int bars = (int) slider.getValue();
-            mainActivityInterface.getMetronome().setBarsRequired(bars);
+            mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeLength(bars);
         }
 
     }

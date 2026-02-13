@@ -20,7 +20,7 @@ public class MidiOptionsFragment extends Fragment {
     private SettingsMidiOptionsBinding myView;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MidiOptionsFragment";
-    private String midi_string="", deeplink_midi_clock="";
+    private String midi_string="", deeplink_midi_clock="", no_device_string="";
 
     @Override
     public void onResume() {
@@ -42,9 +42,16 @@ public class MidiOptionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsMidiOptionsBinding.inflate(inflater,container,false);
 
+        prepareStrings();
         setListeners();
 
         return myView.getRoot();
+    }
+
+    private void prepareStrings() {
+        if (getContext()!=null) {
+            no_device_string = getString(R.string.midi) + ": " + getString(R.string.connections_no_devices);
+        }
     }
 
     private void setListeners() {
@@ -62,7 +69,12 @@ public class MidiOptionsFragment extends Fragment {
             midiBoardBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiBoardBottomSheet");
         });
         myView.midiClock.setOnClickListener(view -> {
-            mainActivityInterface.navigateToFragment(deeplink_midi_clock,0);
+            // TODO reinstate the check for MIDI devices
+            //if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+                mainActivityInterface.navigateToFragment(deeplink_midi_clock, 0);
+            //} else {
+            //    mainActivityInterface.getShowToast().doIt(no_device_string);
+            //}
         });
     }
 }

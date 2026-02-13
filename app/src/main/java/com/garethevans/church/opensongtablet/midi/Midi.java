@@ -20,7 +20,6 @@ import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,10 +30,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class Midi {
 
@@ -49,18 +44,12 @@ public class Midi {
     private String[] messageParts;
     private final String sysexStartCode = "0xF0 0x7F 0xFA 0xF7";
     private final String sysexStopCode = "0xF0 0x7F 0xFC 0xF7";
-    private int midiInputChannelPedal, midiInputChannelSong, midiOutputChannel, midiClockLatency;
-    private boolean midiInput, midiInputAutoscroll, midiInputMetronome, midiInputPad, midiClockShortBurst;
-    private boolean midiClickTrackSend, midiClockSend, midiClockRunning=false;
+    private int midiInputChannelPedal, midiInputChannelSong, midiOutputChannel;
+    private boolean midiInput, midiInputAutoscroll, midiInputMetronome, midiInputPad;
     private int midiClickTrackChannel, midiClickTrackTick = 76, midiClickTrackTock = 77,
             midiClickTrackTickVolume, midiClickTrackTockVolume;
     private String midiClickTickMessageOn="", midiClickTockMessageOn="", midiClickTickMessageOff="", midiClickTockMessageOff="";
-    private long midiClockDelay = 0;
-    private long actualMidiClockDelay = 0;
-    private final byte[] midiClockBytes;
-    private ScheduledExecutorService midiClockExecutor;
-    private ScheduledFuture<?> future;
-    private Runnable clock;
+
     // Initialise
     public Midi(Activity activity,
                 Context c) {
@@ -69,7 +58,6 @@ public class Midi {
         mainActivityInterface = (MainActivityInterface) c;
         getUpdatedPreferences();
         shortHandMidi = new ShortHandMidi(c);
-        midiClockBytes = returnBytesFromHexText("0xF8");
     }
 
     // If we change load in a profile, this is called
@@ -91,11 +79,6 @@ public class Midi {
         midiInputAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputAutoscroll",false);
         midiInputMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputMetronome",false);
         midiInputPad = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiInputPad",false);
-        // Because MIDI clock can be processor intensive, it isn't a user preference.  It must be turned on manually
-        midiClockSend = false;
-        midiClockShortBurst = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiClockShortBurst",false);
-        midiClockLatency = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClockLatency",0);
-        midiClickTrackSend = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiClickTrackSend",false);
         midiClickTrackChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackChannel",10);
         midiClickTrackTick = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTick",76);
         midiClickTrackTock = mainActivityInterface.getPreferences().getMyPreferenceInt("midiClickTrackTock",77);
@@ -290,14 +273,6 @@ public class Midi {
 
     public void setIncludeBluetoothMidi(boolean includeBluetoothMidi) {
         this.includeBluetoothMidi = includeBluetoothMidi;
-    }
-
-    public void setMidiClockShortBurst(boolean midiClockShortBurst) {
-        this.midiClockShortBurst = midiClockShortBurst;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClockShortBurst",midiClockShortBurst);
-    }
-    public boolean getMidiClockShortBurst() {
-        return midiClockShortBurst;
     }
 
     public void setMidiDelay(int midiDelay) {
@@ -552,10 +527,19 @@ public class Midi {
                     int fretNum = Integer.parseInt(chordNotes[i]);
                     String openStringNote = startNotes.get(i);
 
+                    int thisFret;
+                    if (fretNum==0) {
+                        // Don't add the fret number for open strings
+                        thisFret = 0;
+                    } else {
+                        thisFret = fretNum + addFret - 1;
+                    }
+
+                    Log.d(TAG,"thisFret:"+thisFret);
                     // Now go through the notes array the fretNum times
                     int posInNotesArray = notes.indexOf(openStringNote);
-                    midiNotesOnArray.add(buildMidiString("NoteOn", 0, posInNotesArray + fretNum + addFret, 100));
-                    midiNotesOffArray.add(buildMidiString("NoteOff", 0, posInNotesArray + fretNum + addFret, 0));
+                    midiNotesOnArray.add(buildMidiString("NoteOn", 0, posInNotesArray + thisFret, 100));
+                    midiNotesOffArray.add(buildMidiString("NoteOff", 0, posInNotesArray + thisFret, 0));
                 }
             }
         }
@@ -1160,27 +1144,6 @@ public class Midi {
     public String getMidiClickTockMessageOn() {
         return midiClickTockMessageOn;
     }
-    public void setMidiClockSend(boolean midiClockSend) {
-        this.midiClockSend = midiClockSend;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClockSend",midiClockSend);
-        // Stop any existing midiClock
-        stopMidiClock();
-        if (midiClockSend) {
-            // Start the MIDI clock
-            startMidiClock();
-        }
-    }
-    public void sendMidiClockShortBurst() {
-        calculateMidiClock(mainActivityInterface.getSong());
-        if (midiClockShortBurst && midiDevice!=null ) {
-            stopMidiClock();
-            startMidiClock();
-        }
-    }
-    public void setMidiClickTrackSend(boolean midiClickTrackSend) {
-        this.midiClickTrackSend = midiClickTrackSend;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClickTrackSend",midiClickTrackSend);
-    }
     public void setMidiClickTrackChannel(int midiClickTrackChannel) {
         this.midiClickTrackChannel = midiClickTrackChannel;
         mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackChannel",midiClickTrackChannel);
@@ -1206,12 +1169,6 @@ public class Midi {
         mainActivityInterface.getPreferences().setMyPreferenceInt("midiClickTrackTockVolume",midiClickTrackTockVolume);
         setUpMidiTickTock();
     }
-    public boolean getMidiClockSend() {
-        return midiClockSend;
-    }
-    public boolean getMidiClickTrackSend() {
-        return midiClickTrackSend;
-    }
     public int getMidiClickTrackChannel() {
         setUpMidiTickTock();
         return midiClickTrackChannel;
@@ -1233,136 +1190,14 @@ public class Midi {
         return midiClickTrackTockVolume;
     }
     public void sendMidiTick() {
-        if (midiClickTrackSend && midiDevice!=null) {
+        if (midiDevice!=null) {
             sendMidiHexSequence(midiClickTickMessageOn + "\n" + midiClickTockMessageOff);
-            //sendMidiHexSequence(midiClickTickMessageOn);
         }
     }
     public void sendMidiTock() {
-        if (midiClickTrackSend && midiDevice!=null) {
+        if (midiDevice!=null) {
             sendMidiHexSequence(midiClickTockMessageOn + "\n" + midiClickTickMessageOff);
         }
-    }
-    public void calculateMidiClock(Song thisSong) {
-        if (thisSong!=null && thisSong.getTempo()!=null && !thisSong.getTempo().isEmpty()) {
-            String tempo = thisSong.getTempo().trim().replaceAll("\\D","");
-            if (!tempo.isEmpty()) {
-                calculateMidiClock(Integer.parseInt(tempo));
-            } else {
-                calculateMidiClock(100);
-            }
-        } else {
-            calculateMidiClock(100);
-        }
-    }
-    public void calculateMidiClock(int tempo) {
-        // Use the song bpm to calculate the microsecond delay for the MIDI clock messages
-        // Each beat (quarter note) has 24 pulses.
-        // 1 minute = 60 seconds
-        // 60 seconds = 60000 milliseconds = 60000000
-        // Uses the formula:  delay = 60,000,000 / (24 × BPM)
-        // 60,000,000 / (24 × BPM).  Answer is in microseconds
-
-        if (tempo > 0) {
-            // Likely we will need a fudge factor to account for Android timing issues
-            // The strenth of this will be 0-5
-            // For me 40bpm needed an extra 0.4bpm added = 1%
-            // 100bpm needed an extra 2bpm = 2%
-            // (bpm / 4)  / 10   40 / 4  / 10  =   = 1%
-            // (bpm / 4) / 10    100/4   / 10  = 2.5%
-            float fudgeFactor = 1 + (midiClockLatency * (((float)tempo/5f)/1000f));
-            int tempoToUse = Math.round(fudgeFactor * tempo);
-            float calculation = Math.round((float) (60000000) / ((float) (24 * tempoToUse)));
-            midiClockDelay = Math.round(calculation);
-        } else {
-            float fudgeFactor = 1 + (midiClockLatency * (((float)100/5f)/1000f));
-            int tempoToUse = Math.round(fudgeFactor * 100);
-
-            float calculation = Math.round((float) (60000000) / ((float) (24 * tempoToUse)));
-            midiClockDelay = Math.round(calculation);
-        }
-    }
-
-    public void setMidiClockLatency(int midiClockLatency) {
-        this.midiClockLatency = midiClockLatency;
-        mainActivityInterface.getPreferences().setMyPreferenceInt("midiClockLatency",midiClockLatency);
-        calculateMidiClock(mainActivityInterface.getMetronome().getTempo());
-    }
-    public int getMidiClockLatency() {
-        return midiClockLatency;
-    }
-
-    private long midiClockStartTime=0;
-    private long startFor24ppqn;
-    private int count = 1;
-    public void startMidiClock() {
-        actualMidiClockDelay = midiClockDelay;
-        startFor24ppqn = 0;
-        midiClockStartTime = 0;
-        if ((midiClockSend || midiClockShortBurst) && midiDevice!=null) {
-            midiClockRunning = true;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                clock = () -> {
-                    sendMidi(midiClockBytes);
-                    // Expected time was startTime + midiClockDelay.  We use actualMidiClockDelay as we might need to adjust
-                    // Any larger value is a delay that we remove from the next schedule
-                    //long expectedTime = currentTimeMicroSecs + midiClockDelay;
-                    //currentTimeMicroSecs = (System.nanoTime() / 1000);
-                    if (startFor24ppqn==0) {
-                        startFor24ppqn = (System.nanoTime() / 1000);
-                        if (midiClockStartTime==0) {
-                            midiClockStartTime = startFor24ppqn;
-                        }
-                    }
-
-                    //long latency = currentTimeMicroSecs - expectedTime;
-                    count ++;
-                    if (count>24) {
-                        // Work out the average time there has actually been between pulses
-                        long currentTime = (System.nanoTime() / 1000);
-                        long averageTime = (currentTime - startFor24ppqn) / 24;
-                        // The average time will likely be bigger than we want, so subtract this from the currentValue
-                        long difference = averageTime - midiClockDelay;
-                        actualMidiClockDelay = midiClockDelay - difference;
-                        count = 1;
-                        startFor24ppqn=0;
-
-                        if (midiClockShortBurst && currentTime > midiClockStartTime+4000000) {
-                            // If the time has exceeded 5 seconds, stop
-                            stopMidiClock();
-                        }
-                    }
-
-                    //future = midiClockExecutor.schedule(clock, actualMidiClockDelay-latency, TimeUnit.MICROSECONDS);
-                    future = midiClockExecutor.schedule(clock, actualMidiClockDelay, TimeUnit.MICROSECONDS);
-                };
-                midiClockExecutor = Executors.newSingleThreadScheduledExecutor();
-                future = midiClockExecutor.schedule(clock, midiClockDelay, TimeUnit.MICROSECONDS);
-                //future = midiClockExecutor.scheduleAtFixedRate(clock, 0, midiClockDelay, TimeUnit.MICROSECONDS);
-            }
-        }
-    }
-
-    public void stopMidiClock() {
-        midiClockRunning = false;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (midiClockExecutor!=null && future!=null) {
-                future.cancel(true);
-                midiClockExecutor.shutdown();
-                midiClockExecutor.shutdownNow();
-                Thread.currentThread().interrupt();
-                Runnable endclock = () -> midiClockExecutor.shutdown();
-                try {
-                    midiClockExecutor.schedule(endclock, 100, TimeUnit.MILLISECONDS);
-                } catch (Exception e) {
-                    midiClockExecutor.shutdownNow();
-                }
-            }
-        }
-    }
-
-    public boolean getMidiClockRunning() {
-        return midiClockRunning;
     }
 
 }
