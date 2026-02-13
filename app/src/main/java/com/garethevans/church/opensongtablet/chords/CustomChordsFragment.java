@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class CustomChordsFragment extends Fragment {
     private ArrayList<Boolean> pianoKeysOn;
     private boolean delete = false;
     private int selectedIndex = 0;
+    private String instrumentCode = "g";
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CustomChordsFrag";
@@ -90,17 +92,7 @@ public class CustomChordsFragment extends Fragment {
         // Build the guitar frets from the child layouts
         // Show the correct chord diagram (or hide if no custom chord)
         // Build the chord
-        if (isPiano()) {
-            adjustPianoVisibility();
-            vtoPiano();
-            buildPiano();
-            displayPianoChord();
-        } else {
-            adjustGuitarVisibility();
-            vtoGuitar();
-            buildGuitarFrets();
-            displayGuitarChord();
-        }
+        setupBasicFingerings();
 
         canShowSave();
 
@@ -199,6 +191,22 @@ public class CustomChordsFragment extends Fragment {
         }
     }
 
+    private void setupBasicFingerings() {
+        if (isPiano()) {
+            adjustPianoVisibility();
+            vtoPiano();
+            buildPiano();
+            displayPianoChord();
+            myView.pianoChordLayout.piano.setVisibility(View.VISIBLE);
+        } else {
+            adjustGuitarVisibility();
+            vtoGuitar();
+            buildGuitarFrets();
+            displayGuitarChord();
+            adjustGuitarVisibility();
+            myView.guitarChordLayout.setVisibility(View.VISIBLE);
+        }
+    }
     // Set up the drop down menus
     private void setupInstruments() {
         if (getContext()!=null) {
@@ -208,13 +216,15 @@ public class CustomChordsFragment extends Fragment {
             myView.instrument.setAdapter(exposedDropDownArrayAdapter);
         }
         // If this song has a preferred instrument stored, use that
-        String instrumentPref = mainActivityInterface.getSong().getPreferredInstrument();
-        if (instrumentPref==null || instrumentPref.isEmpty()) {
-            instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(
+        instrumentCode = mainActivityInterface.getSong().getPreferredInstrument();
+        Log.d(TAG,"instrumentCode:"+instrumentCode);
+        if (instrumentCode==null || instrumentCode.isEmpty()) {
+            instrumentCode = mainActivityInterface.getPreferences().getMyPreferenceString(
                     "chordInstrument", "g");
+            Log.d(TAG,"instrumentCode:"+instrumentCode);
         }
-        myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentPref));
-        mainActivityInterface.getMidi().setMidiInstrument(instrumentPref);
+        myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentCode));
+        mainActivityInterface.getMidi().setMidiInstrument(instrumentCode);
     }
     private void updateCustomChordDropDown() {
         chordsCodeForInstrument = new ArrayList<>();
@@ -270,9 +280,9 @@ public class CustomChordsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // Save the chosen instrument as our preference
-                String pref = mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(editable.toString());
-                mainActivityInterface.getPreferences().setMyPreferenceString("chordInstrument", pref);
-                mainActivityInterface.getMidi().setMidiInstrument(pref);
+                instrumentCode = mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(editable.toString());
+                mainActivityInterface.getPreferences().setMyPreferenceString("chordInstrument", instrumentCode);
+                mainActivityInterface.getMidi().setMidiInstrument(instrumentCode);
 
                 // This building part draws and measures
                 // Once measured, the views are shown, not hidden
@@ -290,6 +300,7 @@ public class CustomChordsFragment extends Fragment {
                 // This will cause views to be drawn, etc.
                 selectedIndex = -1;
                 updateCustomChordDropDown();
+                setupBasicFingerings();
             }
         });
 
@@ -348,14 +359,14 @@ public class CustomChordsFragment extends Fragment {
 
     // Simple getters based on the instrument chosen
     private int numberOfStrings() {
-        String currInstr = myView.instrument.getText().toString();
-        if (currInstr.equals(guitar_string)) {
+        if (instrumentCode.equals("g")) {
             return 6;
-        } else if (currInstr.equals(banjo5_string)) {
+        } else if (instrumentCode.equals("B")) {
             return 5;
         } else if (isPiano()) {
             return 0;
         } else {
+            // b, u, m, c
             return 4;
         }
     }
@@ -367,6 +378,7 @@ public class CustomChordsFragment extends Fragment {
     private void adjustGuitarVisibility() {
         // The view we want is set to invisible, so it can be drawn, measured, scaled
         // The associated VTO will set to visible once done
+        Log.d(TAG,"currentCode:"+currentCode);
         if (currentCode!=null && !currentCode.isEmpty()) {
             myView.guitarChordLayout.setVisibility(View.INVISIBLE);
         } else {
@@ -376,6 +388,7 @@ public class CustomChordsFragment extends Fragment {
         myView.pianoChordLayout.piano.setVisibility(View.GONE);
     }
     private void buildGuitarFrets() {
+        Log.d(TAG,"buildGuitarFrets()");
         myView.guitarChordLayout.removeAllViews();
 
         // Set the string markers (and space) for the first row
@@ -491,6 +504,7 @@ public class CustomChordsFragment extends Fragment {
             if (which >= 0) {
                 // Update the code
                 currentCode = chordsCodeForInstrument.get(which);
+                defaultCode = currentCode;
                 myView.customCode.setHint(currentCode);
                 // Set the fret marker
                 setMarkerText("fretMarker",chordsFretForInstrument.get(which));
@@ -807,6 +821,7 @@ public class CustomChordsFragment extends Fragment {
     private void doSave() {
         // Replace the currently edited chord
         // Remove the default code (original)
+        Log.d(TAG,"customChordsCode:"+customChordCode+"  currentCode:"+currentCode+"  defaultCode:"+defaultCode);
         if (!currentCode.equals(defaultCode)) {
             customChordCode.remove(defaultCode);
         }
@@ -831,10 +846,12 @@ public class CustomChordsFragment extends Fragment {
         customChordCode.clear();
         customChordCode.addAll(hashSet);
         for (String code:customChordCode) {
-            if (!code.trim().isEmpty()) {
+            Log.d(TAG,"code about to be added to song:"+code);
+            if (!code.trim().isEmpty() && !customChordText.toString().contains(code)) {
                 customChordText.append(code).append(" ");
             }
         }
+        Log.d(TAG,"About to save to song.  setCustomChords("+customChordText.toString().trim()+")");
         mainActivityInterface.getSong().setCustomChords(customChordText.toString().trim());
         mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
         currentCode = "";
@@ -859,6 +876,7 @@ public class CustomChordsFragment extends Fragment {
 
     // Added a new custom chord name for this instrument via a BottomSheet/MainActivity
     public void updateValue(String newChord) {
+        Log.d(TAG,"updateValue("+newChord+")");
         // Received from the textInputBottomSheet via the MainActivity
         if (newChord!=null) {
             // Only allow if this chord doesn't already exist for this instrument
@@ -870,6 +888,8 @@ public class CustomChordsFragment extends Fragment {
                     alreadyExists = true;
                 }
             }
+
+            Log.d(TAG,"alreadyExists:"+alreadyExists);
             if (alreadyExists) {
                 mainActivityInterface.getShowToast().doIt(custom_chord_exists_string);
             } else {
@@ -886,7 +906,6 @@ public class CustomChordsFragment extends Fragment {
 
                 // Set the new code to the code hint and trigger the save
                 // Because it doesn't match the currentCode, it won't overwrite anything
-                //currentCode = "new_chord";
                 currentCode = defaultCode;
                 myView.customCode.setHint(defaultCode);
                 doSave();
