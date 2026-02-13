@@ -1834,4 +1834,5 @@
     <string name="drummer_fill">Drummer fill</string>
     <string name="drummer_transition">Drummer transition</string>
     <string name="drummer_settings">Drummer settings</string>
+    <string name="drummer_not_valid">Please edit the song and set a valid tempo and timesignature</string>
 </resources>
