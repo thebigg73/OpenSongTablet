@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,7 +126,6 @@ public class MyMaterialSlider extends LinearLayout {
         if (stepSize>-1) {
             slider.setStepSize(stepSize);
         }
-        Log.d(TAG,"value:"+value);
         if (value>-1) {
             setValue(value);
         }

@@ -31,7 +31,15 @@
                 android:text="@string/midi_clock_short_burst"
                 android:hint="@string/midi_clock_short_burst_info" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/midiClockStartStop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/midi_clock_start_stop"
+                android:hint="@string/midi_clock_start_stop_info" />
+
+            <!--<com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
                 android:id="@+id/midiClockLatency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +48,7 @@
                 app:infoText="@string/midi_clock_latency_info"
                 android:valueFrom="0"
                 android:valueTo="5"
-                app:adjustable="true" />
+                app:adjustable="true" />-->
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 

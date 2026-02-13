@@ -24,7 +24,7 @@ public class UtilitiesMenuFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsUtilitiesBinding myView;
     private String beatBuddy_string = "", utilities_string="", aeros_string="",
-            deeplink_database_utilities="", voiceLive_string;
+            deeplink_database_utilities="", voiceLive_string, deeplink_drummer;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -73,6 +73,7 @@ public class UtilitiesMenuFragment extends Fragment {
             aeros_string = getString(R.string.deeplink_aeros);
             voiceLive_string = getString(R.string.deeplink_voicelive);
             deeplink_database_utilities = getString(R.string.deeplink_database_utilities);
+            deeplink_drummer = getString(R.string.deeplink_drummer_settings);
         }
     }
 
@@ -122,6 +123,7 @@ public class UtilitiesMenuFragment extends Fragment {
             mainActivityInterface.selectFile(intent);
         });
         myView.mutitrackPlayer.setOnClickListener(v -> mainActivityInterface.displayMultiTrack());
+        myView.drumSequencer.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_drummer,0));
     }
 
 }

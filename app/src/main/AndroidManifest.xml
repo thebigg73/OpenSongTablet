@@ -144,10 +144,11 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:configChanges="uiMode|orientation|keyboard|keyboardHidden|screenSize|navigation|screenLayout"
+            android:configChanges="uiMode|orientation|keyboard|keyboardHidden|screenSize|navigation|screenLayout|smallestScreenSize"
             android:screenOrientation="fullUser"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            android:launchMode="singleInstance"
+            android:resizeableActivity="true"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme"
             android:hardwareAccelerated="false"
             android:stateNotNeeded="true"

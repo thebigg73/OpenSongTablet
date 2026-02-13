@@ -521,34 +521,52 @@ public class MyToolbar extends MaterialToolbar {
 
     public void setUpMetronomeBar(int beats) {
         this.beats = beats;
+
+        // Force visibility NOW so it's ready for Beat 1
+        if (metronomeLayout != null) {
+            metronomeLayout.setVisibility(View.VISIBLE);
+            makeAllBeatsTransparent();
+        }
+
         if (beats==0) {
             // Something wrong, so hide all
             for (int x = 1; x <= 16; x++) {
-                beatView.get(x).setVisibility(View.GONE);
+                if (beatView!=null && beatView.get(x)!=null) {
+                    beatView.get(x).setVisibility(View.GONE);
+                }
             }
-            metronomeLayout.setVisibility(View.GONE);
+            if (metronomeLayout!=null) {
+                metronomeLayout.post(() -> metronomeLayout.setVisibility(View.GONE));
+            }
         } else {
             // Make the ones we need visible, but transparent
             for (int x = 1; x <= beats; x++) {
-                beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
-                beatView.get(x).setVisibility(View.VISIBLE);
+                if (beatView!=null && beatView.get(x)!=null) {
+                    beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
+                    beatView.get(x).setVisibility(View.VISIBLE);
+                }
             }
             // Hide the ones we don't need
             for (int x = beats + 1; x <= 16; x++) {
-                beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
-                beatView.get(x).setVisibility(View.GONE);
+                if (beatView!=null && beatView.get(x)!=null) {
+                    beatView.get(x).setBackgroundColor(Color.TRANSPARENT);
+                    beatView.get(x).setVisibility(View.GONE);
+                }
             }
-            metronomeLayout.setVisibility(View.VISIBLE);
+            if (metronomeLayout!=null) {
+                metronomeLayout.post(() -> metronomeLayout.setVisibility(View.VISIBLE));
+            }
+        }
+
+        // Add this at the end of the method to ensure the UI thread
+        // has actually finished drawing the views before the timer hits
+        if (metronomeLayout!=null) {
+            metronomeLayout.requestLayout();
         }
     }
 
     public void hideMetronomeBar() {
-        for (int x=1; x<=16; x++) {
-            View view = beatView.get(x);
-            view.post(() -> {
-                view.setBackgroundColor(Color.TRANSPARENT);
-            });
-        }
+        makeAllBeatsTransparent();
         metronomeLayout.post(() -> metronomeLayout.setVisibility(View.GONE));
     }
 
@@ -559,29 +577,38 @@ public class MyToolbar extends MaterialToolbar {
         }
     }
 
-    public void highlightBeat(int beat, int colorOn, long bufferFix) {
-        // Highlight the beat
-        // Make sure the layout is visible!
+    public void highlightBeat(int beat, int colorOn, long flashDuration) {
+        post(() -> {
+            // Metronome sends 1, 2, 3, 4.
+            // Your list is [null, view1, view2, view3, view4]
+            int index = beat;
 
-            mainActivityInterface.getMainHandler().postDelayed(() -> {
-                try {
-                    if (metronomeLayout.getVisibility()!=View.VISIBLE) {
-                        metronomeLayout.setVisibility(View.VISIBLE);
-                    }
-                    beatView.get(beat).setBackgroundColor(colorOn);
-                    if (beat == 1) {
-                        // Hide the last beat
-                        beatView.get(beats).setBackgroundColor(Color.TRANSPARENT);
-                    } else {
-                        // Hide the previous beat
-                        beatView.get(beat - 1).setBackgroundColor(Color.TRANSPARENT);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "Likely the beat view was lost when trying to update");
-                }
-            },bufferFix);
+            if (beatView == null || index < 1 || index >= beatView.size()) {
+                // This is likely where Beat 1 is dying
+                Log.e("MyToolbar", "OUT OF BOUNDS: index=" + index + " size=" + (beatView != null ? beatView.size() : 0));
+                return;
+            }
 
+            if (metronomeLayout.getVisibility() != View.VISIBLE) {
+                metronomeLayout.setVisibility(View.VISIBLE);
+            }
+
+            View light = beatView.get(index);
+            if (light != null) {
+                light.animate().cancel();
+                light.setAlpha(1.0f);
+                light.setBackgroundColor(colorOn);
+
+                // Calculate gap so beats don't bleed together
+                long adjustedDuration = Math.max(10, flashDuration - 20);
+
+                light.animate()
+                        .alpha(0f)
+                        .setDuration(10)
+                        .setStartDelay(adjustedDuration)
+                        .start();
+            }
+        });
     }
 
     public void changeTheme() {

@@ -140,6 +140,29 @@ public class PerformanceGestures {
             case "metronomesettings":
                 metronomeSettings();
                 break;
+            case "drummer":
+                if (isLongPress) {
+                    drummerPlayer();
+                } else {
+                    toggleDrummer();
+                }
+                break;
+            case "drummer_player":
+                if (isLongPress) {
+                    toggleDrummer();
+                } else {
+                    drummerPlayer();
+                }
+                break;
+            case "drummer_settings":
+                drummerSettings();
+                break;
+            case "drummer_fill":
+                drummerFill();
+                break;
+            case "drummer_transition":
+                drummerTransition();
+                break;
             case "autoscroll":
                 if (isLongPress) {
                     autoscrollSettings();
@@ -773,6 +796,32 @@ public class PerformanceGestures {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_metronome),0);
     }
 
+    // Start or stop the drummer
+    public void toggleDrummer() {
+        actionInterface.drummerToggle();
+    }
+
+    // Open the drummer settings / sequencer
+    public void drummerSettings() {
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_drummer_settings), 0);
+    }
+
+    // Make the drummer play a fill
+    public void drummerFill() {
+        mainActivityInterface.getDrumViewModel().drummerFill();
+    }
+
+    // Make the drummer transition
+    public void drummerTransition() {
+        mainActivityInterface.getDrumViewModel().drummerTransition();
+    }
+
+    // Show the drummer popup window for control
+    public void drummerPlayer() {
+        mainActivityInterface.displayDrummerPopup();
+    }
+
+    // Open the drummer settings
     // Next song
     public void nextSong() {
         if (mainActivityInterface.getPedalActions().getPedalScrollBeforeMove() && canScroll(true)) {
@@ -1386,7 +1435,7 @@ public class PerformanceGestures {
         // Start or stop the MIDI clock.  This will trigger messages to the user
         // Only allow if MIDI device
         if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
-            boolean currValue= mainActivityInterface.getMidi().getMidiClockSend();
+            boolean currValue= mainActivityInterface.getDrumViewModel().getMidiClock().getIsRunning();
             if (currValue) {
                 // Tell the user
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock)+": "+c.getString(R.string.start));
@@ -1394,25 +1443,25 @@ public class PerformanceGestures {
                 // Tell the user
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock)+": "+c.getString(R.string.stop));
             }
-            mainActivityInterface.getMidi().setMidiClockSend(!currValue);
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(!currValue);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_no_devices));
-            mainActivityInterface.getMidi().setMidiClockSend(false);
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
         }
     }
     public void midiClockBurst() {
         // Find out if we were sending this already
-        boolean sendingalready = mainActivityInterface.getMidi().getMidiClockShortBurst();
+        boolean sendingalready = mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode();
         if (!sendingalready) {
             // Switch off the master MIDI clock send
-            mainActivityInterface.getMidi().setMidiClockSend(false);
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
             // Tell the user
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst) + ": " + c.getString(R.string.on));
         } else {
             // Tell the user
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst)+": "+c.getString(R.string.off));
         }
-        mainActivityInterface.getMidi().setMidiClockShortBurst(!sendingalready);
+        mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClockBurstMode(!sendingalready);
     }
 
     // Nearby messages

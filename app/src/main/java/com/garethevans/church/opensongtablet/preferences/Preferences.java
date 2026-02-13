@@ -473,6 +473,7 @@ public class Preferences extends Activity {
     // metronomeAudio                   boolean     Should the metronome use audio playback of tick/tocks (def:true)
     // metronomeAutoStart               boolean     Should the metronome autostart with song (after manually starting first time) (def:false)
     // metronomeLength                  int         Number of bars the metronome stays on for (0=indefinitely) (def:0)
+    // metronomeMidi                    boolean     Should the metronome also send MIDI beats? (def: false)
     // metronomeSyncWithBeatBuddy       boolean     Should the metronome start and stop sync with the BeatBuddy (def:false)
     // metronomePan                     String      The panning of the metronome sound L, C, R (def:C)
     // metronomeTickSound               String      The reference to the filename in the assets/metronome for the tick (def:digital_high)
@@ -480,6 +481,8 @@ public class Preferences extends Activity {
     // metronomeTockSound               String      The reference to the filename in the assets/metronome for the tick (def:digital_low)
     // metronomeTockVol                 float       The volume of the metronome tick (def:0.6f)
     // metronomeShowVisual              boolean     Should the metronome be visual (flash action bar) (def:false)
+    // metronomeUseDefaults             boolean     Should the metronome use the default time signature of 4/4 and tempo of 100bpm if not set? (def: false)
+    // metronomeWearOS                  boolean     Should the metronome be sent to connected WearOS device (def:false)
     // midiAction1                      String      Midi message allocated to midiAction1 assignable to action/pedal (def:0x99 0x24 0x64) - bass drum
     // midiAction2                      String      Midi message allocated to midiAction2 assignable to action/pedal (def:0x99 0x26 0x64) - snare drum
     // midiAction3                      String      Midi message allocated to midiAction3 assignable to action/pedal (def:0x99 0x2A 0x64) - closed hat
@@ -505,6 +508,7 @@ public class Preferences extends Activity {
     // midiInput                        boolean     Should the app listen for MIDI messages for songs/foot pedal (def:false)
     // midiInputChannelPedal            int         The default MIDI input channel to listen on for pedal controls (def:8)
     // midiInputChannelSong             int         The default MIDI input channel to listen on for song controls (def:9)
+    // midiClock                        boolean     Should the MIDI clock be sent? (def:false)
     // midiClockLatency                 int         The level of latency to try to account for.  A fudge factor of 1-5 (def:0)
     // midiOutputChannel                int         The default MIDI output channel for building MIDI messages, etc. (def:1)
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)

@@ -57,6 +57,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -102,7 +103,10 @@ import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
+import com.garethevans.church.opensongtablet.drummer.DrumViewModel;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
+import com.garethevans.church.opensongtablet.drummer.DrummerPopUp;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.OpenSongSetBundle;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -254,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private DisplayPrevNext displayPrevNext;
     private DrawNotes drawNotes;
     private Drummer drummer;
+    private DrumViewModel drumViewModel;
     private ExportActions exportActions;
     private FixLocale fixLocale;
     private Gestures gestures;
@@ -306,6 +311,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean requireAudioRecorder = false;
     private AudioRecorderPopUp audioRecorderPopUp;
     private MultiTrackPopUp multiTrackPopUp;
+
+    // The drummer
+    private DrummerPopUp drummerPopUp;
 
     // The navigation controls
     private NavHostFragment navHostFragment;
@@ -363,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
             song_actions = "", deeplink_preferences = "", song_string = "", set_string = "",
-            search_index_start = "", search_index_end = "", deeplink_metronome = "",
+            search_index_start = "", search_index_end = "", deeplink_metronome = "", deeplink_drummer_settings = "",
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info = "";
@@ -741,6 +749,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             search_index_start = getString(R.string.index_songs_start);
             search_index_end = getString(R.string.index_songs_end);
             deeplink_metronome = getString(R.string.deeplink_metronome);
+            deeplink_drummer_settings = getString(R.string.deeplink_drummer_settings);
             mode_presenter = getString(R.string.mode_presenter);
             mode_performance = getString(R.string.mode_performance);
             mode_stage = getString(R.string.mode_stage);
@@ -757,6 +766,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
+        setIntent(intent);
         fileOpenIntent = intent;
         // Send the action to be called from the opening fragment to fix backstack!
         if (settingsOpen) {
@@ -905,6 +915,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         beatBuddy = getBeatBuddy();
         voiceLive = getVoiceLive();
         drummer = getDrummer();
+        drumViewModel = getDrumViewModel();
         pedalActions = getPedalActions();
         pad = getPad();
         autoscroll = getAutoscroll();
@@ -2018,6 +2029,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+    @Override
+    public void displayDrummerPopup() {
+        if (myView != null) {
+            if (drummerPopUp != null && drummerPopUp.getIsShowing()) {
+                try {
+                    drummerPopUp.destroyPopup();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                drummerPopUp = new DrummerPopUp(this);
+                drummerPopUp.floatWindow(myView.fragmentView);
+            }
+        }
+    }
+
     @SuppressLint("NewApi")
     @Override
     public void displayMultiTrack() {
@@ -3070,6 +3097,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return drummer;
     }
 
+    @Override
+    public DrumViewModel getDrumViewModel() {
+        if (drumViewModel==null) {
+            drumViewModel = new ViewModelProvider(this).get(DrumViewModel.class);
+            drumViewModel.initialiseDrums(this);
+            observeDrummer();
+        }
+        return drumViewModel;
+    }
+
     // Sticky notes
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
@@ -3098,21 +3135,45 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Metronome
     @Override
     public void metronomeToggle() {
-        // Get the song values for the metronome if any
-        metronome.setSongValues();
-        if (metronome.metronomeValid()) {
-            // Toggle the start or stop
-            if (!metronome.getIsRunning()) {
-                metronome.startMetronome();
-            } else {
-                metronome.stopMetronome();
-            }
+        Log.d(TAG,"metronomeToggle()");
+        getDrumViewModel();
+        if (DrumCalculations.isTempoTimeSigValid(song,getDrumViewModel().getMetronome().getMetronomeUseDefaults())) {
+            drumViewModel.toggleMetronome();
         } else {
             // Open up the metronome settings
+            drumViewModel.stopMetronome();
             navigateToFragment(deeplink_metronome, 0);
+        }
+        /*if (drumViewModel.isMetronomeValid()) {
+            drumViewModel.toggleMetronome();
+
+        } else {
+            // Open up the metronome settings
+            drumViewModel.stopMetronome();
+            navigateToFragment(deeplink_metronome, 0);
+        }*/
+    }
+
+    @Override
+    public void drummerToggle() {
+        getDrumViewModel();
+        if (DrumCalculations.isTempoTimeSigValid(song,getDrumViewModel().getMetronome().getMetronomeUseDefaults())) {
+            drumViewModel.toggleDrummer();
+        } else {
+            // Open up the drummer settings
+            drumViewModel.stopDrummer();
+            navigateToFragment(deeplink_drummer_settings, 0);
         }
     }
 
+    private void observeDrummer() {
+        // Also observe playing state to clear the lights when stopped
+        drumViewModel.getIsDrummerPlaying().observe(this, isPlaying -> {
+            if (!isPlaying) {
+                getToolbar().hideMetronomeBar();
+            }
+        });
+    }
 
     // CCLI
     @Override
@@ -4307,9 +4368,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public Metronome getMetronome() {
+        Log.d(TAG,"TODO Can remove this - getMetronome()");
         if (metronome == null) {
-            metronome = new Metronome(this);
-            metronome.initialiseMetronome();
+            //metronome = new Metronome(this);
+            //metronome.initialiseMetronome();
         }
         return metronome;
     }
@@ -4944,10 +5006,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getMyThemeColors();
 
             // Prepapre the metronome
-            getMetronome();
+            //getMetronome();
 
             if (metronome != null) {
-                metronome.initialiseMetronome();
+                //metronome.initialiseMetronome();
             }
 
         }
@@ -4973,7 +5035,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             autoscroll.stopTimers();
         }
         if (metronome != null) {
-            metronome.stopTimers(true);
+            //metronome.stopTimers(true);
         }
     }
 
@@ -4983,9 +5045,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (pad != null) {
             pad.stopPad();
         }
-        // Stop metronome timers
-        if (metronome != null) {
-            metronome.stopTimers(true);
+        // Stop metronome, drummer and timers
+        if (drumViewModel != null) {
+            drumViewModel.stopAll();
         }
         // Stop autoscroll timers
         if (autoscroll != null) {
@@ -5018,9 +5080,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Turn off nearby
         getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
 
-        // Stop and clear the metronome
-        getMetronome().releaseSoundPool();
-
         // Reset the dealt with intent
         try {
             getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", false);
@@ -5029,8 +5088,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // If we had a bluetooth MIDI device, cancel the connection and unpair
-        // Also stop any MIDI clock
-        getMidi().stopMidiClock();
         getMidi().tryDisconnectBluetoothLE();
 
         getMultiTrackPlayer().closeMultitrack();
@@ -5040,7 +5097,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getStorageAccess().wipeFolder("Received", "");
 
         // If we were using the drummer, release the mediaPlayers
-        getDrummer().endDrummer();
+        getDrumViewModel().stopAll();
+        getDrumViewModel().getDrumSoundManager().release();
 
         // Keep a reference to connections if needed as bundle
 

@@ -1,0 +1,141 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/DefaultView">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/controls"
+        android:orientation="vertical">
+
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/coming_soon" />
+
+        <RadioGroup
+            android:id="@+id/variationGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/radioMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Main"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/radioFull"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Fill"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/radioHalf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Half Fill"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/instrumentLabelContainer"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/beatIndicatorContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="4dp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/sequencerRecyclerView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/btnPlayStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/btnFill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/star" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/btnTransition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/swap" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/btnResetToDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/refresh" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/btnClearPattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/delete" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+            android:id="@+id/btnSavePattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/save" />
+
+    </LinearLayout>
+
+</RelativeLayout>

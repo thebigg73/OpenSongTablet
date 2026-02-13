@@ -154,7 +154,16 @@
                     android:text="@string/metronome_duration"
                     android:value="0"
                     android:valueFrom="0"
-                    android:valueTo="64" />
+                    android:valueTo="64"
+                    android:layout_marginBottom="16dp"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                    android:id="@+id/metronomeDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/use_default"
+                    android:hint="@string/default_metronome_info"
+                    android:layout_marginBottom="16dp"/>
 
                 <LinearLayout
                     android:id="@+id/audioSettings"

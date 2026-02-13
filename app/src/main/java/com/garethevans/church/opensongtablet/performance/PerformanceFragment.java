@@ -72,8 +72,8 @@ public class PerformanceFragment extends Fragment {
     private int heightAfterScale;
     private boolean processingTestView;
     private boolean songChange;
+    private boolean metronomeDrummerChange;
     private boolean firstSongLoad = true;
-    private boolean metronomeWasRunning;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -444,9 +444,12 @@ public class PerformanceFragment extends Fragment {
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
         // IV - Set a boolean indicating song change
+        Log.d(TAG,"folder:"+folder+"  filname:"+filename+"   song.getFolder:"+mainActivityInterface.getSong().getFolder()+"   song.getFilename:"+mainActivityInterface.getSong().getFilename());
         songChange = !mainActivityInterface.getSong().getFilename().equals(filename) ||
                 !mainActivityInterface.getSong().getFolder().equals(folder) ||
                 firstSongLoad || mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getForceReload();
+        metronomeDrummerChange = !mainActivityInterface.getSong().getFilename().equals(filename) ||
+                !mainActivityInterface.getSong().getFolder().equals(folder);
         mainActivityInterface.setHighlightChangeAllowed(true);
 
         if (filename==null || filename.isEmpty() ||
@@ -458,6 +461,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getSong().setFolder(mainfoldername);
         }
 
+        Log.d(TAG,"songChange:"+songChange);
         boolean needToTryAgain = false;
         boolean needToPauseTryAgain = false;
         String keyInFilename;
@@ -1489,25 +1493,41 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }
 
-            metronomeWasRunning = mainActivityInterface.getMetronome().getIsRunning();
-            if (songChange && metronomeWasRunning && !mainActivityInterface.getMetronome().getMetronomeAutoStart()) {
-                // The metronome autostart is switched of and the metronome was running, stop it
-                mainActivityInterface.getMetronome().stopMetronome();
+            // TODO - updated metronome logic
+            // Process our song time signature and tempo
+            boolean metronomeWasRunning = mainActivityInterface.getDrumViewModel().getMetronome().getIsRunning();
+            boolean drummerWasRunning = mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning();
+            boolean metronomeAutostart = mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeAutoStart();
 
-            } else if (songChange && metronomeWasRunning) {
-                // The metronome was running, with autostart on, so update the song values
-                mainActivityInterface.getMetronome().setMetronomeChanged(true);
+            // Prepare the new values for the metronome/drummer in case we need them
+            mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
+
+            // Stop the metronome and drummer incase they were running if we have changed song
+            if (metronomeDrummerChange) {
+                mainActivityInterface.getDrumViewModel().stopMetronome();
+                mainActivityInterface.getDrumViewModel().stopDrummer();
             }
 
+            // Now, if we were running the metronome or drummer, start them again
+            if (metronomeDrummerChange && metronomeWasRunning && metronomeAutostart) {
+                // Start the metronome
+                mainActivityInterface.getDrumViewModel().startMetronome();
+            }
+            if (metronomeDrummerChange && drummerWasRunning) {
+                // Start the drummer
+                mainActivityInterface.getDrumViewModel().startDrummer();
+            }
+
+            // If we have switched on the midiClock, start that again
+            if (mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClock()) {
+                mainActivityInterface.getDrumViewModel().startMidiClock();
+            }
             // Deal with capo information (if required)
             mainActivityInterface.updateOnScreenInfo("capoShow");
             mainActivityInterface.dealWithCapo();
 
             // Start the pad (if the pads are activated and the pad is valid)
             mainActivityInterface.getPad().autoStartPad();
-
-            // Send an update to the MIDI clock if we are sending a short burst
-            mainActivityInterface.getMidi().sendMidiClockShortBurst();
 
             // Update any midi commands (if any)
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() ||

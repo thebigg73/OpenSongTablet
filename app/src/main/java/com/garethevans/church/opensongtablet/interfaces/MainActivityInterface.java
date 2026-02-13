@@ -37,6 +37,7 @@ import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
+import com.garethevans.church.opensongtablet.drummer.DrumViewModel;
 import com.garethevans.church.opensongtablet.drummer.Drummer;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.OpenSongSetBundle;
@@ -274,6 +275,8 @@ public interface MainActivityInterface {
     Midi getMidi();
     void registerMidiPedalAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
     Drummer getDrummer();
+    DrumViewModel getDrumViewModel();
+    void displayDrummerPopup();
     BeatBuddy getBeatBuddy();
     Aeros getAeros();
     VoiceLive getVoiceLive();

@@ -268,6 +268,7 @@
     <string name="column_force">Manually override column breaks</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Use the new page code (!--) in the song to force a new column break when autoscaling</string>
     <string name="column_force_insert">Insert column break</string>
+    <string name="coming_soon">Coming soon...</string>
     <string name="comment">Comment</string>
     <string name="comment_background">Comment background</string>
     <string name="commentline_scale">Scale comment text</string>
@@ -403,7 +404,7 @@
     <string name="deeplink_database_utilities" translatable="false">https://www.opensongapp.com/?p=settings/utilities/database</string>
     <string name="deeplink_display" translatable="false">https://www.opensongapp.com/?p=display</string>
     <string name="deeplink_display_extra" translatable="false">https://www.opensongapp.com/?p=settings/display/extra</string>
-    <string name="deeplink_drummer" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummer</string>
+    <string name="deeplink_drummer_settings" translatable="false">https://www.opensongapp.com/?p=settings/actions/drummersettings</string>
     <string name="deeplink_edit" translatable="false">https://www.opensongapp.com/?p=settings/edit</string>
     <string name="deeplink_export" translatable="false">https://www.opensongapp.com/?p=settings/actions/export</string>
     <string name="deeplink_fonts" translatable="false">https://www.opensongapp.com/?p=settings/display/fonts</string>
@@ -1721,6 +1722,7 @@
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
     <string name="website_custom_slide" translatable="false">https://www.opensongapp.com/user-manual/sets/custom-slides</string>
     <string name="website_database_utilities" translatable="false">https://www.opensongapp.com/user-manual/utilities/database-utilities</string>
+    <string name="website_drummer" translatable="false">https://www.opensongapp.com/user-manual/utilities/drummer</string>
     <string name="website_edit_song" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song</string>
     <string name="website_edit_song_features" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.kntse37simcb</string>
     <string name="website_edit_song_main" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.dqecqr6jwgf6</string>
@@ -1805,4 +1807,31 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="default_metronome_info">Use default values for tempo (100bpm) and time signature (4/4) if they have not been set for the song</string>
+    <string name="drum_sequencer">Drum sequencer</string>
+    <string name="drum_sequencer_info">Create, edit and assign drum tracks to songs</string>
+    <string name="kit_kick">Kick</string>
+    <string name="kit_snare">Snare</string>
+    <string name="drum_kick">Kick</string>
+    <string name="drum_snare">Snare</string>
+    <string name="drum_rim_shot">Rimshot</string>
+    <string name="drum_stick">Stick</string>
+    <string name="drum_hat_closed">HiHat Closed</string>
+    <string name="drum_hat_open">HiHat open</string>
+    <string name="drum_tom_lo">Floor tom</string>
+    <string name="drum_tom_mid">Mid tom</string>
+    <string name="drum_tom_hi">High tom</string>
+    <string name="drum_crash">Crash</string>
+    <string name="drum_splash">Splash</string>
+    <string name="drum_ride">Ride</string>
+    <string name="drum_ride_bell">Ride bell</string>
+    <string name="drum_kit_acoustic">Acoustic kit</string>
+    <string name="drum_kit_cajon">Cajon</string>
+    <string name="drummer">Drummer</string>
+    <string name="midi_clock_start_stop">Send MIDI start/stop</string>
+    <string name="midi_clock_start_stop_info">When the MIDI clock starts, a start MIDI message will also be sent to connected devices.  A stop MIDI message will be sent when you stop the MIDI clock.</string>
+    <string name="drummer_player">Drummer player</string>
+    <string name="drummer_fill">Drummer fill</string>
+    <string name="drummer_transition">Drummer transition</string>
+    <string name="drummer_settings">Drummer settings</string>
 </resources>

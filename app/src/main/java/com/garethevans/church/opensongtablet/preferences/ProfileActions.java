@@ -193,7 +193,9 @@ public class ProfileActions {
             mainActivityInterface.getPedalActions().setPrefs();
             mainActivityInterface.getSwipes().loadPreferences();
             mainActivityInterface.getStorageAccess().updatePreferences();
-            mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getMetronome().initialiseMetronome());
+            mainActivityInterface.getMainHandler().post(() -> {
+                mainActivityInterface.getDrumViewModel().getDrumSoundManager().initialiseDrumSounds(c);
+            });
             mainActivityInterface.getMidi().getUpdatedPreferences();
             mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getUpdatedPreferences();
             mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getUpdatedPreferences();

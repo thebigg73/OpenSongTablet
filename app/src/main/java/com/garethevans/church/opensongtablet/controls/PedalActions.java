@@ -136,6 +136,10 @@ public class PedalActions {
         addString("padsettings",c.getString(R.string.pad)+settings);
         addString("metronome",metronome);
         addString("metronomesettings",c.getString(R.string.metronome)+settings);
+        addString("drummer",c.getString(R.string.drummer)+startstop);
+        addString("drummer_fill",c.getString(R.string.drummer)+" "+c.getString(R.string.fill));
+        addString("drummer_transition",c.getString(R.string.drummer)+" "+c.getString(R.string.transition));
+        addString("drummer_settings",c.getString(R.string.drummer_settings));
         addString("autoscroll",autoscroll);
         addString("autoscrollsettings",c.getString(R.string.autoscroll)+settings);
         addString("inc_autoscroll_speed",c.getString(R.string.inc_autoscroll_speed));

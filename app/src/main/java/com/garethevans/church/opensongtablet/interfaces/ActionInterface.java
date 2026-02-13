@@ -16,6 +16,7 @@ public interface ActionInterface {
     void toggleHighlighter();
     void onBackPressed();
     void metronomeToggle();
+    void drummerToggle();
     FragmentManager getMyFragmentManager();
     CurrentSet getCurrentSet();
     Song getSong();

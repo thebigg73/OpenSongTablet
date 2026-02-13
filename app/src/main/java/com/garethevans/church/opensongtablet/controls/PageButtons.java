@@ -214,6 +214,11 @@ public class PageButtons {
         prepareOption("?","--- " + c.getString(R.string.song_features) + " ---","","",R.drawable.help);
         prepareOption("pad",c.getString(R.string.pad),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.amplifier);
         prepareOption("metronome",c.getString(R.string.metronome),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.metronome);
+        prepareOption("drummer",c.getString(R.string.drummer),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.drummer_player),R.drawable.drummer);
+        prepareOption("drummer_player",c.getString(R.string.drummer_player),c.getString(R.string.open),c.getString(R.string.drummer)+ " " + c.getString(R.string.start) + " / " + c.getString(R.string.stop),R.drawable.drummer_player);
+        prepareOption("drummer_fill",c.getString(R.string.drummer_fill),c.getString(R.string.fill),c.getString(R.string.drummer_transition),R.drawable.drummer_fill);
+        prepareOption("drummer_transition",c.getString(R.string.drummer_transition),c.getString(R.string.transition),c.getString(R.string.drummer_fill),R.drawable.drummer_transition);
+        prepareOption("drummer_settings",c.getString(R.string.drummer_settings),c.getString(R.string.open),"",R.drawable.drummer_settings);
         prepareOption("autoscroll",c.getString(R.string.autoscroll),c.getString(R.string.start) + " / " + c.getString(R.string.stop),c.getString(R.string.settings),R.drawable.autoscroll);
         prepareOption("pad_autoscroll",c.getString(R.string.pad) + " / " + c.getString(R.string.autoscroll),c.getString(R.string.start)+" / "+c.getString(R.string.stop),"",R.drawable.autoscroll_pad);
         prepareOption("pad_metronome",c.getString(R.string.pad) + " / " + c.getString(R.string.metronome),c.getString(R.string.start)+" / "+c.getString(R.string.stop),"",R.drawable.metronome_pad);
