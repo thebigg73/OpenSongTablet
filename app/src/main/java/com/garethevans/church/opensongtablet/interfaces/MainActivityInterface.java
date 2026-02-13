@@ -48,7 +48,6 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
-import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
 import com.garethevans.church.opensongtablet.nearby.NearbyActions;
@@ -140,9 +139,6 @@ public interface MainActivityInterface {
 
     // Capo
     void dealWithCapo();
-
-    // Metronome
-    Metronome getMetronome();
 
     // Pads
     Pad getPad();

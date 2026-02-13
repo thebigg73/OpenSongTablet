@@ -130,7 +130,6 @@ import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
 import com.garethevans.church.opensongtablet.justchords.JustChordsObject;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
-import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
@@ -266,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private LoadSong loadSong;
     private LocalWiFiHost localWiFiHost;
     private MakePDF makePDF;
-    private Metronome metronome;
     private Midi midi;
     private MultiTrackPlayer multiTrackPlayer;
     private NearbyActions nearbyActions;
@@ -919,7 +917,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         pedalActions = getPedalActions();
         pad = getPad();
         autoscroll = getAutoscroll();
-        metronome = getMetronome();
         gestures = getGestures();
         swipes = getSwipes();
         timeTools = getTimeTools();
@@ -3144,14 +3141,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             drumViewModel.stopMetronome();
             navigateToFragment(deeplink_metronome, 0);
         }
-        /*if (drumViewModel.isMetronomeValid()) {
-            drumViewModel.toggleMetronome();
-
-        } else {
-            // Open up the metronome settings
-            drumViewModel.stopMetronome();
-            navigateToFragment(deeplink_metronome, 0);
-        }*/
     }
 
     @Override
@@ -4365,17 +4354,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return autoscroll;
     }
 
-
-    @Override
-    public Metronome getMetronome() {
-        Log.d(TAG,"TODO Can remove this - getMetronome()");
-        if (metronome == null) {
-            //metronome = new Metronome(this);
-            //metronome.initialiseMetronome();
-        }
-        return metronome;
-    }
-
     @Override
     public SongListBuildIndex getSongListBuildIndex() {
         if (songListBuildIndex == null) {
@@ -5005,13 +4983,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Prepare the themes
             getMyThemeColors();
 
-            // Prepapre the metronome
-            //getMetronome();
-
-            if (metronome != null) {
-                //metronome.initialiseMetronome();
-            }
-
         }
 
         try {
@@ -5020,8 +4991,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -5033,9 +5002,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         if (autoscroll != null) {
             autoscroll.stopTimers();
-        }
-        if (metronome != null) {
-            //metronome.stopTimers(true);
         }
     }
 

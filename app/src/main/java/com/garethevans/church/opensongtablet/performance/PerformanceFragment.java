@@ -444,7 +444,6 @@ public class PerformanceFragment extends Fragment {
     // This stuff loads the song and prepares the views
     public void doSongLoad(String folder, String filename) {
         // IV - Set a boolean indicating song change
-        Log.d(TAG,"folder:"+folder+"  filname:"+filename+"   song.getFolder:"+mainActivityInterface.getSong().getFolder()+"   song.getFilename:"+mainActivityInterface.getSong().getFilename());
         songChange = !mainActivityInterface.getSong().getFilename().equals(filename) ||
                 !mainActivityInterface.getSong().getFolder().equals(folder) ||
                 firstSongLoad || mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getForceReload();
@@ -461,7 +460,6 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getSong().setFolder(mainfoldername);
         }
 
-        Log.d(TAG,"songChange:"+songChange);
         boolean needToTryAgain = false;
         boolean needToPauseTryAgain = false;
         String keyInFilename;
@@ -613,8 +611,6 @@ public class PerformanceFragment extends Fragment {
                             if (useExisting) {
                                 songToUse = mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false);
                             } else {
-                                Log.d(TAG,"!useExisting");
-                                Log.d(TAG,"keyInSetFinal:"+keyInSetFinal);
                                 songToUse = mainActivityInterface.getVariations().makeKeyVariation(mainActivityInterface.getLoadSong().doLoadSong(mainActivityInterface.getSong(), false), keyInSetFinal, true, true);
                             }
                         } else {
@@ -1842,7 +1838,6 @@ public class PerformanceFragment extends Fragment {
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     private boolean alreadyChoosingSections = false;
     public void performanceShowSection(int position) {
-        Log.d(TAG,"performanceShowSection:"+position);
         if (!alreadyChoosingSections) {
             alreadyChoosingSections = true;
             // Scroll the recyclerView to the position as long as we aren't in an autoscroll
