@@ -41,6 +41,7 @@ import androidx.webkit.WebViewFeature;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.screensetup.ThemeKeeper;
@@ -751,17 +752,8 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setTheme(newSong.getTheme().trim());
         newSong.setAlttheme(newSong.getAlttheme().trim());
         newSong.setAka(newSong.getAka().trim());
-        // Make sure the tempo is a whole number!
-        if (!newSong.getTempo().isEmpty() && !newSong.getTempo().replaceAll("\\D","").isEmpty()) {
-            try {
-                newSong.setTempo(String.valueOf(Math.round(Float.parseFloat(newSong.getTempo()))));
-            } catch (Exception e) {
-                e.printStackTrace();
-                newSong.setTempo("");
-            }
-        }
-        newSong.setTempo(newSong.getTempo().trim());
-        newSong.setTimesig(mainActivityInterface.getMetronome().fixInvalidTimeSignature(newSong.getTimesig().trim(),false));
+        newSong.setTimesig(DrumCalculations.getFixedTimeSignatureString(newSong.getTimesig(),false));
+        newSong.setTempo(DrumCalculations.getFixedTempoString(newSong.getTempo(),false));
         newSong.setCcli(newSong.getCcli().trim());
 
         if (songSelectAutoDownload.isEmpty()) {

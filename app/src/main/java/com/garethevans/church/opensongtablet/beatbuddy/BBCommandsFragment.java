@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsBeatbuddyCommandsBinding;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiInfo;
 import com.garethevans.church.opensongtablet.midi.MidiItemTouchHelper;
@@ -1025,7 +1026,9 @@ public class BBCommandsFragment extends Fragment {
                 ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.timesigDropDown, R.layout.view_exposed_dropdown_item, timesigs);
                 myView.timesigDropDown.setAdapter(timesigArrayAdapter);
-                myView.timesigDropDown.setText(mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true));
+                //mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
+                myView.timesigDropDown.setText(DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getSong().getTimesig(),true));
+                //myView.timesigDropDown.setText(mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getSong().getTimesig(),true));
                 myView.timesigDropDown.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}

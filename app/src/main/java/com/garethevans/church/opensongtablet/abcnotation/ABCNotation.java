@@ -7,6 +7,7 @@ import android.webkit.WebChromeClient;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.InlineAbcWebView;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.export.ExportFragment;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -90,7 +91,10 @@ public class ABCNotation {
                 songAbcTranspose = 0;
             }
         }
-        songTimeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),true);
+        // Prepare this song's values
+        songTimeSig = DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),true);
+
+        //songTimeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),true);
         // Check for default abcText
         getSongAbcOrDefault();
 

@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.export;
 import android.content.Context;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -92,12 +93,11 @@ public class PrepareFormats {
     }
 
     public String getSongAsText(Song thisSong) {
-
         String string = replaceNulls("", "\n", thisSong.getTitle()) +
                 replaceNulls("", "\n", thisSong.getAuthor()) +
                 replaceNulls("Key: ", "\n", thisSong.getKey()) +
-                replaceNulls("Tempo: ", "\n", thisSong.getTempo()) +
-                replaceNulls("Time signature: ", "\n", mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)) +
+                replaceNulls("Tempo: ", "\n", DrumCalculations.getFixedTempoString(thisSong.getTempo(),false)) +
+                replaceNulls("Time signature: ", "\n", DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false)) +
                 replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
                 replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
                 "\n\n" +
@@ -115,8 +115,8 @@ public class PrepareFormats {
         String string = "{new_song}\n" + replaceNulls("{title:", "}\n", thisSong.getTitle()) +
                 replaceNulls("{artist:", "}\n", thisSong.getAuthor()) +
                 replaceNulls("{key:", "}\n", thisSong.getKey()) +
-                replaceNulls("{tempo:", "}\n", thisSong.getTempo()) +
-                replaceNulls("{time:", "}\n", mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)) +
+                replaceNulls("{tempo:", "}\n", DrumCalculations.getFixedTempoString(thisSong.getTempo(),false)) +
+                replaceNulls("{time:", "}\n", DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false)) +
                 replaceNulls("{copyright:", "}\n", thisSong.getCopyright()) +
                 replaceNulls("{ccli:", "}\n", thisSong.getCcli()) +
                 "\n\n" +
@@ -155,8 +155,8 @@ public class PrepareFormats {
         String string = replaceNulls("", "\n", thisSong.getTitle()) +
                 replaceNulls("", "\n", thisSong.getAuthor()) +
                 replaceNulls("Key: ", "\n", thisSong.getKey()) +
-                replaceNulls("Tempo: ", "\n", thisSong.getTempo()) +
-                replaceNulls("Time signature: ", "\n", mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)) +
+                replaceNulls("Tempo: ", "\n", DrumCalculations.getFixedTempoString(thisSong.getTempo(),false)) +
+                replaceNulls("Time signature: ", "\n", DrumCalculations.getFixedTempoString(thisSong.getTimesig(),false)) +
                 replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
                 replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
                 "\n\n" +

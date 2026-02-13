@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.utilities.CleanDatabaseBottomSheet;
@@ -436,11 +437,11 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                     valueNotEmpty(song.getKey()) ||
                     valueNotEmpty(song.getKeyOriginal()) ||
                     valueNotEmpty(song.getPreferredInstrument()) ||
-                    valueNotEmpty(mainActivityInterface.getMetronome().fixInvalidTimeSignature(song.getTimesig(),false)) ||
+                    valueNotEmpty(DrumCalculations.getFixedTimeSignatureString(song.getTimesig(),false)) ||
                     valueNotEmpty(song.getAka()) ||
                     valueNotEmpty(song.getAutoscrolldelay()) ||
                     valueNotEmpty(song.getAutoscrolllength()) ||
-                    valueNotEmpty(song.getTempo()) ||
+                    valueNotEmpty(DrumCalculations.getFixedTempoString(song.getTempo(),false)) ||
                     valueNotEmpty(song.getPadfile()) ||
                     valueNotEmpty(song.getPadloop()) ||
                     valueNotEmpty(song.getMidi()) ||

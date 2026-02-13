@@ -16,8 +16,10 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.EditSongFeaturesBinding;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.metronome.MetronomeTapTempo;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,7 @@ public class EditSongFragmentFeatures extends Fragment {
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
     private ArrayList<String> instruments = new ArrayList<>();
+    private MetronomeTapTempo metronomeTapTempo;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -177,7 +180,13 @@ public class EditSongFragmentFeatures extends Fragment {
                 myView.tempo.setAdapter(tempoArrayAdapter);
                 myView.tempo.setHint(tempo_string + " ("+bpm_string+")");
                 myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
-                mainActivityInterface.getMetronome().initialiseTapTempo(myView.tapTempo,myView.timesig,null,null,myView.tempo);
+                // Initialise the tap tempo helper class
+                if (metronomeTapTempo==null) {
+                    metronomeTapTempo = new MetronomeTapTempo(getContext(),null);
+                }
+                metronomeTapTempo.initialiseTapTempo(mainActivityInterface.getTempSong(),
+                        myView.tapTempo, myView.timesig, null, null, myView.tempo, null,
+                        false);
             });
         }
 
@@ -195,7 +204,8 @@ public class EditSongFragmentFeatures extends Fragment {
                 ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
                         myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
                 myView.timesig.setAdapter(timesigArrayAdapter);
-                myView.timesig.setText(mainActivityInterface.getMetronome().fixInvalidTimeSignature(mainActivityInterface.getTempSong().getTimesig(),false));
+                //mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getTempSong());
+                myView.timesig.setText(DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getTempSong().getTimesig(),false));
             });
         }
 
@@ -395,7 +405,7 @@ public class EditSongFragmentFeatures extends Fragment {
             myView.linkType.addTextChangedListener(new MyTextWatcher("linktype"));
             myView.linkValue.addTextChangedListener(new MyTextWatcher("linkvalue"));
 
-            myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getMetronome().tapTempo());
+            //myView.tapTempo.setOnClickListener(button -> mainActivityInterface.getDrumViewModel().tapTempo());
 
             // The ABC override
             myView.overrideAbcSlider.addOnChangeListener((slider, value, fromUser) -> {

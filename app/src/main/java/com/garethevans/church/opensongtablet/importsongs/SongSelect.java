@@ -5,6 +5,7 @@ import android.os.Build;
 import android.text.Html;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -166,22 +167,20 @@ public class SongSelect {
 
     private void getTempoTimeSig(Song newSong, String s) {
         s = getSubstring(s,"<span class=\"cproTempoTimeWrapper\">","</span>");
-        String tempo = "";
-        String timeSig = "";
         // Because these can have different languages, we need to scour for content
         s = s.replace("-", " ");
         String[] bits = s.split(" ");
         for (String bit:bits) {
             if (bit.contains("/")) {
                 // This is likely the time signature
-                timeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(bit,true);
+                newSong.setTimesig(bit);
             } else if (!bit.replaceAll("\\D","").isEmpty()) {
                 // This is likely the tempo
-                tempo = bit;
+                newSong.setTempo(bit);
             }
         }
-        newSong.setTempo(tempo);
-        newSong.setTimesig(timeSig);
+        newSong.setTempo(DrumCalculations.getFixedTempoString(newSong.getTempo(),false));
+        newSong.setTimesig(DrumCalculations.getFixedTimeSignatureString(newSong.getTimesig(),false));
     }
 
     private String getCopyright(String s) {

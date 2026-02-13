@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SongSheetHeaders {
@@ -102,8 +103,13 @@ public class SongSheetHeaders {
     public String getKeyCapoTempo(Song thisSong) {
         String key = thisSong.getKey();
         String capo = thisSong.getCapo();
-        String tempo = thisSong.getTempo();
-        String timesig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false);
+        //mainActivityInterface.getDrumViewModel().prepareSongValues(thisSong);
+        String tempo = DrumCalculations.getFixedTempoString(thisSong.getTempo(),false);
+        /*if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
+            tempo = String.valueOf(mainActivityInterface.getDrumViewModel().getBpm());
+        }
+        */
+        String timesig = DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false);
 
         String keyCapoTempo = "";
 

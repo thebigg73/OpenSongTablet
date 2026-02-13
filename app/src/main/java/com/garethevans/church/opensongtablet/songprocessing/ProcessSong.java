@@ -44,6 +44,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.InlineAbcObject;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialEditText;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
@@ -193,8 +194,14 @@ public class ProcessSong {
         thisSong.setHymnnum(fixNullValues(thisSong.getHymnnum()));
         thisSong.setCapoprint(fixNullValues(thisSong.getCapoprint()));
         thisSong.setCapo(fixNullValues(thisSong.getCapo()));
-        thisSong.setTempo(fixNullValues(thisSong.getTempo()));
-        thisSong.setTimesig(fixNullValues(mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)));
+        thisSong.setTempo(fixNullValues(DrumCalculations.getFixedTempoString(thisSong.getTempo(),false)));
+        thisSong.setTimesig(fixNullValues(DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false)));
+        /*mainActivityInterface.getDrumViewModel().prepareSongValues(thisSong);
+        if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
+            thisSong.setTempo(fixNullValues(String.valueOf(mainActivityInterface.getDrumViewModel().getBpm())));
+        }
+        thisSong.setTimesig(fixNullValues(mainActivityInterface.getDrumViewModel().fixInvalidTimeSignature(false)));
+        */
         thisSong.setAutoscrolldelay(fixNullValues(thisSong.getAutoscrolldelay()));
         thisSong.setAutoscrolllength(fixNullValues(thisSong.getAutoscrolllength()));
         thisSong.setCcli(fixNullValues(thisSong.getCcli()));

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -859,52 +860,53 @@ public class BBSQLite extends SQLiteOpenHelper {
                 String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
                 // If we have a drum kit set, send that too
                 String kitString = "";
-                Log.d(TAG,"thisSong.getBeatbuddykit():"+thisSong.getBeatbuddykit());
+                Log.d(TAG, "thisSong.getBeatbuddykit():" + thisSong.getBeatbuddykit());
                 if (thisSong.getBeatbuddykit() != null && !thisSong.getBeatbuddykit().isEmpty()) {
                     int kitNum = getNumberFromKit(thisSong.getBeatbuddykit());
-                    Log.d(TAG,"kitNum:"+kitNum);
+                    Log.d(TAG, "kitNum:" + kitNum);
                     if (kitNum > 0) {
                         Log.d(TAG, "kitNum:" + kitNum + "  kitName:" + thisSong.getBeatbuddykit());
                         kitString = "\n" + kitNum + ". " + thisSong.getBeatbuddykit();
                         hexCode += "\n" + mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
                     }
                 }
-                // If we have a song tempo set, send that too
+
+                // Check we are using the values saved for thisSong
+                //mainActivityInterface.getDrumViewModel().prepareSongValues(thisSong);
+                //mainActivityInterface.getDrumViewModel().fixInvalidTimeSignature(false);
+
+                // Deal with the tempo
+                String bpmString = DrumCalculations.getFixedTempoString(thisSong.getTempo(),false);
                 String tempoString = "";
-                if (thisSong.getTempo() != null && !thisSong.getTempo().isEmpty()) {
-                    String tempo = thisSong.getTempo().replaceAll("\\D", "");
-                    if (!tempo.trim().isEmpty()) {
-                        int bpm = Integer.parseInt(tempo);
-                        tempoString = "\n" + c.getString(R.string.tempo) + ": " + bpm;
-                        hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
-                    }
+                if (bpmString!=null && !bpmString.isEmpty()) {
+                    int bpm = Integer.parseInt(bpmString);
+                    // A non empty string means it is a valid tempo
+                    // If we have a song tempo set, send that too
+                    tempoString = "\n" + c.getString(R.string.tempo) + ": " + bpm;
+                    hexCode += "\n" + mainActivityInterface.getBeatBuddy().getTempoCode(bpm);
                 }
+
                 String timesigString = "";
-                String tempTimeSig = mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false);
-                // If valid the timeSig isn't empty, contains '/' and will have two non-empty bits when split
-                if (tempTimeSig != null && tempTimeSig.contains("/") &&
-                        !tempTimeSig.replace("/","").isEmpty()) {
-                    String[] timeSigBits = tempTimeSig.split("/");
-                    if (timeSigBits.length == 2 && !timeSigBits[0].isEmpty() && !timeSigBits[1].isEmpty()) {
-                        String numerator = timeSigBits[0].replaceAll("\\D", "");
-                        String denominator = timeSigBits[1].replaceAll("\\D", "");
-                        if (!numerator.isEmpty() && !denominator.isEmpty()) {
-                            int num = Integer.parseInt(numerator);
-                            int denom = Integer.parseInt(denominator);
-                            // Check the denominator is a factor of 2
-                            double n = Math.log(denom) / Math.log(2);
-                            if ((int) (Math.ceil(n)) == (int) (Math.floor(n))) {
-                                // Ok, good to proceed.  Prepare the code
-                                // Numerator is simply the hex equiv
-                                // Denominator is the double calculated from 2^n
-                                hexCode += "\n0xF0 0x7F 0x7F 0x03 0x02 0x04 " +
-                                        "0x" + String.format("%02X", num) + " " +
-                                        "0x" + String.format("%02X", (int)n) +
-                                        " 0x18 0x08 0xF7";
-                                timesigString = "\n" +  c.getString(R.string.time_signature) + ": "+tempTimeSig;
-                            }
+                String timeSig = DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false);
+                if (!timeSig.isEmpty()) {
+                    int[] timeSigBits = DrumCalculations.getFixedTimeSignature(timeSig);
+
+                    if (timeSigBits.length==2 && timeSigBits[0]!=-1 && timeSigBits[1]!=-1) {
+                        // Check the denominator is a factor of 2
+                        double n = Math.log(timeSigBits[1]) / Math.log(2);
+                        if ((int) (Math.ceil(n)) == (int) (Math.floor(n))) {
+                            // Ok, good to proceed.  Prepare the code
+                            // Numerator is simply the hex equiv
+                            // Denominator is the double calculated from 2^n
+                            hexCode += "\n0xF0 0x7F 0x7F 0x03 0x02 0x04 " +
+                                    "0x" + String.format("%02X", timeSigBits[0]) + " " +
+                                    "0x" + String.format("%02X", (int) n) +
+                                    " 0x18 0x08 0xF7";
+                            timesigString = "\n" + c.getString(R.string.time_signature) + ": " + timesigString;
                         }
                     }
+                    //}
+                    //}
                 }
 
                 delay = mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
