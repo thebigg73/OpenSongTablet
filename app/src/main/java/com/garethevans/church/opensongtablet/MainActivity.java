@@ -3151,7 +3151,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             // Open up the drummer settings
             drumViewModel.stopDrummer();
-            navigateToFragment(deeplink_drummer_settings, 0);
+            try {
+                getShowToast().doIt(getString(R.string.drummer_not_valid));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

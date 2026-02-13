@@ -43,7 +43,14 @@ public class TimerEngine {
         isRunning = true;
 
         // Create a single-threaded executor for timing
-        executor = new ScheduledThreadPoolExecutor(1);
+        //executor = new ScheduledThreadPoolExecutor(1);
+        executor = new ScheduledThreadPoolExecutor(1, r -> {
+            Thread t = new Thread(r);
+            // Set to maximum priority to prevent CPU "napping"
+            t.setPriority(Thread.MAX_PRIORITY);
+            return t;
+        });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             executor.setRemoveOnCancelPolicy(true);
         }

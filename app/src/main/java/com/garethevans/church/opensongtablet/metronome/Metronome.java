@@ -32,6 +32,9 @@ public class Metronome {
     private VisualListener visualListener;
     private MetronomeFragment metronomeFragment;
     private int totalStepsProcessed = 0;
+    // Pre-calculate these once when the tempo/time signature changes
+    private int cachedInterval = 4;
+    private int cachedMaxSteps = -1;
 
     public Metronome(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -62,7 +65,55 @@ public class Metronome {
         tockColor = ColorUtils.blendARGB(tickColor, mainActivityInterface.getPalette().surface, 0.4f);
     }
 
-    public void onStep(int stepInBar, int stepsPerBar, int denominator, long beatDuration) {
+    public void prepare(int denominator, int metronomeLength, int stepsPerBar) {
+        this.cachedInterval = (denominator == 8) ? 2 : 4;
+        this.cachedMaxSteps = (metronomeLength > 0) ? metronomeLength * stepsPerBar : -1;
+        this.totalStepsProcessed = 0;
+    }
+
+    public void onStep(int totalSteps, int stepsPerBar, long beatDuration) {
+        if (!isRunning) return;
+
+        // 1. Check stop condition using totalSteps to align with the sequencer
+        // This prevents the "separate clock" issue.
+        if (cachedMaxSteps != -1 && totalSteps >= cachedMaxSteps) {
+            mainActivityInterface.getDrumViewModel().stopMetronome();
+            return;
+        }
+
+        // 2. Get the pulse interval directly from the shared Drummer logic
+        // In 6/8, this will return 2 (every 2nd step)
+        int interval = mainActivityInterface.getDrumViewModel().getThisStepsPerPulse();
+        int stepInBar = totalSteps % stepsPerBar;
+
+        // 3. Click logic: Use 'interval' for the modulo check
+        if (stepInBar % interval == 0) {
+            int beatNumber = (stepInBar / interval) + 1;
+            boolean isPrimary = (stepInBar == 0);
+
+            // 4. Accent logic for 6/8 (Denominator 8)
+            boolean isSecondary = false;
+            if (mainActivityInterface.getDrumViewModel().getThisDivisions() == 8) {
+                // Beat 1 is Primary, Beat 4 is the middle pulse in 6/8
+                isSecondary = (beatNumber == 4);
+            }
+            boolean isAccent = isPrimary || isSecondary;
+
+            // Trigger Audio and Visuals
+            if (metronomeAudio) {
+                playAudio(isPrimary); // Accent sound on Beat 1
+            }
+            if (metronomeMidi) {
+                playMidi(isAccent); // MIDI accent on 1 and 4
+            }
+            if (metronomeShowVisual && visualListener != null) {
+                // Pass the beat number (1-6) and the accent status
+                visualListener.onVisualBeat(beatNumber, isAccent, beatDuration);
+            }
+        }
+    }
+
+    /*public void onStep(int stepInBar, int stepsPerBar, int denominator, long beatDuration) {
         // Check if we should stop the metronome (metronomeLength)
         if (metronomeLength>0) {
             int maxSteps = metronomeLength * stepsPerBar;
@@ -114,7 +165,7 @@ public class Metronome {
                 visualListener.onVisualBeat(beatNumber, isAccent, beatDuration);
             }
         }
-    }
+    }*/
 
     // The user preferences
     public int getTickColor() {

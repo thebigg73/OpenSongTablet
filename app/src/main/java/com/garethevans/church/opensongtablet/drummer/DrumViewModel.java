@@ -78,7 +78,7 @@ public class DrumViewModel extends ViewModel {
 
             // 3. Audio & Metronome Logic
             if (metronome != null && metronome.getIsRunning() && thisStepsPerPulse > 0) {
-                metronome.onStep(stepInBar, thisStepsPerBar, thisDivisions, thisBeatDuration);
+                metronome.onStep(stepInBar, thisStepsPerBar, thisBeatDuration);
 
                 // 2. WearOS Haptic (NEW)
                 if (metronomeWearOS!=null && metronomeWearOS.getWearOSValid() &&
@@ -228,7 +228,6 @@ public class DrumViewModel extends ViewModel {
 
             if (metronome != null && metronome.getIsRunning()) {
                 // PASS THE LOCAL VARIABLES DIRECTLY
-                metronome.onStep(stepInBar, thisStepsPerBar, thisDivisions, thisBeatDuration);
             }
 
             if (drummer !=null && drummer.getIsRunning()) {
@@ -445,9 +444,9 @@ public class DrumViewModel extends ViewModel {
         if (!metronomeActive && !drummerActive && !midiClockActive) {
             timerEngine.stop();
             isPlaying.postValue(false);
-            currentStep.postValue(-1);
         }
     }
+
     public void stopAll() {
         // 1. UI: Tell the toolbar to clear and set isPlaying to false
         if (mainActivityInterface.getToolbar() != null) {
