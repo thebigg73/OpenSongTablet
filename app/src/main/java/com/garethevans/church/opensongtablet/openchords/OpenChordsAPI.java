@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.RetrofitInterface;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
@@ -1097,17 +1098,24 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         openChordsSong.setRawData(jsonNullIfEmpty(mainActivityInterface.getConvertJustChords().getJustChordsLyrics(openSongSong)));
         openChordsSong.setArtist(jsonNullIfEmpty(openSongSong.getAuthor()));
         openChordsSong.setDuration(jsonNullIfEmpty(openSongSong.getAutoscrolllength()));
-        String tempo = openSongSong.getTempo();
+
+        // Make sure tempo and timeSignature is valid!
+        //mainActivityInterface.getDrumViewModel().prepareSongValues(openSongSong);
+        String fixedTempoString = jsonNullIfEmpty(DrumCalculations.getFixedTempoString(openSongSong.getTempo(),false));
+        if (fixedTempoString!=null && !fixedTempoString.isEmpty()) {
+            openChordsSong.setTempo(Integer.parseInt(fixedTempoString));
+        } else {
+            openChordsSong.setTempo(null);
+        }
+        /*String tempo = openSongSong.getTempo();
         if (tempo != null) {
             tempo = tempo.replaceAll("\\D", "").trim();
             if (!tempo.isEmpty()) {
                 openChordsSong.setTempo(Integer.parseInt(tempo));
             }
-        }
-        // Make sure timeSignature is valid!
+        }*/
         openChordsSong.setTimeSignature(jsonNullIfEmpty(
-                mainActivityInterface.getMetronome().fixInvalidTimeSignature(
-                openSongSong.getTimesig(),false)));
+                DrumCalculations.getFixedTimeSignatureString(openSongSong.getTimesig(),false)));
         String key = openSongSong.getKey();
         if (key != null && !key.isEmpty()) {
             openChordsSong.setKey(key.replace("m", ""));
@@ -1538,8 +1546,14 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         existingSong.setLyrics(newOpenSongSong.getLyrics());
         existingSong.setAuthor(newOpenSongSong.getAuthor());
         existingSong.setAutoscrolllength(newOpenSongSong.getAutoscrolllength());
-        existingSong.setTempo(newOpenSongSong.getTempo());
-        existingSong.setTimesig(mainActivityInterface.getMetronome().fixInvalidTimeSignature(newOpenSongSong.getTimesig(),false));
+        existingSong.setTempo(DrumCalculations.getFixedTempoString(newOpenSongSong.getTempo(),false));
+        /*if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
+            existingSong.setTempo(String.valueOf(mainActivityInterface.getDrumViewModel().getBpm()));
+        } else {
+            existingSong.setTempo("");
+        }*/
+        //existingSong.setTempo(newOpenSongSong.getTempo());
+        existingSong.setTimesig(DrumCalculations.getFixedTimeSignatureString(newOpenSongSong.getTimesig(),false));
         existingSong.setKey(newOpenSongSong.getKey());
         //existingSong.setCapo(newOpenSongSong.getCapo());
         existingSong.setNotes(newOpenSongSong.getNotes());

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.ShareableObject;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
@@ -168,11 +169,15 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_PREFERRED_INSTRUMENT, thisSong.getPreferredInstrument());
         values.put(SQLite.COLUMN_PREVIEWOVERRIDE, thisSong.getPreviewoverride());
-        values.put(SQLite.COLUMN_TIMESIG, mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false));
+        values.put(SQLite.COLUMN_TIMESIG, DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false));
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
         values.put(SQLite.COLUMN_AUTOSCROLL_LENGTH, thisSong.getAutoscrolllength());
-        values.put(SQLite.COLUMN_TEMPO, thisSong.getTempo());
+        //if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
+        values.put(SQLite.COLUMN_TEMPO, DrumCalculations.getFixedTempoString(thisSong.getTempo(),false));
+        /*} else {
+            values.put(SQLite.COLUMN_TEMPO, "");
+        }*/
         values.put(SQLite.COLUMN_PAD_FILE, thisSong.getPadfile());
         values.put(SQLite.COLUMN_PAD_LOOP, thisSong.getPadloop());
         values.put(SQLite.COLUMN_MIDI, thisSong.getMidi());
@@ -745,12 +750,6 @@ public class CommonSQL {
         if (folders.isEmpty()) {
             folders.add(c.getString(R.string.mainfoldername));
         }
-        Comparator<String> comparator = (o1, o2) -> {
-            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
-            collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1,o2);
-        };
-        Collections.sort(folders, comparator);
 
         // If we have custom folders (variations, etc.) listed, remove them
         if (folders.contains("../Variations/_cache") ||
@@ -772,6 +771,23 @@ public class CommonSQL {
             folders.remove("**Variations");
             folders.remove("**"+c.getString(R.string.variation));
         }
+
+        // We should also add in any folders that are empty - the database has no record of them
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongFolders(mainActivityInterface.getStorageAccess().getSongIDsFromFile(),true,null);
+        for (String songId:songIds) {
+            Log.d(TAG,"songId:"+songId);
+            if (!folders.contains(songId)) {
+                folders.add(songId);
+            }
+        }
+
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1,o2);
+        };
+        Collections.sort(folders, comparator);
+
 
         return folders;
     }
@@ -1080,6 +1096,7 @@ public class CommonSQL {
 
     public void addCSVTableValue(StringBuilder stringBuilder, Song song, Cursor cursor) {
         // This can be called from a database cursor, or a song item that has already been retrieved
+        //mainActivityInterface.getDrumViewModel().prepareSongValues(song);
         stringBuilder.append("\"").append(escaped(song!=null ? song.getUuid() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getFilename() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getFolder() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)))).append("\",");
@@ -1099,11 +1116,12 @@ public class CommonSQL {
         stringBuilder.append("\"").append(escaped(song!=null ? song.getKey() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getKeyOriginal() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY_ORIGINAL)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getPreferredInstrument() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PREFERRED_INSTRUMENT)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? mainActivityInterface.getMetronome().fixInvalidTimeSignature(song.getTimesig(),false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song!=null ? DrumCalculations.getFixedTimeSignatureString(song.getTimesig(),false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getAka() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AKA)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getAutoscrolldelay() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_DELAY)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getAutoscrolllength() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_LENGTH)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getTempo() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song!=null ? DrumCalculations.getFixedTempoString(song.getTempo(),false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO)))).append("\",");
+        //stringBuilder.append("\"").append(escaped(song!=null ? song.getTempo() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getPadfile() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PAD_FILE)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getPadloop() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PAD_LOOP)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getMidi() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_MIDI)))).append("\",");

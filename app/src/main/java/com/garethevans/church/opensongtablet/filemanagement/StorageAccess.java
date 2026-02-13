@@ -287,9 +287,6 @@ public class StorageAccess {
         songsDF = DocumentFile.fromFile(new File(rootFolder, "Songs"));
         copyAssets();
 
-        // Check and remove any zero byte/corrupt files
-        removeZeroLengthFiles();
-
         return "Success";
     }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -402,9 +399,6 @@ public class StorageAccess {
 
             // Now copy the assets if they aren't already there
             copyAssets();
-
-            // Check and remove any zero byte/corrupt files
-            removeZeroLengthFiles();
 
             return "Success";
         } else {
@@ -2586,7 +2580,7 @@ public class StorageAccess {
                         "\"" + fixNull(thisSong.getUser3()).replaceAll("\"", "'") + "\"," +
                         "\"" + fixNull(thisSong.getHymnnum()).replaceAll("\"", "'") + "\"," +
                         "\"" + fixNull(thisSong.getTempo()).replaceAll("\"", "'") + "\"," +
-                        "\"" + fixNull(mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),false)).replaceAll("\"", "'") + "\"";
+                        "\"" + fixNull(thisSong.getTimesig()).replaceAll("\"", "'") + "\"";
 
                 String topline = "\"" + c.getString(R.string.date) + "/" +
                         c.getString(R.string.time) + "\"," +
@@ -2714,6 +2708,7 @@ public class StorageAccess {
                 deleteFile(uriToCheck);
             }
         }
+        Log.d(TAG,"removeZeroLengthFiles() -  completed");
     }
     public void setFileWriteLog(boolean fileWriteLog) {
         this.fileWriteLog = fileWriteLog;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.gson.Gson;
@@ -113,10 +114,12 @@ public class ConvertJustChords {
                 e.printStackTrace();
             }
         }
-        justChordsSongObject.setTempo(thisSong.getTempo());
+
+        justChordsSongObject.setTempo(DrumCalculations.getFixedTempoString(thisSong.getTempo(),false));
+        justChordsSongObject.setTimeSignature(DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false));
         justChordsSongObject.setNotes(thisSong.getNotes());
         justChordsSongObject.setCopyright(thisSong.getCopyright());
-        justChordsSongObject.setTimeSignature(mainActivityInterface.getMetronome().fixInvalidTimeSignature(thisSong.getTimesig(),true));
+        //justChordsSongObject.setTimeSignature(mainActivityInterface.getDrumViewModel().fixInvalidTimeSignature(thisSong.getTimesig(),true));
         justChordsSongObject.setCcli(thisSong.getCcli());
         justChordsSongObject.setId(songuuid);
 
