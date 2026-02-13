@@ -8,7 +8,7 @@ public class SetItemInfo {
     public String songicon="";                  // Which type of icon based on the filetype
     public int songitem=-1;                     // Numbered position in the set
     public String songkey="";                   // The key of the song
-    public String songforsetwork;               // The code for the song in the set preference
+    public String songforsetwork="";               // The code for the song in the set preference
     public void setItem(String songfolder, String songfilename, String songtitle, String songkey,
                         int songitem, String songforsetwork, String songicon) {
         this.songfolder = songfolder;
