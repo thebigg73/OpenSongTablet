@@ -494,7 +494,7 @@ public class ProcessSong {
     private String fixWordStretch(String s) {
         // This replaces text like hal____low_______ed with hal  - low    -  ed
         // Deal with up to 2-8 underscores.  The rest are just replaced
-        if (s.contains("_")) {
+        if (!s.startsWith(";#:") && s.contains("_")) {
             String[] unders   = new String[]{"________","_______","______","_____", "____","___","__","_"};
             String[] replaces = new String[]{"   -    ","   -   ","   -  ","  -  ", " -  "," - ","- ","-"};
             for (int i = 0; i<8; i++) {
@@ -1331,8 +1331,10 @@ public class ProcessSong {
                             break;
                         case "comment":
                             if (displayLyrics) {
-                                str = str.replace("_","");
-                                str = str.replaceAll("[|]"," ");
+                                Log.d(TAG, "str:" + str);
+                                str = str.replace("_", "");
+                                str = str.replaceAll("[|]", " ");
+
                                 if (!showChords) {
                                     // IV - Remove typical word splits, white space and beautify!
                                     str = fixLyricsOnlySpace(str);
@@ -1341,10 +1343,11 @@ public class ProcessSong {
                                         str = fixExcessSpaces(str);
                                     }
                                 }
+
                                 SpannableStringBuilder spannableString = getSpannableBracketString(str);
                                 if (boldText) {
                                     textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-                                    textView.setTypeface(textView.getTypeface(),Typeface.BOLD);
+                                    textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
                                 }
                                 textView.setText(spannableString);
                                 // Comment line with chords above still needs comment background
