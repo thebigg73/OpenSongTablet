@@ -212,6 +212,8 @@ public class ProcessSong {
         thisSong.setUser3(fixNullValues(thisSong.getUser3()));
         thisSong.setBeatbuddysong(fixNullValues(thisSong.getBeatbuddysong()));
         thisSong.setBeatbuddykit(fixNullValues(thisSong.getBeatbuddykit()));
+        thisSong.setDrummer(fixNullValues(thisSong.getDrummer()));
+        thisSong.setDrummerKit(fixNullValues(thisSong.getDrummerKit()));
         thisSong.setKey(fixNullValues(thisSong.getKey()));
         thisSong.setKeyOriginal(fixNullValues(thisSong.getKeyOriginal()));
         thisSong.setPreferredInstrument(fixNullValues(thisSong.getPreferredInstrument()));
@@ -251,6 +253,8 @@ public class ProcessSong {
         myNEWXML += "  <user3>" + parseToHTMLEntities(thisSong.getUser3()).trim() + "</user3>\n";
         myNEWXML += "  <beatbuddysong>" + parseToHTMLEntities(thisSong.getBeatbuddysong()).trim() + "</beatbuddysong>\n";
         myNEWXML += "  <beatbuddykit>" + parseToHTMLEntities(thisSong.getBeatbuddykit()).trim() + "</beatbuddykit>\n";
+        myNEWXML += "  <drummer>" + parseToHTMLEntities(thisSong.getDrummer().trim()) + "</drummer>\n";
+        myNEWXML += "  <drummerkit>" + parseToHTMLEntities(thisSong.getDrummerKit().trim()) + "</drummerkit>\n";
         myNEWXML += "  <key>" + parseToHTMLEntities(thisSong.getKey()).trim() + "</key>\n";
         myNEWXML += "  <keyoriginal>" + parseToHTMLEntities(thisSong.getKeyOriginal()).trim() + "</keyoriginal>\n";
         // If we have set a preferred instrument for chord diagrams, add this to the xml file (no point if empty)

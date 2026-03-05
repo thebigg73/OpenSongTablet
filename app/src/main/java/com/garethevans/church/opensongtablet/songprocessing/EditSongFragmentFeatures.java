@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -41,10 +42,13 @@ public class EditSongFragmentFeatures extends Fragment {
     private String link_string="";
     private String online_search_string="";
     private String use_default_string = "";
+    private String drum_kit_acoustic = "";
+    private String drum_kit_cajon = "";
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
     private ArrayList<String> instruments = new ArrayList<>();
+
     private MetronomeTapTempo metronomeTapTempo;
 
     @Override
@@ -96,6 +100,8 @@ public class EditSongFragmentFeatures extends Fragment {
             String online_string = getString(R.string.online);
             online_search_string = search_string +" ("+ online_string +")";
             use_default_string = getString(R.string.use_default);
+            drum_kit_acoustic = getString(R.string.drum_kit_acoustic);
+            drum_kit_cajon = getString(R.string.drum_kit_cajon);
             instruments = mainActivityInterface.getChordDisplayProcessing().getSongInstruments();
         }
     }
@@ -116,12 +122,12 @@ public class EditSongFragmentFeatures extends Fragment {
                         myView.originalkey, R.layout.view_exposed_dropdown_item, key_choice_string);
                 myView.originalkey.setAdapter(keyArrayAdapter2);
                 myView.originalkey.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKeyOriginal()));
+
+                // The capo
+                setupCapo();
             });
         }
         mainActivityInterface.getMainHandler().post(() -> myView.searchOnline.setText(online_search_string));
-
-        // The capo
-        setupCapo();
 
         // Check for ABC overrides
         if (mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getTempSong())) {
@@ -208,6 +214,26 @@ public class EditSongFragmentFeatures extends Fragment {
                 myView.timesig.setText(DrumCalculations.getFixedTimeSignatureString(mainActivityInterface.getTempSong().getTimesig(),false));
             });
         }
+
+        // The drummer kit
+        // The links
+        ArrayList<String> drumKits = new ArrayList<>();
+        drumKits.add("");
+        drumKits.add(drum_kit_acoustic);
+        drumKits.add(drum_kit_cajon);
+
+        if (getContext()!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                ExposedDropDownArrayAdapter drumKitArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                        myView.drummerKit, R.layout.view_exposed_dropdown_item, drumKits);
+                myView.drummerKit.setAdapter(drumKitArrayAdapter);
+                myView.drummerKit.setText(mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleFromXML(
+                        mainActivityInterface.getTempSong().getDrummerKit()));
+            });
+        }
+
+        // The drummer
+        updateDrummerAdapter();
 
         // The preferred instrument for the song
         if (getContext()!=null) {
@@ -335,10 +361,6 @@ public class EditSongFragmentFeatures extends Fragment {
     private void setLink() {
         String linkvalue;
         switch (whichLink) {
-            case "audio":
-            default:
-                linkvalue = mainActivityInterface.getTempSong().getLinkaudio();
-                break;
             case "youtube":
                 linkvalue = mainActivityInterface.getTempSong().getLinkyoutube();
                 break;
@@ -348,16 +370,17 @@ public class EditSongFragmentFeatures extends Fragment {
             case "other":
                 linkvalue = mainActivityInterface.getTempSong().getLinkother();
                 break;
+            case "audio":
+            default:
+                linkvalue = mainActivityInterface.getTempSong().getLinkaudio();
+                break;
+
         }
         mainActivityInterface.getMainHandler().post(() -> myView.linkValue.setText(linkvalue));
     }
 
     private void editLink(String value) {
         switch (whichLink) {
-            case "audio":
-            default:
-                mainActivityInterface.getTempSong().setLinkaudio(value);
-                break;
             case "youtube":
                 mainActivityInterface.getTempSong().setLinkyoutube(value);
                 break;
@@ -367,6 +390,11 @@ public class EditSongFragmentFeatures extends Fragment {
             case "other":
                 mainActivityInterface.getTempSong().setLinkother(value);
                 break;
+            case "audio":
+            default:
+                mainActivityInterface.getTempSong().setLinkaudio(value);
+                break;
+
         }
     }
 
@@ -396,6 +424,8 @@ public class EditSongFragmentFeatures extends Fragment {
             });
             myView.tempo.addTextChangedListener(new MyTextWatcher("tempo"));
             myView.timesig.addTextChangedListener(new MyTextWatcher("timesig"));
+            myView.drummer.addTextChangedListener(new MyTextWatcher("drummer"));
+            myView.drummerKit.addTextChangedListener(new MyTextWatcher("drummerKit"));
             myView.durationMins.addTextChangedListener(new MyTextWatcher("durationMins"));
             myView.durationSecs.addTextChangedListener(new MyTextWatcher("durationSecs"));
             myView.delay.addTextChangedListener(new MyTextWatcher("delay"));
@@ -448,16 +478,56 @@ public class EditSongFragmentFeatures extends Fragment {
         });
     }
 
+    private void updateDrummerAdapter() {
+        Uri drumFolder = mainActivityInterface.getStorageAccess().getUriForItem("Drummer","","");
+        ArrayList<String> drumFiles = mainActivityInterface.getStorageAccess().listFilesAtUri(drumFolder);
+        ArrayList<String> drummerFileNames = new ArrayList<>();
+        String timeSig = mainActivityInterface.getTempSong().getTimesig();
+        String timeSigInFilename;
+        if (timeSig!=null && !timeSig.isEmpty()) {
+            timeSigInFilename = timeSig.replace("/","_");
+            for (String drumFile : drumFiles) {
+                if (drumFile.contains(timeSigInFilename+".json")) {
+                    String name = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drumFile);
+                    //String name = drumFile.replace(timeSigInFilename+".json","");
+                    Log.d(TAG,"niceNameFromFilename:"+name);
+                    Log.d(TAG,"filenameFromNiceName:"+mainActivityInterface.getDrumViewModel().getDrummer().getFilenameFromNiceName(name));
+                    drummerFileNames.add(name);
+                }
+            }
+
+            drummerFileNames.add(0,"");
+            
+            if (getContext()!=null) {
+                myView.drummer.post(() -> {
+                    ExposedDropDownArrayAdapter drumArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.drummer, R.layout.view_exposed_dropdown_item, drummerFileNames);
+                    myView.drummer.setAdapter(drumArrayAdapter);
+                    String drummerFilename = mainActivityInterface.getTempSong().getDrummer();
+                    String niceName = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drummerFilename);
+                    if (drummerFileNames.contains(niceName)) {
+                        myView.drummer.setText(niceName);
+                    } else {
+                        myView.drummer.setText("");
+                        mainActivityInterface.getTempSong().setDrummer("");
+                    }
+                });
+            }
+
+        }
+
+    }
+
     private String niceTextFromPref(String prefText) {
         switch (prefText) {
-            default:
-                return "";
             case "auto":
                 return pad_auto_string;
             case "link":
                 return link_audio_string;
             case "custom":
                 return custom_string;
+            default:
+                return "";
         }
     }
 
@@ -498,6 +568,21 @@ public class EditSongFragmentFeatures extends Fragment {
                     break;
                 case "timesig":
                     mainActivityInterface.getTempSong().setTimesig(editable.toString());
+                    // We need to reset the drummer and the adapter values
+                    updateDrummerAdapter();
+                    break;
+                case "drummer":
+                    if (editable!=null) {
+                        String niceName = editable.toString();
+                        String fileName = mainActivityInterface.getDrumViewModel().getDrummer().getFilenameFromNiceName(niceName);
+                        mainActivityInterface.getTempSong().setDrummer(fileName);
+                    }
+                    break;
+                case "drummerKit":
+                    if (editable!=null) {
+                        String xmlValue = mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleForSongXML(editable.toString());
+                        mainActivityInterface.getTempSong().setDrummerKit(xmlValue);
+                    }
                     break;
                 case "durationMins":
                 case "durationSecs":

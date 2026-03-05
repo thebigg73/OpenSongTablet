@@ -69,12 +69,11 @@ public class MidiOptionsFragment extends Fragment {
             midiBoardBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiBoardBottomSheet");
         });
         myView.midiClock.setOnClickListener(view -> {
-            // TODO reinstate the check for MIDI devices
-            //if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+            if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
                 mainActivityInterface.navigateToFragment(deeplink_midi_clock, 0);
-            //} else {
-            //    mainActivityInterface.getShowToast().doIt(no_device_string);
-            //}
+            } else {
+                mainActivityInterface.getShowToast().doIt(no_device_string);
+            }
         });
     }
 }

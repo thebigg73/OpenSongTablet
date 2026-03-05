@@ -505,6 +505,8 @@ public class Preferences extends Activity {
     // midiClickTrackTickVolume         int         The volume for the tick sound (def:110)
     // midiClickTrackTock               int         The PC number for the MIDI click track tock sound (def 77 == woodblock low)
     // midiClickTrackTockVolume         int         The volume for the tock sound (def:110)
+    // midiClockBurstMode               boolean     Should MIDI clock messages only be sent for a short burst of time (def:true)
+    // midiClockStartStop               boolean     Should start/stop master control messages be sent when the MIDI clock starts and stops (def:false)
     // midiInput                        boolean     Should the app listen for MIDI messages for songs/foot pedal (def:false)
     // midiInputChannelPedal            int         The default MIDI input channel to listen on for pedal controls (def:8)
     // midiInputChannelSong             int         The default MIDI input channel to listen on for song controls (def:9)

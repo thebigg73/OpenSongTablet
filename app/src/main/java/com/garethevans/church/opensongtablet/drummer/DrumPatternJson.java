@@ -5,17 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrumPatternJson {
-    public String name;
-    public int beats;
-    public int divisions;
+    private String name;
+    private int beats;
+    private int divisions;
     // Key: Drum Name (e.g. "Kick"), Value: array of 16th note triggers
     // The three variations for this specific beat
-    public Map<String, int[]> mainPattern = new HashMap<>();
-    public Map<String, int[]> variationPattern = new HashMap<>();
-    public Map<String, int[]> fillMainPattern = new HashMap<>();
-    public Map<String, int[]> fillVariationPattern = new HashMap<>();
+    private Map<String, int[]> mainPattern = new HashMap<>();
+    private Map<String, int[]> variationPattern = new HashMap<>();
+    private Map<String, int[]> fillMainPattern = new HashMap<>();
+    private Map<String, int[]> fillVariationPattern = new HashMap<>();
 
-    public DrumPatternJson(ArrayList<DrumPart> drumParts, int steps) {
+    public DrumPatternJson(ArrayList<DrumPart> drumParts, int steps, int beats, int divisions) {
+        this.beats = beats;
+        this.divisions = divisions;
         initialiseTracks(drumParts, mainPattern, steps);
         initialiseTracks(drumParts, variationPattern, steps);
         initialiseTracks(drumParts, fillMainPattern, steps);
@@ -58,6 +60,18 @@ public class DrumPatternJson {
     }
     public String getName() {
         return name;
+    }
+    public void setBeats(int beats) {
+        this.beats = beats;
+    }
+    public int getBeats() {
+        return beats;
+    }
+    public void setDivisions(int divisions) {
+        this.divisions = divisions;
+    }
+    public int getDivisions() {
+        return divisions;
     }
 
 }

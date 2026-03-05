@@ -23,6 +23,7 @@ public class TimerEngine {
     private int pulsesPerStep = 6; // Default to 16th notes (Straight)
 
     private ScheduledThreadPoolExecutor executor;
+    private ScheduledThreadPoolExecutor turnOffExecutor;
     private ScheduledFuture<?> clockTask;
 
     private final MainActivityInterface mainActivityInterface;
@@ -34,6 +35,18 @@ public class TimerEngine {
 
     public TimerEngine(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
+        // Create a single-threaded executor for timing
+        executor = new ScheduledThreadPoolExecutor(1, r -> {
+            Thread t = new Thread(r);
+            // Set to maximum priority to prevent CPU "napping"
+            t.setPriority(Thread.MAX_PRIORITY);
+            return t;
+        });
+        turnOffExecutor = new ScheduledThreadPoolExecutor(1);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            executor.setRemoveOnCancelPolicy(true);
+        }
     }
 
     @SuppressLint("DiscouragedApi")
@@ -41,19 +54,6 @@ public class TimerEngine {
         if (isRunning) return;
         //tickCounter = 0;
         isRunning = true;
-
-        // Create a single-threaded executor for timing
-        //executor = new ScheduledThreadPoolExecutor(1);
-        executor = new ScheduledThreadPoolExecutor(1, r -> {
-            Thread t = new Thread(r);
-            // Set to maximum priority to prevent CPU "napping"
-            t.setPriority(Thread.MAX_PRIORITY);
-            return t;
-        });
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            executor.setRemoveOnCancelPolicy(true);
-        }
 
         // 1. Send MIDI START if requested
         midiClock = mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClock();
@@ -65,7 +65,9 @@ public class TimerEngine {
 
         // 2. Schedule the MIDI 5-second cutoff task if we are using midiClockBurstMode
         if (midiClock && mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode()) {
-            executor.schedule(() -> {
+            turnOffExecutor.schedule(() -> {
+                mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
+                mainActivityInterface.getDrumViewModel().getMidiClock().setIsRunning(false);
                 midiClock = false; // Stop sending TICK messages in the main loop
 
                 // Check if we should shut down the whole engine
@@ -74,6 +76,31 @@ public class TimerEngine {
             }, 5, TimeUnit.SECONDS);
         }
 
+        startTask();
+
+        Log.d(TAG, "Timer engine started at " + bpm + " BPM");
+    }
+
+    public void stop() {
+        if (!isRunning) return;
+        isRunning = false;
+
+        // 1. Cancel the ticking task, but DO NOT shutdown the executor
+        if (clockTask != null) {
+            clockTask.cancel(false);
+            clockTask = null;
+        }
+
+        if (midiClock && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockStartStop()) {
+            mainActivityInterface.getMidi().sendMidi(STOP);
+        }
+
+        midiClock = false;
+        Log.d(TAG, "Timer engine stopped (Task cancelled, executor kept alive)");
+    }
+
+    private void startTask() {
         // 3. Main Timing Loop
         // Calculate nanoseconds per MIDI pulse
         // This ensures the new BPM is applied to the timer
@@ -96,33 +123,13 @@ public class TimerEngine {
                 Log.e(TAG, "Error sending MIDI clock", e);
             }
         }, 0, intervalNanos, TimeUnit.NANOSECONDS);
-
-        Log.d(TAG, "Timer engine started at " + bpm + " BPM");
-    }
-
-    public void stop() {
-        if (!isRunning) return;
-        isRunning = false;
-
-        if (clockTask != null) clockTask.cancel(false);
-        if (executor != null) executor.shutdownNow();
-
-        // Send MIDI STOP if we are sending MIDI clock
-        if (midiClock && midiClockStartStop && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // If no MIDI device is connected, the Midi class will deal with this
-            mainActivityInterface.getMidi().sendMidi(STOP);
-        }
-
-        midiClock = false;
-        Log.d(TAG, "Timer engine stopped");
     }
 
     public void setBpm(int newBpm) {
         this.bpm = newBpm;
-        if (isRunning) {
-            // We must stop and restart the executor to change the physical speed
-            stop();
-            start();
+        if (isRunning && clockTask != null) {
+            clockTask.cancel(false); // Stop the current ticking
+            startTask(); // A helper method to just trigger scheduleAtFixedRate
         }
     }
 
@@ -132,7 +139,6 @@ public class TimerEngine {
     public boolean isRunning() {
         return isRunning;
     }
-
 
     public interface OnStepListener {
         void onStep(int totalSteps);
@@ -157,17 +163,18 @@ public class TimerEngine {
      * to apply the new interval immediately.
      */
     public void refresh(int newBpm, int newPulsesPerStep) {
+        // If the values are the same, IGNORE the request to avoid stuttering
+        if (this.bpm == newBpm && this.pulsesPerStep == newPulsesPerStep) {
+            return;
+        }
+
         this.bpm = newBpm;
         this.pulsesPerStep = newPulsesPerStep;
 
-        if (isRunning) {
-            // Cancel the current task but keep the executor alive
-            if (clockTask != null) {
-                clockTask.cancel(false);
-            }
-
-            // Restart the loop with the new timing
-            start();
+        if (isRunning && clockTask != null) {
+            clockTask.cancel(false);
+            // Note: Do NOT reset tickCounter here if you want seamless BPM changes
+            startTask();
         }
     }
 

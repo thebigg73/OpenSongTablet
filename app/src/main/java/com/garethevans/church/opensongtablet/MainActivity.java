@@ -124,7 +124,6 @@ import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
@@ -213,7 +212,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
-        ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
+        ActionInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         SwipeDrawingInterface, BatteryStatus.MyInterface,
         DisplayInterface, EditSongFragmentInterface {
 
@@ -369,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
             song_actions = "", deeplink_preferences = "", song_string = "", set_string = "",
-            search_index_start = "", search_index_end = "", deeplink_metronome = "", deeplink_drummer_settings = "",
+            search_index_start = "", search_index_end = "", deeplink_metronome = "",
             mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info = "";
@@ -747,7 +746,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             search_index_start = getString(R.string.index_songs_start);
             search_index_end = getString(R.string.index_songs_end);
             deeplink_metronome = getString(R.string.deeplink_metronome);
-            deeplink_drummer_settings = getString(R.string.deeplink_drummer_settings);
             mode_presenter = getString(R.string.mode_presenter);
             mode_performance = getString(R.string.mode_performance);
             mode_stage = getString(R.string.mode_stage);
@@ -938,6 +936,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public String getMainfoldername() {
         return mainfoldername;
+    }
+
+    @Override
+    public Activity getMyActivity() {
+        return this;
     }
 
     @Override
@@ -1930,32 +1933,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         }
-    }
-
-
-    @Override
-    public void startDiscovery() {
-        getNearbyActions().getNearbyConnectionManagement().startDiscovery();
-    }
-
-    @Override
-    public void startAdvertising() {
-        getNearbyActions().getNearbyConnectionManagement().startAdvertising();
-    }
-
-    @Override
-    public void stopDiscovery() {
-        getNearbyActions().getNearbyConnectionManagement().stopDiscovery();
-    }
-
-    @Override
-    public void stopAdvertising() {
-        getNearbyActions().getNearbyConnectionManagement().stopAdvertising();
-    }
-
-    @Override
-    public void turnOffNearby() {
-        getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
     }
 
     @Override
@@ -4785,31 +4762,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (setMenuFragment != null && updateSongMenu) {
                 setMenuFragment.updateHighlight();
-            }
-        }
-    }
-
-    @Override
-    public void goToPreviousPage() {
-        // Received from nearbyAction
-        if (song.getFiletype().equals("PDF") && song.getPdfPageCurrent() > 0) {
-            if (presenterValid()) {
-                presenterFragment.selectSection(song.getPdfPageCurrent() - 1);
-            } else if (performanceValid()) {
-                performanceFragment.selectSection(song.getPdfPageCount() - 1);
-            }
-        }
-    }
-
-    @Override
-    public void goToNextPage() {
-        // Received from nearbyAction
-        if (song.getFiletype().equals("PDF") && song.getPdfPageCount() > 0 &&
-                song.getPdfPageCurrent() < song.getPdfPageCount() - 1) {
-            if (presenterValid()) {
-                presenterFragment.selectSection(song.getPdfPageCurrent() + 1);
-            } else if (performanceValid()) {
-                performanceFragment.selectSection(song.getPdfPageCount() + 1);
             }
         }
     }

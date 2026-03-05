@@ -1489,7 +1489,6 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getAutoscroll().startAutoscroll();
             }
 
-            // TODO - updated metronome logic
             // Process our song time signature and tempo
             boolean metronomeWasRunning = mainActivityInterface.getDrumViewModel().getMetronome().getIsRunning();
             boolean drummerWasRunning = mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning();

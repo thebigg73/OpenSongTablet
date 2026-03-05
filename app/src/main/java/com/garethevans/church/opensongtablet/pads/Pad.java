@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.pads;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -9,7 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyImageView;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -46,6 +50,11 @@ public class Pad {
     private boolean pad1Prepared, pad2Prepared;
     private final String pad_auto, link_audio, pad_key_error, pad_file_error,
             pad_custom_pad_error, pad_off, stopping;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final MyImageView rewind, fastForward, playPause;
+    private final Drawable playDrawable;
+    private final Drawable pauseDrawable;
+    private int padUsing = 1;
 
     public Pad(Context c, LinearLayout pad) {
         this.c = c;
@@ -60,15 +69,25 @@ public class Pad {
         pad_custom_pad_error = c.getString(R.string.pad_custom_pad_error);
         pad_off = c.getString(R.string.pad_off);
         stopping = c.getString(R.string.stopping);
+        playDrawable = ContextCompat.getDrawable(c, R.drawable.play);
+        pauseDrawable = ContextCompat.getDrawable(c, R.drawable.pause);
+        rewind = pad.findViewById(R.id.rewind);
+        fastForward = pad.findViewById(R.id.fastForward);
+        playPause = pad.findViewById(R.id.playPause);
+        playPause.setOnClickListener(v -> playStopOrPause(padUsing));
+        fastForward.setOnClickListener(v -> seekPad(+15000));
+        rewind.setOnClickListener(v -> seekPad(-15000));
     }
 
     public void startPad() {
         // IV - Reset paused pads
         if (pad1Pause) {
             stopAndReset(1);
+            padUsing = 1;
         }
         if (pad2Pause) {
             stopAndReset(2);
+            padUsing = 2;
         }
         // IV - managePads will fade all running pads
         // managePads will start the new pad if/when a pad player is free
@@ -490,6 +509,7 @@ public class Pad {
         }
     }
     private void doPlay(int padNum) {
+        padUsing = padNum;
         switch (padNum) {
             case 1:
                 pad1Pause = false;
@@ -510,7 +530,7 @@ public class Pad {
                 }
                 break;
         }
-        pad.setOnClickListener(v -> playStopOrPause(padNum));
+        //pad.setOnClickListener(v -> playStopOrPause(padNum));
         pad.setOnLongClickListener(v -> panicStop());
 
         // IV - We setup the on-screen timer display
@@ -619,6 +639,8 @@ public class Pad {
                 }
                 break;
         }
+        // Change the play/pause button
+        playPause.setImageDrawable(pad1Pause||pad2Pause ? pauseDrawable : playDrawable);
     }
 
     public boolean panicStop() {
@@ -663,5 +685,27 @@ public class Pad {
         padTime.setText("");
         padTotalTime.setVisibility(View.GONE);
         padTotalTime.setText(stopping);
+    }
+
+    private void seekPad(int seekBy) {
+        if (whichPadPlaying()==1) {
+            if (pad1Prepared && pad1.isPlaying()) {
+                int timeToGoTo = pad1.getCurrentPosition() + seekBy;
+                int maxTime = pad1.getDuration();
+                if (timeToGoTo > maxTime) {
+                    timeToGoTo = maxTime;
+                }
+                pad1.seekTo(timeToGoTo);
+            }
+        } else {
+            if (pad2Prepared && pad2.isPlaying()) {
+                int timeToGoTo = pad2.getCurrentPosition() + seekBy;
+                int maxTime = pad1.getDuration();
+                if (timeToGoTo > maxTime) {
+                    timeToGoTo = maxTime;
+                }
+                pad2.seekTo(timeToGoTo);
+            }
+        }
     }
 }

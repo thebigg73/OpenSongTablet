@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:labelFor="@+id/textView"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        tools:hint="Hint">
+        tools:hint="Hint"
+        android:importantForAutofill="no">
 <!--style="@style/ExposedDropDownLayoutOutline"-->
         <AutoCompleteTextView
             android:id="@+id/textView"
@@ -21,7 +22,8 @@
             android:padding="16dp"
             android:inputType="none"
             android:textIsSelectable="false"
-            tools:text="text"/>
+            tools:text="text"
+            android:importantForAutofill="no"/>
 
        <!-- style="@style/EditTextLayout" -->
 

@@ -76,10 +76,6 @@ public class PedalsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPedalBinding.inflate(inflater, container, false);
 
-        // TODO remove
-        //PedalDebugOverlay pedalDebug = new PedalDebugOverlay(getActivity());
-        //pedalDebug.show();
-
         prepareStrings();
 
         webAddress = website_foot_pedal_string;

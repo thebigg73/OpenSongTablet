@@ -496,6 +496,12 @@ public class LoadSong {
                                     case "beatbuddykit":
                                         thisSong.setBeatbuddykit(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                         break;
+                                    case "drummer":
+                                        thisSong.setDrummer(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
+                                    case "drummerkit":
+                                        thisSong.setDrummerKit(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                        break;
                                     case "key":
                                         thisSong.setKey(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                         break;

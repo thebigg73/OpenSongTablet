@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -310,6 +311,7 @@ public interface MainActivityInterface {
     Palette getPalette();
     void refreshToolbarMenu();
     void tintBackgroundToTheme();
+    Activity getMyActivity();
 
     // CCLI
     CCLILog getCCLILog();

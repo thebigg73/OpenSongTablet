@@ -162,6 +162,12 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             imeOptions = imeOptions & (EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                editText.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+                textInputLayout.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+                // If you have access to the layout container:
+                // myView.filenameInputLayout.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+            }
         //    editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         } else if (inputType == InputType.TYPE_CLASS_NUMBER) {
             editText.setInputType(inputType);

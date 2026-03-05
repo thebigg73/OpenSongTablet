@@ -73,6 +73,27 @@
             app:drawableStartCompat="@drawable/amplifier"
             android:clickable="false"/>
 
+        <com.garethevans.church.opensongtablet.customviews.MyImageView
+            android:id="@+id/rewind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rewind"
+            android:contentDescription="@string/back" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyImageView
+            android:id="@+id/playPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play"
+            android:contentDescription="@string/start_stop_pad" />
+
+        <com.garethevans.church.opensongtablet.customviews.MyImageView
+            android:id="@+id/fastForward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fast_forward"
+            android:contentDescription="@string/next" />
+
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/padTime"
             android:layout_width="wrap_content"

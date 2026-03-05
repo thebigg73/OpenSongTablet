@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings("FieldCanBeLocal")

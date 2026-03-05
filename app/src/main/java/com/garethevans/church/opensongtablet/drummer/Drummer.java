@@ -1,10 +1,14 @@
 package com.garethevans.church.opensongtablet.drummer;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
+import com.garethevans.church.opensongtablet.MainActivity;
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Drummer {
@@ -13,6 +17,7 @@ public class Drummer {
     // There are basic midi files available to begin with, but ultimately the user can create their own!
     // Also looking at using Oboe to access low latency audio
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "Drummer";
     private final MainActivityInterface mainActivityInterface;
     private DrumPatternJson currentPattern;
@@ -20,13 +25,16 @@ public class Drummer {
     private boolean isRunning = false;
     private boolean isCountIn = false;
     private int startStep = -1;
-    private int lastKnownStep = 0; // Local tracker to decouple from ViewModel
+    private boolean sequencerMode = false;
 
     private DrumSection activeSection = DrumSection.MAIN;
     private DrumSection pendingSection = null;
     private DrumSection sectionBeforeFill = DrumSection.MAIN;
     private DrumSection nextSectionAfterFill = null; // New variable
     private boolean crashOnNextBar = false;
+    private String drummerStyle="Standard";
+    private final String drum_kit_acoustic;
+    private final String drum_kit_cajon;
 
     // The map currently being read by the playback loop
     private Map<String, int[]> activeMap;
@@ -34,6 +42,8 @@ public class Drummer {
     // Initialise the class and get a MainActivityInterface reference
     public Drummer(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
+        drum_kit_acoustic = c.getString(R.string.drum_kit_acoustic);
+        drum_kit_cajon = c.getString(R.string.drum_kit_cajon);
     }
 
     public void setIsRunning(boolean isRunning) {
@@ -66,9 +76,11 @@ public class Drummer {
 
     private void playCountInSound(String partName) {
         DrumSoundManager soundManager = mainActivityInterface.getDrumViewModel().getDrumSoundManager();
+        String cajonPrefix = getDrummerStyle().equals("Cajon") ? "Cajon_" : "";
+
         if (soundManager != null) {
             // Trigger the specific sample
-            soundManager.playDrum(partName,100);
+            soundManager.playDrum(cajonPrefix+partName, 100);
         }
     }
 
@@ -85,14 +97,14 @@ public class Drummer {
         int stepInBar = totalSteps % stepsPerBar;
 
         // A. MID-BAR FILL ENTRANCE (Step 8)
-        if (stepInBar == 8 && (pendingSection == DrumSection.FILL_MAIN || pendingSection == DrumSection.FILL_VARIATION)) {
+        if (stepInBar == 8 && !sequencerMode && (pendingSection == DrumSection.FILL_MAIN || pendingSection == DrumSection.FILL_VARIATION)) {
             activeSection = pendingSection;
             pendingSection = null;
             updateActiveMap();
         }
 
         // B. BAR START LOGIC (Step 0)
-        if (stepInBar == 0) {
+        if (stepInBar == 0 && !sequencerMode) {
             // 1. Handle Crash
             if (crashOnNextBar) {
                 triggerSound("Crash", 115);
@@ -113,10 +125,18 @@ public class Drummer {
             }
         }
 
-        if (isCountIn && stepInBar == stepsPerBar - 1) {
+        if (isCountIn && stepInBar == stepsPerBar - 1 && !sequencerMode) {
             isCountIn = false;
             // IMPORTANT: We need to make sure we are ready for Step 0 of the MAIN pattern
             activeSection = DrumSection.MAIN;
+            updateActiveMap();
+        }
+
+        // If we are using the sequencer, just stay here
+        if (sequencerMode) {
+            isCountIn = false;
+            activeSection = mainActivityInterface.getDrumViewModel().getActiveSection().getValue();
+            pendingSection = activeSection;
             updateActiveMap();
         }
 
@@ -128,9 +148,8 @@ public class Drummer {
         }
     }
 
-    private void updateActiveMap() {
+    public void updateActiveMap() {
         if (currentPattern == null) return;
-
         switch (activeSection) {
             case MAIN:
                 activeMap = currentPattern.getMainPattern();
@@ -145,17 +164,18 @@ public class Drummer {
                 activeMap = currentPattern.getFillVariationPattern(); // The busier fill
                 break;
         }
-
         mainActivityInterface.getDrumViewModel().updateActiveSection(activeSection);
     }
 
     private void playActivePattern(int stepInBar) {
         if (activeMap == null) return;
 
+        String cajonPrefix = getDrummerStyle().equals("Cajon") ? "Cajon_" : "";
+
         for (Map.Entry<String, int[]> entry : activeMap.entrySet()) {
             int velocity = entry.getValue()[stepInBar];
             if (velocity > 0) {
-                triggerSound(entry.getKey(), velocity);
+                triggerSound(cajonPrefix + entry.getKey(), velocity);
             }
         }
     }
@@ -199,7 +219,9 @@ public class Drummer {
         this.nextSectionAfterFill = target;
 
         // Call the updated fill logic
-        fill(this.lastKnownStep);
+        // Local tracker to decouple from ViewModel
+        int lastKnownStep = 0;
+        fill(lastKnownStep);
     }
 
     private void triggerSound(String instrument, int velocity) {
@@ -225,7 +247,133 @@ public class Drummer {
     }
 
     public String getDrummerStyle() {
-        Log.d(TAG,"TODO getDrummerStyle");
-        return "Standard";
+        if (drummerStyle==null || drummerStyle.isEmpty()) {
+            drummerStyle = "Standard";
+        }
+        return drummerStyle;
+    }
+
+    public void setDrummerStyle(String drummerStyle) {
+        this.drummerStyle = drummerStyle;
+    }
+
+    public String getDrummerStyleForSongXML(String drummerStyle) {
+        if (drummerStyle.equals(drum_kit_cajon) || drummerStyle.equals("Cajon")) {
+            return "Cajon";
+        } else {
+            return "Standard";
+        }
+    }
+    public String getDrummerStyleFromXML(String drummerStyle) {
+        if (drummerStyle.equals("Cajon")) {
+            return drum_kit_cajon;
+        } else {
+            return drum_kit_acoustic;
+        }
+    }
+
+    public void setSequencerMode(boolean sequencerMode) {
+        this.sequencerMode = sequencerMode;
+    }
+
+    public boolean getSequencerMode() {
+        return sequencerMode;
+    }
+
+    public ArrayList<String> getDrummerFiles(String timeSig, boolean niceNames) {
+        Uri drumFolder = mainActivityInterface.getStorageAccess().getUriForItem("Drummer","","");
+        ArrayList<String> drumFiles = mainActivityInterface.getStorageAccess().listFilesAtUri(drumFolder);
+        ArrayList<String> drummerFileNames = new ArrayList<>();
+
+        String matchText = timeSig!=null && timeSig.contains("/") ? timeSig.replace("/","_")+".json" : null;
+
+        for (String drumFile : drumFiles) {
+            if (matchText==null || drumFile.contains(matchText)) {
+                drummerFileNames.add(niceNames ? getNiceNameFromFilename(drumFile) : drumFile);
+            }
+        }
+        return drummerFileNames;
+    }
+
+    public void loadDrummerFile(String filename) {
+        try {
+            // Get the original bpm as this isn't saved in the drummer file
+            int bpm = mainActivityInterface.getDrumViewModel().getThisBpm();
+
+            // 1. Get the URI for the file
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", filename);
+
+            // 2. Read the JSON string from the stream
+            String jsonString = mainActivityInterface.getStorageAccess().readTextFileToString(
+                    mainActivityInterface.getStorageAccess().getInputStream(uri));
+
+            if (jsonString != null && !jsonString.isEmpty()) {
+                // 3. Deserialize using the global Gson instance
+                DrumPatternJson pattern = MainActivity.gson.fromJson(jsonString, DrumPatternJson.class);
+
+                // 4. Update the ViewModel
+                mainActivityInterface.getDrumViewModel().setDrumPatternJson(pattern);
+                mainActivityInterface.getDrumViewModel().setCurrentPattern(pattern);
+                mainActivityInterface.getDrumViewModel().updateAllTimingValues(pattern.getBeats(),pattern.getDivisions(),bpm);
+
+                mainActivityInterface.getDrumViewModel().stopDrummer();
+                updateActiveMap();
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading custom drum pattern: " + filename, e);
+            // Fallback to default if loading fails
+            mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
+        }
+
+    }
+
+    public void saveDrummerFile(String filename) {
+        // Reassign the file to the current one
+        mainActivityInterface.getDrumViewModel().setDrumPatternJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer","",filename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Drummer","",filename);
+        String gsonString = MainActivity.gson.toJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
+        mainActivityInterface.getStorageAccess().writeFileFromString(gsonString,mainActivityInterface.getStorageAccess().getOutputStream(uri));
+    }
+
+    public String getNiceNameFromFilename(String filename) {
+        String niceName = filename.replace(".json","");
+        String timeSig = "";
+        String[] parts = niceName.split("_");
+        // We should have a minimum of 3 parts (more if underscore in name)
+        if (parts.length >=3) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i <= parts.length - 3; i++) {
+                // We only need to do this in case the name intentionally has underscores in it
+                stringBuilder.append(parts[i]).append(" ");
+            }
+            niceName = stringBuilder.toString().trim();
+            timeSig = "(" + parts[parts.length - 2] + "/" + parts[parts.length - 1]+")";
+        }
+        return niceName + " " + timeSig;
+    }
+
+    public String getFilenameFromNiceName(String niceName) {
+        // Replace the last ) with .json
+        String filename = niceName.replace(")",".json");
+        // Replace the ' (' with _ and the '/' with _
+        filename = filename.replace(" (", "_");
+        filename = filename.replace("/", "_");
+        if (!filename.endsWith(".json")) {
+            // Final check for .json ending
+            filename = filename + ".json";
+        }
+        return filename;
+    }
+
+    public String getFilenameFromBasics(String name, String timeSig) {
+        timeSig = timeSig==null ? "" : timeSig.replace("/","_");
+        return name + "_" + timeSig + ".json";
+    }
+
+    public String getNiceNameFromBasics(String name, String timeSig) {
+        timeSig = timeSig==null ? "" : " (" + timeSig + ")";
+        return name + timeSig;
     }
 }

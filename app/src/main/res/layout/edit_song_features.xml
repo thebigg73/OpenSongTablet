@@ -126,6 +126,34 @@
                     android:hint="@string/time_signature" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/drummer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:hint="@string/drummer" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/drummerKit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:hint="@string/drummer_kit" />
+            </LinearLayout>
             <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                 android:id="@+id/tapTempo"
                 android:layout_width="match_parent"
@@ -169,7 +197,8 @@
                     android:layout_weight="1"
                     android:hint="@string/time_mins"
                     android:inputType="number"
-                    app:suffixText="m" />
+                    app:suffixText="m"
+                    android:importantForAutofill="no"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="wrap_content"
@@ -186,7 +215,8 @@
                     android:layout_weight="1"
                     android:hint="@string/time_secs"
                     android:inputType="number"
-                    app:suffixText="s" />
+                    app:suffixText="s"
+                    android:importantForAutofill="no"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                     android:id="@+id/delay"
@@ -196,7 +226,8 @@
                     android:layout_weight="1.5"
                     android:hint="@string/autoscroll_time"
                     android:inputType="number"
-                    app:suffixText="s" />
+                    app:suffixText="s"
+                    android:importantForAutofill="no"/>
             </LinearLayout>
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>

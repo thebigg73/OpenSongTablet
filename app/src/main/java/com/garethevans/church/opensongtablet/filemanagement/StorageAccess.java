@@ -1182,6 +1182,11 @@ public class StorageAccess {
             filename = filename.toLowerCase(Locale.ROOT);
 
             if (filename.contains(".")) {
+                // SongSelect badly downloads chordpro as text extension?!?!?
+                if (filename.contains("-chordpro-") && filename.contains(".txt")) {
+                    // This is a bad SongSelect file make sure we only return true if checking for chordpro
+                    return whichType.equalsIgnoreCase("chordpro");
+                }
                 filename = filename.substring(filename.lastIndexOf("."));
                 return toCheck.contains(filename);
             } else {

@@ -31,7 +31,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
     // Database Version
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 11;
 
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
@@ -327,6 +327,18 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+        if (oldVersion<11) {
+            try (SQLiteDatabase tempDB = SQLiteDatabase.openOrCreateDatabase(dbPath, null)) {
+                Cursor cursor = tempDB.rawQuery("SELECT * FROM " + SQLite.TABLE_NAME + " LIMIT 0", null);
+                if (cursor.getColumnIndex(SQLite.COLUMN_DRUMMER) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_DRUMMER + " TEXT");
+                }
+                if (cursor.getColumnIndex(SQLite.COLUMN_DRUMMER_KIT) == -1) {
+                    tempDB.execSQL("ALTER TABLE " + SQLite.TABLE_NAME + " ADD " + SQLite.COLUMN_DRUMMER_KIT + " TEXT");
+                }
+                cursor.close();
+            }
+        }
     }
 
     public void exportDatabase() {
@@ -535,5 +547,4 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    // TODO Flush entries that aren't in the filesystem, or alert the user to issues (perhaps asking to update the entry?
 }

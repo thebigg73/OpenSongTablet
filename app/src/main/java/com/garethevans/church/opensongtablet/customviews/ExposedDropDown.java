@@ -82,16 +82,13 @@ public class ExposedDropDown extends FrameLayout {
         // Read XML attributes
         int[] set = new int[]{android.R.attr.text, android.R.attr.hint};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
-        CharSequence text = a.getText(0);
-        CharSequence hint = a.getText(1);
+        String text = a.getString(0);
+        String hint = a.getString(1);
+
         a.recycle();
 
-        if (text != null) {
-            setText(text.toString());
-        }
-        if (hint != null) {
-            setHint(hint.toString());
-        }
+        setText(text);
+        setHint(hint);
 
         autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_medium));
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());
@@ -203,6 +200,18 @@ public class ExposedDropDown extends FrameLayout {
             autoCompleteTextView.post(() -> {
                 try {
                     autoCompleteTextView.setText(text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public void setText(String text, boolean filter) {
+        if (autoCompleteTextView != null) {
+            autoCompleteTextView.post(() -> {
+                try {
+                    autoCompleteTextView.setText(text,filter);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

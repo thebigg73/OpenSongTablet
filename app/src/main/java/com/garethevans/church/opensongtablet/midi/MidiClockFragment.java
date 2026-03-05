@@ -184,6 +184,12 @@ public class MidiClockFragment extends Fragment {
             mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(myView.midiClockSend.isChecked());
             mainActivityInterface.getDrumViewModel().getMidiClock().setIsRunning(myView.midiClockSend.isChecked());
         });
+        myView.midiClockStartStop.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getDrumViewModel().stopMidiClock();
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClockStartStop(b);
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(myView.midiClockSend.isChecked());
+            mainActivityInterface.getDrumViewModel().getMidiClock().setIsRunning(myView.midiClockSend.isChecked());
+        });
         myView.midiClickTrackSend.setOnCheckedChangeListener(((compoundButton, b) -> {
             mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeMidi(b);
 

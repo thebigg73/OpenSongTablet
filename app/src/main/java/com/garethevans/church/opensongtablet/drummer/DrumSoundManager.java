@@ -33,8 +33,6 @@ public class DrumSoundManager {
     private DrumKit drumKit;
     private DrumKit cajonKit;
 
-    private HashMap<String, Float> drumKitVolumes, cajonKitVolumes;
-
     private final String drumKickVol = "drumKickVol", drumSnareVol = "drumSnareVol", drumRimShotVol = "drumRimShotVol",
             drumStickVol = "drumStickVol", drumHatClosedVol = "drumHatClosedVol", drumHatOpenVol = "drumHatOpenVol",
             drumTomLoVol = "drumTomLoVol", drumTomMidVol = "drumTomMidVol", drumTomHiVol = "drumTomHiVol",
@@ -111,13 +109,29 @@ public class DrumSoundManager {
         }
 
         AssetManager am = context.getAssets();
+
+        // Get a list of all the unique files
+        String[] drummerFiles = null;
+
+        // Load in the standard kit
         for (int i = 0; i < kit.getDrumParts().size(); i++) {
-            try (AssetFileDescriptor afd = am.openFd("drummer/" + kit.getDrumParts().get(i).getPartFileName())) {
+            try (AssetFileDescriptor afd = am.openFd("drummer/" + drumKit.getDrumParts().get(i).getPartFileName())) {
                 int id = soundPool.load(afd, 1);
-                soundMap.put(kit.getDrumParts().get(i).getPartName(), id);
+                soundMap.put(drumKit.getDrumParts().get(i).getPartName(), id);
                 soundsToLoad ++;
             } catch (IOException e) {
                 Log.e(TAG, "Error loading drum sample: " + kit.getDrumParts().get(i).getPartFileName(), e);
+            }
+        }
+
+        // Load in the cajon kit - will only load in the parts that aren't already in the main kit
+        for (int i = 0; i < kit.getDrumParts().size(); i++) {
+            try (AssetFileDescriptor afd = am.openFd("drummer/" + cajonKit.getDrumParts().get(i).getPartFileName())) {
+                int id = soundPool.load(afd, 1);
+                soundMap.put(cajonKit.getDrumParts().get(i).getPartName(), id);
+                soundsToLoad ++;
+            } catch (IOException e) {
+                Log.e(TAG, "Cajon kit didn't have extra file for: " + cajonKit.getDrumParts().get(i).getPartFileName(), e);
             }
         }
     }
@@ -169,7 +183,7 @@ public class DrumSoundManager {
             Log.e("SOUND_ERROR", "Sound name not found in map: " + name);
             return;
         }
-        int priority = (name.equals("Kick") || name.equals("Snare")) ? 2 : 1;
+        int priority = (name.contains("Kick") || name.contains("Snare")) ? 2 : 1;
         int currentStreamId = soundPool.play(soundId, newVolume, newVolume, priority, 0, 1.0f);
 
         // --- CORRECT CHOKE LOGIC ---
@@ -212,7 +226,22 @@ public class DrumSoundManager {
             drumKit.setDrumParts(drumKitParts);
 
             // The cajon kit
-            // TODO
+            cajonKit = new DrumKit(c.getString(R.string.drum_kit_percussion));
+            ArrayList<DrumPart> cajonKitParts = new ArrayList<>();
+            cajonKitParts.add(buildDrumPart(c,"Cajon_Kick",R.string.drum_kick,drumKickVol,35));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_Snare",R.string.drum_snare,drumSnareVol,38));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_RimShot",R.string.drum_rim_shot,drumRimShotVol,37));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_Stick",R.string.drum_stick,drumStickVol,40));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_HatClosed",R.string.drum_hat_closed,drumHatClosedVol,42));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_HatOpen",R.string.drum_hat_open,drumHatOpenVol,46));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_TomLo",R.string.drum_tom_lo,drumTomLoVol,45));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_TomMid",R.string.drum_tom_mid,drumTomMidVol,47));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_TomHi",R.string.drum_tom_hi,drumTomHiVol,50));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_Crash",R.string.drum_crash,drumCrashVol,49));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_Splash",R.string.drum_splash,drumSplashVol,55));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_Ride",R.string.drum_ride,drumRideVol,51));
+            cajonKitParts.add(buildDrumPart(c,"Cajon_RideBell",R.string.drum_ride_bell,drumRideBellVol,53));
+            cajonKit.setDrumParts(cajonKitParts);
         }
     }
 

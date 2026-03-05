@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:labelFor="@+id/editText"
         tools:hint="Hint"
-        style="@style/EditTextLayoutOutline">
+        style="@style/EditTextLayoutOutline"
+        android:importantForAutofill="no">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText"
@@ -26,6 +27,7 @@
             android:cursorVisible="true"
             android:enabled="true"
             tools:text="The text"
-            android:imeOptions="flagNoExtractUi"/>
+            android:imeOptions="flagNoExtractUi"
+            android:importantForAutofill="no"/>
     </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>

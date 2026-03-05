@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/information" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:padding="@dimen/extra_scroll_space">
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/loadFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:hint="@string/file_chooser"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/saveFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:hint="@string/filename"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/assignFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:hint="@string/drummer_assign_info"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+        android:id="@+id/actionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="16dp"
+        app:icon="@drawable/save"
+        android:text="@string/load"/>
+</LinearLayout>
+

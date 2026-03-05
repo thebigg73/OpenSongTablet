@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.drummer;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -124,39 +125,76 @@ public class DrumViewModel extends ViewModel {
      @param song the song to be processed for tempo and time signature
      */
     public void prepareSongValues(Song song) {
-        // Work out the values for the loaded song.  Called after song has settled, metronome starts
-        if (metronome!=null) {
-            metronome.checkTickTockColors();
+        // Only proceed if we aren't editing the sequence
+        boolean loadedDrummer = false;
+        if (!drummer.getSequencerMode()) {
+            // Work out the values for the loaded song.  Called after song has settled, metronome starts
+            if (metronome != null) {
+                metronome.checkTickTockColors();
+            }
+
+            if (song != null) {
+                if (song.getDrummer()!=null && !song.getDrummer().isEmpty()) {
+                    // Check the file exists
+                    Uri drummerUri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", song.getDrummer());
+                    if (mainActivityInterface.getStorageAccess().uriExists(drummerUri)) {
+                        drummer.loadDrummerFile(song.getDrummer());
+                        loadedDrummer = true;
+                    }
+                }
+
+                if (song.getDrummerKit()==null || song.getDrummerKit().isEmpty()) {
+                    drummer.setDrummerStyle("Standard");
+                } else {
+                    drummer.setDrummerStyle(song.getDrummerKit());
+                }
+
+                if (loadedDrummer) {
+                    thisBeats = getDrumPatternJson().getBeats();
+                    thisDivisions = getDrumPatternJson().getDivisions();
+                    setCurrentPattern(drumPatternJson);
+                } else {
+                    int[] sig = DrumCalculations.getFixedTimeSignature(song.getTimesig());
+                    thisBeats = sig[0];
+                    thisDivisions = sig[1];
+                }
+                thisBpm = DrumCalculations.getFixedTempo(song.getTempo(), true);
+            }
         }
 
-        if (song!=null) {
-            int[] sig = DrumCalculations.getFixedTimeSignature(song.getTimesig());
-            thisBeats = sig[0];
-            thisDivisions = sig[1];
+        // 1. Update the interval for the audio click (Metronome)
+        // This replaces the old fixed 60000 / bpm math
+        thisBeatDuration = DrumCalculations.getBeatDurationMs(thisBpm, thisDivisions);
 
-            thisBpm = DrumCalculations.getFixedTempo(song.getTempo(), true);
-
-            // 1. Update the interval for the audio click (Metronome)
-            // This replaces the old fixed 60000 / bpm math
-            thisBeatDuration = DrumCalculations.getBeatDurationMs(thisBpm, thisDivisions);
-
-            // 4. Bar Math
-            thisPulsesPerStep = DrumCalculations.getPulsesPerStep(sig[1]);
-            thisStepsPerPulse = DrumCalculations.getStepsPerPulse(sig[1]);
-            thisStepsPerBar = DrumCalculations.getTotalStepsInBar(thisBeats, thisDivisions);
+        // 4. Bar Math
+        thisPulsesPerStep = DrumCalculations.getPulsesPerStep(thisDivisions);
+        thisStepsPerPulse = DrumCalculations.getStepsPerPulse(thisDivisions);
+        thisStepsPerBar = DrumCalculations.getTotalStepsInBar(thisBeats, thisDivisions);
 
 
-            // Make sure the visual metronome has the correct number of beats
-            mainActivityInterface.getToolbar().setUpMetronomeBar(thisBeats);
+        // Make sure the visual metronome has the correct number of beats
+        mainActivityInterface.getToolbar().setUpMetronomeBar(thisBeats);
 
+        if (!drummer.getSequencerMode() && !loadedDrummer) {
+            // Build an empty drum pattern
+            buildEmptyPattern();
+
+            // Now add in the default pattern
+            addDefaultPattern();
         }
 
+        // Update the drummer class and timer class to use this as the basis
+        updateDrummerAndTimer();
+    }
+
+    public void buildEmptyPattern() {
         // FORCE REBUILD: Reset the pattern object so it's fresh for the new song
         drumPatternJson = new DrumPatternJson(
                 drumSoundManager.getKit().getDrumParts(),
-                this.thisStepsPerBar
+                this.thisStepsPerBar, thisBeats, thisDivisions
         );
-
+    }
+    public void addDefaultPattern() {
         // Repopulate with the default patterns for the new time signature
         DrumPatternBuilder.buildStandardPattern(
                 drumPatternJson,
@@ -164,7 +202,8 @@ public class DrumViewModel extends ViewModel {
                 this.thisDivisions,
                 this.thisStepsPerPulse
         );
-
+    }
+    public void updateDrummerAndTimer() {
         // Update the drummer with the new pattern
         if (drummer != null) {
             drummer.setPattern(drumPatternJson);
@@ -175,6 +214,7 @@ public class DrumViewModel extends ViewModel {
         if (timerEngine != null) {
             // This now updates both BPM and the 6/8 vs 4/4 resolution in one go
             timerEngine.refresh(thisBpm, thisPulsesPerStep);
+            timerEngine.resetTickCounter();
         }
     }
     public void setThisBpm(int thisBpm) {
@@ -186,8 +226,14 @@ public class DrumViewModel extends ViewModel {
     public int getThisBpm() {
         return thisBpm;
     }
+    public void setThisBeats(int thisBeats) {
+        this.thisBeats = thisBeats;
+    }
     public int getThisBeats() {
         return thisBeats;
+    }
+    public void setThisDivisions(int thisDivisions) {
+        this.thisDivisions = thisDivisions;
     }
     public int getThisDivisions() {
         return thisDivisions;
@@ -213,7 +259,10 @@ public class DrumViewModel extends ViewModel {
         metronome.resetTotalStepsProcessed();
 
         // 1. Prepare values
-        prepareSongValues(mainActivityInterface.getSong());
+        if (!drummer.getIsRunning()) {
+            // The drummer hadn't sorted this, so make sure we do it now
+            prepareSongValues(mainActivityInterface.getSong());
+        }
 
         // 2. Pre-calculate the duration ONCE here, not in the loop
         thisBeatDuration = DrumCalculations.getBeatDurationMs(thisBpm, thisDivisions);
@@ -227,7 +276,7 @@ public class DrumViewModel extends ViewModel {
             int stepInBar = totalSteps % thisStepsPerBar;
 
             if (metronome != null && metronome.getIsRunning()) {
-                // PASS THE LOCAL VARIABLES DIRECTLY
+                metronome.onStep(stepInBar, thisStepsPerBar, thisBeatDuration);
             }
 
             if (drummer !=null && drummer.getIsRunning()) {
@@ -331,7 +380,7 @@ public class DrumViewModel extends ViewModel {
             if (!metronomeAlreadyPlaying) {
                 // This is a FRESH START
                 timerEngine.resetTickCounter();
-                drummer.setIsCountIn(true);
+                drummer.setIsCountIn(!drummer.getSequencerMode());
                 drummer.setStartStep(0);
 
             } else {
@@ -362,7 +411,7 @@ public class DrumViewModel extends ViewModel {
         Log.d(TAG, "stopDrummer()");
         drummer.setIsRunning(false);
         drummerRunning.postValue(false);
-        drummer.setIsCountIn(true);
+        drummer.setIsCountIn(!drummer.getSequencerMode());
 
         stopTimerEngine();
 
@@ -396,13 +445,30 @@ public class DrumViewModel extends ViewModel {
     public LiveData<Boolean> getIsDrummerPlaying() {
         return isPlaying;
     }
+    public void updateAllTimingValues(int thisBeats, int thisDivisions, int thisBpm) {
+        this.thisBeats = thisBeats;
+        this.thisDivisions = thisDivisions;
+        this.thisBpm = thisBpm;
+        thisBeatDuration = DrumCalculations.getBeatDurationMs(thisBpm, thisDivisions);
+        thisPulsesPerStep = DrumCalculations.getPulsesPerStep(thisDivisions);
+        thisStepsPerPulse = DrumCalculations.getStepsPerPulse(thisDivisions);
+        thisStepsPerBar = DrumCalculations.getTotalStepsInBar(thisBeats, thisDivisions);
+        currentStep.postValue(0);
+        updateDrummerAndTimer();
+    }
+
+
     public DrumPatternJson getDrumPatternJson() {
         // Build the default pattern if it doesn't exist yet
         if (drumPatternJson == null && thisBeats > 0) {
-            drumPatternJson = new DrumPatternJson(drumSoundManager.getKit().getDrumParts(), thisStepsPerBar);
+            drumPatternJson = new DrumPatternJson(drumSoundManager.getKit().getDrumParts(), thisStepsPerBar, thisBeats, thisDivisions);
             DrumPatternBuilder.buildStandardPattern(drumPatternJson, thisBeats, thisDivisions, thisStepsPerPulse);
         }
         return drumPatternJson;
+    }
+    public void setDrumPatternJson(DrumPatternJson drumPatternJson) {
+        this.drumPatternJson = drumPatternJson;
+        setCurrentPattern(drumPatternJson);
     }
     public LiveData<Integer> getCurrentStep() {
         return currentStep;
@@ -418,12 +484,13 @@ public class DrumViewModel extends ViewModel {
         // postValue ensures the UI thread picks up the change from the Drummer thread
         activeSection.postValue(section);
     }
-    public LiveData<DrumPatternJson> getCurrentPattern() {
+    public MutableLiveData<DrumPatternJson> getCurrentPattern() {
         return currentPattern;
     }
     public void setCurrentPattern(DrumPatternJson pattern) {
         currentPattern.postValue(pattern);
     }
+
 
     // The timer engine control - use for all!
     // Ensure the engine starts/stops based on all active components
@@ -462,5 +529,6 @@ public class DrumViewModel extends ViewModel {
         // 3. Hardware: Shutdown the high-precision executor
         timerEngine.stop();
     }
+
 
 }
