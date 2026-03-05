@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="abc_include_tab">Συμπεριλάβετε ταμπλατούρα</string>
-    <string name="wearOS">Στείλτε ήχους στο Wear OS</string>
-    <string name="wearOS_info">Ο ηχητικός ή οπτικός μετρονόμος πρέπει να είναι ενεργοποιημένος και η συσκευή Wear OS πρέπει να είναι συζευγμένη</string>
     <string name="abc_include_tab_info">Εμφάνιση ταμπλατούρας οργάνων κάτω από την παρτιτούρα</string>
     <string name="abc_inline_text">Ενσωματωμένο κείμενο ABC</string>
     <string name="abc_inline_text_info">Αντιγράψτε τον παραπάνω κώδικα σε μια γραμμή ενσωματωμένης σημειογραφίας ABC που μπορεί να επικολληθεί στους στίχους του τραγουδιού</string>
@@ -234,6 +232,7 @@
     <string name="column_force">Μη αυτόματη παράκαμψη αλλαγών στηλών</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Χρησιμοποιήστε τον κωδικό νέας σελίδας (!--) στο τραγούδι για να επιβάλετε μια νέα αλλαγή στήλης κατά την αυτόματη κλιμάκωση</string>
     <string name="column_force_insert">Εισαγωγή αλλαγής στήλης</string>
+    <string name="coming_soon">Ερχομαι συντομα...</string>
     <string name="comment">Σχόλιο</string>
     <string name="comment_background">Φόντο σχολίου</string>
     <string name="commentline_scale">Κείμενο σχολίου κλίμακας</string>
@@ -342,6 +341,7 @@
     <string name="dec_autoscroll_speed">Μειώστε την ταχύτητα αυτόματης κύλισης</string>
     <string name="decrease">Μείωση</string>
     <string name="default_autoscroll">Προεπιλεγμένοι χρόνοι αυτοματης κύλισης</string>
+    <string name="default_metronome_info">Χρησιμοποιήστε προεπιλεγμένες τιμές για το τέμπο (100bpm) και την χρονική υπογραφή (4/4) εάν δεν έχουν οριστεί για το τραγούδι</string>
     <string name="default_presentation_text">Συμπερίληψη προεπιλεγμένου κειμένου παρουσίασης</string>
     <string name="delay">Καθυστέρηση</string>
     <string name="delete">Διαγραφή</string>
@@ -364,7 +364,40 @@
     <string name="draw">Ισοπαλία</string>
     <string name="drawing">Σχέδιο</string>
     <string name="drum">Τύμπανο</string>
+    <string name="drum_crash">Σύγκρουση</string>
+    <string name="drum_hat_closed">HiHat Κλειστά</string>
+    <string name="drum_hat_open">Ανοιχτό HiHat</string>
+    <string name="drum_kick">Λάκτισμα</string>
     <string name="drum_kit">Κιτ τυμπάνου</string>
+    <string name="drum_kit_acoustic">Ακουστικό κιτ</string>
+    <string name="drum_kit_cajon">Καχόν</string>
+    <string name="drum_ride">Βόλτα</string>
+    <string name="drum_ride_bell">Κουδούνι ιππασίας</string>
+    <string name="drum_rim_shot">Ριμσό</string>
+    <string name="drum_sequencer">Ακολουθητής τυμπάνων</string>
+    <string name="drum_sequencer_info">Δημιουργήστε, επεξεργαστείτε και αντιστοιχίστε κομμάτια τυμπάνων σε τραγούδια</string>
+    <string name="drum_sequencer_info1">Πατήστε το ρυθμό για να εναλλάσσεστε σε διαφορετικές ταχύτητες</string>
+    <string name="drum_sequencer_info2">Πατήστε παρατεταμένα για να διαγράψετε έναν ρυθμό</string>
+    <string name="drum_snare">Παγίδα</string>
+    <string name="drum_splash">Βουτιά</string>
+    <string name="drum_stick">Ραβδί</string>
+    <string name="drum_tom_hi">Υψηλό τόμ</string>
+    <string name="drum_tom_lo">Τομ δαπέδου</string>
+    <string name="drum_tom_mid">Μέσο τομ</string>
+    <string name="drummer">Τυμπανιστής</string>
+    <string name="drummer_assign">Αναθέτω</string>
+    <string name="drummer_assign_error">Πριν αντιστοιχίσετε έναν ντράμερ σε ένα τραγούδι, πρέπει πρώτα να αποθηκεύσετε το αρχείο ντράμερ</string>
+    <string name="drummer_assign_info">Αντιστοίχιση αυτού του ντράμερ στο τρέχον τραγούδι</string>
+    <string name="drummer_fill">Γέμισμα ντράμερ</string>
+    <string name="drummer_main">Κύριος ρυθμός</string>
+    <string name="drummer_main_fill">Κύριο γέμισμα</string>
+    <string name="drummer_not_valid">Επεξεργαστείτε το τραγούδι και ορίστε ένα έγκυρο τέμπο και χρονική υπογραφή</string>
+    <string name="drummer_part">Μέρος ντράμερ</string>
+    <string name="drummer_player">ντράμερ</string>
+    <string name="drummer_settings">Ρυθμίσεις ντράμερ</string>
+    <string name="drummer_transition">Μετάβαση ντράμερ</string>
+    <string name="drummer_variation">Ρυθμός παραλλαγής</string>
+    <string name="drummer_variation_fill">Γέμισμα παραλλαγής</string>
     <string name="duplicate">Αντίγραφο</string>
     <string name="duplicate_sections">Έχετε χρησιμοποιήσει την ίδια ετικέτα πολλές φορές στο τραγούδι. Αυτό μπορεί να προκαλέσει προβλήματα κατά τον ορισμό της παραγγελίας.</string>
     <string name="duplicate_song">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού</string>
@@ -589,6 +622,8 @@
     <string name="key_original">Αρχικό κλειδί</string>
     <string name="key_original_transpose">Επαναφορά του τραγουδιού στο αρχικό πλήκτρο</string>
     <string name="keyword">Λέξη-κλειδί</string>
+    <string name="kit_kick">Λάκτισμα</string>
+    <string name="kit_snare">Παγίδα</string>
     <string name="landscape">Τοπίο</string>
     <string name="language">Γλώσσα</string>
     <string name="larger">Μεγαλύτερος</string>
@@ -700,6 +735,8 @@
     <string name="midi_clock_master_info">Εάν τα τραγούδια σας έχουν οριστεί ρυθμό και έχει γίνει σύνδεση MIDI, το OpenSongApp θα στείλει το ρυθμό σε όλες τις συσκευές μέσω ενός κωδικού ρολογιού MIDI.  Αυτή η προεπιλογή θα είναι 100 bpm για τραγούδια χωρίς καθορισμένο ρυθμό.</string>
     <string name="midi_clock_short_burst">Στείλτε το ρολόι MIDI ως σύντομη ριπή</string>
     <string name="midi_clock_short_burst_info">Όταν φορτώνεται ένα τραγούδι, το ρολόι MIDI θα σταλεί μόνο για τα πρώτα πέντε δευτερόλεπτα επιτρέποντας στις συσκευές να λαμβάνουν ένα ρυθμό.  Αυτό μπορεί να σας βοηθήσει να αποφύγετε το ρολόι MIDI από το Android να παρασύρεται και να αναγκάζει τις συσκευές να προσαρμόζουν συνεχώς τους ρυθμούς τους.</string>
+    <string name="midi_clock_start_stop">Αποστολή έναρξης/διακοπής MIDI</string>
+    <string name="midi_clock_start_stop_info">Όταν ξεκινήσει το ρολόι MIDI, θα σταλεί επίσης ένα μήνυμα έναρξης MIDI στις συνδεδεμένες συσκευές. Ένα μήνυμα διακοπής MIDI θα σταλεί όταν σταματήσετε το ρολόι MIDI.</string>
     <string name="midi_code_current">Κωδικός MIDI που έχει εκχωρηθεί αυτήν τη στιγμή στην ενέργεια</string>
     <string name="midi_code_new">Νέος κωδικός MIDI</string>
     <string name="midi_commands">Επεξεργασία εντολών τραγουδιού</string>
@@ -821,9 +858,9 @@
     <string name="override_none">Χρήση προεπιλογής εφαρμογής</string>
     <string name="override_off">Αναγκαστική απόκρυψη</string>
     <string name="override_on">Επίδειξη δύναμης</string>
+    <string name="override_preview">Παράκαμψη εμφάνισης προεπισκόπησης επόμενης γραμμής για αυτό το τραγούδι</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_sticky">Παράκαμψη της αυτόματης εμφάνισης αυτοκόλλητων σημειώσεων για αυτό το τραγούδι</string>
-    <string name="override_preview">Παράκαμψη εμφάνισης προεπισκόπησης επόμενης γραμμής για αυτό το τραγούδι</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Αντικατάσταση του υπάρχοντος αντικειμένου</string>
     <string name="overwrite_info">Τυχόν αρχεία που ταιριάζουν ήδη θα αντικατασταθούν από τα αρχεία κεντρικού υπολογιστή</string>
@@ -923,6 +960,8 @@
     <string name="prev_next_autohide">Αυτόματη απόκρυψη κουμπιών προηγούμενου / επόμενου</string>
     <string name="prev_next_text">Χρησιμοποιήστε τα κουμπιά κειμένου προηγούμενο / επόμενο</string>
     <string name="preview">Πρεμιέρα</string>
+    <string name="preview_line_spacing">Απόσταση γραμμής προεπισκόπησης</string>
+    <string name="preview_line_transparency">Διαφάνεια γραμμής προεπισκόπησης</string>
     <string name="previous">Previous</string>
     <string name="print">Τυπώνω</string>
     <string name="processing">Τα αρχεία που υποβάλλονται σε επεξεργασία</string>
@@ -1076,11 +1115,9 @@
     <string name="show_lyrics">Εμφάνιση στίχων</string>
     <string name="show_lyrics_info">Εμφάνιση στίχων που βρέθηκαν στο τραγούδι</string>
     <string name="show_next_in_set">Εμφάνιση επόμενου τραγουδιού στην σειρά</string>
-    <string name="show_next_prev_in_song_menu">Εμφάνιση επίσης προηγούμενου/επόμενου για τραγούδια που δεν ανήκουν σε σύνολο (χρησιμοποιώντας το μενού τραγουδιών)</string>
     <string name="show_next_line_preview">Εμφάνιση προεπισκόπησης επόμενης γραμμής</string>
     <string name="show_next_line_preview_hint">Εμφάνιση της πρώτης γραμμής της επόμενης ενότητας στο κάτω μέρος της οθόνης</string>
-    <string name="preview_line_spacing">Απόσταση γραμμής προεπισκόπησης</string>
-    <string name="preview_line_transparency">Διαφάνεια γραμμής προεπισκόπησης</string>
+    <string name="show_next_prev_in_song_menu">Εμφάνιση επίσης προηγούμενου/επόμενου για τραγούδια που δεν ανήκουν σε σύνολο (χρησιμοποιώντας το μενού τραγουδιών)</string>
     <string name="show_prev_song">Εμφάνιση προηγούμενου τραγουδιού στο σετ</string>
     <string name="show_songs">Εμφάνιση τραγουδιών</string>
     <string name="show_tempo">Εμφάνιση ρυθμού στον τίτλο</string>
@@ -1400,6 +1437,8 @@
     <string name="volume_value">Current volume value</string>
     <string name="wah">Ουα</string>
     <string name="wait">Wait....</string>
+    <string name="wearOS">Στείλτε ήχους στο Wear OS</string>
+    <string name="wearOS_info">Ο ηχητικός ή οπτικός μετρονόμος πρέπει να είναι ενεργοποιημένος και η συσκευή Wear OS πρέπει να είναι συζευγμένη</string>
     <string name="web">Ιστός</string>
     <string name="web_server">Διακομιστής web</string>
     <string name="web_server_hint">Να επιτρέπεται στους χρήστες χωρίς OpenSongApp να προβάλλουν τα τραγούδια σας χρησιμοποιώντας ένα πρόγραμμα περιήγησης ιστού</string>

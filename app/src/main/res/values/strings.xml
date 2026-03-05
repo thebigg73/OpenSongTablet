@@ -455,6 +455,7 @@
     <string name="deeplink_utilities" translatable="false">https://www.opensongapp.com/?p=settings/utilities</string>
     <string name="deeplink_voicelive" translatable="false">https://www.opensongapp.com/?p=settings/utilities/voicelive</string>
     <string name="default_autoscroll">Default autoscroll times</string>
+    <string name="default_metronome_info">Use default values for tempo (100bpm) and time signature (4/4) if they have not been set for the song</string>
     <string name="default_presentation_text">Include default presentation text</string>
     <string name="delay">Delay</string>
     <string name="delete">Delete</string>
@@ -477,7 +478,40 @@
     <string name="draw">Draw</string>
     <string name="drawing">Drawing</string>
     <string name="drum">Drum</string>
+    <string name="drum_crash">Crash</string>
+    <string name="drum_hat_closed">HiHat Closed</string>
+    <string name="drum_hat_open">HiHat open</string>
+    <string name="drum_kick">Kick</string>
     <string name="drum_kit">Drum kit</string>
+    <string name="drum_kit_acoustic">Acoustic kit</string>
+    <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_ride">Ride</string>
+    <string name="drum_ride_bell">Ride bell</string>
+    <string name="drum_rim_shot">Rimshot</string>
+    <string name="drum_sequencer">Drum sequencer</string>
+    <string name="drum_sequencer_info">Create, edit and assign drum tracks to songs</string>
+    <string name="drum_sequencer_info1">Tap the beat to cycle through different velocities</string>
+    <string name="drum_sequencer_info2">Long press to clear a beat</string>
+    <string name="drum_snare">Snare</string>
+    <string name="drum_splash">Splash</string>
+    <string name="drum_stick">Stick</string>
+    <string name="drum_tom_hi">High tom</string>
+    <string name="drum_tom_lo">Floor tom</string>
+    <string name="drum_tom_mid">Mid tom</string>
+    <string name="drummer">Drummer</string>
+    <string name="drummer_assign">Assign</string>
+    <string name="drummer_assign_error">Before assigning a drummer to a song, you need to save the drummer file first</string>
+    <string name="drummer_assign_info">Assign this drummer to the current song</string>
+    <string name="drummer_fill">Drummer fill</string>
+    <string name="drummer_main">Main beat</string>
+    <string name="drummer_main_fill">Main fill</string>
+    <string name="drummer_not_valid">Please edit the song and set a valid tempo and time signature</string>
+    <string name="drummer_part">Drummer part</string>
+    <string name="drummer_player">Drummer player</string>
+    <string name="drummer_settings">Drummer settings</string>
+    <string name="drummer_transition">Drummer transition</string>
+    <string name="drummer_variation">Variation beat</string>
+    <string name="drummer_variation_fill">Variation fill</string>
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
     <string name="duplicate_song">Create a copy of this song</string>
@@ -741,6 +775,8 @@
     <string name="key_original">Original key</string>
     <string name="key_original_transpose">Transpose the song back to the original key</string>
     <string name="keyword">Keyword</string>
+    <string name="kit_kick">Kick</string>
+    <string name="kit_snare">Snare</string>
     <string name="landscape">Landscape</string>
     <string name="language">Language</string>
     <array name="languagelist" translatable="false">
@@ -873,6 +909,8 @@
     <string name="midi_clock_master_info">If your songs have a tempo set and a MIDI connection has been made, OpenSongApp will send the tempo to all devices via a MIDI clock code.  This will default to 100bpm for songs with no tempo set.</string>
     <string name="midi_clock_short_burst">Send MIDI clock as a short burst</string>
     <string name="midi_clock_short_burst_info">When a song loads, the MIDI clock will only be sent for the first five seconds allowing devices to receive a tempo.  This can help avoid the MIDI clock from Android drifting and causing devices to constantly adjust their tempos.</string>
+    <string name="midi_clock_start_stop">Send MIDI start/stop</string>
+    <string name="midi_clock_start_stop_info">When the MIDI clock starts, a start MIDI message will also be sent to connected devices.  A stop MIDI message will be sent when you stop the MIDI clock.</string>
     <string name="midi_code_current">MIDI code currently assigned to action</string>
     <string name="midi_code_new">New MIDI code</string>
     <string name="midi_commands">Edit song commands</string>
@@ -1722,7 +1760,7 @@
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
     <string name="website_custom_slide" translatable="false">https://www.opensongapp.com/user-manual/sets/custom-slides</string>
     <string name="website_database_utilities" translatable="false">https://www.opensongapp.com/user-manual/utilities/database-utilities</string>
-    <string name="website_drummer" translatable="false">https://www.opensongapp.com/user-manual/utilities/drummer</string>
+    <string name="website_drummer" translatable="false">https://www.opensongapp.com/user-manual/songs/song-actions/drummer</string>
     <string name="website_edit_song" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song</string>
     <string name="website_edit_song_features" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.kntse37simcb</string>
     <string name="website_edit_song_main" translatable="false">https://www.opensongapp.com/user-manual/songs/edit-song#h.dqecqr6jwgf6</string>
@@ -1807,32 +1845,6 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="default_metronome_info">Use default values for tempo (100bpm) and time signature (4/4) if they have not been set for the song</string>
-    <string name="drum_sequencer">Drum sequencer</string>
-    <string name="drum_sequencer_info">Create, edit and assign drum tracks to songs</string>
-    <string name="kit_kick">Kick</string>
-    <string name="kit_snare">Snare</string>
-    <string name="drum_kick">Kick</string>
-    <string name="drum_snare">Snare</string>
-    <string name="drum_rim_shot">Rimshot</string>
-    <string name="drum_stick">Stick</string>
-    <string name="drum_hat_closed">HiHat Closed</string>
-    <string name="drum_hat_open">HiHat open</string>
-    <string name="drum_tom_lo">Floor tom</string>
-    <string name="drum_tom_mid">Mid tom</string>
-    <string name="drum_tom_hi">High tom</string>
-    <string name="drum_crash">Crash</string>
-    <string name="drum_splash">Splash</string>
-    <string name="drum_ride">Ride</string>
-    <string name="drum_ride_bell">Ride bell</string>
-    <string name="drum_kit_acoustic">Acoustic kit</string>
-    <string name="drum_kit_cajon">Cajon</string>
-    <string name="drummer">Drummer</string>
-    <string name="midi_clock_start_stop">Send MIDI start/stop</string>
-    <string name="midi_clock_start_stop_info">When the MIDI clock starts, a start MIDI message will also be sent to connected devices.  A stop MIDI message will be sent when you stop the MIDI clock.</string>
-    <string name="drummer_player">Drummer player</string>
-    <string name="drummer_fill">Drummer fill</string>
-    <string name="drummer_transition">Drummer transition</string>
-    <string name="drummer_settings">Drummer settings</string>
-    <string name="drummer_not_valid">Please edit the song and set a valid tempo and timesignature</string>
+    <string name="drum_kit_percussion">Percussion kit</string>
+    <string name="drummer_kit">Drummer kit</string>
 </resources>
