@@ -111,6 +111,7 @@ public class SongListBuildIndex {
         currentlyIndexing = true;
         indexComplete = false;
 
+        Log.d(TAG,"fullIndex()");
         progressText.post(() -> {
             Drawable drawable = AppCompatResources.getDrawable(c,R.drawable.rectangle);
             if (drawable!=null) {
@@ -158,6 +159,8 @@ public class SongListBuildIndex {
                         mainActivityInterface.getIndexingSong().setId(cursor.getInt(indexId));
                         mainActivityInterface.getIndexingSong().setFolder(cursor.getString(indexFolder));
                         mainActivityInterface.getIndexingSong().setFilename(cursor.getString(indexFilename));
+
+                        Log.d(TAG,"indexId:"+indexId+" + folder:"+cursor.getString(indexFolder)+" . filename:"+cursor.getString(indexFilename));
 
                         // Now we have the info to open the file and extract what we need
                         if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
@@ -245,6 +248,8 @@ public class SongListBuildIndex {
                     int position = cursor.getPosition();
                     progressText.post(() -> {
                         String progValue = (Math.round(Math.floor(((float)position/(float)totalSongs)*100))) + "%  ("+position+"/"+totalSongs+")";
+                        Log.d(TAG,"progValue:"+progValue);
+                        progressText.setTextColor(mainActivityInterface.getPalette().textColor);
                         progressText.setText(progValue);
                     });
 

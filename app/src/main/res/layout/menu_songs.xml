@@ -74,27 +74,25 @@
             </LinearLayout>
         </LinearLayout>
 
-        <FrameLayout
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+            android:id="@+id/progressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/actionFAB"
             android:layout_alignBottom="@+id/actionFAB"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/actionFAB"
-            android:focusable="false"
-            android:focusableInTouchMode="false">
-
-            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-                android:id="@+id/progressText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                toolsNs:text="0%"
-                android:background="@drawable/rectangle"
-                android:gravity="center_vertical"
-                android:drawableStart="@drawable/timer"
-                android:visibility="gone"/>
-        </FrameLayout>
+            android:layout_marginStart="16dp"
+            android:minHeight="40dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center"
+            android:drawableStart="@drawable/timer"
+            android:drawablePadding="8dp"
+            android:elevation="16dp"
+            android:background="@drawable/rounded_box"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="14sp"
+            toolsNs:text="100%" />
 
         <com.garethevans.church.opensongtablet.customviews.MyFAB
             android:id="@+id/actionFAB"

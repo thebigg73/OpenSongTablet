@@ -50,7 +50,8 @@ public class CommonSQL {
                 SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS, SQLite.COLUMN_HYMNNUM,
                 SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1,
                 SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_BEATBUDDY_SONG,
-                SQLite.COLUMN_BEATBUDDY_KIT, SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
+                SQLite.COLUMN_BEATBUDDY_KIT, SQLite.COLUMN_DRUMMER, SQLite.COLUMN_DRUMMER_KIT,
+                SQLite.COLUMN_KEY, SQLite.COLUMN_KEY_ORIGINAL,
                 SQLite.COLUMN_PREFERRED_INSTRUMENT, SQLite.COLUMN_UUID, SQLite.COLUMN_LAST_MODIFIED,
                 SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA, SQLite.COLUMN_AUTOSCROLL_DELAY,
                 SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
@@ -165,6 +166,8 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_USER3, thisSong.getUser3());
         values.put(SQLite.COLUMN_BEATBUDDY_SONG, thisSong.getBeatbuddysong());
         values.put(SQLite.COLUMN_BEATBUDDY_KIT, thisSong.getBeatbuddykit());
+        values.put(SQLite.COLUMN_DRUMMER, thisSong.getDrummer());
+        values.put(SQLite.COLUMN_DRUMMER_KIT, thisSong.getDrummerKit());
         values.put(SQLite.COLUMN_KEY, thisSong.getKey());
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_PREFERRED_INSTRUMENT, thisSong.getPreferredInstrument());
@@ -567,6 +570,8 @@ public class CommonSQL {
         thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
         thisSong.setBeatbuddysong(getValue(cursor, SQLite.COLUMN_BEATBUDDY_SONG));
         thisSong.setBeatbuddykit(getValue(cursor, SQLite.COLUMN_BEATBUDDY_KIT));
+        thisSong.setDrummer(getValue(cursor, SQLite.COLUMN_DRUMMER));
+        thisSong.setDrummerKit(getValue(cursor, SQLite.COLUMN_DRUMMER_KIT));
         thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
         thisSong.setKeyOriginal(getValue(cursor, SQLite.COLUMN_KEY_ORIGINAL));
         thisSong.setPreferredInstrument(getValue(cursor, SQLite.COLUMN_PREFERRED_INSTRUMENT));
@@ -1063,6 +1068,8 @@ public class CommonSQL {
         stringBuilder.append("\"").append(SQLite.COLUMN_USER3).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_BEATBUDDY_SONG).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_BEATBUDDY_KIT).append("\",");
+        stringBuilder.append("\"").append(SQLite.COLUMN_DRUMMER).append("\",");
+        stringBuilder.append("\"").append(SQLite.COLUMN_DRUMMER_KIT).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_KEY).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_KEY_ORIGINAL).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_PREFERRED_INSTRUMENT).append("\",");
@@ -1113,6 +1120,8 @@ public class CommonSQL {
         stringBuilder.append("\"").append(escaped(song!=null ? song.getUser3() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER3)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getBeatbuddysong() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_BEATBUDDY_SONG)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getBeatbuddykit() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_BEATBUDDY_KIT)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song!=null ? song.getDrummer() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_DRUMMER)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song!=null ? song.getDrummerKit() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_DRUMMER_KIT)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getKey() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getKeyOriginal() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY_ORIGINAL)))).append("\",");
         stringBuilder.append("\"").append(escaped(song!=null ? song.getPreferredInstrument() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PREFERRED_INSTRUMENT)))).append("\",");
@@ -1195,5 +1204,4 @@ public class CommonSQL {
         return returnInfo;
     }
 
-        // TODO delete stuff from the non-opensong database where the file has gone
 }
