@@ -51,6 +51,13 @@ public class SettingsCategories extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCategoriesBinding.inflate(inflater, container, false);
 
+        return myView.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         // Set the background color
         myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
 
@@ -67,8 +74,6 @@ public class SettingsCategories extends Fragment {
 
         // Set listeners
         setListeners();
-
-        return myView.getRoot();
     }
 
     private void prepareStrings() {

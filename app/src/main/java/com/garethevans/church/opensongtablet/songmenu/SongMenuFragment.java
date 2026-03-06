@@ -594,8 +594,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
         myView.songmenualpha.sideIndexRecyclerView.setVisibility(isIndexEnabled? View.VISIBLE:View.GONE);
 
-        Log.d("SongMenuFragment", "displayIndex() called with map size: " + indexMap.size());
-
         // 1. Ensure the adapter exists
         if (indexAdapter == null) {
             indexAdapter = new IndexAdapter();
