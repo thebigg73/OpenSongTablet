@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     public static final Gson gson = new Gson();
 
-    // Initialise the Executors and main handlers for async tasks
+    // Initialize the Executors and main handlers for async tasks
     ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
             Runtime.getRuntime().availableProcessors(),               // Initial pool size
             (Runtime.getRuntime().availableProcessors() * 8),          // Max pool size (including queued)
@@ -677,7 +677,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             float x = event.getRawX() - scrcoords[0];
             float y = event.getRawY() - scrcoords[1];
 
-            // check whether action is up and the clicking position is outside of the view
+            // check whether action is up and the clicking position is outside the view
             if (event.getAction() == MotionEvent.ACTION_UP
                     && (x < 0 || x > v.getRight() - v.getLeft()
                     || y < 0 || y > v.getBottom() - v.getTop())) {
@@ -790,7 +790,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Log.d(TAG, "openchords link received\n" + fileOpenIntent.getData());
                 try {
                     getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
-                    String uuid = fileOpenIntent.getData().toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
+                    String uuid = Objects.requireNonNull(fileOpenIntent.getData()).toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
                     Log.d(TAG, "uuid:" + uuid);
                     getOpenChordsAPI().setOpenChordsFolderUuid(uuid);
                     getOpenChordsAPI().setReceivedFolderLink(true);
@@ -844,7 +844,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getStorageAccess();
         getPreferences();
 
-        // The song stuff may have been initialised in savedInstanceState
+        // The song stuff may have been initialized in savedInstanceState
         songListBuildIndex = getSongListBuildIndex();
 
         // The screen display stuff
@@ -1679,7 +1679,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // User was in song menu dialog, clicked on create, then entered a new file name
                     // Check this was successful (saved as arguments)
                     if (arguments != null && !arguments.isEmpty() && arguments.get(0).equals("success")) {
-                        // Write a blank xml file with the song name in it
+                        // Write a blank XML file with the song name in it
                         song = processSong.initialiseSong(song.getFolder(), "NEWSONGFILENAME");
                         String newSongText = processSong.getXML(song);
                         // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
@@ -2134,7 +2134,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
-        // Otherwise a new title is passed as a string (in a settings menu)
+        // Otherwise, a new title is passed as a string (in a settings menu)
         if (myView != null) {
             mainLooper.post(() -> {
                 if (myView != null) {
@@ -2233,7 +2233,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
                     break;
                 case "songsetMenu":
-                    // Initialise the arraylists
+                    // Initialize the arraylists
                     whichShowcase = "songsetMenu";
                     initialiseArrayLists();
                     targets.add(Objects.requireNonNull(myView.menuTop.tabs.getTabAt(0)).view);
@@ -2716,7 +2716,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // This is a full rebuild
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
-            // Get all of the files as an array list
+            // Get all the files as an array list
             ArrayList<String> songIds = getStorageAccess().listSongs(false);
             // Write this to text file
             getStorageAccess().writeSongIDFile(songIds);
@@ -2968,7 +2968,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updatePageButtonLayout() {
         if (myView != null && pageButtons != null) {
-            // We have changed something about the page buttons (or initialising them
+            // We have changed something about the page buttons (or initializing them
             if (myView.actionFAB.getRotation() != 0) {
                 pageButtons.animatePageButton(false);
             }
@@ -3287,7 +3287,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     getStorageAccess().isSpecificFileExtension("onsong", importFilename) ||
                     importFilename.toLowerCase(Locale.ROOT).endsWith(".docx")) {
                 setWhattodo("");
-                // Set, song, pdf or image files are initially sent to the import file
+                // Set, song, PDF or image files are initially sent to the import file
                 dealingWithIntent = deeplink_import_file;
             } else {
                 // Might be an opensong file (with no extension)
@@ -3601,7 +3601,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 // Get the key of the song from the file
                 if (getStorageAccess().isSpecificFileExtension("imageorpdf", setFilename)) {
-                    // This is a pdf, we query the persistent database
+                    // This is a PDF, we query the persistent database
                     originalKey = nonOpenSongSQLiteHelper.getKey(setFolder, setFilename);
                 } else if (isNormalVariation) {
                     if (getStorageAccess().uriExists(setUri)) {
@@ -3611,7 +3611,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         quickSong.setFolder(setFolder);
                         quickSong.setFilename(setFilename);
                     } else if (getStorageAccess().uriExists(originalUri)) {
-                        // The variation file doesn't exist yet
+                        // The variation file doesn't exist, yet
                         // We can get the original file
                         quickSong = new Song();
                         quickSong.setFolder(originalFolder);
@@ -3766,7 +3766,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
                 case "addUUIDLastMod":
                     // This checks songs for missing UUID or lastModified values
-                    // If the aren't found, they get added and the song saved again
+                    // If they aren't found, they get added and the song saved again
                     getSongListBuildIndex().setCheckForUUIDLastMod(true);
                     getSongListBuildIndex().setFullIndexRequired(true);
                     getSongListBuildIndex().setIndexRequired(true);
@@ -3881,7 +3881,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "resetColors":
-                    // We will reset the chosen theme colours to app defaults
+                    // We will reset the chosen theme colors to app defaults
                     themeColors.resetTheme();
                     themeColors.getDefaultColors();
                     updateFragment(fragName, callingFragment, null);
@@ -3891,7 +3891,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "renameSet":
                 case "onlineSongOverwrite":
                 case "importSetIntent":
-                    // We are renaming a set or
+                    // We are renaming a set, or
                     // We extracted an online song, but one with the same name exists already
                     updateFragment(fragName, callingFragment, null);
                     allowToast = false;
@@ -3933,7 +3933,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "NearbyAdvertise":
-                    // We have accepted our advertise settings, so continue
+                    // We have accepted our Advertise settings, so continue
                     getNearbyActions().getNearbyConnectionManagement().setUsingNearby(true);
                     if (getNearbyActions().getNearbyConnectionManagement().getNearbyTemporaryAdvertise()) {
                         getNearbyActions().getNearbyConnectionManagement().doTempAdvertise();
@@ -3944,7 +3944,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "NearbyDiscover":
-                    // We have accepted our discover settings, so continue
+                    // We have accepted our Discover settings, so continue
                     getNearbyActions().getNearbyConnectionManagement().setUsingNearby(true);
                     getNearbyActions().getNearbyConnectionManagement().doTempDiscover();
                     allowToast = false;
@@ -4093,7 +4093,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write a crude text file (line separated) with the song Ids (folder/file)
             getStorageAccess().writeSongIDFile(songIds);
 
-            // Non persistent, created from storage at boot (to keep updated) used to references ALL files
+            // Non-persistent, created from storage at boot (to keep updated) used to references ALL files
             if (songListBuildIndex.getFullIndexRequired()) {
                 sqLiteHelper.resetDatabase();
                 sqLiteHelper.insertFast();
@@ -4853,7 +4853,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Set the current orientation
                     pad.setCurrentOrientation(newConfig.orientation);
                     pageButtons.requestLayout();
-                    // IV - After a short delay - to allow screen layout to stabilise
+                    // IV - After a short delay - to allow screen layout to stabilize
                     mainLooper.postDelayed(() -> {
                         // IV - Following testing - Margins update requires 2 calls on orientation change!
                         updateMargins();
@@ -4990,7 +4990,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     protected void onDestroy() {
-        // If we were running a local WiFi host, turn it off
+        // If we were running a local Wi-Fi host, turn it off
         getLocalWiFiHost().stopLocalWifi();
 
         // If we were running a local webServer, turn it off
@@ -5294,7 +5294,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void performanceShowSection(int position) {
-        // This gets a section from from the user selecting either a PDF page or a Stage Mode section
+        // This gets a section from the user selecting either a PDF page or a Stage Mode section
         // Send it back to Performance Mode to deal with the outcome (scroll to, update display, etc)
         if (performanceValid()) {
             performanceFragment.performanceShowSection(position);

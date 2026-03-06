@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toolsNs="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:toolsNs="http://schemas.android.com/tools"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:fitsSystemWindows="false">
@@ -21,8 +21,9 @@
             android:orientation="vertical">
 
             <!-- Filter buttons -->
-            <include android:id="@+id/filterButtons"
-                layout="@layout/menu_filter_buttons"/>
+            <include
+                android:id="@+id/filterButtons"
+                layout="@layout/menu_filter_buttons" />
 
             <include
                 android:id="@+id/filters"
@@ -36,8 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="0dp"
                 android:orientation="horizontal">
 
@@ -64,12 +65,12 @@
                             android:id="@+id/songListRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:clipToPadding="false"
                             android:layout_margin="0dp"
+                            android:clipToPadding="false"
+                            android:orientation="vertical"
                             android:paddingTop="0dp"
-                            android:paddingBottom="64dp"
-                            android:orientation="vertical"/>
-                        </FrameLayout>
+                            android:paddingBottom="64dp" />
+                    </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -78,21 +79,24 @@
             android:id="@+id/progressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/actionFAB"
-            android:layout_alignBottom="@+id/actionFAB"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_alignBaseline="@+id/actionFAB"
             android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:minHeight="40dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:gravity="center"
+            android:background="@drawable/rounded_box"
             android:drawableStart="@drawable/timer"
             android:drawablePadding="8dp"
-            android:elevation="16dp"
-            android:background="@drawable/rounded_box"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            toolsNs:text="100%"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="14sp"
-            toolsNs:text="100%" />
+            app:elevation="16dp"
+            android:visibility="gone"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyFAB
             android:id="@+id/actionFAB"
@@ -100,9 +104,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            app:fab_padding="10dp"
             android:contentDescription="@string/action"
-            app:srcCompat="@drawable/plus"/>
+            app:fab_padding="10dp"
+            app:srcCompat="@drawable/plus" />
 
     </RelativeLayout>
 

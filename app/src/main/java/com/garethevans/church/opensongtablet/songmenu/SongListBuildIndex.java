@@ -24,7 +24,7 @@ import java.util.UUID;
 
 public class SongListBuildIndex {
 
-    // This class is used to index all of the songs in the user's folder
+    // This class is used to index all the songs in the user's folder
     // It builds the search index and prepares the required stuff for the song menus (name, author, key)
     // It updates the entries in the user sqlite database
     // It loads contents into a temp song on the mainactivity called indexingSong;
@@ -107,7 +107,7 @@ public class SongListBuildIndex {
     // Quick scan only updates newer files than the database
     public String fullIndex(MyMaterialSimpleTextView progressText, String specificFolder) {
         // The basic database was created on boot.
-        // Now comes the time consuming bit that fully indexes the songs into the database
+        // Now comes the time-consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
         indexComplete = false;
 
@@ -128,7 +128,7 @@ public class SongListBuildIndex {
         StringBuilder returnString = new StringBuilder();
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.
-            // Then load the file and write the values into the sql table
+            // Then load the file and write the values into the SQL table
             boolean needToSaveAgain = false;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("needToSaveAgain",false);
             String folderMatch = "";
@@ -160,8 +160,6 @@ public class SongListBuildIndex {
                         mainActivityInterface.getIndexingSong().setFolder(cursor.getString(indexFolder));
                         mainActivityInterface.getIndexingSong().setFilename(cursor.getString(indexFilename));
 
-                        Log.d(TAG,"indexId:"+indexId+" + folder:"+cursor.getString(indexFolder)+" . filename:"+cursor.getString(indexFilename));
-
                         // Now we have the info to open the file and extract what we need
                         if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
                             // Get the uri, utf and inputStream for the file
@@ -173,7 +171,7 @@ public class SongListBuildIndex {
                             // Check if we need to index
                             boolean needToUpdate = fullIndexRequired || mainActivityInterface.getStorageAccess().checkModifiedDate(uri);
 
-                            // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
+                            // Now try to get the file as an XML.  If it encounters an error, it is treated in the catch statements
                             // We only do this if we either need to update (newer than last database), or fullIndexing
                             // Both are caught now by the needToUpdate boolean
                             if (needToUpdate && filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
@@ -211,7 +209,7 @@ public class SongListBuildIndex {
                                 if (!needToSaveAgain || checkForUUIDLastMod) {
                                     boolean newUUID = false;
                                     boolean newLastModified = false;
-                                    // If the file doesn't have a uuid or lastModifiedDate in it (older file), add one
+                                    // If the file doesn't have an uuid or lastModifiedDate in it (older file), add one
                                     if (mainActivityInterface.getIndexingSong().getUuid() == null || mainActivityInterface.getIndexingSong().getUuid().isEmpty()) {
                                         mainActivityInterface.getIndexingSong().setUuid(String.valueOf(UUID.randomUUID()));
                                         Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a UUID");
@@ -248,8 +246,6 @@ public class SongListBuildIndex {
                     int position = cursor.getPosition();
                     progressText.post(() -> {
                         String progValue = (Math.round(Math.floor(((float)position/(float)totalSongs)*100))) + "%  ("+position+"/"+totalSongs+")";
-                        Log.d(TAG,"progValue:"+progValue);
-                        progressText.setTextColor(mainActivityInterface.getPalette().textColor);
                         progressText.setText(progValue);
                     });
 
