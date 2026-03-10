@@ -4520,8 +4520,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public WebServer getWebServer() {
         if (webServer == null) {
-            webServer = new WebServer();
-            webServer.initialiseVariables(this);
+            webServer = new WebServer(this);
         }
         return webServer;
     }
@@ -4994,7 +4993,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getLocalWiFiHost().stopLocalWifi();
 
         // If we were running a local webServer, turn it off
-        getWebServer().stop();
+        getWebServer().stopWebServer();
 
         // Clear any toasts
         getShowToast().kill();

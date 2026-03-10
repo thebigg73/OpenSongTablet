@@ -318,18 +318,6 @@ public interface MainActivityInterface {
 
     // ABC Notation
     ABCNotation getAbcNotation();
-    //void resetInlineAbcWebViews();
-    //void resetInlineAbcWebViewsSecondary();
-    //void assignInlineAbcWebView(int containingLinearLayoutPosition, InlineAbcWebView webView, boolean presentation);
-    //int countInlineAbcWebViews();
-    //int countInlineAbcWebViewsSecondary();
-    //ArrayList<InlineAbcWebView> getInlineAbcWebViews();
-    //ArrayList<InlineAbcWebView> getInlineAbcWebViewsSecondary();
-    //void resetInlineAbcObjects();
-    //int countInlineAbcObjects();
-    //void assignInlineAbcObject(int abcContainingItem);
-    //ArrayList<InlineAbcObject> getInlineAbcObjects();
-    //void addInlineAbcObject(InlineAbcObject inlineAbcObject);
 
     // Highlighter notes
     DrawNotes getDrawNotes();
