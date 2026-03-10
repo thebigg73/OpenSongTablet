@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -52,6 +54,9 @@ public class EditSongFragmentLyrics extends Fragment {
     private String success_string="";
     private Bitmap bmp = null;
     private String guitar_tab = "Guitar";
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable runnable;
+    private TextWatcher textWatcher;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -244,7 +249,8 @@ public class EditSongFragmentLyrics extends Fragment {
         }
     }
 
-    private void setupListeners() {myView.lyrics.addTextChangedListener(new TextWatcher() {
+    private void setupListeners() {
+        textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
@@ -255,21 +261,28 @@ public class EditSongFragmentLyrics extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mainActivityInterface.getTempSong().setLyrics(editable.toString());
-                // If we are not undoing/redoing add the changes to the undo list
-                if (addUndoStep) {
-                    int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos() + 1;
-                    mainActivityInterface.getTempSong().setLyricsUndos(lyricsUndosPos, editable.toString());
-                    mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
-                    mainActivityInterface.getTempSong().setLyricsUndoCursorPos(lyricsUndosPos, myView.lyrics.getSelectionStart());
-                    // Enable/disable the undo and redo button
-                    validUndoRedo(lyricsUndosPos);
-                } else {
-                    // We were undoing/redoing, so we didn't do the above.  Now turn this off
-                    addUndoStep = true;
-                }
+                handler.removeCallbacks(runnable);
+                runnable = ()-> {
+                    mainActivityInterface.getTempSong().setLyrics(editable.toString());
+                    // If we are not undoing/redoing add the changes to the undo list
+                    if (addUndoStep) {
+                        int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos() + 1;
+                        mainActivityInterface.getTempSong().setLyricsUndos(lyricsUndosPos, editable.toString());
+                        mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+                        mainActivityInterface.getTempSong().setLyricsUndoCursorPos(lyricsUndosPos, myView.lyrics.getSelectionStart());
+                        // Enable/disable the undo and redo button
+                        validUndoRedo(lyricsUndosPos);
+                    } else {
+                        // We were undoing/redoing, so we didn't do the above.  Now turn this off
+                        addUndoStep = true;
+                    }
+                };
+                // Only update 400ms after the user stops typing
+                handler.postDelayed(runnable, 400);
             }
-        });
+        };
+
+        myView.lyrics.addTextChangedListener(textWatcher);
 
         myView.ocr.setOnClickListener(v -> {
 
@@ -662,4 +675,12 @@ public class EditSongFragmentLyrics extends Fragment {
         mainActivityInterface.getShowToast().doIt(success_string);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        myView = null;
+        mainActivityInterface = null;
+        editSongFragmentInterface = null;
+        textWatcher = null;
+    }
 }

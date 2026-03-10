@@ -52,13 +52,18 @@ public class EditSongFragmentMain extends Fragment  {
 
             // Set listeners
             setUpListeners();
+
+            if (folders == null || folders.isEmpty()) {
+                getFoldersFromStorage();
+                mainActivityInterface.getMainHandler().post(this::updateExposedDropdown);
+            }
         });
     }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = EditSongMainBinding.inflate(inflater, container, false);
-
         return myView.getRoot();
     }
 
@@ -69,6 +74,7 @@ public class EditSongFragmentMain extends Fragment  {
             new_folder_name_string = getString(R.string.new_folder_name);
         }
     }
+
     // Initialise the views
     private void setupValues() {
         if (mainActivityInterface.getTempSong()==null) {
@@ -96,19 +102,8 @@ public class EditSongFragmentMain extends Fragment  {
                 }
             });
 
-            getFoldersFromStorage();
             newFolder = "+ " + new_folder_add_string;
-            folders.add(newFolder);
 
-            if (getContext() != null) {
-                arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (myView != null) {
-                        myView.folder.setAdapter(arrayAdapter);
-                        myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
-                    }
-                });
-            }
             textInputBottomSheet = new TextInputBottomSheet(this, "EditSongFragmentMain", new_folder_string, new_folder_name_string, null, "", "", true);
 
             // Resize the bottom padding to the soft keyboard height or half the screen height for the soft keyboard (workaround)
@@ -153,6 +148,19 @@ public class EditSongFragmentMain extends Fragment  {
         });
     }
 
+    private void updateExposedDropdown() {
+        folders.add(newFolder);
+
+        if (getContext() != null) {
+            arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView != null) {
+                    myView.folder.setAdapter(arrayAdapter);
+                    myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+                }
+            });
+        }
+    }
 
     private class MyTextWatcher implements TextWatcher {
 
@@ -181,8 +189,7 @@ public class EditSongFragmentMain extends Fragment  {
         public void afterTextChanged(Editable s) {
             if (what.equals("folder") && value.equals(newFolder) && getActivity()!=null) {
                 myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
-                textInputBottomSheet.show(getActivity().getSupportFragmentManager(),
-                        "TextInputBottomSheet");
+                showFolderInput();
             } else {
                 updateTempSong();
             }
@@ -216,24 +223,24 @@ public class EditSongFragmentMain extends Fragment  {
 
 
     public void updateValue(String value) {
-        Log.d(TAG,"value:"+value);
+        Log.d(TAG, "value:" + value);
         // New folder name given.  If it isn't null/empty try to create it and select it
-        boolean selectNewFolder = false;
-        if (value!=null && !value.isEmpty()) {
-            // Try to create the new folder (this checks that it doesn't already exist)
-            selectNewFolder = mainActivityInterface.getStorageAccess().createFolder(
-                        "Songs","",value,true);
-        }
-
-        if (selectNewFolder) {
-            getFoldersFromStorage();
-            newFolder = "+ " + new_folder_add_string;
-            folders.add(newFolder);
-            if (getContext() != null) {
-                arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
-                myView.folder.setAdapter(arrayAdapter);
-                myView.folder.setText(value);
-            }
+        if (value != null && !value.isEmpty()) {
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                boolean success = mainActivityInterface.getStorageAccess().createFolder("Songs", "", value, true);
+                if (success) {
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        getFoldersFromStorage();
+                        newFolder = "+ " + new_folder_add_string;
+                        folders.add(newFolder);
+                        if (getContext() != null) {
+                            arrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
+                            myView.folder.setAdapter(arrayAdapter);
+                            myView.folder.setText(value);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -243,10 +250,28 @@ public class EditSongFragmentMain extends Fragment  {
         folders = mainActivityInterface.getStorageAccess().getSongFolders(songIds,true,null);
     }
 
+    private void showFolderInput() {
+        // Check if the fragment is already there by tag
+        Fragment existing = getParentFragmentManager().findFragmentByTag("TextInputBottomSheet");
+
+        if (existing == null) {
+            if (textInputBottomSheet == null) {
+                textInputBottomSheet = new TextInputBottomSheet();
+            }
+
+            // Only show if it's not currently added
+            if (!textInputBottomSheet.isAdded()) {
+                textInputBottomSheet.show(getParentFragmentManager(), "TextInputBottomSheet");
+            }
+        }
+    }
+
     // Finished with this view
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
         myView = null;
+        mainActivityInterface = null;
+        editSongFragmentInterface = null;
     }
 }

@@ -388,4 +388,11 @@ public class EditSongFragmentTags extends Fragment {
         return newTheme;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        myView = null;
+        mainActivityInterface = null;
+        editSongFragmentInterface = null;
+    }
 }

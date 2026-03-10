@@ -177,7 +177,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                                 myView.viewpager.setAdapter(adapter);
                                 myView.viewpager.setOffscreenPageLimit(1);
                                 myView.viewpager.registerOnPageChangeCallback(callback);
-
                                 myView.tabButtons.setBackgroundColor(mainActivityInterface.getPalette().background);
                                 myView.tabButtons.setTabTextColors(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
                                 myView.tabButtons.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
@@ -262,6 +261,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         super.onDestroyView();
         myView.viewpager.unregisterOnPageChangeCallback(callback);
         myView = null;
+        mainActivityInterface = null;
     }
 
     public MyExtendedFloatingActionButton getSaveButton() {

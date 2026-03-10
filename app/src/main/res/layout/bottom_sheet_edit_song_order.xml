@@ -46,7 +46,9 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:isScrollContainer="true"
-                app:columnCount="3" />
+                app:columnCount="3"
+                app:alignmentMode="alignMargins"
+                android:padding="4dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

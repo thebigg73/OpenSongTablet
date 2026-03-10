@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class EditSongViewPagerAdapter extends FragmentStateAdapter {
 
-    public final Fragment[] menuFragments = {new EditSongFragmentLyrics(), new EditSongFragmentMain(), new EditSongFragmentFeatures(), new EditSongFragmentTags()};
     public EditSongViewPagerAdapter(@NonNull FragmentManager fragmentManager,Lifecycle lifecycle) {
         super(fragmentManager,lifecycle);
     }
@@ -16,12 +15,18 @@ public class EditSongViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return menuFragments[position];
+        switch (position) {
+            case 1: return new EditSongFragmentMain();
+            case 2: return new EditSongFragmentFeatures();
+            case 3: return new EditSongFragmentTags();
+            case 0:
+            default: return new EditSongFragmentLyrics();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return menuFragments.length;
+        return 4;
     }
 
 }

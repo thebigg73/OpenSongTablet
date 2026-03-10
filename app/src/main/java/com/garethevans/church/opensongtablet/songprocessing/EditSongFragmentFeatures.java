@@ -680,10 +680,11 @@ public class EditSongFragmentFeatures extends Fragment {
         mainActivityInterface.getTempSong().setPreferredInstrument(preferredInstrument);
     }
 
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
         myView = null;
+        mainActivityInterface = null;
+        editSongFragmentInterface = null;
     }
 }
