@@ -1482,6 +1482,10 @@ public class PerformanceFragment extends Fragment {
 
     private void dealWithExtraStuffOnceSettled() {
         if (getContext()!=null && myView!=null) {
+            // Create temp files to debug
+            //mainActivityInterface.getWebServer().runKtorTemp();
+            mainActivityInterface.getWebServer().updateKtor();
+
             mainActivityInterface.getHotZones().checkScrollButtonOn(myView.zoomLayout,myView.recyclerView);
             // Send the autoscroll information (if required)
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(widthAfterScale, heightAfterScale, availableWidth, availableHeight);
