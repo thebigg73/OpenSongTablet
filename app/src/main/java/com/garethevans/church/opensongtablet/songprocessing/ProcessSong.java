@@ -1335,7 +1335,6 @@ public class ProcessSong {
                             break;
                         case "comment":
                             if (displayLyrics) {
-                                Log.d(TAG, "str:" + str);
                                 str = str.replace("_", "");
                                 str = str.replaceAll("[|]", " ");
 

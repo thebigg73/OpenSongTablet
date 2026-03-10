@@ -110,6 +110,13 @@ public class PresentationOrderBottomSheet extends BottomSheetCommon implements R
                 params.setGravity(Gravity.CENTER_HORIZONTAL);
                 button.setLayoutParams(params);
                 button.setText(heading);
+                // Reduce the height and remove internal vertical insets
+                button.setPadding(0, 0, 0, 0);
+                button.setInsetTop(0);
+                button.setInsetBottom(0);
+                button.setMinimumHeight(0); // Allows the button to be smaller than the default 48dp
+                button.setTextSize(12);     // Slightly smaller text to fit a tighter layout
+
                 button.setOnClickListener(v -> addSection(heading));
                 myView.sectionButtons.addView(button);
             }
@@ -164,5 +171,12 @@ public class PresentationOrderBottomSheet extends BottomSheetCommon implements R
         } else {
             myView.warningText.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
+        mainActivityInterface = null;
     }
 }

@@ -132,14 +132,14 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
 
     public void onItemMoved(int fromPosition, int toPosition) {
         Collections.swap(currentOrder,fromPosition,toPosition);
-        updateValue();
+        //updateValue();
         notifyItemMoved(fromPosition,toPosition);
         recyclerInterface.onItemMove(fromPosition, toPosition);
     }
 
     public void onItemDismissed(int fromPosition) {
         currentOrder.remove(fromPosition);
-        updateValue();
+        //updateValue();
         notifyItemRemoved(fromPosition);
         recyclerInterface.onItemDismiss(fromPosition);
     }
@@ -154,6 +154,12 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
     private void updateValue() {
         mainActivityInterface.getTempSong().setPresentationorder(getPresoOrder());
         mainActivityInterface.updateFragment(fragName,callingFragment,null);
+    }
+
+    // New method to be called only when the drag is FINISHED
+    public void finalSync() {
+        mainActivityInterface.getTempSong().setPresentationorder(getPresoOrder());
+        mainActivityInterface.updateFragment(fragName, callingFragment, null);
     }
 
     public String getPresoOrder() {

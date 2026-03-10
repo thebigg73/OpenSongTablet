@@ -68,6 +68,8 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
                 viewHolder.itemView.setBackgroundTintList(prevColor);
             }
         }
+        // TRIGGER THE SYNC HERE
+        presentationOrderAdapter.finalSync();
     }
 
     @Override
