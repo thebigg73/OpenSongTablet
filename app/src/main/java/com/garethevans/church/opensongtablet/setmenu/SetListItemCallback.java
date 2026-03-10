@@ -171,28 +171,33 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        // This method gets triggered when the user interaction stops with the RecyclerView row
-        Log.d(TAG, "clearView");
+        Log.d(TAG, "clearView - Finalizing Drop");
         dragging = false;
-        // Called when dragged item is released
         super.clearView(recyclerView, viewHolder);
-        // Change the color back to normal if lollipop+
+
+        // Reset background color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             viewHolder.itemView.post(() -> {
                 ((CardView) viewHolder.itemView).setCardBackgroundColor(originalColorForDragging);
-                ((CardView) viewHolder.itemView).setCardBackgroundColor(originalColorForDragging);
             });
         }
-        // Check we rehighlight the set item
+
         if (recyclerView.getAdapter() != null) {
-            SetAdapter setAdapter = (SetAdapter) recyclerView.getAdapter();
-            int currentPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-            if (currentPosition >= 0 && currentPosition < setAdapter.getItemCount()) {
-                viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition, 500);
-                viewHolder.itemView.postDelayed(setAdapter::recoverCurrentSetPosition, 800);
-            }
+            SetAdapter adapter = (SetAdapter) recyclerView.getAdapter();
+
+            // 1. Refresh song numbers and highlights now that the drag is over
+            adapter.notifyDataSetChanged();
+
+            // 2. Update the Title view (e.g. "Song 4 of 12")
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
+
+            // 3. Update the inline set view to match
+            mainActivityInterface.notifyInlineSetChanged(-1);
         }
-        // Update the prev/next
-        mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getDisplayPrevNext().setPrevNext());
+
+        // Update global Prev/Next buttons
+        mainActivityInterface.getMainHandler().post(() ->
+                mainActivityInterface.getDisplayPrevNext().setPrevNext()
+        );
     }
 }

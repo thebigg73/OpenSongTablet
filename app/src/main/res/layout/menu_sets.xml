@@ -32,12 +32,13 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titleLayout">
+        android:layout_below="@+id/titleLayout"
+        android:importantForAccessibility="no">
 
-        <FrameLayout
+        <!--<FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/my_recycler_view"
                 android:layout_width="match_parent"
@@ -48,7 +49,7 @@
                 android:paddingBottom="64dp"
                 android:orientation="vertical"/>
 
-        </FrameLayout>
+        <!--</FrameLayout>-->
 
         <com.garethevans.church.opensongtablet.customviews.MyFAB
             android:id="@+id/setMasterFAB"

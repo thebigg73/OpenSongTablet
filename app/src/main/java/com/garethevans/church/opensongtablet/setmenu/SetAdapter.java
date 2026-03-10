@@ -237,6 +237,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                         holder.cardItem.setTextColor(thisTextColor);
                     }
                 }
+                if (!payloads.isEmpty() && payloads.contains("PAYLOAD_NUMBER_ONLY")) {
+                    // ONLY update the number text, do NOT touch anything else
+                    holder.cardItem.setText(String.valueOf(position + 1));
+                }
             }
 
             // Set the listener for the edit button as the position may have changed
@@ -330,7 +334,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     }
 
     // The callbacks from the SetItemTouchInterface (called from the SetListItemCallback class)
-    @Override
+    /*@Override
     // This method deals with dragging items up and down in the set list
     public void onItemMoved(int fromPosition, int toPosition) {
         if (mainActivityInterface.getCurrentSet().getSetItemInfos()!=null &&
@@ -371,6 +375,62 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             mainActivityInterface.notifyInlineSetChanged(toPosition);
             mainActivityInterface.notifyInlineSetChanged(fromPosition);
         }
+    }*/
+
+    /*@Override
+    public void onItemMoved(int fromPosition, int toPosition) {
+        if (mainActivityInterface.getCurrentSet().getSetItemInfos() != null) {
+            // 1. Swap the data
+            mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
+
+            // 2. Just notify the move. DO NOT notify changes yet.
+            notifyItemMoved(fromPosition, toPosition);
+
+            // 3. Update your internal indices as you are already doing
+            updateInternalIndices(fromPosition, toPosition);
+        }
+    }*/
+
+    @Override
+    public void onItemMoved(int fromPosition, int toPosition) {
+        if (mainActivityInterface.getCurrentSet().getSetItemInfos() != null) {
+            // Swap the data
+            mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
+
+            // Notify the move (this handles the physical sliding animation)
+            notifyItemMoved(fromPosition, toPosition);
+
+            // Update numbers for the two items being swapped using a PAYLOAD
+            // This prevents the ViewHolder from being recycled/rebound fully
+            notifyItemChanged(fromPosition, "PAYLOAD_NUMBER_ONLY");
+            notifyItemChanged(toPosition, "PAYLOAD_NUMBER_ONLY");
+
+            updateInternalIndices(fromPosition, toPosition);
+        }
+    }
+
+    private void updateInternalIndices(int fromPosition, int toPosition) {
+        // 1. Update the persistent preference string in the background
+        mainActivityInterface.getCurrentSet().setSetCurrent(
+                mainActivityInterface.getSetActions().getSetAsPreferenceString()
+        );
+
+        // 2. Update the 'Current Song' index if it was the one being dragged
+        if (fromPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(toPosition);
+        } else if (toPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(fromPosition);
+        }
+
+        // 3. Update the 'Previous Song' index for highlighting
+        if (fromPosition == mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()) {
+            mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(toPosition);
+        } else if (toPosition == mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()) {
+            mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(fromPosition);
+        }
+
+        // 4. Update the mirror list (inline set) logically
+        mainActivityInterface.notifyInlineSetMove(fromPosition, toPosition);
     }
 
     // This method is called when an item is added via the song menu to the end

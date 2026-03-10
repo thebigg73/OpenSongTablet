@@ -49,9 +49,26 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        // If we get a cancel event during a scroll, don't let it kill the drag
+        if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL ||
+                motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            view.getParent().requestDisallowInterceptTouchEvent(false);
+        }
+
         gestureDetector.onTouchEvent(motionEvent);
-        view.performClick();
-        return true;
+
+        // 1. Let the helper know we are moving so it can scroll
+        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+            view.getParent().requestDisallowInterceptTouchEvent(true);
+        }
+
+        // Call performClick for accessibility, but let the return value be false
+        // so the ItemTouchHelper attached to the RecyclerView can "see" the MOVE events
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            view.performClick();
+        }
+
+        return false;
     }
 
     @Override
@@ -75,6 +92,10 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public void onLongPress(@NonNull MotionEvent motionEvent) {
+        // Tell the parent layout NOT to steal this touch event
+        if (itemView.getParent()!=null) {
+            itemView.getParent().requestDisallowInterceptTouchEvent(true);
+        }
         itemTouchHelper.startDrag(this);
     }
 
