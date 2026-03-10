@@ -15,6 +15,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.ShareableObject;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songprocessing.SongId;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -83,10 +84,26 @@ public class CommonSQL {
 
     // Song ID tasks and checks for values
     public String getAnySongId(String folder, String filename) {
-        if (folder==null || folder.isEmpty()) {
+        if (folder == null || folder.isEmpty()) {
             folder = c.getString(R.string.mainfoldername);
         }
         return folder + "/" + filename;
+    }
+    public ArrayList<String> getFolderFilenameFromId(String songId) {
+        ArrayList<String> folderFilename = new ArrayList<>();
+        String[] bits = songId.split("_");
+        StringBuilder folderBits = new StringBuilder();
+        String filename = "";
+        for (int i=0; i<bits.length; i++) {
+            if (i==bits.length-1) {
+                filename = bits[i];
+            } else {
+                folderBits.append(bits[i]).append("/");
+            }
+        }
+        folderFilename.add(folderBits.toString());
+        folderFilename.add(filename);
+        return folderFilename;
     }
 
     boolean songIdExists(SQLiteDatabase db, String songid) {
@@ -109,7 +126,7 @@ public class CommonSQL {
 
         String songid = getAnySongId(folder, filename);
 
-        // If it doens't already exist, create it
+        // If it doesn't already exist, create it
         if (!songIdExists(db, songid)) {
             ContentValues values = new ContentValues();
             values.put(SQLite.COLUMN_SONGID, songid);
@@ -135,16 +152,16 @@ public class CommonSQL {
     public void updateSong(SQLiteDatabase db, Song thisSong) {
         // Values have already been set to sqLite, just need updated in the table
         // We use an object reference to song as this could be from indexingSong or actual song
-        String correctId = getAnySongId(thisSong.getFolder(),thisSong.getFilename());
-        if (thisSong.getSongid()==null || thisSong.getSongid().isEmpty() || !thisSong.getSongid().equals(correctId)) {
+        String correctId = getAnySongId(thisSong.getFolder(), thisSong.getFilename());
+        if (thisSong.getSongid() == null || thisSong.getSongid().isEmpty() || !thisSong.getSongid().equals(correctId)) {
             thisSong.setSongid(correctId);
         }
         String uuid = thisSong.getUuid();
-        if (uuid==null || uuid.isEmpty()) {
+        if (uuid == null || uuid.isEmpty()) {
             thisSong.setUuid(String.valueOf(UUID.randomUUID()));
         }
         String lastModified = thisSong.getLastModified();
-        if (lastModified==null || lastModified.isEmpty()) {
+        if (lastModified == null || lastModified.isEmpty()) {
             thisSong.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
         }
 
@@ -172,12 +189,12 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_KEY_ORIGINAL, thisSong.getKeyOriginal());
         values.put(SQLite.COLUMN_PREFERRED_INSTRUMENT, thisSong.getPreferredInstrument());
         values.put(SQLite.COLUMN_PREVIEWOVERRIDE, thisSong.getPreviewoverride());
-        values.put(SQLite.COLUMN_TIMESIG, DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false));
+        values.put(SQLite.COLUMN_TIMESIG, DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(), false));
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
         values.put(SQLite.COLUMN_AUTOSCROLL_LENGTH, thisSong.getAutoscrolllength());
         //if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
-        values.put(SQLite.COLUMN_TEMPO, DrumCalculations.getFixedTempoString(thisSong.getTempo(),false));
+        values.put(SQLite.COLUMN_TEMPO, DrumCalculations.getFixedTempoString(thisSong.getTempo(), false));
         /*} else {
             values.put(SQLite.COLUMN_TEMPO, "");
         }*/
@@ -205,7 +222,7 @@ public class CommonSQL {
             try {
                 db.insert(SQLite.TABLE_NAME, null, values);
             } catch (Exception e) {
-                Log.e(TAG,"error:"+e);
+                Log.e(TAG, "error:" + e);
             }
         }
     }
@@ -271,8 +288,8 @@ public class CommonSQL {
 
     // Search for values in the table
     public ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
-                                      boolean searchByArtist, boolean searchByKey, boolean searchByTag,
-                                      boolean searchByFilter, boolean searchByTitle, String folderVal,
+                                             boolean searchByArtist, boolean searchByKey, boolean searchByTag,
+                                             boolean searchByFilter, boolean searchByTitle, String folderVal,
                                              String artistVal, String keyVal, String tagVal,
                                              String filterVal, String titleVal, boolean songMenuSortTitles) {
         ArrayList<Song> songs = new ArrayList<>();
@@ -282,7 +299,7 @@ public class CommonSQL {
         String sqlMatch = "";
         if (searchByFolder && folderVal != null && !folderVal.isEmpty()) {
             if (folderVal.equals(mainActivityInterface.getMainfoldername()) ||
-            folderVal.equals("MAIN")) {
+                    folderVal.equals("MAIN")) {
                 sqlMatch += SQLite.COLUMN_FOLDER + "= ? AND ";
                 args.add(folderVal);
             } else {
@@ -293,7 +310,7 @@ public class CommonSQL {
         }
         if (searchByArtist && artistVal != null && !artistVal.isEmpty()) {
             sqlMatch += SQLite.COLUMN_AUTHOR + " LIKE ? AND ";
-            args.add("%"+artistVal+"%");
+            args.add("%" + artistVal + "%");
         }
         if (searchByKey && keyVal != null && !keyVal.isEmpty()) {
             sqlMatch += SQLite.COLUMN_KEY + "= ? AND ";
@@ -311,8 +328,8 @@ public class CommonSQL {
                         tempSqlMatch.append(" OR ");
                         //sqlMatch += " OR ";
                     }
-                    args.add("%"+tagArray[i]+"%");
-                    args.add("%"+tagArray[i]+"%");
+                    args.add("%" + tagArray[i] + "%");
+                    args.add("%" + tagArray[i] + "%");
                 }
                 sqlMatch += tempSqlMatch + ") AND ";
             }
@@ -320,8 +337,8 @@ public class CommonSQL {
         if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
             sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? ) AND ";
-            args.add("%"+titleVal+"%");
-            args.add("%"+titleVal+"%");
+            args.add("%" + titleVal + "%");
+            args.add("%" + titleVal + "%");
         }
         if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
             sqlMatch += "(" + SQLite.COLUMN_LYRICS + " LIKE ? OR ";
@@ -333,15 +350,15 @@ public class CommonSQL {
             sqlMatch += SQLite.COLUMN_USER1 + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_USER2 + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_USER3 + " LIKE ? )";
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
-            args.add("%"+filterVal+"%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
+            args.add("%" + filterVal + "%");
         }
 
         if (!sqlMatch.isEmpty()) {
@@ -405,9 +422,9 @@ public class CommonSQL {
             Collator collator = Collator.getInstance();
             collator.setStrength(Collator.SECONDARY);
             if (songMenuSortTitles) {
-                return collator.compare(o1.getTitle(),o2.getTitle());
+                return collator.compare(o1.getTitle(), o2.getTitle());
             } else {
-                return collator.compare(o1.getFilename(),o2.getFilename());
+                return collator.compare(o1.getFilename(), o2.getFilename());
             }
         };
         Collections.sort(songs, comparator);
@@ -429,7 +446,7 @@ public class CommonSQL {
                 String fo = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
 
                 // Check if the file exists
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",fo,fi);
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", fo, fi);
                 if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                     // The file doesn't exist, so add it to the return list
                     Song song = new Song();
@@ -468,7 +485,7 @@ public class CommonSQL {
 
         String getOrderBySQL = " ORDER BY " + listname + " COLLATE NOCASE ASC";
         String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR +
-                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE+ ",'')," +  SQLite.COLUMN_FILENAME + ") AS " + SQLite.COLUMN_TITLE + ", " +
+                ", IFNULL(NULLIF(" + SQLite.COLUMN_TITLE + ",'')," + SQLite.COLUMN_FILENAME + ") AS " + SQLite.COLUMN_TITLE + ", " +
                 SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
                 SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
                 SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
@@ -489,7 +506,7 @@ public class CommonSQL {
             key = getValue(cursor, SQLite.COLUMN_KEY);
         }
 
-        if (key==null) {
+        if (key == null) {
             key = "";
         }
 
@@ -520,14 +537,14 @@ public class CommonSQL {
 
             closeCursor(cursor);
         } catch (Exception e) {
-            Log.e(TAG,"error:"+e);
+            Log.e(TAG, "error:" + e);
         }
 
         return thisSong;
     }
 
     public Song getSongFromUuid(SQLiteDatabase db, String uuid) {
-        if (uuid!=null && !uuid.isEmpty()) {
+        if (uuid != null && !uuid.isEmpty()) {
             String[] selectionArgs = new String[]{uuid};
             String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_UUID + "= ? ";
             Song thisSong = new Song();
@@ -545,13 +562,14 @@ public class CommonSQL {
 
                 closeCursor(cursor);
             } catch (Exception e) {
-                Log.e(TAG,"error:"+e);
+                Log.e(TAG, "error:" + e);
             }
             return thisSong;
         } else {
             return null;
         }
     }
+
     private void setSongValues(Song thisSong, Cursor cursor) {
         thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
         thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
@@ -598,15 +616,15 @@ public class CommonSQL {
         thisSong.setPresentationorder(getValue(cursor, SQLite.COLUMN_PRESENTATIONORDER));
         thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
         String uuid = getValue(cursor, SQLite.COLUMN_UUID);
-        if (uuid==null || uuid.isEmpty()) {
+        if (uuid == null || uuid.isEmpty()) {
             uuid = String.valueOf(UUID.randomUUID());
         }
         thisSong.setUuid(uuid);
-        thisSong.setLastModified(getValue(cursor,SQLite.COLUMN_LAST_MODIFIED));
+        thisSong.setLastModified(getValue(cursor, SQLite.COLUMN_LAST_MODIFIED));
     }
 
     public Song getOpenChordsSong(SQLiteDatabase db, String folder, String uuid) {
-        String[] selectionArgs = new String[]{uuid,folder};
+        String[] selectionArgs = new String[]{uuid, folder};
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_UUID + "=? AND " + SQLite.COLUMN_FOLDER + "=?";
         Song thisSong = new Song();
 
@@ -619,7 +637,7 @@ public class CommonSQL {
             }
             closeCursor(cursor);
         } catch (Exception e) {
-            Log.e(TAG,"error:"+e);
+            Log.e(TAG, "error:" + e);
         }
         return thisSong;
     }
@@ -643,8 +661,8 @@ public class CommonSQL {
         ArrayList<Song> songs = new ArrayList<>();
 
         // To avoid SQL injections, we need to build the args
-        String[] selectionArgs = new String[] {folder};
-        String sqlQuery = "SELECT * FROM " + SQLite.TABLE_NAME +" WHERE "+SQLite.COLUMN_FOLDER+"=? ORDER BY filename ASC";
+        String[] selectionArgs = new String[]{folder};
+        String sqlQuery = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FOLDER + "=? ORDER BY filename ASC";
         Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
 
         // looping through all rows and adding to list
@@ -703,7 +721,7 @@ public class CommonSQL {
             //Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
             Collator collator = Collator.getInstance();
             collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1.getFilename(),o2.getFilename());
+            return collator.compare(o1.getFilename(), o2.getFilename());
         };
         Collections.sort(songs, comparator);
 
@@ -742,12 +760,12 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
 
-        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)==0) {
-            for (int x=0; x<cursor.getCount(); x++) {
+        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER) == 0) {
+            for (int x = 0; x < cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))
-                        .replace("MAIN/",c.getString(R.string.mainfoldername));
-                folder = folder.replace(c.getString(R.string.mainfoldername)+"/",c.getString(R.string.mainfoldername));
+                        .replace("MAIN/", c.getString(R.string.mainfoldername));
+                folder = folder.replace(c.getString(R.string.mainfoldername) + "/", c.getString(R.string.mainfoldername));
                 folders.add(folder);
             }
         }
@@ -758,29 +776,28 @@ public class CommonSQL {
 
         // If we have custom folders (variations, etc.) listed, remove them
         if (folders.contains("../Variations/_cache") ||
-                folders.contains("../"+c.getString(R.string.variation)+"/_cache") ||
+                folders.contains("../" + c.getString(R.string.variation) + "/_cache") ||
                 folders.contains("**Variations/_cache") ||
-                folders.contains("**"+c.getString(R.string.variation)+"/_cache")) {
+                folders.contains("**" + c.getString(R.string.variation) + "/_cache")) {
             folders.remove("../Variations/_cache");
-            folders.remove("../"+c.getString(R.string.variation)+"/_cache");
+            folders.remove("../" + c.getString(R.string.variation) + "/_cache");
             folders.remove("**Variations/_cache");
-            folders.remove("**"+c.getString(R.string.variation)+"/_cache");
+            folders.remove("**" + c.getString(R.string.variation) + "/_cache");
         }
 
         if (folders.contains("../Variations") ||
-                folders.contains("../"+c.getString(R.string.variation)) ||
+                folders.contains("../" + c.getString(R.string.variation)) ||
                 folders.contains("**Variations") ||
-                folders.contains("**"+c.getString(R.string.variation))) {
+                folders.contains("**" + c.getString(R.string.variation))) {
             folders.remove("../Variations");
-            folders.remove("../"+c.getString(R.string.variation));
+            folders.remove("../" + c.getString(R.string.variation));
             folders.remove("**Variations");
-            folders.remove("**"+c.getString(R.string.variation));
+            folders.remove("**" + c.getString(R.string.variation));
         }
 
         // We should also add in any folders that are empty - the database has no record of them
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongFolders(mainActivityInterface.getStorageAccess().getSongIDsFromFile(),true,null);
-        for (String songId:songIds) {
-            Log.d(TAG,"songId:"+songId);
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongFolders(mainActivityInterface.getStorageAccess().getSongIDsFromFile(), true, null);
+        for (String songId : songIds) {
             if (!folders.contains(songId)) {
                 folders.add(songId);
             }
@@ -789,7 +806,7 @@ public class CommonSQL {
         Comparator<String> comparator = (o1, o2) -> {
             Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
             collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1,o2);
+            return collator.compare(o1, o2);
         };
         Collections.sort(folders, comparator);
 
@@ -799,27 +816,27 @@ public class CommonSQL {
 
     public boolean renameSong(SQLiteDatabase db, String oldFolder, String newFolder,
                               String oldName, String newName) {
-        String oldId = getAnySongId(oldFolder,oldName);
-        String newId = getAnySongId(newFolder,newName);
+        String oldId = getAnySongId(oldFolder, oldName);
+        String newId = getAnySongId(newFolder, newName);
 
         // First change the folder/file againts the matching old songid
         String[] whereClause = new String[]{oldId};
         ContentValues contentValues = new ContentValues();
-        contentValues.put(SQLite.COLUMN_FOLDER,newFolder);
-        contentValues.put(SQLite.COLUMN_FILENAME,newName);
-        contentValues.put(SQLite.COLUMN_SONGID,newId);
+        contentValues.put(SQLite.COLUMN_FOLDER, newFolder);
+        contentValues.put(SQLite.COLUMN_FILENAME, newName);
+        contentValues.put(SQLite.COLUMN_SONGID, newId);
 
-        int val = db.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",whereClause);
+        int val = db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", whereClause);
 
-        return val>0;
+        return val > 0;
     }
 
     public void closeCursor(Cursor cursor) {
-        if (cursor!=null) {
+        if (cursor != null) {
             try {
                 cursor.close();
             } catch (OutOfMemoryError | Exception e) {
-                Log.e(TAG,"error:"+e);
+                Log.e(TAG, "error:" + e);
             }
         }
     }
@@ -833,18 +850,18 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
 
-        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_THEME)==0) {
-            for (int x=0; x<cursor.getCount(); x++) {
+        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_THEME) == 0) {
+            for (int x = 0; x < cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
-                if (themes!=null && themes.contains(";")) {
+                if (themes != null && themes.contains(";")) {
                     String[] themeBits = themes.split(";");
-                    for (String bit:themeBits) {
+                    for (String bit : themeBits) {
                         if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
                             themeTags.add(bit.trim());
                         }
                     }
-                } else if (themes!=null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
+                } else if (themes != null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
                     themeTags.add(themes.trim());
                 }
             }
@@ -853,22 +870,23 @@ public class CommonSQL {
         Comparator<String> comparator = (o1, o2) -> {
             Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
             collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1,o2);
+            return collator.compare(o1, o2);
         };
         Collections.sort(themeTags, comparator);
         return themeTags;
     }
+
     public ArrayList<String> renameThemeTags(SQLiteDatabase db, SQLiteDatabase db2, String oldTag, String newTag) {
         String q = "SELECT " + SQLite.COLUMN_SONGID + ", " + SQLite.COLUMN_FOLDER + ", " +
-                SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FILETYPE + ", " +SQLite.COLUMN_THEME +
+                SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FILETYPE + ", " + SQLite.COLUMN_THEME +
                 " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?";
-        String[] arg = new String[]{"%"+oldTag+"%"};
+        String[] arg = new String[]{"%" + oldTag + "%"};
 
         Cursor cursor = db.rawQuery(q, arg);
 
-        if (cursor!=null && cursor.getColumnCount()>0) {
+        if (cursor != null && cursor.getColumnCount() > 0) {
             cursor.moveToFirst();
-            for (int x=0; x<cursor.getCount(); x++) {
+            for (int x = 0; x < cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String songid = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_SONGID));
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
@@ -876,9 +894,9 @@ public class CommonSQL {
                 String filetype = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE));
                 String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
                 StringBuilder stringBuilder = new StringBuilder();
-                if (themes!=null && themes.contains(";")) {
+                if (themes != null && themes.contains(";")) {
                     String[] themeBits = themes.split(";");
-                    for (String bit:themeBits) {
+                    for (String bit : themeBits) {
                         if (!bit.trim().equals(oldTag.trim()) && !bit.trim().isEmpty()) {
                             stringBuilder.append(bit).append(";");
                         }
@@ -886,24 +904,24 @@ public class CommonSQL {
                     // Add the new tag
                     stringBuilder.append(newTag);
                     themes = stringBuilder.toString();
-                    themes = themes.replace(";;",";");
-                    themes = themes.replace("; ;",";");
-                } else if (themes!=null && !themes.isEmpty() && themes.trim().equals(oldTag.trim())) {
+                    themes = themes.replace(";;", ";");
+                    themes = themes.replace("; ;", ";");
+                } else if (themes != null && !themes.isEmpty() && themes.trim().equals(oldTag.trim())) {
                     themes = newTag;
                 }
                 // Put the fixed themes back into the database
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(SQLite.COLUMN_THEME,themes);
-                db.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",new String[]{songid});
+                contentValues.put(SQLite.COLUMN_THEME, themes);
+                db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{songid});
 
-                // If this is a pdf or img, update the persistent database
-                if (filetype!=null && !filetype.isEmpty() &&
+                // If this is a PDF or img, update the persistent database
+                if (filetype != null && !filetype.isEmpty() &&
                         (filetype.equals("PDF") || filetype.equals("IMG"))) {
-                    db2.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",new String[]{songid});
+                    db2.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{songid});
 
                 } else {
                     // Update the song file (don't do for PDF or IMG obviously
-                    Song tempSong = getSpecificSong(db,folder,filename);
+                    Song tempSong = getSpecificSong(db, folder, filename);
                     tempSong.setTheme(themes);
                     mainActivityInterface.getSaveSong().updateSong(tempSong, false);
                 }
@@ -939,7 +957,7 @@ public class CommonSQL {
         // Remove the end comma
         String text = songsFound.toString();
         if (text.endsWith(", ")) {
-            text = text.substring(0,text.lastIndexOf(", "));
+            text = text.substring(0, text.lastIndexOf(", "));
         }
         return text;
     }
@@ -949,7 +967,7 @@ public class CommonSQL {
         String selectQuery = "SELECT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FILENAME + " = ?;";
         String[] args = {filename};
         Cursor cursor = db.rawQuery(selectQuery, args);
-        if (cursor.getCount()>0) {
+        if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
         }
@@ -961,10 +979,10 @@ public class CommonSQL {
         // If the text contains ', escape it
         // First remove ''
         while (text.contains("''")) {
-            text = text.replace("''","'");
+            text = text.replace("''", "'");
         }
         // Now escape by doubling
-        text = text.replace("'","''");
+        text = text.replace("'", "''");
         return text;
     }
 
@@ -975,7 +993,7 @@ public class CommonSQL {
         results[0] = "";
         results[1] = "";
         Cursor cursor = db.rawQuery(selectQuery, args);
-        if (cursor.getCount()>0) {
+        if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             results[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
             results[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
@@ -993,7 +1011,7 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(selectQuery, args);
         ArrayList<OpenChordsTag> tags = new ArrayList<>();
         ArrayList<String> uniqueThemes = new ArrayList<>();
-        if (cursor.getCount()>0) {
+        if (cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
                     String[] themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME)).split("\n");
@@ -1029,8 +1047,8 @@ public class CommonSQL {
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
-                    addCSVTableValue(stringBuilder,null,cursor);
-                    }
+                    addCSVTableValue(stringBuilder, null, cursor);
+                }
                 while (cursor.moveToNext());
             }
 
@@ -1038,10 +1056,10 @@ public class CommonSQL {
             closeCursor(cursor);
 
             // Now write the file
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",
-                    exportedFilename,stringBuilder.toString().replace("\"null\"","\"\""))) {
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",exportedFilename);
-                c.startActivity(Intent.createChooser(mainActivityInterface.getExportActions().setShareIntent(exportedFilename,"text/csv",uri,null),exportedFilename));
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "",
+                    exportedFilename, stringBuilder.toString().replace("\"null\"", "\"\""))) {
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", exportedFilename);
+                c.startActivity(Intent.createChooser(mainActivityInterface.getExportActions().setShareIntent(exportedFilename, "text/csv", uri, null), exportedFilename));
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));
             } else {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.error));
@@ -1096,56 +1114,56 @@ public class CommonSQL {
     }
 
     private String escaped(String string) {
-        string = string==null ? "" : string;
-        string = string.replace("\"","\"\"");
+        string = string == null ? "" : string;
+        string = string.replace("\"", "\"\"");
         return string;
     }
 
     public void addCSVTableValue(StringBuilder stringBuilder, Song song, Cursor cursor) {
         // This can be called from a database cursor, or a song item that has already been retrieved
         //mainActivityInterface.getDrumViewModel().prepareSongValues(song);
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getUuid() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getFilename() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getFolder() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getTitle() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAuthor() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getCopyright() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_COPYRIGHT)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getLyrics() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LYRICS)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getHymnnum() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_HYMNNUM)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getCcli() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CCLI)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getTheme() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAlttheme() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ALTTHEME)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getUser1() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER1)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getUser2() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER2)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getUser3() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER3)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getBeatbuddysong() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_BEATBUDDY_SONG)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getBeatbuddykit() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_BEATBUDDY_KIT)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getDrummer() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_DRUMMER)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getDrummerKit() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_DRUMMER_KIT)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getKey() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getKeyOriginal() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY_ORIGINAL)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getPreferredInstrument() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PREFERRED_INSTRUMENT)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? DrumCalculations.getFixedTimeSignatureString(song.getTimesig(),false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAka() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AKA)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAutoscrolldelay() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_DELAY)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAutoscrolllength() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_LENGTH)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? DrumCalculations.getFixedTempoString(song.getTempo(),false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getUuid() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getFilename() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getFolder() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getTitle() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAuthor() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getCopyright() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_COPYRIGHT)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getLyrics() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LYRICS)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getHymnnum() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_HYMNNUM)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getCcli() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CCLI)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getTheme() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAlttheme() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ALTTHEME)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getUser1() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER1)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getUser2() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER2)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getUser3() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_USER3)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getBeatbuddysong() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_BEATBUDDY_SONG)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getBeatbuddykit() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_BEATBUDDY_KIT)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getDrummer() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_DRUMMER)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getDrummerKit() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_DRUMMER_KIT)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getKey() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getKeyOriginal() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY_ORIGINAL)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getPreferredInstrument() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PREFERRED_INSTRUMENT)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? DrumCalculations.getFixedTimeSignatureString(song.getTimesig(), false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TIMESIG)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAka() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AKA)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAutoscrolldelay() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_DELAY)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAutoscrolllength() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTOSCROLL_LENGTH)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? DrumCalculations.getFixedTempoString(song.getTempo(), false) : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO)))).append("\",");
         //stringBuilder.append("\"").append(escaped(song!=null ? song.getTempo() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TEMPO)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getPadfile() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PAD_FILE)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getPadloop() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PAD_LOOP)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getMidi() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_MIDI)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getMidiindex() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_MIDI_INDEX)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getCapo() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CAPO)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getCustomchords() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CUSTOM_CHORDS)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getNotes() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_NOTES)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAbc() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ABC)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getAbcTranspose() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ABC_TRANSPOSE)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getLinkyoutube() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_YOUTUBE)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getLinkweb() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_WEB)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getLinkaudio() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_AUDIO)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getLinkother() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_OTHER)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getPresentationorder() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PRESENTATIONORDER)))).append("\",");
-        stringBuilder.append("\"").append(escaped(song!=null ? song.getFiletype() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE)))).append("\"\n");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getPadfile() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PAD_FILE)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getPadloop() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PAD_LOOP)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getMidi() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_MIDI)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getMidiindex() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_MIDI_INDEX)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getCapo() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CAPO)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getCustomchords() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_CUSTOM_CHORDS)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getNotes() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_NOTES)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAbc() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ABC)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getAbcTranspose() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ABC_TRANSPOSE)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getLinkyoutube() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_YOUTUBE)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getLinkweb() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_WEB)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getLinkaudio() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_AUDIO)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getLinkother() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LINK_OTHER)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getPresentationorder() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_PRESENTATIONORDER)))).append("\",");
+        stringBuilder.append("\"").append(escaped(song != null ? song.getFiletype() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE)))).append("\"\n");
 
     }
 
@@ -1158,9 +1176,9 @@ public class CommonSQL {
                 SQLite.COLUMN_UUID +
                 " FROM " + SQLite.TABLE_NAME + ";";
 
-        Cursor cursor = db.rawQuery(selectQuery,null);
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor!=null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 ShareableObject shareableObject = new ShareableObject();
                 shareableObject.setFilename(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)));
@@ -1182,7 +1200,7 @@ public class CommonSQL {
         String songId = getAnySongId(folder, filename);
         String[] selectionArgs = new String[]{songId};
         String sql = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_LAST_MODIFIED + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
-        String[] returnInfo = new String[] {"","","false"};
+        String[] returnInfo = new String[]{"", "", "false"};
 
         Cursor cursor = db.rawQuery(sql, selectionArgs);
 
@@ -1192,16 +1210,46 @@ public class CommonSQL {
                 returnInfo[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
                 returnInfo[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LAST_MODIFIED));
                 returnInfo[2] = "true";  // We have this file
-                returnInfo[0] = returnInfo[0]==null ? "" : returnInfo[0];
-                returnInfo[1] = returnInfo[1]==null ? "" : returnInfo[1];
+                returnInfo[0] = returnInfo[0] == null ? "" : returnInfo[0];
+                returnInfo[1] = returnInfo[1] == null ? "" : returnInfo[1];
             }
 
             closeCursor(cursor);
         } catch (Exception e) {
-            Log.e(TAG,"error:"+e);
+            Log.e(TAG, "error:" + e);
         }
 
         return returnInfo;
+    }
+
+    public ArrayList<SongId> getSongIds(SQLiteDatabase db) {
+        // Create an array of simple song details - used for the web server
+        ArrayList<SongId> songIds = new ArrayList<>();
+        String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " +
+                SQLite.COLUMN_FOLDER + ", " +
+                SQLite.COLUMN_TITLE + ", " +
+                // Wrap the reserved word 'key' in backticks
+                "`" + SQLite.COLUMN_KEY + "`, " +
+                SQLite.COLUMN_AUTHOR +
+                " FROM " + SQLite.TABLE_NAME + ";";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                SongId songId = new SongId();
+                songId.setFolder(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)));
+                songId.setFilename(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)));
+                songId.setKey(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)));
+                songId.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR)));
+                songIds.add(songId);
+            }
+            while (cursor.moveToNext());
+        }
+
+        // close cursor connection
+        closeCursor(cursor);
+        return songIds;
     }
 
 }

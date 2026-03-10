@@ -184,7 +184,9 @@ public class WebServerFragment extends Fragment {
         // Set the webServer info
         myView.allowWebNavigation.setChecked(mainActivityInterface.getWebServer().getAllowWebNavigation());
         Glide.with(this).load(mainActivityInterface.getWebServer().getIPQRCode()).into(myView.qrCode);
-        myView.ipAddress.setText(mainActivityInterface.getWebServer().getIP());
+        String ipAddress = "http://"+mainActivityInterface.getWebServer().getIP()+":8080/";
+
+        myView.ipAddress.setText(ipAddress);
         myView.webServer.setChecked(mainActivityInterface.getWebServer().getRunWebServer());
         myView.webServerInfo.setVisibility(mainActivityInterface.getWebServer().getRunWebServer() ? View.VISIBLE:View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -221,7 +223,7 @@ public class WebServerFragment extends Fragment {
                     }
                 }));
         myView.allowWebNavigation.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getWebServer().setAllowWebNavigation(b));
-        myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getWebServer().getIP()));
+        myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument("http://"+mainActivityInterface.getWebServer().getIP()+":8080/"));
         myView.runHotspot.setOnCheckedChangeListener((compoundButton, b) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (mainActivityInterface.getAppPermissions().hasHotSpotPermission() &&

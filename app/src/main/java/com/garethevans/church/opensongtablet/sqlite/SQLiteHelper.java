@@ -10,6 +10,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.ShareableObject;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songprocessing.SongId;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -293,6 +294,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         } catch (OutOfMemoryError | Exception e) {
             return new String[] {"","","false"};
         }
+    }
+
+    public ArrayList<SongId> getSongIds() {
+        // Create an array of simple song details - used for the web server
+        try (SQLiteDatabase db = getDB()) {
+            return mainActivityInterface.getCommonSQL().getSongIds(db);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 }
 

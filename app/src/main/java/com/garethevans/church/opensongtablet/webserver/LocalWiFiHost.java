@@ -87,7 +87,7 @@ public class LocalWiFiHost {
         Bitmap bitmap = null;
         QRCodeWriter writer = new QRCodeWriter();
         // Get the IP address
-        String ip=mainActivityInterface.getWebServer().getIP();
+        String ip="http://"+mainActivityInterface.getWebServer().getIP()+":8080";
         Log.d(TAG,"ip:"+ip);
         if (configuration != null) {
             try {
