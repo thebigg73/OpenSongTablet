@@ -520,17 +520,17 @@ public class SetManageFragment extends Fragment {
                     mainActivityInterface.getShowToast().doIt(file_exists_string);
                 } else {
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveSet Create Sets/" + newSetFilename + " deleteOld=true");
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newSetUri, null,
+                    /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newSetUri, null,
                             "Sets", "", newSetFilename);
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newSetUri);
-
+                    */
                     mainActivityInterface.getSetActions().setUseThisLastModifiedDate(mainActivityInterface.getTimeTools().getNowIsoTime());
                     String setXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
                     mainActivityInterface.getSetActions().setUseThisLastModifiedDate(null);
 
                     String setAsPref = mainActivityInterface.getSetActions().getSetAsPreferenceString();
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveSet writeFileFromString Sets/" + newSetFilename + " with: " + setXML);
-                    if (mainActivityInterface.getStorageAccess().writeFileFromString(setXML, outputStream)) {
+                    if (mainActivityInterface.getStorageAccess().writeFileFromString("Sets","",newSetFilename,setXML)) {
                         // Update the last loaded set now it is saved.
                         mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(
                                 mainActivityInterface.getCurrentSet().getSetCurrent());

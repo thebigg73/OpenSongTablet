@@ -37,12 +37,14 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
     private final SetItemTouchInterface setItemTouchInterface;
     private final MainActivityInterface mainActivityInterface;
+    private final SetAdapter setAdapter;
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "SetListItemCallback";
 
     SetListItemCallback(Context c, SetAdapter setAdapter) {
         mainActivityInterface = (MainActivityInterface) c;
         setItemTouchInterface = setAdapter;
+        this.setAdapter = setAdapter;
         mBackground = new ColorDrawable();
         try {
             backgroundColor = ContextCompat.getColor(c, R.color.vdarkred);
@@ -98,7 +100,54 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         return true;
     }
 
+
     @Override
+    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+        // Only draw the red background if we are currently swiping
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            View itemView = viewHolder.itemView;
+
+            // If the swipe is finished and returned to 0, clear it
+            if (dX == 0 && !isCurrentlyActive) {
+                clearCanvas(c, (float) itemView.getLeft(), (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                return;
+            }
+
+            // DRAWING THE "UNDERLAY"
+            // We draw the red background in the gap created by dX
+            mBackground.setColor(backgroundColor);
+
+            // Use Math.max to ensure the right bound never goes 'negative'
+            // if the user tries to swipe slightly left
+            int rightBound = itemView.getLeft() + (int) dX;
+
+            mBackground.setBounds(
+                    itemView.getLeft(),
+                    itemView.getTop(),
+                    rightBound,
+                    itemView.getBottom()
+            );
+            mBackground.draw(c);
+
+            // ICON LOGIC
+            if (deleteDrawable != null && dX > (intrinsicWidth + 32)) {
+                int itemHeight = itemView.getHeight();
+                int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
+                int deleteIconLeft = itemView.getLeft() + 32; // Fixed margin from left
+                int deleteIconRight = deleteIconLeft + intrinsicWidth;
+                int deleteIconBottom = deleteIconTop + intrinsicHeight;
+
+                deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+                deleteDrawable.draw(c);
+            }
+        }
+
+        // super must be called to draw the actual song item over our red background
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
+    /*@Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             dragging = true;
@@ -133,6 +182,8 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
     }
+*/
+
 
     private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
         c.drawRect(left, top, right, bottom, mClearPaint);
@@ -140,16 +191,39 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
     @Override
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
-        return 0.70f;
+        // return 0.70f;
+        return 0.50f;
     }
 
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        Log.d("DEBUG_SWIPE", "onSwiped triggered for position: " + viewHolder.getAdapterPosition());
+        // 1. Get the current position of the item being swiped
+        final int position = viewHolder.getBindingAdapterPosition();
+
+        // If position is -1, the item is already gone or being animated
+        if (position == RecyclerView.NO_POSITION) return;
+
+        // 2. Use a 'post' to ensure the swipe animation finishes its physical
+        // travel before we modify the adapter's data.
+        viewHolder.itemView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Call your existing removeItem method
+                // 'true' updates the checkmarks in your song menu
+                setAdapter.removeItem(position, true);
+            }
+        });
     }
 
-
     @Override
+    public float getSwipeEscapeVelocity(float defaultValue) {
+        // Makes the item fly off the screen faster with a smaller 'flick'
+        return defaultValue * 0.2f;
+    }
+
+    /*@Override
     public void onSelectedChanged(@Nullable @org.jetbrains.annotations.Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         // Based on the current state of the RecyclerView and whether it’s pressed or swiped, this method gets triggered.
         // Here we can customize the RecyclerView row. For example, changing the background color.
@@ -166,10 +240,75 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
             }
         }
         super.onSelectedChanged(viewHolder, actionState);
-    }
-
+    }*/
 
     @Override
+    public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+        // 1. Handle the Drag Start (Your existing logic)
+        if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+            dragging = true; // Make sure this boolean is set!
+            if (viewHolder instanceof SetListItemViewHolder) {
+                SetListItemViewHolder myViewHolder = (SetListItemViewHolder) viewHolder;
+                originalColorForDragging = myViewHolder.cardView.getCardBackgroundColor().getDefaultColor();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    myViewHolder.cardView.setCardBackgroundColor(
+                            ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getSetDraggedColor(viewHolder.itemView))
+                    );
+                }
+                setItemTouchInterface.onRowSelected(myViewHolder);
+            }
+        }
+
+        // 2. THE FIX: Handle when the gesture ends (Idle state)
+        if (actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
+            // This triggers when the user lets go.
+            // If they were swiping and it didn't finish, this forces the visual reset.
+            if (viewHolder != null) {
+                getDefaultUIUtil().clearView(viewHolder.itemView);
+            }
+        }
+
+        super.onSelectedChanged(viewHolder, actionState);
+    }
+
+    @Override
+    public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        Log.d(TAG, "clearView - Finalizing Drop or Swipe");
+
+        // 1. Reset the visual translation (fixes the "sliver" and "stuck" view)
+        getDefaultUIUtil().clearView(viewHolder.itemView);
+        super.clearView(recyclerView, viewHolder);
+
+        // 2. Reset background color if it was a CardView
+        if (viewHolder.itemView instanceof CardView) {
+            ((CardView) viewHolder.itemView).setCardBackgroundColor(originalColorForDragging);
+        }
+
+        // 3. ONLY refresh everything if we were DRAGGING
+        // If we were swiping, the removeItem method handles the update safely.
+        if (dragging) {
+            dragging = false;
+
+            if (recyclerView.getAdapter() != null) {
+                SetAdapter adapter = (SetAdapter) recyclerView.getAdapter();
+                recyclerView.post(() -> {
+                    adapter.notifyDataSetChanged();
+                    mainActivityInterface.getCurrentSet().updateSetTitleView();
+                    mainActivityInterface.notifyInlineSetChanged(-1);
+                    mainActivityInterface.getDisplayPrevNext().setPrevNext();
+                });
+            }
+        } else {
+            // We were swiping, not dragging.
+            // Just do a lightweight update for the title/buttons without
+            // nuking the RecyclerView's internal state.
+            mainActivityInterface.getCurrentSet().updateSetTitleView();
+            mainActivityInterface.getDisplayPrevNext().setPrevNext();
+        }
+    }
+
+    /*@Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         Log.d(TAG, "clearView - Finalizing Drop");
         dragging = false;
@@ -186,7 +325,14 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
             SetAdapter adapter = (SetAdapter) recyclerView.getAdapter();
 
             // 1. Refresh song numbers and highlights now that the drag is over
-            adapter.notifyDataSetChanged();
+            recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
 
             // 2. Update the Title view (e.g. "Song 4 of 12")
             mainActivityInterface.getCurrentSet().updateSetTitleView();
@@ -199,5 +345,5 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         mainActivityInterface.getMainHandler().post(() ->
                 mainActivityInterface.getDisplayPrevNext().setPrevNext()
         );
-    }
+    }*/
 }

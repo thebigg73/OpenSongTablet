@@ -27,6 +27,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
+import com.garethevans.church.opensongtablet.customviews.WrapContentLinearLayoutManager;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.AreYouSureBottomSheet;
@@ -153,7 +154,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void initialiseRecyclerView() {
         // Some of these need to run on the UI
-        songListLayoutManager = new LinearLayoutManager(getContext());
+        songListLayoutManager = new WrapContentLinearLayoutManager(getContext());
+        //songListLayoutManager = new LinearLayoutManager(getContext());
         songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
         songListAdapter = new SongListAdapter(getContext(), this, songMenuSongs);
 
@@ -479,21 +481,23 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void buttonsEnabled(boolean enabled) {
-        mainActivityInterface.getMainHandler().post(() -> {
-            if (myView != null) {
-                try {
-                    myView.filterButtons.folderButton.setEnabled(enabled);
-                    myView.filterButtons.artistButton.setEnabled(enabled);
-                    myView.filterButtons.keyButton.setEnabled(enabled);
-                    myView.filterButtons.tagButton.setEnabled(enabled);
-                    myView.filterButtons.filterButton.setEnabled(enabled);
-                    myView.filterButtons.titleButton.setEnabled(enabled);
-                    myView.actionFAB.setEnabled(enabled);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView != null) {
+                    try {
+                        myView.filterButtons.folderButton.setEnabled(enabled);
+                        myView.filterButtons.artistButton.setEnabled(enabled);
+                        myView.filterButtons.keyButton.setEnabled(enabled);
+                        myView.filterButtons.tagButton.setEnabled(enabled);
+                        myView.filterButtons.filterButton.setEnabled(enabled);
+                        myView.filterButtons.titleButton.setEnabled(enabled);
+                        myView.actionFAB.setEnabled(enabled);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void refreshSongList() {
@@ -537,21 +541,23 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
                         // 4. Update the UI
                         ArrayList<Song> finalNewList = newList;
-                        mainActivityInterface.getMainHandler().post(() -> {
-                            // Update the underlying data source
-                            songMenuSongs.updateSongs(finalNewList);
+                        if (mainActivityInterface!=null) {
+                            mainActivityInterface.getMainHandler().post(() -> {
+                                // Update the underlying data source
+                                songMenuSongs.updateSongs(finalNewList);
 
-                            // Tell the adapter to animate the specific changes
-                            diffResult.dispatchUpdatesTo(songListAdapter);
+                                // Tell the adapter to animate the specific changes
+                                diffResult.dispatchUpdatesTo(songListAdapter);
 
-                            // Clean up UI
-                            // Pass the pre-calculated index map from the adapter
-                            displayIndex(newAlphaIndex);
-                            updateSongCount();
-                            if (myView != null) myView.progressBar.setVisibility(View.GONE);
-                            adapterReady = true;
-                            buttonsEnabled(true);
-                        });
+                                // Clean up UI
+                                // Pass the pre-calculated index map from the adapter
+                                displayIndex(newAlphaIndex);
+                                updateSongCount();
+                                if (myView != null) myView.progressBar.setVisibility(View.GONE);
+                                adapterReady = true;
+                                buttonsEnabled(true);
+                            });
+                        }
 
                     } catch (Exception e) {
                         Log.e("SongMenu", "Search failed", e);

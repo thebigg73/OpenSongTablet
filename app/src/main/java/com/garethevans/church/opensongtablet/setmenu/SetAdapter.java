@@ -333,64 +333,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         }
     }
 
-    // The callbacks from the SetItemTouchInterface (called from the SetListItemCallback class)
-    /*@Override
-    // This method deals with dragging items up and down in the set list
-    public void onItemMoved(int fromPosition, int toPosition) {
-        if (mainActivityInterface.getCurrentSet().getSetItemInfos()!=null &&
-                mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition &&
-                mainActivityInterface.getCurrentSet().getCurrentSetSize()>toPosition &&
-                mainActivityInterface.getCurrentSet().getSetItemInfos()!=null) {
-
-            // Update the currentSet and save the set string
-            mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
-            mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
-
-            mainActivityInterface.getMainHandler().post(() -> {
-                // Notify the adapter that we have moved items
-                notifyItemMoved(fromPosition, toPosition);
-
-                // Notify the adapter that we have updated the item numbers
-                notifyItemChanged(toPosition, updateNumber);
-                notifyItemChanged(fromPosition, updateNumber);
-            });
-
-            // Check for the current item or prev set item position being changed
-            if (fromPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
-                mainActivityInterface.getCurrentSet().setIndexSongInSet(toPosition);
-            } else if (toPosition == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
-                mainActivityInterface.getCurrentSet().setIndexSongInSet(fromPosition);
-            }
-            if (fromPosition == mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()) {
-                mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(toPosition);
-            } else if (toPosition == mainActivityInterface.getCurrentSet().getPrevIndexSongInSet()) {
-                mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(fromPosition);
-            }
-
-            // Update the title
-            mainActivityInterface.getCurrentSet().updateSetTitleView();
-
-            // Update the inline set to mirror these changes
-            mainActivityInterface.notifyInlineSetMove(fromPosition, toPosition);
-            mainActivityInterface.notifyInlineSetChanged(toPosition);
-            mainActivityInterface.notifyInlineSetChanged(fromPosition);
-        }
-    }*/
-
-    /*@Override
-    public void onItemMoved(int fromPosition, int toPosition) {
-        if (mainActivityInterface.getCurrentSet().getSetItemInfos() != null) {
-            // 1. Swap the data
-            mainActivityInterface.getCurrentSet().swapPositions(fromPosition, toPosition);
-
-            // 2. Just notify the move. DO NOT notify changes yet.
-            notifyItemMoved(fromPosition, toPosition);
-
-            // 3. Update your internal indices as you are already doing
-            updateInternalIndices(fromPosition, toPosition);
-        }
-    }*/
-
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
         if (mainActivityInterface.getCurrentSet().getSetItemInfos() != null) {
@@ -443,37 +385,38 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     // This method is called when an item is swiped away or unticked in the song menu.
     public void removeItem(int fromPosition,boolean updateMenu) {
         if (mainActivityInterface.getCurrentSet().getCurrentSetSize()>fromPosition) {
+            // --- STEP 1: CAPTURE INFO FIRST ---
+            // Get the song info BEFORE we delete it from the list
+            String folder = mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfolder;
+            String filename = mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfilename;
 
-            // Remove the item from the current set and save the set
+            // --- STEP 2: DATA LOGIC ---
+            // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
-            // If the currently selected set item is after this position, we need to drop it by 1
-            if (fromPosition<mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
-                mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getCurrentSet().getIndexSongInSet()-1);
+            // Adjust the current index if needed
+            if (fromPosition < mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getCurrentSet().getIndexSongInSet() - 1);
             }
 
+            // --- STEP 3: UI UPDATES ---
             mainActivityInterface.getMainHandler().post(() -> {
-                // Notify the adapter of changes
+                // These two calls fix the "empty space" and the index numbers
                 notifyItemRemoved(fromPosition);
+                notifyItemRangeChanged(fromPosition, mainActivityInterface.getCurrentSet().getCurrentSetSize());
 
-                // Update the numbers of the items below this
-                notifyItemRangeChanged(fromPosition,mainActivityInterface.getCurrentSet().getCurrentSetSize()-fromPosition);
+                // Synchronize with other UI elements
+                mainActivityInterface.notifyInlineSetRemoved(fromPosition);
+                mainActivityInterface.notifyInlineSetRangeChanged(fromPosition, mainActivityInterface.getCurrentSet().getCurrentSetSize());
+                mainActivityInterface.getCurrentSet().updateSetTitleView();
+
+                // --- STEP 4: UPDATE SONG MENU ---
+                if (updateMenu) {
+                    mainActivityInterface.updateCheckForThisSong(
+                            mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename)
+                    );
+                }
             });
-
-            // Remove the check mark for this song in the song menu
-            if (updateMenu) {
-                mainActivityInterface.updateCheckForThisSong(
-                        mainActivityInterface.getSQLiteHelper().getSpecificSong(
-                                mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfolder,
-                                mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfilename));
-            }
-
-            // Update the title
-            mainActivityInterface.getCurrentSet().updateSetTitleView();
-
-            // Update the inline set to mirror these changes
-            mainActivityInterface.notifyInlineSetRemoved(fromPosition);
-            mainActivityInterface.notifyInlineSetRangeChanged(fromPosition,mainActivityInterface.getCurrentSet().getCurrentSetSize()-fromPosition);
         }
     }
 
