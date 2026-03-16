@@ -1,40 +1,39 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.garethevans.church.opensongtablet.wear">
-
-    <uses-sdk
-        tools:overrideLibrary="androidx.wear.compose.material.core,androidx.wear.compose.foundation,androidx.wear.compose.material"/>
+    package="com.garethevans.church.opensongtablet"> <uses-sdk
+    tools:overrideLibrary="androidx.wear.compose.material.core,androidx.wear.compose.foundation,androidx.wear.compose.material"/>
 
     <uses-feature android:name="android.hardware.type.watch" />
 
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:label="OpenSongApp Metronome"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:theme="@android:style/Theme.DeviceDefault">
 
-        <!-- Minimal launcher activity to make app visible -->
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
+
         <activity
             android:name=".MainActivity"
-            android:excludeFromRecents="true"
             android:exported="true"
-            android:enabled="true"
-            android:noHistory="true">
+            android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Listener service for receiving beats -->
         <service
             android:name=".MetronomeListenerService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"
-                    tools:ignore="WearableBindListener" />
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/metronome" />
             </intent-filter>
         </service>
 
