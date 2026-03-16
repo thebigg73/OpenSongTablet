@@ -1,6 +1,8 @@
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
+rootProject.name = "OpenSongTablet"
 
-include ':app', ':wear'
-//rootProject.name = 'opensongtablet'
+include ':app'
+include ':wear'
+
+// This ensures Gradle looks in the correct folders
+project(':app').projectDir = new File(settingsDir, 'app')
+project(':wear').projectDir = new File(settingsDir, 'wear')

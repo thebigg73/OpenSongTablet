@@ -15,6 +15,13 @@ android {
         versionName "6.6.3" // MATCH the mobile version
     }
 
+    flavorDimensions "distribution"
+    productFlavors {
+        withWear {
+            dimension "distribution"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

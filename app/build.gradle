@@ -121,6 +121,9 @@ repositories {
 dependencies {
     implementation 'androidx.test.ext:junit:1.3.0'
 
+    //withWearWearApp project(':wear')
+    //add("withWearWearApp", project(":wear"))
+
     // Only include wearable APK in the withWear flavor
     //withWearWearApp project(":wear")
     //"withWearWearApp" project(path: ":wear", configuration: "release")
@@ -205,13 +208,18 @@ dependencies {
 
     // 1. Ktor 2.3.x is the stable choice for Android
     implementation "io.ktor:ktor-server-core:2.3.12"
-    implementation "io.ktor:ktor-server-cio:2.3.12"
+    implementation "io.ktor:ktor-server-netty:2.3.12"
+    //implementation "io.ktor:ktor-server-cio:2.3.12"
     implementation "io.ktor:ktor-server-websockets:2.3.12"
+    implementation "org.slf4j:slf4j-android:1.7.36"
 
     // 2. Align Coroutines to a version compatible with Ktor 2.3.x
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
+    // This waits until flavors are evaluated before trying to link the wear app
+    configurations.maybeCreate("withWearWearApp")
+    add("withWearWearApp", project(":wear"))
 }
 
 kotlin {
