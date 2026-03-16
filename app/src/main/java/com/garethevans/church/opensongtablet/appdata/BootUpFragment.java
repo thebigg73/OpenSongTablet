@@ -241,6 +241,7 @@ public class BootUpFragment extends Fragment {
                         mainActivityInterface.updateMargins();
                     });
 
+
                 } else {
                     // There was a problem with the folders, so restart the app!
                     requireActivity().recreate();

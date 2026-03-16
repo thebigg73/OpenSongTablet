@@ -223,10 +223,10 @@ public class ProfileActions {
     public boolean saveProfile(Uri uri, String profileName) {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
-            // This is used to copy the current preferences xml file to the chosen name / location
+            // This is used to copy the current preferences XML file to the chosen name / location
             // Check the file exists, if not create it
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" saveProfile Create Profiles/"+profileName+" deleteOld=true");
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Profiles", "", profileName);
+            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Profiles", "", profileName, true);
 
             // Different versions of Android save the preferences in different locations.
             Uri prefsFile = getPrefsFile();

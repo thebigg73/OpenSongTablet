@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
-    private Uri appDB, userDB;
+    private Uri appDB, userDB; // appDB is app hidden (but useable), userDB is one in OpenSong/Settings
     private File appDBFile;
     private final String TAG = "NonOSSQLHelper";
     private final MainActivityInterface mainActivityInterface;
@@ -51,8 +51,16 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         appDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",SQLite.NON_OS_DATABASE_NAME);
 
         appDB = Uri.fromFile(appDBFile);
+        Log.d(TAG,"starting trying to get appDB local");
         userDB = mainActivityInterface.getStorageAccess().getUriForItem(
                 "Settings", "", SQLite.NON_OS_DATABASE_NAME);
+        Log.d(TAG,"finished trying to get appDB local");
+
+        // If the userDB uri doesn't exist, copy the appDB now it is ready
+        if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
+            initialiseUserDB = true;
+            copyUserDatabase();
+        }
     }
 
     public SQLiteDatabase getDB() {
@@ -98,19 +106,25 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     }
 
+    private boolean initialiseUserDB = false;
     public boolean copyUserDatabase() {
         // This copies the app persistent database (app cache) into the user's OpenSong/Settings folder
         // GE It should only need done at app close, since it is never used directly
 
         // In case there was an issue and the Uris are null, get them again
-        if (appDB==null || userDB==null) {
+        if ((appDB==null || userDB==null) && !initialiseUserDB) {
             getDatabaseUris();
         }
 
-        if (mainActivityInterface.getStorageAccess().uriTreeValid(userDB)) {
+        Log.d(TAG,"copyUserDatabase() check uriTreeValid for userDB");
+        if (mainActivityInterface.getStorageAccess().uriTreeValid(userDB) ||
+                !mainActivityInterface.getStorageAccess().uriExists(userDB)) {
 
+            Log.d(TAG,"getInputStream");
             // Get an input stream for the app database so we can copy it
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+
+            Log.d(TAG,"check if exists getInputStream");
 
             // Make sure the userDB file exists if it isn't there - may not have been used before
             if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
@@ -499,19 +513,12 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         // If this isn't safe, we will add a row to the removedNonOpenSongSongs.csv file
 
         if (uselessSongs!=null) {
-            Uri removedFilesUri = null;
+            //Uri removedFilesUri = null;
             if (!safeToDelete) {
-                // Check the removedNonOpenSongSongs.csv file exists
-                removedFilesUri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","","removedNonOpenSongSongs.csv");
-                if (!mainActivityInterface.getStorageAccess().uriExists(removedFilesUri)) {
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,removedFilesUri,null,"Settings","",
-                            "removedNonOpenSongSongs.csv");
-                    // Write the table headings to the newly created file
-                    StringBuilder headings = new StringBuilder();
-                    mainActivityInterface.getCommonSQL().addCSVTableHeadings(headings);
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(removedFilesUri);
-                    mainActivityInterface.getStorageAccess().writeFileFromString(headings.toString(),outputStream);
-                }
+                StringBuilder headings = new StringBuilder();
+                mainActivityInterface.getCommonSQL().addCSVTableHeadings(headings);
+                mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","removedNonOpenSongSongs.csv",headings.toString());
+
             }
 
             StringBuilder lineForRemovedFile = new StringBuilder();

@@ -473,8 +473,9 @@ public class ImportOSBFragment extends Fragment {
                                 if (ze.getName().contains("_Highlighter/")) {
                                     filename = ze.getName().replace("_Highlighter/", "");
                                     stringBuilder.append("\n").append(TAG).append(" Create Highlighlighter/").append(filename);
-                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                            false, file_uri, null, "Highlighter", "", filename);
+                                    /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                                            false, file_uri, null, "Highlighter", "", filename);*/
+                                    mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Highlighter","",filename,false);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                     // the file_uri is actually pointing to the app folder as we will save it there then SQL insert or replace in the existing DB
                                     Uri final_file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", SQLite.NON_OS_DATABASE_NAME);

@@ -62,7 +62,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/web_server_port_info"/>
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/portNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/web_server_port"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/allowWebNavigation"

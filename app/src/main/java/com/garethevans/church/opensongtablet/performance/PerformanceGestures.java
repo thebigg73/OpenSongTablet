@@ -731,7 +731,7 @@ public class PerformanceGestures {
         if (mainActivityInterface.getSong().getFilename() != null &&
                 !mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // Make a copy of this song in the variations folder
-            mainActivityInterface.getStorageAccess().doStringWriteToFile("Variations", "",
+            mainActivityInterface.getStorageAccess().writeFileFromString("Variations", "",
                     mainActivityInterface.getSong().getFilename(), mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
             mainActivityInterface.getSong().setFolder("**Variations");
 

@@ -825,7 +825,7 @@ public class MakePDF {
 
         // Remove it as we want to create a new version!
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" getPDFUri Create Export/"+exportFilename+" deleteOld=true");
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", exportFilename);
+        mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Export", "", exportFilename,true);
         return uri;
     }
 

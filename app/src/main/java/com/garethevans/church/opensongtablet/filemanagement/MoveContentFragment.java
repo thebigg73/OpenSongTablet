@@ -212,9 +212,7 @@ public class MoveContentFragment extends Fragment {
                     for (int x = 0; x < filesChosen.size(); x++) {
                         outputFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs", newFolder, filesChosen.get(x));
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doMove Create Songs/"+newFolder+"/"+filesChosen.get(x)+"  deleteOld=true");
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                true, outputFile,
-                                null, "Songs", newFolder, filesChosen.get(x));
+                        mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Songs",newFolder,filesChosen.get(x),true);
                         inputStream = mainActivityInterface.getStorageAccess().getInputStream(uris.get(x));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputFile);
                         // Update the progress
@@ -310,10 +308,9 @@ public class MoveContentFragment extends Fragment {
     }
 
     private void renameHighlighterFiles(Uri oldUri, String newFilename) {
-        Uri highlighterOutputUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",newFilename);
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Highlighter/"+newFilename+"  deleteOld=false");
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, highlighterOutputUri,null,"Highlighter",
-                "",newFilename);
+        mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Highlighter","",newFilename,true);
+        Uri highlighterOutputUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","",newFilename);
         InputStream highlighterInputStream = mainActivityInterface.getStorageAccess().getInputStream(oldUri);
         OutputStream highlighterOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(highlighterOutputUri);
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" renameHighlighter copyFile from "+oldUri+" to Highligher/" + newFilename);

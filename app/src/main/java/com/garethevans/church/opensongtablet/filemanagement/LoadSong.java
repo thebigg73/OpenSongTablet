@@ -13,7 +13,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -273,8 +272,7 @@ public class LoadSong {
         Uri olduri = uri;
         uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
         thisSong.setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,uri,null,where,thisSong.getFolder(),newname);
-        if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Songs",thisSong.getFolder(),newname,thisSong.getSongXML())) {
+        if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",thisSong.getFolder(),newname,thisSong.getSongXML())) {
             mainActivityInterface.getStorageAccess().deleteFile(olduri);
             // Remove the old item from the database
             Log.d(TAG,"remove from database:" + mainActivityInterface.getSQLiteHelper().deleteSong(thisSong.getFolder(),oldname));
@@ -665,7 +663,7 @@ public class LoadSong {
                     if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
                         content = content.substring(0, content.indexOf("</song>")) + "</song>";
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " fixSongs doStringWriteToFile Songs/" + thisSong.getFolder() + "/" + thisSong.getFilename() + " with: " + content);
-                        success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                        success = mainActivityInterface.getStorageAccess().writeFileFromString(
                                 "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
                         Log.d(TAG, "fixSong: " + success);
 
@@ -678,7 +676,7 @@ public class LoadSong {
                         thisSong.setFilename(newname);
                         thisSong.setTitle(newname);
                         String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
-                        success = mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                        success = mainActivityInterface.getStorageAccess().writeFileFromString(
                                 "Songs", thisSong.getFolder(), newname, xml);
                         if (success && !newname.equals(oldname)) {
                             // Remove the obsolete text file
@@ -802,10 +800,11 @@ public class LoadSong {
                 toFix = toFix.replace(origExtracted,newExtracted).replace("<>","");
 
                 // Now save the song again (output stream is closed in the write file method)
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(fixUri);
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+fixUri+" with: "+toFix);
-                mainActivityInterface.getStorageAccess().writeFileFromString(toFix,outputStream);
+                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(fixUri);
+                //mainActivityInterface.getStorageAccess().writeFileFromString(toFix,outputStream);
 
+                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+fixUri+" with: "+toFix);
+                mainActivityInterface.getStorageAccess().writeFileFromString(where,thisSong.getFolder(),thisSong.getFilename(),toFix);
                 Log.d(TAG,"fixed "+section+" :"+newExtracted);
                 return newExtracted;
             } else {

@@ -7,7 +7,6 @@ import android.util.Log;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -645,14 +644,9 @@ public class ConvertChoPro {
         if (oldSongFileName != null && !oldSongFileName.isEmpty() && newSongFileName != null && !newSongFileName.isEmpty()
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong Create Songs/"+songSubFolder+"/"+newSongFileName+" deleteOld=true");
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", songSubFolder, newSongFileName);
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
-            if (outputStream != null) {
-                // Change the songId (references to the uri)
-                // Now remove the old chordpro file
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong writeFileFromString "+newUri+" with: "+newXML);
-                mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
+            if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",songSubFolder,newSongFileName,newXML)) {
+                // The new file was successfully written
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong deleteFile "+oldUri);
                 Log.d(TAG, "attempt to deletefile=" + mainActivityInterface.getStorageAccess().deleteFile(oldUri));
 

@@ -155,12 +155,6 @@ public class SaveSong {
             mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",thisSong.getFolder());
             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",thisSong.getFilename());
 
-            // Update the song xml ready for saving
-            mainActivityInterface.getSong().setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
-
-            // Update the MIDI clock
-            //mainActivityInterface.getMidi().calculateMidiClock(thisSong);
-
             Log.d(TAG,"thisSong.getFolder():"+thisSong.getFolder());
             Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
             Log.d(TAG,"thisSong.getFiletype():"+thisSong.getFiletype());
@@ -169,7 +163,8 @@ public class SaveSong {
                     thisSong.getFilename()!=null &&
                     !thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" updateSong Songs/"+thisSong.getFolder()+"/"+thisSong.getFilename());
-                return mainActivityInterface.getStorageAccess().saveThisSongFile(thisSong);
+                //return mainActivityInterface.getStorageAccess().saveSongToStorage(thisSong);
+                return mainActivityInterface.getStorageAccess().writeSongFile(thisSong);
             } else {
                 return true;
             }

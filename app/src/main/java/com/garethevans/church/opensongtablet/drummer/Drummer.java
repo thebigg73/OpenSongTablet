@@ -331,10 +331,12 @@ public class Drummer {
     public void saveDrummerFile(String filename) {
         // Reassign the file to the current one
         mainActivityInterface.getDrumViewModel().setDrumPatternJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer","",filename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Drummer","",filename);
+
+        //Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer","",filename);
+        //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Drummer","",filename);
         String gsonString = MainActivity.gson.toJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
-        mainActivityInterface.getStorageAccess().writeFileFromString(gsonString,mainActivityInterface.getStorageAccess().getOutputStream(uri));
+        //mainActivityInterface.getStorageAccess().writeFileFromString(gsonString,mainActivityInterface.getStorageAccess().getOutputStream(uri));
+        mainActivityInterface.getStorageAccess().writeFileFromString("Drummer","",filename,gsonString);
     }
 
     public String getNiceNameFromFilename(String filename) {

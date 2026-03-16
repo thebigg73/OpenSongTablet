@@ -1062,7 +1062,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     tempSong.setTitle(itemTitle);
 
                     // Save this temp song so we can recover the contents when we build the set file
-                    mainActivityInterface.getStorageAccess().saveThisSongFile(tempSong);
+                    //mainActivityInterface.getStorageAccess().saveThisSongFile(tempSong);
+                    mainActivityInterface.getStorageAccess().writeSongFile(tempSong);
                     localSet.addItemToSet(tempSong);
                 }
             }
@@ -1475,7 +1476,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     String setXML = convertOpenChordsSetList(serverSetList);
 
                     // Save the set
-                    mainActivityInterface.getStorageAccess().doStringWriteToFile("Sets", "", filename, setXML);
+                    mainActivityInterface.getStorageAccess().writeFileFromString("Sets", "", filename, setXML);
 
                     // Remove this item from the compareObjects since we have dealt with it
                     setListsNotOnLocal.remove(setListsNotOnLocal.get(j));
@@ -1519,7 +1520,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     String setXML = convertOpenChordsSetList(serverSetList);
 
                     // Save the set
-                    mainActivityInterface.getStorageAccess().doStringWriteToFile("Sets", "", filename, setXML);
+                    mainActivityInterface.getStorageAccess().writeFileFromString("Sets", "", filename, setXML);
 
                     // Remove this item from the compareObjects since we have dealt with it
                     setListsOnLocalOlder.remove(setListsOnLocalOlder.get(j));
@@ -1632,7 +1633,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
                 // Get the xml for the setlist
                 String xml = convertOpenChordsSetList(serverSetList);
-                mainActivityInterface.getStorageAccess().doStringWriteToFile("Sets", "", filename, xml);
+                mainActivityInterface.getStorageAccess().writeFileFromString("Sets", "", filename, xml);
                 addNewConflictItemObject(c.getString(R.string.sync_set_force_downloaded), title, nowTime);
             }
         }
@@ -1982,7 +1983,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 Song backup = convertOpenChordsToOpenSong(title, title, nowTime, songToBackup);
                 backup.setFolder("Backups");
                 String xml = mainActivityInterface.getProcessSong().getXML(backup);
-                if (!mainActivityInterface.getStorageAccess().doStringWriteToFile("Backups", "", title + ".ost", xml)) {
+                if (!mainActivityInterface.getStorageAccess().writeFileFromString("Backups", "", title + ".ost", xml)) {
                     // There was an error, so don't delete!
                     songsForUpload.add(songToBackup);
                 }
@@ -2079,7 +2080,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         title = getOpenSongSetCategoryStart() + title;
                     }
                     String xml = convertOpenChordsSetList(setToBackup);
-                    if (!mainActivityInterface.getStorageAccess().doStringWriteToFile("Backups", "", title + ".osts", xml)) {
+                    if (!mainActivityInterface.getStorageAccess().writeFileFromString("Backups", "", title + ".osts", xml)) {
                         // There was an error, so don't delete!
                         setsForUpload.add(setToBackup);
                     }
@@ -2395,7 +2396,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         }
         openChordsConflictCheck.setConflictObects(openChordsConflictObjects);
         String json = gson.toJson(openChordsConflictCheck);
-        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", conflictCheckFile, json);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings", "", conflictCheckFile, json);
     }
 
     private void checkForConflictObject() {
@@ -2557,7 +2558,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     private void saveOpenSongFolderObject() {
         openSongFolderObject.setOpenSongFolderRecordObjects(openSongFolderRecordObjects);
-        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "",
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings", "",
                 songFolderUUIDsFile, gson.toJson(openSongFolderObject));
     }
 
@@ -2661,7 +2662,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     }
                     if (substring != null && openChordsCompareObject.getUuid() != null) {
                         xml = xml.replace(substring, openChordsCompareObject.getUuid());
-                        mainActivityInterface.getStorageAccess().doStringWriteToFile("Sets", "", setName, xml);
+                        mainActivityInterface.getStorageAccess().writeFileFromString("Sets", "", setName, xml);
                     }
 
                 }

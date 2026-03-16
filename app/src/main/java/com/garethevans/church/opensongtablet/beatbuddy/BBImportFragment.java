@@ -360,7 +360,7 @@ public class BBImportFragment extends Fragment {
                         mainActivityInterface.getStorageAccess().writeFileFromString(newCSVText.toString(), outputStream);
 
                         // Also add it to our OpenSong/Settings/ folder
-                        mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","MyBeatBuddyProject.csv",newCSVText.toString());
+                        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","MyBeatBuddyProject.csv",newCSVText.toString());
                     }
                 }
             }
@@ -538,7 +538,7 @@ public class BBImportFragment extends Fragment {
             mainActivityInterface.getShowToast().doIt(success_string);
             mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(true);
             // Make a copy in the OpenSong/Settings/ folder for future callback
-            mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","MyBeatBuddyProject.csv",cachedContent);
+            mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","MyBeatBuddyProject.csv",cachedContent);
         }
     }
 

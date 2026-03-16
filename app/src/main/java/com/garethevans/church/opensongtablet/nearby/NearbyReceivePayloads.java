@@ -371,7 +371,7 @@ public class NearbyReceivePayloads {
                     quickSong.setFolder(mainActivityInterface.getVariations().getKeyVariationsFolder());
                     quickSong.setFilename(mainActivityInterface.getVariations().getKeyVariationFilename(mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), nearbyJson.getKey()));
                     // Save the temp song
-                    mainActivityInterface.getStorageAccess().saveThisSongFile(quickSong);
+                    mainActivityInterface.getStorageAccess().writeSongFile(quickSong);
                     mainActivityInterface.getSong().setFolder(quickSong.getFolder());
                     mainActivityInterface.getSong().setFilename(quickSong.getFilename());
                     // Set the song section
@@ -407,8 +407,8 @@ public class NearbyReceivePayloads {
                 Uri newLocation = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolderforuri, filename);
                 // Prepare the output stream in the Received folder - just keep a temporary version
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " creating temporary song file from XML received from connected host:  " + folder + "/" + subfolderforuri + "/" + filename);
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, folder, subfolderforuri, filename);
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
+                //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, folder, subfolderforuri, filename);
+                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                 mainActivityInterface.getSong().setFolder(subfolder);
                 mainActivityInterface.getSong().setFilename(filename);
 
@@ -418,7 +418,7 @@ public class NearbyReceivePayloads {
                 // Write the file to the desired output stream and load
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " write the file content: " + newLocation + " with: " + nearbyJson.getXml());
 
-                if (mainActivityInterface.getStorageAccess().writeFileFromString(nearbyJson.getXml(), outputStream)) {
+                if (mainActivityInterface.getStorageAccess().writeFileFromString(folder, subfolderforuri, filename, nearbyJson.getXml())) {
                     // Set the song section
                     setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
                     if (nearbyJson.getSwipeDirection() != null) {

@@ -55,7 +55,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public void onDetach() {
         super.onDetach();
-        mainActivityInterface.registerFragment(null,"EditSongFragment");
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.registerFragment(null, "EditSongFragment");
+        }
     }
 
     @Override
@@ -265,6 +267,10 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
 
     public MyExtendedFloatingActionButton getSaveButton() {
-        return myView.saveChanges;
+        if (myView!=null) {
+            return myView.saveChanges;
+        } else {
+            return null;
+        }
     }
 }

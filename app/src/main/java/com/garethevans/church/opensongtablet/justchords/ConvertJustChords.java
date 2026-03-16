@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -192,13 +191,13 @@ public class ConvertJustChords {
         Uri uri = null;
         if (filename!=null && content!=null && !content.isEmpty()) {
             try {
+                mainActivityInterface.getStorageAccess().writeFileFromString("Export","",filename+".justchords",content);
                 uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",filename+".justchords");
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",filename+".justchords");
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-                mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
+                //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",filename+".justchords");
+                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
+                //mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
             } catch (Exception e) {
                 e.printStackTrace();
-                uri = null;
             }
         }
         return uri;

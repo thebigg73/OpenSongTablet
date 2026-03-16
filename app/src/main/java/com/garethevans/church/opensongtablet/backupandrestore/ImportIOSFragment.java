@@ -293,8 +293,9 @@ public class ImportIOSFragment extends Fragment {
                         uriExists = mainActivityInterface.getStorageAccess().uriExists(uri);
                         if (ze.getName()!=null && !ze.getName().isEmpty() && (allowOverwrite || !uriExists)) {
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+"Create Songs/"+folder+"/"+ze.getName()+"  deleteOld="+uriExists);
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(uriExists,
-                                    uri,null,"Songs",folder,ze.getName());
+                            /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(uriExists,
+                                    uri,null,"Songs",folder,ze.getName());*/
+                            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Songs",folder,ze.getName(),uriExists);
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
 
                             zipProgress++;
@@ -380,7 +381,7 @@ public class ImportIOSFragment extends Fragment {
                                         // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
                                         String xml = mainActivityInterface.getProcessSong().getXML(newSong);
                                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " updateFragment doStringWriteToFile Songs/" + folder + "/" + newSong.getFilename() + " with: " + xml);
-                                        if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Songs",
+                                        if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",
                                                 folder, newSong.getFilename(), xml)) {
                                             // Add to the actual database
                                             mainActivityInterface.getSQLiteHelper().createSong(folder, newSong.getFilename());

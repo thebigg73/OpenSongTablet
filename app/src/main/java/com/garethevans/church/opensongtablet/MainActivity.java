@@ -1463,14 +1463,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (navHostFragment != null) {
                 navController = navHostFragment.getNavController();
             }
+
+            if (navController == null && navHostFragment!=null) {
+                navController = navHostFragment.getNavController();
+            }
+
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
             appBarConfiguration = new AppBarConfiguration.Builder(R.id.bootUpFragment,
                     R.id.performanceFragment, R.id.presenterFragment)
                     .setOpenableLayout(myView.drawerLayout)
                     .build();
-            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-            NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
+
+            try {
+                NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+                NavigationUI.setupWithNavController(myView.myToolbar, navController, appBarConfiguration);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             try {
                 TooltipCompat.setTooltipText(myView.drawerLayout, null);
@@ -1684,7 +1694,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         String newSongText = processSong.getXML(song);
                         // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
                         getStorageAccess().updateFileActivityLog(TAG + " updateFragment doStringWriteToFile Songs/" + song.getFolder() + "/" + song.getFilename() + " with: " + newSongText);
-                        if (getStorageAccess().doStringWriteToFile("Songs", song.getFolder(), song.getFilename(), newSongText)) {
+                        if (getStorageAccess().writeFileFromString("Songs", song.getFolder(), song.getFilename(), newSongText)) {
                             navigateToFragment(null, R.id.editSongFragment);
                         } else {
                             getShowToast().doIt(error);
@@ -3865,7 +3875,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     getSetActions().setUseThisLastModifiedDate(null);
 
                     String setString = getSetActions().getSetAsPreferenceString();
-                    result = getStorageAccess().doStringWriteToFile("Sets", "", currentSet.getSetCurrentLastName(), xml);
+                    result = getStorageAccess().writeFileFromString("Sets", "", currentSet.getSetCurrentLastName(), xml);
                     if (result) {
                         // Update the last edited version (current set already has this)
                         currentSet.setSetCurrentBeforeEdits(setString);

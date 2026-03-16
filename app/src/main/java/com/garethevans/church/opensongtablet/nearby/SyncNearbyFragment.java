@@ -398,13 +398,13 @@ public class SyncNearbyFragment extends Fragment {
                                 subfolderToUse = "";
                                 filenameToUse = mainActivityInterface.getNearbyActions().currentSetFile;
                             }
-                            uriForNewItem = mainActivityInterface.getStorageAccess().getUriForItem(folderToUse, subfolderToUse, filenameToUse);
                             if (filenameToUse.endsWith(".json") && filenameToUse.contains("_____")) {
                                 // This is the info for the database
+                                mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Received","",filenameToUse,true);
                                 uriForNewItem = mainActivityInterface.getStorageAccess().getUriForItem("Received","",filenameToUse);
-                                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriForNewItem,null,"Received","",filenameToUse);
                             } else {
-                                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriForNewItem, null, folderToUse, subfolderToUse, filenameToUse);
+                                mainActivityInterface.getStorageAccess().makeSureFileIsRegistered(folderToUse,subfolderToUse,filenameToUse,true);
+                                uriForNewItem = mainActivityInterface.getStorageAccess().getUriForItem(folderToUse, subfolderToUse, filenameToUse);
                             }
                             Log.d(TAG,"Extracting zip item to this Uri:"+uriForNewItem);
                             OutputStream outputStreamForNewItem = mainActivityInterface.getStorageAccess().getOutputStream(uriForNewItem);

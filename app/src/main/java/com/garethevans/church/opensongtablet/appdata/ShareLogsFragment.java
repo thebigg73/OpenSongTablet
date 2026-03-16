@@ -89,8 +89,8 @@ public class ShareLogsFragment extends Fragment {
             mainActivityInterface.getStorageAccess().setFileViewLog(b);
             changeVisibilities();
         });
-        myView.fileWriteReset.setOnClickListener(view -> mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,writeLog,null,settings_string,"",writeLog_string));
-        myView.fileViewReset.setOnClickListener(view -> mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,viewLog,null,settings_string,"",viewLog_string));
+        myView.fileWriteReset.setOnClickListener(view -> mainActivityInterface.getStorageAccess().writeFileFromString(settings_string,"",writeLog_string,""));
+        myView.fileViewReset.setOnClickListener(view -> mainActivityInterface.getStorageAccess().writeFileFromString(settings_string,"",viewLog_string,""));
         myView.fileWriteShare.setOnClickListener(view -> shareFile(writeLog_string,"text/plain", writeLog));
         myView.fileViewShare.setOnClickListener(view -> shareFile(viewLog_string,"text/csv", viewLog));
         myView.crashLogReset.setOnClickListener(view -> {

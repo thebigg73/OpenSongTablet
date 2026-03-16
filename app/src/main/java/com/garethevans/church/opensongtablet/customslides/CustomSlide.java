@@ -155,11 +155,11 @@ public class CustomSlide {
             if (folder.equals("Divider")) {
                 folderToUse = "Notes";
             }
-            mainActivityInterface.getStorageAccess().doStringWriteToFile(folderToUse, "_cache", file, xml);
+            mainActivityInterface.getStorageAccess().writeFileFromString(folderToUse, "_cache", file, xml);
 
             if (reusable) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " addItemToSet doStringWriteToFile " + folderToUse + "/" + file + " with: " + xml);
-                mainActivityInterface.getStorageAccess().doStringWriteToFile(folderToUse, "", file, xml);
+                mainActivityInterface.getStorageAccess().writeFileFromString(folderToUse, "", file, xml);
             }
 
             // Update the current set and save the preference

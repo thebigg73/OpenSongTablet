@@ -552,6 +552,7 @@ public class SetStorageLocationFragment extends Fragment {
             notWriteable();
         }
         if (uriTree != null) {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
             checkStatus();
         }
     }
