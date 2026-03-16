@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.wear;
+package com.garethevans.church.opensongtablet;
 
 import android.content.Intent;
 import android.os.Build;
