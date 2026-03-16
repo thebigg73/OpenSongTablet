@@ -22,6 +22,7 @@ public class CreateHTML {
     // - minSize: Boolean - If the song is already at its minimum scale size
     // -
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private static final String TAG = "CreateHTML";
 
     /**
@@ -47,7 +48,7 @@ public class CreateHTML {
         html.append("  window.location = \"")
                 .append("http://")
                 .append(ipAddress)
-                .append(":8080/")
+                .append(":").append(mainActivityInterface.getWebServer().getPortNumber()).append("/")
                 .append(mainActivityInterface.getWebServer().getHostSongString())
                 .append("/\";\n");
         html.append("}\nsetTimeout('delayer()', 2000);\n</script>\n");
@@ -67,7 +68,7 @@ public class CreateHTML {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
 
         StringBuilder html = new StringBuilder();
-        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,allowWebNavigation,showChords,false, prevAndNext));
+        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,allowWebNavigation,false,false, prevAndNext));
 
         // Now we add the menu bar for the songs
         html.append(getMenuBarHTML(context, mainActivityInterface, song,allowWebNavigation, !allowWebNavigation,false,false));
@@ -95,7 +96,8 @@ public class CreateHTML {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
 
         StringBuilder html = new StringBuilder();
-        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,allowWebNavigation,true,true, prevAndNext));
+
+        html.append(getCommonHTMLTop(mainActivityInterface,song,ipAddress,true,true,true, prevAndNext));
 
         // Now we add the menu bar for the songs
         html.append(getMenuBarHTML(context, mainActivityInterface, song, allowWebNavigation, true, true, false));
@@ -183,7 +185,7 @@ public class CreateHTML {
     private static String getSongFolderChooser(Context c, MainActivityInterface mainActivityInterface, Song song) {
         StringBuilder returnString = new StringBuilder();
         returnString.append("<label for=\"folderChooser\" style=\"background-color:");
-        returnString.append(String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())));
+        returnString.append(String.format("#%06X", (0xFFFFFF & mainActivityInterface.getPalette().background)));
         returnString.append("\">");
         returnString.append(c.getString(R.string.folder));
         returnString.append("</label>\n");
@@ -209,293 +211,255 @@ public class CreateHTML {
     private static String getCommonHTMLTop(MainActivityInterface mainActivityInterface, Song song,
                                            String ip, boolean allowWebNavigation,
                                            boolean isMenu, boolean isSongMenu, ArrayList<SongId> prevAndNext) {
-        return "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<title>OpenSongApp</title>\n" +
-                "<style>\n" +
-                getHTMLFontImports(mainActivityInterface) +
-                "#content {\n" +
-                "    display: inline-block;\n" +
-                "    position: absolute;\n" +
-                "    top: 50px; /* Offset to start below the fixed menu */\n" +
-                "    left: 0;\n" +
-                "    transform-origin: top left;\n" +
-                "    padding-bottom: 100px;\n" +
-                "}\n" +
-                "body {\n" +
-                "    margin: 0;\n" +
-                "    padding: 0;\n" +
-                "    overflow-x: hidden; /* Prevent the 'wiggle' during scaling */\n" +
-                "}\n" +
-                ".clickable,a             {-webkit-user-select: none; /* Safari */\n" +
-                "                          -ms-user-select: none;      /* IE 10 and 11 */\n" +
-                "                          user-select: none;          /* Standard syntax */" +
-                "                          cursor: pointer;}\n" +
-                ".page                    {color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) +
-                "; background-color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) +
-                ";}\n" +
-                ".lyrictable              {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
-                getMenuBarCSS(mainActivityInterface, allowWebNavigation) +
-                ".folderChooser           {width: fit-content; margin:4px; border-collapse: collapse; background-color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) +
-                "; font-size:12pt}\n" +
-                ".itemSub                 {font-size: 60%; font-style:italic; display:block; border-collapse:collapse; color:"+
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) +
-                "; opacity:75%;}\n" +
-                "hr                       {width: 100%; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) +
-                " margin: 10px auto;}\n" +
-                "body,select,option    {width:100%; font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) +
-                "; background-color:"+
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor())) +
-                ";}\n" +
-                "</style>\n" +
-                "<script>\n" +
-                getGlobalJSVariables(ip, song, allowWebNavigation, isMenu, prevAndNext) +
-                getChordFunctionsJS() +
-                getResizeJS() +
-                getGoToSongJS(mainActivityInterface) +
-                getNavigateJS(mainActivityInterface) +
-                getAbcJSIfRequired(mainActivityInterface,song.getLyrics().contains(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) +
-                getFolderChooserJS(isSongMenu) +
-                getWebSocket(ip) +
-                "  var lastWidth = window.innerWidth;\n" +
-                "window.onresize = function() {\n" +
-                "    if (window.innerWidth !== lastWidth) {\n" +
-                "        lastWidth = window.innerWidth;\n" +
-                "        measure();\n" +
-                "    }\n" +
-                "};" +
-                "</script>\n" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" id=\"viewport-meta\">\n" +
-                "</head>\n" +
-                "<body class=\"page\" onload=\"javascript:measure(); filterByFolder();\">\n";
+        String string = "";
+        string += "<!DOCTYPE html>\n";
+        string += "<html lang=\"en\">\n";
+        string += "<head>\n";
+        string += "<title>OpenSongApp</title>\n";
+        string += getStyles(mainActivityInterface);
+        string += getJavascript(mainActivityInterface, song, prevAndNext, ip, isMenu, isSongMenu);
+        string += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" id=\"viewport-meta\">\n";
+        string += "</head>\n";
+        string += "<body class=\"page\" onload=\"javascript:initPage();\">\n";
+        return string;
     }
-    // Repeatable bits of code to save on duplication
-    private static String getHTMLFontImports(MainActivityInterface mainActivityInterface) {
+
+    private static String getStyles(MainActivityInterface mainActivityInterface) {
+        // Prepare some basic reusable variables:
         // This prepares the import code for the top of the html file that locates the fonts from Google
         // If they've been downloaded already, they are cached on the device, so no need to redownload.
+        // We also create all of the other css classes
         String base1 = "@import url('https://fonts.googleapis.com/css?family=";
         String base2 = "&swap=true');\n";
-        String importString = base1+mainActivityInterface.getMyFonts().getLyricFontName()+base2;
-        importString += base1+mainActivityInterface.getMyFonts().getChordFontName()+base2;
-        importString += ".menu                    {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:white; " +
-                "font-size:14.0pt; width: fit-content;}\n";
-        importString += ".item                    {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:white; " +
-                "padding:0px;}\n";
-        importString += ".lyric                   {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:14.0pt; white-space:nowrap; width: fit-content;}\n";
-        importString += ".chord                   {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsChordsColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".capo                    {font-family:"+mainActivityInterface.getMyFonts().getChordFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsCapoColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; white-space:nowrap;width: fit-content;}\n";
-        importString += ".titlemain               {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*1.1f)+"pt; " +
-                "text-decoration:underline;}\n";
-        importString += ".titleextras             {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*0.6f)+"pt; " +
-                "text-decoration:none;}\n";
-        importString += ".heading                 {font-family:"+mainActivityInterface.getMyFonts().getLyricFontName()+", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleHeadings)+"pt; " +
-                "text-decoration:underline;}\n";
-        importString += ".mono                    {font-family:"+mainActivityInterface.getMyFonts().getMonoFontName()+", 'Courier New', monospace; color:" +
-                String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor())) + "; " +
-                "padding: 0px; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleTabs)+"pt; " +
-                "text-decoration:none;}\n";
-        return importString;
+        String lyricsFontName = mainActivityInterface.getMyFonts().getLyricFontName();
+        String chordsFontName = mainActivityInterface.getMyFonts().getChordFontName();
+        String monoFontName = mainActivityInterface.getMyFonts().getMonoFontName();
+        String lyricsTextColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsTextColor()));
+        String chordsTextColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsChordsColor()));
+        String capoTextColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getMyThemeColors().getLyricsCapoColor()));
+        String pageTextColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getPalette().textColor));
+        String pageBackgroundColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getPalette().background));
+        String secondaryColor = String.format("#%06X", (0xFFFFFF & mainActivityInterface.getPalette().secondary));
+
+                String string = "<style>\n";
+        string += base1 + lyricsFontName + base2;
+        string += base1 + chordsFontName + base2;
+        string += ".menu                    {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size:14.0pt; width: fit-content;}\n";
+        string += ".item                    {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size:14.0pt; padding:0px;}\n";
+        string += ".itemSub                 {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + pageTextColor + "; font-size: 60%; font-style:italic; display:block; border-collapse:collapse; opacity:75%;}\n";
+        string += ".lyric                   {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:14.0pt; padding: 0px; white-space:nowrap; width: fit-content;}\n";
+        string += ".chord                   {font-family:" + chordsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + chordsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; padding: 0px; white-space:nowrap; width: fit-content;}\n";
+        string += ".capo                    {font-family:" + chordsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + capoTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleChords)+"pt; padding: 0px; white-space: nowrap; width: fit-content;}\n";
+        string += ".titlemain               {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*1.1f)+"pt; padding: 0px; text-decoration:underline;}\n";
+        string += ".titleextras             {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*0.6f)+"pt; padding: 0px; text-decoration:none;}\n";
+        string += ".heading                 {font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color: " + lyricsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleHeadings)+"pt; padding: 0px; text-decoration:underline;}\n";
+        string += ".mono                    {font-family:" + monoFontName + ", 'Courier New', monospace; color: " + lyricsTextColor + "; font-size:"+(14.0f*mainActivityInterface.getProcessSong().scaleTabs)+"pt; padding: 0px; text-decoration:none;}\n";
+        string += "#content            {display: inline-block; position: absolute; top: 50px; left: 0; transform-origin: top left; padding-bottom: 100px;}\n";
+        string += "#status-dot         {height: 12px; width: 12px; background-color: #bbb; border-radius: 50%; display: inline-block; margin-left: 10px; margin-top: 6px; margin-bottom: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.5);}\n";
+        string += ".connected          {background-color: #00ff00; }\n";
+        string += ".disconnected       {background-color: #ff0000; }\n";
+        string += ".clickable,a        {-webkit-user-select: none; -ms-user-select: none; user-select: none; cursor: pointer;}\n";
+        string += ".page               {color:" + pageTextColor + "; background-color: " + pageBackgroundColor + ";}\n";
+        string += ".lyrictable         {border-spacing:0; border-collapse: collapse; border:0px;}\n";
+        string += "#menu               {position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background-color: " + pageBackgroundColor + "; display: flex; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid #444;}\n";
+        string += "label               {margin-right: 4px; padding: 4px 2px 2px 2px; float: left; background-color:" + secondaryColor + "; font-size:12pt; color:" + pageTextColor + ";}\n";
+        string += "a                   {margin-right: 4px; padding: 4px 2px 4px 2px; float: left; display: inline-block; color:" + pageTextColor + "; background-color: " + secondaryColor + "; font-size:14pt;}\n";
+        string += "a:link              {color: " + pageTextColor + "; text-decoration:none; font-size:12pt;}\n";
+        string += "a:visited           {color: " + pageTextColor + "; text-decoration:none; font-size:12pt;}\n";
+        string += "a:hover             {color: " + pageTextColor + "; text-decoration:none; font-size:12pt;}\n";
+        string += "a:active            {color: " + pageTextColor + "; text-decoration:none; font-size:12pt;}\n";
+        string += ".folderChooser      {width: fit-content; margin: 4px; border-collapse: collapse; background-color: " + pageBackgroundColor + "; font-size: 12pt; color:" + pageTextColor + ";}\n";
+        string += "hr                  {width: 100%; color:" + pageTextColor + "; margin: 10px auto;}\n";
+        string += "body,select,option  {width:100%; font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" + pageTextColor + "; background-color: " + pageBackgroundColor + ";}\n";
+        string += "</style>\n";
+        return string;
     }
-    private static String getMenuBarCSS(MainActivityInterface mainActivityInterface, boolean allowWebNavigation) {
-        if (allowWebNavigation) {
-            return  "#menu {\n" +
-                    "    position: fixed;\n" +
-                    "    top: 0;\n" +
-                    "    left: 0;\n" +
-                    "    width: 100%;\n" +
-                    "    z-index: 1000;\n" +
-                    "    background-color: #000000;\n" +
-                    "    display: flex;\n" +
-                    "    overflow-x: auto; /* Allows the buttons to slide horizontally if too many */\n" +
-                    "    white-space: nowrap;\n" +
-                    "    border-bottom: 1px solid #444;\n" +
-                    "}" +
-                    "\n" +
-                    "label                    {margin-right:4px; padding:2px 2px 2px 2px; float:left; background-color:#294959; font-size:12pt;}\n" +
-                    "a                        {margin-right:4px; padding:4px 2px 4px 2px; float:left; display:inline-block; color:white; background-color:#294959; font-size:14pt;}\n" +
-                    "a:link                   {color:white; text-decoration:none; font-size:12pt;}\n" +
-                    "a:visited                {color:white; text-decoration:none; font-size:12pt;}\n" +
-                    "a:hover                  {color:white; text-decoration:none; font-size:12pt;}\n" +
-                    "a:active                 {color:white; text-decoration:none; font-size:12pt;}\n";
-        } else {
-            return "";
-        }
-    }
-    private static String getGlobalJSVariables(String ip,
-                                               Song song, boolean allowWebNavigation,
-                                               boolean isMenu, ArrayList<SongId> prevAndNext) {
-        return  "  var contentWidth;\n" +
-                "  var menuWidth;\n" +
-                "  var menuscaleratio = 1;\n" +
-                "  var listenToHost = localStorage.getItem('userListenToHost') !== 'false'; // default to true if not set\n" +
-                "  var chords = localStorage.getItem('userShowChords') !== 'false'; // defaults to true if not set\n" +
-                "  var menusized = false;\n" +
-                "  var allowWebNavigation="+allowWebNavigation+";\n" +
-                "  var minSize=" + isMenu+";\n" +
-                "  var maxSize=true;\n" +
-                "  var splash=false;\n" +
-                "  var serverAddress = \"http://" + ip + ":8080/\";\n" +
-                "  var currFolder =\"" + song.getFolder().replace("'","\\'").replace("\"","\\") + "\";\n" +
-                "  var currFilename = \"" + song.getFilename().replace("'","\\'").replace("\"","\\") + "\";\n" +
-                "  var prevFolder =\"" + prevAndNext.get(0).getFolder().replace("'","\\'").replace("\"","\\") + "\";\n" +
-                "  var prevFilename = \"" + prevAndNext.get(0).getFilename().replace("'","\\'").replace("\"","\\") + "\";\n" +
-                "  var nextFolder =\"" + prevAndNext.get(1).getFolder().replace("'","\\'").replace("\"","\\") + "\";\n" +
-                "  var nextFilename = \"" + prevAndNext.get(1).getFilename().replace("'","\\'").replace("\"","\\") + "\";\n";
-    }
-    private static String getChordFunctionsJS() {
-        return "  function toggleChords() {\n" +
-                "    chords = !chords;\n" +
-                "    localStorage.setItem('userShowChords', chords); // Save it!\n" +
-                "    reloadSong();\n" +
-                "  }\n";
-    }
-    private static String getResizeJS() {
-        return "function measure() {\n" +
-                "    var content = document.getElementById(\"content\");\n" +
-                "    \n" +
-                "    // 1. Critical: Reset scaling so we can measure the NATURAL width\n" +
-                "    content.style.transform = \"scale(1)\";\n" +
-                "    content.style.width = \"max-content\"; \n" +
-                "\n" +
-                "    // 2. Handle chord visibility before measuring\n" +
-                "    var chordlines = document.getElementsByClassName('chord');\n" +
-                "    for (var i = 0; i < chordlines.length; i++) {\n" +
-                "        chordlines[i].style.display = chords ? 'table-cell' : 'none';\n" +
-                "    }\n" +
-                "\n" +
-                "    // 3. Give the browser a split second to calculate the new table widths\n" +
-                "    // then capture the true width\n" +
-                "    contentWidth = content.offsetWidth;\n" +
-                "    \n" +
-                "    // 4. Run the actual resizing\n" +
-                "    resize();\n" +
-                "}\n" +
-                "\n" +
-                "  function resize() {\n" +
-                "    var viewportWidth = window.innerWidth - 20; // 20px padding\n" +
-                "    var content = document.getElementById(\"content\");\n" +
-                "    var menu = document.getElementById(\"menu\");\n" +
-                "    \n" +
-                "    if (contentWidth > viewportWidth) {\n" +
-                "        // Content is too wide, so we scale DOWN\n" +
-                "        var scaleratio = viewportWidth / contentWidth;\n" +
-                "        content.style.transform = \"scale(\" + scaleratio + \")\";\n" +
-                "    } else {\n" +
-                "        // Content fits, keep at 100%\n" +
-                "        content.style.transform = \"scale(1)\";\n" +
-                "    }\n" +
-                "\n" +
-                "    // Adjust the body height so we can scroll to the bottom of the scaled content\n" +
-                "    // We add the menu height and some extra padding\n" +
-                "    var scaledHeight = content.offsetHeight * (viewportWidth / contentWidth);\n" +
-                "    document.body.style.height = (scaledHeight + 200) + \"px\";\n" +
-                "}\n" +
-                "  function offsetAnchor() {\n" +
-                "    if (location.hash.length !== 0) {\n" +
-                "       window.scrollTo(window.scrollX, window.scrollY - (document.getElementById('menu').clientHeight) * menuscaleratio);\n" +
-                "    }\n" +
-                "    if (chords && document.getElementById('chordbutton')!=null) {\n" +
-                "      document.getElementById('chordbutton').style.textDecoration = \"none\";\n" +
-                "    } else if (document.getElementById('chordbutton')!=null) {\n" +
-                "      document.getElementById('chordbutton').style.textDecoration = \"line-through\";\n" +
-                "    }\n" +
-                "  }\n" +
-                "  window.addEventListener(\"hashchange\", offsetAnchor);\n" +
-                "  window.setTimeout(offsetAnchor, 1); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).\n\n";
-    }
-    private static String getGoToSongJS(MainActivityInterface mainActivityInterface) {
-        return  "  function goToNextSong() {\n" +
-                "    if (nextFolder.length>0 && nextFilename.length>0) {\n" +
-                "      window.location.href = serverAddress + \"song/?chords=\" + chords + \"&folder=\" + nextFolder + \"&filename=\" + nextFilename;\n" +
-                "    }\n" +
-                "  }\n" +
-                "  function goToPrevSong() {\n" +
-                "    if (prevFolder.length>0 && prevFilename.length>0) {\n" +
-                "      window.location.href = serverAddress + \"song/?chords=\" + chords + \"&folder=\" + prevFolder + \"&filename=\" + prevFilename;\n" +
-                "    }\n" +
-                "  }\n" +
-                "  function reloadSong() {\n" +
-                "    if (currFolder.length>0 && currFilename.length>0) {\n" +
-                "      window.location.href = serverAddress + \"song/?chords=\" + chords + \"&folder=\" + currFolder + \"&filename=\" + currFilename;\n" +
-                "    }\n" +
-                "  }\n" +
-                "  function goToSong(folder,filename) {\n" +
-                "    if (folder.length>0 && filename.length>0) {\n" +
-                "      window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getManualSongString() + "/?chords=\" + chords + \"&folder=\" + folder + \"&filename=\" + filename;\n" +
-                "    }\n" +
-                "  }\n";
-    }
-    private static String getNavigateJS(MainActivityInterface mainActivityInterface) {
-        return  "  function songMenu() {\n" +
-                "    window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getSongMenuString() + "/?folder=\"+currFolder+\"&filename=\"+currFilename;\n" +
-                "  }\n" +
-                "  function setMenu() {\n" +
-                "    window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getSetMenuString() + "/?folder=\"+currFolder+\"&filename=\"+currFilename;\n" +
-                "  }\n" +
-                "  function hostSong() {\n" +
-                "    var listenToHost = document.getElementById(\"listenToHost\").checked;" +
-                "    localStorage.setItem('listenToHost', listenToHost); // Save it!/n" +
-                "    window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getHostSongString() + "/?chords=\"+chords;\n" +
-                "  }\n";
-    }
-    private static String getFolderChooserJS(boolean songMenu) {
+    private static String getJavascript(MainActivityInterface mainActivityInterface, Song song, ArrayList<SongId> prevAndNext, String ip, boolean isMenu, boolean songMenu) {
+        String string = "<script>\n";
+        string += "  var contentWidth;\n";
+        string += "  var menuWidth;\n";
+        string += "  var menuscaleratio = 1;\n";
+        string += "  var listenToHost = localStorage.getItem('userListenToHost') !== 'false'; // default to true if not set\n";
+        string += "  var chords = localStorage.getItem('userShowChords') !== 'false'; // defaults to true if not set\n";
+        string += "  var menusized = false;\n";
+        string += "  var allowWebNavigation = "+mainActivityInterface.getWebServer().getAllowWebNavigation()+";\n";
+        string += "  var minSize = " + isMenu+";\n";
+        string += "  var maxSize = true;\n";
+        string += "  var splash = false;\n";
+        string += "  var serverAddress = \"http://" + ip + ":" + mainActivityInterface.getWebServer().getPortNumber() + "/\";\n";
+        string += "  var currFolder =\"" + song.getFolder().replace("'","\\'").replace("\"","\\") + "\";\n";
+        string += "  var currFilename = \"" + song.getFilename().replace("'","\\'").replace("\"","\\") + "\";\n";
+        string += "  var prevFolder =\"" + prevAndNext.get(0).getFolder().replace("'","\\'").replace("\"","\\") + "\";\n";
+        string += "  var prevFilename = \"" + prevAndNext.get(0).getFilename().replace("'","\\'").replace("\"","\\") + "\";\n";
+        string += "  var nextFolder =\"" + prevAndNext.get(1).getFolder().replace("'","\\'").replace("\"","\\") + "\";\n";
+        string += "  var nextFilename = \"" + prevAndNext.get(1).getFilename().replace("'","\\'").replace("\"","\\") + "\";\n";
+        string += "  var socket;\n";
+        string += "  var dot; // Define it here, but don't assign yet\n\n";
+
+        string += "  function toggleChords() {\n";
+        string += "    chords = !chords;\n";
+        string += "    localStorage.setItem('userShowChords', chords); // Save it!\n";
+        string += "    reloadSong();\n";
+        string += "  }\n";
+
+        string += "  function goToNextSong() {\n";
+        string += "    if (nextFolder.length>0 && nextFilename.length>0) {\n";
+        string += "      window.location.href = serverAddress + \"song/?chords=\" + chords + \"&folder=\" + nextFolder + \"&filename=\" + nextFilename;\n";
+        string += "    }\n";
+        string += "  }\n";
+
+        string += "  function goToPrevSong() {\n";
+        string += "    if (prevFolder.length>0 && prevFilename.length>0) {\n";
+        string += "      window.location.href = serverAddress + \"song/?chords=\" + chords + \"&folder=\" + prevFolder + \"&filename=\" + prevFilename;\n";
+        string += "    }\n";
+        string += "  }\n";
+
+        string += "  function reloadSong() {\n";
+        string += "    if (currFolder.length>0 && currFilename.length>0) {\n";
+        string += "      window.location.href = serverAddress + \"song/?chords=\" + chords + \"&folder=\" + currFolder + \"&filename=\" + currFilename;\n";
+        string += "    }\n";
+        string += "  }\n";
+
+        string += "  function goToSong(folder,filename) {\n";
+        string += "    if (folder.length>0 && filename.length>0) {\n";
+        string += "      window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getManualSongString() + "/?chords=\" + chords + \"&folder=\" + folder + \"&filename=\" + filename;\n";
+        string += "    }\n";
+        string += "  }\n";
+
+        string += "  function songMenu() {\n";
+        string += "    window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getSongMenuString() + "/?folder=\"+currFolder+\"&filename=\"+currFilename;\n";
+        string += "  }\n";
+        string += "  function setMenu() {\n";
+        string += "    window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getSetMenuString() + "/?folder=\"+currFolder+\"&filename=\"+currFilename;\n";
+        string += "  }\n";
+
+        string += "  function hostSong() {\n";
+        string += "    var listenToHost = document.getElementById(\"listenToHost\").checked;";
+        string += "    localStorage.setItem('listenToHost', listenToHost); // Save it!\n";
+        string += "    if (listenToHost) {\n";
+        string += "      window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getHostSongString() + "/?chords=\"+chords;\n";
+        string += "    }\n";
+        string += "  }\n";
+
         if (!songMenu) {
-            return "  function filterByFolder() {}\n";
+            string += "  function filterByFolder() {}\n";
         } else {
-            return  "  function filterByFolder() {\n" +
-                    "    const folderName = document.getElementById('folderChooser').value;\n\n" +
-                    "    // Loop ONLY through elements that have the 'item' class\n" +
-                    "    document.querySelectorAll('.item').forEach(div => {\n" +
-                    "      // If folderName is \"Band\", it checks if the div has the \"Band\" class\n" +
-                    "      if (div.classList.contains(folderName)) {\n" +
-                    "        div.style.display = 'block';\n" +
-                    "      } else {\n" +
-                    "        div.style.display = 'none';\n" +
-                    "      }\n" +
-                    "    });\n" +
-                    "  }\n";
+            string += "  function filterByFolder() {\n";
+            string += "    const folderName = document.getElementById('folderChooser').value;\n";
+            string += "    // Loop ONLY through elements that have the 'item' class\n";
+            string += "    document.querySelectorAll('.item').forEach(div => {\n";
+            string += "      // If folderName is \"Band\", it checks if the div has the \"Band\" class\n";
+            string += "      if (div.classList.contains(folderName)) {\n";
+            string += "        div.style.display = 'block';\n";
+            string += "      } else {\n";
+            string += "        div.style.display = 'none';\n";
+            string += "      }\n";
+            string += "    });\n";
+            string += "  }\n";
         }
-    }
-    private static String getWebSocket(String ipAddress) {
-        return "  var socket = new WebSocket('ws://' + window.location.host + '/updates');\n" +
-                "  socket.onmessage = function(event) {\n" +
-                "    if (event.data === 'REFRESH') {\n" +
-                "      // Should we listen to the host update?" +
-                "      var listenToHost = localStorage.getItem('userListenToHost') !== 'false'; // default to true\n" +
-                "      if (listenToHost) {" +
-                "        // 1. Check the local record\n" +
-                "        var showChords = localStorage.getItem('userShowChords') !== 'false'; // default to true\n\n" +
-                "        // 2. Request the specific version using a Query Parameter\n" +
-                "        // This keeps the \"Path\" the same but tells the server the preferences\n" +
-                "        window.location.href = serverAddress + \"hostsong/?chords=\" + showChords;\n" +
-                "      }\n" +
-                "    }\n" +
-                "  };" +
-                "  // Auto-reconnect if Wi-Fi drops briefly\n" +
-                "  socket.onclose = function() { setTimeout(function() { location.reload(); }, 5000); };\n";
-    }
-    private static String getAbcJSIfRequired(MainActivityInterface mainActivityInterface, boolean hasAbc) {
-        if (hasAbc) {
-            return mainActivityInterface.getWebServer().getAbcJSFromAsset();
-        } else {
-            return "";
+
+        if (song.getLyrics()!=null && song.getLyrics().contains(mainActivityInterface.getAbcNotation().getInlineAbcLineIndicator())) {
+            string += mainActivityInterface.getWebServer().getAbcJSFromAsset();
         }
+
+        string += "  function connect() {\n";
+        string += "    dot = document.getElementById(\"status-dot\");\n";
+        string += "    // Use the dynamic host to avoid hardcoding IPs\n";
+        string += "    socket = new WebSocket('ws://' + window.location.host + '/updates');\n";
+        string += "    socket.onopen = function() {\n";
+        string += "        console.log(\"WebSocket Connected\");\n";
+        string += "        if (dot) dot.className = \"connected\";\n";
+        string += "        // Heartbeat to prevent Safari suspension\n";
+        string += "        if (window.heartbeat) clearInterval(window.heartbeat);\n";
+        string += "        window.heartbeat = setInterval(function() {\n";
+        string += "          if (socket.readyState === WebSocket.OPEN) {\n";
+        string += "            socket.send(\"keep-alive\");\n";
+        string += "          }\n";
+        string += "        }, 10000);\n";
+        string += "    };\n";
+        string += "    socket.onclose = function() {\n";
+        string += "      console.log(\"WebSocket Disconnected. Retrying...\");\n";
+        string += "      if (dot) dot.className = \"disconnected\";\n";
+        string += "      if (window.heartbeat) clearInterval(window.heartbeat);\n";
+        string += "      setTimeout(connect, 2000); // Reconnect loop\n";
+        string += "    };\n";
+        string += "    socket.onmessage = function(event) {\n";
+        string += "      if (event.data === 'REFRESH') {\n";
+        string += "        if (localStorage.getItem('userListenToHost') !== 'false') {\n";
+        string += "          hostSong();\n";
+        string += "        }\n";
+        string += "      }\n";
+        string += "    };\n";
+        string += "  }\n";
+
+        string += "  function measure() {\n";
+        string += "    var content = document.getElementById(\"content\");\n";
+        string += "    // 1. Critical: Reset scaling so we can measure the NATURAL width\n";
+        string += "    content.style.transform = \"scale(1)\";\n";
+        string += "    content.style.width = \"max-content\"; \n";
+        string += "    // 2. Handle chord visibility before measuring\n";
+        string += "    var chordlines = document.getElementsByClassName('chord');\n";
+        string += "    for (var i = 0; i < chordlines.length; i++) {\n";
+        string += "      chordlines[i].style.display = chords ? 'table-cell' : 'none';\n";
+        string += "    }\n";
+        string += "    // 3. Give the browser a split second to calculate the new table widths\n";
+        string += "    // then capture the true width\n";
+        string += "    contentWidth = content.offsetWidth;\n";
+        string += "    // 4. Run the actual resizing\n";
+        string += "    resize();\n";
+        string += "  }\n";
+
+        string += "  function resize() {\n";
+        string += "    var viewportWidth = window.innerWidth - 20; // 20px padding\n";
+        string += "    var content = document.getElementById(\"content\");\n";
+        string += "    var menu = document.getElementById(\"menu\");\n";
+        string += "    if (contentWidth > viewportWidth) {\n";
+        string += "      // Content is too wide, so we scale DOWN\n";
+        string += "      var scaleratio = viewportWidth / contentWidth;\n";
+        string += "      content.style.transform = \"scale(\" + scaleratio + \")\";\n";
+        string += "    } else {\n";
+        string += "      // Content fits, keep at 100%\n";
+        string += "      content.style.transform = \"scale(1)\";\n";
+        string += "    }\n";
+        string += "    // Adjust the body height so we can scroll to the bottom of the scaled content\n";
+        string += "    // We add the menu height and some extra padding\n";
+        string += "    var scaledHeight = content.offsetHeight * (viewportWidth / contentWidth);\n";
+        string += "    document.body.style.height = (scaledHeight + 200) + \"px\";\n";
+        string += "  }\n";
+
+        string += "  function offsetAnchor() {\n";
+        string += "    if (location.hash.length !== 0) {\n";
+        string += "      window.scrollTo(window.scrollX, window.scrollY - (document.getElementById('menu').clientHeight) * menuscaleratio);\n";
+        string += "    }\n";
+        string += "    if (chords && document.getElementById('chordbutton')!=null) {\n";
+        string += "      document.getElementById('chordbutton').style.textDecoration = \"none\";\n";
+        string += "    } else if (document.getElementById('chordbutton')!=null) {\n";
+        string += "      document.getElementById('chordbutton').style.textDecoration = \"line-through\";\n";
+        string += "    }\n";
+        string += "  }\n";
+
+        string += "  var lastWidth = window.innerWidth;\n";
+        string += "  window.onresize = function() {\n";
+        string += "    if (window.innerWidth !== lastWidth) {\n";
+        string += "      lastWidth = window.innerWidth;\n";
+        string += "      measure();\n";
+        string += "    }\n";
+        string += "  };";
+
+        string += "  // Create one clean init function\n";
+        string += "  function initPage() {\n";
+        string += "    measure();\n";
+        string += "    filterByFolder();\n";
+        string += "    connect();\n";
+        string += "  };\n";
+
+        string += "  window.addEventListener(\"hashchange\", offsetAnchor);\n";
+        string += "  window.setTimeout(offsetAnchor, 1); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).\n";
+
+        string += "</script>\n";
+        return string;
     }
+
     private static String getMenuBarHTML(Context c, MainActivityInterface mainActivityInterface,
                                          Song song, boolean allowWebNavigation, boolean hideArrows,
                                          boolean songMenu, boolean setMenu) {
@@ -509,7 +473,7 @@ public class CreateHTML {
             if (setMenu) {
                 setmenuJS = "javascript:reloadSong()";
             }
-            text = "<span id=\"menu\">\n<a id=\"songs\" href=\"javascript:" + songmenuJS + "\">&nbsp; " + c.getString(R.string.songs) + "&nbsp; </a>\n" +
+            text = "<span id=\"menu\">\n<span id=\"status-dot\"></span>\n<a id=\"songs\" href=\"javascript:" + songmenuJS + "\">&nbsp; " + c.getString(R.string.songs) + "&nbsp; </a>\n" +
                     "<a id=\"set\" href=\"javascript:" + setmenuJS + "\">&nbsp; " + c.getString(R.string.set) + "&nbsp; </a>\n";
             if (songMenu) {
                 text += getSongFolderChooser(c,mainActivityInterface,song);

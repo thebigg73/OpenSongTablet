@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +20,11 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.InformationBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsWebServerBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
+import java.util.ArrayList;
 
 public class WebServerFragment extends Fragment {
 
@@ -184,7 +189,7 @@ public class WebServerFragment extends Fragment {
         // Set the webServer info
         myView.allowWebNavigation.setChecked(mainActivityInterface.getWebServer().getAllowWebNavigation());
         Glide.with(this).load(mainActivityInterface.getWebServer().getIPQRCode()).into(myView.qrCode);
-        String ipAddress = "http://"+mainActivityInterface.getWebServer().getIP()+":8080/";
+        String ipAddress = "http://"+mainActivityInterface.getWebServer().getIP()+":"+mainActivityInterface.getWebServer().getPortNumber()+"/";
 
         myView.ipAddress.setText(ipAddress);
         myView.webServer.setChecked(mainActivityInterface.getWebServer().getRunWebServer());
@@ -194,6 +199,22 @@ public class WebServerFragment extends Fragment {
             myView.runHotspot.setVisibility(View.VISIBLE);
         } else {
             myView.runHotspot.setVisibility(View.GONE);
+        }
+
+        ArrayList<String> availablePorts = new ArrayList<>();
+        availablePorts.add("8000");
+        availablePorts.add("8080");
+        availablePorts.add("8081");
+        availablePorts.add("8082");
+        availablePorts.add("8083");
+        availablePorts.add("8084");
+        availablePorts.add("8085");
+        availablePorts.add("8888");
+        availablePorts.add("54321");
+        if (getContext()!=null) {
+            ExposedDropDownArrayAdapter portAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.portNumber, R.layout.view_exposed_dropdown_item, availablePorts);
+            myView.portNumber.setAdapter(portAdapter);
+            myView.portNumber.post(()-> myView.portNumber.setText(mainActivityInterface.getWebServer().getPortNumber()));
         }
     }
 
@@ -223,7 +244,7 @@ public class WebServerFragment extends Fragment {
                     }
                 }));
         myView.allowWebNavigation.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getWebServer().setAllowWebNavigation(b));
-        myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument("http://"+mainActivityInterface.getWebServer().getIP()+":8080/"));
+        myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument("http://"+mainActivityInterface.getWebServer().getIP()+":"+ mainActivityInterface.getWebServer().getPortNumber()+"/"));
         myView.runHotspot.setOnCheckedChangeListener((compoundButton, b) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (mainActivityInterface.getAppPermissions().hasHotSpotPermission() &&
@@ -259,6 +280,25 @@ public class WebServerFragment extends Fragment {
             Intent shareIntent = Intent.createChooser(intent, null);
             startActivity(shareIntent);
             return true;
+        });
+        myView.portNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                mainActivityInterface.getMainHandler().post(() -> {
+                    if (getContext()!=null) {
+                        mainActivityInterface.getWebServer().setPortNumber(myView.portNumber.getText().toString());
+                        Glide.with(getContext()).load(mainActivityInterface.getWebServer().getIPQRCode()).into(myView.qrCode);
+                        String ipAddress = "http://" + mainActivityInterface.getWebServer().getIP() + ":" + mainActivityInterface.getWebServer().getPortNumber() + "/";
+                        myView.ipAddress.setText(ipAddress);
+                    }
+                });
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
         });
     }
 
