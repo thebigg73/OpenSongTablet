@@ -268,7 +268,7 @@
     <string name="column_force">Manually override column breaks</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Use the new page code (!--) in the song to force a new column break when autoscaling</string>
     <string name="column_force_insert">Insert column break</string>
-    <string name="coming_soon">Coming soon...</string>
+    <string name="coming_soon">Coming soon…</string>
     <string name="comment">Comment</string>
     <string name="comment_background">Comment background</string>
     <string name="commentline_scale">Scale comment text</string>
@@ -485,6 +485,7 @@
     <string name="drum_kit">Drum kit</string>
     <string name="drum_kit_acoustic">Acoustic kit</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Percussion kit</string>
     <string name="drum_ride">Ride</string>
     <string name="drum_ride_bell">Ride bell</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -503,6 +504,7 @@
     <string name="drummer_assign_error">Before assigning a drummer to a song, you need to save the drummer file first</string>
     <string name="drummer_assign_info">Assign this drummer to the current song</string>
     <string name="drummer_fill">Drummer fill</string>
+    <string name="drummer_kit">Drummer kit</string>
     <string name="drummer_main">Main beat</string>
     <string name="drummer_main_fill">Main fill</string>
     <string name="drummer_not_valid">Please edit the song and set a valid tempo and time signature</string>
@@ -1732,6 +1734,8 @@
     <string name="web_server_info">Non OpenSongApp users should be on the same network as this device (you can also use a hotspot).  They should then open this web address to view the song.</string>
     <string name="web_server_navigation">Manual navigation</string>
     <string name="web_server_navigation_info">When switched on, users can manually choose any song shown in your song list or current set.  When switched off, users can only view your currently loaded song</string>
+    <string name="web_server_port">Port number</string>
+    <string name="web_server_port_info">Some browsers and Wi-Fi routers block certain port numbers.  If you, or others, can\'t view the web page using the link below, try changing the port number</string>
     <string name="web_view_desktop">Request desktop site</string>
     <string name="web_view_desktop_info">This should improve the layout of songs and avoid the website trying to force you to install their mobile app</string>
     <string name="website">Website</string>
@@ -1845,6 +1849,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="drum_kit_percussion">Percussion kit</string>
-    <string name="drummer_kit">Drummer kit</string>
 </resources>

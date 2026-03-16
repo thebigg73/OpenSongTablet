@@ -232,7 +232,7 @@
     <string name="column_force">Ignoreer kolombreuke met die hand</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Gebruik die nuwe bladsykode (!--) in die liedjie om \'n nuwe kolombreuk af te dwing wanneer outomatiese skaal gemaak word</string>
     <string name="column_force_insert">Voeg kolombreuk in</string>
-    <string name="coming_soon">Kom binnekort...</string>
+    <string name="coming_soon">Kom binnekort…</string>
     <string name="comment">Lewer kommentaar</string>
     <string name="comment_background">Kommentaar agtergrond</string>
     <string name="commentline_scale">Skaal die kommentaar teks</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Dromstel</string>
     <string name="drum_kit_acoustic">Akoestiese stel</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Perkussiestel</string>
     <string name="drum_ride">Ry</string>
     <string name="drum_ride_bell">Ryklokkie</string>
     <string name="drum_rim_shot">Randskot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Voordat jy \'n tromspeler aan \'n liedjie toewys, moet jy eers die tromspelerlêer stoor.</string>
     <string name="drummer_assign_info">Ken hierdie tromspeler toe aan die huidige liedjie</string>
     <string name="drummer_fill">Trommelspeler vul</string>
+    <string name="drummer_kit">Drummerstel</string>
     <string name="drummer_main">Hoofmaat</string>
     <string name="drummer_main_fill">Hoofvulsel</string>
     <string name="drummer_not_valid">Wysig asseblief die liedjie en stel \'n geldige tempo en tydsoortteken in.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Nie-OpenSongApp-gebruikers moet op dieselfde netwerk as hierdie toestel wees (u kan ook \'n hotspot gebruik).  Hulle moet dan hierdie webadres oopmaak om die liedjie te sien.</string>
     <string name="web_server_navigation">Handmatige navigasie</string>
     <string name="web_server_navigation_info">Wanneer dit aangeskakel is, kan gebruikers handmatig enige liedjie kies wat in jou liedjielys of huidige stel gewys word.  As dit afgeskakel is, kan gebruikers slegs u liedjie wat tans gelaai is, sien</string>
+    <string name="web_server_port">Poortnommer</string>
+    <string name="web_server_port_info">Sommige blaaiers en Wi-Fi-routers blokkeer sekere poortnommers. As jy, of ander, nie die webblad met die skakel hieronder kan sien nie, probeer om die poortnommer te verander.</string>
     <string name="web_view_desktop">Versoek lessenaarwebwerf</string>
     <string name="web_view_desktop_info">Dit moet die uitleg van liedjies verbeter en vermy dat die webwerf u probeer dwing om hul mobiele app te installeer</string>
     <string name="website">Webwerf</string>

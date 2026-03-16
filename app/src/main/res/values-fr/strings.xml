@@ -232,7 +232,7 @@
     <string name="column_force">Remplacer manuellement les sauts de colonne</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Utilisez le nouveau code de page (!--) dans la chanson pour forcer un nouveau saut de colonne lors de la mise à l\'échelle automatique</string>
     <string name="column_force_insert">Insérer un saut de colonne</string>
-    <string name="coming_soon">Bientôt...</string>
+    <string name="coming_soon">Bientôt…</string>
     <string name="comment">Commentaire</string>
     <string name="comment_background">Fond des commentaires</string>
     <string name="commentline_scale">Taille du texte de commentaire</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Batterie</string>
     <string name="drum_kit_acoustic">kit acoustique</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Kit de percussion</string>
     <string name="drum_ride">Monter</string>
     <string name="drum_ride_bell">Cloche de balade</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Avant d\'assigner un batteur à une chanson, vous devez d\'abord enregistrer le fichier du batteur.</string>
     <string name="drummer_assign_info">Attribuez ce batteur au morceau en cours.</string>
     <string name="drummer_fill">remplissage de batteur</string>
+    <string name="drummer_kit">Kit de batterie</string>
     <string name="drummer_main">Rythme principal</string>
     <string name="drummer_main_fill">Remplissage principal</string>
     <string name="drummer_not_valid">Veuillez modifier le morceau et définir un tempo et une signature rythmique valides.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Les utilisateurs non OpenSongApp doivent être sur le même réseau que cet appareil (vous pouvez également utiliser un hotspot).  Ils doivent ensuite ouvrir cette adresse Web pour voir la chanson.</string>
     <string name="web_server_navigation">Navigation manuelle</string>
     <string name="web_server_navigation_info">Lorsqu’il est activé, les utilisateurs peuvent choisir manuellement n’importe quel morceau affiché dans votre liste de chansons ou votre ensemble actuel.  Lorsqu’il est désactivé, les utilisateurs ne peuvent afficher que votre morceau actuellement chargé</string>
+    <string name="web_server_port">Numéro de port</string>
+    <string name="web_server_port_info">Certains navigateurs et routeurs Wi-Fi bloquent certains numéros de port. Si vous, ou d\'autres personnes, ne parvenez pas à visualiser la page Web via le lien ci-dessous, essayez de modifier le numéro de port.</string>
     <string name="web_view_desktop">Demander un site de bureau</string>
     <string name="web_view_desktop_info">Cela devrait améliorer la mise en page des chansons et éviter que le site Web n’essaie de vous forcer à installer son application mobile</string>
     <string name="website">Site Internet</string>

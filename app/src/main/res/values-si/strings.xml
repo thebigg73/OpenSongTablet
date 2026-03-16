@@ -232,7 +232,7 @@
     <string name="column_force">තීරු බිඳීම් අතින් අභිබවා යන්න</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">ස්වයං පරිමාණය කිරීමේදී නව තීරු බිඳීමක් බල කිරීමට ගීතයේ නව පිටු කේතය (!--) භාවිතා කරන්න</string>
     <string name="column_force_insert">තීරු කඩනය ඇතුළු කරන්න</string>
-    <string name="coming_soon">ඉක්මණින් පැමිණෙන...</string>
+    <string name="coming_soon">ඉක්මණින් පැමිණෙන…</string>
     <string name="comment">අදහස් දක්වන්න</string>
     <string name="comment_background">අදහස් පසුබිම</string>
     <string name="commentline_scale">පරිමාණ අදහස් පෙළ</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">බෙර කට්ටලය</string>
     <string name="drum_kit_acoustic">ධ්වනි කට්ටලය</string>
     <string name="drum_kit_cajon">කැජොන්</string>
+    <string name="drum_kit_percussion">බෙර වාදන කට්ටලය</string>
     <string name="drum_ride">පදින්න</string>
     <string name="drum_ride_bell">ධාවන සීනුව</string>
     <string name="drum_rim_shot">රිම්ෂොට්</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">ගීතයකට බෙර වාදකයෙකු පැවරීමට පෙර, ඔබ මුලින්ම බෙර වාදක ගොනුව සුරැකිය යුතුය.</string>
     <string name="drummer_assign_info">වත්මන් ගීතයට මෙම බෙර වාදකයා පවරන්න.</string>
     <string name="drummer_fill">බෙර වාදක පිරවීම</string>
+    <string name="drummer_kit">බෙර වාදක කට්ටලය</string>
     <string name="drummer_main">ප්‍රධාන පහර</string>
     <string name="drummer_main_fill">ප්‍රධාන පිරවීම</string>
     <string name="drummer_not_valid">කරුණාකර ගීතය සංස්කරණය කර වලංගු වේග සීමාවක් සහ කාල අත්සනක් සකසන්න.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">OpenSongApp නොවන පරිශීලකයින් මෙම උපාංගය හා සමාන ජාලයක සිටිය යුතුය (ඔබට හොට්ස්පොට් එකක්ද භාවිතා කළ හැක).  ඉන්පසු ඔවුන් ගීතය නැරඹීමට මෙම වෙබ් ලිපිනය විවෘත කළ යුතුය.</string>
     <string name="web_server_navigation">අතින් සංචලනය</string>
     <string name="web_server_navigation_info">මාරු වූ විට, පරිශීලකයින්ට ඔබගේ ගීත ලැයිස්තුවේ හෝ වත්මන් කට්ටලයේ පෙන්වන ඕනෑම ගීතයක් අතින් තෝරා ගත හැක.  ක්‍රියාවිරහිත කළ විට, පරිශීලකයින්ට නැරඹිය හැක්කේ ඔබගේ දැනට පූරණය කර ඇති ගීතය පමණි</string>
+    <string name="web_server_port">තොට අංකය</string>
+    <string name="web_server_port_info">සමහර බ්‍රව්සර් සහ Wi-Fi රවුටර් ඇතැම් තොට අංක අවහිර කරයි. ඔබට හෝ වෙනත් අයට පහත සබැඳිය භාවිතයෙන් වෙබ් පිටුව බැලීමට නොහැකි නම්, තොට අංකය වෙනස් කිරීමට උත්සාහ කරන්න.</string>
     <string name="web_view_desktop">ඩෙස්ක්ටොප් අඩවිය ඉල්ලන්න</string>
     <string name="web_view_desktop_info">මෙය ගීතවල පිරිසැලසුම වැඩිදියුණු කළ යුතු අතර වෙබ් අඩවිය ඔවුන්ගේ ජංගම යෙදුම ස්ථාපනය කිරීමට ඔබට බල කිරීමට උත්සාහ කිරීම වැළැක්විය යුතුය</string>
     <string name="website">වෙබ් අඩවිය</string>

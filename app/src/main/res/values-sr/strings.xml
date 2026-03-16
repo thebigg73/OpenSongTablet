@@ -232,7 +232,7 @@
     <string name="column_force">Ručno zaobiđite prelome kolona</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Koristite novi kod stranice (!--) u pesmi da biste nametnuli prelom nove kolone prilikom automatskog skaliranja</string>
     <string name="column_force_insert">Umetni prelom kolone</string>
-    <string name="coming_soon">Dolazi uskoro...</string>
+    <string name="coming_soon">Dolazi uskoro…</string>
     <string name="comment">Komentar</string>
     <string name="comment_background">Pozadina komentara</string>
     <string name="commentline_scale">Skaliranje teksta komentara</string>
@@ -1456,4 +1456,8 @@
     <string name="drummer_variation">Varijacija beat</string>
     <string name="kit_kick">Udarac</string>
     <string name="midi_clock_start_stop">Pošalji MIDI start / stop</string>
+    <string name="drum_kit_percussion">Udaraljke komplet</string>
+    <string name="drummer_kit">Bubnjar komplet</string>
+    <string name="web_server_port_info">Neki pretraživači i Vi-Fi ruteri blokiraju određene brojeve portova.  Ako vi ili drugi ne možete da vidite veb stranicu koristeći link ispod, pokušajte da promenite broj porta</string>
+    <string name="web_server_port">Broj porta</string>
 </resources>

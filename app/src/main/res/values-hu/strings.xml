@@ -232,7 +232,7 @@
     <string name="column_force">Oszloptörések manuális felülírása</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Használja az új oldalkódot (!--) a dalban, hogy új oszloptörést kényszerítsen ki az automatikus méretezés során</string>
     <string name="column_force_insert">Oszloptörés beszúrása</string>
-    <string name="coming_soon">Hamarosan jön...</string>
+    <string name="coming_soon">Hamarosan jön…</string>
     <string name="comment">Megjegyzés</string>
     <string name="comment_background">Megjegyzés háttér</string>
     <string name="commentline_scale">Scale a megjegyzés szövegét</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Dobfelszerelés</string>
     <string name="drum_kit_acoustic">Akusztikus készlet</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Ütőhangszer készlet</string>
     <string name="drum_ride">Lovagol</string>
     <string name="drum_ride_bell">Csengő</string>
     <string name="drum_rim_shot">Rim shot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Mielőtt dobost rendelnél egy dalhoz, először mentened kell a dobos fájlját.</string>
     <string name="drummer_assign_info">Dobos hozzárendelése az aktuális dalhoz</string>
     <string name="drummer_fill">Dobos betöltés</string>
+    <string name="drummer_kit">Dobosfelszerelés</string>
     <string name="drummer_main">Fő ütem</string>
     <string name="drummer_main_fill">Fő kitöltés</string>
     <string name="drummer_not_valid">Kérlek, szerkeszd a dalt, és állíts be érvényes tempót és ütemjelzést.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">A nem OpenSongApp felhasználóknak ugyanazon a hálózaton kell lenniük, mint ez az eszköz (hotspotot is használhat).  Ezután meg kell nyitniuk ezt a webcímet a dal megtekintéséhez.</string>
     <string name="web_server_navigation">Kézi navigáció</string>
     <string name="web_server_navigation_info">Ha be van kapcsolva, a felhasználók manuálisan kiválaszthatják a dallistában vagy az aktuális készletben megjelenő dalokat.  Ha ki van kapcsolva, a felhasználók csak az aktuálisan betöltött dalt tekinthetik meg</string>
+    <string name="web_server_port">Portszám</string>
+    <string name="web_server_port_info">Néhány böngésző és Wi-Fi routerek blokkolnak bizonyos portszámokat. Ha Ön vagy mások nem tudják megtekinteni a weboldalt az alábbi linken keresztül, próbálja meg módosítani a portszámot.</string>
     <string name="web_view_desktop">Asztali webhely kérése</string>
     <string name="web_view_desktop_info">Ennek javítania kell a dalok elrendezését, és el kell kerülnie, hogy a webhely megpróbálja kényszeríteni a mobilalkalmazás telepítésére</string>
     <string name="website">Weboldal</string>

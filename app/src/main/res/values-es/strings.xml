@@ -232,7 +232,7 @@
     <string name="column_force">Anular manualmente los saltos de columna</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Use el nuevo código de página (!--) en la canción para forzar un nuevo salto de columna al escalar automáticamente</string>
     <string name="column_force_insert">Insertar salto de columna</string>
-    <string name="coming_soon">Próximamente...</string>
+    <string name="coming_soon">Próximamente…</string>
     <string name="comment">Comentario</string>
     <string name="comment_background">Comentario fondo</string>
     <string name="commentline_scale">Escalar el texto del comentario</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Batería</string>
     <string name="drum_kit_acoustic">Kit acústico</string>
     <string name="drum_kit_cajon">Cajón</string>
+    <string name="drum_kit_percussion">Kit de percusión</string>
     <string name="drum_ride">Conducir</string>
     <string name="drum_ride_bell">Timbre de viaje</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Antes de asignar un baterista a una canción, primero debes guardar el archivo del baterista</string>
     <string name="drummer_assign_info">Asignar este baterista a la canción actual</string>
     <string name="drummer_fill">Relleno de baterista</string>
+    <string name="drummer_kit">Kit de batería</string>
     <string name="drummer_main">Ritmo principal</string>
     <string name="drummer_main_fill">Relleno principal</string>
     <string name="drummer_not_valid">Edite la canción y establezca un tempo y compás válidos.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Los usuarios que no son de OpenSongApp deben estar en la misma red que este dispositivo (también puede usar un punto de acceso).  Luego deben abrir esta dirección web para ver la canción.</string>
     <string name="web_server_navigation">Navegación manual</string>
     <string name="web_server_navigation_info">Cuando está activado, los usuarios pueden elegir manualmente cualquier canción que se muestre en su lista de canciones o conjunto actual.  Cuando está apagado, los usuarios solo pueden ver la canción cargada actualmente</string>
+    <string name="web_server_port">Número de puerto</string>
+    <string name="web_server_port_info">Algunos navegadores y routers Wi-Fi bloquean ciertos números de puerto. Si usted u otras personas no pueden ver la página web usando el enlace a continuación, intente cambiar el número de puerto.</string>
     <string name="web_view_desktop">Solicitar sitio de escritorio</string>
     <string name="web_view_desktop_info">Esto debería mejorar el diseño de las canciones y evitar que el sitio web intente obligarlo a instalar su aplicación móvil</string>
     <string name="website">Sitio web</string>

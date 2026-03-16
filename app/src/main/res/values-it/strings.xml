@@ -232,7 +232,7 @@
     <string name="column_force">Imposta manualmente le interruzioni di colonna</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Usa il nuovo codice di pagina (!--) nel brano per forzare una nuova interruzione di colonna durante il ridimensionamento automatico</string>
     <string name="column_force_insert">Inserisci interruzione di colonna</string>
-    <string name="coming_soon">A breve...</string>
+    <string name="coming_soon">A breve…</string>
     <string name="comment">Commento</string>
     <string name="comment_background">Sfondo visualizzato nella sezione Commenti</string>
     <string name="commentline_scale">Dimensione testi commenti</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Tipo di batteria</string>
     <string name="drum_kit_acoustic">Kit acustico</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Kit di percussioni</string>
     <string name="drum_ride">Passeggiata</string>
     <string name="drum_ride_bell">Campanello da viaggio</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Prima di assegnare un batterista a una canzone, è necessario salvare prima il file del batterista</string>
     <string name="drummer_assign_info">Assegna questo batterista alla canzone corrente</string>
     <string name="drummer_fill">Riempimento del batterista</string>
+    <string name="drummer_kit">Kit per batteria</string>
     <string name="drummer_main">Battito principale</string>
     <string name="drummer_main_fill">Riempimento principale</string>
     <string name="drummer_not_valid">Si prega di modificare il brano e impostare un tempo e un\'indicazione di tempo validi</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Gli utenti che non utilizzano OpenSongApp devono essere connessi alla stessa rete di questo dispositivo (è anche possibile utilizzare un hotspot).  Dovrebbero quindi aprire il loro web browser a questo indirizzo.</string>
     <string name="web_server_navigation">Permetti navigazione manuale</string>
     <string name="web_server_navigation_info">Quando è attivata, gli utenti possono scegliere manualmente qualsiasi brano presente nell\'elenco dei brani o nella scaletta corrente.  Quando è disattivato, gli utenti possono visualizzare solo il brano attualmente caricato</string>
+    <string name="web_server_port">Numero di porta</string>
+    <string name="web_server_port_info">Alcuni browser e router Wi-Fi bloccano determinati numeri di porta. Se tu, o altri, non riuscite a visualizzare la pagina web utilizzando il link sottostante, provate a cambiare il numero di porta.</string>
     <string name="web_view_desktop">Richiedi il sito desktop</string>
     <string name="web_view_desktop_info">Dovrebbe migliorare la visualizzazione dei brani ed evitare che il sito web cerchi di costringerti a installare la loro app mobile</string>
     <string name="website">Sito Internet</string>

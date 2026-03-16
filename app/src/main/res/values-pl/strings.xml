@@ -232,7 +232,7 @@
     <string name="column_force">Ręcznie zastąp podziały kolumn</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Użyj kodu nowej strony (!--) w piosence, aby wymusić nowy podział kolumny podczas automatycznego skalowania</string>
     <string name="column_force_insert">Wstaw podział kolumny</string>
-    <string name="coming_soon">Wkrótce...</string>
+    <string name="coming_soon">Wkrótce…</string>
     <string name="comment">Komentarz</string>
     <string name="comment_background">Tło komentarza</string>
     <string name="commentline_scale">Skaluj tekst komentarza</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Perkusja</string>
     <string name="drum_kit_acoustic">Zestaw akustyczny</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Zestaw perkusyjny</string>
     <string name="drum_ride">Jeździć</string>
     <string name="drum_ride_bell">Dzwonek jazdy</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Przed przypisaniem perkusisty do utworu należy najpierw zapisać plik perkusisty</string>
     <string name="drummer_assign_info">Przypisz tego perkusistę do aktualnej piosenki</string>
     <string name="drummer_fill">Wypełnienie perkusisty</string>
+    <string name="drummer_kit">Zestaw perkusyjny</string>
     <string name="drummer_main">Główny rytm</string>
     <string name="drummer_main_fill">Główne wypełnienie</string>
     <string name="drummer_not_valid">Proszę edytować utwór i ustawić prawidłowe tempo i metrum</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Użytkownicy spoza OpenSongApp powinni znajdować się w tej samej sieci co to urządzenie (można również użyć hotspotu). Następnie powinni otworzyć ten adres internetowy, aby wyświetlić piosenkę.</string>
     <string name="web_server_navigation">Nawigacja ręczna</string>
     <string name="web_server_navigation_info">Po włączeniu użytkownicy mogą ręcznie wybrać dowolną piosenkę z listy piosenek lub z bieżącego zestawu. Gdy ta opcja jest wyłączona, użytkownicy mogą wyświetlać tylko aktualnie załadowaną piosenkę</string>
+    <string name="web_server_port">Numer portu</string>
+    <string name="web_server_port_info">Niektóre przeglądarki i routery Wi-Fi blokują określone numery portów. Jeśli Ty lub inni nie możecie wyświetlić strony internetowej za pomocą poniższego linku, spróbujcie zmienić numer portu.</string>
     <string name="web_view_desktop">Poproś o witrynę na komputery</string>
     <string name="web_view_desktop_info">Powinno to poprawić układ utworów i uniknąć sytuacji, w której witryna próbuje zmusić Cię do zainstalowania aplikacji mobilnej</string>
     <string name="website">Strona internetowa</string>

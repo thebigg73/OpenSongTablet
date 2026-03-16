@@ -371,6 +371,7 @@
     <string name="drum_kit">爵士鼓</string>
     <string name="drum_kit_acoustic">原声套件</string>
     <string name="drum_kit_cajon">卡洪</string>
+    <string name="drum_kit_percussion">打击乐器组</string>
     <string name="drum_ride">骑</string>
     <string name="drum_ride_bell">骑行铃</string>
     <string name="drum_rim_shot">边击</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">在为歌曲分配鼓手之前，需要先保存鼓手文件。</string>
     <string name="drummer_assign_info">将这位鼓手分配给当前歌曲</string>
     <string name="drummer_fill">鼓手填充</string>
+    <string name="drummer_kit">鼓手套件</string>
     <string name="drummer_main">主节拍</string>
     <string name="drummer_main_fill">主填充</string>
     <string name="drummer_not_valid">请编辑歌曲并设置有效的速度和拍号。</string>
@@ -1447,6 +1449,8 @@
     <string name="web_server_info">非OpenSongApp用户应与此设备位于同一网络上（您也可以使用热点）。 然后，他们应该打开此网址以查看歌曲。</string>
     <string name="web_server_navigation">手动导航</string>
     <string name="web_server_navigation_info">打开后，用户可以手动选择歌曲列表或当前设置中显示的任何歌曲。 关闭后，用户只能查看您当前加载的歌曲</string>
+    <string name="web_server_port">端口号</string>
+    <string name="web_server_port_info">某些浏览器和 Wi-Fi 路由器会屏蔽某些端口号。如果您或其他用户无法通过以下链接查看网页，请尝试更改端口号。</string>
     <string name="web_view_desktop">请求桌面站点</string>
     <string name="web_view_desktop_info">这应该可以改善歌曲的布局，并避免网站试图强迫您安装他们的移动应用程序</string>
     <string name="website">网站</string>

@@ -232,7 +232,7 @@
     <string name="column_force">段区切りを手動で上書きする</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">曲の新しいページ コード (!--) を使用して、自動スケーリング時に新しい列区切りを強制します</string>
     <string name="column_force_insert">段区切りを挿入</string>
-    <string name="coming_soon">近日公開予定...</string>
+    <string name="coming_soon">近日公開予定…</string>
     <string name="comment">コメント</string>
     <string name="comment_background">コメントの背景</string>
     <string name="commentline_scale">コメントテキストを拡大縮小</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">ドラムキット</string>
     <string name="drum_kit_acoustic">アコースティックキット</string>
     <string name="drum_kit_cajon">カホン</string>
+    <string name="drum_kit_percussion">パーカッションキット</string>
     <string name="drum_ride">乗る</string>
     <string name="drum_ride_bell">ベルに乗る</string>
     <string name="drum_rim_shot">リムショット</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">ドラマーを曲に割り当てる前に、まずドラマーファイルを保存する必要があります</string>
     <string name="drummer_assign_info">このドラマーを現在の曲に割り当てる</string>
     <string name="drummer_fill">ドラマーフィル</string>
+    <string name="drummer_kit">ドラマーキット</string>
     <string name="drummer_main">メインビート</string>
     <string name="drummer_main_fill">メインフィル</string>
     <string name="drummer_not_valid">曲を編集して有効なテンポと拍子を設定してください</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">OpenSongApp以外のユーザーは、このデバイスと同じネットワーク上にいる必要があります(ホットスポットを使用することもできます)。 次に、このWebアドレスを開いて曲を表示する必要があります。</string>
     <string name="web_server_navigation">手動ナビゲーション</string>
     <string name="web_server_navigation_info">オンにすると、ユーザーは曲リストまたは現在のセットに表示されている曲を手動で選択できます。 オフにすると、ユーザーは現在ロードされている曲のみを表示できます</string>
+    <string name="web_server_port">ポート番号</string>
+    <string name="web_server_port_info">一部のブラウザやWi-Fiルーターは特定のポート番号をブロックします。あなたや他のユーザーが以下のリンクからウェブページを表示できない場合は、ポート番号を変更してみてください。</string>
     <string name="web_view_desktop">デスクトップサイトをリクエストする</string>
     <string name="web_view_desktop_info">これにより、曲のレイアウトが改善され、Webサイトがモバイルアプリのインストールを強制しようとするのを回避できます</string>
     <string name="website">Webサイト</string>

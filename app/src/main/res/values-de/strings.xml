@@ -232,7 +232,7 @@
     <string name="column_force">Spaltenumbrüche manuell überschreiben</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Verwenden Sie den neuen Seitencode (!--) im Song, um bei der automatischen Skalierung einen neuen Spaltenumbruch zu erzwingen</string>
     <string name="column_force_insert">Spaltenumbruch einfügen</string>
-    <string name="coming_soon">Kommt bald...</string>
+    <string name="coming_soon">Kommt bald…</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">Hintergrund Kommentar</string>
     <string name="commentline_scale">Kommentartext skalieren</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Schlagzeug</string>
     <string name="drum_kit_acoustic">Akustik-Set</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Schlagzeugset</string>
     <string name="drum_ride">Fahrt</string>
     <string name="drum_ride_bell">Reitglocke</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Bevor Sie einem Song einen Schlagzeuger zuweisen, müssen Sie die Schlagzeugerdatei zuerst speichern.</string>
     <string name="drummer_assign_info">Weisen Sie diesen Schlagzeuger dem aktuellen Song zu.</string>
     <string name="drummer_fill">Schlagzeugerfüllung</string>
+    <string name="drummer_kit">Schlagzeugset</string>
     <string name="drummer_main">Hauptschlag</string>
     <string name="drummer_main_fill">Hauptfüllung</string>
     <string name="drummer_not_valid">Bitte bearbeiten Sie das Lied und geben Sie ein gültiges Tempo und eine gültige Taktart an.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Nicht-OpenSongApp-Benutzer sollten sich im selben Netzwerk wie dieses Gerät befinden (Sie können auch einen Hotspot verwenden).  Sie sollten dann diese Webadresse öffnen, um den Song anzuzeigen.</string>
     <string name="web_server_navigation">Manuelle Navigation</string>
     <string name="web_server_navigation_info">Wenn diese Option eingeschaltet ist, können Benutzer manuell jeden Song auswählen, der in Ihrer Songliste oder Ihrem aktuellen Set angezeigt wird.  Wenn diese Option ausgeschaltet ist, können Benutzer nur Ihren aktuell geladenen Song anzeigen</string>
+    <string name="web_server_port">Portnummer</string>
+    <string name="web_server_port_info">Manche Browser und WLAN-Router blockieren bestimmte Portnummern. Falls Sie oder andere die Webseite über den unten stehenden Link nicht aufrufen können, versuchen Sie, die Portnummer zu ändern.</string>
     <string name="web_view_desktop">Desktop-Site anfordern</string>
     <string name="web_view_desktop_info">Dies sollte das Layout der Songs verbessern und verhindern, dass die Website versucht, Sie zur Installation ihrer mobilen App zu zwingen</string>
     <string name="website">Webseite</string>

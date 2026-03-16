@@ -232,7 +232,7 @@
     <string name="column_force">Перевизначте розриви стовпців вручну</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Використовуйте новий код сторінки (!--) у пісні, щоб примусово створювати новий розрив стовпця під час автоматичного масштабування</string>
     <string name="column_force_insert">Вставити розрив стовпця</string>
-    <string name="coming_soon">Незабаром...</string>
+    <string name="coming_soon">Незабаром…</string>
     <string name="comment">Коментар</string>
     <string name="comment_background">Фон коментаря</string>
     <string name="commentline_scale">Розмір тексту коментаря</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Ударна установка</string>
     <string name="drum_kit_acoustic">Акустичний комплект</string>
     <string name="drum_kit_cajon">Кахон</string>
+    <string name="drum_kit_percussion">Набір для ударних інструментів</string>
     <string name="drum_ride">Їзда</string>
     <string name="drum_ride_bell">Дзвінок для їзди</string>
     <string name="drum_rim_shot">Рімшот</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Перш ніж призначити барабанщика пісні, спочатку потрібно зберегти файл барабанщика</string>
     <string name="drummer_assign_info">Призначити цього барабанщика для поточної пісні</string>
     <string name="drummer_fill">Заповнення барабанщиком</string>
+    <string name="drummer_kit">Ударна установка</string>
     <string name="drummer_main">Основний ритм</string>
     <string name="drummer_main_fill">Основне заповнення</string>
     <string name="drummer_not_valid">Будь ласка, відредагуйте пісню та встановіть правильний темп і розмір</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Користувачі, які не є OpenSongApp, повинні бути в тій же мережі, що і цей пристрій (ви також можете використовувати точку доступу).  Потім вони повинні відкрити цю веб-адресу, щоб переглянути пісню.</string>
     <string name="web_server_navigation">Ручна навігація</string>
     <string name="web_server_navigation_info">Коли ввімкнено, користувачі можуть вручну вибрати будь-яку пісню, яка відображається у вашому списку пісень або поточному наборі.  Коли вимкнено, користувачі зможуть переглядати лише вашу поточну завантажену пісню</string>
+    <string name="web_server_port">Номер порту</string>
+    <string name="web_server_port_info">Деякі браузери та маршрутизатори Wi-Fi блокують певні номери портів. Якщо ви або інші користувачі не можуть переглянути веб-сторінку за посиланням нижче, спробуйте змінити номер порту.</string>
     <string name="web_view_desktop">Запит на десктопний сайт</string>
     <string name="web_view_desktop_info">Це має покращити макет пісень і уникнути спроб веб-сайту змусити вас встановити їхній мобільний додаток</string>
     <string name="website">веб-сайт</string>

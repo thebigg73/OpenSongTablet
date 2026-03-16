@@ -232,7 +232,7 @@
     <string name="column_force">Åsidosätt kolumnbrytningar manuellt</string>
     <string name="column_force_info" tools:ignore="TypographyDashes">Använd den nya sidkoden (!--) i låten för att tvinga fram en ny kolumnbrytning vid automatisk skalning</string>
     <string name="column_force_insert">Infoga kolumnbrytning</string>
-    <string name="coming_soon">Kommer snart...</string>
+    <string name="coming_soon">Kommer snart…</string>
     <string name="comment">Kommentar</string>
     <string name="comment_background">Kommentar bakgrund</string>
     <string name="commentline_scale">Skal kommentartext</string>
@@ -371,6 +371,7 @@
     <string name="drum_kit">Trumset</string>
     <string name="drum_kit_acoustic">Akustiskt kit</string>
     <string name="drum_kit_cajon">Cajon</string>
+    <string name="drum_kit_percussion">Slagverksset</string>
     <string name="drum_ride">Rida</string>
     <string name="drum_ride_bell">Rideklocka</string>
     <string name="drum_rim_shot">Rimshot</string>
@@ -389,6 +390,7 @@
     <string name="drummer_assign_error">Innan du tilldelar en trummis till en låt måste du först spara trummisfilen.</string>
     <string name="drummer_assign_info">Tilldela den här trummisen till den aktuella låten</string>
     <string name="drummer_fill">Trummisfyllning</string>
+    <string name="drummer_kit">Trummisset</string>
     <string name="drummer_main">Huvudtakt</string>
     <string name="drummer_main_fill">Huvudfyllning</string>
     <string name="drummer_not_valid">Redigera låten och ange ett giltigt tempo och en giltig taktart.</string>
@@ -1446,6 +1448,8 @@
     <string name="web_server_info">Användare som inte använder OpenSongApp bör vara i samma nätverk som den här enheten (du kan också använda en hotspot).  De bör sedan öppna den här webbadressen för att se låten.</string>
     <string name="web_server_navigation">Manuell navigering</string>
     <string name="web_server_navigation_info">När den är påslagen kan användarna manuellt välja vilken låt som helst som ska visas i låtlistan eller den aktuella uppsättningen.  När den är avstängd kan användarna bara se din inlästa låt</string>
+    <string name="web_server_port">Portnummer</string>
+    <string name="web_server_port_info">Vissa webbläsare och Wi-Fi-routrar blockerar vissa portnummer. Om du, eller andra, inte kan visa webbsidan med hjälp av länken nedan kan du försöka ändra portnumret.</string>
     <string name="web_view_desktop">Begär skrivbordswebbplats</string>
     <string name="web_view_desktop_info">Detta bör förbättra layouten på låtar och undvika att webbplatsen försöker tvinga dig att installera deras mobilapp</string>
     <string name="website">Hemsida</string>
