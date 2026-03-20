@@ -40,7 +40,7 @@ public class DrumSequencerFragment extends Fragment {
     private Drawable start, stop;
     private String drummer_string="", drummer_website="",
             drummer_main="", drummer_main_fill="", drummer_variation="", drummer_variation_fill="",
-            drum_kit_acoustic="", drum_kit_cajon="";
+            drum_kit_acoustic="", drum_kit_percussion="";
     private final String[] timeSigs = new String[] {"3/4","4/4","5/4","6/8"};
     private String filename = "";
     // Add a flag to prevent listeners from firing during programmatic setup
@@ -113,7 +113,7 @@ public class DrumSequencerFragment extends Fragment {
             drummer_variation = getString(R.string.drummer_variation);
             drummer_variation_fill = getString(R.string.drummer_variation_fill);
             drum_kit_acoustic = getString(R.string.drum_kit_acoustic);
-            drum_kit_cajon = getString(R.string.drum_kit_cajon);
+            drum_kit_percussion = getString(R.string.drum_kit_percussion);
         }
     }
 
@@ -132,7 +132,7 @@ public class DrumSequencerFragment extends Fragment {
 
         ArrayList<String> drummerKits = new ArrayList<>();
         drummerKits.add(drum_kit_acoustic);
-        drummerKits.add(drum_kit_cajon);
+        drummerKits.add(drum_kit_percussion);
 
         if (getContext()!=null) {
             if (myView!=null) {
@@ -235,8 +235,9 @@ public class DrumSequencerFragment extends Fragment {
                         tv.setPadding(0, 0, 16, 0);
                         myView.instrumentLabelContainer.post(() -> {
                             tv.setOnClickListener(view -> {
-                                String cajonPrefix = mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyle().equals("Cajon") ? "Cajon_" : "";
-                                mainActivityInterface.getDrumViewModel().getDrumSoundManager().playDrum(cajonPrefix + view.getTag().toString(), 127);
+                                mainActivityInterface.getDrumViewModel().getDrumSoundManager().playDrum(
+                                        mainActivityInterface.getDrumViewModel().getDrummer().getCajonPrefixIfNeeded() +
+                                                view.getTag().toString(), 127);
                             });
                             myView.instrumentLabelContainer.addView(tv);
                         });

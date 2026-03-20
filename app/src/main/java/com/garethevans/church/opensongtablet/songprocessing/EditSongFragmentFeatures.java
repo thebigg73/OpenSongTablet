@@ -43,7 +43,7 @@ public class EditSongFragmentFeatures extends Fragment {
     private String online_search_string="";
     private String use_default_string = "";
     private String drum_kit_acoustic = "";
-    private String drum_kit_cajon = "";
+    private String drum_kit_percussion = "";
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "EditSongFeatures";
     private String[] key_choice_string={};
@@ -101,7 +101,7 @@ public class EditSongFragmentFeatures extends Fragment {
             online_search_string = search_string +" ("+ online_string +")";
             use_default_string = getString(R.string.use_default);
             drum_kit_acoustic = getString(R.string.drum_kit_acoustic);
-            drum_kit_cajon = getString(R.string.drum_kit_cajon);
+            drum_kit_percussion = getString(R.string.drum_kit_percussion);
             instruments = mainActivityInterface.getChordDisplayProcessing().getSongInstruments();
         }
     }
@@ -220,7 +220,7 @@ public class EditSongFragmentFeatures extends Fragment {
         ArrayList<String> drumKits = new ArrayList<>();
         drumKits.add("");
         drumKits.add(drum_kit_acoustic);
-        drumKits.add(drum_kit_cajon);
+        drumKits.add(drum_kit_percussion);
 
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
@@ -345,7 +345,6 @@ public class EditSongFragmentFeatures extends Fragment {
                 songcapo = "";
             }
 
-            Log.d(TAG, "songcapo:" + songcapo + "  songkey:" + songkey);
             if (songkey != null && !songkey.isEmpty() && !songcapo.isEmpty()) {
                 songcapo = songcapo.replaceAll("\\D", "").trim();
                 if (!songcapo.isEmpty()) {
@@ -489,9 +488,6 @@ public class EditSongFragmentFeatures extends Fragment {
             for (String drumFile : drumFiles) {
                 if (drumFile.contains(timeSigInFilename+".json")) {
                     String name = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drumFile);
-                    //String name = drumFile.replace(timeSigInFilename+".json","");
-                    Log.d(TAG,"niceNameFromFilename:"+name);
-                    Log.d(TAG,"filenameFromNiceName:"+mainActivityInterface.getDrumViewModel().getDrummer().getFilenameFromNiceName(name));
                     drummerFileNames.add(name);
                 }
             }

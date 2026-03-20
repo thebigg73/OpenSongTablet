@@ -165,8 +165,9 @@ public class SequencerAdapter extends RecyclerView.Adapter<DrumViewGridHolder> {
 
                         // Play the note!
                         if (nextVelo > 0) {
-                            String cajonPrefix = mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyle().equals("Cajon") ? "Cajon_" : "";
-                            mainActivityInterface.getDrumViewModel().getDrumSoundManager().playDrum(cajonPrefix + instrument, nextVelo);
+                            mainActivityInterface.getDrumViewModel().getDrumSoundManager().playDrum(
+                                    mainActivityInterface.getDrumViewModel().getDrummer().getCajonPrefixIfNeeded() +
+                                            instrument, nextVelo);
                         }
 
                         // Notify that we have changed

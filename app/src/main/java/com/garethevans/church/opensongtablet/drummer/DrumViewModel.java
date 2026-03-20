@@ -144,9 +144,13 @@ public class DrumViewModel extends ViewModel {
                 }
 
                 if (song.getDrummerKit()==null || song.getDrummerKit().isEmpty()) {
-                    drummer.setDrummerStyle("Standard");
+                    drummer.setDrummerStyle("Acoustic");
+                } else if (song.getDrummerKit().equals("Acoustic") || song.getDrummerKit().equals("Standard")) {
+                    drummer.setDrummerStyle("Acoustic");
+                } else if (song.getDrummerKit().equals("Percussion") || song.getDrummerKit().equals("Cajon")) {
+                    drummer.setDrummerStyle("Percussion");
                 } else {
-                    drummer.setDrummerStyle(song.getDrummerKit());
+                    drummer.setDrummerStyle("Acoustic");
                 }
 
                 if (loadedDrummer) {
