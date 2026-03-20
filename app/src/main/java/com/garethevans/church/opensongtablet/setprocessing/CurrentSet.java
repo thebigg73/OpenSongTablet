@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 

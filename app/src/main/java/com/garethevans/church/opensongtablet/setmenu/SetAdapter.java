@@ -35,6 +35,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private float titleSize, subtitleSizeFile;
     private boolean useTitle;
     private ItemTouchHelper itemTouchHelper;
+    private SetListItemCallback setListItemCallback;
     private final RecyclerView recyclerView;
     private final String highlightItem="highlightItem", unhighlightItem="unhighlightItem",
             updateNumber="updateNumber";
@@ -63,6 +64,10 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
     }
+    public void setSetListItemCallback(SetListItemCallback setListItemCallback) {
+        this.setListItemCallback = setListItemCallback;
+    }
+
 
     public RecyclerView getRecyclerView() {
         return recyclerView;
@@ -190,6 +195,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().textColor);
         }
         holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
+
+
+        // Set the click listener for the whole row
+        /*holder.itemView.setOnClickListener(v -> {
+            // Check if we are currently dragging.
+            // If your Callback is dragging, ignore the click.
+            if (setListItemCallback != null && setListItemCallback.getIsDragging()) {
+                return;
+            }
+            int currentPos = holder.getBindingAdapterPosition();
+            if (currentPos != RecyclerView.NO_POSITION) {
+                onItemClicked(mainActivityInterface, currentPos);
+            }
+        });*/
         //holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
     }
 

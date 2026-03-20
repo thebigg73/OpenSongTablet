@@ -557,8 +557,11 @@ public class PerformanceFragment extends Fragment {
 
                     String keyInSet = null;
                     boolean stillToCreateVariation;
+                    int indexInSet = mainActivityInterface.getCurrentSet().getIndexSongInSet();
 
-                    int indexInSet = mainActivityInterface.getSetActions().indexSongInSet(folder,filename,null);
+                    if (indexInSet==-1 || indexInSet>=mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
+                        indexInSet = mainActivityInterface.getSetActions().indexSongInSet(folder, filename, null);
+                    }
                     if (indexInSet>-1) {
                         mainActivityInterface.getCurrentSet().setIndexSongInSet(indexInSet);
                         keyInSet = mainActivityInterface.getCurrentSet().getSetItemInfo(mainActivityInterface.getCurrentSet().getIndexSongInSet()).songkey;

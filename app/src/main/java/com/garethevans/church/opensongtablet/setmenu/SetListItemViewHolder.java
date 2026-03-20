@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +43,7 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
         cardEdit = itemView.findViewById(R.id.cardview_edit);
         itemView.setOnTouchListener(this);
         gestureDetector = new GestureDetector(itemView.getContext(),this);
+        gestureDetector.setIsLongpressEnabled(false);
         this.itemTouchHelper = itemTouchHelper;
         this.setItemTouchInterface = setItemTouchInterface;
         this.mainActivityInterface = mainActivityInterface;
@@ -49,26 +51,19 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        // If we get a cancel event during a scroll, don't let it kill the drag
-        if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL ||
-                motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        // Pass everything to the detector
+        boolean handled = gestureDetector.onTouchEvent(motionEvent);
+
+        // If the finger is lifted or the touch is cancelled,
+        // make sure we allow the RecyclerView to breathe again
+        if (motionEvent.getAction() == MotionEvent.ACTION_UP ||
+                motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
             view.getParent().requestDisallowInterceptTouchEvent(false);
         }
 
-        gestureDetector.onTouchEvent(motionEvent);
-
-        // 1. Let the helper know we are moving so it can scroll
-        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-            view.getParent().requestDisallowInterceptTouchEvent(true);
-        }
-
-        // Call performClick for accessibility, but let the return value be false
-        // so the ItemTouchHelper attached to the RecyclerView can "see" the MOVE events
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            view.performClick();
-        }
-
-        return false;
+        // IMPORTANT: Return true if handled, but also return true for DOWN
+        // to ensure we get the rest of the events.
+        return handled || motionEvent.getAction() == MotionEvent.ACTION_DOWN;
     }
 
     @Override
@@ -81,8 +76,17 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public boolean onSingleTapUp(@NonNull MotionEvent motionEvent) {
-        setItemTouchInterface.onItemClicked(mainActivityInterface,getAbsoluteAdapterPosition());
-        return false;
+        Log.d(TAG, "onSingleTapUp()");
+
+        // 1. Run your click logic
+        setItemTouchInterface.onItemClicked(mainActivityInterface, getAbsoluteAdapterPosition());
+
+        // 2. FORCE the view to cancel its touch state.
+        // This prevents the ItemTouchHelper from staying "primed" for a drag.
+        motionEvent.setAction(MotionEvent.ACTION_CANCEL);
+        gestureDetector.onTouchEvent(motionEvent);
+
+        return true; // Return true to say we fully handled this
     }
 
     @Override
@@ -93,10 +97,11 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
     @Override
     public void onLongPress(@NonNull MotionEvent motionEvent) {
         // Tell the parent layout NOT to steal this touch event
-        if (itemView.getParent()!=null) {
-            itemView.getParent().requestDisallowInterceptTouchEvent(true);
-        }
-        itemTouchHelper.startDrag(this);
+        //if (itemView.getParent()!=null) {
+        //    itemView.getParent().requestDisallowInterceptTouchEvent(true);
+        //}
+        //itemTouchHelper.startDrag(this);
+        Log.d(TAG, "LongPress detected - letting ItemTouchHelper handle it");
     }
 
     @Override
