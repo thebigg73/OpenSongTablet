@@ -253,24 +253,32 @@ public class AppPermissions {
                         Log.d(TAG,"Handshake result:"+result);
                         // Handshake Successful
                         if (result != null) {
-                            int status = result.userStatus();
+                            Integer status = result.userStatus();
 
-                            if (status == AgeSignalsVerificationStatus.VERIFIED) {
-                                // User is 18+. Standard app experience.
-                                Log.d(TAG, "User is 18+, so no restrictions");
+                            if (status == null) {
+                                // IMPORTANT: If status is null, the user is NOT in a restricted region.
+                                Log.d(TAG, "User is not in a regulated region. Full access.");
                                 ageVerificationPass = true;
+                                return;
+                            }
 
-                            } else if (status == AgeSignalsVerificationStatus.SUPERVISED) {
-                                // User is a minor in Texas.
-                                Log.d(TAG,"User is a minor so disable any features");
-                                ageVerificationPass = false;
-
-                            } else if (status == AgeSignalsVerificationStatus.UNKNOWN) {
-                                // User is in a regulated region (Texas) but Play hasn't verified them.
-                                // Best practice: Treat as minor or prompt to verify in Play Store.
-                                Log.d(TAG,"User is in a regulated region but Play hasn't verified them");
-                                prompUserToVerifyInPlayStore();
-                                ageVerificationPass = false;
+                            // Handle known statuses
+                            switch (status) {
+                                case AgeSignalsVerificationStatus.VERIFIED:
+                                    Log.d(TAG, "User is 18+ verified.");
+                                    ageVerificationPass = true;
+                                    break;
+                                case AgeSignalsVerificationStatus.SUPERVISED:
+                                    Log.d(TAG, "User is a supervised minor.");
+                                    ageVerificationPass = false;
+                                    break;
+                                case AgeSignalsVerificationStatus.UNKNOWN:
+                                    Log.d(TAG, "Regulated region but status unknown.");
+                                    prompUserToVerifyInPlayStore();
+                                    ageVerificationPass = false;
+                                    break;
+                                default:
+                                    ageVerificationPass = true;
                             }
                         }
                     })
