@@ -2357,8 +2357,21 @@ public class StorageAccess {
     public boolean createFolder(String currentDir, String currentSubDir, String newFolder, boolean showToast) {
         // Get the uri for the parent
         Uri dirUri = getUriForItem(currentDir, currentSubDir, "");
-        Uri desireduri = getUriForItem(currentDir,currentSubDir,newFolder);
-        if (!uriExists(desireduri)) {
+        Uri desireduri = getUriForItem(currentDir, currentSubDir, newFolder);
+
+        // We need to check if the desired uri, if it exists, is a folder (as it might be a file with the same name)
+        boolean isDirectory = false;
+        if (lollipopOrLater()) {
+            DocumentFile pickedDir = DocumentFile.fromTreeUri(c, desireduri);
+            if (pickedDir != null) {
+                isDirectory = pickedDir.isDirectory();
+            }
+        } else if (desireduri != null && desireduri.getPath() != null) {
+            File f = new File(desireduri.getPath());
+            isDirectory = f.isDirectory();
+        }
+
+        if (!uriExists(desireduri) || !isDirectory) {
             if (lollipopOrLater()) {
                 return createFolder_SAF(dirUri, newFolder, showToast);
             } else {
