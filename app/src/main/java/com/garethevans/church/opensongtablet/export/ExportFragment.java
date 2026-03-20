@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.export;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ExportFragment extends Fragment {
 
@@ -1010,6 +1012,7 @@ public class ExportFragment extends Fragment {
         // Don't delete - does something!
         Log.d(TAG,"makedirs:"+exportFolder.mkdirs());
         ArrayList<Uri> newUris = new ArrayList<>();
+        ArrayList<String> newFilenames = new ArrayList<>();
 
         // If we are exporting songs in text format, also add the merged one
         Uri mergedTextFile = createMergedTextFile();
@@ -1030,6 +1033,7 @@ public class ExportFragment extends Fragment {
                             Log.d(TAG, "Copy:" + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
                             Uri newUri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
                             newUris.add(newUri);
+                            newFilenames.add(file.getName());
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1054,8 +1058,43 @@ public class ExportFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_TEXT, textContent);
         }
 
+
+        if (newUris.size() > 1) {
+            intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, newUris);
+        } else if (newUris.size() == 1) {
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_STREAM, newUris.get(0));
+            if (newUris.get(0)!=null && newUris.get(0).getPath()!=null) {
+                intent.putExtra(Intent.EXTRA_TITLE, newFilenames.get(0));
+            }
+        }
+
+        // THE FIX: Explicitly grant permissions to every URI via ClipData
+        if (!newUris.isEmpty()) {
+            // Create ClipData with the first URI
+            ClipData clipData = ClipData.newRawUri(shareTitle, newUris.get(0));
+
+            // Add all other URIs in the list to the ClipData
+            for (int i = 1; i < newUris.size(); i++) {
+                clipData.addItem(new ClipData.Item(newUris.get(i)));
+            }
+
+            // Attach the ClipData to the intent.
+            // This is the "manifest" that Google Drive needs to start its UploadActivity.
+            intent.setClipData(clipData);
+        }
+
+
+        // This is the key for background services like Google Drive
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         mainActivityInterface.getMainHandler().post(() -> {
-            startActivity(Intent.createChooser(intent, shareTitle));
+            // Create the Chooser
+            Intent chooser = Intent.createChooser(intent, shareTitle);
+            // IMPORTANT: The chooser also needs the flag to pass it down to the selected app
+            chooser.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(chooser);
             myView.scrim.setVisibility(View.GONE);
             myView.progressText.setVisibility(View.GONE);
             myView.shareButton.setEnabled(true);
