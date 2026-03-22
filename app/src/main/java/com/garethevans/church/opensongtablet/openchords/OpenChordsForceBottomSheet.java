@@ -74,6 +74,14 @@ public class OpenChordsForceBottomSheet extends BottomSheetCommon {
         myView.lastForcePushInfo.setText(value);
         value = sync_force_downloaded_string + ": " + mainActivityInterface.getOpenChordsAPI().getLastModified("lastForcePull");
         myView.lastForcePullInfo.setText(value);
+
+        boolean isOwner = mainActivityInterface.getOpenChordsAPI().getIsOwner();
+        boolean isReadOnly = mainActivityInterface.getOpenChordsAPI().getIsReadOnly();
+
+        // If we are the owner, we can upload fine.  If not, we can only upload if the folder isn't read only
+        boolean canUpload = isOwner || !isReadOnly;
+        myView.forcePush.setVisibility(canUpload? View.VISIBLE:View.GONE);
+
     }
 
     private void setupListeners() {

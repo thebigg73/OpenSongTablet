@@ -11,6 +11,9 @@ public class OpenChordsFolderObject {
     // Matches v1.0.7
     @Nullable private String title;                             // The name of the shared folder
     @Nullable private String ownerId;                           // The UUID that matches the user folder
+    @Nullable private Boolean readonly;                         // Whether the folder is readonly or not
+    @Nullable private Boolean isOwner;                          // Whether the user is the owner of the folder
+    @Nullable private String type;                              // Default is 'folder'
     @Nullable private ArrayList<OpenChordsSong> songs;          // The songs array in the folder
     @Nullable private ArrayList<OpenChordsTag> tags;            // The tags array in the folder
     @Nullable private ArrayList<OpenChordsSetList> setlists;    // The sets array in the folder
@@ -21,6 +24,12 @@ public class OpenChordsFolderObject {
     }
     @Nullable public String getTitle() {
         return title;
+    }
+    @Nullable public Boolean getReadonly() {
+        return readonly;
+    }
+    @Nullable public Boolean getIsOwner() {
+        return isOwner;
     }
     @Nullable public ArrayList<OpenChordsSong> getSongs() {
         return songs;
@@ -38,6 +47,12 @@ public class OpenChordsFolderObject {
     }
     public void setTitle(@Nullable String title) {
         this.title = title;
+    }
+    public void setReadonly(@Nullable Boolean readonly) {
+        this.readonly = readonly;
+    }
+    public void setIsOwner(@Nullable Boolean isOwner) {
+        this.isOwner = isOwner;
     }
     public void setSongs(@Nullable ArrayList<OpenChordsSong> songs) {
         this.songs = songs;

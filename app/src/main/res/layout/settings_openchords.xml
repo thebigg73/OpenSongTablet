@@ -84,6 +84,19 @@
                 <com.garethevans.church.opensongtablet.customviews.MyDivider
                     style="@style/MyDividerLine"/>
 
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                    android:id="@+id/readOnly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/openchords_readonly_switch"
+                    android:hint="@string/openchords_readonly_switch_info"
+                    android:visibility="gone"/>
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    android:id="@+id/readOnlyDivider"
+                    style="@style/MyDividerLine"
+                    android:visibility="gone"/>
+
+
                 <LinearLayout
                     android:id="@+id/uploadLayout"
                     android:layout_width="match_parent"

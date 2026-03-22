@@ -53,7 +53,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             openChordsApiBase = "https://openchords.net/api/v2/",
             openChordsFolderBaseShareable = "https://openchords.net/?fld=",
             songFolderUUIDsFile = "songFolderUUIDs.json";
-    private boolean receivedFolderLink = false;
+    private boolean receivedFolderLink = false, isOwner, isReadOnly, folderIsDifferentUuid;
     private String jwtToken;
 
     // The retrofit, server and fragment declarations
@@ -77,6 +77,11 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // Get the login credentials
         openChordsUsername = mainActivityInterface.getPreferences().getKey(c, "openchordsusername");
         openChordsPassword = mainActivityInterface.getPreferences().getKey(c, "openchordspassword");
+        openChordsUserUuid = mainActivityInterface.getPreferences().getMyPreferenceString("openChordsUserUuid",null);
+        if (openChordsUserUuid == null) {
+            openChordsUserUuid = UUID.randomUUID().toString();
+            mainActivityInterface.getPreferences().setMyPreferenceString("openChordsUserUuid",openChordsUserUuid);
+        }
 
         // Get our jwtToken.  If it is notset or has expired, we will get the token when we open the fragment
         SharedPreferences prefs = c.getSharedPreferences("OpenChords", Context.MODE_PRIVATE);
@@ -149,13 +154,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public void initialiseOpenChordsFolderAndUuid() {
         // If we got here via an intent, we should look for a local folder matching the intent uuid
         if (receivedFolderLink) {
-            Log.d(TAG,"initialiseOpenChordsFolderAndUuid(): receivedFolderLink=true");
             // Look to see if we have a folder that matches the uuid already
             // The uuid was set in the intent already, so don't update that
             // Set our foldername to null or the matching folder
-            Log.d(TAG,"openChordsFolderUuid:"+openChordsFolderUuid);
             openChordsFolderName = getOpenSongFolderNameFromUUID(openChordsFolderUuid);
-            Log.d(TAG,"openChordsFolderName:"+openChordsFolderName +"   openChordsFolderUuid:"+openChordsFolderUuid);
             // If this isn't null, then we have a matching folder, so we can set that name
             // If it is null, we will get the new folder name from the server later
             if (openChordsFolderName != null) {
@@ -179,20 +181,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         this.openChordsFragment = openChordsFragment;
     }
 
-    // This is set true if we received an intent to get an OpenChords folder
-    // It is set false after we query the server (regardless of outcome)
-    public boolean getReceivedFolderLink() {
-        Log.d(TAG,"receivedFolderLink:"+receivedFolderLink);
-        return receivedFolderLink;
-    }
-
     public void setReceivedFolderLink(boolean receivedFolderLink) {
         this.receivedFolderLink = receivedFolderLink;
     }
 
     // The objects retrieved from the server
     private OpenChordsFolderObject serverFolder;
-    private String openChordsFolderName, openChordsFolderUuid, localFolderName;
+    private String openChordsFolderName, openChordsFolderUuid, openChordsUserUuid, localFolderName;
     private ArrayList<OpenChordsSong> serverSongs = new ArrayList<>();
     private ArrayList<OpenChordsSetList> serverSetLists = new ArrayList<>();
     private ArrayList<OpenChordsTag> serverTags = new ArrayList<>();
@@ -236,8 +231,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         if (retrofitInterface==null) {
             rebuildRetrofitInterface();
         }
-        Log.d(TAG,"getOpenChordsFolder("+openChordsFolderUuid+")");
-        Call<OpenChordsFolderObject> call = retrofitInterface.getOpenChordsFolder(openChordsFolderUuid);
+        Call<OpenChordsFolderObject> call = retrofitInterface.getOpenChordsFolder(openChordsFolderUuid, openChordsUserUuid);
         call.enqueue(this);
     }
 
@@ -282,7 +276,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     public void setOpenChordsFolderUuid(String openChordsFolderUuid) {
-        Log.d(TAG,"Setting UUID:"+openChordsFolderUuid);
         this.openChordsFolderUuid = openChordsFolderUuid;
     }
 
@@ -490,10 +483,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     OffsetDateTime utcTimeServer = odtServer.withOffsetSameInstant(ZoneOffset.UTC);
                     long serverObjectLastModified = Instant.parse(utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
 
-                    //long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
-                    Log.d(TAG,"server lastModified:"+serverObject.getLastModified() + "  utc version:"+utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-
-
                     boolean localObjectHasLastModified = true;
                     if (localObject.getLastModified() == null || localObject.getLastModified().isEmpty() ||
                             localObject.getLastModified().equals(c.getString(R.string.is_not_set))) {
@@ -505,9 +494,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     OffsetDateTime odtLocal = OffsetDateTime.parse(serverObject.getLastModified());
                     OffsetDateTime utcTimeLocal = odtLocal.withOffsetSameInstant(ZoneOffset.UTC);
                     long localObjectLastModified = Instant.parse(utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
-                    Log.d(TAG,"local lastModified:"+serverObject.getLastModified() + "  utc version:"+utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-
-                    //long localObjectLastModified = Instant.parse(localObject.getLastModified()).toEpochMilli();
 
                     boolean useLocalLastModified = !serverObjectHasLastModified && localObjectHasLastModified;
                     boolean useServerLastModified = serverObjectHasLastModified && !localObjectHasLastModified;
@@ -715,8 +701,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             if (response.code() == 401) {
                 // We need to get the auth token again
-                Log.d(TAG,"response.code()=401");
+                Log.d(TAG,"We need to get the auth token again");
+                if (openChordsFragment!=null) {
+                    openChordsFragment.changeButtonsEnable(true);
+                }
                 getJwtToken();
+                openChordsFragment.queryOpenChordsServer();
 
             } else {
                 // Make sure we create a conflictObject for the folder if it doesn't exist
@@ -732,13 +722,28 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 if (response.isSuccessful()) {
                     isServerResponse = true;
                     serverFolder = (OpenChordsFolderObject) response.body();
+                    folderIsDifferentUuid = false;
 
                     if (serverFolder != null) {
+
                         // Lets get the server objects we have found!
                         updateProgress(c.getString(R.string.sync_reading_remote_folder) + "\n");
 
                         //String content = MainActivity.gson.toJson(serverFolder, OpenChordsFolderObject.class);
                         //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","ReceivedObject.json",content);
+
+                        // Decide if we are the folder owner
+                        if (serverFolder.getIsOwner()!=null) {
+                            isOwner = serverFolder.getIsOwner();
+                        } else {
+                            isOwner = true;
+                        }
+                        // Decide if the folder is marked as read only
+                        if (serverFolder.getReadonly()!=null) {
+                            isReadOnly = serverFolder.getReadonly();
+                        } else {
+                            isReadOnly = false;
+                        }
 
                         if (serverFolder.getTitle() != null) {
                             openChordsFolderName = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(serverFolder.getTitle());
@@ -763,9 +768,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     serverTags.clear();
                     serverSetLists.clear();
                     isServerResponse = false;
-                    if (openChordsFragment != null) {
-                        openChordsFragment.openChordsFolderNotFound();
-                    }
                 }
 
                 // Now compare the local and server objects
@@ -785,9 +787,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                             openSongFolderRecordObject.setFolderUuid(openChordsFolderUuid);
                             openSongFolderRecordObject.setFolderOwnerUuid(openChordsFolderUuid);
                             saveOpenSongFolderObject();
-                            if (openChordsFragment != null) {
-                                openChordsFragment.openChordsFolderDifferentFromLocal();
-                            }
+                            folderIsDifferentUuid = true;
                             haveFolder = true;
                             break;
                         }
@@ -830,12 +830,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 mainActivityInterface.setWhattodo("");
 
                 if (openChordsFragment != null) {
-                    //if (haveFolder && serverFolder!=null &&
-                    if (serverFolder != null &&
-                            getDownloadCount() == 0 && getUploadCount() == 0) {
-                        // We are already fully synchronised
-                        openChordsFragment.openChordsFolderFullySynced();
-                    }
                     if (serverFolder != null) {
                         openChordsFolderName = serverFolder.getTitle();
                         openChordsFragment.updateFolderTitle(openChordsFolderName);
@@ -849,10 +843,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull Throwable throwable) {
-        Log.d(TAG,"throwable:"+throwable);
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
         if (openChordsFragment != null) {
-            openChordsFragment.openChordsFolderNotFound();
+            openChordsFragment.updateFolderMessage();
         }
     }
 
@@ -1094,6 +1087,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     // Convert OpenSong objects into OpenChords objects
     public OpenChordsSong convertOpenSongToOpenChords(Song openSongSong) {
         OpenChordsSong openChordsSong = new OpenChordsSong();
+
         openChordsSong.setId(openSongSong.getUuid());
         openChordsSong.setTitle(jsonNullIfEmpty(openSongSong.getFilename()));
         openChordsSong.setRawData(jsonNullIfEmpty(mainActivityInterface.getConvertJustChords().getJustChordsLyrics(openSongSong)));
@@ -2678,4 +2672,52 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         }
     }
 
+    public boolean getIsOwner() {
+        return isOwner;
+    }
+    public boolean getIsReadOnly() {
+        return isReadOnly;
+    }
+    public void changeReadOnly(boolean isReadOnly) {
+        OpenChordsFolderPermissionsObject permissionsObject = new OpenChordsFolderPermissionsObject();
+        permissionsObject.setReadonly(isReadOnly);
+        permissionsObject.setUserID(openChordsUserUuid);
+        Call<OpenChordsReturnMessageObject> call = retrofitInterface.postOpenChordsFolderReadOnly(openChordsFolderUuid,permissionsObject);
+        call.enqueue(new Callback<OpenChordsReturnMessageObject>() {
+            @Override
+            public void onResponse(@NonNull Call<OpenChordsReturnMessageObject> call, @NonNull Response<OpenChordsReturnMessageObject> response) {
+                // this method is called when we get response from our api.
+                if (response!=null && response.body()!=null) {
+                    openChordsFragment.changeButtonsEnable(false);
+                    updateProgress(c.getString(R.string.wait) + "\n");
+                    mainActivityInterface.getMainHandler().postDelayed(() -> {
+                        if (openChordsFragment != null) {
+                            openChordsFragment.queryOpenChordsServer();
+                        }
+                    }, 1000);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<OpenChordsReturnMessageObject> call, @NonNull Throwable t) {
+                if (openChordsFragment != null) {
+                    openChordsFragment.changeButtonsEnable(false);
+                    updateProgress(c.getString(R.string.wait) + "\n");
+                    mainActivityInterface.getMainHandler().postDelayed(() -> {
+                        if (openChordsFragment != null) {
+                            openChordsFragment.queryOpenChordsServer();
+                        }
+                    }, 1000);
+                }
+            }
+        });
+    }
+
+    public OpenChordsFolderObject getServerFolder() {
+        return serverFolder;
+    }
+
+    public boolean getFolderIsDifferentUuid() {
+        return folderIsDifferentUuid;
+    }
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,8 +40,9 @@ public class OpenChordsFragment extends Fragment {
     private String wait_string = "";
     private String index_songs_wait_string = "";
     private String sync_querying_remote_string = "";
+    private String owner_string, not_owner_string, read_only_string;
     private SettingsOpenchordsBinding myView;
-    private boolean folderChangedProgrammatically = false;
+    private boolean folderChangedProgrammatically = false, changingReadOnlyProgrammatically = false;
     private Handler checkQueryHandler = new Handler();
     private Runnable checkQueryRunnable;
     private String keepLocalFolderName;
@@ -89,7 +91,6 @@ public class OpenChordsFragment extends Fragment {
         setupViews();
         setupListeners();
 
-        Log.d(TAG,"uuid:"+mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid());
         // Now query the server based on the folder uuid we have in the OpenChordsAPI
         queryOpenChordsServer();
 
@@ -123,6 +124,10 @@ public class OpenChordsFragment extends Fragment {
             sync_no_changes_required_string = getString(R.string.sync_no_changes_required);
             sync_querying_remote_string = getString(R.string.sync_querying_remote);
             index_songs_wait_string = getString(R.string.index_songs_wait);
+            owner_string = getString(R.string.openchords_owner);
+            not_owner_string = getString(R.string.openchords_not_owner);
+            read_only_string = getString(R.string.openchords_readonly);
+
             checkQueryRunnable = () -> {
                 if (mainActivityInterface!=null && mainActivityInterface.getSongListBuildIndex()!=null &&
                         mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
@@ -217,7 +222,6 @@ public class OpenChordsFragment extends Fragment {
                         // Query the server
                         queryOpenChordsServer();
                     }
-                    myView.folderMessage.setText("");
                 } else if (myView!=null && myView.folderToSync.getText() != null && getContext()!=null) {
                     String folderName = myView.folderToSync.getText().toString();
                     Log.d(TAG, "server returned folder sent back from server:" + folderName);
@@ -262,6 +266,14 @@ public class OpenChordsFragment extends Fragment {
             } else {
                 OpenChordsForceBottomSheet openChordsForceBottomSheet = new OpenChordsForceBottomSheet(this);
                 openChordsForceBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "OpenChordsForceBottomSheet");
+            }
+        });
+        myView.readOnly.setOnCheckedChangeListener((compoundButton, readOnly) -> {
+            // If we are the owner, we can push this change
+            // We need to check we aren't just changing this programmatically
+            if (!changingReadOnlyProgrammatically &&
+                mainActivityInterface.getOpenChordsAPI().getIsOwner()) {
+                mainActivityInterface.getOpenChordsAPI().changeReadOnly(readOnly);
             }
         });
     }
@@ -325,17 +337,14 @@ public class OpenChordsFragment extends Fragment {
             // If the server has a different folder title than our one
             // We should prompt the user to either update the server one or rename our folder
             // If the user decides to change the local folder, we need to query again
-            Log.d(TAG,"keepLocalFolderName:"+keepLocalFolderName+"  myView.folderToSync.getText():"+myView.folderToSync.getText().toString()+"  titleToShow:"+titleToShow);
             if (keepLocalFolderName==null && myView.folderToSync.getText() != null && titleToShow!=null && !titleToShow.isEmpty() && !myView.folderToSync.getText().toString().isEmpty() &&
                     !myView.folderToSync.getText().toString().equals(titleToShow)) {
                 OpenChordsFolderNameChangeBottomSheet openChordsFolderNameChangeBottomSheet = new OpenChordsFolderNameChangeBottomSheet(this,myView.folderToSync.getText().toString());
                 openChordsFolderNameChangeBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "OpenChordsFolderNameChangeBottomSheet");
-                myView.folderMessage.setText("");
 
             } else {
                 // Either the folder names are the same, or we didn't have a folder set (i.e. intent)
                 if (titleToShow!=null && !titleToShow.isEmpty()) {
-                    Log.d(TAG, "titleToShow:" + titleToShow + "  myView.folderToSync.getText():" + myView.folderToSync.getText().toString());
                     myView.folderToSync.setText(titleToShow);
                 }
                 folderChangedProgrammatically = false;
@@ -352,7 +361,6 @@ public class OpenChordsFragment extends Fragment {
             checkQueryHandler.removeCallbacks(checkQueryRunnable);
             // Use the folder chosen to query the server and get the results
             mainActivityInterface.getMainHandler().post(() -> {
-                myView.folderMessage.setText("");
                 if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                     changeButtonsEnable(false);
                     checkQueryHandler.postDelayed(checkQueryRunnable, 100);
@@ -383,10 +391,21 @@ public class OpenChordsFragment extends Fragment {
                         myView.folderToSync.setText(keepLocalFolderName);
                     }
                     changeButtonsEnable(true);
+                    boolean isOwner = mainActivityInterface.getOpenChordsAPI().getIsOwner();
+                    boolean isReadOnly = mainActivityInterface.getOpenChordsAPI().getIsReadOnly();
+
+                    // If we are the owner, we can upload fine.  If not, we can only upload if the folder isn't read only
+                    boolean canUpload = isOwner || !isReadOnly;
                     myView.uploadCount.setText(String.valueOf(mainActivityInterface.getOpenChordsAPI().getUploadCount()));
-                    myView.uploadLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getUploadCount()>0 ? View.VISIBLE:View.GONE);
+                    myView.uploadLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getUploadCount()>0 && canUpload? View.VISIBLE:View.GONE);
                     myView.downloadCount.setText(String.valueOf(mainActivityInterface.getOpenChordsAPI().getDownloadCount()));
                     myView.downloadLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getDownloadCount()>0 ? View.VISIBLE:View.GONE);
+                    myView.readOnly.setVisibility(isOwner ? View.VISIBLE : View.GONE);
+                    myView.readOnlyDivider.setVisibility(isOwner ? View.VISIBLE : View.GONE);
+                    changingReadOnlyProgrammatically = true;
+                    myView.readOnly.setChecked(isReadOnly);
+                    myView.readOnly.postDelayed(() -> changingReadOnlyProgrammatically = false,500);
+                    updateFolderMessage();
                 }
             });
         });
@@ -483,6 +502,30 @@ public class OpenChordsFragment extends Fragment {
         mainActivityInterface.getOpenChordsAPI().deleteRemoteSets();
     }
 
+    public void updateFolderMessage() {
+        // Try to update the folder message sensibly
+        int downloadCount = mainActivityInterface.getOpenChordsAPI().getDownloadCount();
+        int uploadCount = mainActivityInterface.getOpenChordsAPI().getUploadCount();
+
+        String ownerInfo = mainActivityInterface.getOpenChordsAPI().getIsOwner() ? owner_string + "\n\n" : not_owner_string + "\n\n";
+        String readOnlyInfo = mainActivityInterface.getOpenChordsAPI().getIsReadOnly() ? read_only_string + "\n\n" : "";
+
+        String folderInfo = "";
+        if (mainActivityInterface.getOpenChordsAPI().getServerFolder()==null) {
+            folderInfo = openchords_folder_doesnt_exist_string;
+            ownerInfo = "";
+            readOnlyInfo = "";
+        } else if (mainActivityInterface.getOpenChordsAPI().getFolderIsDifferentUuid()) {
+            folderInfo = folder_exists_but_is_different_string;
+            ownerInfo = "";
+            readOnlyInfo = "";
+        } else if (downloadCount==0 && uploadCount==0) {
+            folderInfo = sync_no_changes_required_string;
+        }
+        String message = ownerInfo + readOnlyInfo + folderInfo;
+
+        myView.folderMessage.postDelayed(() -> myView.folderMessage.setText(message),500);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
