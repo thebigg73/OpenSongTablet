@@ -263,12 +263,18 @@ public class MyToolbar extends MaterialToolbar {
                 hideView(author, false);
                 if (title!=null) {
                     title.setGravity(Gravity.BOTTOM|Gravity.START);
+                    key.setGravity(Gravity.BOTTOM|Gravity.START);
+                    capo.setGravity(Gravity.BOTTOM|Gravity.START);
+                    tempo.setGravity(Gravity.BOTTOM|Gravity.START);
                     setIcon.setScaleType(ImageView.ScaleType.FIT_END);
                 }
             } else if (author!=null) {
                 hideView(author, true);
                 if (title!=null) {
                     title.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+                    key.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
+                    capo.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
+                    tempo.setGravity(Gravity.CENTER_VERTICAL|Gravity.START);
                     setIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 }
             }

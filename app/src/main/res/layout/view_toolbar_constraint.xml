@@ -201,7 +201,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/songkey_ab"
-            app:layout_constraintTop_toTopOf="@+id/songkey_ab"
+            app:layout_constraintTop_toTopOf="@+id/songtitle_ab"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text=" [Capo]" />
@@ -220,7 +220,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/songcapo_ab"
-            app:layout_constraintTop_toTopOf="@+id/songcapo_ab"
+            app:layout_constraintTop_toTopOf="@+id/songtitle_ab"
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text=" 120bpm" />
