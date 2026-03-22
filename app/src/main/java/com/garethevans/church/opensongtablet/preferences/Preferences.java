@@ -700,6 +700,7 @@ public class Preferences extends Activity {
     // voiceLiveOverrideChannel         boolean     Should VoiceLive MIDI messages always use the MIDI channel preference regardless of the MIDI message channel sent (def:true)
     // voiceLiveSendKey                 boolean     Should the VoiceLive key message be sent by default (def:false)
     // webViewDesktop                   boolean     Should a desktop site be requested for UG online import (def:false)
+    // webServerMessage1-5              String      Saved webServer messages that we can edit and send to connected webServer clients (def:"")
     // whichSetCategory                 String      Which set category are we browsing (category___setname) (def:c.getString(R.string.mainfoldername))
     // whichMode                        String      Which app mode - Stage, Performance, Presentation (def:Performance)
     //

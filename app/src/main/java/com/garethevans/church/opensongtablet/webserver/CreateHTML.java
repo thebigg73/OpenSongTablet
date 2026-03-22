@@ -221,6 +221,7 @@ public class CreateHTML {
         string += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" id=\"viewport-meta\">\n";
         string += "</head>\n";
         string += "<body class=\"page\" onload=\"javascript:initPage();\">\n";
+        string += "<div id=\"alert-box\"></div>\n";
         return string;
     }
 
@@ -270,6 +271,8 @@ public class CreateHTML {
         string += "a:active            {color: " + pageTextColor + "; text-decoration:none; font-size:12pt;}\n";
         string += ".folderChooser      {width: fit-content; margin: 4px; border-collapse: collapse; background-color: " + pageBackgroundColor + "; font-size: 12pt; color:" + pageTextColor + ";}\n";
         string += "hr                  {width: 100%; color:" + pageTextColor + "; margin: 10px auto;}\n";
+        string += "#alert-box          {position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: " + secondaryColor + "; color: " + pageTextColor + "; padding: 15px 25px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); display: none; z-index: 5000; font-family: font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; text-align: center; animation: slideUp 0.4s ease-out;}\n";
+        string += "@keyframes slideUp  {from { bottom: -100px; opacity: 0; } to { bottom: 20px; opacity: 1; }}\n";
         string += "body,select,option  {width:100%; font-family:" + lyricsFontName + ", -apple-system, BlinkMacSystemFont, Tahoma, Verdana, sans-serif; color:" + pageTextColor + "; background-color: " + pageBackgroundColor + ";}\n";
         string += "</style>\n";
         return string;
@@ -385,9 +388,13 @@ public class CreateHTML {
         string += "    };\n";
         string += "    socket.onmessage = function(event) {\n";
         string += "      if (event.data === 'REFRESH') {\n";
-        string += "        if (localStorage.getItem('userListenToHost') !== 'false') {\n";
-        string += "          hostSong();\n";
-        string += "        }\n";
+        string += "        if (localStorage.getItem('userListenToHost') !== 'false') { hostSong(); }\n";
+        string += "      } else if (event.data.startsWith('MSG:')) {\n";
+        string += "        var msg = event.data.substring(4);\n";
+        string += "        var box = document.getElementById('alert-box');\n";
+        string += "        box.innerText = msg;\n";
+        string += "        box.style.display = 'block';\n";
+        string += "        setTimeout(function() { box.style.display = 'none'; }, 10000);\n";
         string += "      }\n";
         string += "    };\n";
         string += "  }\n";

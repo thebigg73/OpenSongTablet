@@ -42,6 +42,8 @@ public class WebServer {
     private String webServerPort;
     private WebServerFragment webServerFragment;
     private String ipAddress;
+    private String webServerMessage1, webServerMessage2, webServerMessage3, webServerMessage4,
+            webServerMessage5, webServerMessageTemp;
 
     // The strings used in the JavaScript and Ktor to identify what we want
     private final String hostsong="hostsong", songmenu="songmenu", setmenu = "setmenu", manualsong="song";
@@ -68,6 +70,14 @@ public class WebServer {
         if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
             callRunWebServer();
         }
+
+        // webServerMessage1-5/Temp are used to send messages to connected clients
+        webServerMessage1 = mainActivityInterface.getPreferences().getMyPreferenceString("webServerMessage1","");
+        webServerMessage2 = mainActivityInterface.getPreferences().getMyPreferenceString("webServerMessage2","");
+        webServerMessage3 = mainActivityInterface.getPreferences().getMyPreferenceString("webServerMessage3","");
+        webServerMessage4 = mainActivityInterface.getPreferences().getMyPreferenceString("webServerMessage4","");
+        webServerMessage5 = mainActivityInterface.getPreferences().getMyPreferenceString("webServerMessage5","");
+        webServerMessageTemp = mainActivityInterface.getPreferences().getMyPreferenceString("webServerMessageTemp","");
     }
 
     // Keep a reference for the webServerFragment
@@ -452,5 +462,64 @@ public class WebServer {
         mainActivityInterface.getPreferences().setMyPreferenceString("webServerPort",webServerPort);
         // Stop the server and start it again
         KtorServer.INSTANCE.start(c, Integer.parseInt(webServerPort));
+    }
+
+    /**
+     * Get the string saved to the webServerMessage1-5/Temp
+     * @param messageNumber - the number of the message (1-5).  If 0, then send webServerMessageTemp
+     * @return the message String
+     */
+    public String getWebServerMessage(int messageNumber) {
+        switch (messageNumber) {
+            case 1:
+                return webServerMessage1;
+            case 2:
+                return webServerMessage2;
+            case 3:
+                return webServerMessage3;
+            case 4:
+                return webServerMessage4;
+            case 5:
+                return webServerMessage5;
+            default:
+                return webServerMessageTemp;
+        }
+    }
+    /**
+     * Get the string saved to the webServerMessage1-5/Temp
+     * @param messageNumber - the number of the message (1-5).  If 0, then webServerMessageTemp
+     * @param message - the message to save to the preference
+     */
+    public void setWebServerMessage(int messageNumber, String message) {
+        String prefString = "webServerMessage"+message;
+        switch (messageNumber) {
+            case 1:
+                webServerMessage1 = message;
+                break;
+            case 2:
+                webServerMessage2 = message;
+                break;
+            case 3:
+                webServerMessage3 = message;
+                break;
+            case 4:
+                webServerMessage4 = message;
+                break;
+            case 5:
+                webServerMessage5 = message;
+                break;
+            default:
+                webServerMessageTemp = message;
+                prefString = "webServerMessageTemp";
+                break;
+        }
+        mainActivityInterface.getPreferences().setMyPreferenceString(prefString,message);
+    }
+    public void sendWebServerMessage(int message) {
+        try {
+            KtorServer.INSTANCE.pushPreferenceMessage(message, mainActivityInterface);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

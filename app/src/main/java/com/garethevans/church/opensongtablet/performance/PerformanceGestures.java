@@ -40,7 +40,7 @@ public class PerformanceGestures {
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
-    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "PerformanceGestures";
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
@@ -65,15 +65,18 @@ public class PerformanceGestures {
         displayInterface = (DisplayInterface) c;
         not_allowed_string = c.getString(R.string.not_allowed);
     }
+
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
     }
+
     public void setRecyclerView(MyRecyclerView recyclerView) {
         this.recyclerView = recyclerView;
-        if (mainActivityInterface!=null) {
+        if (mainActivityInterface != null) {
             this.recyclerView.initialiseRecyclerView(mainActivityInterface);
         }
     }
+
     public void setPresenterRecyclerView(RecyclerView presenterRecyclerView) {
         this.presenterRecyclerView = presenterRecyclerView;
     }
@@ -81,7 +84,7 @@ public class PerformanceGestures {
 
     public void doAction(String action, boolean isLongPress) {
         // Get the action we are trying to run
-        switch(action) {
+        switch (action) {
             case "pageButtons":
             case "?":
                 editPageButtons();
@@ -253,13 +256,13 @@ public class PerformanceGestures {
             // Chords
             case "transpose":
                 if (isLongPress) {
-                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords), 0);
                 } else {
                     transpose();
                 }
                 break;
             case "transposesettings":
-                mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
+                mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords), 0);
                 break;
             case "chordfingerings":
                 if (isLongPress) {
@@ -366,7 +369,7 @@ public class PerformanceGestures {
                     // If we are already set up to be a host from preferences and allowing connections when not in the settings
                     if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyHostMenuOnly() &&
                             (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() ||
-                            mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyPreferredHost())) {
+                                    mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyPreferredHost())) {
                         nearbyAdvertise();
                     } else if (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getNearbyHostMenuOnly() &&
                             (mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() ||
@@ -577,14 +580,14 @@ public class PerformanceGestures {
                 break;
             case "midiclock":
                 if (isLongPress) {
-                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi_clock),0);
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi_clock), 0);
                 } else {
                     midiClock();
                 }
                 break;
             case "midiclockburst":
                 if (isLongPress) {
-                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi_clock),0);
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi_clock), 0);
                 } else {
                     midiClockBurst();
                 }
@@ -635,6 +638,9 @@ public class PerformanceGestures {
             case "multitrack":
                 multiTrack();
                 break;
+            case "webservermessages":
+                webServerMessages();
+                break;
 
             // Projection
             case "showlogo":
@@ -659,7 +665,7 @@ public class PerformanceGestures {
 
     // Edit page buttons
     public void editPageButtons() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_page_buttons),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_page_buttons), 0);
     }
 
     // Song menu
@@ -676,13 +682,14 @@ public class PerformanceGestures {
     public void inlineSet() {
         mainActivityInterface.toggleInlineSet();
     }
+
     public void inlineSetSettings() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_inlineset),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_inlineset), 0);
     }
 
     // Edit song
     public void editSong() {
-        if (mainActivityInterface!=null && mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
+        if (mainActivityInterface != null && mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             // The song is a valid XML file
             // If this is in a set and it is a temp variation, we need to edit the original instead
             if (mainActivityInterface.getVariations().getIsNormalVariation(mainActivityInterface.getSong())) {
@@ -692,7 +699,7 @@ public class PerformanceGestures {
                 String[] getOriginal = mainActivityInterface.getVariations().getPreVariationInfo(mainActivityInterface.getSong());
                 mainActivityInterface.getSong().setFolder(getOriginal[0]);
                 mainActivityInterface.getSong().setFilename(getOriginal[1]);
-                mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(),false);
+                mainActivityInterface.getLoadSong().doLoadSongFile(mainActivityInterface.getSong(), false);
             } else {
                 mainActivityInterface.setWhattodo("");
             }
@@ -700,7 +707,7 @@ public class PerformanceGestures {
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_edit), 0);
 
         } else {
-            if (mainActivityInterface!=null) {
+            if (mainActivityInterface != null) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
             }
         }
@@ -752,16 +759,16 @@ public class PerformanceGestures {
 
     public void exportSet() {
         mainActivityInterface.setWhattodo("exportset");
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets_manage),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets_manage), 0);
     }
 
     public void manageSets() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_sets), 0);
     }
 
     // Redraw the lyrics page
     public void loadSong() {
-        mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),true);
+        mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), true);
     }
 
     // Stop or start autoscroll
@@ -772,7 +779,7 @@ public class PerformanceGestures {
     // Autoscroll settings
     public void autoscrollSettings() {
         AutoscrollBottomSheet autoscrollBottomSheet = new AutoscrollBottomSheet();
-        autoscrollBottomSheet.show(actionInterface.getMyFragmentManager(),"AutoscrollBottomSheet");
+        autoscrollBottomSheet.show(actionInterface.getMyFragmentManager(), "AutoscrollBottomSheet");
     }
 
     // Stop or start pads
@@ -783,7 +790,7 @@ public class PerformanceGestures {
     // Show the pad bottom sheet
     public void padSettings() {
         PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
-        padsBottomSheet.show(actionInterface.getMyFragmentManager(),"padsBottomSheet");
+        padsBottomSheet.show(actionInterface.getMyFragmentManager(), "padsBottomSheet");
     }
 
     // Start or stop the metronome
@@ -793,7 +800,7 @@ public class PerformanceGestures {
 
     // Open the metronome settings
     public void metronomeSettings() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_metronome),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_metronome), 0);
     }
 
     // Start or stop the drummer
@@ -829,11 +836,11 @@ public class PerformanceGestures {
         } else {
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
                 int pos = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-                if (pos==-1) {
+                if (pos == -1) {
                     pos = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
-                if (pos>-1 && pos<mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
-                    mainActivityInterface.loadSongFromSet(pos+1);
+                if (pos > -1 && pos < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
+                    mainActivityInterface.loadSongFromSet(pos + 1);
                 } else {
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.last_song));
                 }
@@ -850,11 +857,11 @@ public class PerformanceGestures {
         } else {
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
                 int pos = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-                if (pos==-1) {
+                if (pos == -1) {
                     pos = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
                 }
-                if (pos>0) {
-                    mainActivityInterface.loadSongFromSet(pos-1);
+                if (pos > 0) {
+                    mainActivityInterface.loadSongFromSet(pos - 1);
                 } else {
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.first_song));
                 }
@@ -875,7 +882,7 @@ public class PerformanceGestures {
                 return !scrollDown && !myZoomLayout.getScrolledToTop();
             }
 
-        // Check the recyclerView for images/pdfs
+            // Check the recyclerView for images/pdfs
         } else if (recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
                 int currentPos, finalPos;
@@ -888,9 +895,9 @@ public class PerformanceGestures {
                 }
                 if (scrollDown && currentPos <= finalPos && displayInterface.getIsSecondaryDisplaying()) {
                     return true;
-                } else if (scrollDown && currentPos<finalPos) {
+                } else if (scrollDown && currentPos < finalPos) {
                     return true;
-                } else if (scrollDown && currentPos==finalPos) {
+                } else if (scrollDown && currentPos == finalPos) {
                     return false;
                 } else {
                     return !scrollDown && currentPos > 0;
@@ -902,7 +909,7 @@ public class PerformanceGestures {
                     return !scrollDown && !recyclerView.getScrolledToTop();
                 }
             }
-        } else if (presenterRecyclerView!=null) {
+        } else if (presenterRecyclerView != null) {
             int currentPos, finalPos;
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 currentPos = mainActivityInterface.getSong().getPdfPageCurrent();
@@ -924,20 +931,20 @@ public class PerformanceGestures {
     // Scroll up/down
     public void scroll(boolean scrollDown) {
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
-                presenterRecyclerView!=null) {
+                presenterRecyclerView != null) {
             int newPosition = getPosition(scrollDown);
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                        presenterRecyclerView.getAdapter()!=null &&
-                        recyclerView.getAdapter()!=null) {
-                    ((PDFPageAdapter)recyclerView.getAdapter()).clickOnSection(newPosition);
+                        presenterRecyclerView.getAdapter() != null &&
+                        recyclerView.getAdapter() != null) {
+                    ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(newPosition);
                 }
             } else {
                 mainActivityInterface.getSong().setCurrentSection(newPosition);
-                if (presenterRecyclerView.getAdapter()!=null) {
-                    ((SongSectionsAdapter)presenterRecyclerView.getAdapter()).itemSelected(newPosition);
+                if (presenterRecyclerView.getAdapter() != null) {
+                    ((SongSectionsAdapter) presenterRecyclerView.getAdapter()).itemSelected(newPosition);
                 }
             }
 
@@ -948,7 +955,7 @@ public class PerformanceGestures {
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                        recyclerView.getAdapter()!=null) {
+                        recyclerView.getAdapter() != null) {
                     try {
                         ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(newPosition);
                     } catch (Exception e) {
@@ -957,7 +964,7 @@ public class PerformanceGestures {
                 }
             } else {
                 mainActivityInterface.getSong().setCurrentSection(newPosition);
-                if (recyclerView.getAdapter()!=null) {
+                if (recyclerView.getAdapter() != null) {
                     try {
                         ((StageSectionAdapter) recyclerView.getAdapter()).clickOnSection(newPosition);
                     } catch (Exception e) {
@@ -975,7 +982,7 @@ public class PerformanceGestures {
                 if (!scrollDown) {
                     width = -width;
                 }
-                recyclerView.smoothScrollBy(width,0);
+                recyclerView.smoothScrollBy(width, 0);
             } else {
                 // Scroll vertically
                 int height = (int) (mainActivityInterface.getGestures().getScrollDistance() * recyclerView.getHeight());
@@ -999,7 +1006,7 @@ public class PerformanceGestures {
         }
 
         scrollPosCheckHandler.removeCallbacks(scrollPosRunnable);
-        scrollPosCheckHandler.postDelayed(scrollPosRunnable,800);
+        scrollPosCheckHandler.postDelayed(scrollPosRunnable, 800);
 
     }
 
@@ -1020,7 +1027,7 @@ public class PerformanceGestures {
         if (scrollDown) {
             // GE only need to allow extra blank fake section if presenting
             if (displayInterface.getIsSecondaryDisplaying() &&
-                        currentPosition <= finalPosition) {
+                    currentPosition <= finalPosition) {
                 newPosition++;
             } else if (currentPosition < finalPosition) {
                 newPosition++;
@@ -1041,7 +1048,7 @@ public class PerformanceGestures {
         } else {
             randomSongBottomSheet = new RandomSongBottomSheet("song");
         }
-        randomSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"randomSongBottomSheet");
+        randomSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "randomSongBottomSheet");
     }
 
     // Transpose the chords
@@ -1066,12 +1073,12 @@ public class PerformanceGestures {
 
     // Custom chords
     public void customChords() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords_custom), 0);
     }
 
     // Chord settings
     public void chordSettings() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords),0);
+        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_chords), 0);
     }
 
     // Toggle between native, capo and both
@@ -1098,6 +1105,7 @@ public class PerformanceGestures {
         TunerBottomSheet tunerBottomSheet = new TunerBottomSheet();
         tunerBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "tunerBottomSheet");
     }
+
     // Show or hide the lyrics
     public void showLyrics() {
         boolean displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayLyrics", true);
@@ -1126,7 +1134,7 @@ public class PerformanceGestures {
         intent.putExtra(Intent.EXTRA_MIME_TYPES, input);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
-                    mainActivityInterface.getStorageAccess().getUriForItem("Media","",""));
+                    mainActivityInterface.getStorageAccess().getUriForItem("Media", "", ""));
         }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         mainActivityInterface.setWhattodo("audioplayer");
@@ -1136,6 +1144,11 @@ public class PerformanceGestures {
     // Show the multitrack player
     public void multiTrack() {
         mainActivityInterface.displayMultiTrack();
+    }
+
+    // Show the webServerMessages
+    public void webServerMessages() {
+        mainActivityInterface.openWebServerMessages();
     }
 
     // Show the abc notation

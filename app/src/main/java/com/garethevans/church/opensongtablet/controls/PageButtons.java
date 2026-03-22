@@ -333,6 +333,7 @@ public class PageButtons {
         prepareOption("audiorecorder",c.getString(R.string.audio_recorder),c.getString(R.string.select),"",R.drawable.microphone);
         prepareOption("audioplayer",c.getString(R.string.audio_player),c.getString(R.string.select),"",R.drawable.audio_player);
         prepareOption("multitrack",c.getString(R.string.multitrack_player),c.getString(R.string.show),"",R.drawable.multitrack);
+        prepareOption("webservermessages",c.getString(R.string.webserver_messages),c.getString(R.string.show),"",R.drawable.message);
 
         prepareOption("","","","",R.drawable.help);
 

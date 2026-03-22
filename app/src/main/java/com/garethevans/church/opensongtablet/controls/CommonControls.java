@@ -197,6 +197,7 @@ public class CommonControls {
         addString("audiorecorder",c.getString(R.string.audio_recorder));
         addString("audioplayer",c.getString(R.string.audio_player));
         addString("multitrack",c.getString(R.string.multitrack_player));
+        addString("webservermessages",c.getString(R.string.webserver_messages));
 
         addString("","");
 

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/webserver_messages" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="top|start"
+                android:gravity="top|start">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                    android:id="@+id/webServerMessage1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="top|start" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                    android:id="@+id/webServerMessage1Send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_gravity="center"
+                    app:fabSize="mini" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                    android:id="@+id/webServerMessage2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="top|start" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                    android:id="@+id/webServerMessage2Send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_gravity="center"
+                    app:fabSize="mini" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                    android:id="@+id/webServerMessage3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="top|start" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                    android:id="@+id/webServerMessage3Send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_gravity="center"
+                    app:fabSize="mini" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                    android:id="@+id/webServerMessage4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="top|start" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                    android:id="@+id/webServerMessage4Send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_gravity="center"
+                    app:fabSize="mini" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                    android:id="@+id/webServerMessage5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="top|start" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                    android:id="@+id/webServerMessage5Send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/arrow_right"
+                    android:layout_gravity="center"
+                    app:fabSize="mini" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -107,6 +107,18 @@
                         android:layout_weight="1"
                         android:hint="@string/web_server_info" />
                 </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/webServerMessages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/webserver_messages"
+                    android:hint="@string/webserver_messages_info"/>
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

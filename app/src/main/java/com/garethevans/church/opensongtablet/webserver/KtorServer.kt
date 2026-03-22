@@ -284,6 +284,30 @@ object KtorServer {
         }
     }
 
+    fun pushPreferenceMessage(messageNumber: Int, mainActivityInterface: MainActivityInterface) {
+        // Retrieve the message based on the preference index
+        val message = when (messageNumber) {
+            1 -> mainActivityInterface.webServer?.getWebServerMessage(1)
+            2 -> mainActivityInterface.webServer?.getWebServerMessage(2)
+            3 -> mainActivityInterface.webServer?.getWebServerMessage(3)
+            4 -> mainActivityInterface.webServer?.getWebServerMessage(4)
+            5 -> mainActivityInterface.webServer?.getWebServerMessage(5)
+            else -> null
+        } ?: return
+
+        val currentSessions = synchronized(sessions) { sessions.toList() }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            currentSessions.forEach { session ->
+                try {
+                    // Prefix with 'MSG:' so the JS knows this is an alert, not a refresh command
+                    session.send("MSG:$message")
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to send message: ${e.message}")
+                }
+            }
+        }
+    }
 }
 
 

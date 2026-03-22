@@ -300,6 +300,8 @@ public class WebServerFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
         });
+        myView.webServerMessages.setOnClickListener(view -> mainActivityInterface.openWebServerMessages());
+
     }
 
     public void setQRHotspot(Bitmap bitmap, String ssid, String password) {

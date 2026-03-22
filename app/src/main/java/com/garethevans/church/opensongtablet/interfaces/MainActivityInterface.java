@@ -115,6 +115,7 @@ public interface MainActivityInterface {
     boolean getFirstRun();
     int getOrientation();
     WebServer getWebServer();
+    void openWebServerMessages();
     LocalWiFiHost getLocalWiFiHost();
     void recreateActivity();
 
@@ -171,7 +172,6 @@ public interface MainActivityInterface {
     Variations getVariations();
     SetMenuFragment getSetMenuFragment();
     OpenSongSetBundle getOpenSongSetBundle();
-
 
     // Menus
     void lockDrawer(boolean lock);
