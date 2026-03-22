@@ -849,6 +849,11 @@
     <string name="openchords_info">Synchronisez le dossier avec OpenChords.  Cela permet à d\'autres applications telles que JustChords de se synchroniser avec OpenSongApp</string>
     <string name="openchords_link">Partager le lien pour le dossier</string>
     <string name="openchords_link_info">Si un dossier a déjà été téléchargé sur le serveur OpenChords, vous pouvez partager un lien que d\'autres pourront utiliser</string>
+    <string name="openchords_not_owner">Il s\'agit d\'un dossier partagé par un autre utilisateur</string>
+    <string name="openchords_owner">Ce dossier vous appartient.</string>
+    <string name="openchords_readonly">Ce dossier est marqué comme étant en lecture seule.</string>
+    <string name="openchords_readonly_switch">Lecture seule</string>
+    <string name="openchords_readonly_switch_info">Modifiez les paramètres de ce dossier pour les autres utilisateurs qui utilisent le lien.</string>
     <string name="opensong_media">Les enregistrements audio sont enregistrés dans /OpenSong/Media/</string>
     <string name="optional">Optionnel</string>
     <string name="order">Commande</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Certains navigateurs et routeurs Wi-Fi bloquent certains numéros de port. Si vous, ou d\'autres personnes, ne parvenez pas à visualiser la page Web via le lien ci-dessous, essayez de modifier le numéro de port.</string>
     <string name="web_view_desktop">Demander un site de bureau</string>
     <string name="web_view_desktop_info">Cela devrait améliorer la mise en page des chansons et éviter que le site Web n’essaie de vous forcer à installer son application mobile</string>
+    <string name="webserver_messages">Messages du serveur Web</string>
+    <string name="webserver_messages_info">Envoyer des messages aux appareils connectés</string>
     <string name="website">Site Internet</string>
     <string name="welcome">Bienvenue sur OpenSongApp</string>
     <string name="where">Où</string>

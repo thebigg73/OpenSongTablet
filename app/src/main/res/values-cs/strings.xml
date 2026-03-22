@@ -849,6 +849,11 @@
     <string name="openchords_info">Gids Sinkroniseer se setkaly s OpenChords.  Dit laat ander toepassings soos JustChords toe om om met OpenSongApp te sinchroniseer</string>
     <string name="openchords_link">Deel skakel vir gids</string>
     <string name="openchords_link_info">Jak je \'n gids reeds na die OpenChords-bediener opgelaai, kan jy \'n skakel deel vir ander om te gebruik</string>
+    <string name="openchords_not_owner">Toto je složka sdílená jiným uživatelem</string>
+    <string name="openchords_owner">Vlastníte tuto složku</string>
+    <string name="openchords_readonly">Tato složka je označena jako pouze pro čtení.</string>
+    <string name="openchords_readonly_switch">Pouze pro čtení</string>
+    <string name="openchords_readonly_switch_info">Změnit nastavení této složky pro ostatní uživatele, kteří odkaz používají</string>
     <string name="opensong_media">Zvukové nahrávky se ukládají do /OpenSong/Media/</string>
     <string name="optional">Volitelný</string>
     <string name="order">Objednávka</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Některé prohlížeče a Wi-Fi routery blokují určitá čísla portů. Pokud vy nebo jiní lidé nemůžete zobrazit webovou stránku pomocí níže uvedeného odkazu, zkuste číslo portu změnit.</string>
     <string name="web_view_desktop">Vyžádejte si web pro počítače</string>
     <string name="web_view_desktop_info">To by mělo zlepšit rozložení skladeb a zabránit tomu, aby se vás web snažil donutit k instalaci jejich mobilní aplikace</string>
+    <string name="webserver_messages">Zprávy webového serveru</string>
+    <string name="webserver_messages_info">Odesílání zpráv na připojená zařízení</string>
     <string name="website">Webová stránka</string>
     <string name="welcome">Vítejte v OpenSongApp</string>
     <string name="where">Kde</string>

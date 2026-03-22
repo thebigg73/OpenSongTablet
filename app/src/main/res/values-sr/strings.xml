@@ -1460,4 +1460,11 @@
     <string name="drummer_kit">Bubnjar komplet</string>
     <string name="web_server_port_info">Neki pretraživači i Vi-Fi ruteri blokiraju određene brojeve portova.  Ako vi ili drugi ne možete da vidite veb stranicu koristeći link ispod, pokušajte da promenite broj porta</string>
     <string name="web_server_port">Broj porta</string>
+    <string name="openchords_not_owner">Ovo je fascikla koju deli drugi korisnik</string>
+    <string name="openchords_readonly">Ova fascikla je označena kao samo za čitanje</string>
+    <string name="openchords_readonly_switch">Samo za čitanje</string>
+    <string name="openchords_readonly_switch_info">Promenite postavke ovog foldera za druge korisnike koji koriste vezu</string>
+    <string name="webserver_messages">Poruke veb servera</string>
+    <string name="webserver_messages_info">Slanje poruka na povezane uređaje</string>
+    <string name="openchords_owner">Vi ste vlasnik ove fascikle</string>
 </resources>

@@ -849,6 +849,11 @@
     <string name="openchords_info">OpenChords සමඟ ෆෝල්ඩරය සමමුහුර්ත කරන්න.  මෙය JustChords වැනි අනෙකුත් යෙදුම් වලට OpenSongApp සමඟ සමමුහුර්ත කිරීමට ඉඩ සලසයි</string>
     <string name="openchords_link">ෆෝල්ඩරය සඳහා සබැඳිය බෙදා ගන්න</string>
     <string name="openchords_link_info">ෆෝල්ඩරයක් දැනටමත් OpenChords සේවාදායකය වෙත උඩුගත කර ඇත්නම් ඔබට අන් අයට භාවිතා කිරීමට සබැඳියක් බෙදා ගත හැක</string>
+    <string name="openchords_not_owner">මෙය වෙනත් පරිශීලකයෙකු විසින් බෙදා ගන්නා ලද ෆෝල්ඩරයකි.</string>
+    <string name="openchords_owner">මෙම ෆෝල්ඩරය ඔබ සතුයි</string>
+    <string name="openchords_readonly">මෙම ෆෝල්ඩරය කියවීමට පමණක් බව සලකුණු කර ඇත.</string>
+    <string name="openchords_readonly_switch">කියවීමට පමණි</string>
+    <string name="openchords_readonly_switch_info">සබැඳිය භාවිතා කරන අනෙකුත් පරිශීලකයින් සඳහා මෙම ෆෝල්ඩරයේ සැකසුම් වෙනස් කරන්න.</string>
     <string name="opensong_media">ශ්‍රව්‍ය පටිගත කිරීම් /OpenSong/Media/ වෙත සුරකිනු ලැබේ</string>
     <string name="optional">විකල්ප</string>
     <string name="order">ඇණවුම් කරන්න</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">සමහර බ්‍රව්සර් සහ Wi-Fi රවුටර් ඇතැම් තොට අංක අවහිර කරයි. ඔබට හෝ වෙනත් අයට පහත සබැඳිය භාවිතයෙන් වෙබ් පිටුව බැලීමට නොහැකි නම්, තොට අංකය වෙනස් කිරීමට උත්සාහ කරන්න.</string>
     <string name="web_view_desktop">ඩෙස්ක්ටොප් අඩවිය ඉල්ලන්න</string>
     <string name="web_view_desktop_info">මෙය ගීතවල පිරිසැලසුම වැඩිදියුණු කළ යුතු අතර වෙබ් අඩවිය ඔවුන්ගේ ජංගම යෙදුම ස්ථාපනය කිරීමට ඔබට බල කිරීමට උත්සාහ කිරීම වැළැක්විය යුතුය</string>
+    <string name="webserver_messages">වෙබ් සේවාදායක පණිවිඩ</string>
+    <string name="webserver_messages_info">සම්බන්ධිත උපාංග වෙත පණිවිඩ යවන්න</string>
     <string name="website">වෙබ් අඩවිය</string>
     <string name="welcome">OpenSongApp වෙත සාදරයෙන් පිළිගනිමු</string>
     <string name="where">කොහෙද</string>

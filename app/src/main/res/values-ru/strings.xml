@@ -849,6 +849,11 @@
     <string name="openchords_info">Синхронизировать папку с OpenChords.  Это позволяет другим приложениям, таким как JustChords, синхронизироваться с OpenSongApp.</string>
     <string name="openchords_link">Поделиться ссылкой на папку</string>
     <string name="openchords_link_info">Если папка уже загружена на сервер OpenChords, вы можете поделиться ссылкой, чтобы другие могли ее использовать.</string>
+    <string name="openchords_not_owner">Это папка, которой поделился другой пользователь.</string>
+    <string name="openchords_owner">Вы являетесь владельцем этой папки.</string>
+    <string name="openchords_readonly">Эта папка помечена как доступная только для чтения.</string>
+    <string name="openchords_readonly_switch">Только для чтения</string>
+    <string name="openchords_readonly_switch_info">Измените настройки этой папки для других пользователей, которые используют эту ссылку.</string>
     <string name="opensong_media">Аудиозаписи сохраняются в /OpenSong/Media/.</string>
     <string name="optional">Опционально</string>
     <string name="order">Заказ</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Некоторые браузеры и Wi-Fi-роутеры блокируют определенные номера портов. Если вы или другие пользователи не можете просмотреть веб-страницу по ссылке ниже, попробуйте изменить номер порта.</string>
     <string name="web_view_desktop">Запросить десктопный сайт</string>
     <string name="web_view_desktop_info">Это должно улучшить макет песен и избежать попыток веб-сайта заставить вас установить их мобильное приложение</string>
+    <string name="webserver_messages">Сообщения веб-сервера</string>
+    <string name="webserver_messages_info">Отправляйте сообщения на подключенные устройства.</string>
     <string name="website">Веб-сайт</string>
     <string name="welcome">Добро пожаловать в OpenSongApp</string>
     <string name="where">Где</string>

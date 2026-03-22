@@ -849,6 +849,11 @@
     <string name="openchords_info">将文件夹与 OpenChords 同步。  这允许其他应用程序（例如 JustChords）与 OpenSongApp 同步</string>
     <string name="openchords_link">共享文件夹链接</string>
     <string name="openchords_link_info">如果文件夹已上传到 OpenChords 服务器，您可以共享链接供其他人使用</string>
+    <string name="openchords_not_owner">这是其他用户共享的文件夹</string>
+    <string name="openchords_owner">此文件夹归您所有</string>
+    <string name="openchords_readonly">此文件夹标记为只读</string>
+    <string name="openchords_readonly_switch">仅阅读</string>
+    <string name="openchords_readonly_switch_info">更改此文件夹的设置，以便其他使用此链接的用户也能访问。</string>
     <string name="opensong_media">录音保存到 /OpenSong/Media/</string>
     <string name="optional">选修的</string>
     <string name="order">命令</string>
@@ -1453,6 +1458,8 @@
     <string name="web_server_port_info">某些浏览器和 Wi-Fi 路由器会屏蔽某些端口号。如果您或其他用户无法通过以下链接查看网页，请尝试更改端口号。</string>
     <string name="web_view_desktop">请求桌面站点</string>
     <string name="web_view_desktop_info">这应该可以改善歌曲的布局，并避免网站试图强迫您安装他们的移动应用程序</string>
+    <string name="webserver_messages">Web服务器消息</string>
+    <string name="webserver_messages_info">向已连接的设备发送消息</string>
     <string name="website">网站</string>
     <string name="welcome">欢迎来到 OpenSongApp</string>
     <string name="where">在哪里</string>

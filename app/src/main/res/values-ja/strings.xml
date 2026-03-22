@@ -849,6 +849,11 @@
     <string name="openchords_info">OpenChordsとフォルダーを同期します。  これにより、JustChords などの他のアプリが OpenSongApp と同期できるようになります</string>
     <string name="openchords_link">フォルダーのリンクを共有する</string>
     <string name="openchords_link_info">フォルダーが既に OpenChords サーバーにアップロードされている場合は、他のユーザーが使用できるリンクを共有できます。</string>
+    <string name="openchords_not_owner">これは他のユーザーが共有したフォルダです</string>
+    <string name="openchords_owner">このフォルダの所有者はあなたです</string>
+    <string name="openchords_readonly">このフォルダは読み取り専用としてマークされています</string>
+    <string name="openchords_readonly_switch">読み取り専用</string>
+    <string name="openchords_readonly_switch_info">このリンクを使用する他のユーザー向けに、このフォルダの設定を変更します。</string>
     <string name="opensong_media">オーディオ録音は /OpenSong/Media/ に保存されます。</string>
     <string name="optional">オプション</string>
     <string name="order">注文</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">一部のブラウザやWi-Fiルーターは特定のポート番号をブロックします。あなたや他のユーザーが以下のリンクからウェブページを表示できない場合は、ポート番号を変更してみてください。</string>
     <string name="web_view_desktop">デスクトップサイトをリクエストする</string>
     <string name="web_view_desktop_info">これにより、曲のレイアウトが改善され、Webサイトがモバイルアプリのインストールを強制しようとするのを回避できます</string>
+    <string name="webserver_messages">ウェブサーバーメッセージ</string>
+    <string name="webserver_messages_info">接続されたデバイスにメッセージを送信する</string>
     <string name="website">Webサイト</string>
     <string name="welcome">OpenSongAppへようこそ</string>
     <string name="where">どこ</string>

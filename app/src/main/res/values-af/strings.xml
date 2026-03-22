@@ -849,6 +849,11 @@
     <string name="openchords_info">Sinkroniseer gids met OpenChords.  Dit laat ander toepassings soos JustChords toe om met OpenSongApp te sinchroniseer</string>
     <string name="openchords_link">Deel skakel vir gids</string>
     <string name="openchords_link_info">As \'n gids reeds na die OpenChords-bediener opgelaai is, kan jy \'n skakel deel vir ander om te gebruik</string>
+    <string name="openchords_not_owner">Hierdie is \'n vouer wat deur \'n ander gebruiker gedeel word</string>
+    <string name="openchords_owner">Jy besit hierdie vouer</string>
+    <string name="openchords_readonly">Hierdie vouer is as slegs leesbaar gemerk</string>
+    <string name="openchords_readonly_switch">Lees slegs</string>
+    <string name="openchords_readonly_switch_info">Verander die instellings van hierdie vouer vir ander gebruikers wat die skakel gebruik</string>
     <string name="opensong_media">Oudio-opnames word gestoor na /OpenSong/Media/</string>
     <string name="optional">Opsioneel</string>
     <string name="order">Bestel</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Sommige blaaiers en Wi-Fi-routers blokkeer sekere poortnommers. As jy, of ander, nie die webblad met die skakel hieronder kan sien nie, probeer om die poortnommer te verander.</string>
     <string name="web_view_desktop">Versoek lessenaarwebwerf</string>
     <string name="web_view_desktop_info">Dit moet die uitleg van liedjies verbeter en vermy dat die webwerf u probeer dwing om hul mobiele app te installeer</string>
+    <string name="webserver_messages">Webbedienerboodskappe</string>
+    <string name="webserver_messages_info">Stuur boodskappe na gekoppelde toestelle</string>
     <string name="website">Webwerf</string>
     <string name="welcome">Welkom by OpenSongApp</string>
     <string name="where">Waar</string>

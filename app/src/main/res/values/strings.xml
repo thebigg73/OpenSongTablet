@@ -1849,4 +1849,11 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="openchords_owner">You own this folder</string>
+    <string name="openchords_not_owner">This is a folder shared by another user</string>
+    <string name="openchords_readonly">This folder is marked as read only</string>
+    <string name="openchords_readonly_switch">Read only</string>
+    <string name="openchords_readonly_switch_info">Change the settings of this folder for other users who use the link</string>
+    <string name="webserver_messages">Webserver messages</string>
+    <string name="webserver_messages_info">Send messages to connected devices</string>
 </resources>

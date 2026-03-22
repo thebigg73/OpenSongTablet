@@ -849,6 +849,11 @@
     <string name="openchords_info">Synkronisera mapp med OpenChords.  Detta gör att andra appar som JustChords kan synkroniseras med OpenSongApp</string>
     <string name="openchords_link">Dela länk för mapp</string>
     <string name="openchords_link_info">Om en mapp redan har laddats upp till OpenChords-servern kan du dela en länk som andra kan använda</string>
+    <string name="openchords_not_owner">Detta är en mapp som delas av en annan användare</string>
+    <string name="openchords_owner">Du äger den här mappen</string>
+    <string name="openchords_readonly">Den här mappen är markerad som skrivskyddad</string>
+    <string name="openchords_readonly_switch">Endast läsning</string>
+    <string name="openchords_readonly_switch_info">Ändra inställningarna för den här mappen för andra användare som använder länken</string>
     <string name="opensong_media">Ljudinspelningar sparas till /OpenSong/Media/</string>
     <string name="optional">Frivillig</string>
     <string name="order">Beställa</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Vissa webbläsare och Wi-Fi-routrar blockerar vissa portnummer. Om du, eller andra, inte kan visa webbsidan med hjälp av länken nedan kan du försöka ändra portnumret.</string>
     <string name="web_view_desktop">Begär skrivbordswebbplats</string>
     <string name="web_view_desktop_info">Detta bör förbättra layouten på låtar och undvika att webbplatsen försöker tvinga dig att installera deras mobilapp</string>
+    <string name="webserver_messages">Webservermeddelanden</string>
+    <string name="webserver_messages_info">Skicka meddelanden till anslutna enheter</string>
     <string name="website">Hemsida</string>
     <string name="welcome">Välkommen till OpenSongApp</string>
     <string name="where">Där</string>

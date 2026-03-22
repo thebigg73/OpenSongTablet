@@ -849,6 +849,11 @@
     <string name="openchords_info">Συγχρονισμός φακέλου με OpenChords.  Αυτό επιτρέπει σε άλλες εφαρμογές όπως το JustChords να συγχρονίζονται με το OpenSongApp</string>
     <string name="openchords_link">Κοινή χρήση συνδέσμου για φάκελο</string>
     <string name="openchords_link_info">Εάν ένας φάκελος έχει ήδη μεταφορτωθεί στον διακομιστή OpenChords, μπορείτε να μοιραστείτε έναν σύνδεσμο για χρήση από άλλους</string>
+    <string name="openchords_not_owner">Αυτός είναι ένας φάκελος που χρησιμοποιείται από άλλον χρήστη</string>
+    <string name="openchords_owner">Είστε κάτοχος αυτού του φακέλου</string>
+    <string name="openchords_readonly">Αυτός ο φάκελος έχει επισημανθεί ως μόνο για ανάγνωση</string>
+    <string name="openchords_readonly_switch">Μόνο για ανάγνωση</string>
+    <string name="openchords_readonly_switch_info">Αλλάξτε τις ρυθμίσεις αυτού του φακέλου για άλλους χρήστες που χρησιμοποιούν τον σύνδεσμο</string>
     <string name="opensong_media">Οι ηχογραφήσεις αποθηκεύονται στο /OpenSong/Media/</string>
     <string name="optional">Προαιρετικός</string>
     <string name="order">Παραγγελία</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Ορισμένα προγράμματα περιήγησης και δρομολογητές Wi-Fi αποκλείουν ορισμένους αριθμούς θυρών. Εάν εσείς ή άλλοι δεν μπορείτε να δείτε την ιστοσελίδα χρησιμοποιώντας τον παρακάτω σύνδεσμο, δοκιμάστε να αλλάξετε τον αριθμό θύρας.</string>
     <string name="web_view_desktop">Ζητήστε ιστότοπο για υπολογιστές</string>
     <string name="web_view_desktop_info">Αυτό θα βελτιώσει τη διάταξη των τραγουδιών και θα αποφύγει τον ιστότοπο να προσπαθεί να σας αναγκάσει να εγκαταστήσετε την εφαρμογή του για κινητά</string>
+    <string name="webserver_messages">Μηνύματα διακομιστή ιστού</string>
+    <string name="webserver_messages_info">Αποστολή μηνυμάτων σε συνδεδεμένες συσκευές</string>
     <string name="website">Δικτυακός τόπος</string>
     <string name="welcome">Καλώς ήρθατε στο OpenSongApp</string>
     <string name="where">Οπου</string>

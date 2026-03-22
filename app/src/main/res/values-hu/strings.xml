@@ -849,6 +849,11 @@
     <string name="openchords_info">Szinkronizálja a mappát az OpenChords-szal.  Ez lehetővé teszi, hogy más alkalmazások, például a JustChords szinkronizáljanak az OpenSongApp alkalmazással</string>
     <string name="openchords_link">Link megosztása a mappához</string>
     <string name="openchords_link_info">Ha egy mappa már fel van töltve az OpenChords szerverre, megoszthat egy hivatkozást mások számára</string>
+    <string name="openchords_not_owner">Ez egy másik felhasználó által megosztott mappa</string>
+    <string name="openchords_owner">Ön a mappa tulajdonosa</string>
+    <string name="openchords_readonly">Ez a mappa írásvédettként van megjelölve</string>
+    <string name="openchords_readonly_switch">Csak olvasható</string>
+    <string name="openchords_readonly_switch_info">Módosítsa a mappa beállításait a hivatkozást használó többi felhasználó számára</string>
     <string name="opensong_media">A hangfelvételek mentése az /OpenSong/Media/ mappába</string>
     <string name="optional">Választható</string>
     <string name="order">Rendelés</string>
@@ -1452,6 +1457,7 @@
     <string name="web_server_port_info">Néhány böngésző és Wi-Fi routerek blokkolnak bizonyos portszámokat. Ha Ön vagy mások nem tudják megtekinteni a weboldalt az alábbi linken keresztül, próbálja meg módosítani a portszámot.</string>
     <string name="web_view_desktop">Asztali webhely kérése</string>
     <string name="web_view_desktop_info">Ennek javítania kell a dalok elrendezését, és el kell kerülnie, hogy a webhely megpróbálja kényszeríteni a mobilalkalmazás telepítésére</string>
+    <string name="webserver_messages">Webszerver üzenetek</string>
     <string name="website">Weboldal</string>
     <string name="welcome">Üdvözli az OpenSongApp</string>
     <string name="where">Ahol</string>
@@ -1460,4 +1466,5 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="webserver_messages_info">Üzenetküldés csatlakoztatott eszközökhöz</string>
 </resources>

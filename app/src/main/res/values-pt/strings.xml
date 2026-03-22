@@ -849,6 +849,11 @@
     <string name="openchords_info">Sincronize a pasta com OpenChords.  Isso permite que outros aplicativos, como JustChords, sincronizem com OpenSongApp</string>
     <string name="openchords_link">Compartilhar link para pasta</string>
     <string name="openchords_link_info">Se uma pasta já foi carregada no servidor OpenChords, você pode compartilhar um link para que outras pessoas possam usar</string>
+    <string name="openchords_not_owner">Esta é uma pasta compartilhada por outro usuário.</string>
+    <string name="openchords_owner">Você é o proprietário desta pasta.</string>
+    <string name="openchords_readonly">Esta pasta está marcada como somente leitura.</string>
+    <string name="openchords_readonly_switch">Somente leitura</string>
+    <string name="openchords_readonly_switch_info">Alterar as configurações desta pasta para outros usuários que utilizam o link.</string>
     <string name="opensong_media">As gravações de áudio são salvas em /OpenSong/Media/</string>
     <string name="optional">Opcional</string>
     <string name="order">Ordem</string>
@@ -1452,6 +1457,8 @@
     <string name="web_server_port_info">Alguns navegadores e roteadores Wi-Fi bloqueiam determinados números de porta. Se você, ou outras pessoas, não conseguirem visualizar a página da web usando o link abaixo, tente alterar o número da porta.</string>
     <string name="web_view_desktop">Solicitar site para desktop</string>
     <string name="web_view_desktop_info">Isso deve melhorar o layout das músicas e evitar que o site tente forçá-lo a instalar seu aplicativo móvel</string>
+    <string name="webserver_messages">mensagens do servidor web</string>
+    <string name="webserver_messages_info">Enviar mensagens para dispositivos conectados</string>
     <string name="website">Local na rede Internet</string>
     <string name="welcome">Bem-vindo ao OpenSongApp</string>
     <string name="where">Onde</string>
