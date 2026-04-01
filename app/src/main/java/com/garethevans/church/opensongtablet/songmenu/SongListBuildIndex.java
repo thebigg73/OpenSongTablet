@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -90,7 +91,7 @@ public class SongListBuildIndex {
     // This is only called when we are full indexing
     public void buildBasicFromFiles() {
         // Check and remove any zero byte/corrupt files before continuing
-        mainActivityInterface.getStorageAccess().removeZeroLengthFiles();
+        //mainActivityInterface.getStorageAccess().removeZeroLengthFiles();
 
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(false);
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
@@ -121,6 +122,7 @@ public class SongListBuildIndex {
             int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
             progressText.setPadding(padding,padding,padding,padding);
             progressText.setText("0%");
+            progressText.setCompoundDrawableTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
             progressText.setTextColor(mainActivityInterface.getPalette().textColor);
             progressText.setVisibility(View.VISIBLE);
         });

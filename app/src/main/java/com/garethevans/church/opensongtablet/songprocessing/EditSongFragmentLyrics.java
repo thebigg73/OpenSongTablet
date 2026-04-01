@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -526,18 +527,27 @@ public class EditSongFragmentLyrics extends Fragment {
             // This comes from the bottom sheet
             // Try to get the current text position
             String text = myView.lyrics.getText().toString();
-            if (text.length() > cursorPos && cursorPos != -1) {
+            if (text.length() >= cursorPos && cursorPos != -1) {
                 if (bitToAdd.startsWith("__CHORD__")) {
                     bitToAdd = bitToAdd.replace("__CHORD__","");
                     text = text.substring(0, cursorPos) + bitToAdd + "  " + text.substring(cursorPos);
                 } else {
-                    text = text.substring(0, cursorPos) + bitToAdd + "\n" + text.substring(cursorPos);
+                    if (bitToAdd.startsWith("[") && bitToAdd.endsWith("]")) {
+                        bitToAdd = "\n" + bitToAdd;
+                    }
+                    text = text.substring(0, cursorPos) + bitToAdd + text.substring(cursorPos);
                 }
                 myView.lyrics.setText(text);
             }
+            Log.d(TAG,"bitToAdd:"+bitToAdd+". moveCursorBy:"+moveCursorBy);
+            Log.d(TAG,"myView.lyrics.getText():"+myView.lyrics.getText());
+            Log.d(TAG,"myView.lyrics.getSelectionStart:"+myView.lyrics.getSelectionStart());
+            Log.d(TAG,"myView.lyrics.getSelectionEnd:"+myView.lyrics.getSelectionEnd());
+            Log.d(TAG,"myView.lyrics.getText().length():"+myView.lyrics.getText().length());
+            Log.d(TAG,"cursorPos:"+cursorPos+"  moverCursorBy:"+moveCursorBy);
+
             // Setting the position should open the keyboard
             myView.lyrics.requestFocus();
-            myView.lyrics.setSelection(cursorPos + moveCursorBy);
             // Also do this in 1 second time to allow for keyboard opening
             mainActivityInterface.getMainHandler().postDelayed(() -> {
                 if (myView!=null) {
