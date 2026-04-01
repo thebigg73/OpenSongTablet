@@ -623,6 +623,8 @@
     <string name="key">Tonart</string>
     <string name="key_original">Originalschlüssel</string>
     <string name="key_original_transpose">Transponieren Sie den Song zurück in die ursprüngliche Tonart</string>
+    <string name="keyboard_smart_ribbon">Tastatur-Smart-Ribbon</string>
+    <string name="keyboard_smart_ribbon_info">Beim Bearbeiten von Songtexten wird das intelligente Menüband über der Bildschirmtastatur angezeigt und bietet Schnellzugriffe zum Einfügen verschiedener Abschnitte in den Text. Ist eine Tonart festgelegt, werden auch häufig verwendete Akkorde angezeigt.</string>
     <string name="keyword">Stichwort</string>
     <string name="kit_kick">Kick</string>
     <string name="kit_snare">Schlinge</string>

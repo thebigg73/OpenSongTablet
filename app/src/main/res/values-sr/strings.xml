@@ -1467,4 +1467,6 @@
     <string name="webserver_messages">Poruke veb servera</string>
     <string name="webserver_messages_info">Slanje poruka na povezane uređaje</string>
     <string name="openchords_owner">Vi ste vlasnik ove fascikle</string>
+    <string name="keyboard_smart_ribbon">Tastatura pametna traka</string>
+    <string name="keyboard_smart_ribbon_info">Prilikom uređivanja tekstova pesama pametna traka je prikazana iznad tastature na ekranu i da će dati shorcuts da dodate različite delove u tekstovima.  Ako je takođe postavljen ključ, on će takođe prikazati najčešće korišćene akorde.</string>
 </resources>

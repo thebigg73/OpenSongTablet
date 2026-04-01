@@ -10,8 +10,10 @@
     <string name="abc_popup_width">ポップアップの幅</string>
     <string name="abc_popup_width_info">画面幅に対するポップアップ ウィンドウの幅のパーセンテージ</string>
     <string name="abc_transpose_to_song">曲のキーに自動移調</string>
-    <string name="abc_transpose_to_song_info">Se una chiave è impostata nella canzone e nella notazione abc, l\'app proverà a regolare l\'output della notazione abc in modo che corrisponda alla chiave della canzone.</string>
+    <string name="abc_transpose_to_song_info">曲とabc記譜の両方にキーが設定されている場合、アプリはabc記譜の出力を調整して曲の調に合わせて調整しようとします。</string>
     <string name="about">約</string>
+    <string name="keyboard_smart_ribbon">キーボードスマートリボン</string>
+    <string name="keyboard_smart_ribbon_info">歌詞を編集する際、画面上のキーボードの上にスマートリボンが表示され、歌詞に様々なセクションを追加するためのショートカットが提供されます。キーが設定されている場合は、よく使われるコードも表示されます。</string>
     <string name="about_description">アプリ情報、ヘルプ、ユーザーガイドなど。</string>
     <string name="acceleration">加速度</string>
     <string name="accent">訛り</string>

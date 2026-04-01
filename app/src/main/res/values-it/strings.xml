@@ -623,6 +623,8 @@
     <string name="key">Tonalità</string>
     <string name="key_original">Tonalità originale</string>
     <string name="key_original_transpose">Ritrasporre il brano alla tonalità originale</string>
+    <string name="keyboard_smart_ribbon">Barra multifunzione intelligente della tastiera</string>
+    <string name="keyboard_smart_ribbon_info">Durante la modifica del testo di una canzone, la barra multifunzione intelligente viene visualizzata sopra la tastiera virtuale e offre scorciatoie per aggiungere diverse sezioni al testo. Se è stata impostata anche una tonalità, verranno mostrati anche gli accordi più comuni.</string>
     <string name="keyword">Parola chiave</string>
     <string name="kit_kick">Calcio</string>
     <string name="kit_snare">Trappola</string>

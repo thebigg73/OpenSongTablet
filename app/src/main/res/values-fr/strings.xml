@@ -623,6 +623,8 @@
     <string name="key">Tonalité</string>
     <string name="key_original">Tonalaté d’origine</string>
     <string name="key_original_transpose">Transposer la chanson à la tonalité d’origine</string>
+    <string name="keyboard_smart_ribbon">Ruban intelligent du clavier</string>
+    <string name="keyboard_smart_ribbon_info">Lors de la modification des paroles d\'une chanson, le ruban intelligent s\'affiche au-dessus du clavier virtuel et propose des raccourcis pour ajouter différentes sections. Si une tonalité est définie, les accords fréquemment utilisés s\'affichent également.</string>
     <string name="keyword">Mot-clé</string>
     <string name="kit_kick">Coup</string>
     <string name="kit_snare">Piège</string>

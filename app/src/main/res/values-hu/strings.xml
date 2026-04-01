@@ -623,6 +623,8 @@
     <string name="key">Kulcs</string>
     <string name="key_original">Eredeti kulcs</string>
     <string name="key_original_transpose">Helyezze vissza a dalt az eredeti hangnemre</string>
+    <string name="keyboard_smart_ribbon">Intelligens billentyűzet menüszalag</string>
+    <string name="keyboard_smart_ribbon_info">Dalszöveg szerkesztésekor az intelligens menüszalag a képernyő-billentyűzet felett jelenik meg, és gyorsbillentyűket kínál a dalszöveghez különböző részek hozzáadásához. Ha hangnem is be van állítva, akkor a gyakran használt akkordokat is megjeleníti.</string>
     <string name="keyword">Kulcsszó</string>
     <string name="kit_kick">Rúgás</string>
     <string name="kit_snare">Csapda</string>
@@ -1458,6 +1460,7 @@
     <string name="web_view_desktop">Asztali webhely kérése</string>
     <string name="web_view_desktop_info">Ennek javítania kell a dalok elrendezését, és el kell kerülnie, hogy a webhely megpróbálja kényszeríteni a mobilalkalmazás telepítésére</string>
     <string name="webserver_messages">Webszerver üzenetek</string>
+    <string name="webserver_messages_info">Üzenetküldés csatlakoztatott eszközökhöz</string>
     <string name="website">Weboldal</string>
     <string name="welcome">Üdvözli az OpenSongApp</string>
     <string name="where">Ahol</string>
@@ -1466,5 +1469,4 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="webserver_messages_info">Üzenetküldés csatlakoztatott eszközökhöz</string>
 </resources>

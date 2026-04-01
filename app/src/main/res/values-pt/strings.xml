@@ -623,6 +623,8 @@
     <string name="key">Tecla</string>
     <string name="key_original">Chave original</string>
     <string name="key_original_transpose">Transpor a música de volta para a chave original</string>
+    <string name="keyboard_smart_ribbon">Faixa inteligente do teclado</string>
+    <string name="keyboard_smart_ribbon_info">Ao editar a letra de uma música, a faixa de opções inteligente é exibida acima do teclado na tela e fornece atalhos para adicionar várias seções à letra. Se uma tonalidade também tiver sido definida, ela mostrará os acordes mais usados.</string>
     <string name="keyword">Palavra-chave</string>
     <string name="kit_kick">Chute</string>
     <string name="kit_snare">Laço</string>

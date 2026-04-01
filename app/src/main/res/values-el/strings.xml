@@ -623,6 +623,8 @@
     <string name="key">Key</string>
     <string name="key_original">Αρχικό κλειδί</string>
     <string name="key_original_transpose">Επαναφορά του τραγουδιού στο αρχικό πλήκτρο</string>
+    <string name="keyboard_smart_ribbon">Έξυπνη κορδέλα πληκτρολογίου</string>
+    <string name="keyboard_smart_ribbon_info">Κατά την επεξεργασία στίχων τραγουδιών, η έξυπνη κορδέλα εμφανίζεται πάνω από το πληκτρολόγιο οθόνης και θα σας δώσει συντομεύσεις για να προσθέσετε διάφορες ενότητες στους στίχους. Εάν έχει επίσης οριστεί μια κλίμακα, θα εμφανιστούν και οι συγχορδίες που χρησιμοποιούνται συνήθως.</string>
     <string name="keyword">Λέξη-κλειδί</string>
     <string name="kit_kick">Λάκτισμα</string>
     <string name="kit_snare">Παγίδα</string>

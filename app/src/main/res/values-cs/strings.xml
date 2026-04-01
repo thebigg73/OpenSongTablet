@@ -623,6 +623,8 @@
     <string name="key">Klíč</string>
     <string name="key_original">Originální klíč</string>
     <string name="key_original_transpose">Transponujte skladbu zpět do původní tóniny</string>
+    <string name="keyboard_smart_ribbon">Inteligentní páska s klávesnicí</string>
+    <string name="keyboard_smart_ribbon_info">Při úpravě textu písně se nad klávesnicí na obrazovce zobrazí chytrý pás s klávesami, který nabízí zkratky pro přidání různých částí do textu. Pokud je nastavena i tónina, zobrazí se také běžně používané akordy.</string>
     <string name="keyword">Klíčové slovo</string>
     <string name="kit_kick">Kop</string>
     <string name="kit_snare">Očko</string>

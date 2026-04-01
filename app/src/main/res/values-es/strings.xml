@@ -623,6 +623,8 @@
     <string name="key">Clave</string>
     <string name="key_original">Tonalidad original</string>
     <string name="key_original_transpose">Transponer la canción a la tonalidad original</string>
+    <string name="keyboard_smart_ribbon">Cinta inteligente para teclado</string>
+    <string name="keyboard_smart_ribbon_info">Al editar la letra de una canción, la cinta inteligente se muestra encima del teclado en pantalla y ofrece accesos directos para añadir distintas secciones a la letra. Si se ha configurado una tecla, también mostrará los acordes más utilizados.</string>
     <string name="keyword">Palabra clave</string>
     <string name="kit_kick">Patada</string>
     <string name="kit_snare">Trampa</string>

@@ -623,6 +623,8 @@
     <string name="key">Тональность</string>
     <string name="key_original">Оригинальный ключ</string>
     <string name="key_original_transpose">Транспонировать песню обратно в исходную тональность</string>
+    <string name="keyboard_smart_ribbon">Умная лента клавиатуры</string>
+    <string name="keyboard_smart_ribbon_info">При редактировании текста песни над экранной клавиатурой отображается интеллектуальная лента, содержащая сочетания клавиш для добавления различных разделов в текст. Если также задана тональность, отображаются и часто используемые аккорды.</string>
     <string name="keyword">Ключевое слово</string>
     <string name="kit_kick">Пинать</string>
     <string name="kit_snare">Ловушка</string>

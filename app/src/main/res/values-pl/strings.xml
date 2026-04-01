@@ -623,6 +623,8 @@
     <string name="key">Tonacja</string>
     <string name="key_original">Oryginalna tonacja</string>
     <string name="key_original_transpose">Transponuj piosenkę z powrotem do oryginalnej tonacji</string>
+    <string name="keyboard_smart_ribbon">Inteligentna wstążka klawiatury</string>
+    <string name="keyboard_smart_ribbon_info">Podczas edycji tekstu utworu, inteligentna wstążka wyświetlana jest nad klawiaturą ekranową i zawiera skróty do dodawania różnych fragmentów do tekstu. Jeśli ustawiono również tonację, pojawią się również najczęściej używane akordy.</string>
     <string name="keyword">Słowo kluczowe</string>
     <string name="kit_kick">Rzut</string>
     <string name="kit_snare">Sidła</string>

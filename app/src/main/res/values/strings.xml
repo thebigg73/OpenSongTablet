@@ -776,6 +776,8 @@
     </array>
     <string name="key_original">Original key</string>
     <string name="key_original_transpose">Transpose the song back to the original key</string>
+    <string name="keyboard_smart_ribbon">Keyboard smart ribbon</string>
+    <string name="keyboard_smart_ribbon_info">When editing song lyrics the smart ribbon is shown above the on-screen keyboard and will give shorcuts to add various sections into the lyrics.  If a key has also been set, it will also show commonly used chords.</string>
     <string name="keyword">Keyword</string>
     <string name="kit_kick">Kick</string>
     <string name="kit_snare">Snare</string>
@@ -1034,6 +1036,11 @@
     <string name="openchords_info">Synchronise folder with OpenChords.  This allows other apps such as JustChords to synchronise with OpenSongApp</string>
     <string name="openchords_link">Share link for folder</string>
     <string name="openchords_link_info">If a folder has already been uploaded to the OpenChords server you can share a link for others to use</string>
+    <string name="openchords_not_owner">This is a folder shared by another user</string>
+    <string name="openchords_owner">You own this folder</string>
+    <string name="openchords_readonly">This folder is marked as read only</string>
+    <string name="openchords_readonly_switch">Read only</string>
+    <string name="openchords_readonly_switch_info">Change the settings of this folder for other users who use the link</string>
     <string name="opensong" translatable="false">OpenSong</string>
     <string name="opensong_media">Audio recordings are saved to /OpenSong/Media/</string>
     <string name="optional">Optional</string>
@@ -1738,6 +1745,8 @@
     <string name="web_server_port_info">Some browsers and Wi-Fi routers block certain port numbers.  If you, or others, can\'t view the web page using the link below, try changing the port number</string>
     <string name="web_view_desktop">Request desktop site</string>
     <string name="web_view_desktop_info">This should improve the layout of songs and avoid the website trying to force you to install their mobile app</string>
+    <string name="webserver_messages">Webserver messages</string>
+    <string name="webserver_messages_info">Send messages to connected devices</string>
     <string name="website">Website</string>
     <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
@@ -1849,11 +1858,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="openchords_owner">You own this folder</string>
-    <string name="openchords_not_owner">This is a folder shared by another user</string>
-    <string name="openchords_readonly">This folder is marked as read only</string>
-    <string name="openchords_readonly_switch">Read only</string>
-    <string name="openchords_readonly_switch_info">Change the settings of this folder for other users who use the link</string>
-    <string name="webserver_messages">Webserver messages</string>
-    <string name="webserver_messages_info">Send messages to connected devices</string>
 </resources>

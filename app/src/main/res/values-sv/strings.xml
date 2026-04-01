@@ -623,6 +623,8 @@
     <string name="key">Nyckel</string>
     <string name="key_original">Ursprunglig nyckel</string>
     <string name="key_original_transpose">Transponera låten tillbaka till originaltonarten</string>
+    <string name="keyboard_smart_ribbon">Smart menyfliksfält för tangentbord</string>
+    <string name="keyboard_smart_ribbon_info">När du redigerar sångtexter visas det smarta menyfliksområdet ovanför tangentbordet på skärmen och ger genvägar för att lägga till olika avsnitt i texten. Om en tangent också har ställts in visas även vanliga ackord.</string>
     <string name="keyword">Nyckelord</string>
     <string name="kit_kick">Sparka</string>
     <string name="kit_snare">Snara</string>

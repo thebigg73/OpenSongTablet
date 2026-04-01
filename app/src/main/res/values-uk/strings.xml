@@ -623,6 +623,8 @@
     <string name="key">Тональність</string>
     <string name="key_original">Оригінальний ключ</string>
     <string name="key_original_transpose">Транспонування пісні назад у вихідний ключ</string>
+    <string name="keyboard_smart_ribbon">Розумна стрічка клавіатури</string>
+    <string name="keyboard_smart_ribbon_info">Під час редагування тексту пісні над екранною клавіатурою відображається смарт-стрічка, яка пропонує швидкі натискання клавіш для додавання різних розділів до тексту. Якщо також встановлено тональність, вона також відображатиме часто використовувані акорди.</string>
     <string name="keyword">Ключове слово</string>
     <string name="kit_kick">Удар ногою</string>
     <string name="kit_snare">Малий барабан</string>

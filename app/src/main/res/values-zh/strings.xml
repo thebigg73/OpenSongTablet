@@ -623,6 +623,8 @@
     <string name="key">图注</string>
     <string name="key_original">原始密钥</string>
     <string name="key_original_transpose">将歌曲转置回原始键</string>
+    <string name="keyboard_smart_ribbon">键盘智能功能区</string>
+    <string name="keyboard_smart_ribbon_info">编辑歌词时，屏幕键盘上方会显示智能功能区，提供快捷键方便您在歌词中添加各种段落。如果已设置调号，它还会显示常用和弦。</string>
     <string name="keyword">关键词</string>
     <string name="kit_kick">踢</string>
     <string name="kit_snare">圈套</string>

@@ -623,6 +623,8 @@
     <string name="key">Sleutel</string>
     <string name="key_original">Oorspronklike sleutel</string>
     <string name="key_original_transpose">Transponeer die liedjie terug na die oorspronklike sleutel</string>
+    <string name="keyboard_smart_ribbon">Slim lint vir die sleutelbord</string>
+    <string name="keyboard_smart_ribbon_info">Wanneer jy liedjielirieke redigeer, word die slim lint bo die skermsleutelbord gewys en sal dit kortpaaie gee om verskeie afdelings by die lirieke te voeg. As \'n sleutel ook ingestel is, sal dit ook algemeen gebruikte akkoorde wys.</string>
     <string name="keyword">Sleutelwoord</string>
     <string name="kit_kick">Skop</string>
     <string name="kit_snare">Snare</string>

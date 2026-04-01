@@ -623,6 +623,8 @@
     <string name="key">යතුර</string>
     <string name="key_original">මුල් යතුර</string>
     <string name="key_original_transpose">ගීතය නැවත මුල් යතුරට මාරු කරන්න</string>
+    <string name="keyboard_smart_ribbon">යතුරුපුවරු ස්මාර්ට් රිබන්</string>
+    <string name="keyboard_smart_ribbon_info">ගීත පද රචනා සංස්කරණය කිරීමේදී තිරයේ යතුරු පුවරුවට ඉහළින් ස්මාර්ට් රිබනය පෙන්වන අතර පද රචනයට විවිධ කොටස් එකතු කිරීමට කෙටිමං ලබා දෙනු ඇත. යතුරක් ද සකසා ඇත්නම්, එය බහුලව භාවිතා වන ස්වර ද පෙන්වනු ඇත.</string>
     <string name="keyword">මූල පදය</string>
     <string name="kit_kick">පයින් ගැසීම</string>
     <string name="kit_snare">උගුල</string>
