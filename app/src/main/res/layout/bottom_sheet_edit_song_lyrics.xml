@@ -87,6 +87,16 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/keyboardSmartRibbon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/keyboard_smart_ribbon"
+                android:hint="@string/keyboard_smart_ribbon_info" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

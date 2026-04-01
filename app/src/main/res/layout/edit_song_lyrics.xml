@@ -72,6 +72,7 @@
     <!-- The custom bar -->
     <RelativeLayout
         android:layout_width="match_parent"
+        android:minHeight="48dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:layout_anchorGravity="bottom"
@@ -80,18 +81,23 @@
             android:id="@+id/imeBarScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:visibility="gone"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" >
-
-    <LinearLayout
-        android:id="@+id/imeBar"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:padding="8dp"/>
+            android:layout_alignParentStart="true"
+            android:fillViewport="true">
+            <LinearLayout
+            android:id="@+id/imeBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"/>
         </HorizontalScrollView>
-
     <LinearLayout
         android:id="@+id/undoRedo"
         android:layout_width="wrap_content"

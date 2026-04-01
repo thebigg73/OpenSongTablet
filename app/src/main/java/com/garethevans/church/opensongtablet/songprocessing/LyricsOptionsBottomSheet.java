@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,6 +80,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetCommon {
         if (openingFragment!=null) {
             myView.textSize.setHint(String.valueOf((int) openingFragment.getEditTextSize()));
         }
+        myView.keyboardSmartRibbon.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("keyboardSmartRibbon",true));
         setTransposeDetectedFormat();
     }
 
@@ -146,8 +148,11 @@ public class LyricsOptionsBottomSheet extends BottomSheetCommon {
                 e.printStackTrace();
             }
         });
+        myView.keyboardSmartRibbon.setOnCheckedChangeListener((compoundButton, checked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("keyboardSmartRibbon", checked);
+        });
 
-        myView.insertInlineMidi.setOnClickListener(view -> {
+                myView.insertInlineMidi.setOnClickListener(view -> {
             if (openingFragment!=null) {
                 InlineMidiBottomSheet inlineMidiBottomSheet = new InlineMidiBottomSheet(openingFragment);
                 inlineMidiBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InlineMIDIMessages");

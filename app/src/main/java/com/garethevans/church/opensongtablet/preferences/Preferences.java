@@ -432,6 +432,7 @@ public class Preferences extends Activity {
     // inlineSetTextSize                float       The text size for the inline set (def:14f)
     // inlineSetTextSizePresenter       float       The text size for the inline set for Presenter mode (def:14f)
     // intentAlreadyDealtWith           boolean     A note of if we have dealt with the intent to avoid multiple calls.  Reset to false on destroy (def: false)
+    // keyboardSmartRibbon              boolean     A smart ribbon above the on screen keyboard when editing song lyrics (boolean: true)
     // language                         String      The locale set in the menu (def:en)
     // largePopups                      boolean     Should the drop down exposed popups be big (def:true)
     // lastUsedVersion                  int         The app version number the last time the app ran (def:0)
