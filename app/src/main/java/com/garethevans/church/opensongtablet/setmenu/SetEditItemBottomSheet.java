@@ -45,7 +45,7 @@ public class SetEditItemBottomSheet extends BottomSheetCommon {
     private boolean isAnyVariation, isKeyVariation, isNormalVariation;
 
     @SuppressWarnings("unused")
-    SetEditItemBottomSheet() {
+    public SetEditItemBottomSheet() {
         // The default constructor which wasn't set up properly
         try {
             dismiss();
@@ -55,7 +55,7 @@ public class SetEditItemBottomSheet extends BottomSheetCommon {
     }
 
     // Instantiate with the desired item
-    SetEditItemBottomSheet(int setPosition) {
+    public SetEditItemBottomSheet(int setPosition) {
         this.setPosition = setPosition;
         arguments.add(String.valueOf(setPosition));
     }
@@ -90,10 +90,9 @@ public class SetEditItemBottomSheet extends BottomSheetCommon {
             originalFolderFilename = mainActivityInterface.getVariations().getPreVariationInfo(setItemInfo);
 
             // Set up the dropdowns
+            // The listeners get added afterwards
             setupExposedDropdowns();
 
-            // Set up the listeners
-            setupListeners();
         });
 
         return myView.getRoot();
@@ -144,35 +143,30 @@ public class SetEditItemBottomSheet extends BottomSheetCommon {
                 if (myView != null) {
                     myView.editFolder.setUserEditing(false);
 
-                    myView.editVariation.setChecked(isAnyVariation);
+                    myView.editFilename.post(()-> {
+                        myView.editVariation.setChecked(isAnyVariation);
 
-                    if (isNormalVariation) {
-                        myView.editFolder.setText(setItemInfo.songfolder);
-                    } else {
-                        myView.editFolder.setText(originalFolderFilename[0]);
-                    }
-                    myView.editFolder.setEnabled(!myView.editVariation.getChecked());
-                    myView.editFolder.setUserEditing(true);
+                        if (isNormalVariation) {
+                            myView.editFolder.setText(setItemInfo.songfolder);
+                        } else {
+                            myView.editFolder.setText(originalFolderFilename[0]);
+                        }
+                        myView.editFolder.setEnabled(!myView.editVariation.getChecked());
 
+                        // While we build the song list, add the current one
+                        myView.editFilename.setUserEditing(false);
+                        if (isKeyVariation) {
+                            myView.editFilename.setText(originalFolderFilename[1]);
+                        } else {
+                            myView.editFilename.setText(setItemInfo.songfilename);
+                        }
+                        myView.editFilename.setUserEditing(true);
 
-                    myView.editFilename.setEnabled(!myView.editVariation.getChecked());
-                    if (getContext() != null) {
-                        filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
-                    }
-                    myView.editFilename.setAdapter(filenameAdapter);
+                        // Now populate and update the filename options dropdown
+                        myView.editFolder.setUserEditing(true);
+                        updateFilesInFolder(originalFolderFilename);
 
-                    // Set the initial value (we have still to populate the dropdown)
-                    myView.editFilename.setUserEditing(false);
-                    if (isKeyVariation) {
-                        myView.editFilename.setText(originalFolderFilename[1]);
-                    } else {
-                        myView.editFilename.setText(setItemInfo.songfilename);
-                    }
-
-                    myView.editFilename.setUserEditing(true);
-
-                    // Now populate and update the filename options dropdown
-                    updateFilesInFolder(originalFolderFilename);
+                    });
                 }
             });
         });
@@ -229,16 +223,25 @@ public class SetEditItemBottomSheet extends BottomSheetCommon {
                     if (getContext() != null) {
                         filenameAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.editFilename, R.layout.view_exposed_dropdown_item, filenames);
                     }
+                    myView.editFilename.setEnabled(!myView.editVariation.getChecked());
+
                     myView.editFilename.setAdapter(filenameAdapter);
                     myView.editFilename.setUserEditing(false);
-                    if (isKeyVariation) {
-                        myView.editFilename.setText(originalFolderFile[1]);
-                    } else {
-                        myView.editFilename.setText(setItemInfo.songfilename);
-                    }
-                    myView.editFilename.setUserEditing(true);
+
+                    myView.editFilename.post(() -> {
+                        if (isKeyVariation) {
+                            myView.editFilename.setText(originalFolderFile[1]);
+                        } else {
+                            myView.editFilename.setText(setItemInfo.songfilename);
+                        }
+                        myView.editFilename.setUserEditing(true);
+                    });
+
 
                     checkAllowEdit();
+
+                    // Now set the listeners
+                    setupListeners();
                 }
             });
         });
