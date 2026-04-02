@@ -2358,29 +2358,32 @@ public class StorageAccess {
         // Get the uri for the parent
         Uri dirUri = getUriForItem(currentDir, currentSubDir, "");
         Uri desireduri = getUriForItem(currentDir, currentSubDir, newFolder);
-
-        // We need to check if the desired uri, if it exists, is a folder (as it might be a file with the same name)
-        boolean isDirectory = false;
-        if (lollipopOrLater()) {
-            DocumentFile pickedDir = DocumentFile.fromTreeUri(c, desireduri);
-            if (pickedDir != null) {
-                isDirectory = pickedDir.isDirectory();
-            }
-        } else if (desireduri != null && desireduri.getPath() != null) {
-            File f = new File(desireduri.getPath());
-            isDirectory = f.isDirectory();
-        }
-
-        if (!uriExists(desireduri) || !isDirectory) {
+        try {
+            // We need to check if the desired uri, if it exists, is a folder (as it might be a file with the same name)
+            boolean isDirectory = false;
             if (lollipopOrLater()) {
-                return createFolder_SAF(dirUri, newFolder, showToast);
+                DocumentFile pickedDir = DocumentFile.fromTreeUri(c, desireduri);
+                if (pickedDir != null) {
+                    isDirectory = pickedDir.isDirectory();
+                }
+            } else if (desireduri != null && desireduri.getPath() != null) {
+                File f = new File(desireduri.getPath());
+                isDirectory = f.isDirectory();
+            }
+
+            if (!uriExists(desireduri) || !isDirectory) {
+                if (lollipopOrLater()) {
+                    return createFolder_SAF(dirUri, newFolder, showToast);
+                } else {
+                    return createFolder_File(dirUri, newFolder, showToast);
+                }
             } else {
-                return createFolder_File(dirUri, newFolder, showToast);
+                if (showToast) {
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.folder_exists));
+                }
+                return false;
             }
-        } else {
-            if (showToast) {
-                mainActivityInterface.getShowToast().doIt(c.getString(R.string.folder_exists));
-            }
+        } catch (Exception e) {
             return false;
         }
     }
