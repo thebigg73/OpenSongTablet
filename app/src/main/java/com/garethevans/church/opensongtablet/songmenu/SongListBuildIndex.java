@@ -122,7 +122,7 @@ public class SongListBuildIndex {
             int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
             progressText.setPadding(padding,padding,padding,padding);
             progressText.setText("0%");
-            progressText.setCompoundDrawableTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            progressText.setPalette(mainActivityInterface.getPalette());
             progressText.setTextColor(mainActivityInterface.getPalette().textColor);
             progressText.setVisibility(View.VISIBLE);
         });
