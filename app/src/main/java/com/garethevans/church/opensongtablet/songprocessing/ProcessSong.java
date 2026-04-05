@@ -1094,8 +1094,9 @@ public class ProcessSong {
     }
 
     private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
+        boolean isNlTabLine = nl < lines.length && lines[nl].startsWith(";") && lines[nl].contains("|") && lines[nl].indexOf("|")==3;
         if (incnormallyricline) {
-            return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || lines[nl].startsWith(";") ||
+            return (nl < lines.length && (lines[nl].startsWith(" ") && !lines[nl].trim().isEmpty() || (lines[nl].startsWith(";") && !isNlTabLine) ||
                     lines[nl].matches("\\d.*$")));
         } else {
             return (nl < lines.length && (lines[nl].matches("\\d.*$")));
