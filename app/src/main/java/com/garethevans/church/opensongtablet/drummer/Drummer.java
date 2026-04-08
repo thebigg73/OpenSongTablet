@@ -32,7 +32,7 @@ public class Drummer {
     private DrumSection sectionBeforeFill = DrumSection.MAIN;
     private DrumSection nextSectionAfterFill = null; // New variable
     private boolean crashOnNextBar = false;
-    private String drummerStyle="Standard";
+    private String drummerStyle="Acoustic";
     private final String drum_kit_acoustic;
     private final String drum_kit_cajon;
     private final String drum_kit_percussion;
@@ -250,24 +250,30 @@ public class Drummer {
         if (drummerStyle==null || drummerStyle.isEmpty()) {
             drummerStyle = "Acoustic";
         }
-        Log.d(TAG,"getDrummerStyle:"+drummerStyle);
         return drummerStyle;
     }
 
     public void setDrummerStyle(String drummerStyle) {
-        Log.d(TAG,"setDrummerStyle("+drummerStyle+")");
-        this.drummerStyle = drummerStyle;
+        if (drummerStyle==null || drummerStyle.isEmpty()) {
+            this.drummerStyle = "Acoustic";
+        } else {
+            this.drummerStyle = drummerStyle;
+        }
     }
 
     public String getDrummerStyleForSongXML(String drummerStyle) {
-        if (drummerStyle.equals(drum_kit_cajon) || drummerStyle.equals("Cajon") || drummerStyle.equals(drum_kit_percussion) || drummerStyle.equals("Percussion")) {
+        if (drummerStyle==null || drummerStyle.isEmpty()) {
+            return "Acoustic";
+        } else if (drummerStyle.equals(drum_kit_cajon) || drummerStyle.equals("Cajon") || drummerStyle.equals(drum_kit_percussion) || drummerStyle.equals("Percussion")) {
             return "Percussion";
         } else {
             return "Acoustic";
         }
     }
     public String getDrummerStyleFromXML(String drummerStyle) {
-        if (drummerStyle.equals(drum_kit_cajon) || drummerStyle.equals("Cajon") || drummerStyle.equals(drum_kit_percussion) || drummerStyle.equals("Percussion")) {
+        if (drummerStyle==null || drummerStyle.isEmpty()) {
+            return drum_kit_acoustic;
+        } else if (drummerStyle.equals(drum_kit_cajon) || drummerStyle.equals("Cajon") || drummerStyle.equals(drum_kit_percussion) || drummerStyle.equals("Percussion")) {
             return drum_kit_percussion;
         } else {
             return drum_kit_acoustic;

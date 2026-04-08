@@ -54,7 +54,10 @@ public class DrumSoundManager {
     public void determineSampleRate(Context context) {
         AudioManager myAudioMgr = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         String sampleRateStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
-        int defaultSampleRate = Integer.parseInt(sampleRateStr);
+        int defaultSampleRate = 44100;
+        if (sampleRateStr != null) {
+            defaultSampleRate = Integer.parseInt(sampleRateStr);
+        }
         String framesPerBurstStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
         int defaultFramesPerBurst = Integer.parseInt(framesPerBurstStr);
         if (defaultSampleRate==48000) {
@@ -69,7 +72,7 @@ public class DrumSoundManager {
         AudioAttributes audioAttributes = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_GAME) // GAME or ASSISTANCE_SONIFICATION
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION) // GAME or ASSISTANCE_SONIFICATION
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION) // CRITICAL for low latency
                     .setFlags(AudioAttributes.FLAG_LOW_LATENCY) // Hints to the system to prioritize speed
                     .build();
@@ -81,7 +84,7 @@ public class DrumSoundManager {
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_GAME) // GAME or ASSISTANCE_SONIFICATION
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION) // GAME or ASSISTANCE_SONIFICATION
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION) // CRITICAL for low latency
                     .build();
 

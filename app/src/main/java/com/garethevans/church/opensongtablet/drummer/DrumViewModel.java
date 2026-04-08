@@ -261,6 +261,8 @@ public class DrumViewModel extends ViewModel {
         Log.d(TAG, "startMetronome()");
         metronome.setIsRunning(true);
         metronome.resetTotalStepsProcessed();
+        // Prepare for short metronome use
+        metronome.prepare(getThisDivisions(), getThisStepsPerBar());
 
         // 1. Prepare values
         if (!drummer.getIsRunning()) {
