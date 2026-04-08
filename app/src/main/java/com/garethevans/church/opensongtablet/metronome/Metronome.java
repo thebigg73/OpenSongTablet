@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.metronome;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
+import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -65,7 +67,7 @@ public class Metronome {
         tockColor = ColorUtils.blendARGB(tickColor, mainActivityInterface.getPalette().surface, 0.4f);
     }
 
-    public void prepare(int denominator, int metronomeLength, int stepsPerBar) {
+    public void prepare(int denominator, int stepsPerBar) {
         this.cachedInterval = (denominator == 8) ? 2 : 4;
         this.cachedMaxSteps = (metronomeLength > 0) ? metronomeLength * stepsPerBar : -1;
         this.totalStepsProcessed = 0;
@@ -74,19 +76,30 @@ public class Metronome {
     public void onStep(int totalSteps, int stepsPerBar, long beatDuration) {
         if (!isRunning) return;
 
-        // 1. Check stop condition using totalSteps to align with the sequencer
-        // This prevents the "separate clock" issue.
-        if (cachedMaxSteps != -1 && totalSteps >= cachedMaxSteps) {
+        // 1. Manually increment the counter every time a step occurs
+        totalStepsProcessed++;
+
+        // 2. Check stop condition using our local counter
+        // We use totalStepsProcessed because it counts continuously from the moment we hit Start
+        if (cachedMaxSteps != -1 && totalStepsProcessed >= cachedMaxSteps) {
+            Log.d(TAG, "Limit reached: " + totalStepsProcessed + "/" + cachedMaxSteps + ". Stopping.");
+
+            // Use a Runnable or post to the main thread if the ViewModel call
+            // involves UI updates, or call it directly if thread-safe:
             mainActivityInterface.getDrumViewModel().stopMetronome();
+
+            // Reset local state
+            isRunning = false;
+            totalStepsProcessed = 0;
             return;
         }
 
-        // 2. Get the pulse interval directly from the shared Drummer logic
+        // 3. Get the pulse interval directly from the shared Drummer logic
         // In 6/8, this will return 2 (every 2nd step)
         int interval = mainActivityInterface.getDrumViewModel().getThisStepsPerPulse();
         int stepInBar = totalSteps % stepsPerBar;
 
-        // 3. Click logic: Use 'interval' for the modulo check
+        // 4. Click logic: Use 'interval' for the modulo check
         if (stepInBar % interval == 0) {
             int beatNumber = (stepInBar / interval) + 1;
             boolean isPrimary = (stepInBar == 0);
@@ -113,59 +126,6 @@ public class Metronome {
         }
     }
 
-    /*public void onStep(int stepInBar, int stepsPerBar, int denominator, long beatDuration) {
-        // Check if we should stop the metronome (metronomeLength)
-        if (metronomeLength>0) {
-            int maxSteps = metronomeLength * stepsPerBar;
-
-            if (totalStepsProcessed >= maxSteps) {
-                // Trigger the stop command
-                mainActivityInterface.getDrumViewModel().stopMetronome();
-                totalStepsProcessed = 0; // Reset for next time
-                return; // Exit early so no more sounds play
-            }
-        }
-
-        // 2. Increment our counter
-        totalStepsProcessed++;
-
-        // Determine how many steps make a beat (pulse).
-        // In 4/4 or 3/4 (denominator 4), this is 4 steps.
-        int interval = (denominator == 8) ? 2 : 4;
-
-        // Use the local variable instead of the class field 'stepsPerPulse'
-        if (stepInBar % interval == 0) {
-
-            int beatNumber = (stepInBar / interval) + 1;
-            boolean isPrimary = (stepInBar == 0);
-
-            // Secondary Accent logic
-            boolean isSecondary = false;
-            if (denominator == 8) {
-                // For 6/8, 9/8, 12/8, we usually want an accent every 3 beats
-                // (e.g., Beat 1 and Beat 4 in 6/8)
-                isSecondary = (beatNumber > 1 && (beatNumber - 1) % 3 == 0);
-            }
-            boolean isAccent = isPrimary || isSecondary;
-
-            // The audio logic
-            if (metronomeAudio) {
-                playAudio(isPrimary);
-            }
-
-            // The MIDI logic
-            if (metronomeMidi) {
-                playMidi(isAccent);
-            }
-
-            // The visual Logic
-            if (metronomeShowVisual && visualListener != null) {
-                // Pass true for big accents, false for standard tocks
-                // Pass the calculated duration (e.g. 500ms for 4/4 at 120bpm)
-                visualListener.onVisualBeat(beatNumber, isAccent, beatDuration);
-            }
-        }
-    }*/
 
     // The user preferences
     public int getTickColor() {
@@ -302,7 +262,9 @@ public class Metronome {
     private void playMidi(boolean accent) {
         // Send MIDI Note for metronome
         byte note = (byte) (accent ? 37 : 36);
-        mainActivityInterface.getMidi().sendMidi(note);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainActivityInterface.getMidi().sendMidi(note);
+        }
     }
 
     public interface VisualListener {
