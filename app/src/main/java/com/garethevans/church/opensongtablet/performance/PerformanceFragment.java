@@ -135,6 +135,7 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
             updateInlineSetVisibility();
         }
+        mainActivityInterface.registerFragment(this, "Performance");
     }
 
     @Override
