@@ -655,20 +655,25 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
+    private boolean dealingWithClick = false;
     @Override
     public void onItemClicked(int position, String folder, String filename, String key, boolean inSet) {
-        myView.songListRecyclerView.stopScroll();
-        mainActivityInterface.getWindowFlags().hideKeyboard();
-        // Default the slide animations to be next (R2L)
-        mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
-        if (inSet) {
-            mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet());
-        } else {
-            mainActivityInterface.doSongLoad(folder, filename, true);
-        }
-        // Collapse any level 2 alphabetical index
-        if (indexAdapter != null) {
-            indexAdapter.collapseAll();
+        if (!dealingWithClick) {
+            dealingWithClick = true;
+            myView.songListRecyclerView.stopScroll();
+            mainActivityInterface.getWindowFlags().hideKeyboard();
+            // Default the slide animations to be next (R2L)
+            mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
+            if (inSet) {
+                mainActivityInterface.loadSongFromSet(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+            } else {
+                mainActivityInterface.doSongLoad(folder, filename, true);
+            }
+            // Collapse any level 2 alphabetical index
+            if (indexAdapter != null) {
+                indexAdapter.collapseAll();
+            }
+            mainActivityInterface.getMainHandler().postDelayed(() -> dealingWithClick = false, 200);
         }
     }
 
