@@ -5012,13 +5012,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // If we were running a local webServer, turn it off
-        getWebServer().stopWebServer();
+        if (getWebServer()!=null) {
+            getWebServer().stopWebServer();
+        }
 
         // Clear any toasts
         getShowToast().kill();
 
         // Turn off nearby
-        getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
+        if (getNearbyActions()!=null) {
+            getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
+        }
 
         // Reset the dealt with intent
         try {
@@ -5028,17 +5032,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // If we had a bluetooth MIDI device, cancel the connection and unpair
-        getMidi().tryDisconnectBluetoothLE();
+        if (getMidi()!=null) {
+            getMidi().tryDisconnectBluetoothLE();
+        }
 
-        getMultiTrackPlayer().closeMultitrack();
+        if (getMultiTrackPlayer()!=null) {
+            getMultiTrackPlayer().closeMultitrack();
+        }
 
         // Clear out the export and received folders
         getStorageAccess().wipeFolder("Export", "");
         getStorageAccess().wipeFolder("Received", "");
 
         // If we were using the drummer, release the mediaPlayers
-        getDrumViewModel().stopAll();
-        getDrumViewModel().getDrumSoundManager().release();
+        if (getDrumViewModel()!=null) {
+            getDrumViewModel().stopAll();
+            getDrumViewModel().getDrumSoundManager().release();
+        }
 
         // Keep a reference to connections if needed as bundle
 

@@ -486,7 +486,7 @@ public class EditSongFragmentFeatures extends Fragment {
         if (timeSig!=null && !timeSig.isEmpty()) {
             timeSigInFilename = timeSig.replace("/","_");
             for (String drumFile : drumFiles) {
-                if (drumFile.contains(timeSigInFilename+".json")) {
+                if (drumFile!=null && drumFile.contains(timeSigInFilename+".json")) {
                     String name = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drumFile);
                     drummerFileNames.add(name);
                 }
@@ -500,6 +500,9 @@ public class EditSongFragmentFeatures extends Fragment {
                             myView.drummer, R.layout.view_exposed_dropdown_item, drummerFileNames);
                     myView.drummer.setAdapter(drumArrayAdapter);
                     String drummerFilename = mainActivityInterface.getTempSong().getDrummer();
+                    if (drummerFilename==null) {
+                        drummerFilename = "";
+                    }
                     String niceName = mainActivityInterface.getDrumViewModel().getDrummer().getNiceNameFromFilename(drummerFilename);
                     if (drummerFileNames.contains(niceName)) {
                         myView.drummer.setText(niceName);

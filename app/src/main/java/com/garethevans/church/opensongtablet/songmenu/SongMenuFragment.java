@@ -823,7 +823,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     public MyMaterialSimpleTextView getProgressText() {
-        return myView.progressText;
+        if (myView!=null) {
+            return myView.progressText;
+        } else if (getContext()!=null) {
+            return new MyMaterialSimpleTextView(getContext());
+        } else {
+            return null;
+        }
     }
 
     public void updateSongMenuSortTitles() {

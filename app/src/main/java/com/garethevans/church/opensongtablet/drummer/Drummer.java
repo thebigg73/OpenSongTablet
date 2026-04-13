@@ -348,6 +348,9 @@ public class Drummer {
     }
 
     public String getNiceNameFromFilename(String filename) {
+        if (filename==null) {
+            filename = "";
+        }
         String niceName = filename.replace(".json","");
         String timeSig = "";
         String[] parts = niceName.split("_");
