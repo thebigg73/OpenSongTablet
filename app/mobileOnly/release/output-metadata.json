@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 441,
-      "versionName": "6.7.0",
+      "versionCode": 442,
+      "versionName": "6.7.1",
       "outputFile": "app-mobileOnly-release.apk"
     }
   ],
