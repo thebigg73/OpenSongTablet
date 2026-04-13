@@ -55,8 +55,40 @@ public class ToneGenerator {
         }
     }
 
+    // 1. Move the loop logic out of the synchronized startTone method
     public void startTone(double chosenFrequency) {
-        Log.d(TAG, "chosenFrequency:" + chosenFrequency);
+        if (isPlaying) return; // Already running
+        isPlaying = true;
+
+        // Use a background thread for the loop so we don't block the caller
+        new Thread(() -> {
+            short[] samples = new short[bufferSize];
+            double ph = 0.0;
+            double twopi = 8.0 * Math.atan(1.0);
+
+            synchronized (this) {
+                if (audioTrack != null && audioTrack.getState() != AudioTrack.STATE_UNINITIALIZED) {
+                    audioTrack.play();
+                }
+            }
+
+            while (isPlaying) {
+                for (int i = 0; i < bufferSize; i++) {
+                    samples[i] = (short) (volume * Math.sin(ph));
+                    ph += twopi * chosenFrequency / sampleRate;
+                }
+
+                // Sync only the write call to ensure we don't write to a released track
+                synchronized (this) {
+                    if (isPlaying && audioTrack != null && audioTrack.getState() == AudioTrack.STATE_INITIALIZED) {
+                        audioTrack.write(samples, 0, bufferSize);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /*public void startTone(double chosenFrequency) {
         isPlaying = true;
 
         short[] samples = new short[bufferSize];
@@ -88,13 +120,25 @@ public class ToneGenerator {
                 }
             }
         }
-    }
+    }*/
 
-    public void stopTone() {
+    /*public synchronized void stopTone() {
         isPlaying = false;
         if (audioTrack != null && audioTrack.getState() == AudioTrack.PLAYSTATE_PLAYING) {
             try {
                 audioTrack.pause();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
+
+    public synchronized void stopTone() {
+        isPlaying = false;
+        if (audioTrack != null && audioTrack.getState() == AudioTrack.PLAYSTATE_PLAYING) {
+            try {
+                audioTrack.pause();
+                audioTrack.flush();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -105,7 +149,7 @@ public class ToneGenerator {
         return isPlaying;
     }
 
-    public void nullAudioTrack() {
+    /*public void nullAudioTrack() {
         if (audioTrack != null && audioTrack.getState() != AudioTrack.STATE_UNINITIALIZED) {
             try {
                 audioTrack.flush();
@@ -121,5 +165,16 @@ public class ToneGenerator {
             }
         }
         audioTrack = null;
+    }
+*/
+    public synchronized void nullAudioTrack() {
+        isPlaying = false; // Stop the loop first
+        if (audioTrack != null) {
+            if (audioTrack.getState() != AudioTrack.STATE_UNINITIALIZED) {
+                audioTrack.stop();
+                audioTrack.release();
+            }
+            audioTrack = null;
+        }
     }
 }

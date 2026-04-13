@@ -224,11 +224,13 @@ public class TunerBottomSheet extends BottomSheetCommon {
             @Override
             public void afterTextChanged(Editable s) {
                 // Get the int value
-                int value = Integer.parseInt(s.toString());
-                mainActivityInterface.getPreferences().setMyPreferenceInt("refAHz", value);
-                concertPitch = (float) value;
-                initialiseTuner();
-                checkMidiButtons();
+                if (s!=null && !s.toString().isEmpty()) {
+                    int value = Integer.parseInt(s.toString());
+                    mainActivityInterface.getPreferences().setMyPreferenceInt("refAHz", value);
+                    concertPitch = (float) value;
+                    initialiseTuner();
+                    checkMidiButtons();
+                }
             }
         });
 
@@ -255,9 +257,11 @@ public class TunerBottomSheet extends BottomSheetCommon {
                 // Get the int value
                 // Get rid of the text
                 String text = s.toString().replaceAll("[^0-9]", "");
-                int value = Integer.parseInt(text);
-                mainActivityInterface.getPreferences().setMyPreferenceInt("tunerCents", value);
-                getTunerCents(value);
+                if (!text.isEmpty()) {
+                    int value = Integer.parseInt(text);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt("tunerCents", value);
+                    getTunerCents(value);
+                }
             }
         });
 
