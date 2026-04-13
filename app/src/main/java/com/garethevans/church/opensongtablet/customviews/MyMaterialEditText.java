@@ -27,9 +27,11 @@ import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -54,6 +56,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private final Handler keyboardHandler = new Handler(Looper.getMainLooper());
     private View.OnFocusChangeListener externalFocusChangeListener;
     private Palette palette;
+    private Context c;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -61,9 +64,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
     public MyMaterialEditText(Context context) {
         super(context);
-        palette = new Palette(context);
-        editText = new TextInputEditText(context);
-        textInputLayout = new TextInputLayout(context);
+        c = getWrappedContext(context);
+        palette = new Palette(c);
+        editText = new TextInputEditText(c);
+        textInputLayout = new TextInputLayout(c);
         textInputLayout.addView(editText,
                 new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         this.addView(textInputLayout,
@@ -75,7 +79,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         //textInputLayout.setId(View.generateViewId());
 
         try {
-            window = ((Activity) context).getWindow();
+            window = ((Activity) c).getWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,13 +87,14 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
     public MyMaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        palette = new Palette(context);
+        c = getWrappedContext(context);
+        palette = new Palette(c);
 
         // Ensure inflation happens with the current app theme
         //ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, context.getTheme());
         //LayoutInflater.from(themeWrapper).inflate(R.layout.view_material_edittext, this, true);
 
-        inflate(context, R.layout.view_material_edittext, this);
+        inflate(c, R.layout.view_material_edittext, this);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,
@@ -106,7 +111,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 com.google.android.material.R.attr.helperText,
                 android.R.attr.layout_gravity,
                 R.attr.removeStyle};
-        TypedArray a = context.obtainStyledAttributes(attrs, set);
+        TypedArray a = c.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
         CharSequence digits = a.getText(2);
@@ -185,7 +190,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
 
         if (useMonospace) {
-            Typeface mono = Typeface.createFromAsset(context.getAssets(), "font/Inconsolata.ttf");
+            Typeface mono = Typeface.createFromAsset(c.getAssets(), "font/Inconsolata.ttf");
             editText.setTypeface(mono);
         }
         if (suffixText != null) {
@@ -209,7 +214,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         a.recycle();
 
         try {
-            window = ((Activity) unwrap(context)).getWindow();
+            window = ((Activity) unwrap(c)).getWindow();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -225,7 +230,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 isKeyboardVisible = false;
             }
             if (useMonospace) {
-                Typeface mono = Typeface.createFromAsset(context.getAssets(), "font/Inconsolata.ttf");
+                Typeface mono = Typeface.createFromAsset(c.getAssets(), "font/Inconsolata.ttf");
                 editText.setTypeface(mono);
             }
         });
@@ -237,6 +242,18 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             return insets;
         });
 
+    }
+
+    private Context getWrappedContext(Context context) {
+        // Access the same preference your Palette.java uses
+        boolean isDark = context.getSharedPreferences("theme_choice", Context.MODE_PRIVATE)
+                .getBoolean("dark", false);
+
+        // Use an AppCompat Theme Overlay
+        int themeRes = isDark ? androidx.appcompat.R.style.ThemeOverlay_AppCompat_Dark
+                : androidx.appcompat.R.style.ThemeOverlay_AppCompat_Light;
+
+        return new androidx.appcompat.view.ContextThemeWrapper(context, themeRes);
     }
 
     public void showKeyboard() {
@@ -458,7 +475,6 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         textInputLayout.setBoxStrokeWidth(2);
         textInputLayout.setBoxStrokeColor(palette.hintColor);
         editText.setTextColor(palette.textColor);
-        editText.setHighlightColor(palette.secondary);
         tintDrawables();
     }
 
@@ -528,9 +544,15 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 if (cursor != null) {
                     editText.setTextCursorDrawable(cursor);
                 }
+                if (editText.getTextCursorDrawable() != null) {
+                    editText.getTextCursorDrawable().setTint(palette.primary);
+                }
             } else {
+                // 2. Try to force the suggestion text color for older APIs
+
                 // Reflection for older versions
-                Field fEditor = editText.getClass().getDeclaredField("mEditor");
+                //Field fEditor = editText.getClass().getDeclaredField("mEditor");
+                Field fEditor = TextView.class.getDeclaredField("mEditor");
                 fEditor.setAccessible(true);
                 Object editor = fEditor.get(editText);
 
