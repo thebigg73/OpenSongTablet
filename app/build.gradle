@@ -37,6 +37,13 @@ android {
         versionCode = 441     // Also change in wear
         versionName = '6.7.0' // Also change in wear
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        // 1. Fetch the value.
+        // 2. Wrap it in escaped double-quotes so it is a valid Java String in BuildConfig.java
+        def gKey = localProps.getProperty('GOOGLE_FONTS_API_KEY') ?: ""
+        buildConfigField "String", "GOOGLE_FONTS_KEY", "\"${gKey}\""
+
         /*externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_shared"
