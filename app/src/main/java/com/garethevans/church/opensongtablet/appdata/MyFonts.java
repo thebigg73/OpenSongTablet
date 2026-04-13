@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.core.provider.FontRequest;
 import androidx.core.provider.FontsContractCompat;
 
+import com.garethevans.church.opensongtablet.BuildConfig;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -267,7 +268,9 @@ public class MyFonts {
         ArrayList<String> fontNames;
         String response = null;
         try {
-            URL url = new URL("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBKvCB1NnWwXGyGA7RTar0VQFCM3rdOE8k&sort=alpha");
+            String apiKey = BuildConfig.GOOGLE_FONTS_KEY;
+            URL url = new URL("https://www.googleapis.com/webfonts/v1/webfonts?key=" + apiKey + "&sort=alpha");
+            //URL url = new URL("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBKvCB1NnWwXGyGA7RTar0VQFCM3rdOE8k&sort=alpha");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
