@@ -278,16 +278,16 @@ public class WebServer {
         mainActivityInterface.getProcessSong().processSongIntoSections(songForHTML,false);
 
         String newSplashPage = CreateHTML.getSplashHTML(c,songForHTML,ipAddress);
-        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","newSplashPage.html", newSplashPage);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","newSplashPage.html", newSplashPage, false);
 
         String newWebPage = CreateHTML.getSongHTML(c,songForHTML,ipAddress,true,true, getPreviousAndNextSongForArrows(songForHTML));
-        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","newWebPage.html", newWebPage);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","newWebPage.html", newWebPage, false);
 
         String songMenuPage = CreateHTML.getSongMenuHTML(c,songForHTML,ipAddress,true, getPreviousAndNextSongForArrows(songForHTML));
-        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","songMenuPage.html", songMenuPage);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","songMenuPage.html", songMenuPage, false);
 
         String setMenuPage = CreateHTML.getSetMenuHTML(c,songForHTML,ipAddress,true, getPreviousAndNextSongForArrows(songForHTML));
-        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","setMenuPage.html", setMenuPage);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","setMenuPage.html", setMenuPage, false);
     }
 
     // Called when we load a song to push a refresh to connected web clients

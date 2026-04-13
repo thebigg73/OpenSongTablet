@@ -98,7 +98,7 @@ public class CCLILog {
 
         // Write the new file
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" createBlankXML doStringWriteToFile Settings/ActivityLog.xml with: "+blankXML);
-        return mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","ActivityLog.xml",blankXML);
+        return mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","ActivityLog.xml",blankXML, false);
     }
 
     @SuppressLint("SimpleDateFormat")

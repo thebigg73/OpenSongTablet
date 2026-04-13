@@ -382,7 +382,7 @@ public class ImportIOSFragment extends Fragment {
                                         String xml = mainActivityInterface.getProcessSong().getXML(newSong);
                                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " updateFragment doStringWriteToFile Songs/" + folder + "/" + newSong.getFilename() + " with: " + xml);
                                         if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",
-                                                folder, newSong.getFilename(), xml)) {
+                                                folder, newSong.getFilename(), xml, false)) {
                                             // Add to the actual database
                                             mainActivityInterface.getSQLiteHelper().createSong(folder, newSong.getFilename());
                                             mainActivityInterface.getSQLiteHelper().updateSong(newSong);

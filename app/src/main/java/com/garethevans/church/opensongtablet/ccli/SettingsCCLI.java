@@ -122,7 +122,7 @@ public class SettingsCCLI extends Fragment {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         mainActivityInterface.getCCLILog().getCurrentEntries(uri);
 
-        if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","","ActivityLog.csv",mainActivityInterface.getCCLILog().getCCLILogAsCSV())) {
+        if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","","ActivityLog.csv",mainActivityInterface.getCCLILog().getCCLILogAsCSV(), false)) {
             uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","","ActivityLog.csv");
             Intent intent = mainActivityInterface.getExportActions().setShareIntent(basicMessage(),"text/csv",uri,null);
             intent.putExtra(Intent.EXTRA_SUBJECT, "ActivityLog.csv");

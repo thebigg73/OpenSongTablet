@@ -259,7 +259,7 @@ public class SongActionsMenuFragment extends Fragment {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doDuplicate doStringWriteToFile Songs/"+mainActivityInterface.getSong().getFolder()+"/"+newName+" with: "+content);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         "Songs", mainActivityInterface.getSong().getFolder(),
-                        newName, content)) {
+                        newName, content, false)) {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                     mainActivityInterface.getSong().setFilename(newName);
 

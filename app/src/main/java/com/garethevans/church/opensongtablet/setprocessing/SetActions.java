@@ -1209,10 +1209,10 @@ public class SetActions {
             }
 
             if (asExport) {
-                mainActivityInterface.getStorageAccess().writeFileFromString(folderExport,"",tempSong.getFilename(),s);
+                mainActivityInterface.getStorageAccess().writeFileFromString(folderExport,"",tempSong.getFilename(),s, false);
 
             } else {
-                mainActivityInterface.getStorageAccess().writeFileFromString(tempSong.getFolder().replace(customLocStart, ""), tempcache, tempSong.getFilename(), s);
+                mainActivityInterface.getStorageAccess().writeFileFromString(tempSong.getFolder().replace(customLocStart, ""), tempcache, tempSong.getFilename(), s, false);
 
                 // Get the file
                 tempSong = mainActivityInterface.getLoadSong().doLoadSongFile(tempSong, false);
@@ -1420,7 +1420,7 @@ public class SetActions {
         // Get the song as XML
         tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(tempSong));
         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTempSlide doStringWriteToFile "+folder+"/"+subfolder+"/"+tempSong.getFilename()+" with: "+tempSong.getSongXML());
-        mainActivityInterface.getStorageAccess().writeFileFromString(folder,subfolder,tempSong.getFilename(),tempSong.getSongXML());
+        mainActivityInterface.getStorageAccess().writeFileFromString(folder,subfolder,tempSong.getFilename(),tempSong.getSongXML(), false);
     }
 
     private String safeNextText(XmlPullParser xpp) {

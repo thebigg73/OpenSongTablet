@@ -71,7 +71,7 @@ public class StorageAccess {
     private boolean fileWriteLog, fileViewLog;
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
-    private final String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
+    private final String[] rootFolders = {"Backgrounds", "Drummer", "Export", "Fonts", "Highlighter", "Images", "Media",
             "Multitrack", "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations", "Backups", "Import"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
@@ -3107,9 +3107,9 @@ public class StorageAccess {
                 "=============================\n"+
                 "If possible, please give a brief description of what you were doing when the app crashed:\n\n\n\n\n\n" +
                 "=============================\n" +
-                crash;
+                crash + "\n\n";
             try {
-                writeFileFromString("Settings", "", "CrashLog.txt", crashContent);
+                writeFileFromString("Settings", "", "CrashLog.txt", crashContent, true);
                 // Set the crashLogAttempts back to zero so we can
             } catch (Exception e) {
                 e.printStackTrace();
@@ -3140,7 +3140,7 @@ public class StorageAccess {
         } else {
             String[] fixLocations = getActualFoldersFromNice(song.getFolder());
             song.setSongXML(mainActivityInterface.getProcessSong().getXML(song));
-            return writeFileFromString(fixLocations[0],fixLocations[1],song.getFilename(),song.getSongXML());
+            return writeFileFromString(fixLocations[0],fixLocations[1],song.getFilename(),song.getSongXML(),false);
         }
     }
     /**  This function can be used to write any text based content to a file
@@ -3152,7 +3152,7 @@ public class StorageAccess {
      * @param content - the string/text to be written to the file
      * @return true if success
      */
-    public boolean writeFileFromString(String folder, String subfolder, String filename, String content) {
+    public boolean writeFileFromString(String folder, String subfolder, String filename, String content, boolean appendToExisting) {
         Log.d(TAG,"writeFileFromString("+folder+","+subfolder+","+filename+","+content);
         // 1. Attempt to get the existing URI
         Uri fileUri = getUriForItem(folder, subfolder, filename);
@@ -3161,7 +3161,8 @@ public class StorageAccess {
         Log.d(TAG,"fileUri:"+fileUri);
         try {
             // 2. Try the "Happy Path" (file/folders already exists)
-            outputStream = c.getContentResolver().openOutputStream(fileUri, "wt");
+            String mode = appendToExisting ? "wa" : "wt";
+            outputStream = c.getContentResolver().openOutputStream(fileUri, mode);
             Log.d(TAG,"fileUri existed and we have a valid output stream");
         } catch (Exception e) {
             // 3. Fallback: File or folders don't exist

@@ -371,7 +371,7 @@ public class ImportBulkFragment extends Fragment {
             //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
             //boolean jcSuccess = mainActivityInterface.getStorageAccess().writeFileFromString(mainActivityInterface.getProcessSong().getXML(jcImport), outputStream);
 
-            if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",imported_string, jcImport.getFilename(), mainActivityInterface.getProcessSong().getXML(jcImport))) {
+            if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",imported_string, jcImport.getFilename(), mainActivityInterface.getProcessSong().getXML(jcImport),false)) {
                 // Add the song to the database
                 mainActivityInterface.getSQLiteHelper().createSong(imported_string, jcImport.getFilename());
                 mainActivityInterface.getSQLiteHelper().updateSong(jcImport);

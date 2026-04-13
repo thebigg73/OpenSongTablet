@@ -502,17 +502,21 @@ public class ChordDisplayProcessing {
                 if (!piano) {
                     pixels = new int[questionWidth * questionHeight];
                     //get pixels
-                    scaledBitmap.getPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
+                    try {
+                        scaledBitmap.getPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
 
-                    // Change the pixels
-                    for (int x = 0; x < pixels.length; ++x) {
-                        if (capochords) {
-                            pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsCapoColor() : pixels[x];
-                        } else {
-                            pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsChordsColor() : pixels[x];
+                        // Change the pixels
+                        for (int x = 0; x < pixels.length; ++x) {
+                            if (capochords) {
+                                pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsCapoColor() : pixels[x];
+                            } else {
+                                pixels[x] = (pixels[x] == c.getResources().getColor(R.color.white)) ? mainActivityInterface.getMyThemeColors().getLyricsChordsColor() : pixels[x];
+                            }
                         }
+                        scaledBitmap.setPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    scaledBitmap.setPixels(pixels, 0, newWidth, 0, 0, newWidth, newHeight);
                 }
 
                 chordName = chordName.replace("$","").replace("/","_");

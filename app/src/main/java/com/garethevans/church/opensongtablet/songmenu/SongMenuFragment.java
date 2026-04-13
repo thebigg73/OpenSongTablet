@@ -571,7 +571,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void updateCheckForThisSong(Song thisSong) {
         // Call to update something about a specific song
         getSongsFound();
-        if (songMenuSongs.getFoundSongs()!=null) {
+        if (songMenuSongs!=null && songMenuSongs.getFoundSongs()!=null) {
             int pos = -1;
             for (int i = 0; i < songMenuSongs.getCount(); i++) {
                 if (songMenuSongs.getFoundSongs().get(i).getFilename().equals(thisSong.getFilename()) &&

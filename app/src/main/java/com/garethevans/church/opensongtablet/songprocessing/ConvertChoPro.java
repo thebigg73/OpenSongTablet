@@ -645,7 +645,7 @@ public class ConvertChoPro {
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong Create Songs/"+songSubFolder+"/"+newSongFileName+" deleteOld=true");
 
-            if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",songSubFolder,newSongFileName,newXML)) {
+            if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",songSubFolder,newSongFileName,newXML, false)) {
                 // The new file was successfully written
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" writeTheImprovedSong deleteFile "+oldUri);
                 Log.d(TAG, "attempt to deletefile=" + mainActivityInterface.getStorageAccess().deleteFile(oldUri));

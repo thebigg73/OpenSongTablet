@@ -1057,7 +1057,7 @@ public class CommonSQL {
 
             // Now write the file
             if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "",
-                    exportedFilename, stringBuilder.toString().replace("\"null\"", "\"\""))) {
+                    exportedFilename, stringBuilder.toString().replace("\"null\"", "\"\""), false)) {
                 Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", exportedFilename);
                 c.startActivity(Intent.createChooser(mainActivityInterface.getExportActions().setShareIntent(exportedFilename, "text/csv", uri, null), exportedFilename));
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));

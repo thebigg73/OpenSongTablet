@@ -517,7 +517,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             if (!safeToDelete) {
                 StringBuilder headings = new StringBuilder();
                 mainActivityInterface.getCommonSQL().addCSVTableHeadings(headings);
-                mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","removedNonOpenSongSongs.csv",headings.toString());
+                mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","removedNonOpenSongSongs.csv",headings.toString(), false);
 
             }
 

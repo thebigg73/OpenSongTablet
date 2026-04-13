@@ -132,7 +132,7 @@ public class ExportSongListBottomSheet extends BottomSheetCommon {
         Uri uri;
         if (myView.exportCsv.isChecked()) {
             mimeTypes.add("text/csv");
-            mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", "songlist.csv", contentCSV);
+            mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", "songlist.csv", contentCSV, false);
             uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", "songlist.csv");
             uris.add(uri);
         }
@@ -145,7 +145,7 @@ public class ExportSongListBottomSheet extends BottomSheetCommon {
 
         if (myView.exportText.isChecked()) {
             mimeTypes.add("text/plain");
-            mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", "songlist.txt", contentCSV);
+            mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", "songlist.txt", contentCSV, false);
             uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", "songlist.txt");
             uris.add(uri);
         }

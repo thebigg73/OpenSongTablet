@@ -530,7 +530,7 @@ public class SetManageFragment extends Fragment {
 
                     String setAsPref = mainActivityInterface.getSetActions().getSetAsPreferenceString();
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveSet writeFileFromString Sets/" + newSetFilename + " with: " + setXML);
-                    if (mainActivityInterface.getStorageAccess().writeFileFromString("Sets","",newSetFilename,setXML)) {
+                    if (mainActivityInterface.getStorageAccess().writeFileFromString("Sets","",newSetFilename,setXML, false)) {
                         // Update the last loaded set now it is saved.
                         mainActivityInterface.getCurrentSet().setSetCurrentBeforeEdits(
                                 mainActivityInterface.getCurrentSet().getSetCurrent());

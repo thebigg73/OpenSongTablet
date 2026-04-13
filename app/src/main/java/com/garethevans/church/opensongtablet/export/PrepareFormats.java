@@ -54,21 +54,21 @@ public class PrepareFormats {
         if (txt && thisSongSQL !=null) {
             String text = getSongAsText(thisSongSQL);
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeSongExportCopies doStringWriteToFile Export/"+newFilename+".txt with: "+text);
-            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename+".txt",text)) {
+            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename+".txt",text, false)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".txt"));
             }
         }
         if (chopro && thisSongSQL !=null) {
             String text = getSongAsChoPro(thisSongSQL);
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeSongExportCopies doStringWriteToFile Export/"+newFilename+".chopro with: "+text);
-            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename+".chopro",text)) {
+            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename+".chopro",text, false)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".chopro"));
             }
         }
         if (onsong && thisSongSQL !=null) {
             String text = getSongAsOnSong(thisSongSQL);
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" makeSongExportCopies doStringWriteToFile Export/"+newFilename+".onsong with: "+text);
-            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename+".onsong",text)) {
+            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename+".onsong",text, false)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".onsong"));
             }
         }

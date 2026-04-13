@@ -272,7 +272,7 @@ public class LoadSong {
         Uri olduri = uri;
         uri = mainActivityInterface.getStorageAccess().getUriForItem(where,thisSong.getFolder(),newname);
         thisSong.setSongXML(mainActivityInterface.getProcessSong().getXML(thisSong));
-        if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",thisSong.getFolder(),newname,thisSong.getSongXML())) {
+        if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",thisSong.getFolder(),newname,thisSong.getSongXML(),false)) {
             mainActivityInterface.getStorageAccess().deleteFile(olduri);
             // Remove the old item from the database
             Log.d(TAG,"remove from database:" + mainActivityInterface.getSQLiteHelper().deleteSong(thisSong.getFolder(),oldname));
@@ -664,7 +664,7 @@ public class LoadSong {
                         content = content.substring(0, content.indexOf("</song>")) + "</song>";
                         mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " fixSongs doStringWriteToFile Songs/" + thisSong.getFolder() + "/" + thisSong.getFilename() + " with: " + content);
                         success = mainActivityInterface.getStorageAccess().writeFileFromString(
-                                "Songs", thisSong.getFolder(), thisSong.getFilename(), content);
+                                "Songs", thisSong.getFolder(), thisSong.getFilename(), content, false);
                         Log.d(TAG, "fixSong: " + success);
 
                     } else if (thisSong.getFiletype().equals("TXT")) {
@@ -677,7 +677,7 @@ public class LoadSong {
                         thisSong.setTitle(newname);
                         String xml = mainActivityInterface.getProcessSong().getXML(thisSong);
                         success = mainActivityInterface.getStorageAccess().writeFileFromString(
-                                "Songs", thisSong.getFolder(), newname, xml);
+                                "Songs", thisSong.getFolder(), newname, xml, false);
                         if (success && !newname.equals(oldname)) {
                             // Remove the obsolete text file
                             mainActivityInterface.getStorageAccess().deleteFile(oldUri);
@@ -804,7 +804,7 @@ public class LoadSong {
                 //mainActivityInterface.getStorageAccess().writeFileFromString(toFix,outputStream);
 
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+fixUri+" with: "+toFix);
-                mainActivityInterface.getStorageAccess().writeFileFromString(where,thisSong.getFolder(),thisSong.getFilename(),toFix);
+                mainActivityInterface.getStorageAccess().writeFileFromString(where,thisSong.getFolder(),thisSong.getFilename(),toFix,false);
                 Log.d(TAG,"fixed "+section+" :"+newExtracted);
                 return newExtracted;
             } else {

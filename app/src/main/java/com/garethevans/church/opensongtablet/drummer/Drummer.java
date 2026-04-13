@@ -344,7 +344,7 @@ public class Drummer {
         //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Drummer","",filename);
         String gsonString = MainActivity.gson.toJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
         //mainActivityInterface.getStorageAccess().writeFileFromString(gsonString,mainActivityInterface.getStorageAccess().getOutputStream(uri));
-        mainActivityInterface.getStorageAccess().writeFileFromString("Drummer","",filename,gsonString);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Drummer","",filename,gsonString, false);
     }
 
     public String getNiceNameFromFilename(String filename) {

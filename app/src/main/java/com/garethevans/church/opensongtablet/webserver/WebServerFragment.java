@@ -46,7 +46,9 @@ public class WebServerFragment extends Fragment {
         WebServerFragment webServerFragment = this;
         // Let the localWiFiHost know we can update the QR code
         mainActivityInterface.getWebServer().setWebServerFragment(webServerFragment);
-        mainActivityInterface.getLocalWiFiHost().setWebServerFragment(webServerFragment);
+        if (mainActivityInterface.getLocalWiFiHost()!=null) {
+            mainActivityInterface.getLocalWiFiHost().setWebServerFragment(webServerFragment);
+        }
 
     }
 
@@ -67,7 +69,9 @@ public class WebServerFragment extends Fragment {
 
         WebServerFragment webServerFragment = this;
         // Let the localWiFiHost know we can update the QR code
-        mainActivityInterface.getLocalWiFiHost().setWebServerFragment(webServerFragment);
+        if (mainActivityInterface.getLocalWiFiHost()!=null) {
+            mainActivityInterface.getLocalWiFiHost().setWebServerFragment(webServerFragment);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             myView.runHotspot.setVisibility(View.VISIBLE);
@@ -315,7 +319,9 @@ public class WebServerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainActivityInterface.getLocalWiFiHost().setWebServerFragment(null);
+        if (mainActivityInterface.getLocalWiFiHost()!=null) {
+            mainActivityInterface.getLocalWiFiHost().setWebServerFragment(null);
+        }
         mainActivityInterface.getWebServer().setWebServerFragment(null);
     }
 }

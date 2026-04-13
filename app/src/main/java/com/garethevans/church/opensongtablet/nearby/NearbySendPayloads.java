@@ -117,7 +117,7 @@ public class NearbySendPayloads {
         // Empty the export folder
         mainActivityInterface.getStorageAccess().wipeFolder("Export","");
         String jsonString = MainActivity.gson.toJson(nearbyJson);
-        mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", filename, jsonString);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", filename, jsonString,false);
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", filename);
         ParcelFileDescriptor pfd;
         try {
@@ -200,7 +200,7 @@ public class NearbySendPayloads {
         // Empty the export folder
         mainActivityInterface.getStorageAccess().wipeFolder("Export","");
         String jsonString = MainActivity.gson.toJson(nearbyJson);
-        mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", nearbyActions.sharableObjectFile, jsonString);
+        mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", nearbyActions.sharableObjectFile, jsonString, false);
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.sharableObjectFile);
         ParcelFileDescriptor pfd;
         try {
@@ -273,7 +273,7 @@ public class NearbySendPayloads {
                         Uri currentSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", nearbyActions.currentSetFile);
                         // Empty the export folder
                         mainActivityInterface.getStorageAccess().wipeFolder("Export","");
-                        mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", nearbyActions.currentSetFile, currentSetXML);
+                        mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", nearbyActions.currentSetFile, currentSetXML, false);
                         mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream, "Export", "", nearbyActions.currentSetFile);
 
                     } else {
@@ -296,7 +296,7 @@ public class NearbySendPayloads {
                         // Empty the export folder
                         mainActivityInterface.getStorageAccess().wipeFolder("Export","");
                         Uri thisNonOSSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Export","", newFilename);
-                        mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename,songJson);
+                        mainActivityInterface.getStorageAccess().writeFileFromString("Export","",newFilename,songJson, false);
                         mainActivityInterface.getStorageAccess().addItemToZip(zipOutputStream,"Export","",newFilename);
                     }
                 }

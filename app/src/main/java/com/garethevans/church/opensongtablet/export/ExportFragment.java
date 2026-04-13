@@ -549,7 +549,7 @@ public class ExportFragment extends Fragment {
                 if (textSet) {
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+setToExport+".txt with: "+setData[1]);
                     mainActivityInterface.getStorageAccess().writeFileFromString(
-                            "Export", "", setToExport + ".txt", setData[1]);
+                            "Export", "", setToExport + ".txt", setData[1], false);
                     if (textSet) {
                         uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", setToExport + ".txt"));
                         if (!mimeTypes.contains("text/plain")) {
@@ -608,7 +608,7 @@ public class ExportFragment extends Fragment {
                             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",song.getFilename());
                             float fileSize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
                             mainActivityInterface.getProcessSong().getXML(song);
-                            mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", song.getFilename(), song.getSongXML());
+                            mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", song.getFilename(), song.getSongXML(), false);
                             if (includeSongs && fileSize>0) {
                                 uris.add(uri);
                             }
@@ -724,7 +724,7 @@ public class ExportFragment extends Fragment {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(song);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".onsong with: "+content);
-                            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", location[1] + ".onsong", content)) {
+                            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", location[1] + ".onsong", content, false)) {
                                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".onsong"));
                                 if (!mimeTypes.contains("text/plain")) {
                                     mimeTypes.add("text/plain");
@@ -737,7 +737,7 @@ public class ExportFragment extends Fragment {
                             // Get the text from the file
                             String content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(song);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSet doStringWriteToFile Export/"+location[1]+".cho with: "+content);
-                            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", location[1] + ".cho", content)) {
+                            if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", location[1] + ".cho", content, false)) {
                                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".cho"));
                                 if (!mimeTypes.contains("text/plain")) {
                                     mimeTypes.add("text/plain");
@@ -754,7 +754,7 @@ public class ExportFragment extends Fragment {
                             }
                             if (text) {
                                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doExportSet doStringWriteToFile Export/" + location[1] + ".txt with: " + content);
-                                if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", location[1] + ".txt", content)) {
+                                if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "", location[1] + ".txt", content, false)) {
                                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".txt"));
                                     if (!mimeTypes.contains("text/plain")) {
                                         mimeTypes.add("text/plain");
@@ -801,7 +801,7 @@ public class ExportFragment extends Fragment {
         if (merged && !combinedSetText.toString().isEmpty()) {
             uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",merged_text_file_string+".txt");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",merged_text_file_string+".txt");
-            mainActivityInterface.getStorageAccess().writeFileFromString("Export","",merged_text_file_string+".txt",combinedSetText.toString());
+            mainActivityInterface.getStorageAccess().writeFileFromString("Export","",merged_text_file_string+".txt",combinedSetText.toString(), false);
         }
         return uri;
     }
@@ -955,7 +955,7 @@ public class ExportFragment extends Fragment {
                 String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(mainActivityInterface.getSong());
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong doStringWriteToFile Export/"+filename+".onsong with: "+content);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "",
-                        filename + ".onsong", content)) {
+                        filename + ".onsong", content, false)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
                             filename + ".onsong"));
                     if (!mimeTypes.contains("text/plain")) {
@@ -968,7 +968,7 @@ public class ExportFragment extends Fragment {
                 String content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(mainActivityInterface.getSong());
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong doStringWriteToFile Export/"+filename+".cho with: "+content);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "",
-                        filename + ".cho", content)) {
+                        filename + ".cho", content, false)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
                             filename + ".cho"));
                     if (!mimeTypes.contains("text/plain")) {
@@ -980,7 +980,7 @@ public class ExportFragment extends Fragment {
             if (text && isXML) {
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doExportSong doStringWriteToFile Export/"+filename+".txt with: "+textContent);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString("Export", "",
-                        filename + ".txt", textContent)) {
+                        filename + ".txt", textContent, false)) {
                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "",
                             filename + ".txt"));
                     if (!mimeTypes.contains("text/plain")) {

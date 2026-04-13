@@ -418,7 +418,7 @@ public class NearbyReceivePayloads {
                 // Write the file to the desired output stream and load
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " write the file content: " + newLocation + " with: " + nearbyJson.getXml());
 
-                if (mainActivityInterface.getStorageAccess().writeFileFromString(folder, subfolderforuri, filename, nearbyJson.getXml())) {
+                if (mainActivityInterface.getStorageAccess().writeFileFromString(folder, subfolderforuri, filename, nearbyJson.getXml(),false)) {
                     // Set the song section
                     setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
                     if (nearbyJson.getSwipeDirection() != null) {
