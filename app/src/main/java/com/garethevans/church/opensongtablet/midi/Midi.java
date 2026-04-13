@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.midi;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -1095,12 +1096,23 @@ public class Midi {
             // If we haven't paired a device in the app, make sure suitable devices are unpaired now so we can discover them
             List<BluetoothDevice> connectedDevices;
             if (bluetoothDevice == null && bluetoothManager != null) {
-                try {
-                    connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // 1. Get the adapter from the manager
+                BluetoothAdapter adapter = bluetoothManager.getAdapter();
+
+                // 2. CRITICAL: Check that the adapter exists AND is actually turned on
+                // This prevents the internal NPE in getConnectedDevices()
+                if (adapter != null && adapter.isEnabled()) {
+                    try {
+                        connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        connectedDevices = null;
+                    }
+                } else {
+                    Log.w(TAG, "Bluetooth Adapter is null or disabled. Skipping device search.");
                     connectedDevices = null;
                 }
+
                 if (midiManager == null) {
                     setMidiManager((MidiManager) c.getSystemService(Context.MIDI_SERVICE));
                 }

@@ -1695,7 +1695,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         String newSongText = processSong.getXML(song);
                         // Save the song.  This also calls lollipopCreateFile with 'true' to deleting old
                         getStorageAccess().updateFileActivityLog(TAG + " updateFragment doStringWriteToFile Songs/" + song.getFolder() + "/" + song.getFilename() + " with: " + newSongText);
-                        if (getStorageAccess().writeFileFromString("Songs", song.getFolder(), song.getFilename(), newSongText)) {
+                        if (getStorageAccess().writeFileFromString("Songs", song.getFolder(), song.getFilename(), newSongText, false)) {
                             navigateToFragment(null, R.id.editSongFragment);
                         } else {
                             getShowToast().doIt(error);
@@ -3876,7 +3876,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     getSetActions().setUseThisLastModifiedDate(null);
 
                     String setString = getSetActions().getSetAsPreferenceString();
-                    result = getStorageAccess().writeFileFromString("Sets", "", currentSet.getSetCurrentLastName(), xml);
+                    result = getStorageAccess().writeFileFromString("Sets", "", currentSet.getSetCurrentLastName(), xml, false);
                     if (result) {
                         // Update the last edited version (current set already has this)
                         currentSet.setSetCurrentBeforeEdits(setString);
@@ -5007,7 +5007,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onDestroy() {
         // If we were running a local Wi-Fi host, turn it off
-        getLocalWiFiHost().stopLocalWifi();
+        if (getLocalWiFiHost() != null) {
+            getLocalWiFiHost().stopLocalWifi();
+        }
 
         // If we were running a local webServer, turn it off
         getWebServer().stopWebServer();
