@@ -2,7 +2,9 @@ package com.garethevans.church.opensongtablet.openchords;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -17,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -174,6 +177,12 @@ public class OpenChordsFragment extends Fragment {
             }
 
             folderChangedProgrammatically = false;
+
+            // Tint the background circle for the file counter
+            ColorStateList secondaryTint = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
+
+            ViewCompat.setBackgroundTintList(myView.uploadCount, secondaryTint);
+            ViewCompat.setBackgroundTintList(myView.downloadCount, secondaryTint);
 
             // Set up the QR code
             Glide.with(getContext()).load(mainActivityInterface.getOpenChordsAPI().getOpenChordsQRCode()).into(myView.openChordsQRImage);
