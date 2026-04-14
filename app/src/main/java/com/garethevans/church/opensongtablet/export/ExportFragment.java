@@ -1020,6 +1020,7 @@ public class ExportFragment extends Fragment {
             uris.add(mergedTextFile);
         }
 
+        String singleFileName = null;
         if (getContext()!=null) {
             for (Uri uri : uris) {
                 if (uri != null) {
@@ -1028,6 +1029,9 @@ public class ExportFragment extends Fragment {
                         // Get the file name after the OpenSong/Export/ bit
                         File file = getFileFromUri(uri, exportFolder);
                         if (file!=null) {
+                            if (singleFileName==null && uris.size()==1) {
+                                singleFileName = file.getName();
+                            }
                             OutputStream outputStream = new FileOutputStream(file);
                             // Don't delete - does something!
                             Log.d(TAG, "Copy:" + mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream));
@@ -1050,11 +1054,16 @@ public class ExportFragment extends Fragment {
             intent = mainActivityInterface.getExportActions().setShareIntent(textContent, "*/*", null, newUris);
         }
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.putExtra(Intent.EXTRA_SUBJECT, app_name_string + " " +
-                exportType + ": " + shareTitle);
+
+        if (singleFileName!=null) {
+            intent.putExtra(Intent.EXTRA_SUBJECT, singleFileName);
+        } else {
+            intent.putExtra(Intent.EXTRA_SUBJECT, app_name_string + " " +
+                    exportType + ": " + shareTitle);
+        }
         if (setContent!=null && myView.exportTextAsMessage.getChecked()) {
             intent.putExtra(Intent.EXTRA_TEXT, setContent);
-        } else if (setContent == null){
+        } else if (setContent == null) {
             intent.putExtra(Intent.EXTRA_TEXT, textContent);
         }
 
