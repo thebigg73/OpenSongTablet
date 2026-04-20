@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         // AGP 9.1.0 is fine, but it's very strict
-        classpath 'com.android.tools.build:gradle:9.1.0'
+        classpath 'com.android.tools.build:gradle:9.1.1'
 
         // Bump this to the latest 2.9.7 to support AGP 9 APIs
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.7'
