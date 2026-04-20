@@ -111,6 +111,7 @@ public class ActionBarSettingsFragment extends Fragment {
                 true,myView.clockTextOnOff,myView.timeLayout);
         myView.clock24hrOnOff.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("clock24hFormat",true));
         myView.clockSeconds.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockSeconds",false));
+        myView.actionBarSettingsMinimise.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("actionBarSettingsMinimise",false));
 
         // The listeners
         myView.titleTextSize.addOnChangeListener(new MyOnChangeListener("songTitleSize",true));
@@ -163,6 +164,10 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.clockSeconds.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("clockSeconds",isChecked);
             updateActionBar("clockSeconds",0.0f,isChecked);
+        });
+        myView.actionBarSettingsMinimise.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("actionBarSettingsMinimise",isChecked);
+            updateActionBar("actionBarSettingsMinimise",0.0f,isChecked);
         });
     }
 

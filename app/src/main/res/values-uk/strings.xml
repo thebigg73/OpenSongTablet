@@ -1469,4 +1469,6 @@
     <string name="worship">Богослужіння</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="actionbar_minimise">Мінімізація іконок панелі дій</string>
+    <string name="actionbar_minimise_info">Перемістіть необов\'язкові іконки у меню переповнення, щоб залишити більше місця для назви пісні</string>
 </resources>

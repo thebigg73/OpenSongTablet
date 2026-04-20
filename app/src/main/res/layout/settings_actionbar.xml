@@ -27,6 +27,16 @@
         <com.garethevans.church.opensongtablet.customviews.MyDivider
             style="@style/MyDividerLine"/>
 
+        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+            android:id="@+id/actionBarSettingsMinimise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/actionbar_minimise"
+            android:hint="@string/actionbar_minimise_info"/>
+        <com.garethevans.church.opensongtablet.customviews.MyDivider
+            style="@style/MyDividerLine"/>
+
+
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1469,4 +1469,6 @@
     <string name="worship">Aanbidding</string>
     <string name="zone">Sone</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="actionbar_minimise">Minimaliseer aksiebalk-ikone</string>
+    <string name="actionbar_minimise_info">Skuif nie-noodsaaklike ikone na die oorloopkieslys om meer ruimte vir die liedjietitel te gee</string>
 </resources>

@@ -1469,4 +1469,6 @@
     <string name="worship">නමස්කාරය</string>
     <string name="zone">කලාපය</string>
     <string name="zoom_level">විශාලන මට්ටම</string>
+    <string name="actionbar_minimise">ක්‍රියා තීරු නිරූපක අවම කරන්න</string>
+    <string name="actionbar_minimise_info">ගීත මාතෘකාව සඳහා වැඩි ඉඩක් ලබා දීම සඳහා අත්‍යවශ්‍ය නොවන අයිකන පිටාර ගැලීමේ මෙනුවට ගෙන යන්න.</string>
 </resources>

@@ -416,6 +416,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Updating toolbar runnable
         updatingToolbarRunnable = () -> {
+            Log.d(TAG,"webHelpAddress:"+webHelpAddress);
             updatingToolbarHelp = true;
             if (menuScreenHelp != null) {
                 menuScreenHelp.setVisible(webHelpAddress != null && !webHelpAddress.isEmpty());
@@ -2187,6 +2188,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // If the user changes settings from the ActionBarSettingsFragment, they get sent here to deal with
         // So let's pass them on to the AppActionBar helper
         myView.myToolbar.updateActionBarSettings(prefName, floatval, isvisible);
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -2305,8 +2307,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Settings and options menus
     @Override
     public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        return true;
+        menuScreenHelp.setVisible(settingsOpen && webHelpAddress != null && !webHelpAddress.isEmpty());
+        menuScreenMirror.setVisible(!settingsOpen);
+
+        // Decide if the user wants the showIfRoom option
+        boolean minimiseAction = getPreferences().getMyPreferenceBoolean("actionBarSettingsMinimise",false);
+        menuScreenHelp.setShowAsAction(minimiseAction && !settingsOpen ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuSearch.setShowAsAction(minimiseAction && !settingsOpen ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuScreenMirror.setShowAsAction(minimiseAction ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack : navIconMenu);
+        updateCastIcon();
+        invalidateOptionsMenu();
+        checkToolbarMenuIcons();
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void checkOptionsMenu() {
@@ -2453,6 +2467,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             menuScreenHelp.setVisible(!settingsOpen);
             menuScreenMirror.setVisible(!settingsOpen);
+
+            // Target the overflow icon in the Toolbar
+            Drawable overflowIcon = getToolbar().getOverflowIcon();
+            if (overflowIcon != null) {
+                // Wrap and mutate to avoid affecting other drawables
+                Drawable wrappedIcon = DrawableCompat.wrap(overflowIcon).mutate();
+                DrawableCompat.setTint(wrappedIcon, tint);
+                getToolbar().setOverflowIcon(wrappedIcon);
+            }
 
             tintMenuIcons(menu, tint);
 

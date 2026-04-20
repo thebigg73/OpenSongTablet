@@ -1469,4 +1469,6 @@
     <string name="worship">Uctívání</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="actionbar_minimise">Minimalizujte ikony na akčním panelu</string>
+    <string name="actionbar_minimise_info">Přesuňte nepodstatné ikony do přetečeného menu, abyste uvolnili více místa pro název skladby</string>
 </resources>

@@ -1470,4 +1470,6 @@
     <string name="worship">崇拜</string>
     <string name="zone">区</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="actionbar_minimise">最小化动作条图标</string>
+    <string name="actionbar_minimise_info">将非必要的图标移到溢出菜单中，以腾出更多空间放歌曲标题</string>
 </resources>

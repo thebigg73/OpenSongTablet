@@ -1469,4 +1469,6 @@
     <string name="worship">Verehrung</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="actionbar_minimise">Minimiere Aktionsbalken-Symbole</string>
+    <string name="actionbar_minimise_info">Verschieben Sie nicht notwendige Symbole ins Überlaufmenü, um mehr Platz für den Songtitel zu schaffen</string>
 </resources>

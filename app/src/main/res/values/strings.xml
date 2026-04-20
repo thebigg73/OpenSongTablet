@@ -25,6 +25,8 @@
     <string name="actionbar_display">Actionbar</string>
     <string name="actionbar_info">Change the appearance of the information in the actionbar</string>
     <string name="actionbar_left">Action bar left</string>
+    <string name="actionbar_minimise">Minimise action bar icons</string>
+    <string name="actionbar_minimise_info">Move non-essential icons into the overflow menu to give more space for the song title</string>
     <string name="actionbar_right">Action bar right</string>
     <string name="actions">Actions</string>
     <string name="actions_current_song">Actions for current song</string>

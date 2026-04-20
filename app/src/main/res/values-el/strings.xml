@@ -1469,4 +1469,6 @@
     <string name="worship">Λατρεία</string>
     <string name="zone">Ζώνη</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="actionbar_minimise">Ελαχιστοποίηση εικονιδίων γραμμής ενεργειών</string>
+    <string name="actionbar_minimise_info">Μετακινήστε τα μη απαραίτητα εικονίδια στο μενού υπερχείλισης για να δώσετε περισσότερο χώρο στον τίτλο του τραγουδιού</string>
 </resources>

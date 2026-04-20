@@ -1469,4 +1469,6 @@
     <string name="worship">Culte</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="actionbar_minimise">Minimiser les icônes de la barre d’action</string>
+    <string name="actionbar_minimise_info">Déplacez les icônes non essentielles dans le menu de dépassement pour laisser plus d’espace au titre de la chanson</string>
 </resources>

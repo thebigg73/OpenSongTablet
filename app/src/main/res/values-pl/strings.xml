@@ -1469,4 +1469,6 @@
     <string name="worship">Cześć</string>
     <string name="zone">Strefa</string>
     <string name="zoom_level">Stopień przybliżenia</string>
+    <string name="actionbar_minimise">Minimalizacja ikon paska akcji</string>
+    <string name="actionbar_minimise_info">Przenieś ikony nieistotne do menu nadmiarowego, aby zrobić więcej miejsca na tytuł utworu</string>
 </resources>

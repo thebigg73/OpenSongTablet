@@ -1469,4 +1469,6 @@
     <string name="worship">Dyrkan</string>
     <string name="zone">Zon</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="actionbar_minimise">Minimera ikoner för handlingsfält</string>
+    <string name="actionbar_minimise_info">Flytta icke-nödvändiga ikoner till överflödesmenyn för att ge mer plats åt låttiteln</string>
 </resources>

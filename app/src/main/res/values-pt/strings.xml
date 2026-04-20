@@ -1469,4 +1469,6 @@
     <string name="worship">Adorar</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="actionbar_minimise">Minimizar ícones da barra de ação</string>
+    <string name="actionbar_minimise_info">Mover ícones não essenciais para o menu de overflow para dar mais espaço ao título da música</string>
 </resources>

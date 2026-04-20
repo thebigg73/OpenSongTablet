@@ -1469,4 +1469,6 @@
     <string name="worship">Поклонение</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Уровень масштабирования</string>
+    <string name="actionbar_minimise">Минимизировать значки панели действий</string>
+    <string name="actionbar_minimise_info">Переместите необязательные значки в меню переполнения, чтобы освободить больше места для названия песни</string>
 </resources>

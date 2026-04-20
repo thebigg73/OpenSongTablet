@@ -1469,4 +1469,6 @@
     <string name="worship">崇拝</string>
     <string name="zone">ゾーン</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="actionbar_minimise">アクションバーアイコンを最小化</string>
+    <string name="actionbar_minimise_info">不要なアイコンをオーバーフローメニューに移動させて、曲名のスペースを増やしましょう</string>
 </resources>
