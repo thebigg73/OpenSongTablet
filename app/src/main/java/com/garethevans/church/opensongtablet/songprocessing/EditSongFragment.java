@@ -70,7 +70,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                              Bundle savedInstanceState) {
         myView = EditSongBinding.inflate(inflater, container, false);
 
-        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        if (myView!=null && mainActivityInterface!=null) {
+            myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        }
 
         prepareStrings();
         webAddress = website_edit_song_string;
