@@ -2329,7 +2329,11 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     mainActivityInterface.getStorageAccess().readTextFileToString(
                             mainActivityInterface.getStorageAccess().getInputStream(conflictCheckUri)),
                     OpenChordsConflictCheck.class);
-            openChordsConflictObjects = openChordsConflictCheck.getConflictObjects();
+            if (openChordsConflictCheck==null) {
+                openChordsConflictObjects = new ArrayList<>();
+            } else {
+                openChordsConflictObjects = openChordsConflictCheck.getConflictObjects();
+            }
         }
     }
 
