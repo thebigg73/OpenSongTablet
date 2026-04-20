@@ -254,7 +254,18 @@ public class EditSongFragmentFeatures extends Fragment {
                 mainActivityInterface.getTempSong().getAutoscrolllength().isEmpty()) {
             mainActivityInterface.getTempSong().setAutoscrolllength("0");
         }
-        int[] timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Integer.parseInt(mainActivityInterface.getTempSong().getAutoscrolllength()));
+        String aslength = mainActivityInterface.getSong().getAutoscrolllength();
+        int[] timeVals;
+        if (aslength!=null) {
+           aslength = aslength.replaceAll("\\D","");
+           if (!aslength.isEmpty()) {
+               timeVals = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Integer.parseInt(aslength));
+           } else {
+               timeVals = new int[]{0, 0};
+           }
+        } else {
+            timeVals = new int[]{0, 0};
+        }
 
         mainActivityInterface.getMainHandler().post(() -> {
             myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
