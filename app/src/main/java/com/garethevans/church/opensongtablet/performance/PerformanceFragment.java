@@ -507,8 +507,11 @@ public class PerformanceFragment extends Fragment {
             return;
         }
 
+        // TODO - setSongChange as true to force the song to load every time
+        songChange = true;
+
         // We only load a song if there is a change of song file, or we manually force it, or receive from the host
-        if (!processingTestView && myView!=null && (songChange || myView.inlineSetList.getForceReload()
+        if (myView!=null && !processingTestView && (songChange || myView.inlineSetList.getForceReload()
                 || mainActivityInterface.getTranspose().getForceReload() ||
             mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getForceReload()) || mainActivityInterface.getForceReload()) {
 

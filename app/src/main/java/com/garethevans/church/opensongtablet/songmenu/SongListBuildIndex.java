@@ -193,7 +193,8 @@ public class SongListBuildIndex {
                                 }
                             } else if (needToUpdate || fullIndexRequired) {
                                 // Look for data in the nonopensong persistent database import
-                                mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
+                                Song nonOpenSongSong = mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename());
+                                mainActivityInterface.setIndexingSong(nonOpenSongSong);
                                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf", mainActivityInterface.getIndexingSong().getFilename())) {
                                     // This is a PDF
                                     mainActivityInterface.getIndexingSong().setFiletype("PDF");

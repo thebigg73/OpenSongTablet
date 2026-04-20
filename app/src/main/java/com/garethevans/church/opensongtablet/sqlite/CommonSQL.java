@@ -532,7 +532,16 @@ public class CommonSQL {
                 thisSong.setTitle(filename);
                 thisSong.setFilename(filename);
                 thisSong.setFolder(folder);
-                thisSong.setLyrics("[" + folder + "/" + filename + "]\n" + c.getString(R.string.song_doesnt_exist));
+
+                // Look for the actual file
+                Uri actualFileUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+                if (mainActivityInterface.getStorageAccess().uriExists(actualFileUri)) {
+                    // Load the song this way
+                    mainActivityInterface.getLoadSong().doLoadSongFile(thisSong,false);
+                } else {
+                    // For some reason, we don't have that song
+                    thisSong.setLyrics("[" + folder + "/" + filename + "]\n" + c.getString(R.string.song_doesnt_exist));
+                }
             }
 
             closeCursor(cursor);
