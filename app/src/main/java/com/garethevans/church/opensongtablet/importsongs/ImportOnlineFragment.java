@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
+import android.webkit.CookieManager;
 import android.webkit.RenderProcessGoneDetail;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
@@ -156,7 +158,6 @@ public class ImportOnlineFragment extends Fragment {
             song_name_already_taken_string = getString(R.string.song_name_already_taken);
             unknown_string = getString(R.string.unknown);
             not_connected_string = getString(R.string.requires_internet);
-            webViewDesktop = mainActivityInterface.getPreferences().getMyPreferenceBoolean("webViewDesktop",false);
         }
     }
 
@@ -184,6 +185,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.webLayout.setVisibility(View.GONE);
         myView.saveLayout.setVisibility(View.GONE);
         myView.grabText.setVisibility(View.GONE);
+        webViewDesktop = mainActivityInterface.getPreferences().getMyPreferenceBoolean("webViewDesktop",false);
         myView.webViewDesktop.setChecked(webViewDesktop);
 
         if (getContext()!=null) {
@@ -227,7 +229,7 @@ public class ImportOnlineFragment extends Fragment {
         setupWebView();
     }
 
-    private void changeUserAgent() {
+    /*private void changeUserAgent() {
         // If we are about to use UG and have switch on request desktop option, set that agent
         // If not, set the device default user agent
         if (webViewDesktop && myView.onlineSource.getText().toString().equals("UltimateGuitar")) {
@@ -235,6 +237,25 @@ public class ImportOnlineFragment extends Fragment {
         } else {
             webView.post(() -> myView.webView.getSettings().setUserAgentString(userAgentDefault));
         }
+    }*/
+    private void changeUserAgent() {
+        if (webView == null) return;
+
+        // Check preference and source
+        boolean isUG = myView.onlineSource.getText().toString().equals("UltimateGuitar");
+
+        if (webViewDesktop && isUG) {
+            webView.getSettings().setUserAgentString(userAgentDesktop);
+            // Force the viewport to act like a desktop
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+        } else {
+            webView.getSettings().setUserAgentString(userAgentDefault);
+            // Revert to mobile scaling
+            webView.getSettings().setUseWideViewPort(false);
+            webView.getSettings().setLoadWithOverviewMode(false);
+        }
+        webView.reload();
     }
 
     private void changeLayouts(boolean search, boolean web, boolean save) {
@@ -266,10 +287,11 @@ public class ImportOnlineFragment extends Fragment {
             extractContent();
         });
         myView.saveButton.setOnClickListener(v -> processContent());
-        myView.webViewDesktop.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("webViewDesktop",b);
-            webViewDesktop = b;
-            changeUserAgent();
+        myView.webViewDesktop.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            webViewDesktop = isChecked;
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("webViewDesktop", isChecked);
+
+            forceUserAgentRefresh();
         });
         myView.importDownload.setOnClickListener(v -> selectFile());
 
@@ -299,10 +321,33 @@ public class ImportOnlineFragment extends Fragment {
                 }
 
                 @Override
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    String url = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        url = request.getUrl().toString();
+                    }
+
+                    // If we are in desktop mode and UG tries to push us to the mobile site, force it back
+                    if (webViewDesktop && url!=null && url.contains("m.ultimate-guitar.com")) {
+                        String desktopUrl = url.replace("m.ultimate-guitar.com", "www.ultimate-guitar.com");
+                        view.loadUrl(desktopUrl);
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     super.onPageStarted(view, url, favicon);
                     webView.post(() -> {
                         webAddressFinal = webView.getUrl();
+                        if (webViewDesktop && webAddressFinal!=null &&
+                                webAddressFinal.contains("ultimate-guitar") &&
+                                !webView.getSettings().getUserAgentString().equals(userAgentDesktop)) {
+                            webView.getSettings().setUserAgentString(userAgentDesktop);
+                            webView.reload();
+                        }
+                        Log.d(TAG,"userAgent:"+webView.getSettings().getUserAgentString());
                         Log.d(TAG,"webAddressFinal:"+webAddressFinal);
                     });
                 }
@@ -341,17 +386,25 @@ public class ImportOnlineFragment extends Fragment {
                 }
             });
 
+            // Force the "Wide Viewport" so it doesn't wrap lyric lines
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+
             // This spoofs a desktop browser required for UG if we have set that option
             userAgentDefault = myView.webView.getSettings().getUserAgentString();
-            userAgentDesktop = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0";
+            //userAgentDesktop = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0";
+            userAgentDesktop = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36";
+
+            // Set the desktop string IMMEDIATELY if the preference is on
+            if (webViewDesktop) {
+                webView.getSettings().setUserAgentString(userAgentDesktop);
+            }
             changeUserAgent();
 
             webView.getSettings().getJavaScriptEnabled();
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setDomStorageEnabled(true);
             webView.getSettings().setAllowFileAccess(true);
-            webView.getSettings().setLoadWithOverviewMode(true);
-            webView.getSettings().setUseWideViewPort(true);
             webView.getSettings().setSupportZoom(true);
             webView.getSettings().setBuiltInZoomControls(true);
             webView.getSettings().setDisplayZoomControls(false);
@@ -363,6 +416,9 @@ public class ImportOnlineFragment extends Fragment {
                 showDownloadProgress(true);
                 changeLayouts(false, false, false);
 
+                // FORCE THE UA HERE, before the post/load
+                changeUserAgent();
+
                 String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
                 if (url != null) {
                     if (url.startsWith("blob")) {
@@ -373,13 +429,25 @@ public class ImportOnlineFragment extends Fragment {
                 }
             });
 
-            // Try to fix the app theme
+            // Try to fix the app theme and the user agent again
             webView.postDelayed(() -> {
                 Log.d(TAG,"Try to retheme");
                 mainActivityInterface.getMyThemeColors().getDefaultColors();
                 ThemeKeeper.save(getContext(),mainActivityInterface.getMyThemeColors().getAppCompatDelegate());
+                forceUserAgentRefresh();
             },1000);
         }
+    }
+
+    private void forceUserAgentRefresh() {
+        // Wipe the "Mobile" memory
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().removeAllCookies(null);
+        }
+        if (myView!=null) {
+            myView.webView.clearCache(true);
+        }
+        changeUserAgent(); // Ensure this calls loadUrl() or reload()
     }
 
     private void goBackBrowser() {
