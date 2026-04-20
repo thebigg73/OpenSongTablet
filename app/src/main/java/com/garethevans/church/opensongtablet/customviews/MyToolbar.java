@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -194,6 +196,9 @@ public class MyToolbar extends MaterialToolbar {
                 break;
             case "actionBarTempo":
                 actionBarTempo = isvisible;
+                break;
+            case "actionBarSettingsMinimise":
+                Log.d(TAG,"minimise actionbar icons toggled");
                 break;
         }
     }
