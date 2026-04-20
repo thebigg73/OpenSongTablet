@@ -332,12 +332,29 @@ public class BBImportFragment extends Fragment {
                                 .append("\"\n");
 
                         String thisKit = kit_string+": "+kitNum+". "+kitName+" ("+kitCode+")";
+                        Log.d(TAG,"thisKit:"+thisKit);
+                        stringBuilder.append(thisKit).append("\n");
+                    } else if (!kit_codes.contains(kitinfo[0])) {
+                        kit_nums.add(rollingKitNum);
+                        kit_names.add(kitinfo[1]);
+                        kit_codes.add(kitinfo[0]);
+                        String midiCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(rollingKitNum).trim();
+                        newCSVText.append("\"").append(kitinfo[0])
+                                .append("\",\"").append(rollingKitNum)
+                                .append("\",\"").append(kitinfo[1])
+                                .append("\",\"").append(midiCode)
+                                .append("\"\n");
+
+                        String thisKit = kit_string+": "+rollingKitNum+". "+kitinfo[1]+" ("+kitinfo[0]+")";
+                        Log.d(TAG,"thisKit:"+thisKit);
                         stringBuilder.append(thisKit).append("\n");
                     }
                     rollingKitNum ++;
                 }
             }
         }
+
+        Log.d(TAG,"stringBuilder:"+stringBuilder);
 
         if (!stringBuilder.toString().isEmpty()) {
             bbsqLite.clearMySongs();
