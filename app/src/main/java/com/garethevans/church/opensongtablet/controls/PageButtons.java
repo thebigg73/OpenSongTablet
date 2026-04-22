@@ -444,7 +444,7 @@ public class PageButtons {
                 }
             }
 
-            if (buttonNum >= 0 && buttonNum <= pageButtonNum) {
+            if (buttonNum >= 0 && buttonNum <= pageButtonNum && pageButtonDrawable.size()>buttonNum) {
                 Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
                 fab.setImageDrawable(buttonDrawable);
                 fab.setPalette(mainActivityInterface.getPalette());

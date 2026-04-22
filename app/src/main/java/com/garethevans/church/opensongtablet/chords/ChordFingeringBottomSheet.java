@@ -18,6 +18,8 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.BottomSheetChordsFingeringBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
+
 public class ChordFingeringBottomSheet extends BottomSheetCommon {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
@@ -178,7 +180,8 @@ public class ChordFingeringBottomSheet extends BottomSheetCommon {
             //  Now we build the chord images and show them
             //  Piano chords get one chord per row, stringed chords get 3
             myView.chordsGridLayout.post(() -> {
-                if (myView.instrument.getText().toString().equals(mainActivityInterface.getChordDisplayProcessing().getInstruments().get(6))) {
+                ArrayList<String> instruments = mainActivityInterface.getChordDisplayProcessing().getInstruments();
+                if (instruments!=null && instruments.size()>=6 && myView.instrument.getText().toString().equals(instruments.get(6))) {
                     myView.chordsGridLayout.setColumnCount(1);
                 } else {
                     myView.chordsGridLayout.setColumnCount(3);
