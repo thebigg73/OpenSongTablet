@@ -2318,7 +2318,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         menuSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack : navIconMenu);
         updateCastIcon();
-        invalidateOptionsMenu();
         checkToolbarMenuIcons();
         return super.onPrepareOptionsMenu(menu);
     }

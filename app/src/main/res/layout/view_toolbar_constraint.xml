@@ -7,6 +7,10 @@
     android:layout_height="?attr/actionBarSize"
     android:minHeight="?attr/actionBarSize"
     android:layout_gravity="start"
+    android:clickable="false"
+    android:focusable="false"
+    android:importantForAccessibility="no"
+    android:descendantFocusability="afterDescendants"
     app:elevation="0dp">
 
     <LinearLayout

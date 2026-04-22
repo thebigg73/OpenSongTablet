@@ -17,6 +17,7 @@ import android.widget.TextClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.ActionMenuView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 
@@ -130,6 +131,19 @@ public class MyToolbar extends MaterialToolbar {
             mainActivityInterface.showActionBar();
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_actionbar), 0);
         });
+
+        // Force the toolbar to handle clicks as direct touches
+        this.setFocusable(false);
+        this.setFocusableInTouchMode(false);
+        setFocusable(false);
+        setFocusableInTouchMode(false);
+
+        // Ensure the menu items themselves don't swallow the focus
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Android 10+
+            this.setForceDarkAllowed(false); // Optional: prevents system from messing with your palette
+        }
+
+        fixMenuTouchTargets();
     }
 
     // Deal with the preferences used for the actionbar
@@ -522,6 +536,41 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+
+        // Every time the toolbar draws itself, we force the menu to the front
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof ActionMenuView) {
+                child.bringToFront();
+
+                // This is the specific fix for the Emulator/Trackpad click
+                child.setFocusable(false);
+                child.setFocusableInTouchMode(false);
+            }
+        }
+    }
+
+    @Override
+    public void inflateMenu(int resId) {
+        super.inflateMenu(resId);
+
+        // Iterate through the children to find the ActionMenuView
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (child instanceof ActionMenuView) {
+                child.setFocusable(false);
+                child.setFocusableInTouchMode(false);
+
+                // This ensures clicking on the emulator or with a mouse
+                // triggers the action immediately
+                child.setClickable(true);
+            }
+        }
+    }
+
+    @Override
     public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
         super.setOnMenuItemClickListener(listener);
     }
@@ -622,6 +671,30 @@ public class MyToolbar extends MaterialToolbar {
         });
     }
 
+    @Override
+    public boolean onCheckIsTextEditor() {
+        return false; // Tells the OS this toolbar isn't an input field, preventing focus-theft
+    }
+
+    public void fixMenuTouchTargets() {
+        this.post(() -> {
+            for (int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                // ActionMenuView is where your menu.xml items live
+                if (child instanceof ActionMenuView) {
+                    child.bringToFront();
+                    // Ensure it doesn't block itself by being focusable
+                    child.setFocusable(false);
+                    child.setFocusableInTouchMode(false);
+
+                    // On Android 10, we force a re-layout to update the touch area
+                    child.requestLayout();
+                }
+            }
+        });
+
+    }
+
     public void changeTheme() {
         this.setTitleTextColor(mainActivityInterface.getPalette().textColor);
         this.setSubtitleTextColor(mainActivityInterface.getPalette().textColor);
@@ -634,7 +707,21 @@ public class MyToolbar extends MaterialToolbar {
         tempo.setTextColor(mainActivityInterface.getPalette().textColor);
         clock.setTextColor(mainActivityInterface.getPalette().textColor);
         setIcon.setColorFilter(mainActivityInterface.getPalette().textColor);
+
+        this.post(() -> {
+            for (int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                // ActionMenuView is the container for your menu items (Desktop toggle, search, etc.)
+                if (child instanceof ActionMenuView) {
+                    child.bringToFront();
+                    child.setFocusable(false);
+                    child.setFocusableInTouchMode(false);
+                }
+            }
+        });
+
         mainActivityInterface.refreshToolbarMenu();
+        fixMenuTouchTargets();
     }
 
 }
