@@ -154,9 +154,9 @@ public class ChordFingeringBottomSheet extends BottomSheetCommon {
         showProgress(true);
         // Clear any chords already there
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            mainActivityInterface.getChordDisplayProcessing().initialiseArrays();
 
             myView.chordsGridLayout.post(() -> myView.chordsGridLayout.removeAllViews());
-            mainActivityInterface.getChordDisplayProcessing().initialiseArrays();
 
             // Get the chords in the song
             mainActivityInterface.getChordDisplayProcessing().findChordsInSong();

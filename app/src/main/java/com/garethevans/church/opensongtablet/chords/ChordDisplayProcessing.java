@@ -40,6 +40,7 @@ public class ChordDisplayProcessing {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         initialiseArrays();
+        setupInstruments(); // Only need to do this once
     }
 
     public void initialiseArrays() {
@@ -47,9 +48,7 @@ public class ChordDisplayProcessing {
         fingerings   = new ArrayList<>();
         pianoKeysArray = new ArrayList<>();
         pianoNotesArray = new ArrayList<>();
-        instruments = new ArrayList<>();
         addPianoKeys();
-        setupInstruments();
     }
 
     public void setupInstruments() {
