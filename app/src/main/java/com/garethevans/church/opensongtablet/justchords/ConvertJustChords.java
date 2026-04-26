@@ -127,14 +127,16 @@ public class ConvertJustChords {
 
         Map<String,Object> keyChord = new HashMap<>();
         // The key needs to be split into 2 parts, key and minor
-    if (thisSong.getKey()!=null && thisSong.getKey().contains("m")) {
-            keyChord.put("key", thisSong.getKey().replace("m",""));
-            keyChord.put("minor", true);
-        } else {
-            keyChord.put("key", thisSong.getKey());
-            keyChord.put("minor", false);
+        if (thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
+            if (thisSong.getKey().contains("m")) {
+                keyChord.put("key", thisSong.getKey().replace("m", ""));
+                keyChord.put("minor", true);
+            } else {
+                keyChord.put("key", thisSong.getKey());
+                keyChord.put("minor", false);
+            }
+            justChordsSongObject.setKeyChord(keyChord);
         }
-        justChordsSongObject.setKeyChord(keyChord);
 
         // Build the lyrics!
         String alllyrics = mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(),thisSong,false);
