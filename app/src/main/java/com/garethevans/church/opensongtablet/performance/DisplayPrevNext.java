@@ -353,6 +353,7 @@ public class DisplayPrevNext {
                     if (prevNextTextButtons) {
                         next.removeCallbacks(hideNextRunnable);
                         next.show();
+
                         if (prevNextHide) {
                             next.postDelayed(hideNextRunnable, 3000);
                         }
@@ -382,6 +383,7 @@ public class DisplayPrevNext {
                 }
             });
         }
+        layout.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonAlpha());
     }
 
     public void updateColors() {
