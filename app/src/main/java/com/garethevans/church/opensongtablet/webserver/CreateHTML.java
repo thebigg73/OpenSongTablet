@@ -488,10 +488,13 @@ public class CreateHTML {
             if (hideArrows) {
                 text += "</span>\n";
             } else {
-                text += "<label>&nbsp; " + c.getString(R.string.web_server_host_song) + " &nbsp;<input type=\"checkbox\" id=\"listenToHost\" onchange=\"javascript:hostSong()\"></label>\n" +
-                        "<a href=\"javascript:toggleChords()\">&nbsp; <span id=\"chordbutton\">" + c.getString(R.string.chords) + "</span>&nbsp; </a>\n" +
-                        "<a href=\"javascript:goToPrevSong()\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a>\n" +
-                        "<a href=\"javascript:goToNextSong()\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a>\n</span>\n" +
+                text += "<label style=\"display: inline-flex; align-items: center;\">" +
+                        "&nbsp;" + c.getString(R.string.web_server_host_song) + "&nbsp;" +
+                        "<input type=\"checkbox\" id=\"listenToHost\" style=\"margin: 0; vertical-align: middle;\" onchange=\"javascript:hostSong()\">" +
+                        "</label>\n" +
+                        "<a href=\"javascript:toggleChords()\" style=\"vertical-align: middle;\">&nbsp; <span id=\"chordbutton\">" + c.getString(R.string.chords) + "</span>&nbsp; </a>\n" +
+                        "<a href=\"javascript:goToPrevSong()\" style=\"vertical-align: middle;\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a>\n" +
+                        "<a href=\"javascript:goToNextSong()\" style=\"vertical-align: middle;\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a>\n</span>\n" +
                         "<script>document.getElementById(\"listenToHost\").checked = listenToHost;</script>\n";
             }
         }
