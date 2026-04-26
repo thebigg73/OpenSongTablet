@@ -146,6 +146,10 @@ public class SongActionsMenuFragment extends Fragment {
         myView.pad.setOnClickListener(v -> actionAllowed(R.id.pads_graph));
         myView.autoscroll.setOnClickListener(v -> actionAllowed(R.id.autoscrollSettingsFragment));
         myView.metronome.setOnClickListener(v -> actionAllowed(R.id.metronomeFragment));
+        myView.drummer.setOnClickListener(v -> {
+            mainActivityInterface.navHome();
+            mainActivityInterface.displayDrummerPopup();
+        });
         myView.stickyNotes.setOnClickListener(v -> actionAllowed(R.id.stickyNotesFragment));
         myView.highlighter.setOnClickListener(v -> actionAllowed(R.id.highlighterFragment));
         myView.links.setOnClickListener(v -> actionAllowed(R.id.linksFragment));

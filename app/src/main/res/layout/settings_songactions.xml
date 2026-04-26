@@ -107,6 +107,16 @@
                 style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/drummer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/drummer"
+                android:hint="@string/drummer_player"
+                app:size="large"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/stickyNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

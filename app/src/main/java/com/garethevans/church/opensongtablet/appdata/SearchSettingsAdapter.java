@@ -141,6 +141,8 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String draw = c.getString(R.string.draw);
         String drawing = c.getString(R.string.drawing);
         String drum = c.getString(R.string.drum);
+        String drummer = c.getString(R.string.drummer);
+        String drumsequencer = c.getString(R.string.drum_sequencer);
         String duplicate = c.getString(R.string.duplicate);
         String edit = c.getString(R.string.edit);
         String empty = c.getString(R.string.empty);
@@ -547,6 +549,17 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                         Arrays.asList(song,songs,metronome,click,drum,tempo,time,signature,bpm),
                         c.getString(R.string.deeplink_metronome),
                         settings+"/"+songactions+"/"+metronome),
+
+                // Drummer
+                new SettingItem(drummer + " ("+settings+")",c.getString(R.string.drum_sequencer_info),
+                        Arrays.asList(song,songs,metronome,drummer,drumsequencer,click,drum,tempo,time,signature,bpm),
+                        c.getString(R.string.deeplink_drummer_settings),
+                        settings+"/"+utilities+"/"+drummer),
+
+                new SettingItem(drummer + " ("+song+")",c.getString(R.string.drummer_player),
+                        Arrays.asList(song,songs,metronome,drummer,drumsequencer,click,drum,tempo,time,signature,bpm),
+                        "action_drummer",
+                        settings+"/"+songactions+"/"+drummer),
 
                 // Sticky notes
                 new SettingItem(c.getString(R.string.song_notes),c.getString(R.string.song_notes_edit),
@@ -1097,6 +1110,10 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                     mainActivityInterface.openDocument(c.getString(R.string.website_paypal));
                     break;
 
+                case "action_drummer":
+                    mainActivityInterface.navHome();
+                    mainActivityInterface.displayDrummerPopup();
+                    break;
             }
 
             return true;
