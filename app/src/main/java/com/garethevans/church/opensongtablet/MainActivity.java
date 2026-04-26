@@ -1529,11 +1529,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                     if (settingsOpen && menuSettings != null) {
                         menuSettings.setIcon(closeIcon);
+                        invalidateOptionsMenu();
 
                         // IV - Other elements are added by the called fragment
                     } else if (!settingsOpen) {
                         // IV - Top level of menu - song details are added by song load
                         menuSettings.setIcon(settingsIcon);
+                        invalidateOptionsMenu();
                         updateCastIcon();
                         if (getPreferences().getMyPreferenceBoolean("clockOn", true) ||
                                 getPreferences().getMyPreferenceBoolean("batteryTextOn", true) ||
@@ -2315,7 +2317,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         menuScreenHelp.setShowAsAction(minimiseAction && !settingsOpen ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
         menuSearch.setShowAsAction(minimiseAction && !settingsOpen ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
         menuScreenMirror.setShowAsAction(minimiseAction ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menuSettings.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuSettings.setShowAsAction(minimiseAction && !settingsOpen? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS);
+        getMainHandler().postDelayed(() -> menuSettings.setShowAsAction(minimiseAction && !settingsOpen? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_ALWAYS),200);
         myView.myToolbar.setNavigationIcon(settingsOpen ? navIconBack : navIconMenu);
         updateCastIcon();
         checkToolbarMenuIcons();
