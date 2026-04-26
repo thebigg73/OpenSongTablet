@@ -626,6 +626,40 @@ public class ProcessSong {
                 line.toLowerCase().contains("verse") || line.toLowerCase().contains("chorus");
     }
 
+    public String simplifySectionHeading(String line) {
+        if (line.startsWith("[Verse") || line.startsWith(c.getString(R.string.verse))) {
+            line = line.replace("[Verse ","[V");
+            line = line.replace("["+c.getString(R.string.verse)+" ","[V");
+            line = line.replace("[Verse","[V");
+            line = line.replace("["+c.getString(R.string.verse),"[V");
+
+        } else if (line.startsWith("[Chorus") || line.startsWith(c.getString(R.string.chorus))) {
+            line = line.replace("[Chorus ","[C");
+            line = line.replace("["+c.getString(R.string.chorus)+" ","[C");
+            line = line.replace("[Chorus","[C");
+            line = line.replace("["+c.getString(R.string.chorus),"[C");
+
+        } else if (line.startsWith("[Bridge") || line.startsWith(c.getString(R.string.bridge))) {
+            line = line.replace("[Bridge ","[B");
+            line = line.replace("["+c.getString(R.string.bridge)+" ","[B");
+            line = line.replace("[Bridge","[B");
+            line = line.replace("["+c.getString(R.string.bridge),"[B");
+
+        } else if (line.startsWith("[Pre-Chorus") || line.startsWith("[Prechorus")) {
+            line = line.replace("[Pre-Chorus ","[P");
+            line = line.replace("["+c.getString(R.string.prechorus)+" ","[P");
+            line = line.replace("[Pre-Chorus","[P");
+            line = line.replace("["+c.getString(R.string.prechorus),"[P");
+
+        } else if (line.startsWith("[Tag") || line.startsWith(c.getString(R.string.tag))) {
+            line = line.replace("[Tag ","[T");
+            line = line.replace("["+c.getString(R.string.tag)+" ","[T");
+            line = line.replace("[Tag","[T");
+            line = line.replace("["+c.getString(R.string.tag),"[T");
+
+        }
+        return line;
+    }
     public String fixHeadingLine(String line) {
         if (!line.startsWith("[")) {
             line = "[" + line;
