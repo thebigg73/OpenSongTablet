@@ -536,7 +536,6 @@ public class Midi {
                         thisFret = fretNum + addFret - 1;
                     }
 
-                    Log.d(TAG,"thisFret:"+thisFret);
                     // Now go through the notes array the fretNum times
                     int posInNotesArray = notes.indexOf(openStringNote);
                     midiNotesOnArray.add(buildMidiString("NoteOn", 0, posInNotesArray + thisFret, 100));

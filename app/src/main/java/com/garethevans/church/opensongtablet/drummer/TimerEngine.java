@@ -66,7 +66,7 @@ public class TimerEngine {
         // 2. Schedule the MIDI 5-second cutoff task if we are using midiClockBurstMode
         if (midiClock && mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode()) {
             turnOffExecutor.schedule(() -> {
-                mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
+                // Don't turn off the main switch as we want to MIDI clock to be sent again when the next song loads
                 mainActivityInterface.getDrumViewModel().getMidiClock().setIsRunning(false);
                 midiClock = false; // Stop sending TICK messages in the main loop
 
