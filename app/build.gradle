@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 447     // Also change in wear
-        versionName = '6.7.6' // Also change in wear
+        versionCode = 448     // Also change in wear
+        versionName = '6.7.7' // Also change in wear
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -195,7 +195,7 @@ dependencies {
     implementation 'com.gu.android:toolargetool:0.3.2'                  // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                       // Low latency audio
     implementation 'androidx.exifinterface:exifinterface:1.4.2'         // To get image exif data (orientation for camera)
-    implementation 'com.google.code.gson:gson:2.13.2'                   // GSon for JSON conversion of Song/Set objects
+    implementation 'com.google.code.gson:gson:2.14.0'                   // GSon for JSON conversion of Song/Set objects
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'              // Retrofit for web access
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'        // Retrofit for web access
     //noinspection NewerVersionAvailable,GradleDependency - Updating this above 1.5.0 breaks it!!!
