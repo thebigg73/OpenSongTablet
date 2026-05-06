@@ -89,7 +89,8 @@ public class WebServer {
         getIP();
         try {
             if (runWebServer) {
-                KtorServer.INSTANCE.start(c, Integer.parseInt(webServerPort));
+                KtorServer.INSTANCE.setInterface(mainActivityInterface);
+                KtorServer.INSTANCE.start(c, c.getApplicationContext(), Integer.parseInt(webServerPort));
 
             } else {
                 KtorServer.INSTANCE.stopServerExternal();
@@ -461,7 +462,7 @@ public class WebServer {
         this.webServerPort = webServerPort;
         mainActivityInterface.getPreferences().setMyPreferenceString("webServerPort",webServerPort);
         // Stop the server and start it again
-        KtorServer.INSTANCE.start(c, Integer.parseInt(webServerPort));
+        KtorServer.INSTANCE.start(c, c.getApplicationContext(), Integer.parseInt(webServerPort));
     }
 
     /**
