@@ -371,4 +371,6 @@ public interface MainActivityInterface {
     void displayAudioRecorder();
     void displayMultiTrack();
     void nullMultitrackPopUp();
+    void toggleAudioPlayerPopUp();
+    void removeAudioPlayerPopUp();
 }

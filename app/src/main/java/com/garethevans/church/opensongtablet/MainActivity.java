@@ -184,6 +184,7 @@ import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tags.BulkTagAssignFragment;
 import com.garethevans.church.opensongtablet.utilities.AudioPlayerBottomSheet;
+import com.garethevans.church.opensongtablet.utilities.AudioPlayerPopUp;
 import com.garethevans.church.opensongtablet.utilities.AudioRecorderPopUp;
 import com.garethevans.church.opensongtablet.utilities.DatabaseUtilitiesFragment;
 import com.garethevans.church.opensongtablet.utilities.ForumFragment;
@@ -309,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean requireAudioRecorder = false;
     private AudioRecorderPopUp audioRecorderPopUp;
     private MultiTrackPopUp multiTrackPopUp;
+    private AudioPlayerPopUp audioPlayerPopUp;
 
     // The drummer
     private DrummerPopUp drummerPopUp;
@@ -439,6 +441,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 whattodo = "";
                                 AudioPlayerBottomSheet audioPlayerBottomSheet = new AudioPlayerBottomSheet();
                                 audioPlayerBottomSheet.show(getMyFragmentManager(), "audioPlayerBottomSheet");
+                            } else if (whattodo.equals("audioplayerpopup")) {
+                                whattodo = "";
+                                toggleAudioPlayerPopUp();
                             }
                         } else {
                             getShowToast().error();
@@ -2015,6 +2020,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 audioRecorderPopUp.floatRecorder(myView.fragmentView);
             }
         }
+    }
+
+    @Override
+    public void toggleAudioPlayerPopUp() {
+        if (myView != null) {
+            if (audioPlayerPopUp != null) {
+                try {
+                    audioPlayerPopUp.destroyPopup();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                audioPlayerPopUp = new AudioPlayerPopUp(this);
+                audioPlayerPopUp.floatPlayer(myView.fragmentView);
+            }
+        }
+    }
+
+    @Override
+    public void removeAudioPlayerPopUp() {
+        audioPlayerPopUp = null;
     }
 
     @Override

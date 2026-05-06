@@ -879,10 +879,15 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                         "action_audioRecorder",
                         settings+"/"+utilities+"/"+c.getString(R.string.audio_recorder)),
 
-                // Audio recorder
+                // Audio player
                 new SettingItem(c.getString(R.string.audio_player),c.getString(R.string.audio_player_info),
-                        Arrays.asList(utilities,utility,tool,audio,record,recorder),
+                        Arrays.asList(utilities,utility,tool,audio,player,track),
                         "action_audioPlayer",
+                        settings+"/"+utilities+"/"+c.getString(R.string.audio_player)),
+
+                new SettingItem(c.getString(R.string.audio_player)+" ("+popup+")",c.getString(R.string.audio_player_info),
+                        Arrays.asList(utilities,utility,tool,audio,player,popup,track),
+                        "action_audioPlayerPopUp",
                         settings+"/"+utilities+"/"+c.getString(R.string.audio_player)),
 
                 // Multitrack player - utility
@@ -1073,6 +1078,11 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 case "action_audioPlayer":
                     mainActivityInterface.setWhattodo("audioPlayer");
+                    mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_utilities),0);
+                    break;
+
+                case "action_audioPlayerPopUp":
+                    mainActivityInterface.setWhattodo("audioPlayerPopUp");
                     mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_utilities),0);
                     break;
 

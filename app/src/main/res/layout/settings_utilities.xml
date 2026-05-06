@@ -86,6 +86,16 @@
                 style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/audioPlayerPopUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/audio_player"
+                android:hint="@string/audio_player_info"
+                app:size="large"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/mutitrackPlayer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
