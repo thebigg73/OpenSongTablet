@@ -471,6 +471,8 @@ public class CreateHTML {
                                          Song song, boolean allowWebNavigation, boolean hideArrows,
                                          boolean songMenu, boolean setMenu) {
         String text = "";
+        String hiddenText = songMenu || setMenu ? " display: none;\" " : "";
+        String closeButton = songMenu || setMenu ? "<a id=\"close\" href=\"javascript:reloadSong()\">&nbsp; &nbsp; X &nbsp; &nbsp;</a>" : "";
         if (allowWebNavigation) {
             String songmenuJS = "songMenu()";
             String setmenuJS = "setMenu()";
@@ -485,19 +487,26 @@ public class CreateHTML {
             if (songMenu) {
                 text += getSongFolderChooser(c,mainActivityInterface,song);
             }
-            if (hideArrows) {
-                text += "</span>\n";
-            } else {
-                text += "<label style=\"display: inline-flex; align-items: center;\">" +
-                        "&nbsp;" + c.getString(R.string.web_server_host_song) + "&nbsp;" +
-                        "<input type=\"checkbox\" id=\"listenToHost\" style=\"margin: 0; vertical-align: middle;\" onchange=\"javascript:hostSong()\">" +
-                        "</label>\n" +
-                        "<a href=\"javascript:toggleChords()\" style=\"vertical-align: middle;\">&nbsp; <span id=\"chordbutton\">" + c.getString(R.string.chords) + "</span>&nbsp; </a>\n" +
-                        "<a href=\"javascript:goToPrevSong()\" style=\"vertical-align: middle;\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a>\n" +
-                        "<a href=\"javascript:goToNextSong()\" style=\"vertical-align: middle;\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a>\n</span>\n" +
-                        "<script>document.getElementById(\"listenToHost\").checked = listenToHost;</script>\n";
-            }
+        } else {
+            text = "<span id=\"menu\">\n<span id=\"status-dot\"></span>\n";
         }
+
+
+        text += "<label style=\"display: inline-flex;"+hiddenText+" align-items: center;\">" +
+                "&nbsp;" + c.getString(R.string.web_server_host_song) + "&nbsp;" +
+                "<input type=\"checkbox\" id=\"listenToHost\" style=\"margin: 0; vertical-align: middle;"+hiddenText+"\" onchange=\"javascript:hostSong()\">" +
+                "</label>\n" +
+                "<a href=\"javascript:toggleChords()\" style=\"vertical-align: middle;"+hiddenText+"\">&nbsp; <span id=\"chordbutton\">" + c.getString(R.string.chords) + "</span>&nbsp; </a>\n";
+
+        if (!hideArrows) {
+            text += "<a href=\"javascript:goToPrevSong()\" style=\"vertical-align: middle;"+hiddenText+"\">&nbsp; &nbsp; &lt;&nbsp; &nbsp; </a>\n" +
+                    "<a href=\"javascript:goToNextSong()\" style=\"vertical-align: middle;"+hiddenText+"\">&nbsp; &nbsp; &gt;&nbsp; &nbsp; </a>";
+        }
+
+        text += closeButton+"</span>\n" +
+                "<script>document.getElementById(\"listenToHost\").checked = listenToHost;</script>\n";
+
+
         return text;
     }
     private static String getImgPDFSong(Context c, MainActivityInterface mainActivityInterface, Song songForHTML) {
