@@ -24,7 +24,8 @@ public class UtilitiesMenuFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsUtilitiesBinding myView;
     private String beatBuddy_string = "", utilities_string="", aeros_string="",
-            deeplink_database_utilities="", voiceLive_string, deeplink_drummer;
+            deeplink_database_utilities="", voiceLive_string, deeplink_drummer,
+            audio_player_popup_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -56,6 +57,9 @@ public class UtilitiesMenuFragment extends Fragment {
         if (mainActivityInterface.getWhattodo().equals("audioPlayer")) {
             mainActivityInterface.setWhattodo("");
             myView.audioPlayer.performClick();
+        } else if (mainActivityInterface.getWhattodo().equals("audioPlayerPopUp")) {
+            mainActivityInterface.setWhattodo("");
+            myView.audioPlayerPopUp.performClick();
         } else if (mainActivityInterface.getWhattodo().equals("audioRecorder")) {
             mainActivityInterface.setWhattodo("");
             myView.audioRecorder.performClick();
@@ -74,12 +78,16 @@ public class UtilitiesMenuFragment extends Fragment {
             voiceLive_string = getString(R.string.deeplink_voicelive);
             deeplink_database_utilities = getString(R.string.deeplink_database_utilities);
             deeplink_drummer = getString(R.string.deeplink_drummer_settings);
+            audio_player_popup_string = getString(R.string.audio_player) + " ("+getString(R.string.popup)+")";
         }
     }
 
     private void setupViews() {
         // Hide the multitrack player if not running Lollipop or later
         myView.mutitrackPlayer.setVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? View.VISIBLE:View.GONE);
+
+        // Add the word popup to the audioplayer popup
+        myView.audioPlayerPopUp.setText(audio_player_popup_string);
     }
 
 
@@ -104,26 +112,33 @@ public class UtilitiesMenuFragment extends Fragment {
             }
         });
         myView.audioPlayer.setOnClickListener(v -> {
-            // Ask the user to select a file
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("*/*");
-            ArrayList<String> input = new ArrayList<>();
-            input.add("audio/*");
-            input.add("audio/3gp");
-            input.add("video/3gp");
-            input.add("video/mp4)");
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, input);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
-                        mainActivityInterface.getStorageAccess().getUriForItem("Media","",""));
-            }
-            intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
             mainActivityInterface.setWhattodo("audioplayer");
-            mainActivityInterface.selectFile(intent);
+            audioChooser();
+        });
+        myView.audioPlayerPopUp.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("audioplayerpopup");
+            audioChooser();
         });
         myView.mutitrackPlayer.setOnClickListener(v -> mainActivityInterface.displayMultiTrack());
         myView.drumSequencer.setOnClickListener(v -> mainActivityInterface.navigateToFragment(deeplink_drummer,0));
     }
 
+    private void audioChooser() {
+        // Ask the user to select a file
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        ArrayList<String> input = new ArrayList<>();
+        input.add("audio/*");
+        input.add("audio/3gp");
+        input.add("video/3gp");
+        input.add("video/mp4)");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, input);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Media","",""));
+        }
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
+        mainActivityInterface.selectFile(intent);
+    }
 }
