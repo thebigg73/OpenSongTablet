@@ -930,6 +930,18 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             String presentationOrder = stringBuilder.toString().replace("  "," ");
             song.setPresentationorder(presentationOrder.trim());
         }
+        // Now check for link urls in the metadata
+        if (openChordsSong.getMetadata()!=null) {
+            if (openChordsSong.getMetadata().getYoutubeUrl()!=null && openChordsSong.getMetadata().getYoutubeUrl().startsWith("http")) {
+                song.setLinkyoutube(openChordsSong.getMetadata().getYoutubeUrl());
+            }
+            if (openChordsSong.getMetadata().getAudioUrl()!=null && openChordsSong.getMetadata().getAudioUrl().startsWith("http")) {
+                song.setLinkaudio(openChordsSong.getMetadata().getAudioUrl());
+            }
+            if (openChordsSong.getMetadata().getSpotifyId()!=null && openChordsSong.getMetadata().getSpotifyId().contains("spotify")) {
+                song.setLinkother(openChordsSong.getMetadata().getSpotifyId());
+            }
+        }
         return song;
     }
 
@@ -1102,13 +1114,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         } else {
             openChordsSong.setTempo(null);
         }
-        /*String tempo = openSongSong.getTempo();
-        if (tempo != null) {
-            tempo = tempo.replaceAll("\\D", "").trim();
-            if (!tempo.isEmpty()) {
-                openChordsSong.setTempo(Integer.parseInt(tempo));
-            }
-        }*/
         openChordsSong.setTimeSignature(jsonNullIfEmpty(
                 DrumCalculations.getFixedTimeSignatureString(openSongSong.getTimesig(),false)));
         String key = openSongSong.getKey();
@@ -1169,6 +1174,29 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 !openSongSong.getPresentationorder().isEmpty()) {
             openChordsSong.setStructure(getOpenChordsStructure(openSongSong));
         }
+        // Now add any http(s) link files as metadata
+        OpenChordsSongMetaDataItem metaDataItem = new OpenChordsSongMetaDataItem();
+        String linkYouTube = jsonNullIfEmpty(openSongSong.getLinkyoutube());
+        String linkAudio = jsonNullIfEmpty(openSongSong.getLinkaudio());
+        String linkOther = jsonNullIfEmpty(openSongSong.getLinkother());
+
+        // Add YouTube link if it exists and is web based
+        if (linkYouTube!=null && linkYouTube.startsWith("http")) {
+            metaDataItem.setYoutubeUrl(linkYouTube);
+        }
+        // Add Audio link if it exists and is web based
+        if (linkAudio!=null && linkAudio.startsWith("http")) {
+            metaDataItem.setAudioUrl(linkAudio);
+        }
+        // Add Spotify (or other) link if it exists and is web based
+        if (linkOther!=null && linkOther.contains("spotify")) {
+            metaDataItem.setSpotifyId(linkOther);
+        }
+        // If any of these pieces of metadata are valid, add to the song
+        if (metaDataItem.getAudioUrl()!=null || metaDataItem.getYoutubeUrl()!=null || metaDataItem.getSpotifyId()!=null) {
+            openChordsSong.setMetadata(metaDataItem);
+        }
+
         return openChordsSong;
     }
 
