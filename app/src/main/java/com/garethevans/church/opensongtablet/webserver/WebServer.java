@@ -39,6 +39,7 @@ public class WebServer {
     private String abcJSFromAsset;
     private boolean runWebServer;
     private boolean allowWebNavigation;
+    private boolean listenForWebAPI;
     private String webServerPort;
     private WebServerFragment webServerFragment;
     private String ipAddress;
@@ -66,6 +67,8 @@ public class WebServer {
         runWebServer = mainActivityInterface.getPreferences().getMyPreferenceBoolean("runWebServer",false);
         allowWebNavigation = mainActivityInterface.getPreferences().getMyPreferenceBoolean("allowWebNavigation",false);
         webServerPort = mainActivityInterface.getPreferences().getMyPreferenceString("webServerPort","8080");
+        listenForWebAPI = mainActivityInterface.getPreferences().getMyPreferenceBoolean("listenForWebAPI",false);
+
         // If we have Wi-Fi permissions, we can go ahead and get the required info and start the server if needed automatically
         if (mainActivityInterface.getAppPermissions().hasWebServerPermission()) {
             callRunWebServer();
@@ -267,6 +270,13 @@ public class WebServer {
         this.allowWebNavigation = allowWebNavigation;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("allowWebNavigation",allowWebNavigation);
     }
+    public boolean getListenForWebAPI() {
+        return listenForWebAPI;
+    }
+    public void setListenForWebAPI(boolean listenForWebAPI) {
+        this.listenForWebAPI = listenForWebAPI;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("listenForWebAPI",listenForWebAPI);
+    }
 
     public String getAbcJSFromAsset() {
         return abcJSFromAsset;
@@ -462,7 +472,9 @@ public class WebServer {
         this.webServerPort = webServerPort;
         mainActivityInterface.getPreferences().setMyPreferenceString("webServerPort",webServerPort);
         // Stop the server and start it again
-        KtorServer.INSTANCE.start(c, c.getApplicationContext(), Integer.parseInt(webServerPort));
+        if (runWebServer) { // Only restart if the "Master Switch" is actually ON
+            KtorServer.INSTANCE.start(c, c.getApplicationContext(), Integer.parseInt(webServerPort));
+        }
     }
 
     /**

@@ -29,6 +29,7 @@ import io.ktor.server.websocket.webSocket
 import io.ktor.websocket.send
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -36,6 +37,10 @@ import kotlinx.coroutines.sync.withLock
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.util.Collections
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.close
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 
 object KtorServer {
     private const val TAG = "KtorServer"
@@ -44,6 +49,11 @@ object KtorServer {
     private var currentPort: Int? = null
     private var mainActivityInterface: MainActivityInterface? = null
     //private var interfaceRef: java.lang.ref.WeakReference<MainActivityInterface>? = null
+    private val serverJob = SupervisorJob()
+    private val serverScope = CoroutineScope(Dispatchers.IO + serverJob)
+    private var isShuttingDown = false
+    private var isRestartPending = false
+    private var pendingPort: Int = 8080
 
     fun setInterface(mainActivityInterface: MainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface
@@ -56,25 +66,37 @@ object KtorServer {
         Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketServerSession>())
 
     fun start(c: Context, appContext: Context, port: Int) {
+        if (isShuttingDown || mainActivityInterface==null) return // Refuse to start
+
         //val mainActivityInterface = c.applicationContext as? MainActivityInterface ?: return
         //val mainActivityInterface = getInterface();
-
-        if (mainActivityInterface==null) {
-            return
-        }
 
         CoroutineScope(Dispatchers.IO).launch {
             // Use withLock to prevent multiple threads from starting/stopping at once
             serverMutex.withLock {
 
-                // 1. Check if a server is already running on this port
-                if (server != null && currentPort == port) {
-                    Log.d(TAG, "Server already running on port $port. Skipping start.")
+                if (isShuttingDown) {
+                    Log.d(TAG, "Shutdown in progress. Flagging restart for port $port.")
+                    isRestartPending = true
+                    pendingPort = port
                     return@withLock
                 }
 
+                if (server != null) {
+                    if (currentPort == port) {
+                        Log.d(TAG, "Server already running on port $port.")
+                        return@withLock
+                    }
+                    // If port changed, trigger shutdown and set restart flag
+                    isRestartPending = true
+                    pendingPort = port
+                    stopServerInternal()
+                    return@withLock
+                }
+
+
                 // 2. If server exists but is on a different port or is dead, stop it first
-                stopServerInternal()
+                //stopServerInternal()
 
                 // Small delay to ensure sockets are released by the OS
                 delay(500)
@@ -251,7 +273,8 @@ object KtorServer {
                                     val folder = call.request.queryParameters["folder"] ?: ""
                                     val filename = call.request.queryParameters["filename"] ?: ""
                                     // Kotlin's 'if' is an expression, so we can assign the result directly
-                                    val song: Song? = if (folder.isNullOrBlank() || filename.isNullOrBlank()) {
+                                    val song: Song? = if (folder.isNullOrBlank() || filename.isNullOrBlank() ||
+                                        mainActivityInterface?.webServer?.allowWebNavigation == false) {
                                         mainActivityInterface?.getSong()
                                     } else {
                                         mainActivityInterface?.sqLiteHelper?.getSpecificSong(folder, filename)
@@ -270,7 +293,7 @@ object KtorServer {
                                             )
                                         }
                                     } catch (e: Exception) {
-                                        Log.e("KtorServer", "Error fetching song: ${e.message}")
+                                        Log.e(TAG, "Error fetching song: ${e.message}")
                                         call.respondText(
                                             "{\"error\": \"Internal server error\"}",
                                             ContentType.Application.Json,
@@ -279,25 +302,72 @@ object KtorServer {
                                     }
                                 }
 
+                                // API to trigger the webServer host device to load a song (act as a client to SongEditorWeb or other API device)
+                                get("/api/remote") {
+                                    if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                        // An API to receive the song via json for a PWS such as SongEditorWeb
+                                        val folder = call.request.queryParameters["folder"] ?: ""
+                                        val filename =
+                                            call.request.queryParameters["filename"] ?: ""
+                                        // Kotlin's 'if' is an expression, so we can assign the result directly
+                                        if (!folder.isNullOrBlank() && !filename.isNullOrBlank() &&
+                                            mainActivityInterface?.webServer?.allowWebNavigation == true) {
+                                            mainActivityInterface?.doSongLoad(
+                                                folder,
+                                                filename,
+                                                true
+                                            );
+                                            // 2. Respond with a 200 OK so the PWA knows it worked
+                                            call.respondText(
+                                                "{\"status\": \"success\", \"message\": \"Loading $filename\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.OK
+                                            )
+
+                                        } else {
+                                            // Respond with an error if parameters are missing
+                                            call.respondText(
+                                                "{\"status\": \"error\", \"message\": \"Missing parameters or the device has blocked manual navigation\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.BadRequest
+                                            )
+                                        }
+                                    } else {
+                                        // Respond that the host isn't listening
+                                        call.respondText(
+                                            "{\"status\": \"error\", \"message\": \"Device not listening\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.BadRequest
+                                        )
+                                    }
+                                }
+
                                 // API to return the full list of available songs as a JSON array
                                 get("/api/list") {
-                                    try {
-                                        // 1. Call your existing logic to get the populated ArrayList
-                                        // (Assuming you've exposed this via your interface)
-                                        val songList: ArrayList<ShareableObject> = mainActivityInterface?.sqLiteHelper?.shareableSongs ?: arrayListOf()
+                                    if (mainActivityInterface?.webServer?.allowWebNavigation ?: false) {
+                                        try {
+                                            // 1. Call your existing logic to get the populated ArrayList
+                                            // (Assuming you've exposed this via your interface)
+                                            val songList: ArrayList<ShareableObject> =
+                                                mainActivityInterface?.sqLiteHelper?.shareableSongs
+                                                    ?: arrayListOf()
 
-                                        // 2. Serialize the entire list to a JSON Array using Gson
-                                        val jsonString = MainActivity.gson.toJson(songList)
+                                            // 2. Serialize the entire list to a JSON Array using Gson
+                                            val jsonString = MainActivity.gson.toJson(songList)
 
-                                        // 3. Return the response
-                                        call.respondText(jsonString, ContentType.Application.Json)
-                                    } catch (e: Exception) {
-                                        Log.e("KtorServer", "Error fetching song list: ${e.message}")
-                                        call.respondText(
-                                            "{\"error\": \"Could not retrieve song list\"}",
-                                            ContentType.Application.Json,
-                                            HttpStatusCode.InternalServerError
-                                        )
+                                            // 3. Return the response
+                                            call.respondText(
+                                                jsonString,
+                                                ContentType.Application.Json
+                                            )
+                                        } catch (e: Exception) {
+                                            Log.e(TAG, "Error fetching song list: ${e.message}")
+                                            call.respondText(
+                                                "{\"error\": \"Could not retrieve song list\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.InternalServerError
+                                            )
+                                        }
                                     }
                                 }
 
@@ -331,26 +401,48 @@ object KtorServer {
         }
     }
 
-    // Internal helper that doesn't use its own lock (since start() handles it)
     private suspend fun stopServerInternal() {
-        server?.let {
-            try {
-                Log.d(TAG, "Gracefully shutting down Ktor...")
-                it.stop(500, 1000)
-            } finally {
-                server = null
-                currentPort = null
-                sessions.clear()
-                Log.d(TAG, "Server resources cleared.")
-            }
-        }
-    }
+        if (isShuttingDown) return
+        isShuttingDown = true
+        serverJob.cancelChildren()
 
-    private fun launchRetry(c: Context, appContext: Context, port: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.w(TAG, "Port $port busy, retrying in 3s...")
-            delay(3000)
-            start(c, appContext, port)
+        try {
+            server?.let {
+                Log.d(TAG, "Gracefully shutting down Ktor...")
+
+                // 1. Close all active WebSocket sessions first
+                val sessionSnapshot = synchronized(sessions) { sessions.toList() }
+                sessionSnapshot.forEach { session ->
+                    try {
+                        // Use a specific reason so the client knows why it's disconnecting
+                        session.close(CloseReason(CloseReason.Codes.GOING_AWAY, "Server Shutting Down"))
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error closing session: ${e.message}")
+                    }
+                }
+                sessions.clear()
+
+                // 2. Stop the engine with a grace period
+                it.stop(500, 1000)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Shutdown error: ${e.message}")
+        } finally {
+            server = null
+            currentPort = null
+            isShuttingDown = false
+            Log.d(TAG, "Server resources cleared.")
+
+            // CHECK FOR PENDING RESTART
+            if (isRestartPending) {
+                isRestartPending = false
+                Log.d(TAG, "Triggering pending restart on port $pendingPort")
+                // Call start again - it will now pass the isShuttingDown check
+                // You may need to pass the context through or store a reference
+                mainActivityInterface?.let {
+                    start(it as Context, (it as Context).applicationContext, pendingPort)
+                }
+            }
         }
     }
 
@@ -361,7 +453,6 @@ object KtorServer {
             }
         }
     }
-
 
     fun pushRefresh() {
         val currentSong: Song? = mainActivityInterface?.getSong()
@@ -377,7 +468,8 @@ object KtorServer {
         // 1. Create a snapshot of the sessions to avoid holding a lock during network I/O
         val currentSessions = synchronized(sessions) { sessions.toList() }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        // Use our controlled scope here
+        serverScope.launch {
             currentSessions.forEach { session ->
                 try {
                     session.send(jsonString)
@@ -401,13 +493,14 @@ object KtorServer {
 
         val currentSessions = synchronized(sessions) { sessions.toList() }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        // Use our controlled scope here
+        serverScope.launch {
             currentSessions.forEach { session ->
                 try {
                     // Prefix with 'MSG:' so the JS knows this is an alert, not a refresh command
                     session.send("MSG:$message")
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to send message: ${e.message}")
+                    Log.e(TAG, "WebSocket send failed: ${e.message}")
                 }
             }
         }

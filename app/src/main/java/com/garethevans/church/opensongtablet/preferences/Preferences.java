@@ -468,6 +468,7 @@ public class Preferences extends Activity {
     // light_abcPopupColor              int         The background colour for the abc popup window (def:vvlightgrey)
     // light_abcPopupTextColor          int         The text color for the abc popup windonw (def:black)
     // lineSpacing                      float       The line spacing trim value to use (def:0.1f)
+    // listenForWebAPI                  boolean     Allow the app to load songs as instructed via devices connected to the WebServer (def:false)
     // marginToolbarLeft                int         Any additional padding to the left of the actionbar content (def:0)
     // marginToolbarRight               int         Any additional padding to the right of the actionbar content (def:0)
     // maxPDFScaling                    float       An option to adjust the output size of PDFs from default size (values 0.4-1.5 def:0.75f)

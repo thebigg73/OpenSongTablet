@@ -323,9 +323,21 @@ public class CreateHTML {
         string += "    }\n";
         string += "  }\n";
 
-        string += "  function goToSong(folder,filename) {\n";
-        string += "    if (folder.length>0 && filename.length>0) {\n";
-        string += "      window.location.href = serverAddress + \"" + mainActivityInterface.getWebServer().getManualSongString() + "/?chords=\" + chords + \"&folder=\" + folder + \"&filename=\" + filename;\n";
+        string += "  function goToSong(folder, filename) {\n";
+        string += "    if (folder.length > 0 && filename.length > 0) {\n";
+        string += "      // 1. Build the API URL for the remote command\n";
+        string += "      var remoteUrl = serverAddress + '/api/remote?folder=' + encodeURIComponent(folder) + '&filename=' + encodeURIComponent(filename);\n";
+        string += "      \n";
+        string += "      // 2. Fire the command to the tablet in the background\n";
+        string += "      fetch(remoteUrl).then(function() {\n";
+        string += "         console.log('Tablet synced');\n";
+        string += "      }).catch(function(err) {\n";
+        string += "         console.error('Remote sync failed', err);\n";
+        string += "      });\n";
+        string += "      \n";
+        string += "      // 3. Update the CURRENT browser window to show the song\n";
+        string += "      // We stay on the same page but change the URL parameters and reload\n";
+        string += "      window.location.href = serverAddress + '" + mainActivityInterface.getWebServer().getManualSongString() + "/?chords=' + chords + '&folder=' + encodeURIComponent(folder) + '&filename=' + encodeURIComponent(filename);\n";
         string += "    }\n";
         string += "  }\n";
 

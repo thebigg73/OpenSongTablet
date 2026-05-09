@@ -192,6 +192,7 @@ public class WebServerFragment extends Fragment {
     private void updateViews() {
         // Set the webServer info
         myView.allowWebNavigation.setChecked(mainActivityInterface.getWebServer().getAllowWebNavigation());
+        myView.listenForWebAPI.setChecked(mainActivityInterface.getWebServer().getListenForWebAPI());
         Glide.with(this).load(mainActivityInterface.getWebServer().getIPQRCode()).into(myView.qrCode);
         String ipAddress = "http://"+mainActivityInterface.getWebServer().getIP()+":"+mainActivityInterface.getWebServer().getPortNumber()+"/";
 
@@ -248,6 +249,7 @@ public class WebServerFragment extends Fragment {
                     }
                 }));
         myView.allowWebNavigation.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getWebServer().setAllowWebNavigation(b));
+        myView.listenForWebAPI.setOnCheckedChangeListener(((compoundButton, b) -> mainActivityInterface.getWebServer().setListenForWebAPI(b)));
         myView.webServerInfo.setOnClickListener(view -> mainActivityInterface.openDocument("http://"+mainActivityInterface.getWebServer().getIP()+":"+ mainActivityInterface.getWebServer().getPortNumber()+"/"));
         myView.runHotspot.setOnCheckedChangeListener((compoundButton, b) -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
