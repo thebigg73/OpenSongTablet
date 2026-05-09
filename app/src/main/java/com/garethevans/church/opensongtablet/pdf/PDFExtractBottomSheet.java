@@ -120,8 +120,8 @@ public class PDFExtractBottomSheet extends BottomSheetCommon {
         myView.saveSearchable.setOnClickListener(view -> {
             if (myView.createNewSong.isChecked() && myView.filename.getText()!=null &&
             !myView.filename.getText().toString().isEmpty()) {
-                // Create a new song
-                Song newSong = new Song();
+                // Create a new song but update existing metadata with what we have if it exists
+                Song newSong = mainActivityInterface.getTempSong()==null ? new Song() : mainActivityInterface.getTempSong();
                 newSong.setFiletype("XML");
                 newSong.setFilename(myView.filename.getText().toString());
                 newSong.setFolder(myView.folder.getText().toString());
