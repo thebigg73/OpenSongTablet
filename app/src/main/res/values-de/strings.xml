@@ -24,6 +24,8 @@
     <string name="actionbar_display">Aktionsleiste</string>
     <string name="actionbar_info">Ändern Sie das Erscheinungsbild der Informationen in der Aktionsleiste</string>
     <string name="actionbar_left">Aktionsleiste links</string>
+    <string name="actionbar_minimise">Minimiere Aktionsbalken-Symbole</string>
+    <string name="actionbar_minimise_info">Verschieben Sie nicht notwendige Symbole ins Überlaufmenü, um mehr Platz für den Songtitel zu schaffen</string>
     <string name="actionbar_right">Aktionsleiste rechts</string>
     <string name="actions">Aktionen</string>
     <string name="actions_current_song">Aktionen für den aktuellen Song</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Erlauben Sie Benutzern ohne OpenSongApp, Ihre Songs über einen Webbrowser anzuzeigen</string>
     <string name="web_server_host_song">Lied des Gastgebers</string>
     <string name="web_server_info">Nicht-OpenSongApp-Benutzer sollten sich im selben Netzwerk wie dieses Gerät befinden (Sie können auch einen Hotspot verwenden).  Sie sollten dann diese Webadresse öffnen, um den Song anzuzeigen.</string>
+    <string name="web_server_listen_api">Achten Sie auf Songänderungen, die über den Webserver gesendet werden.</string>
+    <string name="web_server_listen_api_info">Geräten, die mit dem Webserver verbunden sind (einschließlich SongEditorWeb), erlauben, Songänderungen auf diesem Gerät auszulösen</string>
     <string name="web_server_navigation">Manuelle Navigation</string>
     <string name="web_server_navigation_info">Wenn diese Option eingeschaltet ist, können Benutzer manuell jeden Song auswählen, der in Ihrer Songliste oder Ihrem aktuellen Set angezeigt wird.  Wenn diese Option ausgeschaltet ist, können Benutzer nur Ihren aktuell geladenen Song anzeigen</string>
     <string name="web_server_port">Portnummer</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Verehrung</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoomstufe</string>
-    <string name="actionbar_minimise">Minimiere Aktionsbalken-Symbole</string>
-    <string name="actionbar_minimise_info">Verschieben Sie nicht notwendige Symbole ins Überlaufmenü, um mehr Platz für den Songtitel zu schaffen</string>
 </resources>

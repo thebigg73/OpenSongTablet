@@ -24,6 +24,8 @@
     <string name="actionbar_display">Панель дій</string>
     <string name="actionbar_info">Змініть вигляд інформації на панелі дій</string>
     <string name="actionbar_left">Рядок дій ліворуч</string>
+    <string name="actionbar_minimise">Мінімізація іконок панелі дій</string>
+    <string name="actionbar_minimise_info">Перемістіть необов\'язкові іконки у меню переповнення, щоб залишити більше місця для назви пісні</string>
     <string name="actionbar_right">Рядок дій праворуч</string>
     <string name="actions">Дії</string>
     <string name="actions_current_song">Дії для поточної пісні</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Дозвольте користувачам без OpenSongApp переглядати ваші пісні за допомогою веб-браузера</string>
     <string name="web_server_host_song">Пісня ведучого</string>
     <string name="web_server_info">Користувачі, які не є OpenSongApp, повинні бути в тій же мережі, що і цей пристрій (ви також можете використовувати точку доступу).  Потім вони повинні відкрити цю веб-адресу, щоб переглянути пісню.</string>
+    <string name="web_server_listen_api">Прослуховування змін у піснях, що надсилаються через веб-сервер</string>
+    <string name="web_server_listen_api_info">Дозволити пристроям, підключеним до веб-сервера (включно з SongEditorWeb), ініціювати зміни пісень на цьому пристрої</string>
     <string name="web_server_navigation">Ручна навігація</string>
     <string name="web_server_navigation_info">Коли ввімкнено, користувачі можуть вручну вибрати будь-яку пісню, яка відображається у вашому списку пісень або поточному наборі.  Коли вимкнено, користувачі зможуть переглядати лише вашу поточну завантажену пісню</string>
     <string name="web_server_port">Номер порту</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Богослужіння</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Рівень масштабування</string>
-    <string name="actionbar_minimise">Мінімізація іконок панелі дій</string>
-    <string name="actionbar_minimise_info">Перемістіть необов\'язкові іконки у меню переповнення, щоб залишити більше місця для назви пісні</string>
 </resources>

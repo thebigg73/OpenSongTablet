@@ -24,6 +24,8 @@
     <string name="actionbar_display">操作栏</string>
     <string name="actionbar_info">更改操作栏中信息的外观</string>
     <string name="actionbar_left">左侧操作栏</string>
+    <string name="actionbar_minimise">最小化动作条图标</string>
+    <string name="actionbar_minimise_info">将非必要的图标移到溢出菜单中，以腾出更多空间放歌曲标题</string>
     <string name="actionbar_right">操作栏右侧</string>
     <string name="actions">行动</string>
     <string name="actions_current_song">当前歌曲的操作</string>
@@ -1454,6 +1456,8 @@
     <string name="web_server_hint">允许没有OpenSongApp的用户使用网络浏览器查看您的歌曲</string>
     <string name="web_server_host_song">主持人之歌</string>
     <string name="web_server_info">非OpenSongApp用户应与此设备位于同一网络上（您也可以使用热点）。 然后，他们应该打开此网址以查看歌曲。</string>
+    <string name="web_server_listen_api">监听通过网络服务器发送的歌曲更改。</string>
+    <string name="web_server_listen_api_info">允许连接到 Web 服务器的设备（包括 SongEditorWeb）触发此设备上的歌曲更改</string>
     <string name="web_server_navigation">手动导航</string>
     <string name="web_server_navigation_info">打开后，用户可以手动选择歌曲列表或当前设置中显示的任何歌曲。 关闭后，用户只能查看您当前加载的歌曲</string>
     <string name="web_server_port">端口号</string>
@@ -1470,6 +1474,4 @@
     <string name="worship">崇拜</string>
     <string name="zone">区</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="actionbar_minimise">最小化动作条图标</string>
-    <string name="actionbar_minimise_info">将非必要的图标移到溢出菜单中，以腾出更多空间放歌曲标题</string>
 </resources>

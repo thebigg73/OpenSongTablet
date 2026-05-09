@@ -24,6 +24,8 @@
     <string name="actionbar_display">Aksiebalk</string>
     <string name="actionbar_info">Verander die voorkoms van die inligting in die aksiebalk</string>
     <string name="actionbar_left">Aksiebalk links</string>
+    <string name="actionbar_minimise">Minimaliseer aksiebalk-ikone</string>
+    <string name="actionbar_minimise_info">Skuif nie-noodsaaklike ikone na die oorloopkieslys om meer ruimte vir die liedjietitel te gee</string>
     <string name="actionbar_right">Aksie balk reg</string>
     <string name="actions">Aksies</string>
     <string name="actions_current_song">Aksies vir huidige liedjie</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Laat gebruikers sonder OpenSongApp toe om u liedjies met behulp van \'n webblaaier te sien</string>
     <string name="web_server_host_song">Gasheer se liedjie</string>
     <string name="web_server_info">Nie-OpenSongApp-gebruikers moet op dieselfde netwerk as hierdie toestel wees (u kan ook \'n hotspot gebruik).  Hulle moet dan hierdie webadres oopmaak om die liedjie te sien.</string>
+    <string name="web_server_listen_api">Luister vir liedjieveranderinge wat via WebServer gestuur word</string>
+    <string name="web_server_listen_api_info">Laat toestelle wat aan die webbediener gekoppel is (insluitend SongEditorWeb) toe om liedjieveranderinge op hierdie toestel te aktiveer</string>
     <string name="web_server_navigation">Handmatige navigasie</string>
     <string name="web_server_navigation_info">Wanneer dit aangeskakel is, kan gebruikers handmatig enige liedjie kies wat in jou liedjielys of huidige stel gewys word.  As dit afgeskakel is, kan gebruikers slegs u liedjie wat tans gelaai is, sien</string>
     <string name="web_server_port">Poortnommer</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Aanbidding</string>
     <string name="zone">Sone</string>
     <string name="zoom_level">Zoemvlak</string>
-    <string name="actionbar_minimise">Minimaliseer aksiebalk-ikone</string>
-    <string name="actionbar_minimise_info">Skuif nie-noodsaaklike ikone na die oorloopkieslys om meer ruimte vir die liedjietitel te gee</string>
 </resources>

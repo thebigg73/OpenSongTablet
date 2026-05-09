@@ -1471,4 +1471,6 @@
     <string name="keyboard_smart_ribbon_info">Prilikom uređivanja tekstova pesama pametna traka je prikazana iznad tastature na ekranu i da će dati shorcuts da dodate različite delove u tekstovima.  Ako je takođe postavljen ključ, on će takođe prikazati najčešće korišćene akorde.</string>
     <string name="actionbar_minimise">Minimizirajte ikone akcione trake</string>
     <string name="actionbar_minimise_info">Premestite nebitne ikone u meni prelivanja kako biste dali više prostora za naslov pesme</string>
+    <string name="web_server_listen_api">Slušajte promene pesama poslate preko VebServer</string>
+    <string name="web_server_listen_api_info">"Dozvolite uređajima povezanim sa veb serverom (uključujući SongEditorVeb) da aktivira promene pesama na ovom uređaju "</string>
 </resources>

@@ -24,6 +24,8 @@
     <string name="actionbar_display">Barra dell\'azione</string>
     <string name="actionbar_info">Modifica l\'aspetto delle informazioni nella barra delle azioni</string>
     <string name="actionbar_left">Barra delle azioni sinistra</string>
+    <string name="actionbar_minimise">Minimizza le icone della barra delle azioni</string>
+    <string name="actionbar_minimise_info">Sposta le icone non essenziali nel menu di overflow per lasciare più spazio al titolo della canzone</string>
     <string name="actionbar_right">Barra delle azioni destra</string>
     <string name="actions">Azioni</string>
     <string name="actions_current_song">Azioni per il brano corrente</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Consenti agli utenti senza OpenSongApp di visualizzare i tuoi brani utilizzando un browser web</string>
     <string name="web_server_host_song">Brani presenti sul server</string>
     <string name="web_server_info">Gli utenti che non utilizzano OpenSongApp devono essere connessi alla stessa rete di questo dispositivo (è anche possibile utilizzare un hotspot).  Dovrebbero quindi aprire il loro web browser a questo indirizzo.</string>
+    <string name="web_server_listen_api">Ascolta le modifiche al brano inviate tramite WebServer</string>
+    <string name="web_server_listen_api_info">Consenti ai dispositivi connessi al server web (incluso SongEditorWeb) di attivare le modifiche ai brani su questo dispositivo</string>
     <string name="web_server_navigation">Permetti navigazione manuale</string>
     <string name="web_server_navigation_info">Quando è attivata, gli utenti possono scegliere manualmente qualsiasi brano presente nell\'elenco dei brani o nella scaletta corrente.  Quando è disattivato, gli utenti possono visualizzare solo il brano attualmente caricato</string>
     <string name="web_server_port">Numero di porta</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Culto</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="actionbar_minimise">Minimizza le icone della barra delle azioni</string>
-    <string name="actionbar_minimise_info">Sposta le icone non essenziali nel menu di overflow per lasciare più spazio al titolo della canzone</string>
 </resources>

@@ -12,8 +12,6 @@
     <string name="abc_transpose_to_song">曲のキーに自動移調</string>
     <string name="abc_transpose_to_song_info">曲とabc記譜の両方にキーが設定されている場合、アプリはabc記譜の出力を調整して曲の調に合わせて調整しようとします。</string>
     <string name="about">約</string>
-    <string name="keyboard_smart_ribbon">キーボードスマートリボン</string>
-    <string name="keyboard_smart_ribbon_info">歌詞を編集する際、画面上のキーボードの上にスマートリボンが表示され、歌詞に様々なセクションを追加するためのショートカットが提供されます。キーが設定されている場合は、よく使われるコードも表示されます。</string>
     <string name="about_description">アプリ情報、ヘルプ、ユーザーガイドなど。</string>
     <string name="acceleration">加速度</string>
     <string name="accent">訛り</string>
@@ -26,6 +24,8 @@
     <string name="actionbar_display">アクションバー</string>
     <string name="actionbar_info">アクションバーの情報の外観を変更する</string>
     <string name="actionbar_left">アクションバー左</string>
+    <string name="actionbar_minimise">アクションバーアイコンを最小化</string>
+    <string name="actionbar_minimise_info">不要なアイコンをオーバーフローメニューに移動させて、曲名のスペースを増やしましょう</string>
     <string name="actionbar_right">アクションバーの右</string>
     <string name="actions">アクション</string>
     <string name="actions_current_song">現在の曲のアクション</string>
@@ -625,6 +625,8 @@
     <string name="key">キー (key)</string>
     <string name="key_original">元のキー</string>
     <string name="key_original_transpose">曲を元のキーに戻す</string>
+    <string name="keyboard_smart_ribbon">キーボードスマートリボン</string>
+    <string name="keyboard_smart_ribbon_info">歌詞を編集する際、画面上のキーボードの上にスマートリボンが表示され、歌詞に様々なセクションを追加するためのショートカットが提供されます。キーが設定されている場合は、よく使われるコードも表示されます。</string>
     <string name="keyword">キーワード</string>
     <string name="kit_kick">キック</string>
     <string name="kit_snare">スネア</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">OpenSongApp を持たないユーザーがウェブブラウザを使用して曲を表示できるようにする</string>
     <string name="web_server_host_song">ホストの歌</string>
     <string name="web_server_info">OpenSongApp以外のユーザーは、このデバイスと同じネットワーク上にいる必要があります(ホットスポットを使用することもできます)。 次に、このWebアドレスを開いて曲を表示する必要があります。</string>
+    <string name="web_server_listen_api">Webサーバー経由で送信される曲の変更を聞き取ってください。</string>
+    <string name="web_server_listen_api_info">Webサーバーに接続されたデバイス（SongEditorWebを含む）がこのデバイス上で曲の変更をトリガーできるようにする</string>
     <string name="web_server_navigation">手動ナビゲーション</string>
     <string name="web_server_navigation_info">オンにすると、ユーザーは曲リストまたは現在のセットに表示されている曲を手動で選択できます。 オフにすると、ユーザーは現在ロードされている曲のみを表示できます</string>
     <string name="web_server_port">ポート番号</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">崇拝</string>
     <string name="zone">ゾーン</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="actionbar_minimise">アクションバーアイコンを最小化</string>
-    <string name="actionbar_minimise_info">不要なアイコンをオーバーフローメニューに移動させて、曲名のスペースを増やしましょう</string>
 </resources>

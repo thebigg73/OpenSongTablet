@@ -24,6 +24,8 @@
     <string name="actionbar_display">Γραμμή δράσης</string>
     <string name="actionbar_info">Αλλάξτε την εμφάνιση των πληροφοριών στη γραμμή ενεργειών</string>
     <string name="actionbar_left">Αριστερή γραμμή ενεργειών</string>
+    <string name="actionbar_minimise">Ελαχιστοποίηση εικονιδίων γραμμής ενεργειών</string>
+    <string name="actionbar_minimise_info">Μετακινήστε τα μη απαραίτητα εικονίδια στο μενού υπερχείλισης για να δώσετε περισσότερο χώρο στον τίτλο του τραγουδιού</string>
     <string name="actionbar_right">Δεξιά γραμμή ενεργειών</string>
     <string name="actions">Ενέργειες</string>
     <string name="actions_current_song">Ενέργειες για το τρέχον τραγούδι</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Να επιτρέπεται στους χρήστες χωρίς OpenSongApp να προβάλλουν τα τραγούδια σας χρησιμοποιώντας ένα πρόγραμμα περιήγησης ιστού</string>
     <string name="web_server_host_song">Τραγούδι του οικοδεσπότη</string>
     <string name="web_server_info">Οι χρήστες που δεν είναι OpenSongApp θα πρέπει να βρίσκονται στο ίδιο δίκτυο με αυτήν τη συσκευή (μπορείτε επίσης να χρησιμοποιήσετε ένα hotspot).  Στη συνέχεια, θα πρέπει να ανοίξουν αυτήν τη διεύθυνση ιστού για να δουν το τραγούδι.</string>
+    <string name="web_server_listen_api">Ακούστε για αλλαγές τραγουδιών που αποστέλλονται μέσω του WebServer</string>
+    <string name="web_server_listen_api_info">Επιτρέψτε σε συσκευές που είναι συνδεδεμένες στον διακομιστή ιστού (συμπεριλαμβανομένου του SongEditorWeb) να ενεργοποιούν αλλαγές τραγουδιών σε αυτήν τη συσκευή.</string>
     <string name="web_server_navigation">Χειροκίνητη πλοήγηση</string>
     <string name="web_server_navigation_info">Όταν είναι ενεργοποιημένη, οι χρήστες μπορούν να επιλέξουν χειροκίνητα οποιοδήποτε τραγούδι εμφανίζεται στη λίστα τραγουδιών ή στο τρέχον σύνολο τραγουδιών σας.  Όταν είναι απενεργοποιημένο, οι χρήστες μπορούν να δουν μόνο το τρέχον φορτωμένο τραγούδι σας</string>
     <string name="web_server_port">Αριθμός θύρας</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Λατρεία</string>
     <string name="zone">Ζώνη</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
-    <string name="actionbar_minimise">Ελαχιστοποίηση εικονιδίων γραμμής ενεργειών</string>
-    <string name="actionbar_minimise_info">Μετακινήστε τα μη απαραίτητα εικονίδια στο μενού υπερχείλισης για να δώσετε περισσότερο χώρο στον τίτλο του τραγουδιού</string>
 </resources>

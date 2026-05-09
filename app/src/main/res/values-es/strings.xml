@@ -24,6 +24,8 @@
     <string name="actionbar_display">Barra de acciones</string>
     <string name="actionbar_info">Cambiar la apariencia de la información en la barra de acciones</string>
     <string name="actionbar_left">Barra de acciones izquierda</string>
+    <string name="actionbar_minimise">Minimizar los iconos de la barra de acción</string>
+    <string name="actionbar_minimise_info">Mueve los iconos no esenciales al menú de desbordamiento para dar más espacio al título de la canción</string>
     <string name="actionbar_right">Barra de acciones derecha</string>
     <string name="actions">Acciones</string>
     <string name="actions_current_song">Acciones para la canción actual</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Permite a los usuarios sin OpenSongApp ver tus canciones usando un navegador web</string>
     <string name="web_server_host_song">Canción del anfitrión</string>
     <string name="web_server_info">Los usuarios que no son de OpenSongApp deben estar en la misma red que este dispositivo (también puede usar un punto de acceso).  Luego deben abrir esta dirección web para ver la canción.</string>
+    <string name="web_server_listen_api">Esté atento a los cambios de canción enviados a través del servidor web.</string>
+    <string name="web_server_listen_api_info">Permitir que los dispositivos conectados al servidor web (incluido SongEditorWeb) activen los cambios de canción en este dispositivo.</string>
     <string name="web_server_navigation">Navegación manual</string>
     <string name="web_server_navigation_info">Cuando está activado, los usuarios pueden elegir manualmente cualquier canción que se muestre en su lista de canciones o conjunto actual.  Cuando está apagado, los usuarios solo pueden ver la canción cargada actualmente</string>
     <string name="web_server_port">Número de puerto</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Culto</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nivel de zoom</string>
-    <string name="actionbar_minimise">Minimizar los iconos de la barra de acción</string>
-    <string name="actionbar_minimise_info">Mueve los iconos no esenciales al menú de desbordamiento para dar más espacio al título de la canción</string>
 </resources>

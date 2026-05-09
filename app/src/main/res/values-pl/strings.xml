@@ -24,6 +24,8 @@
     <string name="actionbar_display">Pasek działań</string>
     <string name="actionbar_info">Zmień wygląd informacji na pasku działań</string>
     <string name="actionbar_left">Pasek działań lewy</string>
+    <string name="actionbar_minimise">Minimalizacja ikon paska akcji</string>
+    <string name="actionbar_minimise_info">Przenieś ikony nieistotne do menu nadmiarowego, aby zrobić więcej miejsca na tytuł utworu</string>
     <string name="actionbar_right">Pasek działań prawy</string>
     <string name="actions">Akcje</string>
     <string name="actions_current_song">Działania dla bieżącej piosenki</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Zezwalaj użytkownikom bez OpenSongApp na wyświetlanie piosenek za pomocą przeglądarki internetowej</string>
     <string name="web_server_host_song">Piosenka gospodarza</string>
     <string name="web_server_info">Użytkownicy spoza OpenSongApp powinni znajdować się w tej samej sieci co to urządzenie (można również użyć hotspotu). Następnie powinni otworzyć ten adres internetowy, aby wyświetlić piosenkę.</string>
+    <string name="web_server_listen_api">Nasłuchuj zmian w utworach przesyłanych przez serwer WWW</string>
+    <string name="web_server_listen_api_info">Zezwalaj urządzeniom podłączonym do serwera internetowego (w tym SongEditorWeb) na wyzwalanie zmian utworów na tym urządzeniu</string>
     <string name="web_server_navigation">Nawigacja ręczna</string>
     <string name="web_server_navigation_info">Po włączeniu użytkownicy mogą ręcznie wybrać dowolną piosenkę z listy piosenek lub z bieżącego zestawu. Gdy ta opcja jest wyłączona, użytkownicy mogą wyświetlać tylko aktualnie załadowaną piosenkę</string>
     <string name="web_server_port">Numer portu</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Cześć</string>
     <string name="zone">Strefa</string>
     <string name="zoom_level">Stopień przybliżenia</string>
-    <string name="actionbar_minimise">Minimalizacja ikon paska akcji</string>
-    <string name="actionbar_minimise_info">Przenieś ikony nieistotne do menu nadmiarowego, aby zrobić więcej miejsca na tytuł utworu</string>
 </resources>

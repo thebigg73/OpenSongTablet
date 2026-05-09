@@ -24,6 +24,8 @@
     <string name="actionbar_display">Åtgärdsfältet</string>
     <string name="actionbar_info">Ändra utseendet på informationen i åtgärdsfältet</string>
     <string name="actionbar_left">Åtgärdsfältet till vänster</string>
+    <string name="actionbar_minimise">Minimera ikoner för handlingsfält</string>
+    <string name="actionbar_minimise_info">Flytta icke-nödvändiga ikoner till överflödesmenyn för att ge mer plats åt låttiteln</string>
     <string name="actionbar_right">Åtgärdsfältet till höger</string>
     <string name="actions">Handlingar</string>
     <string name="actions_current_song">Åtgärder för aktuell låt</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Tillåt användare utan OpenSongApp att visa dina låtar med en webbläsare</string>
     <string name="web_server_host_song">Värdens sång</string>
     <string name="web_server_info">Användare som inte använder OpenSongApp bör vara i samma nätverk som den här enheten (du kan också använda en hotspot).  De bör sedan öppna den här webbadressen för att se låten.</string>
+    <string name="web_server_listen_api">Lyssna efter låtändringar som skickas via webbservern</string>
+    <string name="web_server_listen_api_info">Tillåt enheter som är anslutna till webbservern (inklusive SongEditorWeb) att utlösa låtändringar på den här enheten</string>
     <string name="web_server_navigation">Manuell navigering</string>
     <string name="web_server_navigation_info">När den är påslagen kan användarna manuellt välja vilken låt som helst som ska visas i låtlistan eller den aktuella uppsättningen.  När den är avstängd kan användarna bara se din inlästa låt</string>
     <string name="web_server_port">Portnummer</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Dyrkan</string>
     <string name="zone">Zon</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="actionbar_minimise">Minimera ikoner för handlingsfält</string>
-    <string name="actionbar_minimise_info">Flytta icke-nödvändiga ikoner till överflödesmenyn för att ge mer plats åt låttiteln</string>
 </resources>

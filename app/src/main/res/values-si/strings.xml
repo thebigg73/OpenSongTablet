@@ -24,6 +24,8 @@
     <string name="actionbar_display">ක්රියාකාරී තීරුව</string>
     <string name="actionbar_info">ක්රියාකාරී තීරුවේ ඇති තොරතුරුවල පෙනුම වෙනස් කරන්න</string>
     <string name="actionbar_left">ක්‍රියා තීරුව වමේ</string>
+    <string name="actionbar_minimise">ක්‍රියා තීරු නිරූපක අවම කරන්න</string>
+    <string name="actionbar_minimise_info">ගීත මාතෘකාව සඳහා වැඩි ඉඩක් ලබා දීම සඳහා අත්‍යවශ්‍ය නොවන අයිකන පිටාර ගැලීමේ මෙනුවට ගෙන යන්න.</string>
     <string name="actionbar_right">ක්‍රියා තීරුව දකුණ</string>
     <string name="actions">ක්රියාවන්</string>
     <string name="actions_current_song">වත්මන් ගීතය සඳහා ක්‍රියා</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">OpenSongApp නොමැති පරිශීලකයින්ට වෙබ් බ්‍රවුසරයක් භාවිතයෙන් ඔබේ ගීත බැලීමට ඉඩ දෙන්න</string>
     <string name="web_server_host_song">සත්කාරක ගීතය</string>
     <string name="web_server_info">OpenSongApp නොවන පරිශීලකයින් මෙම උපාංගය හා සමාන ජාලයක සිටිය යුතුය (ඔබට හොට්ස්පොට් එකක්ද භාවිතා කළ හැක).  ඉන්පසු ඔවුන් ගීතය නැරඹීමට මෙම වෙබ් ලිපිනය විවෘත කළ යුතුය.</string>
+    <string name="web_server_listen_api">WebServer හරහා යවන ලද ගීත වෙනස්කම් සඳහා සවන් දෙන්න.</string>
+    <string name="web_server_listen_api_info">වෙබ් සේවාදායකයට සම්බන්ධ කර ඇති උපාංගවලට (SongEditorWeb ඇතුළුව) මෙම උපාංගයේ ගීත වෙනස්කම් ක්‍රියාත්මක කිරීමට ඉඩ දෙන්න.</string>
     <string name="web_server_navigation">අතින් සංචලනය</string>
     <string name="web_server_navigation_info">මාරු වූ විට, පරිශීලකයින්ට ඔබගේ ගීත ලැයිස්තුවේ හෝ වත්මන් කට්ටලයේ පෙන්වන ඕනෑම ගීතයක් අතින් තෝරා ගත හැක.  ක්‍රියාවිරහිත කළ විට, පරිශීලකයින්ට නැරඹිය හැක්කේ ඔබගේ දැනට පූරණය කර ඇති ගීතය පමණි</string>
     <string name="web_server_port">තොට අංකය</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">නමස්කාරය</string>
     <string name="zone">කලාපය</string>
     <string name="zoom_level">විශාලන මට්ටම</string>
-    <string name="actionbar_minimise">ක්‍රියා තීරු නිරූපක අවම කරන්න</string>
-    <string name="actionbar_minimise_info">ගීත මාතෘකාව සඳහා වැඩි ඉඩක් ලබා දීම සඳහා අත්‍යවශ්‍ය නොවන අයිකන පිටාර ගැලීමේ මෙනුවට ගෙන යන්න.</string>
 </resources>

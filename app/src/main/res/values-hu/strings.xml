@@ -24,6 +24,8 @@
     <string name="actionbar_display">Actionbar</string>
     <string name="actionbar_info">Módosítsa az információ megjelenését a műveletsoron</string>
     <string name="actionbar_left">Bal oldali műveletsáv</string>
+    <string name="actionbar_minimise">Minimalizáld az akciósáv ikonokat</string>
+    <string name="actionbar_minimise_info">Mozgasd a nem létfontosságú ikonokat a túlcsordulás menübe, hogy több helyet adj a dal címének</string>
     <string name="actionbar_right">Műveletsáv jobb</string>
     <string name="actions">Hozzászólások</string>
     <string name="actions_current_song">Műveletek az aktuális dalhoz</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Lehetővé teszi az OpenSongApp nélküli felhasználók számára, hogy webböngészővel tekintsék meg dalait</string>
     <string name="web_server_host_song">A házigazda dala</string>
     <string name="web_server_info">A nem OpenSongApp felhasználóknak ugyanazon a hálózaton kell lenniük, mint ez az eszköz (hotspotot is használhat).  Ezután meg kell nyitniuk ezt a webcímet a dal megtekintéséhez.</string>
+    <string name="web_server_listen_api">Figyelje a webszerveren keresztül küldött dalmódosításokat</string>
+    <string name="web_server_listen_api_info">Engedélyezi a webszerverhez csatlakoztatott eszközök (beleértve a SongEditorWebet is) számára, hogy dalmódosításokat indítsanak el ezen az eszközön.</string>
     <string name="web_server_navigation">Kézi navigáció</string>
     <string name="web_server_navigation_info">Ha be van kapcsolva, a felhasználók manuálisan kiválaszthatják a dallistában vagy az aktuális készletben megjelenő dalokat.  Ha ki van kapcsolva, a felhasználók csak az aktuálisan betöltött dalt tekinthetik meg</string>
     <string name="web_server_port">Portszám</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="actionbar_minimise">Minimalizáld az akciósáv ikonokat</string>
-    <string name="actionbar_minimise_info">Mozgasd a nem létfontosságú ikonokat a túlcsordulás menübe, hogy több helyet adj a dal címének</string>
 </resources>

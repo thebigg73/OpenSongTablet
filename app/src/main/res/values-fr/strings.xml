@@ -24,6 +24,8 @@
     <string name="actionbar_display">Barre d\'action</string>
     <string name="actionbar_info">Modifier l\'apparence des informations dans la barre d\'action</string>
     <string name="actionbar_left">Barre d’actions gauche</string>
+    <string name="actionbar_minimise">Minimiser les icônes de la barre d’action</string>
+    <string name="actionbar_minimise_info">Déplacez les icônes non essentielles dans le menu de dépassement pour laisser plus d’espace au titre de la chanson</string>
     <string name="actionbar_right">Barre d’actions droite</string>
     <string name="actions">Un appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.</string>
     <string name="actions_current_song">Actions pour la chanson en cours</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Autoriser les utilisateurs sans OpenSongApp à afficher vos chansons à l’aide d’un navigateur Web</string>
     <string name="web_server_host_song">Chanson de l’hôte</string>
     <string name="web_server_info">Les utilisateurs non OpenSongApp doivent être sur le même réseau que cet appareil (vous pouvez également utiliser un hotspot).  Ils doivent ensuite ouvrir cette adresse Web pour voir la chanson.</string>
+    <string name="web_server_listen_api">Soyez attentif aux changements de chanson envoyés via le serveur Web.</string>
+    <string name="web_server_listen_api_info">Autoriser les appareils connectés au serveur web (y compris SongEditorWeb) à déclencher des changements de chanson sur cet appareil.</string>
     <string name="web_server_navigation">Navigation manuelle</string>
     <string name="web_server_navigation_info">Lorsqu’il est activé, les utilisateurs peuvent choisir manuellement n’importe quel morceau affiché dans votre liste de chansons ou votre ensemble actuel.  Lorsqu’il est désactivé, les utilisateurs ne peuvent afficher que votre morceau actuellement chargé</string>
     <string name="web_server_port">Numéro de port</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Culte</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Le niveau de zoom</string>
-    <string name="actionbar_minimise">Minimiser les icônes de la barre d’action</string>
-    <string name="actionbar_minimise_info">Déplacez les icônes non essentielles dans le menu de dépassement pour laisser plus d’espace au titre de la chanson</string>
 </resources>

@@ -24,6 +24,8 @@
     <string name="actionbar_display">Barra de ação</string>
     <string name="actionbar_info">Alterar a aparência das informações na barra de ação</string>
     <string name="actionbar_left">Barra de ação esquerda</string>
+    <string name="actionbar_minimise">Minimizar ícones da barra de ação</string>
+    <string name="actionbar_minimise_info">Mover ícones não essenciais para o menu de overflow para dar mais espaço ao título da música</string>
     <string name="actionbar_right">Direito de barra de ação</string>
     <string name="actions">Ações</string>
     <string name="actions_current_song">Ações para a música atual</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Permitir que usuários sem OpenSongApp visualizem suas músicas usando um navegador da Web</string>
     <string name="web_server_host_song">Música do anfitrião</string>
     <string name="web_server_info">Os usuários que não são do OpenSongApp devem estar na mesma rede que este dispositivo (você também pode usar um hotspot).  Eles devem então abrir este endereço web para ver a música.</string>
+    <string name="web_server_listen_api">Fique atento às alterações de música enviadas pelo servidor web.</string>
+    <string name="web_server_listen_api_info">Permitir que dispositivos conectados ao servidor web (incluindo o SongEditorWeb) acionem mudanças de música neste dispositivo.</string>
     <string name="web_server_navigation">Navegação manual</string>
     <string name="web_server_navigation_info">Quando ligados, os utilizadores podem escolher manualmente qualquer música apresentada na sua lista de músicas ou conjunto atual.  Quando desligado, os utilizadores só podem ver a música carregada no momento</string>
     <string name="web_server_port">Número da porta</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Adorar</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nível de zoom</string>
-    <string name="actionbar_minimise">Minimizar ícones da barra de ação</string>
-    <string name="actionbar_minimise_info">Mover ícones não essenciais para o menu de overflow para dar mais espaço ao título da música</string>
 </resources>

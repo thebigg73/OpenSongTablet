@@ -24,6 +24,8 @@
     <string name="actionbar_display">Панель действий</string>
     <string name="actionbar_info">Изменить внешний вид информации на панели действий</string>
     <string name="actionbar_left">Панель действий слева</string>
+    <string name="actionbar_minimise">Минимизировать значки панели действий</string>
+    <string name="actionbar_minimise_info">Переместите необязательные значки в меню переполнения, чтобы освободить больше места для названия песни</string>
     <string name="actionbar_right">Панель действий справа</string>
     <string name="actions">Действия</string>
     <string name="actions_current_song">Действия с текущей песней</string>
@@ -1453,6 +1455,8 @@
     <string name="web_server_hint">Разрешить пользователям, не имеющим OpenSongApp, просматривать ваши песни с помощью веб-браузера</string>
     <string name="web_server_host_song">Песня у хоста</string>
     <string name="web_server_info">Пользователи, не являющиеся пользователями OpenSongApp, должны находиться в той же сети, что и это устройство (вы также можете использовать точку доступа).  Затем они должны открыть этот веб-адрес, чтобы просмотреть песню.</string>
+    <string name="web_server_listen_api">Отслеживайте изменения в песне, передаваемые через веб-сервер.</string>
+    <string name="web_server_listen_api_info">Разрешить устройствам, подключенным к веб-серверу (включая SongEditorWeb), запускать изменения песен на этом устройстве.</string>
     <string name="web_server_navigation">Ручная навигация</string>
     <string name="web_server_navigation_info">Если этот параметр включен, пользователи могут вручную выбрать любую песню, отображаемую в списке песен или текущем сетлисте.  Если этот параметр выключен, пользователи могут просматривать только загруженную в данный момент песню</string>
     <string name="web_server_port">номер порта</string>
@@ -1469,6 +1473,4 @@
     <string name="worship">Поклонение</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="actionbar_minimise">Минимизировать значки панели действий</string>
-    <string name="actionbar_minimise_info">Переместите необязательные значки в меню переполнения, чтобы освободить больше места для названия песни</string>
 </resources>
