@@ -386,7 +386,7 @@ public class CreateHTML {
         string += "      if (window.heartbeat) clearInterval(window.heartbeat);\n";
         string += "      setTimeout(connect, 2000); // Reconnect loop\n";
         string += "    };\n";
-        string += "    socket.onmessage = function(event) {\n";
+        /*string += "    socket.onmessage = function(event) {\n";
         string += "      if (event.data === 'REFRESH') {\n";
         string += "        if (localStorage.getItem('userListenToHost') !== 'false') { hostSong(); }\n";
         string += "      } else if (event.data.startsWith('MSG:')) {\n";
@@ -395,6 +395,36 @@ public class CreateHTML {
         string += "        box.innerText = msg;\n";
         string += "        box.style.display = 'block';\n";
         string += "        setTimeout(function() { box.style.display = 'none'; }, 10000);\n";
+        string += "      }\n";
+        string += "    };\n";
+        */
+        string += "    socket.onmessage = function(event) {\n";
+        string += "      try {\n";
+        string += "        var payload = JSON.parse(event.data);\n";
+        string += "        \n";
+        // Handle the Refresh/Song Change action
+        string += "        if (payload.action === 'REFRESH') {\n";
+        string += "          if (localStorage.getItem('userListenToHost') !== 'false') { hostSong(); }\n";
+        string += "        }\n";
+        string += "        \n";
+        // Handle Messages (assuming your JSON has a 'message' field now)
+        string += "        if (payload.message) {\n";
+        string += "          var box = document.getElementById('alert-box');\n";
+        string += "          box.innerText = payload.message;\n";
+        string += "          box.style.display = 'block';\n";
+        string += "          setTimeout(function() { box.style.display = 'none'; }, 10000);\n";
+        string += "        }\n";
+        string += "      } catch (e) {\n";
+        // Fallback for your existing 'MSG:' logic if you still send raw strings sometimes
+        string += "        if (event.data === 'REFRESH') {\n";
+        string += "          if (localStorage.getItem('userListenToHost') !== 'false') { hostSong(); }\n";
+        string += "        } else if (event.data.startsWith('MSG:')) {\n";
+        string += "          var msg = event.data.substring(4);\n";
+        string += "          var box = document.getElementById('alert-box');\n";
+        string += "          box.innerText = msg;\n";
+        string += "          box.style.display = 'block';\n";
+        string += "          setTimeout(function() { box.style.display = 'none'; }, 10000);\n";
+        string += "        }\n";
         string += "      }\n";
         string += "    };\n";
         string += "  }\n";

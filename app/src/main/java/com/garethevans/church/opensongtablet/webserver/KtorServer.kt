@@ -2,8 +2,14 @@ package com.garethevans.church.opensongtablet.webserver
 
 import android.content.Context
 import android.util.Log
+import com.garethevans.church.opensongtablet.MainActivity
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface
+import com.garethevans.church.opensongtablet.nearby.ShareableObject
+import com.garethevans.church.opensongtablet.songprocessing.Song
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.engine.applicationEngineEnvironment
@@ -11,6 +17,7 @@ import io.ktor.server.engine.connector
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
@@ -88,6 +95,19 @@ object KtorServer {
                                 pingPeriod = Duration.ofSeconds(15)
                                 timeout = Duration.ofSeconds(30)
                             }
+
+                            install(CORS) {
+                                // Allow the PWA to access the API from any origin
+                                anyHost()
+
+                                // Corrected function names for Ktor 2.x/3.x
+                                allowHeader(HttpHeaders.ContentType)
+                                allowHeader(HttpHeaders.AccessControlAllowOrigin)
+
+                                allowMethod(HttpMethod.Get)
+                                allowMethod(HttpMethod.Options) // Important for browser pre-flight checks
+                            }
+
                             routing {
                                 val ip = mainActivityInterface?.webServer?.ip
 
@@ -226,6 +246,61 @@ object KtorServer {
                                     call.respondText(html, ContentType.Text.Html)
                                 }
 
+                                // An API to receive the song via json for a PWS such as SongEditorWeb
+                                get("/api/song") {
+                                    val folder = call.request.queryParameters["folder"] ?: ""
+                                    val filename = call.request.queryParameters["filename"] ?: ""
+                                    // Kotlin's 'if' is an expression, so we can assign the result directly
+                                    val song: Song? = if (folder.isNullOrBlank() || filename.isNullOrBlank()) {
+                                        mainActivityInterface?.getSong()
+                                    } else {
+                                        mainActivityInterface?.sqLiteHelper?.getSpecificSong(folder, filename)
+                                    }
+
+                                    try {
+                                        if (song != null) {
+                                            // Serialize the full object using your existing Gson instance
+                                            val jsonString = MainActivity.gson.toJson(song)
+                                            call.respondText(jsonString, ContentType.Application.Json)
+                                        } else {
+                                            call.respondText(
+                                                "{\"error\": \"Song not found in database\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.NotFound
+                                            )
+                                        }
+                                    } catch (e: Exception) {
+                                        Log.e("KtorServer", "Error fetching song: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Internal server error\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.InternalServerError
+                                        )
+                                    }
+                                }
+
+                                // API to return the full list of available songs as a JSON array
+                                get("/api/list") {
+                                    try {
+                                        // 1. Call your existing logic to get the populated ArrayList
+                                        // (Assuming you've exposed this via your interface)
+                                        val songList: ArrayList<ShareableObject> = mainActivityInterface?.sqLiteHelper?.shareableSongs ?: arrayListOf()
+
+                                        // 2. Serialize the entire list to a JSON Array using Gson
+                                        val jsonString = MainActivity.gson.toJson(songList)
+
+                                        // 3. Return the response
+                                        call.respondText(jsonString, ContentType.Application.Json)
+                                    } catch (e: Exception) {
+                                        Log.e("KtorServer", "Error fetching song list: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Could not retrieve song list\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.InternalServerError
+                                        )
+                                    }
+                                }
+
                                 // The WebSocket "Channel"
                                 webSocket("/updates") {
                                     sessions.add(this)
@@ -287,20 +362,27 @@ object KtorServer {
         }
     }
 
-    fun pushRefresh() {
-        // 1. Create a snapshot of the sessions to avoid holding a lock during network I/O
-        val currentSessions = synchronized(sessions) {
-            sessions.toList() // Creates a shallow copy
-        }
 
-        // 2. Launch the network work in the background
+    fun pushRefresh() {
+        val currentSong: Song? = mainActivityInterface?.getSong()
+
+        // Create a simple map that tells the client what to do
+        val payload = mapOf(
+            "action" to "REFRESH", // Existing browsers can look for this
+            "data" to currentSong  // PWAs can use this
+        )
+
+        val jsonString = MainActivity.gson.toJson(payload)
+
+        // 1. Create a snapshot of the sessions to avoid holding a lock during network I/O
+        val currentSessions = synchronized(sessions) { sessions.toList() }
+
         CoroutineScope(Dispatchers.IO).launch {
             currentSessions.forEach { session ->
                 try {
-                    // Now the suspension point is safe; we are iterating over a local list
-                    session.send("REFRESH")
+                    session.send(jsonString)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to send refresh, session likely closed: ${e.message}")
+                    Log.e(TAG, "WebSocket send failed: ${e.message}")
                 }
             }
         }
@@ -331,70 +413,3 @@ object KtorServer {
         }
     }
 }
-
-/*
-
-object KtorServer {
-    private const val TAG = "KtorServer"
-    private var server: NettyApplicationEngine? = null
-    private val serverMutex = Mutex()
-    private var currentPort: Int? = null
-
-    fun start(c: Context, port: Int) {
-        val mainActivityInterface = c.applicationContext as? MainActivityInterface ?: return
-
-        CoroutineScope(Dispatchers.IO).launch {
-            serverMutex.withLock {
-                // 1. Check if a server is already running on this port
-                if (server != null && currentPort == port) {
-                    Log.d(TAG, "Server already running on port $port. Skipping start.")
-                    return@withLock
-                }
-
-                // 2. If server exists but is on a different port or is dead, stop it first
-                stopServerInternal()
-
-                // Small delay to ensure sockets are released by the OS
-                delay(500)
-
-                try {
-                    val env = applicationEngineEnvironment {
-                        // ... (keep your existing environment configuration here) ...
-                        connector {
-                            this.port = port
-                            this.host = "0.0.0.0"
-                        }
-                        // ... (keep your existing module/routing logic) ...
-                    }
-
-                    server = embeddedServer(Netty, env).apply {
-                        start(wait = false)
-                    }
-                    currentPort = port
-                    Log.d(TAG, "Server started successfully on $port")
-
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to start server: ${e.message}")
-                    server = null
-                    currentPort = null
-                }
-            }
-        }
-    }
-
-    private suspend fun stopServerInternal() {
-        server?.let {
-            try {
-                it.stop(500, 1000)
-            } finally {
-                server = null
-                currentPort = null
-                sessions.clear()
-            }
-        }
-    }
-
-    // ... rest of your pushRefresh and helper methods ...
-}
-
- */
