@@ -219,44 +219,52 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         }
     }
 
+    private boolean alreadySaving = false;
     private void doSaveChanges() {
-        // Make sure the soft keyboard is closed
-        mainActivityInterface.getWindowFlags().hideKeyboard();
+        if (!alreadySaving) {
+            alreadySaving = true;
+            // Make sure the soft keyboard is closed
+            mainActivityInterface.getWindowFlags().hideKeyboard();
 
-        // Send this off for processing in a new Thread
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            // If we were editing the lyrics as ChoPro, convert to OpenSong
-            if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-                String lyrics = mainActivityInterface.getTempSong().getLyrics();
-                lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(lyrics);
-                mainActivityInterface.getTempSong().setLyrics(lyrics);
-                mainActivityInterface.getTempSong().setEditingAsChoPro(false);
-            }
+            // Send this off for processing in a new Thread
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // If we were editing the lyrics as ChoPro, convert to OpenSong
+                if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+                    String lyrics = mainActivityInterface.getTempSong().getLyrics();
+                    lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(lyrics);
+                    mainActivityInterface.getTempSong().setLyrics(lyrics);
+                    mainActivityInterface.getTempSong().setEditingAsChoPro(false);
+                }
 
-            // For a new song, check we have a folder/filename set
-            boolean oktoproceed = true;
-            if (mainActivityInterface.getTempSong().getFilename()==null || mainActivityInterface.getTempSong().getFilename().isEmpty()) {
-                mainActivityInterface.getShowToast().doIt(not_saved_filename_string);
-                oktoproceed = false;
-            } else if (mainActivityInterface.getTempSong().getFolder()==null || mainActivityInterface.getTempSong().getFolder().isEmpty()) {
-                mainActivityInterface.getShowToast().doIt(not_saved_folder_string);
-                oktoproceed = false;
-            } else if (mainActivityInterface.getTempSong().getTitle()==null || mainActivityInterface.getTempSong().getTitle().isEmpty()) {
-                // Ok to proceed, but copy the filename into the empty title
-                mainActivityInterface.getTempSong().setTitle(mainActivityInterface.getTempSong().getFilename());
-            }
+                // For a new song, check we have a folder/filename set
+                boolean oktoproceed = true;
+                if (mainActivityInterface.getTempSong().getFilename() == null || mainActivityInterface.getTempSong().getFilename().isEmpty()) {
+                    mainActivityInterface.getShowToast().doIt(not_saved_filename_string);
+                    oktoproceed = false;
+                } else if (mainActivityInterface.getTempSong().getFolder() == null || mainActivityInterface.getTempSong().getFolder().isEmpty()) {
+                    mainActivityInterface.getShowToast().doIt(not_saved_folder_string);
+                    oktoproceed = false;
+                } else if (mainActivityInterface.getTempSong().getTitle() == null || mainActivityInterface.getTempSong().getTitle().isEmpty()) {
+                    // Ok to proceed, but copy the filename into the empty title
+                    mainActivityInterface.getTempSong().setTitle(mainActivityInterface.getTempSong().getFilename());
+                }
 
-            if (oktoproceed && mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
-                // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (mainActivityInterface!=null) {
-                        mainActivityInterface.navHome();
-                    }
-                });
-            } else if (oktoproceed) {
-                mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(not_saved_string));
-            }
-        });
+                if (oktoproceed && mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
+                    // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        if (mainActivityInterface != null) {
+                            mainActivityInterface.navHome();
+                        }
+                        alreadySaving = false;
+                    });
+                } else if (oktoproceed) {
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        mainActivityInterface.getShowToast().doIt(not_saved_string);
+                        alreadySaving = false;
+                    });
+                }
+            });
+        }
     }
 
     public void moveSaveButtonUp(boolean moveUp) {
