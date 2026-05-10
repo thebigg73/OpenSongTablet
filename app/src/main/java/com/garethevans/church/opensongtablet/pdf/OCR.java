@@ -136,15 +136,36 @@ public class OCR {
                     int top = pageHeightToAdd;
                     int left = 0;
                     int right = 0;
-                    if (lineFrame!=null) {
-                        top = lineFrame.top + pageHeightToAdd;
+                    if (lineFrame != null) {
+                        int currentTop = lineFrame.top + pageHeightToAdd;
                         left = lineFrame.left;
                         right = lineFrame.right;
-                        totalLineCount++;
-                        totalLineHeight += lineFrame.bottom - lineFrame.top;
+
+                        // 1. Determine if THIS block is a chord or lyric before merging
+                        boolean currentIsChord = mainActivityInterface.getConvertTextSong().convertText(lineText).startsWith(".");
+
+                        int targetKey = currentTop;
+                        int fudge = 10;
+
+                        for (int i = 0; i < stringSparseArray.size(); i++) {
+                            int existingTop = stringSparseArray.keyAt(i);
+                            if (Math.abs(existingTop - currentTop) < fudge) {
+
+                                // 2. CHECK: Only merge if the existing line is the same type
+                                // We use the first character of the existing line to check ('.' for chords, ' ' for lyrics)
+                                String existingText = stringSparseArray.get(existingTop);
+                                boolean existingIsChord = existingText.contains(blockSplitEndFinal + ".");
+
+                                if (currentIsChord == existingIsChord) {
+                                    targetKey = existingTop;
+                                    break;
+                                }
+                            }
+                        }
+                        top = targetKey;
                     }
 
-                    String currLine = stringSparseArray.get(top,"");
+                    String currLine = stringSparseArray.get(top, "");
                     String newLine = (currLine+blockSplitStart+left+blockSplitStartFinal+blockSplitEnd+right+blockSplitEndFinal+lineText);
                     Log.d(TAG,"top:"+top+"  newLine:"+newLine);
                     stringSparseArray.put(top,newLine);

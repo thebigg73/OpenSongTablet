@@ -16,18 +16,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 import androidx.exifinterface.media.ExifInterface;
+import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.CreateSongBottomSheet;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanner;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanning;
+import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -40,22 +45,23 @@ public class ImportOptionsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private final String TAG = "ImportOptionsFragment";
     private SettingsImportBinding myView;
-    private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream","application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
-    private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
+    private final String[] validFiles = new String[]{"text/plain", "image/*", "text/xml", "application/xml", "application/pdf", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
+    private final String[] validBackups = new String[]{"application/zip", "application/octet-stream", "application/*"};
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ActivityResultLauncher<String> cameraPermission;
+    private ActivityResultLauncher<IntentSenderRequest> scannerLauncher;
     private ActivityResultLauncher<Uri> takePhoto;
-    private int whichFileType;
     private Uri uri;
     private File file;
-    private String cameraFilename, import_main_string="",
-            deeplink_import_osb_string="", network_error_string="";
+    private String cameraFilename, import_main_string = "",
+            deeplink_import_osb_string = "", network_error_string = "";
 
     @Override
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(import_main_string);
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -65,7 +71,7 @@ public class ImportOptionsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = SettingsImportBinding.inflate(inflater,container,false);
+        myView = SettingsImportBinding.inflate(inflater, container, false);
 
         // Tint the progressBar as the secondary color
         mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
@@ -79,7 +85,7 @@ public class ImportOptionsFragment extends Fragment {
         setListeners();
 
         // Check if we get here to trigger an action (menu search)
-        if (mainActivityInterface.getWhattodo()!=null) {
+        if (mainActivityInterface.getWhattodo() != null) {
             if (mainActivityInterface.getWhattodo().equals("camera")) {
                 mainActivityInterface.setWhattodo("");
                 myView.importCamera.performClick();
@@ -105,13 +111,14 @@ public class ImportOptionsFragment extends Fragment {
     }
 
     private void prepareStrings() {
-        if (getContext()!=null) {
+        if (getContext() != null) {
             import_main_string = getString(R.string.import_main);
             deeplink_import_osb_string = getString(R.string.deeplink_import_osb);
             network_error_string = getString(R.string.network_error);
             //deeplink_browse_host_files = getString(R.string.deeplink_browse_host_files);
         }
     }
+
     private void setupLauncher() {
         // Initialise the launchers
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -135,26 +142,26 @@ public class ImportOptionsFragment extends Fragment {
         });
         cameraPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (!mainActivityInterface.getAppPermissions().hasCameraPermission()) {
-                // Permission hasn't been allowed and we are due to explain why
+                // Permission hasn't been allowed, and we are due to explain why
                 try {
                     Snackbar.make(myView.getRoot(), R.string.permissions_refused,
                             LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
-                                try {
-                                    cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
-                                } catch (Exception e) {
-                                    Log.d(TAG,"User probably left this fragment");
-                                }
+                        try {
+                            cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
+                        } catch (Exception e) {
+                            Log.d(TAG, "User probably left this fragment");
+                        }
                     }).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
                 // Save the image to the app private folder for now
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",mainActivityInterface.getLocale());
-                cameraFilename = "Camera_"+sdf.format(new Date())+".jpg";
-                Log.d(TAG,"cameraFilename:"+cameraFilename);
-                file = mainActivityInterface.getStorageAccess().getAppSpecificFile("files","export",cameraFilename);
-                if (getContext()!=null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", mainActivityInterface.getLocale());
+                cameraFilename = "Camera_" + sdf.format(new Date()) + ".jpg";
+                Log.d(TAG, "cameraFilename:" + cameraFilename);
+                file = mainActivityInterface.getStorageAccess().getAppSpecificFile("files", "export", cameraFilename);
+                if (getContext() != null) {
                     uri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
                     takePhoto.launch(uri);
                 }
@@ -164,7 +171,7 @@ public class ImportOptionsFragment extends Fragment {
         takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),
                 result -> {
                     if (result) {
-                        Log.d(TAG,"success");
+                        Log.d(TAG, "success");
 
                         // Do this with a delay handler to give time for the file to finish
                         myView.importCamera.postDelayed(() -> {
@@ -175,26 +182,26 @@ public class ImportOptionsFragment extends Fragment {
                                     int newExifRotation = 0;
                                     switch (surfaceRotation) {
                                         case Surface.ROTATION_0:
-                                            Log.d(TAG,"surfaceRotation:ROTATION_0");
+                                            Log.d(TAG, "surfaceRotation:ROTATION_0");
                                             newExifRotation = ExifInterface.ORIENTATION_NORMAL;
                                             break;
                                         case Surface.ROTATION_90:
                                             newExifRotation = ExifInterface.ORIENTATION_ROTATE_90;
-                                            Log.d(TAG,"surfaceRotation:ROTATION_90");
+                                            Log.d(TAG, "surfaceRotation:ROTATION_90");
                                             break;
                                         case Surface.ROTATION_180:
-                                            Log.d(TAG,"surfaceRotation:ROTATION_180");
+                                            Log.d(TAG, "surfaceRotation:ROTATION_180");
                                             newExifRotation = ExifInterface.ORIENTATION_ROTATE_180;
                                             break;
                                         case Surface.ROTATION_270:
-                                            Log.d(TAG,"surfaceRotation:ROTATION_270");
+                                            Log.d(TAG, "surfaceRotation:ROTATION_270");
                                             newExifRotation = ExifInterface.ORIENTATION_ROTATE_270;
                                             break;
                                     }
-                                    Log.d(TAG,"newExifRotation:"+newExifRotation);
+                                    Log.d(TAG, "newExifRotation:" + newExifRotation);
                                     ExifInterface ei = new ExifInterface(file.getPath());
                                     String currentOrientation = ei.getAttribute(ExifInterface.TAG_ORIENTATION);
-                                    Log.d(TAG,"current exif orientation:"+currentOrientation);
+                                    Log.d(TAG, "current exif orientation:" + currentOrientation);
                                     ei.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(newExifRotation));
                                     ei.saveAttributes();
                                 } catch (Exception e) {
@@ -203,8 +210,24 @@ public class ImportOptionsFragment extends Fragment {
                             }
                             // Now ask the user for a file name and folder using the bottom sheet
                             CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet(uri);
-                            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"CreateSongBottomSheet");
-                        },100);
+                            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "CreateSongBottomSheet");
+                        }, 100);
+                    }
+                });
+
+        scannerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartIntentSenderForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        GmsDocumentScanningResult scanningResult =
+                                GmsDocumentScanningResult.fromActivityResultIntent(result.getData());
+
+                        if (scanningResult != null && scanningResult.getPages() != null) {
+                            Uri scanUri = scanningResult.getPages().get(0).getImageUri();
+                            // Send to your existing CreateSongBottomSheet
+                            CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet(scanUri);
+                            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "CreateSongBottomSheet");
+                        }
                     }
                 });
     }
@@ -213,51 +236,75 @@ public class ImportOptionsFragment extends Fragment {
         myView.createSong.setOnClickListener(v -> {
             // Open the bottom sheet to create a new song folder/filename
             CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet();
-            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"CreateSongBottomSheet");
+            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "CreateSongBottomSheet");
         });
-        myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
-        myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
-        myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"),validBackups));
-        myView.importBulk.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importBulkFragment));
+        myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"), validFiles));
+        myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"), validBackups));
+        myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"), validBackups));
+        myView.importBulk.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.importBulkFragment));
         myView.importCamera.setOnClickListener(v -> getCamera());
-        myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importOnlineFragment));
+        myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.importOnlineFragment));
         myView.importChurch.setOnClickListener(v -> {
             // Check connection
             mainActivityInterface.setWhattodo("importChurchSample");
-            mainActivityInterface.getCheckInternet().checkConnection(getContext(),this, R.id.importOSBFragment, mainActivityInterface);
+            mainActivityInterface.getCheckInternet().checkConnection(getContext(), this, R.id.importOSBFragment, mainActivityInterface);
         });
         myView.importBand.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("importBandSample");
-            mainActivityInterface.getCheckInternet().checkConnection(getContext(),this, R.id.importOSBFragment, mainActivityInterface);
+            mainActivityInterface.getCheckInternet().checkConnection(getContext(), this, R.id.importOSBFragment, mainActivityInterface);
         });
     }
 
     private void selectFile(int id, String[] mimeTypes) {
-        whichFileType = id;
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
-                    mainActivityInterface.getStorageAccess().getUriForItem("Import","",""));
+                    mainActivityInterface.getStorageAccess().getUriForItem("Import", "", ""));
         }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         activityResultLauncher.launch(intent);
     }
 
     private void getCamera() {
-        // Check permission and go for it if ok
-        cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
+        // 1. Check if Google Play Services is available
+        if (mainActivityInterface.getAppPermissions().hasGooglePlay()) {
+            // 2. Use New Document Scanner
+            launchDocumentScanner();
+        } else {
+            // 3. Fallback: Use your original camera logic
+            cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
+        }
+    }
+
+    private void launchDocumentScanner() {
+        GmsDocumentScannerOptions options = new GmsDocumentScannerOptions.Builder()
+                .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
+                .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
+                .build();
+
+        GmsDocumentScanner scanner = GmsDocumentScanning.getClient(options);
+
+        if (getActivity() != null) {
+            scanner.getStartScanIntent(getActivity())
+                    .addOnSuccessListener(intentSender -> scannerLauncher.launch(new IntentSenderRequest.Builder(intentSender).build()))
+                    .addOnFailureListener(e -> {
+                        // If the scanner itself fails to initialize, fallback to standard camera
+                        cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
+                    });
+        }
     }
 
     public void isConnected(boolean isConnected) {
         if (isConnected) {
-            mainActivityInterface.navigateToFragment(deeplink_import_osb_string,0);
+            mainActivityInterface.navigateToFragment(deeplink_import_osb_string, 0);
         } else {
             mainActivityInterface.setWhattodo("");
             mainActivityInterface.getShowToast().doIt(network_error_string);
         }
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
