@@ -19,6 +19,7 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.request.receiveText
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
@@ -376,17 +377,18 @@ object KtorServer {
                                     Log.d(TAG,"save attempt");
                                     if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
                                         // An API to receive the song via json from a PWS such as SongEditorWeb
-                                        val newSongString = call.request.queryParameters["song"] ?: "";
-                                        val newSetString = call.request.queryParameters["set"] ?: "";
+                                        val jsonString = call.receiveText()
 
                                         // Kotlin's 'if' is an expression, so we can assign the result directly
-                                        if (!newSongString.isNullOrBlank()) {
+                                        if (!jsonString.isNullOrBlank()) {
                                             // Get an Song Object from the JSON string
                                             try {
                                                 val newSong: Song = MainActivity.gson.fromJson(
-                                                    newSongString,
+                                                    jsonString,
                                                     Song::class.java
                                                 )
+
+                                                // TODO if newSong.folder=="Sets", reassign to a set object
 
                                                 if (newSong.filename!=null && newSong.folder!=null) {
                                                     // The song didn't exist, so prompt the user to see if they want to save the new incoming song.
@@ -422,7 +424,7 @@ object KtorServer {
                                                 )
                                             }
 
-                                        } else if (!newSongString.isNullOrBlank()) {
+                                        } else if (!jsonString.isNullOrBlank()) {
                                             // TODO currently just return an error as we aren't dealing with this yet
                                             call.respondText(
                                                 "{\"status\": \"error\", \"message\": \"OpenSongApp isn't yet dealing with saving a set\"}",
