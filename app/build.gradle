@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 449     // Also change in wear
-        versionName = '6.7.8' // Also change in wear
+        versionCode = 450     // Also change in wear
+        versionName = '6.7.9' // Also change in wear
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -172,6 +172,7 @@ dependencies {
     // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:19.3.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1' // For OCR text recognition (PDF/Camera)
+    implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0' // For OCR text straightening when taking photos of text
     implementation 'com.google.android.play:feature-delivery:2.1.0'                     // For updated resources
     implementation 'com.google.android.play:feature-delivery-ktx:2.1.0'                 // For updated resources
     implementation 'com.google.android.gms:play-services-wearable:19.0.0'

@@ -11,8 +11,8 @@ android {
         applicationId = "com.garethevans.church.opensongtablet"
         minSdk 23
         targetSdk 35
-        versionCode 449     // MATCH the mobile version
-        versionName "6.7.8" // MATCH the mobile version
+        versionCode 450     // MATCH the mobile version
+        versionName "6.7.9" // MATCH the mobile version
     }
 
     flavorDimensions "distribution"
