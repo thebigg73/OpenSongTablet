@@ -267,7 +267,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         holder.pdfPageImage.getLayoutParams().width = width;
         holder.v.getLayoutParams().width = width;
 
-
+        Log.d(TAG,"pdfFolder:"+pdfFolder+"  pdfFilename:"+pdfFilename+"  pageNum:"+pageNum+"  size:"+width+"x"+height);
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                 pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"), true);
         // If we want to enable PDF trimming of whitespace

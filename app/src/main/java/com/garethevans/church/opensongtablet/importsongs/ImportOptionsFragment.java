@@ -121,6 +121,8 @@ public class ImportOptionsFragment extends Fragment {
 
     private void setupLauncher() {
         // Initialise the launchers
+
+        // Deal with the file picker result
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 try {
@@ -140,6 +142,8 @@ public class ImportOptionsFragment extends Fragment {
                 }
             }
         });
+
+        // The launcher to request camera permissions
         cameraPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (!mainActivityInterface.getAppPermissions().hasCameraPermission()) {
                 // Permission hasn't been allowed, and we are due to explain why
@@ -156,15 +160,7 @@ public class ImportOptionsFragment extends Fragment {
                     e.printStackTrace();
                 }
             } else {
-                // Save the image to the app private folder for now
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", mainActivityInterface.getLocale());
-                cameraFilename = "Camera_" + sdf.format(new Date()) + ".jpg";
-                Log.d(TAG, "cameraFilename:" + cameraFilename);
-                file = mainActivityInterface.getStorageAccess().getAppSpecificFile("files", "export", cameraFilename);
-                if (getContext() != null) {
-                    uri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
-                    takePhoto.launch(uri);
-                }
+                getCamera();
             }
         });
 
@@ -222,11 +218,24 @@ public class ImportOptionsFragment extends Fragment {
                         GmsDocumentScanningResult scanningResult =
                                 GmsDocumentScanningResult.fromActivityResultIntent(result.getData());
 
-                        if (scanningResult != null && scanningResult.getPages() != null) {
-                            Uri scanUri = scanningResult.getPages().get(0).getImageUri();
-                            // Send to your existing CreateSongBottomSheet
-                            CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet(scanUri);
-                            createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "CreateSongBottomSheet");
+                        Uri scanUri = null;
+
+                        if (scanningResult != null) {
+                            // 1. Get JPEGs for your existing OCR logic
+                            if (scanningResult.getPages() != null) {
+                                scanUri = scanningResult.getPages().get(0).getImageUri();
+                            }
+
+                            // 2. Get the PDF for the music score
+                            if (scanningResult.getPdf() != null) {
+                                scanUri = scanningResult.getPdf().getUri();
+                            }
+
+                            if (scanUri!=null) {
+                                // Send to your existing CreateSongBottomSheet
+                                CreateSongBottomSheet createSongBottomSheet = new CreateSongBottomSheet(scanUri);
+                                createSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "CreateSongBottomSheet");
+                            }
                         }
                     }
                 });
@@ -268,19 +277,39 @@ public class ImportOptionsFragment extends Fragment {
     }
 
     private void getCamera() {
-        // 1. Check if Google Play Services is available
-        if (mainActivityInterface.getAppPermissions().hasGooglePlay()) {
-            // 2. Use New Document Scanner
-            launchDocumentScanner();
-        } else {
-            // 3. Fallback: Use your original camera logic
+        // First check that we have camera permissions
+        if (!mainActivityInterface.getAppPermissions().hasCameraPermission()) {
             cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
+            return;
+        }
+
+        // Save the image to the app private folder for now
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", mainActivityInterface.getLocale());
+        cameraFilename = "Camera_" + sdf.format(new Date());
+        Log.d(TAG, "cameraFilename:" + cameraFilename);
+        if (getContext() != null) {
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && mainActivityInterface.getAppPermissions().hasGooglePlay()) {
+                cameraFilename += ".pdf";
+                file = mainActivityInterface.getStorageAccess().getAppSpecificFile("files", "export", cameraFilename);
+                uri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
+                launchDocumentScanner();
+            } else {
+                cameraFilename += ".jpg";
+                file = mainActivityInterface.getStorageAccess().getAppSpecificFile("files", "export", cameraFilename);
+                uri = FileProvider.getUriForFile(getContext(), "com.garethevans.church.opensongtablet.fileprovider", file);
+                takePhoto.launch(uri);
+            }
         }
     }
 
     private void launchDocumentScanner() {
         GmsDocumentScannerOptions options = new GmsDocumentScannerOptions.Builder()
-                .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
+                .setGalleryImportAllowed(true)
+                // REQUEST BOTH FORMATS HERE
+                .setResultFormats(
+                        GmsDocumentScannerOptions.RESULT_FORMAT_JPEG,
+                        GmsDocumentScannerOptions.RESULT_FORMAT_PDF
+                )
                 .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
                 .build();
 
@@ -290,8 +319,8 @@ public class ImportOptionsFragment extends Fragment {
             scanner.getStartScanIntent(getActivity())
                     .addOnSuccessListener(intentSender -> scannerLauncher.launch(new IntentSenderRequest.Builder(intentSender).build()))
                     .addOnFailureListener(e -> {
-                        // If the scanner itself fails to initialize, fallback to standard camera
-                        cameraPermission.launch(mainActivityInterface.getAppPermissions().getCameraPermissions());
+                        mainActivityInterface.getShowToast().error();
+                        //takePhoto.launch(uri);
                     });
         }
     }

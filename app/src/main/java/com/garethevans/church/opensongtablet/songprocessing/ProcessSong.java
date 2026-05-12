@@ -3894,17 +3894,23 @@ public class ProcessSong {
         // FileDescriptor for file, it allows you to close file when you are done with it
         ParcelFileDescriptor parcelFileDescriptor = getPDFParcelFileDescriptor(uri);
 
+        PdfRenderer pdfRenderer = null;
         // Get PDF renderer
-        PdfRenderer pdfRenderer = getPDFRenderer(parcelFileDescriptor);
+        try {
+            pdfRenderer = getPDFRenderer(parcelFileDescriptor);
+            // Get the page count
+            mainActivityInterface.getSong().setPdfPageCount(getPDFPageCount(pdfRenderer));
 
-        // Get the page count
-        mainActivityInterface.getSong().setPdfPageCount(getPDFPageCount(pdfRenderer));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Set the current page number
         page = getCurrentPage(page);
 
         if (parcelFileDescriptor != null && pdfRenderer != null && mainActivityInterface.getSong().getPdfPageCount() > 0) {
             // Good to continue!
+            Log.d(TAG,"Good to continue");
 
             // Get the currentPDF page
             PdfRenderer.Page currentPage = getPDFPage(pdfRenderer, page);
