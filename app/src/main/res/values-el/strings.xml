@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">Ερώτημα για τον απομακρυσμένο διακομιστή…</string>
     <string name="sync_reading_local_folder">Ανάγνωση των περιεχομένων του τοπικού φακέλου</string>
     <string name="sync_reading_remote_folder">Ανάγνωση των περιεχομένων του απομακρυσμένου φακέλου</string>
+    <string name="sync_remote_confirm_save">Μπορείτε να δείτε μερικές πληροφορίες παρακάτω και να επιβεβαιώσετε αν θέλετε να τις αποθηκεύσετε</string>
     <string name="sync_remote_folder_name">Όνομα απομακρυσμένου φακέλου</string>
+    <string name="sync_remote_item">Απομακρυσμένο στοιχείο OpenSongApp</string>
     <string name="sync_remote_items_older">Απομακρυσμένα στοιχεία που χρειάζονται ενημέρωση</string>
+    <string name="sync_remote_new_item">Ένα νέο στοιχείο έχει ληφθεί από μια απομακρυσμένη συσκευή.</string>
+    <string name="sync_remote_replace_item">Μια απομακρυσμένη συσκευή επιθυμεί να αντικαταστήσει ένα υπάρχον στοιχείο.</string>
     <string name="sync_remote_set_deleted">Το απομακρυσμένο σύνολο διαγράφηκε</string>
     <string name="sync_remote_song_deleted">Το απομακρυσμένο τραγούδι διαγράφηκε</string>
+    <string name="sync_remote_update_item">Ένα στοιχείο έχει ενημερωθεί σε μια απομακρυσμένη συσκευή.</string>
     <string name="sync_same">Σύγχρονος</string>
     <string name="sync_server_no_matching_folder">Αυτός ο φάκελος δεν υπάρχει στον απομακρυσμένο διακομιστή</string>
     <string name="sync_server_noresponse_error">Δεν υπήρξε απάντηση από τον διακομιστή</string>

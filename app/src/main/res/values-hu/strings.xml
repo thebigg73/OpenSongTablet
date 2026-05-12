@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">A távoli szerver lekérdezése…</string>
     <string name="sync_reading_local_folder">A helyi mappa tartalmának olvasása</string>
     <string name="sync_reading_remote_folder">A távoli mappa tartalmának beolvasása</string>
+    <string name="sync_remote_confirm_save">Az alábbiakban láthat néhány információt, és megerősítheti, hogy menteni szeretné-e ezt.</string>
     <string name="sync_remote_folder_name">Távoli mappa neve</string>
+    <string name="sync_remote_item">Távoli OpenSongApp elem</string>
     <string name="sync_remote_items_older">Távoli elemek, amelyek frissítésre szorulnak</string>
+    <string name="sync_remote_new_item">Új elem érkezett egy távoli eszközről.</string>
+    <string name="sync_remote_replace_item">Egy távoli eszköz egy meglévő elemet kíván lecserélni.</string>
     <string name="sync_remote_set_deleted">Távirányító készlet törölve</string>
     <string name="sync_remote_song_deleted">A távoli dal törölve</string>
+    <string name="sync_remote_update_item">Egy elem frissítve lett egy távoli eszközön.</string>
     <string name="sync_same">Naprakész</string>
     <string name="sync_server_no_matching_folder">Ez a mappa nem létezik a távoli kiszolgálón</string>
     <string name="sync_server_noresponse_error">Nem érkezett válasz a szervertől</string>

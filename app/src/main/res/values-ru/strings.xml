@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">Запрос к удаленному серверу…</string>
     <string name="sync_reading_local_folder">Чтение содержимого локальной папки</string>
     <string name="sync_reading_remote_folder">Чтение содержимого удаленной папки</string>
+    <string name="sync_remote_confirm_save">Ниже вы найдете некоторую информацию и сможете подтвердить, хотите ли вы сохранить это.</string>
     <string name="sync_remote_folder_name">Имя удаленной папки</string>
+    <string name="sync_remote_item">Удаленный элемент OpenSongApp</string>
     <string name="sync_remote_items_older">Удаленные элементы, которые необходимо обновить</string>
+    <string name="sync_remote_new_item">С удалённого устройства получен новый элемент.</string>
+    <string name="sync_remote_replace_item">Дистанционно управляемое устройство желает заменить существующий элемент.</string>
     <string name="sync_remote_set_deleted">Удаленный набор удален.</string>
     <string name="sync_remote_song_deleted">Удаленная песня удалена.</string>
+    <string name="sync_remote_update_item">На удалённом устройстве произошло обновление элемента.</string>
     <string name="sync_same">До настоящего времени</string>
     <string name="sync_server_no_matching_folder">Эта папка не существует на удаленном сервере</string>
     <string name="sync_server_noresponse_error">Ответа от сервера не было</string>

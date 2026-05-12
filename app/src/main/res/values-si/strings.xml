@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">දුරස්ථ සේවාදායකය විමසමින්…</string>
     <string name="sync_reading_local_folder">දේශීය ෆෝල්ඩරයේ අන්තර්ගතය කියවීම</string>
     <string name="sync_reading_remote_folder">දුරස්ථ ෆෝල්ඩරයේ අන්තර්ගතය කියවීම</string>
+    <string name="sync_remote_confirm_save">ඔබට පහතින් යම් තොරතුරු දැක ගත හැකි අතර ඔබට මෙය සුරැකීමට අවශ්‍ය දැයි තහවුරු කරන්න.</string>
     <string name="sync_remote_folder_name">දුරස්ථ ෆෝල්ඩරයේ නම</string>
+    <string name="sync_remote_item">දුරස්ථ OpenSongApp අයිතමය</string>
     <string name="sync_remote_items_older">යාවත්කාලීන කළ යුතු දුරස්ථ අයිතම</string>
+    <string name="sync_remote_new_item">දුරස්ථ උපාංගයකින් නව අයිතමයක් ලැබී ඇත.</string>
+    <string name="sync_remote_replace_item">දුරස්ථ උපාංගයක් පවතින අයිතමයක් ප්‍රතිස්ථාපනය කිරීමට කැමති වේ.</string>
     <string name="sync_remote_set_deleted">දුරස්ථ කට්ටලය මකා ඇත</string>
     <string name="sync_remote_song_deleted">දුරස්ථ ගීතය මකා දමන ලදී</string>
+    <string name="sync_remote_update_item">දුරස්ථ උපාංගයක අයිතමයක් යාවත්කාලීන කර ඇත.</string>
     <string name="sync_same">යාවත්කාලීනව</string>
     <string name="sync_server_no_matching_folder">මෙම ෆෝල්ඩරය දුරස්ථ සේවාදායකයේ නොමැත</string>
     <string name="sync_server_noresponse_error">සේවාදායකයෙන් ප්‍රතිචාරයක් නැත</string>

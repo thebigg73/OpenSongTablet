@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">正在查询远程服务器…</string>
     <string name="sync_reading_local_folder">读取本地文件夹的内容</string>
     <string name="sync_reading_remote_folder">读取远程文件夹的内容</string>
+    <string name="sync_remote_confirm_save">您可以在下方查看一些信息，并确认是否要保存此内容。</string>
     <string name="sync_remote_folder_name">远程文件夹名称</string>
+    <string name="sync_remote_item">远程 OpenSongApp 项目</string>
     <string name="sync_remote_items_older">需要更新的远程项目</string>
+    <string name="sync_remote_new_item">从远程设备接收到新物品。</string>
+    <string name="sync_remote_replace_item">远程设备想要替换现有物品。</string>
     <string name="sync_remote_set_deleted">远程设置已删除</string>
     <string name="sync_remote_song_deleted">远程歌曲已删除</string>
+    <string name="sync_remote_update_item">远程设备上的项目已更新。</string>
     <string name="sync_same">最新</string>
     <string name="sync_server_no_matching_folder">远程服务器上不存在该文件夹</string>
     <string name="sync_server_noresponse_error">服务器没有响应</string>

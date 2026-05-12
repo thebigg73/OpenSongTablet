@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">Wysyłam zapytanie do zdalnego serwera…</string>
     <string name="sync_reading_local_folder">Odczytywanie zawartości folderu lokalnego</string>
     <string name="sync_reading_remote_folder">Odczytywanie zawartości folderu zdalnego</string>
+    <string name="sync_remote_confirm_save">Poniżej możesz zobaczyć niektóre informacje i potwierdzić, czy chcesz je zapisać</string>
     <string name="sync_remote_folder_name">Nazwa folderu zdalnego</string>
+    <string name="sync_remote_item">Zdalny element OpenSongApp</string>
     <string name="sync_remote_items_older">Elementy zdalne, które wymagają aktualizacji</string>
+    <string name="sync_remote_new_item">Otrzymano nowy element ze zdalnego urządzenia.</string>
+    <string name="sync_remote_replace_item">Urządzenie zdalne chce zastąpić istniejący element.</string>
     <string name="sync_remote_set_deleted">Zestaw zdalny usunięty</string>
     <string name="sync_remote_song_deleted">Zdalny utwór został usunięty</string>
+    <string name="sync_remote_update_item">Element został zaktualizowany na urządzeniu zdalnym.</string>
     <string name="sync_same">Aktualny</string>
     <string name="sync_server_no_matching_folder">Ten folder nie istnieje na serwerze zdalnym</string>
     <string name="sync_server_noresponse_error">Serwer nie odpowiedział</string>

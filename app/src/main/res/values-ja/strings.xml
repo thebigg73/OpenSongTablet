@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">リモートサーバーに問い合わせ中…</string>
     <string name="sync_reading_local_folder">ローカルフォルダーの内容を読み取る</string>
     <string name="sync_reading_remote_folder">リモートフォルダーの内容を読み取る</string>
+    <string name="sync_remote_confirm_save">下記に情報が表示されていますので、保存するかどうか確認してください。</string>
     <string name="sync_remote_folder_name">リモートフォルダー名</string>
+    <string name="sync_remote_item">リモート OpenSongApp アイテム</string>
     <string name="sync_remote_items_older">更新が必要なリモート項目</string>
+    <string name="sync_remote_new_item">遠隔デバイスから新しいアイテムが受信されました。</string>
+    <string name="sync_remote_replace_item">遠隔操作される機器が、既存の機器を交換しようとしています。</string>
     <string name="sync_remote_set_deleted">リモートセットが削除されました</string>
     <string name="sync_remote_song_deleted">リモートソングが削除されました</string>
+    <string name="sync_remote_update_item">リモートデバイス上でアイテムが更新されました。</string>
     <string name="sync_same">最新の</string>
     <string name="sync_server_no_matching_folder">このフォルダーはリモートサーバー上に存在しません</string>
     <string name="sync_server_noresponse_error">サーバーから応答がありませんでした</string>

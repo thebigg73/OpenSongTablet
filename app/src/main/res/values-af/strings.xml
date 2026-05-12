@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">Doen navraag oor die afgeleë bediener …</string>
     <string name="sync_reading_local_folder">Lees die inhoud van die plaaslike gids</string>
     <string name="sync_reading_remote_folder">Lees die inhoud van die afgeleë vouer</string>
+    <string name="sync_remote_confirm_save">Jy kan hieronder inligting sien en bevestig of jy dit wil stoor.</string>
     <string name="sync_remote_folder_name">Afgeleë vouernaam</string>
+    <string name="sync_remote_item">Afstandbeheerde OpenSongApp-item</string>
     <string name="sync_remote_items_older">Afgeleë items wat opgedateer moet word</string>
+    <string name="sync_remote_new_item">\'n Nuwe item is van \'n afgeleë toestel ontvang.</string>
+    <string name="sync_remote_replace_item">\'n Afgeleë toestel wil \'n bestaande item vervang.</string>
     <string name="sync_remote_set_deleted">Afstandstel is uitgevee</string>
     <string name="sync_remote_song_deleted">Afgeleë liedjie is uitgevee</string>
+    <string name="sync_remote_update_item">\'n Item is op \'n afgeleë toestel opgedateer.</string>
     <string name="sync_same">Op datum</string>
     <string name="sync_server_no_matching_folder">Hierdie vouer bestaan nie op die afgeleë bediener nie</string>
     <string name="sync_server_noresponse_error">Daar was geen reaksie vanaf die bediener nie</string>

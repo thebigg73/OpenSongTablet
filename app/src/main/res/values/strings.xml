@@ -1496,10 +1496,15 @@
     <string name="sync_querying_remote">Querying the remote server…</string>
     <string name="sync_reading_local_folder">Reading the contents of the local folder</string>
     <string name="sync_reading_remote_folder">Reading the contents of the remote folder</string>
+    <string name="sync_remote_confirm_save">You can see some information below and confirm if you want to save this</string>
     <string name="sync_remote_folder_name">Remote folder name</string>
+    <string name="sync_remote_item">Remote OpenSongApp item</string>
     <string name="sync_remote_items_older">Remote items that need updated</string>
+    <string name="sync_remote_new_item">A new item has been received from a remote device.</string>
+    <string name="sync_remote_replace_item">A remote device wishes to replace an existing item.</string>
     <string name="sync_remote_set_deleted">Remote set deleted</string>
     <string name="sync_remote_song_deleted">Remote song deleted</string>
+    <string name="sync_remote_update_item">An item has been updated on a remote device.</string>
     <string name="sync_same">Up to date</string>
     <string name="sync_server_no_matching_folder">This folder does not exist on the remote server</string>
     <string name="sync_server_noresponse_error">There was no response from the server</string>

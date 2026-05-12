@@ -1473,4 +1473,9 @@
     <string name="actionbar_minimise_info">Premestite nebitne ikone u meni prelivanja kako biste dali više prostora za naslov pesme</string>
     <string name="web_server_listen_api">Slušajte promene pesama poslate preko VebServer</string>
     <string name="web_server_listen_api_info">"Dozvolite uređajima povezanim sa veb serverom (uključujući SongEditorVeb) da aktivira promene pesama na ovom uređaju "</string>
+    <string name="sync_remote_item">Daljinski OpenSongApp stavka</string>
+    <string name="sync_remote_new_item">Nova stavka je primljena sa udaljenog uređaja.</string>
+    <string name="sync_remote_update_item">Stavka je ažurirana na udaljenom uređaju.</string>
+    <string name="sync_remote_replace_item">Udaljeni uređaj želi da zameni postojeću stavku.</string>
+    <string name="sync_remote_confirm_save">U nastavku možete videti neke informacije i potvrditi da li želite da sačuvate ovo</string>
 </resources>

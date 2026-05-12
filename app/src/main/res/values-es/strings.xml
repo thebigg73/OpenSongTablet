@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">Consultando el servidor remoto…</string>
     <string name="sync_reading_local_folder">Leer el contenido de la carpeta local.</string>
     <string name="sync_reading_remote_folder">Leer el contenido de la carpeta remota</string>
+    <string name="sync_remote_confirm_save">Puedes ver información a continuación y confirmar si deseas guardar esto.</string>
     <string name="sync_remote_folder_name">Nombre de la carpeta remota</string>
+    <string name="sync_remote_item">Elemento remoto de OpenSongApp</string>
     <string name="sync_remote_items_older">Elementos remotos que necesitan actualización</string>
+    <string name="sync_remote_new_item">Se ha recibido un nuevo elemento desde un dispositivo remoto.</string>
+    <string name="sync_remote_replace_item">Un dispositivo remoto desea reemplazar un elemento existente.</string>
     <string name="sync_remote_set_deleted">Conjunto remoto eliminado</string>
     <string name="sync_remote_song_deleted">Canción remota eliminada</string>
+    <string name="sync_remote_update_item">Se ha actualizado un elemento en un dispositivo remoto.</string>
     <string name="sync_same">A hoy</string>
     <string name="sync_server_no_matching_folder">Esta carpeta no existe en el servidor remoto.</string>
     <string name="sync_server_noresponse_error">No hubo respuesta del servidor.</string>

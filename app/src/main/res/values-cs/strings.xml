@@ -1301,10 +1301,15 @@
     <string name="sync_querying_remote">Doen navraag oor die afgeleë bediener …</string>
     <string name="sync_reading_local_folder">Lees zemře v plaaslike gids</string>
     <string name="sync_reading_remote_folder">Lees die inhoud van die afgeleë vouer</string>
+    <string name="sync_remote_confirm_save">Níže si můžete prohlédnout některé informace a potvrdit, zda chcete tyto údaje uložit.</string>
     <string name="sync_remote_folder_name">Název vzdálené složky</string>
+    <string name="sync_remote_item">Vzdálená položka OpenSongApp</string>
     <string name="sync_remote_items_older">Afgeleë items wat opgedateer moet word</string>
+    <string name="sync_remote_new_item">Ze vzdáleného zařízení byla přijata nová položka.</string>
+    <string name="sync_remote_replace_item">Vzdálené zařízení si přeje nahradit existující položku.</string>
     <string name="sync_remote_set_deleted">Vzdálená sada byla smazána</string>
     <string name="sync_remote_song_deleted">Vzdálená skladba byla smazána</string>
+    <string name="sync_remote_update_item">Položka byla aktualizována na vzdáleném zařízení.</string>
     <string name="sync_same">Aktuální</string>
     <string name="sync_server_no_matching_folder">Tato složka na vzdáleném serveru neexistuje</string>
     <string name="sync_server_noresponse_error">Ze serveru nepřišla žádná odpověď</string>
