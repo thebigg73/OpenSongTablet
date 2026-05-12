@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.webserver
 import android.content.Context
 import android.util.Log
 import com.garethevans.church.opensongtablet.MainActivity
+import com.garethevans.church.opensongtablet.R
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface
 import com.garethevans.church.opensongtablet.nearby.ShareableObject
 import com.garethevans.church.opensongtablet.songprocessing.Song
@@ -39,7 +40,6 @@ import java.time.Duration
 import java.util.Collections
 import io.ktor.websocket.CloseReason
 import io.ktor.websocket.close
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 
 object KtorServer {
@@ -368,6 +368,75 @@ object KtorServer {
                                                 HttpStatusCode.InternalServerError
                                             )
                                         }
+                                    }
+                                }
+
+                                // API to return the full list of available songs as a JSON array
+                                get("/api/save") {
+                                    Log.d(TAG,"save attempt");
+                                    if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                        // An API to receive the song via json from a PWS such as SongEditorWeb
+                                        val newSongString = call.request.queryParameters["song"] ?: "";
+                                        val newSetString = call.request.queryParameters["set"] ?: "";
+
+                                        // Kotlin's 'if' is an expression, so we can assign the result directly
+                                        if (!newSongString.isNullOrBlank()) {
+                                            // Get an Song Object from the JSON string
+                                            try {
+                                                val newSong: Song = MainActivity.gson.fromJson(
+                                                    newSongString,
+                                                    Song::class.java
+                                                )
+
+                                                if (newSong.filename!=null && newSong.folder!=null) {
+                                                    // The song didn't exist, so prompt the user to see if they want to save the new incoming song.
+                                                    val remoteSaveSongBottomSheet = RemoteSaveBottomSheet(newSong,null);
+                                                    Log.d(TAG,"Getting here: mainActivityInterface:"+mainActivityInterface);
+                                                    mainActivityInterface?.let {
+                                                        remoteSaveSongBottomSheet.show(
+                                                            it.myFragmentManager,
+                                                            "RemoteSaveBottomSheet"
+                                                        )
+                                                    }
+                                                    // 2. Respond with a 200 OK so the PWA knows it worked
+                                                    call.respondText(
+                                                        "{\"status\": \"success\", \"message\": \"Saving ${newSong.filename}\"}",
+                                                        ContentType.Application.Json,
+                                                        HttpStatusCode.OK
+                                                    )
+                                                } else {
+                                                    // Respond with an error if parameters are missing
+                                                    call.respondText(
+                                                        "{\"status\": \"error\", \"message\": \"Missing parameters or the device isn't listening\"}",
+                                                        ContentType.Application.Json,
+                                                        HttpStatusCode.BadRequest
+                                                    )
+                                                }
+                                            } catch (e: Exception) {
+                                                e.printStackTrace()
+                                                // Respond with an error if parameters are missing
+                                                call.respondText(
+                                                    "{\"status\": \"error\", \"message\": \"The song json has errors\"}",
+                                                    ContentType.Application.Json,
+                                                    HttpStatusCode.BadRequest
+                                                )
+                                            }
+
+                                        } else if (!newSongString.isNullOrBlank()) {
+                                            // TODO currently just return an error as we aren't dealing with this yet
+                                            call.respondText(
+                                                "{\"status\": \"error\", \"message\": \"OpenSongApp isn't yet dealing with saving a set\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.BadRequest
+                                            )
+                                        }
+                                    } else {
+                                        // Respond that the host isn't listening
+                                        call.respondText(
+                                            "{\"status\": \"error\", \"message\": \"Device not listening\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.BadRequest
+                                        )
                                     }
                                 }
 

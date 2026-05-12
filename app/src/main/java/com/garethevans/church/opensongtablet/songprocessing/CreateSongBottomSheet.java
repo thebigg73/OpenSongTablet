@@ -36,6 +36,8 @@ public class CreateSongBottomSheet extends BottomSheetCommon {
     private String filename="", folder="";
     private ArrayList<String> foldersFound;
     private Uri thisImageUri = null;
+    private boolean isPDF = false;
+    private boolean isImage = false;
 
     public CreateSongBottomSheet() {
         // The default constructor for normal song creation
@@ -44,6 +46,13 @@ public class CreateSongBottomSheet extends BottomSheetCommon {
         // The constructor for using the camera
         if (imageUri!=null && !imageUri.toString().isEmpty()) {
             thisImageUri = imageUri;
+            if (thisImageUri.toString().toLowerCase().endsWith(".pdf")) {
+                isPDF = true;
+                isImage = false;
+            } else {
+                isPDF = false;
+                isImage = true;
+            }
         }
     }
 
@@ -138,9 +147,12 @@ public class CreateSongBottomSheet extends BottomSheetCommon {
             String viewFilename = "";
             if (myView.filenameEditText.getText()!=null) {
                 viewFilename = myView.filenameEditText.getText().toString();
-                if (thisImageUri!=null && !viewFilename.endsWith(".jpg")) {
+                if (isImage && !viewFilename.toLowerCase().endsWith(".jpg")) {
                     // Check for the filename with an image extension
                     viewFilename = viewFilename + ".jpg";
+                } else if (isPDF && !viewFilename.toLowerCase().endsWith(".pdf")) {
+                    // Check for the filename with an image extension
+                    viewFilename = viewFilename + ".pdf";
                 }
             }
             if (viewFilename.isEmpty()) {
@@ -172,12 +184,17 @@ public class CreateSongBottomSheet extends BottomSheetCommon {
             // If this was a new song created from the camera, we need to put it in the correct location
             if (thisImageUri!=null) {
                 try {
-                    // Make sure the new filename has .jpg in it
-                    if (!filename.toLowerCase(Locale.ROOT).endsWith(".jpg")) {
+                    // Make sure the new filename has .jpg or .pdf in it
+                    if (isImage && !filename.toLowerCase(Locale.ROOT).endsWith(".jpg")) {
                         filename = filename + ".jpg";
                         mainActivityInterface.getSong().setFilename(filename);
                         mainActivityInterface.getSong().setTitle(filename);
+                    } else if (isPDF && !filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+                        filename = filename + ".pdf";
+                        mainActivityInterface.getSong().setFilename(filename);
+                        mainActivityInterface.getSong().setTitle(filename);
                     }
+
                     // Copy the image uri to the correct file location
                     Uri newImageUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, newImageUri, null, "Songs", folder, filename);
@@ -189,8 +206,12 @@ public class CreateSongBottomSheet extends BottomSheetCommon {
                     mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(folder, filename);
                     mainActivityInterface.getSQLiteHelper().createSong(folder, filename);
 
-                    // Update the created song to include the filetype as IMG
-                    mainActivityInterface.getSong().setFiletype("IMG");
+                    // Update the created song to include the filetype as IMG or PDF
+                    if (isImage) {
+                        mainActivityInterface.getSong().setFiletype("IMG");
+                    } else if (isPDF) {
+                        mainActivityInterface.getSong().setFiletype("PDF");
+                    }
                     mainActivityInterface.getSQLiteHelper().updateSong(mainActivityInterface.getSong());
 
                     // Save the song
