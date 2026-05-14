@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.webserver
 import android.content.Context
 import android.util.Log
 import com.garethevans.church.opensongtablet.MainActivity
-import com.garethevans.church.opensongtablet.R
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface
 import com.garethevans.church.opensongtablet.nearby.ShareableObject
 import com.garethevans.church.opensongtablet.songprocessing.Song
@@ -22,16 +21,20 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.websocket.DefaultWebSocketServerSession
 import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.pingPeriod
 import io.ktor.server.websocket.timeout
 import io.ktor.server.websocket.webSocket
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.close
 import io.ktor.websocket.send
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -39,9 +42,6 @@ import kotlinx.coroutines.sync.withLock
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.util.Collections
-import io.ktor.websocket.CloseReason
-import io.ktor.websocket.close
-import kotlinx.coroutines.cancelChildren
 
 object KtorServer {
     private const val TAG = "KtorServer"
@@ -49,6 +49,7 @@ object KtorServer {
     private val serverMutex = Mutex() // Add: import kotlinx.coroutines.sync.Mutex
     private var currentPort: Int? = null
     private var mainActivityInterface: MainActivityInterface? = null
+
     //private var interfaceRef: java.lang.ref.WeakReference<MainActivityInterface>? = null
     private val serverJob = SupervisorJob()
     private val serverScope = CoroutineScope(Dispatchers.IO + serverJob)
@@ -67,10 +68,7 @@ object KtorServer {
         Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketServerSession>())
 
     fun start(c: Context, appContext: Context, port: Int) {
-        if (isShuttingDown || mainActivityInterface==null) return // Refuse to start
-
-        //val mainActivityInterface = c.applicationContext as? MainActivityInterface ?: return
-        //val mainActivityInterface = getInterface();
+        if (isShuttingDown || mainActivityInterface == null) return // Refuse to start
 
         CoroutineScope(Dispatchers.IO).launch {
             // Use withLock to prevent multiple threads from starting/stopping at once
@@ -105,8 +103,10 @@ object KtorServer {
                 try {
                     val env = applicationEngineEnvironment {
                         this.developmentMode = false // Explicitly disable
-                        log = LoggerFactory.getLogger("ktor.application") // Optional: requires slf4j-api
-                        watchPaths = emptyList() // Ensure this is empty to prevent WatchService initialization
+                        log =
+                            LoggerFactory.getLogger("ktor.application") // Optional: requires slf4j-api
+                        watchPaths =
+                            emptyList() // Ensure this is empty to prevent WatchService initialization
                         connector {
                             this.port = port
                             this.host = "0.0.0.0"
@@ -135,7 +135,7 @@ object KtorServer {
                                 val ip = mainActivityInterface?.webServer?.ip
 
                                 // When we request a song page (from the set or song menu, or host song
-                                // the host will send this song as html, but will also send the name of the
+                                // the host will send this song as HTML, but will also send the name of the
                                 // previous and next songs as variables
 
                                 // First load, so show the splash screen, get the user's preferences
@@ -154,19 +154,19 @@ object KtorServer {
                                     call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
-
                                 // Get host song (also the default after the splash screen)
                                 get("/" + mainActivityInterface?.webServer?.hostSongString + "/") {
                                     val song = mainActivityInterface?.song
                                     val chords =
                                         call.request.queryParameters["chords"]?.toBoolean() ?: true
 
-                                    // Now prepare the html
+                                    // Now prepare the HTML
                                     val html = CreateHTML.getSongHTML(
                                         c,
                                         song,
                                         ip,
-                                        mainActivityInterface?.webServer?.allowWebNavigation ?: true,
+                                        mainActivityInterface?.webServer?.allowWebNavigation
+                                            ?: true,
                                         chords,
                                         mainActivityInterface?.webServer?.getPreviousAndNextSongForArrows(
                                             song!!
@@ -180,7 +180,6 @@ object KtorServer {
                                     call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
-
                                 // Show the set menu
                                 get("/" + mainActivityInterface?.webServer?.setMenuString + "/") {
                                     // The user sends his currently loaded song so they can return if needed
@@ -196,7 +195,8 @@ object KtorServer {
                                         c,
                                         song,
                                         ip,
-                                        mainActivityInterface?.webServer?.allowWebNavigation ?: true,
+                                        mainActivityInterface?.webServer?.allowWebNavigation
+                                            ?: true,
                                         mainActivityInterface?.webServer?.getPreviousAndNextSongForArrows(
                                             song!!
                                         )!!
@@ -209,7 +209,6 @@ object KtorServer {
                                     call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
-
                                 // Show the song menu
                                 get("/" + mainActivityInterface?.webServer?.songMenuString + "/") {
                                     // The user sends his currently loaded song so they can return if needed
@@ -225,7 +224,8 @@ object KtorServer {
                                         c,
                                         song,
                                         ip,
-                                        mainActivityInterface?.webServer?.allowWebNavigation ?: true,
+                                        mainActivityInterface?.webServer?.allowWebNavigation
+                                            ?: true,
                                         mainActivityInterface?.webServer?.getPreviousAndNextSongForArrows(
                                             song!!
                                         )!!
@@ -238,7 +238,6 @@ object KtorServer {
                                     call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
-
                                 // Show a specific song (chosen by the user)
                                 get("/" + mainActivityInterface?.webServer?.manualSongString + "/") {
                                     val folder = call.request.queryParameters["folder"] ?: ""
@@ -254,7 +253,8 @@ object KtorServer {
                                         c,
                                         song,
                                         ip,
-                                        mainActivityInterface?.webServer?.allowWebNavigation ?: true,
+                                        mainActivityInterface?.webServer?.allowWebNavigation
+                                            ?: true,
                                         chords,
                                         mainActivityInterface?.webServer?.getPreviousAndNextSongForArrows(
                                             song!!
@@ -269,32 +269,54 @@ object KtorServer {
                                     call.respondText(html, ContentType.Text.Html)
                                 }
 
-                                // An API to receive the song via json for a PWS such as SongEditorWeb
+                                // Various exposed API methods for integration with SongWebEditor
+                                // An API to receive the song via JSON for a PWS such as SongEditorWeb
+                                // Where possible, both GET and POST methods should be handled
                                 get("/api/song") {
-                                    val folder = call.request.queryParameters["folder"] ?: ""
-                                    val filename = call.request.queryParameters["filename"] ?: ""
-                                    // Kotlin's 'if' is an expression, so we can assign the result directly
-                                    val song: Song? = if (folder.isNullOrBlank() || filename.isNullOrBlank() ||
-                                        mainActivityInterface?.webServer?.allowWebNavigation == false) {
-                                        mainActivityInterface?.getSong()
-                                    } else {
-                                        mainActivityInterface?.sqLiteHelper?.getSpecificSong(folder, filename)
-                                    }
-
+                                    Log.d(TAG, "api/song [GET]")
                                     try {
-                                        if (song != null) {
-                                            // Serialize the full object using your existing Gson instance
-                                            val jsonString = MainActivity.gson.toJson(song)
-                                            call.respondText(jsonString, ContentType.Application.Json)
+                                        if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                            // An API to receive the song request via JSON from a PWS such as SongEditorWeb
+                                            val folder =
+                                                call.request.queryParameters["folder"] ?: ""
+                                            val filename =
+                                                call.request.queryParameters["filename"] ?: ""
+                                            // Kotlin's 'if' is an expression, so we can assign the result directly
+                                            val song: Song? =
+                                                if (folder.isBlank() || filename.isBlank() ||
+                                                    mainActivityInterface?.webServer?.allowWebNavigation == false
+                                                ) {
+                                                    mainActivityInterface?.getSong()
+                                                } else {
+                                                    mainActivityInterface?.sqLiteHelper?.getSpecificSong(
+                                                        folder,
+                                                        filename
+                                                    )
+                                                }
+
+                                            if (song != null) {
+                                                // Serialize the full object using your existing Gson instance
+                                                val jsonString = MainActivity.gson.toJson(song)
+                                                call.respondText(
+                                                    jsonString,
+                                                    ContentType.Application.Json
+                                                )
+                                            } else {
+                                                call.respondText(
+                                                    "{\"error\": \"Song not found in database\"}",
+                                                    ContentType.Application.Json,
+                                                    HttpStatusCode.NotFound
+                                                )
+                                            }
                                         } else {
                                             call.respondText(
-                                                "{\"error\": \"Song not found in database\"}",
+                                                "{\"error\": \"Host not listening for web server API\"}",
                                                 ContentType.Application.Json,
-                                                HttpStatusCode.NotFound
+                                                HttpStatusCode.Forbidden
                                             )
                                         }
                                     } catch (e: Exception) {
-                                        Log.e(TAG, "Error fetching song: ${e.message}")
+                                        Log.e(TAG, "Error: ${e.message}")
                                         call.respondText(
                                             "{\"error\": \"Internal server error\"}",
                                             ContentType.Application.Json,
@@ -302,51 +324,220 @@ object KtorServer {
                                         )
                                     }
                                 }
+                                post("/api/song") {
+                                    // The WebServer can receive a request for a song via a POST method
+                                    // This should be a JSON object that matches SongIdentifier.java
+                                    Log.d(TAG, "api/song [POST]")
+                                    if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                        // An API to receive the song request via JSON from a PWS such as SongEditorWeb
+                                        val jsonString = call.receiveText()
+
+                                        // Kotlin's 'if' is an expression, so we can assign the result directly
+                                        if (!jsonString.isNullOrBlank()) {
+                                            // Get a SongIdentifier Object from the JSON string
+                                            try {
+                                                val songIdentifier: SongIdentifier =
+                                                    MainActivity.gson.fromJson(
+                                                        jsonString,
+                                                        SongIdentifier::class.java
+                                                    )
+                                                val song: Song?
+                                                if (songIdentifier.folder.isNullOrBlank() ||
+                                                    songIdentifier.filename.isNullOrBlank()) {
+                                                    // Something was wrong with the folder or filename
+                                                    // Load the current song
+                                                    song = mainActivityInterface?.getSong()
+                                                } else {
+                                                    // Load the requested song
+                                                    song =
+                                                        mainActivityInterface?.sqLiteHelper?.getSpecificSong(
+                                                            songIdentifier.folder,
+                                                            songIdentifier.filename
+                                                        )
+                                                }
+
+                                                if (song != null) {
+                                                    // Serialize the full object using your existing Gson instance
+                                                    val jsonString = MainActivity.gson.toJson(song)
+                                                    call.respondText(
+                                                        jsonString,
+                                                        ContentType.Application.Json
+                                                    )
+                                                } else {
+                                                    call.respondText(
+                                                        "{\"error\": \"Song not found in database\"}",
+                                                        ContentType.Application.Json,
+                                                        HttpStatusCode.NotFound
+                                                    )
+                                                }
+                                            } catch (e: com.google.gson.JsonSyntaxException) {
+                                                // This triggers if the PWA sends malformed JSON
+                                                Log.e(TAG, "Malformed JSON received: ${e.message}")
+                                                call.respondText(
+                                                    "{\"error\": \"Invalid JSON format: ${e.localizedMessage}\"}",
+                                                    ContentType.Application.Json,
+                                                    HttpStatusCode.BadRequest
+                                                )
+                                            } catch (e: Exception) {
+                                                Log.e(TAG, "Error fetching song: ${e.message}")
+                                                call.respondText(
+                                                    "{\"error\": \"Internal server error\"}",
+                                                    ContentType.Application.Json,
+                                                    HttpStatusCode.InternalServerError
+                                                )
+                                            }
+                                        } else {
+                                            call.respondText(
+                                                "{\"error\": \"Song folder and filename not specified\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.NotFound
+                                            )
+                                        }
+                                    } else {
+                                        call.respondText(
+                                            "{\"error\": \"Host not listening for web server API\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.Forbidden
+                                        )
+                                    }
+                                }
 
                                 // API to trigger the webServer host device to load a song (act as a client to SongEditorWeb or other API device)
                                 get("/api/remote") {
-                                    if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
-                                        // An API to receive the song via json for a PWS such as SongEditorWeb
-                                        val folder = call.request.queryParameters["folder"] ?: ""
-                                        val filename =
-                                            call.request.queryParameters["filename"] ?: ""
-                                        // Kotlin's 'if' is an expression, so we can assign the result directly
-                                        if (!folder.isNullOrBlank() && !filename.isNullOrBlank() &&
-                                            mainActivityInterface?.webServer?.allowWebNavigation == true) {
-                                            mainActivityInterface?.doSongLoad(
-                                                folder,
-                                                filename,
-                                                true
-                                            );
-                                            // 2. Respond with a 200 OK so the PWA knows it worked
-                                            call.respondText(
-                                                "{\"status\": \"success\", \"message\": \"Loading $filename\"}",
-                                                ContentType.Application.Json,
-                                                HttpStatusCode.OK
-                                            )
+                                    try {
+                                        if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                            // An API to receive the song via JSON for a PWS such as SongEditorWeb
+                                            val folder =
+                                                call.request.queryParameters["folder"] ?: ""
+                                            val filename =
+                                                call.request.queryParameters["filename"] ?: ""
 
+                                            // Kotlin's 'if' is an expression, so we can assign the result directly
+                                            if (!folder.isNullOrBlank() && !filename.isNullOrBlank()) {
+                                                mainActivityInterface?.doSongLoad(
+                                                    folder,
+                                                    filename,
+                                                    true
+                                                )
+
+                                                // Respond with a 200 OK so the PWA knows it worked
+                                                call.respondText(
+                                                    "{\"status\": \"success\", \"message\": \"Loading $filename\"}",
+                                                    ContentType.Application.Json, HttpStatusCode.OK
+                                                )
+
+                                            } else {
+                                                // Respond that there was an issue with the folder filename JSON
+                                                call.respondText(
+                                                    "{\"error\": \"Song folder and/or filename not specified\"}",
+                                                    ContentType.Application.Json,
+                                                    HttpStatusCode.BadRequest
+                                                )
+                                            }
                                         } else {
-                                            // Respond with an error if parameters are missing
+                                            // Respond that the host isn't listening
                                             call.respondText(
-                                                "{\"status\": \"error\", \"message\": \"Missing parameters or the device has blocked manual navigation\"}",
+                                                "{\"status\": \"error\", \"message\": \"Device not listening\"}",
                                                 ContentType.Application.Json,
                                                 HttpStatusCode.BadRequest
                                             )
                                         }
-                                    } else {
-                                        // Respond that the host isn't listening
+                                    } catch (e: com.google.gson.JsonSyntaxException) {
+                                        // This triggers if the PWA sends malformed JSON
+                                        Log.e(TAG, "Malformed JSON received: ${e.message}")
                                         call.respondText(
-                                            "{\"status\": \"error\", \"message\": \"Device not listening\"}",
+                                            "{\"error\": \"Invalid JSON format: ${e.localizedMessage}\"}",
                                             ContentType.Application.Json,
                                             HttpStatusCode.BadRequest
                                         )
+                                    } catch (e: Exception) {
+                                        Log.e(TAG, "Error: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Internal server error\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.InternalServerError
+                                        )
+                                    }
+                                }
+                                post("/api/remote") {
+                                    try {
+                                        if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                            // An API to receive the song request via JSON for a PWS such as SongEditorWeb
+                                            val jsonString = call.receiveText()
+
+                                            // Kotlin's 'if' is an expression, so we can assign the result directly
+                                            if (!jsonString.isNullOrBlank()) {
+                                                // Get a SongIdentifier Object from the JSON string
+                                                val songIdentifier: SongIdentifier =
+                                                    MainActivity.gson.fromJson(
+                                                        jsonString,
+                                                        SongIdentifier::class.java
+                                                    )
+                                                if (!songIdentifier.folder.isNullOrBlank() && !songIdentifier.filename.isNullOrBlank()) {
+                                                    // Tell OpenSongApp to load the requested song
+                                                    mainActivityInterface?.doSongLoad(
+                                                        songIdentifier.folder,
+                                                        songIdentifier.filename,
+                                                        true
+                                                    )
+
+                                                    // Respond with a 200 OK so the PWA knows it worked
+                                                    call.respondText(
+                                                        "{\"status\": \"success\", \"message\": \"Loading ${songIdentifier.filename}\"}",
+                                                        ContentType.Application.Json,
+                                                        HttpStatusCode.OK
+                                                    )
+
+                                                } else {
+                                                    // Respond that there was an issue with the folder filename JSON
+                                                    call.respondText(
+                                                        "{\"error\": \"Song folder and/or filename not specified\"}",
+                                                        ContentType.Application.Json,
+                                                        HttpStatusCode.BadRequest
+                                                    )
+                                                }
+                                            } else {
+                                                // Respond that there was an issue with the folder filename JSON
+                                                call.respondText(
+                                                    "{\"error\": \"Song folder and/or filename not specified\"}",
+                                                    ContentType.Application.Json,
+                                                    HttpStatusCode.BadRequest
+                                                )
+                                            }
+                                        } else {
+                                            // Respond that the host isn't listening
+                                            call.respondText(
+                                                "{\"status\": \"error\", \"message\": \"Device not listening\"}",
+                                                ContentType.Application.Json,
+                                                HttpStatusCode.BadRequest
+                                            )
+                                        }
+                                    } catch (e: com.google.gson.JsonSyntaxException) {
+                                        // This triggers if the PWA sends malformed JSON
+                                        Log.e(TAG, "Malformed JSON received: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Invalid JSON format: ${e.localizedMessage}\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.BadRequest
+                                        )
+                                    } catch (e: Exception) {
+                                        Log.e(TAG, "Error: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Internal server error\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.InternalServerError
+                                        )
+
                                     }
                                 }
 
                                 // API to return the full list of available songs as a JSON array
                                 get("/api/list") {
-                                    if (mainActivityInterface?.webServer?.allowWebNavigation ?: false) {
-                                        try {
+                                    try {
+                                        if (mainActivityInterface?.webServer?.listenForWebAPI
+                                                ?: false
+                                        ) {
+
                                             // 1. Call your existing logic to get the populated ArrayList
                                             // (Assuming you've exposed this via your interface)
                                             val songList: ArrayList<ShareableObject> =
@@ -361,28 +552,35 @@ object KtorServer {
                                                 jsonString,
                                                 ContentType.Application.Json
                                             )
-                                        } catch (e: Exception) {
-                                            Log.e(TAG, "Error fetching song list: ${e.message}")
+                                        } else {
+                                            // Respond that the host isn't listening
                                             call.respondText(
-                                                "{\"error\": \"Could not retrieve song list\"}",
+                                                "{\"status\": \"error\", \"message\": \"Device not listening\"}",
                                                 ContentType.Application.Json,
-                                                HttpStatusCode.InternalServerError
+                                                HttpStatusCode.BadRequest
                                             )
+
                                         }
+                                    } catch (e: Exception) {
+                                        Log.e(TAG, "Error: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Internal server error\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.InternalServerError
+                                        )
                                     }
                                 }
-
                                 // API to return the full list of available songs as a JSON array
-                                get("/api/save") {
-                                    Log.d(TAG,"save attempt");
-                                    if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
-                                        // An API to receive the song via json from a PWS such as SongEditorWeb
-                                        val jsonString = call.receiveText()
+                                post("/api/save") {
+                                    Log.d(TAG, "save attempt")
+                                    try {
+                                        if (mainActivityInterface?.webServer?.listenForWebAPI == true) {
+                                            // An API to receive the song via JSON from a PWS such as SongEditorWeb
+                                            val jsonString = call.receiveText()
 
-                                        // Kotlin's 'if' is an expression, so we can assign the result directly
-                                        if (!jsonString.isNullOrBlank()) {
-                                            // Get an Song Object from the JSON string
-                                            try {
+                                            // Kotlin's 'if' is an expression, so we can assign the result directly
+                                            if (!jsonString.isNullOrBlank()) {
+                                                // Get a Song Object from the JSON string
                                                 val newSong: Song = MainActivity.gson.fromJson(
                                                     jsonString,
                                                     Song::class.java
@@ -390,10 +588,10 @@ object KtorServer {
 
                                                 // TODO if newSong.folder=="Sets", reassign to a set object
 
-                                                if (newSong.filename!=null && newSong.folder!=null) {
+                                                if (newSong.filename != null && newSong.folder != null) {
                                                     // The song didn't exist, so prompt the user to see if they want to save the new incoming song.
-                                                    val remoteSaveSongBottomSheet = RemoteSaveBottomSheet(newSong,null);
-                                                    Log.d(TAG,"Getting here: mainActivityInterface:"+mainActivityInterface);
+                                                    val remoteSaveSongBottomSheet =
+                                                        RemoteSaveBottomSheet(newSong, null)
                                                     mainActivityInterface?.let {
                                                         remoteSaveSongBottomSheet.show(
                                                             it.myFragmentManager,
@@ -406,38 +604,46 @@ object KtorServer {
                                                         ContentType.Application.Json,
                                                         HttpStatusCode.OK
                                                     )
+
                                                 } else {
-                                                    // Respond with an error if parameters are missing
+                                                    // Respond that there was an issue with the folder filename JSON
                                                     call.respondText(
-                                                        "{\"status\": \"error\", \"message\": \"Missing parameters or the device isn't listening\"}",
+                                                        "{\"error\": \"Song folder and/or filename not specified\"}",
                                                         ContentType.Application.Json,
                                                         HttpStatusCode.BadRequest
                                                     )
                                                 }
-                                            } catch (e: Exception) {
-                                                e.printStackTrace()
-                                                // Respond with an error if parameters are missing
+
+                                            } else {
+                                                // Respond that there was an issue with the folder filename JSON
                                                 call.respondText(
-                                                    "{\"status\": \"error\", \"message\": \"The song json has errors\"}",
+                                                    "{\"error\": \"There was an issue with the json song object\"}",
                                                     ContentType.Application.Json,
                                                     HttpStatusCode.BadRequest
                                                 )
                                             }
-
-                                        } else if (!jsonString.isNullOrBlank()) {
-                                            // TODO currently just return an error as we aren't dealing with this yet
+                                        } else {
+                                            // Respond that the host isn't listening
                                             call.respondText(
-                                                "{\"status\": \"error\", \"message\": \"OpenSongApp isn't yet dealing with saving a set\"}",
+                                                "{\"status\": \"error\", \"message\": \"Device not listening\"}",
                                                 ContentType.Application.Json,
                                                 HttpStatusCode.BadRequest
                                             )
                                         }
-                                    } else {
-                                        // Respond that the host isn't listening
+                                    } catch (e: com.google.gson.JsonSyntaxException) {
+                                        // This triggers if the PWA sends malformed JSON
+                                        Log.e(TAG, "Malformed JSON received: ${e.message}")
                                         call.respondText(
-                                            "{\"status\": \"error\", \"message\": \"Device not listening\"}",
+                                            "{\"error\": \"Invalid JSON format: ${e.localizedMessage}\"}",
                                             ContentType.Application.Json,
                                             HttpStatusCode.BadRequest
+                                        )
+                                    } catch (e: Exception) {
+                                        Log.e(TAG, "Error: ${e.message}")
+                                        call.respondText(
+                                            "{\"error\": \"Internal server error\"}",
+                                            ContentType.Application.Json,
+                                            HttpStatusCode.InternalServerError
                                         )
                                     }
                                 }
@@ -486,7 +692,12 @@ object KtorServer {
                 sessionSnapshot.forEach { session ->
                     try {
                         // Use a specific reason so the client knows why it's disconnecting
-                        session.close(CloseReason(CloseReason.Codes.GOING_AWAY, "Server Shutting Down"))
+                        session.close(
+                            CloseReason(
+                                CloseReason.Codes.GOING_AWAY,
+                                "Server Shutting Down"
+                            )
+                        )
                     } catch (e: Exception) {
                         Log.e(TAG, "Error closing session: ${e.message}")
                     }
@@ -576,4 +787,6 @@ object KtorServer {
             }
         }
     }
+
+
 }
