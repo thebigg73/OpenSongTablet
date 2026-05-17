@@ -56,6 +56,7 @@ public class DrumViewModel extends ViewModel {
         this.metronomeWearOS = new MetronomeWearOS(c);
         // Check for a physical connection (optional, for UI feedback)
         checkWearOSValid();
+        metronomeWearOS.checkWearOSValid();
 
         timerEngine.setOnStepListener(totalSteps -> {
             // Check if the song has actually been loaded/initialized
@@ -80,13 +81,6 @@ public class DrumViewModel extends ViewModel {
             // 3. Audio & Metronome Logic
             if (metronome != null && metronome.getIsRunning() && thisStepsPerPulse > 0) {
                 metronome.onStep(stepInBar, thisStepsPerBar, thisBeatDuration);
-
-                // 2. WearOS Haptic (NEW)
-                if (metronomeWearOS!=null && metronomeWearOS.getWearOSValid() &&
-                        metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getIsRunning()) {
-                    // This runs on a background task so it won't block the audio timing
-                    metronomeWearOS.sendBeat(stepInBar==0);
-                }
 
                 metronome.setVisualListener((beatNumber, isAccent, thisBeatDuration) -> {
                     int color = isAccent ? metronome.getTickColor() : metronome.getTockColor();
@@ -220,6 +214,11 @@ public class DrumViewModel extends ViewModel {
             timerEngine.refresh(thisBpm, thisPulsesPerStep);
             timerEngine.resetTickCounter();
         }
+
+        // ADD THIS: Update the WearOS companion app
+        if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getWearOSValid()) {
+            metronomeWearOS.updateMetronomeState(false, thisBpm);
+        }
     }
     public void setThisBpm(int thisBpm) {
         this.thisBpm = thisBpm;
@@ -318,6 +317,10 @@ public class DrumViewModel extends ViewModel {
             if (metronome.getIsRunning()) { // Double-check we haven't stopped already
                 timerEngine.resetTickCounter();
                 timerEngine.start();
+
+                if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getWearOSValid()) {
+                    metronomeWearOS.updateMetronomeState(true, thisBpm);
+                }
             }
         }, 100); // 100ms is perfect for audio stabilization
     }
@@ -339,6 +342,10 @@ public class DrumViewModel extends ViewModel {
 
         // Fix the metronome start/stop icon if available
         metronome.updateStartStopButton();
+
+        if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getWearOSValid()) {
+            metronomeWearOS.updateMetronomeState(false, thisBpm);
+        }
     }
 
     public void checkWearOSValid() {

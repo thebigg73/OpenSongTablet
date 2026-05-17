@@ -100,6 +100,7 @@ public class TimerEngine {
         Log.d(TAG, "Timer engine stopped (Task cancelled, executor kept alive)");
     }
 
+    @SuppressLint("DiscouragedApi")
     private void startTask() {
         // 3. Main Timing Loop
         // Calculate nanoseconds per MIDI pulse

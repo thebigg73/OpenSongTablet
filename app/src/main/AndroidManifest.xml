@@ -96,6 +96,11 @@
         android:largeScreens="true"
         android:xlargeScreens="true"/>
 
+    <queries>
+        <package android:name="com.google.android.apps.wear.companion" />
+        <package android:name="com.samsung.android.watermelo" />
+    </queries>
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"

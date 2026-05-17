@@ -1,13 +1,19 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
+import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -20,6 +26,8 @@ public class MetronomeListenerService extends WearableListenerService {
     private static final String TAG = "MetronomeService";
     public static final String BEAT_PATH_TICK = "/metronome/beat/tick";
     public static final String BEAT_PATH_TOCK = "/metronome/beat/tock";
+    private static final String METRONOME_STATE_PATH = "/metronome/state";
+    public static final String ACTION_METRONOME_SYNC = "com.garethevans.church.opensongtablet.METRONOME_SYNC";
     @SuppressWarnings("FieldCanBeLocal")
     private final int tickLength = 50;
     @SuppressWarnings("FieldCanBeLocal")
@@ -46,6 +54,38 @@ public class MetronomeListenerService extends WearableListenerService {
             simulateBeat(path);
         }
         return START_STICKY;
+    }
+
+    @Override
+    public void onDataChanged(DataEventBuffer dataEvents) {
+        for (DataEvent event : dataEvents) {
+            if (event.getType() == DataEvent.TYPE_CHANGED &&
+                    METRONOME_STATE_PATH.equals(event.getDataItem().getUri().getPath())) {
+
+                DataMap dataMap = DataMapItem.fromDataItem(event.getDataItem()).getDataMap();
+                boolean isPlaying = dataMap.getBoolean("isPlaying");
+                int bpm = dataMap.getInt("bpm");
+                int beatsPerBar = dataMap.getInt("beatsPerBar", 4);
+                int beatDenominator = dataMap.getInt("beatDenominator", 4); // Pulls 4, 8, etc.
+
+                Log.d(TAG, "Sync Event from Phone -> Playing: " + isPlaying + ", BPM: " + bpm + ", Signature: " + beatsPerBar + "/4");
+
+                Intent intent = new Intent(ACTION_METRONOME_SYNC);
+                intent.putExtra("isPlaying", isPlaying);
+                intent.putExtra("bpm", bpm);
+                intent.putExtra("beatsPerBar", beatsPerBar);
+                intent.putExtra("beatDenominator", beatDenominator);
+
+
+                //Intent intent = new Intent("com.opensong.METRONOME_UPDATE");
+                //intent.putExtra("isPlaying", isPlaying);
+                //intent.putExtra("bpm", bpm);
+                //intent.putExtra("beatsPerBar", beatsPerBar);
+                //intent.putExtra("beatDenominator", beatDenominator);
+                sendBroadcast(intent);
+                Log.d("MetronomeService", "📣 Broadcast dispatched on channel: " + ACTION_METRONOME_SYNC);
+            }
+        }
     }
 
     /**
@@ -111,5 +151,7 @@ public class MetronomeListenerService extends WearableListenerService {
             Log.w(TAG, "No vibrator available on this device");
         }
     }
+
+
 
 }

@@ -9,7 +9,10 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.List;
@@ -24,6 +27,7 @@ public class MetronomeWearOS {
     private boolean metronomeWearOS;
     private boolean isRunning = false;
     private boolean wearOSValid = false;
+    private static final String METRONOME_STATE_PATH = "/metronome/state";
 
     public MetronomeWearOS(Context c) {
         this.c = c;
@@ -76,6 +80,20 @@ public class MetronomeWearOS {
                         mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment().updateWearOS(false);
                     }
                 }
+                Wearable.getNodeClient(c).getConnectedNodes()
+                        .addOnSuccessListener(nodes -> {
+                            if (nodes.isEmpty()) {
+                                Log.e("OpenSongSync", "❌ NO WATCH NODES FOUND! The emulators are NOT paired via ADB.");
+                                wearOSValid = false;
+
+                            } else {
+                                for (com.google.android.gms.wearable.Node node : nodes) {
+                                    Log.i("OpenSongSync", "✅ FOUND WATCH NODE: " + node.getDisplayName() + " (Id: " + node.getId() + ")");
+                                    wearOSValid = true;
+                                }
+                            }
+                        })
+                        .addOnFailureListener(e -> Log.e("OpenSongSync", "❌ Failed to query nodes: " + e.getMessage()));
             });
         }
     }
@@ -107,25 +125,36 @@ public class MetronomeWearOS {
         }
     }
 
+
     /**
-     * Sends a beat message to all connected Wear OS devices.
-     * Should be called once per metronome tick.
+     * Call this whenever playback toggles, or the user shifts the BPM tempo.
+     * This updates a single sync map immediately.
      */
-    public void sendBeat(boolean tickBeat) {
-        Log.d(TAG,"sendBeat wearOS");
-        Wearable.getNodeClient(c).getConnectedNodes()
-                .addOnSuccessListener(nodes -> {
-                    if (nodes == null || nodes.isEmpty()) {
-                        // Skip sending; no nodes connected
-                        Log.d("WatchMessenger", "No nodes connected, skipping beat");
-                        return;
-                    }
-                    for (Node node : nodes) {
-                        Wearable.getMessageClient(c)
-                                .sendMessage(node.getId(), tickBeat ? BEAT_PATH_TICK : BEAT_PATH_TOCK, null)
-                                .addOnSuccessListener(aVoid -> Log.d("WatchMessenger", "Beat sent"))
-                                .addOnFailureListener(e -> Log.e("WatchMessenger", "Failed to send beat", e));
-                    }
-                });
+    public void updateMetronomeState(boolean isPlaying, int bpm) {
+        Log.d(TAG, "Updating Wear OS state: Playing=" + isPlaying + ", BPM=" + bpm);
+
+        // Inside your Phone/Tablet app's sync method:
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create("/metronome/state");
+        DataMap dataMap = dataMapRequest.getDataMap();
+
+        dataMap.putBoolean("isPlaying", isPlaying);
+        dataMap.putInt("bpm", bpm);
+        dataMap.putInt("beatsPerBar", mainActivityInterface.getDrumViewModel().getThisBeats());
+        dataMap.putInt("beatDenominator", mainActivityInterface.getDrumViewModel().getThisDivisions());
+
+        // CRITICAL: Guarantees the data package fingerprint is unique every time,
+        // bypassing the phone-side cache check so it actually transmits!
+        dataMap.putLong("sync_timestamp", System.currentTimeMillis());
+
+        // Fire it off urgently with no battery delays
+        PutDataRequest request = dataMapRequest.asPutDataRequest();
+        request.setUrgent();
+
+        Wearable.getDataClient(c).putDataItem(request);
+        // FIX: Change asPutDataItem() to asPutDataRequest()
+        Wearable.getDataClient(c).putDataItem(dataMapRequest.asPutDataRequest())
+                .addOnSuccessListener(unused -> Log.d(TAG, "State successfully pushed to Wearable Data Layer"))
+                .addOnFailureListener(e -> Log.e(TAG, "Failed to push metronome state", e));
+
     }
 }
