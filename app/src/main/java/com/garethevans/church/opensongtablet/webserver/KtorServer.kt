@@ -21,6 +21,7 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
+import io.ktor.server.routing.options
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.websocket.DefaultWebSocketServerSession
@@ -120,19 +121,37 @@ object KtorServer {
                             }
 
                             install(CORS) {
-                                // Allow the PWA to access the API from any origin
+                                // 1. Allow any host dynamically (this automatically accepts both http and https origins)
                                 anyHost()
 
-                                // Corrected function names for Ktor 2.x/3.x
+                                // 2. Permit the HTTP methods you are using
+                                allowMethod(HttpMethod.Get)
+                                allowMethod(HttpMethod.Post)
+                                allowMethod(HttpMethod.Options) // Crucial for HTTPS "pre-flight" handshakes
+
+                                // 3. Permit the common headers sent by PWAs / Fetch API
                                 allowHeader(HttpHeaders.ContentType)
+                                allowHeader(HttpHeaders.Authorization)
                                 allowHeader(HttpHeaders.AccessControlAllowOrigin)
 
-                                allowMethod(HttpMethod.Get)
-                                allowMethod(HttpMethod.Options) // Important for browser pre-flight checks
+                                // Add Private Network support globally right here:
+                                allowHeader("Access-Control-Allow-Private-Network")
+                                exposeHeader("Access-Control-Allow-Private-Network")
+
+                                // 4. Expose headers if your PWA client needs to read them
+                                exposeHeader(HttpHeaders.ContentType)
+
+                                // 5. Allow credentials (cookies, auth headers) across cross-origins if needed
+                                allowCredentials = true
                             }
 
                             routing {
                                 val ip = mainActivityInterface?.webServer?.ip
+
+                                // Intercept pre-flight OPTIONS requests for any API endpoint
+                                options("/api/{...}") {
+                                    call.respondText("", status = HttpStatusCode.OK)
+                                }
 
                                 // When we request a song page (from the set or song menu, or host song
                                 // the host will send this song as HTML, but will also send the name of the
@@ -146,12 +165,6 @@ object KtorServer {
                                         mainActivityInterface?.getSong(),
                                         ip
                                     )
-                                    // ADD THIS LINE TO BYPASS CHROME'S SECURITY
-                                    call.response.headers.append(
-                                        "Access-Control-Allow-Private-Network",
-                                        "true"
-                                    )
-                                    call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
                                 // Get host song (also the default after the splash screen)
@@ -172,12 +185,6 @@ object KtorServer {
                                             song!!
                                         )!!
                                     )
-                                    // ADD THIS LINE TO BYPASS CHROME'S SECURITY
-                                    call.response.headers.append(
-                                        "Access-Control-Allow-Private-Network",
-                                        "true"
-                                    )
-                                    call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
                                 // Show the set menu
@@ -201,12 +208,6 @@ object KtorServer {
                                             song!!
                                         )!!
                                     )
-                                    // ADD THIS LINE TO BYPASS CHROME'S SECURITY
-                                    call.response.headers.append(
-                                        "Access-Control-Allow-Private-Network",
-                                        "true"
-                                    )
-                                    call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
                                 // Show the song menu
@@ -230,12 +231,6 @@ object KtorServer {
                                             song!!
                                         )!!
                                     )
-                                    // ADD THIS LINE TO BYPASS CHROME'S SECURITY
-                                    call.response.headers.append(
-                                        "Access-Control-Allow-Private-Network",
-                                        "true"
-                                    )
-                                    call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
                                 // Show a specific song (chosen by the user)
@@ -260,12 +255,6 @@ object KtorServer {
                                             song!!
                                         )!!
                                     )
-                                    // ADD THIS LINE TO BYPASS CHROME'S SECURITY
-                                    call.response.headers.append(
-                                        "Access-Control-Allow-Private-Network",
-                                        "true"
-                                    )
-                                    call.response.headers.append("Access-Control-Allow-Origin", "*")
                                     call.respondText(html, ContentType.Text.Html)
                                 }
 
@@ -343,7 +332,8 @@ object KtorServer {
                                                     )
                                                 val song: Song?
                                                 if (songIdentifier.folder.isNullOrBlank() ||
-                                                    songIdentifier.filename.isNullOrBlank()) {
+                                                    songIdentifier.filename.isNullOrBlank()
+                                                ) {
                                                     // Something was wrong with the folder or filename
                                                     // Load the current song
                                                     song = mainActivityInterface?.getSong()
@@ -787,6 +777,4 @@ object KtorServer {
             }
         }
     }
-
-
 }
