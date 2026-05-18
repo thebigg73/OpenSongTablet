@@ -323,7 +323,7 @@ public class MyFonts {
                                 "Bayon Beth_Ellen BioRhyme_Expanded Blinker Bokor Buda Cabin_Condensed " +
                                 "Birthstone Birthstone_Bounce Blaka Blaka_Hollow Blaka_Ink Bona_Nova " +
                                 "Bonheur_Royale Borel Braah_One Brincolage_Grotesque Bruno_Ace Bruno_Ace_SC " +
-                                "Cairo_Play Caprasimo Caramel Carattere Carlito Charis_SIL Cherish" +
+                                "Cairo_Play Caprasimo Caramel Carattere Carlito Charis_SIL Cherish " +
                                 "Cherry_Bomb_One Chivo_Mono Chokokutai Climate_Crisis Comforter Comforter_Brush " +
                                 "Comme Corinthia Calligraffitti Chakre_Petch Charm Charmonman Chenla Coda_Caption " +
                                 "Content Crimson_Pro DM_Sans DM_Serif_Display DM_Serif_Text Dangrek " +
@@ -351,7 +351,7 @@ public class MyFonts {
                                 "Libre_Barcode_128 Libre_Barcode_128_Text Libre_Barcode_39 Libre_Bodoni" +
                                 "Libre_Barcode_39_Extended Libre_Barcode_39_Extended_Text Libre_Barcode_39_Text " +
                                 "Libre_Caslon_Display Libre_Caslon_Text Literata Liu_Jian_Mao_Cao " +
-                                "Licorice Linefont Lisu_Bosa Love_Light Lugrasimo Lumanosimo Lunasima" +
+                                "Licorice Linefont Lisu_Bosa Love_Light Lugrasimo Lumanosimo Lunasima " +
                                 "Luxurious_Roman Luxurious_Script Long_Cang M_PLUS_1 M_PLUS_1p M_PLUS_1_Code " +
                                 "M_PLUS_2 M_PLUS_Code_Latin M_PLUS_Rounded_1c Ma_Shan_Zheng Major_Mono_Display " +
                                 "Marhey Martian_Mono Material_Icons Material_Icons_Outlined Material_Icons_Round " +
