@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 452     // Also change in wear
-        versionName = '6.8.1' // Also change in wear
+        versionCode = 457     // Also change in wear
+        versionName = '6.8.2' // Also change in wear
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -54,7 +54,7 @@ android {
     }
 
     // --- Product flavors for dual build targets ---
-    flavorDimensions "distribution"
+    /*flavorDimensions "distribution"
 
     productFlavors {
         mobileOnly {
@@ -63,10 +63,10 @@ android {
         withWear {
             dimension "distribution"
         }
-    }
+    }*/
 
     buildTypes {
-        release {
+        /*release {
             minifyEnabled = false
             shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -80,9 +80,22 @@ android {
             minifyEnabled = false
             shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }*/
+        release {
+            minifyEnabled = false
+            shrinkResources = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig = signingConfigs.release
+        }
+        beta {
+            initWith release
+        }
+        debug {
+            minifyEnabled = false
+            shrinkResources = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 
     packagingOptions {
         resources.excludes.add("META-INF/*")
@@ -125,6 +138,10 @@ repositories {
     }
 }
 
+/*configurations {
+    withWearWearApp
+}*/
+
 dependencies {
     implementation 'androidx.test.ext:junit:1.3.0'
 
@@ -144,59 +161,87 @@ dependencies {
 
     // Activity and fragments
     implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'                  // Lifecycle for fragment control
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    // Lifecycle for fragment control
     implementation 'androidx.navigation:navigation-fragment-ktx:2.9.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.9.7'
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.7'
-    implementation 'androidx.preference:preference-ktx:1.2.1'                       // The app preferences
-    implementation 'androidx.multidex:multidex:2.0.1'                               // Allow splitting of file for older devices
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.8'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+    // The app preferences
+    implementation 'androidx.multidex:multidex:2.0.1'
+    // Allow splitting of file for older devices
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation 'androidx.core:core-ktx:1.17.0'
     implementation 'androidx.activity:activity-ktx:1.12.4'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'                // To allow Java time/date utilities on <Android 8
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+    // To allow Java time/date utilities on <Android 8
 
     // Material design and layouts
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.2.0' // RecyclerView (obviously)
-    implementation 'androidx.recyclerview:recyclerview:1.4.0'           // Use this version with SDK 34
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    // Use this version with SDK 34
     implementation 'androidx.gridlayout:gridlayout:1.1.0'               // GridLayout (obviously)
-    implementation 'androidx.cardview:cardview:1.0.0'                   // Cardview for recycler list items
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'   // Constraint layouts with FAB
-    implementation 'androidx.webkit:webkit:1.15.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    // Cardview for recycler list items
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    // Constraint layouts with FAB
+    implementation 'androidx.webkit:webkit:1.16.0'
 
     // Google Play services (Play store, casting, fonts, etc.)
-    implementation 'androidx.mediarouter:mediarouter:1.8.1'                             // For casting obviously!
+    implementation 'androidx.mediarouter:mediarouter:1.8.1'
+    // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast:22.3.1'
     // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:22.3.1'
     // For casting obviously!
-    implementation 'com.google.android.gms:play-services-nearby:19.3.0'                 // For Google Nearby Connect devices
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1' // For OCR text recognition (PDF/Camera)
-    implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0' // For OCR text straightening when taking photos of text
-    implementation 'com.google.android.play:feature-delivery:2.1.0'                     // For updated resources
-    implementation 'com.google.android.play:feature-delivery-ktx:2.1.0'                 // For updated resources
-    implementation 'com.google.android.gms:play-services-wearable:19.0.0'
-    implementation 'com.google.android.play:app-update:2.1.0'                           // For updated resources
-    implementation 'com.google.android.play:review-ktx:2.0.2'                           // For updated resources
-    implementation 'androidx.documentfile:documentfile:1.1.0'                           // Document file dependency
+    implementation 'com.google.android.gms:play-services-nearby:19.3.0'
+    // For Google Nearby Connect devices
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1'
+    // For OCR text recognition (PDF/Camera)
+    implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0'
+    // For OCR text straightening when taking photos of text
+    implementation 'com.google.android.play:feature-delivery:2.1.0'
+    // For updated resources
+    implementation 'com.google.android.play:feature-delivery-ktx:2.1.0'
+    // For updated resources
+    implementation 'com.google.android.gms:play-services-wearable:20.0.1'
+    implementation 'com.google.android.play:app-update:2.1.0'
+    // For updated resources
+    implementation 'com.google.android.play:review-ktx:2.0.2'
+    // For updated resources
+    implementation 'androidx.documentfile:documentfile:1.1.0'
+    // Document file dependency
     implementation 'androidx.browser:browser:1.10.0'
-    implementation 'androidx.annotation:annotation:1.10.0'                               // Allows annotations in code
-    annotationProcessor 'androidx.annotation:annotation:1.10.0'                          // Allows annotations in code
+    implementation 'androidx.annotation:annotation:1.10.0'
+    // Allows annotations in code
+    annotationProcessor 'androidx.annotation:annotation:1.10.0'
+    // Allows annotations in code
 
     // App features
-    implementation 'org.apache.commons:commons-compress:1.28.0'         // For creating and editing compressed files (osb, backup)
-    implementation files('libs/TarsosDSP-Android-2.4.jar')              // For the pitch detection in the tuner
-    implementation 'com.github.bumptech.glide:glide:5.0.7'              // For better setting of images
-    annotationProcessor 'com.github.bumptech.glide:compiler:5.0.7'      // For better setting of images
-    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'    // To highlight new features in the app
+    implementation 'org.apache.commons:commons-compress:1.28.0'
+    // For creating and editing compressed files (osb, backup)
+    implementation files('libs/TarsosDSP-Android-2.4.jar')
+    // For the pitch detection in the tuner
+    implementation 'com.github.bumptech.glide:glide:5.0.7'
+    // For better setting of images
+    annotationProcessor 'com.github.bumptech.glide:compiler:5.0.7'
+    // For better setting of images
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'
+    // To highlight new features in the app
     //implementation 'org.nanohttpd:nanohttpd:2.3.1'                      // For a webserver to display songs for non OpenSongApp users
-    implementation 'com.vanniktech:android-image-cropper:4.7.0'         // For image cropping/rotation
+    implementation 'com.vanniktech:android-image-cropper:4.7.0'
+    // For image cropping/rotation
     implementation 'com.google.zxing:core:3.5.4'                        // To generate QR code
-    implementation 'com.caverock:androidsvg-aar:1.4'                    // To convert SVG from abc notation into ImageView
-    implementation 'com.gu.android:toolargetool:0.3.2'                  // To attempt to log transaction too large crashes
+    implementation 'com.caverock:androidsvg-aar:1.4'
+    // To convert SVG from abc notation into ImageView
+    implementation 'com.gu.android:toolargetool:0.3.2'
+    // To attempt to log transaction too large crashes
     //implementation 'com.google.oboe:oboe:1.7.0'                       // Low latency audio
-    implementation 'androidx.exifinterface:exifinterface:1.4.2'         // To get image exif data (orientation for camera)
-    implementation 'com.google.code.gson:gson:2.14.0'                   // GSon for JSON conversion of Song/Set objects
+    implementation 'androidx.exifinterface:exifinterface:1.4.2'
+    // To get image exif data (orientation for camera)
+    implementation 'com.google.code.gson:gson:2.14.0'
+    // GSon for JSON conversion of Song/Set objects
     implementation 'com.squareup.retrofit2:retrofit:3.0.0'              // Retrofit for web access
     implementation 'com.squareup.retrofit2:converter-gson:3.0.0'        // Retrofit for web access
     //noinspection NewerVersionAvailable,GradleDependency - Updating this above 1.5.0 breaks it!!!
@@ -226,9 +271,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
-    // This waits until flavors are evaluated before trying to link the wear app
-    configurations.maybeCreate("withWearWearApp")
-    add("withWearWearApp", project(":wear"))
+    // 3. Safely attach the wear module to our explicitly declared configuration bucket
+    //withWearWearApp project(':wear')
+
 }
 
 kotlin {
