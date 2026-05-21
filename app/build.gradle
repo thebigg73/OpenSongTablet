@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 457     // Also change in wear
-        versionName = '6.8.2' // Also change in wear
+        versionCode = 460     // Also change in wear if we need to update that as well
+        versionName = '6.8.3' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -177,7 +177,8 @@ dependencies {
     // To allow Java time/date utilities on <Android 8
 
     // Material design and layouts
-    implementation 'com.google.android.material:material:1.14.0'
+    // Downgrade from 1.14.x to the latest stable 1.13 or 1.12 release that supports API 21/22
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.2.0' // RecyclerView (obviously)
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     // Use this version with SDK 34

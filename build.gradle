@@ -4,6 +4,7 @@ buildscript {
         //jcenter()
         google()
         mavenCentral()
+        gradlePluginPortal() // <--- ADD THIS: Necessary to find the plugin
     }
     dependencies {
         // AGP 9.1.0 is fine, but it's very strict
@@ -12,11 +13,9 @@ buildscript {
         // Bump this to the latest 2.9.7 to support AGP 9 APIs
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.8'
 
-        // Kotlin 2.2.10 is great, keep these
+        // Add these lines so the plugins are available for your modules
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.10'
         classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.2.10'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -24,5 +23,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal() // <--- ADD THIS: Necessary to find the plugin
     }
 }
