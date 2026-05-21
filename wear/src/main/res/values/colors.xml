@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="theme_main">#141b22</color>
+    <color name="theme_black">#000000</color>
     <color name="theme_onbeat_flash">#4E88BB</color>
     <color name="theme_offbeat_flash">#3C667A</color>
     <color name="theme_button">#294959</color>

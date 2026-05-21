@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MyWearApp" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+    <style name="Theme.Settings" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>

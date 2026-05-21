@@ -4,5 +4,8 @@
         <item name="windowSplashScreenBackground">@android:color/black</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
         <item name="postSplashScreenTheme">@android:style/Theme.DeviceDefault</item>
+        <!-- Force the window canvas to stay black behind your views -->
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorBackground">@android:color/black</item>
     </style>
 </resources>

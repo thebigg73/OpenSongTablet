@@ -21,14 +21,19 @@
             android:value="true" />
 
         <activity
-            android:name="com.garethevans.church.opensongtablet.MainActivity"
-            android:exported="true"
+            android:name="com.garethevans.church.opensongtablet.MainActivity"  android:exported="true"
             android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.garethevans.church.opensongtablet.SettingsActivity"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.DeviceDefault"
+            android:exported="false" />
 
         <service
             android:name="com.garethevans.church.opensongtablet.MetronomeListenerService"

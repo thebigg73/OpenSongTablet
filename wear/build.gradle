@@ -4,26 +4,16 @@ plugins {
 }
 
 android {
-    namespace = 'com.garethevans.church.opensongtablet.wear'
+    namespace = 'com.garethevans.church.opensongtablet'
     compileSdk 36
 
     defaultConfig {
         applicationId = "com.garethevans.church.opensongtablet"
-        minSdk 23
+        minSdk 25
         targetSdk 35
-        versionCode 900457     // Keep the 900 to separate from mobile, but match the last 3 digits
-        versionName "6.8.2" // MATCH the mobile version
+        versionCode 900460
+        versionName "6.8.3"
     }
-
-    /*
-    flavorDimensions "distribution"
-    productFlavors {
-        withWear {
-            dimension "distribution"
-        }
-    }
-
-     */
 
     buildTypes {
         release {
@@ -31,35 +21,62 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    
+
     buildFeatures {
         compose = true
+    }
+}
+
+configurations {
+    configureEach {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
     }
 }
 
 repositories {
     google()
     mavenCentral()
-    maven {
-        url = "https://jitpack.io"
-    }
+    maven { url = "https://jitpack.io" }
 }
 
 dependencies {
+    implementation("androidx.wear:wear:1.4.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
 
+    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("androidx.core:core-ktx:1.18.0")
     implementation 'com.google.android.gms:play-services-wearable:20.0.1'
-    implementation platform('androidx.compose:compose-bom:2026.05.00')
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.wear.compose:compose-material:1.6.1'
-    implementation 'androidx.wear.compose:compose-foundation:1.6.1'
-    implementation 'androidx.wear:wear-tooling-preview:1.0.0'
-    implementation 'androidx.activity:activity-compose:1.13.0'
-    implementation 'androidx.core:core-splashscreen:1.2.0'
-    implementation 'androidx.wear:wear:1.4.0'
+    implementation 'androidx.wear.compose:compose-material3:1.6.2'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.11.2'
+    implementation 'androidx.compose.runtime:runtime:1.11.2'
+    implementation 'androidx.databinding:compiler:3.2.0-alpha11'
+    implementation 'androidx.compose.ui:ui:1.11.2'
+
+    def composeBom = platform("androidx.compose:compose-bom:2026.05.01")
+    implementation(composeBom)
+
+    // Wear Compose dependencies
+    implementation("androidx.wear.compose:compose-material:1.6.2")
+    implementation("androidx.wear.compose:compose-foundation:1.6.2")
+
+    // Activity integration
+    implementation("androidx.activity:activity-compose:1.13.0")
+
+
+    // Lifecycle and ViewModel integration
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
+
+    // --- ADD THESE LINES ---
+    // Tooling is required for Previews and layout inspection
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
+    // Add this line to resolve the Theme.SplashScreen references
+    implementation("androidx.core:core-splashscreen:1.2.0")
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.11.2'
 }

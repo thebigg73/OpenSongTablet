@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="beat_mode_labels">
+        <item>Vibrate &amp; Flash</item>
+        <item>Vibrate Only</item>
+        <item>Off (Mute)</item>
+    </string-array>
+
+    <string-array name="beat_mode_values">
+        <item>both</item>
+        <item>vibe</item>
+        <item>off</item>
+    </string-array>
+
+    <string-array name="vibration_labels">
+        <item>Soft Accent</item>
+        <item>Medium Impact</item>
+        <item>Maximum Force</item>
+    </string-array>
+    <string-array name="vibration_values">
+        <item>100</item>
+        <item>180</item>
+        <item>255</item>
+    </string-array>
+</resources>

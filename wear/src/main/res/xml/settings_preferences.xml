@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Main Beat (Beat 1)">
+        <ListPreference
+            app:key="pref_main_beat_mode"
+            app:title="Feedback Type"
+            app:summary="What happens on the downbeat"
+            app:entries="@array/beat_mode_labels"
+            app:entryValues="@array/beat_mode_values"
+            app:defaultValue="both" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Offbeats (Beats 2+) ">
+        <ListPreference
+            app:key="pref_offbeat_mode"
+            app:title="Feedback Type"
+            app:summary="What happens on subsequent beats"
+            app:entries="@array/beat_mode_labels"
+            app:entryValues="@array/beat_mode_values"
+            app:defaultValue="both" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Haptic Strength">
+        <ListPreference
+            app:key="pref_vibration_intensity"
+            app:title="Vibration Force"
+            app:entries="@array/vibration_labels"
+            app:entryValues="@array/vibration_values"
+            app:defaultValue="255" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
