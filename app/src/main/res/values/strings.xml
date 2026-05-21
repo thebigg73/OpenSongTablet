@@ -1867,4 +1867,5 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="connection_metronome_info">Listen for metronome start and stop actions</string>
 </resources>

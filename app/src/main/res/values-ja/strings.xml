@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">セットの保存、ロード、エクスポート、削除、インポート、およびバックアップ</string>
     <string name="set_manage_swipe">あなたのセットリストから項目を削除するには、スワイプ</string>
     <string name="set_name">セット名</string>
-    <string name="set_new">引き払う</string>
+    <string name="set_new">新しいセットを作成する</string>
     <string name="set_new_info">現在のセットからすべての曲を削除します</string>
     <string name="set_packaged_opensongapp">パッケージ化された OpenSongApp セット ファイル</string>
     <string name="set_packaged_opensongapp_info">これにより、セット ファイルと、セット内で参照されるすべての OpenSong、PDF、または画像ファイルを含むカスタム zip ファイルが作成されます。  これは他の OpenSongApp ユーザーと共有できます</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">崇拝</string>
     <string name="zone">ゾーン</string>
     <string name="zoom_level">ズームレベル</string>
+    <string name="connection_metronome_info">メトロノームの開始と停止の動きを聞く</string>
 </resources>

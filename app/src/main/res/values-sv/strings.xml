@@ -1478,4 +1478,5 @@
     <string name="worship">Dyrkan</string>
     <string name="zone">Zon</string>
     <string name="zoom_level">Zoomnivå</string>
+    <string name="connection_metronome_info">Lyssna efter metronomens start- och stopprörelser</string>
 </resources>

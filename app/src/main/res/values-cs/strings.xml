@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Uložte, načtěte, exportujte, odeberte, importujte a zálohujte sady</string>
     <string name="set_manage_swipe">Přejeďte odstranit položku ze seznamu set</string>
     <string name="set_name">Nastavit název</string>
-    <string name="set_new">Vymazat</string>
+    <string name="set_new">Vytvořte novou sadu</string>
     <string name="set_new_info">Odebrat všechny skladby z aktuální sady</string>
     <string name="set_packaged_opensongapp">Zabalený soubor sady OpenSongApp</string>
     <string name="set_packaged_opensongapp_info">Tím se vytvoří vlastní soubor zip, který obsahuje soubor sady a všechny soubory OpenSong, PDF nebo obrázky uvedené v sadě.  To lze sdílet s ostatními uživateli OpenSongApp</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Uctívání</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Úroveň přiblížení</string>
+    <string name="connection_metronome_info">Poslouchejte startovní a zastavovací akce metronomu</string>
 </resources>

@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Enregistrer, charger, exporter, supprimer, importer et sauvegarder des ensembles</string>
     <string name="set_manage_swipe">Glissez pour supprimer un élément de votre liste</string>
     <string name="set_name">Définir le nom</string>
-    <string name="set_new">Vider</string>
+    <string name="set_new">Créer un nouvel ensemble</string>
     <string name="set_new_info">Supprimer toutes les chansons de l\'ensemble actuel</string>
     <string name="set_packaged_opensongapp">Fichier d\'ensemble OpenSongApp packagé</string>
     <string name="set_packaged_opensongapp_info">Cela crée un fichier zip personnalisé contenant le fichier de l\'ensemble et tous les fichiers OpenSong, PDF ou image référencés dans l\'ensemble.  Cela peut être partagé avec d\'autres utilisateurs d\'OpenSongApp</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Culte</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Le niveau de zoom</string>
+    <string name="connection_metronome_info">Écoutez les actions de démarrage et d’arrêt du métronome</string>
 </resources>

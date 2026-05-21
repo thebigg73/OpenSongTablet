@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Salvar, carregar, exportar, remover, importar e fazer backup de conjuntos</string>
     <string name="set_manage_swipe">Passe para remover um item do seu set list</string>
     <string name="set_name">Nome do conjunto</string>
-    <string name="set_new">Esvaziar</string>
+    <string name="set_new">Criar um novo conjunto</string>
     <string name="set_new_info">Remova todas as músicas do conjunto atual</string>
     <string name="set_packaged_opensongapp">Arquivo de conjunto OpenSongApp empacotado</string>
     <string name="set_packaged_opensongapp_info">Isso cria um arquivo zip personalizado que contém o arquivo do conjunto e todos os arquivos OpenSong, PDF ou de imagem referenciados no conjunto.  Isso pode ser compartilhado com outros usuários do OpenSongApp</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Adorar</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nível de zoom</string>
+    <string name="connection_metronome_info">Ouça as ações de início e paragem do metrónomo</string>
 </resources>

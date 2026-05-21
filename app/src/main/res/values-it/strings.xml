@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Carica, salva, rimuovi, importa, esporta, esegui il backup delle scalette</string>
     <string name="set_manage_swipe">Trascina a lato per rimuovere un brano dalla scaletta</string>
     <string name="set_name">Nome scaletta</string>
-    <string name="set_new">Nuova scaletta</string>
+    <string name="set_new">Crea un nuovo set</string>
     <string name="set_new_info">Rimuovi tutti i brani dalla scaletta corrente</string>
     <string name="set_packaged_opensongapp">File compresso di scalette OpenSongApp</string>
     <string name="set_packaged_opensongapp_info">Crea un file .zip personalizzato che contiene il file della scaletta e tutti i file OpenSong, PDF o immagine a cui si fa riferimento nella scaletta.  Questo può essere quindi condiviso con altri utenti OpenSongApp</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Culto</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Livello di zoom</string>
+    <string name="connection_metronome_info">Ascolta le azioni di inizio e arresto del metronomo</string>
 </resources>

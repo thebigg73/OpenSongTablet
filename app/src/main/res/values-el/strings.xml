@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Αποθήκευση, φόρτωση, εξαγωγή, αφαίρεση, εισαγωγή και δημιουργία αντιγράφων ασφαλείας συνόλων</string>
     <string name="set_manage_swipe">Σύρε για την διαγραφή αντικειμένου από την λίστα</string>
     <string name="set_name">Όνομα ορισμού</string>
-    <string name="set_new">Νέα σειρά</string>
+    <string name="set_new">Δημιουργία νέου συνόλου</string>
     <string name="set_new_info">Καταργήστε όλα τα τραγούδια από το τρέχον σετ</string>
     <string name="set_packaged_opensongapp">Συσκευασμένο αρχείο συνόλου OpenSongApp</string>
     <string name="set_packaged_opensongapp_info">Αυτό δημιουργεί ένα προσαρμοσμένο αρχείο zip που περιέχει το σύνολο αρχείου και όλα τα αρχεία OpenSong, PDF ή εικόνας που αναφέρονται στο σετ.  Αυτό μπορεί να κοινοποιηθεί με άλλους χρήστες του OpenSongApp</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Λατρεία</string>
     <string name="zone">Ζώνη</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
+    <string name="connection_metronome_info">Ακούστε τις ενέργειες έναρξης και διακοπής μετρονόμου</string>
 </resources>

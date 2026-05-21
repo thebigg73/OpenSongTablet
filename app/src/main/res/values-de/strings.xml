@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Sätze speichern, laden, exportieren, entfernen, importieren und sichern</string>
     <string name="set_manage_swipe">Wischen, um ein Element aus der Setlist zu entfernen.</string>
     <string name="set_name">Name einsetzen</string>
-    <string name="set_new">Zurücksetzen</string>
+    <string name="set_new">Erstelle eine neue Menge</string>
     <string name="set_new_info">Entfernen Sie alle Songs aus dem aktuellen Set</string>
     <string name="set_packaged_opensongapp">Verpackte OpenSongApp-Set-Datei</string>
     <string name="set_packaged_opensongapp_info">Dadurch wird eine benutzerdefinierte ZIP-Datei erstellt, die Set-Datei und alle im Set referenzierten OpenSong-, PDF- oder Bilddateien enthält.  Dies kann mit anderen OpenSongApp-Benutzern geteilt werden</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Verehrung</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoomstufe</string>
+    <string name="connection_metronome_info">Hören Sie auf Start- und Stoppaktionen des Metronoms</string>
 </resources>

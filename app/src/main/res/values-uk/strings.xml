@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Збереження, завантаження, експорт, видалення, імпорт і резервне копіювання наборів</string>
     <string name="set_manage_swipe">Проведіть, щоб видалити елемент з вашого списку</string>
     <string name="set_name">Перейменування</string>
-    <string name="set_new">Новий / Очищення поточного</string>
+    <string name="set_new">Створіть новий набір</string>
     <string name="set_new_info">Видалити всі пісні з поточного набору</string>
     <string name="set_packaged_opensongapp">Запакований файл набору OpenSongApp</string>
     <string name="set_packaged_opensongapp_info">Це створює спеціальний zip-файл, який містить файл набору та всі файли OpenSong, PDF або зображення, на які посилаються в наборі.  Цим можна поділитися з іншими користувачами OpenSongApp</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Богослужіння</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Рівень масштабування</string>
+    <string name="connection_metronome_info">Слухайте дії запуску і зупинки метронома</string>
 </resources>

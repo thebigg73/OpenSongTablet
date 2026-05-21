@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Сохранение, загрузка, экспорт, удаление, импорт и резервное копирование сетлистов</string>
     <string name="set_manage_swipe">Смахните пальцем, чтобы удалить элемент из вашего сетлиста</string>
     <string name="set_name">Название сетлиста</string>
-    <string name="set_new">Создать новый сетлист</string>
+    <string name="set_new">Создайте новый набор</string>
     <string name="set_new_info">Удалить все песни из текущего сетлиста</string>
     <string name="set_packaged_opensongapp">Упакованный файл сетлиста OpenSongApp</string>
     <string name="set_packaged_opensongapp_info">Создается пользовательский zip-файл, содержащий файл сетлиста и все файлы OpenSong, PDF или изображения, на которые есть ссылки в этом сетлисте. Им можно поделиться с другими пользователями OpenSongApp.</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Поклонение</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Уровень масштабирования</string>
+    <string name="connection_metronome_info">Слушайте действия метронома для запуска и прекращения</string>
 </resources>

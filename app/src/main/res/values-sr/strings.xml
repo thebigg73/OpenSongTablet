@@ -1049,7 +1049,7 @@
     <string name="set_manage_info">Sačuvajte, učitajte, izvezite, uklonite, uvezite i napravite rezervnu kopiju skupova</string>
     <string name="set_manage_swipe">Prevuci za uklanjanje stavke iz set liste</string>
     <string name="set_name">Podesite ime</string>
-    <string name="set_new">Očistiti</string>
+    <string name="set_new">Kreirajte novi skup</string>
     <string name="set_new_info">Ukloni sve pesme iz trenutnog skupa</string>
     <string name="set_packaged_opensongapp">Upakovana OpenSongApp set fajl</string>
     <string name="set_packaged_opensongapp_info">Ovo stvara prilagođenu zip datoteku koja sadrži set fajl i sve OpenSong, PDF ili slikovne datoteke koje se pozivaju u setu.  Ovo se može deliti sa drugim korisnicima OpenSongApp-a</string>
@@ -1478,4 +1478,5 @@
     <string name="sync_remote_update_item">Stavka je ažurirana na udaljenom uređaju.</string>
     <string name="sync_remote_replace_item">Udaljeni uređaj želi da zameni postojeću stavku.</string>
     <string name="sync_remote_confirm_save">U nastavku možete videti neke informacije i potvrditi da li želite da sačuvate ovo</string>
+    <string name="connection_metronome_info">Slušajte akcije pokretanja i zaustavljanja metronoma</string>
 </resources>

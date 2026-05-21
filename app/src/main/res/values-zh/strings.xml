@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">保存、加载、导出、删除、导入和备份集</string>
     <string name="set_manage_swipe">刷卡从您所设定的列表中删除一个项目</string>
     <string name="set_name">设置名称</string>
-    <string name="set_new">明确</string>
+    <string name="set_new">创建一个新集合</string>
     <string name="set_new_info">从当前集合中删除所有歌曲</string>
     <string name="set_packaged_opensongapp">打包的OpenSongApp设置文件</string>
     <string name="set_packaged_opensongapp_info">这将创建一个自定义 zip 文件，其中包含集合文件以及集合中引用的所有 OpenSong、PDF 或图像文件。  这可以与其他 OpenSongApp 用户共享</string>
@@ -1479,4 +1479,5 @@
     <string name="worship">崇拜</string>
     <string name="zone">区</string>
     <string name="zoom_level">缩放级别</string>
+    <string name="connection_metronome_info">听节拍器的启动和停止动作</string>
 </resources>

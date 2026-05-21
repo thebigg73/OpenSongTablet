@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Mentse, töltse be, exportálja, távolítsa el, importálja és mentse a készleteket</string>
     <string name="set_manage_swipe">Ellop eltávolítani egy elemet a beállítás listáról</string>
     <string name="set_name">Állítsa be a nevet</string>
-    <string name="set_new">Vámkezeltet</string>
+    <string name="set_new">Új készlet létrehozása</string>
     <string name="set_new_info">Az összes dal eltávolítása az aktuális készletből</string>
     <string name="set_packaged_opensongapp">Csomagolt OpenSongApp készletfájl</string>
     <string name="set_packaged_opensongapp_info">Ezzel létrehoz egy egyéni zip fájlt, amely tartalmazza a készletfájlt és a készletben hivatkozott összes OpenSong-, PDF- vagy képfájlt.  Ez megosztható más OpenSongApp-felhasználókkal</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
+    <string name="connection_metronome_info">Hallgasd meg a metronóm indítási és leállítási akcióit</string>
 </resources>

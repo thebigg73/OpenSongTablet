@@ -1098,7 +1098,7 @@
     <string name="set_manage_info">Stoor, laai, voer uit, verwyder, voer in en rugsteun stelle</string>
     <string name="set_manage_swipe">Swipe om \'n item uit jou stel lys verwyder</string>
     <string name="set_name">Stel naam</string>
-    <string name="set_new">Opruim</string>
+    <string name="set_new">Skep \'n nuwe stel</string>
     <string name="set_new_info">Verwyder alle liedjies uit die huidige stel</string>
     <string name="set_packaged_opensongapp">Verpakte OpenSongApp-stellêer</string>
     <string name="set_packaged_opensongapp_info">Dit skep \'n pasgemaakte zip-lêer wat die stellêer en alle OpenSong-, PDF- of beeldlêers bevat waarna in die stel verwys word.  Dit kan met ander OpenSongApp-gebruikers gedeel word</string>
@@ -1478,4 +1478,5 @@
     <string name="worship">Aanbidding</string>
     <string name="zone">Sone</string>
     <string name="zoom_level">Zoemvlak</string>
+    <string name="connection_metronome_info">Luister vir metronoom se begin- en stopaksies</string>
 </resources>
