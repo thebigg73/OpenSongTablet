@@ -530,6 +530,7 @@ public class Preferences extends Activity {
     // nearbyPreferredHost              boolean     If we set ourselves as a host, this will be the next start on boot option (def:false)
     // nearbyReceiveHostAutoscroll      boolean     Should we listen (as a client) for the host starting/stopping autoscroll? (def:true)
     // nearbyReceiveHostFiles           boolean     If we are a client, do we want to receive a temporary copy of the host's version of the songs? (def:true)
+    // nearbyReceiveHostMetronome       boolean     If we should listen as a client to host metronome start/stop (def:true)
     // nearbyReceiveHostScroll          boolean     If we are a client, do we listen for the host changing scroll position (def:true)
     // nearbyReceiveHostSongSections    boolean     If we are a client, do we listen for the host changing sections (def:true)
     // nearbyStartOnBoot                boolean     Should the nearby connection start on boot (using host if previously set, or default as client) (def:false)

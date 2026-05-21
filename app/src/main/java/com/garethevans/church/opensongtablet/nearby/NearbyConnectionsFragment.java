@@ -173,6 +173,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.receiveHostFiles.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyReceiveHostFiles());
         myView.bottomSheet.keepHostFiles.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyKeepHostFiles());
         myView.bottomSheet.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyReceiveHostAutoscroll());
+        myView.bottomSheet.receiveMetronome.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyReceiveHostMetronome());
         myView.bottomSheet.receiveHostSections.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyReceiveHostSongSections());
         myView.bottomSheet.receiveScroll.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyReceiveHostScroll());
         myView.bottomSheet.matchToPDFSong.setChecked(mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().getNearbyMatchToPDFSong());
@@ -418,6 +419,7 @@ public class NearbyConnectionsFragment extends Fragment {
         });
         myView.bottomSheet.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().setNearbyHostMenuOnly(isChecked));
         myView.bottomSheet.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().setNearbyReceiveHostAutoscroll(isChecked));
+        myView.bottomSheet.receiveMetronome.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().setNearbyReceiveHostMetronome(isChecked));
         myView.bottomSheet.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().setNearbyReceiveHostSongSections(isChecked));
         myView.bottomSheet.receiveScroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().setNearbyReceiveHostScroll(isChecked));
         myView.bottomSheet.matchToPDFSong.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyActions().getNearbyReceivePayloads().setNearbyMatchToPDFSong(isChecked));

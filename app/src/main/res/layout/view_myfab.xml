@@ -14,5 +14,5 @@
         android:contentDescription="@string/page_buttons"
         app:useCompatPadding="false"
         android:layout_margin="0dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 </RelativeLayout>

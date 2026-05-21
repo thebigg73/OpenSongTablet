@@ -67,7 +67,7 @@ public class MetronomeFragment extends Fragment {
 
         // Check if we can show the wearOS switch
         mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeFragment(this);
-        mainActivityInterface.getDrumViewModel().getMetronomeWearOS().checkWearOSValid();
+        mainActivityInterface.getDrumViewModel().getMetronomeWearOS().checkWearOSValid(getContext());
         mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
 
         // Set up the views and populate them

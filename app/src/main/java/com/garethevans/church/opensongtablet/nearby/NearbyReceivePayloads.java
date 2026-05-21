@@ -39,6 +39,7 @@ public class NearbyReceivePayloads {
     private boolean nearbyReceiveHostFiles;
     private boolean nearbyReceiveHostAutoscroll;
     private boolean nearbyReceiveHostScroll;
+    private boolean nearbyReceiveHostMetronome;
     private boolean nearbyKeepHostFiles;
     private boolean nearbyMatchToPDFSong;
     private boolean nearbyMessageSticky;
@@ -61,7 +62,8 @@ public class NearbyReceivePayloads {
 
     // Get the preferences for receiving payloads
     public void getUpdatedPreferences() {
-        nearbyReceiveHostAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("receiveHostAutoscroll", true);
+        nearbyReceiveHostAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyReceiveHostAutoscroll", true);
+        nearbyReceiveHostMetronome = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyReceiveHostMetronome",true);
         nearbyReceiveHostFiles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyReceiveHostFiles", true);
         nearbyReceiveHostScroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyReceiveHostScroll", true);
         nearbyKeepHostFiles = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyKeepHostFiles", false);
@@ -160,6 +162,10 @@ public class NearbyReceivePayloads {
                                         autoscrollIncrease();
                                     } else if (what.equals(nearbyActions.autoscrollDecrease)) {
                                         autoscrollDecrease();
+                                    } else if (what.equals(nearbyActions.metronomeStart)) {
+                                        metronomeStart();
+                                    } else if (what.equals(nearbyActions.metronomeStop)) {
+                                        metronomeStop();
                                     } else if (what.startsWith(nearbyActions.scrollByTag)) {
                                         scrollByProportion(nearbyJson);
                                     } else if (what.startsWith(nearbyActions.scrollToTag)) {
@@ -269,6 +275,20 @@ public class NearbyReceivePayloads {
     private void autoscrollDecrease() {
         if (nearbyReceiveHostAutoscroll && !nearbyActions.getNearbyConnectionManagement().getIsHost()) {
             mainActivityInterface.getAutoscroll().slowDownAutoscroll();
+        }
+    }
+
+    // Metronome actions
+    private void metronomeStart() {
+        if (nearbyReceiveHostMetronome && !nearbyActions.getNearbyConnectionManagement().getIsHost() &&
+                !mainActivityInterface.getDrumViewModel().getMetronome().getIsRunning()) {
+            mainActivityInterface.getDrumViewModel().startMetronome();
+        }
+    }
+    private void metronomeStop() {
+        if (nearbyReceiveHostMetronome && !nearbyActions.getNearbyConnectionManagement().getIsHost() &&
+                mainActivityInterface.getDrumViewModel().getMetronome().getIsRunning()) {
+            mainActivityInterface.getDrumViewModel().stopMetronome();
         }
     }
 
@@ -767,6 +787,9 @@ public class NearbyReceivePayloads {
     public boolean getNearbyReceiveHostAutoscroll() {
         return nearbyReceiveHostAutoscroll;
     }
+    public boolean getNearbyReceiveHostMetronome() {
+        return nearbyReceiveHostMetronome;
+    }
     public boolean getNearbyReceiveHostScroll() {
         return nearbyReceiveHostScroll;
     }
@@ -792,6 +815,10 @@ public class NearbyReceivePayloads {
     public void setNearbyReceiveHostAutoscroll(boolean nearbyReceiveHostAutoscroll) {
         this.nearbyReceiveHostAutoscroll = nearbyReceiveHostAutoscroll;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyReceiveHostAutoscroll",nearbyReceiveHostAutoscroll);
+    }
+    public void setNearbyReceiveHostMetronome(boolean nearbyReceiveHostMetronome) {
+        this.nearbyReceiveHostMetronome = nearbyReceiveHostMetronome;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyReceiveHostMetronome",nearbyReceiveHostMetronome);
     }
     public void setNearbyReceiveHostScroll(boolean nearbyReceiveHostScroll) {
         this.nearbyReceiveHostScroll = nearbyReceiveHostScroll;

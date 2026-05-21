@@ -56,7 +56,7 @@ public class DrumViewModel extends ViewModel {
         this.metronomeWearOS = new MetronomeWearOS(c);
         // Check for a physical connection (optional, for UI feedback)
         checkWearOSValid();
-        metronomeWearOS.checkWearOSValid();
+        metronomeWearOS.checkWearOSValid(c);
 
         timerEngine.setOnStepListener(totalSteps -> {
             // Check if the song has actually been loaded/initialized
@@ -263,6 +263,9 @@ public class DrumViewModel extends ViewModel {
         // Prepare for short metronome use
         metronome.prepare(getThisDivisions(), getThisStepsPerBar());
 
+        // If we are connected as a host, send to client devices
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().metronomeStart);
+
         // 1. Prepare values
         if (!drummer.getIsRunning()) {
             // The drummer hadn't sorted this, so make sure we do it now
@@ -326,6 +329,9 @@ public class DrumViewModel extends ViewModel {
     }
     public void stopMetronome() {
         Log.d(TAG,"stopMetronome()");
+
+        // If we are connected as a host, send to client devices
+        mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendCommandIfHost(mainActivityInterface.getNearbyActions().metronomeStop);
 
         // Tell the metronome we are no longer running
         metronome.setIsRunning(false);

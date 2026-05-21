@@ -9,6 +9,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wearable.CapabilityClient;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -60,42 +61,29 @@ public class MetronomeWearOS {
         return isRunning;
     }
 
-    public void checkWearOSValid() {
-        if (c!=null) {
-            checkWearConnection(connected -> {
-                if (connected) {
-                    Log.d(TAG, "Wear device connected!");
-                    // enable vibrate toggle as long as it is switched on
-                    metronomeWearOS = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeWearOS", false);
-                    // Only valid if connected, which it is, and we want it
-                    wearOSValid = metronomeWearOS;
-                    if (mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment()!=null) {
-                        mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment().updateWearOS(true);
-                    }
-                } else {
-                    Log.d(TAG, "No Wear API or no device connected");
-                    // disable or hide vibrate option
-                    wearOSValid = false;
-                    if (mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment()!=null) {
-                        mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment().updateWearOS(false);
-                    }
-                }
-                Wearable.getNodeClient(c).getConnectedNodes()
-                        .addOnSuccessListener(nodes -> {
-                            if (nodes.isEmpty()) {
-                                Log.e("OpenSongSync", "❌ NO WATCH NODES FOUND! The emulators are NOT paired via ADB.");
-                                wearOSValid = false;
+    public void checkWearOSValid(Context context) {
+        Wearable.getCapabilityClient(context)
+                .getCapability("metronome_wear_app", CapabilityClient.FILTER_REACHABLE)
+                .addOnSuccessListener(capabilityInfo -> {
+                    boolean isWatchReachable = !capabilityInfo.getNodes().isEmpty();
 
-                            } else {
-                                for (com.google.android.gms.wearable.Node node : nodes) {
-                                    Log.i("OpenSongSync", "✅ FOUND WATCH NODE: " + node.getDisplayName() + " (Id: " + node.getId() + ")");
-                                    wearOSValid = true;
-                                }
-                            }
-                        })
-                        .addOnFailureListener(e -> Log.e("OpenSongSync", "❌ Failed to query nodes: " + e.getMessage()));
-            });
-        }
+                    if (isWatchReachable) {
+                        Log.d(TAG, "Wear OS device is paired, reachable, and has the app installed.");
+                        wearOSValid = true;
+                    } else {
+                        Log.d(TAG, "No reachable Wear OS devices found.");
+                        wearOSValid = false;
+                    }
+
+                    // Update your UI/Fragment here
+                    if (mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment() != null) {
+                        mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeFragment().updateWearOS(wearOSValid);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Capability check failed", e);
+                    wearOSValid = false;
+                });
     }
 
 

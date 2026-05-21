@@ -137,6 +137,13 @@
                     android:text="@string/autoscroll" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                    android:id="@+id/receiveMetronome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/connection_metronome_info"
+                    android:text="@string/metronome" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/receiveScroll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -30,6 +30,8 @@ public class NearbyActions {
     public String autoscrollStart = "___autoscrollstart___";
     public String autoscrollStop = "___autoscrollstop___";
     public String autoscrollDecrease = "___autoscrolldecrease___";
+    public String metronomeStart = "___metronomestart___";
+    public String metronomeStop = "___metronomestop___";
 
     // Song section identifiers in bytes payloads
     public String sectionTag = "___section___";
