@@ -5,7 +5,7 @@
     <uses-feature android:name="android.hardware.type.watch" android:required="true"/>
 
     <uses-sdk
-        tools:overrideLibrary="androidx.wear.compose.material.core,androidx.wear.compose.foundation,androidx.wear.compose.material"/>
+        tools:overrideLibrary=""/>
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -21,7 +21,8 @@
             android:value="true" />
 
         <activity
-            android:name="com.garethevans.church.opensongtablet.MainActivity"  android:exported="true"
+            android:name=".MainActivity"
+            android:label="Metronome"  android:exported="true"
             android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,13 +31,13 @@
         </activity>
 
         <activity
-            android:name="com.garethevans.church.opensongtablet.SettingsActivity"
+            android:name=".SettingsActivity"
             android:taskAffinity=""
             android:theme="@android:style/Theme.DeviceDefault"
             android:exported="false" />
 
         <service
-            android:name="com.garethevans.church.opensongtablet.MetronomeListenerService"
+            android:name=".MetronomeListenerService"
             android:exported="true">
 
             <intent-filter>

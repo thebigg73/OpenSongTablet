@@ -72,19 +72,14 @@ sendBroadcast(intent)
         }
     }
 
-    @Suppress("DEPRECATION")
     private fun triggerVibration(mainBeat: Boolean) {
         if (vibrator == null) return
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val effect = if (mainBeat)
-                VibrationEffect.createOneShot(tickLength.toLong(), tickAmplitude)
-            else
-                VibrationEffect.createOneShot(tockLength.toLong(), tockAmplitude) // weaker offbeat
-            vibrator!!.vibrate(effect)
-        } else {
-            vibrator!!.vibrate((if (mainBeat) 50 else 30).toLong())
-        }
+        val effect = if (mainBeat)
+            VibrationEffect.createOneShot(tickLength.toLong(), tickAmplitude)
+        else
+            VibrationEffect.createOneShot(tockLength.toLong(), tockAmplitude) // weaker offbeat
+        vibrator!!.vibrate(effect)
     }
 
     override fun onMessageReceived(event: MessageEvent) {

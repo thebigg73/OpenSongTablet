@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet
 
+import android.os.SystemClock
 import kotlinx.coroutines.*
 
 class MetronomeEngine(
@@ -27,7 +28,7 @@ class MetronomeEngine(
             var currentBeat = 0
 
             while (isPlaying) {
-                val start = System.currentTimeMillis()
+                val start = SystemClock.elapsedRealtime()
 
                 // Logic: isOffbeat is true if it's not the downbeat (0)
                 val isOffbeat = (currentBeat != 0)
@@ -50,7 +51,7 @@ class MetronomeEngine(
                     quarterNoteInterval
                 }
 
-                val elapsed = System.currentTimeMillis() - start
+                val elapsed = SystemClock.elapsedRealtime() - start
                 val delayTime = (interval - elapsed).coerceAtLeast(0)
                 delay(delayTime)
             }

@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.wear.ambient.AmbientLifecycleObserver
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
@@ -63,34 +65,96 @@ import androidx.wear.compose.material.Text
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 
 
 class MainActivity : ComponentActivity() {
+
+    private var TAG: String = "MainActivity"
+    private lateinit var ambientObserver: AmbientLifecycleObserver
+    // Expose this state to your Composables
+    private val isAmbient = mutableStateOf(false)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Add this to signal to the OS that this activity needs to stay awake
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        // Enable Ambient Mode
+        // Initialize the observer with the Activity and the callback
+        val ambientCallback = object : AmbientLifecycleObserver.AmbientLifecycleCallback {
+            override fun onEnterAmbient(ambientDetails: AmbientLifecycleObserver.AmbientDetails) {
+                // Called when moving into ambient mode.
+                // Adjust UI: use black background, white/grey text, disable animations.
+                isAmbient.value = true
+                Log.d("DEBUG", "onEnterAmbient() Ambient state: ${isAmbient.value}")
+            }
+
+            override fun onExitAmbient() {
+                // Called when leaving ambient mode.
+                // Restore full UI: colors, animations, interactive elements.
+                isAmbient.value = false
+                Log.d("DEBUG", "onExitAmbient() Ambient state: ${isAmbient.value}")
+            }
+
+            override fun onUpdateAmbient() {
+                // Called periodically (typically once per minute) to refresh content.
+                Log.d("DEBUG", "onUpdateAmbient() Ambient state: ${isAmbient.value}")
+            }
+        }
+
+        ambientObserver = AmbientLifecycleObserver(this, ambientCallback)
+        lifecycle.addObserver(ambientObserver)
+
+
         setContent {
             MaterialTheme(colors = MaterialTheme.colors.copy(background = Color.Black)) {
                 // Remove the Box here, let MetronomeScreen define the root
-                MetronomeScreen()
+                MetronomeScreen(isAmbient = isAmbient.value)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Do NOT clear the flag here if you want the app to stay active in ambient mode.
+        // The system will handle the power transition automatically once you
+        // implement AmbientLifecycleObserver.
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Good practice to remove the observer
+        lifecycle.removeObserver(ambientObserver)
     }
 }
 
 @Preview(showBackground = true, device = "id:wearos_small_round")
 @Composable
 fun MetronomePreview() {
-    MetronomeScreen()
+    MetronomeScreen(isAmbient = false)
 }
 
 @SuppressLint("UnspecifiedRegisterReceiverFlag")
 @Suppress("DEPRECATION")
 @Composable
-fun MetronomeScreen() {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
+fun MetronomeScreen(isAmbient: Boolean) {
+    val TAG: String = "MetronomeScreen"
+    //val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    // 1. Create a "latest" reference for your ambient state
+    val currentIsAmbient by androidx.compose.runtime.rememberUpdatedState(isAmbient)
+
+    // Add a variable to hold the flash job outside the engine lambda
+    var flashJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
+    var flashIntensity by remember { mutableIntStateOf(0) } // 0=Off, 1=Dim, 2=Full
+
+    androidx.compose.runtime.LaunchedEffect(currentIsAmbient) {
+        if (isAmbient) {
+            // If we just entered Ambient mode, kill the flash immediately
+            flashJob?.cancel()
+            flashIntensity = 0
+        }
+    }
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -103,9 +167,6 @@ fun MetronomeScreen() {
     val tapTimestamps = remember { mutableStateListOf<Long>() }
     var showTempoPicker by remember { mutableStateOf(false) }
     var showTimeSigPicker by remember { mutableStateOf(false) }
-    // Add a variable to hold the flash job outside the engine lambda
-    var flashJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
-    var flashIntensity by remember { mutableIntStateOf(0) } // 0=Off, 1=Dim, 2=Full
 
     // Intercept the back button/swipe
     BackHandler(enabled = showTempoPicker || showTimeSigPicker) {
@@ -116,7 +177,6 @@ fun MetronomeScreen() {
 
     // Engine: Trigger vibration inside the lambda
     // Engine: Now uses the logic based on preferences
-    // Inside MetronomeScreen
     val engine = remember {
         MetronomeEngine(onTick = { isOffbeat, currentBeat ->
             println("DEBUG: Tick received, offbeat: $isOffbeat") // Check Logcat
@@ -129,7 +189,7 @@ fun MetronomeScreen() {
             val intensity = prefs.getString("pref_intensity", "Normal") ?: "Normal"
 
             // Trigger flash
-            if (mode.contains("Flash", ignoreCase = true)) {
+            if (mode.contains("Flash", ignoreCase = true) && !currentIsAmbient) {
                 flashJob?.cancel()
                 flashJob = scope.launch(Dispatchers.Main) {
                     // Set 2 for Downbeat, 1 for Offbeat
@@ -142,26 +202,9 @@ fun MetronomeScreen() {
             // Vibration
             if (mode.contains("Vibrate", ignoreCase = true)) {
                 val amplitude = getAmplitude(intensity, isOffbeat)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(30, amplitude))
-                }
+                vibrator.vibrate(VibrationEffect.createOneShot(30, amplitude))
             }
         })
-    }
-
-    DisposableEffect(lifecycle) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) {
-                // Force stop everything when the user swipes away
-                flashJob?.cancel()
-                flashIntensity = 0
-                if (isPlaying) {
-                    engine.stop()
-                }
-            }
-        }
-        lifecycle.addObserver(observer)
-        onDispose { lifecycle.removeObserver(observer) }
     }
 
     DisposableEffect(Unit) {
@@ -329,39 +372,49 @@ fun MetronomeScreen() {
                             horizontalArrangement = Arrangement.spacedBy(18.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // Settings Button
-                            Button(
-                                onClick = {
-                                    val intent = Intent(context, SettingsActivity::class.java)
-                                    context.startActivity(intent)
-                                },
-                                // Change background to Black
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent, contentColor = Color.White)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.settings),
-                                    contentDescription = "Settings",
-                                    // Make icon slightly bigger
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
+                            // Only show buttons if NOT in ambient mode
+                            if (!isAmbient) {
+                                // Settings Button
+                                Button(
+                                    onClick = {
+                                        val intent = Intent(context, SettingsActivity::class.java)
+                                        context.startActivity(intent)
+                                    },
+                                    // Change background to Black
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color.Transparent,
+                                        contentColor = Color.White
+                                    )
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.settings),
+                                        contentDescription = "Settings",
+                                        // Make icon slightly bigger
+                                        modifier = Modifier.size(32.dp)
+                                    )
+                                }
 
-                            // Toggle Play/Stop Button
-                            Button(
-                                onClick = {
-                                    isPlaying = !isPlaying
-                                    if (isPlaying) engine.start(bpm, beatsTop, beatsBottom)
-                                    else engine.stop()
-                                },
-                                // Change background to Black
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent, contentColor = Color.White)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = if (isPlaying) R.drawable.stop else R.drawable.play),
-                                    contentDescription = if (isPlaying) "Stop" else "Start",
-                                    // Make icon slightly bigger
-                                    modifier = Modifier.size(32.dp)
+                                // Toggle Play/Stop Button
+                                Button(
+                                    onClick = {
+                                        isPlaying = !isPlaying
+                                        if (isPlaying) engine.start(bpm, beatsTop, beatsBottom)
+                                        else engine.stop()
+                                    },
+                                    // Change background to Black
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color.Transparent,
+                                        contentColor = Color.White
+                                    )
                                 )
+                                {
+                                    Icon(
+                                        painter = painterResource(id = if (isPlaying) R.drawable.stop else R.drawable.play),
+                                        contentDescription = if (isPlaying) "Stop" else "Start",
+                                        // Make icon slightly bigger
+                                        modifier = Modifier.size(32.dp)
+                                    )
+                                }
                             }
                         }
                     }
@@ -443,6 +496,7 @@ fun TempoPicker(initialBpm: Int, onValueSelected: (Int) -> Unit) {
         }
     }
 }
+
 
 // Helper to calculate intensity
 fun getAmplitude(intensity: String, isOffbeat: Boolean): Int {
