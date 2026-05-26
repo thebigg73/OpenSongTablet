@@ -99,11 +99,13 @@ public class JustChordsSongObject {
         return emptyOrValue(ccli);
     }
     public Map<String,Object> getKeyChord() {
-        if (!keyChord.containsKey("key")) {
-            keyChord.put("key","");
-        }
-        if (!keyChord.containsKey("minor")) {
-            keyChord.put("minor",false);
+        if (keyChord!=null) {
+            if (!keyChord.containsKey("key")) {
+                keyChord.put("key", "");
+            }
+            if (!keyChord.containsKey("minor")) {
+                keyChord.put("minor", false);
+            }
         }
         return keyChord;
     }

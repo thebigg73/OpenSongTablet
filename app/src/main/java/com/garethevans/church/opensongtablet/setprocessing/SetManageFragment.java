@@ -398,7 +398,6 @@ public class SetManageFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "za");
                     changeSortIconColor("za");
                     setManageAdapter.changeSortOrder();
-                    //setManageAdapter.prepareSetManageInfos();
                 }
             });
             myView.sortOldest.setOnClickListener(view -> {
@@ -406,7 +405,6 @@ public class SetManageFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "oldest");
                     changeSortIconColor("oldest");
                     setManageAdapter.changeSortOrder();
-                    //setManageAdapter.prepareSetManageInfos();
                 }
             });
             myView.sortNewest.setOnClickListener(view -> {
@@ -414,7 +412,6 @@ public class SetManageFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "newest");
                     changeSortIconColor("newest");
                     setManageAdapter.changeSortOrder();
-                    //setManageAdapter.prepareSetManageInfos();
                 }
             });
         });
@@ -544,8 +541,14 @@ public class SetManageFragment extends Fragment {
                     }
                 }
             }
-            setManageAdapter.prepareSetManageInfos();
-            mainActivityInterface.getMainHandler().post(() -> myView.progressBar.setVisibility(View.GONE));
+            if (setManageAdapter!=null) {
+                setManageAdapter.prepareSetManageInfos();
+            }
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView!=null) {
+                    myView.progressBar.setVisibility(View.GONE);
+                }
+            });
         });
     }
 
