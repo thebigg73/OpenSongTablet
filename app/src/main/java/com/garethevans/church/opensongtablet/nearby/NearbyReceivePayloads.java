@@ -280,14 +280,12 @@ public class NearbyReceivePayloads {
 
     // Metronome actions
     private void metronomeStart() {
-        if (nearbyReceiveHostMetronome && !nearbyActions.getNearbyConnectionManagement().getIsHost() &&
-                !mainActivityInterface.getDrumViewModel().getMetronome().getIsRunning()) {
+        if (nearbyReceiveHostMetronome && !nearbyActions.getNearbyConnectionManagement().getIsHost()) {
             mainActivityInterface.getDrumViewModel().startMetronome();
         }
     }
     private void metronomeStop() {
-        if (nearbyReceiveHostMetronome && !nearbyActions.getNearbyConnectionManagement().getIsHost() &&
-                mainActivityInterface.getDrumViewModel().getMetronome().getIsRunning()) {
+        if (nearbyReceiveHostMetronome && !nearbyActions.getNearbyConnectionManagement().getIsHost()) {
             mainActivityInterface.getDrumViewModel().stopMetronome();
         }
     }

@@ -1508,7 +1508,7 @@ public class PerformanceFragment extends Fragment {
             // Prepare the new values for the metronome/drummer in case we need them
             mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
 
-            // Stop the metronome and drummer incase they were running if we have changed song
+            // Stop the metronome and drummer in case they were running if we have changed song
             if (metronomeDrummerChange) {
                 mainActivityInterface.getDrumViewModel().stopMetronome();
                 mainActivityInterface.getDrumViewModel().stopDrummer();
