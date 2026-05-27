@@ -319,10 +319,15 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         fixColor(myView.filterButtons.tagButton, songListSearchByTag);
         fixColor(myView.filterButtons.filterButton, songListSearchByFilter);
         fixColor(myView.filterButtons.titleButton, songListSearchByTitle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myView.filterButtons.searchButtonGroup.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
-        } else {
-            myView.filterButtons.searchButtonGroup.setBackgroundColor(mainActivityInterface.getPalette().primary);
+        if (myView!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                myView.filterButtons.searchButtonGroup.post(() ->
+                        myView.filterButtons.searchButtonGroup.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary)));
+
+            } else {
+                myView.filterButtons.searchButtonGroup.post(() ->
+                        myView.filterButtons.searchButtonGroup.setBackgroundColor(mainActivityInterface.getPalette().primary));
+            }
         }
         prepareSearch();
     }
@@ -332,13 +337,17 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             if (getContext()!=null) {
                 int activecolor = mainActivityInterface.getPalette().secondary;
                 int inactivecolor = getResources().getColor(R.color.transparent);
-                if (active) {
-                    button.setBackgroundColor(activecolor);
-                } else {
-                    button.setBackgroundColor(inactivecolor);
+                if (button != null) {
+                    button.post(() -> {
+                        if (active) {
+                            button.setBackgroundColor(activecolor);
+                        } else {
+                            button.setBackgroundColor(inactivecolor);
+                        }
+                        button.setIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().onPrimary));
+                        button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                    });
                 }
-                button.setIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().onPrimary));
-                button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             }
         } catch (Exception e) {
             e.printStackTrace();
