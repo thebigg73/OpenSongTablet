@@ -9,9 +9,6 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-import androidx.webkit.internal.ApiFeature;
-
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -71,7 +68,19 @@ public class DrumSoundManager {
         // Inside initialiseDrumSounds or the constructor
         AudioAttributes audioAttributes = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
             audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)                 // ✅ Redirects to media stream mixer
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)     // ✅ Marks as a sustained music asset
+                    .setFlags(AudioAttributes.FLAG_LOW_LATENCY)             // Keeps the high-speed latency optimization
+                    .build();
+
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(32)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+
+            /*audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION) // GAME or ASSISTANCE_SONIFICATION
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION) // CRITICAL for low latency
                     .setFlags(AudioAttributes.FLAG_LOW_LATENCY) // Hints to the system to prioritize speed
@@ -80,10 +89,20 @@ public class DrumSoundManager {
             soundPool = new SoundPool.Builder()
                     .setMaxStreams(32)
                     .setAudioAttributes(audioAttributes)
-                    .build();
+                    .build();*/
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)                 // ✅ Redirects older devices to media stream
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)     // ✅ Marks as music
+                    .build();
+
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(32)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+
+            /*audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION) // GAME or ASSISTANCE_SONIFICATION
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION) // CRITICAL for low latency
                     .build();
@@ -91,7 +110,7 @@ public class DrumSoundManager {
             soundPool = new SoundPool.Builder()
                     .setMaxStreams(32)
                     .setAudioAttributes(audioAttributes)
-                    .build();
+                    .build();*/
 
         } else {
             soundPool = new SoundPool(32, AudioManager.STREAM_MUSIC, 0);
