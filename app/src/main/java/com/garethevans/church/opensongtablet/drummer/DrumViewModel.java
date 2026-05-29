@@ -214,11 +214,6 @@ public class DrumViewModel extends ViewModel {
             timerEngine.refresh(thisBpm, thisPulsesPerStep);
             timerEngine.resetTickCounter();
         }
-
-        // ADD THIS: Update the WearOS companion app
-        if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getWearOSValid()) {
-            metronomeWearOS.updateMetronomeState(false, thisBpm);
-        }
     }
     public void setThisBpm(int thisBpm) {
         this.thisBpm = thisBpm;
@@ -321,7 +316,8 @@ public class DrumViewModel extends ViewModel {
                 timerEngine.resetTickCounter();
                 timerEngine.start();
 
-                if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getWearOSValid()) {
+                if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() &&
+                        metronomeWearOS.getWearOSValid()) {
                     metronomeWearOS.updateMetronomeState(true, thisBpm);
                 }
             }
@@ -349,7 +345,8 @@ public class DrumViewModel extends ViewModel {
         // Fix the metronome start/stop icon if available
         metronome.updateStartStopButton();
 
-        if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() && metronomeWearOS.getWearOSValid()) {
+        if (metronomeWearOS != null && metronomeWearOS.getMetronomeWearOS() &&
+                metronomeWearOS.getWearOSValid()) {
             metronomeWearOS.updateMetronomeState(false, thisBpm);
         }
     }
@@ -548,6 +545,5 @@ public class DrumViewModel extends ViewModel {
         // 3. Hardware: Shutdown the high-precision executor
         timerEngine.stop();
     }
-
 
 }

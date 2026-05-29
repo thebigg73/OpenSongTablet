@@ -55,7 +55,7 @@ class MetronomeListenerService : WearableListenerService() {
                 intent.putExtra("beatsPerBar", beatsPerBar)
                 intent.putExtra("beatDenominator", beatDenominator)
 
-sendBroadcast(intent)
+                sendBroadcast(intent)
 
             }
         }

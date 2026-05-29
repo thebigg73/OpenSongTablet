@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -74,7 +75,6 @@ class MainActivity : ComponentActivity() {
     // Expose this state to your Composables
     private val isAmbient = mutableStateOf(false)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Add this to signal to the OS that this activity needs to stay awake
@@ -86,19 +86,16 @@ class MainActivity : ComponentActivity() {
                 // Called when moving into ambient mode.
                 // Adjust UI: use black background, white/grey text, disable animations.
                 isAmbient.value = true
-                Log.d("DEBUG", "onEnterAmbient() Ambient state: ${isAmbient.value}")
             }
 
             override fun onExitAmbient() {
                 // Called when leaving ambient mode.
                 // Restore full UI: colors, animations, interactive elements.
                 isAmbient.value = false
-                Log.d("DEBUG", "onExitAmbient() Ambient state: ${isAmbient.value}")
             }
 
             override fun onUpdateAmbient() {
                 // Called periodically (typically once per minute) to refresh content.
-                Log.d("DEBUG", "onUpdateAmbient() Ambient state: ${isAmbient.value}")
             }
         }
 
@@ -133,6 +130,8 @@ class MainActivity : ComponentActivity() {
 fun MetronomePreview() {
     MetronomeScreen(isAmbient = false)
 }
+
+private var lastStopTimestamp: Long = 0L // Tracks the last stop time
 
 @SuppressLint("UnspecifiedRegisterReceiverFlag")
 @Suppress("DEPRECATION")
@@ -179,7 +178,6 @@ fun MetronomeScreen(isAmbient: Boolean) {
     // Engine: Now uses the logic based on preferences
     val engine = remember {
         MetronomeEngine(onTick = { isOffbeat, currentBeat ->
-            println("DEBUG: Tick received, offbeat: $isOffbeat") // Check Logcat
 
             val mode = if (isOffbeat)
                 prefs.getString("pref_off_beat_mode", "Vibrate and flash") ?: "Vibrate and flash"
@@ -207,6 +205,14 @@ fun MetronomeScreen(isAmbient: Boolean) {
         })
     }
 
+    LaunchedEffect(isPlaying) {
+        if (isPlaying) {
+            engine.start(bpm, beatsTop, beatsBottom)
+        } else {
+            engine.stop()
+        }
+    }
+
     DisposableEffect(Unit) {
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -218,18 +224,13 @@ fun MetronomeScreen(isAmbient: Boolean) {
                     val shouldPlay = intent.getBooleanExtra("isPlaying", false)
 
                     // 2. Update UI State (this triggers the screen to redraw)
-                    bpm = newBpm
-                    beatsTop = newTop
-                    beatsBottom = newBottom
+                    if (bpm != newBpm || beatsTop != newTop || beatsBottom != newBottom) {
+                        bpm = newBpm
+                        beatsTop = newTop
+                        beatsBottom = newBottom
+                    }
                     isPlaying = shouldPlay
 
-                    // 3. Restart the engine with the fresh values
-                    if (isPlaying) {
-                        engine.stop()
-                        engine.start(bpm, beatsTop, beatsBottom)
-                    } else {
-                        engine.stop()
-                    }
                 }
             }
         }
@@ -329,7 +330,6 @@ fun MetronomeScreen(isAmbient: Boolean) {
                                             }
                                         },
                                         onLongPress = {
-                                            println("DEBUG: Long press detected!") // Check Logcat for this
                                             showTempoPicker = true
                                         }
                                     )
@@ -349,7 +349,6 @@ fun MetronomeScreen(isAmbient: Boolean) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.spacedBy((-4).dp),
                                 modifier = Modifier.clickable {
-                                    println("DEBUG: Short time signature press detected!") // Check Logcat for this
                                     showTimeSigPicker = true
                                 }
                             ) {

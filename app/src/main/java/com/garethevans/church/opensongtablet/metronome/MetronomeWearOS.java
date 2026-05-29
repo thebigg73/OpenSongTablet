@@ -119,8 +119,6 @@ public class MetronomeWearOS {
      * This updates a single sync map immediately.
      */
     public void updateMetronomeState(boolean isPlaying, int bpm) {
-        Log.d(TAG, "Updating Wear OS state: Playing=" + isPlaying + ", BPM=" + bpm);
-
         // Inside your Phone/Tablet app's sync method:
         PutDataMapRequest dataMapRequest = PutDataMapRequest.create("/metronome/state");
         DataMap dataMap = dataMapRequest.getDataMap();
