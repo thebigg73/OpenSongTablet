@@ -1492,7 +1492,53 @@ public class StorageAccess {
         }
         return null;
     }
+    /*private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
+        Log.d(TAG,"uriTreeHome:"+uriTreeHome);
+        if (uriTreeHome == null) {
+            uriTreeHome = homeFolder(null);
+        }
+        if (uriTreeHome == null) return null;
 
+        try {
+            // 1. Rebuild the targeted virtual folder ID layout
+            String rootDocId = DocumentsContract.getTreeDocumentId(uriTreeHome);
+            StringBuilder pathBuilder = new StringBuilder(rootDocId);
+
+            if (!rootDocId.endsWith(appFolder)) {
+                pathBuilder.append("/").append(appFolder);
+            }
+            if (folder != null && !folder.isEmpty()) {
+                pathBuilder.append("/").append(folder);
+            }
+            if (subfolder != null && !subfolder.isEmpty() &&
+                    !subfolder.equals("MAIN") && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+                pathBuilder.append("/").append(subfolder);
+            }
+
+            // 2. Build the children directory pointing URI matching that folder
+            Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(uriTreeHome, pathBuilder.toString());
+
+            // 3. Query the content resolver directly for the filename in a single step
+            ContentResolver resolver = c.getContentResolver();
+            try (Cursor cursor = resolver.query(
+                    childrenUri,
+                    new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME},
+                    DocumentsContract.Document.COLUMN_DISPLAY_NAME + " = ?",
+                    new String[]{filename},
+                    null)) {
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    // Found it! Pull the true indexed document ID from the database record
+                    String docId = cursor.getString(cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_DOCUMENT_ID));
+                    return DocumentsContract.buildDocumentUriUsingTree(uriTreeHome, docId);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Fast optimization look up optimization failed, structural fallback activated", e);
+        }
+
+        return null; // File does not exist yet
+    }*/
     private Uri getUriForItem_File(String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
         File f = new File(s);
