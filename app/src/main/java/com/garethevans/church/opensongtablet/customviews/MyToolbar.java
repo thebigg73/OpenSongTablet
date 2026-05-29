@@ -536,7 +536,7 @@ public class MyToolbar extends MaterialToolbar {
 
         // Force visibility NOW so it's ready for Beat 1
         if (metronomeLayout != null) {
-            metronomeLayout.setVisibility(View.VISIBLE);
+            metronomeLayout.post(() -> metronomeLayout.setVisibility(View.VISIBLE));
             makeAllBeatsTransparent();
         }
 
@@ -573,7 +573,7 @@ public class MyToolbar extends MaterialToolbar {
         // Add this at the end of the method to ensure the UI thread
         // has actually finished drawing the views before the timer hits
         if (metronomeLayout!=null) {
-            metronomeLayout.requestLayout();
+            metronomeLayout.post(metronomeLayout::requestLayout);
         }
     }
 
