@@ -61,36 +61,61 @@ public class AppPermissions {
 
     // Nearby
     public String[] getNearbyPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android T / 13  SDK_INT=33
-            return new String[]{Manifest.permission.NEARBY_WIFI_DEVICES,
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_ADVERTISE,
-                    Manifest.permission.BLUETOOTH_CONNECT,
+        BluetoothManager bm = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+        boolean hasBluetooth = (bm != null && bm.getAdapter() != null);
+
+        // 1. Android 13 and Higher (API 33+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (hasBluetooth) {
+                return new String[]{
+                        Manifest.permission.NEARBY_WIFI_DEVICES,
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_ADVERTISE,
+                        Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                };
+            } else {
+                // Emulators / devices without bluetooth still require location for startDiscovery()
+                return new String[]{
+                        Manifest.permission.NEARBY_WIFI_DEVICES,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                };
+            }
+        }
+
+        // 2. Android 12 (API 31 & 32)
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (hasBluetooth) {
+                return new String[]{
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_ADVERTISE,
+                        Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                };
+            } else {
+                return new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                };
+            }
+        }
+
+        // 3. Android 10 & 11 (API 29 & 30)
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.CHANGE_WIFI_STATE};
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android S / 12  SDK_INT=31
-            return new String[]{Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_ADVERTISE,
-                    Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.CHANGE_WIFI_STATE};
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Android Q / 10  SDK_INT=29
-            return new String[]{Manifest.permission.BLUETOOTH,
-                    Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.CHANGE_WIFI_STATE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION};
-        } else { // Older versions!
-            return new String[]{Manifest.permission.BLUETOOTH,
-                    Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.CHANGE_WIFI_STATE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION};
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
+        }
+
+        // 4. Legacy Versions (Android 9 and Older)
+        else {
+            return new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
         }
     }
 
