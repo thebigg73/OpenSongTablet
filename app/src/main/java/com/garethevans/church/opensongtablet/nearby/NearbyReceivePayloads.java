@@ -634,8 +634,8 @@ public class NearbyReceivePayloads {
         if (payloadFileUri != null) {
             // Copy the file to our storage Received
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(payloadFileUri);
+            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Received","",fileInfo.getFilename(),true);
             Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", fileInfo.getFilename());
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, outputUri, null, "Received", "", fileInfo.getFilename());
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
             if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(outputUri);
@@ -673,8 +673,8 @@ public class NearbyReceivePayloads {
             if (payloadFileUri != null) {
                 // Copy the file to our storage Received
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(payloadFileUri);
+                mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Received","",fileInfo.getFilename(),true);
                 Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", fileInfo.getFilename());
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, outputUri, null, "Received", "", fileInfo.getFilename());
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
                 NearbyJson nearbyJson;
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
@@ -724,8 +724,8 @@ public class NearbyReceivePayloads {
             // Copy the file to our storage Received
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(payloadFileUri);
             // Create a zip file in our Received folder
+            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Received","",fileInfo.getFilename(),true);
             Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", fileInfo.getFilename());
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, outputUri, null, "Received", "", fileInfo.getFilename());
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
             if (fileInfo.getFilename()!=null && mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                 String what = null;
