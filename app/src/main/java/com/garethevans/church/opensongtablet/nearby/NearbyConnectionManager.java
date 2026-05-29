@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 
@@ -154,6 +155,11 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
     // Set the strategy as either cluster (many to many) or star (one to many).
     public void setNearbyStrategy(Strategy nearbyStrategy) {
+        if (isEmulator()) {
+            Log.d(TAG,"Emulator, so force P2P_STAR");
+            nearbyStrategy = Strategy.P2P_STAR;
+        }
+
         this.nearbyStrategy = nearbyStrategy;
         advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
@@ -227,6 +233,23 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
         return deviceId;
     }
 
+    // Deal with emulator vs real device
+    // Check if the current device is a virtual emulator
+    public static boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
+                || "google_sdk".equals(Build.PRODUCT)
+                // Modern Android Studio Emulator detection strings:
+                || Build.HARDWARE.contains("goldfish")
+                || Build.HARDWARE.contains("ranchu")
+                || Build.PRODUCT.contains("sdk_gphone")
+                || Build.BOARD.toLowerCase().contains("goldfish");
+    }
 
     // Discovery
     @Override
