@@ -346,14 +346,9 @@
 
         <!-- The box background -->
         <item name="boxBackgroundMode">outline</item>
-        <!--<item name="boxBackgroundColor">@color/transparent</item>-->
-        <!--<item name="boxStrokeColor">?attr/hintTextColor</item>-->
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="android:textSize">@dimen/text_medium</item>
-        <!-- The highlights -->
-        <!--<item name="colorControlActivated">?attr/colorAccent</item>-->
-        <!--<item name="colorControlNormal">?attr/colorAccent</item>-->
     </style>
 
     <!-- Menu tabs -->

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -160,6 +161,9 @@ public class SyncNearbyFragment extends Fragment {
             myView.syncPager.setAdapter(syncViewPagerAdapter);
             myView.syncPager.setOffscreenPageLimit(2);
             TabLayout tabLayout = myView.syncTabs;
+            tabLayout.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
+            tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            tabLayout.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
             new TabLayoutMediator(tabLayout, myView.syncPager, (tab, position) -> {
                 switch (position) {
                     case 0:
