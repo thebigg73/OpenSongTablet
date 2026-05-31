@@ -9,6 +9,7 @@ import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongId;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 
 public class CreateHTML {
@@ -398,19 +399,62 @@ public class CreateHTML {
         string += "      if (window.heartbeat) clearInterval(window.heartbeat);\n";
         string += "      setTimeout(connect, 2000); // Reconnect loop\n";
         string += "    };\n";
-        /*string += "    socket.onmessage = function(event) {\n";
-        string += "      if (event.data === 'REFRESH') {\n";
-        string += "        if (localStorage.getItem('userListenToHost') !== 'false') { hostSong(); }\n";
-        string += "      } else if (event.data.startsWith('MSG:')) {\n";
-        string += "        var msg = event.data.substring(4);\n";
-        string += "        var box = document.getElementById('alert-box');\n";
-        string += "        box.innerText = msg;\n";
-        string += "        box.style.display = 'block';\n";
-        string += "        setTimeout(function() { box.style.display = 'none'; }, 10000);\n";
+
+
+        // Listen for messages incoming on websocket
+        // They can be refresh commands or messages.
+        // Safari prefers blobs
+        string += "    socket.onmessage = function(event) {\n";
+        string += "      // Check if the data is a Blob and convert it if necessary\n";
+        string += "      if (event.data instanceof Blob) {\n";
+        string += "        var reader = new FileReader();\n";
+        string += "        reader.onload = function() {\n";
+        string += "          processMessage(reader.result);\n";
+        string += "        };\n";
+        string += "        reader.readAsText(event.data);\n";
+        string += "      } else {\n";
+        string += "        processMessage(event.data);\n";
         string += "      }\n";
         string += "    };\n";
-        */
-        string += "    socket.onmessage = function(event) {\n";
+        string += "  }\n";
+        string += "  \n";
+        string += "  function processMessage(data) {\n";
+        string += "    try {\n";
+        string += "      var payload = JSON.parse(data);\n";
+        string += "      if (payload.action === 'REFRESH') {\n";
+        string += "        if (localStorage.getItem('userListenToHost') !== 'false') {\n";
+        string += "          hostSong();\n";
+        string += "        }\n";
+        string += "      }\n";
+        string += "      if (payload.message) {\n";
+        string += "        displayAlert(payload.message);\n";
+        string += "      }\n";
+        string += "    } catch (e) {\n";
+        string += "      // Fallback for your old string logic\n";
+        string += "      if (data === 'REFRESH') {\n";
+        string += "        if (localStorage.getItem('userListenToHost') !== 'false') {\n";
+        string += "          hostSong();\n";
+        string += "        }\n";
+        string += "      } else if (data.startsWith('MSG:')) {\n";
+        string += "        displayAlert(data.substring(4));\n";
+        string += "      }\n";
+        string += "    }\n";
+        string += "  }\n";
+        string += "  \n";
+        string += "  function displayAlert(msg) {\n";
+        string += "    var box = document.getElementById('alert-box');\n";
+        string += "    if (box) {\n";
+        string += "      box.innerText = msg;\n";
+        string += "      box.style.display = 'block';\n";
+        string += "      setTimeout(function() {\n";
+        string += "        box.style.display = 'none';\n";
+        string += "      }, 10000);\n";
+        string += "    }\n";
+        string += "  }\n";
+
+
+        // OLD CODE THAT ONLY WORKS ON CHROME
+        /*string += "    socket.onmessage = function(event) {\n";
         string += "      try {\n";
         string += "        var payload = JSON.parse(event.data);\n";
         string += "        \n";
@@ -440,7 +484,7 @@ public class CreateHTML {
         string += "      }\n";
         string += "    };\n";
         string += "  }\n";
-
+*/
         string += "  function measure() {\n";
         string += "    var content = document.getElementById(\"content\");\n";
         string += "    // 1. Critical: Reset scaling so we can measure the NATURAL width\n";
