@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.tags;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -33,7 +34,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
     TagSongListAdapter(Context c, RecyclerView recyclerView) {
         mainActivityInterface = (MainActivityInterface) c;
         this.recyclerView = recyclerView;
-        highlightOff = c.getResources().getColor(R.color.transparent);
+        highlightOff = mainActivityInterface.getPalette().primaryVariant;
         highlightOn = mainActivityInterface.getPalette().secondary;
     }
 
@@ -93,7 +94,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
                 // If ths song has the current tag, highlight it
                 if (checkedArray.get(position,false)) {
-                    setColor(holder.cardView,highlightOn);
+                    setColor(holder.cardView, highlightOn);
                 } else {
                     setColor(holder.cardView,highlightOff);
                 }
@@ -130,7 +131,8 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
     private void setColor(MaterialCardView cardView, int cardColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cardView.setBackgroundTintList(ColorStateList.valueOf(cardColor));
+            cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+            //cardView.setBackgroundTintList(ColorStateList.valueOf(cardColor));
         } else {
             cardView.setBackgroundColor(cardColor);
         }

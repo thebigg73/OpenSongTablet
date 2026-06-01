@@ -63,19 +63,28 @@ public class BulkTagAssignFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsTagManageBinding.inflate(inflater, container, false);
 
-        // Tint the progressBar as the secondary color
-        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
 
-        prepareStrings();
-
-        setupViews();
-
-        setupListeners();
-
-        // Do the showcase for info
-        setupShowcase();
 
         return myView.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Tint the progressBar as the secondary color
+            mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+
+            prepareStrings();
+
+            setupViews();
+
+            setupListeners();
+
+            // Do the showcase for info
+            setupShowcase();
+        });
     }
 
     private void prepareStrings() {
@@ -93,123 +102,131 @@ public class BulkTagAssignFragment extends Fragment {
         }
     }
     private void setupViews() {
-        myView.progressBar.setVisibility(View.VISIBLE);
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.progressBar.setVisibility(View.VISIBLE);
 
-        // Initialise the recyclerview
-        initialiseRecyclerView();
+            // Initialise the recyclerview
+            initialiseRecyclerView();
 
-        // Hide the filter rows
-        fixFilterRows();
+            // Hide the filter rows
+            fixFilterRows();
 
-        // Populate the dropdowns
-        setupDropdowns();
-        setupTagsToAddRemove();
+            // Populate the dropdowns
+            setupDropdowns();
+            setupTagsToAddRemove();
 
-        // Set the filterButton colours
-        if (getContext()!=null) {
-            activecolor = mainActivityInterface.getPalette().secondary;
-            inactivecolor = getResources().getColor(R.color.transparent);
-        }
-        // This bit also prepares the songList
-        fixButtons();
+            // Set the filterButton colours
+            if (getContext() != null) {
+                activecolor = mainActivityInterface.getPalette().secondary;
+                inactivecolor = getResources().getColor(R.color.transparent);
+            }
+            // This bit also prepares the songList
+            fixButtons();
 
-        myView.progressBar.setVisibility(View.GONE);
+            myView.progressBar.setVisibility(View.GONE);
+        });
     }
 
     private void setupListeners() {
-        myView.filterButtons.folderButton.setOnClickListener(v -> {
-            songListSearchByFolder = !songListSearchByFolder;
-            showHideRows(myView.filters.folderLayout,songListSearchByFolder);
-            fixColor(myView.filterButtons.folderButton,songListSearchByFolder);
-        });
-        myView.filterButtons.titleButton.setOnClickListener(v -> {
-            songListSearchByTitle = !songListSearchByTitle;
-            showHideRows(myView.filters.titleSearch,songListSearchByTitle);
-            fixColor(myView.filterButtons.titleButton,songListSearchByTitle);
-        });
-        myView.filterButtons.tagButton.setOnClickListener(v -> {
-            songListSearchByTag = !songListSearchByTag;
-            showHideRows(myView.filters.tagLayout,songListSearchByTag);
-            fixColor(myView.filterButtons.tagButton,songListSearchByTag);
-        });
-        myView.filterButtons.keyButton.setOnClickListener(v -> {
-            songListSearchByKey = !songListSearchByKey;
-            showHideRows(myView.filters.keySearch,songListSearchByKey);
-            fixColor(myView.filterButtons.keyButton,songListSearchByKey);
-        });
-        myView.filterButtons.artistButton.setOnClickListener(v -> {
-            songListSearchByArtist = !songListSearchByArtist;
-            showHideRows(myView.filters.artistSearch,songListSearchByArtist);
-            fixColor(myView.filterButtons.artistButton,songListSearchByArtist);
-        });
-        myView.filterButtons.filterButton.setOnClickListener(v -> {
-            songListSearchByFilter = !songListSearchByFilter;
-            showHideRows(myView.filters.filterSearch,songListSearchByFilter);
-            fixColor(myView.filterButtons.filterButton,songListSearchByFilter);
-        });
-        myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
-        myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
-        myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
-        myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
-        myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
-        myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
-        myView.thisTag.addTextChangedListener(new MyTextWatcher("currentTag"));
-        myView.searchThisTag.setOnClickListener(v -> {
-            showForThisTag = !showForThisTag;
-            if (showForThisTag) {
-                myView.searchThisTag.setImageResource(R.drawable.filter_off);
-                songListSearchByTag = true;
-                showHideRows(myView.filters.tagLayout, true);
-                fixColor(myView.filterButtons.tagButton, true);
-                myView.filters.tagSearch.setText(myView.thisTag.getText().toString());
-            } else {
-                myView.searchThisTag.setImageResource(R.drawable.filter_on);
-                songListSearchByTag = false;
-                showHideRows(myView.filters.tagSearch,false);
-                fixColor(myView.filterButtons.tagButton, false);
-                myView.filters.tagSearch.setText("");
-            }
-        });
-        myView.addNewTag.setOnClickListener(v -> {
-            TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "BulkTagAssignFragment", new_category_string, tag_string,
-                    null,null,null,true);
-            textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
-        });
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.filterButtons.folderButton.setOnClickListener(v -> {
+                songListSearchByFolder = !songListSearchByFolder;
+                showHideRows(myView.filters.folderLayout, songListSearchByFolder);
+                fixColor(myView.filterButtons.folderButton, songListSearchByFolder);
+            });
+            myView.filterButtons.titleButton.setOnClickListener(v -> {
+                songListSearchByTitle = !songListSearchByTitle;
+                showHideRows(myView.filters.titleSearch, songListSearchByTitle);
+                fixColor(myView.filterButtons.titleButton, songListSearchByTitle);
+            });
+            myView.filterButtons.tagButton.setOnClickListener(v -> {
+                songListSearchByTag = !songListSearchByTag;
+                showHideRows(myView.filters.tagLayout, songListSearchByTag);
+                fixColor(myView.filterButtons.tagButton, songListSearchByTag);
+            });
+            myView.filterButtons.keyButton.setOnClickListener(v -> {
+                songListSearchByKey = !songListSearchByKey;
+                showHideRows(myView.filters.keySearch, songListSearchByKey);
+                fixColor(myView.filterButtons.keyButton, songListSearchByKey);
+            });
+            myView.filterButtons.artistButton.setOnClickListener(v -> {
+                songListSearchByArtist = !songListSearchByArtist;
+                showHideRows(myView.filters.artistSearch, songListSearchByArtist);
+                fixColor(myView.filterButtons.artistButton, songListSearchByArtist);
+            });
+            myView.filterButtons.filterButton.setOnClickListener(v -> {
+                songListSearchByFilter = !songListSearchByFilter;
+                showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+                fixColor(myView.filterButtons.filterButton, songListSearchByFilter);
+            });
+            myView.filters.titleSearch.addTextChangedListener(new MyTextWatcher("title"));
+            myView.filters.filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
+            myView.filters.artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
+            myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
+            myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
+            myView.filters.tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
+            myView.thisTag.addTextChangedListener(new MyTextWatcher("currentTag"));
+            myView.searchThisTag.setOnClickListener(v -> {
+                showForThisTag = !showForThisTag;
+                if (showForThisTag) {
+                    myView.searchThisTag.setImageResource(R.drawable.filter_off);
+                    songListSearchByTag = true;
+                    showHideRows(myView.filters.tagLayout, true);
+                    fixColor(myView.filterButtons.tagButton, true);
+                    myView.filters.tagSearch.setText(myView.thisTag.getText().toString());
+                } else {
+                    myView.searchThisTag.setImageResource(R.drawable.filter_on);
+                    songListSearchByTag = false;
+                    showHideRows(myView.filters.tagSearch, false);
+                    fixColor(myView.filterButtons.tagButton, false);
+                    myView.filters.tagSearch.setText("");
+                }
+            });
+            myView.addNewTag.setOnClickListener(v -> {
+                TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+                        "BulkTagAssignFragment", new_category_string, tag_string,
+                        null, null, null, true);
+                textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
+            });
 
-        myView.renameThisTag.hide();
-        myView.renameThisTag.setOnClickListener(v -> {
-            currentTagName = myView.thisTag.getText().toString();
-            TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+            myView.renameThisTag.hide();
+            myView.renameThisTag.setOnClickListener(v -> {
+                currentTagName = myView.thisTag.getText().toString();
+                TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
                         "BulkTagAssignFragmentRename", currentTagName, rename_string,
                         null, null, null, true);
-                textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"TextInputBottomSheet");
+                textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "TextInputBottomSheet");
+            });
         });
     }
 
     private void initialiseRecyclerView() {
-        myView.songList.removeAllViews();
-        if (getContext()!=null) {
-            LinearLayoutManager songListLayoutManager = new LinearLayoutManager(getContext());
-            songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
-            myView.songList.setLayoutManager(songListLayoutManager);
-            myView.songList.setHasFixedSize(false);
-            myView.songList.setOnClickListener(null);
-            tagSongListAdapter = new TagSongListAdapter(getContext(), myView.songList);
-            myView.songList.setAdapter(tagSongListAdapter);
-        }
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.songList.removeAllViews();
+            if (getContext() != null) {
+                LinearLayoutManager songListLayoutManager = new LinearLayoutManager(getContext());
+                songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                myView.songList.setLayoutManager(songListLayoutManager);
+                myView.songList.setHasFixedSize(false);
+                myView.songList.setOnClickListener(null);
+                tagSongListAdapter = new TagSongListAdapter(getContext(), myView.songList);
+                myView.songList.setAdapter(tagSongListAdapter);
+            }
+        });
     }
 
     private void fixFilterRows() {
-        // Hide the edit folder/tag buttons as not required here
-        myView.filters.manageTags.setVisibility(View.GONE);
-        myView.filters.manageFolders.setVisibility(View.GONE);
-        showHideRows(myView.filters.folderLayout, songListSearchByFolder);
-        showHideRows(myView.filters.artistSearch, songListSearchByArtist);
-        showHideRows(myView.filters.keySearch, songListSearchByKey);
-        showHideRows(myView.filters.tagLayout, songListSearchByTag);
-        showHideRows(myView.filters.filterSearch, songListSearchByFilter);
-        showHideRows(myView.filters.titleSearch, songListSearchByTitle);
+        mainActivityInterface.getMainHandler().post(() -> {
+            // Hide the edit folder/tag buttons as not required here
+            myView.filters.manageTags.setVisibility(View.GONE);
+            myView.filters.manageFolders.setVisibility(View.GONE);
+            showHideRows(myView.filters.folderLayout, songListSearchByFolder);
+            showHideRows(myView.filters.artistSearch, songListSearchByArtist);
+            showHideRows(myView.filters.keySearch, songListSearchByKey);
+            showHideRows(myView.filters.tagLayout, songListSearchByTag);
+            showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+            showHideRows(myView.filters.titleSearch, songListSearchByTitle);
+        });
     }
 
     private void showHideRows(View view, boolean show) {
@@ -233,9 +250,9 @@ public class BulkTagAssignFragment extends Fragment {
     private void fixColor(Button button, boolean active) {
         try {
             if (active) {
-                button.setBackgroundColor(activecolor);
+                button.post(() -> button.setBackgroundColor(activecolor));
             } else {
-                button.setBackgroundColor(inactivecolor);
+                button.post(() -> button.setBackgroundColor(inactivecolor));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,10 +261,12 @@ public class BulkTagAssignFragment extends Fragment {
 
     private void setupDropdowns() {
         if (getContext()!=null) {
-            ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.keySearch, R.layout.view_exposed_dropdown_item, key_choice_string);
-            ExposedDropDownArrayAdapter folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, mainActivityInterface.getSQLiteHelper().getFolders());
-            myView.filters.keySearch.setAdapter(keyArrayAdapter);
-            myView.filters.folderSearch.setAdapter(folderArrayAdapter);
+            mainActivityInterface.getMainHandler().post(() -> {
+                ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.keySearch, R.layout.view_exposed_dropdown_item, key_choice_string);
+                ExposedDropDownArrayAdapter folderArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.filters.folderSearch, R.layout.view_exposed_dropdown_item, mainActivityInterface.getSQLiteHelper().getFolders());
+                myView.filters.keySearch.setAdapter(keyArrayAdapter);
+                myView.filters.folderSearch.setAdapter(folderArrayAdapter);
+            });
         }
     }
 
@@ -265,37 +284,43 @@ public class BulkTagAssignFragment extends Fragment {
         coll.setStrength(Collator.SECONDARY);
         Collections.sort(values, coll);
 
-        if (getContext()!=null) {
-            ExposedDropDownArrayAdapter tagArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.thisTag, R.layout.view_exposed_dropdown_item, values);
-            myView.thisTag.setAdapter(tagArrayAdapter);
-        }
-        myView.thisTag.setText(thisTag);
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (getContext() != null) {
+                ExposedDropDownArrayAdapter tagArrayAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.thisTag, R.layout.view_exposed_dropdown_item, values);
+                myView.thisTag.setAdapter(tagArrayAdapter);
+            }
+            myView.thisTag.setText(thisTag);
+        });
     }
 
     private void setupShowcase() {
         if (getActivity()!=null) {
-            ArrayList<View> targets = new ArrayList<>();
-            targets.add(myView.filterButtons.getRoot());
-            targets.add(myView.thisTag);
-            targets.add(myView.addNewTag);
-            targets.add(myView.searchThisTag);
+            mainActivityInterface.getMainHandler().post(() -> {
+                ArrayList<View> targets = new ArrayList<>();
+                targets.add(myView.filterButtons.getRoot());
+                targets.add(myView.thisTag);
+                targets.add(myView.addNewTag);
+                targets.add(myView.searchThisTag);
 
-            ArrayList<String> infos = new ArrayList<>();
-            infos.add(filter_songs_string);
-            infos.add(tag_to_use_string);
-            infos.add(tag_new_string);
-            infos.add(tag_search_string);
+                ArrayList<String> infos = new ArrayList<>();
+                infos.add(filter_songs_string);
+                infos.add(tag_to_use_string);
+                infos.add(tag_new_string);
+                infos.add(tag_search_string);
 
-            mainActivityInterface.getShowCase().sequenceShowCase(getActivity(), targets, null,
-                    infos, null, "bulkTagAssign");
+                mainActivityInterface.getShowCase().sequenceShowCase(getActivity(), targets, null,
+                        infos, null, "bulkTagAssign");
+            });
         }
     }
     private void prepareResults() {
-        tagSongListAdapter.updateSongsFound(myView.thisTag.getText().toString(),
-                songListSearchByFolder, songListSearchByArtist,
-                songListSearchByKey, songListSearchByTag, songListSearchByFilter,
-                songListSearchByTitle, folderSearchVal, artistSearchVal, keySearchVal,
-                tagSearchVal, filterSearchVal, titleSearchVal);
+        if (tagSongListAdapter!=null) {
+            tagSongListAdapter.updateSongsFound(myView.thisTag.getText().toString(),
+                    songListSearchByFolder, songListSearchByArtist,
+                    songListSearchByKey, songListSearchByTag, songListSearchByFilter,
+                    songListSearchByTitle, folderSearchVal, artistSearchVal, keySearchVal,
+                    tagSearchVal, filterSearchVal, titleSearchVal);
+        }
     }
 
     private class MyTextWatcher implements TextWatcher {

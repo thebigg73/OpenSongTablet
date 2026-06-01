@@ -93,14 +93,14 @@
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="0dp"
                     android:text="@string/tag_add_remove" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/songList"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="16dp" />
+                    android:padding="0dp" />
 
             </LinearLayout>
         </LinearLayout>

@@ -14,7 +14,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:visibility="gone"/>
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/filterSearch"
@@ -25,7 +26,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:visibility="gone"/>
 
     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
         android:id="@+id/keySearch"
@@ -35,7 +37,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:visibility="gone"/>
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/artistSearch"
@@ -46,13 +49,15 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="2dp"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/folderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
         android:id="@+id/folderSearch"
@@ -85,7 +90,8 @@
         android:id="@+id/tagLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/tagSearch"
