@@ -665,6 +665,7 @@ public class Preferences extends Activity {
     // songListSearchByTag              boolean     Should we search in the song list using a custom folder (def:false)
     // songListSearchByTitle            boolean     Should we search in the song list using a custom title (def:false)
     // songListSearchByFilter           boolean     Should we search in the song list using a custom filter (def:false)
+    // songListShowTags                 boolean     When adding/removing tags from songs, show the actual tags as text (def:true)
     // songLoadSuccess                  boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
     // songMenuAlphaIndexLevel2         boolean     Should the alphabetical index have a level 2 filter (clicking on it displays two letters) (def:false)
     // songMenuAlphaIndexShow           boolean     Should we show the alphabetical index in the song menu (def:true)

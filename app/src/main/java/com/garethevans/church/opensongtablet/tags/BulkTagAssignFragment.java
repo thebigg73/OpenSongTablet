@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.tags;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -63,8 +64,6 @@ public class BulkTagAssignFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsTagManageBinding.inflate(inflater, container, false);
 
-
-
         return myView.getRoot();
     }
 
@@ -105,11 +104,19 @@ public class BulkTagAssignFragment extends Fragment {
         mainActivityInterface.getMainHandler().post(() -> {
             myView.progressBar.setVisibility(View.VISIBLE);
 
+            // The switch to show tags in the recyclerView
+            myView.songListShowTags.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListShowTags", true));
+
             // Initialise the recyclerview
             initialiseRecyclerView();
 
             // Hide the filter rows
             fixFilterRows();
+
+            if (getContext() != null) {
+                myView.alphabetIndex.setPalette(mainActivityInterface.getPalette());
+                myView.alphabetIndex.setTextSize(getResources().getDimension(R.dimen.text_small));
+            }
 
             // Populate the dropdowns
             setupDropdowns();
@@ -127,6 +134,7 @@ public class BulkTagAssignFragment extends Fragment {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setupListeners() {
         mainActivityInterface.getMainHandler().post(() -> {
             myView.filterButtons.folderButton.setOnClickListener(v -> {
@@ -196,6 +204,22 @@ public class BulkTagAssignFragment extends Fragment {
                         "BulkTagAssignFragmentRename", currentTagName, rename_string,
                         null, null, null, true);
                 textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "TextInputBottomSheet");
+            });
+
+            myView.songListShowTags.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListShowTags",isChecked);
+                tagSongListAdapter.setSongListShowTags(isChecked);
+                tagSongListAdapter.notifyDataSetChanged();
+            });
+
+            myView.alphabetIndex.setOnIndexTouchListener(letter -> {
+                if (tagSongListAdapter != null) {
+                    int position = tagSongListAdapter.getPositionForLetter(letter);
+                    if (position != -1 && myView.songList.getLayoutManager() != null) {
+                        ((LinearLayoutManager) myView.songList.getLayoutManager())
+                                .scrollToPositionWithOffset(position, 0);
+                    }
+                }
             });
         });
     }
@@ -320,6 +344,9 @@ public class BulkTagAssignFragment extends Fragment {
                     songListSearchByKey, songListSearchByTag, songListSearchByFilter,
                     songListSearchByTitle, folderSearchVal, artistSearchVal, keySearchVal,
                     tagSearchVal, filterSearchVal, titleSearchVal);
+
+            // Add this line to update the alphabet letters dynamically:
+            myView.alphabetIndex.setLetters(tagSongListAdapter.getStartingLetters());
         }
     }
 

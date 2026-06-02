@@ -1,8 +1,8 @@
 package com.garethevans.church.opensongtablet.tags;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -31,13 +31,18 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
     private final String TAG = "TagSongListAdapter";
     private SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final int highlightOn, highlightOff;
+    private boolean songListShowTags;
     TagSongListAdapter(Context c, RecyclerView recyclerView) {
         mainActivityInterface = (MainActivityInterface) c;
         this.recyclerView = recyclerView;
         highlightOff = mainActivityInterface.getPalette().primaryVariant;
         highlightOn = mainActivityInterface.getPalette().secondary;
+        songListShowTags = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListShowTags",true);
     }
 
+    public void setSongListShowTags(boolean songListShowTags) {
+        this.songListShowTags = songListShowTags;
+    }
     @NonNull
     @Override
     public TagViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,7 +66,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
                 if (payload.equals("updateTag")) {
                     // We want to update the tag text
                     String tag = songInfos.get(position).tag;
-                    if (tag.isEmpty() || tag.equals(";")) {
+                    if (tag.isEmpty() || tag.equals(";") || !songListShowTags) {
                         holder.songInfo.setHint(null);
                     } else {
                         holder.songInfo.setHint(fixTagForDisplay(fixTagStringForSaving(tag)));
@@ -110,7 +115,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
                 }
 
                 // Set the tags if they exist
-                if (tags==null || tags.isEmpty() || tags.equals(";")) {
+                if (tags==null || tags.isEmpty() || tags.equals(";") || !songListShowTags) {
                     holder.songInfo.setHint(null);
                 } else {
                     tags = fixTagForDisplay(fixTagStringForSaving(tags));
@@ -137,12 +142,12 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
             cardView.setBackgroundColor(cardColor);
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void updateSongsFound(String currentTag, boolean songListSearchByFolder, boolean songListSearchByArtist,
                                  boolean songListSearchByKey, boolean songListSearchByTag,
                                  boolean songListSearchByFilter, boolean songListSearchByTitle,
                                  String folderSearchVal, String artistSearchVal, String keySearchVal,
                                  String tagSearchVal, String filterSearchVal, String titleSearchVal) {
-        notifyItemRangeRemoved(0,getItemCount());
         this.currentTag = currentTag;
         ArrayList<Song> songsFound = mainActivityInterface.getSQLiteHelper().
                 getSongsByFilters(songListSearchByFolder, songListSearchByArtist,
@@ -175,8 +180,7 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
         }
 
         // Update the list
-        notifyItemRangeInserted(0,songInfos.size());
-        notifyItemRangeChanged(0,songInfos.size());
+        notifyDataSetChanged();
     }
 
     public void updateSongTags(String folder, String filename, boolean isChecked, int position) {
@@ -208,6 +212,48 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
             });
             mainActivityInterface.getSaveSong().updateSong(tempSong,false);
         });
+    }
+
+    // Add these below your updateSongTags method
+
+    public List<String> getStartingLetters() {
+        List<String> letters = new ArrayList<>();
+        for (TagsInfo info : songInfos) {
+            String title = info.title;
+            if (title == null || title.isEmpty()) {
+                title = info.filename;
+            }
+            if (title != null && !title.trim().isEmpty()) {
+                String firstChar = title.substring(0, 1).toUpperCase();
+                // Group numbers/symbols into a '#' category
+                if (Character.isDigit(firstChar.charAt(0)) || !Character.isLetter(firstChar.charAt(0))) {
+                    firstChar = "#";
+                }
+                if (!letters.contains(firstChar)) {
+                    letters.add(firstChar);
+                }
+            }
+        }
+        return letters;
+    }
+
+    public int getPositionForLetter(String letter) {
+        for (int i = 0; i < songInfos.size(); i++) {
+            String title = songInfos.get(i).title;
+            if (title == null || title.isEmpty()) {
+                title = songInfos.get(i).filename;
+            }
+            if (title != null && !title.trim().isEmpty()) {
+                String firstChar = title.substring(0, 1).toUpperCase();
+                if (Character.isDigit(firstChar.charAt(0)) || !Character.isLetter(firstChar.charAt(0))) {
+                    firstChar = "#";
+                }
+                if (firstChar.equals(letter)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     private String fixTagStringForSaving(String thisTag) {

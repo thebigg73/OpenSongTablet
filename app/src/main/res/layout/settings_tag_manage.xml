@@ -54,6 +54,7 @@
                         android:id="@+id/thisTag"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:hint="@string/tag" />
 
@@ -77,16 +78,30 @@
                         app:fabSize="mini" />
                 </LinearLayout>
 
-                <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
-                    android:id="@+id/renameThisTag"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/rename"
-                    android:text="@string/rename"
-                    android:visibility="visible"
-                    app:fabSize="mini"
-                    app:icon="@drawable/set_edit" />
+                    android:orientation="horizontal">
+
+                    <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                        android:id="@+id/songListShowTags"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:hint="@string/tags_show_info"
+                        android:text="@string/tags_show" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+                        android:id="@+id/renameThisTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/rename"
+                        android:text="@string/rename"
+                        android:visibility="visible"
+                        app:fabSize="mini"
+                        app:icon="@drawable/set_edit" />
+                </LinearLayout>
 
                 <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
 
@@ -96,12 +111,26 @@
                     android:padding="0dp"
                     android:text="@string/tag_add_remove" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/songList"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="0dp" />
+                    android:orientation="horizontal">
 
+                    <com.garethevans.church.opensongtablet.customviews.AlphabetIndexView
+                        android:id="@+id/alphabetIndex"
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/songList"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="0dp" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

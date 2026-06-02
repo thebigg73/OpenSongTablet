@@ -1868,4 +1868,6 @@
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
     <string name="connection_metronome_info">Listen for metronome start and stop actions</string>
+    <string name="tags_show">Show tags used</string>
+    <string name="tags_show_info">Include the names of each tag saved in the song list</string>
 </resources>
