@@ -192,7 +192,7 @@
     <string name="capo_fret">Capo fret</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret as numeral</string>
-    <string name="cast_info_string">OpenSongApp using screen mirroring to display on a second screen.  If the app is unable open your cast settings page showing available devices, you will have to manually start screen mirroring on your device before running OpenSongApp.  The app will then use the connected screen</string>
+    <string name="cast_info_string">OpenSongApp using screen mirroring to display on a second screen.  If the app is unable to open your cast settings page showing available devices, you will have to manually start screen mirroring on your device before running OpenSongApp.  The app will then use the connected screen</string>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
     <string name="category">Category</string>
     <string name="cavaquinho">Cavaquinho</string>
@@ -332,7 +332,7 @@
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
     <string name="connections_start_on_boot">Start nearby connections on boot up</string>
-    <string name="connections_start_on_boot_info">Use your current connection preferences next time you boot up (includes all host/client settings selected here).  By default hosts will advertise and clients will discover, but you can manually choose any option on the settings page</string>
+    <string name="connections_start_on_boot_info">Use your current connection preferences next time you boot up (includes all host/client settings selected here).  By default, hosts will advertise and clients will discover, but you can manually choose any option on the settings page</string>
     <string name="content">Content</string>
     <string name="continue_text">Continue</string>
     <string name="contribute">Contribute</string>
@@ -665,8 +665,8 @@
     <string name="hot_zone_top_left">Top left</string>
     <string name="hot_zones">Hot zones</string>
     <string name="hot_zones_info">Assign custom actions to areas of the screen</string>
-    <string name="hotspot">Setup a WiFi hotspot</string>
-    <string name="hotspot_info">If no WiFi network is available, OpenSongApp can create a local WiFi hotspot (no internet access) that other devices can connect to and access the web server.</string>
+    <string name="hotspot">Setup a Wi-Fi hotspot</string>
+    <string name="hotspot_info">If no Wi-Fi network is available, OpenSongApp can create a local Wi-Fi hotspot (no internet access) that other devices can connect to and access the web server.</string>
     <string name="hymn_number">Hymn number</string>
     <string name="ignore_cutouts">Ignore cutouts</string>
     <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
@@ -1065,7 +1065,7 @@
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
-    <string name="pad_cross_fade_info">This will automatically start pads when moving between songs and allow a smooth cross fade.  You must manually start the pad the first time.</string>
+    <string name="pad_cross_fade_info">This will automatically start pads when moving between songs and allow a smooth cross-fade.  You must manually start the pad the first time.</string>
     <string name="pad_custom_info">Set custom pads to use as backing tracks matching song keys.  These files must be saved in the OpenSong/Pads folder.  Songs that have the pad set as \'Auto\' and have a key set will use the file noted here.</string>
     <string name="pad_custom_pad_error">There is a problem with the custom auto pad set for this key</string>
     <string name="pad_custom_short">Choose built in or custom pads to match each key</string>
