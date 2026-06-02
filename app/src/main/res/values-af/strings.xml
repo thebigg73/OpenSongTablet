@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">\'n Gekoppelde toestel het inligting in \'n ou formaat gestuur.  Vra hulle asseblief om hul toepassing op te dateer.</string>
     <string name="connection_match_to_pdf_song">Verkies om die PDF-lêer te pas</string>
     <string name="connection_match_to_pdf_song_info">Eerder as om bypassende OpenSong-lêers te probeer laai, probeer om PDF-lêers met dieselfde naam te laai (maar eindig met .pdf)</string>
+    <string name="connection_metronome_info">Luister vir metronoom se begin- en stopaksies</string>
     <string name="connection_scroll_info">Luister vir blaai op en af opdragte</string>
     <string name="connections_accept">Konnekteer met</string>
     <string name="connections_accept_code">Bevestig dat die kode ooreenstem op albei toestelle:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Bestuur liedjie-etikette om te help met liedsoektog</string>
     <string name="tag_to_use">Die merker om by te voeg of uit liedjies te verwyder</string>
     <string name="tags_remove_from_songs">Hierdie temamerker sal van die volgende liedjies verwyder word:</string>
+    <string name="tags_show">Wys etikette wat gebruik is</string>
+    <string name="tags_show_info">Sluit die name van elke etiket in wat in die liedjielys gestoor is</string>
     <string name="tap">Kort druk / tik</string>
     <string name="tap_tempo">Tik tempo stel</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Aanbidding</string>
     <string name="zone">Sone</string>
     <string name="zoom_level">Zoemvlak</string>
-    <string name="connection_metronome_info">Luister vir metronoom se begin- en stopaksies</string>
 </resources>

@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Un appareil connecté a envoyé des informations dans un format obsolète. Veuillez lui demander de mettre à jour son application.</string>
     <string name="connection_match_to_pdf_song">Préférez le fichier PDF correspondant</string>
     <string name="connection_match_to_pdf_song_info">Plutôt que d’essayer de charger les fichiers OpenSong correspondants, essayez de charger des fichiers PDF portant le même nom (mais se terminant par .pdf)</string>
+    <string name="connection_metronome_info">Écoutez les actions de démarrage et d’arrêt du métronome</string>
     <string name="connection_scroll_info">Écoutez les commandes de défilement vers le haut et vers le bas</string>
     <string name="connections_accept">Se connecter avec</string>
     <string name="connections_accept_code">Confirmez que le code correspond sur les deux appareils:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Gérer les balises de chansons pour faciliter la recherche de chansons</string>
     <string name="tag_to_use">Le tag à ajouter ou supprimer des chansons</string>
     <string name="tags_remove_from_songs">Cette balise de thème sera supprimée des chansons suivantes :</string>
+    <string name="tags_show">Afficher les balises utilisées</string>
+    <string name="tags_show_info">Incluez le nom de chaque étiquette enregistrée dans la liste des chansons</string>
     <string name="tap">Appui court / tap</string>
     <string name="tap_tempo">Tapez pour régler le tempo</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Culte</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Le niveau de zoom</string>
-    <string name="connection_metronome_info">Écoutez les actions de démarrage et d’arrêt du métronome</string>
 </resources>

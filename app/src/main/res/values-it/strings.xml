@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Un dispositivo connesso ha inviato informazioni in un formato obsoleto. Chiedigli di aggiornare l\'app.</string>
     <string name="connection_match_to_pdf_song">Seleziona il file PDF del brano corrispondente</string>
     <string name="connection_match_to_pdf_song_info">Invece di caricare i brani OpenSong corrispondenti, prova a caricare i file PDF con lo stesso nome ma che estensione .pdf</string>
+    <string name="connection_metronome_info">Ascolta le azioni di inizio e arresto del metronomo</string>
     <string name="connection_scroll_info">Rileva i comandi di scorrimento su e giù</string>
     <string name="connections_accept">Connesso con</string>
     <string name="connections_accept_code">Conferma la corrispondenza del codice su entrambi i dispositivi:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Gestisci le etichette da assegnare ai brani per facilitarne la loro ricerca</string>
     <string name="tag_to_use">Etichetta da aggiungere o rimuovere dai brani</string>
     <string name="tags_remove_from_songs">Questa etichetta verrà rimossa dai seguenti brani:</string>
+    <string name="tags_show">Mostra i tag utilizzati</string>
+    <string name="tags_show_info">Includi i nomi di ciascun tag salvato nell\'elenco dei brani</string>
     <string name="tap">Tocco / Pressione breve</string>
     <string name="tap_tempo">Tocca più volte per impostare il tempo</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Culto</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Livello di zoom</string>
-    <string name="connection_metronome_info">Ascolta le azioni di inizio e arresto del metronomo</string>
 </resources>

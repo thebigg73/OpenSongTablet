@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">සම්බන්ධිත උපාංගයක් පැරණි ආකෘතියකින් තොරතුරු යවා ඇත.  කරුණාකර ඔවුන්ගේ යෙදුම යාවත්කාලීන කරන ලෙස ඉල්ලා සිටින්න.</string>
     <string name="connection_match_to_pdf_song">PDF ගොනුව ගැළපීමට කැමති වන්න</string>
     <string name="connection_match_to_pdf_song_info">ගැලපෙන OpenSong ගොනු පූරණය කිරීමට උත්සාහ කරනවා වෙනුවට, PDF ගොනු එකම නමකින් පූරණය කිරීමට උත්සාහ කරන්න (නමුත් .pdf වලින් අවසන් වේ)</string>
+    <string name="connection_metronome_info">මෙට්‍රොනොම් ආරම්භක සහ නැවතුම් ක්‍රියා සඳහා සවන් දෙන්න</string>
     <string name="connection_scroll_info">අනුචලනය ඉහළ සහ පහළ විධාන සඳහා සවන් දෙන්න</string>
     <string name="connections_accept">සමඟ සම්බන්ධ වන්න</string>
     <string name="connections_accept_code">උපාංග දෙකෙහිම කේත ගැලපීම තහවුරු කරන්න:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">ගීත සෙවීමට උදව් කිරීමට ගීත ටැග් කළමනාකරණය කරන්න</string>
     <string name="tag_to_use">ගීත එකතු කිරීමට හෝ ඉවත් කිරීමට ටැගය</string>
     <string name="tags_remove_from_songs">මෙම තේමා ටැගය පහත ගීත වලින් ඉවත් කරනු ලැබේ:</string>
+    <string name="tags_show">භාවිතා කළ ටැග් පෙන්වන්න</string>
+    <string name="tags_show_info">ගීත ලැයිස්තුවේ සුරකින ලද එක් එක් ටැගයේ නම් ඇතුළත් කරන්න.</string>
     <string name="tap">කෙටි ඔබන්න / තට්ටු කරන්න</string>
     <string name="tap_tempo">වේගය සැකසීමට තට්ටු කරන්න</string>
     <string name="tempo">ටෙම්පෝ</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">නමස්කාරය</string>
     <string name="zone">කලාපය</string>
     <string name="zoom_level">විශාලන මට්ටම</string>
-    <string name="connection_metronome_info">මෙට්‍රොනොම් ආරම්භක සහ නැවතුම් ක්‍රියා සඳහා සවන් දෙන්න</string>
 </resources>

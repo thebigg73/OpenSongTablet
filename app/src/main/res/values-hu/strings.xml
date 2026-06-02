@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Egy csatlakoztatott eszköz régi formátumban küldött információkat.  Kérje meg őket az alkalmazás frissítésére.</string>
     <string name="connection_match_to_pdf_song">Egyező PDF-fájl előnyben részesítése</string>
     <string name="connection_match_to_pdf_song_info">Ahelyett, hogy megpróbálná betölteni a megfelelő OpenSong fájlokat, próbálja meg betölteni az azonos nevű (de .pdf-vel végződő) PDF-fájlokat</string>
+    <string name="connection_metronome_info">Hallgasd meg a metronóm indítási és leállítási akcióit</string>
     <string name="connection_scroll_info">Figyelje a görgető fel és le parancsokat</string>
     <string name="connections_accept">Kapcsolódik valamivel</string>
     <string name="connections_accept_code">Ellenőrizze, hogy a kód megfelel-e mindkét eszközön:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Kezelje a dalcímkéket, hogy segítse a dalkeresést</string>
     <string name="tag_to_use">A dalokhoz hozzáadandó vagy onnan eltávolítandó címke</string>
     <string name="tags_remove_from_songs">Ez a témacímke el lesz távolítva a következő dalokról:</string>
+    <string name="tags_show">Felhasznált címkék megjelenítése</string>
+    <string name="tags_show_info">Tartalmazza az egyes, a dallistában mentett címkék nevét</string>
     <string name="tap">Rövid megnyomás / érintés</string>
     <string name="tap_tempo">Érintse meg, hogy a tempó</string>
     <string name="tempo">Tempó</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Imádat</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Nagyítási szint</string>
-    <string name="connection_metronome_info">Hallgasd meg a metronóm indítási és leállítási akcióit</string>
 </resources>

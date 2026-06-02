@@ -1479,4 +1479,6 @@
     <string name="sync_remote_replace_item">Udaljeni uređaj želi da zameni postojeću stavku.</string>
     <string name="sync_remote_confirm_save">U nastavku možete videti neke informacije i potvrditi da li želite da sačuvate ovo</string>
     <string name="connection_metronome_info">Slušajte akcije pokretanja i zaustavljanja metronoma</string>
+    <string name="tags_show">Pokaži korišćene oznake</string>
+    <string name="tags_show_info">Uključite imena svake oznake sačuvane na listi pesama</string>
 </resources>

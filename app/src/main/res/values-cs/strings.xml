@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Připojené zařízení odeslalo informace ve starém formátu.  Požádejte je, aby aktualizovali svou aplikaci.</string>
     <string name="connection_match_to_pdf_song">Preferovat odpovídající soubor PDF</string>
     <string name="connection_match_to_pdf_song_info">Místo toho, abyste se pokoušeli načíst odpovídající soubory OpenSong, zkuste načíst soubory PDF se stejným názvem (ale končící na .pdf)</string>
+    <string name="connection_metronome_info">Poslouchejte startovní a zastavovací akce metronomu</string>
     <string name="connection_scroll_info">Poslouchejte příkazy pro posun nahoru a dolů</string>
     <string name="connections_accept">Spojit s</string>
     <string name="connections_accept_code">Potvrďte shodu kódu na obou zařízeních:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Spravujte značky skladeb, které vám pomohou s vyhledáváním skladeb</string>
     <string name="tag_to_use">Značka, kterou chcete přidat nebo odebrat ze skladeb</string>
     <string name="tags_remove_from_songs">Tato značka tématu bude odstraněna z následujících skladeb:</string>
+    <string name="tags_show">Zobrazit použité štítky</string>
+    <string name="tags_show_info">Zahrnout názvy všech tagů uložených v seznamu skladeb</string>
     <string name="tap">Krátkým stisknutím / klepnutím</string>
     <string name="tap_tempo">Klepnutím nastavte tempo</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Uctívání</string>
     <string name="zone">Zóna</string>
     <string name="zoom_level">Úroveň přiblížení</string>
-    <string name="connection_metronome_info">Poslouchejte startovní a zastavovací akce metronomu</string>
 </resources>

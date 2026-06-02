@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">接続されたデバイスから古い形式の情報が送信されました。アプリのアップデートを依頼してください。</string>
     <string name="connection_match_to_pdf_song">一致するPDFファイルを優先する</string>
     <string name="connection_match_to_pdf_song_info">一致するOpenSongファイルを読み込もうとするのではなく、同じ名前(ただし.pdfで終わる)のPDFファイルを読み込んでみてください</string>
+    <string name="connection_metronome_info">メトロノームの開始と停止の動きを聞く</string>
     <string name="connection_scroll_info">上下にスクロールするコマンドを聞く</string>
     <string name="connections_accept">と接続する</string>
     <string name="connections_accept_code">両方のデバイスでコードが一致することを確認します。</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">曲の検索に役立つ曲のタグを管理する</string>
     <string name="tag_to_use">曲に追加または削除するタグ</string>
     <string name="tags_remove_from_songs">このテーマタグは、次の曲から削除されます。</string>
+    <string name="tags_show">使用されているタグを表示</string>
+    <string name="tags_show_info">曲リストに保存されている各タグの名前を含める</string>
     <string name="tap">ショートプレス/タップ</string>
     <string name="tap_tempo">テンポを設定するタップ</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">崇拝</string>
     <string name="zone">ゾーン</string>
     <string name="zoom_level">ズームレベル</string>
-    <string name="connection_metronome_info">メトロノームの開始と停止の動きを聞く</string>
 </resources>

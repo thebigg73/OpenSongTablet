@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Підключений пристрій надіслав інформацію в старому форматі.  Попросіть їх оновити свою програму.</string>
     <string name="connection_match_to_pdf_song">Віддавайте перевагу відповідному PDF-файлу</string>
     <string name="connection_match_to_pdf_song_info">Замість того, щоб намагатися завантажити відповідні файли OpenSong, спробуйте завантажити файли PDF з такою самою назвою (але закінчуючи на .pdf)</string>
+    <string name="connection_metronome_info">Слухайте дії запуску і зупинки метронома</string>
     <string name="connection_scroll_info">Слухайте команди прокрутки вгору та вниз</string>
     <string name="connections_accept">З\'єднати з</string>
     <string name="connections_accept_code">Підтвердіть збіг коду на обох пристроях:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Керуйте тегами пісень, щоб допомогти з пошуком пісень</string>
     <string name="tag_to_use">Тег, який можна додати або видалити з пісень</string>
     <string name="tags_remove_from_songs">Цей тег теми буде видалено з таких пісень:</string>
+    <string name="tags_show">Показати використані теги</string>
+    <string name="tags_show_info">Включити назви кожного тегу, збереженого у списку пісень</string>
     <string name="tap">Коротке натискання/тап</string>
     <string name="tap_tempo">Натисніть, щоб встановити темп</string>
     <string name="tempo">Темп</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Богослужіння</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Рівень масштабування</string>
-    <string name="connection_metronome_info">Слухайте дії запуску і зупинки метронома</string>
 </resources>

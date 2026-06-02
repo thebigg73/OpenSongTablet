@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Μια συνδεδεμένη συσκευή έχει στείλει πληροφορίες σε παλιά μορφή.  Ζητήστε τους να ενημερώσουν την εφαρμογή τους.</string>
     <string name="connection_match_to_pdf_song">Προτιμήστε το αντίστοιχο αρχείο PDF</string>
     <string name="connection_match_to_pdf_song_info">Αντί να προσπαθήσετε να φορτώσετε αρχεία OpenSong που ταιριάζουν, δοκιμάστε να φορτώσετε αρχεία PDF με το ίδιο όνομα (αλλά με .pdf)</string>
+    <string name="connection_metronome_info">Ακούστε τις ενέργειες έναρξης και διακοπής μετρονόμου</string>
     <string name="connection_scroll_info">Ακούστε τις εντολές κύλισης προς τα πάνω και προς τα κάτω</string>
     <string name="connections_accept">Συνδέω με</string>
     <string name="connections_accept_code">Επιβεβαιώστε ότι ο κωδικός ταιριάζει και στις δύο συσκευές:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Διαχειριστείτε ετικέτες τραγουδιών για να βοηθήσετε στην αναζήτηση τραγουδιών</string>
     <string name="tag_to_use">Η ετικέτα για προσθήκη ή αφαίρεση από τραγούδια</string>
     <string name="tags_remove_from_songs">Αυτή η ετικέτα θέματος θα αφαιρεθεί από τα ακόλουθα τραγούδια:</string>
+    <string name="tags_show">Εμφάνιση ετικετών που χρησιμοποιήθηκαν</string>
+    <string name="tags_show_info">Συμπεριλάβετε τα ονόματα κάθε ετικέτας που είναι αποθηκευμένη στη λίστα τραγουδιών</string>
     <string name="tap">Πατήστε σύντομα / πατήστε</string>
     <string name="tap_tempo">Ακούμπα (Tap) για να εισαχθεί ο ρυθμός</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Λατρεία</string>
     <string name="zone">Ζώνη</string>
     <string name="zoom_level">Επίπεδο ζουμ</string>
-    <string name="connection_metronome_info">Ακούστε τις ενέργειες έναρξης και διακοπής μετρονόμου</string>
 </resources>

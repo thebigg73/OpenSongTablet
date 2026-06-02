@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">已连接的设备已发送旧格式的信息。请要求他们更新其应用程序。</string>
     <string name="connection_match_to_pdf_song">首选匹配的 PDF 文件</string>
     <string name="connection_match_to_pdf_song_info">与其尝试加载匹配的 OpenSong 文件，不如尝试加载同名（但以 .pdf 结尾）的 PDF 文件</string>
+    <string name="connection_metronome_info">听节拍器的启动和停止动作</string>
     <string name="connection_scroll_info">监听向上和向下滚动命令</string>
     <string name="connections_accept">与连接</string>
     <string name="connections_accept_code">确认两个设备上的代码匹配：</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">管理歌曲标签以帮助歌曲搜索</string>
     <string name="tag_to_use">从歌曲中添加或删除的标签</string>
     <string name="tags_remove_from_songs">此主题标签将从以下歌曲中移除：</string>
+    <string name="tags_show">显示使用的标签</string>
+    <string name="tags_show_info">请将歌曲列表中保存的每个标签的名称都包含在内</string>
     <string name="tap">短按/轻按</string>
     <string name="tap_tempo">轻按以设定的速度</string>
     <string name="tempo">拍子</string>
@@ -1479,5 +1482,4 @@
     <string name="worship">崇拜</string>
     <string name="zone">区</string>
     <string name="zoom_level">缩放级别</string>
-    <string name="connection_metronome_info">听节拍器的启动和停止动作</string>
 </resources>

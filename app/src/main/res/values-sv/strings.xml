@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">En ansluten enhet har skickat information i ett gammalt format.  Be dem uppdatera sin app.</string>
     <string name="connection_match_to_pdf_song">Föredra matchande PDF-fil</string>
     <string name="connection_match_to_pdf_song_info">Istället för att försöka ladda matchande OpenSong-filer, försök att ladda PDF-filer med samma namn (men som slutar med .pdf)</string>
+    <string name="connection_metronome_info">Lyssna efter metronomens start- och stopprörelser</string>
     <string name="connection_scroll_info">Lyssna efter kommandon för att scrolla upp och ner</string>
     <string name="connections_accept">Ansluta till</string>
     <string name="connections_accept_code">Bekräfta kodmatchningarna på båda enheterna:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Hantera låttaggar för att hjälpa till med låtsökning</string>
     <string name="tag_to_use">Taggen att lägga till eller ta bort från låtar</string>
     <string name="tags_remove_from_songs">Den här temataggen kommer att tas bort från följande låtar:</string>
+    <string name="tags_show">Visa använda taggar</string>
+    <string name="tags_show_info">Inkludera namnen på varje tagg som sparats i låtlistan</string>
     <string name="tap">Kort tryck / tryck</string>
     <string name="tap_tempo">Tryck för att ställa in tempo</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Dyrkan</string>
     <string name="zone">Zon</string>
     <string name="zoom_level">Zoomnivå</string>
-    <string name="connection_metronome_info">Lyssna efter metronomens start- och stopprörelser</string>
 </resources>

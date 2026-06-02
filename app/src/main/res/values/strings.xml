@@ -284,6 +284,7 @@
     <string name="connection_host_needs_update">A connected device has sent information in an old format.  Please ask them to update their app.</string>
     <string name="connection_match_to_pdf_song">Prefer matching PDF file</string>
     <string name="connection_match_to_pdf_song_info">Rather than try to load matching OpenSong files, try to load PDF files with the same name (but ending with .pdf)</string>
+    <string name="connection_metronome_info">Listen for metronome start and stop actions</string>
     <string name="connection_scroll_info">Listen for scroll up and down commands</string>
     <string name="connections_accept">Connect with</string>
     <string name="connections_accept_code">Confirm the code matches on both devices:</string>
@@ -1550,6 +1551,8 @@
     <string name="tag_song_info">Manage song tags to help with song searching</string>
     <string name="tag_to_use">The tag to add or remove from songs</string>
     <string name="tags_remove_from_songs">This theme tag will be removed from the following songs:</string>
+    <string name="tags_show">Show tags used</string>
+    <string name="tags_show_info">Include the names of each tag saved in the song list</string>
     <string name="tap">Short press/tap</string>
     <string name="tap_tempo">Tap to set tempo</string>
     <string name="tempo">Tempo</string>
@@ -1867,7 +1870,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="connection_metronome_info">Listen for metronome start and stop actions</string>
-    <string name="tags_show">Show tags used</string>
-    <string name="tags_show_info">Include the names of each tag saved in the song list</string>
 </resources>

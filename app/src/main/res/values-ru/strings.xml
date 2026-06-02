@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Подключённое устройство отправило информацию в старом формате. Попросите его обновить приложение.</string>
     <string name="connection_match_to_pdf_song">Предпочитать совпадающий PDF-файл</string>
     <string name="connection_match_to_pdf_song_info">Вместо того, чтобы пытаться загрузить совпадающие файлы OpenSong, попробуйте загрузить PDF-файлы с тем же именем (но оканчивающимися на .pdf)</string>
+    <string name="connection_metronome_info">Слушайте действия метронома для запуска и прекращения</string>
     <string name="connection_scroll_info">Ожидание команды прокрутки вверх и вниз</string>
     <string name="connections_accept">Соединить с</string>
     <string name="connections_accept_code">Подтвердите совпадение кода на обоих устройствах:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Управляйте тегами песен, чтобы упростить поиск песен</string>
     <string name="tag_to_use">Тег, который нужно добавить или удалить из песен</string>
     <string name="tags_remove_from_songs">Этот тематический тег будет удален из следующих песен:</string>
+    <string name="tags_show">Показать использованные теги</string>
+    <string name="tags_show_info">Укажите названия каждого тега, сохраненного в списке песен.</string>
     <string name="tap">Короткое нажатие/тап</string>
     <string name="tap_tempo">Тапайте, чтобы установить темп</string>
     <string name="tempo">Темп</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Поклонение</string>
     <string name="zone">Зона</string>
     <string name="zoom_level">Уровень масштабирования</string>
-    <string name="connection_metronome_info">Слушайте действия метронома для запуска и прекращения</string>
 </resources>

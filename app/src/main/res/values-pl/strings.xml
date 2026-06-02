@@ -248,6 +248,7 @@
     <string name="connection_host_needs_update">Podłączone urządzenie wysłało informacje w starym formacie. Poproś o aktualizację aplikacji.</string>
     <string name="connection_match_to_pdf_song">Preferuj pasujący plik PDF</string>
     <string name="connection_match_to_pdf_song_info">Zamiast próbować załadować pasujące pliki OpenSong, spróbuj załadować pliki PDF o tej samej nazwie (ale kończące się na .pdf)</string>
+    <string name="connection_metronome_info">Nasłuchuj akcji startu i zatrzymania metronomu</string>
     <string name="connection_scroll_info">Nasłuchuj poleceń przewijania w górę i w dół</string>
     <string name="connections_accept">Połącz z</string>
     <string name="connections_accept_code">Potwierdź, czy kod pasuje na obu urządzeniach:</string>
@@ -1355,6 +1356,8 @@
     <string name="tag_song_info">Zarządzaj etykietami piosenek, aby pomóc w wyszukiwaniu</string>
     <string name="tag_to_use">Etykieta do dodania lub usunięcia z piosenek</string>
     <string name="tags_remove_from_songs">Ta etykieta motywu zostanie usunięta z następujących piosenek:</string>
+    <string name="tags_show">Pokaż użyte tagi</string>
+    <string name="tags_show_info">Uwzględnij nazwy wszystkich tagów zapisanych na liście utworów</string>
     <string name="tap">Krótkie naciśnięcie/dotknięcie</string>
     <string name="tap_tempo">Dotknij, aby ustawić tempo</string>
     <string name="tempo">Tempo</string>
@@ -1478,5 +1481,4 @@
     <string name="worship">Cześć</string>
     <string name="zone">Strefa</string>
     <string name="zoom_level">Stopień przybliżenia</string>
-    <string name="connection_metronome_info">Nasłuchuj akcji startu i zatrzymania metronomu</string>
 </resources>
