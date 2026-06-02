@@ -348,59 +348,76 @@ public class NearbyReceivePayloads {
     private void loadSongFromMyLibrary(NearbyJson nearbyJson) {
         setForceReload(true);
         // We just want to trigger loading the song on our device (if we have it).
-        // If not, we get notified it doesn't exits
-        if (nearbyReturnActionsInterface != null && !nearbyActions.getNearbyConnectionManagement().getIsHost()) {
-            if (nearbyJson.getFolder() != null && nearbyJson.getFilename() != null) {
-                mainActivityInterface.getSong().setFolder(nearbyJson.getFolder());
-                mainActivityInterface.getSong().setFilename(nearbyJson.getFilename());
-                setSongSection(mainActivityInterface.getSong(),nearbyJson.getSection());
-                if (nearbyJson.getSwipeDirection() != null) {
-                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection(nearbyJson.getSwipeDirection());
-                } else {
-                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
-                }
+        // If not, we get notified it doesn't exist
+        // We first need to check if a transpose is required
 
-                // Check if we need to load the song in a different key.
-                boolean needToTempTranspose = false;
-                if (nearbyJson.getKey() != null) {
-                    // Get the key of our song
-                    needToTempTranspose = !nearbyJson.getKey().equals(mainActivityInterface.getSQLiteHelper().getKey(nearbyJson.getFolder(), nearbyJson.getFilename()));
-                }
+        if (nearbyJson!=null && nearbyJson.getFolder()!=null && nearbyJson.getFilename()!=null) {
 
-                // If we want to use PDF versions of songs instead, change the filename
-                if (nearbyMatchToPDFSong && !nearbyJson.getFilename().toLowerCase().endsWith(".pdf")) {
-                    String newPDFFilename = nearbyJson.getFilename() + ".pdf";
-                    Uri newPDFUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", nearbyJson.getFolder(), newPDFFilename);
-                    if (mainActivityInterface.getStorageAccess().uriExists(newPDFUri)) {
-                        mainActivityInterface.getSong().setFilename(newPDFFilename);
-                    }
-                }
+            boolean needToTempTranspose = false;
 
-                // We can ignore any temp transpose if this is an image or a pdf
-                if (mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong())) {
-                    needToTempTranspose = false;
-                }
-
-                if (needToTempTranspose) {
-                    Song quickSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
-                            mainActivityInterface.getSong().getFolder(),
-                            mainActivityInterface.getSong().getFilename());
-                    quickSong = mainActivityInterface.getVariations().makeKeyVariation(quickSong, nearbyJson.getKey(), false, false);
-                    quickSong.setFolder(mainActivityInterface.getVariations().getKeyVariationsFolder());
-                    quickSong.setFilename(mainActivityInterface.getVariations().getKeyVariationFilename(mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), nearbyJson.getKey()));
-                    // Save the temp song
-                    mainActivityInterface.getStorageAccess().writeSongFile(quickSong);
-                    mainActivityInterface.getSong().setFolder(quickSong.getFolder());
-                    mainActivityInterface.getSong().setFilename(quickSong.getFilename());
-                    // Set the song section
+            // If the received song is already a key variation from the host, we need to get the original
+            if (mainActivityInterface.getVariations().getIsKeyVariation(nearbyJson.getFolder(), nearbyJson.getFilename()) ||
+                            mainActivityInterface.getVariations().getIsNormalVariation(nearbyJson.getFolder(), nearbyJson.getFilename())) {
+                String[] preVariationInfo = mainActivityInterface.getVariations().getPreVariationInfo(nearbyJson.getFolder(), nearbyJson.getFilename(), nearbyJson.getKey());
+                nearbyJson.setFolder(preVariationInfo[0]);
+                nearbyJson.setFilename(preVariationInfo[1]);
+            }
+            if (nearbyReturnActionsInterface != null && !nearbyActions.getNearbyConnectionManagement().getIsHost()) {
+                if (nearbyJson.getFolder() != null && nearbyJson.getFilename() != null) {
+                    mainActivityInterface.getSong().setFolder(nearbyJson.getFolder());
+                    mainActivityInterface.getSong().setFilename(nearbyJson.getFilename());
                     setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
-                }
-                if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
-                    mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
-                }
-                // Only load the song if we aren't in a settings window
-                if (!mainActivityInterface.getSettingsOpen()) {
-                    nearbyReturnActionsInterface.loadSong(true);
+                    if (nearbyJson.getSwipeDirection() != null) {
+                        mainActivityInterface.getDisplayPrevNext().setSwipeDirection(nearbyJson.getSwipeDirection());
+                    } else {
+                        mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
+                    }
+
+                    // Check if we need to load the song in a different key.
+                    if (nearbyJson.getKey() != null) {
+                        // Get the key of our song
+                        needToTempTranspose = !nearbyJson.getKey().equals(mainActivityInterface.getSQLiteHelper().getKey(nearbyJson.getFolder(), nearbyJson.getFilename()));
+                    }
+
+                    // If we want to use PDF versions of songs instead, change the filename
+                    if (nearbyMatchToPDFSong && !nearbyJson.getFilename().toLowerCase().endsWith(".pdf")) {
+                        String newPDFFilename = nearbyJson.getFilename() + ".pdf";
+                        Uri newPDFUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", nearbyJson.getFolder(), newPDFFilename);
+                        if (mainActivityInterface.getStorageAccess().uriExists(newPDFUri)) {
+                            mainActivityInterface.getSong().setFilename(newPDFFilename);
+                        }
+                    }
+
+                    // We can ignore any temp transpose if this is an image or a pdf
+                    if (mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong())) {
+                        needToTempTranspose = false;
+                    }
+
+                    if (needToTempTranspose) {
+                        Log.d(TAG, "before transposing!!!");
+                        Song quickSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
+                                mainActivityInterface.getSong().getFolder(),
+                                mainActivityInterface.getSong().getFilename());
+                        Log.d(TAG, "quickSong.getFolder():" + quickSong.getFolder() + " quickSong.getFilename():" + quickSong.getFilename());
+                        Log.d(TAG, "quickSong.getLyrics():" + quickSong.getLyrics());
+                        quickSong = mainActivityInterface.getVariations().makeKeyVariation(quickSong, nearbyJson.getKey(), false, true);
+                        quickSong.setFolder(mainActivityInterface.getVariations().getKeyVariationsFolder());
+                        quickSong.setFilename(mainActivityInterface.getVariations().getKeyVariationFilename(mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), nearbyJson.getKey()));
+                        // Save the temp song
+                        Log.d(TAG, "quickSong.getFolder():" + quickSong.getFolder() + " quickSong.getFilename():" + quickSong.getFilename());
+                        mainActivityInterface.getStorageAccess().writeSongFile(quickSong);
+                        mainActivityInterface.getSong().setFolder(quickSong.getFolder());
+                        mainActivityInterface.getSong().setFilename(quickSong.getFilename());
+                        // Set the song section
+                        setSongSection(mainActivityInterface.getSong(), nearbyJson.getSection());
+                    }
+                    if (!nearbyActions.getNearbyReceivePayloads().nearbyReceiveHostFiles) {
+                        mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
+                    }
+                    // Only load the song if we aren't in a settings window
+                    if (!mainActivityInterface.getSettingsOpen()) {
+                        nearbyReturnActionsInterface.loadSong(true);
+                    }
                 }
             }
         }
