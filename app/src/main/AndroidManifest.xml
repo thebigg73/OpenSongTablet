@@ -77,8 +77,10 @@
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" tools:targetApi="s" />
 
 
+    <!-- These aren't required.  If the user leaves the app, they don't need the services
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    -->
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" tools:remove="android:maxSdkVersion" />
