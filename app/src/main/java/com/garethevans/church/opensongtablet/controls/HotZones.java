@@ -3,17 +3,22 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
 public class HotZones {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "HotZones";
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private View hotZoneTopLeftView;
     private View hotZoneTopCenterView;
@@ -30,6 +35,7 @@ public class HotZones {
 
     // This creates an overlay with clickable zones for action assignment
     public HotZones(Context c) {
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         mode_performance = c.getString(R.string.mode_performance);
         getPreferences();
@@ -72,7 +78,7 @@ public class HotZones {
         setUsingScrollZones();
     }
 
-    private void checkIfRequired() {
+    public void checkIfRequired() {
         // Check hotzone required
         if (!mainActivityInterface.getMode().equals(mode_performance)) {
             hotZoneTopLeftView.setVisibility(View.GONE);
@@ -80,19 +86,39 @@ public class HotZones {
             hotZoneBottomCenterView.setVisibility(View.GONE);
 
         } else {
-            // If the inline set is open the top left zone is disabled
+            // If the inline set is less than 25%, the top left zone is disabled
             // If the inline set size is greater than 40%, the center zones are also disabled
             boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",true);
             float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.2f);
+
 
             hotZoneTopLeftView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
             hotZoneTopCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
             hotZoneBottomCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
 
+            // Decide if we can show the topLeft hotzone.
+            // For this to be true, we need to decide if the width is >0 after removing the inline set width
+            int actualInlineSetWidth = 0;
+            int hotZoneWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    96,c.getResources().getDisplayMetrics());
+            int topLeftAvailable = hotZoneWidth;
+            if (inlineSet && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+                // Work out the size allowed for the topLeft hot zone
+                actualInlineSetWidth = Math.round(inlineSetWidth * mainActivityInterface.getDisplayMetrics()[0]);
+                topLeftAvailable = (int)((mainActivityInterface.getDisplayMetrics()[0] / 2f) - (hotZoneWidth/2f)) - actualInlineSetWidth;
+            }
+
             hotZoneTopLeftView.setVisibility(
-                    hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && !inlineSet &&
-                            (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?
+                    hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && (!inlineSet || topLeftAvailable > 0) && (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?
                             View.VISIBLE : View.GONE);
+
+            if (hotZoneTopLeftView.getVisibility()==View.VISIBLE && inlineSet) {
+                // Move the view across
+                Log.d(TAG,"move the hotZone:"+actualInlineSetWidth);
+                hotZoneTopLeftView.setLeft(0);
+                hotZoneTopLeftView.setTranslationX(actualInlineSetWidth);
+                hotZoneTopLeftView.getLayoutParams().width = topLeftAvailable;
+            }
             hotZoneTopCenterView.setVisibility(
                     hotZoneTopCenterShort != null && hotZoneTopCenterLong != null && (!inlineSet || inlineSetWidth<0.5f) &&
                             (!hotZoneTopCenterShort.isEmpty() || !hotZoneTopCenterLong.isEmpty()) ?

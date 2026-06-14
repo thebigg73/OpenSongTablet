@@ -189,7 +189,8 @@ public class InlineSetFragment extends Fragment {
     }
 
     private void checkHotZoneConflict() {
-        myView.disableLeftHotZone.post(() -> myView.disableLeftHotZone.setVisibility(myView.showInlineSet.getChecked() ? View.VISIBLE:View.GONE));
+        myView.disableLeftHotZone.post(() -> myView.disableLeftHotZone.setVisibility(myView.showInlineSet.getChecked() && myView.widthSlider.getValue()>25? View.VISIBLE:View.GONE));
         myView.disableCenterHotZone.post(() -> myView.disableCenterHotZone.setVisibility((myView.showInlineSet.getChecked() && myView.widthSlider.getValue()>45) ? View.VISIBLE:View.GONE));
+        mainActivityInterface.getHotZones().checkIfRequired();
     }
 }

@@ -635,6 +635,9 @@ public class PerformanceGestures {
             case "audioplayer":
                 audioPlayer();
                 break;
+            case "audioplayerpopup":
+                audioPlayerPopup();
+                break;
             case "multitrack":
                 multiTrack();
                 break;
@@ -716,6 +719,10 @@ public class PerformanceGestures {
     // Add to set
     public void addToSet() {
         // Add to the currently loaded to the currentSet
+        // Log this as well
+        if (mainActivityInterface.getSong()!=null) {
+            mainActivityInterface.getAnalyticsHelper().incrementSetCount(mainActivityInterface.getSong().getUuid());
+        }
         mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
 
         // Tell the user that the song has been added.
@@ -741,6 +748,11 @@ public class PerformanceGestures {
             mainActivityInterface.getStorageAccess().writeFileFromString("Variations", "",
                     mainActivityInterface.getSong().getFilename(), mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()), false);
             mainActivityInterface.getSong().setFolder("**Variations");
+
+            // Log this as well
+            if (mainActivityInterface.getSong()!=null) {
+                mainActivityInterface.getAnalyticsHelper().incrementSetCount(mainActivityInterface.getSong().getUuid());
+            }
 
             // Add to the current set
             mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
@@ -1138,6 +1150,26 @@ public class PerformanceGestures {
         }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         mainActivityInterface.setWhattodo("audioplayer");
+        mainActivityInterface.selectFile(intent);
+    }
+
+    public void audioPlayerPopup() {
+        // Ask the user to select a file
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        ArrayList<String> input = new ArrayList<>();
+        input.add("audio/*");
+        input.add("audio/3gp");
+        input.add("video/3gp");
+        input.add("video/mp4)");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, input);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
+                    mainActivityInterface.getStorageAccess().getUriForItem("Media", "", ""));
+        }
+        intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
+        mainActivityInterface.setWhattodo("audioplayerpopup");
         mainActivityInterface.selectFile(intent);
     }
 
