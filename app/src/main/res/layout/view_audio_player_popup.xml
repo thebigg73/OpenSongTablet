@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:maxWidth="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg">
 
     <LinearLayout
-        android:layout_width="250dp"
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="250dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/popup_bg">
 
         <com.garethevans.church.opensongtablet.customviews.DialogHeader
             android:id="@+id/dialogHeader"
@@ -22,7 +23,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp"
+                    android:padding="8dp"
                     android:paddingBottom="@dimen/extra_scroll_space">
 
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
@@ -31,10 +32,12 @@
                         android:layout_height="wrap_content"/>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
                         android:clipToPadding="false"
                         android:clipChildren="false">
 
@@ -50,6 +53,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:src="@drawable/play"
+                                app:fabSize="mini"
                                 android:contentDescription="@string/start"/>
                         </FrameLayout>
                         <FrameLayout
@@ -62,6 +66,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:src="@drawable/stop"
+                                app:fabSize="mini"
                                 android:contentDescription="@string/stop"/>
                         </FrameLayout>
 

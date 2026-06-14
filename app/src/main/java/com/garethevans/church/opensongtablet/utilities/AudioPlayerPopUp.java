@@ -115,6 +115,15 @@ public class AudioPlayerPopUp {
         playContent = myView.findViewById(R.id.playContent);
         seekBar = myView.findViewById(R.id.seekBar);
 
+        try {
+            dialogHeader.findViewById(R.id.headerLayout).setPadding(8,0,8,0);
+            seekBar.hideText();
+            seekBar.setSliderPadding(8,0,8,0);
+            playContent.setPadding(8,0,8,0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Update the palette colours for the seekbar and buttons
         Palette tempPalette = new Palette(c);
         tempPalette.secondaryVariant = mainActivityInterface.getPalette().textColor;
