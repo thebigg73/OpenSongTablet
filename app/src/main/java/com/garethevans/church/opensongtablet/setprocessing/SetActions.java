@@ -139,6 +139,7 @@ public class SetActions {
                 setItemInfo.songkey = key;
                 setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo,false);
+                // This is purely building the current set, so don't log the song being added
                 Song thisSong = new Song();
                 thisSong.setFolder(folder);
                 thisSong.setFilename(filename);
@@ -1041,7 +1042,7 @@ public class SetActions {
 
         } else {
             if (currentSet!=null) {
-                currentSet.addItemToSet(tempSong.getFolder(), tempSong.getFilename(), tempSong.getTitle(), "", true);
+                currentSet.addItemToSet(tempSong.getFolder(), tempSong.getFilename(), tempSong.getTitle(), "",true);
             }
             // Now create the file in the Scripture/_cache folder
             writeTempSlide(folderScripture, cache, tempSong);

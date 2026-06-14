@@ -184,9 +184,9 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             });
         }
 
-        if (si.songicon==null || si.songicon.isEmpty()) {
+        //if (si.songicon==null || si.songicon.isEmpty()) {
             si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
-        }
+        //}
 
         // Set the icon
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
@@ -197,19 +197,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
 
 
-        // Set the click listener for the whole row
-        /*holder.itemView.setOnClickListener(v -> {
-            // Check if we are currently dragging.
-            // If your Callback is dragging, ignore the click.
-            if (setListItemCallback != null && setListItemCallback.getIsDragging()) {
-                return;
-            }
-            int currentPos = holder.getBindingAdapterPosition();
-            if (currentPos != RecyclerView.NO_POSITION) {
-                onItemClicked(mainActivityInterface, currentPos);
-            }
-        });*/
-        //holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
     }
 
     @Override
@@ -258,7 +245,8 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                 }
                 if (!payloads.isEmpty() && payloads.contains("PAYLOAD_NUMBER_ONLY")) {
                     // ONLY update the number text, do NOT touch anything else
-                    holder.cardItem.setText(String.valueOf(position + 1));
+                    String text = (position + 1) + ".";
+                    holder.cardItem.setText(text);
                 }
             }
 
@@ -409,6 +397,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             String folder = mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfolder;
             String filename = mainActivityInterface.getCurrentSet().getSetItemInfo(fromPosition).songfilename;
 
+            // Update the analytics
+            mainActivityInterface.getAnalyticsHelper().decrementSetCount(
+                    mainActivityInterface.getSQLiteHelper().getUuidFromFolderAndFile(
+                            mainActivityInterface.getCommonSQL().getAnySongId(folder,filename))[0]);
+
             // --- STEP 2: DATA LOGIC ---
             // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
@@ -454,6 +447,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
         // Update the checked items
         updateCheckedItem(setItemInfo);
+
+        // Update the analytics
+        mainActivityInterface.getAnalyticsHelper().incrementViewCount(
+                mainActivityInterface.getCommonSQL().getAnySongId(setItemInfo.songfolder,setItemInfo.songfilename));
+
 
         // Update the title
         mainActivityInterface.getCurrentSet().updateSetTitleView();

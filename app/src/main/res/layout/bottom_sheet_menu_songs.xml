@@ -130,6 +130,9 @@
                 android:padding="16dp"
                 android:text="@string/random_song"
                 app:mydrawable="@drawable/folder_search" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/newSongs"
@@ -139,6 +142,9 @@
                 android:padding="16dp"
                 android:text="@string/add_songs"
                 app:mydrawable="@drawable/database_import" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/rebuildIndexFull"
@@ -148,6 +154,9 @@
                 android:padding="16dp"
                 android:text="@string/index_songs_rebuild"
                 app:mydrawable="@drawable/menu" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/rebuildIndexQuick"
@@ -157,6 +166,21 @@
                 android:padding="16dp"
                 android:text="@string/index_songs_rebuild"
                 app:mydrawable="@drawable/menu" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/songAnalytics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/analytics_info"
+                android:padding="16dp"
+                android:text="@string/analytics"
+                app:mydrawable="@drawable/menu" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </ScrollView>

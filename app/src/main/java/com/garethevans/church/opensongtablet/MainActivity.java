@@ -179,6 +179,7 @@ import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongActionsMenuFragment;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
+import com.garethevans.church.opensongtablet.sqlite.AnalyticsSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -237,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ABCNotation abcNotation;
     private Aeros aeros;
     private AlertChecks alertChecks;
+    private AnalyticsSQLiteHelper analyticsHelper;
     private AppPermissions appPermissions;
     private Autoscroll autoscroll;
     private BeatBuddy beatBuddy;
@@ -418,7 +420,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Updating toolbar runnable
         updatingToolbarRunnable = () -> {
-            Log.d(TAG,"webHelpAddress:"+webHelpAddress);
             updatingToolbarHelp = true;
             if (menuScreenHelp != null) {
                 menuScreenHelp.setVisible(webHelpAddress != null && !webHelpAddress.isEmpty());
@@ -503,7 +504,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                     myView.mainPageFrame.getFocusDummy().requestFocus();
                                     myView.mainPageFrame.getFocusDummy().requestFocusFromTouch();
                                 });
-                        Log.d(TAG, "clear the focus");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -781,7 +781,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else if (presenterValid()) {
             presenterFragment.tryToImportIntent();
         } else if (performanceValid()) {
-            Log.d(TAG, "performance valid - sending there");
             performanceFragment.tryToImportIntent();
         }
         super.onNewIntent(intent);
@@ -880,6 +879,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         sqLiteHelper = getSQLiteHelper();
         nonOpenSongSQLiteHelper = getNonOpenSongSQLiteHelper();
         commonSQL = getCommonSQL();
+        analyticsHelper = getAnalyticsHelper();
 
         // Converting song formats and processing song content
         chordDisplayProcessing = getChordDisplayProcessing();
@@ -1864,6 +1864,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     e.printStackTrace();
                 }
             }
+            // Use this to clear everything back to the first fragment
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             if (whichMode.equals(mode_presenter)) {
                 navigateToFragment(deeplink_presenter, 0);
 
@@ -3069,6 +3071,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return commonSQL;
     }
 
+    @Override
+    public AnalyticsSQLiteHelper getAnalyticsHelper() {
+        if (analyticsHelper == null) {
+            analyticsHelper = new AnalyticsSQLiteHelper(this);
+        }
+        return analyticsHelper;
+    }
 
     // Song actions
     @Override
@@ -3171,7 +3180,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Metronome
     @Override
     public void metronomeToggle() {
-        Log.d(TAG,"metronomeToggle()");
         getDrumViewModel();
         if (DrumCalculations.isTempoTimeSigValid(song,getDrumViewModel().getMetronome().getMetronomeUseDefaults())) {
             drumViewModel.toggleMetronome();
@@ -5285,6 +5293,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                     break;
                                 case "newSongLoaded":
                                     secondaryDisplay.setIsNewSong();
+                                    // Log this as well
+                                    if (getSong()!=null) {
+                                        getAnalyticsHelper().lastCastDate(getSong().getUuid());
+                                    }
                                     break;
 
                                 // The alert bar

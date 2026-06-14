@@ -81,6 +81,7 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertWord;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
+import com.garethevans.church.opensongtablet.sqlite.AnalyticsSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -282,6 +283,7 @@ public interface MainActivityInterface {
     SQLiteHelper getSQLiteHelper();
     NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
     CommonSQL getCommonSQL();
+    AnalyticsSQLiteHelper getAnalyticsHelper();
 
     // Web activities
     WebDownload getWebDownload();

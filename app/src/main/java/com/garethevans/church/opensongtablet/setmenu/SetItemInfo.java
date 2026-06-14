@@ -9,8 +9,9 @@ public class SetItemInfo {
     public int songitem=-1;                     // Numbered position in the set
     public String songkey="";                   // The key of the song
     public String songforsetwork="";               // The code for the song in the set preference
+    public String uuid="";                      // The song uuid
     public void setItem(String songfolder, String songfilename, String songtitle, String songkey,
-                        int songitem, String songforsetwork, String songicon) {
+                        int songitem, String songforsetwork, String songicon, String uuid) {
         this.songfolder = songfolder;
         this.songfoldernice = songfolder;
         this.songfilename = songfilename;
