@@ -68,6 +68,14 @@ public class SQLite {
     user3
     uuid
 
+
+    For app analytics
+    song_analytics;
+    song_uuid
+    view_count
+    last_viewed_at
+    last_added_to_set_at
+    last_cast_at
 */
 
     // The table columns
@@ -121,6 +129,16 @@ public class SQLite {
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_LAST_MODIFIED = "lastmodified";
 
+
+    // For analytics
+    public static final String ANALYTICS_TABLE_NAME = "song_analytics";
+    public static final String COLUMN_SONG_UUID = "song_uuid"; // Links to existing UUID
+    public static final String COLUMN_VIEW_COUNT = "view_count";
+    public static final String COLUMN_LAST_VIEWED = "last_viewed_at";
+    public static final String COLUMN_LAST_SET_DATE = "last_added_to_set_at";
+    public static final String COLUMN_LAST_CAST_DATE = "last_cast_at";
+    public static final String COLUMN_SET_COUNT = "set_count";
+
     // Create table SQL query.  Because this will have non OpenSong stuff too, include all useable fields
     static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
@@ -171,4 +189,13 @@ public class SQLite {
                     + COLUMN_UUID + " TEXT,"
                     + COLUMN_LAST_MODIFIED + " TEXT"
                     + ");";
+
+    public static final String CREATE_ANALYTICS_TABLE = "CREATE TABLE IF NOT EXISTS " + ANALYTICS_TABLE_NAME + " ("
+            + COLUMN_SONG_UUID + " TEXT PRIMARY KEY, "
+            + COLUMN_VIEW_COUNT + " INTEGER DEFAULT 0, "
+            + COLUMN_LAST_VIEWED + " INTEGER DEFAULT 0, "
+            + COLUMN_LAST_SET_DATE + " INTEGER DEFAULT 0, "
+            + COLUMN_LAST_CAST_DATE + " INTEGER DEFAULT 0, "
+            + COLUMN_SET_COUNT + " INTEGER DEFAULT 0"
+            + ");";
 }

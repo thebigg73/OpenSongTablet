@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.analytics.AnalyticsItem;
+import com.garethevans.church.opensongtablet.analytics.SortMode;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.ShareableObject;
@@ -106,6 +108,7 @@ public class CommonSQL {
         return folderFilename;
     }
 
+
     boolean songIdExists(SQLiteDatabase db, String songid) {
         String[] selectionArgs = new String[]{escape(songid)};
         String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ? ";
@@ -114,6 +117,7 @@ public class CommonSQL {
         closeCursor(cursor);
         return exists;
     }
+
 
     // Create, delete and update
     void createSong(SQLiteDatabase db, String folder, String filename) {
@@ -127,12 +131,23 @@ public class CommonSQL {
         String songid = getAnySongId(folder, filename);
 
         // If it doesn't already exist, create it
-        if (!songIdExists(db, songid)) {
+        if (!songIdExists(db,songid)) {
             ContentValues values = new ContentValues();
             values.put(SQLite.COLUMN_SONGID, songid);
             values.put(SQLite.COLUMN_FOLDER, folder);
             values.put(SQLite.COLUMN_FILENAME, filename);
+            values.put(SQLite.COLUMN_TITLE, filename);   // If PDF or image
+            boolean isPDF = mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",filename);
+            boolean isIMG = mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename);
+            if (isPDF) {
+                values.put(SQLite.COLUMN_FILETYPE, "PDF");
+            } else if (isIMG) {
+                values.put(SQLite.COLUMN_FILETYPE, "IMG");
+            } else {
+                values.put(SQLite.COLUMN_FILETYPE,"XML");
+            }
             values.put(SQLite.COLUMN_UUID, UUID.randomUUID().toString());
+            values.put(SQLite.COLUMN_LAST_MODIFIED, mainActivityInterface.getTimeTools().getNowIsoTime());
 
             // Insert the new row
             try {
@@ -216,6 +231,9 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_FILETYPE, thisSong.getFiletype());
         values.put(SQLite.COLUMN_LAST_MODIFIED, thisSong.getLastModified());
 
+        if (!db.isOpen()) {
+            db = mainActivityInterface.getSQLiteHelper().getWritableDatabase();
+        }
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
         if (row == 0) {
@@ -394,7 +412,12 @@ public class CommonSQL {
                 String ti = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
                 String th = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
                 String at = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ALTTHEME));
-
+                String uu = "";
+                try {
+                    uu = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Song song = new Song();
                 song.setFilename(fi);
                 song.setFolder(fo);
@@ -403,6 +426,7 @@ public class CommonSQL {
                 song.setTitle(ti);
                 song.setTheme(th);
                 song.setAlttheme(at);
+                song.setUuid(uu);
 
                 songs.add(song);
 
@@ -488,10 +512,112 @@ public class CommonSQL {
                 ", IFNULL(NULLIF(" + SQLite.COLUMN_TITLE + ",'')," + SQLite.COLUMN_FILENAME + ") AS " + SQLite.COLUMN_TITLE + ", " +
                 SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
                 SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
-                SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
+                SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM + ", " +
+                SQLite.COLUMN_UUID +
                 " FROM " + SQLite.TABLE_NAME + " ";
         return getBasicSQLQueryStart + sqlMatch + " " + getOrderBySQL;
     }
+
+    public ArrayList<AnalyticsItem> getAnalyticsItems(SQLiteDatabase mainDb, String sortMode, String sqlMatch, String[] selectionArgs) {
+        mainActivityInterface.getAnalyticsHelper();
+        String analyticsPath = AnalyticsSQLiteHelper.getDatabasePath(c);
+        mainDb.execSQL("ATTACH DATABASE '" + analyticsPath + "' AS analyticsDb");
+
+        // Mapping columns to the analytics table structure
+        String query = "SELECT s.*, " +
+                "IFNULL(a.view_count, 0) as view_count, " +
+                "IFNULL(a.last_viewed_at, 0) as last_viewed_at, " +
+                "IFNULL(a.last_cast_at, 0) as last_cast_at, " +
+                "IFNULL(a.last_added_to_set_at, 0) as last_added_to_set_at, " +
+                "IFNULL(a.set_count, 0) as set_count " +
+                "FROM " + SQLite.TABLE_NAME + " s " +
+                "LEFT JOIN analyticsDb.song_analytics a ON s." + SQLite.COLUMN_UUID + " = a.song_uuid " +
+                sqlMatch +
+                " ORDER BY " + getSortOrder(sortMode);
+
+        ArrayList<AnalyticsItem> list = new ArrayList<>();
+        try (Cursor cursor = mainDb.rawQuery(query, selectionArgs)) {
+            while (cursor.moveToNext()) {
+                AnalyticsItem item = new AnalyticsItem();
+                item.title = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
+                item.folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+                item.filename = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME));
+                item.viewCount = cursor.getInt(cursor.getColumnIndexOrThrow("view_count"));
+                item.lastViewed = cursor.getLong(cursor.getColumnIndexOrThrow("last_viewed_at"));
+                item.lastCast = cursor.getLong(cursor.getColumnIndexOrThrow("last_cast_at"));
+                item.lastAddToSet = cursor.getLong(cursor.getColumnIndexOrThrow("last_added_to_set_at"));
+                item.setCount = cursor.getInt(cursor.getColumnIndexOrThrow("set_count"));
+                list.add(item);
+            }
+        } finally {
+            mainDb.execSQL("DETACH DATABASE analyticsDb");
+        }
+        return list;
+    }
+
+    private String getSortOrder(String sortMode) {
+        switch (sortMode) {
+            case "popularity": return "view_count DESC, s.title COLLATE NOCASE ASC";
+            case "last_viewed": return "last_viewed_at DESC, s.title COLLATE NOCASE ASC";
+            case "last_cast": return "last_cast_at DESC, s.title COLLATE NOCASE ASC";
+            case "last_added_to_set": return "last_added_to_set_at DESC, s.title COLLATE NOCASE ASC";
+            case "count_set": return "set_count DESC, s.title COLLATE NOCASE ASC";
+            default: return "s.title COLLATE NOCASE ASC";
+        }
+    }
+
+    /*public ArrayList<AnalyticsItem> getAnalyticsItems(SQLiteDatabase mainDb, String sortMode, String sqlMatch, String[] selectionArgs) {
+        mainActivityInterface.getAnalyticsHelper();
+        String analyticsPath = AnalyticsSQLiteHelper.getDatabasePath(c);
+        mainDb.execSQL("ATTACH DATABASE '" + analyticsPath + "' AS analyticsDb");
+
+        // Map sort modes to SQL columns
+        String orderBy;
+        switch (sortMode) {
+            case SortMode.POPULARITY: orderBy = "popularity DESC"; break;
+            case SortMode.LAST_VIEWED: orderBy = "a.last_viewed_timestamp DESC"; break;
+            case SortMode.LAST_CAST: orderBy = "a.last_cast_timestamp DESC"; break;
+            case SortMode.LAST_SET: orderBy = "a.last_add_to_set_timestamp DESC"; break;
+            case SortMode.COUNT_SET: orderBy = "a.set_count DESC"; break;
+            default: orderBy = "s.title COLLATE NOCASE ASC";
+        }
+
+        String query = "SELECT s.*, " +
+                "IFNULL(a.view_count, 0) as popularity, " +
+                "IFNULL(a.last_viewed_timestamp, 0) as last_viewed, " +
+                "IFNULL(a.last_cast_timestamp, 0) as last_cast, " +
+                "IFNULL(a.last_add_to_set_timestamp, 0) as last_added, " +
+                "IFNULL(a.set_count, 0) as set_count " +
+                "FROM " + SQLite.TABLE_NAME + " s " +
+                "LEFT JOIN analyticsDb.PopularityTable a ON s." + SQLite.COLUMN_UUID + " = a.song_uuid " +
+                sqlMatch +
+                " ORDER BY " + orderBy;
+
+        ArrayList<AnalyticsItem> list = new ArrayList<>();
+        try (Cursor cursor = mainDb.rawQuery(query, selectionArgs)) {
+            while (cursor.moveToNext()) {
+                AnalyticsItem item = new AnalyticsItem();
+
+                public static final String ANALYTICS_TABLE_NAME = "song_analytics";
+                public static final String COLUMN_SONG_UUID = "song_uuid"; // Links to existing UUID
+                public static final String COLUMN_VIEW_COUNT = "view_count";
+                public static final String COLUMN_LAST_VIEWED = "last_viewed_at";
+                public static final String COLUMN_LAST_SET_DATE = "last_added_to_set_at";
+                public static final String COLUMN_LAST_CAST_DATE = "last_cast_at";
+                public static final String COLUMN_SET_COUNT = "set_count";
+
+
+                item.title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                item.folder = cursor.getString(cursor.getColumnIndexOrThrow("folder"));
+                item.viewCount = cursor.getInt(cursor.getColumnIndexOrThrow("popularity"));
+                item.lastViewed = cursor.getLong(cursor.getColumnIndexOrThrow("last_viewed"));
+                item.lastAddToSet = cursor.getLong(cursor.getColumnIndexOrThrow("last_added"));
+                // ... map other analytics fields
+                list.add(item);
+            }
+        }
+        return list;
+    }*/
 
     public String getKey(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
