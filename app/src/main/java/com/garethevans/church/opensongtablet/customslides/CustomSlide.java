@@ -165,8 +165,9 @@ public class CustomSlide {
             // Update the current set and save the preference
             String setItem = mainActivityInterface.getSetActions().getSongForSetWork("**" + folder, file, key);
             SetItemInfo setItemInfo = new SetItemInfo();
-            setItemInfo.setItem("**" + folder, file, title, key, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "");
+            setItemInfo.setItem("**" + folder, file, title, key, mainActivityInterface.getCurrentSet().getCurrentSetSize() + 1, setItem, "","");
             mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, true);
+            // This isn't a song, so don't log this addition
             mainActivityInterface.getCurrentSet().setSetCurrent(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             // Update the set menu title

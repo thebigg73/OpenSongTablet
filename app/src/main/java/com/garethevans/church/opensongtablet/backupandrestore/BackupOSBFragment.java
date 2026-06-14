@@ -105,7 +105,7 @@ public class BackupOSBFragment extends Fragment {
             mainActivityInterface.getMainHandler().post(() -> myView.backupName.setText(deffilename));
 
             // Get a list of available folders in the app
-            ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getDB());
+            ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getReadableDatabase());
 
             // Create a new checkbox entry (default to ticked) for each one
             mainActivityInterface.getMainHandler().post(() -> {

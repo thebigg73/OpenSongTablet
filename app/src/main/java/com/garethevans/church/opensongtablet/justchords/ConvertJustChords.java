@@ -255,6 +255,7 @@ public class ConvertJustChords {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    // This set was created elsewhere, so don't log here
                     mainActivityInterface.getCurrentSet().addItemToSet(song);
                 }
                 // Get a setXML file

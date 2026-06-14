@@ -1069,6 +1069,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     // Save this temp song so we can recover the contents when we build the set file
                     //mainActivityInterface.getStorageAccess().saveThisSongFile(tempSong);
                     mainActivityInterface.getStorageAccess().writeSongFile(tempSong);
+                    // This set was created elsewhere, so don't log here
                     localSet.addItemToSet(tempSong);
                 }
             }

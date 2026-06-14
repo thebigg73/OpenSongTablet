@@ -350,11 +350,19 @@ public class PerformanceFragment extends Fragment {
     }
     public void toggleInlineSet() {
         myView.inlineSetList.toggleInlineSet();
+        mainActivityInterface.getHotZones().checkIfRequired();
     }
     public void updateInlineSetVisibility() {
         if (myView!=null) {
             myView.inlineSetList.checkVisibility();
+            mainActivityInterface.getHotZones().checkIfRequired();
         }
+    }
+    public boolean getInlineSetVisible() {
+        if (myView!=null) {
+            return myView.inlineSetList.getVisibility()==View.VISIBLE;
+        }
+        return false;
     }
     public void notifyToClearInlineSet(int from, int count) {
         if (myView!=null) {
@@ -859,28 +867,30 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                float scale = pdfPageAdapter.getPdfHorizontalScale();
-                widthBeforeScale = pdfPageAdapter.getWidth();
-                widthAfterScale = widthBeforeScale;
-                heightBeforeScale = pdfPageAdapter.getHeight();
-                heightAfterScale = heightBeforeScale;
-                recyclerLayoutManager.setSizes(pdfPageAdapter.getWidths(), pdfPageAdapter.getHeights(), availableWidth, availableHeight,scale);
-                myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(),0,0,0);
-                myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
-                //IV - Reset zoom
-                myView.recyclerView.toggleScale();
+                if (myView!=null && myView.recyclerView.getViewTreeObserver()!=null) {
+                    myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    float scale = pdfPageAdapter.getPdfHorizontalScale();
+                    widthBeforeScale = pdfPageAdapter.getWidth();
+                    widthAfterScale = widthBeforeScale;
+                    heightBeforeScale = pdfPageAdapter.getHeight();
+                    heightAfterScale = heightBeforeScale;
+                    recyclerLayoutManager.setSizes(pdfPageAdapter.getWidths(), pdfPageAdapter.getHeights(), availableWidth, availableHeight, scale);
+                    myView.recyclerView.setPadding(myView.inlineSetList.getInlineSetWidth(), 0, 0, 0);
+                    myView.recyclerView.setMaxScrollY(heightAfterScale - availableHeight);
+                    //IV - Reset zoom
+                    myView.recyclerView.toggleScale();
 
 
-                // Do the slide in
-                myView.recyclerView.setVisibility(View.VISIBLE);
-                myView.recyclerView.startAnimation(animSlideIn);
+                    // Do the slide in
+                    myView.recyclerView.setVisibility(View.VISIBLE);
+                    myView.recyclerView.startAnimation(animSlideIn);
 
-                // Get a null screenshot
-                getScreenshot(0, 0, 0);
+                    // Get a null screenshot
+                    getScreenshot(0, 0, 0);
 
-                // Deal with song actions to run after display (highlighter, notes, etc)
-                dealWithStuffAfterReady(true);
+                    // Deal with song actions to run after display (highlighter, notes, etc)
+                    dealWithStuffAfterReady(true);
+                }
             }
         });
         myView.recyclerView.setAdapter(pdfPageAdapter);
@@ -1568,6 +1578,7 @@ public class PerformanceFragment extends Fragment {
 
             // Update the view log usage
             mainActivityInterface.getStorageAccess().updateFileUsageLog(mainActivityInterface.getSong());
+            mainActivityInterface.getAnalyticsHelper().incrementViewCount(mainActivityInterface.getSong().getUuid());
 
             // If we opened the app with and intent/file, check if we need to import
             tryToImportIntent();

@@ -507,6 +507,7 @@ public class ImportFileFragment extends Fragment {
                             // Use the setItemInfo to create a new set from our OnSong HTML set
                             mainActivityInterface.getCurrentSet().setSetCurrentLastName(mainActivityInterface.getConvertOnSong().getSetTitle());
                             for (SetItemInfo setItemInfo:setItemInfos) {
+                                // Because this set was created in OnSong, we don't log the addition of songs to the set
                                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, false);
                             }
                             // Save this as an actual set file
