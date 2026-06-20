@@ -53,6 +53,5 @@
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/edit"
         android:src="@drawable/pen"
-        android:layout_margin="16dp"
-        app:useCompatPadding="true" />
+        android:layout_margin="16dp" />
 </RelativeLayout>

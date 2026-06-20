@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/draggableView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -31,10 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:contentDescription="@string/tool"
+            app:makeFlat="true"
             app:backgroundTint="@color/transparent"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            app:fabSize="mini"
+            app:myFabSize="mini"
             android:src="@drawable/pen" />
 
         <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -43,10 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:contentDescription="@string/save"
+            app:makeFlat="true"
             app:backgroundTint="@color/transparent"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            app:fabSize="mini"
+            app:myFabSize="mini"
             android:src="@drawable/save" />
 
     </LinearLayout>
@@ -60,7 +63,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:layout_width="wrap_content"
@@ -79,10 +82,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp"
                 android:contentDescription="@string/highlight"
+                app:makeFlat="true"
                 app:backgroundTint="@color/transparent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/pen" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -92,10 +96,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp"
                 android:contentDescription="@string/highlight"
+                app:makeFlat="true"
                 app:backgroundTint="@color/transparent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/highlighter" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -105,10 +110,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp"
                 android:contentDescription="@string/highlight"
+                app:makeFlat="true"
                 app:backgroundTint="@color/transparent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/eraser" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -118,10 +124,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp"
                 android:contentDescription="@string/highlight"
+                app:makeFlat="true"
                 app:backgroundTint="@color/transparent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/undo" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -131,10 +138,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp"
                 android:contentDescription="@string/highlight"
+                app:makeFlat="true"
                 app:backgroundTint="@color/transparent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/redo" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -144,10 +152,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="2dp"
                 android:contentDescription="@string/highlight"
+                app:makeFlat="true"
                 app:backgroundTint="@color/transparent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/delete" />
         </LinearLayout>
 
@@ -193,10 +202,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:contentDescription="@string/color_choose"
-                    app:backgroundTint="@color/black"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:fabSize="mini" />
+                    app:makeFlat="true"
+                    app:fabIcon="@drawable/check"
+                    app:fabButtonColor="@color/black"
+                    app:myFabSize="mini" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/color_white"
@@ -204,10 +213,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:contentDescription="@string/color_choose"
-                    app:backgroundTint="@color/white"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:fabSize="mini" />
+                    app:fabIcon="@drawable/check"
+                    app:makeFlat="true"
+                    app:fabButtonColor="@color/white"
+                    app:myFabSize="mini" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/color_yellow"
@@ -215,10 +224,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:contentDescription="@string/color_choose"
-                    app:backgroundTint="@color/yellow"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:fabSize="mini" />
+                    app:fabIcon="@drawable/check"
+                    app:makeFlat="true"
+                    app:fabButtonColor="@color/yellow"
+                    app:myFabSize="mini" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/color_red"
@@ -226,10 +235,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:contentDescription="@string/color_choose"
-                    app:backgroundTint="@color/red"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:fabSize="mini" />
+                    app:makeFlat="true"
+                    app:fabIcon="@drawable/check"
+                    app:fabButtonColor="@color/red"
+                    app:myFabSize="mini" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/color_green"
@@ -237,10 +246,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:contentDescription="@string/color_choose"
-                    app:backgroundTint="@color/green"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:fabSize="mini" />
+                    app:fabIcon="@drawable/check"
+                    app:makeFlat="true"
+                    app:fabButtonColor="@color/green"
+                    app:myFabSize="mini" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/color_blue"
@@ -248,10 +257,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:contentDescription="@string/color_choose"
-                    app:backgroundTint="@color/blue"
-                    app:borderWidth="0dp"
-                    app:elevation="0dp"
-                    app:fabSize="mini" />
+                    app:makeFlat="true"
+                    app:fabIcon="@drawable/check"
+                    app:fabButtonColor="@color/blue"
+                    app:myFabSize="mini" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

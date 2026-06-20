@@ -6,8 +6,19 @@
         <attr name="size" />
     </declare-styleable>
 
-    <declare-styleable name="MyFAB">
-        <attr name="fab_padding" format="dimension" />
+    <declare-styleable name="MyFloatingActionButton">
+        <attr name="android:src" />
+        <attr name="fabIcon" format="reference"/>
+        <attr name="android:alpha" />
+        <attr name="myFabSize" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
+        </attr>
+        <attr name="addTouchPadding" format="boolean" />
+        <attr name="makeFlat" format="boolean" />
+        <attr name="android:padding" />
+        <attr name="fabIconColor" format="integer"/>
+        <attr name="fabButtonColor" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="MyMaterialEditText">

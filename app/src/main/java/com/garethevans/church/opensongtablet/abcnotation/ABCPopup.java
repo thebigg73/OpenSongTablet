@@ -19,7 +19,6 @@ import android.widget.PopupWindow;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
@@ -133,11 +132,8 @@ public class ABCPopup {
             closeIcon.setColorFilter(mainActivityInterface.getMyThemeColors().getStickyTextColor(), PorterDuff.Mode.SRC_IN);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            closeButton.setElevation(0);
-            closeButton.setCompatElevation(0f);     // removes shadow across states
-            ViewCompat.setElevation(closeButton, 0f);
-            closeButton.setStateListAnimator(null);
-        }
+            closeButton.makeFlat();
+       }
         closeButton.setImageDrawable(closeIcon);
         closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
 

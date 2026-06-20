@@ -127,9 +127,9 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
     public void setPalette(Palette palette) {
         if (palette!=null) {
             textView.setTextColor(palette.textColor);
-            closeButtonDialog.setColorFilter(palette.textColor);
-            minimiseButtonDialog.setColorFilter(palette.textColor);
-            webHelp.setColorFilter(palette.textColor);
+            closeButtonDialog.setFABIconColor(palette.textColor);
+            minimiseButtonDialog.setFABIconColor(palette.textColor);
+            webHelp.setFABIconColor(palette.textColor);
         }
     }
 }

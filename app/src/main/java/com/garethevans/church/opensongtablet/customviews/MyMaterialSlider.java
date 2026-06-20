@@ -241,6 +241,14 @@ public class MyMaterialSlider extends LinearLayout {
         slider.setLabelFormatter(labelFormatter);
     }
 
+    public void hideText() {
+        titleTextView.setVisibility(View.GONE);
+        infoTextView.setVisibility(View.GONE);
+    }
+    public void setSliderPadding(int left, int top, int right, int bottom) {
+        slider.setPadding(left,top,right,bottom);
+    }
+
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);

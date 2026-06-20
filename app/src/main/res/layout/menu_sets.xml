@@ -49,16 +49,14 @@
                 android:paddingBottom="64dp"
                 android:orientation="vertical"/>
 
-        <!--</FrameLayout>-->
-
-        <com.garethevans.church.opensongtablet.customviews.MyFAB
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/setMasterFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            app:fab_padding="10dp"
+            app:addTouchPadding="true"
             android:contentDescription="@string/action"
-            app:srcCompat="@drawable/plus"
+            android:src="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

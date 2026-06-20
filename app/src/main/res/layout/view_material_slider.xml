@@ -47,7 +47,7 @@
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/minus_1"
                 android:src="@drawable/minus"
-                app:fabSize="mini" />
+                app:myFabSize="mini" />
         </FrameLayout>
 
         <com.google.android.material.slider.Slider
@@ -87,7 +87,7 @@
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/plus_1"
                 android:src="@drawable/plus"
-                app:fabSize="mini" />
+                app:myFabSize="mini" />
         </FrameLayout>
     </LinearLayout>
 

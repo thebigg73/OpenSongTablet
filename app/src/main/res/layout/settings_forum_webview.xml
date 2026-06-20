@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/arrow_left"
         app:useCompatPadding="true"
-        app:fabSize="mini"
+        app:myFabSize="mini"
         android:layout_margin="16dp"
         android:contentDescription="@string/back"/>
 
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arrow_right"
-        app:fabSize="mini"
+        app:myFabSize="mini"
         android:layout_margin="16dp"
         android:contentDescription="@string/back"/>
 

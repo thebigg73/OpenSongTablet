@@ -115,7 +115,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/back"
                     android:src="@drawable/arrow_left"
-                    app:fabSize="mini"
+                    app:myFabSize="mini"
                     app:useCompatPadding="false" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -126,7 +126,7 @@
                     android:layout_margin="8dp"
                     android:contentDescription="@string/close"
                     android:src="@drawable/close"
-                    app:fabSize="mini"
+                    app:myFabSize="mini"
                     app:useCompatPadding="false" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -136,7 +136,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/save"
-                    app:fabSize="mini"
+                    app:myFabSize="mini"
                     android:src="@drawable/download"
                     app:useCompatPadding="false"
                     tools:ignore="DuplicateClickableBoundsCheck" />
@@ -148,7 +148,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/text_extract_check"
-                    app:fabSize="mini"
+                    app:myFabSize="mini"
                     android:src="@drawable/search"
                     app:useCompatPadding="false"
                     tools:ignore="RedundantDescriptionCheck" />

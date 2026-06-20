@@ -37,7 +37,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/preview"
                         android:src="@drawable/play"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -52,7 +52,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/delete"
                         android:src="@drawable/star"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -67,7 +67,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/save"
                         android:src="@drawable/swap"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </FrameLayout>
 
             <FrameLayout
@@ -82,7 +82,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/save"
                     android:src="@drawable/settings"
-                    app:fabSize="mini" />
+                    app:myFabSize="mini" />
             </FrameLayout>
             </LinearLayout>
     </LinearLayout>

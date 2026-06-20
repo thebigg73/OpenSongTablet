@@ -22,10 +22,10 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
-import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.TrackSlider;
 import com.garethevans.church.opensongtablet.databinding.ViewMultitrackBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +38,7 @@ public class MultiTrackPopUp {
     private final String TAG = "MultiTrackPopUp";
 
     private PopupWindow popupWindow;
-    private MyFloatingActionButton closeButton;
+    private FloatingActionButton closeButton;
     private FloatWindow floatWindow;
     private int posX;
     private int posY;

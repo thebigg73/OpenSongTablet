@@ -105,7 +105,7 @@
                     android:layout_alignParentEnd="true"
                     android:clipChildren="true" />
 
-                <com.garethevans.church.opensongtablet.customviews.MyFAB
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/actionFAB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,8 +113,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginTop="12dp"
                     android:contentDescription="@string/action"
-                    app:fab_padding="16dp"
-                    app:srcCompat="@drawable/plus" />
+                    app:addTouchPadding="true"
+                    android:src="@drawable/plus" />
 
 
                 <!-- The previous and next info -->

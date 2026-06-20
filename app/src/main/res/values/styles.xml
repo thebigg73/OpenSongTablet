@@ -24,6 +24,15 @@
         <item name="cornerSizeBottomRight">8dp</item>
     </style>
 
+    <style name="Widget.MyApp.FloatingActionButton.Flat" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="elevation">0dp</item>
+        <item name="pressedTranslationZ">0dp</item>
+        <item name="borderWidth">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
     <!-- Filled MaterialButton style -->
     <style name="FilledButton" parent="Widget.MaterialComponents.Button">
         <!-- hook in the ShapeAppearance -->

@@ -31,11 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/sync_check_for_updates"
                 android:src="@drawable/refresh"
-                app:fabSize="mini" />
+                app:myFabSize="mini" />
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout

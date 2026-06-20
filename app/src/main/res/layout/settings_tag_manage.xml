@@ -66,7 +66,7 @@
                         android:layout_marginEnd="8dp"
                         android:contentDescription="@string/new_category"
                         android:src="@drawable/plus"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
 
                     <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/searchThisTag"
@@ -75,7 +75,7 @@
                         android:layout_gravity="center_vertical"
                         android:contentDescription="@string/search"
                         android:src="@drawable/filter_on"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,7 +99,7 @@
                         android:contentDescription="@string/rename"
                         android:text="@string/rename"
                         android:visibility="visible"
-                        app:fabSize="mini"
+                        app:myFabSize="mini"
                         app:icon="@drawable/set_edit" />
                 </LinearLayout>
 

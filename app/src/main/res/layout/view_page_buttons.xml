@@ -23,77 +23,77 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom1Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button1"
                 android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom2Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button2"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom3Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button3"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom4Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button4"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom5Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button5"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom6Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
                 android:contentDescription="@string/quicklaunch_button6"
-                app:srcCompat="@drawable/help" />
+                app:addTouchPadding="true"
+                android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom7Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button7"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFAB
+            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/custom8Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
-                app:fab_padding="16dp"
+                app:addTouchPadding="true"
                 android:contentDescription="@string/quicklaunch_button8"
-                app:srcCompat="@drawable/help" />
+                android:src="@drawable/help" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

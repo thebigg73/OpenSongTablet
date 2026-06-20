@@ -52,7 +52,7 @@
                 android:layout_height="match_parent"
                 android:minHeight="96dp"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:baselineAligned="true">
 
                 <FrameLayout
@@ -67,7 +67,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/preview"
                         android:src="@drawable/play"
-                        app:fabSize="mini"
+                        app:myFabSize="mini"
                         app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
 
@@ -83,7 +83,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/delete"
                         android:src="@drawable/delete"
-                        app:fabSize="mini"
+                        app:myFabSize="mini"
                         app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
 
@@ -99,7 +99,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/save"
                         android:src="@drawable/save"
-                        app:fabSize="mini"
+                        app:myFabSize="mini"
                         app:backgroundTint="?attr/colorSecondaryVariant" />
                 </FrameLayout>
             </LinearLayout>

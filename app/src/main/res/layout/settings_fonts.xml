@@ -40,13 +40,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="1dp"
                         android:contentDescription="@string/link_web"
-                        android:src="@drawable/web_outline"
+                        android:src="@drawable/web"
                         app:backgroundTint="@color/transparent"
                         app:borderWidth="0dp"
                         app:elevation="0dp"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -67,13 +66,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="1dp"
                         android:contentDescription="@string/link_web"
-                        android:src="@drawable/web_outline"
+                        app:makeFlat="true"
+                        android:src="@drawable/web"
                         app:backgroundTint="@color/transparent"
                         app:borderWidth="0dp"
                         app:elevation="0dp"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -128,11 +127,12 @@
                         android:layout_gravity="bottom"
                         android:layout_marginTop="1dp"
                         android:contentDescription="@string/link_web"
-                        android:src="@drawable/web_outline"
+                        android:src="@drawable/web"
+                        app:makeFlat="true"
                         app:backgroundTint="@color/transparent"
                         app:borderWidth="0dp"
                         app:elevation="0dp"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -153,13 +153,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="1dp"
                         android:contentDescription="@string/link_web"
-                        android:src="@drawable/web_outline"
+                        android:src="@drawable/web"
+                        app:makeFlat="true"
                         app:backgroundTint="@color/transparent"
                         app:borderWidth="0dp"
                         app:elevation="0dp"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -213,11 +213,12 @@
                         android:layout_gravity="bottom"
                         android:layout_marginTop="1dp"
                         android:contentDescription="@string/link_web"
-                        android:src="@drawable/web_outline"
+                        android:src="@drawable/web"
+                        app:makeFlat="true"
                         app:backgroundTint="@color/transparent"
                         app:borderWidth="0dp"
                         app:elevation="0dp"
-                        app:fabSize="mini" />
+                        app:myFabSize="mini" />
                 </LinearLayout>
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView

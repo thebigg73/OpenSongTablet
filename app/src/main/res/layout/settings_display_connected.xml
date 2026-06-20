@@ -55,12 +55,8 @@
                     android:layout_gravity="bottom|end"
                     android:contentDescription="@string/media"
                     android:enabled="false"
-                    android:padding="0dp"
                     android:tint="?attr/colorSecondaryVariant"
-                    app:backgroundTint="?attr/colorSurface"
-                    app:fabCustomSize="16dp"
-                    android:src="@drawable/play"
-                    app:useCompatPadding="false" />
+                    android:src="@drawable/play"/>
 
                 <View
                     android:layout_width="match_parent"

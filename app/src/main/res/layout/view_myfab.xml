@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/myFABHolder"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:clipChildren="false"
-    android:clipToPadding="false">
+    android:layout_height="wrap_content">
 
-    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/myFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
         android:contentDescription="@string/page_buttons"
         app:useCompatPadding="false"
-        android:layout_margin="0dp"
-        android:layout_gravity="center" />
-</RelativeLayout>
+        app:shapeAppearance="@style/ShapeAppearance.MyApp.Button.Rounded"/>
+</merge>

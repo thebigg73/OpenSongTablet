@@ -99,7 +99,7 @@
                     android:id="@+id/sortAZ"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:contentDescription="@string/alphabetical_sort"
                     android:src="@drawable/sort_az" />
 
@@ -107,7 +107,7 @@
                     android:id="@+id/sortZA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:contentDescription="@string/alphabetical_sort"
                     android:src="@drawable/sort_za" />
 
@@ -115,7 +115,7 @@
                     android:id="@+id/sortOldest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:contentDescription="@string/set_sort"
                     android:src="@drawable/sort_oldest" />
 
@@ -123,7 +123,7 @@
                     android:id="@+id/sortNewest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:contentDescription="@string/set_sort"
                     android:src="@drawable/sort_newest" />
 

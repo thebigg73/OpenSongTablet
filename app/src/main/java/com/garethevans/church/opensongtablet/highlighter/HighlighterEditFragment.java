@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.highlighter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -119,14 +121,9 @@ public class HighlighterEditFragment extends Fragment {
 
     private void setupViews() {
         if (getContext() != null) {
-            whiteCheck = VectorDrawableCompat.create(getResources(), R.drawable.check, getContext().getTheme());
-            if (whiteCheck != null) {
-                whiteCheck.mutate();
-            }
-            blackCheck = VectorDrawableCompat.create(getResources(), R.drawable.check, getContext().getTheme());
-            if (blackCheck != null) {
-                blackCheck.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
-            }
+            // Load two completely separate instances from the resources
+            whiteCheck = VectorDrawableCompat.create(getResources(), R.drawable.check_white, null);
+            blackCheck = VectorDrawableCompat.create(getResources(), R.drawable.check_black, null);
         }
 
         mainActivityInterface.setDrawNotes(myView.drawNotes);
@@ -176,6 +173,8 @@ public class HighlighterEditFragment extends Fragment {
 
         checkUndos();
         checkRedos();
+
+        mainActivityInterface.getMainHandler().postDelayed(() -> myView.draggableToolbox.setColorChoosers(),500);
     }
 
     private void getScreenshot() {
@@ -315,10 +314,13 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     private Drawable getBestCheck() {
-        if (activeTool.equals("pen") && (drawingPenColor == penWhite || drawingPenColor == penYellow)) {
+        Log.d(TAG,"activeTool:"+activeTool+"  drawingPenColor:"+drawingPenColor+"  drawingHighlighterColor:"+drawingHighlighterColor);
+        if (activeTool.equals("pen") && (drawingPenColor == penWhite || drawingPenColor == penYellow || drawingPenColor == penGreen)) {
+            Log.d(TAG,"blackCheck");
             return blackCheck;
         } else if (activeTool.equals("highlighter") && (drawingHighlighterColor == highlighterWhite ||
-                drawingHighlighterColor == highlighterYellow)) {
+                drawingHighlighterColor == highlighterYellow || drawingHighlighterColor == highlighterGreen)) {
+            Log.d(TAG,"whiteCheck");
             return blackCheck;
         } else {
             return whiteCheck;

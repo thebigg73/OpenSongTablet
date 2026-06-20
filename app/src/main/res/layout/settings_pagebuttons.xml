@@ -62,14 +62,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button1Opt"
@@ -119,14 +119,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button2Opt"
@@ -176,14 +176,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button3Opt"
@@ -233,14 +233,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button4Opt"
@@ -290,14 +290,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button5Opt"
@@ -347,14 +347,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button6Opt"
@@ -404,14 +404,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button7Opt"
@@ -461,14 +461,14 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.garethevans.church.opensongtablet.customviews.MyFAB
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                         android:id="@+id/button8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="@string/button"
-                        app:srcCompat="@drawable/help" />
+                        android:src="@drawable/help" />
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button8Opt"

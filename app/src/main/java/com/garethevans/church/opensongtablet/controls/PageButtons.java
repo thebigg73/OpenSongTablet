@@ -12,7 +12,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.MyFAB;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,7 +39,7 @@ public class PageButtons {
 
     // My buttons in the main activity
     private LinearLayout pageButtonsLayout;
-    private ArrayList<MyFAB> fabs;
+    private ArrayList<MyFloatingActionButton> fabs;
 
     // My chosen buttons in the edit fragment
     private final int pageButtonNum = 8;
@@ -47,7 +47,7 @@ public class PageButtons {
     private ArrayList<String> pageButtonAction, pageButtonText, pageButtonShortText, pageButtonLongText;
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
-    private MyFAB actionButton;
+    private MyFloatingActionButton actionButton;
 
     public PageButtons(Context c) {
         this.c = c;
@@ -62,11 +62,11 @@ public class PageButtons {
     }
 
 
-    public void setMainFABS(MyFAB actionButton, MyFAB custom1,
-                            MyFAB custom2, MyFAB custom3,
-                            MyFAB custom4, MyFAB custom5,
-                            MyFAB custom6, MyFAB custom7,
-                            MyFAB custom8, LinearLayout pageButtonsLayout) {
+    public void setMainFABS(MyFloatingActionButton actionButton, MyFloatingActionButton custom1,
+                            MyFloatingActionButton custom2, MyFloatingActionButton custom3,
+                            MyFloatingActionButton custom4, MyFloatingActionButton custom5,
+                            MyFloatingActionButton custom6, MyFloatingActionButton custom7,
+                            MyFloatingActionButton custom8, LinearLayout pageButtonsLayout) {
         this.actionButton = actionButton;
         fabs = new ArrayList<>();
         updateColors();
@@ -143,7 +143,7 @@ public class PageButtons {
         }
     }
 
-    public MyFAB getFAB(int x) {
+    public MyFloatingActionButton getFAB(int x) {
         if (fabs!=null) {
             return fabs.get(x);
         } else {
@@ -425,7 +425,7 @@ public class PageButtons {
     }
 
     // This will redesign the button for the page
-    public void setPageButton(MyFAB fab, int buttonNum, boolean editing) {
+    public void setPageButton(MyFloatingActionButton fab, int buttonNum, boolean editing) {
         if (pageButtonsLayout!=null) {
             // The alpha is set on the linear layout, not the individual buttons
             pageButtonsLayout.setAlpha(pageButtonAlpha);

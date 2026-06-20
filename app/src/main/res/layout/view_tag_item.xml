@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            app:fabSize="mini"
+            app:myFabSize="mini"
             android:contentDescription="@string/delete"
             android:src="@drawable/delete" />
     </RelativeLayout>

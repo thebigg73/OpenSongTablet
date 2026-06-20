@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class HighlighterToolBox extends LinearLayout implements View.OnTouchListener {
 
+    private final String TAG = "HighlighterToolBox";
     private final static float CLICK_DRAG_TOLERANCE = 10; // Often, there will be a slight, unintentional, drag when the user taps the FAB, so we need to account for this.
 
     private float downRawX, downRawY;
@@ -37,6 +39,7 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         super(context);
         initialise(context);
     }
+    private Palette palette;
 
     public HighlighterToolBox(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -48,7 +51,7 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
 
         inflate(context, R.layout.view_highlighter_toolbar,this);
 
-        Palette palette = new Palette(context);
+        palette = new Palette(context);
 
         LinearLayout mainTools = findViewById(R.id.mainTools);
         mainTools.setBackgroundColor(palette.surface);
@@ -73,10 +76,10 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         blueFAB = findViewById(R.id.color_blue);
         sizeSlider = findViewById(R.id.sizeSlider);
 
+        setColorChoosers();
         setDrawables(context);
 
         setListeners();
-
     }
 
     private void setDrawables(Context context) {
@@ -98,9 +101,19 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
                 currentTool.setImageDrawable(penDrawable);
                 break;
         }
+        currentTool.setFABIconColor(palette.textColor);
         penFAB.setAlpha(which.equals("pen") ? 1f:0.5f);
         highlighterFAB.setAlpha(which.equals("highlighter") ? 1f:0.5f);
         eraserFAB.setAlpha(which.equals("eraser") ? 1f:0.5f);
+    }
+
+    public void setColorChoosers() {
+        blackFAB.setFABButtonColor(Color.BLACK);
+        whiteFAB.setFABButtonColor(Color.WHITE);
+        yellowFAB.setFABButtonColor(Color.YELLOW);
+        redFAB.setFABButtonColor(Color.RED);
+        greenFAB.setFABButtonColor(Color.GREEN);
+        blueFAB.setFABButtonColor(Color.BLUE);
     }
 
     public void setColor(String which, Drawable check) {
@@ -110,6 +123,7 @@ public class HighlighterToolBox extends LinearLayout implements View.OnTouchList
         redFAB.setImageDrawable(which.equals("red") ? check:null);
         greenFAB.setImageDrawable(which.equals("green") ? check:null);
         blueFAB.setImageDrawable(which.equals("blue") ? check:null);
+
     }
 
     private void setListeners() {

@@ -27,7 +27,8 @@ public class DrummerPopUp {
     private final Drawable drummerPlay, drummerStop;
     private final float pageButtonAlpha;
     private PopupWindow popupWindow;
-    private MyFloatingActionButton closeButton, drummerPlayStop, drummerFill, drummerTransition,
+    private MyFloatingActionButton closeButton;
+    private MyFloatingActionButton drummerPlayStop, drummerFill, drummerTransition,
             drummerSettings;
     private FloatWindow floatWindow;
 

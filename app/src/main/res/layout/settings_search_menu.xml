@@ -22,11 +22,12 @@
             android:inputType="text"
             app:endIconMode="clear_text" />
 
-        <com.garethevans.church.opensongtablet.customviews.MyFAB
+        <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/searchOnline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/user_guide"
+            app:myFabSize="mini"
             android:src="@drawable/web" />
     </LinearLayout>
 

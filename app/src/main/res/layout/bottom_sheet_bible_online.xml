@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:contentDescription="@string/back"
             android:src="@drawable/arrow_left"
-            app:fabSize="mini" />
+            app:myFabSize="mini" />
 
         <FrameLayout
             android:layout_width="0dp"
@@ -55,7 +55,7 @@
             android:contentDescription="@string/back"
             android:src="@drawable/close"
             app:backgroundTint="@color/red"
-            app:fabSize="mini" />
+            app:myFabSize="mini" />
     </LinearLayout>
 
     <RelativeLayout

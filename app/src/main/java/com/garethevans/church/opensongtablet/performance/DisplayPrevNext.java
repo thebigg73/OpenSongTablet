@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
-import com.garethevans.church.opensongtablet.customviews.MyFAB;
+import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
@@ -24,7 +24,7 @@ public class DisplayPrevNext {
     private final RelativeLayout layout;
     private MyZoomLayout zoomLayout;
     private final MyExtendedFloatingActionButton prev, next;
-    private final MyFAB prevFAB, nextFAB;
+    private final MyFloatingActionButton prevFAB, nextFAB;
     private boolean showPrev, prevVisible = false;
     private boolean showNext, nextVisible = false;
     private boolean prevNextSongMenu;
@@ -64,7 +64,7 @@ public class DisplayPrevNext {
 
     public DisplayPrevNext (Context c, RelativeLayout layout,
                             MyExtendedFloatingActionButton prev, MyExtendedFloatingActionButton next,
-                            MyFAB prevFAB, MyFAB nextFAB) {
+                            MyFloatingActionButton prevFAB, MyFloatingActionButton nextFAB) {
         this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
         this.layout = layout;

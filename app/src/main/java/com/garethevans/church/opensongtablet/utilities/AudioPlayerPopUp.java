@@ -39,7 +39,7 @@ public class AudioPlayerPopUp {
             isDragging = false, playingBeforeDrag = false, minimised = false;
     private PopupWindow popupWindow;
     private FloatWindow floatWindow;
-    private MyFloatingActionButton closeButton, playPauseButton, stopButton, minimiseButton;
+    private MyFloatingActionButton closeButton, minimiseButton, playPauseButton, stopButton;
     private MyMaterialSlider seekBar;
     private LinearLayout playContent;
     private String web_help;

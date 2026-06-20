@@ -62,21 +62,19 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:contentDescription="@string/delete"
                     android:src="@drawable/delete"
                     android:text="@string/delete"
-                    app:fabSize="normal" />
+                    app:myFabSize="normal" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                     android:id="@+id/newChord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
                     android:contentDescription="@string/new_something"
                     android:src="@drawable/plus"
-                    app:fabSize="normal" />
+                    app:myFabSize="normal" />
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView

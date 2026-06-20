@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="8dp">
+        android:paddingBottom="8dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,42 +72,42 @@
                 android:id="@+id/playStop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/play" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/resetToDefault"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/refresh" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/delete" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/save" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/load"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/file_search" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
                 android:id="@+id/assign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabSize="mini"
+                app:myFabSize="mini"
                 android:src="@drawable/song_add" />
         </LinearLayout>
     </HorizontalScrollView>

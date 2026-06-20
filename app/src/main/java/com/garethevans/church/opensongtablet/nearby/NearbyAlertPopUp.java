@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.FloatWindow;
@@ -84,13 +83,7 @@ public class NearbyAlertPopUp {
         Drawable closeIcon = ResourcesCompat.getDrawable(c.getResources(),R.drawable.close,c.getTheme());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            closeButton.setElevation(0);
-            closeButton.setCompatElevation(0f);     // removes shadow across states
-            ViewCompat.setElevation(closeButton, 0f);
-            if (closeIcon!=null) {
-                closeButton.setStateListAnimator(null);
-                closeIcon.setTint(mainActivityInterface.getMyThemeColors().getStickyTextColor());
-            }
+            closeButton.makeFlat();
         }
         closeButton.setImageDrawable(closeIcon);
         closeButton.setBackgroundColor(Color.TRANSPARENT);

@@ -54,7 +54,7 @@
                         android:contentDescription="@string/multitrack_folder_choose_other"
                         android:text="@string/multitrack_folder_choose_other"
                         android:src="@drawable/folder_search"
-                        app:fabSize="mini"/>
+                        app:myFabSize="mini"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/file_replace"
                         android:contentDescription="@string/multitrack_convert"
-                        app:fabSize="mini"/>
+                        app:myFabSize="mini"/>
                 </LinearLayout>
 
                 <LinearLayout
