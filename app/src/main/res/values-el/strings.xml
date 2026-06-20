@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Κάνοντας κλικ σε ένα στοιχείο στο αλφαβητικό ευρετήριο θα γίνει εναλλαγή μεταξύ ενός και δύο χαρακτήρων αλφαβητικού ευρετηρίου</string>
     <string name="alphabetical_sort">Βάλτε τα στοιχεία σε αλφαβητική σειρά</string>
     <string name="amp">Αμπέραζ</string>
+    <string name="analytics">Αναλυτικά στοιχεία τραγουδιών</string>
+    <string name="analytics_count">Ταξινόμηση κατά προσθήκη στον ορισμό αριθμού</string>
+    <string name="analytics_info">Δείτε στατιστικά στοιχεία χρήσης τραγουδιών</string>
+    <string name="analytics_last_added_to_set">Ταξινόμηση κατά τελευταία προσθήκη για να ορίσετε ημερομηνία</string>
+    <string name="analytics_last_cast">Ταξινόμηση κατά ημερομηνία τελευταίας μετάδοσης (εξωτερική οθόνη)</string>
+    <string name="analytics_last_viewed">Ταξινόμηση κατά τελευταία προβολή</string>
+    <string name="analytics_popularity">Ταξινόμηση κατά δημοτικότητα</string>
+    <string name="analytics_reset">Επαναφορά αναλυτικών στοιχείων τραγουδιού</string>
+    <string name="analytics_set_count">Ταξινόμηση κατά προσθήκη στον ορισμό αριθμού</string>
     <string name="app">App</string>
     <string name="app_specific_file">Ένα αρχείο συγκεκριμένο για το OpenSongApp</string>
     <string name="appearance_change">Ρυθμίζει την εμφάνιση</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Μετρονόμος αυτόματης εκκίνησης</string>
     <string name="metronome_autostart_info">Διατηρήστε τον μετρονόμο σε λειτουργία όταν αλλάζετε τραγούδια</string>
     <string name="metronome_duration">Διάρκεια μετρονόμου (bars)</string>
+    <string name="metronome_duration_visual">Διάρκεια οπτικού μετρονόμου (μπάρες)</string>
     <string name="metronome_info">Προσαρμόστε τις ρυθμίσεις του μετρονόμου</string>
     <string name="microphone">Μικρόφωνο</string>
     <string name="midi_action">Δράση MIDI</string>

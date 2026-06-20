@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Genom att klicka på ett objekt i det alfabetiska indexet växlas det mellan ett och två teckens alfabetiskt index</string>
     <string name="alphabetical_sort">Placera objekt i alfabetisk ordning</string>
     <string name="amp">Amp</string>
+    <string name="analytics">Låtanalys</string>
+    <string name="analytics_count">Sortera efter antal tillagda till antalet</string>
+    <string name="analytics_info">Visa statistik för låtanvändning</string>
+    <string name="analytics_last_added_to_set">Sortera efter senast tillagd till inställt datum</string>
+    <string name="analytics_last_cast">Sortera efter senaste rollbesättningsdatum (extern skärm)</string>
+    <string name="analytics_last_viewed">Sortera efter senast visade</string>
+    <string name="analytics_popularity">Sortera efter popularitet</string>
+    <string name="analytics_reset">Återställ låtanalys</string>
+    <string name="analytics_set_count">Sortera efter antal tillagda till antalet</string>
     <string name="app">App</string>
     <string name="app_specific_file">En fil som är specifik för OpenSongApp</string>
     <string name="appearance_change">Justerar utseendet</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Autostart metronom</string>
     <string name="metronome_autostart_info">Håll metronomen igång när du byter låt</string>
     <string name="metronome_duration">Metronome varaktighet (staplar)</string>
+    <string name="metronome_duration_visual">Visuell metronomlängd (takter)</string>
     <string name="metronome_info">Justera metronominställningarna</string>
     <string name="microphone">Mikrofon</string>
     <string name="midi_action">MIDI-åtgärd</string>

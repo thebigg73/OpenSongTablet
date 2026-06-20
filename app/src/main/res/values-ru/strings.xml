@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Щелчок по элементу в алфавитном указателе будет переключаться между односимвольным и двухсимвольным алфавитным указателем.</string>
     <string name="alphabetical_sort">Расположить элементы в алфавитном порядке</string>
     <string name="amp">Усилитель</string>
+    <string name="analytics">Аналитика песен</string>
+    <string name="analytics_count">Сортировать по количеству добавленных в набор данных</string>
+    <string name="analytics_info">Просмотреть статистику использования песни</string>
+    <string name="analytics_last_added_to_set">Сортировать по дате последнего добавления (с указанием даты).</string>
+    <string name="analytics_last_cast">Сортировать по дате последнего кавалерийского тура (внешнее отображение)</string>
+    <string name="analytics_last_viewed">Сортировать по последнему просмотру</string>
+    <string name="analytics_popularity">Сортировать по популярности</string>
+    <string name="analytics_reset">Сбросить аналитику песни</string>
+    <string name="analytics_set_count">Сортировать по количеству добавленных в набор данных</string>
     <string name="app">Приложение</string>
     <string name="app_specific_file">Файл OpenSongApp</string>
     <string name="appearance_change">Настройка внешнего вида</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Автозапуск метронома</string>
     <string name="metronome_autostart_info">Держать метроном включенным при смене песен</string>
     <string name="metronome_duration">Продолжительность метронома (столбцы)</string>
+    <string name="metronome_duration_visual">Длительность визуального метронома (в тактах)</string>
     <string name="metronome_info">Настройка метронома</string>
     <string name="microphone">Микрофон</string>
     <string name="midi_action">MIDI-экшен</string>

@@ -1870,4 +1870,15 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="analytics_popularity">Sort by popularity</string>
+    <string name="analytics_last_cast">Sort by last cast date (external display)</string>
+    <string name="analytics_last_viewed">Sort by last viewed</string>
+    <string name="analytics_last_added_to_set">Sort by last added to set date</string>
+    <string name="analytics_count">Sort by added to set count</string>
+    <string name="analytics">Song analytics</string>
+    <string name="analytics_info">View song usage stats</string>
+    <string name="metronome_duration_visual">Visual metronome duration (bars)</string>
+    <string name="analytics_set_count">Sort by added to set count</string>
+    <string name="analytics_reset">Reset song analytics</string>
+
 </resources>

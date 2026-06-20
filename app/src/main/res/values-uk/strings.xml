@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Натискання елемента в алфавітному покажчику перемикає алфавітний індекс з одного та двох символів</string>
     <string name="alphabetical_sort">Розставте предмети в алфавітному порядку</string>
     <string name="amp">підсилювач</string>
+    <string name="analytics">Аналітика пісень</string>
+    <string name="analytics_count">Сортувати за кількістю доданих до набору</string>
+    <string name="analytics_info">Переглянути статистику використання пісень</string>
+    <string name="analytics_last_added_to_set">Сортувати за датою останнього додавання до встановленої дати</string>
+    <string name="analytics_last_cast">Сортувати за датою останнього кастингу (зовнішній дисплей)</string>
+    <string name="analytics_last_viewed">Сортувати за датою останнього перегляду</string>
+    <string name="analytics_popularity">Сортувати за популярністю</string>
+    <string name="analytics_reset">Скинути аналітику пісні</string>
+    <string name="analytics_set_count">Сортувати за кількістю доданих до набору</string>
     <string name="app">додаток</string>
     <string name="app_specific_file">Спеціальний файл для OpenSongApp</string>
     <string name="appearance_change">Коригує зовнішній вигляд</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Автозапуск метронома</string>
     <string name="metronome_autostart_info">Увімкніть метроном під час зміни пісень</string>
     <string name="metronome_duration">Тривалість метронома (бари)</string>
+    <string name="metronome_duration_visual">Тривалість візуального метронома (такти)</string>
     <string name="metronome_info">Налаштуйте параметри метронома</string>
     <string name="microphone">Мікрофон</string>
     <string name="midi_action">Дія MIDI</string>

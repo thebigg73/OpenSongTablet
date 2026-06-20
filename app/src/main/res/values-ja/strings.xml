@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">アルファベット順のインデックスの項目をクリックすると、1 文字と 2 文字のアルファベット順のインデックスが切り替わります</string>
     <string name="alphabetical_sort">項目をアルファベット順に並べる</string>
     <string name="amp">アンプ</string>
+    <string name="analytics">楽曲分析</string>
+    <string name="analytics_count">セットに追加した数で並べ替える</string>
+    <string name="analytics_info">楽曲の使用統計を見る</string>
+    <string name="analytics_last_added_to_set">最終追加日順に並べ替え</string>
+    <string name="analytics_last_cast">最終キャスト日順に並べ替え（外部表示）</string>
+    <string name="analytics_last_viewed">最後に閲覧した順に並べ替える</string>
+    <string name="analytics_popularity">人気順に並べ替える</string>
+    <string name="analytics_reset">楽曲分析をリセット</string>
+    <string name="analytics_set_count">セットに追加した数で並べ替える</string>
     <string name="app">アプリ</string>
     <string name="app_specific_file">OpenSongApp に固有のファイル</string>
     <string name="appearance_change">外観を調整します</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">自動起動メトロノーム</string>
     <string name="metronome_autostart_info">曲を変えるときにメトロノームを鳴らし続ける</string>
     <string name="metronome_duration">メトロノームの長さ（バー）</string>
+    <string name="metronome_duration_visual">視覚的なメトロノームの長さ（小節）</string>
     <string name="metronome_info">メトロノーム設定を調整する</string>
     <string name="microphone">マイク</string>
     <string name="midi_action">MIDI アクション</string>

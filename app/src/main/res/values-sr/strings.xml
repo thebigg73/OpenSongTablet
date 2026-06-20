@@ -1481,4 +1481,14 @@
     <string name="connection_metronome_info">Slušajte akcije pokretanja i zaustavljanja metronoma</string>
     <string name="tags_show">Pokaži korišćene oznake</string>
     <string name="tags_show_info">Uključite imena svake oznake sačuvane na listi pesama</string>
+    <string name="analytics_popularity">Sortiraj po popularnosti</string>
+    <string name="analytics_last_viewed">Sortiraj po poslednjem pregledu</string>
+    <string name="analytics_last_added_to_set">Sortiraj po poslednjem dodavanju do postavljenog datuma</string>
+    <string name="analytics_count">Sortiraj po dodat da podesite broj</string>
+    <string name="analytics">Analitika pesama</string>
+    <string name="analytics_info">Pogledaj statistiku korišćenja pesama</string>
+    <string name="analytics_last_cast">Sortiraj po poslednjem datumu bacanja (spoljni displej)</string>
+    <string name="metronome_duration_visual">Vizuelni metronom trajanje (barovi)</string>
+    <string name="analytics_set_count">Sortiraj po dodat da podesite broj</string>
+    <string name="analytics_reset">Poništavanje analitike pesama</string>
 </resources>

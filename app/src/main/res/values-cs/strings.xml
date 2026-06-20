@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Kliknutím na položku v abecedním rejstříku přepnete mezi jedno a dvouznakovým abecedním rejstříkem</string>
     <string name="alphabetical_sort">Seřaďte položky v abecedním pořadí</string>
     <string name="amp">Amp</string>
+    <string name="analytics">Analýza písní</string>
+    <string name="analytics_count">Seřadit podle počtu přidání do sady</string>
+    <string name="analytics_info">Zobrazit statistiky používání skladeb</string>
+    <string name="analytics_last_added_to_set">Seřadit podle data posledního přidání k nastavenému datu</string>
+    <string name="analytics_last_cast">Seřadit podle data posledního obsazení (externí displej)</string>
+    <string name="analytics_last_viewed">Seřadit podle posledního zobrazení</string>
+    <string name="analytics_popularity">Seřadit podle oblíbenosti</string>
+    <string name="analytics_reset">Obnovit analýzy skladeb</string>
+    <string name="analytics_set_count">Seřadit podle počtu přidání do sady</string>
     <string name="app">App</string>
     <string name="app_specific_file">Soubor specifický pro OpenSongApp</string>
     <string name="appearance_change">Upravuje vzhled</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Automatické spuštění metronomu</string>
     <string name="metronome_autostart_info">Při změně skladeb mějte spuštěný metronom</string>
     <string name="metronome_duration">Trvání metronomu (bary)</string>
+    <string name="metronome_duration_visual">Délka vizuálního metronomu (takty)</string>
     <string name="metronome_info">Upravte nastavení metronomu</string>
     <string name="microphone">Mikrofon</string>
     <string name="midi_action">MIDI akce</string>

@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Deur op \'n item in die alfabetiese indeks te klik, sal tussen een en twee karakters alfabetiese indeks verander</string>
     <string name="alphabetical_sort">Plaas items in alfabetiese volgorde</string>
     <string name="amp">Amp</string>
+    <string name="analytics">Liedjie-analise</string>
+    <string name="analytics_count">Sorteer volgens bygevoeg tot stel telling</string>
+    <string name="analytics_info">Bekyk liedjiegebruikstatistieke</string>
+    <string name="analytics_last_added_to_set">Sorteer volgens laas bygevoeg tot vasgestelde datum</string>
+    <string name="analytics_last_cast">Sorteer volgens laaste rolverdelingsdatum (eksterne skerm)</string>
+    <string name="analytics_last_viewed">Sorteer volgens laas gekyk</string>
+    <string name="analytics_popularity">Sorteer volgens gewildheid</string>
+    <string name="analytics_reset">Stel liedjie-analise terug</string>
+    <string name="analytics_set_count">Sorteer volgens bygevoeg tot stel telling</string>
     <string name="app">Toep</string>
     <string name="app_specific_file">\'n Lêer spesifiek vir OpenSongApp</string>
     <string name="appearance_change">Pas voorkoms aan</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Outostart metronoom</string>
     <string name="metronome_autostart_info">Hou metronoom aan die gang wanneer jy van liedjies verander</string>
     <string name="metronome_duration">Metronoomduur (mate)</string>
+    <string name="metronome_duration_visual">Visuele metronoomduur (mate)</string>
     <string name="metronome_info">Pas die metronoominstellings aan</string>
     <string name="microphone">Mikrofoon</string>
     <string name="midi_action">MIDI-aksie</string>

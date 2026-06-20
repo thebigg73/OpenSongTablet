@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Facendo clic su un elemento nell\'indice alfabetico si alterna tra l\'indice alfabetico a uno o due caratteri</string>
     <string name="alphabetical_sort">Elenco in ordine alfabetico</string>
     <string name="amp">Amp</string>
+    <string name="analytics">Analisi musicale</string>
+    <string name="analytics_count">Ordina per numero aggiunto al set</string>
+    <string name="analytics_info">Visualizza le statistiche sull\'utilizzo dei brani</string>
+    <string name="analytics_last_added_to_set">Ordina per data di aggiunta più recente</string>
+    <string name="analytics_last_cast">Ordina per data dell\'ultimo lancio (visualizzazione esterna)</string>
+    <string name="analytics_last_viewed">Ordina per data di visualizzazione più recente</string>
+    <string name="analytics_popularity">Ordina per popolarità</string>
+    <string name="analytics_reset">Reimposta l\'analisi dei brani</string>
+    <string name="analytics_set_count">Ordina per numero aggiunto al set</string>
     <string name="app">Applicazione</string>
     <string name="app_specific_file">File specifico di OpenSongApp</string>
     <string name="appearance_change">Modifica l\'aspetto</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Avvio automatico del metronomo</string>
     <string name="metronome_autostart_info">Il metronomo si avvierà automaticamente al cambio del brano</string>
     <string name="metronome_duration">Tempo di durata del metronomo</string>
+    <string name="metronome_duration_visual">Durata del metronomo visivo (barre)</string>
     <string name="metronome_info">Modifica le impostazioni del metronomo</string>
     <string name="microphone">Microfono</string>
     <string name="midi_action">Azione MIDI</string>

@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">单击字母索引中的项目将在一个和两个字符的字母索引之间切换</string>
     <string name="alphabetical_sort">按字母顺序放置项目</string>
     <string name="amp">放大器</string>
+    <string name="analytics">歌曲分析</string>
+    <string name="analytics_count">按添加到集合的数量排序</string>
+    <string name="analytics_info">查看歌曲使用统计数据</string>
+    <string name="analytics_last_added_to_set">按最后添加到设定日期排序</string>
+    <string name="analytics_last_cast">按上次演出日期排序（外部显示）</string>
+    <string name="analytics_last_viewed">按上次浏览时间排序</string>
+    <string name="analytics_popularity">按受欢迎程度排序</string>
+    <string name="analytics_reset">重置歌曲分析</string>
+    <string name="analytics_set_count">按添加到集合的数量排序</string>
     <string name="app">应用程序</string>
     <string name="app_specific_file">特定于 OpenSongApp 的文件</string>
     <string name="appearance_change">调整外观</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">自动启动节拍器</string>
     <string name="metronome_autostart_info">改变歌曲时保持节拍器运行</string>
     <string name="metronome_duration">节拍器持续时间（巴）</string>
+    <string name="metronome_duration_visual">视觉节拍器持续时间（小节）</string>
     <string name="metronome_info">调整节拍器设置</string>
     <string name="microphone">麦克风</string>
     <string name="midi_action">MIDI 动作</string>

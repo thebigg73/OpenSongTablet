@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">අකාරාදී දර්ශකයේ ඇති අයිතමයක් මත ක්ලික් කිරීමෙන් අක්ෂර අකාරාදී දර්ශක එක සහ දෙක අතර මාරු වේ</string>
     <string name="alphabetical_sort">අයිතම අකාරාදී පිළිවෙලට තබන්න</string>
     <string name="amp">ඇම්ප්</string>
+    <string name="analytics">ගීත විශ්ලේෂණ</string>
+    <string name="analytics_count">කට්ටල ගණනට එකතු කළ ගණන අනුව වර්ග කරන්න</string>
+    <string name="analytics_info">ගීත භාවිත සංඛ්‍යාලේඛන බලන්න</string>
+    <string name="analytics_last_added_to_set">සැකසූ දිනයට අවසන් වරට එකතු කළ දිනය අනුව වර්ග කරන්න</string>
+    <string name="analytics_last_cast">අවසන් විකාශන දිනය අනුව වර්ග කරන්න (බාහිර සංදර්ශකය)</string>
+    <string name="analytics_last_viewed">අවසන් වරට බැලූ වේලාව අනුව වර්ග කරන්න</string>
+    <string name="analytics_popularity">ජනප්‍රියතාවය අනුව වර්ග කරන්න</string>
+    <string name="analytics_reset">ගීත විශ්ලේෂණ යළි පිහිටුවන්න</string>
+    <string name="analytics_set_count">කට්ටල ගණනට එකතු කළ ගණන අනුව වර්ග කරන්න</string>
     <string name="app">යෙදුම</string>
     <string name="app_specific_file">OpenSongApp සඳහා විශේෂිත ගොනුවක්</string>
     <string name="appearance_change">පෙනුම සකස් කරයි</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">ස්වයංක්‍රීය ආරම්භක මෙට්‍රොනෝමය</string>
     <string name="metronome_autostart_info">ගීත වෙනස් කිරීමේදී මෙට්‍රොනොම් ක්‍රියාත්මකව තබා ගන්න</string>
     <string name="metronome_duration">මෙට්‍රොනොම් කාලසීමාව (බාර්)</string>
+    <string name="metronome_duration_visual">දෘශ්‍ය මෙට්‍රොනොම් කාල සීමාව (තීරු)</string>
     <string name="metronome_info">මෙට්‍රොනොම් සැකසුම් සකසන්න</string>
     <string name="microphone">මයික්රෆෝනය</string>
     <string name="midi_action">MIDI ක්‍රියාව</string>

@@ -51,6 +51,15 @@
     <string name="alphabetical_level2_info">Az alfabetikus index egy elemére kattintva válthat egy és két karakteres alfabetikus index között</string>
     <string name="alphabetical_sort">Tedd az elemeket ábécé sorrendbe</string>
     <string name="amp">Amp</string>
+    <string name="analytics">Dalelemzés</string>
+    <string name="analytics_count">Rendezés a készlethez hozzáadott darabszám szerint</string>
+    <string name="analytics_info">Zeneszám-felhasználási statisztikák megtekintése</string>
+    <string name="analytics_last_added_to_set">Rendezés utolsó hozzáadás dátuma szerint</string>
+    <string name="analytics_last_cast">Rendezés az utolsó átküldés dátuma szerint (külső kijelző)</string>
+    <string name="analytics_last_viewed">Rendezés utoljára megtekintés szerint</string>
+    <string name="analytics_popularity">Rendezés népszerűség szerint</string>
+    <string name="analytics_reset">Zeneelemzések visszaállítása</string>
+    <string name="analytics_set_count">Rendezés a készlethez hozzáadott darabszám szerint</string>
     <string name="app">App</string>
     <string name="app_specific_file">Az OpenSongApp-ra jellemző fájl</string>
     <string name="appearance_change">Beállítja a megjelenést</string>
@@ -711,6 +720,7 @@
     <string name="metronome_autostart">Metronóm automatikus indítása</string>
     <string name="metronome_autostart_info">A metronóm folyamatosan fut, amikor dalokat vált</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)</string>
+    <string name="metronome_duration_visual">Vizuális metronóm időtartama (ütemek)</string>
     <string name="metronome_info">Módosítsa a metronóm beállításait</string>
     <string name="microphone">Mikrofon</string>
     <string name="midi_action">MIDI akció</string>
