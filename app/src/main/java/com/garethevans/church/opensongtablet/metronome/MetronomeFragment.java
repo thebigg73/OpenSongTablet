@@ -238,6 +238,9 @@ public class MetronomeFragment extends Fragment {
                 myView.maxBars.setAdjustableButtons(true);
                 myView.maxBars.setValue(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeLength());
                 myView.maxBars.setHint(getMaxBars(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeLength()));
+                myView.maxBarsVisual.setAdjustableButtons(true);
+                myView.maxBarsVisual.setValue(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeVisualLength());
+                myView.maxBarsVisual.setHint(getMaxBars(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeVisualLength()));
 
                 // Set the default metronome switch
                 myView.metronomeDefault.setChecked(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeUseDefaults());
@@ -302,6 +305,8 @@ public class MetronomeFragment extends Fragment {
             myView.tockVolume.addOnChangeListener(new MySliderChangeListener("metronomeTockVol"));
             myView.maxBars.addOnSliderTouchListener(new MySliderTouchListener("metronomeLength"));
             myView.maxBars.addOnChangeListener(new MySliderChangeListener("metronomeLength"));
+            myView.maxBarsVisual.addOnSliderTouchListener(new MySliderTouchListener("metronomeVisualLength"));
+            myView.maxBarsVisual.addOnChangeListener(new MySliderChangeListener("metronomeVisualLength"));
             myView.midiClickTrackSwitch.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeMidi(b));
             myView.metronomeDefault.setOnCheckedChangeListener((view,b) -> mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeUseDefaults(b));
 
@@ -481,6 +486,10 @@ public class MetronomeFragment extends Fragment {
                     int bars = (int)slider.getValue();
                     mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeLength(bars);
                     break;
+                case "metronomeVisualLength":
+                    int barsVisual = (int)slider.getValue();
+                    mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeVisualLength(barsVisual);
+                    break;
             }
         }
     }
@@ -506,6 +515,12 @@ public class MetronomeFragment extends Fragment {
                     myView.maxBars.setHint(getMaxBars((int)value));
                     if (!fromUser) {
                         mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeLength((int)value);
+                    }
+                    break;
+                case "metronomeVisualLength":
+                    myView.maxBarsVisual.setHint(getMaxBars((int)value));
+                    if (!fromUser) {
+                        mainActivityInterface.getDrumViewModel().getMetronome().setMetronomeVisualLength((int)value);
                     }
                     break;
             }

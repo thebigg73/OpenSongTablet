@@ -157,6 +157,18 @@
                     android:valueTo="64"
                     android:layout_marginBottom="16dp"/>
 
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialSlider
+                    android:id="@+id/maxBarsVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/metronome_duration_visual"
+                    android:text="@string/metronome_duration_visual"
+                    android:value="0"
+                    android:valueFrom="0"
+                    android:valueTo="64"
+                    android:layout_marginBottom="16dp"/>
+
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                     android:id="@+id/metronomeDefault"
                     android:layout_width="match_parent"
@@ -248,7 +260,6 @@
         android:layout_gravity="bottom|end"
         android:contentDescription="@string/start"
         android:src="@drawable/play"
-        android:layout_marginBottom="64dp"
-        android:paddingBottom="64dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

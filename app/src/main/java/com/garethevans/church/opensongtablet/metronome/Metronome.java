@@ -26,7 +26,7 @@ public class Metronome {
     private String metronomeTickSound, metronomeTockSound;
     private float metronomeTockVol;
     private String metronomePan;
-    private int metronomeLength;
+    private int metronomeLength, metronomeVisualLength;
     private boolean metronomeAudio, metronomeShowVisual, metronomeMidi,
             metronomeAutoStart, metronomeUseDefaults;
     private int tickColor = Color.RED;
@@ -34,9 +34,8 @@ public class Metronome {
     private VisualListener visualListener;
     private MetronomeFragment metronomeFragment;
     private int totalStepsProcessed = 0;
-    // Pre-calculate these once when the tempo/time signature changes
-    private int cachedInterval = 4;
     private int cachedMaxSteps = -1;
+    private int cachedMaxVisualSteps = -1;
 
     public Metronome(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -47,6 +46,7 @@ public class Metronome {
         metronomeShowVisual = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeShowVisual",true);
         metronomeMidi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeMidi",false);
         metronomeLength = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength",0);
+        metronomeVisualLength = mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeVisualLength",0);
         metronomeAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeAutoStart",false);
         metronomeTickSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTickSound","digital_high");
         metronomeTockSound = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTockSound","digital_low");
@@ -68,8 +68,10 @@ public class Metronome {
     }
 
     public void prepare(int denominator, int stepsPerBar) {
-        this.cachedInterval = (denominator == 8) ? 2 : 4;
+        // Pre-calculate these once when the tempo/time signature changes
+        int cachedInterval = (denominator == 8) ? 2 : 4;
         this.cachedMaxSteps = (metronomeLength > 0) ? metronomeLength * stepsPerBar : -1;
+        this.cachedMaxVisualSteps = (metronomeVisualLength > 0) ? metronomeVisualLength * stepsPerBar : -1;
         this.totalStepsProcessed = 0;
     }
 
@@ -80,9 +82,12 @@ public class Metronome {
         totalStepsProcessed++;
 
         // 2. Check stop condition using our local counter
+        boolean continueMetronome = cachedMaxSteps == -1 || (totalStepsProcessed < cachedMaxSteps);
+        boolean continueVisualMetronome = cachedMaxVisualSteps == -1 || (totalStepsProcessed < cachedMaxVisualSteps);
+
         // We use totalStepsProcessed because it counts continuously from the moment we hit Start
-        if (cachedMaxSteps != -1 && totalStepsProcessed >= cachedMaxSteps) {
-            Log.d(TAG, "Limit reached: " + totalStepsProcessed + "/" + cachedMaxSteps + ". Stopping.");
+        if (!continueMetronome && !continueVisualMetronome) {
+            Log.d(TAG, "Limit reached: " + totalStepsProcessed + "/" + Math.max(cachedMaxSteps,cachedMaxVisualSteps) + ". Stopping.");
 
             // Use a Runnable or post to the main thread if the ViewModel call
             // involves UI updates, or call it directly if thread-safe:
@@ -112,14 +117,15 @@ public class Metronome {
             }
             boolean isAccent = isPrimary || isSecondary;
 
-            // Trigger Audio and Visuals
-            if (metronomeAudio) {
+            // Trigger Audio and Visual
+            // Because audio and visual can be different lengths, check both
+            if (metronomeAudio && continueMetronome) {
                 playAudio(isPrimary); // Accent sound on Beat 1
             }
-            if (metronomeMidi) {
+            if (metronomeMidi && continueMetronome) {
                 playMidi(isAccent); // MIDI accent on 1 and 4
             }
-            if (metronomeShowVisual && visualListener != null) {
+            if (metronomeShowVisual && visualListener != null && continueVisualMetronome) {
                 // Pass the beat number (1-6) and the accent status
                 visualListener.onVisualBeat(beatNumber, isAccent, beatDuration);
             }
@@ -164,6 +170,13 @@ public class Metronome {
     public void setMetronomeLength(int metronomeLength) {
         this.metronomeLength = metronomeLength;
         mainActivityInterface.getPreferences().setMyPreferenceInt("metronomeLength",metronomeLength);
+    }
+    public int getMetronomeVisualLength() {
+        return metronomeVisualLength;
+    }
+    public void setMetronomeVisualLength(int metronomeVisualLength) {
+        this.metronomeVisualLength = metronomeVisualLength;
+        mainActivityInterface.getPreferences().setMyPreferenceInt("metronomeVisualLength",metronomeVisualLength);
     }
     public boolean getMetronomeAutoStart() {
         return metronomeAutoStart;

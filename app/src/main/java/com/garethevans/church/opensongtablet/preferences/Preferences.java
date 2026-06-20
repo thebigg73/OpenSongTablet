@@ -476,6 +476,7 @@ public class Preferences extends Activity {
     // metronomeAudio                   boolean     Should the metronome use audio playback of tick/tocks (def:true)
     // metronomeAutoStart               boolean     Should the metronome autostart with song (after manually starting first time) (def:false)
     // metronomeLength                  int         Number of bars the metronome stays on for (0=indefinitely) (def:0)
+    // metronomeVisualLength            int         Number of bars the visual metronome stays on for (0=indefinitely) (def:0)
     // metronomeMidi                    boolean     Should the metronome also send MIDI beats? (def: false)
     // metronomeSyncWithBeatBuddy       boolean     Should the metronome start and stop sync with the BeatBuddy (def:false)
     // metronomePan                     String      The panning of the metronome sound L, C, R (def:C)
