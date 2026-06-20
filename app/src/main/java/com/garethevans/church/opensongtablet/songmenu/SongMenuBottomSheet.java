@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.analytics.AnalyticsBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSongsBinding;
@@ -168,6 +169,11 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
                 mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string+progressText,myView.getRoot());
             }
         });
+        myView.songAnalytics.setOnClickListener(v -> {
+            AnalyticsBottomSheet analyticsBottomSheet = new AnalyticsBottomSheet();
+            analyticsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AnalyticsBottomSheet");
+            dismiss();
+        });
     }
 
     private void navigateTo(String deepLink) {
@@ -212,6 +218,10 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
     }
 
     private void addToCurrentSet() {
+        // Log this as well
+        if (mainActivityInterface.getSong()!=null) {
+            mainActivityInterface.getAnalyticsHelper().incrementSetCount(mainActivityInterface.getSong().getUuid());
+        }
         mainActivityInterface.getCurrentSet().addItemToSet(mainActivityInterface.getSong());
     }
 

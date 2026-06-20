@@ -11,6 +11,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class BBSQLite extends SQLiteOpenHelper {
 
     // This holds the default song list searchable from the app
-    public final String DATABASE_NAME = "BeatBuddy.db";
+    public static final String DATABASE_NAME = "BeatBuddy.db";
     private final MainActivityInterface mainActivityInterface;
     public final String TABLE_NAME_DEFAULT_SONGS = "defsongs";
     public final String TABLE_NAME_DEFAULT_DRUMS = "defdrums";
@@ -128,23 +129,40 @@ public class BBSQLite extends SQLiteOpenHelper {
     // The initialisers
     public BBSQLite(Context c) {
         // Don't create the database here as we don't want to recreate on each call.
-        super(c,  "BeatBuddy.db", null, DATABASE_VERSION);
+        super(c,  getDatabasePath(c),null, DATABASE_VERSION);
         mainActivityInterface = (MainActivityInterface) c;
     }
 
-    // Database Version
+    static String getDatabasePath(Context context) {
+        // This mirrors your main database location logic
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
+        File dbFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database", "", DATABASE_NAME);
+        return dbFile.getAbsolutePath();
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // If the table doesn't exist, create it.
-        if (db!=null) {
-            try {
-                createTables(db);
-                buildDefaultDatabase();
+        db.execSQL(CREATE_TABLE_DEFAULT_SONGS);
+        db.execSQL(CREATE_TABLE_MY_SONGS);
+        db.execSQL(CREATE_TABLE_DEFAULT_DRUMS);
+        db.execSQL(CREATE_TABLE_MY_DRUMS);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // After upgrade, make the changes required based on the new number
+        // For now, nothing required as we haven't changed
+        /*
+        if (oldVersion < 5) {
+        try {
+                db.execSQL("ALTER TABLE " + SQLite.ANALYTICS_TABLE_NAME + " ADD COLUMN " + SQLite.COLUMN_SET_COUNT + " INTEGER DEFAULT 0;");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+         }
+         */
     }
+
     public void checkDefaultDatabase() {
         int defSongs = getDefSongsCount();
         int defDrums = getDefDrumsCount();
@@ -168,7 +186,8 @@ public class BBSQLite extends SQLiteOpenHelper {
     }
     public int getCount(String what) {
         int count = 0;
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
             String query = "SELECT " + COLUMN_ID + " FROM " + what + ";";
             Cursor cursor = db.rawQuery(query, null);
             count = cursor.getCount();
@@ -179,57 +198,22 @@ public class BBSQLite extends SQLiteOpenHelper {
         return count;
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        dropTables(db);
-        // Create tables again
-        onCreate(db);
-    }
-
-    private void createTables(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_DEFAULT_SONGS);
-        db.execSQL(CREATE_TABLE_MY_SONGS);
-        db.execSQL(CREATE_TABLE_DEFAULT_DRUMS);
-        db.execSQL(CREATE_TABLE_MY_DRUMS);
-    }
-
-    private void dropTables(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DEFAULT_SONGS + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_SONGS + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DEFAULT_DRUMS + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_DRUMS + ";");
-    }
 
     // Create and reset the database
-    public SQLiteDatabase getDB() {
-        try {
-            File f = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",DATABASE_NAME);
-            //File f = new File(c.getExternalFilesDir("Database"), DATABASE_NAME);
-            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(f, null);
-            // Check if the table exists
-            createTables(db);
-            return db;
-        } catch (OutOfMemoryError | Exception e) {
-            return null;
-        }
-    }
-    void emptyTable(SQLiteDatabase db) {
-        // This drops the table if it exists (wipes it ready to start again)
-        if (db!=null) {
-            try {
-                dropTables(db);
-            } catch (OutOfMemoryError | Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public void resetDatabase() {
-        try (SQLiteDatabase db = getDB()) {
-            emptyTable(db);
-            onCreate(db);
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.execSQL("DELETE FROM " + TABLE_NAME_DEFAULT_SONGS + ";");
+            db.execSQL("DELETE FROM " + TABLE_NAME_MY_SONGS + ";");
+            db.execSQL("DELETE FROM " + TABLE_NAME_DEFAULT_DRUMS + ";");
+            db.execSQL("DELETE FROM " + TABLE_NAME_MY_DRUMS + ";");
+
+            db.setTransactionSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -242,7 +226,6 @@ public class BBSQLite extends SQLiteOpenHelper {
             }
         }
     }
-
 
     // Create the database for first use
     private void getDefaultSongs() {
@@ -560,7 +543,7 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
 
         // If the database doesn't exist, create it
-        SQLiteDatabase db = getDB();
+        SQLiteDatabase db = getWritableDatabase();
 
         // Insert new values or ignore rows that exist already
         for (BBSong bbSong : bbSongs) {
@@ -594,21 +577,18 @@ public class BBSQLite extends SQLiteOpenHelper {
                 Log.d(TAG, kits[1] + " already exists in the table, not able to create.");
             }
         }
-
-        db.close();
     }
 
     public void clearMySongs() {
-        SQLiteDatabase db = getDB();
+        SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_SONGS + ";");
         db.execSQL(CREATE_TABLE_MY_SONGS);
-        db.close();
     }
 
     public void addMySongs(ArrayList<String> song_codes, ArrayList<Integer> song_nums,
                            ArrayList<String> song_names, ArrayList<String> folder_codes,
                            ArrayList<Integer> folder_nums, ArrayList<String> folder_names) {
-        SQLiteDatabase db = getDB();
+        SQLiteDatabase db = getWritableDatabase();
         for (int x=0; x<song_nums.size(); x++) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_SONG_CODE, song_codes.get(x));
@@ -625,18 +605,16 @@ public class BBSQLite extends SQLiteOpenHelper {
                 Log.d(TAG, song_names.get(x) + " already exists in the table, not able to create.");
             }
         }
-        db.close();
     }
 
     public void clearMyDrums() {
-        SQLiteDatabase db = getDB();
+        SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MY_DRUMS + ";");
         db.execSQL(CREATE_TABLE_MY_DRUMS);
-        db.close();
     }
     public void addMyDrumKits(ArrayList<Integer> kit_nums, ArrayList<String> kit_names,
                               ArrayList<String> kit_codes) {
-        SQLiteDatabase db = getDB();
+        SQLiteDatabase db = getWritableDatabase();
         for (int x = 0; x<kit_names.size(); x++) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_KIT_NUM, kit_nums.get(x));
@@ -650,11 +628,10 @@ public class BBSQLite extends SQLiteOpenHelper {
                 Log.d(TAG, kit_names.get(x) + " already exists in the table, not able to create.");
             }
         }
-        db.close();
     }
 
     public ArrayList<String> searchUniqueValues(String whatColumns, String whichTable, String sortBy) {
-        SQLiteDatabase db = getDB();
+        SQLiteDatabase db = getReadableDatabase();
 
         ArrayList<String> values = new ArrayList<>();
         String q = "SELECT DISTINCT " + whatColumns + " FROM " + whichTable + " ORDER BY " +
@@ -696,12 +673,12 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
         closeCursor(cursor);
         values.add(0,"");
-        db.close();
         return values;
     }
 
     public ArrayList<BBSong> getMySongsByFolder(String folderVal) {
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
             // The folder will have both the folder number and the folder name
             int folderNum = -1;
             String folderName = "";
@@ -758,7 +735,6 @@ public class BBSQLite extends SQLiteOpenHelper {
                 closeCursor(cursor);
             }
 
-            db.close();
             //Return the songs
             return bbSongsFound;
         } catch (OutOfMemoryError | Exception e) {
@@ -851,7 +827,7 @@ public class BBSQLite extends SQLiteOpenHelper {
             String[] selectionArgs = new String[args.size()];
             selectionArgs = args.toArray(selectionArgs);
 
-            SQLiteDatabase db = getDB();
+            SQLiteDatabase db = getReadableDatabase();
             Cursor cursor = db.rawQuery(query, selectionArgs);
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -915,14 +891,14 @@ public class BBSQLite extends SQLiteOpenHelper {
                 mainActivityInterface.getShowToast().doIt(message);
             }
             closeCursor(cursor);
-            db.close();
         }
         return delay;
     }
 
     // Only called by default songs
     public ArrayList<BBSong> getSongsByFilters(String folderVal, String timeSigVal, String kitVal) {
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
             Log.d(TAG,"folderVal:"+folderVal+"  timeSigVal:"+timeSigVal+"  kitVal:"+kitVal);
             ArrayList<BBSong> bbSongsFound = new ArrayList<>();
             // The folder will have both the folder number and the folder name
@@ -1014,8 +990,6 @@ public class BBSQLite extends SQLiteOpenHelper {
             // close cursor connection
             closeCursor(cursor);
 
-            db.close();
-
             //Return the songs
             return bbSongsFound;
         } catch (OutOfMemoryError | Exception e) {
@@ -1027,7 +1001,8 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     public ArrayList<String> getUnique(String whatColumn, String whichTable) {
         ArrayList<String> values = new ArrayList<>();
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
 
             String q = "SELECT DISTINCT " + whatColumn + " FROM " + whichTable + " ORDER BY " +
                     whatColumn + " ASC";
@@ -1055,15 +1030,18 @@ public class BBSQLite extends SQLiteOpenHelper {
             }
             closeCursor(cursor);
             values.add(0,"");
-            db.close();
-            return values;
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return values;
     }
     public String lookupValue(String getColumn,
                               String querySearch, String[] args) {
 
         String value = "";
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
             Cursor cursor = db.rawQuery(querySearch, args);
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -1087,7 +1065,8 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     public int getNumberFromKit(String kitname) {
         int foundKit = -1;
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
             String queryKit;
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
                 queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_MY_DRUMS + " ";
@@ -1101,9 +1080,8 @@ public class BBSQLite extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 foundKit = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT_NUM));
             }
-            if (cursor != null) {
-                cursor.close();
-            }
+            closeCursor(cursor);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1112,7 +1090,8 @@ public class BBSQLite extends SQLiteOpenHelper {
 
     public String getDrumKitForNumber(int number) {
         String kitName = "";
-        try (SQLiteDatabase db = getDB()) {
+        SQLiteDatabase db = getReadableDatabase();
+        try {
             String queryKit;
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
                 queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_MY_DRUMS + " ";
@@ -1126,9 +1105,7 @@ public class BBSQLite extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 kitName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KIT_NAME));
             }
-            if (cursor != null) {
-                cursor.close();
-            }
+            closeCursor(cursor);
         } catch (Exception e) {
             e.printStackTrace();
         }

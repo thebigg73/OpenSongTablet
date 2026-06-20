@@ -292,6 +292,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                             songItemViewHolder.itemChecked.setChecked(true);
                             mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey, true);
 
+                            // Add the analytics
+                            mainActivityInterface.getAnalyticsHelper().incrementSetCount(mainActivityInterface.getSQLiteHelper().
+                                    getUuidFromFolderAndFile(mainActivityInterface.getCommonSQL().getAnySongId(itemFolder,itemFilename))[0]);
+
                             // Notify the set menu fragment which updates the adapters
                             mainActivityInterface.notifySetFragment("setItemInserted",-1);
 
@@ -381,7 +385,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                 songMenuSongs.getFoundSongs()!=null &&
                 songMenuSongs.getCount()>pos) {
             // Get the current value and change it
-            mainActivityInterface.getMainHandler().post(() -> notifyItemChanged(pos,"checkOn"));
+            mainActivityInterface.getMainHandler().post(() -> {
+                boolean inSet = mainActivityInterface.getSetActions().isSongInSet(songMenuSongs.getFoundSongs().get(pos));
+                notifyItemChanged(pos,inSet ? "checkOn":"checkOff");
+            });
         }
     }
 
@@ -397,8 +404,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
                 // Only proceed if this song isn't already in the set
                 if (!mainActivityInterface.getSetActions().isSongInSet(song)) {
-                    mainActivityInterface.getCurrentSet().addItemToSet(song);
-                    notifyItemChanged(i, "checkOn");
+                    // Log this as well
+                    if (song!=null) {
+                        mainActivityInterface.getAnalyticsHelper().incrementSetCount(song.getUuid());
+                        mainActivityInterface.getCurrentSet().addItemToSet(song);
+                        notifyItemChanged(i, "checkOn");
+                    }
                 }
             }
         }

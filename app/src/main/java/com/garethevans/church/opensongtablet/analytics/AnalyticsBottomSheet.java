@@ -185,7 +185,8 @@ public class AnalyticsBottomSheet extends BottomSheetCommon {
     private List<AnalyticsItem> fetchAnalyticsData() {
         // 1. Get analytics into a Map for fast lookup
         ArrayList<AnalyticsItem> resultList = new ArrayList<>();
-        try (SQLiteDatabase analytics = mainActivityInterface.getAnalyticsHelper().getReadableDatabase()) {
+        SQLiteDatabase analytics = mainActivityInterface.getAnalyticsHelper().getReadableDatabase();
+        try {
             Map<String, AnalyticsItem> analyticsMap = new HashMap<>();
             Cursor cursor = analytics.query("song_analytics", null, null, null, null, null, null);
             while (cursor.moveToNext()) {

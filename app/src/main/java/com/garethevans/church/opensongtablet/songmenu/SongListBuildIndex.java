@@ -128,7 +128,8 @@ public class SongListBuildIndex {
         });
 
         StringBuilder returnString = new StringBuilder();
-        try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
+        SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getWritableDatabase();
+        try {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the SQL table
             boolean needToSaveAgain = false;
@@ -141,7 +142,8 @@ public class SongListBuildIndex {
             String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
                      " FROM " + SQLite.TABLE_NAME + folderMatch;
 
-            Cursor cursor = db.rawQuery(altquery, null);
+            Cursor cursor;
+            cursor = db.rawQuery(altquery, null);
 
             if (cursor.getCount()>0) {
                 // Get the total song number
