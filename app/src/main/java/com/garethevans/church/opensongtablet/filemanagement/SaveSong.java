@@ -155,9 +155,6 @@ public class SaveSong {
             mainActivityInterface.getPreferences().setMyPreferenceString("songFolder",thisSong.getFolder());
             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",thisSong.getFilename());
 
-            Log.d(TAG,"thisSong.getFolder():"+thisSong.getFolder());
-            Log.d(TAG,"thisSong.getFilename():"+thisSong.getFilename());
-            Log.d(TAG,"thisSong.getFiletype():"+thisSong.getFiletype());
             // Now save the song file and return the success!
             if (thisSong.getFiletype().equals("XML") &&
                     thisSong.getFilename()!=null &&

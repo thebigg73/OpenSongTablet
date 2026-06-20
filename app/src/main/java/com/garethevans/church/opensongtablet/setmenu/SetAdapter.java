@@ -184,9 +184,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             });
         }
 
-        //if (si.songicon==null || si.songicon.isEmpty()) {
-            si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
-        //}
+        si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
 
         // Set the icon
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
@@ -195,8 +193,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().textColor);
         }
         holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
-
-
     }
 
     @Override
