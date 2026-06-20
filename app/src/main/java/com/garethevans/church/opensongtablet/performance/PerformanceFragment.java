@@ -71,6 +71,7 @@ public class PerformanceFragment extends Fragment {
     private int widthAfterScale;
     private int heightAfterScale;
     private boolean processingTestView;
+    @SuppressWarnings("FieldCanBeLocal")
     private boolean songChange;
     private boolean metronomeDrummerChange;
     private boolean firstSongLoad = true;
@@ -357,12 +358,6 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.checkVisibility();
             mainActivityInterface.getHotZones().checkIfRequired();
         }
-    }
-    public boolean getInlineSetVisible() {
-        if (myView!=null) {
-            return myView.inlineSetList.getVisibility()==View.VISIBLE;
-        }
-        return false;
     }
     public void notifyToClearInlineSet(int from, int count) {
         if (myView!=null) {
@@ -1620,54 +1615,56 @@ public class PerformanceFragment extends Fragment {
                         public void onGlobalLayout() {
                             try {
                                 if (getContext() != null) {
-                                    myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                                    // Load in the bitmap with these dimensions
-                                    // v5 used portrait and landscape views.  However, now if we only have one
-                                    // column, we will always load the portrait view
-                                    // landscape is now for columns
-                                    Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                                            getHighlighterFile(0, 0);
+                                    if (myView != null && myView.highlighterView.getViewTreeObserver() != null) {
+                                        myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                        // Load in the bitmap with these dimensions
+                                        // v5 used portrait and landscape views.  However, now if we only have one
+                                        // column, we will always load the portrait view
+                                        // landscape is now for columns
+                                        Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                                                getHighlighterFile(0, 0);
 
-                                    if (highlighterBitmap==null) {
-                                        // Clear the previous highlighter image
-                                        Glide.with(getContext()).clear(myView.highlighterView);
-                                    } else if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
+                                        if (highlighterBitmap == null) {
+                                            // Clear the previous highlighter image
+                                            Glide.with(getContext()).clear(myView.highlighterView);
+                                        } else if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
-                                        // If the bitmap doesn't match the view, scale it
-                                        float bmpXScale = (float)w/(float)highlighterBitmap.getWidth();
-                                        float bmpYScale = (float)h/(float)highlighterBitmap.getHeight();
+                                            // If the bitmap doesn't match the view, scale it
+                                            float bmpXScale = (float) w / (float) highlighterBitmap.getWidth();
+                                            float bmpYScale = (float) h / (float) highlighterBitmap.getHeight();
 
-                                        myView.highlighterView.setVisibility(View.VISIBLE);
-                                        ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
-                                        rlp.width = (int) ((float) w * bmpXScale);
-                                        rlp.height = (int) ((float) h * bmpYScale);
+                                            myView.highlighterView.setVisibility(View.VISIBLE);
+                                            ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
+                                            rlp.width = (int) ((float) w * bmpXScale);
+                                            rlp.height = (int) ((float) h * bmpYScale);
 
-                                        myView.highlighterView.setLayoutParams(rlp);
-                                        RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width, rlp.height);
-                                        Glide.with(getContext()).load(highlighterBitmap).
-                                                apply(requestOptions).
-                                                into(myView.highlighterView);
+                                            myView.highlighterView.setLayoutParams(rlp);
+                                            RequestOptions requestOptions = new RequestOptions().centerInside().override(rlp.width, rlp.height);
+                                            Glide.with(getContext()).load(highlighterBitmap).
+                                                    apply(requestOptions).
+                                                    into(myView.highlighterView);
 
-                                        myView.highlighterView.setPivotX(0f);
-                                        myView.highlighterView.setPivotY(0f);
+                                            myView.highlighterView.setPivotX(0f);
+                                            myView.highlighterView.setPivotY(0f);
 
-                                        // Hide after a certain length of time
-                                        int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
-                                        if (timetohide != 0) {
-                                            autoHideHighlighterHandler.postDelayed(
-                                                    autoHideHighlighterRunnable, timetohide * 1000L);
-                                        }
-                                    } else {
-                                        myView.highlighterView.post(() -> {
-                                            if (myView != null) {
-                                                try {
-                                                    myView.highlighterView.setVisibility(View.GONE);
-                                                } catch (Exception e) {
-                                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
-                                                    e.printStackTrace();
-                                                }
+                                            // Hide after a certain length of time
+                                            int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
+                                            if (timetohide != 0) {
+                                                autoHideHighlighterHandler.postDelayed(
+                                                        autoHideHighlighterRunnable, timetohide * 1000L);
                                             }
-                                        });
+                                        } else {
+                                            myView.highlighterView.post(() -> {
+                                                if (myView != null) {
+                                                    try {
+                                                        myView.highlighterView.setVisibility(View.GONE);
+                                                    } catch (Exception e) {
+                                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+                                        }
                                     }
                                 }
                             } catch (Exception e) {
@@ -1901,7 +1898,7 @@ public class PerformanceFragment extends Fragment {
                 performanceShowSection(position);
             } else if (mainActivityInterface.getMode().equals(mode_stage)) {
                 mainActivityInterface.getMainHandler().postDelayed(() -> {
-                    if (stageSectionAdapter != null && stageSectionAdapter.getItemCount() > position && position >= 0 && myView != null && myView.recyclerView != null) {
+                    if (stageSectionAdapter != null && stageSectionAdapter.getItemCount() > position && position >= 0 && myView != null) {
                         stageSectionAdapter.clickOnSection(position);
                         performanceShowSection(position);
                     }

@@ -4,14 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
@@ -26,7 +24,7 @@ public class WebServerMessagesBottomSheet extends BottomSheetCommon {
     private final String TAG = "WebServerMessagesBS";
     private BottomSheetWebserverMessagesBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private String title="", webserver_website="", webserver_message="";
+    private String webserver_website="", webserver_message="";
 
     @Override
     public void onAttach(@NonNull Context context) {

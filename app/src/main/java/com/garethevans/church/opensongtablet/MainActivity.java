@@ -59,6 +59,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -1371,9 +1372,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.alreadyBackPressed = alreadyBackPressed;
     }
 
-    @SuppressWarnings("deprecation")
     public void interceptBackPressed() {
-        if (alreadyBackPressed && !settingsOpen) {
+        int currentId = (navController != null && navController.getCurrentDestination() != null)
+                ? navController.getCurrentDestination().getId() : -1;
+
+        if (navController==null) return;
+
+        // 1. If we are on a root fragment, show the exit confirmation immediately.
+        // By NOT calling navController.navigateUp() or super, we kill the "scrolling" effect.
+        if (currentId == R.id.performanceFragment || currentId == R.id.presenterFragment || currentId == R.id.setStorageLocationFragment) {
+            displayAreYouSure("exit", exit_confirm, null,
+                    navController.getCurrentDestination().getNavigatorName(),
+                    navHostFragment, null);
+        }
+        // 2. If settings are open, handle the UI-specific pop
+        else if (settingsOpen) {
+            navController.navigateUp();
+        }
+        // 3. Otherwise, let the NavController try to handle it (standard history)
+        else if (navController.popBackStack()) {
+            // Handled by NavController
+            Log.d(TAG,"navController deals with this");
+        }
+        // 4. Final fallback
+        else {
+            finish();
+        }
+        /*if (alreadyBackPressed && !settingsOpen) {
             // Close the app
             confirmedAction(true, "exit", null, null, null, null);
         } else if (settingsOpen) {
@@ -1392,7 +1417,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // This is deprecated, but a last ditch effort!
                 super.onBackPressed();
             }
-        }
+        }*/
     }
 
 
@@ -1622,6 +1647,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Set the force reload flag as we want the song to reload when needed
             // Set the force reload flag
             forceReload = true;
+
             try {
                 if (Thread.currentThread() != getMainHandler().getLooper().getThread()) {
                     getMainHandler().post(super::onPostResume);
@@ -1654,6 +1680,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 hideActionButton(false);
 
             } else {
+
+
                 runOnUiThread(() -> {
                     try {
                         if (navController == null) {
@@ -1843,8 +1871,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         updateFragment("toggleScale", null, null);
     }
 
-    @Override
-    public void navHome() {
+    /*public void navHome() {
         lockDrawer(false);
         if (navController == null) {
             try {
@@ -1873,6 +1900,44 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 navigateToFragment(deeplink_performance, 0);
             }
         }
+    }*/
+
+    @Override
+    public void navHome() {
+        Log.d(TAG,"navHome() called");
+        if (navController == null) {
+            try {
+                setupActionbar();
+                setupNavigation();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d(TAG, "navHome() called");
+
+        // 1. Identify your root destination
+        int targetId = whichMode.equals(mode_presenter) ? R.id.presenterFragment : R.id.performanceFragment;
+
+        // 2. Clear the NavHostFragment's internal backstack
+        // We must reach into the NavHost to clear its child fragment manager
+        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            FragmentManager childFm = navHostFragment.getChildFragmentManager();
+            // Clear all fragments in the NavHost directly
+            childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
+        // 3. Reset the NavController and force it to a clean state
+        // We navigate to the target and clear everything in the NavController stack
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(navController.getGraph().getStartDestinationId(), true)
+                .setLaunchSingleTop(true)
+                .build();
+
+        navController.navigate(targetId, null, navOptions);
+
+        Log.d(TAG, "navHome() completed: forced reset to " + targetId);
     }
 
     @Override
@@ -2374,10 +2439,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (item.getItemId() == R.id.settings_menu_item) {
             // Either open or close the settings menu
             if (settingsOpen) {
-                if (navController.getCurrentDestination() != null &&
-                        navController.getCurrentDestination().getId() == R.id.preferencesFragment) {
-                    popTheBackStack(R.id.preferencesFragment, true);
-                }
                 navHome();
             } else {
                 navigateToFragment(deeplink_preferences, 0);
