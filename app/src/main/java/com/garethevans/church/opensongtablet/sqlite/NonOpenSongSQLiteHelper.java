@@ -60,10 +60,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         appDBFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database","",SQLite.NON_OS_DATABASE_NAME);
 
         appDB = Uri.fromFile(appDBFile);
-        Log.d(TAG,"starting trying to get appDB local");
         userDB = mainActivityInterface.getStorageAccess().getUriForItem(
                 "Settings", "", SQLite.NON_OS_DATABASE_NAME);
-        Log.d(TAG,"finished trying to get appDB local");
 
         // If the userDB uri doesn't exist, copy the appDB now it is ready
         if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
@@ -156,15 +154,11 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             getDatabaseUris();
         }
 
-        Log.d(TAG,"copyUserDatabase() check uriTreeValid for userDB");
         if (mainActivityInterface.getStorageAccess().uriTreeValid(userDB) ||
                 !mainActivityInterface.getStorageAccess().uriExists(userDB)) {
 
-            Log.d(TAG,"getInputStream");
             // Get an input stream for the app database so we can copy it
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
-
-            Log.d(TAG,"check if exists getInputStream");
 
             // Make sure the userDB file exists if it isn't there - may not have been used before
             if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {

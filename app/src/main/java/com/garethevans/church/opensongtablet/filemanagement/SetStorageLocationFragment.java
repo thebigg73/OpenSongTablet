@@ -476,8 +476,9 @@ public class SetStorageLocationFragment extends Fragment {
 
         } else {
             // Storage permission has not been granted.  Launch the request to allow it
+            // This will only be triggered if running lower than lollipop
             Log.d(TAG,"Doesn't have permission");
-            //storagePermission.launch(mainActivityInterface.getAppPermissions().getStoragePermissions());
+            storagePermission.launch(mainActivityInterface.getAppPermissions().getStoragePermissions());
         }
     }
 

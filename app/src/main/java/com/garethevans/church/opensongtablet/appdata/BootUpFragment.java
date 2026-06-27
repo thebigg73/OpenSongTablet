@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,21 +109,27 @@ public class BootUpFragment extends Fragment {
 
     // Checks made before starting the app
     public void startOrSetUp() {
-        if (storageIsCorrectlySet()) {
-            if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
-                    mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed",false)) {
-                try {
-                    BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
-                    bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
-                } catch (Exception e) {
-                    e.printStackTrace();
+        Log.d(TAG,"about to run startOrSetup(), but pausing");
+        // Put a slight delay on calling this to make sure the preference has been fully saved
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            Log.d(TAG,"now runningvstartOrSetup()");
+
+            if (storageIsCorrectlySet()) {
+                if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
+                        mainActivityInterface.getPreferences().getMyPreferenceBoolean("indexSkipAllowed", false)) {
+                    try {
+                        BootUpIndexBottomSheet bootUpIndexBottomSheet = new BootUpIndexBottomSheet(this);
+                        bootUpIndexBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "BootUpIndexing");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    startBootProcess(true, true);
                 }
             } else {
-                startBootProcess(true,true);
+                requireStorageCheck();
             }
-        } else {
-            requireStorageCheck();
-        }
+        },500);
     }
     private boolean storageIsCorrectlySet() {
         // Check that storage permission is granted and that it has been set and that it exists
