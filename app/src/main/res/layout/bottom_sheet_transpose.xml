@@ -164,7 +164,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:padding="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="32dp">
 
         <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/convertToFlats"
