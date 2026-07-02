@@ -278,7 +278,8 @@ public class MyFloatingActionButton extends FrameLayout {
 
     public void makeFlat() {
         // Force the background to be a solid transparent color
-        myFAB.setBackgroundColor(Color.TRANSPARENT);
+        myFAB.setBackgroundTintList(null);
+        myFAB.setAnimation(null);
 
         // Remove the shadow-casting background
         if (myFAB.getBackground() instanceof MaterialShapeDrawable) {
