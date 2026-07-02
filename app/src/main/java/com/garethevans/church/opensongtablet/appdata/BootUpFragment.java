@@ -112,7 +112,7 @@ public class BootUpFragment extends Fragment {
         Log.d(TAG,"about to run startOrSetup(), but pausing");
         // Put a slight delay on calling this to make sure the preference has been fully saved
         mainActivityInterface.getMainHandler().postDelayed(() -> {
-            Log.d(TAG,"now runningvstartOrSetup()");
+            Log.d(TAG,"now runningStartOrSetup()");
 
             if (storageIsCorrectlySet()) {
                 if (!mainActivityInterface.getAlertChecks().showUpdateInfo() &&
@@ -210,7 +210,7 @@ public class BootUpFragment extends Fragment {
                     updateMessage();
 
                     if (needIndex) {
-                        // Check for bad files
+                        // We want to rebuild the index, either fully or quickly
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
                         mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
                         mainActivityInterface.quickSongMenuBuild();
@@ -296,6 +296,7 @@ public class BootUpFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceString("songFilename",temp_welcome);
         }
     }
+
 
     @Override
     public void onDestroy() {
