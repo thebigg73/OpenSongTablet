@@ -1883,8 +1883,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
 
-        Log.d(TAG, "navHome() called");
-
         // 1. Identify your root destination
         int targetId = whichMode.equals(mode_presenter) ? R.id.presenterFragment : R.id.performanceFragment;
 
@@ -1906,7 +1904,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         navController.navigate(targetId, null, navOptions);
 
-        Log.d(TAG, "navHome() completed: forced reset to " + targetId);
     }
 
     @Override
@@ -4159,6 +4156,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void fullIndex(String specificFolder) {
+        Log.d(TAG,"fullIndex called in MainActivity");
         if (songListBuildIndex.getIndexRequired() && !songListBuildIndex.getCurrentlyIndexing()) {
             getShowToast().doIt(search_index_start);
             getThreadPoolExecutor().execute(() -> {
@@ -4182,9 +4180,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void quickSongMenuBuild() {
+        Log.d(TAG,"quickSongMenuBuild()");
         if (getStorageAccess() != null && getSQLiteHelper() != null && getNonOpenSongSQLiteHelper() != null) {
             ArrayList<String> songIds = new ArrayList<>();
             try {
+                Log.d(TAG,"getting songIds");
                 songIds = getStorageAccess().listSongs(false);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4194,7 +4194,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             // Non-persistent, created from storage at boot (to keep updated) used to references ALL files
             if (songListBuildIndex.getFullIndexRequired()) {
+                Log.d(TAG,"resetDatabase()");
                 sqLiteHelper.resetDatabase();
+                Log.d(TAG,"insertFast()");
                 sqLiteHelper.insertFast();
             } else {
                 // Remove existing items that don't match the new songIds
@@ -4205,6 +4207,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
             // Updated each time a file is created, deleted, moved.
             // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
+            Log.d(TAG,"nonOpenSongSQLiteHelper.initialise()");
             nonOpenSongSQLiteHelper.initialise();
 
             // Add entries to the database that have songid, folder and filename fields

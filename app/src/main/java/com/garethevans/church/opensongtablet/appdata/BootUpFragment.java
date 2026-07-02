@@ -219,6 +219,9 @@ public class BootUpFragment extends Fragment {
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
                     }
 
+                    message = success;
+                    updateMessage();
+
                     // Finished indexing
                     if (getContext() != null) {
                         message = success;
@@ -247,7 +250,6 @@ public class BootUpFragment extends Fragment {
                         mainActivityInterface.showActionBar();
                         mainActivityInterface.updateMargins();
                     });
-
 
                 } else {
                     // There was a problem with the folders, so restart the app!

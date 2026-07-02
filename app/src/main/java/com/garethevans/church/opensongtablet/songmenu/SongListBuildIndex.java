@@ -112,19 +112,21 @@ public class SongListBuildIndex {
         indexComplete = false;
 
         Log.d(TAG,"fullIndex()");
-        progressText.post(() -> {
-            Drawable drawable = AppCompatResources.getDrawable(c,R.drawable.rectangle);
-            if (drawable!=null) {
-                DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().secondary);
-            }
-            progressText.setBackground(drawable);
-            int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
-            progressText.setPadding(padding,padding,padding,padding);
-            progressText.setText("0%");
-            progressText.setPalette(mainActivityInterface.getPalette());
-            progressText.setTextColor(mainActivityInterface.getPalette().textColor);
-            progressText.setVisibility(View.VISIBLE);
-        });
+        if (progressText!=null) {
+            progressText.post(() -> {
+                Drawable drawable = AppCompatResources.getDrawable(c, R.drawable.rectangle);
+                if (drawable != null) {
+                    DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().secondary);
+                }
+                progressText.setBackground(drawable);
+                int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
+                progressText.setPadding(padding, padding, padding, padding);
+                progressText.setText("0%");
+                progressText.setPalette(mainActivityInterface.getPalette());
+                progressText.setTextColor(mainActivityInterface.getPalette().textColor);
+                progressText.setVisibility(View.VISIBLE);
+            });
+        }
 
         StringBuilder returnString = new StringBuilder();
         SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getWritableDatabase();

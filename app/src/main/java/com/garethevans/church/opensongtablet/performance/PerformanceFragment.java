@@ -208,7 +208,12 @@ public class PerformanceFragment extends Fragment {
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-            mainActivityInterface.fullIndex(null);
+            // Do this on a background thread after a 1 second delay to allow app start!
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                if (mainActivityInterface!=null && myView!=null && getContext()!=null) {
+                    mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.fullIndex(null));
+                }
+            },2000);
         }
 
         // Set listeners for the scroll/scale/gestures
