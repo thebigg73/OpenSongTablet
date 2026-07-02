@@ -932,6 +932,13 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
         },500);
     }
 
+    public void stopAllEndpoints() {
+        try {
+            Nearby.getConnectionsClient(c).stopAllEndpoints();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean sendAsHost() {
         return hasValidConnections() && isHost;

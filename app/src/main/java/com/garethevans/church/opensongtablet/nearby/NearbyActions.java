@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.nearby;
 import android.app.Activity;
 import android.content.Context;
 
+import com.google.android.gms.nearby.Nearby;
+
 public class NearbyActions {
 
     // This class is the communicator head class for Nearby actions
@@ -118,5 +120,4 @@ public class NearbyActions {
     public SyncNearbyFragment getSyncNearbyFragment() {
         return syncNearbyFragment;
     }
-
 }

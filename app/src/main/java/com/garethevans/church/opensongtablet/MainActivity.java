@@ -5109,6 +5109,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Turn off nearby
         if (getNearbyActions()!=null) {
+            getNearbyActions().getNearbyConnectionManagement().stopAllEndpoints();
             getNearbyActions().getNearbyConnectionManagement().turnOffNearby();
         }
 
