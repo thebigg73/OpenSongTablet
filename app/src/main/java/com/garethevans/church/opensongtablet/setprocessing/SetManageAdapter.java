@@ -24,6 +24,7 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
     private final ArrayList<String> checkedItems = new ArrayList<>();
     private final String whatView;
     private final SetManageFragment setManageFragment;
+    private final Object lock = new Object();
 
     SetManageAdapter(Context c, SetManageFragment setManageFragment, String whatView) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -133,10 +134,17 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
         // Prepare the view from the foundSets array
         position = holder.getAbsoluteAdapterPosition();
 
-        // Get the values for this view
-        if (position<foundSets.size()) {
-            FoundSet foundSet = foundSets.get(position);
+        FoundSet foundSet;
+        synchronized (lock) {
+            if (position < foundSets.size()) {
+                foundSet = foundSets.get(position);
+            } else {
+                return;
+            }
+        }
 
+        // Get the values for this view
+        if (foundSet!=null) {
             // Decide if this value is selected (only available/visible when loading set)
             holder.checkBox.setChecked(foundSet.getChecked());
             if (whatView.equals("loadset") || whatView.equals("deleteset")) {
@@ -194,19 +202,22 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
     public void changeSortOrder() {
         // Now do the sorting based on the user preference
         String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
-        switch (setsSortOrder) {
-            case "az":
-                Collections.sort(foundSets, (FoundSet a, FoundSet z) -> a.getTitle().compareTo(z.getTitle()));
-                break;
-            case "za":
-                Collections.sort(foundSets, (FoundSet a, FoundSet z) -> z.getTitle().compareTo(a.getTitle()));
-                break;
-            case "newest":
-                Collections.sort(foundSets, (o1, o2) -> Long.compare(o2.getLastModifiedLong(), o1.getLastModifiedLong()));
-                break;
-            case "oldest":
-                Collections.sort(foundSets, (o1, o2) -> Long.compare(o1.getLastModifiedLong(), o2.getLastModifiedLong()));
-                break;
+        // Synchronize the sort operation
+        synchronized (lock) {
+            switch (setsSortOrder) {
+                case "az":
+                    Collections.sort(foundSets, (FoundSet a, FoundSet z) -> a.getTitle().compareTo(z.getTitle()));
+                    break;
+                case "za":
+                    Collections.sort(foundSets, (FoundSet a, FoundSet z) -> z.getTitle().compareTo(a.getTitle()));
+                    break;
+                case "newest":
+                    Collections.sort(foundSets, (o1, o2) -> Long.compare(o2.getLastModifiedLong(), o1.getLastModifiedLong()));
+                    break;
+                case "oldest":
+                    Collections.sort(foundSets, (o1, o2) -> Long.compare(o1.getLastModifiedLong(), o2.getLastModifiedLong()));
+                    break;
+            }
         }
         mainActivityInterface.getMainHandler().post(() -> notifyItemRangeChanged(0,getItemCount()));
     }
