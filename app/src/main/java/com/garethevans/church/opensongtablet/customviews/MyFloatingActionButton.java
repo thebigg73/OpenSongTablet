@@ -45,6 +45,8 @@ public class MyFloatingActionButton extends FrameLayout {
         inflate(context, R.layout.view_myfab, this);
 
         myFAB = findViewById(R.id.myFAB);
+        setClipChildren(false);
+        setClipToPadding(false);
 
         // Read configuration.  Store some to set after attached to window (to override default style)
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyFloatingActionButton);
@@ -158,7 +160,7 @@ public class MyFloatingActionButton extends FrameLayout {
         setAnimationListeners();
 
         // Set default colors
-        Palette palette = new Palette(getContext());
+        palette = new Palette(getContext());
         if (targetButtonColor!=-1) {
             palette.secondary = targetButtonColor;
         }
