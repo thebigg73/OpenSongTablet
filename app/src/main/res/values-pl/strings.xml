@@ -561,6 +561,8 @@
     <string name="hot_zones_info">Przypisz niestandardowe akcje do stref ekranu</string>
     <string name="hotspot">Skonfiguruj hotspot Wi-Fi</string>
     <string name="hotspot_info">Jeśli żadna sieć Wi-Fi nie jest dostępna, OpenSongApp może utworzyć lokalny hotspot Wi-Fi (brak dostępu do Internetu), z którym inne urządzenia mogą się połączyć i uzyskać dostęp do serwera internetowego.</string>
+    <string name="hybrid_mode">Tryb hybrydowy</string>
+    <string name="hybrid_mode_info">Połączenie trybu występu i trybu prezentera</string>
     <string name="hymn_number">Numer hymnu</string>
     <string name="ignore_cutouts">Ignoruj wycięcia</string>
     <string name="ignore_cutouts_info">Jeśli Twoje urządzenie ma wycięcia w wyświetlaczu, możesz wymusić, aby aplikacja nadal rysowała w tym miejscu. Upewnij się, że nadal widzisz przyciski menu, zanim opuścisz tę stronę, w przeciwnym razie możesz nie mieć dostępu do ustawień aplikacji!</string>

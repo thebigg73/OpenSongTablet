@@ -561,6 +561,8 @@
     <string name="hot_zones_info">画面の領域にカスタムアクションを割り当てる</string>
     <string name="hotspot">WiFiホットスポットをセットアップする</string>
     <string name="hotspot_info">WiFiネットワークが利用できない場合、OpenSongAppは、他のデバイスが接続してWebサーバーにアクセスできるローカルWiFiホットスポット(インターネットアクセスなし)を作成できます。</string>
+    <string name="hybrid_mode">ハイブリッドモード</string>
+    <string name="hybrid_mode_info">パフォーマンスモードとプレゼンターモードのハイブリッド</string>
     <string name="hymn_number">賛美歌番号</string>
     <string name="ignore_cutouts">カットアウトを無視</string>
     <string name="ignore_cutouts_info">デバイスにノッチ (ディスプレイ カットアウト) がある場合は、アプリにこのスペースを強制的に描画させることができます。このページを離れる前に、メニュー ボタンが表示されていることを確認してください。そうしないと、アプリの設定にアクセスできなくなる可能性があります。</string>

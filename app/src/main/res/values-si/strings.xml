@@ -561,6 +561,8 @@
     <string name="hot_zones_info">තිරයේ ප්‍රදේශවලට අභිරුචි ක්‍රියා පවරන්න</string>
     <string name="hotspot">WiFi හොට්ස්පොට් එකක් සකසන්න</string>
     <string name="hotspot_info">WiFi ජාලයක් නොමැති නම්, OpenSongApp හට වෙනත් උපාංගවලට සම්බන්ධ වීමට සහ වෙබ් සේවාදායකයට ප්‍රවේශ විය හැකි දේශීය WiFi හොට්ස්පොට් එකක් (අන්තර්ජාල ප්‍රවේශයක් නැත) සෑදිය හැක.</string>
+    <string name="hybrid_mode">දෙමුහුන් මාදිලිය</string>
+    <string name="hybrid_mode_info">කාර්ය සාධන සහ ඉදිරිපත් කරන්නා මාදිලිවල දෙමුහුන් ක්‍රමයක්</string>
     <string name="hymn_number">ගීතිකා අංකය</string>
     <string name="ignore_cutouts">කටවුට් නොසලකා හරින්න</string>
     <string name="ignore_cutouts_info">ඔබගේ උපාංගයට සටහන් (කට්අවුට් සංදර්ශන) තිබේ නම්, ඔබට මෙම ඉඩ මත තවමත් ඇඳීමට යෙදුමට බල කළ හැක.  ඔබ මෙම පිටුවෙන් පිටවීමට පෙර ඔබට තවමත් මෙනු බොත්තම් දැකිය හැකි බවට වග බලා ගන්න, එසේ නොමැතිනම් ඔබට යෙදුම් සැකසීම් වෙත ප්‍රවේශ වීමට නොහැකි විය හැක!</string>

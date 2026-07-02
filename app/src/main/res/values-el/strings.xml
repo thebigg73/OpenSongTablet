@@ -561,6 +561,8 @@
     <string name="hot_zones_info">Αντιστοίχιση προσαρμοσμένων ενεργειών σε περιοχές της οθόνης</string>
     <string name="hotspot">Ρύθμιση Wi-Fi hotspot</string>
     <string name="hotspot_info">Εάν δεν υπάρχει διαθέσιμο δίκτυο WiFi, το OpenSongApp μπορεί να δημιουργήσει ένα τοπικό σημείο πρόσβασης WiFi (χωρίς πρόσβαση στο διαδίκτυο) στο οποίο μπορούν να συνδεθούν άλλες συσκευές και να έχουν πρόσβαση στον διακομιστή ιστού.</string>
+    <string name="hybrid_mode">Υβριδική λειτουργία</string>
+    <string name="hybrid_mode_info">Ένα υβρίδιο λειτουργιών Performance και Presenter</string>
     <string name="hymn_number">Hymn number</string>
     <string name="ignore_cutouts">Αγνοήστε τις αποκοπές</string>
     <string name="ignore_cutouts_info">Εάν η συσκευή σας έχει εγκοπές (αποκοπή οθόνης), μπορείτε να αναγκάσετε την εφαρμογή να συνεχίσει να τραβήξει πάνω από αυτό το διάστημα. Βεβαιωθείτε ότι εξακολουθείτε να βλέπετε τα κουμπιά μενού προτού φύγετε από αυτήν τη σελίδα, διαφορετικά ενδέχεται να μην έχετε πρόσβαση στις ρυθμίσεις της εφαρμογής!</string>

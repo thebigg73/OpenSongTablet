@@ -561,6 +561,8 @@
     <string name="hot_zones_info">将自定义操作分配给屏幕区域</string>
     <string name="hotspot">设置 WiFi 热点</string>
     <string name="hotspot_info">如果没有可用的 WiFi 网络，OpenSongApp 可以创建一个本地 WiFi 热点（无法访问互联网），其他设备可以连接到并访问 Web 服务器。</string>
+    <string name="hybrid_mode">混合模式</string>
+    <string name="hybrid_mode_info">表演模式和演讲者模式的混合体</string>
     <string name="hymn_number">圣诗</string>
     <string name="ignore_cutouts">忽略切口</string>
     <string name="ignore_cutouts_info">如果您的设备有凹口（显示切口），您可以强制应用程序仍然绘制此空间。离开此页面之前，请确保您仍然可以看到菜单按钮，否则您可能无法访问应用程序设置！</string>

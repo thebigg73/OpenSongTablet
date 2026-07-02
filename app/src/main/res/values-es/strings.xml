@@ -561,6 +561,8 @@
     <string name="hot_zones_info">Asignar acciones personalizadas a áreas de la pantalla</string>
     <string name="hotspot">Configurar un punto de acceso WiFi</string>
     <string name="hotspot_info">Si no hay una red WiFi disponible, OpenSongApp puede crear un punto de acceso WiFi local (sin acceso a Internet) al que otros dispositivos pueden conectarse y acceder al servidor web.</string>
+    <string name="hybrid_mode">Modo híbrido</string>
+    <string name="hybrid_mode_info">Un híbrido de los modos de Actuación y Presentación.</string>
     <string name="hymn_number">Número Himno</string>
     <string name="ignore_cutouts">Omitir recortes</string>
     <string name="ignore_cutouts_info">Si su dispositivo tiene muescas (recortes de pantalla), puede forzar a la aplicación a dibujar sobre este espacio.  Asegúrese de que aún puede ver los botones de menú antes de salir de esta página, de lo contrario, es posible que no pueda acceder a la configuración de la aplicación.</string>

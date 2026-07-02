@@ -561,6 +561,8 @@
     <string name="hot_zones_info">Tilldela anpassade åtgärder till områden på skärmen</string>
     <string name="hotspot">Konfigurera en WiFi-hotspot</string>
     <string name="hotspot_info">Om inget WiFi-nätverk är tillgängligt kan OpenSongApp skapa en lokal WiFi-hotspot (ingen internetåtkomst) som andra enheter kan ansluta till och komma åt webbservern.</string>
+    <string name="hybrid_mode">Hybridläge</string>
+    <string name="hybrid_mode_info">En hybrid av Performance- och Presenter-lägen</string>
     <string name="hymn_number">Sångnummer</string>
     <string name="ignore_cutouts">Ignorera utklipp</string>
     <string name="ignore_cutouts_info">Om din enhet har skåror (skärmutskärningar) kan du tvinga appen att fortfarande dra över detta utrymme.  Se till att du fortfarande kan se menyknapparna innan du lämnar den här sidan, annars kanske du inte kan komma åt appinställningarna!</string>

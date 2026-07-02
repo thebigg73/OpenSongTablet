@@ -676,6 +676,8 @@
     <string name="hot_zones_info">Assign custom actions to areas of the screen</string>
     <string name="hotspot">Setup a Wi-Fi hotspot</string>
     <string name="hotspot_info">If no Wi-Fi network is available, OpenSongApp can create a local Wi-Fi hotspot (no internet access) that other devices can connect to and access the web server.</string>
+    <string name="hybrid_mode">Hybrid mode</string>
+    <string name="hybrid_mode_info">A hybrid of Performance and Presenter modes</string>
     <string name="hymn_number">Hymn number</string>
     <string name="ignore_cutouts">Ignore cutouts</string>
     <string name="ignore_cutouts_info">If your device has notches (display cutouts), you can force the app to still draw over this space.  Make sure you can still see the menu buttons before you leave this page, otherwise you might not be able to access the app settings!</string>
@@ -962,6 +964,7 @@
     <string name="min_font_size">Preferred minimum autoscale font size</string>
     <string name="minus_1" translatable="false">-1</string>
     <string name="mode">Mode</string>
+    <string name="mode_hybrid" translatable="false">Hybrid</string>
     <string name="mode_performance" translatable="false">Performance</string>
     <string name="mode_presenter" translatable="false">Presenter</string>
     <string name="mode_stage" translatable="false">Stage</string>

@@ -561,6 +561,8 @@
     <string name="hot_zones_info">Egyéni műveletek hozzárendelése a képernyő területeihez</string>
     <string name="hotspot">WiFi hotspot beállítása</string>
     <string name="hotspot_info">Ha nincs elérhető WiFi hálózat, az OpenSongApp létrehozhat egy helyi WiFi hotspotot (nincs internet-hozzáférés), amelyhez más eszközök csatlakozhatnak és hozzáférhetnek a webszerverhez.</string>
+    <string name="hybrid_mode">Hibrid mód</string>
+    <string name="hybrid_mode_info">A Teljesítmény és az Előadói módok hibridje</string>
     <string name="hymn_number">Hymn szám</string>
     <string name="ignore_cutouts">A kivágások figyelmen kívül hagyása</string>
     <string name="ignore_cutouts_info">Ha az eszközén vannak bevágások (kivágások a kijelzőn), akkor kényszerítheti az alkalmazást, hogy továbbra is rajzoljon ezen a területen. Mielőtt elhagyja ezt az oldalt, győződjön meg róla, hogy továbbra is látja a menügombokat, ellenkező esetben előfordulhat, hogy nem tudja elérni az alkalmazás beállításait!</string>

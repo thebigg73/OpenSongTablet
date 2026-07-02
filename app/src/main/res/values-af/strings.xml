@@ -561,6 +561,8 @@
     <string name="hot_zones_info">Ken pasgemaakte aksies toe aan dele van die skerm</string>
     <string name="hotspot">Stel \'n WiFi-hotspot op</string>
     <string name="hotspot_info">As daar geen WiFi-netwerk beskikbaar is nie, kan OpenSongApp \'n plaaslike WiFi-hotspot skep (geen internettoegang nie) waaraan ander toestelle kan koppel en toegang tot die webbediener het.</string>
+    <string name="hybrid_mode">Hibriede modus</string>
+    <string name="hybrid_mode_info">\'n Hibriede van Prestasie- en Aanbiedermodusse</string>
     <string name="hymn_number">Hymn aantal</string>
     <string name="ignore_cutouts">Ignoreer kerwe</string>
     <string name="ignore_cutouts_info">As jou toestel kepe het (vertoonuitknipsels), kan jy die toepassing dwing om steeds oor hierdie spasie te teken. Maak seker dat jy steeds die kieslysknoppies kan sien voordat jy hierdie bladsy verlaat, anders sal jy dalk nie toegang tot die programinstellings kry nie!</string>
