@@ -41,7 +41,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     private SettingsDisplayConnectedBinding myView;
     private String connected_display_string="", website_connected_display_string="",
             mode_performance_string="", mode_stage_string="", words_and_music_by_string="",
-            used_by_permission_string="";
+            used_by_permission_string="", mode_hybrid_string="";
     private String webAddress;
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result != null && result.getData() != null) {
@@ -104,6 +104,7 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             website_connected_display_string = getString(R.string.website_connected_display);
             mode_performance_string = getString(R.string.mode_performance);
             mode_stage_string = getString(R.string.mode_stage);
+            mode_hybrid_string = getContext().getString(R.string.mode_hybrid);
             words_and_music_by_string = getString(R.string.words_and_music_by);
             used_by_permission_string = getString(R.string.used_by_permision);
         }
@@ -174,7 +175,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
 
     private void setViews() {
         // These settings can be called from any mode, hide what we don't need
-        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+        if (mainActivityInterface.getMode().equals(mode_performance_string) ||
+                mainActivityInterface.getMode().equals(mode_hybrid_string)) {
             myView.backgroundLayout.setVisibility(View.GONE);
             myView.presoBackgroundAlpha.setVisibility(View.GONE);
             myView.presoBackgroundDivider.setVisibility(View.GONE);
@@ -361,7 +363,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             displayInterface.updateDisplay("setSongContent");
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+                if (!mainActivityInterface.getMode().equals(mode_performance_string) &&
+                    !mainActivityInterface.getMode().equals(mode_hybrid_string)) {
                     displayInterface.updateDisplay("showSection");
                 }
 
@@ -507,7 +510,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPresenterSettings().setCastRotation(slider.getValue());
                     displayInterface.updateDisplay("changeRotation");
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+                        if (mainActivityInterface.getMode().equals(mode_performance_string) ||
+                                mainActivityInterface.getMode().equals(mode_hybrid_string)) {
                             displayInterface.updateDisplay("setSongContent");
                         } else {
                             displayInterface.updateDisplay("showSection");
@@ -527,7 +531,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     }
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         displayInterface.updateDisplay("measureAvailableSizes");
-                        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+                        if (mainActivityInterface.getMode().equals(mode_performance_string) ||
+                                mainActivityInterface.getMode().equals(mode_hybrid_string)) {
                             displayInterface.updateDisplay("setSongContent");
                         } else {
                             displayInterface.updateDisplay("showSection");
@@ -548,7 +553,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
                     mainActivityInterface.getPresenterSettings().setFontSizePresoMax(slider.getValue());
                     new Handler(Looper.getMainLooper()).postDelayed(() -> {
                         displayInterface.updateDisplay("measureAvailableSizes");
-                        if (mainActivityInterface.getMode().equals(mode_performance_string)) {
+                        if (mainActivityInterface.getMode().equals(mode_performance_string) ||
+                                mainActivityInterface.getMode().equals(mode_hybrid_string)) {
                             displayInterface.updateDisplay("setSongContent");
                         } else {
                             displayInterface.updateDisplay("showSection");
@@ -717,7 +723,8 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
             displayInterface.updateDisplay("initialiseInfoBarRequired");
         },200);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+            if (!mainActivityInterface.getMode().equals(mode_performance_string) &&
+                !mainActivityInterface.getMode().equals(mode_hybrid_string)) {
                 displayInterface.updateDisplay("showSection");
             }
         },800);

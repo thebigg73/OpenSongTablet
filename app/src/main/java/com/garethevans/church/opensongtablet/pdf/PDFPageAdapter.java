@@ -209,7 +209,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                             if (itemHighlighted.get(position,false)) {
                                 alphaval = 1f;
                             }
-                            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                                    mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                                 alphaval = 1f;
                             }
                             holder.v.setAlpha(alphaval);
@@ -293,7 +294,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         cardView.post(()->{
             try {
-                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                    !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                     cardView.setAlpha(finalAlpha);
                 } else {
                     cardView.setAlpha(1f);
@@ -366,8 +368,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
                 onTouchAction();
 
-                // Only do this alpha change if we aren't in Performance mode
-                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                // Only do this alpha change if we aren't in Performance or hybrid mode
+                if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                        !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                     if (pageInfos.size()>currentSection) {
                         itemHighlighted.put(currentSection, false);
                         //pageInfos.get(currentSection).alpha = alphaoff;

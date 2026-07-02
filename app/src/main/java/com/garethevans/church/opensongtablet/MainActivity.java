@@ -1871,37 +1871,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         updateFragment("toggleScale", null, null);
     }
 
-    /*public void navHome() {
-        lockDrawer(false);
-        if (navController == null) {
-            try {
-                setupActionbar();
-                setupNavigation();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (navController != null && myView != null) {
-            whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
-            if (navController.getCurrentDestination() != null) {
-                try {
-                    navController.popBackStack(Objects.requireNonNull(navController.getCurrentDestination()).getId(), true);
-                } catch (Exception e) {
-                    Log.d(TAG, "Can't pop the backstack");
-                    e.printStackTrace();
-                }
-            }
-            // Use this to clear everything back to the first fragment
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            if (whichMode.equals(mode_presenter)) {
-                navigateToFragment(deeplink_presenter, 0);
-
-            } else {
-                navigateToFragment(deeplink_performance, 0);
-            }
-        }
-    }*/
-
     @Override
     public void navHome() {
         Log.d(TAG,"navHome() called");
@@ -2044,7 +2013,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             performanceFragment.showNearbyAlertPopUp(message);
         }
     }
-
 
     // For audio recording
     public void setRequireAudioRecorder() {
@@ -4214,7 +4182,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void quickSongMenuBuild() {
-        if (getStorageAccess() != null && sqLiteHelper != null && nonOpenSongSQLiteHelper != null) {
+        if (getStorageAccess() != null && getSQLiteHelper() != null && getNonOpenSongSQLiteHelper() != null) {
             ArrayList<String> songIds = new ArrayList<>();
             try {
                 songIds = getStorageAccess().listSongs(false);

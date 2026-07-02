@@ -25,7 +25,7 @@ public class HotZones {
     private View hotZoneBottomCenterView;
     private String hotZoneTopLeftShort, hotZoneTopCenterShort, hotZoneBottomCenterShort,
             hotZoneTopLeftLong, hotZoneTopCenterLong, hotZoneBottomCenterLong;
-    private final String mode_performance;
+    private final String mode_performance, mode_hybrid;
     private boolean usingScrollZones;
     private final Handler checkScrollRequiredHandler = new Handler(Looper.getMainLooper());
     private Runnable checkScrollRequiredRunnable;
@@ -38,6 +38,7 @@ public class HotZones {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         mode_performance = c.getString(R.string.mode_performance);
+        mode_hybrid = c.getString(R.string.mode_hybrid);
         getPreferences();
     }
 
@@ -80,7 +81,7 @@ public class HotZones {
 
     public void checkIfRequired() {
         // Check hotzone required
-        if (!mainActivityInterface.getMode().equals(mode_performance)) {
+        if (!mainActivityInterface.getMode().equals(mode_performance) && !mainActivityInterface.getMode().equals(mode_hybrid)) {
             hotZoneTopLeftView.setVisibility(View.GONE);
             hotZoneTopCenterView.setVisibility(View.GONE);
             hotZoneBottomCenterView.setVisibility(View.GONE);

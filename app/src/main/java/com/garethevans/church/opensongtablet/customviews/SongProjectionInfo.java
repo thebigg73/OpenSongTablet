@@ -32,7 +32,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
     private float clockTextSize;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongProjectionInfo";
-    private final String performance_string;
+    private final String performance_string, hybrid_string;
 
     public SongProjectionInfo(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -58,6 +58,7 @@ public class SongProjectionInfo extends LinearLayoutCompat {
         capoIcon.setId(View.generateViewId());
 
         performance_string = context.getString(R.string.mode_performance);
+        hybrid_string = context.getString(R.string.mode_hybrid);
     }
 
 
@@ -76,7 +77,8 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             showMiniLogo(false);
             smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
-        } else if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        } else if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                    !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
             // The bottom bar for the secondary display in Stage and Presenter mode
             showMiniLogo(false);
             smallText(mainActivityInterface, false);
@@ -135,7 +137,8 @@ public class SongProjectionInfo extends LinearLayoutCompat {
 
             ColorStateList colorList;
             int color;
-            if (mainActivityInterface.getMode().equals(performance_string)) {
+            if (mainActivityInterface.getMode().equals(performance_string) ||
+                mainActivityInterface.getMode().equals(hybrid_string)) {
                 color = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
             } else {
                 color = mainActivityInterface.getMyThemeColors().getPresoInfoFontColor();

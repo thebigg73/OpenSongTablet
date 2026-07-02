@@ -1144,7 +1144,8 @@ public class ProcessSong {
 
         htmlLyrics.append("\n<table class=\"lyrictable\">\n");
 
-        boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        boolean performancePresentation = presentation &&
+                (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)));
         boolean showChords = (presentation && mainActivityInterface.getPresenterSettings().getPresoShowChords()) ||
                 (!presentation && displayChords);
 
@@ -1160,7 +1161,8 @@ public class ProcessSong {
             string = chordbit + groupline_string + string;
         }
 
-        boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        boolean applyFixExcessSpaces = (trimWordSpacing || presentation ||
+                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
 
         // Get rid of any square brackets holders in the content
@@ -1251,7 +1253,8 @@ public class ProcessSong {
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(thisSong, linetype, str);
-                        if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                        if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                             // IV - Pad the start of line with space (line already has trailing space) to ensure good block shadow
                             // IV - Start with a non breaking space which will not be removed
                             if (str.startsWith(" ")) {
@@ -1663,7 +1666,8 @@ public class ProcessSong {
 
     private String fixMultiLineFormat(String string, boolean presentation) {
         multilineSong = isMultiLineFormatSong(string);
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || presentation ||
+        if ((!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) || presentation ||
                 (!multiLineVerseKeepCompact && multilineSong)) {
             // Reset the available song sections
             // Ok the song is in the multiline format
@@ -2064,10 +2068,14 @@ public class ProcessSong {
                               boolean presentation, boolean boldText) {
         MyMaterialSimpleTextView textView = newTextView(presentation, linetype, typeface, size, color);
 
-        boolean applyFixExcessSpaces = (trimWordSpacing || presentation || !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        boolean applyFixExcessSpaces = (trimWordSpacing || presentation ||
+                (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                        !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                 (!multiLineVerseKeepCompact && !multilineSong));
 
-        if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        if (presentation &&
+                (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)))) {
             textView.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
             // IV - Pad the string with space to ensure good block shadow
             // IV - Start with a non breaking space which will not be removed
@@ -2262,7 +2270,9 @@ public class ProcessSong {
         // 3. Make sure new column/breaks aren't pulled into separate sections
         // Do this by trimming whitespace before them
         // In performance mode, we want new section so split is easier as it could be in the middle of a section
-        if (lyrics.contains("!--") && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        if (lyrics.contains("!--") &&
+                (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)))) {
             lyrics = lyrics.replace("!--","!--\n[]\n");
             // Now remove this blank section if the next item was a new section already
             lyrics = lyrics.replace("!--\n[]\n[","!--\n[");
@@ -2292,7 +2302,8 @@ public class ProcessSong {
         // 6. Prepare for double new line section split - needed for all except scripture or performance primary (not presentation) screen
         String doubleNewlineSplit = "\n\n";
         if (!song.getFolder().contains(c.getResources().getString(R.string.scripture)) &&
-                !(mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && !presentation )) {
+                !(mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && !presentation) &&
+                !(mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)) && !presentation)) {
             doubleNewlineSplit = "§";
         }
 
@@ -2386,7 +2397,8 @@ public class ProcessSong {
             fixedlyrics.append("\n§");
             if (songSections.get(x).startsWith("[")) {
                 // IV - Store the header.  Use an empty header in performance mode.
-                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                     sectionHeader = "¬";
                 } else {
                     sectionHeader = songSections.get(x).substring(0,songSections.get(x).indexOf("]") + 1);
@@ -2408,7 +2420,8 @@ public class ProcessSong {
         // If we are in performance mode, we trim if we have requested it
         boolean stageOrPresenter = mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter));
-        boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid));
         if (stageOrPresenter || (performance && trimSections)) {
                 lyrics = lyrics
                     // We protect the leading space of lyric lines
@@ -2521,7 +2534,9 @@ public class ProcessSong {
         ArrayList<Integer> sectionColors = new ArrayList<>();
         htmlLyrics = new StringBuilder();
 
-        boolean performancePresentation = presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        boolean performancePresentation = presentation &&
+                (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)));
         // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
         processSongIntoSections(song, presentation && !performancePresentation);
 
@@ -2744,7 +2759,8 @@ public class ProcessSong {
                                         }*/
                                     }
 
-                                } else if ((!presentation || performancePresentation) && !asPDF && (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)))) {
+                                } else if ((!presentation || performancePresentation) && !asPDF &&
+                                        (!line.isEmpty() || mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)))) {
                                     // Get rid of any square brackets holders in the content
 
                                     // IV - Remove typical word splits, white space and trim - beautify!
@@ -2795,7 +2811,7 @@ public class ProcessSong {
                     }
 
 
-                    if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && blockShadow) {
+                    if (presentation && (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) && blockShadow) {
                         linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
                                     getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
                     } else {
@@ -2808,7 +2824,8 @@ public class ProcessSong {
                 // If this section has inline MIDI commands, add an on click listener
                 // Only do this if it is an XML song and we are in performance mode
                 // Stage mode (for XML files) will use the section adapter listener instead
-                if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                if ((mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                            mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                         song.getFiletype().equals("XML") &&
                         !song.getInlineMidiMessages().get(sect,"").isEmpty()) {
                     final String message = song.getInlineMidiMessages().get(sect,"");
@@ -3076,7 +3093,8 @@ public class ProcessSong {
         int sectionSpace = 0;
         int totalSectionSpace = 0;
         // GE #233 more complex.
-        boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance));
+        boolean performance = mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid));
         boolean stageOrPresenter = (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                 mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) && !presentation;
 
@@ -3125,7 +3143,9 @@ public class ProcessSong {
 
         boolean isSongList = thisSong.getUser1()!=null && thisSong.getUser1().equals("PRINT_SONG_LIST");
 
-        if (!isSongList && !mainActivityInterface.getStorageAccess().isIMGorPDF(thisSong.getFilename()) && (autoScale.equals("Y") || (pdfPrinting && forceSinglePagePDF) || (presentation && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))))) {
+        if (!isSongList && !mainActivityInterface.getStorageAccess().isIMGorPDF(thisSong.getFilename()) && (autoScale.equals("Y") || (pdfPrinting && forceSinglePagePDF) ||
+                (presentation &&
+                        (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)))))) {
 
             if (forceColumns && forceColumnInfo != null && forceColumnInfo[0] != 1) {
                 if (forceColumnInfo[0] == 2) {

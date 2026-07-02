@@ -177,7 +177,8 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     public void updatePageBackgroundColor() {
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
             // In Presenter mode, we set the bottom layer as black (to allow black screen)
             // Any video, image or coloured backgrounds get their own layer above this (set elsewhere)
             if (myView != null) {
@@ -352,7 +353,8 @@ public class SecondaryDisplay extends Presentation {
     private void hideCols2and3() {
         // Only need these in performance mode
         int visiblity = View.GONE;
-        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+            mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
             visiblity = View.VISIBLE;
         }
         final int finalInvisibility = visiblity;
@@ -372,7 +374,8 @@ public class SecondaryDisplay extends Presentation {
             // There has been an update to the user's background or logo, so pull them in from preferences
             // (already updated in PresenterSettings)
             // This only runs in PresenterMode!  Performance/Stage Mode reflect the device theme
-            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                    !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                 // We can use either a drawable (for a solid colour) or a uri (for an image)
                 // Get the current background to fade out and set the background to the next
                 backgroundToFadeOut = null;
@@ -596,6 +599,7 @@ public class SecondaryDisplay extends Presentation {
     private void setupTimers() {
         // If we are in Performance mode, don't do this
         if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)) &&
                 canShowSong() && waitUntilTimerTask==null) {
             // IV - After a short delay to allow display to render
             mainActivityInterface.getMainHandler().postDelayed(() -> {
@@ -632,7 +636,8 @@ public class SecondaryDisplay extends Presentation {
     }
     private void cancelInfoTimers() {
         // If we are in Performance mode, don't do this
-        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+        if (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
             // If the info timers are set up, cancel them before we try to set new ones
             if (waitUntilTimer!=null) {
                 Log.d(TAG, "hide timer cancelled");
@@ -853,7 +858,8 @@ public class SecondaryDisplay extends Presentation {
         // If required (new song loaded and not already showing), indicate to show the info bar
         if ((isNewSong && songInfoChanged()) ||
                 mainActivityInterface.getPresenterSettings().getCurrentSection()>-1 ||
-                mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
 
             if (myView!=null) {
                 if (!myView.songProjectionInfo1.getIsDisplaying()) {
@@ -952,6 +958,7 @@ public class SecondaryDisplay extends Presentation {
 
                 if (showPreview &&
                     !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+                        !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)) &&
                     !mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                     !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
                     !mainActivityInterface.getSong().getFolder().contains("**Image")) {
@@ -1046,11 +1053,13 @@ public class SecondaryDisplay extends Presentation {
             myView.testLayout.removeAllViews();
 
             Log.d(TAG, "views are ready and about to show all sections");
-            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                 showAllSections();
             } else {
                 // Only need to show the current section (if it has been chosen)
-                if (mainActivityInterface.getSong().getCurrentSection() >= 0 && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
+                if (mainActivityInterface.getSong().getCurrentSection() >= 0 &&
+                        !mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter))) {
                     showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
                 }
             }
@@ -1068,7 +1077,8 @@ public class SecondaryDisplay extends Presentation {
         if (myView != null) {
             // IV - End new song status on showing a section
             isNewSong = false;
-            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+            if ((mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                    mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                     !mainActivityInterface.getSong().getFiletype().equals("IMG") &&
                     !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getMainHandler().postDelayed(() -> {
@@ -1145,7 +1155,8 @@ public class SecondaryDisplay extends Presentation {
 
                                     secondaryViews.get(position).setPivotX(0f);
                                     secondaryViews.get(position).setPivotY(0f);
-                                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) {
+                                    if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                                            mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                                         secondaryViews.get(position).setScaleX(1);
                                         secondaryViews.get(position).setScaleY(1);
                                     } else {
@@ -1397,7 +1408,10 @@ public class SecondaryDisplay extends Presentation {
         mainActivityInterface.getProcessSong().processSongIntoSections(tempSong,true);
 
         try {
-            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false, !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))).get(0);
+            View newView = mainActivityInterface.getProcessSong().setSongInLayout(tempSong, false,
+                    (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance))) &&
+                        !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)))
+                    .get(0);
             // Replace the old view with this one once it has been measured etc.
             newView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

@@ -20,7 +20,7 @@ public class HighlighterFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsHighlighterBinding myView;
     private String highlight_string="", website_highlighter_string="", mode_performance_string="",
-            on_string="";
+            mode_hybrid_string="", on_string="";
     private String webAddress;
 
     @Override
@@ -59,6 +59,7 @@ public class HighlighterFragment extends Fragment {
             highlight_string = getString(R.string.highlight);
             website_highlighter_string = getString(R.string.website_highlighter);
             mode_performance_string = getString(R.string.mode_performance);
+            mode_hybrid_string = getContext().getString(R.string.mode_hybrid);
             on_string = getString(R.string.on);
         }
     }
@@ -71,7 +72,8 @@ public class HighlighterFragment extends Fragment {
         myView.timeToDisplayHighlighter.setValue(timeToDisplayHighlighter);
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
-        hideView(myView.edit,mainActivityInterface.getMode().equals(mode_performance_string));
+        hideView(myView.edit,mainActivityInterface.getMode().equals(mode_performance_string) ||
+                mainActivityInterface.getMode().equals(mode_hybrid_string));
         if (!mainActivityInterface.validScreenShotFile() && mainActivityInterface.getSong().getFiletype().equals("XML")) {
             myView.edit.hide();
         } else {

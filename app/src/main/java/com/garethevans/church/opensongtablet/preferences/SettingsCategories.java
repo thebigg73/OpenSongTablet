@@ -28,7 +28,8 @@ public class SettingsCategories extends Fragment {
     ActivityResultLauncher<String[]> nearbyConnectionsPermission;
     ActivityResultLauncher<String[]> webserverPermission;
     private String settings_string="", mode_presenter_string="", presenter_mode_string="",
-            mode_stage_string="", stage_mode_string="", performance_mode_string="",
+            mode_stage_string="", stage_mode_string="", performance_mode_string="", hybrid_mode_string="",
+            mode_hybrid_string="",
             play_services_error_string="", midi_description_string="", not_available_string="",
             location_string="", permissions_refused_string="", wait_string="", nearby_string="";
 
@@ -84,6 +85,8 @@ public class SettingsCategories extends Fragment {
             mode_stage_string = getString(R.string.mode_stage);
             stage_mode_string = getString(R.string.stage_mode);
             performance_mode_string = getString(R.string.performance_mode);
+            mode_hybrid_string = getString(R.string.mode_hybrid);
+            hybrid_mode_string = getString(R.string.hybrid_mode);
             play_services_error_string = getString(R.string.play_services_error);
             midi_description_string = getString(R.string.midi_description);
             not_available_string = getString(R.string.not_available);
@@ -115,6 +118,8 @@ public class SettingsCategories extends Fragment {
             mode = presenter_mode_string;
         } else if (getMode.equals(mode_stage_string)) {
             mode = stage_mode_string;
+        } else if (getMode.equals(mode_hybrid_string)) {
+            mode = hybrid_mode_string;
         } else {
             mode = performance_mode_string;
         }

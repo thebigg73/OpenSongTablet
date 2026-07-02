@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.stage;
 
 // This deals with displaying the song in StageMode (actually using a recyclerView in PerformanceMode)
+// If we are using hydrid mode, the song renders in a recyclerView for better memory management - will be the main method soon!
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -43,6 +44,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
     int spacing = 0;
+    private boolean mode_hybrid = false;
+    private float maxScaleWidth = 1f, maxScaleHeight = 1f;
 
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface,
@@ -52,6 +55,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         this.displayInterface = displayInterface;
         maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50f);
         stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
+        mode_hybrid = mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid));
         sectionInfos = new ArrayList<>();
         floatHSizes = new ArrayList<>();
         floatVSizes = new ArrayList<>();
@@ -84,6 +88,9 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         }
 
         float defFontSize = mainActivityInterface.getProcessSong().getDefFontSize();
+        float maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50);
+        maxScaleWidth = maxFontSize / defFontSize;
+        maxScaleHeight = maxFontSize / defFontSize;
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
 
@@ -95,11 +102,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionWidth = mainActivityInterface.getSectionWidths().get(x);
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
 
-            float x_scale = (float)(availableWidth - padding)/(float)sectionWidth;
+            //float x_scale = (float)(availableWidth - padding)/(float)sectionWidth;
+            float x_scale = (float)(availableWidth)/(float)sectionWidth;
             float y_scale = (float)(availableHeight-mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()))*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize / defFontSize));
+            maxScaleWidth = Math.min(scale,maxScaleWidth);
 
             float itemWidth = sectionWidth * scale + (spacing);
             floatWidth += itemWidth;
@@ -115,6 +124,35 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             stageSectionInfo.scale = scale;
             stageSectionInfo.alpha = alpha;
             sectionInfos.add(stageSectionInfo);
+        }
+
+        // Now we decide on the scaling for Hybrid view
+        if (mode_hybrid) {
+            if (mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("W")) {
+                // Scale to maxWidth
+                Log.d(TAG,"Scale to maxWidth:"+maxScaleWidth);
+                for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
+                    sectionInfos.get(x).scale = maxScaleWidth;
+                }
+            } else if (mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("Y")) {
+                // Scale to fit everything on page
+                // Get the total height
+                float totalHeight = spacing;
+                for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
+                    totalHeight += sectionInfos.get(x).height + spacing;
+                }
+                maxScaleHeight = Math.min((float)availableHeight / totalHeight,maxScaleWidth);
+                Log.d(TAG,"Scale to maxHeight:"+maxScaleHeight);
+                for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
+                    sectionInfos.get(x).scale = maxScaleHeight;
+                }
+            } else {
+                // Scale to 1f
+                Log.d(TAG,"Scale to 1f");
+                for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
+                    sectionInfos.get(x).scale = 1f;
+                }
+            }
         }
     }
 
@@ -134,15 +172,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         } else {
             // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
             for (Object payload : payloads) {
-                if (payload.equals(alphaChange)) {
+                if (payload.equals(alphaChange) && !mode_hybrid) {
                     // We want to update the highlight colour to off
                     holder.v.post(()->{
                         try {
                             holder.v.setAlpha(sectionInfos.get(pos).alpha);
                             float scale = sectionInfos.get(pos).scale;
-                            //holder.v.getLayoutParams().width = availableWidth;
                             holder.sectionView.getLayoutParams().width = availableWidth;
-                            //holder.v.getLayoutParams().height = (int) (sectionInfos.get(pos).height * scale);
                             holder.sectionView.getLayoutParams().height = (int) (sectionInfos.get(pos).height * scale);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -201,6 +237,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                         ((ViewGroup)v.getParent()).removeView(v);
                     }
                     holder.sectionView.addView(v);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

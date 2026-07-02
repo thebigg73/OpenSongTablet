@@ -34,7 +34,8 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     private final int viewWidth, viewHeight;
     private int totalPages;
     private float floatWidth, floatHeight;
-    private final String scaleType, mode_performance_string, mode_stage_string, mode_presenter_string;
+    private final String scaleType, mode_performance_string, mode_stage_string,
+            mode_presenter_string, mode_hybrid_string;
     private final float density;
     private int currentSection = 0;
     private final Context c;
@@ -53,6 +54,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         mode_performance_string = c.getString(R.string.mode_performance);
         mode_stage_string = c.getString(R.string.mode_stage);
         mode_presenter_string = c.getString(R.string.mode_presenter);
+        mode_hybrid_string = c.getString(R.string.mode_hybrid);
     }
 
     private void setSongInfo() {
@@ -78,7 +80,8 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             slideInfo.pageNum = x;
             slideInfo.pageNumText = (x+1) + "/" + totalPages;
 
-            if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+            if (!mainActivityInterface.getMode().equals(mode_performance_string) &&
+                    !mainActivityInterface.getMode().equals(mode_hybrid_string)) {
                 slideInfo.alpha = 0.4f;
             } else {
                 slideInfo.alpha = 1f;
@@ -167,7 +170,8 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         float alpha = slideInfos.get(position).alpha;
         CardView cardView = (CardView)holder.v;
         if ((mainActivityInterface.getMode().equals(mode_stage_string) && position == currentSection) ||
-        mainActivityInterface.getMode().equals(mode_performance_string)) {
+                mainActivityInterface.getMode().equals(mode_performance_string) ||
+                mainActivityInterface.getMode().equals(mode_hybrid_string)) {
             alpha = 1.0f;
         }
         cardView.setAlpha(alpha);
@@ -215,7 +219,8 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        if (!mainActivityInterface.getMode().equals(mode_performance_string)) {
+        if (!mainActivityInterface.getMode().equals(mode_performance_string) &&
+                !mainActivityInterface.getMode().equals(mode_hybrid_string)) {
             slideInfos.get(currentSection).alpha = 0.4f;
             notifyItemChanged(currentSection, alphaChange);
         }

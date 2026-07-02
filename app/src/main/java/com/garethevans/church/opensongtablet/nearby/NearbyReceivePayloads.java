@@ -292,7 +292,9 @@ public class NearbyReceivePayloads {
 
     // Scroll to actions
     private void scrollByProportion(NearbyJson nearbyJson) {
-        if (nearbyReceiveHostScroll && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        if (nearbyReceiveHostScroll &&
+                (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                 !nearbyActions.getNearbyConnectionManagement().getIsHost() &&
                 nearbyReturnActionsInterface != null && nearbyJson.getScrollProportion() != null) {
             nearbyReturnActionsInterface.doScrollByProportion(nearbyJson.getScrollProportion());
@@ -300,7 +302,9 @@ public class NearbyReceivePayloads {
     }
     private void scrollToProportion(NearbyJson nearbyJson) {
         // It sends the scrollProportion as a ratio of scrollAmount/songHeight
-        if (nearbyReceiveHostScroll && mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        if (nearbyReceiveHostScroll &&
+                (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                        mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                 !nearbyActions.getNearbyConnectionManagement().getIsHost() &&
                 nearbyReturnActionsInterface != null && nearbyJson.getScrollProportion() != null) {
             nearbyReturnActionsInterface.doScrollToProportion(nearbyJson.getScrollProportion());

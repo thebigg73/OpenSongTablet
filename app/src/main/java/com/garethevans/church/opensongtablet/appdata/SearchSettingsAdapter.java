@@ -172,6 +172,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String host = c.getString(R.string.host);
         String hot = c.getString(R.string.hot);
         String hotzones = c.getString(R.string.hot_zones);
+        String hybrid = c.getString(R.string.mode_hybrid);
         String image = c.getString(R.string.image);
         String immersive = c.getString(R.string.immersive);
         String import_string = c.getString(R.string.import_basic);
@@ -364,9 +365,9 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String zone = c.getString(R.string.zone);
 
         allItems = Arrays.asList(
-                //App modes: Performance, Stage, Presenter
-                new SettingItem(c.getString(R.string.choose_app_mode),performance+", "+stage+", "+presenter,
-                        Arrays.asList(mode,performance,stage,presenter),
+                //App modes: Performance, Stage, Presenter, Hybrid
+                new SettingItem(c.getString(R.string.choose_app_mode),performance+", "+stage+", "+presenter+", "+hybrid,
+                        Arrays.asList(mode,performance,stage,presenter,hybrid),
                         c.getString(R.string.deeplink_app_mode),
                         settings+"/"+c.getString(R.string.choose_app_mode)),
 

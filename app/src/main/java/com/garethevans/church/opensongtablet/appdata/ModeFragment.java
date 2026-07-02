@@ -81,6 +81,9 @@ public class ModeFragment extends Fragment {
             case "Stage":
                 myView.stageMode.showCheckmark(true);
                 break;
+            case "Hybrid":
+                myView.hybridMode.showCheckmark(true);
+                break;
         }
     }
 
@@ -88,6 +91,7 @@ public class ModeFragment extends Fragment {
         myView.performanceMode.setOnClickListener(v -> updatePreference("Performance"));
         myView.stageMode.setOnClickListener(v -> updatePreference("Stage"));
         myView.presenterMode.setOnClickListener(v -> updatePreference("Presenter"));
+        myView.hybridMode.setOnClickListener(v -> updatePreference("Hybrid"));
     }
 
     private void updatePreference(String which) {

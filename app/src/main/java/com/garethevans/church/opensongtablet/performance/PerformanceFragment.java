@@ -85,7 +85,7 @@ public class PerformanceFragment extends Fragment {
     private RecyclerLayoutManager recyclerLayoutManager;
     private final Handler dealWithExtraStuffOnceSettledHandler = new Handler();
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
-    private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="",
+    private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="", mode_hybrid="",
             not_allowed="", image_string="", nearby_large_file_string="", inline_set_string="";
     private int sendSongDelay = 0;
     @SuppressWarnings("FieldCanBeLocal")
@@ -279,6 +279,7 @@ public class PerformanceFragment extends Fragment {
             mode_performance = getString(R.string.mode_performance);
             mode_presenter = getString(R.string.mode_presenter);
             mode_stage = getString(R.string.mode_stage);
+            mode_hybrid = getContext().getString(R.string.mode_hybrid);
             not_allowed = getString(R.string.not_allowed);
             image_string= getString(R.string.image);
             nearby_large_file_string = getString(R.string.nearby_large_file);
@@ -305,7 +306,7 @@ public class PerformanceFragment extends Fragment {
         swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumDistance", 250);
         swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMaxDistanceYError", 200);
         swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumVelocity", 600);
-        if (mainActivityInterface.getMode().equals(mode_performance)) {
+        if (mainActivityInterface.getMode().equals(mode_performance) || mainActivityInterface.getMode().equals(mode_hybrid)) {
             myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.waterMark.setVisibility(View.VISIBLE);
         } else if (mainActivityInterface.getMode().equals(mode_stage)) {
@@ -1166,8 +1167,8 @@ public class PerformanceFragment extends Fragment {
                 myView.testPane.removeAllViews();
 
                 // Decide which mode we are in to determine how the views are rendered
-                if (mainActivityInterface.getMode().equals(mode_stage)) {
-                    // We are in Stage mode so use the recyclerView
+                if (mainActivityInterface.getMode().equals(mode_stage) || mainActivityInterface.getMode().equals(mode_hybrid)) {
+                    // We are in Stage or Hybrid mode so use the recyclerView
                     myView.recyclerView.setVisibility(View.INVISIBLE);
                     myView.pageHolder.setVisibility(View.GONE);
                     myView.songView.setVisibility(View.GONE);
@@ -1412,7 +1413,8 @@ public class PerformanceFragment extends Fragment {
         }
 
         // Now deal with the highlighter file
-        if (mainActivityInterface.getMode().equals(mode_performance)) {
+        if (mainActivityInterface.getMode().equals(mode_performance) ||
+                mainActivityInterface.getMode().equals(mode_hybrid)) {
             // The highlighter is already part of the scaling if it isn't an xml
             if (mainActivityInterface.getSong().getFiletype()==null ||
                     mainActivityInterface.getSong().getFiletype().isEmpty() ||
@@ -1740,7 +1742,8 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void toggleHighlighter() {
-        if (mainActivityInterface.getMode().equals(mode_performance)) {
+        if (mainActivityInterface.getMode().equals(mode_performance) ||
+            mainActivityInterface.getMode().equals(mode_hybrid)) {
             if (myView.highlighterView.getVisibility() == View.VISIBLE) {
                 myView.highlighterView.setVisibility(View.GONE);
             } else {
@@ -1858,8 +1861,8 @@ public class PerformanceFragment extends Fragment {
     public void performanceShowSection(int position) {
         if (!alreadyChoosingSections) {
             alreadyChoosingSections = true;
-            // Scroll the recyclerView to the position as long as we aren't in an autoscroll
-            if (myView != null && recyclerLayoutManager != null &&
+            // Scroll the recyclerView to the position as long as we aren't in an autoscroll or in hybrid mode
+            if (myView != null && recyclerLayoutManager != null && !mainActivityInterface.getMode().equals(mode_hybrid) &&
                     ((stageSectionAdapter != null && stageSectionAdapter.getItemCount() > position) ||
                             (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && pdfPageAdapter !=null && pdfPageAdapter.getItemCount() > position)) &&
                     position >= 0) {

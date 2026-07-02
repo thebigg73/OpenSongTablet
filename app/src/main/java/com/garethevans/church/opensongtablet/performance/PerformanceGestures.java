@@ -896,7 +896,8 @@ public class PerformanceGestures {
 
             // Check the recyclerView for images/pdfs
         } else if (recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
-            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage))) {
+            if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
+                    mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) {
                 int currentPos, finalPos;
                 if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     currentPos = mainActivityInterface.getSong().getPdfPageCurrent();
@@ -986,7 +987,8 @@ public class PerformanceGestures {
             }
 
 
-        } else if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) &&
+        } else if ((mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
+                mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                 recyclerView != null && recyclerView.getVisibility() == View.VISIBLE) {
             if (mainActivityInterface.getGestures().getPdfLandscapeView()) {
                 // Scroll horizontally
