@@ -936,4 +936,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             updateSongCount();
         }
     }
+
+    public void refreshSongListDisplay() {
+        if (songListAdapter!=null) {
+            songListAdapter.getUpdatedPreferences();
+            songListAdapter.notifyDataSetChanged();
+        }
+    }
 }

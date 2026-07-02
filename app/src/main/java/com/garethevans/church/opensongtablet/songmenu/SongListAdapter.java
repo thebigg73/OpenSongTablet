@@ -24,7 +24,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "SongListAdapter";
     private final MainActivityInterface mainActivityInterface;
-    private final boolean showChecked;
+    private boolean showChecked;
     private boolean songMenuSortTitles;
     private float titleSize, subtitleSizeAuthor, subtitleSizeFile;
     private final SongMenuSongs songMenuSongs;
@@ -34,8 +34,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     public SongListAdapter(Context c, AdapterCallback callback, SongMenuSongs songMenuSongs) {
         mainActivityInterface = (MainActivityInterface) c;
         this.callback = callback;
-        this.showChecked = mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean("songMenuSetTicksShow", true);
         this.songMenuSongs = songMenuSongs;
         getUpdatedPreferences();
     }
@@ -47,6 +45,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         titleSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuItemSize",14f);
         subtitleSizeAuthor = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeAuthor",12f);
         subtitleSizeFile = mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuSubItemSizeFile",12f);
+        showChecked = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true);
     }
 
 

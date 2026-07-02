@@ -14,6 +14,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsMenuBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songmenu.SongMenuFragment;
 import com.google.android.material.slider.Slider;
 
 public class MenuSettingsFragment extends Fragment {
@@ -231,6 +232,18 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName, myVal);
             // Try to update the song menu
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null,null);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Rebuild the song and set menu (layout pass)
+        if (mainActivityInterface!=null) {
+            SongMenuFragment songMenuFragment = mainActivityInterface.getSongMenuFragment();
+            if (songMenuFragment!=null) {
+                songMenuFragment.refreshSongListDisplay();
+            }
         }
     }
 }
