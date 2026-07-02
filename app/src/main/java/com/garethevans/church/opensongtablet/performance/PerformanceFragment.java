@@ -660,23 +660,27 @@ public class PerformanceFragment extends Fragment {
                         }
 
                         // Now slide out the song and after a delay start the next bit of the processing
-                        if (myView != null) {
+                        if (myView != null && myView.recyclerView!=null) {
                             myView.recyclerView.post(() -> {
-                                try {
-                                    if (myView.recyclerView.getVisibility() == View.VISIBLE) {
-                                        myView.recyclerView.startAnimation(animSlideOut);
+                                if (myView!=null) {
+                                    try {
+                                        if (myView.recyclerView.getVisibility() == View.VISIBLE) {
+                                            myView.recyclerView.startAnimation(animSlideOut);
+                                        }
+                                    } catch (Exception e) {
+                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                     }
-                                } catch (Exception e) {
-                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                 }
                             });
                             myView.pageHolder.post(() -> {
-                                try {
-                                    if (myView.pageHolder.getVisibility() == View.VISIBLE) {
-                                        myView.pageHolder.startAnimation(animSlideOut);
+                                if (myView!=null) {
+                                    try {
+                                        if (myView.pageHolder.getVisibility() == View.VISIBLE) {
+                                            myView.pageHolder.startAnimation(animSlideOut);
+                                        }
+                                    } catch (Exception e) {
+                                        mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                     }
-                                } catch (Exception e) {
-                                    mainActivityInterface.getStorageAccess().updateCrashLog(e.toString());
                                 }
                             });
                         }
