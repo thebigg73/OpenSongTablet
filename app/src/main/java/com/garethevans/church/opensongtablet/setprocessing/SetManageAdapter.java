@@ -114,9 +114,7 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
         changeSortOrder();
 
         // Notify the adapter of the changes
-        mainActivityInterface.getMainHandler().post(() -> {
-            notifyItemRangeInserted(0, getItemCount());
-        });
+        mainActivityInterface.getMainHandler().post(() -> notifyItemRangeInserted(0, getItemCount()));
     }
 
     @NonNull
