@@ -79,6 +79,10 @@ public class NearbyTransferRecords {
     public void addAlreadyReceivedPayload(Payload payload) {
         try {
             synchronized (incomingPayloads) {
+                // Safety cap: if map gets too large, remove the oldest item
+                if (incomingPayloads.size() > 50) {
+                    incomingPayloads.removeAt(0);
+                }
                 incomingPayloads.put(payload.getId(), payload);
             }
         } catch (Exception e) {
@@ -87,11 +91,19 @@ public class NearbyTransferRecords {
     }
     public void addAlreadyReceivedFileInformation(NearbyJson nearbyJson) {
         synchronized (incomingFileInformation) {
+            // Safety cap: if map gets too large, remove the oldest item
+            if (incomingFileInformation.size() > 50) {
+                incomingFileInformation.removeAt(0);
+            }
             incomingFileInformation.put(nearbyJson.getId(), nearbyJson);
         }
     }
     public void addAlreadySentPayload(Payload payload) {
         synchronized (outgoingPayloads) {
+            // Safety cap: if map gets too large, remove the oldest item
+            if (outgoingPayloads.size() > 50) {
+                outgoingPayloads.removeAt(0);
+            }
             outgoingPayloads.put(payload.getId(), payload);
         }
     }
@@ -128,7 +140,7 @@ public class NearbyTransferRecords {
     }
 
     // Remove the outgoing payloads/nearbyJsons from our arrays to recover memory (dealt with)
-    // These are done as delayed handlers (10 seconds)
+    // These are done as delayed handlers (15 seconds)
     public void removeAlreadySentPayload(long id) {
         mainActivityInterface.getMainHandler().postDelayed(() -> {
             synchronized (outgoingPayloads) {
