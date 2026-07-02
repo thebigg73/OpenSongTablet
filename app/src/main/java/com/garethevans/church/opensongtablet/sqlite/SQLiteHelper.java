@@ -44,6 +44,7 @@ public class SQLiteHelper {
         return songsDb.getReadableDatabase();
     }
 
+    // Reset the database.  Soft clears entries
     public void resetDatabase() {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
