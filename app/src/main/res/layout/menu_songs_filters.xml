@@ -76,8 +76,9 @@
             android:layout_height="wrap_content"
             android:src="@drawable/set_edit"
             android:contentDescription="@string/new_folder_info"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
+            android:layout_marginTop="4dp"
             app:useCompatPadding="false"
             app:backgroundTint="@color/transparent"
             app:borderWidth="0dp"
@@ -90,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
     <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
         android:id="@+id/tagSearch"
@@ -111,12 +112,13 @@
             android:layout_height="wrap_content"
             android:src="@drawable/set_edit"
             android:contentDescription="@string/tag_song_info"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
+            android:layout_marginTop="4dp"
             app:useCompatPadding="false"
             app:backgroundTint="@color/transparent"
             app:borderWidth="0dp"
             app:elevation="0dp"
-            app:myFabSize="mini"/>
+            app:myFabSize="mini" />
     </LinearLayout>
 </LinearLayout>
