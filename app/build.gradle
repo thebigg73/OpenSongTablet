@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 464     // Also change in wear if we need to update that as well
-        versionName = '6.8.6' // Also change in wear if we need to update that as well
+        versionCode = 465     // Also change in wear if we need to update that as well
+        versionName = '6.8.7' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -53,34 +53,7 @@ android {
 
     }
 
-    // --- Product flavors for dual build targets ---
-    /*flavorDimensions "distribution"
-
-    productFlavors {
-        mobileOnly {
-            dimension "distribution"
-        }
-        withWear {
-            dimension "distribution"
-        }
-    }*/
-
     buildTypes {
-        /*release {
-            minifyEnabled = false
-            shrinkResources = false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig = signingConfigs.release
-        }
-        beta {
-            initWith release
-            matchingFallbacks = ['release']
-        }
-        debug {
-            minifyEnabled = false
-            shrinkResources = false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }*/
         release {
             minifyEnabled = false
             shrinkResources = false
@@ -108,7 +81,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-
 
     buildFeatures {
         viewBinding = true
@@ -138,19 +110,8 @@ repositories {
     }
 }
 
-/*configurations {
-    withWearWearApp
-}*/
-
 dependencies {
     implementation 'androidx.test.ext:junit:1.3.0'
-
-    //withWearWearApp project(':wear')
-    //add("withWearWearApp", project(":wear"))
-
-    // Only include wearable APK in the withWear flavor
-    //withWearWearApp project(":wear")
-    //"withWearWearApp" project(path: ":wear", configuration: "release")
 
     // Age verification API for recent law changes in Texas
     implementation 'com.google.android.play:age-signals:0.0.3' // Or latest version
@@ -163,8 +124,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.7'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.7'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.8'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.8'
     implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.8'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     // The app preferences
@@ -172,7 +133,7 @@ dependencies {
     // Allow splitting of file for older devices
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     implementation 'androidx.core:core-ktx:1.17.0'
-    implementation 'androidx.activity:activity-ktx:1.12.4'
+    implementation 'androidx.activity:activity-ktx:1.13.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
     // To allow Java time/date utilities on <Android 8
 
@@ -184,7 +145,7 @@ dependencies {
     // Use this version with SDK 34
     implementation 'androidx.gridlayout:gridlayout:1.1.0'               // GridLayout (obviously)
     implementation 'androidx.cardview:cardview:1.0.0'
-    // Cardview for recycler list items
+    // CardView for recycler list items
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     // Constraint layouts with FAB
     implementation 'androidx.webkit:webkit:1.16.0'
@@ -230,7 +191,6 @@ dependencies {
     // For better setting of images
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.7'
     // To highlight new features in the app
-    //implementation 'org.nanohttpd:nanohttpd:2.3.1'                      // For a webserver to display songs for non OpenSongApp users
     implementation 'com.vanniktech:android-image-cropper:4.7.0'
     // For image cropping/rotation
     implementation 'com.google.zxing:core:3.5.4'                        // To generate QR code
@@ -272,8 +232,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
-    // 3. Safely attach the wear module to our explicitly declared configuration bucket
-    //withWearWearApp project(':wear')
 
 }
 

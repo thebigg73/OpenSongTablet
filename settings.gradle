@@ -1,3 +1,17 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+// 1. Apply the Foojay resolver plugin
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+// 2. Configure toolchain management
 rootProject.name = "OpenSongTablet"
 
 include ':app'
