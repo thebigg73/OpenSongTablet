@@ -3278,41 +3278,45 @@ public class StorageAccess {
         if (uriTreeHome == null) uriTreeHome = homeFolder(null);
 
         // Start at the OpenSong root (which uriTreeHome should point to)
-        DocumentFile currentDir = DocumentFile.fromTreeUri(c, uriTreeHome);
-        if (currentDir == null) return null;
+        if (uriTreeHome!=null) {
+            DocumentFile currentDir = DocumentFile.fromTreeUri(c, uriTreeHome);
+            if (currentDir == null) return null;
 
-        // 1. Handle primary folder (e.g., "Songs")
-        if (folder != null && !folder.isEmpty()) {
-            currentDir = getOrCreateDir(currentDir, folder);
-        }
+            // 1. Handle primary folder (e.g., "Songs")
+            if (folder != null && !folder.isEmpty()) {
+                currentDir = getOrCreateDir(currentDir, folder);
+            }
 
-        // 2. Handle nested subfolders (e.g., "Band/Just me/New songs")
-        if (currentDir != null && subfolder != null && !subfolder.isEmpty()
-                && !subfolder.equals(mainActivityInterface.getMainfoldername())
-                && !subfolder.equals("MAIN")) {
+            // 2. Handle nested subfolders (e.g., "Band/Just me/New songs")
+            if (currentDir != null && subfolder != null && !subfolder.isEmpty()
+                    && !subfolder.equals(mainActivityInterface.getMainfoldername())
+                    && !subfolder.equals("MAIN")) {
 
-            // Split by / and iterate through the parts
-            String[] parts = subfolder.split("/");
-            for (String part : parts) {
-                if (!part.isEmpty()) {
-                    currentDir = getOrCreateDir(currentDir, part);
-                    if (currentDir == null) break;
+                // Split by / and iterate through the parts
+                String[] parts = subfolder.split("/");
+                for (String part : parts) {
+                    if (!part.isEmpty()) {
+                        currentDir = getOrCreateDir(currentDir, part);
+                        if (currentDir == null) break;
+                    }
                 }
             }
-        }
 
-        // 3. Create the file in the final directory
-        if (currentDir != null) {
-            if (filename!=null && !filename.isEmpty()) {
-                // Check if file exists to avoid (1) duplicates if prepareValidFileReference didn't run
-                DocumentFile existingFile = currentDir.findFile(filename);
-                if (existingFile != null) return existingFile.getUri();
+            // 3. Create the file in the final directory
+            if (currentDir != null) {
+                if (filename != null && !filename.isEmpty()) {
+                    // Check if file exists to avoid (1) duplicates if prepareValidFileReference didn't run
+                    DocumentFile existingFile = currentDir.findFile(filename);
+                    if (existingFile != null) return existingFile.getUri();
 
-                DocumentFile newFile = currentDir.createFile("application/octet-stream", filename);
-                return (newFile != null) ? newFile.getUri() : null;
+                    DocumentFile newFile = currentDir.createFile("application/octet-stream", filename);
+                    return (newFile != null) ? newFile.getUri() : null;
+                }
             }
+            return null;
+        } else {
+            return null;
         }
-        return null;
     }
     private Uri createFile_Legacy(String folder, String subfolder, String filename) {
         if (getUriTreeHome()==null || getUriTreeHome().getPath()==null) {
