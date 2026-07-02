@@ -22,25 +22,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/customNote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/simple_note" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/customSlide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/custom_slide" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/customImageSlide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/image_slide" />
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/customDivider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
