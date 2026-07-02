@@ -26,6 +26,7 @@ public class NearbyTransferRecords {
     private final SimpleArrayMap<Long, Payload> incomingPayloads = new SimpleArrayMap<>();
     private final SimpleArrayMap<Long, NearbyJson> incomingFileInformation = new SimpleArrayMap<>();
     private final SimpleArrayMap<Long, Boolean> incomingDealtWith = new SimpleArrayMap<>();
+
     // Outgoing payloads (what has been sent)
     private final SimpleArrayMap<Long, Payload> outgoingPayloads = new SimpleArrayMap<>();
 
@@ -36,67 +37,91 @@ public class NearbyTransferRecords {
 
     // Check if we have already received these payloads/nearbyJsons
     public boolean getAlreadyReceivedPayload(Payload payload) {
-        return incomingPayloads.containsKey(payload.getId());
+        synchronized (incomingPayloads) {
+            return incomingPayloads.containsKey(payload.getId());
+        }
     }
     public boolean getAlreadyReceivedFilePayload(long id) {
-        Payload payload = incomingPayloads.get(id);
-        return payload!=null && payload.getType()==Payload.Type.FILE;
+        synchronized (incomingPayloads) {
+            Payload payload = incomingPayloads.get(id);
+            return payload != null && payload.getType() == Payload.Type.FILE;
+        }
     }
     public Payload getAlreadyReceivedPayload(long id) {
-        return incomingPayloads.get(id);
+        synchronized (incomingPayloads) {
+            return incomingPayloads.get(id);
+        }
     }
     public boolean getAlreadyReceivedFileInformation(NearbyJson nearbyJson) {
-        return incomingFileInformation.containsKey(nearbyJson.getId());
+        synchronized (incomingFileInformation) {
+            return incomingFileInformation.containsKey(nearbyJson.getId());
+        }
     }
     public NearbyJson getAlreadyReceivedFileInformation(Long id) {
-        return incomingFileInformation.get(id);
+        synchronized (incomingFileInformation) {
+            return incomingFileInformation.get(id);
+        }
     }
     public void addIncomingDealtWith(long id, Boolean dealtWith) {
-        incomingDealtWith.put(id, dealtWith);
+        synchronized (incomingDealtWith) {
+            incomingDealtWith.put(id, dealtWith);
+        }
     }
 
     // Check if we have already sent these payloads/nearbyJsons
     public boolean getNotAlreadySentPayload(Payload payload) {
-        return !outgoingPayloads.containsKey(payload.getId());
+        synchronized (outgoingPayloads) {
+            return !outgoingPayloads.containsKey(payload.getId());
+        }
     }
 
     // Add the payloads/nearbyJsons to our arrays
     public void addAlreadyReceivedPayload(Payload payload) {
         try {
-            incomingPayloads.put(payload.getId(), payload);
+            synchronized (incomingPayloads) {
+                incomingPayloads.put(payload.getId(), payload);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public void addAlreadyReceivedFileInformation(NearbyJson nearbyJson) {
-        incomingFileInformation.put(nearbyJson.getId(), nearbyJson);
+        synchronized (incomingFileInformation) {
+            incomingFileInformation.put(nearbyJson.getId(), nearbyJson);
+        }
     }
     public void addAlreadySentPayload(Payload payload) {
-        outgoingPayloads.put(payload.getId(), payload);
+        synchronized (outgoingPayloads) {
+            outgoingPayloads.put(payload.getId(), payload);
+        }
     }
 
     // Remove the incoming payloads/nearbyJsons from our arrays to recover memory (dealt with)
     // These are done as delayed handlers (10 seconds)
     public void removeAlreadyReceivedPayload(long id) {
         mainActivityInterface.getMainHandler().postDelayed(() -> {
-            try {
-                if (incomingPayloads.containsKey(id)) {
-                    incomingPayloads.remove(id);
+            synchronized (incomingPayloads) {
+                try {
+                    if (incomingPayloads.containsKey(id)) {
+                        incomingPayloads.remove(id);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         },delayToRemove);
     }
     public void removeAlreadyReceivedFileInformation(Long id) {
         if (id!=null) {
             mainActivityInterface.getMainHandler().postDelayed(() -> {
-                try {
-                    if (incomingFileInformation.containsKey(id)) {
-                        incomingFileInformation.remove(id);
+                synchronized (incomingFileInformation) {
+                    try {
+                        if (incomingFileInformation.containsKey(id)) {
+                            incomingFileInformation.remove(id);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }, delayToRemove);
         }
@@ -106,25 +131,29 @@ public class NearbyTransferRecords {
     // These are done as delayed handlers (10 seconds)
     public void removeAlreadySentPayload(long id) {
         mainActivityInterface.getMainHandler().postDelayed(() -> {
-            try {
-                if (outgoingPayloads.containsKey(id)) {
-                    outgoingPayloads.remove(id);
+            synchronized (outgoingPayloads) {
+                try {
+                    if (outgoingPayloads.containsKey(id)) {
+                        outgoingPayloads.remove(id);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         },delayToRemove);
     }
     public void removeAlreadyDealtWith(long id) {
         mainActivityInterface.getMainHandler().postDelayed(() -> {
-            try {
-                if (incomingDealtWith.containsKey(id)) {
-                    incomingDealtWith.remove(id);
+            synchronized (incomingDealtWith) {
+                try {
+                    if (incomingDealtWith.containsKey(id)) {
+                        incomingDealtWith.remove(id);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        },delayToRemove);
+        }, delayToRemove);
     }
 
     public void setLastFileReceivedURI(Uri lastFileReceivedURI) {
