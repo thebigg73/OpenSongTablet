@@ -64,9 +64,13 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 "Settings", "", SQLite.NON_OS_DATABASE_NAME);
 
         // If the userDB uri doesn't exist, copy the appDB now it is ready
-        if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
-            initialiseUserDB = true;
-            copyUserDatabase();
+        try {
+            if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
+                initialiseUserDB = true;
+                copyUserDatabase();
+            }
+        } catch (Exception e) {
+            Log.d(TAG,"userDB doesn't exist");
         }
     }
 
@@ -162,9 +166,10 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
             // Make sure the userDB file exists if it isn't there - may not have been used before
             if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Settings","",SQLite.NON_OS_DATABASE_NAME,false);
+                /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                         false, userDB, null, "Settings", "",
-                        SQLite.NON_OS_DATABASE_NAME);
+                        SQLite.NON_OS_DATABASE_NAME);*/
             }
 
             // Get an output stream for the userDB to copy into
@@ -322,7 +327,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         String songId = mainActivityInterface.getCommonSQL().getAnySongId(folder, filename);
 
         // Retrieve references without using try-with-resources
-        SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getReadableDatabase();
+        SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getWritableDatabase();
         SQLiteDatabase db2 = getReadableDatabase();
 
         try {

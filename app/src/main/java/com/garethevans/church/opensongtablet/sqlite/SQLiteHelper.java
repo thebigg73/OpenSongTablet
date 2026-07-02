@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
@@ -12,65 +11,54 @@ import com.garethevans.church.opensongtablet.openchords.OpenChordsTag;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongId;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class SQLiteHelper extends SQLiteOpenHelper {
+public class SQLiteHelper {
 
-    private static final int DATABASE_VERSION = 11;
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "SQLiteHelper";
-
-    // Static helper to resolve the path BEFORE super() is called
-    private static String getDatabasePath(Context c) {
-        MainActivityInterface mai = (MainActivityInterface) c;
-        File dbFile = mai.getStorageAccess().getAppSpecificFile("Database", "", SQLite.DATABASE_NAME);
-        return dbFile.getAbsolutePath();
-    }
+    private final SongsDatabase songsDb;
 
     public SQLiteHelper(Context c) {
-        // Now super is the first statement, satisfying Java requirements
-        super(c, getDatabasePath(c), null, DATABASE_VERSION);
         this.mainActivityInterface = (MainActivityInterface) c;
         this.c = c;
-    }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        if (db != null) {
-            try {
-                db.execSQL(SQLite.CREATE_TABLE);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        // Create the singleton database object - let Android decide on the best location
+        songsDb = SongsDatabase.getInstance(c);
+
+        // Get the writable database as a sanity check that it is open
+        try {
+            songsDb.getWritableDatabase();
+        } catch (Exception e) {
+            Log.d(TAG,"Database not ready yet");
         }
     }
 
-    /**
-     * Completely resets the song database by dropping and recreating the table.
-     * Ideal for a full re-index from local files.
-     */
+    // The getters to access the database
+    public SQLiteDatabase getWritableDatabase() {
+        return songsDb.getWritableDatabase();
+    }
+    public SQLiteDatabase getReadableDatabase() {
+        return songsDb.getReadableDatabase();
+    }
+
     public void resetDatabase() {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
-            onCreate(db);
+            // This removes all data but keeps the table and columns intact
+            db.execSQL("DELETE FROM " + SQLite.TABLE_NAME);
+
+            // Optional: Reset auto-increment counters if you use them
+            db.execSQL("DELETE FROM sqlite_sequence WHERE name='" + SQLite.TABLE_NAME + "'");
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            Log.e(TAG, "Error resetting database", e);
+            Log.e("Database", "Error clearing table", e);
         } finally {
             db.endTransaction();
         }
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Since songs.db is rebuilt from local files, this is safe
-        db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
-        onCreate(db);
     }
 
     // Create, delete and update entries
@@ -82,17 +70,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
     public void insertFast() {
-        SQLiteDatabase db = getWritableDatabase();
-        db.beginTransaction();
-        try {
-            mainActivityInterface.getCommonSQL().insertFast(db);
-            db.setTransactionSuccessful();
-        } catch (OutOfMemoryError | Exception e) { // Keep both here
-            Log.e(TAG, "Error performing fast insert", e);
-        } finally {
-            db.endTransaction();
-        }
+        resetDatabase();
+        mainActivityInterface.getCommonSQL().insertFast(getWritableDatabase());
     }
+
     public void createSong(String folder, String filename) {
         // Creates a basic song entry to the database (id, songid, folder, file)
         try {
@@ -124,8 +105,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             Log.e(TAG, "Error renaming song", e);
         }
     }
-
-
 
     // Search for entries in the database
     public ArrayList<String> getFolders() {
@@ -167,14 +146,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                                              String folderVal, String artistVal, String keyVal,
                                              String tagVal, String filterVal, String titleVal,
                                              boolean songMenuSortTitles) {
-
         try {
-           return mainActivityInterface.getCommonSQL().getSongsByFilters(getReadableDatabase(), searchByFolder,
-                   searchByArtist, searchByKey, searchByTag, searchByFilter, searchByTitle,
+            return mainActivityInterface.getCommonSQL().getSongsByFilters(getReadableDatabase(), searchByFolder,
+                    searchByArtist, searchByKey, searchByTag, searchByFilter, searchByTitle,
                     folderVal, artistVal, keyVal, tagVal, filterVal, titleVal, songMenuSortTitles);
         } catch (OutOfMemoryError | Exception e) {
             Log.d(TAG,"Table doesn't exist");
-            resetDatabase();
             return new ArrayList<>();
         }
     }
@@ -241,7 +218,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return new ArrayList<>();
         }
     }
-
 
     public ArrayList<String> renameThemeTags(String oldTag, String newTag) {
         // Retrieve helpers

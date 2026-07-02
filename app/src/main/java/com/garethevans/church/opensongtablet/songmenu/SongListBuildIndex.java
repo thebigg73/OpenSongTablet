@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -140,9 +139,12 @@ public class SongListBuildIndex {
             }
 
             String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
-                     " FROM " + SQLite.TABLE_NAME + folderMatch;
+                    " FROM " + SQLite.TABLE_NAME + folderMatch;
 
             Cursor cursor;
+
+            // Start the transaction
+            db.beginTransaction();
             cursor = db.rawQuery(altquery, null);
 
             if (cursor.getCount()>0) {
@@ -255,7 +257,9 @@ public class SongListBuildIndex {
                     });
 
                 } while (cursor.moveToNext());
+
             }
+            db.setTransactionSuccessful();
             progressText.post(() -> progressText.setVisibility(View.GONE));
             cursor.close();
             indexRequired = false;
@@ -283,7 +287,13 @@ public class SongListBuildIndex {
             returnString.append(c.getString(R.string.index_songs_error)).append(": ").
                     append(mainActivityInterface.getIndexingSong().getFolder()).append("/").
                     append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
+        } finally {
+            db.endTransaction();
         }
+
+        // Make sure we hide the progress text
+        progressText.post(() -> progressText.setVisibility(View.GONE));
+
         currentlyIndexing = false;
 
         // Any songs with rogue endings would've been logged, so fix if needed

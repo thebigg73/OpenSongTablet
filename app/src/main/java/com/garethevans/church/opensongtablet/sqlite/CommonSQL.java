@@ -107,20 +107,30 @@ public class CommonSQL {
         folderFilename.add(filename);
         return folderFilename;
     }
+    public boolean songIdExists(SQLiteDatabase db, String songid) {
+        // 1. Remove the escape() call - the '?' placeholder handles this safely
+        String[] selectionArgs = new String[]{songid};
 
+        // 2. Optimization: SELECT 1 is faster than SELECT *
+        String query = "SELECT 1 FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ? LIMIT 1";
 
-    boolean songIdExists(SQLiteDatabase db, String songid) {
-        String[] selectionArgs = new String[]{escape(songid)};
-        String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ? ";
-        Cursor cursor = db.rawQuery(Query, selectionArgs);
-        boolean exists = cursor.getCount() > 0;
-        closeCursor(cursor);
-        return exists;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(query, selectionArgs);
+            // 3. cursor.moveToFirst() is the standard way to check for a match
+            return cursor != null && cursor.moveToFirst();
+        } catch (Exception e) {
+            Log.e("CommonSQL", "Error checking song existence", e);
+            return false;
+        } finally {
+            // 4. Always close in a finally block to prevent resource leaks
+            closeCursor(cursor);
+        }
     }
 
 
     // Create, delete and update
-    void createSong(SQLiteDatabase db, String folder, String filename) {
+    public void createSong(SQLiteDatabase db, String folder, String filename) {
         // Creates a basic song entry to the database (id, songid, folder, file)
         if (folder == null || folder.isEmpty()) {
             folder = c.getString(R.string.mainfoldername);
@@ -157,13 +167,11 @@ public class CommonSQL {
             }
         }
     }
-
-    int deleteSong(SQLiteDatabase db, String folder, String filename) {
+    public int deleteSong(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         return db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " = ?",
                 new String[]{String.valueOf(songId)});
     }
-
     public void updateSong(SQLiteDatabase db, Song thisSong) {
         // Values have already been set to sqLite, just need updated in the table
         // We use an object reference to song as this could be from indexingSong or actual song
@@ -231,9 +239,6 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_FILETYPE, thisSong.getFiletype());
         values.put(SQLite.COLUMN_LAST_MODIFIED, thisSong.getLastModified());
 
-        if (!db.isOpen()) {
-            db = mainActivityInterface.getSQLiteHelper().getWritableDatabase();
-        }
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
         if (row == 0) {
@@ -244,7 +249,6 @@ public class CommonSQL {
             }
         }
     }
-
     public void removeOldSongs(SQLiteDatabase db, ArrayList<String> songIds) {
         // Remove entries in the database that aren't in the songIds
         StringBuilder inQuery = new StringBuilder();
@@ -261,48 +265,61 @@ public class CommonSQL {
         inQuery.append(")");
         db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " NOT IN " + inQuery, null);
     }
-
     public void insertFast(SQLiteDatabase db) {
-        // Insert new values or ignore rows that exist already
-        String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder, title ) VALUES ( ?, ?, ?, ?)";
-        db.beginTransactionNonExclusive();
-        SQLiteStatement stmt = db.compileStatement(sql);
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
+        if (db == null || !db.isOpen()) {
+            Log.e(TAG, "Database is closed or null!");
+            return;
+        }
 
-        for (String s : songIds) {
-            String filename;
-            String foldername;
-            // Only add song files, so if it ends with / this loop skips
-            if (s.endsWith("/")) {
-                filename = "";
-                foldername = s.substring(0, s.lastIndexOf("/"));
-            } else if (s.contains("/")) {
-                filename = s.substring(s.lastIndexOf("/"));
-                foldername = s.replace(filename, "");
-            } else {
-                filename = s;
-                foldername = c.getString(R.string.mainfoldername);
+        String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " (songid, filename, folder, title) VALUES (?, ?, ?, ?)";
+
+        // Wrap in try-with-resources if using newer Android/Java,
+        // otherwise keep manual close in finally
+        try (SQLiteStatement stmt = db.compileStatement(sql)) {
+            db.beginTransactionNonExclusive(); // Better for concurrent access
+            try {
+                ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
+                for (String s : songIds) {
+                    String filename;
+                    String foldername;
+                    // Only add song files, so if it ends with / this loop skips
+                    if (s.endsWith("/")) {
+                        filename = "";
+                        foldername = s.substring(0, s.lastIndexOf("/"));
+                    } else if (s.contains("/")) {
+                        filename = s.substring(s.lastIndexOf("/"));
+                        foldername = s.replace(filename, "");
+                    } else {
+                        filename = s;
+                        foldername = c.getString(R.string.mainfoldername);
+                    }
+
+                    filename = filename.replace("/", "");
+
+                    if (!filename.isEmpty()) {
+                        stmt.bindString(1, s);
+                        stmt.bindString(2, filename);
+                        stmt.bindString(3, foldername);
+                        stmt.bindString(4, filename);
+                        stmt.executeInsert(); // Use executeInsert() for ID return
+                        stmt.clearBindings();
+                    }
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                // CRITICAL: Log the actual SQLite error
+                Log.e(TAG, "TRANSACTION FAILED: " + e.getMessage(), e);
+            } finally {
+                db.endTransaction();
             }
-
-            filename = filename.replace("/", "");
-
-            if (!filename.isEmpty()) {
-                stmt.bindString(1, s);
-                stmt.bindString(2, filename);
-                stmt.bindString(3, foldername);
-                // Temp title for now
-                // During full indexing this will be replaced
-                stmt.bindString(4, filename);
-
-                stmt.execute();
-                stmt.clearBindings();
-            }
+        } catch (Exception e) {
+            Log.e(TAG, "Statement compilation failed: " + e.getMessage());
         }
     }
-
     public String getValue(Cursor cursor, String index) {
         return cursor.getString(cursor.getColumnIndexOrThrow(index));
     }
+
 
     // Search for values in the table
     public ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
@@ -457,6 +474,7 @@ public class CommonSQL {
         return songs;
     }
 
+
     // This checks the database for files that don't actually exist
     // A reference to the Song object (folder/filename only) is returned
     public ArrayList<Song> getNonExistingSongsInDB(SQLiteDatabase db) {
@@ -485,7 +503,6 @@ public class CommonSQL {
         // close cursor connection
         try {
             closeCursor(cursor);
-            db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -493,14 +510,14 @@ public class CommonSQL {
         return songs;
     }
 
+
+    // The query string builders
     private String getAllQuery() {
         return "SELECT * FROM " + SQLite.TABLE_NAME + " ORDER BY " + SQLite.COLUMN_FILENAME + " ASC";
     }
-
     private String getFolderFilenameQuery() {
         return "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME;
     }
-
     private String getSelectQuery(boolean songMenuSortTitles, String sqlMatch) {
         String listname = SQLite.COLUMN_FILENAME;
         if (songMenuSortTitles) {
@@ -518,6 +535,8 @@ public class CommonSQL {
         return getBasicSQLQueryStart + sqlMatch + " " + getOrderBySQL;
     }
 
+
+    // The analytics database
     public ArrayList<AnalyticsItem> getAnalyticsItems(SQLiteDatabase mainDb, String sortMode, String sqlMatch, String[] selectionArgs) {
         mainActivityInterface.getAnalyticsHelper();
         String analyticsPath = AnalyticsSQLiteHelper.getDatabasePath(c);
@@ -554,7 +573,6 @@ public class CommonSQL {
         }
         return list;
     }
-
     private String getSortOrder(String sortMode) {
         switch (sortMode) {
             case "popularity": return "view_count DESC, s.title COLLATE NOCASE ASC";
@@ -566,80 +584,22 @@ public class CommonSQL {
         }
     }
 
-    /*public ArrayList<AnalyticsItem> getAnalyticsItems(SQLiteDatabase mainDb, String sortMode, String sqlMatch, String[] selectionArgs) {
-        mainActivityInterface.getAnalyticsHelper();
-        String analyticsPath = AnalyticsSQLiteHelper.getDatabasePath(c);
-        mainDb.execSQL("ATTACH DATABASE '" + analyticsPath + "' AS analyticsDb");
 
-        // Map sort modes to SQL columns
-        String orderBy;
-        switch (sortMode) {
-            case SortMode.POPULARITY: orderBy = "popularity DESC"; break;
-            case SortMode.LAST_VIEWED: orderBy = "a.last_viewed_timestamp DESC"; break;
-            case SortMode.LAST_CAST: orderBy = "a.last_cast_timestamp DESC"; break;
-            case SortMode.LAST_SET: orderBy = "a.last_add_to_set_timestamp DESC"; break;
-            case SortMode.COUNT_SET: orderBy = "a.set_count DESC"; break;
-            default: orderBy = "s.title COLLATE NOCASE ASC";
-        }
-
-        String query = "SELECT s.*, " +
-                "IFNULL(a.view_count, 0) as popularity, " +
-                "IFNULL(a.last_viewed_timestamp, 0) as last_viewed, " +
-                "IFNULL(a.last_cast_timestamp, 0) as last_cast, " +
-                "IFNULL(a.last_add_to_set_timestamp, 0) as last_added, " +
-                "IFNULL(a.set_count, 0) as set_count " +
-                "FROM " + SQLite.TABLE_NAME + " s " +
-                "LEFT JOIN analyticsDb.PopularityTable a ON s." + SQLite.COLUMN_UUID + " = a.song_uuid " +
-                sqlMatch +
-                " ORDER BY " + orderBy;
-
-        ArrayList<AnalyticsItem> list = new ArrayList<>();
-        try (Cursor cursor = mainDb.rawQuery(query, selectionArgs)) {
-            while (cursor.moveToNext()) {
-                AnalyticsItem item = new AnalyticsItem();
-
-                public static final String ANALYTICS_TABLE_NAME = "song_analytics";
-                public static final String COLUMN_SONG_UUID = "song_uuid"; // Links to existing UUID
-                public static final String COLUMN_VIEW_COUNT = "view_count";
-                public static final String COLUMN_LAST_VIEWED = "last_viewed_at";
-                public static final String COLUMN_LAST_SET_DATE = "last_added_to_set_at";
-                public static final String COLUMN_LAST_CAST_DATE = "last_cast_at";
-                public static final String COLUMN_SET_COUNT = "set_count";
-
-
-                item.title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-                item.folder = cursor.getString(cursor.getColumnIndexOrThrow("folder"));
-                item.viewCount = cursor.getInt(cursor.getColumnIndexOrThrow("popularity"));
-                item.lastViewed = cursor.getLong(cursor.getColumnIndexOrThrow("last_viewed"));
-                item.lastAddToSet = cursor.getLong(cursor.getColumnIndexOrThrow("last_added"));
-                // ... map other analytics fields
-                list.add(item);
-            }
-        }
-        return list;
-    }*/
-
-    public String getKey(SQLiteDatabase db, String folder, String filename) {
+    // Get specific song details
+    public boolean songExists(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
-        String[] selectionArgs = new String[]{songId};
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
-
-        Cursor cursor = db.rawQuery(sql, selectionArgs);
-
-        String key = "";
-        // Get the first item (the matching songID)
-        if (cursor.moveToFirst()) {
-            key = getValue(cursor, SQLite.COLUMN_KEY);
+        Cursor cursor = db.rawQuery(sql, new String[]{songId});
+        int count;
+        if (cursor == null) {
+            // Error, so not found
+            return false;
+        } else {
+            count = cursor.getCount();
         }
-
-        if (key == null) {
-            key = "";
-        }
-
         closeCursor(cursor);
-        return key;
+        return count > 0;
     }
-
     public Song getSpecificSong(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         String[] selectionArgs = new String[]{songId};
@@ -677,7 +637,6 @@ public class CommonSQL {
 
         return thisSong;
     }
-
     public Song getSongFromUuid(SQLiteDatabase db, String uuid) {
         if (uuid != null && !uuid.isEmpty()) {
             String[] selectionArgs = new String[]{uuid};
@@ -704,7 +663,6 @@ public class CommonSQL {
             return null;
         }
     }
-
     private void setSongValues(Song thisSong, Cursor cursor) {
         thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
         thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
@@ -757,7 +715,347 @@ public class CommonSQL {
         thisSong.setUuid(uuid);
         thisSong.setLastModified(getValue(cursor, SQLite.COLUMN_LAST_MODIFIED));
     }
+    public String getKey(SQLiteDatabase db, String folder, String filename) {
+        String songId = getAnySongId(folder, filename);
+        String[] selectionArgs = new String[]{songId};
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
 
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        String key = "";
+        // Get the first item (the matching songID)
+        if (cursor.moveToFirst()) {
+            key = getValue(cursor, SQLite.COLUMN_KEY);
+        }
+
+        if (key == null) {
+            key = "";
+        }
+
+        closeCursor(cursor);
+        return key;
+    }
+    public ArrayList<String> getFolders(SQLiteDatabase db) {
+        ArrayList<String> folders = new ArrayList<>();
+        String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
+                SQLite.COLUMN_FOLDER + " ASC";
+
+        // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
+        Cursor cursor = db.rawQuery(q, null);
+        cursor.moveToFirst();
+
+        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER) == 0) {
+            for (int x = 0; x < cursor.getCount(); x++) {
+                cursor.moveToPosition(x);
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))
+                        .replace("MAIN/", c.getString(R.string.mainfoldername));
+                folder = folder.replace(c.getString(R.string.mainfoldername) + "/", c.getString(R.string.mainfoldername));
+                folders.add(folder);
+            }
+        }
+        closeCursor(cursor);
+        if (folders.isEmpty()) {
+            folders.add(c.getString(R.string.mainfoldername));
+        }
+
+        // If we have custom folders (variations, etc.) listed, remove them
+        if (folders.contains("../Variations/_cache") ||
+                folders.contains("../" + c.getString(R.string.variation) + "/_cache") ||
+                folders.contains("**Variations/_cache") ||
+                folders.contains("**" + c.getString(R.string.variation) + "/_cache")) {
+            folders.remove("../Variations/_cache");
+            folders.remove("../" + c.getString(R.string.variation) + "/_cache");
+            folders.remove("**Variations/_cache");
+            folders.remove("**" + c.getString(R.string.variation) + "/_cache");
+        }
+
+        if (folders.contains("../Variations") ||
+                folders.contains("../" + c.getString(R.string.variation)) ||
+                folders.contains("**Variations") ||
+                folders.contains("**" + c.getString(R.string.variation))) {
+            folders.remove("../Variations");
+            folders.remove("../" + c.getString(R.string.variation));
+            folders.remove("**Variations");
+            folders.remove("**" + c.getString(R.string.variation));
+        }
+
+        // We should also add in any folders that are empty - the database has no record of them
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongFolders(mainActivityInterface.getStorageAccess().getSongIDsFromFile(), true, null);
+        for (String songId : songIds) {
+            if (!folders.contains(songId)) {
+                folders.add(songId);
+            }
+        }
+
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1, o2);
+        };
+        Collections.sort(folders, comparator);
+
+
+        return folders;
+    }
+    public Song getSongFromMidiIndex(SQLiteDatabase db, int midiIndex) {
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_MIDI_INDEX + "= ? ";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(midiIndex)});
+        Song thisSong = new Song();
+
+        // Get the first item (the matching songID)
+        try {
+            if (cursor.moveToFirst()) {
+                thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
+                thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
+                cursor.close();
+                return thisSong;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            cursor.close();
+        }
+        // No song found,
+        return null;
+    }
+    public ArrayList<String> getUniqueThemeTags(SQLiteDatabase db) {
+        ArrayList<String> themeTags = new ArrayList<>();
+
+        String q = "SELECT DISTINCT " + SQLite.COLUMN_THEME + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
+                SQLite.COLUMN_THEME + " ASC";
+
+        Cursor cursor = db.rawQuery(q, null);
+        cursor.moveToFirst();
+
+        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_THEME) == 0) {
+            for (int x = 0; x < cursor.getCount(); x++) {
+                cursor.moveToPosition(x);
+                String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
+                if (themes != null && themes.contains(";")) {
+                    String[] themeBits = themes.split(";");
+                    for (String bit : themeBits) {
+                        if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
+                            themeTags.add(bit.trim());
+                        }
+                    }
+                } else if (themes != null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
+                    themeTags.add(themes.trim());
+                }
+            }
+        }
+        closeCursor(cursor);
+        Comparator<String> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+            collator.setStrength(Collator.SECONDARY);
+            return collator.compare(o1, o2);
+        };
+        Collections.sort(themeTags, comparator);
+        return themeTags;
+    }
+    public ArrayList<String> renameThemeTags(SQLiteDatabase db, SQLiteDatabase db2, String oldTag, String newTag) {
+        String q = "SELECT " + SQLite.COLUMN_SONGID + ", " + SQLite.COLUMN_FOLDER + ", " +
+                SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FILETYPE + ", " + SQLite.COLUMN_THEME +
+                " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?";
+        String[] arg = new String[]{"%" + oldTag + "%"};
+
+        db.beginTransaction();
+
+        try {
+            Cursor cursor = db.rawQuery(q, arg);
+
+            if (cursor != null && cursor.getColumnCount() > 0) {
+                cursor.moveToFirst();
+                for (int x = 0; x < cursor.getCount(); x++) {
+                    cursor.moveToPosition(x);
+                    String songid = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_SONGID));
+                    String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+                    String filename = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME));
+                    String filetype = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE));
+                    String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (themes != null && themes.contains(";")) {
+                        String[] themeBits = themes.split(";");
+                        for (String bit : themeBits) {
+                            if (!bit.trim().equals(oldTag.trim()) && !bit.trim().isEmpty()) {
+                                stringBuilder.append(bit).append(";");
+                            }
+                        }
+                        // Add the new tag
+                        stringBuilder.append(newTag);
+                        themes = stringBuilder.toString();
+                        themes = themes.replace(";;", ";");
+                        themes = themes.replace("; ;", ";");
+                    } else if (themes != null && !themes.isEmpty() && themes.trim().equals(oldTag.trim())) {
+                        themes = newTag;
+                    }
+                    // Put the fixed themes back into the database
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(SQLite.COLUMN_THEME, themes);
+                    db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{songid});
+
+                    // If this is a PDF or img, update the persistent database
+                    if (filetype != null && !filetype.isEmpty() &&
+                            (filetype.equals("PDF") || filetype.equals("IMG"))) {
+                        db2.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{songid});
+
+                    } else {
+                        // Update the song file (don't do for PDF or IMG obviously
+                        Song tempSong = getSpecificSong(db, folder, filename);
+                        tempSong.setTheme(themes);
+                        mainActivityInterface.getSaveSong().updateSong(tempSong, false);
+                    }
+                }
+            }
+            closeCursor(cursor);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+
+        // Now get the new unique tags
+        return getUniqueThemeTags(db);
+    }
+    public String getSongsWithThemeTag(SQLiteDatabase db, String tag) {
+        StringBuilder songsFound = new StringBuilder();
+        String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FOLDER +
+                " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?;";
+
+        String[] args = {tag};
+        Cursor cursor = db.rawQuery(selectQuery, args);
+
+        if (cursor.moveToFirst()) {
+            do {
+                songsFound.append(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))).
+                        append("/").
+                        append(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME))).
+                        append(", ");
+            }
+            while (cursor.moveToNext());
+        }
+
+        // close cursor connection
+        closeCursor(cursor);
+
+        // Remove the end comma
+        String text = songsFound.toString();
+        if (text.endsWith(", ")) {
+            text = text.substring(0, text.lastIndexOf(", "));
+        }
+        return text;
+    }
+    public String getFolderForSong(SQLiteDatabase db, String filename) {
+        String folder = c.getString(R.string.mainfoldername);
+        String selectQuery = "SELECT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FILENAME + " = ?;";
+        String[] args = {filename};
+        Cursor cursor = db.rawQuery(selectQuery, args);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+        }
+        closeCursor(cursor);
+        return folder;
+    }
+    public boolean renameSong(SQLiteDatabase db, String oldFolder, String newFolder,
+                              String oldName, String newName) {
+        String oldId = getAnySongId(oldFolder, oldName);
+        String newId = getAnySongId(newFolder, newName);
+
+        // First change the folder/file againts the matching old songid
+        String[] whereClause = new String[]{oldId};
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SQLite.COLUMN_FOLDER, newFolder);
+        contentValues.put(SQLite.COLUMN_FILENAME, newName);
+        contentValues.put(SQLite.COLUMN_SONGID, newId);
+
+        int val = 0;
+        db.beginTransaction();
+        try {
+            val = db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", whereClause);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+
+        return val > 0;
+    }
+    public String[] getUuidFromFolderAndFile(SQLiteDatabase db, String folderAndFile) {
+        String selectQuery = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_TITLE + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ?;";
+        String[] args = {folderAndFile};
+        String[] results = new String[2];
+        results[0] = "";
+        results[1] = "";
+        Cursor cursor = db.rawQuery(selectQuery, args);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            results[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
+            results[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
+        } else {
+            results[0] = String.valueOf(UUID.randomUUID());
+            results[1] = "";
+        }
+        closeCursor(cursor);
+        return results;
+    }
+    public String[] getSongCreationInfo(SQLiteDatabase db, String folder, String filename) {
+        String songId = getAnySongId(folder, filename);
+        String[] selectionArgs = new String[]{songId};
+        String sql = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_LAST_MODIFIED + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
+        String[] returnInfo = new String[]{"", "", "false"};
+
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        // Get the first item (the matching songID)
+        try {
+            if (cursor.moveToFirst()) {
+                returnInfo[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
+                returnInfo[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LAST_MODIFIED));
+                returnInfo[2] = "true";  // We have this file
+                returnInfo[0] = returnInfo[0] == null ? "" : returnInfo[0];
+                returnInfo[1] = returnInfo[1] == null ? "" : returnInfo[1];
+            }
+
+            closeCursor(cursor);
+        } catch (Exception e) {
+            Log.e(TAG, "error:" + e);
+        }
+
+        return returnInfo;
+    }
+
+    public ArrayList<SongId> getSongIds(SQLiteDatabase db) {
+        // Create an array of simple song details - used for the web server
+        ArrayList<SongId> songIds = new ArrayList<>();
+        String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " +
+                SQLite.COLUMN_FOLDER + ", " +
+                SQLite.COLUMN_TITLE + ", " +
+                // Wrap the reserved word 'key' in backticks
+                "`" + SQLite.COLUMN_KEY + "`, " +
+                SQLite.COLUMN_AUTHOR +
+                " FROM " + SQLite.TABLE_NAME + ";";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                SongId songId = new SongId();
+                songId.setFolder(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)));
+                songId.setFilename(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)));
+                songId.setKey(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)));
+                songId.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR)));
+                songIds.add(songId);
+            }
+            while (cursor.moveToNext());
+        }
+
+        // close cursor connection
+        closeCursor(cursor);
+        return songIds;
+    }
+
+
+    // OpenChords details
     public Song getOpenChordsSong(SQLiteDatabase db, String folder, String uuid) {
         String[] selectionArgs = new String[]{uuid, folder};
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_UUID + "=? AND " + SQLite.COLUMN_FOLDER + "=?";
@@ -776,22 +1074,6 @@ public class CommonSQL {
         }
         return thisSong;
     }
-
-    public boolean songExists(SQLiteDatabase db, String folder, String filename) {
-        String songId = getAnySongId(folder, filename);
-        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
-        Cursor cursor = db.rawQuery(sql, new String[]{songId});
-        int count;
-        if (cursor == null) {
-            // Error, so not found
-            return false;
-        } else {
-            count = cursor.getCount();
-        }
-        closeCursor(cursor);
-        return count > 0;
-    }
-
     public ArrayList<Song> openChordsSyncGetSongsFromFolder(SQLiteDatabase db, String folder) {
         ArrayList<Song> songs = new ArrayList<>();
 
@@ -863,283 +1145,6 @@ public class CommonSQL {
         //Return the songs
         return songs;
     }
-
-
-    public Song getSongFromMidiIndex(SQLiteDatabase db, int midiIndex) {
-        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_MIDI_INDEX + "= ? ";
-        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(midiIndex)});
-        Song thisSong = new Song();
-
-        // Get the first item (the matching songID)
-        try {
-            if (cursor.moveToFirst()) {
-                thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
-                thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
-                cursor.close();
-                return thisSong;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            cursor.close();
-        }
-        // No song found,
-        return null;
-    }
-
-    public ArrayList<String> getFolders(SQLiteDatabase db) {
-        ArrayList<String> folders = new ArrayList<>();
-        String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
-                SQLite.COLUMN_FOLDER + " ASC";
-
-        // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
-        Cursor cursor = db.rawQuery(q, null);
-        cursor.moveToFirst();
-
-        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER) == 0) {
-            for (int x = 0; x < cursor.getCount(); x++) {
-                cursor.moveToPosition(x);
-                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))
-                        .replace("MAIN/", c.getString(R.string.mainfoldername));
-                folder = folder.replace(c.getString(R.string.mainfoldername) + "/", c.getString(R.string.mainfoldername));
-                folders.add(folder);
-            }
-        }
-        closeCursor(cursor);
-        if (folders.isEmpty()) {
-            folders.add(c.getString(R.string.mainfoldername));
-        }
-
-        // If we have custom folders (variations, etc.) listed, remove them
-        if (folders.contains("../Variations/_cache") ||
-                folders.contains("../" + c.getString(R.string.variation) + "/_cache") ||
-                folders.contains("**Variations/_cache") ||
-                folders.contains("**" + c.getString(R.string.variation) + "/_cache")) {
-            folders.remove("../Variations/_cache");
-            folders.remove("../" + c.getString(R.string.variation) + "/_cache");
-            folders.remove("**Variations/_cache");
-            folders.remove("**" + c.getString(R.string.variation) + "/_cache");
-        }
-
-        if (folders.contains("../Variations") ||
-                folders.contains("../" + c.getString(R.string.variation)) ||
-                folders.contains("**Variations") ||
-                folders.contains("**" + c.getString(R.string.variation))) {
-            folders.remove("../Variations");
-            folders.remove("../" + c.getString(R.string.variation));
-            folders.remove("**Variations");
-            folders.remove("**" + c.getString(R.string.variation));
-        }
-
-        // We should also add in any folders that are empty - the database has no record of them
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongFolders(mainActivityInterface.getStorageAccess().getSongIDsFromFile(), true, null);
-        for (String songId : songIds) {
-            if (!folders.contains(songId)) {
-                folders.add(songId);
-            }
-        }
-
-        Comparator<String> comparator = (o1, o2) -> {
-            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
-            collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1, o2);
-        };
-        Collections.sort(folders, comparator);
-
-
-        return folders;
-    }
-
-    public boolean renameSong(SQLiteDatabase db, String oldFolder, String newFolder,
-                              String oldName, String newName) {
-        String oldId = getAnySongId(oldFolder, oldName);
-        String newId = getAnySongId(newFolder, newName);
-
-        // First change the folder/file againts the matching old songid
-        String[] whereClause = new String[]{oldId};
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(SQLite.COLUMN_FOLDER, newFolder);
-        contentValues.put(SQLite.COLUMN_FILENAME, newName);
-        contentValues.put(SQLite.COLUMN_SONGID, newId);
-
-        int val = db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", whereClause);
-
-        return val > 0;
-    }
-
-    public void closeCursor(Cursor cursor) {
-        if (cursor != null) {
-            try {
-                cursor.close();
-            } catch (OutOfMemoryError | Exception e) {
-                Log.e(TAG, "error:" + e);
-            }
-        }
-    }
-
-    public ArrayList<String> getUniqueThemeTags(SQLiteDatabase db) {
-        ArrayList<String> themeTags = new ArrayList<>();
-
-        String q = "SELECT DISTINCT " + SQLite.COLUMN_THEME + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
-                SQLite.COLUMN_THEME + " ASC";
-
-        Cursor cursor = db.rawQuery(q, null);
-        cursor.moveToFirst();
-
-        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_THEME) == 0) {
-            for (int x = 0; x < cursor.getCount(); x++) {
-                cursor.moveToPosition(x);
-                String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
-                if (themes != null && themes.contains(";")) {
-                    String[] themeBits = themes.split(";");
-                    for (String bit : themeBits) {
-                        if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
-                            themeTags.add(bit.trim());
-                        }
-                    }
-                } else if (themes != null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
-                    themeTags.add(themes.trim());
-                }
-            }
-        }
-        closeCursor(cursor);
-        Comparator<String> comparator = (o1, o2) -> {
-            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
-            collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1, o2);
-        };
-        Collections.sort(themeTags, comparator);
-        return themeTags;
-    }
-
-    public ArrayList<String> renameThemeTags(SQLiteDatabase db, SQLiteDatabase db2, String oldTag, String newTag) {
-        String q = "SELECT " + SQLite.COLUMN_SONGID + ", " + SQLite.COLUMN_FOLDER + ", " +
-                SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FILETYPE + ", " + SQLite.COLUMN_THEME +
-                " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?";
-        String[] arg = new String[]{"%" + oldTag + "%"};
-
-        Cursor cursor = db.rawQuery(q, arg);
-
-        if (cursor != null && cursor.getColumnCount() > 0) {
-            cursor.moveToFirst();
-            for (int x = 0; x < cursor.getCount(); x++) {
-                cursor.moveToPosition(x);
-                String songid = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_SONGID));
-                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
-                String filename = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME));
-                String filetype = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE));
-                String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
-                StringBuilder stringBuilder = new StringBuilder();
-                if (themes != null && themes.contains(";")) {
-                    String[] themeBits = themes.split(";");
-                    for (String bit : themeBits) {
-                        if (!bit.trim().equals(oldTag.trim()) && !bit.trim().isEmpty()) {
-                            stringBuilder.append(bit).append(";");
-                        }
-                    }
-                    // Add the new tag
-                    stringBuilder.append(newTag);
-                    themes = stringBuilder.toString();
-                    themes = themes.replace(";;", ";");
-                    themes = themes.replace("; ;", ";");
-                } else if (themes != null && !themes.isEmpty() && themes.trim().equals(oldTag.trim())) {
-                    themes = newTag;
-                }
-                // Put the fixed themes back into the database
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(SQLite.COLUMN_THEME, themes);
-                db.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{songid});
-
-                // If this is a PDF or img, update the persistent database
-                if (filetype != null && !filetype.isEmpty() &&
-                        (filetype.equals("PDF") || filetype.equals("IMG"))) {
-                    db2.update(SQLite.TABLE_NAME, contentValues, SQLite.COLUMN_SONGID + "=?", new String[]{songid});
-
-                } else {
-                    // Update the song file (don't do for PDF or IMG obviously
-                    Song tempSong = getSpecificSong(db, folder, filename);
-                    tempSong.setTheme(themes);
-                    mainActivityInterface.getSaveSong().updateSong(tempSong, false);
-                }
-            }
-        }
-        closeCursor(cursor);
-
-        // Now get the new unique tags
-        return getUniqueThemeTags(db);
-    }
-
-    public String getSongsWithThemeTag(SQLiteDatabase db, String tag) {
-        StringBuilder songsFound = new StringBuilder();
-        String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FOLDER +
-                " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?;";
-
-        String[] args = {tag};
-        Cursor cursor = db.rawQuery(selectQuery, args);
-
-        if (cursor.moveToFirst()) {
-            do {
-                songsFound.append(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))).
-                        append("/").
-                        append(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME))).
-                        append(", ");
-            }
-            while (cursor.moveToNext());
-        }
-
-        // close cursor connection
-        closeCursor(cursor);
-
-        // Remove the end comma
-        String text = songsFound.toString();
-        if (text.endsWith(", ")) {
-            text = text.substring(0, text.lastIndexOf(", "));
-        }
-        return text;
-    }
-
-    public String getFolderForSong(SQLiteDatabase db, String filename) {
-        String folder = c.getString(R.string.mainfoldername);
-        String selectQuery = "SELECT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FILENAME + " = ?;";
-        String[] args = {filename};
-        Cursor cursor = db.rawQuery(selectQuery, args);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
-        }
-        cursor.close();
-        return folder;
-    }
-
-    private String escape(String text) {
-        // If the text contains ', escape it
-        // First remove ''
-        while (text.contains("''")) {
-            text = text.replace("''", "'");
-        }
-        // Now escape by doubling
-        text = text.replace("'", "''");
-        return text;
-    }
-
-    public String[] getUuidFromFolderAndFile(SQLiteDatabase db, String folderAndFile) {
-        String selectQuery = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_TITLE + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ?;";
-        String[] args = {folderAndFile};
-        String[] results = new String[2];
-        results[0] = "";
-        results[1] = "";
-        Cursor cursor = db.rawQuery(selectQuery, args);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            results[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
-            results[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
-        } else {
-            results[0] = String.valueOf(UUID.randomUUID());
-            results[1] = "";
-        }
-        cursor.close();
-        return results;
-    }
-
     public ArrayList<OpenChordsTag> getThemesFromFilesInFolder(SQLiteDatabase db, String folder) {
         String selectQuery = "SELECT " + SQLite.COLUMN_THEME + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_FOLDER + " = ?;";
         String[] args = {folder};
@@ -1166,6 +1171,7 @@ public class CommonSQL {
 
         return tags;
     }
+
 
     // This can be used to export the persistent database to a 'readable' csv table that can be imported into a spreadsheet
     public void exportDatabase(SQLiteDatabase db, String exportedFilename) {
@@ -1201,7 +1207,6 @@ public class CommonSQL {
             }
         });
     }
-
     public void addCSVTableHeadings(StringBuilder stringBuilder) {
         // Add the table headings - CODE MUST BE UPDATED IF COLUMNS CHANGE - USE SQLite file
         // Don't worry about ID or SONG_ID as they are created automatically based on entry / filenames / folders
@@ -1247,13 +1252,6 @@ public class CommonSQL {
         stringBuilder.append("\"").append(SQLite.COLUMN_PRESENTATIONORDER).append("\",");
         stringBuilder.append("\"").append(SQLite.COLUMN_FILETYPE).append("\"\n");
     }
-
-    private String escaped(String string) {
-        string = string == null ? "" : string;
-        string = string.replace("\"", "\"\"");
-        return string;
-    }
-
     public void addCSVTableValue(StringBuilder stringBuilder, Song song, Cursor cursor) {
         // This can be called from a database cursor, or a song item that has already been retrieved
         //mainActivityInterface.getDrumViewModel().prepareSongValues(song);
@@ -1301,7 +1299,6 @@ public class CommonSQL {
         stringBuilder.append("\"").append(escaped(song != null ? song.getFiletype() : cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILETYPE)))).append("\"\n");
 
     }
-
     public ArrayList<ShareableObject> getShareableSongs(SQLiteDatabase db) {
         ArrayList<ShareableObject> shareableSongs = new ArrayList<>();
         String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " +
@@ -1331,60 +1328,32 @@ public class CommonSQL {
         return shareableSongs;
     }
 
-    public String[] getSongCreationInfo(SQLiteDatabase db, String folder, String filename) {
-        String songId = getAnySongId(folder, filename);
-        String[] selectionArgs = new String[]{songId};
-        String sql = "SELECT " + SQLite.COLUMN_UUID + ", " + SQLite.COLUMN_LAST_MODIFIED + " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
-        String[] returnInfo = new String[]{"", "", "false"};
 
-        Cursor cursor = db.rawQuery(sql, selectionArgs);
-
-        // Get the first item (the matching songID)
-        try {
-            if (cursor.moveToFirst()) {
-                returnInfo[0] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
-                returnInfo[1] = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LAST_MODIFIED));
-                returnInfo[2] = "true";  // We have this file
-                returnInfo[0] = returnInfo[0] == null ? "" : returnInfo[0];
-                returnInfo[1] = returnInfo[1] == null ? "" : returnInfo[1];
+    // General helpers
+    public void closeCursor(Cursor cursor) {
+        if (cursor != null) {
+            try {
+                cursor.close();
+            } catch (OutOfMemoryError | Exception e) {
+                Log.e(TAG, "error:" + e);
             }
-
-            closeCursor(cursor);
-        } catch (Exception e) {
-            Log.e(TAG, "error:" + e);
         }
-
-        return returnInfo;
     }
-
-    public ArrayList<SongId> getSongIds(SQLiteDatabase db) {
-        // Create an array of simple song details - used for the web server
-        ArrayList<SongId> songIds = new ArrayList<>();
-        String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " +
-                SQLite.COLUMN_FOLDER + ", " +
-                SQLite.COLUMN_TITLE + ", " +
-                // Wrap the reserved word 'key' in backticks
-                "`" + SQLite.COLUMN_KEY + "`, " +
-                SQLite.COLUMN_AUTHOR +
-                " FROM " + SQLite.TABLE_NAME + ";";
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                SongId songId = new SongId();
-                songId.setFolder(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)));
-                songId.setFilename(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME)));
-                songId.setKey(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY)));
-                songId.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR)));
-                songIds.add(songId);
-            }
-            while (cursor.moveToNext());
+    private String escape(String text) {
+        // If the text is null, return an empty string
+        // If the text contains ', escape it
+        // First remove ''
+        while (text.contains("''")) {
+            text = text.replace("''", "'");
         }
-
-        // close cursor connection
-        closeCursor(cursor);
-        return songIds;
+        // Now escape by doubling
+        text = text.replace("'", "''");
+        return text;
+    }
+    private String escaped(String string) {
+        string = string == null ? "" : string;
+        string = string.replace("\"", "\"\"");
+        return string;
     }
 
 }

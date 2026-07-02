@@ -83,6 +83,14 @@ public class SetStorageLocationFragment extends Fragment {
 
         // Showcase
         storageShowcase();
+
+        // Run a delayed status check if the start button isn't visible
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
+            Log.d(TAG,"Checking status again");
+            if (myView!=null && myView.startApp.getVisibility()!=View.VISIBLE) {
+                checkStatus();
+            }
+        },500);
     }
 
     @Override

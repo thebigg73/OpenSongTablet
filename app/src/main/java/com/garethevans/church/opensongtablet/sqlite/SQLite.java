@@ -140,7 +140,7 @@ public class SQLite {
     public static final String COLUMN_SET_COUNT = "set_count";
 
     // Create table SQL query.  Because this will have non OpenSong stuff too, include all useable fields
-    static final String CREATE_TABLE =
+    public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_SONGID + " TEXT UNIQUE,"
