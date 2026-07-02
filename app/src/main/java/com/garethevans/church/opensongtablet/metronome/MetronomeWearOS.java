@@ -20,7 +20,7 @@ import java.util.List;
 
 public class MetronomeWearOS {
 
-    private final String TAG = "WearConnectionHelper";
+    private final String TAG = "WearMetronomeOS";
     private static final String BEAT_PATH_TICK = "/metronome/beat/tick";
     private static final String BEAT_PATH_TOCK = "/metronome/beat/tock";
     private final Context c;
@@ -81,7 +81,7 @@ public class MetronomeWearOS {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "Capability check failed", e);
+                    Log.d(TAG,"Checked for WearOS compatibility on this device, but not found");
                     wearOSValid = false;
                 });
     }
