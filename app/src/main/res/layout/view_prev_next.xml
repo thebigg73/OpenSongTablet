@@ -4,7 +4,9 @@
     android:id="@+id/nextPrev"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="96dp">
+    android:minHeight="96dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 <LinearLayout
     android:id="@+id/nextPrevInfoLayout"
     android:layout_width="match_parent"
@@ -13,6 +15,8 @@
     android:paddingBottom="12dp"
     android:layout_alignParentBottom="true"
     android:minHeight="64dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -20,6 +24,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:paddingTop="12dp">
 
         <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
@@ -49,7 +55,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingTop="12dp">
+        android:paddingTop="12dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
             android:id="@+id/nextButton"
@@ -82,13 +90,17 @@
         android:paddingBottom="4dp"
         android:minHeight="48dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
     <FrameLayout
         android:id="@+id/prevFABHolder"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
     <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/prevButtonFAB"
@@ -103,7 +115,9 @@
         android:id="@+id/nextFABHolder"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
     <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
         android:id="@+id/nextButtonFAB"
