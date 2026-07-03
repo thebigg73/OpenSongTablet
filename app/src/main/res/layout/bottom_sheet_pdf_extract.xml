@@ -2,80 +2,78 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
-    <LinearLayout
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_extract" />
+
+    <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/saveSearchable"
-        android:orientation="vertical">
+        android:layout_below="@+id/dialogHeader"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:scrollbars="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.DialogHeader
-            android:id="@+id/dialogHeader"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_extract" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
 
-
-        <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
-            android:id="@+id/nestedScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="16dp"
-            android:layout_weight="1">
-
-            <LinearLayout
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/createNewSong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="80dp"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/extra_scroll_space">
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/create_new_song" />
 
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
-                    android:id="@+id/createNewSong"
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/newSongLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/folder"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/create_new_song" />
-
-                <LinearLayout
-                    android:id="@+id/newSongLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="horizontal">
-
-                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                        android:id="@+id/folder"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="0.4"
-                        android:hint="@string/folder" />
-
-                    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-                        android:id="@+id/filename"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="0.6"
-                        android:hint="@string/filename"
-                        app:endIconMode="clear_text" />
-                </LinearLayout>
+                    android:layout_gravity="bottom"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="0.4"
+                    android:hint="@string/folder" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-                    android:id="@+id/extractedText"
-                    android:layout_width="match_parent"
+                    android:id="@+id/filename"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/lyrics"
-                    android:inputType="textMultiLine"
-                    app:useMonospace="true"
-                    android:minLines="20" />
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="0.6"
+                    android:hint="@string/filename"
+                    app:endIconMode="clear_text" />
             </LinearLayout>
-        </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
-    </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/extractedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/lyrics"
+                android:inputType="textMultiLine"
+                android:minLines="20"
+                app:useMonospace="true" />
+
+        </LinearLayout>
+    </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
     <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
         android:id="@+id/saveSearchable"
@@ -83,7 +81,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/extract"
         app:icon="@drawable/database_import" />
 

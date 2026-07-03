@@ -20,7 +20,7 @@ public class ScrollViewWithFAB extends ScrollView {
 
     public ScrollViewWithFAB(@NonNull Context context) {
         super(context);
-        new ScrollView(context);
+        //new ScrollView(context);
     }
 
     public ScrollViewWithFAB(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {

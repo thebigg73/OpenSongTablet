@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,13 +41,13 @@ public class ImportFileFragment extends Fragment {
     private SettingsImportFileBinding myView;
     private Song newSong = new Song();
     private ArrayList<String> folders;
-    private boolean isIMGorPDF, showNotFoundToast=false, isSetFile = false, isHTML = false;
+    private boolean isIMGorPDF, showNotFoundToast = false, isSetFile = false, isHTML = false;
     private String basename, requiredExtension, setcategory, newSetName;
     private Uri copyTo;
     private String originalFolder, originalFilename, import_from_file_string = "",
             error_string = "", mainfoldername_string = "", overwrite_string = "",
             filename_string = "", file_exists_string = "", set_name_string = "",
-            set_category_string = "", import_set_string="", deeplink_import_file = "",
+            set_category_string = "", import_set_string = "", deeplink_import_file = "",
             set_items_not_found_string = "";
     private ExposedDropDownArrayAdapter exposedDropDownArrayAdapter;
     private ArrayList<SetItemInfo> setItemInfos = null;
@@ -75,6 +76,12 @@ public class ImportFileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsImportFileBinding.inflate(inflater, container, false);
 
+        // FORCE the fragment's root view to occupy space
+        myView.getRoot().setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
+
         // Tint the progressBar as the secondary color
         mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progress);
 
@@ -87,6 +94,8 @@ public class ImportFileFragment extends Fragment {
         originalFilename = mainActivityInterface.getSong().getFilename();
         // Hide everything other than the progress bar while we process the song
         showProgress(true);
+        myView.content.setText(null);
+        myView.content.setHint(null);
         myView.content.setVisibility(View.GONE);
         myView.importButton.setVisibility(View.GONE);
         myView.imageView.setVisibility(View.GONE);
@@ -105,14 +114,14 @@ public class ImportFileFragment extends Fragment {
             if (mainActivityInterface.getWhattodo().equals("importset")) {
                 // This is actually a set
                 mainActivityInterface.getMainHandler().post(() -> {
-                            mainActivityInterface.updateToolbar(import_set_string);
-                            myView.filename.setHint(set_name_string);
-                            myView.folder.setHint(set_category_string);
-                            myView.existing.setVisibility(View.GONE);
-                            myView.setLoadFirst.setVisibility(View.VISIBLE);
-                            myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst", true));
-                            myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst", b));
-                        });
+                    mainActivityInterface.updateToolbar(import_set_string);
+                    myView.filename.setHint(set_name_string);
+                    myView.folder.setHint(set_category_string);
+                    myView.existing.setVisibility(View.GONE);
+                    myView.setLoadFirst.setVisibility(View.VISIBLE);
+                    myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst", true));
+                    myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst", b));
+                });
                 isSetFile = true;
                 folders = mainActivityInterface.getSetActions().getCategories(mainActivityInterface.getSetActions().getAllSets());
                 if (basename.contains("__")) {
@@ -131,7 +140,7 @@ public class ImportFileFragment extends Fragment {
             newSong.setFilename(mainActivityInterface.getImportFilename());
             isIMGorPDF = mainActivityInterface.getStorageAccess().isIMGorPDF(newSong);
             requiredExtension = "";
-            if (mainActivityInterface.getImportFilename()!=null && mainActivityInterface.getImportFilename().contains(".") && isIMGorPDF) {
+            if (mainActivityInterface.getImportFilename() != null && mainActivityInterface.getImportFilename().contains(".") && isIMGorPDF) {
                 requiredExtension = mainActivityInterface.getImportFilename().substring(mainActivityInterface.getImportFilename().lastIndexOf("."));
                 basename = mainActivityInterface.getImportFilename();
             }
@@ -189,23 +198,23 @@ public class ImportFileFragment extends Fragment {
 
     private void readInSetFile() {
         // Read in as a text string
-        isHTML = mainActivityInterface.getStorageAccess().isSpecificFileExtension("html",mainActivityInterface.getImportFilename());
+        isHTML = mainActivityInterface.getStorageAccess().isSpecificFileExtension("html", mainActivityInterface.getImportFilename());
         showNotFoundToast = false;
         if (isHTML) {
             setItemInfos = mainActivityInterface.getConvertOnSong().getOnSongHTMLSetList(mainActivityInterface.getImportUri());
-            if (setItemInfos!=null && !setItemInfos.isEmpty()) {
+            if (setItemInfos != null && !setItemInfos.isEmpty()) {
                 StringBuilder newItems = new StringBuilder();
-                for (SetItemInfo setItemInfo:setItemInfos) {
+                for (SetItemInfo setItemInfo : setItemInfos) {
                     String foundOrNot = "";
                     if (setItemInfo.songfilename.startsWith("__NOTFOUND__")) {
                         showNotFoundToast = true;
                         foundOrNot = "* ";
-                        setItemInfo.songfilename = setItemInfo.songfilename.replace("__NOTFOUND__","");
+                        setItemInfo.songfilename = setItemInfo.songfilename.replace("__NOTFOUND__", "");
                     }
-                    newItems.append(foundOrNot).append((setItemInfo.songitem+1)).append(". ").
+                    newItems.append(foundOrNot).append((setItemInfo.songitem + 1)).append(". ").
                             append(setItemInfo.songfolder).append("/").
                             append(setItemInfo.songfilename);
-                    if (setItemInfo.songkey!=null && !setItemInfo.songkey.isEmpty()) {
+                    if (setItemInfo.songkey != null && !setItemInfo.songkey.isEmpty()) {
                         newItems.append(" (").append(setItemInfo.songkey).append(")");
                     }
                     newItems.append("\n");
@@ -213,8 +222,8 @@ public class ImportFileFragment extends Fragment {
 
                 myView.content.post(() -> {
                     if (showNotFoundToast) {
-                        InformationBottomSheet informationBottomSheet = new InformationBottomSheet(import_set_string,set_items_not_found_string,null,null);
-                        informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"InformationBottomSheet");
+                        InformationBottomSheet informationBottomSheet = new InformationBottomSheet(import_set_string, set_items_not_found_string, null, null);
+                        informationBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "InformationBottomSheet");
                     }
                     basename = mainActivityInterface.getConvertOnSong().getSetTitle();
                     myView.filename.setText(basename);
@@ -253,18 +262,26 @@ public class ImportFileFragment extends Fragment {
     }
 
     private void readInFile() {
-        if (isIMGorPDF && getActivity()!=null && getContext()!=null) {
-            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",mainActivityInterface.getImportFilename()) &&
+        if (isIMGorPDF && getActivity() != null && getContext() != null) {
+            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF", mainActivityInterface.getImportFilename()) &&
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 // Load in a preview if the version of Android is high enough
-                Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null,null,1,200,200,"N", true);
-                myView.imageView.post(()-> Glide.with(getContext()).load(bmp).into(myView.imageView));
+                Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromPDF(null, null, 0, 300, 300, "N", true);
+
+                myView.imageView.postDelayed(() -> {
+                    myView.imageView.setVisibility(View.VISIBLE);
+                    Glide.with(this)
+                            .load(bmp)
+                            .fitCenter()
+                            .into(myView.imageView);
+
+                }, 500);
                 newSong.setFiletype("PDF");
             } else {
-                myView.imageView.post(()-> Glide.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView));
+                myView.imageView.postDelayed(() -> Glide.with(getContext()).load(mainActivityInterface.getImportUri()).into(myView.imageView), 500);
                 newSong.setFiletype("IMG");
             }
-        } else if (mainActivityInterface.getImportFilename()!=null){
+        } else if (mainActivityInterface.getImportFilename() != null) {
             // Because ost files aren't normally allowed (BAD extension) in the song folder
             // This would cause the file to be read as text if it has this extension
             // We set a pass go variable for now so that isn't checked again when reading the import
@@ -272,11 +289,11 @@ public class ImportFileFragment extends Fragment {
                 newSong.setFiletype("XML");
             }
 
-            boolean isText = mainActivityInterface.getStorageAccess().isSpecificFileExtension("text",mainActivityInterface.getImportFilename());
-            boolean isChoPro = mainActivityInterface.getStorageAccess().isSpecificFileExtension("chordpro",mainActivityInterface.getImportFilename());
-            boolean isOnSong = mainActivityInterface.getStorageAccess().isSpecificFileExtension("onsong",mainActivityInterface.getImportFilename());
-            boolean isWord = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx",mainActivityInterface.getImportFilename());
-            boolean isJustChords = mainActivityInterface.getStorageAccess().isSpecificFileExtension("justchords",mainActivityInterface.getImportFilename());
+            boolean isText = mainActivityInterface.getStorageAccess().isSpecificFileExtension("text", mainActivityInterface.getImportFilename());
+            boolean isChoPro = mainActivityInterface.getStorageAccess().isSpecificFileExtension("chordpro", mainActivityInterface.getImportFilename());
+            boolean isOnSong = mainActivityInterface.getStorageAccess().isSpecificFileExtension("onsong", mainActivityInterface.getImportFilename());
+            boolean isWord = mainActivityInterface.getStorageAccess().isSpecificFileExtension("docx", mainActivityInterface.getImportFilename());
+            boolean isJustChords = mainActivityInterface.getStorageAccess().isSpecificFileExtension("justchords", mainActivityInterface.getImportFilename());
             String content = "";
 
             if (isText || isChoPro || isOnSong || isJustChords) {
@@ -286,7 +303,7 @@ public class ImportFileFragment extends Fragment {
             if (isText) {
                 newSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(content));
             } else if (isChoPro) {
-                newSong = mainActivityInterface.getConvertChoPro().convertTextToTags(mainActivityInterface.getImportUri(),newSong);
+                newSong = mainActivityInterface.getConvertChoPro().convertTextToTags(mainActivityInterface.getImportUri(), newSong);
             } else if (isOnSong) {
                 newSong = mainActivityInterface.getConvertOnSong().convertTextToTags(mainActivityInterface.getImportUri(), newSong);
             } else if (isWord) {
@@ -304,7 +321,7 @@ public class ImportFileFragment extends Fragment {
                     newSong.setFolder(mainActivityInterface.getMainfoldername());
                     newSong.setFilename("importUri");
                     newSong.setFiletype("XML");
-                    if (mainActivityInterface.getImportUri()!=null) {
+                    if (mainActivityInterface.getImportUri() != null) {
                         newSong.setEncoding(mainActivityInterface.getImportUri().toString());
                     }
                     newSong = mainActivityInterface.getLoadSong().doLoadSongFile(newSong, false);
@@ -313,13 +330,13 @@ public class ImportFileFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            myView.content.post(()-> {
-                        myView.content.setText(newSong.getTitle());
-                        if (getContext()!=null) {
-                            myView.content.setHintMonospace(getContext());
-                        }
-                        myView.content.setHint(newSong.getLyrics());
-                    });
+            myView.content.post(() -> {
+                myView.content.setText(newSong.getTitle());
+                if (getContext() != null) {
+                    myView.content.setHintMonospace(getContext());
+                }
+                myView.content.setHint(newSong.getLyrics());
+            });
             // Because we have loaded the song (sort of), we need to reset the mainActivity.getSong()
             // As this will have been changed by the load process
             if (mainActivityInterface.getLoadSong().getImportingFile()) {
@@ -333,19 +350,20 @@ public class ImportFileFragment extends Fragment {
     }
 
     private void updateViews() {
-        myView.filename.setText(basename);
+        myView.filename.post(() -> myView.filename.setText(basename));
 
         if (isIMGorPDF) {
-            myView.imageView.setVisibility(View.VISIBLE);
+            myView.imageView.post(() -> myView.imageView.setVisibility(View.VISIBLE));
         } else {
-            myView.content.setVisibility(View.VISIBLE);
+            myView.content.post(() -> myView.content.setVisibility(View.VISIBLE));
         }
 
         // Check if file with this name already exists
-        checkIfFileExists();
+        mainActivityInterface.getMainHandler().post(this::checkIfFileExists);
     }
 
     private boolean checkIfFileExists() {
+        // Runs on UI
         newSong.setFilename(myView.filename.getText().toString());
         newSong.setTitle(myView.filename.getText().toString());
         newSong.setFolder(myView.folder.getText().toString());
@@ -361,7 +379,7 @@ public class ImportFileFragment extends Fragment {
                     mainActivityInterface.getSetActions().getSetCategorySeparator() +
                     myView.filename.getText().toString();
         }
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folder,subfolder,filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, filename);
         if (!isSetFile && mainActivityInterface.getStorageAccess().uriExists(uri)) {
             myView.existing.setVisibility(View.VISIBLE);
             return true;
@@ -374,7 +392,7 @@ public class ImportFileFragment extends Fragment {
     private void setupListeners() {
         myView.filename.addTextChangedListener(new MyTextWatcher());
         myView.folder.addTextChangedListener(new MyTextWatcher());
-        myView.importButton.setOnClickListener(v->doImport());
+        myView.importButton.setOnClickListener(v -> doImport());
     }
 
     private void doImport() {
@@ -382,7 +400,7 @@ public class ImportFileFragment extends Fragment {
             // Import the set if it doesn't already exist and filename isn't empty
             String folderprefix = "";
             if (!myView.folder.getText().toString().isEmpty() &&
-                !myView.folder.getText().toString().equals(mainfoldername_string)) {
+                    !myView.folder.getText().toString().equals(mainfoldername_string)) {
                 folderprefix = myView.folder.getText().toString() + "__";
             }
             String filename = myView.filename.getText().toString();
@@ -398,7 +416,7 @@ public class ImportFileFragment extends Fragment {
                     finishImportSet();
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(filename_string+" "+error_string);
+                mainActivityInterface.getShowToast().doIt(filename_string + " " + error_string);
             }
 
 
@@ -425,25 +443,25 @@ public class ImportFileFragment extends Fragment {
                     if (isIMGorPDF) {
                         // Now copy the file
                         copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, newFilename);
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Copy to Songs/"+folder+"/"+newFilename+"  deleteOld=true");
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Copy to Songs/" + folder + "/" + newFilename + "  deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Songs", folder, newFilename);
                         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(mainActivityInterface.getImportUri());
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport copyFile from "+mainActivityInterface.getImportUri()+" to Songs/" + folder + "/" + newFilename);
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doImport copyFile from " + mainActivityInterface.getImportUri() + " to Songs/" + folder + "/" + newFilename);
                         success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
 
-                    } else if (newSong.getFilename()!=null &&
+                    } else if (newSong.getFilename() != null &&
                             !newSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
                         // This is now a proper song, so write it
                         newSong.setFolder(folder);
                         newSong.setFilename(newFilename);
                         newSong.setFiletype("XML");
                         copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, newFilename);
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Copy to Songs/"+folder+"/"+newFilename+"  deleteOld=true");
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Copy to Songs/" + folder + "/" + newFilename + "  deleteOld=true");
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Songs", folder, newFilename);
                         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
                         String xml = mainActivityInterface.getProcessSong().getXML(newSong);
-                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport writeFileFromString Songs/"+folder+"/"+newFilename+" with: "+xml);
+                        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " doImport writeFileFromString Songs/" + folder + "/" + newFilename + " with: " + xml);
                         success = mainActivityInterface.getStorageAccess().writeFileFromString(xml, outputStream);
                     } else {
                         success = false;
@@ -480,7 +498,7 @@ public class ImportFileFragment extends Fragment {
     }
 
     public void finishImportSet() {
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             mainActivityInterface.getMainHandler().post(() -> {
                 showProgress(true);
                 myView.importButton.setEnabled(false);
@@ -499,14 +517,14 @@ public class ImportFileFragment extends Fragment {
                         //mainActivityInterface.getSetActions().clearCurrentSet();
 
                         // Notify the set menu to update to an empty set
-                        mainActivityInterface.notifySetFragment("clear",oldSize);
+                        mainActivityInterface.notifySetFragment("clear", oldSize);
                         mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
                         mainActivityInterface.getCurrentSet().setPrevIndexSongInSet(-1);
 
-                        if (isHTML && setItemInfos!=null && !setItemInfos.isEmpty()) {
+                        if (isHTML && setItemInfos != null && !setItemInfos.isEmpty()) {
                             // Use the setItemInfo to create a new set from our OnSong HTML set
                             mainActivityInterface.getCurrentSet().setSetCurrentLastName(mainActivityInterface.getConvertOnSong().getSetTitle());
-                            for (SetItemInfo setItemInfo:setItemInfos) {
+                            for (SetItemInfo setItemInfo : setItemInfos) {
                                 // Because this set was created in OnSong, we don't log the addition of songs to the set
                                 mainActivityInterface.getCurrentSet().addItemToSet(setItemInfo, false);
                             }
@@ -517,9 +535,9 @@ public class ImportFileFragment extends Fragment {
 
                             copyTo = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", newSetName);
                             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " Finish import  Sets/" + newSetName + "  deleteOld=true");
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,copyTo,null,"Sets","",newSetName);
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyTo, null, "Sets", "", newSetName);
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(copyTo);
-                            mainActivityInterface.getStorageAccess().writeFileFromString(xml,outputStream);
+                            mainActivityInterface.getStorageAccess().writeFileFromString(xml, outputStream);
                             // Now clear the currentSet aagin
                             mainActivityInterface.getSetActions().clearCurrentSet();
                             oktocontinue = true;
@@ -543,17 +561,10 @@ public class ImportFileFragment extends Fragment {
                                 mainActivityInterface.setWhattodo("pendingLoadSet");
                                 mainActivityInterface.getSetActions().loadSets(thisSet, mainActivityInterface.getCurrentSet(), newSetName);
                                 showProgress(false);
-                                //mainActivityInterface.navHome();
                                 mainActivityInterface.getShowToast().success();
-
-
-                                //mainActivityInterface.setWhattodo("pendingLoadSet");
                                 mainActivityInterface.getCurrentSet().updateSetTitleView();
                                 mainActivityInterface.navHome();
-                                Log.d(TAG,"getting here");
-                                //mainActivityInterface.chooseMenu(true);
                             });
-                            //mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.chooseMenu(true), 1000);
                         } else {
                             mainActivityInterface.getShowToast().doIt(error_string);
                         }
@@ -572,29 +583,31 @@ public class ImportFileFragment extends Fragment {
         }
     }
 
+    private void showProgress(boolean show) {
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null) {
+                try {
+                    myView.progress.setVisibility(show ? View.VISIBLE : View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private class MyTextWatcher implements TextWatcher {
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
         public void afterTextChanged(Editable editable) {
             checkIfFileExists();
         }
-    }
-
-    private void showProgress(boolean show) {
-        mainActivityInterface.getMainHandler().post(() -> {
-                if (myView!=null) {
-                    try {
-                        myView.progress.setVisibility(show ? View.VISIBLE : View.GONE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-        });
     }
 }

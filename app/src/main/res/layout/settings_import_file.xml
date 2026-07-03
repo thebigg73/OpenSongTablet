@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
+    <!-- Switch to a simpler ScrollView approach -->
     <com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         style="@style/DefaultView">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/extra_scroll_space_large">
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/extra_scroll_space">
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/filename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginBottom="16dp"
                 app:endIconMode="clear_text"
                 android:hint="@string/filename" />
@@ -28,23 +32,31 @@
                 android:id="@+id/folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/filename"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
                 android:hint="@string/folder" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/setLoadFirst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/folder"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
                 android:text="@string/set_load_first"
                 android:hint="@string/set_load_first_info"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <LinearLayout
                 android:id="@+id/existing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                app:layout_constraintTop_toBottomOf="@+id/setLoadFirst"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:visibility="visible">
 
                 <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                     android:layout_width="match_parent"
@@ -57,23 +69,35 @@
                     android:layout_height="wrap_content"
                     android:text="@string/overwrite" />
             </LinearLayout>
+
             <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:id="@+id/myDivider"
+                app:layout_constraintTop_toBottomOf="@+id/existing"
+                app:layout_constraintStart_toStartOf="parent"
                 style="@style/MyDividerLine"/>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:contentDescription="@string/image"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toBottomOf="@+id/myDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                android:adjustViewBounds="true"
+                android:visibility="visible" />
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
                 android:text="@string/content" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:contentDescription="@string/image" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.garethevans.church.opensongtablet.customviews.ScrollViewWithFAB>
 
     <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
@@ -91,10 +115,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/ScrimBackground"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="@dimen/progress_bar_size"
         android:layout_height="@dimen/progress_bar_size"
         android:layout_gravity="center"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
