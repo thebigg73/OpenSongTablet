@@ -3902,11 +3902,13 @@ public class ProcessSong {
     public Bitmap getBitmapFromPDF(String folder, String filename, int page, int allowedWidth,
                                    int allowedHeight, String scale, boolean useCropped) {
         Bitmap bmp = null;
-
         Uri uri;
+        boolean imported = false;
+
         if (folder==null) {
             // This is an external file
             uri = mainActivityInterface.getImportUri();
+            imported = true;
         } else {
             uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
         }
@@ -3916,10 +3918,14 @@ public class ProcessSong {
 
         PdfRenderer pdfRenderer = null;
         // Get PDF renderer
+        int pageCount = 0;
         try {
             pdfRenderer = getPDFRenderer(parcelFileDescriptor);
             // Get the page count
-            mainActivityInterface.getSong().setPdfPageCount(getPDFPageCount(pdfRenderer));
+            pageCount = getPDFPageCount(pdfRenderer);
+            if (!imported) {
+                mainActivityInterface.getSong().setPdfPageCount(pageCount);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -3928,7 +3934,7 @@ public class ProcessSong {
         // Set the current page number
         page = getCurrentPage(page);
 
-        if (parcelFileDescriptor != null && pdfRenderer != null && mainActivityInterface.getSong().getPdfPageCount() > 0) {
+        if (parcelFileDescriptor != null && pdfRenderer != null && pageCount > 0) {
             // Good to continue!
             Log.d(TAG,"Good to continue");
 
