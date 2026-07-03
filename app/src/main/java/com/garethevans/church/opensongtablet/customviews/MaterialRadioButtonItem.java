@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -10,6 +12,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 
 public class MaterialRadioButtonItem extends LinearLayout {
@@ -54,6 +57,8 @@ public class MaterialRadioButtonItem extends LinearLayout {
         setChecked(checked);
 
         typedArray.recycle();
+        setPalette(new Palette(context));
+
     }
 
     public void setText(String text) {
@@ -138,6 +143,16 @@ public class MaterialRadioButtonItem extends LinearLayout {
         textView.setEnabled(enabled);
         hintView.setEnabled(enabled);
         radioButton.setEnabled(enabled);
+    }
+
+    public void setPalette(Palette palette) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            radioButton.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        } else {
+            radioButton.setBackgroundColor(palette.secondary);
+        }
+        textView.setTextColor(palette.textColor);
+        hintView.setTextColor(palette.hintColor);
     }
 
 }

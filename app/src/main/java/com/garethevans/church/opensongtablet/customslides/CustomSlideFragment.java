@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TableRow;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -99,6 +100,7 @@ public class CustomSlideFragment extends Fragment {
     private void setupViews() {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.content,8);
+
         switch (mainActivityInterface.getCustomSlide().getCreateType()) {
             case "slide":
                 myView.customSlide.setChecked(true);
@@ -153,18 +155,21 @@ public class CustomSlideFragment extends Fragment {
         // The slide type
         myView.customNote.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
+                changeChecks(true,false,false,false);
                 showViews(true,false,false,true,false);
                 mainActivityInterface.getCustomSlide().setCreateType("note");
             }
         });
         myView.customSlide.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
+                changeChecks(false,true,false,false);
                 showViews(true,true,true,true,false);
                 mainActivityInterface.getCustomSlide().setCreateType("slide");
             }
         });
         myView.customImageSlide.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
+                changeChecks(false,false,true,false);
                 showViews(true,true,true,false,true);
                 mainActivityInterface.getCustomSlide().setCreateType("image");
                 buildImageRows();
@@ -172,6 +177,7 @@ public class CustomSlideFragment extends Fragment {
         });
         myView.customDivider.setOnCheckedChangeListener(((compoundButton, b) -> {
             if (b) {
+                changeChecks(false,false,false,true);
                 showViews(true,false,false,false,false);
                 mainActivityInterface.getCustomSlide().setCreateType("divider");
             }
@@ -210,6 +216,12 @@ public class CustomSlideFragment extends Fragment {
                 }
             }
         });
+    }
+    private void changeChecks(boolean noteChecked, boolean slideChecked, boolean imageChecked, boolean dividerChecked) {
+        myView.customNote.setChecked(noteChecked);
+        myView.customSlide.setChecked(slideChecked);
+        myView.customImageSlide.setChecked(imageChecked);
+        myView.customDivider.setChecked(dividerChecked);
     }
     private void showViews(boolean showTitle, boolean showTime, boolean showLoop, boolean showContent, boolean showImageContent) {
         showView(myView.title,showTitle);
