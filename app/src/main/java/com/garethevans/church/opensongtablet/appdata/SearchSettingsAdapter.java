@@ -421,7 +421,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
                 // Menu settings
                 new SettingItem(c.getString(R.string.menu_settings), c.getString(R.string.menu_settings_description),
-                        Arrays.asList(display,settings,song,set,menu,title,checkbox,alphabetical,index,size,popup),
+                        Arrays.asList(display,settings,song,set,menu,title,checkbox,alphabetical,index,size,popup,filter,filtering),
                         c.getString(R.string.deeplink_menu_settings),
                         settings+"/"+display+"/"+c.getString(R.string.menu_settings)),
 

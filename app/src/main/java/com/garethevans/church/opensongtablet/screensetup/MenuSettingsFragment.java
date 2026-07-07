@@ -137,6 +137,8 @@ public class MenuSettingsFragment extends Fragment {
         myView.songAlphabeticalSize.setHintTextSize(songMenuAlphaIndexSize);
         myView.songMenuCheckboxes.setChecked(showTickBoxes);
 
+        myView.songListFilterReset.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListFilterReset",true));
+
         if (sortByTitles) {
             myView.songMenuOrder.setSliderPos(1);
         } else {
@@ -176,6 +178,16 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.updateSongMenu("menuSettingsFrag",null, null);
         });
         myView.largePopups.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("largePopups",isChecked));
+        myView.songListFilterReset.setOnCheckedChangeListener((buttonView,isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListFilterReset", isChecked);
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                SongMenuFragment songMenuFragment = mainActivityInterface.getSongMenuFragment();
+                if (songMenuFragment!=null) {
+                    //songMenuFragment.refreshSongListDisplay();
+                    songMenuFragment.removeFiltersFromLoadSong();
+                }
+            });
+        });
     }
 
     private void showHideSize(boolean show) {

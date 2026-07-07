@@ -98,6 +98,15 @@
                 style="@style/MyDividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/songListFilterReset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song_list_filter_reset"
+                android:hint="@string/song_list_filter_reset_info"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/largePopups"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
