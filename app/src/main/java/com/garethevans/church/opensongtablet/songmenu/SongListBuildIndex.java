@@ -89,9 +89,6 @@ public class SongListBuildIndex {
     // This creates a basic database from the song files.
     // This is only called when we are full indexing
     public void buildBasicFromFiles() {
-        // Check and remove any zero byte/corrupt files before continuing
-        //mainActivityInterface.getStorageAccess().removeZeroLengthFiles();
-
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(false);
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
         if (fullIndexRequired) {
@@ -101,7 +98,6 @@ public class SongListBuildIndex {
             mainActivityInterface.getSQLiteHelper().insertFast();
         }
     }
-
 
     // This scans the files (quick and full).
     // Quick scan only updates newer files than the database

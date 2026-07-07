@@ -129,7 +129,9 @@ public class PrepareFormats {
         return string;
     }
 
-    public Uri getSongAsImage(Song thisSong) {
+
+    // TODO remove if not needed
+    /*public Uri getSongAsImage(Song thisSong) {
         String newFilename = thisSong.getFolder().replace("/","_");
         if (!newFilename.endsWith("_")) {
             newFilename = newFilename + "_";
@@ -147,7 +149,7 @@ public class PrepareFormats {
            e.printStackTrace();
         }
         return uri;
-    }
+    }*/
 
     public String getSongAsOnSong(Song thisSong) {
         // This converts an OpenSong file into a OnSong file

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="16dp">
+    android:paddingBottom="32dp">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeader"
@@ -82,8 +82,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/extract"
+        android:fitsSystemWindows="true"
         app:icon="@drawable/database_import" />
 
 </RelativeLayout>

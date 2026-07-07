@@ -12,6 +12,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongId;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SQLiteHelper {
 
@@ -36,6 +37,8 @@ public class SQLiteHelper {
         }
     }
 
+
+
     // The getters to access the database
     public SQLiteDatabase getWritableDatabase() {
         return songsDb.getWritableDatabase();
@@ -44,15 +47,20 @@ public class SQLiteHelper {
         return songsDb.getReadableDatabase();
     }
 
-    // Reset the database.  Soft clears entries
-    public void resetDatabase() {
-        SQLiteDatabase db = getWritableDatabase();
+    public synchronized void resetDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d("Database", "Is database read-only? " + db.isReadOnly());
+        // If it's read-only, it's likely a stale/locked connection
+        if (db.isReadOnly()) {
+            Log.w("Database", "Database is read-only, forcing close and retry.");
+            db.close(); // Close the stale connection
+            // Do NOT call getWritableDatabase() again here, just let the next call handle it
+            return;
+        }
+
         db.beginTransaction();
         try {
-            // This removes all data but keeps the table and columns intact
             db.execSQL("DELETE FROM " + SQLite.TABLE_NAME);
-
-            // Optional: Reset auto-increment counters if you use them
             db.execSQL("DELETE FROM sqlite_sequence WHERE name='" + SQLite.TABLE_NAME + "'");
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -71,7 +79,6 @@ public class SQLiteHelper {
         }
     }
     public void insertFast() {
-        resetDatabase();
         mainActivityInterface.getCommonSQL().insertFast(getWritableDatabase());
     }
 

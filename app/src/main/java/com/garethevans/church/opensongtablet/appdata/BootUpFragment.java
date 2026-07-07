@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songmenu.SongMenuFragment;
 
 /*
 This fragment is the first one that the main activity loads up.
@@ -213,7 +214,11 @@ public class BootUpFragment extends Fragment {
                         // We want to rebuild the index, either fully or quickly
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(false);
                         mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
-                        mainActivityInterface.quickSongMenuBuild();
+                        // Check we have an active (and clean database)
+                        mainActivityInterface.getSQLiteHelper();
+                        // Now run the insertFast to prepare the database with the basics
+                        // Once the app starts and the fullIndex begins, we can still query
+                        mainActivityInterface.getSQLiteHelper().insertFast();
 
                     } else {
                         mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
@@ -244,6 +249,7 @@ public class BootUpFragment extends Fragment {
                         mainActivityInterface.getMidi().setupBluetoothManager();
                     }
 
+                    Log.d(TAG,"Ready to navHome, but testing, so stopping here");
                     // Set up the rest of the main activity (on the main thread)
                     mainActivityInterface.getMainHandler().post(() -> {
                         mainActivityInterface.navHome();

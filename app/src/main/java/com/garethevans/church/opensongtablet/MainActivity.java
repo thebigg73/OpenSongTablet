@@ -4194,15 +4194,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             // Non-persistent, created from storage at boot (to keep updated) used to references ALL files
             if (songListBuildIndex.getFullIndexRequired()) {
-                Log.d(TAG,"resetDatabase()");
-                sqLiteHelper.resetDatabase();
-                Log.d(TAG,"insertFast()");
-                sqLiteHelper.insertFast();
+                if (!sqLiteHelper.getWritableDatabase().isReadOnly()) {
+                    sqLiteHelper.resetDatabase();
+                    sqLiteHelper.insertFast();
+                } else {
+                    Log.e(TAG,"databas was read only");
+                }
             } else {
                 // Remove existing items that don't match the new songIds
                 // If this throws an error, the database is reset
                 sqLiteHelper.removeOldSongs(songIds);
             }
+
+            // Now we get the basic song list on a new background thread, and update the menu for now
+            getThreadPoolExecutor().execute(() -> {
+                if (songMenuFragment!=null) {
+                    songMenuFragment.refreshSongList();
+                }
+            });
 
             // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
             // Updated each time a file is created, deleted, moved.
@@ -4214,7 +4223,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // This is the minimum that we need for the song menu.
             // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
             // Also will later include all the stuff for the search index as well
-
         }
     }
 

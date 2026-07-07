@@ -48,7 +48,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
         showChecked = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSetTicksShow",true);
     }
 
-
     public interface AdapterCallback {
         void onItemClicked(int position, String folder, String filename, String key, boolean inSet);
         void onItemLongClicked(int position, String folder, String filename, String key);

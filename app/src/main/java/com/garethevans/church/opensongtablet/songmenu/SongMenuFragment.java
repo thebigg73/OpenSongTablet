@@ -271,34 +271,36 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         boolean needToUpdateSearch = songListSearchByArtist || songListSearchByKey ||
                 songListSearchByTag || songListSearchByTitle || songListSearchByFilter;
 
-        if (songListSearchByArtist) {
-            songListSearchByArtist = false;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByArtist", false);
-            showHideRows(myView.filters.artistSearch, songListSearchByArtist);
-        }
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListFilterReset",true)) {
+            if (songListSearchByArtist) {
+                songListSearchByArtist = false;
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByArtist", false);
+                showHideRows(myView.filters.artistSearch, songListSearchByArtist);
+            }
 
-        if (songListSearchByKey) {
-            songListSearchByKey = false;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByKey", false);
-            showHideRows(myView.filters.keySearch, songListSearchByKey);
-        }
+            if (songListSearchByKey) {
+                songListSearchByKey = false;
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByKey", false);
+                showHideRows(myView.filters.keySearch, songListSearchByKey);
+            }
 
-        if (songListSearchByTag) {
-            songListSearchByTag = false;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", false);
-            showHideRows(myView.filters.tagLayout, songListSearchByTag);
-        }
+            if (songListSearchByTag) {
+                songListSearchByTag = false;
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", false);
+                showHideRows(myView.filters.tagLayout, songListSearchByTag);
+            }
 
-        if (songListSearchByTitle) {
-            songListSearchByTitle = false;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTitle",false);
-            showHideRows(myView.filters.titleSearch, songListSearchByTitle);
-        }
+            if (songListSearchByTitle) {
+                songListSearchByTitle = false;
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTitle", false);
+                showHideRows(myView.filters.titleSearch, songListSearchByTitle);
+            }
 
-        if (songListSearchByFilter) {
-            songListSearchByFilter = false;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFilter", false);
-            showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+            if (songListSearchByFilter) {
+                songListSearchByFilter = false;
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFilter", false);
+                showHideRows(myView.filters.filterSearch, songListSearchByFilter);
+            }
         }
 
         if (needToUpdateSearch) {
@@ -906,7 +908,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void setSongListSearchByFolderValue(String songListSearchByFolderValue) {
         this.songListSearchByFolderValue =  songListSearchByFolderValue;
-        mainActivityInterface.getPreferences().setMyPreferenceString("songListSearchByFolderValue",songListSearchByFolderValue);
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.getPreferences().setMyPreferenceString("songListSearchByFolderValue", songListSearchByFolderValue);
+        }
     }
 
     private void getSongListSearchByFolderValue() {
@@ -940,7 +944,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void refreshSongListDisplay() {
         if (songListAdapter!=null) {
             songListAdapter.getUpdatedPreferences();
-            songListAdapter.notifyDataSetChanged();
+            mainActivityInterface.getMainHandler().post(() -> songListAdapter.notifyDataSetChanged());
         }
     }
 }
