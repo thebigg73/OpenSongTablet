@@ -1168,6 +1168,8 @@
     <string name="song_features">Song-Funktionen</string>
     <string name="song_features_warning">Diese Werte werden am besten mit den speziellen Song-Feature-Optionen im Einstellungsmenü eingestellt. Speichern Sie zuerst das Lied. Sie können die Werte hier jedoch manuell bearbeiten.</string>
     <string name="song_files_separate">Songdateien</string>
+    <string name="song_list_filter_reset">Songfilter beim Laden löschen</string>
+    <string name="song_list_filter_reset_info">Beim Laden eines Titels aus einer Playlist oder beim Empfang von einem angeschlossenen Gerät stimmen die Filter Ihrer Songliste möglicherweise nicht mit dem aktuellen Titel überein. Deaktivieren Sie diese Option, um dies zu ignorieren und die ausgewählten Filter beizubehalten.</string>
     <string name="song_menu_checkboxes">Set-Kontrollkästchen im Liedmenü anzeigen</string>
     <string name="song_menu_subtitle_size">Untertitelgröße des Liedmenüelements</string>
     <string name="song_menu_title_size">Titelgröße des Song-Menüeintrags</string>

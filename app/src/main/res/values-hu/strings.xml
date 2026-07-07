@@ -1168,6 +1168,8 @@
     <string name="song_features">A dal jellemzői</string>
     <string name="song_features_warning">Ezeket az értékeket a legjobban a beállítások menüben található dal funkció opcióival lehet beállítani. Először mentse el a dalt. Itt azonban manuálisan is szerkesztheti az értékeket.</string>
     <string name="song_files_separate">Dalfájlok</string>
+    <string name="song_list_filter_reset">Zeneszám-szűrők törlése betöltéskor</string>
+    <string name="song_list_filter_reset_info">Amikor egy dalt betöltesz egy lejátszási listából vagy csatlakoztatott eszközről fogadsz, a dallista szűrői nem biztos, hogy egyeznek az aktuális dallal. Kapcsold ki ezt a funkciót, ha ezt figyelmen kívül szeretnéd hagyni, és meg szeretnéd tartani a kiválasztott szűrőket.</string>
     <string name="song_menu_checkboxes">Itt található készlet jelölőnégyzetet dal menü</string>
     <string name="song_menu_subtitle_size">Dal menüelem felirat mérete</string>
     <string name="song_menu_title_size">Dal menüpont címének mérete</string>

@@ -1168,6 +1168,8 @@
     <string name="song_features">曲の特徴</string>
     <string name="song_features_warning">これらの値は、設定メニューの専用の曲機能オプションを使用して設定するのが最適です。 最初に曲を保存します。 ただし、ここで値を手動で編集できます。</string>
     <string name="song_files_separate">ソングファイル</string>
+    <string name="song_list_filter_reset">読み込み時に曲のフィルターをクリアする</string>
+    <string name="song_list_filter_reset_info">セットリストから曲を読み込む場合、または接続されたデバイスから曲を読み込む場合、曲リストのフィルターが現在の曲と一致しない場合があります。これをオフにすると、このエラーを無視して選択したフィルターが維持されます。</string>
     <string name="song_menu_checkboxes">ソングメニューで設定したチェックボックスを表示する</string>
     <string name="song_menu_subtitle_size">曲のメニュー項目の字幕サイズ</string>
     <string name="song_menu_title_size">ソングメニュー項目のタイトルサイズ</string>

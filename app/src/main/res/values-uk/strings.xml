@@ -1168,6 +1168,8 @@
     <string name="song_features">Особливості пісні</string>
     <string name="song_features_warning">Ці значення найкраще встановити за допомогою спеціальних опцій функції пісні в меню налаштувань. Спочатку збережіть пісню. Однак тут можна вручну відредагувати значення.</string>
     <string name="song_files_separate">Файли пісень</string>
+    <string name="song_list_filter_reset">Очистити фільтри пісень під час завантаження</string>
+    <string name="song_list_filter_reset_info">Під час завантаження пісні зі списку відтворення або отримання з підключеного пристрою фільтри вашого списку пісень можуть не відповідати поточній пісні. Вимкніть цю опцію, щоб ігнорувати це та залишити вибрані фільтри.</string>
     <string name="song_menu_checkboxes">Показувати встановлені прапорці в меню пісень</string>
     <string name="song_menu_subtitle_size">Розмір субтитрів пункту меню пісні</string>
     <string name="song_menu_title_size">Розмір назви пункту меню пісні</string>

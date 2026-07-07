@@ -1168,6 +1168,8 @@
     <string name="song_features">Vlastnosti písně</string>
     <string name="song_features_warning">Tyto hodnoty lze nejlépe nastavit pomocí možností vyhrazených funkcí skladby v nabídce nastavení. Nejprve skladbu uložte. Zde však můžete ručně upravit hodnoty.</string>
     <string name="song_files_separate">Soubory písní</string>
+    <string name="song_list_filter_reset">Vymazat filtry skladeb při načítání</string>
+    <string name="song_list_filter_reset_info">Při načítání skladby ze seznamu skladeb nebo při přijímání z připojeného zařízení se filtry seznamu skladeb nemusí shodovat s aktuální skladbou. Vypnutím této funkce tuto funkci ignorujete a ponecháte vybrané filtry.</string>
     <string name="song_menu_checkboxes">Zobrazit zaškrtávací políčka v nabídce skladby</string>
     <string name="song_menu_subtitle_size">Velikost titulků položky nabídky skladby</string>
     <string name="song_menu_title_size">Velikost názvu položky nabídky skladby</string>

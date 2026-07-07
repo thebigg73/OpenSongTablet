@@ -1168,6 +1168,8 @@
     <string name="song_features">Caractéristiques de la chanson</string>
     <string name="song_features_warning">Ces valeurs sont mieux définies à l\'aide des options de fonction de chanson dédiées dans le menu des paramètres. Enregistrez d\'abord le morceau. Vous pouvez cependant modifier manuellement les valeurs ici.</string>
     <string name="song_files_separate">Fichiers de chansons</string>
+    <string name="song_list_filter_reset">Effacer les filtres musicaux au chargement</string>
+    <string name="song_list_filter_reset_info">Lors du chargement d\'un morceau depuis une playlist ou reçu d\'un appareil connecté, les filtres de votre playlist peuvent ne pas correspondre au morceau en cours. Désactivez cette option pour ignorer ce problème et conserver les filtres sélectionnés.</string>
     <string name="song_menu_checkboxes">Afficher les cases à cocher dans le menu de la chanson</string>
     <string name="song_menu_subtitle_size">Taille des sous-titres de l\'élément de menu du morceau</string>
     <string name="song_menu_title_size">Taille du titre de l\'élément de menu de morceau</string>

@@ -1168,6 +1168,8 @@
     <string name="song_features">Låtfunktioner</string>
     <string name="song_features_warning">Dessa värden ställs bäst in med de dedikerade sångfunktionsalternativen i inställningsmenyn. Spara låten först. Du kan dock redigera värdena manuellt här.</string>
     <string name="song_files_separate">Låtfiler</string>
+    <string name="song_list_filter_reset">Rensa låtfilter vid laddning</string>
+    <string name="song_list_filter_reset_info">När du laddar en låt från en spellista eller tar emot den från en ansluten enhet kanske dina filter för låtlistan inte matchar den aktuella låten. Stäng av detta för att ignorera detta och behålla de valda filtren.</string>
     <string name="song_menu_checkboxes">Visa inställda kryssrutor i låtmenyn</string>
     <string name="song_menu_subtitle_size">Sångmenyalternativ undertextstorlek</string>
     <string name="song_menu_title_size">Sångmenyobjektets titelstorlek</string>

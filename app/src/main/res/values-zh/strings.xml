@@ -1168,6 +1168,8 @@
     <string name="song_features">歌曲特色</string>
     <string name="song_features_warning">这些值最好使用设置菜单中的专用歌曲功能选项进行设置。 先保存歌曲。 但是，您可以在此处手动编辑值。</string>
     <string name="song_files_separate">歌曲文件</string>
+    <string name="song_list_filter_reset">加载时清除歌曲过滤器</string>
+    <string name="song_list_filter_reset_info">从歌单加载歌曲或从连接的设备接收歌曲时，歌曲列表筛选条件可能与当前歌曲不匹配。关闭此选项可忽略此问题并保留已选择的筛选条件。</string>
     <string name="song_menu_checkboxes">在歌曲菜单中显示设置复选框</string>
     <string name="song_menu_subtitle_size">歌曲菜单项字幕大小</string>
     <string name="song_menu_title_size">歌曲菜单项标题大小</string>

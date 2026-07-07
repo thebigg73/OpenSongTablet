@@ -1168,6 +1168,8 @@
     <string name="song_features">Recursos da música</string>
     <string name="song_features_warning">Esses valores são melhor definidos usando as opções de recursos de música dedicados no menu de configurações. Salve a música primeiro. Você pode, no entanto, editar manualmente os valores aqui.</string>
     <string name="song_files_separate">Arquivos de música</string>
+    <string name="song_list_filter_reset">Limpar filtros de música ao carregar</string>
+    <string name="song_list_filter_reset_info">Ao carregar uma música de uma lista de reprodução ou recebida de um dispositivo conectado, os filtros da sua lista de músicas podem não corresponder à música atual. Desative esta opção para ignorar esse problema e manter os filtros selecionados.</string>
     <string name="song_menu_checkboxes">Mostrar caixas de seleção no menu de músicas</string>
     <string name="song_menu_subtitle_size">Tamanho da legenda do item do menu de música</string>
     <string name="song_menu_title_size">Tamanho do título do item do menu de música</string>

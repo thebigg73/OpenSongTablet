@@ -1168,6 +1168,8 @@
     <string name="song_features">Caratteristiche del brano</string>
     <string name="song_features_warning">Questi valori possono essere impostati al meglio modificando le opzioni presenti nella voce di menu Impostazioni/Gestione del brano; si consiglia di salvare prima il brano. È tuttavia possibile modificare manualmente i valori qui.</string>
     <string name="song_files_separate">Singoli files di brani</string>
+    <string name="song_list_filter_reset">Cancella i filtri dei brani al caricamento</string>
+    <string name="song_list_filter_reset_info">Quando si carica un brano da una playlist o ricevuto da un dispositivo connesso, i filtri della playlist potrebbero non corrispondere al brano corrente. Disattiva questa opzione per ignorare questo messaggio e mantenere i filtri selezionati.</string>
     <string name="song_menu_checkboxes">Mostra le caselle di controllo nel menu dei brani</string>
     <string name="song_menu_subtitle_size">Dimensione dei sottotitoli della voce nel menu dei brani</string>
     <string name="song_menu_title_size">Dimensione del titolo della voce nel menu dei brani</string>

@@ -1168,6 +1168,8 @@
     <string name="song_features">Funkcje piosenki</string>
     <string name="song_features_warning">Te wartości najlepiej ustawić za pomocą dedykowanych opcji funkcji piosenki w menu ustawień. Najpierw zapisz piosenkę. Możesz jednak ręcznie edytować wartości tutaj.</string>
     <string name="song_files_separate">Pliki utworów</string>
+    <string name="song_list_filter_reset">Wyczyść filtry utworów podczas ładowania</string>
+    <string name="song_list_filter_reset_info">Podczas ładowania utworu z listy utworów lub odbierania go z podłączonego urządzenia, filtry listy utworów mogą nie pasować do bieżącego utworu. Wyłącz tę opcję, aby zignorować ten problem i zachować wybrane filtry.</string>
     <string name="song_menu_checkboxes">Pokaż zaznaczone pola wyboru w menu piosenki</string>
     <string name="song_menu_subtitle_size">Rozmiar podtytułu elementu menu piosenki</string>
     <string name="song_menu_title_size">Rozmiar tytułu elementu menu piosenki</string>

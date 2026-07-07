@@ -1168,6 +1168,8 @@
     <string name="song_features">Características de la canción</string>
     <string name="song_features_warning">Estos valores se configuran mejor utilizando las opciones de funciones de canciones dedicadas en el menú de configuración. Guarde la canción primero. Sin embargo, puede editar manualmente los valores aquí.</string>
     <string name="song_files_separate">Archivos de canciones</string>
+    <string name="song_list_filter_reset">Borrar filtros de canciones al cargar</string>
+    <string name="song_list_filter_reset_info">Al cargar una canción desde una lista de reproducción o recibida desde un dispositivo conectado, es posible que los filtros de la lista de canciones no coincidan con la canción actual. Desactive esta opción para ignorar este problema y mantener los filtros seleccionados.</string>
     <string name="song_menu_checkboxes">Mostrar casillas de verificación en el menú de canciones</string>
     <string name="song_menu_subtitle_size">Tamaño de los subtítulos del elemento del menú de la canción</string>
     <string name="song_menu_title_size">Tamaño del título del elemento del menú de la canción</string>

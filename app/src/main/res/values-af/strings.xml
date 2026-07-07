@@ -1168,6 +1168,8 @@
     <string name="song_features">Lied kenmerke</string>
     <string name="song_features_warning">Hierdie waardes word die beste gestel deur die toegewyde liedjie-funksie-opsies in die instellingskieslys te gebruik. Stoor eers die liedjie. U kan egter die waardes hier handmatig wysig.</string>
     <string name="song_files_separate">Liedjie lêers</string>
+    <string name="song_list_filter_reset">Vee liedjiefilters uit tydens laai</string>
+    <string name="song_list_filter_reset_info">Wanneer jy \'n liedjie vanaf \'n stellys laai of vanaf \'n gekoppelde toestel ontvang, mag jou liedjielysfilters nie met die huidige liedjie ooreenstem nie. Skakel dit af om dit te ignoreer en die gekose filters te behou.</string>
     <string name="song_menu_checkboxes">Wys verstek bokse in die lied menu</string>
     <string name="song_menu_subtitle_size">Song-kieslys-item ondertitelgrootte</string>
     <string name="song_menu_title_size">Liedjie kieslys item titel grootte</string>
