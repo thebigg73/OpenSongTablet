@@ -1362,6 +1362,8 @@
     <string name="song_features">Song features</string>
     <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
     <string name="song_files_separate">Song files</string>
+    <string name="song_list_filter_reset">Clear song filters on load</string>
+    <string name="song_list_filter_reset_info">When loading a song from a set list or received from a connected device, your song list filters may not match the current song.  Turn this off to ignore this and keep the filters chosen</string>
     <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>
     <string name="song_menu_subtitle_size">Song menu item subtitle size</string>
     <string name="song_menu_title_size">Song menu item title size</string>
@@ -1883,6 +1885,4 @@
     <string name="zefania" translatable="false">Zefania</string>
     <string name="zone">Zone</string>
     <string name="zoom_level">Zoom level</string>
-    <string name="song_list_filter_reset">Clear song filters on load</string>
-    <string name="song_list_filter_reset_info">When loading a song from a set list or received from a connected device, your song list filters may not match the current song.  Turn this off to ignore this and keep the filters chosen</string>
 </resources>
