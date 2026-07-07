@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +26,20 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
     private String file_string = "", deeplink_export_string = "", deeplink_edit_string = "",
             deeplink_song_actions_string = "", deeplink_import_string = "", search_index_wait_string = "",
             added_to_set_string = "", variation_string = "", index_rebuild_string = "", quick_string = "", full_string = "";
-
-    private final String songTitle;
+    private final Handler updateCurrentSongHandler = new Handler();
+    private final Runnable updateCurrentSongRunnable = new Runnable() {
+        @Override
+        public void run() {
+            updateFolderAndFilename();
+        }
+    };
+    private String songFolder, songFilename;
 
     public SongMenuBottomSheet() {
         // Default constructor required to avoid re-instantiation failures
         // Just close the bottom sheet
-        songTitle = "";
+        songFolder = "";
+        songFilename = "";
         try {
             dismiss();
         } catch (Exception e) {
@@ -40,8 +47,9 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
         }
     }
 
-    SongMenuBottomSheet(String songTitle) {
-        this.songTitle = songTitle;
+    SongMenuBottomSheet(String songFolder, String songFilename) {
+        this.songFolder = songFolder;
+        this.songFilename = songFilename;
     }
 
     @Override
@@ -80,6 +88,14 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
             index_rebuild_string = getString(R.string.index_songs_rebuild);
             quick_string = getString(R.string.index_songs_quick);
             full_string = getString(R.string.index_songs_full);
+            // If the filename is empty, we use the current song
+            if (songFilename==null || songFilename.isEmpty()) {
+                songFilename = mainActivityInterface.getSong().getFilename();
+                songFolder = mainActivityInterface.getSong().getFolder();
+            } else if (songFolder==null || songFolder.isEmpty()) {
+                // Default to the MAIN folder
+                songFolder = getString(R.string.mainfoldername);
+            }
         }
     }
 
@@ -91,8 +107,16 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
         } else {
             myView.songSpecificActions.setVisibility(View.VISIBLE);
             myView.otherOptions.setVisibility(View.VISIBLE);
-            myView.songTitle.setHint(file_string + ": " + songTitle);
+            myView.songTitle.setHint(file_string + ": " + songFilename + " ("+songFolder+")");
         }
+
+        // If the mainActivity.getSong() hasn't fully loaded, we update the folder/filename here now
+        mainActivityInterface.getSong().setFilename(songFilename);
+        mainActivityInterface.getSong().setFolder(songFolder);
+        // Do this again after a couple of seconds to allow loading
+        updateCurrentSongHandler.removeCallbacks(updateCurrentSongRunnable);
+        updateCurrentSongHandler.postDelayed(updateCurrentSongRunnable,2000);
+
         // Check we have songs in the menu
         if (!mainActivityInterface.getSongsFound("song").isEmpty()) {
             myView.randomSong.setVisibility(View.VISIBLE);
@@ -108,8 +132,7 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
     private void setListeners() {
         // Listener for buttons
         myView.songLoad.setOnClickListener(v -> {
-            mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                    mainActivityInterface.getSong().getFilename(), true);
+            mainActivityInterface.doSongLoad(songFolder, songFilename, true);
             dismiss();
         });
         myView.songShare.setOnClickListener(v -> navigateTo(deeplink_export_string));
@@ -130,7 +153,6 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                     // Make this a complete rebuild of the database, rather than an update scan
                     mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
-                    Log.d(TAG, "RESET DATABASE 132");
                     mainActivityInterface.getSQLiteHelper().resetDatabase();
                     mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
                     mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
@@ -235,5 +257,20 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
         //mainActivityInterface.updateSetList();
 
         dismiss();
+    }
+
+    private void updateFolderAndFilename() {
+        if (songFolder!=null && !songFolder.isEmpty()) {
+            mainActivityInterface.getSong().setFolder(songFolder);
+        }
+        if (songFilename!=null && !songFilename.isEmpty()) {
+            mainActivityInterface.getSong().setFilename(songFilename);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        updateCurrentSongHandler.removeCallbacks(updateCurrentSongRunnable);
     }
 }

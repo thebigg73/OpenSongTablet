@@ -65,7 +65,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private boolean songMenuSortTitles;
     private final Handler waitBeforeSearchHandler = new Handler();
     private final Runnable waitBeforeSearchRunnable = this::prepareSearch;
-    private String longClickFilename = "";
+    private String longClickFilename = "", longClickFolder="";
     private IndexAdapter indexAdapter;
 
     private static MainActivityInterface mainActivityInterface;
@@ -363,6 +363,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songButtonActive = false;
                 mainActivityInterface.getMainHandler().postDelayed(() -> songButtonActive = true, 600);
                 longClickFilename = mainActivityInterface.getSong().getFilename();
+                longClickFolder = mainActivityInterface.getSong().getFolder();
                 showActionDialog();
             }
         });
@@ -473,7 +474,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void showActionDialog() {
-        SongMenuBottomSheet songMenuBottomSheet = new SongMenuBottomSheet(longClickFilename);
+        SongMenuBottomSheet songMenuBottomSheet = new SongMenuBottomSheet(longClickFolder, longClickFilename);
         songMenuBottomSheet.show(getParentFragmentManager(), "songMenuActions");
     }
 
@@ -693,6 +694,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void onItemLongClicked(int position, String folder, String filename, String key) {
         myView.songListRecyclerView.stopScroll();
         longClickFilename = filename;
+        longClickFolder = folder;
         mainActivityInterface.getWindowFlags().hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename,false);
         showActionDialog();
