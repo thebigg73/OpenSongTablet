@@ -2,8 +2,11 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,8 @@ public class SearchMenuFragment extends Fragment {
     private SearchSettingsAdapter searchSettingsAdapter;
     private String title="";
     private final String webSearchAddress = "https://www.opensongapp.com/_/search?universe=classic&scope=site&showCloudSearchTab=false&query=";
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable searchRunnable;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -68,19 +73,26 @@ public class SearchMenuFragment extends Fragment {
 
     private void setupListeners() {
         myView.searchBox.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable editable) {}
+                                                    @Override
+                                                    public void afterTextChanged(Editable editable) {
+                                                    }
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                                                    @Override
+                                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                    }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (searchSettingsAdapter!=null) {
-                    searchSettingsAdapter.filterAndRank(myView.searchBox.getText().toString());
-                }
-            }
-        });
+                                                    @Override
+                                                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                        handler.removeCallbacks(searchRunnable); // Cancel previous search
+                                                        searchRunnable = () -> {
+                                                            if (searchSettingsAdapter != null) {
+                                                                Log.d(TAG, "filterAndRank");
+                                                                searchSettingsAdapter.filterAndRank(myView.searchBox.getText().toString());
+                                                            }
+                                                        };
+                                                        handler.postDelayed(searchRunnable, 150); // Wait 150ms before searching
+                                                    }
+                                                });
         myView.searchOnline.setOnClickListener(view -> mainActivityInterface.openDocument(webSearchAddress+myView.searchBox.getText().toString()));
     }
 }

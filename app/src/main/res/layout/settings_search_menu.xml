@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/user_guide"
             app:myFabSize="mini"
+            android:layout_marginTop="10dp"
             android:src="@drawable/web" />
     </LinearLayout>
 

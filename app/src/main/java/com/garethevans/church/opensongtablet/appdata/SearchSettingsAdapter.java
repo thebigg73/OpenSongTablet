@@ -22,7 +22,9 @@ import com.garethevans.church.opensongtablet.utilities.TunerBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsViewHolder> {
 
@@ -33,6 +35,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
     private final List<SettingItem> displayedItems;
     private final MainActivityInterface mainActivityInterface;
     private final SearchMenuFragment searchMenuFragment;
+    private final Map<String, Integer> distanceCache = new HashMap<>();
 
     public SearchSettingsAdapter(Context c, SearchMenuFragment searchMenuFragment) {
         this.c = c;
@@ -1220,45 +1223,59 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         return displayedItems.size();
     }
 
-    public void filterAndRank(String query) {
-        displayedItems.clear();
+    public void filterAndRank(final String query) {
         if (query == null || query.trim().isEmpty()) {
-            displayedItems.addAll(allItems); // Return original if no query
-        } else {
-
-            String[] queryWords = query.toLowerCase().split("\\s+");
-            List<ScoredItem> scoredItems = new ArrayList<>();
-
-            for (int i = 0; i < allItems.size(); i++) {
-                SettingItem item = allItems.get(i);
-                int score = 0;
-
-                // Title match (multi-word, high weight)
-                score += scoreMultiWord(item.titleLower, queryWords, 5, true);
-
-                // Keywords match (medium weight)
-                for (String kw : item.keywordsLower) {
-                    score += scoreMultiWord(kw, queryWords, 3, false);
-                }
-
-                // Description match (low weight)
-                score += scoreMultiWord(item.descriptionLower, queryWords, 1, false);
-
-                if (score > 0) {
-                    scoredItems.add(new ScoredItem(item, score));
-                }
-            }
-
-            scoredItems.sort((a, b) -> Integer.compare(b.score, a.score));
-
-            List<SettingItem> result = new ArrayList<>();
-            for (ScoredItem si : scoredItems) {
-                result.add(si.item);
-            }
-
-            displayedItems.addAll(result);
+            displayedItems.clear();
+            distanceCache.clear();
+            displayedItems.addAll(allItems);
+            notifyDataSetChanged();
+            return;
         }
-        notifyDataSetChanged();
+
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // 1. Clean the input (remove filler words)
+                String[] fillers = {"how", "do", "i", "can", "please", "the", "a"};
+                String trimmedQuery = query.toLowerCase();
+                for (String filler : fillers) {
+                    trimmedQuery = trimmedQuery.replace(filler, "").trim();
+                }
+
+                String[] queryWords = trimmedQuery.toLowerCase().split("\\s+");
+                List<ScoredItem> scoredItems = new ArrayList<>();
+
+                for (int i = 0; i < allItems.size(); i++) {
+                    SettingItem item = allItems.get(i);
+                    int score = 0;
+
+                    // Title match (multi-word, high weight)
+                    score += scoreMultiWord(item.titleLower, queryWords, 5, true);
+
+                    // Keywords match (medium weight)
+                    for (String kw : item.keywordsLower) {
+                        score += scoreMultiWord(kw, queryWords, 3, false);
+                    }
+
+                    // Description match (low weight)
+                    score += scoreMultiWord(item.descriptionLower, queryWords, 1, false);
+
+                    if (score > 0) {
+                        scoredItems.add(new ScoredItem(item, score));
+                    }
+                }
+
+                scoredItems.sort((a, b) -> Integer.compare(b.score, a.score));
+
+                List<SettingItem> result = new ArrayList<>();
+                for (ScoredItem si : scoredItems) {
+                    result.add(si.item);
+                }
+
+            mainActivityInterface.getMainHandler().post(() -> {
+                displayedItems.clear();
+                displayedItems.addAll(result);
+                notifyDataSetChanged();
+            });
+        });
     }
 
     private int scoreMultiWord(String text, String[] queryWords, int weight, boolean earlyExit) {
@@ -1276,7 +1293,7 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
                 if (earlyExit && score >= 100) break; // already good enough
             } else {
                 // Only do fuzzy check if no normal match
-                int distance = levenshteinDistance(text, word);
+                int distance = getCachedLevenshtein(text, word);
                 int maxTypos = Math.max(1, word.length() / 4);
                 if (distance <= maxTypos) {
                     score += (30 - distance * 5);
@@ -1285,6 +1302,15 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         }
 
         return score * weight;
+    }
+
+    private int getCachedLevenshtein(String a, String b) {
+        String key = a + "|" + b; // Create a unique key
+        if (distanceCache.containsKey(key)) return distanceCache.get(key);
+
+        int dist = levenshteinDistance(a, b);
+        distanceCache.put(key, dist);
+        return dist;
     }
 
     private int levenshteinDistance(String a, String b) {
