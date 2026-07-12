@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
 
@@ -42,20 +43,19 @@ public final class Palette {
     }
 
     public void setColors(Context context) {
-        background = ContextCompat.getColor(context, dark ? R.color.dark_primary : R.color.light_primary);
-        onBackground = ContextCompat.getColor(context, dark ? R.color.dark_color : R.color.light_color);
-        surface = ContextCompat.getColor(context, dark ? R.color.dark_surface : R.color.light_surface);
-        onSurface = ContextCompat.getColor(context, dark ? R.color.dark_color : R.color.light_color);
-        primary = ContextCompat.getColor(context, dark ? R.color.dark_primary : R.color.light_primary);
-        primaryVariant = ContextCompat.getColor(context, dark ? R.color.dark_primary_variant : R.color.light_primary_variant);
-        onPrimary = ContextCompat.getColor(context, dark ? R.color.dark_color : R.color.light_color);
-        textColor = ContextCompat.getColor(context, dark ? R.color.dark_color : R.color.light_color);
-        hintColor = ContextCompat.getColor(context, dark ? R.color.dark_hint : R.color.light_hint);
-        secondary = ContextCompat.getColor(context, dark ? R.color.dark_secondary : R.color.light_secondary);
-        secondaryVariant = ContextCompat.getColor(context, dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant);
-        secondaryFixed = ContextCompat.getColor(context, dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed);
-        errorColor = ContextCompat.getColor(context, dark ? R.color.dark_error : R.color.light_error);
-
+        background = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);
+        onBackground = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+        surface = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_surface : R.color.light_surface, null);
+        onSurface = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+        primary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);
+        primaryVariant = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary_variant : R.color.light_primary_variant, null);
+        onPrimary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+        textColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+        hintColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_hint : R.color.light_hint, null);
+        secondary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary : R.color.light_secondary, null);
+        secondaryVariant = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant, null);
+        secondaryFixed = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed, null);
+        errorColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_error : R.color.light_error, null);
     }
 
 }
