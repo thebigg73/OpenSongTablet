@@ -119,8 +119,8 @@ dependencies {
     implementation 'com.google.android.play:age-signals:0.0.3' // Or latest version
     implementation 'com.google.android.gms:play-services-tasks:18.4.1'
 
-    // Kotlin requirements
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.3.10'
+    // Kotlin requirements - KEEP AT 2.2.10 as crashing FireHD if upgraded
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.10'
 
     // Activity and fragments
     implementation 'androidx.appcompat:appcompat:1.7.1'
@@ -233,7 +233,6 @@ dependencies {
     // 2. Align Coroutines to a version compatible with Ktor 2.3.x
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
-
 
 }
 
