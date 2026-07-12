@@ -25,6 +25,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class CommonSQL {
@@ -735,7 +736,7 @@ public class CommonSQL {
         closeCursor(cursor);
         return key;
     }
-    public ArrayList<String> getFolders(SQLiteDatabase db) {
+    /*public ArrayList<String> getFolders(SQLiteDatabase db) {
         ArrayList<String> folders = new ArrayList<>();
         String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
                 SQLite.COLUMN_FOLDER + " ASC";
@@ -796,6 +797,46 @@ public class CommonSQL {
 
 
         return folders;
+    }
+    */
+    // Alternative getFolders method that should be quicker:
+    public ArrayList<String> getFolders(SQLiteDatabase db) {
+        HashSet<String> folderSet = new HashSet<>();
+        String mainFolder = c.getString(R.string.mainfoldername);
+
+        // 1. Database Folders
+        String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME;
+        try (Cursor cursor = db.rawQuery(q, null)) {
+            int folderIndex = cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER);
+            while (cursor.moveToNext()) {
+                String folder = cursor.getString(folderIndex);
+                // Basic cleanup: remove _cache and variation folders immediately
+                if (!folder.contains("_cache") && !folder.contains(c.getString(R.string.variation))) {
+                    // Normalize "MAIN/" to your localized string
+                    folder = folder.replace("MAIN/", mainFolder).replace(mainFolder + "/", mainFolder);
+                    folderSet.add(folder);
+                }
+            }
+        }
+
+        // 2. File System Folders
+        // Pass 'false' to getSongFolders to avoid it adding the main folder prematurely
+        ArrayList<String> fileFolders = mainActivityInterface.getStorageAccess().getSongFolders(
+                mainActivityInterface.getStorageAccess().getSongIDsFromFile(), false, null);
+
+        // Add all from file system (HashSet handles de-duplication automatically)
+        folderSet.addAll(fileFolders);
+
+        // 3. Final cleanup: Ensure MAIN folder is present and consistent
+        folderSet.add(mainFolder);
+
+        // 4. Convert and Sort
+        ArrayList<String> result = new ArrayList<>(folderSet);
+        Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+        collator.setStrength(Collator.SECONDARY);
+        result.sort(collator::compare);
+
+        return result;
     }
     public Song getSongFromMidiIndex(SQLiteDatabase db, int midiIndex) {
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_MIDI_INDEX + "= ? ";

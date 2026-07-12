@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -2478,7 +2479,7 @@ public class StorageAccess {
         }
         return outcome;
     }
-    public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
+    /*public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
         ArrayList<String> availableFolders = new ArrayList<>();
         for (String entry : songIDs) {
             if (entry.endsWith("/")) {
@@ -2498,6 +2499,38 @@ public class StorageAccess {
         if (addMain) {
             availableFolders.add(0, c.getString(R.string.mainfoldername));
         }
+        return availableFolders;
+    }*/
+    // Replace getSongFolders with this optimised one:
+    public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
+        HashSet<String> folderSet = new HashSet<>();
+
+        for (String entry : songIDs) {
+            if (entry != null && entry.contains("/")) {
+                // Find the last slash to separate the folder path from the file/sub-item
+                int lastSlashIndex = entry.lastIndexOf("/");
+
+                // If the entry IS a folder (ends in /), use the whole string (minus the trailing /)
+                // If it is a file, use the substring up to the last slash
+                String folderPath = entry.endsWith("/") ? entry.substring(0, lastSlashIndex) : entry.substring(0, lastSlashIndex);
+
+                if (!folderPath.equals(toIgnore) && !folderPath.isEmpty()) {
+                    folderSet.add(folderPath);
+                }
+            }
+        }
+
+        ArrayList<String> availableFolders = new ArrayList<>(folderSet);
+
+        // Sort logic...
+        Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+        collator.setStrength(Collator.SECONDARY);
+        availableFolders.sort(collator::compare);
+
+        if (addMain) {
+            availableFolders.add(0, c.getString(R.string.mainfoldername));
+        }
+
         return availableFolders;
     }
 
