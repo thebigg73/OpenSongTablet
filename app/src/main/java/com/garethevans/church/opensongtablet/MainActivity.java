@@ -33,7 +33,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -391,6 +390,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // Set up crash collector first
+        setUpCrashCollector();
+
         // Use a manual dark / light theme (Android's breaks when using WebView!)
         getPalette();
         // Get current theme mode from SharedPreferences or wherever you store it
@@ -401,9 +403,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onCreate(savedInstanceState);
 
         EdgeToEdge.enable(this);
-
-        // Set up crash collector
-        setUpCrashCollector();
 
         // Set up the audioPermission launcher
         audioPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -618,26 +617,32 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void setUpCrashCollector() {
-        // Set up a default crash capture, but keep a reference to the original handler
         uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+
         Thread.setDefaultUncaughtExceptionHandler((thread, e) -> {
-            // Get the stack trace.
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
+            // 1. Guaranteed Write (Internal Storage)
+            File file = new File(getFilesDir(), "crashLog.txt");
+            try (PrintWriter pwFile = new PrintWriter(file)) {
+                e.printStackTrace(pwFile);
+            } catch (Exception ex) {
+                Log.e(TAG, "Failed to write internal crash log", ex);
+            }
 
-            // Write a crash log file
-            getStorageAccess().updateCrashLog(sw.toString());
-
-            // Reset the unhandled exception handler
-            Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
-
-            // Now turn off the app while alerting the user
+            // 2. Attempt Custom Location (SAF/uriTree)
             try {
-                Toast.makeText(this, this.getString(R.string.crash_alert), Toast.LENGTH_LONG).show();
-                throw e;
-            } catch (Throwable ex) {
-                this.finish();
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                getStorageAccess().updateCrashLog(sw.toString());
+            } catch (Exception e2) {
+                Log.d(TAG, "unable to write to custom location: " + e2);
+            }
+
+            // 3. Proper Delegation
+            if (uncaughtExceptionHandler != null) {
+                uncaughtExceptionHandler.uncaughtException(thread, e);
+            } else {
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         });
     }
