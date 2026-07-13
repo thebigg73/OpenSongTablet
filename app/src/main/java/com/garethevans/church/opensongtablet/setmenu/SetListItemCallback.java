@@ -10,13 +10,13 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +47,7 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         this.setAdapter = setAdapter;
         mBackground = new ColorDrawable();
         try {
-            backgroundColor = ContextCompat.getColor(c, R.color.vdarkred);
+            backgroundColor = ResourcesCompat.getColor(c.getResources(), R.color.vdarkred, null);
         } catch (Exception e) {
             if (c != null) {
                 backgroundColor = c.getResources().getColor(R.color.vdarkred);
@@ -168,13 +168,10 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
         // 2. Use a 'post' to ensure the swipe animation finishes its physical
         // travel before we modify the adapter's data.
-        viewHolder.itemView.post(new Runnable() {
-            @Override
-            public void run() {
-                // Call your existing removeItem method
-                // 'true' updates the checkmarks in your song menu
-                setAdapter.removeItem(position, true);
-            }
+        viewHolder.itemView.post(() -> {
+            // Call your existing removeItem method
+            // 'true' updates the checkmarks in your song menu
+            setAdapter.removeItem(position, true);
         });
     }
 

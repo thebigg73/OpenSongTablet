@@ -25,7 +25,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -173,7 +172,7 @@ public class TunerBottomSheet extends BottomSheetCommon {
             microphone_string = getString(R.string.microphone);
             permissions_refused_string = getString(R.string.permissions_refused);
             settings_string = getString(R.string.settings);
-            needleInTuneColor = ContextCompat.getColor(getContext(), R.color.green);
+            needleInTuneColor = ResourcesCompat.getColor(getContext().getResources(), R.color.green,null);
             needleNotInTuneColor = mainActivityInterface.getPalette().secondaryVariant;
             toneGenerator = new ToneGenerator(getContext());
         }

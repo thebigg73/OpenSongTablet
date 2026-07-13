@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.Gravity;
 
-import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -218,8 +218,8 @@ public class PresenterSettings {
                 return backgroundVideo1;
             case "vid2":
                 return backgroundVideo2;
-            default:
             case "color":
+            default:
                 return null;
         }
     }
@@ -352,7 +352,7 @@ public class PresenterSettings {
         setBackgroundToUse(mainActivityInterface.getPreferences().
                 getMyPreferenceString("backgroundToUse","img1"));
         setBackgroundColor(mainActivityInterface.getPreferences().
-                getMyPreferenceInt("backgroundColor", ContextCompat.getColor(c,R.color.red)));
+                getMyPreferenceInt("backgroundColor", ResourcesCompat.getColor(c.getResources(),R.color.red,null)));
         setPresoBackgroundAlpha(mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("presoBackgroundAlpha",1f));
     }
