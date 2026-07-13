@@ -63,7 +63,6 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
         String advertise = c.getString(R.string.connections_advertise);
         String aeros = "Aeros"; // *
         String alphabetical = c.getString(R.string.alphabetical);
-        String app = c.getString(R.string.app);
         String audio = c.getString(R.string.audio);
         String author = c.getString(R.string.author);
         String automatic = c.getString(R.string.automatic);
@@ -1234,10 +1233,10 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                 // 1. Clean the input (remove filler words)
-                String[] fillers = {"how", "do", "i", "can", "please", "the", "a"};
+                String[] fillers = {" how ", " do ", " i ", " can ", " please ", " the ", " a "};
                 String trimmedQuery = query.toLowerCase();
                 for (String filler : fillers) {
-                    trimmedQuery = trimmedQuery.replace(filler, "").trim();
+                    trimmedQuery = trimmedQuery.replace(filler, " ").trim();
                 }
 
                 String[] queryWords = trimmedQuery.toLowerCase().split("\\s+");
@@ -1306,7 +1305,9 @@ public class SearchSettingsAdapter extends RecyclerView.Adapter<SearchSettingsVi
 
     private int getCachedLevenshtein(String a, String b) {
         String key = a + "|" + b; // Create a unique key
-        if (distanceCache.containsKey(key)) return distanceCache.get(key);
+        if (distanceCache.containsKey(key)) {
+            return distanceCache.get(key);
+        }
 
         int dist = levenshteinDistance(a, b);
         distanceCache.put(key, dist);
