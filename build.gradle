@@ -12,6 +12,8 @@ buildscript {
 
         // Bump this to the latest 2.9.7 to support AGP 9 APIs
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.8'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.7'
+        classpath 'com.google.gms:google-services:4.5.0'
 
         // Add these lines so the plugins are available for your modules
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.10'
