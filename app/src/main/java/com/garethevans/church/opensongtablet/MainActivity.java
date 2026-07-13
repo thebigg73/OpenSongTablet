@@ -1403,28 +1403,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         else {
             finish();
         }
-        /*if (alreadyBackPressed && !settingsOpen) {
-            // Close the app
-            confirmedAction(true, "exit", null, null, null, null);
-        } else if (settingsOpen) {
-            navController.navigateUp();
-        } else if (navController != null && navController.getCurrentDestination() != null) {
-            alreadyBackPressed = true;
-            try {
-                int id = Objects.requireNonNull(navController.getCurrentDestination()).getId();
-                if (id == R.id.performanceFragment || id == R.id.presenterFragment || id == R.id.setStorageLocationFragment) {
-                    displayAreYouSure("exit", exit_confirm, null,
-                            Objects.requireNonNull(navController.getCurrentDestination()).getNavigatorName(),
-                            navHostFragment, null);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                // This is deprecated, but a last ditch effort!
-                super.onBackPressed();
-            }
-        }*/
     }
-
 
     private void checkMenuIconsAreNotNull() {
         if (closeIcon == null) {
@@ -1495,8 +1474,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Navigation logic
     private void setupNavigation() {
         if (navHostFragment == null || navController == null) {
-            navHostFragment =
-                    (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (navHostFragment != null) {
                 navController = navHostFragment.getNavController();
             }
