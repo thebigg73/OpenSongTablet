@@ -21,6 +21,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -56,6 +58,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProcessSong {
 
@@ -97,7 +101,8 @@ public class ProcessSong {
     private boolean forceSinglePagePDF;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha, lineSpacing;
     public float scaleChords, scaleHeadings, scaleComments, scaleMultilingual, scaleTabs;
-    private String songAutoScale;
+    private String songAutoScale, chordDisplay;
+    private int chordFormat;
     // Stuff for resizing/scaling
     private int padding = 8, primaryScreenColumns=1;
     private boolean bracketsOpen = false;
@@ -151,6 +156,7 @@ public class ProcessSong {
         curlyBracketsDevice = mainActivityInterface.getPreferences().getMyPreferenceBoolean("curlyBracketsDevice",false);
         forceColumns = mainActivityInterface.getPreferences().getMyPreferenceBoolean("forceColumns",true);
         hideInlineMidi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInlineMidi",false);
+        chordDisplay = mainActivityInterface.getPreferences().getMyPreferenceString("chordDisplay","standard");
     }
 
     public boolean showingCapo(String capo) {
@@ -1271,10 +1277,15 @@ public class ProcessSong {
                             // Only show this if we want chords and if there is a capo, we want both capo and native
                             if (showChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords) && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
-                                    textView.setText(new SpannableString(highlightChords(str,
-                                            highlightChordColor)));
+                                    // Use highlighted chords
+                                    textView.setText(getChordDisplaySpannable(str,chordDisplay,highlightChordColor));
                                 } else {
-                                    textView.setText(str);
+                                    // Decide how to process
+                                    if (chordDisplay.equals("standard")) {
+                                        textView.setText(str);
+                                    } else {
+                                        textView.setText(getChordDisplaySpannable(str, chordDisplay,null));
+                                    }
                                 }
                                 if (displayChordDiagrams) {
                                     // If the chord bit is a line of multiple chords, we need to deal with that
@@ -1309,10 +1320,15 @@ public class ProcessSong {
                             // Only show this if we want chords and if there is a capo and showcapo
                             if (showChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)  && !(performancePresentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords())) {
                                 if (highlightChordColor != 0x00000000) {
-                                    textView.setText(new SpannableString(highlightChords(str,
-                                            highlightChordColor)));
+                                    // Use highlighted chords
+                                    textView.setText(getChordDisplaySpannable(str, chordDisplay, highlightChordColor));
                                 } else {
-                                    textView.setText(str);
+                                    // Decide how to process
+                                    if (chordDisplay.equals("standard")) {
+                                        textView.setText(str);
+                                    } else {
+                                        textView.setText(getChordDisplaySpannable(str, chordDisplay, null));
+                                    }
                                 }
                                 if (displayChordDiagrams) {
                                     // If the chord bit is a line of multiple chords, we need to deal with that
@@ -1628,25 +1644,6 @@ public class ProcessSong {
         return spannableStringBuilder;
     }
 
-    private Spannable highlightChords(String str, int highlightChordColor) {
-        // Draw the backgrounds to the chord(s)
-        Spannable span = new SpannableString(str);
-        str = str + " ";
-        int start = 0;
-        int end = str.indexOf(" ");
-        while (end > -1) {
-            span.setSpan(new BackgroundColorSpan(highlightChordColor), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            // IV - Move startPos past spaces to the next non space
-            start = end;
-            while (str.substring(start + 1).startsWith(" ")) {
-                start = start + 1;
-            }
-            start = start + 1;
-            // IV - See if we have more work
-            end = str.indexOf(" ", start);
-        }
-        return span;
-    }
 
     private boolean isMultiLineFormatSong(String string) {
         // Best way to determine if the song is in multiline format is
@@ -2018,6 +2015,86 @@ public class ProcessSong {
         }
     }
 
+    // Group 1: Root (A-G + accidental)
+    // Group 2: Quality (m, min, maj, dim, aug, sus, )
+    // Group 3: Extension (numbers, +, -)
+    // This gets set when a new song is processed
+    private Pattern CHORD_REGEX = Pattern.compile("([A-G][#b]?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+    public void setChordRegex(int chordFormat) {
+        switch (chordFormat) {
+            case 2: // Euro B/H
+                CHORD_REGEX = Pattern.compile("([A-H][#b]?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+            case 3: // Euro es/is (Note the grouping: (es|is)?)
+                CHORD_REGEX = Pattern.compile("([A-H](es|is)?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+            case 4: // DoReMi (Longest strings first!)
+                CHORD_REGEX = Pattern.compile("(DÓ|Dó|dó|DO#|DOb|DO|RÉ|Ré|ré|RE#|REb|RE|MI#|MIb|MI|FÁ|Fá|fá|FA#|FAb|FA|SOL#|SOLb|SOL|LÁ|Lá|lá|LA#|LAb|LA|SI#|SIb|SI|UT)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+            case 5: // Nashville
+                CHORD_REGEX = Pattern.compile("(1[0-2]|[1-9])(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+            case 6: // Numeral
+                // Sorted longest to shortest: XII, XI, IX, VI, V, IV, III, II, I, X
+                CHORD_REGEX = Pattern.compile("\\b(XII|XI|IX|VI{1,3}|V|IV|III|II|I|X)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+            case 7: // Euro alternative  A Bb B Cis/Des   - similar to 3, but not using B/H or Bb/B
+                CHORD_REGEX = Pattern.compile("([A-G](es|is)?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+            case 1: // Standard
+            default:
+                CHORD_REGEX = Pattern.compile("([A-G][#b]?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                break;
+
+        }
+    }
+    public String getChordDisplay() {
+        return chordDisplay;
+    }
+    public void setChordDisplay(String chordDisplay) {
+        this.chordDisplay = chordDisplay;
+        mainActivityInterface.getPreferences().setMyPreferenceString("chordDisplay",chordDisplay);
+    }
+    public Spannable getChordDisplaySpannable(String line, String methodFromChordDisplay, Integer highlightColorOrNull) {
+        SpannableString span = new SpannableString(line);
+        Matcher m = CHORD_REGEX.matcher(line);
+
+        while (m.find()) {
+            int rootStart = m.start(1), rootEnd = m.end(1);
+            int qualStart = m.start(2), qualEnd = m.end(2);
+            int extStart = m.start(3), extEnd = m.end(3);
+
+            // Apply background colour highlight to whole chord if required
+            if (highlightColorOrNull!=null) {
+                span.setSpan(new BackgroundColorSpan(highlightColorOrNull), rootStart, m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+
+            // Styling logic based on selected style
+            switch (methodFromChordDisplay) {
+                case "modern":
+                    // Everything after root is superscript
+                    applySuperscript(span, qualStart, extEnd);
+                    break;
+                case "hybrid":
+                    // Only extension (Group 3) is superscript
+                    applySuperscript(span, extStart, extEnd);
+                    break;
+                case "normal":
+                default:
+                    // We shouldn't actually get here as we check before calling this function
+                    break;
+            }
+        }
+        return span;
+    }
+
+    private static void applySuperscript(Spannable s, int start, int end) {
+        if (start != -1 && end != -1) {
+            s.setSpan(new SuperscriptSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            s.setSpan(new RelativeSizeSpan(0.7f), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
     /*private ImageView getInlineAbcImageView(String string, int which) {
         ImageView  imageView = new ImageView(c);
         imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -2096,7 +2173,7 @@ public class ProcessSong {
             htmlLyrics.append("<div class=\"heading\">").append(str).append("</div>\n");
         } else {
             if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
-                textView.setText(highlightChords(str, highlightChordColor));
+                textView.setText(getChordDisplaySpannable(str, chordDisplay, highlightChordColor));
                 htmlLyrics.append("<div class=\"chord\">").append(str).append("</div>\n");
             } else if (linetype.equals("lyric") || linetype.equals("multilingual")) {
                 // Just set the text
@@ -2533,6 +2610,10 @@ public class ProcessSong {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
         htmlLyrics = new StringBuilder();
+
+        // Set the regex for chord display (for superscript styles)
+        mainActivityInterface.getTranspose().checkChordFormat(song);
+        mainActivityInterface.getProcessSong().setChordRegex(song.getDetectedChordFormat());
 
         boolean performancePresentation = presentation &&
                 (mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||

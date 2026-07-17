@@ -228,6 +228,7 @@ public class Preferences extends Activity {
     // ccliAutomaticLogging             boolean     Should we automatically write to the ccli log (def:false)
     // ccliChurchName                   String      The name of the church for CCLI logging (def:"")
     // ccliLicence                      String      The CCLI licence number (def:"")
+    // chordDisplay                     String      How should chords be shown: standard (Cmaj7), hybrid (Cmaj⁷), modern (Cᵐᵃʲ⁷) (def: standard)
     // chordFormat                      int         My preferred chord format (def:1=normal, 2=Bb->B and B->H, 3=same as 2, but with is/es/as. 4=doremi, 5=nashvillenumber 6=nashvillenumeral) (def:1)
     // chordFormatAutoChange            boolean     When a song is loaded and use preferred is switched on, should the song try to auto change (not overwrite) (def:false);
     // chordFormatUsePreferred          boolean     When transposing, should we assume we are using preferred chord format (def:true)

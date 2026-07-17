@@ -3,6 +3,10 @@ package com.garethevans.church.opensongtablet.chords;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +37,10 @@ public class ChordFormatFragment extends Fragment {
     private String chord_settings_string="", website_chords_settings_string="",
     chords_string="", capo_string="", both_string="";
     private String webAddress;
+    CharSequence standard_spannable = new SpannableStringBuilder();
+    CharSequence hybrid_spannable = new SpannableStringBuilder();
+    CharSequence modern_spannable = new SpannableStringBuilder();
+    private boolean programmaticChange = false;
 
     @Override
     public void onResume() {
@@ -72,6 +80,9 @@ public class ChordFormatFragment extends Fragment {
             both_string = getString(R.string.both);
             chord_settings_string = getString(R.string.chord_settings);
             website_chords_settings_string = getString(R.string.website_chords_settings);
+            standard_spannable = TextUtils.concat(getString(R.string.standard)," (Cmaj7)");
+            hybrid_spannable = TextUtils.concat(getString(R.string.hybrid)," (",mainActivityInterface.getProcessSong().getChordDisplaySpannable("Cmaj7","hybrid",null),")");
+            modern_spannable = TextUtils.concat(getString(R.string.modern)," (",mainActivityInterface.getProcessSong().getChordDisplaySpannable("Cmaj7","modern",null),")");
         }
     }
     private void setValues() {
@@ -119,6 +130,11 @@ public class ChordFormatFragment extends Fragment {
 
         chordFormats = mainActivityInterface.getTranspose().getChordFormatAppearances();
         chordFormatNames = mainActivityInterface.getTranspose().getChordFormatNames();
+
+        myView.chordDisplayStandard.setText(standard_spannable);
+        myView.chordDisplayHybrid.setText(hybrid_spannable);
+        myView.chordDisplayModern.setText(modern_spannable);
+        updateChordDisplayOptions();
 
         if (getContext()!=null) {
             ExposedDropDownArrayAdapter formatAdapter = new ExposedDropDownArrayAdapter(getContext(),
@@ -196,6 +212,30 @@ public class ChordFormatFragment extends Fragment {
             showHideView(myView.preferredInstrument,b && myView.displayChordDiagrams.getChecked());
         });
 
+        myView.chordDisplayStandard.setOnCheckedChangeListener((view, checked) -> {
+            if (checked) {
+                mainActivityInterface.getProcessSong().setChordDisplay("standard");
+            }
+            if (!programmaticChange) {
+                updateChordDisplayOptions();
+            }
+        });
+        myView.chordDisplayHybrid.setOnCheckedChangeListener((view, checked) -> {
+            if (checked) {
+                mainActivityInterface.getProcessSong().setChordDisplay("hybrid");
+            }
+            if (!programmaticChange) {
+                updateChordDisplayOptions();
+            }
+        });
+        myView.chordDisplayModern.setOnCheckedChangeListener((view, checked) -> {
+            if (checked) {
+                mainActivityInterface.getProcessSong().setChordDisplay("modern");
+            }
+            if (!programmaticChange) {
+                updateChordDisplayOptions();
+            }
+        });
         myView.displayChordDiagrams.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "displayChordDiagrams",b);
@@ -321,6 +361,14 @@ public class ChordFormatFragment extends Fragment {
         } else {
             myView.capoChords.setSliderPos(0);
         }
+    }
+
+    private void updateChordDisplayOptions() {
+        programmaticChange = true;
+        myView.chordDisplayStandard.setChecked(mainActivityInterface.getProcessSong().getChordDisplay().equals("standard"));
+        myView.chordDisplayHybrid.setChecked(mainActivityInterface.getProcessSong().getChordDisplay().equals("hybrid"));
+        myView.chordDisplayModern.setChecked(mainActivityInterface.getProcessSong().getChordDisplay().equals("modern"));
+        programmaticChange = false;
     }
 
     private class MySliderChangeListener implements Slider.OnChangeListener{

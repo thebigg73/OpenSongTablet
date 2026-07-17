@@ -22,6 +22,26 @@
                 android:text="@string/show_chords"
                 android:layout_marginBottom="16dp"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chord_display"/>
+            <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
+                android:id="@+id/chordDisplayStandard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/standard"/>
+            <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
+                android:id="@+id/chordDisplayHybrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hybrid"/>
+            <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
+                android:id="@+id/chordDisplayModern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modern"/>
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/displayChordDiagrams"
                 android:layout_width="match_parent"
