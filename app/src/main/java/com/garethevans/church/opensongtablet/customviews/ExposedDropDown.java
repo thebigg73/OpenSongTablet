@@ -51,6 +51,7 @@ public class ExposedDropDown extends FrameLayout {
     private Window window;
 
     private boolean userEditing = true;
+    private boolean programmaticChange = false;
 
     private final AutoCompleteTextView autoCompleteTextView;
     private final TextInputLayout textInputLayout;
@@ -238,6 +239,14 @@ public class ExposedDropDown extends FrameLayout {
     public boolean getUserEditing() { return userEditing; }
 
     public void setUserEditing(boolean userEditing) { this.userEditing = userEditing; }
+
+    public boolean getProgrammaticChange() {
+        return programmaticChange;
+    }
+
+    public void setProgrammaticChange(boolean programmaticChange) {
+        this.programmaticChange = programmaticChange;
+    }
 
     public void setAdapter(ExposedDropDownArrayAdapter arrayAdapter) {
         autoCompleteTextView.setAdapter(arrayAdapter);

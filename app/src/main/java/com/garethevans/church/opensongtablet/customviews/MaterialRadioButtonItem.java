@@ -90,6 +90,35 @@ public class MaterialRadioButtonItem extends LinearLayout {
         }
     }
 
+    public void setText(CharSequence text) {
+        if (textView!=null) {
+            if (text == null || text.toString().isEmpty()) {
+                textView.post(() -> {
+                    try {
+                        textView.setVisibility(View.GONE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                textView.post(() -> {
+                    try {
+                        textView.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            textView.post(() -> {
+                try {
+                    textView.setText(text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+    }
+
     public void setHint(String hint) {
         if (hintView!=null) {
             if (hint == null || hint.isEmpty()) {
