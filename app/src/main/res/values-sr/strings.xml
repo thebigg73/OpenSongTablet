@@ -207,6 +207,7 @@
     <string name="choose_video2">Odabrati pozadinski video 2</string>
     <string name="chord_capo_display">Ako pesma ima kapo akorde, koje akorde treba prikazati?</string>
     <string name="chord_color">Font akroda</string>
+    <string name="chord_display">Stil prikaza akorda</string>
     <string name="chord_fingering">Ukazivanje akorda</string>
     <string name="chord_fingering_inline">Pokažite akord prstima u pesmi</string>
     <string name="chord_fingering_inline_info">Ovo će nacrtati dijagrame akorda za svaki akord u pesmi koristeći željeni instrument (ili instrument koji je određen za pesmu).  Ovo će značajno usporiti prikaz pesme i treba ga koristiti samo prilikom učenja akorda.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Dodeljivanje prilagođenih radnji oblastima ekrana</string>
     <string name="hotspot">Podešavanje Wi-Fi hotspota</string>
     <string name="hotspot_info">Ako WiFi mreža nije dostupna, OpenSongApp može da kreira lokalnu Wi-Fi hotspot (bez pristupa internetu) sa kojom drugi uređaji mogu da se povežu i pristupe veb serveru.</string>
+    <string name="hybrid">Hibrid</string>
     <string name="hybrid_mode">Hibridni režim</string>
     <string name="hybrid_mode_info">Hibrid režima performansi i prezentera</string>
     <string name="hymn_number">Broj himne</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">MIDI brzina</string>
     <string name="min_font_size">Željena minimalna veličina fonta kod autozumiranja</string>
     <string name="mode">Režimu</string>
+    <string name="modern">Moderan</string>
     <string name="modulation">Modulaцija</string>
     <string name="move">Premestite</string>
     <string name="move_from">Preći sa</string>

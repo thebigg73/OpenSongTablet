@@ -207,6 +207,7 @@
     <string name="choose_video2">Выбор фонового видео 2</string>
     <string name="chord_capo_display">Если в песне есть капо аккорды, какие из аккордов нужно показать?</string>
     <string name="chord_color">Шрифт аккордов</string>
+    <string name="chord_display">стиль отображения аккордов</string>
     <string name="chord_fingering">Аппликатура аккордов</string>
     <string name="chord_fingering_inline">Покажите аппликатуры аккордов в песне</string>
     <string name="chord_fingering_inline_info">При этом будут нарисованы диаграммы аккордов для каждого аккорда в песне с использованием предпочтительного инструмента (или инструмента, указанного в песне).  Это значительно замедлит отображение песни, поэтому его следует использовать только при разучивании аккордов.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Назначение пользовательских действий областям экрана</string>
     <string name="hotspot">Настройка точки доступа Wi-Fi</string>
     <string name="hotspot_info">Если сеть Wi-Fi недоступна, OpenSongApp может создать локальную точку доступа Wi-Fi (без доступа в Интернет), к которой другие устройства смогут подключаться и получать доступ к веб-серверу.</string>
+    <string name="hybrid">Гибридный</string>
     <string name="hybrid_mode">Гибридный режим</string>
     <string name="hybrid_mode_info">Гибрид режимов «Выступление» и «Докладчик».</string>
     <string name="hymn_number">Номер гимна</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Чувствительность к нажатию</string>
     <string name="min_font_size">Предпочтительный минимальный размер шрифта при автомасштабировании</string>
     <string name="mode">Режим</string>
+    <string name="modern">Современный</string>
     <string name="modulation">Модуляция</string>
     <string name="move">Двигаться</string>
     <string name="move_from">Переместить из</string>

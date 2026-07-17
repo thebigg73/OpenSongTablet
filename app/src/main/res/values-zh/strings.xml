@@ -207,6 +207,7 @@
     <string name="choose_video2">选择背景视频2</string>
     <string name="chord_capo_display">如果一首歌有变调夹和弦，应该显示哪些和弦？</string>
     <string name="chord_color">和弦字体</string>
+    <string name="chord_display">和弦显示样式</string>
     <string name="chord_fingering">和弦指法</string>
     <string name="chord_fingering_inline">显示歌曲中的和弦指法</string>
     <string name="chord_fingering_inline_info">这将使用首选乐器（或歌曲指定乐器）为歌曲中的每个和弦绘制和弦图。  这将显着减慢歌曲的显示速度，并且仅应在学习和弦时使用。</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">将自定义操作分配给屏幕区域</string>
     <string name="hotspot">设置 WiFi 热点</string>
     <string name="hotspot_info">如果没有可用的 WiFi 网络，OpenSongApp 可以创建一个本地 WiFi 热点（无法访问互联网），其他设备可以连接到并访问 Web 服务器。</string>
+    <string name="hybrid">杂交种</string>
     <string name="hybrid_mode">混合模式</string>
     <string name="hybrid_mode_info">表演模式和演讲者模式的混合体</string>
     <string name="hymn_number">圣诗</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">速度</string>
     <string name="min_font_size">首选最小自动缩放字体大小</string>
     <string name="mode">模式</string>
+    <string name="modern">现代的</string>
     <string name="modulation">调制</string>
     <string name="move">移动</string>
     <string name="move_from">从移动</string>

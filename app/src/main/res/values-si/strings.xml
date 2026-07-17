@@ -207,6 +207,7 @@
     <string name="choose_video2">පසුබිම් වීඩියෝව තෝරන්න 2</string>
     <string name="chord_capo_display">ගීතයක Capo chords තිබේ නම්, කුමන chords පෙන්විය යුතුද?</string>
     <string name="chord_color">කෝඩ්ස් අකුරු</string>
+    <string name="chord_display">ස්වර සංදර්ශක විලාසය</string>
     <string name="chord_fingering">Chord fingering</string>
     <string name="chord_fingering_inline">ගීතයේ ස්වර ඇඟිලි සලකුණු පෙන්වන්න</string>
     <string name="chord_fingering_inline_info">මෙමගින් ගීතයේ එක් එක් ස්වරය සඳහා වඩාත් කැමති උපකරණය (හෝ ගීත නිශ්චිත උපකරණය) භාවිතයෙන් ස්වර රූප සටහන් අඳිනු ඇත.  මෙය ගීතයේ සංදර්ශකය සැලකිය යුතු ලෙස මන්දගාමී කරනු ඇති අතර එය භාවිතා කළ යුත්තේ කෝඩ් ඉගෙන ගන්නා විට පමණි.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">තිරයේ ප්‍රදේශවලට අභිරුචි ක්‍රියා පවරන්න</string>
     <string name="hotspot">WiFi හොට්ස්පොට් එකක් සකසන්න</string>
     <string name="hotspot_info">WiFi ජාලයක් නොමැති නම්, OpenSongApp හට වෙනත් උපාංගවලට සම්බන්ධ වීමට සහ වෙබ් සේවාදායකයට ප්‍රවේශ විය හැකි දේශීය WiFi හොට්ස්පොට් එකක් (අන්තර්ජාල ප්‍රවේශයක් නැත) සෑදිය හැක.</string>
+    <string name="hybrid">දෙමුහුන්</string>
     <string name="hybrid_mode">දෙමුහුන් මාදිලිය</string>
     <string name="hybrid_mode_info">කාර්ය සාධන සහ ඉදිරිපත් කරන්නා මාදිලිවල දෙමුහුන් ක්‍රමයක්</string>
     <string name="hymn_number">ගීතිකා අංකය</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">ප්‍රවේගය</string>
     <string name="min_font_size">කැමති අවම ස්වයංක්‍රීය පරිමාණ අකුරු ප්‍රමාණය</string>
     <string name="mode">මාදිලිය</string>
+    <string name="modern">නූතන</string>
     <string name="modulation">මොඩියුලේෂන්</string>
     <string name="move">චලනය කරන්න</string>
     <string name="move_from">සිට ගමන් කරන්න</string>

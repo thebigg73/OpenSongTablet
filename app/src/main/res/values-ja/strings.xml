@@ -207,6 +207,7 @@
     <string name="choose_video2">背景ビデオ2を選択してください</string>
     <string name="chord_capo_display">曲にカポコードがある場合、どのコードを表示する必要がありますか？</string>
     <string name="chord_color">和音フォント</string>
+    <string name="chord_display">コード表示スタイル</string>
     <string name="chord_fingering">コード運指</string>
     <string name="chord_fingering_inline">曲内のコードの運指を表示する</string>
     <string name="chord_fingering_inline_info">これにより、好みの楽器 (または曲で指定された楽器) を使用して、曲内の各コードのコード ダイアグラムが描画されます。  これにより、曲の表示が大幅に遅くなるため、コードを学習する場合にのみ使用してください。</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">画面の領域にカスタムアクションを割り当てる</string>
     <string name="hotspot">WiFiホットスポットをセットアップする</string>
     <string name="hotspot_info">WiFiネットワークが利用できない場合、OpenSongAppは、他のデバイスが接続してWebサーバーにアクセスできるローカルWiFiホットスポット(インターネットアクセスなし)を作成できます。</string>
+    <string name="hybrid">ハイブリッド</string>
     <string name="hybrid_mode">ハイブリッドモード</string>
     <string name="hybrid_mode_info">パフォーマンスモードとプレゼンターモードのハイブリッド</string>
     <string name="hymn_number">賛美歌番号</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">速度</string>
     <string name="min_font_size">好ましい最小オートスケールのフォントサイズ</string>
     <string name="mode">モード</string>
+    <string name="modern">モダンな</string>
     <string name="modulation">変調</string>
     <string name="move">動く</string>
     <string name="move_from">から移動</string>

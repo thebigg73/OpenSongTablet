@@ -207,6 +207,7 @@
     <string name="choose_video2">Escolha o fundo de vídeo 2</string>
     <string name="chord_capo_display">Se uma música tem acordes de capo, quais acordes devem ser mostrados?</string>
     <string name="chord_color">Fonte Chords</string>
+    <string name="chord_display">Estilo de exibição de acordes</string>
     <string name="chord_fingering">Dedilhado de acordes</string>
     <string name="chord_fingering_inline">Mostrar dedilhados de acordes na música</string>
     <string name="chord_fingering_inline_info">Isso desenhará diagramas de acordes para cada acorde da música usando o instrumento preferido (ou instrumento especificado pela música).  Isso diminuirá significativamente a exibição da música e só deve ser usado ao aprender acordes.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Atribuir ações personalizadas a áreas da tela</string>
     <string name="hotspot">Configurar um hotspot WiFi</string>
     <string name="hotspot_info">Se nenhuma rede WiFi estiver disponível, o OpenSongApp pode criar um hotspot WiFi local (sem acesso à Internet) ao qual outros dispositivos podem se conectar e acessar o servidor web.</string>
+    <string name="hybrid">Híbrido</string>
     <string name="hybrid_mode">Modo híbrido</string>
     <string name="hybrid_mode_info">Um híbrido dos modos Performance e Apresentador.</string>
     <string name="hymn_number">Número Hymn</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Velocidade</string>
     <string name="min_font_size">Tamanho preferido fonte autoscale mínimo</string>
     <string name="mode">Modo</string>
+    <string name="modern">Moderno</string>
     <string name="modulation">Modulação</string>
     <string name="move">Mover</string>
     <string name="move_from">Mover-se a partir de</string>

@@ -207,6 +207,7 @@
     <string name="choose_video2">Scegliere il video di sfondo 2</string>
     <string name="chord_capo_display">Se in un brano viene usato il capotasto, quali accordi dovrebbero essere visualizzati?</string>
     <string name="chord_color">Colore di visualizzazione degli accordi</string>
+    <string name="chord_display">Stile di visualizzazione degli accordi</string>
     <string name="chord_fingering">Diteggiatura degli accordi</string>
     <string name="chord_fingering_inline">Mostra le diteggiature degli accordi nel brano</string>
     <string name="chord_fingering_inline_info">Verrà visualizzato la diteggiatura di ogni accordo presente nel brano in base allo strumento musicale selezionato (o lo strumento specificato nel brano).  Questo rallenterà notevolmente la visualizzazione del brano. Utilizzare questa opzione solo in fase di apprendimento.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Assegnare azioni personalizzate nelle zone speciali dello schermo</string>
     <string name="hotspot">Configurare un hotspot Wi-Fi</string>
     <string name="hotspot_info">Se non è disponibile alcuna rete WiFi, OpenSongApp può creare un hotspot WiFi locale (nessun accesso a Internet) a cui altri dispositivi possono connettersi e accedere al server web.</string>
+    <string name="hybrid">Ibrido</string>
     <string name="hybrid_mode">Modalità ibrida</string>
     <string name="hybrid_mode_info">Un ibrido tra le modalità Performance e Presenter.</string>
     <string name="hymn_number">Numero Inno</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Velocità</string>
     <string name="min_font_size">Dimensione minima del carattere con il ridimensionamento automatico</string>
     <string name="mode">Modalità</string>
+    <string name="modern">Moderno</string>
     <string name="modulation">Modulazione</string>
     <string name="move">Mossa</string>
     <string name="move_from">Passare da</string>

@@ -207,6 +207,7 @@
     <string name="choose_video2">Kies agtergrond video 2</string>
     <string name="chord_capo_display">As \'n liedjie capo-akkoorde het, watter akkoorde moet gewys word?</string>
     <string name="chord_color">Akkoorde font</string>
+    <string name="chord_display">Akkoordvertoningstyl</string>
     <string name="chord_fingering">Akkoord vinger</string>
     <string name="chord_fingering_inline">Wys akkoordvingersettings in die liedjie</string>
     <string name="chord_fingering_inline_info">Dit sal akkoorddiagramme vir elke akkoord in die liedjie teken deur die voorkeurinstrument (of liedgespesifiseerde instrument) te gebruik.  Dit sal die vertoning van die liedjie aansienlik vertraag en moet slegs gebruik word wanneer jy akkoorde leer.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Ken pasgemaakte aksies toe aan dele van die skerm</string>
     <string name="hotspot">Stel \'n WiFi-hotspot op</string>
     <string name="hotspot_info">As daar geen WiFi-netwerk beskikbaar is nie, kan OpenSongApp \'n plaaslike WiFi-hotspot skep (geen internettoegang nie) waaraan ander toestelle kan koppel en toegang tot die webbediener het.</string>
+    <string name="hybrid">Hibriede</string>
     <string name="hybrid_mode">Hibriede modus</string>
     <string name="hybrid_mode_info">\'n Hibriede van Prestasie- en Aanbiedermodusse</string>
     <string name="hymn_number">Hymn aantal</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Snelheid</string>
     <string name="min_font_size">Verkies minimum autoscale lettergrootte</string>
     <string name="mode">Modus</string>
+    <string name="modern">Moderne</string>
     <string name="modulation">Modulasie</string>
     <string name="move">Beweeg</string>
     <string name="move_from">Beweeg van</string>

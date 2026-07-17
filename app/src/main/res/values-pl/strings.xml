@@ -207,6 +207,7 @@
     <string name="choose_video2">Wybierz tło wideo 2</string>
     <string name="chord_capo_display">Jeśli piosenka ma akordy kapo, które akordy powinny być pokazane?</string>
     <string name="chord_color">Czcionka akordów</string>
+    <string name="chord_display">Styl wyświetlania akordów</string>
     <string name="chord_fingering">Palcowanie akordów</string>
     <string name="chord_fingering_inline">Pokaż palcowanie akordów w utworze</string>
     <string name="chord_fingering_inline_info">Spowoduje to narysowanie diagramów akordów dla każdego akordu w utworze przy użyciu preferowanego instrumentu (lub instrumentu określonego w utworze).  Spowoduje to znaczne spowolnienie wyświetlania utworu i powinno być używane wyłącznie podczas nauki akordów.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Przypisz niestandardowe akcje do stref ekranu</string>
     <string name="hotspot">Skonfiguruj hotspot Wi-Fi</string>
     <string name="hotspot_info">Jeśli żadna sieć Wi-Fi nie jest dostępna, OpenSongApp może utworzyć lokalny hotspot Wi-Fi (brak dostępu do Internetu), z którym inne urządzenia mogą się połączyć i uzyskać dostęp do serwera internetowego.</string>
+    <string name="hybrid">Hybrydowy</string>
     <string name="hybrid_mode">Tryb hybrydowy</string>
     <string name="hybrid_mode_info">Połączenie trybu występu i trybu prezentera</string>
     <string name="hymn_number">Numer hymnu</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Prędkość</string>
     <string name="min_font_size">Minimalny rozmiar czcionki przy autoskalowaniu</string>
     <string name="mode">Tryb</string>
+    <string name="modern">Nowoczesny</string>
     <string name="modulation">Modulacja</string>
     <string name="move">Przenosić</string>
     <string name="move_from">Przenieś z</string>

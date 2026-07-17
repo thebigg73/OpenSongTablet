@@ -207,6 +207,7 @@
     <string name="choose_video2">Επιλογή βίντεο φόντου 2</string>
     <string name="chord_capo_display">Αν ένα τραγούδι έχει συγχορδίες capo, ποιες συγχορδίες πρέπει να εμφανίζονται;</string>
     <string name="chord_color">Γραμματοσειρά συγχορδιών</string>
+    <string name="chord_display">Στυλ εμφάνισης συγχορδιών</string>
     <string name="chord_fingering">Χορδές</string>
     <string name="chord_fingering_inline">Εμφάνιση συγχορδιών στο τραγούδι</string>
     <string name="chord_fingering_inline_info">Αυτό θα σχεδιάσει διαγράμματα συγχορδιών για κάθε συγχορδία του τραγουδιού χρησιμοποιώντας το προτιμώμενο όργανο (ή το καθορισμένο όργανο του τραγουδιού).  Αυτό θα επιβραδύνει σημαντικά την εμφάνιση του τραγουδιού και θα πρέπει να χρησιμοποιείται μόνο όταν μαθαίνετε συγχορδίες.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Αντιστοίχιση προσαρμοσμένων ενεργειών σε περιοχές της οθόνης</string>
     <string name="hotspot">Ρύθμιση Wi-Fi hotspot</string>
     <string name="hotspot_info">Εάν δεν υπάρχει διαθέσιμο δίκτυο WiFi, το OpenSongApp μπορεί να δημιουργήσει ένα τοπικό σημείο πρόσβασης WiFi (χωρίς πρόσβαση στο διαδίκτυο) στο οποίο μπορούν να συνδεθούν άλλες συσκευές και να έχουν πρόσβαση στον διακομιστή ιστού.</string>
+    <string name="hybrid">Υβρίδιο</string>
     <string name="hybrid_mode">Υβριδική λειτουργία</string>
     <string name="hybrid_mode_info">Ένα υβρίδιο λειτουργιών Performance και Presenter</string>
     <string name="hymn_number">Hymn number</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Ταχύτητα</string>
     <string name="min_font_size">Preferred minimum autoscale font size</string>
     <string name="mode">Τρόπος</string>
+    <string name="modern">Σύγχρονος</string>
     <string name="modulation">Διαμόρφωση</string>
     <string name="move">Κίνηση</string>
     <string name="move_from">Μετακινούμαι από</string>

@@ -229,6 +229,7 @@
     <string name="choose_video2">Choose background video 2</string>
     <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
     <string name="chord_color">Chords font</string>
+    <string name="chord_display">Chord display style</string>
     <string name="chord_fingering">Chord fingering</string>
     <string name="chord_fingering_inline">Show chord fingerings in the song</string>
     <string name="chord_fingering_inline_info">This will draw chord diagrams for each chord in the song using the preferred instrument (or song specified instrument).  This will significantly slow down the display of the song and should only be used when learning chords.</string>
@@ -676,6 +677,7 @@
     <string name="hot_zones_info">Assign custom actions to areas of the screen</string>
     <string name="hotspot">Setup a Wi-Fi hotspot</string>
     <string name="hotspot_info">If no Wi-Fi network is available, OpenSongApp can create a local Wi-Fi hotspot (no internet access) that other devices can connect to and access the web server.</string>
+    <string name="hybrid">Hybrid</string>
     <string name="hybrid_mode">Hybrid mode</string>
     <string name="hybrid_mode_info">A hybrid of Performance and Presenter modes</string>
     <string name="hymn_number">Hymn number</string>
@@ -968,6 +970,7 @@
     <string name="mode_performance" translatable="false">Performance</string>
     <string name="mode_presenter" translatable="false">Presenter</string>
     <string name="mode_stage" translatable="false">Stage</string>
+    <string name="modern">Modern</string>
     <string name="modulation">Modulation</string>
     <string name="move">Move</string>
     <string name="move_from">Move from</string>

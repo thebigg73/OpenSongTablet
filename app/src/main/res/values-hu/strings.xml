@@ -207,6 +207,7 @@
     <string name="choose_video2">Válassza ki a háttér video 2</string>
     <string name="chord_capo_display">Ha egy dalnak vannak capo akkordjai, melyik akkordokat kell megjeleníteni?</string>
     <string name="chord_color">Chords font</string>
+    <string name="chord_display">Akkord megjelenítési stílusa</string>
     <string name="chord_fingering">Akkordfogás</string>
     <string name="chord_fingering_inline">Mutasd meg az akkordfogásokat a dalban</string>
     <string name="chord_fingering_inline_info">Ez akkorddiagramot rajzol a dal minden akkordjához a preferált hangszerrel (vagy a dalhoz megadott hangszerrel).  Ez jelentősen lelassítja a dal megjelenítését, és csak akkordok tanulásához használható.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Egyéni műveletek hozzárendelése a képernyő területeihez</string>
     <string name="hotspot">WiFi hotspot beállítása</string>
     <string name="hotspot_info">Ha nincs elérhető WiFi hálózat, az OpenSongApp létrehozhat egy helyi WiFi hotspotot (nincs internet-hozzáférés), amelyhez más eszközök csatlakozhatnak és hozzáférhetnek a webszerverhez.</string>
+    <string name="hybrid">Hibrid</string>
     <string name="hybrid_mode">Hibrid mód</string>
     <string name="hybrid_mode_info">A Teljesítmény és az Előadói módok hibridje</string>
     <string name="hymn_number">Hymn szám</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Sebesség</string>
     <string name="min_font_size">Előnyös minimális autoscale betűméret</string>
     <string name="mode">Mód</string>
+    <string name="modern">Modern</string>
     <string name="modulation">Moduláció</string>
     <string name="move">Mozog</string>
     <string name="move_from">Elmenni valahonnan</string>

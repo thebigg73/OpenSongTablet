@@ -207,6 +207,7 @@
     <string name="choose_video2">Vyberte si pozadí video 2</string>
     <string name="chord_capo_display">Pokud má skladba akordy capo, které akordy by se měly zobrazit?</string>
     <string name="chord_color">Akordy písmo</string>
+    <string name="chord_display">Styl zobrazení akordů</string>
     <string name="chord_fingering">Prstění akordů</string>
     <string name="chord_fingering_inline">Zobrazit akordové prstoklady v písni</string>
     <string name="chord_fingering_inline_info">Tím se nakreslí akordové diagramy pro každý akord ve skladbě pomocí preferovaného nástroje (nebo nástroje určeného skladbou).  To výrazně zpomalí zobrazení skladby a mělo by se používat pouze při učení akordů.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Přiřazení vlastních akcí k oblastem obrazovky</string>
     <string name="hotspot">Nastavení Wi-Fi hotspotu</string>
     <string name="hotspot_info">Pokud není k dispozici žádná WiFi síť, OpenSongApp může vytvořit místní WiFi hotspot (bez přístupu k internetu), ke kterému se mohou připojit ostatní zařízení a přistupovat k webovému serveru.</string>
+    <string name="hybrid">Hybridní</string>
     <string name="hybrid_mode">Hybridní režim</string>
     <string name="hybrid_mode_info">Hybridní režim Performance a Presenter</string>
     <string name="hymn_number">Číslo Hymn</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Rychlost</string>
     <string name="min_font_size">Preferovaný minimální velikost písma Autoscale</string>
     <string name="mode">Režim</string>
+    <string name="modern">Moderní</string>
     <string name="modulation">Modulace</string>
     <string name="move">Pohyb</string>
     <string name="move_from">Odstěhovat se</string>

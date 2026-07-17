@@ -207,6 +207,7 @@
     <string name="choose_video2">Hintergrundvideo 2 wählen</string>
     <string name="chord_capo_display">Wenn ein Song Capo-Akkorde hat, welche Akkorde sollen angezeigt werden?</string>
     <string name="chord_color">Schrift Akkorde</string>
+    <string name="chord_display">Chord-Anzeigestil</string>
     <string name="chord_fingering">Griffbilder</string>
     <string name="chord_fingering_inline">Akkordgriffe im Lied anzeigen</string>
     <string name="chord_fingering_inline_info">Dadurch werden Akkorddiagramme für jeden Akkord im Song mit dem bevorzugten Instrument (oder dem im Song angegebenen Instrument) erstellt.  Dies verlangsamt die Anzeige des Liedes erheblich und sollte nur beim Erlernen von Akkorden verwendet werden.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Zuweisen von benutzerdefinierten Aktionen zu Bereichen des Bildschirms</string>
     <string name="hotspot">WLAN-Hotspot einrichten</string>
     <string name="hotspot_info">Wenn kein WLAN-Netzwerk verfügbar ist, kann OpenSongApp einen lokalen WLAN-Hotspot (kein Internetzugang) erstellen, mit dem sich andere Geräte verbinden und auf den Webserver zugreifen können.</string>
+    <string name="hybrid">Hybrid</string>
     <string name="hybrid_mode">Hybridmodus</string>
     <string name="hybrid_mode_info">Eine Mischung aus Performance- und Präsentationsmodus</string>
     <string name="hymn_number">Liederbuch Nummer</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Anschlagsdynamik</string>
     <string name="min_font_size">Minimale Schriftgröße für automatische Skalierung</string>
     <string name="mode">Modus</string>
+    <string name="modern">Modern</string>
     <string name="modulation">Modulation</string>
     <string name="move">Bewegen</string>
     <string name="move_from">Abziehen</string>

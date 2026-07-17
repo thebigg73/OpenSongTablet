@@ -207,6 +207,7 @@
     <string name="choose_video2">Välj bakgrunds video 2</string>
     <string name="chord_capo_display">Om en låt har capo-ackord, vilka ackord ska visas?</string>
     <string name="chord_color">Ackord typsnitt</string>
+    <string name="chord_display">Ackordvisningsstil</string>
     <string name="chord_fingering">Ackord fingersättning</string>
     <string name="chord_fingering_inline">Visa ackordsfingersättningar i låten</string>
     <string name="chord_fingering_inline_info">Detta kommer att rita ackorddiagram för varje ackord i sången med det föredragna instrumentet (eller sångspecifikt instrument).  Detta kommer att avsevärt sakta ner visningen av sången och bör endast användas när du lär dig ackord.</string>
@@ -561,6 +562,7 @@
     <string name="hot_zones_info">Tilldela anpassade åtgärder till områden på skärmen</string>
     <string name="hotspot">Konfigurera en WiFi-hotspot</string>
     <string name="hotspot_info">Om inget WiFi-nätverk är tillgängligt kan OpenSongApp skapa en lokal WiFi-hotspot (ingen internetåtkomst) som andra enheter kan ansluta till och komma åt webbservern.</string>
+    <string name="hybrid">Hybrid</string>
     <string name="hybrid_mode">Hybridläge</string>
     <string name="hybrid_mode_info">En hybrid av Performance- och Presenter-lägen</string>
     <string name="hymn_number">Sångnummer</string>
@@ -788,6 +790,7 @@
     <string name="midi_velocity">Hastighet</string>
     <string name="min_font_size">Föredragen autoskala typstorlek</string>
     <string name="mode">Läge</string>
+    <string name="modern">Modern</string>
     <string name="modulation">Modulation</string>
     <string name="move">Flytta</string>
     <string name="move_from">Flytta från</string>
