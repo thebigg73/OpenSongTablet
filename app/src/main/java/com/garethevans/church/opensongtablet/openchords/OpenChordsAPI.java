@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -69,6 +71,39 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private final String openChordsUsername;
     private final String openChordsPassword;
 
+    private final Handler delayedQueryHandler = new Handler();
+    private final Runnable delayedQueryRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (openChordsFragment!=null) {
+                openChordsFragment.queryOpenChordsServer();
+            }
+        }
+    };
+    private final Runnable resetIfNoResponseRunnable = new Runnable() {
+        @Override
+        public void run() {
+            waitingForQueryResponse = false;
+            if (openChordsFragment!=null) {
+                openChordsFragment.changeButtonsEnable(true);
+            }
+        }
+    };
+    private boolean waitingForQueryResponse = false;
+    private final long delayForQuery = 2000;
+    private final Handler waitMessageHandler = new Handler(Looper.getMainLooper());
+    private final Runnable waitMessageRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (openChordsFragment!=null) {
+                // Get the text in the message and if it still says 'Wait', clear and reset
+                if (openChordsFragment.getMessage().trim().equals(c.getString(R.string.wait))) {
+                    openChordsFragment.changeButtonsEnable(true);
+                }
+            }
+        }
+    };
+
     // Initialise the class
     public OpenChordsAPI(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -88,7 +123,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         jwtToken = prefs.getString("jwtToken", "notset");
     }
 
-    private void rebuildRetrofitInterface(){
+    private void rebuildRetrofitInterface() {
         AuthInterceptor interceptor = new AuthInterceptor(jwtToken);
 
         OkHttpClient client = new OkHttpClient.Builder()
@@ -102,6 +137,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 .build().create(RetrofitInterface.class);
     }
 
+    // This deals with getting permissions/token from the OpenChords server
     private void getJwtToken() {
         @SuppressLint("HardwareIds") OpenChordsLoginRequest loginRequest = new OpenChordsLoginRequest(openChordsUsername,
                 openChordsPassword, Settings.Secure.getString(c.getContentResolver(),
@@ -115,6 +151,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         call.enqueue(new Callback<OpenChordsLoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<OpenChordsLoginResponse> call, @NonNull Response<OpenChordsLoginResponse> response) {
+                receivedResponse();
                 if (response.isSuccessful()) {
                     OpenChordsLoginResponse loginResponse = response.body();
                     if (loginResponse != null) {
@@ -125,10 +162,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
                         rebuildRetrofitInterface();
 
-                        // Now we can run the query if the openChordsFragment isn't null
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
+                        // Now we know we have the permissions, query again after a delay
+                        delayedQueryServer(delayForQuery);
                     }
                 } else {
                     mainActivityInterface.getShowToast().doIt(c.getString(R.string.network_error));
@@ -137,8 +172,16 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
             @Override
             public void onFailure(@NonNull Call<OpenChordsLoginResponse> call, @NonNull Throwable t) {
-                // Handle network errors or other failures
-                Log.e("Login Failure", t.getMessage());
+                // We received a response (even though it was a failure!)
+                receivedResponse();
+
+                // Alert the user to the error
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
+
+                // Allow the user interaction again
+                if (openChordsFragment!=null) {
+                    openChordsFragment.changeButtonsEnable(true);
+                }
             }
         });
     }
@@ -471,55 +514,31 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 OpenChordsCompareObject localObject = localSongsCompareObjects.get(j);
                 if ((localObject.getUuid() != null && localObject.getUuid().equalsIgnoreCase(serverObject.getUuid()))) {
                     // This is a match, now decide if it needs updated or not
-                    boolean serverObjectHasLastModified = true;
-                    if (serverObject.getLastModified() == null || serverObject.getLastModified().equals(c.getString(R.string.is_not_set))) {
-                        serverObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
-                        serverObjectHasLastModified = false;
-                    }
+                    long localObjectLastModified = getLastModifiedLong(localObject);
+                    long serverObjectLastModified = getLastModifiedLong(serverObject);
 
-                    // Ensure the last modified is in UTC
-                    // Parse the input string
-                    OffsetDateTime odtServer = OffsetDateTime.parse(serverObject.getLastModified());
-                    OffsetDateTime utcTimeServer = odtServer.withOffsetSameInstant(ZoneOffset.UTC);
-                    long serverObjectLastModified = Instant.parse(utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+                    // Booleans to check we have set values (otherwise they will be 0)
+                    boolean serverObjectHasLastModified = serverObjectLastModified>0;
+                    boolean localObjectHasLastModified = localObjectLastModified>0;
 
-                    boolean localObjectHasLastModified = true;
-                    if (localObject.getLastModified() == null || localObject.getLastModified().isEmpty() ||
-                            localObject.getLastModified().equals(c.getString(R.string.is_not_set))) {
-                        localObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
-                        localObjectHasLastModified = false;
-                    }
-                    // Ensure the last modified is in UTC
-                    // Parse the input string
-                    OffsetDateTime odtLocal = OffsetDateTime.parse(serverObject.getLastModified());
-                    OffsetDateTime utcTimeLocal = odtLocal.withOffsetSameInstant(ZoneOffset.UTC);
-                    long localObjectLastModified = Instant.parse(utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+                    // Find out which is newer (if both are the same, neither are true)
+                    boolean serverObjectIsLastModified = serverObjectLastModified > localObjectLastModified;
+                    boolean localObjectIsLastModified = localObjectLastModified > serverObjectLastModified;
 
-                    boolean useLocalLastModified = !serverObjectHasLastModified && localObjectHasLastModified;
-                    boolean useServerLastModified = serverObjectHasLastModified && !localObjectHasLastModified;
-                    boolean localNewer = localObjectLastModified > serverObjectLastModified;
-                    boolean serverNewer = localObjectLastModified < serverObjectLastModified;
-
-                    if (useLocalLastModified) {
+                    if (!serverObjectHasLastModified && localObjectHasLastModified) {
                         // The server version doesn't have a last modified date, but the local does, we need to update the server
                         songsOnServerOlder.add(localObject);
 
-                    } else if (useServerLastModified) {
+                    } else if (!localObjectHasLastModified && serverObjectHasLastModified) {
                         // The local version doesn't have a last modified date, but the server does, we need to update the local
                         songsOnLocalOlder.add(serverObject);
 
                     } else {
-                        if (localNewer) {
+                        if (localObjectIsLastModified) {
                             // The server object needs updated
                             songsOnServerOlder.add(localObject);
 
-                        /*
-                        Was trying to use this, but doesn't work as I don't force a pull
-                        } else if (localObjectLastModified < serverObjectLastModified &&
-                                (localObjectLastModified < lastDownloadSongChangesMillis ||
-                                        lastDownloadSongChangesMillis==0)) {
-                        */
-                        } else if (serverNewer) {
+                        } else if (serverObjectIsLastModified) {
                             // The local object needs updated as it is older than the server
                             // And also older the last download time (or it has never been downloaded)
                             songsOnLocalOlder.add(serverObject);
@@ -541,29 +560,18 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 if ((localObject.getUuid() != null && localObject.getUuid().equalsIgnoreCase(serverObject.getUuid())) ||
                         (localObject.getTitle() != null && localObject.getTitle().equals(serverObject.getTitle()))) {
                     // This is a match, now decide if it needs updated or not
-                    boolean serverObjectHasLastModified = true;
-                    if (serverObject.getLastModified() == null || serverObject.getLastModified().isEmpty()) {
-                        serverObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
-                        serverObjectHasLastModified = false;
-                    }
-                    OffsetDateTime odtServer = OffsetDateTime.parse(serverObject.getLastModified());
-                    OffsetDateTime utcTimeServer = odtServer.withOffsetSameInstant(ZoneOffset.UTC);
-                    long serverObjectLastModified = Instant.parse(utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
-                    //long serverObjectLastModified = Instant.parse(serverObject.getLastModified()).toEpochMilli();
+                    long localObjectLastModified = getLastModifiedLong(localObject);
+                    long serverObjectLastModified = getLastModifiedLong(serverObject);
 
-                    boolean localObjectHasLastModified = true;
-                    if (localObject.getLastModified() == null || localObject.getLastModified().isEmpty()) {
-                        localObject.setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
-                        localObjectHasLastModified = false;
-                    }
-                    OffsetDateTime odtLocal = OffsetDateTime.parse(serverObject.getLastModified());
-                    OffsetDateTime utcTimeLocal = odtLocal.withOffsetSameInstant(ZoneOffset.UTC);
-                    long localObjectLastModified = Instant.parse(utcTimeLocal.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
-                    //long localObjectLastModified = Instant.parse(localObject.getLastModified()).toEpochMilli();
-                    if (serverObjectLastModified == 0) {
-                        serverObjectLastModified = localObjectLastModified;
-                    }
+                    // Booleans to check we have set values (otherwise they will be 0)
+                    boolean serverObjectHasLastModified = serverObjectLastModified>0;
+                    boolean localObjectHasLastModified = localObjectLastModified>0;
 
+                    // Find out which is newer (if both are the same, neither are true)
+                    boolean serverObjectIsLastModified = serverObjectLastModified > localObjectLastModified;
+                    boolean localObjectIsLastModified = localObjectLastModified > serverObjectLastModified;
+
+                    // Now decide what needs updated
                     if (!serverObjectHasLastModified && localObjectHasLastModified) {
                         // The server version doesn't have a last modified date, but the local does, we need to update the server
                         setListsOnServerOlder.add(localObject);
@@ -577,12 +585,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                             // The server object needs updated
                             setListsOnServerOlder.add(localObject);
 
-                        /*
-                        Was trying to use this, but doesn't work as I don't force a pull
-                        } else if (localObjectLastModified < serverObjectLastModified &&
-                                (localObjectLastModified < lastDownloadSetChangesMillis ||
-                                        lastDownloadSetChangesMillis==0)) {
-                        */
                         } else if (localObjectLastModified < serverObjectLastModified) {
                             // The local object needs updated
                             setListsOnLocalOlder.add(serverObject);
@@ -699,16 +701,19 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     @Override
     public void onResponse(@NonNull Call call, @NonNull Response response) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            receivedResponse();
+
             if (response.code() == 401) {
                 // We need to get the auth token again
                 Log.d(TAG,"We need to get the auth token again");
                 if (openChordsFragment!=null) {
                     openChordsFragment.changeButtonsEnable(true);
                 }
+                // Get the token again (this also sends a query to try again afterwards)
                 getJwtToken();
-                openChordsFragment.queryOpenChordsServer();
 
             } else {
+                Log.d(TAG,"server returned success for query");
                 // Make sure we create a conflictObject for the folder if it doesn't exist
                 checkForConflictObject();
 
@@ -830,6 +835,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 mainActivityInterface.setWhattodo("");
 
                 if (openChordsFragment != null) {
+                    // Make sure the folder names are matching
+                    // Because this is set programmatically, it doesn't trigger the query again
                     if (serverFolder != null) {
                         openChordsFolderName = serverFolder.getTitle();
                         openChordsFragment.updateFolderTitle(openChordsFolderName);
@@ -843,8 +850,15 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull Throwable throwable) {
+        // We received a response (even though it was a failure!)
+        receivedResponse();
+
+        // Alert the user to the error
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
-        if (openChordsFragment != null) {
+
+        // Allow the user interaction again
+        if (openChordsFragment!=null) {
+            openChordsFragment.changeButtonsEnable(true);
             openChordsFragment.updateFolderMessage();
         }
     }
@@ -857,7 +871,14 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         this.isServerResponse = isServerResponse;
     }
 
+
     private void updateProgress(String message) {
+        // This displays a message to the screen.
+        // If the message is 'Wait...' and nothing changes for 5 seconds, clear the message
+        waitMessageHandler.removeCallbacks(waitMessageRunnable);
+        if (message.trim().equals(c.getString(R.string.wait))) {
+            waitMessageHandler.postDelayed(waitMessageRunnable, 5000);
+        }
         if (openChordsFragment != null) {
             openChordsFragment.updateProgress(message);
         }
@@ -1095,7 +1116,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private String getEmptyForZero(int integer) {
         return integer == 0 ? "" : String.valueOf(integer);
     }
-
 
     // Convert OpenSong objects into OpenChords objects
     public OpenChordsSong convertOpenSongToOpenChords(Song openSongSong) {
@@ -1679,9 +1699,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setTitle(getLocalFolderName());
         uploadFolderObject.setOwnerId(openChordsFolderUuid);
 
-        // If we need to update the uuid of local songs, do it
-        //updateLocalSongsUuid();
-
         // If we need to update the uuid of local sets, do it
         updateLocalSetsUuid();
 
@@ -1737,39 +1754,35 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setSetLists(setsForUpload);
         uploadFolderObject.setTags(tagsForUpload);
 
-        //String json = gson.toJson(uploadFolderObject);
-        // Replace unneccessary items
-        //json = removeUnnecessaryBitsFromJson(json);
-        //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
-
         updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
 
         Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
         call.enqueue(new Callback<OpenChordsFolderObject>() {
             @Override
             public void onResponse(@NonNull Call<OpenChordsFolderObject> call, @NonNull Response<OpenChordsFolderObject> response) {
+                receivedResponse();
                 // this method is called when we get response from our api.
                 if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+
+                    // Because we have changed something, we need to query again and compare content
+                    delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<OpenChordsFolderObject> call, @NonNull Throwable t) {
-                if (openChordsFragment != null) {
-                    openChordsFragment.changeButtonsEnable(false);
-                    updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+                // We received a response (even though it was a failure!)
+                receivedResponse();
+
+                // Alert the user to the error
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
+
+                // Allow the user interaction again
+                if (openChordsFragment!=null) {
+                    openChordsFragment.changeButtonsEnable(true);
+                    openChordsFragment.updateFolderMessage();
                 }
             }
         });
@@ -1965,9 +1978,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 updateTheSongMenu();
             }
             updateConflictFile();
-            if (openChordsFragment != null) {
-                openChordsFragment.queryOpenChordsServer();
-            }
+
+            // Because we have changed something, we need to query again and compare content
+            delayedQueryServer(delayForQuery);
         });
     }
 
@@ -2019,18 +2032,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             uploadFolderObject.setSetLists(serverSetLists);
             uploadFolderObject.setTags(serverTags);
 
-            //String json = gson.toJson(uploadFolderObject);
-            // Replace unneccessary items
-            //json = removeUnnecessaryBitsFromJson(json);
-            //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
-
             updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
             doQueryCall(uploadFolderObject);
             updateConflictFile();
 
-            if (openChordsFragment != null) {
-                openChordsFragment.queryOpenChordsServer();
-            }
+            // Because we have changed something, we need to query again and compare content
+            delayedQueryServer(delayForQuery);
         });
     }
 
@@ -2059,9 +2066,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 addNewConflictItemObject(c.getString(R.string.sync_local_set_deleted), title, nowTime);
             }
             updateConflictFile();
-            if (openChordsFragment != null) {
-                openChordsFragment.queryOpenChordsServer();
-            }
+
+            // Because we have changed something, we need to query again and compare content
+            delayedQueryServer(delayForQuery);
         });
     }
 
@@ -2125,9 +2132,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 doQueryCall(uploadFolderObject);
                 updateConflictFile();
             }
-            if (openChordsFragment != null) {
-                openChordsFragment.queryOpenChordsServer();
-            }
+
+            // Because we have changed something, we need to query again and compare content
+            delayedQueryServer(delayForQuery);
         });
     }
 
@@ -2137,27 +2144,28 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             @Override
             public void onResponse(@NonNull Call<OpenChordsFolderObject> call, @NonNull Response<OpenChordsFolderObject> response) {
                 // this method is called when we get response from our api.
+                receivedResponse();
                 if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+
+                    // Because we have changed something, we need to query again and compare content
+                    delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<OpenChordsFolderObject> call, @NonNull Throwable t) {
-                if (openChordsFragment != null) {
-                    openChordsFragment.changeButtonsEnable(false);
-                    updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+                // We received a response (even though it was a failure!)
+                receivedResponse();
+
+                // Alert the user to the error
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
+
+                // Allow the user interaction again
+                if (openChordsFragment!=null) {
+                    openChordsFragment.changeButtonsEnable(true);
+                    openChordsFragment.updateFolderMessage();
                 }
             }
         });
@@ -2229,37 +2237,33 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
         updateConflictItem("lastForcePush");
 
-        //String json = gson.toJson(uploadFolderObject);
-        // Replace unneccessary items
-        //json = removeUnnecessaryBitsFromJson(json);
-        //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "forcePush.json", json);
-
         Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
         call.enqueue(new Callback<OpenChordsFolderObject>() {
             @Override
             public void onResponse(@NonNull Call<OpenChordsFolderObject> call, @NonNull Response<OpenChordsFolderObject> response) {
+                receivedResponse();
                 // this method is called when we get response from our api.
                 if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+
+                    // Because we have changed something, we need to query again and compare content
+                    delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<OpenChordsFolderObject> call, @NonNull Throwable t) {
-                if (openChordsFragment != null) {
-                    openChordsFragment.changeButtonsEnable(false);
-                    updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+                // We received a response (even though it was a failure!)
+                receivedResponse();
+
+                // Alert the user to the error
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
+
+                // Allow the user interaction again
+                if (openChordsFragment!=null) {
+                    openChordsFragment.changeButtonsEnable(true);
+                    openChordsFragment.updateFolderMessage();
                 }
             }
         });
@@ -2719,31 +2723,35 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         call.enqueue(new Callback<OpenChordsReturnMessageObject>() {
             @Override
             public void onResponse(@NonNull Call<OpenChordsReturnMessageObject> call, @NonNull Response<OpenChordsReturnMessageObject> response) {
+                receivedResponse();
                 // this method is called when we get response from our api.
                 if (response!=null && response.body()!=null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+
+                    // Because we have changed something, we need to query again and compare content
+                    delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<OpenChordsReturnMessageObject> call, @NonNull Throwable t) {
-                if (openChordsFragment != null) {
-                    openChordsFragment.changeButtonsEnable(false);
-                    updateProgress(c.getString(R.string.wait) + "\n");
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        if (openChordsFragment != null) {
-                            openChordsFragment.queryOpenChordsServer();
-                        }
-                    }, 1000);
+                // We received a response (even though it was a failure!)
+                receivedResponse();
+
+                // Alert the user to the error
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
+
+                // Allow the user interaction again
+                if (openChordsFragment!=null) {
+                    openChordsFragment.changeButtonsEnable(true);
+                    openChordsFragment.updateFolderMessage();
                 }
             }
         });
+    }
+    public boolean getFolderExists() {
+        return serverFolder != null;
     }
 
     public OpenChordsFolderObject getServerFolder() {
@@ -2752,5 +2760,62 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     public boolean getFolderIsDifferentUuid() {
         return folderIsDifferentUuid;
+    }
+
+    public ArrayList<OpenChordsCompareObject> getLocalSongsCompareObjects() {
+        return localSongsCompareObjects;
+    }
+
+    public ArrayList<OpenChordsCompareObject> getServerSongsCompareObjects() {
+        return serverSongsCompareObjects;
+    }
+
+    public long getLastModifiedLong(OpenChordsCompareObject openChordsCompareObject) {
+        if (openChordsCompareObject!=null) {
+            return getLastModifiedLong(openChordsCompareObject.getLastModified());
+        } else {
+            return 0;
+        }
+    }
+    public long getLastModifiedLong(String utcLastModifiedString) {
+        long lastModifiedLong = 0;
+        if (utcLastModifiedString!=null && !utcLastModifiedString.isEmpty()) {
+            try {
+                OffsetDateTime odtServer = OffsetDateTime.parse(utcLastModifiedString);
+                OffsetDateTime utcTimeServer = odtServer.withOffsetSameInstant(ZoneOffset.UTC);
+                lastModifiedLong = Instant.parse(utcTimeServer.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)).toEpochMilli();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return lastModifiedLong;
+    }
+
+    // So we don't get stuck in a loop and keep querying the server, we use the logic below
+    // Once we start the query process, we keep a boolean flag record.
+    // This is only reset once we finish the response action (or a failure/error happens)
+    // or if we wait 10s without a response from the server
+    public void delayedQueryServer(long delayTime) {
+        // Query the server again after a fixed delay
+        removeCallbacks();
+        if (!waitingForQueryResponse) {
+            waitingForQueryResponse = true;
+            delayedQueryHandler.postDelayed(delayedQueryRunnable, delayTime);
+        }
+        // Set the timeout safety check to 5s beyond our initial delay
+        delayedQueryHandler.postDelayed(resetIfNoResponseRunnable,delayTime+5000);
+    }
+    public void removeCallbacks() {
+        delayedQueryHandler.removeCallbacks(delayedQueryRunnable);
+        delayedQueryHandler.removeCallbacks(resetIfNoResponseRunnable);
+    }
+    public void setWaitingForQueryResponse(boolean waitingForQueryResponse) {
+        this.waitingForQueryResponse = waitingForQueryResponse;
+    }
+    public boolean getWaitingForQueryResponse() {
+        return waitingForQueryResponse;
+    }
+    public void receivedResponse() {
+        removeCallbacks();
     }
 }

@@ -151,7 +151,7 @@ public class OpenChordsFolderNameChangeBottomSheet extends BottomSheetCommon {
         mainActivityInterface.getOpenChordsAPI().setIsServerResponse(true);
         openChordsFragment.justUpdateTitle(newTitle);
         // Now query the server
-        openChordsFragment.queryOpenChordsServer();
+        mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
         try {
             dismiss();
         } catch (Exception e) {

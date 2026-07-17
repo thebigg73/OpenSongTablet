@@ -49,14 +49,6 @@ public class OpenChordsFragment extends Fragment {
     private Handler checkQueryHandler = new Handler();
     private Runnable checkQueryRunnable;
     private String keepLocalFolderName;
-    private boolean alreadyQuerying = false;
-    private Handler alreadyQueryingHandler;
-    private Runnable alreadyQueryingReset = new Runnable() {
-        @Override
-        public void run() {
-            alreadyQuerying = false;
-        }
-    };
 
     @Override
     public void onResume() {
@@ -69,8 +61,9 @@ public class OpenChordsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        alreadyQueryingHandler = mainActivityInterface.getMainHandler();
         mainActivityInterface.getOpenChordsAPI().setOpenChordsFragment(this);
+        mainActivityInterface.getOpenChordsAPI().removeCallbacks();
+        mainActivityInterface.getOpenChordsAPI().setWaitingForQueryResponse(false);
     }
 
     @Nullable
@@ -94,8 +87,7 @@ public class OpenChordsFragment extends Fragment {
         setupViews();
         setupListeners();
 
-        // Now query the server based on the folder uuid we have in the OpenChordsAPI
-        queryOpenChordsServer();
+        mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
 
         return myView.getRoot();
     }
@@ -142,12 +134,13 @@ public class OpenChordsFragment extends Fragment {
                             progressText += "\n" + progressView.getText().toString();
                         }
                         updateProgress(progressText);
-                        checkQueryHandler.postDelayed(checkQueryRunnable, 100);
+                        checkQueryHandler.removeCallbacks(checkQueryRunnable);
+                        checkQueryHandler.postDelayed(checkQueryRunnable, 1000);
                     }
                 } else {
-                    alreadyQueryingHandler.removeCallbacks(alreadyQueryingReset);
-                    alreadyQuerying = false;
-                    queryOpenChordsServer();
+                    Log.d(TAG,"checkQueryRunnable");
+                    Log.d(TAG,"checkQueryRunnable() completed.  Should we query the server again?");
+                    //mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
                 }
             };
         }
@@ -159,6 +152,7 @@ public class OpenChordsFragment extends Fragment {
                     new ExposedDropDownArrayAdapter(getContext(), myView.folderToSync,
                             R.layout.view_exposed_dropdown_item,
                             mainActivityInterface.getOpenChordsAPI().getValidFolders());
+            myView.folderToSync.setProgrammaticChange(true);
             myView.folderToSync.setAdapter(exposedDropDownArrayAdapter);
             folderChangedProgrammatically = true;
             if (mainActivityInterface.getWhattodo().equals("openchordsintent")) {
@@ -166,7 +160,6 @@ public class OpenChordsFragment extends Fragment {
                 // Look for a local folder that matches the intent uuid
                 // If not, set it to null
                 mainActivityInterface.setWhattodo("");
-                folderChangedProgrammatically = true;
                 myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
                         getOpenSongFolderNameFromUUID(
                                 mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
@@ -175,8 +168,6 @@ public class OpenChordsFragment extends Fragment {
                 // Just set it to our preference
                 myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName());
             }
-
-            folderChangedProgrammatically = false;
 
             // Tint the background circle for the file counter
             ColorStateList secondaryTint = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
@@ -206,7 +197,7 @@ public class OpenChordsFragment extends Fragment {
                         !mainActivityInterface.getOpenChordsAPI().getIsServerResponse()) {
                     // If we manually changed this, save the new folder name preference
                     // Otherwise we are just updating the folder name from the server response
-                    if (!folderChangedProgrammatically) {
+                    if (!folderChangedProgrammatically && !myView.folderToSync.getProgrammaticChange()) {
                         // We have manually changed the folder name
                         String folderName = myView.folderToSync.getText().toString();
                         mainActivityInterface.getOpenChordsAPI().setReceivedFolderLink(false);
@@ -229,7 +220,8 @@ public class OpenChordsFragment extends Fragment {
                                 getOpenChordsQRCode()).into(myView.openChordsQRImage);
 
                         // Query the server
-                        queryOpenChordsServer();
+                        Log.d(TAG,"changed our folder.  Should we query the server again? - yes!");
+                        mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
                     }
                 } else if (myView!=null && myView.folderToSync.getText() != null && getContext()!=null) {
                     String folderName = myView.folderToSync.getText().toString();
@@ -237,11 +229,18 @@ public class OpenChordsFragment extends Fragment {
                     mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderName(folderName);
                 }
                 mainActivityInterface.getOpenChordsAPI().setIsServerResponse(false);
-                folderChangedProgrammatically = false;
+                myView.folderToSync.postDelayed(() -> {
+                    folderChangedProgrammatically = false;
+                    myView.folderToSync.setProgrammaticChange(false);
+                },200);
             }
         });
         myView.openChordsQRImage.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getOpenChordsAPI().getOpenChordsAddress()));
-        myView.refresh.setOnClickListener(view -> queryOpenChordsServer());
+        myView.refresh.setOnClickListener(view -> {
+            // Query the server again
+            Log.d(TAG,"clicked on update.  Should we query the server again? -yes");
+            mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
+        });
         myView.downloadLayout.setOnClickListener(view -> {
             if (mainActivityInterface.getSongListBuildIndex()!=null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                 checkQueryHandler.removeCallbacks(checkQueryRunnable);
@@ -332,12 +331,18 @@ public class OpenChordsFragment extends Fragment {
     }
 
     public void justUpdateTitle(String title) {
-        mainActivityInterface.getMainHandler().post(() -> myView.folderToSync.setText(title));
+        folderChangedProgrammatically = true;
+        mainActivityInterface.getMainHandler().post(() -> {
+            myView.folderToSync.setProgrammaticChange(true);
+            myView.folderToSync.setText(title);
+            myView.folderToSync.postDelayed(() -> myView.folderToSync.setProgrammaticChange(false),200);
+        });
     }
     public void updateFolderTitle(String title) {
+        folderChangedProgrammatically = true;
         mainActivityInterface.getMainHandler().post(() -> {
+            myView.folderToSync.setProgrammaticChange(true);
             mainActivityInterface.getOpenChordsAPI().setIsServerResponse(true);
-            folderChangedProgrammatically = true;
             String titleToShow = title;
             if (keepLocalFolderName!=null) {
                 mainActivityInterface.getOpenChordsAPI().setLocalFolderName(keepLocalFolderName);
@@ -354,9 +359,12 @@ public class OpenChordsFragment extends Fragment {
             } else {
                 // Either the folder names are the same, or we didn't have a folder set (i.e. intent)
                 if (titleToShow!=null && !titleToShow.isEmpty()) {
+                    folderChangedProgrammatically = true;
+                    myView.folderToSync.setProgrammaticChange(true);
                     myView.folderToSync.setText(titleToShow);
+                    myView.folderToSync.postDelayed(() -> myView.folderToSync.setProgrammaticChange(false),200);
+                    folderChangedProgrammatically = false;
                 }
-                folderChangedProgrammatically = false;
                 mainActivityInterface.getOpenChordsAPI().setIsServerResponse(false);
                 changeButtonsEnable(true);
             }
@@ -364,32 +372,30 @@ public class OpenChordsFragment extends Fragment {
     }
 
     public void queryOpenChordsServer() {
-        if (!alreadyQuerying) {
-            alreadyQueryingHandler.removeCallbacks(alreadyQueryingReset);
-            alreadyQuerying = true;
-            checkQueryHandler.removeCallbacks(checkQueryRunnable);
-            // Use the folder chosen to query the server and get the results
-            mainActivityInterface.getMainHandler().post(() -> {
-                if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-                    changeButtonsEnable(false);
-                    checkQueryHandler.postDelayed(checkQueryRunnable, 100);
+        Log.d(TAG, "queryOpenChordsServer()   waitingForQueryResponse:" + mainActivityInterface.getOpenChordsAPI().getWaitingForQueryResponse());
+        checkQueryHandler.removeCallbacks(checkQueryRunnable);
+        // Use the folder chosen to query the server and get the results
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+                changeButtonsEnable(false);
+                checkQueryHandler.postDelayed(checkQueryRunnable, 500);
 
-                } else {
-                    if (myView != null && myView.folderToSync.getText() != null) {
-                        changeButtonsEnable(false);
-                        updateProgress(sync_querying_remote_string + "\n");
-                        mainActivityInterface.getMainHandler().postDelayed(() -> {
-                            myView.folderMessage.setText("");
-                            mainActivityInterface.getOpenChordsAPI().getFolderContentsFromUUID();
-                        }, 100);
-                    }
+            } else {
+                if (myView != null && myView.folderToSync.getText() != null) {
+                    changeButtonsEnable(false);
+                    updateProgress(sync_querying_remote_string + "\n");
+                    mainActivityInterface.getMainHandler().postDelayed(() -> {
+                        myView.folderMessage.setText("");
+                        mainActivityInterface.getOpenChordsAPI().getFolderContentsFromUUID();
+                    }, 500);
                 }
-            });
-        }
+            }
+        });
     }
 
     // We are sent here after hearing back from the server
     public void logChanges() {
+        Log.d(TAG,"Log changes called");
         // Do this on a new thread
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Update the change number identifiers
@@ -397,14 +403,29 @@ public class OpenChordsFragment extends Fragment {
                 if (myView != null) {
                     if (keepLocalFolderName!=null) {
                         folderChangedProgrammatically = true;
+                        myView.folderToSync.setProgrammaticChange(true);
                         myView.folderToSync.setText(keepLocalFolderName);
+                        myView.folderToSync.postDelayed(() -> myView.folderToSync.setProgrammaticChange(false),200);
                     }
                     changeButtonsEnable(true);
                     boolean isOwner = mainActivityInterface.getOpenChordsAPI().getIsOwner();
                     boolean isReadOnly = mainActivityInterface.getOpenChordsAPI().getIsReadOnly();
+                    boolean folderExists = mainActivityInterface.getOpenChordsAPI().getFolderExists();
+
+                    Log.d(TAG,"isOwner:"+isOwner+"  isReadOnly:"+isReadOnly+"  folderExists:"+folderExists);
+                    Log.d(TAG,"localFolderName:"+mainActivityInterface.getOpenChordsAPI().getLocalFolderName());
+                    Log.d(TAG,"songsNotOnServerString:"+mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerString());
+                    for (OpenChordsCompareObject openChordsCompareObject:mainActivityInterface.getOpenChordsAPI().getLocalSongsCompareObjects()) {
+                        Log.d(TAG,"localSong:"+openChordsCompareObject.getTitle() + "  "+ openChordsCompareObject.getLastModified());
+                    }
+                    for (OpenChordsCompareObject openChordsCompareObject:mainActivityInterface.getOpenChordsAPI().getServerSongsCompareObjects()) {
+                        Log.d(TAG,"serverSong:"+openChordsCompareObject.getTitle() + "  "+ openChordsCompareObject.getLastModified());
+                    }
 
                     // If we are the owner, we can upload fine.  If not, we can only upload if the folder isn't read only
-                    boolean canUpload = isOwner || !isReadOnly;
+                    boolean canUpload = isOwner || !isReadOnly || !folderExists;
+                    Log.d(TAG,"uploadCount:"+mainActivityInterface.getOpenChordsAPI().getUploadCount());
+                    Log.d(TAG,"downlaodCount:"+mainActivityInterface.getOpenChordsAPI().getDownloadCount());
                     myView.uploadCount.setText(String.valueOf(mainActivityInterface.getOpenChordsAPI().getUploadCount()));
                     myView.uploadLayout.setVisibility(mainActivityInterface.getOpenChordsAPI().getUploadCount()>0 && canUpload? View.VISIBLE:View.GONE);
                     myView.downloadCount.setText(String.valueOf(mainActivityInterface.getOpenChordsAPI().getDownloadCount()));
@@ -415,11 +436,14 @@ public class OpenChordsFragment extends Fragment {
                     myView.readOnly.setChecked(isReadOnly);
                     myView.readOnly.postDelayed(() -> changingReadOnlyProgrammatically = false,500);
                     updateFolderMessage();
+
+                    // Release the boolean check so we can query again if required
+                    mainActivityInterface.getOpenChordsAPI().setWaitingForQueryResponse(false);
+                    mainActivityInterface.getOpenChordsAPI().removeCallbacks();
                 }
             });
         });
-        alreadyQueryingHandler.postDelayed(alreadyQueryingReset,1000);
-}
+    }
 
     public void updateProgress(String progress) {
         if (myView != null && progress!=null) {
@@ -455,7 +479,6 @@ public class OpenChordsFragment extends Fragment {
                 changeButtonsEnable(false);
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                     mainActivityInterface.getOpenChordsAPI().forcePull();
-                    mainActivityInterface.getMainHandler().post(this::queryOpenChordsServer);
                 });
                 break;
 
@@ -465,7 +488,6 @@ public class OpenChordsFragment extends Fragment {
                 changeButtonsEnable(false);
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
                     mainActivityInterface.getOpenChordsAPI().forcePush();
-                    mainActivityInterface.getMainHandler().post(this::queryOpenChordsServer);
                 });
                 break;
         }
@@ -482,7 +504,9 @@ public class OpenChordsFragment extends Fragment {
                     changeButtonsEnable(true);
                 }
             });
-            queryOpenChordsServer();
+            // Query the server
+            Log.d(TAG,"prepareDownload() completed.  Should we query the server again?");
+
         });
     }
     public void prepareUpload(boolean newSongs, boolean updateSongs, boolean newSetLists, boolean updateSetLists) {
@@ -495,7 +519,6 @@ public class OpenChordsFragment extends Fragment {
                     changeButtonsEnable(true);
                 }
             });
-            queryOpenChordsServer();
         });
     }
     public void deleteLocalSongs() {
@@ -511,6 +534,15 @@ public class OpenChordsFragment extends Fragment {
         mainActivityInterface.getOpenChordsAPI().deleteRemoteSets();
     }
 
+    // Returns the string in the message
+    public String getMessage() {
+        if (myView!=null && myView.progressLayout.getVisibility()==View.VISIBLE && myView.progressText.getText()!=null) {
+            return myView.progressText.getText().toString();
+        } else {
+            return "";
+        }
+    }
+
     public void updateFolderMessage() {
         // Try to update the folder message sensibly
         int downloadCount = mainActivityInterface.getOpenChordsAPI().getDownloadCount();
@@ -518,9 +550,10 @@ public class OpenChordsFragment extends Fragment {
 
         String ownerInfo = mainActivityInterface.getOpenChordsAPI().getIsOwner() ? owner_string + "\n\n" : not_owner_string + "\n\n";
         String readOnlyInfo = mainActivityInterface.getOpenChordsAPI().getIsReadOnly() ? read_only_string + "\n\n" : "";
+        Log.d(TAG,"folderExists:"+mainActivityInterface.getOpenChordsAPI().getFolderExists());
 
         String folderInfo = "";
-        if (mainActivityInterface.getOpenChordsAPI().getServerFolder()==null) {
+        if (!mainActivityInterface.getOpenChordsAPI().getFolderExists()) {
             folderInfo = openchords_folder_doesnt_exist_string;
             ownerInfo = "";
             readOnlyInfo = "";
@@ -542,5 +575,6 @@ public class OpenChordsFragment extends Fragment {
         checkQueryHandler = null;
         mainActivityInterface.getOpenChordsAPI().setOpenChordsFragment(null);
         mainActivityInterface.getOpenChordsAPI().clearSyncObjects();
+        mainActivityInterface.getOpenChordsAPI().removeCallbacks();
     }
 }
