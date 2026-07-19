@@ -509,6 +509,9 @@ public class SetManageFragment extends Fragment {
                     newSetFilename = setCategory + mainActivityInterface.getSetActions().getSetCategorySeparator() + setName;
                 }
 
+                // Make sure we have the set name ready!
+                mainActivityInterface.getCurrentSet().setSetCurrentLastName(setName);
+
                 // If the file already exists and we aren't overwriting, alert the user to rename it
                 newSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", newSetFilename);
 
@@ -517,10 +520,6 @@ public class SetManageFragment extends Fragment {
                     mainActivityInterface.getShowToast().doIt(file_exists_string);
                 } else {
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " saveSet Create Sets/" + newSetFilename + " deleteOld=true");
-                    /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newSetUri, null,
-                            "Sets", "", newSetFilename);
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newSetUri);
-                    */
                     mainActivityInterface.getSetActions().setUseThisLastModifiedDate(mainActivityInterface.getTimeTools().getNowIsoTime());
                     String setXML = mainActivityInterface.getSetActions().createSetXML(mainActivityInterface.getCurrentSet());
                     mainActivityInterface.getSetActions().setUseThisLastModifiedDate(null);

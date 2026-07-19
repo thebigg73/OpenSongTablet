@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,9 @@ public class ImportSetBundleFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsSetImportBundleBinding.inflate(inflater, container, false);
+
+        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+
         return myView.getRoot();
     }
 
@@ -93,6 +97,10 @@ public class ImportSetBundleFragment extends Fragment {
             importSetBundleViewPager.setAdapter(importBundleViewPagerAdapter);
             importSetBundleViewPager.setOffscreenPageLimit(1);
             TabLayout tabLayout = myView.importSetBundleTabs;
+            tabLayout.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
+            tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            tabLayout.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
+
             new TabLayoutMediator(tabLayout, importSetBundleViewPager, (tab, position) -> {
                 switch (position) {
                     case 0:

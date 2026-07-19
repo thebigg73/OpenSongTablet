@@ -189,10 +189,12 @@ public class ImportSetBundleSetFragment extends Fragment {
     public void setSetName(String setName) {
         if (myView != null) {
             myView.setName.post(() -> {
-                // We need to check the set name doesn't have an inbuilt category
-                String[] categoryAndName = mainActivityInterface.getSetActions().getSetCategoryAndName(setName);
-                myView.setCategory.setText(categoryAndName[0]);
-                myView.setName.setText(categoryAndName[1]);
+                if (myView!=null && mainActivityInterface!=null) {
+                    // We need to check the set name doesn't have an inbuilt category
+                    String[] categoryAndName = mainActivityInterface.getSetActions().getSetCategoryAndName(setName);
+                    myView.setCategory.setText(categoryAndName[0]);
+                    myView.setName.setText(categoryAndName[1]);
+                }
             });
         }
     }

@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet.setprocessing;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
+import com.garethevans.church.opensongtablet.setmenu.SetListItemViewHolder;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
@@ -70,6 +73,9 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
         } else {
             si.songkey = "";
         }
+
+        // Update the theme!
+        setColor(holder);
 
         String text = si.songitem + ".";
         holder.cardItem.setText(text);
@@ -171,4 +177,20 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
         }
     }
 
+    // Set the colour of the chosen view
+    private void setColor(ImportSetItemViewHolder holder) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.cardView.setCardBackgroundColor(mainActivityInterface.getPalette().primary);
+            holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
+        } else {
+            holder.cardView.setBackgroundColor(mainActivityInterface.getPalette().primary);
+        }
+
+        holder.cardItem.setTextColor(mainActivityInterface.getPalette().textColor);
+        holder.cardFilename.setTextColor(mainActivityInterface.getPalette().textColor);
+        holder.cardFolder.setTextColor(mainActivityInterface.getPalette().hintColor);
+        holder.cardExists.setBackgroundColor(mainActivityInterface.getPalette().errorColor);
+        holder.cardExists.setTextColor(mainActivityInterface.getPalette().textColor);
+
+    }
 }
