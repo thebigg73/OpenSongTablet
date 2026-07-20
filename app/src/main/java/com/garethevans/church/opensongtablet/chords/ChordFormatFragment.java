@@ -325,7 +325,9 @@ public class ChordFormatFragment extends Fragment {
                 formattouse = chordFormatNames.indexOf(editable.toString())+1;
                 mainActivityInterface.getPreferences().setMyPreferenceInt(
                         "chordFormat", formattouse);
-                myView.chosenPreferredFormat.setHint(chordFormats.get(formattouse-1));
+                if (formattouse > 0) {
+                    myView.chosenPreferredFormat.setHint(chordFormats.get(formattouse - 1));
+                }
                 fixChordPrefText();
             }
         });
