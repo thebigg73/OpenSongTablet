@@ -219,9 +219,14 @@ public class PadsBottomSheet extends BottomSheetCommon {
             intent.setType("audio/*");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // Check the folder exists
-                mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Pads","","",false);
-                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
-                        mainActivityInterface.getStorageAccess().getUriForItem("Pads","",""));
+                try {
+                    Uri initialUri = mainActivityInterface.getStorageAccess().getUriForItem("Pads", "", "");
+                    if (initialUri != null) {
+                        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, initialUri);
+                    }
+                } catch (Exception e) {
+                    Log.w(TAG, "Could not resolve initial URI for Pads folder, opening picker without it", e);
+                }
             }
             intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
             try {
