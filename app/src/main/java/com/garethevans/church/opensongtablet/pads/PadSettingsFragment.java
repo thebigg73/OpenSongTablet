@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.pads;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class PadSettingsFragment extends Fragment {
 
+    private final String TAG = "PadSettingsFragment";
     private SettingsPadsBinding myView;
     private MainActivityInterface mainActivityInterface;
     private boolean padPlaying;
@@ -58,11 +60,11 @@ public class PadSettingsFragment extends Fragment {
     }
     private void setListeners() {
         myView.padCurrent.setOnClickListener(v -> {
-            // Nav home then open the pad bottom sheet
-            mainActivityInterface.navHome();
-            if (getActivity()!=null) {
+            if (mainActivityInterface!=null) {
                 PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
-                padsBottomSheet.show(getActivity().getSupportFragmentManager(), "padsBottomSheet");
+                padsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "padsBottomSheet");
+                // Nav home then open the pad bottom sheet
+                mainActivityInterface.navHome();
             }
         });
         myView.padCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customPadsFragment));
@@ -81,10 +83,13 @@ public class PadSettingsFragment extends Fragment {
     private void changePlayIcon() {
         if (getContext()!=null) {
             if (padPlaying) {
-                myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.stop, getContext().getTheme()));
+                //myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.stop, getContext().getTheme()));
+                myView.startStopButton.setImageDrawable(R.drawable.stop);
             } else {
-                myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.play, getContext().getTheme()));
+                //myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.play, getContext().getTheme()));
+                myView.startStopButton.setImageDrawable(R.drawable.play);
             }
+            //myView.startStopButton.setPalette(mainActivityInterface.getPalette());
         }
     }
 }
