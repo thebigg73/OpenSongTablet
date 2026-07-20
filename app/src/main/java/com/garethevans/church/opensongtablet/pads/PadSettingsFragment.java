@@ -83,13 +83,10 @@ public class PadSettingsFragment extends Fragment {
     private void changePlayIcon() {
         if (getContext()!=null) {
             if (padPlaying) {
-                //myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.stop, getContext().getTheme()));
                 myView.startStopButton.setImageDrawable(R.drawable.stop);
             } else {
-                //myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.play, getContext().getTheme()));
                 myView.startStopButton.setImageDrawable(R.drawable.play);
             }
-            //myView.startStopButton.setPalette(mainActivityInterface.getPalette());
         }
     }
 }

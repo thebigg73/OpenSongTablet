@@ -216,7 +216,20 @@ public class PadsBottomSheet extends BottomSheetCommon {
         });
         myView.padLinkAudio.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("audio/*");
+            // 1. Broaden the filter to ensure the picker always opens across all OEM devices
+            intent.setType("*/*");
+
+            // 2. Explicitly supply the accepted audio MIME types so the picker still highlights/filters audio
+            String[] mimeTypes = {
+                    "audio/mpeg",    // .mp3, .m4a
+                    "audio/wav",     // .wav
+                    "audio/aac",     // .aac
+                    "audio/ogg",     // .ogg, .opus
+                    "audio/mp4",     // .mp4 audio
+                    "application/ogg"
+            };
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // Check the folder exists
                 try {

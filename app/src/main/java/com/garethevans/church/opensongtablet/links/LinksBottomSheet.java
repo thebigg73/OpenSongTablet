@@ -106,7 +106,9 @@ public class LinksBottomSheet extends BottomSheetCommon {
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
                         if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
                             ContentResolver resolver = getActivity().getContentResolver();
-                            resolver.takePersistableUriPermission(contentUri, mainActivityInterface.getStorageAccess().getTakePersistentWriteUriFlags());
+                            if (resolver!=null && contentUri!=null) {
+                                resolver.takePersistableUriPermission(contentUri, mainActivityInterface.getStorageAccess().getTakePersistentWriteUriFlags());
+                            }
                         }
                         myView.linkLocation.setText(mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri));
                     }
@@ -121,30 +123,6 @@ public class LinksBottomSheet extends BottomSheetCommon {
     private void setupViews() {
         Log.d(TAG,mainActivityInterface.getWhattodo());
         switch (mainActivityInterface.getWhattodo()) {
-            case "linkYouTube":
-            default:
-                myView.dialogHeading.setText(link_youtube_string);
-                myView.linkLocation.setText(mainActivityInterface.getSong().getLinkyoutube());
-                if (myView.linkLocation.getText().toString().contains("https://music.youtube.com")) {
-                    myView.youTubeOrMusic.setSliderPos(1);
-                } else {
-                    myView.youTubeOrMusic.setSliderPos(0);
-                }
-                if (getContext()!=null) {
-                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.youtube));
-                }
-                myView.openLink.setOnClickListener(view -> openDocument());
-                myView.searchLink.setHint(link_search_youtube_string);
-                myView.searchLink.setOnClickListener(view -> {
-                    if (myView.youTubeOrMusic.getValue()==0) {
-                        openBrowser("https://www.youtube.com/search?q=");
-                    } else {
-                        openBrowser("https://music.youtube.com/search?q=");
-                    }
-                });
-                myView.youTubeOrMusic.setVisibility(View.VISIBLE);
-                myView.youTubeOrMusic.setTextRight(youtube_string + " " + music_string);
-                break;
 
             //music.youtube.com/watch?v=
             case "linkAudio":
@@ -180,6 +158,31 @@ public class LinksBottomSheet extends BottomSheetCommon {
                 myView.searchLink.setHint(link_search_document_string);
                 myView.searchLink.setOnClickListener(view -> searchFile("*/*"));
                 break;
+            case "linkYouTube":
+            default:
+                myView.dialogHeading.setText(link_youtube_string);
+                myView.linkLocation.setText(mainActivityInterface.getSong().getLinkyoutube());
+                if (myView.linkLocation.getText().toString().contains("https://music.youtube.com")) {
+                    myView.youTubeOrMusic.setSliderPos(1);
+                } else {
+                    myView.youTubeOrMusic.setSliderPos(0);
+                }
+                if (getContext()!=null) {
+                    myView.openLink.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.youtube));
+                }
+                myView.openLink.setOnClickListener(view -> openDocument());
+                myView.searchLink.setHint(link_search_youtube_string);
+                myView.searchLink.setOnClickListener(view -> {
+                    if (myView.youTubeOrMusic.getValue()==0) {
+                        openBrowser("https://www.youtube.com/search?q=");
+                    } else {
+                        openBrowser("https://music.youtube.com/search?q=");
+                    }
+                });
+                myView.youTubeOrMusic.setVisibility(View.VISIBLE);
+                myView.youTubeOrMusic.setTextRight(youtube_string + " " + music_string);
+                break;
+
         }
         myView.resetLink.setOnClickListener(view -> resetLink());
         myView.dialogHeading.setClose(this);
@@ -200,7 +203,23 @@ public class LinksBottomSheet extends BottomSheetCommon {
     private void searchFile(String mimeType) {
         // Try to open at the default OpenSong location
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        if (mimeType.equals("audio/*")) {
+            // 1. Broaden the filter to ensure the picker always opens across all OEM devices
+            intent.setType("*/*");
+
+            // 2. Explicitly supply the accepted audio MIME types so the picker still highlights/filters audio
+            String[] mimeTypes = {
+                    "audio/mpeg",    // .mp3, .m4a
+                    "audio/wav",     // .wav
+                    "audio/aac",     // .aac
+                    "audio/ogg",     // .ogg, .opus
+                    "audio/mp4",     // .mp4 audio
+                    "application/ogg"
+            };
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        } else {
         intent.setType(mimeType);
+        }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentWriteUriFlags());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
@@ -233,10 +252,6 @@ public class LinksBottomSheet extends BottomSheetCommon {
 
     private void updateSong() {
         switch (mainActivityInterface.getWhattodo()) {
-            case "linkYouTube":
-            default:
-                mainActivityInterface.getSong().setLinkyoutube(getLinkText());
-                break;
             case "linkAudio":
                 mainActivityInterface.getSong().setLinkaudio(getLinkText());
                 break;
@@ -246,6 +261,11 @@ public class LinksBottomSheet extends BottomSheetCommon {
             case "linkOther":
                 mainActivityInterface.getSong().setLinkother(getLinkText());
                 break;
+            case "linkYouTube":
+            default:
+                mainActivityInterface.getSong().setLinkyoutube(getLinkText());
+                break;
+
         }
         if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false)) {
             mainActivityInterface.getShowToast().doItBottomSheet(success_string,myView.getRoot());

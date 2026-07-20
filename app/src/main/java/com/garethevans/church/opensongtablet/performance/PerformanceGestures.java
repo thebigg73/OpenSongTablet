@@ -1141,7 +1141,12 @@ public class PerformanceGestures {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         ArrayList<String> input = new ArrayList<>();
-        input.add("audio/*");
+        input.add("audio/mpeg");    // .mp3, .m4a
+        input.add("audio/wav");     // .wav
+        input.add("audio/aac");     // .aac
+        input.add("audio/ogg");     // .ogg, .opus
+        input.add("audio/mp4");     // .mp4 audio
+        input.add("application/ogg");
         input.add("audio/3gp");
         input.add("video/3gp");
         input.add("video/mp4)");
@@ -1161,7 +1166,12 @@ public class PerformanceGestures {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         ArrayList<String> input = new ArrayList<>();
-        input.add("audio/*");
+        input.add("audio/mpeg");    // .mp3, .m4a
+        input.add("audio/wav");     // .wav
+        input.add("audio/aac");     // .aac
+        input.add("audio/ogg");     // .ogg, .opus
+        input.add("audio/mp4");     // .mp4 audio
+        input.add("application/ogg");
         input.add("audio/3gp");
         input.add("video/3gp");
         input.add("video/mp4)");

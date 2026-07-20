@@ -147,10 +147,25 @@ public class CustomPadsFragment extends Fragment {
         this.prefValue = prefValue;
         this.myMaterialEditText.setText(pad_auto_string);
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("audio/*");
+        // 1. Broaden the filter to ensure the picker always opens across all OEM devices
+        intent.setType("*/*");
+
+        // 2. Explicitly supply the accepted audio MIME types so the picker still highlights/filters audio
+        String[] mimeTypes = {
+                "audio/mpeg",    // .mp3, .m4a
+                "audio/wav",     // .wav
+                "audio/aac",     // .aac
+                "audio/ogg",     // .ogg, .opus
+                "audio/mp4",     // .mp4 audio
+                "application/ogg"
+        };
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,
-                    mainActivityInterface.getStorageAccess().getUriForItem("Pads","",""));
+            Uri extraUri = mainActivityInterface.getStorageAccess().getUriForItem("Pads","","");
+            if (extraUri!=null) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, extraUri);
+            }
         }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddPersistentReadUriFlags());
         activityResultLauncher.launch(intent);
