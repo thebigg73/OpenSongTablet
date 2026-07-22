@@ -446,8 +446,6 @@ public class NearbyReceivePayloads {
                 Uri newLocation = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolderforuri, filename);
                 // Prepare the output stream in the Received folder - just keep a temporary version
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG + " creating temporary song file from XML received from connected host:  " + folder + "/" + subfolderforuri + "/" + filename);
-                //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, folder, subfolderforuri, filename);
-                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                 mainActivityInterface.getSong().setFolder(subfolder);
                 mainActivityInterface.getSong().setFilename(filename);
 
@@ -563,7 +561,9 @@ public class NearbyReceivePayloads {
                 e.printStackTrace();
             } finally {
                 // Delete the original file.
-                c.getContentResolver().delete(inputUri, null, null);
+                if (inputUri!=null) {
+                    c.getContentResolver().delete(inputUri, null, null);
+                }
             }
         }
     }

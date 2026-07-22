@@ -290,9 +290,6 @@ public class ABCNotation {
         // Convert our preference which is a single string with commas into an array
 
         switch (abcInstrumentTab) {
-            case "guitar":
-            default:
-                return new String[] {"E,","A,","D","G","B","e"};
             case "guitardropd":
                 return new String[] {"D,","A,","D","G","B","e"};
             case "guitaropeng":
@@ -312,6 +309,10 @@ public class ABCNotation {
                 return new String[] {"E,,","A,,","D,","G,"};
             case "bass5":
                 return new String[] {"B,,,","E,,","A,,","D,","G,"};
+            case "guitar":
+            default:
+                return new String[] {"E,","A,","D","G","B","e"};
+
         }
     }
 
@@ -341,9 +342,6 @@ public class ABCNotation {
         // The preference is a non translated simple text string
         // Get a nice translated string from this
         switch (abcInstrumentTab) {
-            case "guitar":
-            default:
-                return guitar;
             case "guitardropd":
                 return guitar_drop_d;
             case "guitaropeng":
@@ -366,6 +364,10 @@ public class ABCNotation {
                 return bass4;
             case "bass5":
                 return bass5;
+            case "guitar":
+            default:
+                return guitar;
+
         }
     }
     public String getAbcInstrumentPrefFromNice(String niceInstrument) {
@@ -402,11 +404,6 @@ public class ABCNotation {
         // ABC notation only allows some instrument types
         // We fudge this by grouping them into available options
         switch (abcInstrumentTab) {
-            case "guitar":
-            case "guitardropd":
-            case "guitaropeng":
-            default:
-                return "guitar";
             case "banjo4":
             case "bass4":
             case "cavaquinho":
@@ -420,6 +417,12 @@ public class ABCNotation {
             case "banjo5":
             case "bass5":
                 return "fiveString";
+            case "guitar":
+            case "guitardropd":
+            case "guitaropeng":
+            default:
+                return "guitar";
+
         }
     }
     public String getAbcInstrumentLabelABCJS() {

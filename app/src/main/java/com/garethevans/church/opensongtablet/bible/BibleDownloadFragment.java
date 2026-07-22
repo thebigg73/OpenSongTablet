@@ -190,17 +190,12 @@ public class BibleDownloadFragment extends Fragment {
                     mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" extractBibleZipFile createFile "+folder+"/"+subfolder+"/"+ze.getName());
                     mainActivityInterface.getStorageAccess().createFile(null, folder, subfolder, ze.getName());
                     Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, ze.getName());
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
-                    try {
+                    try (OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri)) {
                         while ((count = zis.read(buffer)) != -1)
                             outputStream.write(buffer, 0, count);
-                    } finally {
-                        try {
-                            outputStream.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 zis.closeEntry();

@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -118,7 +117,7 @@ public class ShowToast {
         MyMaterialSimpleTextView textToast = view.findViewById(R.id.textToast);
         textToast.setTextColor(mainActivityInterface.getPalette().textColor);
         MaterialCardView cardView = view.findViewById(R.id.toastCardView);
-        cardView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        cardView.setBackgroundColor(mainActivityInterface.getPalette().secondary);
         textToast.setOnClickListener(tv -> popupWindow.dismiss());
         popupWindow.getContentView().getRootView().setOnClickListener(v -> popupWindow.dismiss());
 

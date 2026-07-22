@@ -2,43 +2,27 @@ package com.garethevans.church.opensongtablet.analytics;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
-import com.garethevans.church.opensongtablet.databinding.BottomSheetAlertInfoBinding;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAnalyticsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +36,7 @@ public class AnalyticsBottomSheet extends BottomSheetCommon {
     private BottomSheetAnalyticsBinding myView;
     private final String TAG = "AnalyticsBottomSheet";
     private String popularity_string="", last_viewed_string="", last_cast_string="",
-            last_added_to_set_string="", count_string="", count_set_string="";
+            last_added_to_set_string="", count_set_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -121,64 +105,61 @@ public class AnalyticsBottomSheet extends BottomSheetCommon {
 
     private void setupListeners() {
         // The song items listeners are dealt with in the adapter
-        myView.sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG,"clicked");
-                if (getContext()!=null) {
-                    Dialog dialog = new Dialog(getContext());
-                    dialog.setContentView(R.layout.view_sort_analytics_options);
+        myView.sortButton.setOnClickListener(view -> {
+            Log.d(TAG,"clicked");
+            if (getContext()!=null) {
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.view_sort_analytics_options);
 
-                    // Set background to transparent so your custom XML background shows
-                    if (dialog.getWindow() != null) {
-                        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.popup_bg);
-                        if (drawable!=null) {
-                            DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().secondary);
-                            dialog.getWindow().setBackgroundDrawable(drawable);
-                        }
+                // Set background to transparent so your custom XML background shows
+                if (dialog.getWindow() != null) {
+                    Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.popup_bg);
+                    if (drawable!=null) {
+                        DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().secondary);
+                        dialog.getWindow().setBackgroundDrawable(drawable);
                     }
-
-                    // Programmatically find and configure views
-                    // Set listeners for each text view to perform the sort
-                    dialog.findViewById(R.id.sort_item_popularity).setOnClickListener(v -> {
-                        SortMode.lastSortMethod = SortMode.POPULARITY;
-                        setupViews();
-                        dialog.dismiss();
-                    });
-
-                    dialog.findViewById(R.id.sort_item_last_viewed).setOnClickListener(v -> {
-                        SortMode.lastSortMethod = SortMode.LAST_VIEWED;
-                        setupViews();
-                        dialog.dismiss();
-                    });
-
-                    dialog.findViewById(R.id.sort_item_last_added).setOnClickListener(v -> {
-                        SortMode.lastSortMethod = SortMode.LAST_SET;
-                        setupViews();
-                        dialog.dismiss();
-                    });
-
-                    dialog.findViewById(R.id.sort_item_added_to_set).setOnClickListener(v -> {
-                        SortMode.lastSortMethod = SortMode.COUNT_SET;
-                        setupViews();
-                        dialog.dismiss();
-                    });
-
-                    dialog.findViewById(R.id.sort_item_last_cast).setOnClickListener(v -> {
-                        SortMode.lastSortMethod = SortMode.LAST_CAST;
-                        setupViews();
-                        dialog.dismiss();
-                    });
-
-                    dialog.findViewById(R.id.reset_analytics).setOnClickListener(v -> {
-                        mainActivityInterface.getAnalyticsHelper().resetAnalytics();
-                        setupViews();
-                        dialog.dismiss();
-                    });
-
-                    // Show the dialog
-                    dialog.show();
                 }
+
+                // Programmatically find and configure views
+                // Set listeners for each text view to perform the sort
+                dialog.findViewById(R.id.sort_item_popularity).setOnClickListener(v -> {
+                    SortMode.lastSortMethod = SortMode.POPULARITY;
+                    setupViews();
+                    dialog.dismiss();
+                });
+
+                dialog.findViewById(R.id.sort_item_last_viewed).setOnClickListener(v -> {
+                    SortMode.lastSortMethod = SortMode.LAST_VIEWED;
+                    setupViews();
+                    dialog.dismiss();
+                });
+
+                dialog.findViewById(R.id.sort_item_last_added).setOnClickListener(v -> {
+                    SortMode.lastSortMethod = SortMode.LAST_SET;
+                    setupViews();
+                    dialog.dismiss();
+                });
+
+                dialog.findViewById(R.id.sort_item_added_to_set).setOnClickListener(v -> {
+                    SortMode.lastSortMethod = SortMode.COUNT_SET;
+                    setupViews();
+                    dialog.dismiss();
+                });
+
+                dialog.findViewById(R.id.sort_item_last_cast).setOnClickListener(v -> {
+                    SortMode.lastSortMethod = SortMode.LAST_CAST;
+                    setupViews();
+                    dialog.dismiss();
+                });
+
+                dialog.findViewById(R.id.reset_analytics).setOnClickListener(v -> {
+                    mainActivityInterface.getAnalyticsHelper().resetAnalytics();
+                    setupViews();
+                    dialog.dismiss();
+                });
+
+                // Show the dialog
+                dialog.show();
             }
         });
     }

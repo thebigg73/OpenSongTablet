@@ -155,21 +155,18 @@ public class OpenSongSetBundle {
                 while ((ze = zipInputStream.getNextEntry()) != null) {
                     File extractedFile = mainActivityInterface.getStorageAccess().getAppSpecificFile(folder, subfolder, ze.getName());
                     if (extractedFile != null) {
-                        OutputStream outputStream = new FileOutputStream(extractedFile);
                         // Write the file
-                        int count;
-                        try {
-                            while ((count = zipInputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, count);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
+                        try (OutputStream outputStream = new FileOutputStream(extractedFile)) {
                             try {
-                                outputStream.close();
+                                int count;
+                                while ((count = zipInputStream.read(buffer)) != -1) {
+                                    outputStream.write(buffer, 0, count);
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }

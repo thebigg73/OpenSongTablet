@@ -33,7 +33,6 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.SettingsExportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.slider.LabelFormatter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +40,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 public class ExportFragment extends Fragment {
 
@@ -242,13 +240,7 @@ public class ExportFragment extends Fragment {
         myView.screenShot.setCheckBox(mainActivityInterface.getPreferences().getMyPreferenceBoolean("exportScreenshot",false));
 
         // Set the pdf/print theme
-        myView.maxPDFScaling.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return (int)value+"%";
-            }
-        });
+        myView.maxPDFScaling.setLabelFormatter(value -> (int)value+"%");
         setMaxPDFScaling();
         myView.forceSinglePage.setChecked(mainActivityInterface.getMakePDF().getForceSinglePage());
         myView.forceSinglePage.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getMakePDF().setForceSinglePage(b));
@@ -377,7 +369,7 @@ public class ExportFragment extends Fragment {
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
             if (pref!=null) {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(pref,isChecked);
             }
@@ -388,10 +380,6 @@ public class ExportFragment extends Fragment {
         String theme = default_string;
         if (mainActivityInterface!=null && mainActivityInterface.getMyThemeColors()!=null) {
             switch (mainActivityInterface.getMyThemeColors().getPdfTheme()) {
-                case "default":
-                default:
-                    theme = default_string;
-                    break;
                 case "dark":
                     theme = dark_string;
                     break;
@@ -403,6 +391,10 @@ public class ExportFragment extends Fragment {
                     break;
                 case "custom2":
                     theme = custom2_string;
+                    break;
+                case "default":
+                default:
+                    theme = default_string;
                     break;
             }
         }
@@ -1117,6 +1109,9 @@ public class ExportFragment extends Fragment {
     private File getFileFromUri(Uri uri, File exportFolder) {
         if (uri!=null) {
             String name = uri.getLastPathSegment();
+            if (name==null) {
+                name="";
+            }
             String bitToRemove = "OpenSong/Export/";
             if (name.contains(bitToRemove) && !name.endsWith(bitToRemove)) {
                 name = name.substring(name.indexOf(bitToRemove) + bitToRemove.length());
@@ -1716,14 +1711,6 @@ public class ExportFragment extends Fragment {
                 }
             }
 
-            /*if (justChordsSetBundle) {
-                //mainActivityInterface.getOpenSongSetBundle().zipFiles(setToExport, urisSetBundle, false);
-
-                Uri justChordsBundleUri = mainActivityInterface.getOpenSongSetBundle().getJustChordsBundleUri();
-                if (justChordsBundleUri!=null) {
-                        uris.add(justChordsBundleUri);
-                }
-            }*/
             mainActivityInterface.getOpenSongSetBundle().destroy();
         }
     }

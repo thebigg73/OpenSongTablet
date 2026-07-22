@@ -186,10 +186,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                                 myView.tabButtons.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
                                 new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
                                     switch (position) {
-                                        case 0:
-                                        default:
-                                            tab.setText(lyrics_string);
-                                            break;
                                         case 1:
                                             tab.setText(mainfoldername_string);
                                             break;
@@ -199,6 +195,11 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                                         case 3:
                                             tab.setText(tag_string);
                                             break;
+                                        case 0:
+                                        default:
+                                            tab.setText(lyrics_string);
+                                            break;
+
                                     }
                                 }).attach();
                             }

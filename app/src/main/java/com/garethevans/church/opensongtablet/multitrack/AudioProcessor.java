@@ -49,9 +49,11 @@ public class AudioProcessor {
             for (int i = 0; i < extractor.getTrackCount(); i++) {
                 format = extractor.getTrackFormat(i);
                 String mime = format.getString(MediaFormat.KEY_MIME);
-                if (mime.startsWith("audio/")) {
-                    trackIndex = i;
-                    break;
+                if (mime!=null) {
+                    if (mime.startsWith("audio/")) {
+                        trackIndex = i;
+                        break;
+                    }
                 }
             }
 
@@ -153,7 +155,7 @@ public class AudioProcessor {
                     if (!filename.toLowerCase().endsWith(".wav") && uri!=null) {
                         mediaMetadataRetriever.setDataSource(c, uri);
                         String mimeType = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
-                        if (mimeType.contains("audio/")) {
+                        if (mimeType!=null && mimeType.contains("audio/")) {
                             audioFiles.add(filename);
                             if (!mimeType.equals("audio/wav")) {
                                 filesNeedingConversion.add(filename);

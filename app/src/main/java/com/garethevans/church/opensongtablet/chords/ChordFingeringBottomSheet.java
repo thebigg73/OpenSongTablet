@@ -221,9 +221,7 @@ public class ChordFingeringBottomSheet extends BottomSheetCommon {
 
     private void showProgress(boolean show) {
         if (myView!=null) {
-            myView.getRoot().post(() -> {
-                myView.progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            });
+            myView.getRoot().post(() -> myView.progressBar.setVisibility(show ? View.VISIBLE : View.GONE));
         }
     }
 

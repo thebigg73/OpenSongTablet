@@ -112,36 +112,6 @@ public class StorageAccess {
 
     // This gets the uri for the uriTreeHome (the uri of the ..../OpenSong folder
     // This may or may not be the same as uriTree as this could be the parent folder
-    /*public Uri homeFolder(Uri uri) {
-        // The user specified a storage folder when they started the app
-        // However, this might not be the OpenSong folder, but the folder containing it
-        // This function is called once when the app starts and fixes that
-        // We need a reference to the OpenSong as the root for the app
-
-        String uriTree_String;
-        if (uri == null) {
-            // No uri has been sent, so retrieve it from the preferences
-            uriTree_String = getStoragePreference();
-        } else {
-            // Use the uri sent as the base start point
-            uriTree_String = uri.toString();
-        }
-
-        try {
-            if (uriTree_String != null) {
-                if (lollipopOrLater()) {
-                    uri = homeFolder_SAF(uriTree_String);
-                } else {
-                    uri = homeFolder_File(uriTree_String);
-                }
-            }
-
-        } catch (Exception e) {
-            // Could be called if the uri stored is for a different version of Android. e.g. after upgrade
-            uri = null;
-        }
-        return uri;
-    }*/
     public Uri homeFolder(Uri uri) {
         // The user specified a storage folder when they started the app
         // However, this might not be the OpenSong folder, but the folder containing it
@@ -193,30 +163,6 @@ public class StorageAccess {
         }
     }
 
-    /*private Uri homeFolder_SAF(String uriTree_String) {
-        // When using a document tree, the uri needed for DocumentsContract is more complex than the uri chosen.
-        // Create a document file to get a contract uri
-        Uri uri = Uri.parse(uriTree_String);
-        if (uri != null) {
-            DocumentFile df = documentFileFromRootUri(uri, uriTree_String);
-            if (df == null || !df.exists()) {
-                uri = null;
-            } else {
-                uri = df.getUri();
-                //uriTree = uri;
-            }
-
-            // If uri doesn't end with /OpenSong/, fix that
-            if (uri != null && uri.getLastPathSegment() != null && !uri.getLastPathSegment().endsWith("OpenSong")) {
-                String s = uri.toString();
-                s = s + "%2F" + appFolder;
-                uri = Uri.parse(s);
-            }
-        }
-        uriTreeHome = uri;
-        return uri;
-    }
-*/
     private Uri homeFolder_SAF(Uri treeUri) {
         if (treeUri == null) return null;
 
@@ -251,7 +197,6 @@ public class StorageAccess {
 
         return null;
     }
-
     private Uri homeFolder_File(String uriTree_String) {
         File f;
         // Now get rid of the file start as it'll get added again later
@@ -355,126 +300,6 @@ public class StorageAccess {
         return "Success";
     }
 
-/*  @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private String createOrCheckRootFolders_SAF(Uri uri) {
-        uriTreeHome = homeFolder(uri);
-
-        // Prepare for the fileWriteActivity.txt log
-        StringBuilder stringBuilder = new StringBuilder();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-        stringBuilder.append("--------------------\nBootup:")
-                .append(sdf.format(new Date())).append("\n").append(TAG);
-        // Look to see if uriTreeHome actually exists
-        DocumentFile documentFile = DocumentFile.fromTreeUri(c, uri);
-        if (documentFile != null && documentFile.exists() && documentFile.getUri().toString().endsWith(appFolder)) {
-            // This is the correct uriTreeHome
-            uriTreeHome = documentFile.getUri();
-        } else if (documentFile != null) {
-            DocumentFile openSongDf = documentFile.findFile(appFolder);
-            if (openSongDf == null) {
-                openSongDf = documentFile.createDirectory(appFolder);
-                if (openSongDf != null) {
-                    uriTreeHome = openSongDf.getUri();
-                    documentFile = openSongDf;
-                }
-            } else {
-                uriTreeHome = openSongDf.getUri();
-                documentFile = openSongDf;
-            }
-        }
-
-        // Keep a reference to the OpenSongs/ documentFile
-        uriTreeDF = documentFile;
-
-        setUriTreeHome(uriTreeHome);
-
-        // Go through the main folders and try to create them
-        // We have a reference to the OpenSong/ folder now from above
-        if (documentFile != null) {
-            stringBuilder.append("\nuriTreeHome:").append(documentFile.getUri());
-            for (String folder : rootFolders) {
-                try {
-                    DocumentFile dfFolder = documentFile.findFile(folder);
-                    stringBuilder.append("\nLooking for:").append(folder);
-                    if (dfFolder == null || !dfFolder.exists()) {
-                        stringBuilder.append(" - Not found, so create");
-                        DocumentFile thisDF = documentFile.createDirectory(folder);
-                        if (thisDF != null) {
-                            stringBuilder.append(":").append(thisDF.getUri());
-                        } else {
-                            stringBuilder.append(" - failed as thisDF==null");
-                        }
-
-                    } else {
-                        stringBuilder.append(" - Found, so skip:").append(dfFolder.getUri());
-                    }
-
-                } catch (Exception e) {
-                    stringBuilder.append(" - error creating\n");
-                }
-            }
-
-            // Now we know we have the main folders, get a permanent reference to OpenSong/Songs
-            songsDF = uriTreeDF.findFile("Songs");
-            stringBuilder.append("\nRoot folders done, now check _cache folder");
-
-            // Now for the cache folders
-            for (String folder : cacheFolders) {
-                String[] bits = folder.split("/");
-                stringBuilder.append("\nChecking cache folder:").append(folder);
-                try {
-                    // The main folder exists (dealt with above).  Get a reference
-                    DocumentFile dfFolder = documentFile.findFile(bits[0]);
-                    if (dfFolder != null) {
-                        DocumentFile dfSubFolder = dfFolder.findFile(bits[1]);
-                        if (dfSubFolder == null || !dfSubFolder.exists()) {
-                            stringBuilder.append(" - parent folder exists, so create _cache");
-                            DocumentFile thisDF = dfFolder.createDirectory(bits[1]);
-                            if (thisDF != null) {
-                                stringBuilder.append(" - created:").append(thisDF.getUri());
-                            } else {
-                                stringBuilder.append(" - tried to create, but failed:").append(bits[1]);
-                            }
-                        } else {
-                            stringBuilder.append(" - _cache folder already exists, so skip:").append(dfSubFolder.getUri());
-                        }
-                    } else {
-                        stringBuilder.append(" - parent folder didn't exist, so can't create _cache");
-                    }
-
-                } catch (Exception e2) {
-                    stringBuilder.append("\nError creating cache:").append(folder);
-                }
-
-                // Clear any key variations from the Variations/_cache folder
-                try {
-                    ArrayList<String> cacheFiles = listFilesInFolder("Variations","_cache");
-                    for (String cacheFile:cacheFiles) {
-                        if (cacheFile.contains("_K-")) {
-                            Uri uriToRemove = getUriForItem("Variations","_cache",cacheFile);
-                            Log.d(TAG,"removed "+cacheFile+": "+deleteFile(uriToRemove));
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // Update the log
-            updateFileActivityLog(stringBuilder.toString());
-
-            // Now copy the assets if they aren't already there
-            copyAssets();
-
-            return "Success";
-        } else {
-            // Update the log
-            stringBuilder.append("\nuriTreeHome not set/working");
-            updateFileActivityLog(stringBuilder.toString());
-            return "Failure";
-        }
-    }
-*/
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private String createOrCheckRootFolders_SAF(Uri uri) {
         // 1. Resolve/Fix the home folder URI first
@@ -556,42 +381,6 @@ public class StorageAccess {
         }
     }
 
-    /*private void copyAssets() {
-        try {
-            // Copies the background assets
-            AssetManager assetManager = c.getAssets();
-            String[] files = new String[2];
-            files[0] = "backgrounds/OpenSongApp_Background.png";
-            files[1] = "backgrounds/OpenSongApp_Logo.png";
-            Uri backgrounds = getUriForItem("Backgrounds", "", "");
-
-            DocumentFile df = documentFileFromUri(backgrounds, backgrounds.getPath());
-            for (String filename : files) {
-                String filetocopy = filename.replace("backgrounds/", "");
-                // See if they are already there first
-                Uri uritocheck = getUriForItem("Backgrounds", "", filetocopy);
-                if (!uriExists(uritocheck)) {
-                    if (lollipopOrLater()) {
-                        DocumentsContract.createDocument(c.getContentResolver(), backgrounds, "image/png", filetocopy);
-                    } else {
-                        df.createFile("image/png", filetocopy);
-                    }
-                    if (uritocheck != null) {
-                        OutputStream out = getOutputStream(uritocheck);
-                        try {
-                            InputStream in = assetManager.open(filename);
-                            copyFile(in, out);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     private void copyAssets() {
         try {
             AssetManager assetManager = c.getAssets();
@@ -652,6 +441,9 @@ public class StorageAccess {
         String path = "";
         try {
             path = uri.getPath();
+            if (path==null) {
+                path = "";
+            }
             // When not an internal path (more patterns may be needed) indicate as external
             if (!path.contains("/tree/primary")) {
                 path = c.getString(R.string.storage_ext);
@@ -744,7 +536,14 @@ public class StorageAccess {
     }
 
     public String[] niceUriTree_File(Uri uri, String[] storageDetails) {
-        storageDetails[1] = uri.getPath().replace("file://", "");
+        String uriPath = "";
+        if (uri!=null) {
+            uriPath = uri.getPath();
+        }
+        if (uriPath==null) {
+            uriPath = "";
+        }
+        storageDetails[1] = uriPath.replace("file://", "");
         if (!storageDetails[1].startsWith("/")) {
             storageDetails[1] = "/" + storageDetails[1];
         }
@@ -769,8 +568,8 @@ public class StorageAccess {
 
         // Prepare an arraylist for any song folders so we can count the items
         ArrayList<File> foldersToIndex = new ArrayList<>();
-        if (uri.getPath() != null) {
-            foldersToIndex.add(new File(uri.getPath()));
+        if (!uriPath.isEmpty()) {
+            foldersToIndex.add(new File(uriPath));
         }
         int count = 0;
         try {
@@ -797,6 +596,9 @@ public class StorageAccess {
     public Uri fixBadStorage(Uri uri) {
         if (uri != null) {
             String text = uri.getPath();
+            if (text==null) {
+                text = "";
+            }
             // IV: Exclude raw storage
             if (text.startsWith("/tree/raw:") || text.startsWith("/tree/msd:")) {
                 uri = null;
@@ -899,18 +701,6 @@ public class StorageAccess {
         return s;
     }
 
-    /*public String safeFilename(String filename) {
-        // Remove bad characters from filenames
-        if (filename==null) {
-            filename = "";
-        }
-        filename = filename.replace("|","¦");
-        filename = filename.replaceAll("[*?<>&!#$+\":{}@\\\\]", " "); // Removes bad characters - leave ' and / though
-        filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
-        // Don't allow the name OpenSong
-        filename = filename.replace(appFolder, "Open_Song");
-        return filename.trim();  // Returns the trimmed value
-    }*/
     public String safeFilename(String name) {
         if (name == null) return "unnamed_song";
 
@@ -1170,48 +960,15 @@ public class StorageAccess {
     }
 
     private boolean uriExists_SAF(Uri uri) {
-        boolean file=false;
-        if (uri!=null && uri.getScheme()!=null && uri.getScheme().startsWith("file")) {
-            // Must be in the user storage
-            file = true;
-        }
-        if (file) {
+        boolean file = uri != null && uri.getScheme() != null && uri.getScheme().startsWith("file");
+        // Must be in the user storage
+        if (file && uri.getPath()!=null) {
             File f = new File(uri.getPath());
             return f.exists();
         }
-        if (uri!=null && !uri.getPath().isEmpty() && c!=null && c.getContentResolver()!=null) {
+        if (uri!=null && uri.getPath()!=null && !uri.getPath().isEmpty() && c!=null && c.getContentResolver()!=null) {
 
-            /*
-            REMOVED THIS AS IT SPITS ERRORS WHEN CHECKING ANYTHING ON DOCUMENTFILE
-            DocumentFile documentFile = null;
-            DocumentFile documentFileFromTreeUri = null;
-            try {
-                documentFile = DocumentFile.fromSingleUri(c, uri);
-                documentFileFromTreeUri = DocumentFile.fromTreeUri(c, uri);
-            } catch (Exception e) {
-                Log.d(TAG, uri + " not a singleUri");
-            }
-
-            if (documentFile!=null && documentFileFromTreeUri!=null) {
-                Log.d(TAG, "documentFile:" + documentFile.getUri() + " documentFileFromTreeUri:" + documentFileFromTreeUri.getUri());
-                Log.d(TAG,"can read the document file:"+documentFile.canRead() + " can write:"+documentFile.canWrite());
-            }
-
-            if (documentFile != null) {
-                try {
-                    if (documentFile.exists()) {
-                        return true;
-                    } else {
-                        Log.d(TAG,"documentFile.exists is false");
-                    }
-                } catch (Exception e) {
-                   Log.d(TAG,"Still an issue, try the final method");
-                }
-            } else {
-                return false;
-            }*/
-
-            try (InputStream is = c.getContentResolver().openInputStream(uri)) {
+            try (InputStream ignored = c.getContentResolver().openInputStream(uri)) {
                 return true;
             } catch (Exception e) {
                 return false;
@@ -1237,7 +994,9 @@ public class StorageAccess {
             try {
                 if (uri != null) {
                     InputStream is = c.getContentResolver().openInputStream(uri);
-                    is.close();
+                    if (is!=null) {
+                        is.close();
+                    }
                     return true;
                 } else {
                     return false;
@@ -1493,53 +1252,6 @@ public class StorageAccess {
         }
         return null;
     }
-    /*private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
-        Log.d(TAG,"uriTreeHome:"+uriTreeHome);
-        if (uriTreeHome == null) {
-            uriTreeHome = homeFolder(null);
-        }
-        if (uriTreeHome == null) return null;
-
-        try {
-            // 1. Rebuild the targeted virtual folder ID layout
-            String rootDocId = DocumentsContract.getTreeDocumentId(uriTreeHome);
-            StringBuilder pathBuilder = new StringBuilder(rootDocId);
-
-            if (!rootDocId.endsWith(appFolder)) {
-                pathBuilder.append("/").append(appFolder);
-            }
-            if (folder != null && !folder.isEmpty()) {
-                pathBuilder.append("/").append(folder);
-            }
-            if (subfolder != null && !subfolder.isEmpty() &&
-                    !subfolder.equals("MAIN") && !subfolder.equals(c.getString(R.string.mainfoldername))) {
-                pathBuilder.append("/").append(subfolder);
-            }
-
-            // 2. Build the children directory pointing URI matching that folder
-            Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(uriTreeHome, pathBuilder.toString());
-
-            // 3. Query the content resolver directly for the filename in a single step
-            ContentResolver resolver = c.getContentResolver();
-            try (Cursor cursor = resolver.query(
-                    childrenUri,
-                    new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME},
-                    DocumentsContract.Document.COLUMN_DISPLAY_NAME + " = ?",
-                    new String[]{filename},
-                    null)) {
-
-                if (cursor != null && cursor.moveToFirst()) {
-                    // Found it! Pull the true indexed document ID from the database record
-                    String docId = cursor.getString(cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_DOCUMENT_ID));
-                    return DocumentsContract.buildDocumentUriUsingTree(uriTreeHome, docId);
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Fast optimization look up optimization failed, structural fallback activated", e);
-        }
-
-        return null; // File does not exist yet
-    }*/
     private Uri getUriForItem_File(String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
         File f = new File(s);
@@ -1638,68 +1350,6 @@ public class StorageAccess {
 
 
     // Basic file actions (read, create, copy, delete, write)
-
-    /** Save the song with valid folder, filename, lyrics, etc.
-     // @param song as long as folder, filename, lyrics, etc. are ok, we create and save the XML here
-     * @return true if save success
-     */
-    /*public boolean saveSongToStorage(Song song) {
-        if (song.getFilename() == null || song.getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-            return false;
-        }
-
-        String[] fixLocations = getActualFoldersFromNice(song.getFolder());
-        // fixLocations[0] is likely "Songs", fixLocations[1] is the subfolder
-        Uri fileUri = getUriForItem(fixLocations[0], fixLocations[1], song.getFilename());
-
-        // Prepare XML
-        song.setSongXML(mainActivityInterface.getProcessSong().getXML(song));
-
-        try {
-            // 1. Try to overwrite first (prevents (1) duplicates)
-            OutputStream os = c.getContentResolver().openOutputStream(fileUri, "wt");
-            if (os != null) {
-                os.write(song.getSongXML().getBytes(StandardCharsets.UTF_8));
-                os.close();
-                return true;
-            }
-        } catch (FileNotFoundException e) {
-            // 2. File doesn't exist, navigate hierarchy: OpenSong -> Songs -> Category
-            DocumentFile root = DocumentFile.fromTreeUri(c, uriTreeHome); // "OpenSong/"
-            if (root != null) {
-                // Navigate into the "Songs" folder first
-                DocumentFile songsBaseDir = root.findFile("Songs");
-
-                if (songsBaseDir != null) {
-                    // Now find the category folder (e.g., "Hymns") inside "Songs"
-                    DocumentFile targetFolder = (song.getFolder() == null || song.getFolder().isEmpty())
-                            ? songsBaseDir
-                            : songsBaseDir.findFile(song.getFolder());
-
-                    if (targetFolder != null) {
-                        // Use octet-stream to keep it extensionless
-                        DocumentFile newFile = targetFolder.createFile("application/octet-stream", song.getFilename());
-
-                        if (newFile != null) {
-                            try (OutputStream os = getOutputStream(newFile.getUri())) {
-                                os.write(song.getSongXML().getBytes(StandardCharsets.UTF_8));
-                                return true;
-                            } catch (IOException ioException) {
-                                Log.e("StorageAccess", "Failed to write new file", ioException);
-                            }
-                        }
-                    } else {
-                        Log.e("StorageAccess", "Subfolder not found: " + song.getFolder());
-                    }
-                }
-            }
-        } catch (IOException e) {
-            Log.e("StorageAccess", "Error saving song", e);
-        }
-        return false;
-    }
-*/
-
 
     public String[] getActualFoldersFromNice(String folder) {
         String[] location = new String[2];
@@ -1839,19 +1489,6 @@ public class StorageAccess {
         OutputStream outputStream = getOutputStream(targetUri);
         return copyFile(inputStream,outputStream);
     }
-
-    /*public boolean doStringWriteToFile(String folder, String subfolder, String filename, String string) {
-        try {
-            Uri uri = getUriForItem(folder, subfolder, filename);
-            lollipopCreateFileForOutputStream(true, uri, null, folder, subfolder, filename);
-            OutputStream outputStream = getOutputStream(uri);
-            return writeFileFromString(string, outputStream);
-        } catch (Exception e) {
-            updateCrashLogAttempts++;
-            e.printStackTrace();
-            return false;
-        }
-    }*/
 
     public void writeFileFromDecodedImageString(OutputStream os, byte[] bytes) {
         try {
@@ -2220,9 +1857,11 @@ public class StorageAccess {
         }
     }
     private void renameFileFromUri_File(Uri oldUri, Uri newUri) {
-        File file = new File(oldUri.getPath());
-        boolean renamed = file.renameTo(new File(newUri.getPath()));
-        Log.d(TAG,"renamed:"+renamed);
+        if (oldUri!=null && oldUri.getPath()!=null && newUri!=null && newUri.getPath()!=null) {
+            File file = new File(oldUri.getPath());
+            boolean renamed = file.renameTo(new File(newUri.getPath()));
+            Log.d(TAG, "renamed:" + renamed);
+        }
     }
     private void renameFileFromUri_SAF(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
         // Don't use document file rename as it can end badly if there is an issue
@@ -2248,6 +1887,9 @@ public class StorageAccess {
     public String getFileNameFromUri(Uri uri) {
         if (uri!=null) {
             String scheme = uri.getScheme();
+            if (scheme==null) {
+                scheme = "";
+            }
             if (scheme.equals("file")) {
                 return uri.getLastPathSegment();
             } else if (scheme.equals("content")) {
@@ -2366,7 +2008,7 @@ public class StorageAccess {
     }
     public void wipeFolder(String folder, String subfolder) {
         Uri uri = getUriForItem(folder,subfolder,null);
-        if (uriExists(uri)) {
+        if (uri!=null && uri.getPath()!=null && uriExists(uri)) {
             if (lollipopOrLater()) {
                 wipeFolder_SAF(uri,folder,subfolder);
             } else {
@@ -2479,29 +2121,6 @@ public class StorageAccess {
         }
         return outcome;
     }
-    /*public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
-        ArrayList<String> availableFolders = new ArrayList<>();
-        for (String entry : songIDs) {
-            if (entry.endsWith("/")) {
-                String newtext = entry.substring(0, entry.lastIndexOf("/"));
-                if (!newtext.equals(toIgnore) && !availableFolders.contains(newtext)) {
-                    availableFolders.add(newtext);
-                }
-            }
-        }
-        Comparator<String> comparator = (o1, o2) -> {
-            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
-            collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1,o2);
-        };
-        Collections.sort(availableFolders,comparator);
-        // Add the MAIN folder
-        if (addMain) {
-            availableFolders.add(0, c.getString(R.string.mainfoldername));
-        }
-        return availableFolders;
-    }*/
-    // Replace getSongFolders with this optimised one:
     public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
         HashSet<String> folderSet = new HashSet<>();
 
@@ -2789,12 +2408,14 @@ public class StorageAccess {
     }
     private ArrayList<String> listFilesAtUri_File(Uri uri) {
         ArrayList<String> al = new ArrayList<>();
-        File f = new File(uri.getPath());
-        if (f.length()>0) {
-            File[] files = f.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    al.add(file.getName());
+        if (uri!=null && uri.getPath()!=null) {
+            File f = new File(uri.getPath());
+            if (f.length() > 0) {
+                File[] files = f.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        al.add(file.getName());
+                    }
                 }
             }
         }

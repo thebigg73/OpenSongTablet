@@ -33,7 +33,7 @@ public class Autoscroll {
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime,
             onscreenAutoscrollHide, usingZoomLayout, autoscrollPreDelayCountdown, autoHideSent=false;
     private int songDelay, songDuration, displayWidth, displayHeight, songWidth, songHeight, scrollTime, flashCount,
-            autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn, inlinePauseTotal;
+            autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, inlinePauseTotal;
     private final int flashTime = 600, updateTime = 20;
     private float scrollIncrement, scrollPosition, scrollCount, scrollIncrementScale;
     private final OnScreenInfo onScreenInfo;

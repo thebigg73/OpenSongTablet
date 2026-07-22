@@ -246,9 +246,21 @@ public class ConvertTextSong {
         compiledtext = compiledtext.replace("\n\n","\n\n[ ]\n");
         compiledtext = compiledtext.replace("\n \n","\n\n[ ]\n");
 
+        // Replace multiple blank sections
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n[ ]\n[ ]\n[ ]\n","[ ]\n");
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n[ ]\n[ ]\n","[ ]\n");
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n[ ]\n","[ ]\n");
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n","[ ]\n");
+
         // Now replace blank sections that aren't needed (followed by section already)
         compiledtext = compiledtext.replace("\n\n\n[ ]\n[","\n\n\n[");
         compiledtext = compiledtext.replace("\n\n[ ]\n[","\n\n[");
+
+        // Replace multiple blank sections (do again as we might have changed this above)
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n[ ]\n[ ]\n[ ]\n","[ ]\n");
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n[ ]\n[ ]\n","[ ]\n");
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n[ ]\n","[ ]\n");
+        compiledtext = compiledtext.replace("[ ]\n[ ]\n","[ ]\n");
 
         return compiledtext;
     }

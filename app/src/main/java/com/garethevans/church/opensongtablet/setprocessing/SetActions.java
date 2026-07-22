@@ -1537,7 +1537,7 @@ public class SetActions {
 
     public SetObject createSetObjectFromFilename(String setFilename) {
         // We need to parse the set xml and populate the object
-        SetObject setObject = null;
+        SetObject setObject;
 
         Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setFilename);
         setObject = new SetObject();
@@ -1798,7 +1798,8 @@ public class SetActions {
             }*/
             openChordsSetListItem.setId(String.valueOf(UUID.randomUUID()));
             openChordsSetListItem.setType("slide");
-            if (setSlideGroupObject.getName()!=null && !setSlideGroupObject.getTitle().isEmpty()) {
+            if (setSlideGroupObject.getName()!=null && setSlideGroupObject.getTitle()!=null &&
+                    !setSlideGroupObject.getTitle().isEmpty()) {
                 openChordsSetListItem.setTitle(setSlideGroupObject.getName());
             }
 
@@ -1930,13 +1931,14 @@ public class SetActions {
             </slide_group>
         */
 
-        String xmlBit = "" +
-                "    <slide_group " + "name=\"" + setSlideGroupObject.getName().trim() + "\" type=\"scripture\">\n" +
+        if (setSlideGroupObject.getName()==null) {
+            setSlideGroupObject.setName("");
+        }
+
+        return "    <slide_group " + "name=\"" + setSlideGroupObject.getName().trim() + "\" type=\"scripture\">\n" +
                 "      <title>" + setSlideGroupObject.getTitle() + "</title>\n" +
                 "      <subtitle>" + setSlideGroupObject.getSubtitle() + "</subtitle>\n" +
                 "      <notes>" + setSlideGroupObject.getNotes() + "</notes>\n";
-
-        return xmlBit;
     }
     private void pullXMLIntoSongSlideGroupObject(XmlPullParser xpp, SetSlideGroupObject setSlideGroupObject) {
         String path = stripSlashes(mainActivityInterface.getProcessSong().

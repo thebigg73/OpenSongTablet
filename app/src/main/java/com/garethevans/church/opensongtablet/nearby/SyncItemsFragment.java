@@ -136,8 +136,6 @@ public class SyncItemsFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
                 // Send the folderChosen to the arrayAdapter
                 prepareRecycler(getContext());
-                //syncNearbyFragment.announceNotPrepared(what);
-                //nearbySyncAdapter.chooseFolder(myView.folderFilter.getText().toString());
             }
         });
     }

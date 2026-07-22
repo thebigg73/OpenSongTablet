@@ -22,8 +22,8 @@ public class RemoteSaveBottomSheet extends BottomSheetCommon {
     private final String TAG = "RemoteSaveBottomSheet";
     private MainActivityInterface mainActivityInterface;
     private BottomSheetRemoteSaveBinding myView;
-    private Song songToSave = null, songToCompare = null;
-    private CurrentSet setToSave = null, setToCompare = null;
+    private Song songToSave, songToCompare = null;
+    private CurrentSet setToSave, setToCompare = null;
     private String song_doesnt_exist = "", sync_remote_new_item = "", sync_remote_update_item = "",
             sync_remote_replace_item = "", sync_remote_confirm_save = "";
     private boolean isNewSong = false, songNewer = false, songUuidMatches = false;

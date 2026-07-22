@@ -61,7 +61,9 @@ public class MoveContentFragment extends Fragment {
         prepareStrings();
 
         if (getArguments()!=null && getArguments().containsKey("subdir")) {
-            subfolder = getArguments().get("subdir").toString();
+            if (getArguments().get("subdir")!=null) {
+                subfolder = getArguments().get("subdir").toString();
+            }
         }
         if (subfolder==null || subfolder.isEmpty()) {
             subfolder = mainfoldername_string;

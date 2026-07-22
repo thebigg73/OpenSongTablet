@@ -19,7 +19,6 @@ public class FixLocale {
     private final String TAG = "FixLocale";
     private Locale userLocale;
     private String language;
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
 
 
@@ -28,7 +27,6 @@ public class FixLocale {
     }
 
     public FixLocale(Context c) {
-        this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
         getUpdatedPreferences();
     }
@@ -67,10 +65,6 @@ public class FixLocale {
 
             // Load the appropriate translations
             // The old method no longer works on newer devices
-            //Configuration configuration = new Configuration();
-            //Locale.setDefault(userLocale);
-            //configuration.setLocale(userLocale);
-            //c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
             LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(language);
             AppCompatDelegate.setApplicationLocales(appLocale);
 
@@ -83,10 +77,6 @@ public class FixLocale {
 
         if (!wasset) {
             try {
-                //Configuration configuration = new Configuration();
-                //Locale.setDefault(userLocale);
-                //configuration.setLocale(userLocale);
-                //c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
                 LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(language);
                 AppCompatDelegate.setApplicationLocales(appLocale);
             } catch (Exception e) {

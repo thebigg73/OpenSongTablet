@@ -813,9 +813,7 @@ public class SetManageFragment extends Fragment {
 
     public void showProgress(boolean showProgress) {
         if (myView!=null) {
-            myView.progressBar.post(() -> {
-                myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
-            });
+            myView.progressBar.post(() -> myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE));
         }
     }
 

@@ -24,7 +24,7 @@ public class OpenChordsSongMetaDataItem {
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
     }
-    public void setSpotifyId(String sectionName) {
+    public void setSpotifyId(String spotifyId) {
         this.spotifyId = spotifyId;
     }
 

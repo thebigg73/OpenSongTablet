@@ -125,10 +125,6 @@ public class StickyPopUp {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             closeButton.makeFlat();
-            //closeButton.setElevation(0);
-            //closeButton.setCompatElevation(0f);     // removes shadow across states
-            //ViewCompat.setElevation(closeButton, 0f);
-            //closeButton.setStateListAnimator(null);
         }
 
         closeButton.setImageDrawable(closeIcon);

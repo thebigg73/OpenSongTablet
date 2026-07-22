@@ -89,7 +89,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     }
 
     public void prepareAlphaList() {
-        if (myView!=null) {
+        if (myView!=null && getContext()!=null) {
             myView.sideIndex.removeAllViews();
             for (String ab : alphaList) {
                 MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(getContext());

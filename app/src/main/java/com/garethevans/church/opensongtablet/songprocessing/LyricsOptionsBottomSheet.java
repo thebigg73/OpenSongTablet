@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -148,9 +147,7 @@ public class LyricsOptionsBottomSheet extends BottomSheetCommon {
                 e.printStackTrace();
             }
         });
-        myView.keyboardSmartRibbon.setOnCheckedChangeListener((compoundButton, checked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("keyboardSmartRibbon", checked);
-        });
+        myView.keyboardSmartRibbon.setOnCheckedChangeListener((compoundButton, checked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("keyboardSmartRibbon", checked));
 
                 myView.insertInlineMidi.setOnClickListener(view -> {
             if (openingFragment!=null) {

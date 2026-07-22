@@ -357,12 +357,6 @@ public class Transpose {
                 if (line.startsWith(".")) {
                     line = line.replaceFirst("."," ");
                     switch (oldChordFormat) {
-                        default:
-                        case 1:
-                            for (int z = 0; z < fromChords1.length; z++) {
-                                line = line.replace(fromChords1[z], toChordsNums1[z]);
-                            }
-                            break;
                         case 2:
                             for (int z = 0; z < fromChords2.length; z++) {
                                 line = line.replace(fromChords2[z], toChordsNums2[z]);
@@ -392,6 +386,13 @@ public class Transpose {
                                 line = line.replace(fromNash[z], toChordNumsNash[z]);
                             }
                             break;
+                        case 1:
+                        default:
+                            for (int z = 0; z < fromChords1.length; z++) {
+                                line = line.replace(fromChords1[z], toChordsNums1[z]);
+                            }
+                            break;
+
                     }
 
                     // If the old format has transposable chords - transpose
@@ -399,16 +400,6 @@ public class Transpose {
                         line = transposeNumber(line, transposeDirection, transposeTimes);
                     }
                     switch (newChordFormat) {
-                        default:
-                        case 1:
-                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
-                                line = line.replace(fromChordsNum[z], toFlatChords1[z]);
-                            } else {
-                                for (int z = 0; z < fromChordsNum.length; z++) {
-                                    line = line.replace(fromChordsNum[z], toSharpChords1[z]);
-                                }
-                            }
-                            break;
                         case 2:
                             if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
                                 line = line.replace(fromChordsNum[z], toFlatChords2[z]);
@@ -466,6 +457,17 @@ public class Transpose {
                                 }
                             }
                             break;
+                        case 1:
+                        default:
+                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
+                                line = line.replace(fromChordsNum[z], toFlatChords1[z]);
+                            } else {
+                                for (int z = 0; z < fromChordsNum.length; z++) {
+                                    line = line.replace(fromChordsNum[z], toSharpChords1[z]);
+                                }
+                            }
+                            break;
+
                     }
 
                     // Space adjustments: Remove patterns that cancel out

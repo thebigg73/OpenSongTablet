@@ -100,12 +100,7 @@ public class ProfileFragment extends Fragment {
         if (getContext()!=null) {
             mainActivityInterface.getProfileActions().resetPreferences();
             System.exit(1);
-            /*NavOptions navOptions = new NavOptions.Builder()
-                    .setPopUpTo(R.id.setStorageLocationFragment, true)
-                    .build();
-            NavHostFragment.findNavController(this)
-                    .navigate(Uri.parse(getString(R.string.deeplink_set_storage)), navOptions);
-        */}
+        }
     }
 
     @Override

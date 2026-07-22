@@ -452,11 +452,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     found = true;
                     break;
                 }
-                /*if (localObject.getTitle() != null && localObject.getTitle().equals(serverObject.getTitle())) {
-                    // Just ignore for now.  We will update the local uuid
-                    found = true;
-                    break;
-                }*/
             }
             if (!found) {
                 // Add this local object
@@ -1594,12 +1589,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         existingSong.setAuthor(newOpenSongSong.getAuthor());
         existingSong.setAutoscrolllength(newOpenSongSong.getAutoscrolllength());
         existingSong.setTempo(DrumCalculations.getFixedTempoString(newOpenSongSong.getTempo(),false));
-        /*if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
-            existingSong.setTempo(String.valueOf(mainActivityInterface.getDrumViewModel().getBpm()));
-        } else {
-            existingSong.setTempo("");
-        }*/
-        //existingSong.setTempo(newOpenSongSong.getTempo());
         existingSong.setTimesig(DrumCalculations.getFixedTimeSignatureString(newOpenSongSong.getTimesig(),false));
         existingSong.setKey(newOpenSongSong.getKey());
         //existingSong.setCapo(newOpenSongSong.getCapo());
@@ -2125,11 +2114,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 uploadFolderObject.setSongs(serverSongs);
                 uploadFolderObject.setSetLists(setsForUpload);
                 uploadFolderObject.setTags(serverTags);
-
-                //String json = gson.toJson(uploadFolderObject);
-                // Replace unneccessary items
-                //json = removeUnnecessaryBitsFromJson(json);
-                //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings", "", "uploadFolderObject2.json", json);
 
                 updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
                 doQueryCall(uploadFolderObject);
@@ -2700,14 +2684,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     }
 
                 }
-
-
-                /*Song localSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(getLocalFolderName(), openChordsCompareObject.getTitle());
-                if (localSong != null) {
-                    localSong.setUuid(openChordsCompareObject.getUuid());
-                    mainActivityInterface.getSQLiteHelper().updateSong(localSong);
-                    mainActivityInterface.getSaveSong().updateSong(localSong, false);
-                }*/
             }
         }
     }

@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.analytics.AnalyticsItem;
-import com.garethevans.church.opensongtablet.analytics.SortMode;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.nearby.ShareableObject;
@@ -736,69 +735,7 @@ public class CommonSQL {
         closeCursor(cursor);
         return key;
     }
-    /*public ArrayList<String> getFolders(SQLiteDatabase db) {
-        ArrayList<String> folders = new ArrayList<>();
-        String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
-                SQLite.COLUMN_FOLDER + " ASC";
 
-        // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
-        Cursor cursor = db.rawQuery(q, null);
-        cursor.moveToFirst();
-
-        if (cursor.getColumnCount() > 0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER) == 0) {
-            for (int x = 0; x < cursor.getCount(); x++) {
-                cursor.moveToPosition(x);
-                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))
-                        .replace("MAIN/", c.getString(R.string.mainfoldername));
-                folder = folder.replace(c.getString(R.string.mainfoldername) + "/", c.getString(R.string.mainfoldername));
-                folders.add(folder);
-            }
-        }
-        closeCursor(cursor);
-        if (folders.isEmpty()) {
-            folders.add(c.getString(R.string.mainfoldername));
-        }
-
-        // If we have custom folders (variations, etc.) listed, remove them
-        if (folders.contains("../Variations/_cache") ||
-                folders.contains("../" + c.getString(R.string.variation) + "/_cache") ||
-                folders.contains("**Variations/_cache") ||
-                folders.contains("**" + c.getString(R.string.variation) + "/_cache")) {
-            folders.remove("../Variations/_cache");
-            folders.remove("../" + c.getString(R.string.variation) + "/_cache");
-            folders.remove("**Variations/_cache");
-            folders.remove("**" + c.getString(R.string.variation) + "/_cache");
-        }
-
-        if (folders.contains("../Variations") ||
-                folders.contains("../" + c.getString(R.string.variation)) ||
-                folders.contains("**Variations") ||
-                folders.contains("**" + c.getString(R.string.variation))) {
-            folders.remove("../Variations");
-            folders.remove("../" + c.getString(R.string.variation));
-            folders.remove("**Variations");
-            folders.remove("**" + c.getString(R.string.variation));
-        }
-
-        // We should also add in any folders that are empty - the database has no record of them
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongFolders(mainActivityInterface.getStorageAccess().getSongIDsFromFile(), true, null);
-        for (String songId : songIds) {
-            if (!folders.contains(songId)) {
-                folders.add(songId);
-            }
-        }
-
-        Comparator<String> comparator = (o1, o2) -> {
-            Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
-            collator.setStrength(Collator.SECONDARY);
-            return collator.compare(o1, o2);
-        };
-        Collections.sort(folders, comparator);
-
-
-        return folders;
-    }
-    */
     // Alternative getFolders method that should be quicker:
     public ArrayList<String> getFolders(SQLiteDatabase db) {
         HashSet<String> folderSet = new HashSet<>();

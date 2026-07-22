@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.analytics;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.analytics.AnalyticsItem;
-import com.garethevans.church.opensongtablet.analytics.AnalyticsViewHolder;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.text.SimpleDateFormat;

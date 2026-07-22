@@ -269,7 +269,7 @@ public class WebServerFragment extends Fragment {
                 myView.runHotspot.setVisibility(View.GONE);
             }
         });
-        myView.hotspotInfo.setOnLongClickListener((View.OnLongClickListener) view -> {
+        myView.hotspotInfo.setOnLongClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, myView.hotspotInfo.getText().toString());
@@ -278,7 +278,7 @@ public class WebServerFragment extends Fragment {
             startActivity(shareIntent);
             return true;
         });
-        myView.ipAddress.setOnLongClickListener((View.OnLongClickListener) view -> {
+        myView.ipAddress.setOnLongClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, myView.ipAddress.getText().toString());

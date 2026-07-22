@@ -66,27 +66,28 @@ public class VoiceLiveFragment extends Fragment {
         myView.voiceLiveOverrideChannel.setChecked(mainActivityInterface.getVoiceLive().getVoiceLiveOverrideChannel());
         myView.voiceLiveSendKey.setChecked(mainActivityInterface.getVoiceLive().getVoiceLiveSendKey());
         switch (mainActivityInterface.getVoiceLive().getVoiceLiveMajorHarmony()) {
-            case "MAJ1":
-            default:
-                myView.voiceLiveMajorHarmony.setSliderPos(0);
-                break;
             case "MAJ2":
                 myView.voiceLiveMajorHarmony.setSliderPos(1);
                 break;
             case "MAJ3":
                 myView.voiceLiveMajorHarmony.setSliderPos(2);
                 break;
+            case "MAJ1":
+            default:
+                myView.voiceLiveMajorHarmony.setSliderPos(0);
+                break;
+
         }
         switch (mainActivityInterface.getVoiceLive().getVoiceLiveMinorHarmony()) {
-            case "MIN1":
-            default:
-                myView.voiceLiveMinorHarmony.setSliderPos(0);
-                break;
             case "MIN2":
                 myView.voiceLiveMinorHarmony.setSliderPos(1);
                 break;
             case "MIN3":
                 myView.voiceLiveMinorHarmony.setSliderPos(2);
+                break;
+            case "MIN1":
+            default:
+                myView.voiceLiveMinorHarmony.setSliderPos(0);
                 break;
         }
     }
@@ -100,30 +101,32 @@ public class VoiceLiveFragment extends Fragment {
         myView.voiceLiveOverrideChannel.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getVoiceLive().setVoiceLiveOverrideChannel(b));
         myView.voiceLiveMajorHarmony.addOnChangeListener((slider, value, fromUser) -> {
             switch ((int) value) {
-                case 0:
-                default:
-                    mainActivityInterface.getVoiceLive().setVoiceLiveMajorHarmony("MAJ1");
-                    break;
                 case 1:
                     mainActivityInterface.getVoiceLive().setVoiceLiveMajorHarmony("MAJ2");
                     break;
                 case 2:
                     mainActivityInterface.getVoiceLive().setVoiceLiveMajorHarmony("MAJ3");
                     break;
+                case 0:
+                default:
+                    mainActivityInterface.getVoiceLive().setVoiceLiveMajorHarmony("MAJ1");
+                    break;
+
             }
         });
         myView.voiceLiveMinorHarmony.addOnChangeListener((slider, value, fromUser) -> {
             switch ((int) value) {
-                case 0:
-                default:
-                    mainActivityInterface.getVoiceLive().setVoiceLiveMinorHarmony("MIN1");
-                    break;
                 case 1:
                     mainActivityInterface.getVoiceLive().setVoiceLiveMinorHarmony("MIN2");
                     break;
                 case 2:
                     mainActivityInterface.getVoiceLive().setVoiceLiveMinorHarmony("MIN3");
                     break;
+                case 0:
+                default:
+                    mainActivityInterface.getVoiceLive().setVoiceLiveMinorHarmony("MIN1");
+                    break;
+
             }
         });
     }

@@ -30,7 +30,7 @@ public class NearbySyncAdapter extends RecyclerView.Adapter<NeabyItemViewHolder>
     private final String sync_newer, sync_older, sync_missing, sync_same, sync_uuid_mismatch,
             sync_exists, current_set_string, what;
     private String folderChosen = "";
-    private boolean accessingTheArray = false;   // To avoid concurrent
+    private boolean accessingTheArray;   // To avoid concurrent
 
     NearbySyncAdapter(Context c, SyncNearbyFragment syncNearbyFragment, SyncItemsFragment syncItemsFragment, String what) {
         mainActivityInterface = (MainActivityInterface) c;

@@ -24,6 +24,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
     private final MainActivityInterface mainActivityInterface;
     private ItemTouchHelper itemTouchHelper;
     private ArrayList<MidiInfo> midiInfos;
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MidiMessagesAdapter";
     private boolean fromSongMessages = true;
 

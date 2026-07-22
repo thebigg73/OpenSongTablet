@@ -80,17 +80,6 @@ public class DrumSoundManager {
                     .setAudioAttributes(audioAttributes)
                     .build();
 
-            /*audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION) // GAME or ASSISTANCE_SONIFICATION
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION) // CRITICAL for low latency
-                    .setFlags(AudioAttributes.FLAG_LOW_LATENCY) // Hints to the system to prioritize speed
-                    .build();
-
-            soundPool = new SoundPool.Builder()
-                    .setMaxStreams(32)
-                    .setAudioAttributes(audioAttributes)
-                    .build();*/
-
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)                 // ✅ Redirects older devices to media stream
@@ -101,16 +90,6 @@ public class DrumSoundManager {
                     .setMaxStreams(32)
                     .setAudioAttributes(audioAttributes)
                     .build();
-
-            /*audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION) // GAME or ASSISTANCE_SONIFICATION
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION) // CRITICAL for low latency
-                    .build();
-
-            soundPool = new SoundPool.Builder()
-                    .setMaxStreams(32)
-                    .setAudioAttributes(audioAttributes)
-                    .build();*/
 
         } else {
             soundPool = new SoundPool(32, AudioManager.STREAM_MUSIC, 0);

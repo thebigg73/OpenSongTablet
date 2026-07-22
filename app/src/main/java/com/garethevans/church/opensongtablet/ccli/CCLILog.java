@@ -415,9 +415,6 @@ public class CCLILog {
     private String getActionText(String action) {
         String actionText;
         switch (action) {
-            default:
-                actionText = c.getString(R.string.other);
-                break;
             case "1":
                 actionText = c.getString(R.string.new_something);
                 break;
@@ -436,6 +433,9 @@ public class CCLILog {
                 break;
             case "6":
                 actionText = c.getString(R.string.songsheet);
+                break;
+            default:
+                actionText = c.getString(R.string.other);
                 break;
         }
         return actionText;

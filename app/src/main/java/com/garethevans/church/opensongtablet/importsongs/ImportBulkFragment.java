@@ -145,8 +145,10 @@ public class ImportBulkFragment extends Fragment {
                 }
             } else {
                 Uri thisUri = resultData.getData();
-                uris.add(thisUri);
-                foundItems.add(mainActivityInterface.getStorageAccess().getActualFilename(thisUri.toString()));
+                if (thisUri!=null) {
+                    uris.add(thisUri);
+                    foundItems.add(mainActivityInterface.getStorageAccess().getActualFilename(thisUri.toString()));
+                }
             }
         }
         // Display list of songs
@@ -364,13 +366,6 @@ public class ImportBulkFragment extends Fragment {
         if (justChordsSongObject!=null) {
             Song jcImport = mainActivityInterface.getConvertJustChords().getOpenSongFromJustChordsSong(justChordsSongObject);
             jcImport.setFolder(imported_string);
-            // Create the new uri/file for writing
-            //Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", imported_string, jcImport.getFilename());
-            //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri, null, "Songs", imported_string, jcImport.getFilename());
-            // Write the song
-            //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
-            //boolean jcSuccess = mainActivityInterface.getStorageAccess().writeFileFromString(mainActivityInterface.getProcessSong().getXML(jcImport), outputStream);
-
             if (mainActivityInterface.getStorageAccess().writeFileFromString("Songs",imported_string, jcImport.getFilename(), mainActivityInterface.getProcessSong().getXML(jcImport),false)) {
                 // Add the song to the database
                 mainActivityInterface.getSQLiteHelper().createSong(imported_string, jcImport.getFilename());

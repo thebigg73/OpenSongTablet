@@ -18,7 +18,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsAbcnotationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 import java.util.Arrays;
@@ -123,13 +122,7 @@ public class MusicScoreFragment extends Fragment {
         // Set up the inline staff width
         myView.abcInlineWidth.setValue(mainActivityInterface.getAbcNotation().getAbcInlineWidth());
         myView.abcInlineWidth.setHint(mainActivityInterface.getAbcNotation().getAbcInlineWidth()+"px");
-        myView.abcInlineWidth.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return (int)value+"px";
-            }
-        });
+        myView.abcInlineWidth.setLabelFormatter(value -> (int)value+"px");
 
         // Set up the transpose options
         myView.autoTranspose.setChecked(mainActivityInterface.getAbcNotation().getAbcAutoTranspose());

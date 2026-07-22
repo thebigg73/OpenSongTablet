@@ -11,7 +11,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.File;
 import java.util.ArrayList;

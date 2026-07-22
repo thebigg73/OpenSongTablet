@@ -362,20 +362,6 @@ public class ExportSongListBottomSheet extends BottomSheetCommon {
             mainActivityInterface.getMakePDF().setPreferedAttributes();
             mainActivityInterface.getMakePDF().setForceSinglePage(false);
             printManager.print(jobName, multipagePrinterAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
-
-
-            // Set the exporting scale to be min of 0.75f
-
-            /*
-            mainActivityInterface.getMakePDF().setExportingSongList(true);
-
-            PrinterAdapter printerAdapter = new PrinterAdapter(getActivity());
-            printerAdapter.updateSections(sectionViews, sectionWidths, sectionHeights,
-                    myView.headerLayout, headerWidth, headerHeight, song_string);
-            mainActivityInterface.getMakePDF().setPreferedAttributes();
-            printManager.print(jobName, printerAdapter, mainActivityInterface.getMakePDF().getPrintAttributes());
-
-             */
         }
     }
 

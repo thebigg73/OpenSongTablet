@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TableRow;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -203,7 +202,7 @@ public class CustomSlideFragment extends Fragment {
                         // If this is a localised (i.e. inside OpenSong folder), we don't need to take the permissions
                         // There is a limit of 128-512 permissions allowed (depending on Android version).
                         String localisedUri = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
-                        if (!localisedUri.contains("../OpenSong/") && getActivity()!=null) {
+                        if (contentUri!=null && !localisedUri.contains("../OpenSong/") && getActivity()!=null) {
                             ContentResolver resolver = getActivity().getContentResolver();
                             resolver.takePersistableUriPermission(contentUri, mainActivityInterface.getStorageAccess().getTakePersistentReadUriFlags());
                         }

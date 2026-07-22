@@ -8,6 +8,7 @@ public class MidiClock {
 
     // The class dealing with sending MidiClock
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MidiClock";
     private final MainActivityInterface mainActivityInterface;
     private boolean isRunning = false;
@@ -22,7 +23,7 @@ public class MidiClock {
 
     // The user can switch on/off the sending of start and stop with the MIDI clock.
     // By default this is off.  Saved as a persistent user preference
-    private boolean midiClockStartStop = false;
+    private boolean midiClockStartStop;
 
     public MidiClock(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
@@ -47,7 +48,7 @@ public class MidiClock {
     public void setMidiClockBurstMode(boolean midiClockBurstMode) {
         this.midiClockBurstMode = midiClockBurstMode;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClockBurstMode",midiClockBurstMode);
-    };
+    }
 
     // Should MIDI start and stop also be sent with the clock - persistent user preference
     public boolean getMidiClockStartStop() {
@@ -56,7 +57,7 @@ public class MidiClock {
     public void setMidiClockStartStop(boolean midiClockStartStop) {
         this.midiClockStartStop = midiClockStartStop;
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiClockStartStop",midiClockStartStop);
-    };
+    }
 
     // Is the MIDI clock running?
     public void setIsRunning(boolean isRunning) {

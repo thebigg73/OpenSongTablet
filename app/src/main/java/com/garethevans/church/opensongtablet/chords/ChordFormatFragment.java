@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet.chords;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;

@@ -14,7 +14,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAudioPlayerBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 import java.util.Locale;
@@ -105,14 +104,10 @@ public class AudioPlayerBottomSheet extends BottomSheetCommon {
                 playingBeforeDrag = false;
             }
         });
-        myView.seekBar.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                int[] time = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Math.round(value));
-                return String.format(Locale.getDefault(),"%02d", time[0]) + ":" +
-                        String.format(Locale.getDefault(),"%02d", time[1]);
-            }
+        myView.seekBar.setLabelFormatter(value -> {
+            int[] time = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Math.round(value));
+            return String.format(Locale.getDefault(),"%02d", time[0]) + ":" +
+                    String.format(Locale.getDefault(),"%02d", time[1]);
         });
     }
 

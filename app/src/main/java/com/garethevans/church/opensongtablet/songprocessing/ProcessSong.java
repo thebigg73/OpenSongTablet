@@ -202,12 +202,6 @@ public class ProcessSong {
         thisSong.setCapo(fixNullValues(thisSong.getCapo()));
         thisSong.setTempo(fixNullValues(DrumCalculations.getFixedTempoString(thisSong.getTempo(),false)));
         thisSong.setTimesig(fixNullValues(DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false)));
-        /*mainActivityInterface.getDrumViewModel().prepareSongValues(thisSong);
-        if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
-            thisSong.setTempo(fixNullValues(String.valueOf(mainActivityInterface.getDrumViewModel().getBpm())));
-        }
-        thisSong.setTimesig(fixNullValues(mainActivityInterface.getDrumViewModel().fixInvalidTimeSignature(false)));
-        */
         thisSong.setAutoscrolldelay(fixNullValues(thisSong.getAutoscrolldelay()));
         thisSong.setAutoscrolllength(fixNullValues(thisSong.getAutoscrolllength()));
         thisSong.setCcli(fixNullValues(thisSong.getCcli()));

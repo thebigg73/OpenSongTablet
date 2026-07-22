@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -477,18 +475,14 @@ public class OpenChordsFragment extends Fragment {
                 // We have forced a pull.
                 // This wipes our local items and downloads everything from the remote folder
                 changeButtonsEnable(false);
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    mainActivityInterface.getOpenChordsAPI().forcePull();
-                });
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getOpenChordsAPI().forcePull());
                 break;
 
             case "openChordsForcePush":
                 // We have forced a push.
                 // This wipes the remote items and uploads everything from the local folder
                 changeButtonsEnable(false);
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    mainActivityInterface.getOpenChordsAPI().forcePush();
-                });
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> mainActivityInterface.getOpenChordsAPI().forcePush());
                 break;
         }
     }

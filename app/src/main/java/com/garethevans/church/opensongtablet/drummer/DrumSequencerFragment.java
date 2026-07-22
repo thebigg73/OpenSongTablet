@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.drummer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -234,11 +235,9 @@ public class DrumSequencerFragment extends Fragment {
                                 ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(42))); // Match item height
                         tv.setPadding(0, 0, 16, 0);
                         myView.instrumentLabelContainer.post(() -> {
-                            tv.setOnClickListener(view -> {
-                                mainActivityInterface.getDrumViewModel().getDrumSoundManager().playDrum(
-                                        mainActivityInterface.getDrumViewModel().getDrummer().getCajonPrefixIfNeeded() +
-                                                view.getTag().toString(), 127);
-                            });
+                            tv.setOnClickListener(view -> mainActivityInterface.getDrumViewModel().getDrumSoundManager().playDrum(
+                                    mainActivityInterface.getDrumViewModel().getDrummer().getCajonPrefixIfNeeded() +
+                                            view.getTag().toString(), 127));
                             myView.instrumentLabelContainer.addView(tv);
                         });
                     }
@@ -334,6 +333,7 @@ public class DrumSequencerFragment extends Fragment {
         setupBeatIndicators();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setupGrid() {
         int steps = mainActivityInterface.getDrumViewModel().getThisStepsPerBar();
 

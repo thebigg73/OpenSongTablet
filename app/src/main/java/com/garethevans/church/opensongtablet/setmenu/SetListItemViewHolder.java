@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -49,6 +50,7 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
         this.mainActivityInterface = mainActivityInterface;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         // Pass everything to the detector
@@ -96,11 +98,6 @@ public class SetListItemViewHolder extends RecyclerView.ViewHolder implements Vi
 
     @Override
     public void onLongPress(@NonNull MotionEvent motionEvent) {
-        // Tell the parent layout NOT to steal this touch event
-        //if (itemView.getParent()!=null) {
-        //    itemView.getParent().requestDisallowInterceptTouchEvent(true);
-        //}
-        //itemTouchHelper.startDrag(this);
         Log.d(TAG, "LongPress detected - letting ItemTouchHelper handle it");
     }
 

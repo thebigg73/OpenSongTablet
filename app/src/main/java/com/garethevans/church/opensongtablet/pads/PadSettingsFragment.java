@@ -2,14 +2,12 @@ package com.garethevans.church.opensongtablet.pads;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -18,6 +16,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class PadSettingsFragment extends Fragment {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PadSettingsFragment";
     private SettingsPadsBinding myView;
     private MainActivityInterface mainActivityInterface;

@@ -1,6 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -640,6 +640,7 @@ public class WindowFlags {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreRoundedCorners",ignoreRoundedCorners);
     }
 
+    @SuppressLint("NewApi")
     public Size getUsableScreenSize() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Insets insets = insetsCompat.getInsetsIgnoringVisibility(

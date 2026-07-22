@@ -16,7 +16,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.garethevans.church.opensongtablet.setmenu.SetListItemViewHolder;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
@@ -103,13 +102,9 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
         holder.cardExists.setVisibility(exists ? View.VISIBLE:View.GONE);
 
         holder.cardCheckBox.setChecked(checked);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View view) {
-                                                   itemsChecked.set(position,!itemsChecked.get(position));
-                                                   holder.cardCheckBox.setChecked(itemsChecked.get(position));
-                                               }
-
+        holder.cardView.setOnClickListener(view -> {
+            itemsChecked.set(position,!itemsChecked.get(position));
+            holder.cardCheckBox.setChecked(itemsChecked.get(position));
         });
     }
 
@@ -135,7 +130,7 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
                 if (itemFile != null) {
                     // We have the file and we can now import it
                     Log.d(TAG, "itemFile:" + itemFile.getName());
-                    Uri outputUri = null;
+                    Uri outputUri;
                     // Simply copy this file to the new location
                     outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", si.songfolder, si.songfilename);
                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, outputUri, null, "Songs", si.songfolder, si.songfilename);
@@ -162,7 +157,6 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
                             }
                             mainActivityInterface.updateSongMenu(tempSong);
                         }
-                        ;
                     }
                 }
             }

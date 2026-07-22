@@ -570,11 +570,6 @@ public class InlineMidiBottomSheet extends BottomSheetCommon {
                         adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range0_100);
                         break;
 
-                    default:
-                    case "0-127":
-                        adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range0_127);
-                        break;
-
                     case "1-127":
                         adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range1_127);
                         break;
@@ -602,6 +597,13 @@ public class InlineMidiBottomSheet extends BottomSheetCommon {
                     case "scales":
                         adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, scales);
                         break;
+
+                    case "0-127":
+                    default:
+                        adapter1 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue1, R.layout.view_exposed_dropdown_item, range0_127);
+                        break;
+
+
                 }
                 myView.midiValue1.setAdapter(adapter1);
                 myView.midiValue1.setText(adapter1.getItem(0));
@@ -615,11 +617,6 @@ public class InlineMidiBottomSheet extends BottomSheetCommon {
                         adapter2 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue2, R.layout.view_exposed_dropdown_item, range0_100);
                         break;
 
-                    default:
-                    case "0-127":
-                        adapter2 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue2, R.layout.view_exposed_dropdown_item, range0_127);
-                        break;
-
                     case "1-127":
                         adapter2 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue2, R.layout.view_exposed_dropdown_item, range1_127);
                         break;
@@ -631,6 +628,13 @@ public class InlineMidiBottomSheet extends BottomSheetCommon {
                     case "1-32":
                         adapter2 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue2, R.layout.view_exposed_dropdown_item, range1_32);
                         break;
+
+                    case "0-127":
+                    default:
+                        adapter2 = new ExposedDropDownArrayAdapter(getContext(), myView.midiValue2, R.layout.view_exposed_dropdown_item, range0_127);
+                        break;
+
+
                 }
                 myView.midiValue2.setAdapter(adapter2);
                 myView.midiValue2.setText(adapter2.getItem(0));

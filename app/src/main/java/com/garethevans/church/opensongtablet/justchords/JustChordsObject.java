@@ -40,9 +40,7 @@ public class JustChordsObject {
     }
     public void setSongs(JustChordsSongObject[] songs) {
         this.songs = new JustChordsSongObject[songs.length];
-        for (int i=0;i<songs.length;i++) {
-            this.songs[i] = songs[i];
-        }
+        System.arraycopy(songs, 0, this.songs, 0, songs.length);
         this.songs = emptyOrSongValues(songs);
     }
     public void setTags(String[] tags) {

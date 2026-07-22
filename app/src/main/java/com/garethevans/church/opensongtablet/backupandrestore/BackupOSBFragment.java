@@ -199,8 +199,6 @@ public class BackupOSBFragment extends Fragment {
             Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
             mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Backups/"+backupFilename+"  deleteOld=true");
             mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Backups","",backupFilename,true);
-            /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
-                    backupUri,null,"Backups","",backupFilename);*/
             OutputStream outputStream;
             ZipOutputStream zipOutputStream = null;
             try {

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -72,13 +71,14 @@ public class PadDefaultsFragment extends Fragment {
             case "L":
                 myView.padPan.setSliderPos(0);
                 break;
+            case "R":
+                myView.padPan.setSliderPos(2);
+                break;
             case "C":
             default:
                 myView.padPan.setSliderPos(1);
                 break;
-            case "R":
-                myView.padPan.setSliderPos(2);
-                break;
+
         }
 
         boolean padAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("padAutoStart", false);

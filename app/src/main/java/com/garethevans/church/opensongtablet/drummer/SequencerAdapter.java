@@ -28,13 +28,12 @@ public class SequencerAdapter extends RecyclerView.Adapter<DrumViewGridHolder> {
     private final int[] velocityColors;
     private DrumSection currentSection = DrumSection.MAIN;
     private final List<String> cachedInstrumentNames = new ArrayList<>();
-    private final Context c;
-    private String showcase_string_1 = "", showcase_string_2 = "";
+    private final String showcase_string_1;
+    private final String showcase_string_2;
     private boolean alreadyShowcased = false;
 
     public SequencerAdapter(Context c) {
         this.mainActivityInterface = (MainActivityInterface) c;
-        this.c = c;
         velocity_string = c.getString(R.string.midi_velocity);
         off_string = c.getString(R.string.off);
         showcase_string_1 = c.getString(R.string.drum_sequencer_info1);
@@ -251,26 +250,6 @@ public class SequencerAdapter extends RecyclerView.Adapter<DrumViewGridHolder> {
             holder.itemView.setBackgroundColor(isOnBeat ? mainActivityInterface.getPalette().secondary : mainActivityInterface.getPalette().primaryVariant);
         }
     }
-
-    /*private void updateStepHighlight(DrumViewGridHolder holder, int position, int velocity) {
-        int stepsPerBar = mainActivityInterface.getDrumViewModel().getThisStepsPerBar();
-        int stepInBar = position % stepsPerBar;
-        int stepsPerPulse = mainActivityInterface.getDrumViewModel().getThisStepsPerPulse();
-
-        // 1. Playhead (Highlighted Column)
-        if (stepInBar == playheadStep) {
-            holder.itemView.setBackgroundColor(Color.YELLOW);
-        }
-        // 2. Note (The Drum Beat) - This ensures notes REAPPEAR after the playhead passes
-        else if (velocity > 0) {
-            holder.itemView.setBackgroundColor(getVelocityColor(velocity));
-        }
-        // 3. Background Grid (Beats vs Off-beats)
-        else {
-            boolean isOnBeat = (stepInBar % stepsPerPulse == 0);
-            holder.itemView.setBackgroundColor(isOnBeat ? mainActivityInterface.getPalette().secondary : mainActivityInterface.getPalette().primaryVariant);
-        }
-    }*/
 
     @Override
     public int getItemCount() {

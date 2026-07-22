@@ -100,10 +100,15 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 try {
                     ParcelFileDescriptor fd = c.getContentResolver().openFileDescriptor(uri, "r");
-                    BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, options);
-                    width = options.outWidth;
-                    height = options.outHeight;
-                    fd.close();
+                    if (fd != null) {
+                        BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, options);
+                        width = options.outWidth;
+                        height = options.outHeight;
+                        fd.close();
+                    } else {
+                        width = 200;
+                        height = 200;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     width = 200;

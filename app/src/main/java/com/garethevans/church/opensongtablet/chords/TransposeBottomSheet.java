@@ -16,7 +16,6 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setmenu.SetItemInfo;
-import com.google.android.material.slider.LabelFormatter;
 
 public class TransposeBottomSheet extends BottomSheetCommon {
 
@@ -104,8 +103,6 @@ public class TransposeBottomSheet extends BottomSheetCommon {
                 position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
 
             // In a set, so hide the song only transpose options
-            //String itemFolder = mainActivityInterface.getCurrentSet().getSetItemInfo(position).songfolder;
-            //myView.transposeCapo.setVisibility(itemFolder.equals("**Variation")?View.VISIBLE:View.GONE);
             myView.transposeCapo.setVisibility(View.GONE);
             myView.transposeCopy.setVisibility(View.GONE);
 
@@ -219,18 +216,14 @@ public class TransposeBottomSheet extends BottomSheetCommon {
     }
     private void setListeners() {
         // Set the label formatter (when dragging)
-        myView.transposeSlider.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                // Use the number of semitones
-                if (value<6) {
-                    return "-" + (int)(6-value);
-                } else if (value>6) {
-                    return "+" + (int)(value-6);
-                } else {
-                    return String.valueOf(0);
-                }
+        myView.transposeSlider.setLabelFormatter(value -> {
+            // Use the number of semitones
+            if (value<6) {
+                return "-" + (int)(6-value);
+            } else if (value>6) {
+                return "+" + (int)(value-6);
+            } else {
+                return String.valueOf(0);
             }
         });
 

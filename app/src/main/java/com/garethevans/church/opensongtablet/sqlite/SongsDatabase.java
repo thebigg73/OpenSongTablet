@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet.sqlite;
 
-import static com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper.TAG;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

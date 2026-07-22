@@ -43,7 +43,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     @SuppressWarnings({"FieldCanBeLocal","unused"})
     private final String TAG = "StageSectionAdapter";
     int spacing = 0;
-    private boolean mode_hybrid = false;
+    private final boolean mode_hybrid;
     private float maxScaleWidth = 1f, maxScaleHeight = 1f;
 
 

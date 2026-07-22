@@ -195,9 +195,7 @@ public class ConvertJustChords {
             try {
                 mainActivityInterface.getStorageAccess().writeFileFromString("Export","",filename+".justchords",content,false);
                 uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",filename+".justchords");
-                //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",filename+".justchords");
-                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-                //mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

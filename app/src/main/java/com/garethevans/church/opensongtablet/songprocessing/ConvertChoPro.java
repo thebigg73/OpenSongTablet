@@ -867,13 +867,6 @@ public class ConvertChoPro {
             type.add(mainActivityInterface.getProcessSong().determineLineTypes(l));
         }
 
-        /*boolean dealingwithchorus = false;
-        boolean dealingwithverse = false;
-        boolean dealingwithbridge = false;
-        boolean dealingwithpart = false;
-
-         */
-
         // Go through each line and add the appropriate lyrics with chords in them
         for (int y = 0; y < linenums; y++) {
             // Go through the section a line at a time
@@ -1026,64 +1019,6 @@ public class ConvertChoPro {
                     //newlyrics.append("{sot}\n").append(thisLine.replaceFirst(";","")).append("\n{eot}");
                     break;
 
-                /*case "heading":
-                    // If this is a chorus, verse or bridge, deal with it appropriately
-                    // Add the heading as a comment with hash
-                    // For check purposes strip out numbers and shorten chorus to C
-                    String numText = thisLine.replaceAll("\\D", "");
-                    String testLine = thisLine.replaceAll("[ 0-9]", "").toLowerCase(Locale.ROOT);
-                    testLine = testLine.replace(c.getString(R.string.chorus).toLowerCase(),"c");
-                    testLine = testLine.replace("chorus","c");
-                    testLine = testLine.replace(c.getString(R.string.verse).toLowerCase(),"c");
-                    testLine = testLine.replace("verse","v");
-                    testLine = testLine.replace(c.getString(R.string.bridge).toLowerCase(),"c");
-                    testLine = testLine.replace("bridge","b");
-                    testLine = testLine.replace("[","").replace("]","");
-                    testLine = "[" + testLine.trim() + "]";
-
-                    if (testLine.startsWith("[c]")) {
-                        dealingwithchorus = true;
-                        newlyrics.append("{soc}\n#").append(thisLine);
-                    } else if (testLine.startsWith("[v]")) {
-                            dealingwithverse = true;
-                            if (!numText.isEmpty()) {
-                                newlyrics.append("{sov:").append(c.getString(R.string.verse)).append(" ").append(numText).append("}\n");
-                            } else {
-                                newlyrics.append("{sov:").append(c.getString(R.string.verse)).append("}\n");
-                            }
-                    } else if (testLine.startsWith("[b]")) {
-                        dealingwithbridge = true;
-                        if (!numText.isEmpty()) {
-                            newlyrics.append("{sob:").append(c.getString(R.string.bridge)).append(" ").append(numText).append("}\n");
-                        } else {
-                            newlyrics.append("{sob:").append(c.getString(R.string.bridge)).append("}\n");
-                        }
-
-                    } else if (testLine.startsWith("[") && testLine.endsWith("]")) {
-                        dealingwithpart = true;
-                        if (!numText.isEmpty()) {
-                            newlyrics.append("{sop:").append(testLine.replace("[","").replace("]","")).append(" ").append(numText).append("}\n");
-                        } else {
-                            newlyrics.append("{sop:").append(testLine.replace("[","").replace("]","")).append("}\n");
-                        }
-
-
-                    } else {
-                        if (dealingwithchorus) {
-                            // We've finished with the chorus,
-                            dealingwithchorus = false;
-                            newlyrics.append("{eoc}\n" + "#").append(thisLine);
-                        } else if (dealingwithbridge) {
-                            // We've finished with the bridge
-                            dealingwithbridge = false;
-                            newlyrics.append("{eob}\n" + "#").append(thisLine);
-
-                        } else {
-                            newlyrics.append("#").append(thisLine);
-                        }
-                    }
-                    break;
-*/
                 default:
                     // Check for end of directives
                     if (thisLine.trim().isEmpty()) {
@@ -1091,16 +1026,6 @@ public class ConvertChoPro {
                         newlyrics.append("¬");
                         newlyrics.append(addChordProEndOfDirective());
                     }
-                    /*// If a line is blank we need to add it and consider an end of a Chorus
-                    if (thisLine.trim().isEmpty()) {
-                        // Add just a line beginning (trim the line)
-                        newlyrics.append("¬");
-                        if (dealingwithchorus) {
-                            // We've finished with the chorus,
-                            dealingwithchorus = false;
-                            newlyrics.append("{eoc}\n");
-                        }
-                    }*/
                     break;
             }
             newlyrics.append("\n");
@@ -1251,7 +1176,7 @@ public class ConvertChoPro {
         // [Verse],    #[V],        [V1],         [Verse 1], etc. need to be converted to
         // {sov:Verse}, {sov:Verse}  {sov:Verse 1}  {sov:Verse 1} etc.
         // The same for [Bridge], [Chorus] and custom tags (which become {sov:})
-        String returnString = "";
+        String returnString;
         if (line.startsWith("[") && line.endsWith("]")) {
             // Check for ending previous parts
             returnString = addChordProEndOfDirective();
@@ -1354,7 +1279,7 @@ public class ConvertChoPro {
 
         } else if (line.contains("{so") || line.contains("{start_of") && line.endsWith("}")) {
             // Now we must figure out the directive name
-            String directiveName = "";
+            String directiveName;
             line = line.replace("{start_of_verse", "{sov");
             line = line.replace("{start_of_chorus", "{soc");
             line = line.replace("{start_of_bridge", "{sob");

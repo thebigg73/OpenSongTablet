@@ -278,9 +278,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.searchButton.setOnClickListener(v -> checkConnection());
         myView.closeSearch.setOnClickListener(v -> changeLayouts(true, false, false));
         myView.backButton.setOnClickListener(v -> goBackBrowser());
-        myView.grabText.setOnClickListener(v -> {
-            extractContent();
-        });
+        myView.grabText.setOnClickListener(v -> extractContent());
         myView.saveButton.setOnClickListener(v -> processContent());
         myView.webViewDesktop.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             webViewDesktop = isChecked;
@@ -578,7 +576,7 @@ public class ImportOnlineFragment extends Fragment {
                     if (source.equals("SongSelect")) {
                         MyJSInterface.resetFlattenedWebString();
                         // IV - SongSelect viewers use shadow DOM content, allow time to fully populate and then extract
-                        if ((webView.getOriginalUrl().endsWith("/viewchordsheet") || webView.getOriginalUrl().endsWith("/viewlyrics")) &&
+                        if (webView.getOriginalUrl()!=null && (webView.getOriginalUrl().endsWith("/viewchordsheet") || webView.getOriginalUrl().endsWith("/viewlyrics")) &&
                                 !webView.getOriginalUrl().contains("returnUrl")) {
                             script = MyJSInterface.flattenShadowRoot();
                             String finalScript = script;
@@ -640,7 +638,7 @@ public class ImportOnlineFragment extends Fragment {
                                 (webString.contains("<pre class=\"tK8GG")) &&
                                 (webString.contains("<span class=\"y68er") ||
                                         webString.contains("<span class=\"fsG7q")))) &&
-                                !webView.getUrl().contains("search.php?")) {
+                        (webView.getUrl()!=null && !webView.getUrl().contains("search.php?"))) {
                     show = true;
                 }
                 break;
@@ -698,7 +696,7 @@ public class ImportOnlineFragment extends Fragment {
                 break;
             case "Google":
             case "DuckDuckGo":
-                if ((!webView.getUrl().contains("google") || (!webView.getUrl().contains("duckduckgo"))) &&
+                if (webView.getUrl()!=null && (!webView.getUrl().contains("google") || (!webView.getUrl().contains("duckduckgo"))) &&
                         !webView.getUrl().contains("songselect")) {
                     if (myView!=null && chordinator!=null) {
                         chordinator.setTitle(myView.searchPhrase.getText().toString());

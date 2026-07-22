@@ -689,7 +689,7 @@ public class LoadSong {
                         mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
                     }
                 } else if (thisSong.getFiletype().equals("TXT")) {
-
+                    Log.d(TAG,"THIS IS A TEXT SONG!!!!");
                 }
             }
         }
@@ -798,10 +798,6 @@ public class LoadSong {
                 newExtracted = newExtracted.replace("<","&lt;");
                 newExtracted = newExtracted.replace(">","&gt;");
                 toFix = toFix.replace(origExtracted,newExtracted).replace("<>","");
-
-                // Now save the song again (output stream is closed in the write file method)
-                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(fixUri);
-                //mainActivityInterface.getStorageAccess().writeFileFromString(toFix,outputStream);
 
                 mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" fixXML writeFileFromString "+fixUri+" with: "+toFix);
                 mainActivityInterface.getStorageAccess().writeFileFromString(where,thisSong.getFolder(),thisSong.getFilename(),toFix,false);

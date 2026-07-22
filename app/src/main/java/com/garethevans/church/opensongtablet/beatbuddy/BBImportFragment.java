@@ -125,7 +125,7 @@ public class BBImportFragment extends Fragment {
                 result -> {
                     if (result.getData() != null && result.getResultCode() == Activity.RESULT_OK) {
                         Uri sdCard = result.getData().getData();
-                        if (getContext()!=null) {
+                        if (getContext()!=null && sdCard!=null) {
                             getContext().getContentResolver().takePersistableUriPermission(sdCard,
                                     mainActivityInterface.getStorageAccess().getTakePersistentWriteUriFlags());
                             DocumentFile df = DocumentFile.fromTreeUri(getContext(),sdCard);

@@ -5,7 +5,6 @@ import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.util.Log;
 
 public class ToneGenerator {
 
@@ -88,51 +87,6 @@ public class ToneGenerator {
         }).start();
     }
 
-    /*public void startTone(double chosenFrequency) {
-        isPlaying = true;
-
-        short[] samples = new short[bufferSize];
-        double twopi = 4.0 * Math.atan(1.0);
-        double ph = 0.0;
-
-        // Start audio and then we will write to the audio track
-        if (audioTrack != null && audioTrack.getState() != AudioTrack.PLAYSTATE_PLAYING) {
-            try {
-                audioTrack.play();
-            } catch (Exception e) {
-                e.printStackTrace();
-                isPlaying = false;
-            }
-        }
-
-        // synthesis loop
-        while (isPlaying) {
-            for (int i = 0; i < bufferSize; i++) {
-                samples[i] = (short) (volume * (float) Math.sin(ph));
-                ph += twopi * chosenFrequency / (float) sampleRate;
-            }
-            if (audioTrack != null) {
-                try {
-                    audioTrack.write(samples, 0, bufferSize);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    isPlaying = false;
-                }
-            }
-        }
-    }*/
-
-    /*public synchronized void stopTone() {
-        isPlaying = false;
-        if (audioTrack != null && audioTrack.getState() == AudioTrack.PLAYSTATE_PLAYING) {
-            try {
-                audioTrack.pause();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
-
     public synchronized void stopTone() {
         isPlaying = false;
         if (audioTrack != null && audioTrack.getState() == AudioTrack.PLAYSTATE_PLAYING) {
@@ -149,24 +103,6 @@ public class ToneGenerator {
         return isPlaying;
     }
 
-    /*public void nullAudioTrack() {
-        if (audioTrack != null && audioTrack.getState() != AudioTrack.STATE_UNINITIALIZED) {
-            try {
-                audioTrack.flush();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (audioTrack != null && audioTrack.getState() != AudioTrack.STATE_UNINITIALIZED) {
-            try {
-                audioTrack.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        audioTrack = null;
-    }
-*/
     public synchronized void nullAudioTrack() {
         isPlaying = false; // Stop the loop first
         if (audioTrack != null) {

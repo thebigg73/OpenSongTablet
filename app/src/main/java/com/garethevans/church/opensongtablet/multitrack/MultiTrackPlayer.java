@@ -16,7 +16,6 @@ import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.customviews.TrackSlider;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 import java.io.BufferedInputStream;
@@ -565,13 +564,7 @@ public class MultiTrackPlayer {
             trackProgressView.addOnChangeListener((slider, value, fromUser) -> trackProgressView.setHint(mainActivityInterface.getTimeTools().timeFormatFixer((int)value) + " / " +
                     mainActivityInterface.getTimeTools().timeFormatFixer(trackLengthSecs)));
             trackProgressView.setValueTo(trackLengthSecs);
-            trackProgressView.setLabelFormatter(new LabelFormatter() {
-                @NonNull
-                @Override
-                public String getFormattedValue(float value) {
-                    return mainActivityInterface.getTimeTools().timeFormatFixer((int)value);
-                }
-            });
+            trackProgressView.setLabelFormatter(value -> mainActivityInterface.getTimeTools().timeFormatFixer((int)value));
         }
     }
 

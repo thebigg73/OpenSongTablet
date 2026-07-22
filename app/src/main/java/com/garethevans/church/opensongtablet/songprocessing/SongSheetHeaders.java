@@ -103,12 +103,7 @@ public class SongSheetHeaders {
     public String getKeyCapoTempo(Song thisSong) {
         String key = thisSong.getKey();
         String capo = thisSong.getCapo();
-        //mainActivityInterface.getDrumViewModel().prepareSongValues(thisSong);
         String tempo = DrumCalculations.getFixedTempoString(thisSong.getTempo(),false);
-        /*if (mainActivityInterface.getDrumViewModel().getBpm()>-1) {
-            tempo = String.valueOf(mainActivityInterface.getDrumViewModel().getBpm());
-        }
-        */
         String timesig = DrumCalculations.getFixedTimeSignatureString(thisSong.getTimesig(),false);
 
         String keyCapoTempo = "";

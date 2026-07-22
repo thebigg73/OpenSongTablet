@@ -9,7 +9,6 @@ import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -128,28 +127,6 @@ public class PrepareFormats {
 
         return string;
     }
-
-
-    // TODO remove if not needed
-    /*public Uri getSongAsImage(Song thisSong) {
-        String newFilename = thisSong.getFolder().replace("/","_");
-        if (!newFilename.endsWith("_")) {
-            newFilename = newFilename + "_";
-        }
-        newFilename = newFilename + thisSong.getFilename() + ".png";
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
-        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" Create Export/"+newFilename+"  deleteOld=true");
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
-                uri, "application/pdf","Export","",newFilename);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
-        mainActivityInterface.getStorageAccess().updateFileActivityLog(TAG+" doImport writeImage Export/"+newFilename);
-        try (FileInputStream fileInputStream = new FileInputStream(mainActivityInterface.getScreenshotFile())) {
-            mainActivityInterface.getStorageAccess().copyFile(fileInputStream,outputStream);
-        } catch (Exception e) {
-           e.printStackTrace();
-        }
-        return uri;
-    }*/
 
     public String getSongAsOnSong(Song thisSong) {
         // This converts an OpenSong file into a OnSong file

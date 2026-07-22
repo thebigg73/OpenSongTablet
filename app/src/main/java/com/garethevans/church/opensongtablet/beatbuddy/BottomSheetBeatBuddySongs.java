@@ -92,35 +92,36 @@ public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
         // Set up the adapters
         if (getContext() != null && bbsqLite!=null) {
 
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                // Get the unique values for each of the folders, time signatures and drum kits
-                uniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
-                        bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
-                uniqueTimeSignatures = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_SIGNATURE,
-                        bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_SIGNATURE);
-                uniqueDrumKits = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_KIT_NUM, bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_KIT_NUM);
-                myUniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
-                        bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_MY_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
+            try (ExecutorService executorService = Executors.newSingleThreadExecutor()) {
+                executorService.execute(() -> {
+                    // Get the unique values for each of the folders, time signatures and drum kits
+                    uniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
+                            bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
+                    uniqueTimeSignatures = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_SIGNATURE,
+                            bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_SIGNATURE);
+                    uniqueDrumKits = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_KIT_NUM, bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_KIT_NUM);
+                    myUniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
+                            bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_MY_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
 
-                myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
+                    myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
 
-                foldersAdapter = new ExposedDropDownArrayAdapter(
-                        getContext(), myView.folder, R.layout.view_exposed_dropdown_item, uniqueFolders);
-                timeSignaturesAdapter = new ExposedDropDownArrayAdapter(
-                        getContext(), myView.timeSignature, R.layout.view_exposed_dropdown_item, uniqueTimeSignatures);
-                drumKitsAdapter = new ExposedDropDownArrayAdapter(
-                        getContext(), myView.drumKit, R.layout.view_exposed_dropdown_item, uniqueDrumKits);
-                myfoldersAdapter = new ExposedDropDownArrayAdapter(
-                        getContext(), myView.folder, R.layout.view_exposed_dropdown_item, myUniqueFolders);
+                    foldersAdapter = new ExposedDropDownArrayAdapter(
+                            getContext(), myView.folder, R.layout.view_exposed_dropdown_item, uniqueFolders);
+                    timeSignaturesAdapter = new ExposedDropDownArrayAdapter(
+                            getContext(), myView.timeSignature, R.layout.view_exposed_dropdown_item, uniqueTimeSignatures);
+                    drumKitsAdapter = new ExposedDropDownArrayAdapter(
+                            getContext(), myView.drumKit, R.layout.view_exposed_dropdown_item, uniqueDrumKits);
+                    myfoldersAdapter = new ExposedDropDownArrayAdapter(
+                            getContext(), myView.folder, R.layout.view_exposed_dropdown_item, myUniqueFolders);
 
-                Handler h = new Handler(Looper.getMainLooper());
+                    Handler h = new Handler(Looper.getMainLooper());
 
-                h.post(() -> {
-                    changeViewsDefaultOrImported();
-                    getFoundSongs();
+                    h.post(() -> {
+                        changeViewsDefaultOrImported();
+                        getFoundSongs();
+                    });
                 });
-            });
+            }
         }
     }
 

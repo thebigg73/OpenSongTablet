@@ -340,10 +340,8 @@ public class Drummer {
         // Reassign the file to the current one
         mainActivityInterface.getDrumViewModel().setDrumPatternJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
 
-        //Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer","",filename);
-        //mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Drummer","",filename);
         String gsonString = MainActivity.gson.toJson(mainActivityInterface.getDrumViewModel().getCurrentPattern().getValue());
-        //mainActivityInterface.getStorageAccess().writeFileFromString(gsonString,mainActivityInterface.getStorageAccess().getOutputStream(uri));
+        mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Drummer","",filename,false);
         mainActivityInterface.getStorageAccess().writeFileFromString("Drummer","",filename,gsonString, false);
     }
 

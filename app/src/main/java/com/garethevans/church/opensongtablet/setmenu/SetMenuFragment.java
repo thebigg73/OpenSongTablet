@@ -94,7 +94,6 @@ public class SetMenuFragment extends Fragment {
     private void setupAdapter() {
         if (getContext()!=null && myView!=null) {
             setAdapter = new SetAdapter(getContext(), myView.myRecyclerView);
-            ;
             myView.myRecyclerView.post(() -> {
                 llm = new LinearLayoutManager(getContext());
                 llm.setOrientation(RecyclerView.VERTICAL);

@@ -267,9 +267,6 @@ public class PedalsFragment extends Fragment {
 
     private ExposedDropDown getShortExposedDropdownByNum(int which) {
         switch (which) {
-            case 1:
-            default:
-                return myView.shortButton1Text;
             case 2:
                 return myView.shortButton2Text;
             case 3:
@@ -284,14 +281,15 @@ public class PedalsFragment extends Fragment {
                 return myView.shortButton7Text;
             case 8:
                 return myView.shortButton8Text;
+            case 1:
+            default:
+                return myView.shortButton1Text;
+
         }
     }
 
     private ExposedDropDown getLongExposedDropdownByNum(int which) {
         switch (which) {
-            case 1:
-            default:
-                return myView.longButton1Text;
             case 2:
                 return myView.longButton2Text;
             case 3:
@@ -306,6 +304,10 @@ public class PedalsFragment extends Fragment {
                 return myView.longButton7Text;
             case 8:
                 return myView.longButton8Text;
+            case 1:
+            default:
+                return myView.longButton1Text;
+
         }
     }
 

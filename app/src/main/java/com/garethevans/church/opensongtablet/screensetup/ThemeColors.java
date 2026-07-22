@@ -310,13 +310,6 @@ public class ThemeColors {
         updatePDFTheme(mainActivityInterface.getPreferences().getMyPreferenceString("pdfTheme","default"),false);
     }
 
-    /*public void setSytemDayNight(boolean useDark) {
-        AppCompatActivity activity = (AppCompatActivity) c;
-        appCompatDelegate = useDark ? AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_NO;
-        AppCompatDelegate.setDefaultNightMode(useDark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        activity.getDelegate().applyDayNight();
-    }*/
-
     public int getAppCompatDelegate() {
         return appCompatDelegate;
     }

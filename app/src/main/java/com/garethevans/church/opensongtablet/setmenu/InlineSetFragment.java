@@ -26,7 +26,6 @@ public class InlineSetFragment extends Fragment {
     private String set_inline_string="", website_inline_set_string="", performance_mode_string="",
             stage_mode_string="", presenter_mode_string="";
     private String webAddress;
-    boolean inlineSet, isInlineSetPresenter;
 
     @Override
     public void onResume() {
@@ -140,10 +139,6 @@ public class InlineSetFragment extends Fragment {
             String hint1 = (int)value + "%";
             String hint2 = (int)value + "sp";
             switch (which) {
-                case "performance":
-                default:
-                    myView.widthSlider.setHint(hint1);
-                    break;
                 case "presenter":
                     myView.widthSliderPresenter.setHint(hint1);
                     break;
@@ -155,6 +150,11 @@ public class InlineSetFragment extends Fragment {
                     myView.textSizeSliderPresenter.setHint(hint2);
                     myView.textSizeSliderPresenter.setHintTextSize(value);
                     break;
+                case "performance":
+                default:
+                    myView.widthSlider.setHint(hint1);
+                    break;
+
             }
             checkHotZoneConflict();
         }
@@ -170,10 +170,6 @@ public class InlineSetFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             switch (pref) {
-                case "inlineSetWidth":
-                default:
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidth", myView.widthSlider.getValue() / 100f);
-                    break;
                 case "inlineSetWidthPresenter":
                     mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidthPresenter", myView.widthSliderPresenter.getValue() / 100f);
                     break;
@@ -182,6 +178,10 @@ public class InlineSetFragment extends Fragment {
                     break;
                 case "inlineSetTextSizePresenter":
                     mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetTextSizePresenter",myView.textSizeSliderPresenter.getValue());
+                    break;
+                case "inlineSetWidth":
+                default:
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat("inlineSetWidth", myView.widthSlider.getValue() / 100f);
                     break;
             }
             checkHotZoneConflict();

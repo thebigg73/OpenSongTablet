@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.accessibilityservice.AccessibilityService;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -8,8 +9,10 @@ import android.view.accessibility.AccessibilityEvent;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+@SuppressLint("AccessibilityPolicy")
 public class PedalAccessibilityService extends AccessibilityService {
 
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "PedalService";
     private MainActivityInterface mainActivityInterface;
 

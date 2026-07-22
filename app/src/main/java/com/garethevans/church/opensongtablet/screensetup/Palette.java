@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -27,7 +26,7 @@ public final class Palette {
     public int primaryVariant;
 
     private final String PREF_NAME="theme_choice", DARK="dark";
-    public boolean dark = false;
+    public boolean dark;
 
     public Palette(Context context) {
         dark = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

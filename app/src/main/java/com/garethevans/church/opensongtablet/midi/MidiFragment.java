@@ -464,63 +464,65 @@ public class MidiFragment extends Fragment {
                 }
 
                 // For each device, add a new text view
-                for (int x = 0; x < size; x++) {
-                    MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(getContext());
-                    textView.setTextColor(Color.BLACK);
-                    textView.setBackgroundColor(Color.LTGRAY);
-                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    llp.setMargins(12, 12, 12, 12);
-                    textView.setLayoutParams(llp);
-                    if (bluetoothscan && !mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
-                        midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
-                    } else {
-                        if (bluetoothscan) {
-                            textView.setText(bluetoothDevices.get(x).getName());
+                if (getContext()!=null) {
+                    for (int x = 0; x < size; x++) {
+                        MyMaterialSimpleTextView textView = new MyMaterialSimpleTextView(getContext());
+                        textView.setTextColor(Color.BLACK);
+                        textView.setBackgroundColor(Color.LTGRAY);
+                        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        llp.setMargins(12, 12, 12, 12);
+                        textView.setLayoutParams(llp);
+                        if (bluetoothscan && !mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                            midiScanPermissions.launch(mainActivityInterface.getAppPermissions().getMidiScanPermissions());
                         } else {
-                            textView.setText(usbNames.get(x));
-                        }
-                        textView.setTextSize(18.0f);
-                        textView.setPadding(24, 24, 24, 24);
-                        int finalX = x;
-                        textView.setOnClickListener(v -> {
-                            // Disconnect any other devices
-                            mainActivityInterface.getMidi().disconnectDevice();
-                            // Set the new details
-
                             if (bluetoothscan) {
-                                // Stop scanning
-                                bleScanHandler.removeCallbacks(stopBleScan);
-                                bleScanHandler.post(stopBleScan);
-
-                                mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
-                                mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
-                                mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
+                                textView.setText(bluetoothDevices.get(x).getName());
                             } else {
-                                mainActivityInterface.getMidi().setMidiDeviceName(null);
-                                mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
-                                mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
+                                textView.setText(usbNames.get(x));
                             }
-                            mainActivityInterface.getMidi().setMidiManager((MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE));
+                            textView.setTextSize(18.0f);
+                            textView.setPadding(24, 24, 24, 24);
+                            int finalX = x;
+                            textView.setOnClickListener(v -> {
+                                // Disconnect any other devices
+                                mainActivityInterface.getMidi().disconnectDevice();
+                                // Set the new details
 
-                            if (bluetoothscan && mainActivityInterface.getMidi().getMidiManager() != null) {
-                                mainActivityInterface.getMidi().getMidiManager().openBluetoothDevice(bluetoothDevices.get(finalX), device -> {
-                                    mainActivityInterface.getMidi().setMidiDevice(device);
-                                    setupDevice(device);
-                                    selected.postDelayed(runnable, 1000);
-                                }, null);
-                            } else if (mainActivityInterface.getMidi().getMidiManager() != null) {
-                                try {
-                                    mainActivityInterface.getMidi().getMidiManager().openDevice(usbMidiDevices[finalX], device -> {
+                                if (bluetoothscan) {
+                                    // Stop scanning
+                                    bleScanHandler.removeCallbacks(stopBleScan);
+                                    bleScanHandler.post(stopBleScan);
+
+                                    mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
+                                    mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
+                                    mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
+                                } else {
+                                    mainActivityInterface.getMidi().setMidiDeviceName(null);
+                                    mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
+                                    mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
+                                }
+                                mainActivityInterface.getMidi().setMidiManager((MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE));
+
+                                if (bluetoothscan && mainActivityInterface.getMidi().getMidiManager() != null) {
+                                    mainActivityInterface.getMidi().getMidiManager().openBluetoothDevice(bluetoothDevices.get(finalX), device -> {
                                         mainActivityInterface.getMidi().setMidiDevice(device);
                                         setupDevice(device);
                                         selected.postDelayed(runnable, 1000);
                                     }, null);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                } else if (mainActivityInterface.getMidi().getMidiManager() != null) {
+                                    try {
+                                        mainActivityInterface.getMidi().getMidiManager().openDevice(usbMidiDevices[finalX], device -> {
+                                            mainActivityInterface.getMidi().setMidiDevice(device);
+                                            setupDevice(device);
+                                            selected.postDelayed(runnable, 1000);
+                                        }, null);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        });
-                        myView.foundDevicesLayout.addView(textView);
+                            });
+                            myView.foundDevicesLayout.addView(textView);
+                        }
                     }
                 }
             } catch (Exception e) {

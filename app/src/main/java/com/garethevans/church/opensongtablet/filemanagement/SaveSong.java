@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;

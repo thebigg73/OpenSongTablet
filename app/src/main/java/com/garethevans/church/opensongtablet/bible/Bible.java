@@ -95,6 +95,14 @@ public class Bible {
     }
     private void getAttributeToSearch() {
         switch (bibleFormat) {
+            case "Zefania":
+                tagtosearch_book = "BIBLEBOOK";
+                attributetosearch_book = "bname";
+                attributetosearch_chapter = "cnumber";
+                attributetosearch_verse = "vnumber";
+                setZefaniaBibleName();
+                break;
+
             case "OpenSong":
             default:
                 tagtosearch_book = "b";
@@ -102,14 +110,6 @@ public class Bible {
                 attributetosearch_chapter = "n";
                 attributetosearch_verse = "n";
                 setOpenSongBibleName();
-                break;
-
-            case "Zefania":
-                tagtosearch_book = "BIBLEBOOK";
-                attributetosearch_book = "bname";
-                attributetosearch_chapter = "cnumber";
-                attributetosearch_verse = "vnumber";
-                setZefaniaBibleName();
                 break;
         }
     }

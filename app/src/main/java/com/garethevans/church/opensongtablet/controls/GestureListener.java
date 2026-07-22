@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -27,7 +29,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     }
 
     @Override
-    public boolean onDoubleTap(MotionEvent e) {
+    public boolean onDoubleTap(@NonNull MotionEvent e) {
         // Make sure this isn't sent while we are already dealing with it
         Log.d(TAG,"onDoubleTap");
         if (!doubleTapping && !longPressing) {
@@ -42,7 +44,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     }
 
     @Override
-    public void onLongPress(MotionEvent e) {
+    public void onLongPress(@NonNull MotionEvent e) {
         super.onLongPress(e);
         if (doubleTapping) {
             longPressing = false;
@@ -64,7 +66,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     // The listener for swiping between songs
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+    public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2, float velocityX,
                            float velocityY) {
         boolean okForPrev = (mainActivityInterface.getGestures().getPdfLandscapeView() &&
                 (mainActivityInterface.getGestures().getPdfAllVisible() ||

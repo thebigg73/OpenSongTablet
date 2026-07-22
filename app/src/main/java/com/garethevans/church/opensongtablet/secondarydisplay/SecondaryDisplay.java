@@ -523,9 +523,7 @@ public class SecondaryDisplay extends Presentation {
 
             // Set visibility to GONE after fade animation completes to ensure view is fully hidden
             // time/2 matches the fade-down duration in CustomAnimation.faderAnimation()
-            myView.pageHolder.postDelayed(() -> {
-                myView.pageHolder.setVisibility(View.GONE);
-            }, time/2);
+            myView.pageHolder.postDelayed(() -> myView.pageHolder.setVisibility(View.GONE), time/2);
         } else {
             myView.pageHolder.setVisibility(View.VISIBLE);
             mainActivityInterface.getCustomAnimation().faderAnimation(myView.pageHolder, time, 0f, 1f);

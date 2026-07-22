@@ -535,7 +535,37 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
         if (index>=0) {
             command = midiCommand.get(index);
             switch (command) {
-                default:
+                case "CC":
+                case "NO":
+                case "BBS":
+                    usingVal1 = true;
+                    usingVal2 = true;
+                    break;
+                case "BBTX":
+                case "BBTN":
+                case "BBTP":
+                case "BBTEX":
+                case "BBTEN":
+                case "BBTEP":
+                case "BBH":
+                case "BBHX":
+                case "BBD":
+                case "BBDX":
+                case "BBI":
+                case "BBO":
+                case "BBP":
+                case "BBA":
+                case "BBF":
+                case "VLNX":
+                    usingVal1 = false;
+                    usingVal2 = false;
+                    break;
+                case "START":
+                case "STOP":
+                    usingVal1 = false;
+                    usingVal2 = false;
+                    usingSysEx = true;
+                    break;
                 case "PC":
                 case "BBT":
                 case "BBTE":
@@ -572,39 +602,11 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
                 case "VLVHIT":
                 case "VLS":
                 case "VLP":
+                default:
                     usingVal1 = true;
                     usingVal2 = false;
                     break;
-                case "CC":
-                case "NO":
-                case "BBS":
-                    usingVal1 = true;
-                    usingVal2 = true;
-                    break;
-                case "BBTX":
-                case "BBTN":
-                case "BBTP":
-                case "BBTEX":
-                case "BBTEN":
-                case "BBTEP":
-                case "BBH":
-                case "BBHX":
-                case "BBD":
-                case "BBDX":
-                case "BBI":
-                case "BBO":
-                case "BBP":
-                case "BBA":
-                case "BBF":
-                case "VLNX":
-                    usingVal1 = false;
-                    usingVal2 = false;
-                    break;
-                case "START":
-                case "STOP":
-                    usingVal1 = false;
-                    usingVal2 = false;
-                    usingSysEx = true;
+
             }
 
             // Set up the dropdowns
@@ -613,9 +615,6 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
             if (usingVal1) {
                 // Decide which values should be shown.  Options are 0-100, 0-127, 1-127, 1-128, 40-300
                 switch (command) {
-                    default:
-                        addArrayListToDropdown(myView.midiValue1, midiValue0_127);
-                        break;
                     case "NO":
                     case "NX":
                         addArrayListToDropdown(myView.midiValue1, midiNotes);
@@ -685,6 +684,9 @@ public class MidiShortHandBottomSheet extends BottomSheetCommon {
                     case "VLP":
                         addArrayListToDropdown(myView.midiValue1, midiValue1_500);
                         value1Hint = preset_string;
+                        break;
+                    default:
+                        addArrayListToDropdown(myView.midiValue1, midiValue0_127);
                         break;
                 }
 

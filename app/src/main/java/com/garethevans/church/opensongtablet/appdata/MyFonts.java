@@ -406,7 +406,7 @@ public class MyFonts {
 
         // Now add in any fonts stored in the user folder (for non Google Service users)
         ArrayList<String> userFonts = mainActivityInterface.getStorageAccess().listFilesInFolder("Fonts","");
-        if (userFonts!=null && userFonts.size()>0) {
+        if (userFonts!=null && !userFonts.isEmpty()) {
             Collections.sort(userFonts, Collections.reverseOrder());
             for (String userFont:userFonts) {
                 fontNames.add(0, "Fonts/"+userFont);

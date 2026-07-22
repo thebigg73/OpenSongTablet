@@ -27,12 +27,7 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
             deeplink_song_actions_string = "", deeplink_import_string = "", search_index_wait_string = "",
             added_to_set_string = "", variation_string = "", index_rebuild_string = "", quick_string = "", full_string = "";
     private final Handler updateCurrentSongHandler = new Handler();
-    private final Runnable updateCurrentSongRunnable = new Runnable() {
-        @Override
-        public void run() {
-            updateFolderAndFilename();
-        }
-    };
+    private final Runnable updateCurrentSongRunnable = this::updateFolderAndFilename;
     private String songFolder, songFilename;
 
     public SongMenuBottomSheet() {

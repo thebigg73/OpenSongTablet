@@ -249,16 +249,20 @@ public class SongListBuildIndex {
                         }
                     }
                     int position = cursor.getPosition();
-                    progressText.post(() -> {
-                        String progValue = (Math.round(Math.floor(((float)position/(float)totalSongs)*100))) + "%  ("+position+"/"+totalSongs+")";
-                        progressText.setText(progValue);
-                    });
+                    if (progressText!=null) {
+                        progressText.post(() -> {
+                            String progValue = (Math.round(Math.floor(((float) position / (float) totalSongs) * 100))) + "%  (" + position + "/" + totalSongs + ")";
+                            progressText.setText(progValue);
+                        });
+                    }
 
                 } while (cursor.moveToNext());
 
             }
             db.setTransactionSuccessful();
-            progressText.post(() -> progressText.setVisibility(View.GONE));
+            if (progressText!=null) {
+                progressText.post(() -> progressText.setVisibility(View.GONE));
+            }
             cursor.close();
             indexRequired = false;
             setIndexComplete(true);
@@ -290,7 +294,9 @@ public class SongListBuildIndex {
         }
 
         // Make sure we hide the progress text
-        progressText.post(() -> progressText.setVisibility(View.GONE));
+        if (progressText!=null) {
+            progressText.post(() -> progressText.setVisibility(View.GONE));
+        }
 
         currentlyIndexing = false;
 

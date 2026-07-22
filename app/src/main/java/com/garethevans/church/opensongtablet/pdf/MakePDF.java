@@ -168,9 +168,12 @@ public class MakePDF {
 
         if (printAttributes==null) {
             setPreferedAttributes();
-        } else {
+        } else if (printAttributes.getMediaSize()!=null){
             docWidth = (int) (((float) printAttributes.getMediaSize().getWidthMils() / 1000f) * 72f);
             docHeight = (int) (((float) printAttributes.getMediaSize().getHeightMils() / 1000f) * 72f);
+        } else {
+            docWidth = (int) ((210f / 1000f) * 72f);
+            docHeight = (int) ((297f / 1000f) * 72f);
         }
 
         pageNum = 1;
@@ -535,8 +538,6 @@ public class MakePDF {
                         int newImgHeight = (int) (resize * inlineAbcObject.getAbcHeight());
                         ViewGroup.LayoutParams lp = thisView.getLayoutParams();
                         lp.height = newImgHeight;
-                        //thisView.setLayoutParams(llp);
-                        //thisView.invalidate();
                         inlineAbcObject.setIsPDF(true);
                         mainActivityInterface.getAbcNotation().getInlineAbcObjects().get(item).drawTheImageView((ImageView) thisView);
                         Log.d(TAG, "size of ImageView:" + thisView.getMeasuredWidth() + "x" + thisView.getMeasuredHeight());
@@ -546,14 +547,6 @@ public class MakePDF {
                 }
             }
 
-            //Log.d(TAG,"view:"+view.getClass()+"  width:"+view.getMeasuredWidth()+"  height:"+view.getMeasuredHeight());
-            //TextView logo = new TextView(c);
-            //logo.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(), R.drawable.splash_logo,null));
-            //logo.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            //logo.setText("HHELLLOO");
-            //logo.setLayoutParams(new LinearLayout.LayoutParams(200,20));
-            //logo.setBackgroundColor(Color.RED);
-            //logo.draw(pageCanvas);
             view.draw(pageCanvas);
             pageCanvas.restore();
 

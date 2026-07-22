@@ -167,9 +167,6 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             // Make sure the userDB file exists if it isn't there - may not have been used before
             if (!mainActivityInterface.getStorageAccess().uriExists(userDB)) {
                 mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Settings","",SQLite.NON_OS_DATABASE_NAME,false);
-                /*mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                        false, userDB, null, "Settings", "",
-                        SQLite.NON_OS_DATABASE_NAME);*/
             }
 
             // Get an output stream for the userDB to copy into

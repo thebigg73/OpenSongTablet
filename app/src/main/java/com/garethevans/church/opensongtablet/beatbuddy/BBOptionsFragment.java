@@ -111,14 +111,15 @@ public class BBOptionsFragment extends Fragment {
             areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSure");
         });
         myView.beatBuddyBrowse.setOnClickListener((view) -> {
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            executorService.execute(() -> {
-                BBSQLite bbsqLite = new BBSQLite(getContext());
-                    BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
-                            null,bbsqLite);
-                    bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
-                            "BottomSheetBeatBuddySongs");
-            });
+            try (ExecutorService executorService = Executors.newSingleThreadExecutor()) {
+                executorService.execute(() -> {
+                    BBSQLite bbsqLite = new BBSQLite(getContext());
+                        BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
+                                null, bbsqLite);
+                        bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
+                                "BottomSheetBeatBuddySongs");
+                });
+            }
         });
         myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
         myView.useImported.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b));

@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiClockBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 import java.util.concurrent.Executors;
@@ -104,60 +103,24 @@ public class MidiClockFragment extends Fragment {
         myView.midiClockSend.setChecked(mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClock());
         myView.midiClockShortBurst.setChecked(mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode());
         myView.midiClockStartStop.setChecked(mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockStartStop());
-        myView.midiClickTrackChannel.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
-            }
-        });
+        myView.midiClickTrackChannel.setLabelFormatter(value -> String.valueOf((int)value));
         myView.midiClickTrackSend.setChecked(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeMidi());
         myView.midiClickTrackLayout.setVisibility(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeMidi() ? View.VISIBLE:View.GONE);
         myView.midiClickTrackChannel.setValue(mainActivityInterface.getMidi().getMidiClickTrackChannel());
         myView.midiClickTrackChannel.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClickTrackChannel()));
-        myView.midiClickTrackChannel.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
-            }
-        });
+        myView.midiClickTrackChannel.setLabelFormatter(value -> String.valueOf((int)value));
         myView.midiClickTrackTick.setValue(mainActivityInterface.getMidi().getMidiClickTrackTick());
         myView.midiClickTrackTick.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClickTrackTick()));
-        myView.midiClickTrackTick.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
-            }
-        });
+        myView.midiClickTrackTick.setLabelFormatter(value -> String.valueOf((int)value));
         myView.midiClickTrackTock.setValue(mainActivityInterface.getMidi().getMidiClickTrackTock());
         myView.midiClickTrackTock.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClickTrackTock()));
-        myView.midiClickTrackTock.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
-            }
-        });
+        myView.midiClickTrackTock.setLabelFormatter(value -> String.valueOf((int)value));
         myView.midiClickTrackTickVolume.setValue(mainActivityInterface.getMidi().getMidiClickTrackTickVolume());
         myView.midiClickTrackTickVolume.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClickTrackTickVolume()));
-        myView.midiClickTrackTickVolume.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
-            }
-        });
+        myView.midiClickTrackTickVolume.setLabelFormatter(value -> String.valueOf((int)value));
         myView.midiClickTrackTockVolume.setValue(mainActivityInterface.getMidi().getMidiClickTrackTockVolume());
         myView.midiClickTrackTockVolume.setHint(String.valueOf(mainActivityInterface.getMidi().getMidiClickTrackTockVolume()));
-        myView.midiClickTrackTockVolume.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return String.valueOf((int)value);
-            }
-        });
+        myView.midiClickTrackTockVolume.setLabelFormatter(value -> String.valueOf((int)value));
         // Get the max bars required
         myView.maxBars.setValue(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeLength());
         myView.maxBars.setHint(getMaxBars(mainActivityInterface.getDrumViewModel().getMetronome().getMetronomeLength()));

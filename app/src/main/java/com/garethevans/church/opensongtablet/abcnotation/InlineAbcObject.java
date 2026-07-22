@@ -20,6 +20,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class InlineAbcObject {
 
     // This holds the information for the ABC svg used for ImageView and WebView drawings
+    @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "InlineAbcObject";
     private final MainActivityInterface mainActivityInterface;
     private String abcSvgText, abcInlineText;

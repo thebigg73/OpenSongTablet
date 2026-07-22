@@ -21,7 +21,6 @@ import com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSlider;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 import java.util.Locale;
@@ -203,22 +202,13 @@ public class AudioPlayerPopUp {
                 playingBeforeDrag = false;
             }
         });
-        seekBar.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                int[] time = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Math.round(value));
-                return String.format(Locale.getDefault(),"%02d", time[0]) + ":" +
-                        String.format(Locale.getDefault(),"%02d", time[1]);
-            }
+        seekBar.setLabelFormatter(value -> {
+            int[] time = mainActivityInterface.getTimeTools().getMinsSecsFromSecs(Math.round(value));
+            return String.format(Locale.getDefault(),"%02d", time[0]) + ":" +
+                    String.format(Locale.getDefault(),"%02d", time[1]);
         });
         minimiseButton.setOnClickListener(view -> minimiseAction());
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                destroyPopup();
-            }
-        });
+        closeButton.setOnClickListener(view -> destroyPopup());
     }
 
     private void setupTimers() {

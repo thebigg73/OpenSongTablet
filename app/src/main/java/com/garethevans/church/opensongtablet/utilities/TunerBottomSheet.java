@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -54,8 +53,8 @@ public class TunerBottomSheet extends BottomSheetCommon {
             "437", "438", "439", "440", "441", "442", "443", "444"));
     private final ArrayList<String> cents = new ArrayList<>(Arrays.asList("+/- 0 cent", "+/- 1 cent",
             "+/- 2 cent", "+/- 3 cent", "+/- 4 cent", "+/- 5 cent"));
-    private final Handler resetTunerHandler = new Handler(Looper.myLooper());
-    private final Handler turnOffAudioTrack = new Handler();
+    private Handler resetTunerHandler;
+    private Handler turnOffAudioTrack;
     private MainActivityInterface mainActivityInterface;
     private BottomSheetTunerBinding myView;
     private ActivityResultLauncher<String> activityResultLauncher;
@@ -473,10 +472,12 @@ public class TunerBottomSheet extends BottomSheetCommon {
 
         int SAMPLE_RATE = 44100;
         try {
-            AudioManager myAudioMgr = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-            String sampleRateStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
-            if (sampleRateStr != null) {
-                SAMPLE_RATE = Integer.parseInt(sampleRateStr);
+            if (getContext()!=null) {
+                AudioManager myAudioMgr = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+                String sampleRateStr = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
+                if (sampleRateStr != null) {
+                    SAMPLE_RATE = Integer.parseInt(sampleRateStr);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -509,6 +510,9 @@ public class TunerBottomSheet extends BottomSheetCommon {
     }
 
     private void checkTheTuning(float pitchHz) {
+        if (resetTunerHandler==null) {
+            resetTunerHandler = mainActivityInterface.getMainHandler();
+        }
         resetTunerHandler.removeCallbacks(resetTunerDisplay);
         resetTunerHandler.postDelayed(resetTunerDisplay, 1000);
 
@@ -621,6 +625,9 @@ public class TunerBottomSheet extends BottomSheetCommon {
 
     private void prepareSineWave(double freqOfTone) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            if (turnOffAudioTrack == null) {
+                turnOffAudioTrack = mainActivityInterface.getMainHandler();
+            }
             if (toneGenerator != null && !toneGenerator.getIsPlaying()) {
                 turnOffAudioTrack.removeCallbacks(turnOffAudioRunnable);
                 try {

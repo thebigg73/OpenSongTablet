@@ -1,14 +1,12 @@
 package com.garethevans.church.opensongtablet.highlighter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
@@ -201,17 +198,19 @@ public class HighlighterEditFragment extends Fragment {
 
     private void getPDFPage() {
         // Load an image of the currently selected page
-        Log.d(TAG, "pageNumber=" + mainActivityInterface.getSong().getPdfPageCurrent());
-        screenShotBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
-                mainActivityInterface.getSong().getFolder(),
-                mainActivityInterface.getSong().getFilename(), mainActivityInterface.getSong().getPdfPageCurrent(),
-                availableWidth, availableHeight, "Y", true);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+            Log.d(TAG, "pageNumber=" + mainActivityInterface.getSong().getPdfPageCurrent());
+            screenShotBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
+                    mainActivityInterface.getSong().getFolder(),
+                    mainActivityInterface.getSong().getFilename(), mainActivityInterface.getSong().getPdfPageCurrent(),
+                    availableWidth, availableHeight, "Y", true);
 
-        int w = screenShotBitmap.getWidth();
-        int h = screenShotBitmap.getHeight();
+            int w = screenShotBitmap.getWidth();
+            int h = screenShotBitmap.getHeight();
 
-        // Set the scale
-        setScale(w, h);
+            // Set the scale
+            setScale(w, h);
+        }
     }
 
     private void setScale(int bitmapWidth, int bitmapHeight) {
@@ -275,11 +274,6 @@ public class HighlighterEditFragment extends Fragment {
     private void setColors() {
         String colorChosen;
         switch (currentColor) {
-            case penBlack:
-            case highlighterBlack:
-            default:
-                colorChosen = "black";
-                break;
             case penWhite:
             case highlighterWhite:
                 colorChosen = "white";
@@ -300,6 +294,12 @@ public class HighlighterEditFragment extends Fragment {
             case highlighterBlue:
                 colorChosen = "blue";
                 break;
+            case penBlack:
+            case highlighterBlack:
+            default:
+                colorChosen = "black";
+                break;
+
         }
         if (activeTool.equals("highlighter")) {
             currentColor = drawingHighlighterColor;
