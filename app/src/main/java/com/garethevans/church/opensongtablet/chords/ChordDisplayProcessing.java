@@ -107,9 +107,6 @@ public class ChordDisplayProcessing {
     }
     public String getInstrumentFromPref(String pref) {
         switch (pref) {
-            case "g":
-            default:
-                return instruments.get(0);
             case "u":
                 return instruments.get(1);
             case "m":
@@ -122,6 +119,10 @@ public class ChordDisplayProcessing {
                 return instruments.get(5);
             case "p":
                 return instruments.get(6);
+            case "g":
+            default:
+                return instruments.get(0);
+
         }
     }
     public ArrayList<String> getChordsInSong() {
@@ -232,18 +233,23 @@ public class ChordDisplayProcessing {
     public void addCustomChordFingering(String forInstrument) {
         // If we have custom chords in the song add them (they are split by a space)
         // Only add this instrument though
-        if (!mainActivityInterface.getSong().getCustomchords().isEmpty()) {
-            String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
-            for (String customChord:customChords) {
-                String chordName = "$"+customChord.substring(customChord.lastIndexOf("_")+1)+"$";
-                if (customChord.contains("_"+forInstrument+"_") && !fingerings.contains((chordName))) {
-                    String chordFingering = customChord.substring(0,customChord.indexOf("_"+forInstrument+"_"));
-                    int index = chordsInSong.indexOf(chordName);
-                    if (index>=0) {
-                        fingerings.set(index,chordFingering);
-                    } else {
-                        fingerings.add(chordFingering);
-                        chordsInSong.add(chordName);
+        if (mainActivityInterface.getSong()!=null) {
+            if (mainActivityInterface.getSong().getCustomchords()==null) {
+                mainActivityInterface.getSong().setCustomChords("");
+            }
+            if (!mainActivityInterface.getSong().getCustomchords().isEmpty()) {
+                String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
+                for (String customChord : customChords) {
+                    String chordName = "$" + customChord.substring(customChord.lastIndexOf("_") + 1) + "$";
+                    if (customChord.contains("_" + forInstrument + "_") && !fingerings.contains((chordName))) {
+                        String chordFingering = customChord.substring(0, customChord.indexOf("_" + forInstrument + "_"));
+                        int index = chordsInSong.indexOf(chordName);
+                        if (index >= 0) {
+                            fingerings.set(index, chordFingering);
+                        } else {
+                            fingerings.add(chordFingering);
+                            chordsInSong.add(chordName);
+                        }
                     }
                 }
             }
@@ -680,9 +686,6 @@ public class ChordDisplayProcessing {
         if (pref!=null) {
             // If no preferred instrument is saved with the song, it will show as 'Use default'
             switch (pref) {
-                default:
-                    instrument = c.getString(R.string.use_default);
-                    break;
                 case "g":
                     instrument = c.getString(R.string.guitar);
                     break;
@@ -704,6 +707,10 @@ public class ChordDisplayProcessing {
                 case "p":
                     instrument = c.getString(R.string.piano);
                     break;
+                default:
+                    instrument = c.getString(R.string.use_default);
+                    break;
+
             }
         } else {
             // If it wasn't set, or null, use this value

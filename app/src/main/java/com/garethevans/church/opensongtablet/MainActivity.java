@@ -58,6 +58,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -351,7 +352,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private LinearLayout songSheetTitleLayout;
     private ArrayList<Integer> sectionWidths, sectionHeights, sectionColors;
     private String whichMode, whattodo, importFilename;
-    private final String presenter = "Presenter", performance = "Performance";
     private Uri importUri;
     private boolean settingsOpen = false, showSetMenu, forceReload,
             pageButtonActive = true, menuOpen, firstRun = true;
@@ -374,10 +374,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
             song_actions = "", deeplink_preferences = "", song_string = "", set_string = "",
             search_index_start = "", search_index_end = "", deeplink_metronome = "",
-            mode_presenter = "", mode_performance = "", mode_stage = "", success = "", okay = "", pad_playback_info = "",
+            success = "", okay = "", pad_playback_info = "",
             no_suitable_application = "", indexing_string = "", deeplink_edit = "", cast_info_string = "",
             menu_showcase_info = "";
 
+    private String mode_performance, mode_presenter, mode_stage, mode_hybrid;
     private MenuItem menuScreenMirror, menuScreenHelp, menuSearch, menuSettings;
     private String webHelpAddress = null;
 
@@ -762,6 +763,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             mode_presenter = getString(R.string.mode_presenter);
             mode_performance = getString(R.string.mode_performance);
             mode_stage = getString(R.string.mode_stage);
+            mode_hybrid = getString(R.string.mode_hybrid);
             success = getString(R.string.success);
             okay = getString(R.string.okay);
             pad_playback_info = getString(R.string.pad_playback_info);
@@ -795,15 +797,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void dealWithIntent(int navigationId) {
         boolean dealtWith = getPreferences().getMyPreferenceBoolean("intentAlreadyDealtWith", false);
-        Log.d(TAG, "intentAlreadyDealtWith:" + dealtWith);
         getThreadPoolExecutor().execute(() -> {
             if (fileOpenIntent != null && fileOpenIntent.getDataString() != null && fileOpenIntent.getDataString().startsWith(getOpenChordsAPI().getAppFolderTrigger())) {
                 // This should trigger the GET request to sync OpenChords
-                Log.d(TAG, "openchords link received\n" + fileOpenIntent.getData());
                 try {
                     getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
                     String uuid = Objects.requireNonNull(fileOpenIntent.getData()).toString().replace(getOpenChordsAPI().getAppFolderTrigger(), "");
-                    Log.d(TAG, "uuid:" + uuid);
                     getOpenChordsAPI().setOpenChordsFolderUuid(uuid);
                     getOpenChordsAPI().setReceivedFolderLink(true);
                     setWhattodo("openchordsintent");
@@ -1196,10 +1195,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void initialiseStartVariables() {
         getMyThemeColors().setThemeName(getPreferences().getMyPreferenceString("appTheme", "dark"));
-        whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
+        whichMode = getPreferences().getMyPreferenceString("whichMode", mode_performance);
         // Fix old mode from old profile
         if (whichMode.equals("Presentation")) {
-            whichMode = presenter;
+            whichMode = mode_presenter;
         }
 
         // Song location
@@ -1268,7 +1267,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else if (!decided && initialVal != -0.0f) {
                     // We have our first value, so now compare.
                     // If we are getting bigger = opening, if smaller, closing
-                    if (!whichMode.equals(presenter)) {
+                    if (!whichMode.equals(mode_presenter)) {
                         hideActionButton(slideOffset > initialVal);
                     }
                     menuOpen = slideOffset > initialVal;
@@ -1299,7 +1298,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
                 menuOpen = false;
-                if (!whichMode.equals(presenter)) {
+                if (!whichMode.equals(mode_presenter)) {
                     hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
                 // Hide the keyboard
@@ -1856,7 +1855,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navHome() {
-        Log.d(TAG,"navHome() called");
+        // NavHome always clears the backstack (no back navigation)
         if (navController == null) {
             try {
                 setupActionbar();
@@ -1866,27 +1865,49 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         }
 
-        // 1. Identify your root destination
+        // 1. Identify your target root destination
         int targetId = whichMode.equals(mode_presenter) ? R.id.presenterFragment : R.id.performanceFragment;
+        int currentId = -1;
+        if (navController.getCurrentDestination()!=null) {
+            currentId = navController.getCurrentDestination().getId();
+        }
 
-        // 2. Clear the NavHostFragment's internal backstack
-        // We must reach into the NavHost to clear its child fragment manager
+        // 2. Clear the NavHostFragment's internal child fragment manager backstack directly
         Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             FragmentManager childFm = navHostFragment.getChildFragmentManager();
-            // Clear all fragments in the NavHost directly
             childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
-        // 3. Reset the NavController and force it to a clean state
-        // We navigate to the target and clear everything in the NavController stack
-        NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(navController.getGraph().getStartDestinationId(), true)
-                .setLaunchSingleTop(true)
-                .build();
+        // 3. Reset the NavController state safely
+        try {
+            NavGraph graph = navController.getGraph();
+            int oldStartId = graph.getStartDestinationId();
 
-        navController.navigate(targetId, null, navOptions);
+            // Update the graph's official start destination to the new target
+            graph.setStartDestination(targetId);
 
+            NavOptions.Builder builder = new NavOptions.Builder()
+                    .setLaunchSingleTop(true);
+
+            if (oldStartId != targetId) {
+                // Pop everything up to (and including) the old start destination
+                // so it completely disappears from the back stack history.
+                builder.setPopUpTo(oldStartId, true);
+            } else {
+                // If we are already on the home graph, pop up to targetId exclusive
+                // to clear any nested sub-pages the user drilled down into.
+                builder.setPopUpTo(targetId, false);
+            }
+
+            if (targetId != currentId) {
+                navController.navigate(targetId, null, builder.build());
+            }
+
+        } catch (Exception e) {
+            getStorageAccess().updateCrashLog("Unable to navHome(): " + e);
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -2859,11 +2880,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private boolean performanceValid() {
-        return performanceFragment != null && !whichMode.equals(presenter) && !settingsOpen;
+        // Will be true for Performance, Stage and Hybrid modes
+        return performanceFragment != null && !whichMode.equals(mode_presenter) && !settingsOpen;
     }
 
     @Override
     public boolean getPerformanceValid() {
+        // Will be true for Performance, Stage and Hybrid modes
         return performanceValid();
     }
 
@@ -2873,7 +2896,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private boolean presenterValid() {
-        return presenterFragment != null && whichMode.equals(presenter) && !settingsOpen;
+        // Will be true for Presenter mode only
+        return presenterFragment != null && whichMode.equals(mode_presenter) && !settingsOpen;
     }
 
     @Override
@@ -3166,14 +3190,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
         if (performanceValid()) {
-            performanceFragment.dealWithStickyNotes(forceshow, hide);
+            try {
+                performanceFragment.dealWithStickyNotes(forceshow, hide);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void showAbc(boolean forceShow, boolean hide) {
         // Try to show the abc score
         if (performanceValid()) {
-            performanceFragment.dealWithAbc(forceShow, hide);
+            try {
+                performanceFragment.dealWithAbc(forceShow, hide);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -3182,7 +3214,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void toggleHighlighter() {
         // Try to show the highlighter
         if (performanceValid()) {
-            performanceFragment.toggleHighlighter();
+            try {
+                performanceFragment.toggleHighlighter();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -3621,7 +3657,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Check if the song is in the set
         mainLooper.postDelayed(() -> {
-            if (whichMode.equals(presenter)) {
+            if (whichMode.equals(mode_presenter)) {
                 if (presenterValid()) {
                     presenterFragment.doSongLoad(folder, filename);
                 } else {
@@ -3637,136 +3673,141 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }, delay);
     }
 
+    private boolean currentlyLoadingSongFromSet = false;
     @Override
     public void loadSongFromSet(int position) {
-        getThreadPoolExecutor().execute(() -> {
-            if (position >= currentSet.getIndexSongInSet()) {
-                displayPrevNext.setSwipeDirection("R2L");
-            } else {
-                displayPrevNext.setSwipeDirection("L2R");
-            }
-
-            if (getCurrentSet().getCurrentSetSize() > position) {
-                // Update the index in the set
-                // Remove highlighting from the old position
-                currentSet.setIndexSongInSet(position);
-                if (setMenuFragment != null) {
-                    setMenuFragment.removeHighlight();
-                }
-
-                // Get the set item
-                SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
-                String setFolder = setItemInfo.songfolder;
-                String setFilename = setItemInfo.songfilename;
-                String setKey = setItemInfo.songkey;
-                Uri setUri = getStorageAccess().getUriForItem("Songs", setFolder, setFilename);
-
-                if (setItemInfo.songfilename.equals(getSetActions().getDividerIdentifier())) {
-                    // Exit here!
-                    return;
-                }
-                // If we are viewing a set item with a temp key change, we will need these variables
-                String[] bits = getVariations().getPreVariationInfo(setItemInfo);
-                String originalFolder = bits[0];
-                String originalFilename = bits[1];
-                String originalKey = bits[2];
-                Uri originalUri = getStorageAccess().getUriForItem("Songs", originalFolder, originalFilename);
-
-                // Determine if this is a variation file based on the filename
-                boolean isNormalVariation = getVariations().getIsNormalVariation(setFolder, setFilename);
-
-                // Create a null/empty song object in case we need to load it to get the key or transpose
-                Song quickSong = null;
-
-                // Get the key of the song from the file
-                if (getStorageAccess().isSpecificFileExtension("imageorpdf", setFilename)) {
-                    // This is a PDF, we query the persistent database
-                    originalKey = nonOpenSongSQLiteHelper.getKey(setFolder, setFilename);
-                } else if (isNormalVariation) {
-                    if (getStorageAccess().uriExists(setUri)) {
-                        // We are a variation and the file already exists.
-                        // We can get the key from the variation file
-                        quickSong = new Song();
-                        quickSong.setFolder(setFolder);
-                        quickSong.setFilename(setFilename);
-                    } else if (getStorageAccess().uriExists(originalUri)) {
-                        // The variation file doesn't exist, yet
-                        // We can get the original file
-                        quickSong = new Song();
-                        quickSong.setFolder(originalFolder);
-                        quickSong.setFilename(originalFilename);
-                    }
-                    if (quickSong != null && quickSong.getFilename() != null &&
-                            !quickSong.getFilename().isEmpty()) {
-                        quickSong = getLoadSong().doLoadSong(quickSong, false);
-                        originalKey = quickSong.getKey();
-                    }
+        if (!currentlyLoadingSongFromSet) {
+            currentlyLoadingSongFromSet = true;
+            getThreadPoolExecutor().execute(() -> {
+                if (position >= currentSet.getIndexSongInSet()) {
+                    displayPrevNext.setSwipeDirection("R2L");
                 } else {
-                    originalKey = sqLiteHelper.getKey(setFolder, setFilename);
+                    displayPrevNext.setSwipeDirection("L2R");
                 }
 
-                boolean isKeyVariation = setKey != null && originalKey != null && !setKey.isEmpty() &&
-                        !originalKey.isEmpty() && !setKey.equals(originalKey);
-
-                if (isKeyVariation) {
-                    // Could be just a key variation, or a standard variation needing adjusted
-
-                    boolean needToTranspose = false;
-                    Uri targetUri;
-                    String targetFilename;
-
-                    if (isNormalVariation) {
-                        // We must already have the variation file, so we can edit directly
-                        needToTranspose = true;
-
-                    } else {
-                        // Look for an already created key Variation file so we don't need to do it again
-                        targetFilename = getVariations().getKeyVariationFilename(originalFolder, originalFilename, setKey);
-                        targetUri = getVariations().getKeyVariationUri(targetFilename);
-
-                        if (!getStorageAccess().uriExists(targetUri)) {
-                            needToTranspose = true;
-                        }
-
-                        // We adjust the folder and filename on a temporary basis
-                        // This isn't used in the set, just in the loading process
-                        setFolder = getVariations().getKeyVariationsFolder();
-                        setFilename = targetFilename;
+                if (getCurrentSet().getCurrentSetSize() > position) {
+                    // Update the index in the set
+                    // Remove highlighting from the old position
+                    currentSet.setIndexSongInSet(position);
+                    if (setMenuFragment != null) {
+                        setMenuFragment.removeHighlight();
                     }
 
-                    if (needToTranspose) {
-                        // The set has specified a key that is different from our song
-                        if (quickSong == null) {
-                            // This was a straightforward song (i.e. not a standard variation)
-                            // Get the song object from the database
-                            if (getStorageAccess().isSpecificFileExtension("imageorpdf", setFilename)) {
-                                quickSong = nonOpenSongSQLiteHelper.getSpecificSong(originalFolder, originalFilename);
-                            } else {
-                                quickSong = sqLiteHelper.getSpecificSong(originalFolder, originalFilename);
-                            }
-                        } else if (quickSong.getLyrics() == null || quickSong.getLyrics().isEmpty()) {
+                    // Get the set item
+                    SetItemInfo setItemInfo = getCurrentSet().getSetItemInfo(position);
+                    String setFolder = setItemInfo.songfolder;
+                    String setFilename = setItemInfo.songfilename;
+                    String setKey = setItemInfo.songkey;
+                    Uri setUri = getStorageAccess().getUriForItem("Songs", setFolder, setFilename);
+
+                    if (setItemInfo.songfilename.equals(getSetActions().getDividerIdentifier())) {
+                        // Exit here!
+                        return;
+                    }
+                    // If we are viewing a set item with a temp key change, we will need these variables
+                    String[] bits = getVariations().getPreVariationInfo(setItemInfo);
+                    String originalFolder = bits[0];
+                    String originalFilename = bits[1];
+                    String originalKey = bits[2];
+                    Uri originalUri = getStorageAccess().getUriForItem("Songs", originalFolder, originalFilename);
+
+                    // Determine if this is a variation file based on the filename
+                    boolean isNormalVariation = getVariations().getIsNormalVariation(setFolder, setFilename);
+
+                    // Create a null/empty song object in case we need to load it to get the key or transpose
+                    Song quickSong = null;
+
+                    // Get the key of the song from the file
+                    if (getStorageAccess().isSpecificFileExtension("imageorpdf", setFilename)) {
+                        // This is a PDF, we query the persistent database
+                        originalKey = nonOpenSongSQLiteHelper.getKey(setFolder, setFilename);
+                    } else if (isNormalVariation) {
+                        if (getStorageAccess().uriExists(setUri)) {
+                            // We are a variation and the file already exists.
+                            // We can get the key from the variation file
+                            quickSong = new Song();
+                            quickSong.setFolder(setFolder);
+                            quickSong.setFilename(setFilename);
+                        } else if (getStorageAccess().uriExists(originalUri)) {
+                            // The variation file doesn't exist, yet
+                            // We can get the original file
+                            quickSong = new Song();
+                            quickSong.setFolder(originalFolder);
+                            quickSong.setFilename(originalFilename);
+                        }
+                        if (quickSong != null && quickSong.getFilename() != null &&
+                                !quickSong.getFilename().isEmpty()) {
                             quickSong = getLoadSong().doLoadSong(quickSong, false);
+                            originalKey = quickSong.getKey();
                         }
-                        getVariations().makeKeyVariation(quickSong, setKey, false, !isNormalVariation);
-
-                    } else if (!getVariations().getIsNormalOrKeyVariation(setFolder, setFilename)) {
-                        // Load the song in the original key
-                        setFolder = originalFolder;
-                        setFilename = originalFilename;
-                        setItemInfo.songfolder = originalFolder;
-                        setItemInfo.songfilename = originalFilename;
-                        setItemInfo.songfoldernice = originalFolder;
+                    } else {
+                        originalKey = sqLiteHelper.getKey(setFolder, setFilename);
                     }
-                }
 
-                // Now update the song menu filters (remove all but folder)
-                if (songMenuFragment != null) {
-                    songMenuFragment.removeFiltersFromLoadSong();
-                }
+                    boolean isKeyVariation = setKey != null && originalKey != null && !setKey.isEmpty() &&
+                            !originalKey.isEmpty() && !setKey.equals(originalKey);
 
-                doSongLoad(setFolder, setFilename, true);
-            }
-        });
+                    if (isKeyVariation) {
+                        // Could be just a key variation, or a standard variation needing adjusted
+
+                        boolean needToTranspose = false;
+                        Uri targetUri;
+                        String targetFilename;
+
+                        if (isNormalVariation) {
+                            // We must already have the variation file, so we can edit directly
+                            needToTranspose = true;
+
+                        } else {
+                            // Look for an already created key Variation file so we don't need to do it again
+                            targetFilename = getVariations().getKeyVariationFilename(originalFolder, originalFilename, setKey);
+                            targetUri = getVariations().getKeyVariationUri(targetFilename);
+
+                            if (!getStorageAccess().uriExists(targetUri)) {
+                                needToTranspose = true;
+                            }
+
+                            // We adjust the folder and filename on a temporary basis
+                            // This isn't used in the set, just in the loading process
+                            setFolder = getVariations().getKeyVariationsFolder();
+                            setFilename = targetFilename;
+                        }
+
+                        if (needToTranspose) {
+                            // The set has specified a key that is different from our song
+                            if (quickSong == null) {
+                                // This was a straightforward song (i.e. not a standard variation)
+                                // Get the song object from the database
+                                if (getStorageAccess().isSpecificFileExtension("imageorpdf", setFilename)) {
+                                    quickSong = nonOpenSongSQLiteHelper.getSpecificSong(originalFolder, originalFilename);
+                                } else {
+                                    quickSong = sqLiteHelper.getSpecificSong(originalFolder, originalFilename);
+                                }
+                            } else if (quickSong.getLyrics() == null || quickSong.getLyrics().isEmpty()) {
+                                quickSong = getLoadSong().doLoadSong(quickSong, false);
+                            }
+                            getVariations().makeKeyVariation(quickSong, setKey, false, !isNormalVariation);
+
+                        } else if (!getVariations().getIsNormalOrKeyVariation(setFolder, setFilename)) {
+                            // Load the song in the original key
+                            setFolder = originalFolder;
+                            setFilename = originalFilename;
+                            setItemInfo.songfolder = originalFolder;
+                            setItemInfo.songfilename = originalFilename;
+                            setItemInfo.songfoldernice = originalFolder;
+                        }
+                    }
+
+                    // Now update the song menu filters (remove all but folder)
+                    if (songMenuFragment != null) {
+                        songMenuFragment.removeFiltersFromLoadSong();
+                    }
+
+                    doSongLoad(setFolder, setFilename, true);
+                    currentlyLoadingSongFromSet = false;
+                }
+            });
+        }
     }
 
     @Override
@@ -3782,20 +3823,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     @Override
-    public void registerFragment(Fragment frag, String what) {
+    public void registerFragment(Fragment frag, String whatFragName) {
+        // This registers fragments (it doesn't set the mode)
         if (whichMode != null) {
-            switch (what) {
-                case "Performance":
+            switch (whatFragName) {
+                case "PerformanceFragment":
                     performanceFragment = (PerformanceFragment) frag;
                     presenterFragment = null;
-                    if (whichMode.equals(mode_presenter)) {
-                        whichMode = mode_performance;
-                    }
                     break;
-                case "Presenter":
+                case "PresenterFragment":
                     presenterFragment = (PresenterFragment) frag;
                     performanceFragment = null;
-                    whichMode = mode_presenter;
                     break;
                 case "EditSongFragment":
                     editSongFragment = (EditSongFragment) frag;
@@ -3816,7 +3854,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     bootUpFragment = (BootUpFragment) frag;
                     break;
             }
-        } else if (what.equals("BootUpFragment")) {
+        } else if (whatFragName.equals("BootUpFragment")) {
             bootUpFragment = (BootUpFragment) frag;
         }
     }
@@ -4139,7 +4177,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void fullIndex(String specificFolder) {
-        Log.d(TAG,"fullIndex called in MainActivity");
         if (songListBuildIndex.getIndexRequired() && !songListBuildIndex.getCurrentlyIndexing()) {
             getShowToast().doIt(search_index_start);
             getThreadPoolExecutor().execute(() -> {
@@ -4163,11 +4200,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void quickSongMenuBuild() {
-        Log.d(TAG,"quickSongMenuBuild()");
         if (getStorageAccess() != null && getSQLiteHelper() != null && getNonOpenSongSQLiteHelper() != null) {
             ArrayList<String> songIds = new ArrayList<>();
             try {
-                Log.d(TAG,"getting songIds");
                 songIds = getStorageAccess().listSongs(false);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4199,7 +4234,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
             // Updated each time a file is created, deleted, moved.
             // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
-            Log.d(TAG,"nonOpenSongSQLiteHelper.initialise()");
             nonOpenSongSQLiteHelper.initialise();
 
             // Add entries to the database that have songid, folder and filename fields
@@ -4327,14 +4361,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public String getMode() {
         if (whichMode == null) {
-            whichMode = getPreferences().getMyPreferenceString("whichMode", performance);
+            whichMode = getPreferences().getMyPreferenceString("whichMode", mode_performance);
         }
         return whichMode;
     }
-
     @Override
     public void setMode(String whichMode) {
-        this.whichMode = whichMode;
+        if (whichMode!=null) {
+            this.whichMode = whichMode;
+        }
+    }
+    @Override
+    public String modePerformanceString() {
+        return mode_performance;
+    }
+    @Override
+    public String modePresenterString() {
+        return mode_presenter;
+    }
+    @Override
+    public String modeStageString() {
+        return mode_stage;
+    }
+    @Override
+    public String modeHybridString() {
+        return mode_hybrid;
     }
 
     @Override
@@ -4515,7 +4566,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                 out.flush();
                 out.close();
-            } catch (Exception e) {
+            } catch (OutOfMemoryError | Exception e) {
                 e.printStackTrace();
             }
         }

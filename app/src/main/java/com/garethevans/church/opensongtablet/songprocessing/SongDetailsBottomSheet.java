@@ -1,32 +1,28 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetSongDetailsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class SongDetailsBottomSheet extends BottomSheetCommon {
 
     private BottomSheetSongDetailsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private String not_available_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,6 +51,9 @@ public class SongDetailsBottomSheet extends BottomSheetCommon {
     }
 
     private void setupViews() {
+        if (getContext()!=null) {
+            not_available_string = getString(R.string.not_allowed);
+        }
         myView.songSheet.removeAllViews();
         LinearLayout linearLayout = mainActivityInterface.getSongSheetHeaders().getSongSheet(mainActivityInterface.getSong(),0.9f,getResources().getColor(R.color.vlightgrey));
         if (linearLayout!=null) {
@@ -91,8 +90,9 @@ public class SongDetailsBottomSheet extends BottomSheetCommon {
         }
         myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
 
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
-                mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+        if ((mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null) &&
+                ((mainActivityInterface.getSong().getFiletype().equals("PDF") && Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) ||
+                mainActivityInterface.getSong().getFiletype().equals("IMG"))) {
             myView.textExtract.setVisibility(View.VISIBLE);
         } else {
             myView.textExtract.setVisibility(View.GONE);
@@ -100,13 +100,20 @@ public class SongDetailsBottomSheet extends BottomSheetCommon {
     }
 
     private void setupListeners() {
-        myView.textExtract.setOnClickListener(v -> extractText());
+        myView.textExtract.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                extractText();
+            } else {
+                mainActivityInterface.getShowToast().doIt(not_available_string);
+            }
+        });
         myView.edit.setOnClickListener(v -> {
             mainActivityInterface.navigateToFragment(getString(R.string.deeplink_edit),0);
             dismiss();
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void extractText() {
         String filetype = mainActivityInterface.getSong().getFiletype();
         String folder = mainActivityInterface.getSong().getFolder();

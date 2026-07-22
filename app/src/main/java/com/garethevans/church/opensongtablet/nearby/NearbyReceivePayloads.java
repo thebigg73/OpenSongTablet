@@ -314,7 +314,7 @@ public class NearbyReceivePayloads {
     // A nearby message has been received
     private void messageDisplay(NearbyJson nearbyJson) {
         // Show an alert to the client
-        if (!mainActivityInterface.getMode().equals("Presenter") && nearbyMessageSticky) {
+        if (!mainActivityInterface.getMode().equals(mainActivityInterface.modePresenterString()) && nearbyMessageSticky) {
             // Show a sticky note alert
             mainActivityInterface.showNearbyAlertPopUp(nearbyJson.getMessage());
         } else {

@@ -112,6 +112,10 @@ public interface MainActivityInterface {
     VersionNumber getVersionNumber();
     String getMode();
     void setMode(String whichMode);
+    String modePerformanceString();
+    String modePresenterString();
+    String modeStageString();
+    String modeHybridString();
     void setFirstRun(boolean firstRun);
     boolean getFirstRun();
     int getOrientation();

@@ -21,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -122,7 +123,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
         actionInterface = (ActionInterface) context;
         displayInterface = (DisplayInterface) context;
-        mainActivityInterface.registerFragment(this, "Performance");
     }
 
     @Override
@@ -136,7 +136,13 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.initialisePreferences(getContext(), mainActivityInterface);
             updateInlineSetVisibility();
         }
-        mainActivityInterface.registerFragment(this, "Performance");
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Register this fragment
+        mainActivityInterface.registerFragment(this,"PerformanceFragment");
     }
 
     @Override
@@ -146,7 +152,7 @@ public class PerformanceFragment extends Fragment {
         if (mainActivityInterface.getToolbar()!=null) {
             mainActivityInterface.getToolbar().setPerformanceMode(false);
         }
-        mainActivityInterface.registerFragment(null,"Performance");
+        mainActivityInterface.registerFragment(null,"PerformanceFragment");
     }
     @Override
     public void onDestroyView() {
@@ -180,8 +186,6 @@ public class PerformanceFragment extends Fragment {
         myView = ModePerformanceBinding.inflate(inflater, container, false);
         prepareStrings();
 
-        // Register this fragment
-        mainActivityInterface.registerFragment(this,"Performance");
         mainActivityInterface.updateFragment("updateSongMenuSortTitles",this,null);
 
         // Initialise the helper classes that do the heavy lifting

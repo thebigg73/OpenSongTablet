@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,41 +111,57 @@ public class EditSongFragmentFeatures extends Fragment {
 
         // The key
         mainActivityInterface.getTranspose().checkOriginalKeySet(mainActivityInterface.getTempSong());
-        if (getContext()!=null) {
+        if (getContext()!=null && myView!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                ExposedDropDownArrayAdapter keyArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
-                myView.key.setAdapter(keyArrayAdapter1);
-                myView.key.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKey()));
-                ExposedDropDownArrayAdapter keyArrayAdapter2 = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.originalkey, R.layout.view_exposed_dropdown_item, key_choice_string);
-                myView.originalkey.setAdapter(keyArrayAdapter2);
-                myView.originalkey.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKeyOriginal()));
+                if (mainActivityInterface!=null && myView!=null) {
+                    ExposedDropDownArrayAdapter keyArrayAdapter1 = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.key, R.layout.view_exposed_dropdown_item, key_choice_string);
+                    myView.key.setAdapter(keyArrayAdapter1);
+                    myView.key.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKey()));
+                    ExposedDropDownArrayAdapter keyArrayAdapter2 = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.originalkey, R.layout.view_exposed_dropdown_item, key_choice_string);
+                    myView.originalkey.setAdapter(keyArrayAdapter2);
+                    myView.originalkey.setText(mainActivityInterface.getTranspose().getFixedKey(mainActivityInterface.getTempSong().getKeyOriginal()));
 
-                // The capo
-                setupCapo();
+                    // The capo
+                    setupCapo();
+                }
             });
         }
-        mainActivityInterface.getMainHandler().post(() -> myView.searchOnline.setText(online_search_string));
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                myView.searchOnline.setText(online_search_string);
+            }
+        });
 
         // Check for ABC overrides
+        int sliderPos = 0;
         if (mainActivityInterface.getProcessSong().getHasAbcOffOverride(mainActivityInterface.getTempSong())) {
-            myView.overrideAbcSlider.setSliderPos(2);
+            sliderPos = 2;
         } else if (mainActivityInterface.getProcessSong().getHasAbcOnOverride(mainActivityInterface.getTempSong())) {
-            myView.overrideAbcSlider.setSliderPos(1);
-        } else {
-            myView.overrideAbcSlider.setSliderPos(0);
+            sliderPos = 1;
         }
+        final int sliderPosFinal = sliderPos;
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                myView.overrideAbcSlider.setSliderPos(sliderPosFinal);
+            }
+        });
 
         // Check for preview overrides
+        int previewSliderPos = 0;
         String previewOverride = mainActivityInterface.getTempSong().getPreviewoverride();
         if (previewOverride != null && previewOverride.equals("force_off")) {
-            myView.overridePreviewSlider.setSliderPos(2);
+            previewSliderPos = 2;
         } else if (previewOverride != null && previewOverride.equals("force_on")) {
-            myView.overridePreviewSlider.setSliderPos(1);
-        } else {
-            myView.overridePreviewSlider.setSliderPos(0);
+            previewSliderPos = 1;
         }
+        final int previewSliderPosFinal = previewSliderPos;
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView!=null) {
+                myView.overridePreviewSlider.setSliderPos(previewSliderPosFinal);
+            }
+        });
 
         // The pad file
         ArrayList<String> padfiles = new ArrayList<>();
@@ -155,10 +170,12 @@ public class EditSongFragmentFeatures extends Fragment {
         padfiles.add(off_string);
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
-                myView.pad.setAdapter(padArrayAdapter);
-                myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
+                if (myView!=null) {
+                    ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
+                    myView.pad.setAdapter(padArrayAdapter);
+                    myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
+                }
             });
         }
         if (mainActivityInterface.getTempSong().getPadfile() == null ||
@@ -168,9 +185,17 @@ public class EditSongFragmentFeatures extends Fragment {
 
         // The loop
         if (mainActivityInterface.getTempSong().getPadloop()!=null) {
-            mainActivityInterface.getMainHandler().post(() -> myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true")));
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView != null) {
+                    myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true"));
+                }
+            });
         } else {
-            mainActivityInterface.getMainHandler().post(() -> myView.loop.setChecked(false));
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (myView!=null) {
+                    myView.loop.setChecked(false);
+                }
+            });
         }
 
         // The tempo
@@ -181,18 +206,20 @@ public class EditSongFragmentFeatures extends Fragment {
         }
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
-                myView.tempo.setAdapter(tempoArrayAdapter);
-                myView.tempo.setHint(tempo_string + " ("+bpm_string+")");
-                myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
-                // Initialise the tap tempo helper class
-                if (metronomeTapTempo==null) {
-                    metronomeTapTempo = new MetronomeTapTempo(getContext(),null);
+                if (myView!=null) {
+                    ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
+                    myView.tempo.setAdapter(tempoArrayAdapter);
+                    myView.tempo.setHint(tempo_string + " (" + bpm_string + ")");
+                    myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
+                    // Initialise the tap tempo helper class
+                    if (metronomeTapTempo == null) {
+                        metronomeTapTempo = new MetronomeTapTempo(getContext(), null);
+                    }
+                    metronomeTapTempo.initialiseTapTempo(mainActivityInterface.getTempSong(),
+                            myView.tapTempo, myView.timesig, null, null, myView.tempo, null,
+                            false);
                 }
-                metronomeTapTempo.initialiseTapTempo(mainActivityInterface.getTempSong(),
-                        myView.tapTempo, myView.timesig, null, null, myView.tempo, null,
-                        false);
             });
         }
 
@@ -224,11 +251,13 @@ public class EditSongFragmentFeatures extends Fragment {
 
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                ExposedDropDownArrayAdapter drumKitArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
-                        myView.drummerKit, R.layout.view_exposed_dropdown_item, drumKits);
-                myView.drummerKit.setAdapter(drumKitArrayAdapter);
-                myView.drummerKit.setText(mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleFromXML(
-                        mainActivityInterface.getTempSong().getDrummerKit()));
+                if (myView!=null) {
+                    ExposedDropDownArrayAdapter drumKitArrayAdapter = new ExposedDropDownArrayAdapter(getContext(),
+                            myView.drummerKit, R.layout.view_exposed_dropdown_item, drumKits);
+                    myView.drummerKit.setAdapter(drumKitArrayAdapter);
+                    myView.drummerKit.setText(mainActivityInterface.getDrumViewModel().getDrummer().getDrummerStyleFromXML(
+                            mainActivityInterface.getTempSong().getDrummerKit()));
+                }
             });
         }
 
@@ -238,14 +267,16 @@ public class EditSongFragmentFeatures extends Fragment {
         // The preferred instrument for the song
         if (getContext()!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
-                // Add the default text temporarily
-                instruments.add(0, use_default_string);
-                ExposedDropDownArrayAdapter instrumentsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.preferredInstrument, R.layout.view_exposed_dropdown_item, instruments);
-                myView.preferredInstrument.setAdapter(instrumentsAdapter);
-                String chosen = mainActivityInterface.getChordDisplayProcessing().getSongInstrumentNice(mainActivityInterface.getTempSong().getPreferredInstrument());
-                myView.preferredInstrument.setText(chosen);
-                // Now take the default out of the arraylist
-                instruments.remove(0);
+                if (myView!=null) {
+                    // Add the default text temporarily
+                    instruments.add(0, use_default_string);
+                    ExposedDropDownArrayAdapter instrumentsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.preferredInstrument, R.layout.view_exposed_dropdown_item, instruments);
+                    myView.preferredInstrument.setAdapter(instrumentsAdapter);
+                    String chosen = mainActivityInterface.getChordDisplayProcessing().getSongInstrumentNice(mainActivityInterface.getTempSong().getPreferredInstrument());
+                    myView.preferredInstrument.setText(chosen);
+                    // Now take the default out of the arraylist
+                    instruments.remove(0);
+                }
             });
         }
 
@@ -268,23 +299,25 @@ public class EditSongFragmentFeatures extends Fragment {
         }
 
         mainActivityInterface.getMainHandler().post(() -> {
-            myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
-            myView.durationMins.setDigits("0123456789");
-            myView.durationMins.setText(String.valueOf(timeVals[0]));
-            myView.durationSecs.setInputType(InputType.TYPE_CLASS_NUMBER);
-            myView.durationSecs.setDigits("0123456789");
-            myView.durationSecs.setText(String.valueOf(timeVals[1]));
-            myView.delay.setInputType(InputType.TYPE_CLASS_NUMBER);
-            myView.delay.setDigits("0123456789");
-            myView.delay.setText(mainActivityInterface.getTempSong().getAutoscrolldelay());
+            if (myView!=null) {
+                myView.durationMins.setInputType(InputType.TYPE_CLASS_NUMBER);
+                myView.durationMins.setDigits("0123456789");
+                myView.durationMins.setText(String.valueOf(timeVals[0]));
+                myView.durationSecs.setInputType(InputType.TYPE_CLASS_NUMBER);
+                myView.durationSecs.setDigits("0123456789");
+                myView.durationSecs.setText(String.valueOf(timeVals[1]));
+                myView.delay.setInputType(InputType.TYPE_CLASS_NUMBER);
+                myView.delay.setDigits("0123456789");
+                myView.delay.setText(mainActivityInterface.getTempSong().getAutoscrolldelay());
 
-        // The midi, abc and customchords
-            myView.midi.setText(mainActivityInterface.getTempSong().getMidi());
-            mainActivityInterface.getProcessSong().editBoxToMultiline(myView.midi);
-            myView.abc.setText(mainActivityInterface.getTempSong().getAbc());
-            mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abc);
-            myView.customChords.setText(mainActivityInterface.getTempSong().getCustomchords());
-            mainActivityInterface.getProcessSong().editBoxToMultiline(myView.customChords);
+                // The midi, abc and customchords
+                myView.midi.setText(mainActivityInterface.getTempSong().getMidi());
+                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.midi);
+                myView.abc.setText(mainActivityInterface.getTempSong().getAbc());
+                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abc);
+                myView.customChords.setText(mainActivityInterface.getTempSong().getCustomchords());
+                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.customChords);
+            }
         });
         checkLines();
 

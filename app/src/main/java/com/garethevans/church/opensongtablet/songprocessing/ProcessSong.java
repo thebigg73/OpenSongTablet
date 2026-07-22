@@ -2881,9 +2881,10 @@ public class ProcessSong {
                         }
                     }
 
-                    // IV - Support add section space feature for stage mode. This is done in column processing for performance mode.
+                    // IV - Support add section space feature for stage/hybrid mode. This is done in column processing for performance mode.
                     if (!presentation &&
-                            addSectionSpace && mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) &&
+                            addSectionSpace &&
+                            (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) || mainActivityInterface.getMode().equals(c.getString(R.string.hybrid))) &&
                             !mainActivityInterface.getMakePDF().getIsSetListPrinting() &&
                             sect != (song.getPresoOrderSongSections().size() - 1)) {
                         linearLayout.addView(lineText(song, "lyric", "", getTypeface(false, "lyric"),
@@ -2892,7 +2893,7 @@ public class ProcessSong {
                     }
 
 
-                    if (presentation && (!mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) || mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) && blockShadow) {
+                    if (presentation && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) && !mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid)) && blockShadow) {
                         linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
                                     getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
                     } else {

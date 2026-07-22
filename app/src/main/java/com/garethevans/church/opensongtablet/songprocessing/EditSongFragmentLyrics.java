@@ -12,7 +12,6 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
@@ -41,6 +39,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ThreadPoolExecutor;
 
 // This fragment purely deals with the lyrics/chords
 
@@ -71,29 +70,39 @@ public class EditSongFragmentLyrics extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            try {
-                prepareStrings();
-                setupValues();
-                setupPreview();
 
-                // The stuff that needs to be on the UI
-                mainActivityInterface.getMainHandler().post(() -> {
-                    if (myView!=null) {
-                        // Add listeners
-                        setupListeners();
+        ThreadPoolExecutor executor = mainActivityInterface.getThreadPoolExecutor();
+        if (executor != null && !executor.isShutdown() && !executor.isTerminated()) {
+            executor.execute(() -> {
+                try {
+                    prepareStrings();
+                    setupValues();
+                    setupPreview();
 
-                        myView.lyrics.clearFocus();
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
-            }
-        });
+                    // The stuff that needs to be on the UI
+                    mainActivityInterface.getMainHandler().post(() -> {
+                        if (myView != null && isAdded()) {
+                            // Add listeners
+                            setupListeners();
+
+                            myView.lyrics.clearFocus();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mainActivityInterface.getStorageAccess().updateFileActivityLog(e.toString());
+                }
+            });
+        } else {
+            // Fallback: If the pool is somehow dead, execute safely on the main thread
+            // or request a fresh executor from your mainActivityInterface
+            Log.w(TAG, "ThreadPoolExecutor is shutdown or null during onResume()");
+        }
 
         try {
-            myView.lyrics.clearFocus();
+            if (myView != null) {
+                myView.lyrics.clearFocus();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -349,7 +358,7 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.imeBarScrollView.setBackgroundColor(mainActivityInterface.getPalette().surface);
             myView.imeBarScrollView.setVisibility(View.VISIBLE);
             myView.imeBar.removeAllViews();
-            editSongFragmentInterface.getSaveButton().setTranslationY((-mainActivityInterface.getDisplayDensity() * 48) + 12);
+            editSongFragmentInterface.getSaveButton().setTranslationY((-mainActivityInterface.getDisplayDensity() * (48)));
 
             // Build the quick bar as OpenSong or ChordPro
             String[] strings;
@@ -394,17 +403,8 @@ public class EditSongFragmentLyrics extends Fragment {
                         DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().secondary);
                     }
                     textView.setBackground(drawable);
-                    //textView.setPadding(32,8,32,8);
-                    //LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    //        LinearLayout.LayoutParams.MATCH_PARENT);
-                    //buttonParams.setMargins(8,0,8,0);
-                    //textView.setLayoutParams(buttonParams);
                     textView.setGravity(Gravity.CENTER);
-                    //TextViewCompat.setAutoSizeTextTypeWithDefaults(textView, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
-                    // Make the text wider to force the box
-                    //string = "     " + string  + "     ";
                     textView.setText(string);
-                    //string = string.trim();
                     int moveCursorBy;
                     boolean addingChord;
                     if (string.equals("{" + guitar_tab + "}")) {
@@ -534,24 +534,21 @@ public class EditSongFragmentLyrics extends Fragment {
                 } else {
                     if (bitToAdd.startsWith("[") && bitToAdd.endsWith("]")) {
                         bitToAdd = "\n" + bitToAdd;
+                        moveCursorBy ++;
                     }
                     text = text.substring(0, cursorPos) + bitToAdd + text.substring(cursorPos);
                 }
                 myView.lyrics.setText(text);
             }
-            Log.d(TAG,"bitToAdd:"+bitToAdd+". moveCursorBy:"+moveCursorBy);
-            Log.d(TAG,"myView.lyrics.getText():"+myView.lyrics.getText());
-            Log.d(TAG,"myView.lyrics.getSelectionStart:"+myView.lyrics.getSelectionStart());
-            Log.d(TAG,"myView.lyrics.getSelectionEnd:"+myView.lyrics.getSelectionEnd());
-            Log.d(TAG,"myView.lyrics.getText().length():"+myView.lyrics.getText().length());
-            Log.d(TAG,"cursorPos:"+cursorPos+"  moverCursorBy:"+moveCursorBy);
 
             // Setting the position should open the keyboard
             myView.lyrics.requestFocus();
             // Also do this in 1 second time to allow for keyboard opening
+            int newPos = cursorPos + moveCursorBy;
+            myView.lyrics.setSelection(newPos);
             mainActivityInterface.getMainHandler().postDelayed(() -> {
                 if (myView!=null) {
-                    myView.lyrics.setSelection(cursorPos + moveCursorBy);
+                    myView.lyrics.setSelection(newPos);
                 }
             }, 1000);
 

@@ -81,81 +81,9 @@ public class MyFloatingActionButton extends FrameLayout {
 
         a.recycle();
 
-
-/*
-
-        // Get the typed array using your styleable name
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyFloatingActionButton);
-
-        // 1. Get the drawable from android:src
-        int srcResId = a.getResourceId(R.styleable.MyFAB_android_src, R.drawable.help_outline);
-        myFAB.setImageResource(srcResId);
-
-        // 2. Get the boolean for extra padding
-        boolean addPadding = a.getBoolean(R.styleable.MyFAB_addTouchPadding, false);
-        if (addPadding) {
-            int padding = (int) (16 * getContext().getResources().getDisplayMetrics().density);
-            setPadding(padding, padding, padding, padding);
-        }
-
-        // 3. Get the size enum
-        int size = a.getInt(R.styleable.MyFAB_myFabSize, FloatingActionButton.SIZE_NORMAL);
-        myFAB.setSize(size);
-
-        // 4. Check for the "makeFlat" attribute
-        isFlat = a.getBoolean(R.styleable.MyFAB_makeFlat, false);
-        if (isFlat) {
-            makeFlat();
-        }
-
-        // 5. Check for padding
-        int padding = a.getDimensionPixelSize(R.styleable.MyFAB_android_padding, 0);
-        if (padding>0) {
-            padding = (int)(getContext().getResources().getDisplayMetrics().density * padding);
-            myFAB.setPadding(padding, padding, padding, padding);
-        }
-
-        // ALWAYS recycle after use
-        a.recycle();
-*/
-
-/*
-        // Apply standard FAB attributes from the XML to the internal button
-        TypedArray b = context.obtainStyledAttributes(attrs,
-                new int[] {
-                        com.google.android.material.R.attr.elevation,
-                        com.google.android.material.R.attr.backgroundTint
-                });
-
-        // 1. Apply Elevation
-        if (b.hasValue(0)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                myFAB.setElevation(b.getDimension(0, 0));
-            } else {
-                myFAB.setCompatElevation(b.getDimension(0,0));
-            }
-        }
-
-        // 2. Apply Background Tint
-        if (b.hasValue(1)) {
-            //myFAB.setBackgroundTintList(b.getColorStateList(1));
-            myFAB.setBackgroundTintList(ColorStateList.valueOf(b.getColor(1, Color.TRANSPARENT)));
-        }
-
-        b.recycle();*/
-
-        setOnClickListener(v -> {
-            if (myFAB.getVisibility()==View.VISIBLE) {
-                myFAB.performClick();
-                myFAB.setPressed(true);
-                myFAB.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        myFAB.setPressed(false);
-                    }
-                }, 300);
-            }
-        });
+        // The framelayout should not consume the clicks as they pass to the child by default
+        setClickable(false);
+        setFocusable(false);
 
         setAnimationListeners();
 
@@ -306,6 +234,7 @@ public class MyFloatingActionButton extends FrameLayout {
     }
 
     public void setPalette(Palette palette) {
+        this.palette = palette;
         // Tint the button
         setFABButtonColor(palette.secondary);
         // Tint the icon

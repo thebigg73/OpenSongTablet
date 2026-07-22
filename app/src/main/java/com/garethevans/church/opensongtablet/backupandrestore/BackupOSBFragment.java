@@ -218,8 +218,10 @@ public class BackupOSBFragment extends Fragment {
             if (wantPersistentDB) {
                 // Copy the current appDB to the userDB (the one in Settings)
                 mainActivityInterface.getMainHandler().post(() -> {
-                    String message = string_processing + ": " + SQLite.NON_OS_DATABASE_NAME;
-                    myView.progressText.setText(message);
+                    if (myView!=null) {
+                        String message = string_processing + ": " + SQLite.NON_OS_DATABASE_NAME;
+                        myView.progressText.setText(message);
+                    }
                 });
                 Log.d(TAG,"DB copied: "+mainActivityInterface.getNonOpenSongSQLiteHelper().
                         copyUserDatabase());

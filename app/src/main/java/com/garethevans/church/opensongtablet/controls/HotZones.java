@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -12,7 +11,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
 public class HotZones {
 
@@ -82,9 +80,11 @@ public class HotZones {
     public void checkIfRequired() {
         // Check hotzone required
         if (!mainActivityInterface.getMode().equals(mode_performance) && !mainActivityInterface.getMode().equals(mode_hybrid)) {
-            hotZoneTopLeftView.setVisibility(View.GONE);
-            hotZoneTopCenterView.setVisibility(View.GONE);
-            hotZoneBottomCenterView.setVisibility(View.GONE);
+            if (hotZoneTopLeftView!=null && hotZoneTopCenterView!=null && hotZoneBottomCenterView!=null) {
+                hotZoneTopLeftView.setVisibility(View.GONE);
+                hotZoneTopCenterView.setVisibility(View.GONE);
+                hotZoneBottomCenterView.setVisibility(View.GONE);
+            }
 
         } else {
             // If the inline set is less than 25%, the top left zone is disabled
@@ -92,10 +92,11 @@ public class HotZones {
             boolean inlineSet = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSet",true);
             float inlineSetWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("inlineSetWidth",0.2f);
 
-
-            hotZoneTopLeftView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
-            hotZoneTopCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
-            hotZoneBottomCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+            if (hotZoneTopLeftView!=null && hotZoneTopCenterView!=null && hotZoneBottomCenterView!=null) {
+                hotZoneTopLeftView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+                hotZoneTopCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+                hotZoneBottomCenterView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getHotZoneColor());
+            }
 
             // Decide if we can show the topLeft hotzone.
             // For this to be true, we need to decide if the width is >0 after removing the inline set width
@@ -109,28 +110,30 @@ public class HotZones {
                 topLeftAvailable = (int)((mainActivityInterface.getDisplayMetrics()[0] / 2f) - (hotZoneWidth/2f)) - actualInlineSetWidth;
             }
 
-            hotZoneTopLeftView.setVisibility(
-                    hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && (!inlineSet || topLeftAvailable > 0) && (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?
-                            View.VISIBLE : View.GONE);
+            if (hotZoneTopLeftView!=null && hotZoneTopCenterView!=null && hotZoneBottomCenterView!=null) {
+                hotZoneTopLeftView.setVisibility(
+                        hotZoneTopLeftShort != null && hotZoneTopLeftLong != null && (!inlineSet || topLeftAvailable > 0) && (!hotZoneTopLeftShort.isEmpty() || !hotZoneTopLeftLong.isEmpty()) ?
+                                View.VISIBLE : View.GONE);
 
-            if (hotZoneTopLeftView.getVisibility()==View.VISIBLE && inlineSet) {
-                // Move the view across
-                Log.d(TAG,"move the hotZone:"+actualInlineSetWidth);
-                hotZoneTopLeftView.setLeft(0);
-                hotZoneTopLeftView.setTranslationX(actualInlineSetWidth);
-                hotZoneTopLeftView.getLayoutParams().width = topLeftAvailable;
+                if (hotZoneTopLeftView.getVisibility() == View.VISIBLE && inlineSet) {
+                    // Move the view across
+                    Log.d(TAG, "move the hotZone:" + actualInlineSetWidth);
+                    hotZoneTopLeftView.setLeft(0);
+                    hotZoneTopLeftView.setTranslationX(actualInlineSetWidth);
+                    hotZoneTopLeftView.getLayoutParams().width = topLeftAvailable;
+                }
+                hotZoneTopCenterView.setVisibility(
+                        hotZoneTopCenterShort != null && hotZoneTopCenterLong != null && (!inlineSet || inlineSetWidth < 0.5f) &&
+                                (!hotZoneTopCenterShort.isEmpty() || !hotZoneTopCenterLong.isEmpty()) ?
+                                View.VISIBLE : View.GONE);
+                hotZoneBottomCenterView.setVisibility(
+                        hotZoneBottomCenterShort != null && hotZoneBottomCenterLong != null && (!inlineSet || inlineSetWidth < 0.4f) &&
+                                (!hotZoneBottomCenterShort.isEmpty() || !hotZoneBottomCenterLong.isEmpty()) ?
+                                View.VISIBLE : View.GONE);
+                // Update the listeners
+                setListeners();
+                setUsingScrollZones();
             }
-            hotZoneTopCenterView.setVisibility(
-                    hotZoneTopCenterShort != null && hotZoneTopCenterLong != null && (!inlineSet || inlineSetWidth<0.5f) &&
-                            (!hotZoneTopCenterShort.isEmpty() || !hotZoneTopCenterLong.isEmpty()) ?
-                            View.VISIBLE : View.GONE);
-            hotZoneBottomCenterView.setVisibility(
-                    hotZoneBottomCenterShort != null && hotZoneBottomCenterLong != null && (!inlineSet || inlineSetWidth<0.4f) &&
-                            (!hotZoneBottomCenterShort.isEmpty() || !hotZoneBottomCenterLong.isEmpty()) ?
-                            View.VISIBLE : View.GONE);
-            // Update the listeners
-            setListeners();
-            setUsingScrollZones();
         }
     }
 

@@ -168,41 +168,52 @@ public class SetActions {
     // Called after the songs have been indexed.  Check titles from database
     public void updateSetTitlesAndIndexes() {
         for (int x=0; x<mainActivityInterface.getCurrentSet().getCurrentSetSize(); x++) {
+            Song tempSong = null;
             // Update the title
-            Song tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfolder,
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfilename);
-            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songtitle = tempSong.getTitle();
-            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songitem = x+1;
-            // Decide on the icon to use for the set item
-            String folder = mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfolder;
-            if (folder!=null) {
-                if (folder.equals("**Slides")) {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Slides";
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceSlide;
-                } else if (folder.equals("**Notes")) {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Notes";
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceNote;
-                } else if (folder.equals("**Scripture")) {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Scripture";
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceScripture;
-                } else if (folder.equals("**Images")) {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Images";
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceImage;
-                } else if (folder.equals("**Variations")) {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Variations";
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceVariation;
-                } else if (folder.toLowerCase(Locale.ROOT).contains(".pdf")) {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = ".pdf";
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = nicePDF;
-                } else {
-                    mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Songs";
+            if (mainActivityInterface.getCurrentSet().getSetItemInfos() != null && x < mainActivityInterface.getCurrentSet().getSetItemInfos().size()) {
+                SetItemInfo setItemInfo = mainActivityInterface.getCurrentSet().getSetItemInfo(x);
+
+                if (setItemInfo != null) {
+
+                    String folder = setItemInfo.songfolder;
+                    String filename = setItemInfo.songfilename;
+
+                    if (folder != null && filename != null) {
+                        tempSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename);
+
+                        mainActivityInterface.getCurrentSet().getSetItemInfo(x).songtitle = tempSong.getTitle();
+                        mainActivityInterface.getCurrentSet().getSetItemInfo(x).songitem = x + 1;
+
+                        if (folder.equals("**Slides")) {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Slides";
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceSlide;
+                        } else if (folder.equals("**Notes")) {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Notes";
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceNote;
+                        } else if (folder.equals("**Scripture")) {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Scripture";
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceScripture;
+                        } else if (folder.equals("**Images")) {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Images";
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceImage;
+                        } else if (folder.equals("**Variations")) {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Variations";
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = niceVariation;
+                        } else if (folder.toLowerCase(Locale.ROOT).contains(".pdf")) {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = ".pdf";
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songfoldernice = nicePDF;
+                        } else {
+                            mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Songs";
+                        }
+                    } else {
+                        mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Songs";
+                    }
+                    // Update checks in the song menu
+                    if (tempSong!=null) {
+                        mainActivityInterface.updateCheckForThisSong(tempSong);
+                    }
                 }
-            } else {
-                mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Songs";
             }
-            // Update checks in the song menu
-            mainActivityInterface.updateCheckForThisSong(tempSong);
         }
         mainActivityInterface.updateSetList();
     }

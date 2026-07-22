@@ -706,9 +706,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             if (response.code() == 401) {
                 // We need to get the auth token again
                 Log.d(TAG,"We need to get the auth token again");
-                if (openChordsFragment!=null) {
-                    openChordsFragment.changeButtonsEnable(true);
-                }
+                // Safely update UI on the main handler and check if fragment is still active
+                mainActivityInterface.getMainHandler().post(() -> {
+                    if (openChordsFragment != null && openChordsFragment.isAdded()) {
+                        openChordsFragment.changeButtonsEnable(true);
+                    }
+                });
                 // Get the token again (this also sends a query to try again afterwards)
                 getJwtToken();
 

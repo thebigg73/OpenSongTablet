@@ -229,20 +229,15 @@ public class ImportOnlineFragment extends Fragment {
         setupWebView();
     }
 
-    /*private void changeUserAgent() {
-        // If we are about to use UG and have switch on request desktop option, set that agent
-        // If not, set the device default user agent
-        if (webViewDesktop && myView.onlineSource.getText().toString().equals("UltimateGuitar")) {
-            webView.post(() -> myView.webView.getSettings().setUserAgentString(userAgentDesktop));
-        } else {
-            webView.post(() -> myView.webView.getSettings().setUserAgentString(userAgentDefault));
-        }
-    }*/
     private void changeUserAgent() {
-        if (webView == null) return;
+        if (myView==null || webView == null) return;
 
-        // Check preference and source
-        boolean isUG = myView.onlineSource.getText().toString().equals("UltimateGuitar");
+        boolean isUG = false;
+        String onlineSource = "";
+        if (myView.onlineSource.getText()!=null) {
+            // Check preference and source
+            isUG = myView.onlineSource.getText().toString().equals("UltimateGuitar");
+        }
 
         if (webViewDesktop && isUG) {
             webView.getSettings().setUserAgentString(userAgentDesktop);
@@ -1126,17 +1121,37 @@ public class ImportOnlineFragment extends Fragment {
 
     private void showDownloadProgress(final boolean waiting) {
         if (myView!=null) {
-            webView.post(() -> webView.setEnabled(!waiting));
+            webView.post(() -> {
+                if (myView != null) {
+                    webView.setEnabled(!waiting);
+                }
+            });
             final int visibility;
             if (waiting) {
                 visibility = View.VISIBLE;
             } else {
                 visibility = View.GONE;
             }
-            myView.progressBar.post(() -> myView.progressBar.setVisibility(visibility));
-            myView.saveButton.post(() -> myView.saveButton.setEnabled(!waiting));
-            myView.backButton.post(() -> myView.backButton.setEnabled(!waiting));
-            myView.closeSearch.post(() -> myView.closeSearch.setEnabled(!waiting));
+            myView.progressBar.post(() -> {
+                if (myView!=null) {
+                    myView.progressBar.setVisibility(visibility);
+                }
+            });
+            myView.saveButton.post(() -> {
+                if (myView!=null) {
+                    myView.saveButton.setEnabled(!waiting);
+                }
+            });
+            myView.backButton.post(() -> {
+                if (myView!=null) {
+                    myView.backButton.setEnabled(!waiting);
+                }
+            });
+            myView.closeSearch.post(() -> {
+                if (myView!=null) {
+                    myView.closeSearch.setEnabled(!waiting);
+                }
+            });
         }
     }
 

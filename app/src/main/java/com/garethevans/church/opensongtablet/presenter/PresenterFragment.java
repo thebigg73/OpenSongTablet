@@ -59,7 +59,6 @@ public class PresenterFragment extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         displayInterface = (DisplayInterface) context;
-        mainActivityInterface.registerFragment(this,"Presenter");
     }
 
     @Override
@@ -74,7 +73,7 @@ public class PresenterFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mainActivityInterface.registerFragment(null,"Presenter");
+        mainActivityInterface.registerFragment(null,"PresenterFragment");
     }
 
     @Nullable
@@ -94,8 +93,7 @@ public class PresenterFragment extends Fragment {
         landscape = this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         setPortraitLandscape();
 
-        // Register this fragment
-        mainActivityInterface.registerFragment(this,"Presenter");
+        // Update the songMenuSortTitles
         mainActivityInterface.updateFragment("updateSongMenuSortTitles",this,null);
 
         // Hide the main page buttons
@@ -164,6 +162,13 @@ public class PresenterFragment extends Fragment {
         }
 
         return myView.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG,"set from PresenterFragment onViewCreated");
+        mainActivityInterface.registerFragment(this,"PresenterFragment");
     }
 
     private void prepareViews() {
@@ -260,6 +265,7 @@ public class PresenterFragment extends Fragment {
     }
 
     public void doSongLoad(String folder, String filename) {
+        Log.d(TAG,"doSongLoad("+folder+","+filename+")");
         // Check to highlighting in the set
         mainActivityInterface.checkSetMenuItemHighlighted(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet());
 
@@ -290,7 +296,8 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("initialiseInfoBarRequired");
 
         // IV - Reset current values to 0
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+        if (mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null &&
+                mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             mainActivityInterface.getSong().setPdfPageCurrent(0);
         } else {
             mainActivityInterface.getSong().setCurrentSection(0);
@@ -319,9 +326,11 @@ public class PresenterFragment extends Fragment {
 
         if (songSectionsFragment!=null) {
             myView.viewPager.postDelayed(() -> {
-                songSectionsFragment.setContext(getContext());
-                myView.viewPager.setCurrentItem(0);
-                songSectionsFragment.showSongInfo();
+                if (getContext()!=null && myView!=null) {
+                    songSectionsFragment.setContext(getContext());
+                    myView.viewPager.setCurrentItem(0);
+                    songSectionsFragment.showSongInfo();
+                }
             }, 50);
         }
 
@@ -415,7 +424,7 @@ public class PresenterFragment extends Fragment {
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        public void onCheckedChanged(@NonNull CompoundButton compoundButton, boolean b) {
             if ((landscape && myMaterialSwitch==myView.showLogoSide) || myMaterialSwitch==myView.showLogo) {
                 mainActivityInterface.getPresenterSettings().setLogoOn(b);
                 displayInterface.updateDisplay("showLogo");
@@ -448,20 +457,24 @@ public class PresenterFragment extends Fragment {
 
     // Inline set
     public void orientationInlineSet(int orientation) {
-        myView.inlineSetList.orientationChanged(orientation);
+        myView.inlineSetList.post(() -> myView.inlineSetList.orientationChanged(orientation));
     }
     public void toggleInlineSet() {
-        myView.inlineSetList.toggleInlineSet();
+        myView.inlineSetList.post(() -> myView.inlineSetList.toggleInlineSet());
     }
     public void updateInlineSetVisibility() {
         if (myView!=null) {
-            myView.inlineSetList.checkVisibility();
+            myView.inlineSetList.post(() -> myView.inlineSetList.checkVisibility());
         }
     }
     public void notifyToClearInlineSet(int from, int count) {
         if (myView!=null) {
-            myView.inlineSetList.notifyToClearInlineSet(from,count);
-            myView.inlineSetList.setVisibility(View.GONE);
+            myView.inlineSetList.post(() -> {
+                if (myView != null) {
+                    myView.inlineSetList.notifyToClearInlineSet(from, count);
+                    myView.inlineSetList.setVisibility(View.GONE);
+                }
+            });
         }
     }
     public void notifyToInsertAllInlineSet() {
@@ -471,13 +484,13 @@ public class PresenterFragment extends Fragment {
     }
     public void notifyInlineSetInserted() {
         if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetInserted();
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetInserted());
         }
     }
     public void notifyInlineSetInserted(int position) {
         if (myView!=null) {
             try {
-                myView.inlineSetList.notifyInlineSetInserted(position);
+                myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetInserted(position));
             } catch (Exception e) {
                 Log.d(TAG, "Couldn't update inline set - might just not be shown currently");
             }
@@ -485,35 +498,39 @@ public class PresenterFragment extends Fragment {
     }
     public void notifyInlineSetRemoved(int position) {
         if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetRemoved(position);
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetRemoved(position));
         }
     }
     public void notifyInlineSetMove(int from, int to) {
         if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetMove(from,to);
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetMove(from,to));
         }
     }
     public void notifyInlineSetChanged(int position) {
         if (myView!=null) {
-            mainActivityInterface.getMainHandler().post(() -> myView.inlineSetList.notifyInlineSetChanged(position));
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetChanged(position));
         }
     }
     public void notifyInlineSetRangeChanged(int from, int count) {
         if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetRangeChanged(from,count);
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetRangeChanged(from,count));
         }
     }
     public void notifyInlineSetHighlight() {
         if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetHighlight();
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetHighlight());
         }
     }
     @SuppressWarnings("ConstantConditions")
     public void updateInlineSetSortTitles() {
         if (myView!=null && myView.inlineSetList!=null && myView.inlineSetList.getChildCount()<=0) {
             try {
-                myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
-                myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetUpdated());
+                myView.inlineSetList.post(() -> {
+                    if (myView!=null) {
+                        myView.inlineSetList.setUseTitle(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuSortTitles", true));
+                        myView.inlineSetList.notifyInlineSetUpdated();
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -521,7 +538,7 @@ public class PresenterFragment extends Fragment {
     }
     public void notifyInlineSetScrollToItem() {
         if (myView!=null) {
-            myView.inlineSetList.notifyInlineSetScrollToItem();
+            myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetScrollToItem());
         }
     }
 

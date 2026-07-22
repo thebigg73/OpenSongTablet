@@ -66,14 +66,24 @@ public class BatteryStatus extends BroadcastReceiver {
 
     public void showBatteryStuff(boolean show) {
         if (show) {
-            batteryImage.setVisibility(batteryDialOn ? View.VISIBLE:View.GONE);
-            batteryCharge.setVisibility(batteryTextOn ? View.VISIBLE:View.GONE);
+            batteryImage.post(() -> {
+                batteryImage.setVisibility(batteryDialOn ? View.VISIBLE:View.GONE);
+                batteryImage.requestLayout();
+            });
+            batteryCharge.post(() -> {
+                batteryCharge.setVisibility(batteryTextOn ? View.VISIBLE:View.GONE);
+                batteryCharge.requestLayout();
+            });
         } else {
-            batteryImage.setVisibility(View.GONE);
-            batteryCharge.setVisibility(View.GONE);
+            batteryImage.post(() -> {
+                batteryImage.setVisibility(View.GONE);
+                batteryImage.requestLayout();
+            });
+            batteryCharge.post(() -> {
+                batteryCharge.setVisibility(View.GONE);
+                batteryCharge.requestLayout();
+            });
         }
-        batteryImage.requestLayout();
-        batteryCharge.requestLayout();
     }
     public void setBatteryDialOn(boolean batteryDialOn) {
         this.batteryDialOn = batteryDialOn;
@@ -88,7 +98,8 @@ public class BatteryStatus extends BroadcastReceiver {
     }
     public void setBatteryTextSize(float batteryTextSize) {
         this.batteryTextSize = batteryTextSize;
-        batteryCharge.setTextSize(batteryTextSize);
+        batteryCharge.post(() -> batteryCharge.setTextSize(batteryTextSize));
+
     }
 
 
@@ -112,15 +123,17 @@ public class BatteryStatus extends BroadcastReceiver {
         }
     }
 
-    public void getBatteryStatus () {
+    public void getBatteryStatus() {
         if (batteryTextOn && batteryCharge != null) {
             batteryCharge.post(() -> {
                 int i = Math.round(charge * 100.0f);
                 String chargeText = i + "%";
 
-                batteryCharge.setTextSize(batteryTextSize);
-                batteryCharge.setText(chargeText);
-                batteryCharge.setTextColor(mainActivityInterface.getPalette().textColor);
+                batteryCharge.post(() -> {
+                    batteryCharge.setTextSize(batteryTextSize);
+                    batteryCharge.setText(chargeText);
+                    batteryCharge.setTextColor(mainActivityInterface.getPalette().textColor);
+                });
             });
         }
 
@@ -137,12 +150,11 @@ public class BatteryStatus extends BroadcastReceiver {
     public void setBatteryImage() {
         BitmapDrawable bmp = batteryImage((int) (charge * 100f));
         if (bmp!=null) {
-            batteryImage.setImageDrawable(bmp);
+            batteryImage.post(() -> batteryImage.setImageDrawable(bmp));
         }
     }
 
     public BitmapDrawable batteryImage(int charge) {
-
         int size = (int)(toolbarHeight*0.75f);
         if (size>0) {
             Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types

@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,7 +129,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         if (mode_hybrid) {
             if (mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W").equals("W")) {
                 // Scale to maxWidth
-                Log.d(TAG,"Scale to maxWidth:"+maxScaleWidth);
                 for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
                     sectionInfos.get(x).scale = maxScaleWidth;
                 }
@@ -142,13 +140,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     totalHeight += sectionInfos.get(x).height + spacing;
                 }
                 maxScaleHeight = Math.min((float)availableHeight / totalHeight,maxScaleWidth);
-                Log.d(TAG,"Scale to maxHeight:"+maxScaleHeight);
                 for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
                     sectionInfos.get(x).scale = maxScaleHeight;
                 }
             } else {
                 // Scale to 1f
-                Log.d(TAG,"Scale to 1f");
                 for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
                     sectionInfos.get(x).scale = 1f;
                 }
@@ -301,7 +297,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     }
 
     public void sectionSelected(int position) {
-        Log.d(TAG,"sectionSelected from adapter:"+position);
         // Whatever the previously selected item was, change the alpha to the alphaOff value
         // Only do this alpha change in stage mode
 

@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ public class ModeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mainActivityInterface.updateToolbar(choose_app_mode);
-        Log.d(TAG,"webAddress:"+webAddress);
         if (webAddress!=null) {
             mainActivityInterface.updateToolbarHelp(webAddress);
         }
@@ -70,28 +68,23 @@ public class ModeFragment extends Fragment {
         }
     }
     private void highlightMode() {
-        switch (mainActivityInterface.getPreferences().getMyPreferenceString(
-                "whichMode","Performance")) {
-            case "Performance":
-                myView.performanceMode.showCheckmark(true);
-                break;
-            case "Presenter":
-                myView.presenterMode.showCheckmark(true);
-                break;
-            case "Stage":
-                myView.stageMode.showCheckmark(true);
-                break;
-            case "Hybrid":
-                myView.hybridMode.showCheckmark(true);
-                break;
+        // Compare our mode with the strings in the MainActivity (avoids typos)
+        if (mainActivityInterface.getMode().equals(mainActivityInterface.modePresenterString())) {
+            myView.presenterMode.showCheckmark(true);
+        } else if (mainActivityInterface.getMode().equals(mainActivityInterface.modeStageString())) {
+            myView.stageMode.showCheckmark(true);
+        } else if (mainActivityInterface.getMode().equals(mainActivityInterface.modeHybridString())) {
+            myView.hybridMode.showCheckmark(true);
+        } else {
+            myView.performanceMode.showCheckmark(true);
         }
     }
 
     private void setListeners() {
-        myView.performanceMode.setOnClickListener(v -> updatePreference("Performance"));
-        myView.stageMode.setOnClickListener(v -> updatePreference("Stage"));
-        myView.presenterMode.setOnClickListener(v -> updatePreference("Presenter"));
-        myView.hybridMode.setOnClickListener(v -> updatePreference("Hybrid"));
+        myView.performanceMode.setOnClickListener(v -> updatePreference(mainActivityInterface.modePerformanceString()));
+        myView.stageMode.setOnClickListener(v -> updatePreference(mainActivityInterface.modeStageString()));
+        myView.presenterMode.setOnClickListener(v -> updatePreference(mainActivityInterface.modePresenterString()));
+        myView.hybridMode.setOnClickListener(v -> updatePreference(mainActivityInterface.modeHybridString()));
     }
 
     private void updatePreference(String which) {
@@ -101,7 +94,7 @@ public class ModeFragment extends Fragment {
         // This means it will refresh settings and connected displays when it triggers
         mainActivityInterface.setFirstRun(true);
         displayInterface.updateDisplay("setSongContentPrefs");
-        mainActivityInterface.navHome();
+        mainActivityInterface.getMainHandler().postDelayed(() -> mainActivityInterface.navHome(),250);
     }
 
     @Override

@@ -384,8 +384,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                 songMenuSongs.getCount()>pos) {
             // Get the current value and change it
             mainActivityInterface.getMainHandler().post(() -> {
-                boolean inSet = mainActivityInterface.getSetActions().isSongInSet(songMenuSongs.getFoundSongs().get(pos));
-                notifyItemChanged(pos,inSet ? "checkOn":"checkOff");
+                // Because this is post, check again for valid numbering
+                if (songMenuSongs.getFoundSongs().size()>pos && pos!=-1) {
+                    boolean inSet = mainActivityInterface.getSetActions().isSongInSet(songMenuSongs.getFoundSongs().get(pos));
+                    notifyItemChanged(pos, inSet ? "checkOn" : "checkOff");
+                }
             });
         }
     }

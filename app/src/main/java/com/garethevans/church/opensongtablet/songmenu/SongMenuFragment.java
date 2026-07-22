@@ -867,7 +867,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void updateSongCount() {
         if (myView!=null) {
             myView.songTitleStuff.getRoot().post(() -> {
-                if (myView!=null) {
+                if (myView!=null && mainActivityInterface!=null) {
                     myView.songTitleStuff.setCheckTitle.setTextColor(mainActivityInterface.getPalette().textColor);
                     myView.songTitleStuff.songCount.setTextColor(mainActivityInterface.getPalette().textColor);
                     myView.songTitleStuff.songtitleTitle.setTextColor(mainActivityInterface.getPalette().textColor);
@@ -916,7 +916,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void getSongListSearchByFolderValue() {
-        songListSearchByFolderValue = mainActivityInterface.getPreferences().getMyPreferenceString("songListSearchByFolderValue","");
+        if (mainActivityInterface != null) {
+            songListSearchByFolderValue = mainActivityInterface.getPreferences().getMyPreferenceString("songListSearchByFolderValue", "");
+        } else {
+            songListSearchByFolderValue = "";
+        }
     }
 
     @Override

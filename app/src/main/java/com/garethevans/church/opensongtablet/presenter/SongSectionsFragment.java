@@ -199,7 +199,7 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void setContext(Context c) {
-        if (mainActivityInterface==null) {
+        if (mainActivityInterface==null && c!=null) {
             mainActivityInterface = (MainActivityInterface) c;
             displayInterface = (DisplayInterface) c;
             mainActivityInterface.navHome();
