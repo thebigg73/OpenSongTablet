@@ -878,7 +878,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         themeColors = getMyThemeColors();
         profileActions = getProfileActions();
         appPermissions = getAppPermissions();
-        appPermissions.checkAgeVerification();
+        appPermissions.checkAgeVerification(this);
 
         // The databases
         sqLiteHelper = getSQLiteHelper();
