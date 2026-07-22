@@ -141,7 +141,13 @@ public class InlineSetList extends RecyclerView {
     private void scrollToItem(int position) {
         if (mainActivityInterface!=null) {
             this.post(() -> {
-                if (position > -1 &&
+                // 1. Get the first and last fully or partially visible item positions
+                int firstVisible = llm.findFirstVisibleItemPosition();
+                int lastVisible = llm.findLastVisibleItemPosition();
+
+                boolean notVisible = position<firstVisible || position>lastVisible;
+
+                if (position > -1 && notVisible &&
                         position < mainActivityInterface.getCurrentSet().getCurrentSetSize()) {
                     // Scroll to that item
                     llm.scrollToPositionWithOffset(position, 0);

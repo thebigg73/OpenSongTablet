@@ -104,7 +104,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
         android:orientation="horizontal"
-        android:layout_above="@id/imeBarScrollView">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_alignTop="@+id/settingsButton">
 
         <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
             android:id="@+id/undoButton"
@@ -113,7 +115,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:layout_marginBottom="6dp"
+            android:padding="6dp"
             android:contentDescription="@string/back"
             android:src="@drawable/undo" />
 
@@ -124,7 +126,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:layout_marginBottom="6dp"
+            android:padding="6dp"
             android:contentDescription="@string/next"
             android:src="@drawable/redo" />
     </LinearLayout>
@@ -135,9 +137,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="6dp"
+        android:padding="6dp"
         android:contentDescription="@string/extra_settings"
-        android:layout_above="@id/imeBarScrollView"
+        android:layout_above="@+id/imeBarScrollView"
         android:layout_centerHorizontal="true"
         android:src="@drawable/menu" />
     </RelativeLayout>

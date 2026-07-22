@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -61,8 +62,6 @@ public class BootUpFragment extends Fragment {
 
         mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", mode_performance));
 
-        mainActivityInterface.registerFragment(this,"BootUpFragment");
-
         mainActivityInterface.setSettingsOpen(false);
         mainActivityInterface.disableActionBarStuff(false);
         mainActivityInterface.hideActionBar();
@@ -74,9 +73,14 @@ public class BootUpFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mainActivityInterface.registerFragment(this,"BootUpFragment");
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        mainActivityInterface.registerFragment(this,"BootUpFragment");
         if (mainActivityInterface.getWaitingOnBootUpFragment()) {
             startOrSetUp();
         }
@@ -99,13 +103,6 @@ public class BootUpFragment extends Fragment {
     private void hideMenus() {
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mainActivityInterface.registerFragment(null,"BootUpFragment");
-        myView = null;
     }
 
     // Checks made before starting the app
@@ -249,7 +246,6 @@ public class BootUpFragment extends Fragment {
                         mainActivityInterface.getMidi().setupBluetoothManager();
                     }
 
-                    Log.d(TAG,"Ready to navHome, but testing, so stopping here");
                     // Set up the rest of the main activity (on the main thread)
                     mainActivityInterface.getMainHandler().post(() -> {
                         mainActivityInterface.navHome();
@@ -305,11 +301,11 @@ public class BootUpFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         myView = null;
+        Log.d(TAG,"setting fragment to null");
         mainActivityInterface.registerFragment(null,"BootUpFragment");
     }
 

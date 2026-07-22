@@ -210,7 +210,15 @@ public class SetMenuFragment extends Fragment {
                 }
                 if (llm!=null && position>=0) {
                     try {
-                        llm.scrollToPositionWithOffset(position, 0);
+                        // 1. Get the first and last fully or partially visible item positions
+                        int firstVisible = llm.findFirstVisibleItemPosition();
+                        int lastVisible = llm.findLastVisibleItemPosition();
+
+                        // 2. Check if the target position is outside the current visible range
+                        if (position < firstVisible || position > lastVisible) {
+                            // It's not visible, so scroll to it
+                            llm.scrollToPositionWithOffset(position, 0);
+                        }
                         mainActivityInterface.notifyInlineSetScrollToItem();
                     } catch (Exception e) {
                         e.printStackTrace();
