@@ -59,6 +59,7 @@ public class ExposedDropDown extends FrameLayout {
         this(context, null);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_exposed_dropdown, this);
@@ -81,15 +82,17 @@ public class ExposedDropDown extends FrameLayout {
         }
 
         // Read XML attributes
-        int[] set = new int[]{android.R.attr.text, android.R.attr.hint};
-        TypedArray a = context.obtainStyledAttributes(attrs, set);
-        String text = a.getString(0);
-        String hint = a.getString(1);
-
-        a.recycle();
-
-        setText(text);
-        setHint(hint);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExposedDropDown);
+        try {
+            String text = a.getString(R.styleable.ExposedDropDown_android_text); // In preview
+            autoCompleteTextView.setText(text);                                  // For inflation
+            String hint = a.getString(R.styleable.ExposedDropDown_android_hint); // In preview
+            textInputLayout.setHint(hint);                                       // For inflation
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
+        }
 
         autoCompleteTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_medium));
         autoCompleteTextView.setOnTouchListener(new MyTouchListener());

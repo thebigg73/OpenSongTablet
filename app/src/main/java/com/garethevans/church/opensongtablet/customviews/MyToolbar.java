@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -17,9 +16,7 @@ import android.widget.TextClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.ActionMenuView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -627,7 +624,9 @@ public class MyToolbar extends MaterialToolbar {
         this.setTitleTextColor(mainActivityInterface.getPalette().textColor);
         this.setSubtitleTextColor(mainActivityInterface.getPalette().textColor);
         this.setBackgroundColor(mainActivityInterface.getPalette().primary);
-        this.setElevation(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.setElevation(0);
+        }
         title.setTextColor(mainActivityInterface.getPalette().textColor);
         author.setTextColor(mainActivityInterface.getPalette().textColor);
         key.setTextColor(mainActivityInterface.getPalette().textColor);

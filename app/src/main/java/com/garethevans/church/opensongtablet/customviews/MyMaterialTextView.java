@@ -106,30 +106,6 @@ public class MyMaterialTextView extends LinearLayout {
             hintView.setVisibility(View.GONE);
         }
 
-        /*if (attrs != null) {
-            // Read framework attrs (android:text, android:hint)
-            int[] baseAttrs = new int[]{android.R.attr.text, android.R.attr.hint};
-            TypedArray taBase = context.obtainStyledAttributes(attrs, baseAttrs, defStyleAttr, 0);
-
-            String mainText = taBase.getString(0);
-            //setText(mainText);
-            *//*if (mainText != null) {
-                textView.setText(mainText);
-            } else {
-                textView.setVisibility(View.GONE);
-            }*//*
-
-            String hintText = taBase.getString(1);
-            setHint(hintText);
-            *//*if (hintText != null) hintView.setText(hintText);
-*//*
-            taBase.recycle();
-
-
-        } else {
-
-        }*/
-
         setPalette(new Palette(context));
     }
 

@@ -31,10 +31,10 @@ public class MyFloatingActionButton extends FrameLayout {
     private Palette palette;
 
     // Store configuration
-    private boolean isFlat = false;
-    private float targetAlpha = 1.0f;
-    private int targetButtonColor = -1;
-    private int targetIconColor = -1;
+    private boolean isFlat;
+    private final float targetAlpha;
+    private final int targetButtonColor;
+    private final int targetIconColor;
 
     public MyFloatingActionButton(@NonNull Context context) {
         this(context,null);
@@ -48,38 +48,44 @@ public class MyFloatingActionButton extends FrameLayout {
         setClipChildren(false);
         setClipToPadding(false);
 
-        // Read configuration.  Store some to set after attached to window (to override default style)
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyFloatingActionButton);
-        isFlat = a.getBoolean(R.styleable.MyFloatingActionButton_makeFlat, false);
-        targetAlpha = a.getFloat(R.styleable.MyFloatingActionButton_android_alpha, 1.0f);
-        targetIconColor = a.getColor(R.styleable.MyFloatingActionButton_fabIconColor, -1);
-        targetButtonColor = a.getColor(R.styleable.MyFloatingActionButton_fabButtonColor, -1);
+        try {
+            // 1. Booleans & Alphas with safe defaults
+            isFlat = a.getBoolean(R.styleable.MyFloatingActionButton_makeFlat, false);
+            targetAlpha = a.getFloat(R.styleable.MyFloatingActionButton_android_alpha, 1.0f);
 
-        // These can be dealt with directly
-        int srcResId = a.getResourceId(R.styleable.MyFloatingActionButton_android_src, R.drawable.help_outline);
-        int fabIcon = a.getResourceId(R.styleable.MyFloatingActionButton_fabIcon, R.drawable.help_outline);
-        if (fabIcon==R.drawable.help_outline) {
-            fabIcon = srcResId;
+            // 2. Colors (-1 as a default indicator for unassigned colors)
+            targetIconColor = a.getColor(R.styleable.MyFloatingActionButton_fabIconColor, -1);
+            targetButtonColor = a.getColor(R.styleable.MyFloatingActionButton_fabButtonColor, -1);
+
+            // 3. Icon resolution: Check app:fabIcon first, then fallback to android:src, then default
+            int fabIcon = a.getResourceId(R.styleable.MyFloatingActionButton_fabIcon, 0);
+            if (fabIcon == 0) {
+                fabIcon = a.getResourceId(R.styleable.MyFloatingActionButton_android_src, 0);
+            }
+            int finalIcon = (fabIcon != 0) ? fabIcon : R.drawable.help_outline;
+            myFAB.setImageResource(finalIcon);
+
+            // 4. Size enum (Default to normal size = 0)
+            int size = a.getInt(R.styleable.MyFloatingActionButton_myFabSize, FloatingActionButton.SIZE_NORMAL);
+            myFAB.setSize(size);
+
+            // 5. Native padding (Safe standard layout attribute)
+            int padding = a.getDimensionPixelSize(R.styleable.MyFloatingActionButton_android_padding, 0);
+            if (padding > 0) {
+                myFAB.setPadding(padding, padding, padding, padding);
+            }
+
+            // 6. Touch padding flag (Read safely as a boolean without mutating layout bounds during inflation)
+            boolean addPadding = a.getBoolean(R.styleable.MyFloatingActionButton_addTouchPadding, false);
+            if (addPadding) {
+                int extraTouchSpace = padding + ((int) (16 * getContext().getResources().getDisplayMetrics().density));
+                setPadding(extraTouchSpace, extraTouchSpace, extraTouchSpace, extraTouchSpace);
+            }
+
+        } finally {
+            a.recycle(); // Cleanly closed once and only once
         }
-        myFAB.setImageResource(fabIcon);
-
-        boolean addPadding = a.getBoolean(R.styleable.MyFloatingActionButton_addTouchPadding, false);
-        if (addPadding) {
-            int padding = (int) (16 * getContext().getResources().getDisplayMetrics().density);
-            setPadding(padding, padding, padding, padding);
-        }
-
-        // 3. Get the size enum
-        int size = a.getInt(R.styleable.MyFloatingActionButton_myFabSize, FloatingActionButton.SIZE_NORMAL);
-        myFAB.setSize(size);
-
-        int padding = a.getDimensionPixelSize(R.styleable.MyFloatingActionButton_android_padding, 0);
-        if (padding>0) {
-            padding = (int)(getContext().getResources().getDisplayMetrics().density * padding);
-            myFAB.setPadding(padding, padding, padding, padding);
-        }
-
-        a.recycle();
 
         // The framelayout should not consume the clicks as they pass to the child by default
         setClickable(false);
@@ -205,6 +211,7 @@ public class MyFloatingActionButton extends FrameLayout {
     }
 
     public void makeFlat() {
+        isFlat = true;
         // Force the background to be a solid transparent color
         myFAB.setBackgroundTintList(null);
         myFAB.setAnimation(null);

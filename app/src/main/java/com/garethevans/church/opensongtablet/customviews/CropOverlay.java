@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.garethevans.church.opensongtablet.R;
 
 import java.util.ArrayList;
@@ -55,8 +57,8 @@ public class CropOverlay extends View {
 
     // the method that draws the balls
     @Override
-    protected void onDraw(Canvas canvas) {
-        if(points[3]==null) //point4 null when user did not touch and move on screen.
+    protected void onDraw(@NonNull Canvas canvas) {
+        if (points[3]==null) //point4 null when user did not touch and move on screen.
             return;
         int left, top, right, bottom;
         left = points[0].x;

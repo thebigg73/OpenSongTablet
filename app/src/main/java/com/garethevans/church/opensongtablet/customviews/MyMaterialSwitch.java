@@ -42,30 +42,31 @@ public class MyMaterialSwitch extends LinearLayout {
         hintView.setId(View.generateViewId());
         switchMaterial.setId(View.generateViewId());
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialSwitch);
-        String size = a.getString(R.styleable.MaterialSwitch_size);
-        if (size==null) {
-            size = "medium";
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyMaterialSwitch);
+        try {
+            String size = a.getString(R.styleable.MyMaterialSwitch_size);
+            if (size == null) {
+                size = "medium";
+            }
+            setSize(size);
+
+            String mainText = a.getString(R.styleable.MyMaterialSwitch_android_text);
+            setText(mainText);
+
+            String hintText = a.getString(R.styleable.MyMaterialSwitch_android_hint);
+            setHint(hintText);
+
+            boolean isSwitched = a.getBoolean(R.styleable.MyMaterialSwitch_android_checked,false);
+            setChecked(isSwitched);
+
+            boolean smallText = a.getBoolean(R.styleable.MyMaterialSwitch_smallText,false);
+            setSmallText(smallText);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
         }
-        a.recycle();
-        setSize(size);
-
-        int[] set = new int[] {android.R.attr.text, android.R.attr.hint, android.R.attr.checked, R.attr.smallText};
-        TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
-
-        String mainText = typedArray.getString(0);
-        setText(mainText);
-
-        String hintText = typedArray.getString(1);
-        setHint(hintText);
-
-        boolean isSwitched = typedArray.getBoolean(2,false);
-        setChecked(isSwitched);
-
-        boolean smallText = typedArray.getBoolean(3, false);
-        setSmallText(smallText);
-
-        typedArray.recycle();
 
         textView.setOnClickListener(v -> setChecked(!getChecked()));
         hintView.setOnClickListener(v -> setChecked(!getChecked()));

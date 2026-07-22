@@ -33,8 +33,13 @@ public class ThemeItemColor extends LinearLayout {
 
         int[] set = new int[] {android.R.attr.text};
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
-        setText(typedArray.getString(0));
-        typedArray.recycle();
+        try {
+            setText(typedArray.getString(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            typedArray.recycle();
+        }
 
         labelText.setClickable(false);
 

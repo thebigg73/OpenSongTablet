@@ -40,13 +40,16 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
         int[] set = new int[]{android.R.attr.text};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
-
-        CharSequence text = a.getText(0);
-        if (text!=null) {
-            setText(text.toString());
+        try {
+            CharSequence text = a.getText(0);
+            if (text != null) {
+                setText(text.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
         }
-
-        a.recycle();
 
         setPalette(new Palette(context));
     }

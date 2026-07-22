@@ -476,7 +476,7 @@ public class MyRecyclerView extends RecyclerView  implements RecyclerView.Smooth
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         canvas.save();
         canvas.translate(mPosX, mPosY);

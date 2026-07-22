@@ -12,6 +12,8 @@ import android.graphics.Shader.TileMode;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 public class ColorChooserView extends View {
         private Paint paint;
         private ComposeShader shader;
@@ -37,7 +39,7 @@ public class ColorChooserView extends View {
         }
 
         @Override
-        protected void onDraw(Canvas canvas) {
+        protected void onDraw(@NonNull Canvas canvas) {
                 super.onDraw(canvas);
                 if (paint == null) {
                         paint = new Paint();

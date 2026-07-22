@@ -14,8 +14,7 @@ import androidx.core.widget.CompoundButtonCompat;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 
-
-// Don't this is actually used (instead inflated as view holder in recyclerView adapter
+// Don't think is actually used (instead inflated as view holder in recyclerView adapter
 public class MyListItemCheckbox extends LinearLayout {
 
     private CheckBox checkBox;

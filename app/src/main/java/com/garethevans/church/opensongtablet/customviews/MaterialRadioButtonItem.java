@@ -44,21 +44,29 @@ public class MaterialRadioButtonItem extends LinearLayout {
         hintView.setId(View.generateViewId());
         radioButton.setId(View.generateViewId());
 
-        int[] set = new int[] {android.R.attr.text, android.R.attr.hint, android.R.attr.checked};
-        TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialRadioButtonItem);
+        try {
+            String mainText = a.getString(R.styleable.MaterialRadioButtonItem_android_text);
+            textView.setText(mainText);
+            if (mainText==null || mainText.isEmpty()) {
+                textView.setVisibility(View.GONE);
+            }
 
-        String mainText = typedArray.getString(0);
-        setText(mainText);
+            String hintText =  a.getString(R.styleable.MaterialRadioButtonItem_android_hint);
+            hintView.setText(hintText);
+            if (hintText==null || hintText.isEmpty()) {
+                hintView.setVisibility(View.GONE);
+            }
 
-        String hintText = typedArray.getString(1);
-        setHint(hintText);
+            boolean checked = a.getBoolean(R.styleable.MaterialRadioButtonItem_android_checked,false);
+            radioButton.setChecked(checked);
 
-        boolean checked = typedArray.getBoolean(2,false);
-        setChecked(checked);
-
-        typedArray.recycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
+        }
         setPalette(new Palette(context));
-
     }
 
     public void setText(String text) {

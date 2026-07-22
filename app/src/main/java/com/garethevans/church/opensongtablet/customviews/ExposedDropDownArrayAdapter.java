@@ -18,7 +18,7 @@ public class ExposedDropDownArrayAdapter extends ArrayAdapter<String> {
 
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "ExposedDropDownAdapter";
-    private MainActivityInterface mainActivityInterface;
+    private final MainActivityInterface mainActivityInterface;
 
     public ExposedDropDownArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> objects) {
         // Because we have not passed in a reference to the exposed dropdown,

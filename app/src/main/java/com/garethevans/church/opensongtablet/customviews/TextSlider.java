@@ -20,8 +20,6 @@ public class TextSlider extends LinearLayout {
     private final Slider slider;
     private final MyMaterialSimpleTextView heading;
     private Palette palette;
-    //int activeColor;
-    //int inactiveColor;
     private final float xxlarge, xlarge, large, medium, small, xsmall;
 
     public TextSlider(Context context, @Nullable AttributeSet attrs) {
@@ -48,30 +46,35 @@ public class TextSlider extends LinearLayout {
         heading.setId(View.generateViewId());
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextSlider);
-        CharSequence leftText = a.getText(R.styleable.TextSlider_textLeft);
-        CharSequence rightText = a.getText(R.styleable.TextSlider_textRight);
-        int position = a.getInt(R.styleable.TextSlider_value,0);
-        CharSequence headingText = a.getText(R.styleable.TextSlider_heading);
-        if (headingText!=null) {
-            setHeading(headingText.toString());
-        } else {
-            setHeading(null);
+        try {
+            CharSequence leftText = a.getText(R.styleable.TextSlider_textLeft);
+            CharSequence rightText = a.getText(R.styleable.TextSlider_textRight);
+            int position = a.getInt(R.styleable.TextSlider_value, 0);
+            CharSequence headingText = a.getText(R.styleable.TextSlider_heading);
+            if (headingText != null) {
+                setHeading(headingText.toString());
+            } else {
+                setHeading(null);
+            }
+
+            textLeft.setText(leftText);
+            textRight.setText(rightText);
+            slider.setStepSize(1);
+            slider.setValue(position);
+            highlightSelectedText(position);
+
+            // Define colors for different states of the slider
+            slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+            slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+
+            slider.addOnChangeListener((slider, value, fromUser) -> highlightSelectedText(value));
+            textLeft.setOnClickListener(view -> slider.setValue(0));
+            textRight.setOnClickListener(view -> slider.setValue(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
         }
-
-        textLeft.setText(leftText);
-        textRight.setText(rightText);
-        slider.setStepSize(1);
-        slider.setValue(position);
-        highlightSelectedText(position);
-
-        // Define colors for different states of the slider
-        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
-        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-
-        slider.addOnChangeListener((slider, value, fromUser) -> highlightSelectedText(value));
-        textLeft.setOnClickListener(view -> slider.setValue(0));
-        textRight.setOnClickListener(view -> slider.setValue(1));
-        a.recycle();
     }
 
     private void highlightSelectedText(float position) {
@@ -134,5 +137,13 @@ public class TextSlider extends LinearLayout {
         } else {
             return getTextRight();
         }
+    }
+
+    public void setPalette(Palette palette) {
+        this.palette = palette;
+        // Define colors for different states of the slider
+        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+
     }
 }

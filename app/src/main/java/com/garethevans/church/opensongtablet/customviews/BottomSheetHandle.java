@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import com.garethevans.church.opensongtablet.R;
 public class BottomSheetHandle extends FrameLayout {
 
     private final ImageView handle;
-    private final boolean isDraggableX;
+    private boolean isDraggableX = false;
     private float startX;
     private long startTime;
     float handleWidth, handleX;
@@ -25,15 +26,23 @@ public class BottomSheetHandle extends FrameLayout {
 
     public BottomSheetHandle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        ContextThemeWrapper contextThemeWrapper = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            contextThemeWrapper = new ContextThemeWrapper(context, context.getTheme());
+        }
         LayoutInflater.from(contextThemeWrapper).inflate(R.layout.view_bottom_sheet_handle, this, true);
         handle = findViewById(R.id.handle);
         handle.setId(View.generateViewId());
         handle.setFocusable(true);
         handle.setFocusableInTouchMode(true);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetHandle);
-        isDraggableX = a.getBoolean(R.styleable.BottomSheetHandle_isDraggableX, false);
-        a.recycle();
+        try {
+            isDraggableX = a.getBoolean(R.styleable.BottomSheetHandle_isDraggableX, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
+        }
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {

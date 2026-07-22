@@ -73,51 +73,56 @@ public class TextThreeSlider extends LinearLayout {
         slider.setId(View.generateViewId());
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextThreeSlider);
-        CharSequence leftText = a.getText(R.styleable.TextThreeSlider_textL);
-        CharSequence rightText = a.getText(R.styleable.TextThreeSlider_textR);
-        CharSequence centerText = a.getText(R.styleable.TextThreeSlider_textC);
-        Drawable leftDrawable = a.getDrawable(R.styleable.TextThreeSlider_drawableL);
-        Drawable rightDrawable = a.getDrawable(R.styleable.TextThreeSlider_drawableR);
-        Drawable centerDrawable = a.getDrawable(R.styleable.TextThreeSlider_drawableC);
+        try {
+            CharSequence leftText = a.getText(R.styleable.TextThreeSlider_textL);
+            CharSequence rightText = a.getText(R.styleable.TextThreeSlider_textR);
+            CharSequence centerText = a.getText(R.styleable.TextThreeSlider_textC);
+            Drawable leftDrawable = a.getDrawable(R.styleable.TextThreeSlider_drawableL);
+            Drawable rightDrawable = a.getDrawable(R.styleable.TextThreeSlider_drawableR);
+            Drawable centerDrawable = a.getDrawable(R.styleable.TextThreeSlider_drawableC);
 
-        int position = a.getInt(R.styleable.TextThreeSlider_chosen,0);
-        CharSequence text = a.getText(R.styleable.TextThreeSlider_label);
+            int position = a.getInt(R.styleable.TextThreeSlider_chosen, 0);
+            CharSequence text = a.getText(R.styleable.TextThreeSlider_label);
 
-        textOrNull(label,text);
-        textOrNull(textLeft,leftText);
-        textOrNull(textRight,rightText);
-        textOrNull(textCenter,centerText);
+            textOrNull(label, text);
+            textOrNull(textLeft, leftText);
+            textOrNull(textRight, rightText);
+            textOrNull(textCenter, centerText);
 
-        // To cope with KitKat not liking vector assets
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            if (leftDrawable!=null) {
-                DrawableCompat.setTint(leftDrawable, palette.textColor);
+            // To cope with KitKat not liking vector assets
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                if (leftDrawable != null) {
+                    DrawableCompat.setTint(leftDrawable, palette.textColor);
+                }
+                if (rightDrawable != null) {
+                    DrawableCompat.setTint(rightDrawable, palette.textColor);
+                }
+                if (centerDrawable != null) {
+                    DrawableCompat.setTint(centerDrawable, palette.textColor);
+                }
+
+                imageLeft.setImageDrawable(leftDrawable);
+                imageRight.setImageDrawable(rightDrawable);
+                imageCenter.setImageDrawable(centerDrawable);
             }
-            if (rightDrawable!=null) {
-                DrawableCompat.setTint(rightDrawable, palette.textColor);
-            }
-            if (centerDrawable!=null) {
-                DrawableCompat.setTint(centerDrawable, palette.textColor);
-            }
 
-            imageLeft.setImageDrawable(leftDrawable);
-            imageRight.setImageDrawable(rightDrawable);
-            imageCenter.setImageDrawable(centerDrawable);
+            textLeft.setOnClickListener(view -> setSliderPos(0));
+            textCenter.setOnClickListener(view -> setSliderPos(1));
+            textRight.setOnClickListener(view -> setSliderPos(2));
+            imageLeft.setOnClickListener(view -> setSliderPos(0));
+            imageCenter.setOnClickListener(view -> setSliderPos(1));
+            imageRight.setOnClickListener(view -> setSliderPos(2));
+
+            // Define colors for different states of the slider
+            slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+            slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+            slider.addOnChangeListener((slider, value, fromUser) -> updateAlphas());
+            slider.setValue(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            a.recycle();
         }
-
-        textLeft.setOnClickListener(view -> setSliderPos(0));
-        textCenter.setOnClickListener(view -> setSliderPos(1));
-        textRight.setOnClickListener(view -> setSliderPos(2));
-        imageLeft.setOnClickListener(view -> setSliderPos(0));
-        imageCenter.setOnClickListener(view -> setSliderPos(1));
-        imageRight.setOnClickListener(view -> setSliderPos(2));
-
-        // Define colors for different states of the slider
-        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
-        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-        slider.addOnChangeListener((slider, value, fromUser) -> updateAlphas());
-        slider.setValue(position);
-        a.recycle();
 
         iconOrText();
     }

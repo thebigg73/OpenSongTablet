@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
@@ -183,7 +184,7 @@ public class DrawNotes extends View {
     }
 
     // This bit actually does the drawing to screen called when view is initialised or invalidated
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         if (existingHighlighterFile != null) {
             canvas.drawBitmap(existingHighlighterFile,0,0, bitmapPaint);
         }

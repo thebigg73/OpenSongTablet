@@ -11,6 +11,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.OverScroller;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class MyZoomLayout extends FrameLayout {
@@ -67,7 +68,7 @@ public class MyZoomLayout extends FrameLayout {
     }
 
     @Override
-    public void dispatchDraw(Canvas canvas) {
+    public void dispatchDraw(@NonNull Canvas canvas) {
         try {
             super.dispatchDraw(canvas);
         } catch (Exception e) {
@@ -191,7 +192,7 @@ public class MyZoomLayout extends FrameLayout {
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
-        public boolean onScale(ScaleGestureDetector detector) {
+        public boolean onScale(@NonNull ScaleGestureDetector detector) {
             if (allowPinchToZoom) {
                 scaleFactor *= detector.getScaleFactor();
                 if (scaleFactor > maxScaleFactor) {
@@ -219,7 +220,7 @@ public class MyZoomLayout extends FrameLayout {
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        public boolean onScroll(MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
             // First scroll event should be ignored because of bad distanceX
             if (isFirstScrollEvent) {
                 isFirstScrollEvent = false;
@@ -250,7 +251,7 @@ public class MyZoomLayout extends FrameLayout {
         }
 
         @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
             overScroller.fling(getScrollX(), getScrollY(), (int)-velocityX, (int)-velocityY,
                     0, maxScrollX, 0, maxScrollY,overShootX,overShootY);
             invalidate();
@@ -259,7 +260,7 @@ public class MyZoomLayout extends FrameLayout {
 
 
         @Override
-        public boolean onDown(MotionEvent e) {
+        public boolean onDown(@NonNull MotionEvent e) {
             if (!overScroller.isFinished()) {
                 overScroller.forceFinished(true);
             }
