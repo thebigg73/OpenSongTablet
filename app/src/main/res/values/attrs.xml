@@ -7,8 +7,8 @@
     </declare-styleable>
 
     <declare-styleable name="MyFloatingActionButton">
-        <attr name="android:src" />
         <attr name="fabIcon" format="reference"/>
+        <attr name="android:src" format="reference"/>
         <attr name="android:alpha" />
         <attr name="myFabSize" format="enum">
             <enum name="normal" value="0" />
@@ -55,9 +55,9 @@
         <attr name="adjustable" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="MaterialSwitch">
-        <attr name="android:text"/>
-        <attr name="android:hint"/>
+    <declare-styleable name="MyMaterialSwitch">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
         <attr name="smallText" format="boolean"/>
         <attr name="size" />
         <attr name="android:checked"/>

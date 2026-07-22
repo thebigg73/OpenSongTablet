@@ -107,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        android:src="@drawable/arrow_left"
+        app:fabIcon="@drawable/arrow_left"
         app:addTouchPadding="true"/>
     </FrameLayout>
 
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/arrow_right"
+        app:fabIcon="@drawable/arrow_right"
         app:addTouchPadding="true"/>
     </FrameLayout>
     </LinearLayout>

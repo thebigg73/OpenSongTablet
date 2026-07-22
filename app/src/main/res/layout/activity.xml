@@ -115,7 +115,7 @@
                     android:layout_marginBottom="8dp"
                     android:contentDescription="@string/action"
                     app:addTouchPadding="true"
-                    android:src="@drawable/plus" />
+                    app:fabIcon="@drawable/plus" />
 
 
                 <!-- The previous and next info -->
