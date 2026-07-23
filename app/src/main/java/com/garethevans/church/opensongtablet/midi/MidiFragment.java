@@ -73,7 +73,8 @@ public class MidiFragment extends Fragment {
                     bluetoothLeScanner.stopScan(scanCallback);
                 }
             } catch (Exception e) {
-                Log.d(TAG,"Unable to stop the Bluetooth scan.  Likely closed the fragment!/n");
+                Log.d(TAG,"Unable to stop the Bluetooth scan.  Likely closed the fragment!");
+                e.printStackTrace();
             }
         }
     };
@@ -128,6 +129,12 @@ public class MidiFragment extends Fragment {
             setListeners();
         }));
         return myView.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mainActivityInterface.setMidiFragment(this);
     }
 
     private void prepareStrings() {
@@ -353,10 +360,47 @@ public class MidiFragment extends Fragment {
     private void startScanBluetooth() {
         // To get here, we know we have permission as we've already checked!
         bluetoothDevices = new ArrayList<>();
+        bluetoothDevices.clear();
         usbMidiDevices = new MidiDeviceInfo[0];
         myView.foundDevicesLayout.removeAllViews();
         myView.devicesText.setVisibility(View.GONE);
 
+        /*// 1. ADD BONDED DEVICES FIRST
+        List<BluetoothDevice> bondedDevices = mainActivityInterface.getMidi().getBondedMidiDevices();
+        for (BluetoothDevice device : bondedDevices) {
+            ParcelUuid[] uuids = device.getUuids();
+            boolean isMidi = false;
+            String targetUuid = mainActivityInterface.getMidi().getUuidBle();
+
+            if (uuids != null) {
+                for (ParcelUuid uuid : uuids) {
+                    Log.d("MidiFragment", "Checking device: " + device.getName() + " with UUID: " + uuid.toString());
+                    if (targetUuid != null && uuid.toString().equalsIgnoreCase(targetUuid)) {
+                        isMidi = true;
+                        break;
+                    }
+                }
+            }
+
+            // Fallback or explicit check for known names if UUID check is too strict
+            if (!isMidi && device.getName() != null) {
+                if (device.getName().contains("WIDI") || device.getName().contains("W90 Pro")) {
+                    isMidi = true;
+                }
+            }
+
+            if (isMidi && !bluetoothDevices.contains(device)) {
+                bluetoothDevices.add(device);
+                Log.d("MidiFragment", "Added to layout list: " + device.getName());
+            }
+        }
+
+        // Force UI update safely on the Main Thread
+        if (!bluetoothDevices.isEmpty()) {
+            requireActivity().runOnUiThread(() -> updateDevices(true));
+        }*/
+
+        // 2. CONTINUE WITH LIVE BLE SCAN FOR UNBONDED DEVICES
         // Scan specified BLE devices only with ScanFilter
         ScanFilter scanFilter =
                 new ScanFilter.Builder()
@@ -496,6 +540,9 @@ public class MidiFragment extends Fragment {
                                     mainActivityInterface.getMidi().setMidiDeviceName(bluetoothDevices.get(finalX).getName());
                                     mainActivityInterface.getMidi().setMidiDeviceAddress(bluetoothDevices.get(finalX).getAddress());
                                     mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
+
+                                    // EXPLICITLY TRIGGER GATT CONNECTION FOR ANDROID 13 HARDWARE WAKEUP
+                                    //mainActivityInterface.getMidi().tryPairBluetoothLE();
                                 } else {
                                     mainActivityInterface.getMidi().setMidiDeviceName(null);
                                     mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
@@ -579,43 +626,49 @@ public class MidiFragment extends Fragment {
     }
 
     // Connect or disconnect devices
+    // Connect or disconnect devices
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void setupDevice(MidiDevice device) {
+    public void setupDevice(MidiDevice device) {
         if (device!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
                 mainActivityInterface.getMidi().setMidiDevice(device);
 
-                MidiDeviceInfo midiDeviceInfo = mainActivityInterface.getMidi().getMidiDevice().getInfo();
+                // Add a small delay for BLE devices to populate ports if needed
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    MidiDeviceInfo midiDeviceInfo = mainActivityInterface.getMidi().getMidiDevice().getInfo();
 
-                boolean foundinport = false;  // We will only grab the first one
-                boolean foundoutport = false; // We will only grab the first one
+                    boolean foundinport = false;
+                    boolean foundoutport = false;
 
-                if (midiDeviceInfo!=null) {
-                    MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
-                    if (portInfos!=null) {
-                        for (MidiDeviceInfo.PortInfo pi : portInfos) {
-                            switch (pi.getType()) {
-                                case MidiDeviceInfo.PortInfo.TYPE_INPUT:
-                                    if (!foundinport) {
-                                        mainActivityInterface.getMidi().setMidiInputPort(mainActivityInterface.getMidi().getMidiDevice().openInputPort(pi.getPortNumber()));
-                                        foundinport = true;
-                                    }
-                                    break;
-                                case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
-                                    if (!foundoutport) {
-                                        mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
-                                        if (myView.midiInput.getChecked()) {
-                                            mainActivityInterface.getMidi().enableMidiListener();
+                    if (midiDeviceInfo!=null) {
+                        MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
+                        if (portInfos!=null) {
+                            for (MidiDeviceInfo.PortInfo pi : portInfos) {
+                                switch (pi.getType()) {
+                                    case MidiDeviceInfo.PortInfo.TYPE_INPUT:
+                                        if (!foundinport) {
+                                            mainActivityInterface.getMidi().setMidiInputPort(mainActivityInterface.getMidi().getMidiDevice().openInputPort(pi.getPortNumber()));
+                                            foundinport = true;
+                                            Log.d(TAG, "Successfully bound MIDI Input Port: " + pi.getPortNumber());
                                         }
-                                        foundoutport = true;
-                                    }
-                                    break;
+                                        break;
+                                    case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
+                                        if (!foundoutport) {
+                                            mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
+                                            if (myView.midiInput.getChecked()) {
+                                                mainActivityInterface.getMidi().enableMidiListener();
+                                            }
+                                            foundoutport = true;
+                                            Log.d(TAG, "Successfully bound MIDI Output Port: " + pi.getPortNumber());
+                                        }
+                                        break;
+                                }
                             }
                         }
+                    } else {
+                        Log.d(TAG,"No midiDevice connected");
                     }
-                } else {
-                    Log.d(TAG,"No midiDevice connected");
-                }
+                }, 400); // 400ms buffer allows the BLE MIDI stack to expose its port list
             });
         }
     }
@@ -625,6 +678,7 @@ public class MidiFragment extends Fragment {
         myView.progressBar.setVisibility(View.GONE);
         displayCurrentDevice();
     }
+
 
     @Override
     public void onDestroy() {
@@ -639,6 +693,7 @@ public class MidiFragment extends Fragment {
                 Log.d(TAG, "Scanner unable to be stopped (maybe already stopped!)");
             }
         }
+        mainActivityInterface.setMidiFragment(null);
         mainActivityInterface.registerFragment(null, "MidiFragment");
     }
 
