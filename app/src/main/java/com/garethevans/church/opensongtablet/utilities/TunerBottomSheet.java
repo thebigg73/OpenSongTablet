@@ -171,7 +171,12 @@ public class TunerBottomSheet extends BottomSheetCommon {
             microphone_string = getString(R.string.microphone);
             permissions_refused_string = getString(R.string.permissions_refused);
             settings_string = getString(R.string.settings);
-            needleInTuneColor = ResourcesCompat.getColor(getContext().getResources(), R.color.green,null);
+            try {
+                needleInTuneColor = ResourcesCompat.getColor(getContext().getResources(), R.color.green, null);
+            } catch (Throwable t) {
+                // Throwable includes Exceptions and will catch FireHD crashes here
+                needleInTuneColor = getContext().getResources().getColor(R.color.green);
+            }
             needleNotInTuneColor = mainActivityInterface.getPalette().secondaryVariant;
             toneGenerator = new ToneGenerator(getContext());
         }

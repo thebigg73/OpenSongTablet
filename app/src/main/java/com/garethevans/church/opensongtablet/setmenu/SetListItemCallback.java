@@ -48,7 +48,8 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
         mBackground = new ColorDrawable();
         try {
             backgroundColor = ResourcesCompat.getColor(c.getResources(), R.color.vdarkred, null);
-        } catch (Exception e) {
+        } catch (Throwable t) {
+            // Catched both throwables and exceptions for FireHD devices
             if (c != null) {
                 backgroundColor = c.getResources().getColor(R.color.vdarkred);
             } else {

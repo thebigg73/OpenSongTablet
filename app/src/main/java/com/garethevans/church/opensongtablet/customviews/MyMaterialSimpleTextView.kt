@@ -33,6 +33,26 @@ class MyMaterialSimpleTextView @JvmOverloads constructor(
 
     fun setPalette(palette: Palette) {
         setTextColor(palette.textColor)
-        TextViewCompat.setCompoundDrawableTintList(this, ColorStateList.valueOf(palette.textColor))
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            // Safe to call natively on API 23+
+            TextViewCompat.setCompoundDrawableTintList(this, ColorStateList.valueOf(palette.textColor))
+        } else {
+            // Manual wrapping for API 22 and below to avoid NoSuchMethodError
+            val drawables = compoundDrawablesRelative
+            val tintedDrawables = drawables.map { drawable ->
+                drawable?.let {
+                    val mutableDrawable = it.mutate()
+                    androidx.core.graphics.drawable.DrawableCompat.setTint(mutableDrawable, palette.textColor)
+                    mutableDrawable
+                }
+            }
+            setCompoundDrawablesRelative(
+                tintedDrawables[0],
+                tintedDrawables[1],
+                tintedDrawables[2],
+                tintedDrawables[3]
+            )
+        }
     }
 }

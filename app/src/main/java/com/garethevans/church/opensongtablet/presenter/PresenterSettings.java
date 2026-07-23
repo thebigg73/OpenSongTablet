@@ -352,7 +352,7 @@ public class PresenterSettings {
         setBackgroundToUse(mainActivityInterface.getPreferences().
                 getMyPreferenceString("backgroundToUse","img1"));
         setBackgroundColor(mainActivityInterface.getPreferences().
-                getMyPreferenceInt("backgroundColor", ResourcesCompat.getColor(c.getResources(),R.color.red,null)));
+                getMyPreferenceInt("backgroundColor", c.getResources().getColor(R.color.red)));
         setPresoBackgroundAlpha(mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("presoBackgroundAlpha",1f));
     }

@@ -42,19 +42,36 @@ public final class Palette {
     }
 
     public void setColors(Context context) {
-        background = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);
-        onBackground = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
-        surface = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_surface : R.color.light_surface, null);
-        onSurface = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
-        primary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);
-        primaryVariant = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary_variant : R.color.light_primary_variant, null);
-        onPrimary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
-        textColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
-        hintColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_hint : R.color.light_hint, null);
-        secondary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary : R.color.light_secondary, null);
-        secondaryVariant = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant, null);
-        secondaryFixed = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed, null);
-        errorColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_error : R.color.light_error, null);
+        try {
+            background = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);
+            onBackground = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+            surface = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_surface : R.color.light_surface, null);
+            onSurface = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+            primary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);
+            primaryVariant = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary_variant : R.color.light_primary_variant, null);
+            onPrimary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+            textColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_color : R.color.light_color, null);
+            hintColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_hint : R.color.light_hint, null);
+            secondary = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary : R.color.light_secondary, null);
+            secondaryVariant = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant, null);
+            secondaryFixed = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed, null);
+            errorColor = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_error : R.color.light_error, null);
+        } catch (Throwable t) {
+            // Catches both missing method Errors on API 22 and any runtime Exceptions cleanly
+            background = context.getResources().getColor(dark ? R.color.dark_primary : R.color.light_primary);
+            onBackground = context.getResources().getColor(dark ? R.color.dark_color : R.color.light_color);
+            surface = context.getResources().getColor(dark ? R.color.dark_surface : R.color.light_surface);
+            onSurface = context.getResources().getColor(dark ? R.color.dark_color : R.color.light_color);
+            primary = context.getResources().getColor(dark ? R.color.dark_primary : R.color.light_primary);
+            primaryVariant = context.getResources().getColor(dark ? R.color.dark_primary_variant : R.color.light_primary_variant);
+            onPrimary = context.getResources().getColor(dark ? R.color.dark_color : R.color.light_color);
+            textColor = context.getResources().getColor(dark ? R.color.dark_color : R.color.light_color);
+            hintColor = context.getResources().getColor(dark ? R.color.dark_hint : R.color.light_hint);
+            secondary = context.getResources().getColor(dark ? R.color.dark_secondary : R.color.light_secondary);
+            secondaryVariant = context.getResources().getColor(dark ? R.color.dark_secondary_variant : R.color.light_secondary_variant);
+            secondaryFixed = context.getResources().getColor(dark ? R.color.dark_secondary_fixed : R.color.light_secondary_fixed);
+            errorColor = context.getResources().getColor(dark ? R.color.dark_error : R.color.light_error);
+        }
     }
 
 }
