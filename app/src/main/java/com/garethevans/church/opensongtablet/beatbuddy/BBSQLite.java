@@ -744,6 +744,41 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
     }
 
+    public void sendSongMidiCodeFromName(Context c, String songName) {
+        // This happens on a background thread
+
+        // No point unless we have a valid MIDI connection!
+        if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                String query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                        COLUMN_SONG_NUM + " FROM " + TABLE_NAME_DEFAULT_SONGS + " ";
+                if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
+                    query = "SELECT " + COLUMN_FOLDER_NUM + ", " +
+                            COLUMN_SONG_NUM + " FROM " + TABLE_NAME_MY_SONGS + " ";
+                }
+
+                // Get the search options
+                query += "WHERE " + COLUMN_SONG_NAME + "=?";
+                String[] args = new String[]{songName};
+
+                Log.d(TAG,"query:"+query);
+
+                SQLiteDatabase db = getReadableDatabase();
+                Log.d(TAG,"db:"+db);
+                Cursor cursor = db.rawQuery(query, args);
+                Log.d(TAG,"cursor:"+cursor);
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    int folder_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_FOLDER_NUM));
+                    int song_num = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SONG_NUM));
+                    String hexCode = mainActivityInterface.getBeatBuddy().getSongCode(folder_num, song_num);
+                    mainActivityInterface.getMidi().sendMidiHexSequence(hexCode);
+                }
+                closeCursor(cursor);
+            });
+        }
+    }
+
     // When loading a song, and option is checked,
     // The app will look for matching song names in the database
     // If found, the song will be sent to the BeatBuddy automatically

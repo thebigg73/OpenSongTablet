@@ -50,6 +50,7 @@ import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.justchords.ConvertJustChords;
 import com.garethevans.church.opensongtablet.midi.Midi;
+import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
 import com.garethevans.church.opensongtablet.nearby.NearbyActions;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsAPI;
@@ -275,6 +276,8 @@ public interface MainActivityInterface {
 
     // Midi
     Midi getMidi();
+    MidiFragment getMidiFragment();
+    void setMidiFragment(MidiFragment midiFragment);
     void registerMidiPedalAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
     Drummer getDrummer();
     DrumViewModel getDrumViewModel();
@@ -282,6 +285,8 @@ public interface MainActivityInterface {
     BeatBuddy getBeatBuddy();
     Aeros getAeros();
     VoiceLive getVoiceLive();
+    void toggleBeatBuddyControlPopUp();
+    void removeBeatBuddyControlPopUp();
 
     // Database
     SQLiteHelper getSQLiteHelper();

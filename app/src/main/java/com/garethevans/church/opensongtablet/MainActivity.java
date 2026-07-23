@@ -80,6 +80,7 @@ import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.beatbuddy.BBOptionsFragment;
 import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddy;
+import com.garethevans.church.opensongtablet.beatbuddy.BeatBuddyControlPopUp;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
@@ -132,6 +133,7 @@ import com.garethevans.church.opensongtablet.justchords.JustChordsObject;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiActionBottomSheet;
+import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPlayer;
 import com.garethevans.church.opensongtablet.multitrack.MultiTrackPopUp;
 import com.garethevans.church.opensongtablet.nearby.NearbyActions;
@@ -314,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private AudioRecorderPopUp audioRecorderPopUp;
     private MultiTrackPopUp multiTrackPopUp;
     private AudioPlayerPopUp audioPlayerPopUp;
+    private BeatBuddyControlPopUp beatBuddyControlPopup;
 
     // The drummer
     private DrummerPopUp drummerPopUp;
@@ -330,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SetMenuFragment setMenuFragment;
     private PerformanceFragment performanceFragment;
     private PresenterFragment presenterFragment;
+    private MidiFragment midiFragment;
     private EditSongFragment editSongFragment;
     private NearbyConnectionsFragment nearbyConnectionsFragment;
     private PedalsFragment pedalsFragment;
@@ -1610,6 +1614,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
+        Log.d(TAG,"navigateToFragment() called");
         // Hide the abc notes if required
         showAbc(false, true);
 
@@ -1636,8 +1641,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else {
                     super.onPostResume();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
 
             // Either sent a deeplink string, or a fragment id
@@ -1666,6 +1671,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 runOnUiThread(() -> {
                     try {
+                        Log.d(TAG,"navController:"+navController);
                         if (navController == null) {
                             setupActionbar();
                             setupNavigation();
@@ -3144,6 +3150,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public MidiFragment getMidiFragment() {
+        return midiFragment;
+    }
+    @Override
+    public void setMidiFragment(MidiFragment midiFragment) {
+        this.midiFragment = midiFragment;
+    }
+
+    @Override
     public Aeros getAeros() {
         if (aeros == null) {
             aeros = new Aeros(this);
@@ -3852,6 +3867,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
                 case "BootUpFragment":
                     bootUpFragment = (BootUpFragment) frag;
+                    break;
+                case "MidiFragment":
+                    midiFragment = (MidiFragment) frag;
                     break;
             }
         } else if (whatFragName.equals("BootUpFragment")) {
@@ -5467,5 +5485,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
+    @Override
+    public void toggleBeatBuddyControlPopUp() {
+        if (beatBuddyControlPopup!=null) {
+            beatBuddyControlPopup.destroyPopup();
+        } else {
+            beatBuddyControlPopup = new BeatBuddyControlPopUp(this);
+            beatBuddyControlPopup.floatPlayer(myView.getRoot());
+        }
+    }
+    @Override
+    public void removeBeatBuddyControlPopUp() {
+        beatBuddyControlPopup = null;
+    }
 }

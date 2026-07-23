@@ -289,6 +289,7 @@ public class PageButtons {
                 c.getString(R.string.on)+" / "+c.getString(R.string.off),R.drawable.midi);
         prepareOption("midiboard",c.getString(R.string.midi_board),c.getString(R.string.select),"",R.drawable.midi_board);
         prepareOption("beatbuddy",c.getString(R.string.beat_buddy),c.getString(R.string.settings),"",R.drawable.beatbuddy_settings);
+        prepareOption("beatbuddycontroller",c.getString(R.string.beat_buddy_control),c.getString(R.string.show) + " / " +c.getString(R.string.hide),"",R.drawable.beatbuddy_settings);
         prepareOption("beatbuddystart",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.start),c.getString(R.string.start),c.getString(R.string.stop),R.drawable.beatbuddy_start);
         prepareOption("beatbuddystop",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.stop),c.getString(R.string.stop),"",R.drawable.beatbuddy_stop);
         prepareOption("beatbuddypause",c.getString(R.string.beat_buddy)+" "+c.getString(R.string.pause),c.getString(R.string.pause),"",R.drawable.beatbuddy_pause);

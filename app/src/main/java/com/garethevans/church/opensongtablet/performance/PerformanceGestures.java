@@ -413,6 +413,9 @@ public class PerformanceGestures {
             case "beatbuddy":
                 beatBuddy();
                 break;
+            case "beatbuddycontroller":
+                beatBuddyController();
+                break;
             case "beatbuddystart":
                 if (isLongPress) {
                     beatBuddyStop();
@@ -1400,6 +1403,9 @@ public class PerformanceGestures {
     // The BeatBuddy stuff
     public void beatBuddy() {
         mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_beatbuddy_commands),0);
+    }
+    public void beatBuddyController() {
+        mainActivityInterface.toggleBeatBuddyControlPopUp();
     }
     public void beatBuddyStart() {
         mainActivityInterface.getBeatBuddy().beatBuddyStart();

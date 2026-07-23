@@ -139,4 +139,19 @@
         <attr name="tunerGreen" format="reference"/>
 
     </declare-styleable>
+
+    <declare-styleable name="MyRotaryDialView">
+        <attr name="dialSize" format="enum">
+            <enum name="mini" value="0"/>
+            <enum name="normal" value="1"/>
+            <enum name="large" value="2"/>
+            <enum name="xlarge" value="3"/>
+        </attr>
+        <attr name="android:valueFrom" format="integer"/>
+        <attr name="android:valueTo" format="integer"/>
+        <attr name="android:value" format="integer"/>
+        <attr name="android:text" format="string"/>
+        <attr name="showValuesAsText" format="boolean"/>
+        <attr name="suffixText" format="string"/>
+    </declare-styleable>
 </resources>
