@@ -43,6 +43,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         try {
             CharSequence text = a.getText(0);
             if (text != null) {
+                textView.setText(text.toString());
                 setText(text.toString());
             }
         } catch (Exception e) {
