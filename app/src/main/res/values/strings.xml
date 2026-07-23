@@ -121,6 +121,8 @@
     <string name="beat_buddy_auto">Automatically send BeatBuddy song</string>
     <string name="beat_buddy_auto_info">Compares your song \'Filename\', \'Title\' and \'Also known as\' fields with your BeatBuddy database.  If a matching song is found, the folder and song code are sent over MIDI automatically</string>
     <string name="beat_buddy_browse_info">Browse the songs on the BeatBuddy (using the default project or imported project)</string>
+    <string name="beat_buddy_control">BeatBuddy controller</string>
+    <string name="beat_buddy_control_info">Control the main settings live on your BeatBuddy</string>
     <string name="beat_buddy_database_reset">Clear the BeatBuddy database in the app.  This will restore the pedal defaults only.</string>
     <string name="beat_buddy_dynamic_messages">Dynamic MIDI messages (the app deals with the code)</string>
     <string name="beat_buddy_folder_info">Folder must be a number between 1 and 16384</string>
@@ -1788,6 +1790,7 @@
     <string name="website_backup" translatable="false">https://www.opensongapp.com/user-manual/songs/opensongapp-backup</string>
     <string name="website_beatbuddy" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/options</string>
     <string name="website_beatbuddy_commands" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/commands</string>
+    <string name="website_beatbuddy_controller" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/controller</string>
     <string name="website_beatbuddy_import" translatable="false">https://www.opensongapp.com/user-manual/utilities/beatbuddy/import</string>
     <string name="website_bible_download" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/download-bible</string>
     <string name="website_bible_offline" translatable="false">https://www.opensongapp.com/user-manual/sets/bible/search-offline</string>

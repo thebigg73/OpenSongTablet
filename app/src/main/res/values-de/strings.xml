@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">BeatBuddy-Song automatisch senden</string>
     <string name="beat_buddy_auto_info">Vergleicht deine Song-Felder Dateiname, Titel und auch bekannt als Felder mit deiner BeatBuddy-Datenbank.  Wenn ein passender Song gefunden wird, werden der Ordner und der Songcode automatisch über MIDI gesendet</string>
     <string name="beat_buddy_browse_info">Durchsuchen Sie die Songs auf dem BeatBuddy (mit dem Standardprojekt oder dem importierten Projekt)</string>
+    <string name="beat_buddy_control">BeatBuddy-Controller</string>
+    <string name="beat_buddy_control_info">Steuern Sie die wichtigsten Einstellungen live auf Ihrem BeatBuddy.</string>
     <string name="beat_buddy_database_reset">Löschen Sie die BeatBuddy-Datenbank in der App.  Dadurch werden nur die Standardeinstellungen des Pedals wiederhergestellt.</string>
     <string name="beat_buddy_dynamic_messages">Dynamische MIDI-Befehle (die App kümmert sich um den Code)</string>
     <string name="beat_buddy_folder_info">Der Ordner muss eine Zahl zwischen 1 und 16384 haben</string>

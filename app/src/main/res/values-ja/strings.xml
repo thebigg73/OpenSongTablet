@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">ビートバディの曲を自動的に送信する</string>
     <string name="beat_buddy_auto_info">曲のファイル名、タイトル、フィールドとも呼ばれますBeatBuddyデータベースを比較します。 一致する曲が見つかった場合、フォルダと曲コードは自動的にMIDI経由で送信されます</string>
     <string name="beat_buddy_browse_info">BeatBuddyで曲をブラウズする(デフォルトのプロジェクトまたは読み込んだプロジェクトを使用)</string>
+    <string name="beat_buddy_control">BeatBuddyコントローラー</string>
+    <string name="beat_buddy_control_info">BeatBuddyでメイン設定をリアルタイムでコントロール</string>
     <string name="beat_buddy_database_reset">アプリ内の BeatBuddy データベースをクリアします。 これにより、ペダルのデフォルトのみが復元されます。</string>
     <string name="beat_buddy_dynamic_messages">ダイナミックMIDIメッセージ(アプリがコードを処理します)</string>
     <string name="beat_buddy_folder_info">フォルダーは 1 から 16384 までの数値である必要があります</string>

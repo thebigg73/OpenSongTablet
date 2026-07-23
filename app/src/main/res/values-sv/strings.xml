@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Skicka automatiskt BeatBuddy-låt</string>
     <string name="beat_buddy_auto_info">Jämför din låt Filnamn, Titel och Även känd som fält med din BeatBuddy-databas.  Om en matchande låt hittas skickas mappen och låtkoden automatiskt över MIDI</string>
     <string name="beat_buddy_browse_info">Bläddra bland låtarna på BeatBuddy (med standardprojektet eller det importerade projektet)</string>
+    <string name="beat_buddy_control">BeatBuddy-kontroll</string>
+    <string name="beat_buddy_control_info">Kontrollera huvudinställningarna live på din BeatBuddy</string>
     <string name="beat_buddy_database_reset">Rensa BeatBuddy-databasen i appen.  Detta återställer endast pedalstandardinställningarna.</string>
     <string name="beat_buddy_dynamic_messages">Dynamiska MIDI-meddelanden (appen hanterar koden)</string>
     <string name="beat_buddy_folder_info">Mappen måste vara ett nummer mellan 1 och 16384</string>

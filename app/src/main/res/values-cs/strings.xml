@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Automaticky odeslat skladbu BeatBuddy</string>
     <string name="beat_buddy_auto_info">Porovná vaše skladba Název souboru, Název a Také známé jako pole s databází BeatBuddy.  Pokud je nalezena odpovídající skladba, složka a kód skladby jsou automaticky odeslány přes MIDI</string>
     <string name="beat_buddy_browse_info">Procházení skladeb na BeatBuddy (pomocí výchozího projektu nebo importovaného projektu)</string>
+    <string name="beat_buddy_control">Ovladač BeatBuddy</string>
+    <string name="beat_buddy_control_info">Ovládejte hlavní nastavení přímo na svém BeatBuddy</string>
     <string name="beat_buddy_database_reset">Vymažte databázi BeatBuddy v aplikaci.  Tím se obnoví pouze výchozí nastavení pedálu.</string>
     <string name="beat_buddy_dynamic_messages">Dynamické MIDI zprávy (aplikace se zabývá kódem)</string>
     <string name="beat_buddy_folder_info">Složka musí mít číslo mezi 1 a 16384</string>

@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Enviar automáticamente la canción de BeatBuddy</string>
     <string name="beat_buddy_auto_info">Compara los campos Nombre de archivo, Título y También conocido como de tu canción con tu base de datos de BeatBuddy.  Si se encuentra una canción coincidente, la carpeta y el código de la canción se envían automáticamente a través de MIDI</string>
     <string name="beat_buddy_browse_info">Explorar las canciones en el BeatBuddy (usando el proyecto predeterminado o el proyecto importado)</string>
+    <string name="beat_buddy_control">Controlador BeatBuddy</string>
+    <string name="beat_buddy_control_info">Controla los ajustes principales en directo desde tu BeatBuddy.</string>
     <string name="beat_buddy_database_reset">Borre la base de datos de BeatBuddy en la aplicación.  Esto restaurará solo los valores predeterminados del pedal.</string>
     <string name="beat_buddy_dynamic_messages">Mensajes MIDI dinámicos (la aplicación se ocupa del código)</string>
     <string name="beat_buddy_folder_info">La carpeta debe tener un número entre 1 y 16384</string>

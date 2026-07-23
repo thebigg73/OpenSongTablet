@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Automatycznie wysyłaj piosenkę BeatBuddy</string>
     <string name="beat_buddy_auto_info">Porównuje pola \'Nazwa pliku\', \'Tytuł piosenki\' i \'Znane również jako\' z bazą danych BeatBuddy.  Jeśli pasująca piosenka zostanie znaleziona, folder i kod piosenki są automatycznie wysyłane przez MIDI</string>
     <string name="beat_buddy_browse_info">Przeglądaj piosenki na BeatBuddy (używając domyślnego projektu lub zaimportowanego projektu)</string>
+    <string name="beat_buddy_control">Kontroler BeatBuddy</string>
+    <string name="beat_buddy_control_info">Kontroluj główne ustawienia na żywo w swoim BeatBuddy</string>
     <string name="beat_buddy_database_reset">Wyczyść bazę danych BeatBuddy w aplikacji. Spowoduje to przywrócenie domyślnych ustawień pedału.</string>
     <string name="beat_buddy_dynamic_messages">Dynamiczne komunikaty MIDI (aplikacja zajmuje się kodem)</string>
     <string name="beat_buddy_folder_info">Folder musi mieć numer z zakresu od 1 do 16384</string>

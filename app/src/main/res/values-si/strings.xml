@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">BeatBuddy ගීතය ස්වයංක්‍රීයව යවන්න</string>
     <string name="beat_buddy_auto_info">ඔබගේ BeatBuddy දත්ත සමුදාය සමඟ ඔබගේ ගීතය \'ගොනු නාමය\', \'මාතෘකාව\' සහ \'ලෙස ද හඳුන්වනු ලැබේ\' යන ක්ෂේත්‍ර සසඳයි.  ගැළපෙන ගීතයක් හමු වුවහොත්, ෆෝල්ඩරය සහ ගීත කේතය ස්වයංක්‍රීයව MIDI හරහා යවනු ලැබේ</string>
     <string name="beat_buddy_browse_info">BeatBuddy හි ගීත බ්‍රවුස් කරන්න (පෙරනිමි ව්‍යාපෘතිය හෝ ආනයනය කළ ව්‍යාපෘතිය භාවිතයෙන්)</string>
+    <string name="beat_buddy_control">බීට්බඩි පාලකය</string>
+    <string name="beat_buddy_control_info">ඔබගේ BeatBuddy හි ප්‍රධාන සැකසුම් සජීවීව පාලනය කරන්න</string>
     <string name="beat_buddy_database_reset">යෙදුමේ BeatBuddy දත්ත සමුදාය හිස් කරන්න.  මෙය pedal defaults පමණක් ප්‍රතිසාධනය කරයි.</string>
     <string name="beat_buddy_dynamic_messages">ගතික MIDI පණිවිඩ (යෙදුම කේතය සමඟ ගනුදෙනු කරයි)</string>
     <string name="beat_buddy_folder_info">ෆෝල්ඩරය 1 සහ 16384 අතර අංකයක් විය යුතුය</string>

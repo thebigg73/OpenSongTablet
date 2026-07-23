@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Invia automaticamente il brano a BeatBuddy</string>
     <string name="beat_buddy_auto_info">Confronta i campi Nome file, Titolo e Conosciuto come brano con il database BeatBuddy. Se viene trovato un brano corrispondente, la cartella e il codice del brano vengono inviati automaticamente via MIDI</string>
     <string name="beat_buddy_browse_info">Sfoglia i brani su BeatBuddy (usando il progetto predefinito o il progetto importato)</string>
+    <string name="beat_buddy_control">Controller BeatBuddy</string>
+    <string name="beat_buddy_control_info">Controlla le impostazioni principali in tempo reale sul tuo BeatBuddy</string>
     <string name="beat_buddy_database_reset">Elimina il database BeatBuddy nell\'app.  Ciò ripristinerà solo le impostazioni predefinite del pedale.</string>
     <string name="beat_buddy_dynamic_messages">Messaggi MIDI dinamici (l\'app gestisce il codice)</string>
     <string name="beat_buddy_folder_info">La cartella deve essere un numero compreso tra 1 e 16384</string>

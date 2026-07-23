@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Automatski pošalji BeatBuddy pesmu</string>
     <string name="beat_buddy_auto_info">Poredi vaše pesmu Filename, Title i Also known as fields with your BeatBuddy database.  Ako se uporedi pesma, fascikla i kôd pesme se automatski šalju preko MIDI-ja</string>
     <string name="beat_buddy_browse_info">Pregledajte pesme na BeatBuddy (koristeći podrazumevani projekat ili uvezeni projekat)</string>
+    <string name="beat_buddy_control">Kontroler BeatBuddy</string>
+    <string name="beat_buddy_control_info">Kontrolišite glavna podešavanja uživo na svom BeatBuddy-ju</string>
     <string name="beat_buddy_database_reset">Obriši BeatBuddy bazu podataka u aplikaciji.  Ovo će vratiti samo podrazumevane vrednosti pedala.</string>
     <string name="beat_buddy_dynamic_messages">Dinamičke MIDI poruke (aplikacija se bavi kodom)</string>
     <string name="beat_buddy_folder_info">Fascikla mora biti broj između 1 i 16384</string>

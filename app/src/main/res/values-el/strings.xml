@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Αυτόματη αποστολή τραγουδιού BeatBuddy</string>
     <string name="beat_buddy_auto_info">Συγκρίνει το τραγούδι σας Όνομα αρχείου, Τίτλος και Επίσης γνωστά ως πεδία με τη βάση δεδομένων BeatBuddy.  Εάν βρεθεί ένα αντίστοιχο τραγούδι, ο φάκελος και ο κωδικός τραγουδιού αποστέλλονται αυτόματα μέσω MIDI</string>
     <string name="beat_buddy_browse_info">Περιηγηθείτε στα τραγούδια στο BeatBuddy (χρησιμοποιώντας το προεπιλεγμένο έργο ή το εισαγόμενο έργο)</string>
+    <string name="beat_buddy_control">Χειριστήριο BeatBuddy</string>
+    <string name="beat_buddy_control_info">Ελέγξτε τις κύριες ρυθμίσεις ζωντανά στο BeatBuddy σας</string>
     <string name="beat_buddy_database_reset">Διαγράψτε τη βάση δεδομένων BeatBuddy στην εφαρμογή.  Αυτό θα επαναφέρει μόνο τις προεπιλογές πεντάλ.</string>
     <string name="beat_buddy_dynamic_messages">Δυναμικά μηνύματα MIDI (η εφαρμογή ασχολείται με τον κώδικα)</string>
     <string name="beat_buddy_folder_info">Ο φάκελος πρέπει να είναι ένας αριθμός μεταξύ 1 και 16384</string>

@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">BeatBuddy dal automatikus küldése</string>
     <string name="beat_buddy_auto_info">Összehasonlítja a dalodat Fájlnév, cím és más néven mezők a BeatBuddy adatbázisoddal.  Ha talál egyező dalt, a mappa és a dal kódja automatikusan MIDI-n keresztül kerül elküldésre</string>
     <string name="beat_buddy_browse_info">Böngésszen a BeatBuddy dalai között (az alapértelmezett projekt vagy az importált projekt használatával)</string>
+    <string name="beat_buddy_control">BeatBuddy kontroller</string>
+    <string name="beat_buddy_control_info">A főbb beállítások élőben, a BeatBuddy-n keresztül vezérelhetők</string>
     <string name="beat_buddy_database_reset">Törölje a BeatBuddy adatbázist az alkalmazásban.  Ez csak a pedál alapértelmezett beállításait állítja vissza.</string>
     <string name="beat_buddy_dynamic_messages">Dinamikus MIDI-üzenetek (az alkalmazás kezeli a kódot)</string>
     <string name="beat_buddy_folder_info">A mappának 1 és 16384 közötti számnak kell lennie</string>

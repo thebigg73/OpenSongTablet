@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">自动发送 BeatBuddy 歌曲</string>
     <string name="beat_buddy_auto_info">将您的歌曲文件名、标题和也称为字段与您的 BeatBuddy 数据库进行比较。 如果找到匹配的歌曲，文件夹和歌曲代码将自动通过 MIDI 发送</string>
     <string name="beat_buddy_browse_info">浏览 BeatBuddy 上的歌曲（使用默认项目或导入的项目）</string>
+    <string name="beat_buddy_control">BeatBuddy 控制器</string>
+    <string name="beat_buddy_control_info">在您的 BeatBuddy 上实时控制主要设置</string>
     <string name="beat_buddy_database_reset">清除应用程序中的 BeatBuddy 数据库。 这将仅恢复踏板默认值。</string>
     <string name="beat_buddy_dynamic_messages">动态 MIDI 消息（应用程序处理代码）</string>
     <string name="beat_buddy_folder_info">文件夹必须是介于 1 和 16384 之间的数字</string>

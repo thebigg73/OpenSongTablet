@@ -116,6 +116,8 @@
     <string name="beat_buddy_auto">Автоматически отправлять песню BeatBuddy</string>
     <string name="beat_buddy_auto_info">Сравнивает имя файла вашей песни, название и поля, также известные как поля, с вашей базой данных BeatBuddy.  Если найдена подходящая песня, папка и код песни автоматически отправляются через MIDI</string>
     <string name="beat_buddy_browse_info">Просмотр песен на BeatBuddy (используя проект по умолчанию или импортированный проект)</string>
+    <string name="beat_buddy_control">Контроллер BeatBuddy</string>
+    <string name="beat_buddy_control_info">Управляйте основными настройками в режиме реального времени на вашем BeatBuddy.</string>
     <string name="beat_buddy_database_reset">Очистить базу данных BeatBuddy в приложении. Это восстановит настройки педали по умолчанию.</string>
     <string name="beat_buddy_dynamic_messages">Динамические MIDI-сообщения (приложение работает с кодом)</string>
     <string name="beat_buddy_folder_info">Папка должна иметь номер от 1 до 16384</string>
