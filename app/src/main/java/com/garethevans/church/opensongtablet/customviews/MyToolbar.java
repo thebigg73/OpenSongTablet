@@ -16,17 +16,18 @@ import android.widget.TextClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
-import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 
-
-public class MyToolbar extends MaterialToolbar {
+// Moved away from MaterialToolbar due to FireHD crashes
+public class MyToolbar extends Toolbar {
 
     // This holds references to the items in the Toolbar (except the battery)
     // Battery changes get sent via the mainactivityInterface
@@ -66,9 +67,21 @@ public class MyToolbar extends MaterialToolbar {
         actionBar.setElevation(0);
         this.actionBar = actionBar;
         delayActionBarHide = new Handler();
-        hideActionBarRunnable = () -> {
+        /*hideActionBarRunnable = () -> {
             if (actionBar.isShowing() && !mainActivityInterface.needActionBar()) {
                 actionBar.hide();
+            }
+        };*/
+        hideActionBarRunnable = () -> {
+            if (this.getVisibility() == View.VISIBLE && !mainActivityInterface.needActionBar()) {
+                Log.d("ToolbarDebug", "Auto-hide timer triggered: Hiding toolbar and container.");
+                this.setVisibility(View.GONE);
+                if (getParent() instanceof View) {
+                    ((View) getParent()).setVisibility(View.GONE);
+                }
+                if (mainActivityInterface instanceof MainActivity) {
+                    ((MainActivity) mainActivityInterface).updateMargins();
+                }
             }
         };
         updateClock();
@@ -419,7 +432,7 @@ public class MyToolbar extends MaterialToolbar {
     }
 
     // Show/hide the actionbar
-    public void showActionBar(boolean menuOpen) {
+    /*public void showActionBar(boolean menuOpen) {
         // Remove any existing callbacks to hide the actionbar
         try {
             if (delayActionBarHide!=null) {
@@ -452,6 +465,38 @@ public class MyToolbar extends MaterialToolbar {
             }
         }
     }
+*/
+    public void showActionBar(boolean menuOpen) {
+        try {
+            if (delayActionBarHide != null) {
+                delayActionBarHide.removeCallbacks(hideActionBarRunnable);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mainActivityInterface.getMainHandler().post(() -> {
+            this.setVisibility(View.VISIBLE);
+            // Ensure the parent layout container becomes visible too!
+            if (getParent() instanceof View) {
+                ((View) getParent()).setVisibility(View.VISIBLE);
+            }
+            if (mainActivityInterface instanceof MainActivity) {
+                // Force layout update so getBottom() calculates correctly next pass
+                ((MainActivity) mainActivityInterface).updateMargins();
+            }
+        });
+
+        if (hideActionBar && performanceMode && !menuOpen) {
+            try {
+                if (delayActionBarHide != null) {
+                    delayActionBarHide.postDelayed(hideActionBarRunnable, actionBarHideTime);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void removeCallBacks() {
         delayActionBarHide.removeCallbacks(hideActionBarRunnable);
@@ -459,7 +504,7 @@ public class MyToolbar extends MaterialToolbar {
 
 
     // Get the actionbar height - fakes a height of 0 if autohiding
-    public int getActionBarHeight(boolean forceShown) {
+    /*public int getActionBarHeight(boolean forceShown) {
 
         if (hideActionBar && performanceMode && !forceShown) {
             return mainActivityInterface.getWindowFlags().getCustomMarginTop();
@@ -471,7 +516,20 @@ public class MyToolbar extends MaterialToolbar {
                 return getHeight();
             }
         }
+    }*/
+    public int getActionBarHeight(boolean forceShown) {
+        if (hideActionBar && performanceMode && !forceShown) {
+            return 0; // Underlying view fills the screen when hidden
+        } else {
+            int height = getHeight();
+            if (height <= 0) {
+                // Fallback to a safe default standard height (~56dp converted to pixels)
+                return (int) (56 * getResources().getDisplayMetrics().density);
+            }
+            return height;
+        }
     }
+
 
     public void setAdditionalTopPadding(int additionalTopPadding) {
         this.additionalTopPadding = additionalTopPadding;

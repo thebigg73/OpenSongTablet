@@ -34,7 +34,7 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 479     // Also change in wear if we need to update that as well
+        versionCode = 480     // Also change in wear if we need to update that as well
         versionName = '6.9.0' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -134,7 +134,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     // Allow splitting of file for older devices
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
-    implementation 'androidx.core:core-ktx:1.17.0'
+    // Downgrade from core 1.17.0 to support down to KitKat
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.activity:activity-ktx:1.13.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
     // To allow Java time/date utilities on <Android 8

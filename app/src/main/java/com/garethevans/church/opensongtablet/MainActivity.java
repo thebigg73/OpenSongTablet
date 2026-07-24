@@ -1000,13 +1000,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void showActionBar() {
+        Log.d(TAG,"showActionBar() called");
         if (myView != null) {
             myView.myToolbar.showActionBar(settingsOpen);
             updateMargins();
         }
     }
 
-    @Override
+    /*@Override
     public void updateMargins() {
         if (myView != null && windowFlags != null) {
             mainLooper.post(() -> {
@@ -1030,10 +1031,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 int statusPadding = 0;
                 int topPadding = 0;
                 if (myView != null) {
-                    if (settingsOpen) {
+                    boolean isToolbarShown = (settingsOpen || !myView.myToolbar.getHideActionBar() || myView.myAppBarLayout.getVisibility() == View.VISIBLE);
+
+                    if (isToolbarShown) {
                         topPadding = myView.myToolbar.getActionBarHeight(true);
                     } else {
-                        topPadding = myView.myToolbar.getActionBarHeight(!myView.myToolbar.getHideActionBar());
+                        // Toolbar is hidden: return 0 for toolbar space so the underlying view fills the screen
+                        topPadding = 0;
                     }
                 }
                 if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
@@ -1047,10 +1051,65 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     topPadding += statusPadding + margins[1];
                 }
 
-                int bottomOfToolbar = getBottomOfToolbar();
+                *//*int bottomOfToolbar = getBottomOfToolbar();
 
                 if (myView != null) {
                     myView.fragmentView.setPadding(margins[0], Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)), margins[2], margins[3]);
+                    myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
+                    myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
+                }*//*
+                int bottomOfToolbar = getBottomOfToolbar();
+                // If the toolbar is hidden, we want bottomOfToolbar to be 0 so it doesn't leave a gap
+                if (myView.myToolbar.getHideActionBar() && myView.myAppBarLayout.getVisibility() != View.VISIBLE) {
+                    bottomOfToolbar = 0;
+                }
+
+                if (myView != null) {
+                    myView.fragmentView.setPadding(
+                            margins[0],
+                            Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)),
+                            margins[2],
+                            margins[3]
+                    );
+                    myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
+                    myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
+
+                }
+            });
+        }
+    }*/
+    @Override
+    public void updateMargins() {
+        if (myView != null && windowFlags != null) {
+            mainLooper.post(() -> {
+                int[] margins = windowFlags.getMargins();
+                int additionalTop = getAdditionalTop();
+
+                if (myView != null) {
+                    myView.myToolbar.setAdditionalTopPadding(additionalTop);
+                    myView.myToolbar.setPadding(margins[0] + windowFlags.getMarginToolbarLeft(),
+                            margins[1] + additionalTop,
+                            margins[2] + windowFlags.getMarginToolbarRight(),
+                            0);
+                }
+
+                int finalTopPadding;
+
+                // Check if auto-hide is active
+                boolean isAutoHiding = myView.myToolbar.getHideActionBar();
+
+                // If settings are open OR auto-hide is turned off, we MUST push content down
+                if (settingsOpen || !isAutoHiding) {
+                    int toolbarHeight = myView.myToolbar.getActionBarHeight(true);
+                    finalTopPadding = Math.max(margins[1] + additionalTop, toolbarHeight);
+                } else {
+                    // Auto-hide is active and we are on a regular song/main view:
+                    // Keep fragment pinned to the top boundary so it floats underneath cleanly.
+                    finalTopPadding = margins[1] + additionalTop;
+                }
+
+                if (myView != null) {
+                    myView.fragmentView.setPadding(margins[0], finalTopPadding, margins[2], margins[3]);
                     myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
                     myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
                 }
@@ -1058,7 +1117,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-    private int getBottomOfToolbar() {
+    /*private int getBottomOfToolbar() {
         int bottomOfToolbar = myView.myAppBarLayout.getBottom();
         if (myView.myToolbar.getHideActionBar()) {
             if (windowFlags.getShowStatus()) {
@@ -1069,6 +1128,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 bottomOfToolbar = 0;
             }
         }
+        return bottomOfToolbar;
+    }
+*/
+    private int getBottomOfToolbar() {
+        if (myView == null || myView.myAppBarLayout == null) {
+            return 0;
+        }
+
+        int visibility = myView.myAppBarLayout.getVisibility();
+        Log.d("ToolbarDebug", "myAppBarLayout visibility: " + (visibility == View.VISIBLE ? "VISIBLE" : (visibility == View.GONE ? "GONE" : "INVISIBLE")));
+
+        if (visibility != View.VISIBLE) {
+            Log.d("ToolbarDebug", "myAppBarLayout is not visible, returning 0 for bottomOfToolbar");
+            return 0;
+        }
+
+        int bottomOfToolbar = myView.myAppBarLayout.getBottom();
+        if (bottomOfToolbar == 0) {
+            bottomOfToolbar = (int) (56 * getResources().getDisplayMetrics().density);
+        }
+        Log.d("ToolbarDebug", "myAppBarLayout.getBottom() measured: " + bottomOfToolbar);
         return bottomOfToolbar;
     }
 
@@ -5496,6 +5576,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void removeBeatBuddyControlPopUp() {
+        // Check it still isn't showing
         beatBuddyControlPopup = null;
     }
+
+    @Override
+    public void forceCloseBeatBuddyControlPopUp() {
+        if (beatBuddyControlPopup!=null) {
+            try {
+                beatBuddyControlPopup.destroyPopup();
+                beatBuddyControlPopup = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void updateBeatBuddyControlPopUp() {
+        if (beatBuddyControlPopup!=null) {
+            try {
+                beatBuddyControlPopup.updateCurrentSong();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
