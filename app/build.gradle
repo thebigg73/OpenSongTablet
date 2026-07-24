@@ -34,7 +34,7 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 480     // Also change in wear if we need to update that as well
+        versionCode = 481     // Also change in wear if we need to update that as well
         versionName = '6.9.0' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
