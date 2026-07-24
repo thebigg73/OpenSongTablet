@@ -287,6 +287,8 @@ public interface MainActivityInterface {
     VoiceLive getVoiceLive();
     void toggleBeatBuddyControlPopUp();
     void removeBeatBuddyControlPopUp();
+    void forceCloseBeatBuddyControlPopUp();
+    void updateBeatBuddyControlPopUp();
 
     // Database
     SQLiteHelper getSQLiteHelper();
