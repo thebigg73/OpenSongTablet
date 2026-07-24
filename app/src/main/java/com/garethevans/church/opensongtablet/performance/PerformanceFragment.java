@@ -130,6 +130,7 @@ public class PerformanceFragment extends Fragment {
         super.onResume();
         // Register this fragment
         mainActivityInterface.registerFragment(this,"PerformanceFragment");
+        mainActivityInterface.getToolbar().setPerformanceMode(true);
         prepareStrings();
         firstSongLoad = true;
         updateInlineSetSortTitles();

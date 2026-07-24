@@ -1698,6 +1698,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Hide the abc notes if required
         showAbc(false, true);
 
+        // Make sure we let the toolbar know we are in performance mode (or going there)
+        // This is needed if we are hiding the toolbar
+        if (id==R.id.performanceFragment || (deepLink!=null && deepLink.equals(getString(R.string.deeplink_performance)))) {
+            getToolbar().setPerformanceMode(true);
+        } else {
+            getToolbar().setPerformanceMode(false);
+        }
+
         // Hide the sticky notes if required
         showSticky(false, true);
 
@@ -3753,12 +3761,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Check if the song is in the set
         mainLooper.postDelayed(() -> {
             if (whichMode.equals(mode_presenter)) {
+                getToolbar().setPerformanceMode(false);
                 if (presenterValid()) {
                     presenterFragment.doSongLoad(folder, filename);
                 } else {
                     navigateToFragment(null, R.id.presenterFragment);
                 }
             } else {
+                getToolbar().setPerformanceMode(true);
                 if (performanceValid()) {
                     performanceFragment.doSongLoad(folder, filename);
                 } else {

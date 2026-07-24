@@ -487,6 +487,7 @@ public class MyToolbar extends Toolbar {
             }
         });
 
+        Log.d(TAG,"hideActionBar:"+hideActionBar+"  performanceMode:"+performanceMode+"  menuOpen:"+menuOpen);
         if (hideActionBar && performanceMode && !menuOpen) {
             try {
                 if (delayActionBarHide != null) {
