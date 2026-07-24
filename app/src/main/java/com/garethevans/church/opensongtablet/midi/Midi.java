@@ -58,6 +58,10 @@ public class Midi {
             midiClickTrackTickVolume, midiClickTrackTockVolume;
     private String midiClickTickMessageOn="", midiClickTockMessageOn="", midiClickTickMessageOff="", midiClickTockMessageOff="";
 
+    // Because some shorthand MIDI messages send two parts, we need to process them and then send separately
+    // They get added to this array that is called and cleared after standard song messages are sent
+    // Examples are MIDI1:BBBPM200 - needs two values, etc.
+    private ArrayList<String> splitSongMidiMessages = new ArrayList<>();
     // Initialise
     public Midi(Activity activity,
                 Context c) {
@@ -578,8 +582,10 @@ public class Midi {
     public boolean sendMidi(byte[] b) {
         boolean success = false;
 
-        Log.d(TAG, "sendMidi(" + Arrays.toString(b) + ")");
-        Log.d(TAG, "useDirectGatt:" + useDirectGatt + "  activeGattCharacteristic:" + activeGattCharacteristic + "  activeBluetoothGatt:" + activeBluetoothGatt);
+        if (b==null || b.length==0) {
+            return true;
+        }
+
         // Check if we are using the Direct GATT fallback (for budget/problematic devices)
         if (useDirectGatt && activeGattCharacteristic != null && activeBluetoothGatt != null) {
             try {
@@ -605,9 +611,6 @@ public class Midi {
 
             // Otherwise, use the standard modern MidiManager pipeline
         } else if (midiInputPort != null) {
-            Log.d(TAG, "midiDevice:" + midiDevice);
-            Log.d(TAG, "midiInputPort:" + midiInputPort);
-
             try {
                 midiInputPort.send(b, 0, b.length);
                 success = true;
@@ -622,7 +625,10 @@ public class Midi {
     public void sendMidi(int position) {
         // Send midi from the arrayList
         if (position >= 0 && position < songMidiMessages.size()) {
-            sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
+            // Check for shorthand
+            String message = songMidiMessages.get(position);
+            byte[] bytes = returnBytesFromHexText(message);
+            sendMidi(bytes);
         }
     }
 
@@ -634,10 +640,37 @@ public class Midi {
                 new Handler().postDelayed(() -> {
                     if (songMidiMessages.get(finalPosition)!=null &&
                             !songMidiMessages.get(finalPosition).isEmpty()) {
-                        sendMidi(finalPosition);
+                        sendMidi(returnBytesFromHexText(songMidiMessages.get(finalPosition)));
                     }
                 }, (long) midiDelay *position);
             }
+            // If we have additional splitMidiMessages (two parts from shorthand), send now:
+            new Handler().postDelayed(this::sendSplitSongMIDIMessages,(long)midiDelay*songMidiMessages.size());
+        }
+    }
+    public void sendSplitSongMIDIMessages() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                splitSongMidiMessages!=null && !splitSongMidiMessages.isEmpty()) {
+            for (int position = 0; position < splitSongMidiMessages.size(); position++) {
+                int finalPosition = position;
+                new Handler().postDelayed(() -> {
+                    if (splitSongMidiMessages.size()>finalPosition && splitSongMidiMessages.get(finalPosition)!=null &&
+                            !splitSongMidiMessages.get(finalPosition).isEmpty()) {
+                        try {
+                            byte[] bytes = returnBytesFromHexText(splitSongMidiMessages.get(finalPosition));
+                            sendMidi(bytes);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, (long) midiDelay *position);
+            }
+            // Now clear the array
+            new Handler().postDelayed(() -> {
+                if (splitSongMidiMessages != null) {
+                    splitSongMidiMessages.clear();
+                }
+            }, (long) midiDelay * splitSongMidiMessages.size());
         }
     }
     public int sendMidiHexSequence(String sequence) {
@@ -821,6 +854,18 @@ public class Midi {
         */
         // First check for shorhand
         lineofhextext = checkForShortHandMIDI(lineofhextext).trim();
+        if (lineofhextext.contains("\n")) {
+            // This needs to be added to the split arrays and sent later
+            String[] splitline = lineofhextext.split("\n");
+            for (String split:splitline) {
+                split = split.trim();
+                if (!split.isEmpty()) {
+                    splitSongMidiMessages.add(split);
+                }
+            }
+            // Return an empty array
+            return new byte[0];
+        }
 
         String[] hexbits = lineofhextext.split(" ");
         byte[] bytes = new byte[hexbits.length];
@@ -930,6 +975,7 @@ public class Midi {
         } else {
             songMidiMessages.clear();
         }
+        splitSongMidiMessages.clear();
 
         String messages = mainActivityInterface.getSong().getMidi();
 

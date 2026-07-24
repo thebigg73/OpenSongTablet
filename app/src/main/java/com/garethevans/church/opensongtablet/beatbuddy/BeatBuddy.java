@@ -319,7 +319,6 @@ public class BeatBuddy {
         if (incrementalVol > 100) {
             incrementalVol = 100;
         }
-        Log.d(TAG,"vol set to:"+incrementalVol);
         // Send the MIDI code
         mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Mix_vol,incrementalVol);
     }
@@ -334,7 +333,6 @@ public class BeatBuddy {
         if (incrementalVol < 0) {
             incrementalVol = 0;
         }
-        Log.d(TAG,"vol set to:"+incrementalVol);
         // Send the MIDI code
         mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Mix_vol,incrementalVol);
     }
@@ -349,7 +347,6 @@ public class BeatBuddy {
         if (incrementalHPVol > 100) {
             incrementalHPVol = 100;
         }
-        Log.d(TAG,"hpvol set to:"+incrementalHPVol);
         // Send the MIDI code
         mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_HP_vol,incrementalHPVol);
     }
@@ -364,7 +361,6 @@ public class BeatBuddy {
         if (incrementalHPVol < 0) {
             incrementalHPVol = 0;
         }
-        Log.d(TAG,"hpvol set to:"+incrementalHPVol);
         // Send the MIDI code
         mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_HP_vol,incrementalHPVol);
     }
@@ -477,13 +473,16 @@ public class BeatBuddy {
         // Song number is simpler.  Just take away 1
         songNumber = songNumber - 1;
 
-        String code = "";
+        String msbCode = "";
+        String lsbCode;
         if (!beatBuddyAerosMode) {
-            code = mainActivityInterface.getMidi().buildMidiString("CC", beatBuddyChannel - 1, CC_Folder_MSB, part1Dec);
+            msbCode = mainActivityInterface.getMidi().buildMidiString("CC", beatBuddyChannel - 1, CC_Folder_MSB, part1Dec) + "\n";
         }
-        code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Folder_LSB,part2Dec);
-        code += "\n" + mainActivityInterface.getMidi().buildMidiString("PC",beatBuddyChannel-1,-1,songNumber);
-        return code.trim();
+        lsbCode = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Folder_LSB,part2Dec);
+        lsbCode += "\n" + mainActivityInterface.getMidi().buildMidiString("PC",beatBuddyChannel-1,-1,songNumber);
+        String newCode;
+        newCode = (msbCode.trim() + "\n" + lsbCode.trim()).trim();
+        return newCode;
     }
 
     public String getTempoCode(int tempo) {
@@ -492,9 +491,9 @@ public class BeatBuddy {
         // Part 2 =MOD(tempo,128)
         int part1Dec = (int)Math.floor((float)tempo/128f);
         int part2Dec = Math.floorMod(tempo,128);
-        String code = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Tempo_MSB,part1Dec);
-        code += "\n" + mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Tempo_LSB,part2Dec);
-        return code;
+        String code1 = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Tempo_MSB,part1Dec);
+        String code2 = mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Tempo_LSB,part2Dec);
+        return code1+"\n"+code2;
     }
 
     public String getVolumeCode() {

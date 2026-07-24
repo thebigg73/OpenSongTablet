@@ -227,8 +227,10 @@ public class ShortHandMidi {
                             if (!midiChannel.isEmpty() && valueFromHex(midiChannel) >= 0) {
                                 // Temporarily change the BeatBuddy saved channel
                                 int savedChannel = mainActivityInterface.getBeatBuddy().getBeatBuddyChannel();
-                                mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(valueFromHex(midiChannel));
-                                commandPart1 = mainActivityInterface.getBeatBuddy().getTempoCode(valueFromString(bit, "BBBPM"));
+                                // Remember the BeatBuddy channel is the actual channel 1-16 (not computer version 0-15)
+                                mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(valueFromHex(midiChannel+1));
+                                int valFromString = valueFromString(bit,"BBBPM");
+                                commandPart1 = mainActivityInterface.getBeatBuddy().getTempoCode(valFromString);
                                 commandPart2 = "_"; // So it is valid -  removed later
                                 commandPart3 = "";
                                 // Put the channel back
@@ -248,8 +250,9 @@ public class ShortHandMidi {
                                     if (!midiChannel.isEmpty() && valueFromHex(midiChannel) >= 0) {
                                         // Temporarily change the BeatBuddy saved channel
                                         int savedChannel = mainActivityInterface.getBeatBuddy().getBeatBuddyChannel();
-                                        mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(valueFromHex(midiChannel));
-                                        commandPart1 = mainActivityInterface.getBeatBuddy().getSongCode(folder, song);
+                                        // Remember the BeatBuddy channel is the actual channel 1-16 (not computer version 0-15)
+                                        mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(valueFromHex(midiChannel+1));
+                                        commandPart1 = mainActivityInterface.getBeatBuddy().getSongCode(folder,song);
                                         commandPart2 = "_"; // So it is valid -  removed later
                                         commandPart3 = "";
                                         mainActivityInterface.getBeatBuddy().setBeatBuddyChannel(savedChannel);
