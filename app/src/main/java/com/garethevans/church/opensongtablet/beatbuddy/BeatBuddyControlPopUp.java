@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.DialogHeader;
@@ -26,6 +27,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class BeatBuddyControlPopUp {
 
@@ -43,6 +45,9 @@ public class BeatBuddyControlPopUp {
     private PopupWindow popupWindow;
     private FloatWindow floatWindow;
     private BBSQLite bbsqLite;
+    // The active save dial preferences
+    private boolean beatBuddyControllerKitActive, beatBuddyControllerTempoActive,
+                beatBuddyControllerVolActive, beatBuddyControllerVolHPActive;
 
     private int posX, posY;
     private float pageButtonAlpha;
@@ -65,6 +70,12 @@ public class BeatBuddyControlPopUp {
         // Because we are on a floating window, we need to tweak the theme
         palette.secondary = palette.secondaryVariant;
         palette.primary = palette.primaryVariant;
+
+        // Get the preferences
+        beatBuddyControllerKitActive = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyControllerKitActive",true);
+        beatBuddyControllerTempoActive = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyControllerTempoActive",true);
+        beatBuddyControllerVolActive = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyControllerVolActive",false);
+        beatBuddyControllerVolHPActive = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyControllerVolHPActive",false);
     }
 
     // The views and listeners for the popup
@@ -194,6 +205,26 @@ public class BeatBuddyControlPopUp {
             String drumKitHexCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
             mainActivityInterface.getMidi().sendMidiHexSequence(drumKitHexCode);
         });
+        beatBuddyTempoControl.setOnDialLongClickListener(dimmed -> {
+            // Change our preference
+            Log.d(TAG,"saving pref:"+!dimmed);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyControllerTempoActive",!dimmed);
+        });
+        beatBuddyVolumeControl.setOnDialLongClickListener(dimmed -> {
+            // Change our preference
+            Log.d(TAG,"saving pref:"+!dimmed);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyControllerVolActive",!dimmed);
+        });
+        beatBuddyHeadphoneVolumeControl.setOnDialLongClickListener(dimmed -> {
+            // Change our preference
+            Log.d(TAG,"saving pref:"+!dimmed);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyControllerVolHPActive",!dimmed);
+        });
+        beatBuddyDrumKitControl.setOnDialLongClickListener(dimmed -> {
+            // Change our preference
+            Log.d(TAG,"saving pref:"+!dimmed);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("beatBuddyControllerKitActive",!dimmed);
+        });
         songExposedDropDown.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
@@ -217,25 +248,61 @@ public class BeatBuddyControlPopUp {
         stop.setOnClickListener(view -> mainActivityInterface.getBeatBuddy().beatBuddyStop());
         pause.setOnClickListener(view -> mainActivityInterface.getBeatBuddy().beatBuddyPause());
         saveToSongButton.setOnClickListener(view -> {
-            // Save the fields
-            mainActivityInterface.getSong().setBeatbuddykit(beatBuddyDrumKitControl.getCurrentTextValue());
-            mainActivityInterface.getSong().setTempo(String.valueOf(beatBuddyTempoControl.getCurrentValue()));
+            // Save the fields as long as they aren't dimmed (set to not save)
+            if (!beatBuddyDrumKitControl.getAlphaDimmed()) {
+                mainActivityInterface.getSong().setBeatbuddykit(beatBuddyDrumKitControl.getCurrentTextValue());
+            }
+            if (!beatBuddyTempoControl.getAlphaDimmed()) {
+                mainActivityInterface.getSong().setTempo(String.valueOf(beatBuddyTempoControl.getCurrentValue()));
+            }
 
-            // Now we save the volume, headphone volume as static messages
-            String volumeHexCode = mainActivityInterface.getBeatBuddy().getVolumeCode();
-            String volumeHPHexCode = mainActivityInterface.getBeatBuddy().getVolumeHPCode();
+            // The song is always saved
+            String song = "";
+            if (songExposedDropDown.getText()!=null) {
+                song = songExposedDropDown.getText().toString();
+            }
+            mainActivityInterface.getSong().setBeatbuddysong(song);
+
+            // Now we save the volume, headphone volume as static messages, but using shorthand
+            String bbvCode = "";
+            String bbvhCode = "";
+            if (!beatBuddyVolumeControl.getAlphaDimmed()) {
+                bbvCode = "MIDI" + mainActivityInterface.getBeatBuddy().getBeatBuddyChannel() + ":BBV" + mainActivityInterface.getBeatBuddy().getBeatBuddyVolume();
+            }
+            if (!beatBuddyHeadphoneVolumeControl.getAlphaDimmed()) {
+                bbvhCode = "MIDI" + mainActivityInterface.getBeatBuddy().getBeatBuddyChannel() + ":BBVH" + mainActivityInterface.getBeatBuddy().getBeatBuddyHPVolume();
+            }
+
+            String newVolumeCode = (bbvCode + "\n" + bbvhCode).trim();
 
             String currentMidiMessages = mainActivityInterface.getSong().getMidi();
             String newMidiMessages;
-            if (currentMidiMessages==null) {
-                newMidiMessages = volumeHexCode + "\n" + volumeHPHexCode;
+            if (currentMidiMessages!=null && !currentMidiMessages.isEmpty()) {
+                // Go through the current messages and remove any existing volume commands
+                String[] lines = currentMidiMessages.split("\n");
+                StringBuilder trimmedlines = new StringBuilder();
+                for (String line:lines) {
+                    line = line.trim();
+                    if (!line.isEmpty() && !line.contains(":BBV")) {
+                        // Add back in unless it contains BBVH or BBV
+                        trimmedlines.append(line).append("\n");
+                    }
+                }
+                newMidiMessages = trimmedlines.toString().trim() + "\n" + newVolumeCode;
             } else {
-                newMidiMessages = currentMidiMessages.trim() + "\n" + volumeHexCode + "\n" + volumeHPHexCode;
+                newMidiMessages = newVolumeCode;
             }
             mainActivityInterface.getSong().setMidi(newMidiMessages.trim());
 
             mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
-            mainActivityInterface.getShowToast().success();
+            saveToSongButton.setText(c.getString(R.string.success));
+            saveToSongButton.setEnabled(false);
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
+                if (saveToSongButton!=null) {
+                    saveToSongButton.setEnabled(true);
+                    saveToSongButton.setText(c.getString(R.string.save));
+                }
+            },1000);
         });
     }
 
@@ -265,6 +332,10 @@ public class BeatBuddyControlPopUp {
     }
 
     private void setEnabled(boolean enabled) {
+        if (enabled) {
+            //Set with the current song values
+            updateCurrentSong();
+        }
         beatBuddyVolumeControl.setEnabled(enabled);
         beatBuddyHeadphoneVolumeControl.setEnabled(enabled);
         beatBuddyTempoControl.setEnabled(enabled);
@@ -275,7 +346,6 @@ public class BeatBuddyControlPopUp {
         stop.setEnabled(enabled);
         settingInitialValues = !enabled;
     }
-
 
     private void getBeatBuddyValues(Context c) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
@@ -323,6 +393,65 @@ public class BeatBuddyControlPopUp {
 
     }
 
+    public void updateCurrentSong() {
+        // We have loaded a new song in the background, so update the values to what we currently have
+        String song = mainActivityInterface.getSong().getBeatbuddysong();
+        int tempo = DrumCalculations.getFixedTempo(mainActivityInterface.getSong().getTempo(),true);
+        String kit = mainActivityInterface.getSong().getBeatbuddykit();
+
+        // For the volume and heaphone volume, these would be set from the midi messages
+        // Only get shorthand messages
+        String midiMessages = mainActivityInterface.getSong().getMidi();
+        int volume = -1;
+        int hpvolume = -1;
+        if (midiMessages!=null) {
+            String[] lines = midiMessages.split("\n");
+            for (String line:lines) {
+                if (line.contains(":BBVH")) {
+                    // Get the heaphone volume
+                    line = line.substring(line.indexOf(":BBVH"));
+                    line = line.replace(":BBVH","");
+                    if (!line.isEmpty() && !line.replaceAll("\\D","").trim().isEmpty()) {
+                        hpvolume = Integer.parseInt(line.replaceAll("\\D","").trim());
+                    }
+                } else if (line.contains(":BBV")) {
+                    // Get the volume
+                    line = line.substring(line.indexOf(":BBV"));
+                    line = line.replace(":BBV","");
+                    if (!line.isEmpty() && !line.replaceAll("\\D","").trim().isEmpty()) {
+                        volume = Integer.parseInt(line.replaceAll("\\D","").trim());
+                    }
+                }
+            }
+        }
+
+        // Now set non-null and non-empty values
+        if (volume>-1 && volume<=100) {
+            beatBuddyVolumeControl.setCurrentValue(volume);
+            // Because this is saved with the song, make it active regardless of our preference
+            beatBuddyVolumeControl.setAlphaDimmed(false);
+        } else {
+            beatBuddyVolumeControl.setAlphaDimmed(!beatBuddyControllerVolActive);
+        }
+        if (hpvolume>-1 && hpvolume<=100) {
+            beatBuddyHeadphoneVolumeControl.setCurrentValue(hpvolume);
+            // Because this is saved with the song, make it active
+            beatBuddyHeadphoneVolumeControl.setAlphaDimmed(false);
+        } else {
+            beatBuddyHeadphoneVolumeControl.setAlphaDimmed(!beatBuddyControllerVolHPActive);
+        }
+        if (song!=null) {
+            songExposedDropDown.setText(song);
+        }
+        beatBuddyTempoControl.setCurrentValue(tempo);
+        if (kit!=null && !kit.isEmpty() && kits.contains(kit)) {
+            beatBuddyDrumKitControl.setCurrentValue(kits.indexOf(kit));
+            // Because this is saved with the song, make it active
+            beatBuddyDrumKitControl.setAlphaDimmed(false);
+        } else {
+            beatBuddyDrumKitControl.setAlphaDimmed(!beatBuddyControllerKitActive);
+        }
+    }
     private void toggleMinimise() {
         minimised = !minimised;
         minimiseLayout.setVisibility(minimised ? View.GONE : View.VISIBLE);

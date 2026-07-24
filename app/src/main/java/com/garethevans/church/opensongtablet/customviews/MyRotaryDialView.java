@@ -6,9 +6,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +32,7 @@ public class MyRotaryDialView extends LinearLayout {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "MyRotaryDialView";
     private Palette palette;
+    private final float dimmedAlphaValue = 0.6f;
     // Listener interface for value changes
     public interface OnValueChangedListener {
         void onValueChanged(int value);
@@ -44,6 +48,7 @@ public class MyRotaryDialView extends LinearLayout {
     private ArrayList<String> valuesAsText = new ArrayList<>();
     private String suffixText = "";
     private boolean tapTempoEnabled = false;
+    private boolean alphaDimmed = false;
 
     // Interaction tracking
     private float angle = 110f;
@@ -230,6 +235,22 @@ public class MyRotaryDialView extends LinearLayout {
         this.dialClickListener = listener;
     }
 
+    public void performDialLongClick() {
+        Log.d(TAG,"performDialLongClick()   dialLongClickListener:"+dialLongClickListener);
+        if (dialLongClickListener != null) {
+            dialLongClickListener.onDialLongClick(alphaDimmed);
+        }
+    }
+    public interface OnDialLongClickListener {
+        void onDialLongClick(boolean alphaDimmed);
+    }
+    private OnDialLongClickListener dialLongClickListener;
+
+    public void setOnDialLongClickListener(OnDialLongClickListener listener) {
+        Log.d(TAG,"setOnDialClickListener:"+listener);
+        this.dialLongClickListener = listener;
+    }
+
     public void setOnValueChangedListener(OnValueChangedListener listener) {
         this.valueChangedListener = listener;
     }
@@ -384,6 +405,19 @@ public class MyRotaryDialView extends LinearLayout {
         private float downX, downY;
         private static final float TAP_TOLERANCE = 10f; // Maximum pixels a finger can move to still be considered a tap
 
+        private Handler longPressHandler = new Handler(Looper.getMainLooper());
+        private boolean isLongClickTriggered = false;
+        private Runnable longPressRunnable = () -> {
+            isLongClickTriggered = true;
+
+            // Perform haptic feedback so the user feels the long-press register
+            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+
+            // Trigger your exclusion logic here
+            toggelAlphaDimmed();
+            performDialLongClick();
+        };
+
         @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouchEvent(MotionEvent event) {
@@ -391,13 +425,26 @@ public class MyRotaryDialView extends LinearLayout {
                 case MotionEvent.ACTION_DOWN:
                     downX = event.getX();
                     downY = event.getY();
+                    isLongClickTriggered = false;
+
+                    // Start the 500ms timer for a long press
+                    longPressHandler.postDelayed(longPressRunnable, 500);
+
                     if (getParent() != null) {
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
-                    // REMOVED updateAngleFromTouch here so it doesn't jump on tap-down!
                     return true;
 
                 case MotionEvent.ACTION_MOVE:
+                    float currentDx = Math.abs(event.getX() - downX);
+                    float currentDy = Math.abs(event.getY() - downY);
+
+                    // If the user drags their finger past the tolerance threshold,
+                    // cancel the long-press so it doesn't trigger while they are turning the dial!
+                    if (currentDx > TAP_TOLERANCE || currentDy > TAP_TOLERANCE) {
+                        longPressHandler.removeCallbacks(longPressRunnable);
+                    }
+
                     // Only rotate while dragging around the dial
                     updateAngleFromTouch(event.getX(), event.getY());
                     return true;
@@ -407,22 +454,25 @@ public class MyRotaryDialView extends LinearLayout {
                         getParent().requestDisallowInterceptTouchEvent(false);
                     }
 
-                    // Check if it was a quick tap
-                    float dx = Math.abs(event.getX() - downX);
-                    float dy = Math.abs(event.getY() - downY);
-                    if (dx < TAP_TOLERANCE && dy < TAP_TOLERANCE) {
-                        // Record a tap tempo event (useful if this dial is your tempo control)
-                        recordTap();
-                    }
+                    // Always clear the long-press timer when lifting the finger
+                    longPressHandler.removeCallbacks(longPressRunnable);
 
-                    // Also trigger your release/click action
-                    performDialClick();
+                    // If the long press DID NOT trigger, handle normal taps/drags
+                    if (!isLongClickTriggered) {
+                        float dx = Math.abs(event.getX() - downX);
+                        float dy = Math.abs(event.getY() - downY);
+                        if (dx < TAP_TOLERANCE && dy < TAP_TOLERANCE) {
+                            recordTap();
+                        }
+                        performDialClick();
+                    }
                     return true;
 
                 case MotionEvent.ACTION_CANCEL:
                     if (getParent() != null) {
                         getParent().requestDisallowInterceptTouchEvent(false);
                     }
+                    longPressHandler.removeCallbacks(longPressRunnable);
                     return true;
             }
             return super.onTouchEvent(event);
@@ -627,5 +677,18 @@ public class MyRotaryDialView extends LinearLayout {
     }
     public boolean getTapTempoEnabled() {
         return tapTempoEnabled;
+    }
+
+    public void toggelAlphaDimmed() {
+        alphaDimmed = !alphaDimmed;
+        setAlpha(alphaDimmed ? dimmedAlphaValue : 1.0f);
+    }
+    public boolean getAlphaDimmed() {
+        return alphaDimmed;
+    }
+
+    public void setAlphaDimmed(boolean alphaDimmed) {
+        this.alphaDimmed = alphaDimmed;
+        setAlpha(alphaDimmed ? dimmedAlphaValue : 1.0f);
     }
 }
