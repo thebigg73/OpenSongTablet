@@ -64,6 +64,7 @@ public class PresenterFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityInterface.registerFragment(this,"PresenterFragment");
         prepareStrings();
         mainActivityInterface.updateToolbar(presenter_mode_string);
         updateInlineSetSortTitles();

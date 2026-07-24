@@ -128,6 +128,8 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // Register this fragment
+        mainActivityInterface.registerFragment(this,"PerformanceFragment");
         prepareStrings();
         firstSongLoad = true;
         updateInlineSetSortTitles();
@@ -176,6 +178,9 @@ public class PerformanceFragment extends Fragment {
         myView = null;
         stickyPopUp = null;
         nearbyAlertPopUp = null;
+        // If we had the BeatBuddy popup open, close that too
+        mainActivityInterface.forceCloseBeatBuddyControlPopUp();
+
         super.onDestroyView();
     }
 
@@ -1578,6 +1583,9 @@ public class PerformanceFragment extends Fragment {
                         mainActivityInterface.getMidi().sendSongMessages();
                     }, delay);
                 }
+
+                // Update the BeatBuddyControlPopUp (if visible)
+                mainActivityInterface.updateBeatBuddyControlPopUp();
             }
 
             // Check the set index
