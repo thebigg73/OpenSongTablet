@@ -40,27 +40,12 @@
         <FrameLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false"
             app:elevation="0dp">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/myAppBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:visibility="gone">
-<!--android:theme="?attr/actionBarStyle"-->
 
-                <com.garethevans.church.opensongtablet.customviews.MyToolbar
-                    android:id="@+id/myToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"/>
-            </com.google.android.material.appbar.AppBarLayout>
 
             <!--The main fragments get loaded up here-->
             <RelativeLayout
@@ -127,6 +112,23 @@
                     android:layout_alignParentBottom="true"
                     android:layout_toStartOf="@+id/actionFAB" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/myAppBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="16dp"
+                android:background="@color/transparent"
+                android:visibility="gone">
+
+                <com.garethevans.church.opensongtablet.customviews.MyToolbar
+                    android:id="@+id/myToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"/>
+            </LinearLayout>
         </FrameLayout>
 
         <!--The left song and set menu-->
