@@ -122,6 +122,7 @@ public class AppPermissions {
     }
 
     public boolean hasGooglePlay() {
+        Log.d(TAG,"has GooglePlay:"+(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS));
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
     }
 
@@ -254,72 +255,11 @@ public class AppPermissions {
         permissionsLog = "";
     }
 
-
-    /*public void checkAgeVerification() {
-        // From 1st Jan 2026 Texas requires that apps check age from Google Play API
-        if (hasGooglePlay()) {
-            // 1. Initialize the manager - use a fake one if testing
-            AgeSignalsManager ageSignalsManager = AgeSignalsManagerFactory.create(context);
-            //FakeAgeSignalsManager ageSignalsManager = new FakeAgeSignalsManager();
-
-            // 2. Set fake age data if testing
-            *//*AgeSignalsResult testResult = AgeSignalsResult.builder()
-                    .setUserStatus(AgeSignalsVerificationStatus.SUPERVISED)
-                    .setAgeLower(13)
-                    .setAgeUpper(15)
-                    .build();
-            ageSignalsManager.setNextAgeSignalsResult(testResult);
-            *//*
-
-            // Create the request
-            AgeSignalsRequest request = AgeSignalsRequest.builder().build();
-
-            // 3. Initiate the handshake
-            ageSignalsManager.checkAgeSignals(request)
-                    .addOnSuccessListener(result -> {
-                        Log.d(TAG,"Handshake result:"+result);
-                        // Handshake Successful
-                        if (result != null) {
-                            Integer status = result.userStatus();
-                            Integer status = result.();
-
-                            if (status == null) {
-                                // IMPORTANT: If status is null, the user is NOT in a restricted region.
-                                Log.d(TAG, "User is not in a regulated region. Full access.");
-                                ageVerificationPass = true;
-                                return;
-                            }
-
-                            // Handle known statuses
-                            switch (status) {
-                                case AgeSignalsVerificationStatus.VERIFIED:
-                                    Log.d(TAG, "User is 18+ verified.");
-                                    ageVerificationPass = true;
-                                    break;
-                                case AgeSignalsVerificationStatus.SUPERVISED:
-                                    Log.d(TAG, "User is a supervised minor.");
-                                    ageVerificationPass = false;
-                                    break;
-                                case AgeSignalsVerificationStatus.UNKNOWN:
-                                    Log.d(TAG, "Regulated region but status unknown.");
-                                    prompUserToVerifyInPlayStore();
-                                    ageVerificationPass = false;
-                                    break;
-                                default:
-                                    ageVerificationPass = true;
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handshake Failed (e.g. no internet or service unavailable)
-                        Log.d(TAG, "AgeAPI handshake failed: " + e.getMessage());
-                        ageVerificationPass = true;
-                    });
-        }
-    }*/
-
     public void checkAgeVerification(Activity activity) {
         // From 1st Jan 2026 Texas requires that apps check age from Google Play API
+        // By default we have permission
+        ageVerificationPass = true;
+
         if (hasGooglePlay()) {
             // 1. Initialize the manager - use a fake one if testing
             AgeSignalsManager ageSignalsManager = AgeSignalsManagerFactory.create(context);
@@ -343,16 +283,20 @@ public class AppPermissions {
             ageSignalsManager.requestAgeSignalsAccess(accessRequest)
                     .addOnSuccessListener(accessResult -> {
                         Integer accessStatus = accessResult.ageSignalsStatus();
+                        if (accessStatus == null) {
+                            // Not required
+                            Log.d(TAG,"age verification not required");
+                            ageVerificationPass = true;
 
-                        if (accessStatus == null || accessStatus != AgeSignalsStatus.SHARED) {
+                        } else if (accessStatus != AgeSignalsStatus.SHARED) {
                             // User did not share age, declined, or is in verification-required state
                             Log.d(TAG, "Age signals access not shared or required: " + accessStatus);
 
-                            if (accessStatus != null && accessStatus == AgeSignalsStatus.VERIFICATION_REQUIRED) {
+                            if (accessStatus == AgeSignalsStatus.VERIFICATION_REQUIRED) {
+                                ageVerificationPass = false;
                                 prompUserToVerifyInPlayStore();
                             }
 
-                            ageVerificationPass = false;
                             return;
                         }
 
@@ -365,7 +309,7 @@ public class AppPermissions {
                                         Integer ageUpper = result.ageUpper();
                                         Integer ageRangeSource = result.ageRangeSource();
 
-                                        if (ageRangeSource == null) {
+                                        if (ageRangeSource == null|| ageLower == null || ageUpper == null) {
                                             Log.d(TAG, "User is not in a regulated region or data unavailable. Full access.");
                                             ageVerificationPass = true;
                                             return;
@@ -373,7 +317,7 @@ public class AppPermissions {
 
                                         // Evaluate based on age range or source tier
                                         // Example: checking if lower bound is 18+ or inspecting tier
-                                        if (ageLower != null && ageLower >= 18) {
+                                        if (ageLower >= 18) {
                                             Log.d(TAG, "User is 18+ verified/declared.");
                                             ageVerificationPass = true;
                                         } else {
@@ -383,13 +327,13 @@ public class AppPermissions {
                                     }
                                 })
                                 .addOnFailureListener(e -> {
-                                    Log.d(TAG, "checkAgeSignals failed: " + e.getMessage());
+                                    Log.d(TAG, "checkAgeSignals failed");
                                     ageVerificationPass = true;
                                 });
                     })
                     .addOnFailureListener(e -> {
                         // Handshake/Access Request Failed (e.g. no internet or service unavailable)
-                        Log.d(TAG, "AgeAPI requestAgeSignalsAccess failed: " + e.getMessage());
+                        Log.d(TAG, "AgeAPI requestAgeSignalsAccess failed");
                         ageVerificationPass = true;
                     });
         }
