@@ -125,7 +125,11 @@ public class SetMenuFragment extends Fragment {
 
                 if (getContext()!=null) {
                     try {
-                        snackbar.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                        //snackbar.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                        snackbar.setBackgroundTintList(new ColorStateList(
+                                new int[][]{new int[0]},
+                                new int[]{mainActivityInterface.getPalette().secondary}
+                        ));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -277,6 +281,13 @@ public class SetMenuFragment extends Fragment {
         // The item was added to the set already by the calling method (song menu or action)
         if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
             mainActivityInterface.getMainHandler().post(() -> setAdapter.insertItem());
+        }
+    }
+    // Notify when adding a song to cue next
+    public void notifyItemCueNext(int position) {
+        // The item was moved in the currentSetList already, just update the adapter
+        if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
+            mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyInlineSetCueItem(position));
         }
     }
     public void notifyItemRemoved(int position) {

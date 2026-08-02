@@ -94,7 +94,11 @@ public class SetManageFragment extends Fragment {
         whattodo = mainActivityInterface.getWhattodo();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myView.actualProgressBar.setIndeterminateTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //myView.actualProgressBar.setIndeterminateTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            myView.actualProgressBar.setIndeterminateTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         }
         showProgress(true);
 
@@ -382,8 +386,16 @@ public class SetManageFragment extends Fragment {
             });
 
             String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
-            activeColorStateList = ColorStateList.valueOf(activeColor);
-            inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
+            //activeColorStateList = ColorStateList.valueOf(activeColor);
+            activeColorStateList = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{activeColor}
+            );
+            //inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
+            inactiveColorStateList = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{inactiveColor}
+            );
             changeSortIconColor(setsSortOrder);
             myView.sortAZ.setOnClickListener(view -> {
                 if (allowChanges) {

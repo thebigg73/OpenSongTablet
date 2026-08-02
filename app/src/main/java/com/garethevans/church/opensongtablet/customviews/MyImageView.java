@@ -21,6 +21,10 @@ public class MyImageView extends androidx.appcompat.widget.AppCompatImageView {
     }
 
     public void setPalette(Palette palette) {
-        ImageViewCompat.setImageTintList(this,ColorStateList.valueOf(palette.textColor));
+        //ImageViewCompat.setImageTintList(this,ColorStateList.valueOf(palette.textColor));
+        ImageViewCompat.setImageTintList(this,new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.textColor}
+        ));
     }
 }

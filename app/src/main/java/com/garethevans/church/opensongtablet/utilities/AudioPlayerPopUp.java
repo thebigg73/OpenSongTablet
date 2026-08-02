@@ -97,7 +97,11 @@ public class AudioPlayerPopUp {
         View myView = View.inflate(c, R.layout.view_audio_player_popup, null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            myView.findViewById(R.id.label).setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         } else {
             myView.findViewById(R.id.layout).setBackgroundColor(mainActivityInterface.getPalette().secondary);
         }

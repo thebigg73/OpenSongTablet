@@ -237,7 +237,11 @@ public class PresenterFragment extends Fragment {
 
             myView.viewPager.setAdapter(pageAdapter);
             myView.viewPager.setUserInputEnabled(false);
-            myView.presenterTabs.setTabTextColors(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            //myView.presenterTabs.setTabTextColors(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            myView.presenterTabs.setTabTextColors(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().textColor}
+            ));
             myView.presenterTabs.setBackgroundColor(mainActivityInterface.getPalette().background);
             myView.presenterTabs.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
             new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
@@ -540,6 +544,15 @@ public class PresenterFragment extends Fragment {
     public void notifyInlineSetScrollToItem() {
         if (myView!=null) {
             myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetScrollToItem());
+        }
+    }
+    public void notifyInlineSetCueItem(int fromPosition) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.notifyInlineSetCueItem(fromPosition);
+            } catch (Exception e) {
+                Log.d(TAG,"Couldn't update inline set - might just not be shown currently");
+            }
         }
     }
 

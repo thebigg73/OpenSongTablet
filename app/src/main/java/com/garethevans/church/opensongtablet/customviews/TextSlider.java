@@ -64,9 +64,16 @@ public class TextSlider extends LinearLayout {
             highlightSelectedText(position);
 
             // Define colors for different states of the slider
-            slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
-            slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-
+            //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+            slider.setThumbTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.secondaryFixed}
+            ));
+            //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+            slider.setTrackTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.secondary}
+            ));
             slider.addOnChangeListener((slider, value, fromUser) -> highlightSelectedText(value));
             textLeft.setOnClickListener(view -> slider.setValue(0));
             textRight.setOnClickListener(view -> slider.setValue(1));
@@ -142,8 +149,15 @@ public class TextSlider extends LinearLayout {
     public void setPalette(Palette palette) {
         this.palette = palette;
         // Define colors for different states of the slider
-        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
-        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-
+        //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+        slider.setThumbTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondaryFixed}
+        ));
+        //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+        slider.setTrackTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondary}
+        ));
     }
 }

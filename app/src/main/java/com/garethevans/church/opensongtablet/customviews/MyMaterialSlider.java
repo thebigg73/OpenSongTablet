@@ -131,11 +131,23 @@ public class MyMaterialSlider extends LinearLayout {
         }
 
         if (trackColor!=0) {
-            slider.setTrackTintList(ColorStateList.valueOf(trackColor));
+            //slider.setTrackTintList(ColorStateList.valueOf(trackColor));
+            slider.setTrackTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{trackColor}
+            ));
         }
         if (thumbColor!=0) {
-            slider.setThumbStrokeColor(ColorStateList.valueOf(thumbColor));
-            slider.setThumbTintList(ColorStateList.valueOf(thumbColor));
+            //slider.setThumbStrokeColor(ColorStateList.valueOf(thumbColor));
+            slider.setThumbStrokeColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{thumbColor}
+            ));
+            //slider.setThumbTintList(ColorStateList.valueOf(thumbColor));
+            slider.setThumbTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{thumbColor}
+            ));
         }
 
         if (trackHeight!=0) {
@@ -326,8 +338,20 @@ public class MyMaterialSlider extends LinearLayout {
         titleTextView.setTextColor(palette.textColor);
         bottomHintView.setTextColor(palette.hintColor);
         infoTextView.setTextColor(palette.hintColor);
-        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
-        slider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+        slider.setTrackTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondary}
+        ));
+        //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        slider.setThumbTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondaryVariant}
+        ));
+        //slider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        slider.setTickTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
     }
 }

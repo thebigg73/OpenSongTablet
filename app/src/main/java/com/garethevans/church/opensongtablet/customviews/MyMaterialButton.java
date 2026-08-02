@@ -22,8 +22,16 @@ public class MyMaterialButton extends MaterialButton {
     }
 
     public void setPalette(Palette palette) {
-        setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        //setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondary}
+        ));
         setTextColor(palette.textColor);
-        setIconTint(ColorStateList.valueOf(palette.textColor));
+        //setIconTint(ColorStateList.valueOf(palette.textColor));
+        setIconTint(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.textColor}
+        ));
     }
 }

@@ -44,10 +44,21 @@ public class MidiSlider extends LinearLayout {
 
         Palette palette = new Palette(context);
         sliderValues.setBackgroundColor(palette.secondary);
-        slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
-        slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
-        slider.setTickActiveTintList(ColorStateList.valueOf(Color.TRANSPARENT));
-
+        //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+        slider.setTrackTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondary}
+        ));
+        //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        slider.setThumbTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondaryVariant}
+        ));
+        //slider.setTickActiveTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        slider.setTickActiveTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
         slider.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:

@@ -958,7 +958,11 @@ public class ThemeColors {
 
     public void tintProgressBar(ProgressBar progressBar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            progressBar.setIndeterminateTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //progressBar.setIndeterminateTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            progressBar.setIndeterminateTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         } else {
             Drawable indeterminateDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
             DrawableCompat.setTint(indeterminateDrawable, mainActivityInterface.getPalette().secondary);

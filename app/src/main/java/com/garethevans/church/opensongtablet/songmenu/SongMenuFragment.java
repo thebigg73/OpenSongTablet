@@ -323,9 +323,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         fixColor(myView.filterButtons.titleButton, songListSearchByTitle);
         if (myView!=null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                myView.filterButtons.searchButtonGroup.post(() ->
-                        myView.filterButtons.searchButtonGroup.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary)));
-
+                myView.filterButtons.searchButtonGroup.post(() -> {
+                    //myView.filterButtons.searchButtonGroup.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().primary)));
+                    myView.filterButtons.searchButtonGroup.setBackgroundTintList(new ColorStateList(
+                            new int[][]{new int[0]},
+                            new int[]{mainActivityInterface.getPalette().primary}
+                    ));
+                });
             } else {
                 myView.filterButtons.searchButtonGroup.post(() ->
                         myView.filterButtons.searchButtonGroup.setBackgroundColor(mainActivityInterface.getPalette().primary));
@@ -346,8 +350,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                         } else {
                             button.setBackgroundColor(inactivecolor);
                         }
-                        button.setIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().onPrimary));
-                        button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                        //button.setIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().onPrimary));
+                        button.setIconTint(new ColorStateList(
+                                new int[][]{new int[0]},
+                                new int[]{mainActivityInterface.getPalette().onPrimary}
+                        ));
+                        //button.setStrokeColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                        button.setStrokeColor(new ColorStateList(
+                                new int[][]{new int[0]},
+                                new int[]{mainActivityInterface.getPalette().secondary}
+                        ));
                     });
                 }
             }

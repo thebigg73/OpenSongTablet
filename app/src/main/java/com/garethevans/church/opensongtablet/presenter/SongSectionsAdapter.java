@@ -248,8 +248,16 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
     private void setColor(SongSectionViewHolder holder, int cardColor, int buttonColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            holder.item.setBackgroundTintList(ColorStateList.valueOf(cardColor));
-            holder.edit.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            //holder.item.setBackgroundTintList(ColorStateList.valueOf(cardColor));
+            holder.item.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{cardColor}
+            ));
+            //holder.edit.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+            holder.edit.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{buttonColor}
+            ));
         } else {
             holder.item.setBackgroundColor(cardColor);
             holder.edit.setBackgroundColor(buttonColor);

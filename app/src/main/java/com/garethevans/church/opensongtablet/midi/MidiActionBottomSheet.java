@@ -106,14 +106,46 @@ public class MidiActionBottomSheet extends BottomSheetCommon {
     }
 
     private void changeHighlight() {
-        ViewCompat.setBackgroundTintList(myView.action1, ColorStateList.valueOf(which==1 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action2, ColorStateList.valueOf(which==2 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action3, ColorStateList.valueOf(which==3 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action4, ColorStateList.valueOf(which==4 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action5, ColorStateList.valueOf(which==5 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action6, ColorStateList.valueOf(which==6 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action7, ColorStateList.valueOf(which==7 ? on:off));
-        ViewCompat.setBackgroundTintList(myView.action8, ColorStateList.valueOf(which==8 ? on:off));
+        //ViewCompat.setBackgroundTintList(myView.action1, ColorStateList.valueOf(which==1 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action1, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==1 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action2, ColorStateList.valueOf(which==2 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action2, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==2 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action3, ColorStateList.valueOf(which==3 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action3, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==3 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action4, ColorStateList.valueOf(which==4 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action4, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==4 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action5, ColorStateList.valueOf(which==5 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action5, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==5 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action6, ColorStateList.valueOf(which==6 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action6, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==6 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action7, ColorStateList.valueOf(which==7 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action7, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==7 ? on:off}
+        ));
+        //ViewCompat.setBackgroundTintList(myView.action8, ColorStateList.valueOf(which==8 ? on:off));
+        ViewCompat.setBackgroundTintList(myView.action8, new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{which==8 ? on:off}
+        ));
     }
 
     private class MyOnClick implements View.OnClickListener {

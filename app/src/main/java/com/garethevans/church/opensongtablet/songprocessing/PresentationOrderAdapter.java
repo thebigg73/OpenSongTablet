@@ -105,7 +105,11 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         if (!mainActivityInterface.getTempSong().getSongSectionHeadings().contains(header)) {
            // There is reference to a section that isn't in the song
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                cardView.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.vdarkred)));
+                //cardView.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.vdarkred)));
+                cardView.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{c.getResources().getColor(R.color.vdarkred)}
+                ));
             } else {
                 cardView.setBackgroundColor(c.getResources().getColor(R.color.vdarkred));
             }

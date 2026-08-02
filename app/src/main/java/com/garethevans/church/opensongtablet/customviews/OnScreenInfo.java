@@ -18,14 +18,14 @@ public class OnScreenInfo extends LinearLayout {
 
     private final LinearLayout info;
     private final LinearLayout capo;
-    private final MyMaterialSimpleTextView capoIcon;
+    private final MyImageView capoIcon;
     private final MyMaterialSimpleTextView capoInfo;
     private final LinearLayout autoscroll;
-    private final MyMaterialSimpleTextView autoscrollIcon;
+    private final MyImageView autoscrollIcon;
     private final MyMaterialSimpleTextView autoscrollTime;
     private final MyMaterialSimpleTextView autoscrollTotalTime;
     private final LinearLayout pad;
-    private final MyMaterialSimpleTextView padIcon;
+    private final MyImageView padIcon;
     private final MyMaterialSimpleTextView padTime;
     private final MyMaterialSimpleTextView padTotalTime;
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
@@ -79,7 +79,11 @@ public class OnScreenInfo extends LinearLayout {
         info = findViewById(R.id.info);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            info.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         } else {
             info.setBackgroundColor(mainActivityInterface.getPalette().secondary);
         }
@@ -101,6 +105,7 @@ public class OnScreenInfo extends LinearLayout {
         autoHidePad  = mainActivityInterface.getPreferences().getMyPreferenceBoolean("onscreenPadHide", true);
         autoHideAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("onscreenAutoscrollHide", true);
         updateAlpha(c,mainActivityInterface);
+        updatePalette();
     }
 
     public void updateAlpha(Context c, MainActivityInterface mainActivityInterface) {
@@ -110,15 +115,16 @@ public class OnScreenInfo extends LinearLayout {
         }
         info.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonAlpha());
         //int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
-        //padTime.setTextColor(textColor);
-        //padTotalTime.setTextColor(textColor);
-        //capoInfo.setTextColor(textColor);
-        //autoscrollTime.setTextColor(textColor);
-        //autoscrollTotalTime.setTextColor(textColor);
+        padTime.setTextColor(mainActivityInterface.getPalette().textColor);
+        padTotalTime.setTextColor(mainActivityInterface.getPalette().textColor);
+        capoInfo.setTextColor(mainActivityInterface.getPalette().textColor);
+        //autoscrollTime.setTextColor(mainActivityInterface.getPalette().textColor);
+        //autoscrollTotalTime.setTextColor(mainActivityInterface.getPalette().textColor);
         //TextViewCompat.setCompoundDrawableTintList(autoscrollIcon, ColorStateList.valueOf(textColor));
         //TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
-        //TextViewCompat.setCompoundDrawableTintList(padIcon, ColorStateList.valueOf(textColor));
-        //TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
+        /*TextViewCompat.setCompoundDrawableTintList(padIcon, new ColorStateList(new int[][]{new int[0]},
+                new int[]{mainActivityInterface.getPalette().textColor}));
+        *///TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
         //TextViewCompat.setCompoundDrawableTintList(capoIcon, ColorStateList.valueOf(textColor));
         //TextViewCompat.setCompoundDrawableTintList(capoInfo, ColorStateList.valueOf(textColor));
     }
@@ -204,5 +210,9 @@ public class OnScreenInfo extends LinearLayout {
         } else if (!show) {
             capo.post(() -> capo.setVisibility(View.GONE));
         }
+    }
+
+    private void updatePalette() {
+
     }
 }

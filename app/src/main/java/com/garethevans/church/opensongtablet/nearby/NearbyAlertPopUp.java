@@ -87,7 +87,11 @@ public class NearbyAlertPopUp {
         }
         closeButton.setImageDrawable(closeIcon);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
-        closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        //closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        closeButton.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
 
         floatWindow.addView(closeButton);
 

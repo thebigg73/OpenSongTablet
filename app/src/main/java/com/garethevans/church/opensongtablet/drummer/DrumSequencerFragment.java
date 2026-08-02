@@ -198,8 +198,11 @@ public class DrumSequencerFragment extends Fragment {
             stop = ContextCompat.getDrawable(getContext(), R.drawable.stop);
             start = ContextCompat.getDrawable(getContext(), R.drawable.play);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                stop.setTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
-                stop.setTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+                //stop.setTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+                stop.setTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().textColor}
+                ));
             }
         }
     }

@@ -184,7 +184,11 @@ public class MaterialRadioButtonItem extends LinearLayout {
 
     public void setPalette(Palette palette) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            radioButton.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+            //radioButton.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+            radioButton.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.secondary}
+            ));
         } else {
             radioButton.setBackgroundColor(palette.secondary);
         }

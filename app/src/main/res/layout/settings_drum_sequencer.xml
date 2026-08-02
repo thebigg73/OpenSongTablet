@@ -73,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:myFabSize="mini"
+                android:padding="8dp"
                 android:src="@drawable/play" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -80,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:myFabSize="mini"
+                android:padding="8dp"
                 android:src="@drawable/refresh" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -87,6 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:myFabSize="mini"
+                android:padding="8dp"
                 android:src="@drawable/delete" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -94,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:myFabSize="mini"
+                android:padding="8dp"
                 android:src="@drawable/save" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -101,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:myFabSize="mini"
+                android:padding="8dp"
                 android:src="@drawable/file_search" />
 
             <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
@@ -108,6 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:myFabSize="mini"
+                android:padding="8dp"
                 android:src="@drawable/song_add" />
         </LinearLayout>
     </HorizontalScrollView>

@@ -63,7 +63,11 @@ public abstract class BottomSheetCommon extends BottomSheetDialogFragment {
                 );
 
                 // Set fill color to match the theme
-                shapeDrawable.setFillColor(ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant));
+                //shapeDrawable.setFillColor(ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant));
+                shapeDrawable.setFillColor(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().primaryVariant}
+                ));
 
                 // Apply it
                 //ViewCompat.setBackground(bottomSheet, shapeDrawable);

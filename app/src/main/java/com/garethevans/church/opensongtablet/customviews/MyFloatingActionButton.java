@@ -193,6 +193,7 @@ public class MyFloatingActionButton extends FrameLayout {
         }
         myFAB.setSupportImageTintList(null);
         myFAB.setImageDrawable(drawable);
+        setFABIconColor(palette.textColor);
     }
 
     public void setImageDrawable(int drawableInt) {
@@ -200,10 +201,12 @@ public class MyFloatingActionButton extends FrameLayout {
         if (drawable!=null) {
             DrawableCompat.setTint(drawable, palette.onPrimary);
             myFAB.setImageDrawable(drawable);
+            setFABIconColor(palette.textColor);
         }
     }
     public void setImageResource(int drawableInt) {
         myFAB.setImageResource(drawableInt);
+        setFABIconColor(palette.textColor);
     }
 
     public Drawable getDrawable() {
@@ -225,8 +228,16 @@ public class MyFloatingActionButton extends FrameLayout {
         }
 
         // Final fallback for the icon tinting
-        myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
-        myFAB.setRippleColor(ColorStateList.valueOf(Color.TRANSPARENT));
+        //myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        myFAB.setSupportBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
+        //myFAB.setRippleColor(ColorStateList.valueOf(Color.TRANSPARENT));
+        myFAB.setRippleColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             myFAB.setElevation(0);
@@ -250,14 +261,29 @@ public class MyFloatingActionButton extends FrameLayout {
 
     public void setFABButtonColor(int color) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                myFAB.setBackgroundTintList(ColorStateList.valueOf(color));
-                myFAB.setRippleColor(ColorStateList.valueOf(color));
+                //myFAB.setBackgroundTintList(ColorStateList.valueOf(color));
+                myFAB.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{color}
+                ));
+                //myFAB.setRippleColor(ColorStateList.valueOf(color));
+                myFAB.setRippleColor(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{color}
+                ));
             } else {
-                myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
+                //myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
+                myFAB.setSupportBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{color}
+                ));
                 myFAB.setRippleColor(color);
             }
-            myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
-
+            //myFAB.setSupportBackgroundTintList(ColorStateList.valueOf(color));
+            myFAB.setSupportBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{color}
+            ));
     }
 
     public void setFABIconColor(int color) {
@@ -266,8 +292,11 @@ public class MyFloatingActionButton extends FrameLayout {
 
         DrawableCompat.setTint(drawable, color);
         myFAB.setImageDrawable(drawable);
-        myFAB.setSupportImageTintList(ColorStateList.valueOf(color));
-
+        //myFAB.setSupportImageTintList(ColorStateList.valueOf(color));
+        myFAB.setSupportImageTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{color}
+        ));
     }
 
     public void setImageTintList(ColorStateList colorStateList) {

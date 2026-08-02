@@ -175,7 +175,11 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
     private void setColor(ImportSetItemViewHolder holder) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.cardView.setCardBackgroundColor(mainActivityInterface.getPalette().primary);
-            holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
+            //holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(mainActivityInterface.getPalette().primary));
+            holder.cardView.setCardBackgroundColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().primary}
+            ));
         } else {
             holder.cardView.setBackgroundColor(mainActivityInterface.getPalette().primary);
         }

@@ -69,7 +69,11 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         } else if (!readableCommand.trim().isEmpty()) {
             holder.vMidiReadable.setVisibility(View.VISIBLE);
         }
-        holder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        //holder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+        holder.itemView.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{mainActivityInterface.getPalette().secondary}
+        ));
         holder.vCard.setBackgroundColor(mainActivityInterface.getPalette().secondary);
         holder.vItem.setTextColor(mainActivityInterface.getPalette().textColor);
         holder.vMidiCommand.setTextColor(mainActivityInterface.getPalette().textColor);

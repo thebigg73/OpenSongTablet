@@ -136,7 +136,11 @@ public class TagSongListAdapter extends RecyclerView.Adapter<TagViewHolder> {
 
     private void setColor(MaterialCardView cardView, int cardColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+            //cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+            cardView.setCardBackgroundColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{cardColor}
+            ));
             //cardView.setBackgroundTintList(ColorStateList.valueOf(cardColor));
         } else {
             cardView.setBackgroundColor(cardColor);

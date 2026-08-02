@@ -26,8 +26,16 @@ public class MyExtendedFloatingActionButton extends ExtendedFloatingActionButton
     }
 
     public void setPalette(Palette palette) {
-        setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
-        setIconTint(ColorStateList.valueOf(palette.onPrimary));
+        //setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondary}
+        ));
+        //setIconTint(ColorStateList.valueOf(palette.onPrimary));
+        setIconTint(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.onPrimary}
+        ));
         setTextColor(palette.textColor);
     }
 

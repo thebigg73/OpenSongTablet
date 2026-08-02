@@ -103,8 +103,16 @@ public class ImportSetBundleSetFragment extends Fragment {
 
             // The sort buttons
             String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
-            activeColorStateList = ColorStateList.valueOf(activeColor);
-            inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
+            //activeColorStateList = ColorStateList.valueOf(activeColor);
+            activeColorStateList = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{activeColor}
+            );
+            //inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
+            inactiveColorStateList = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{inactiveColor}
+            );
             myView.sortAZ.setSupportBackgroundTintList(setsSortOrder.equals("az") ? activeColorStateList : inactiveColorStateList);
             myView.sortZA.setSupportBackgroundTintList(setsSortOrder.equals("za") ? activeColorStateList : inactiveColorStateList);
             myView.sortOldest.setSupportBackgroundTintList(setsSortOrder.equals("oldest") ? activeColorStateList : inactiveColorStateList);

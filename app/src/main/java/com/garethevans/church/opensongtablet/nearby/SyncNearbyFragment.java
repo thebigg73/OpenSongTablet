@@ -162,7 +162,11 @@ public class SyncNearbyFragment extends Fragment {
             myView.syncPager.setOffscreenPageLimit(2);
             TabLayout tabLayout = myView.syncTabs;
             tabLayout.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
-            tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            //tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            tabLayout.setTabIconTint(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().textColor}
+            ));
             tabLayout.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
             new TabLayoutMediator(tabLayout, myView.syncPager, (tab, position) -> {
                 switch (position) {

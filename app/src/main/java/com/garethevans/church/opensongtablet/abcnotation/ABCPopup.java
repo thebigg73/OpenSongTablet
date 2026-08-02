@@ -135,8 +135,11 @@ public class ABCPopup {
             closeButton.makeFlat();
        }
         closeButton.setImageDrawable(closeIcon);
-        closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
-
+        //closeButton.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        closeButton.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
         floatWindow.addView(closeButton);
 
         // Now the WebView for the music score

@@ -36,7 +36,7 @@ import java.util.Collections;
 
 public class ExposedDropDown extends FrameLayout {
 
-    @SuppressWarnings({"unused","FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "ExposedDropDown";
 
     private Context c;
@@ -55,6 +55,7 @@ public class ExposedDropDown extends FrameLayout {
 
     private final AutoCompleteTextView autoCompleteTextView;
     private final TextInputLayout textInputLayout;
+
     public ExposedDropDown(@NonNull Context context) {
         this(context, null);
     }
@@ -192,7 +193,9 @@ public class ExposedDropDown extends FrameLayout {
     }
 
     // Convenience accessors
-    public AutoCompleteTextView getAutoCompleteTextView() { return autoCompleteTextView; }
+    public AutoCompleteTextView getAutoCompleteTextView() {
+        return autoCompleteTextView;
+    }
 
     public Editable getText() {
         if (autoCompleteTextView.getText() == null) autoCompleteTextView.setText("");
@@ -215,7 +218,7 @@ public class ExposedDropDown extends FrameLayout {
         if (autoCompleteTextView != null) {
             autoCompleteTextView.post(() -> {
                 try {
-                    autoCompleteTextView.setText(text,filter);
+                    autoCompleteTextView.setText(text, filter);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -224,7 +227,7 @@ public class ExposedDropDown extends FrameLayout {
     }
 
     public void setHint(String hint) {
-        if (textInputLayout!=null) {
+        if (textInputLayout != null) {
             textInputLayout.post(() -> {
                 try {
                     textInputLayout.setHint(hint);
@@ -239,9 +242,13 @@ public class ExposedDropDown extends FrameLayout {
         autoCompleteTextView.addTextChangedListener(textWatcher);
     }
 
-    public boolean getUserEditing() { return userEditing; }
+    public boolean getUserEditing() {
+        return userEditing;
+    }
 
-    public void setUserEditing(boolean userEditing) { this.userEditing = userEditing; }
+    public void setUserEditing(boolean userEditing) {
+        this.userEditing = userEditing;
+    }
 
     public boolean getProgrammaticChange() {
         return programmaticChange;
@@ -257,36 +264,47 @@ public class ExposedDropDown extends FrameLayout {
 
     public void setPalette() {
 
-            autoCompleteTextView.setTextColor(palette.textColor);
-            // Tint the popup background
-            Drawable drawable = DrawableCompat.wrap(autoCompleteTextView.getDropDownBackground()).mutate();
-            DrawableCompat.setTint(drawable, palette.secondary);
-            autoCompleteTextView.setDropDownBackgroundDrawable(drawable);
-            autoCompleteTextView.invalidate();
+        autoCompleteTextView.setTextColor(palette.textColor);
+        // Tint the popup background
+        Drawable drawable = DrawableCompat.wrap(autoCompleteTextView.getDropDownBackground()).mutate();
+        DrawableCompat.setTint(drawable, palette.secondary);
+        autoCompleteTextView.setDropDownBackgroundDrawable(drawable);
+        autoCompleteTextView.invalidate();
 
 
-        textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
-            textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        //textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
+        //textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setDefaultHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
+        //textInputLayout.setEndIconTintList(ColorStateList.valueOf(palette.textColor));
+        textInputLayout.setEndIconTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.textColor}
+        ));
 
-            textInputLayout.setEndIconTintList(ColorStateList.valueOf(palette.textColor));
+        textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
+        textInputLayout.setBoxStrokeWidth(2);
 
-            textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
-            textInputLayout.setBoxStrokeWidth(2);
+        // Focused stroke color
+        textInputLayout.setBoxStrokeColor(palette.hintColor);
 
-            // Focused stroke color
-            textInputLayout.setBoxStrokeColor(palette.hintColor);
+        // Default (unfocused) stroke color
+        try {
+            Field defaultStrokeField = TextInputLayout.class.getDeclaredField("defaultStrokeColor");
+            defaultStrokeField.setAccessible(true);
+            defaultStrokeField.setInt(textInputLayout, palette.hintColor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            // Default (unfocused) stroke color
-            try {
-                Field defaultStrokeField = TextInputLayout.class.getDeclaredField("defaultStrokeColor");
-                defaultStrokeField.setAccessible(true);
-                defaultStrokeField.setInt(textInputLayout, palette.hintColor);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // Force redraw of the outline
-            textInputLayout.invalidate();
+        // Force redraw of the outline
+        textInputLayout.invalidate();
 
     }
 

@@ -62,8 +62,16 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         // Change the color back to normal if lollipop+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (prevColor==null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
-                prevColor = ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant);
+                //viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+                viewHolder.itemView.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().secondaryVariant}
+                ));
+                //prevColor = ColorStateList.valueOf(mainActivityInterface.getPalette().primaryVariant);
+                prevColor = new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().primaryVariant}
+                );
             } else {
                 viewHolder.itemView.setBackgroundTintList(prevColor);
             }
@@ -80,7 +88,11 @@ public class PresoOrderItemTouchHelper extends ItemTouchHelper.Callback {
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
                 prevColor = viewHolder.itemView.getBackgroundTintList();
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                //viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                viewHolder.itemView.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().secondary}
+                ));
             }
         }
     }

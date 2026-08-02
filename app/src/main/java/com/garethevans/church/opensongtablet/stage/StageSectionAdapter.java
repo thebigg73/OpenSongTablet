@@ -246,7 +246,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                         cardView.setAlpha(finalAlpha);
                         cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                         cardView.getLayoutParams().height = (int) (height * scale);
-                        ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
+                        //ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
+                        ViewCompat.setBackgroundTintList(cardView, new ColorStateList(
+                                new int[][]{new int[0]},
+                                new int[]{mainActivityInterface.getSectionColors().get(section)}
+                        ));
                         cardView.setVisibility(View.VISIBLE);
                         cardView.setOnClickListener(view -> {
                             if (fakeClick) {

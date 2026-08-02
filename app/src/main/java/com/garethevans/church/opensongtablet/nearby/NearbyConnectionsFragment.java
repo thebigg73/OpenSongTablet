@@ -78,8 +78,16 @@ public class NearbyConnectionsFragment extends Fragment {
         webAddress = website_nearby_string;
 
         if (getContext()!=null) {
-            onColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant);
-            offColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
+            //onColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant);
+            onColor = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondaryVariant}
+            );
+            //offColor = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
+            offColor = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            );
         }
 
         // Set the helpers
@@ -129,7 +137,11 @@ public class NearbyConnectionsFragment extends Fragment {
             }
             myView.bottomSheet.bottomSheetTab.setBackground(drawable);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                myView.bottomSheet.bottomSheet.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                //myView.bottomSheet.bottomSheet.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                myView.bottomSheet.bottomSheet.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().secondary}
+                ));
             }
 
             Drawable drawableBs = AppCompatResources.getDrawable(getContext(), R.drawable.rounded_dialog);

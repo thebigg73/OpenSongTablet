@@ -86,11 +86,27 @@ public class LyricsOptionsBottomSheet extends BottomSheetCommon {
     private void openSongOrChoProButtonColor() {
         mainActivityInterface.getTempSong().setEditingAsChoPro(mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false));
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            myView.choPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
-            myView.openSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
+            //myView.choPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
+            myView.choPro.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{colorOn}
+            ));
+            //myView.openSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
+            myView.openSong.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{colorOff}
+            ));
         } else {
-            myView.choPro.setBackgroundTintList(ColorStateList.valueOf(colorOff));
-            myView.openSong.setBackgroundTintList(ColorStateList.valueOf(colorOn));
+            //myView.choPro.setBackgroundTintList(ColorStateList.valueOf(colorOff));
+            myView.choPro.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{colorOff}
+            ));
+            //myView.openSong.setBackgroundTintList(ColorStateList.valueOf(colorOn));
+            myView.openSong.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{colorOn}
+            ));
         }
     }
 

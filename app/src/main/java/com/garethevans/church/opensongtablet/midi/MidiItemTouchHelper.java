@@ -50,7 +50,11 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
         // If lollipop+, change the tint of the cardview item
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
-                viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                //viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                viewHolder.itemView.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().secondary}
+                ));
             }
         }
     }

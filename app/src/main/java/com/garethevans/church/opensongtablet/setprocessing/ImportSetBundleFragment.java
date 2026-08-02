@@ -98,7 +98,11 @@ public class ImportSetBundleFragment extends Fragment {
             importSetBundleViewPager.setOffscreenPageLimit(1);
             TabLayout tabLayout = myView.importSetBundleTabs;
             tabLayout.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
-            tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            //tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
+            tabLayout.setTabIconTint(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().textColor}
+            ));
             tabLayout.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
 
             new TabLayoutMediator(tabLayout, importSetBundleViewPager, (tab, position) -> {

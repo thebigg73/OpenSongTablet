@@ -143,7 +143,11 @@ public class SongProjectionInfo extends LinearLayoutCompat {
             } else {
                 color = mainActivityInterface.getMyThemeColors().getPresoInfoFontColor();
             }
-            colorList = ColorStateList.valueOf(color);
+            //colorList = ColorStateList.valueOf(color);
+            colorList = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{color}
+            );
             capoIcon.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
             TextViewCompat.setCompoundDrawableTintList(capoIcon, colorList);
 

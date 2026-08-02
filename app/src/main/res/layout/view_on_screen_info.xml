@@ -24,13 +24,13 @@
         android:focusableInTouchMode="false"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+        <com.garethevans.church.opensongtablet.customviews.MyImageView
             android:id="@+id/autoscrollIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX="0.75"
             android:scaleY="0.75"
-            app:drawableStartCompat="@drawable/autoscroll"
+            android:src="@drawable/autoscroll"
             android:clickable="false" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -64,13 +64,13 @@
         android:focusable="false"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+        <com.garethevans.church.opensongtablet.customviews.MyImageView
             android:id="@+id/padIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX="0.75"
             android:scaleY="0.75"
-            app:drawableStartCompat="@drawable/amplifier"
+            android:src="@drawable/amplifier"
             android:clickable="false"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyImageView
@@ -123,13 +123,13 @@
         android:focusable="false"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+        <com.garethevans.church.opensongtablet.customviews.MyImageView
             android:id="@+id/capoIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX="0.75"
             android:scaleY="0.75"
-            app:drawableStartCompat="@drawable/capo"
+            android:src="@drawable/capo"
             android:clickable="false"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView

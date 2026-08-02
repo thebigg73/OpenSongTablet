@@ -298,7 +298,16 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
     public void setHint(String hintText) {
         textInputLayout.setHint(hintText);
-        textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        // Don't use ColorStateList.valueOf(...) as FireHD devices don't like this!
+        textInputLayout.setHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
+        //textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
     }
 
     public void setOnEditorActionListener(MyMaterialSimpleTextView.OnEditorActionListener editorActionListener) {
@@ -460,7 +469,11 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         editText.setTextColor(color);
     }
     public void setHintColor(int color) {
-        textInputLayout.setHintTextColor(ColorStateList.valueOf(color));
+        //textInputLayout.setHintTextColor(ColorStateList.valueOf(color));
+        textInputLayout.setHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{color}
+        ));
     }
 
     public void setGravity(int gravity) {
@@ -468,10 +481,22 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
 
     public void setPalette() {
-        textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        //textInputLayout.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
         editText.setHintTextColor(palette.hintColor);
-        editText.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
-        textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        //editText.setHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        editText.setHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
+        //textInputLayout.setDefaultHintTextColor(ColorStateList.valueOf(palette.hintColor));
+        textInputLayout.setDefaultHintTextColor(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.hintColor}
+        ));
         textInputLayout.setBoxStrokeWidth(2);
         textInputLayout.setBoxStrokeColor(palette.hintColor);
         editText.setTextColor(palette.textColor);

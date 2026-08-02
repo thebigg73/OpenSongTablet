@@ -117,7 +117,11 @@ public class BeatBuddyControlPopUp {
         View myView = View.inflate(c, R.layout.view_beatbuddy_control_popup, null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            myView.findViewById(R.id.layout).setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         } else {
             myView.findViewById(R.id.layout).setBackgroundColor(mainActivityInterface.getPalette().secondary);
         }

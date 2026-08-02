@@ -55,7 +55,11 @@ public class ThemeItemColor extends LinearLayout {
     }
 
     public void setPalette(Palette palette) {
-        labelText.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        //labelText.setBackgroundTintList(ColorStateList.valueOf(palette.secondary));
+        labelText.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondary}
+        ));
         labelText.setTextColor(palette.textColor);
     }
 }

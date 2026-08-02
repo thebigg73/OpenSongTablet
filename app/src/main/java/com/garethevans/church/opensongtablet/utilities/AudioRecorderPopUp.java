@@ -100,7 +100,11 @@ public class AudioRecorderPopUp {
         View myView = View.inflate(c, R.layout.view_audio_recorder_popup, null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            myView.findViewById(R.id.layout).setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         } else {
             myView.findViewById(R.id.layout).setBackgroundColor(mainActivityInterface.getPalette().secondary);
         }
@@ -193,14 +197,22 @@ public class AudioRecorderPopUp {
         startMediaRecorder();
         recordButton.setIcon(recordStop);
         recordButton.setText(c.getString(R.string.stop));
-        recordButton.setBackgroundTintList(ColorStateList.valueOf(colorActive));
+        //recordButton.setBackgroundTintList(ColorStateList.valueOf(colorActive));
+        recordButton.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{colorActive}
+        ));
         floatWindow.setAlpha(recordingAlpha);
     }
     private void stopRecording() {
         stopMediaRecorder();
         recordButton.setIcon(recordStart);
         recordButton.setText(c.getString(R.string.record));
-        recordButton.setBackgroundTintList(ColorStateList.valueOf(colorInactive));
+        //recordButton.setBackgroundTintList(ColorStateList.valueOf(colorInactive));
+        recordButton.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{colorInactive}
+        ));
         floatWindow.setAlpha(pageButtonAlpha);
 
         recordButton.setVisibility(View.GONE);

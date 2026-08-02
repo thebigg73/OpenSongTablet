@@ -146,12 +146,36 @@ public class TrackSlider extends LinearLayout {
             masterBoost3.setEnabled(false);
         }
         trackNameTextView.setText(trackName);
-        panSlider.setTrackTintList(ColorStateList.valueOf(palette.primaryVariant));
-        panSlider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
-        panSlider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
-        volumeSlider.setTrackTintList(ColorStateList.valueOf(palette.primaryVariant));
-        volumeSlider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
-        volumeSlider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        //panSlider.setTrackTintList(ColorStateList.valueOf(palette.primaryVariant));
+        panSlider.setTrackTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.primaryVariant}
+        ));
+        //panSlider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        panSlider.setThumbTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondaryVariant}
+        ));
+        //panSlider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        panSlider.setTickTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
+        //volumeSlider.setTrackTintList(ColorStateList.valueOf(palette.primaryVariant));
+        volumeSlider.setTrackTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.primaryVariant}
+        ));
+        //volumeSlider.setThumbTintList(ColorStateList.valueOf(palette.secondaryVariant));
+        volumeSlider.setThumbTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{palette.secondaryVariant}
+        ));
+        //volumeSlider.setTickTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+        volumeSlider.setTickTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{Color.TRANSPARENT}
+        ));
 
         Drawable box = AppCompatResources.getDrawable(context,R.drawable.rounded_box);
         if (box!=null) {

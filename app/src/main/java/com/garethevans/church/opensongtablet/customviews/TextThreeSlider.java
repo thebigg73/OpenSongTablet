@@ -114,8 +114,16 @@ public class TextThreeSlider extends LinearLayout {
             imageRight.setOnClickListener(view -> setSliderPos(2));
 
             // Define colors for different states of the slider
-            slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
-            slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+            //slider.setThumbTintList(ColorStateList.valueOf(palette.secondaryFixed));
+            slider.setTrackTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.secondaryFixed}
+            ));
+            //slider.setTrackTintList(ColorStateList.valueOf(palette.secondary));
+            slider.setTrackTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{palette.secondary}
+            ));
             slider.addOnChangeListener((slider, value, fromUser) -> updateAlphas());
             slider.setValue(position);
         } catch (Exception e) {

@@ -168,7 +168,11 @@ public class OpenChordsFragment extends Fragment {
             }
 
             // Tint the background circle for the file counter
-            ColorStateList secondaryTint = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
+            //ColorStateList secondaryTint = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
+            ColorStateList secondaryTint = new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            );
 
             ViewCompat.setBackgroundTintList(myView.uploadCount, secondaryTint);
             ViewCompat.setBackgroundTintList(myView.downloadCount, secondaryTint);

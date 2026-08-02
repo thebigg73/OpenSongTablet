@@ -76,7 +76,11 @@ public class DrummerPopUp {
         View myView = View.inflate(c, R.layout.view_drummer_popup, null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            myView.findViewById(R.id.layout).setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
         } else {
             myView.findViewById(R.id.layout).setBackgroundColor(mainActivityInterface.getPalette().secondary);
         }
@@ -90,10 +94,26 @@ public class DrummerPopUp {
         drummerFill = myView.findViewById(R.id.drummerFill);
         drummerTransition = myView.findViewById(R.id.drummerTransition);
         drummerSettings = myView.findViewById(R.id.drummerSettings);
-        drummerPlayStop.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
-        drummerFill.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
-        drummerTransition.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
-        drummerSettings.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+        //drummerPlayStop.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+        drummerPlayStop.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{mainActivityInterface.getPalette().secondaryVariant}
+        ));
+        //drummerFill.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+        drummerFill.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{mainActivityInterface.getPalette().secondaryVariant}
+        ));
+        //drummerTransition.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+        drummerTransition.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{mainActivityInterface.getPalette().secondaryVariant}
+        ));
+        //drummerSettings.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+        drummerSettings.setBackgroundTintList(new ColorStateList(
+                new int[][]{new int[0]},
+                new int[]{mainActivityInterface.getPalette().secondaryVariant}
+        ));
 
         if (mainActivityInterface.getDrumViewModel().getDrummer().getIsRunning()) {
             drummerPlayStop.setImageDrawable(drummerStop);

@@ -71,7 +71,11 @@ public class CustomAlertDialog {
         // --- Background with rounded corners ---
         if (dialog.getWindow() != null) {
             MaterialShapeDrawable background = new MaterialShapeDrawable();
-            background.setFillColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            //background.setFillColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+            background.setFillColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{mainActivityInterface.getPalette().secondary}
+            ));
             background.setElevation(24f);
             background.setShapeAppearanceModel(
                     ShapeAppearanceModel.builder()
@@ -105,7 +109,11 @@ public class CustomAlertDialog {
             if (button != null) {
                 button.setTextColor(mainActivityInterface.getPalette().textColor);
                 if (button instanceof MaterialButton) {
-                    ((MaterialButton) button).setRippleColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+                    //((MaterialButton) button).setRippleColor(ColorStateList.valueOf(mainActivityInterface.getPalette().secondaryVariant));
+                    ((MaterialButton) button).setRippleColor(new ColorStateList(
+                            new int[][]{new int[0]},
+                            new int[]{mainActivityInterface.getPalette().secondaryVariant}
+                    ));
                 }
             }
         }

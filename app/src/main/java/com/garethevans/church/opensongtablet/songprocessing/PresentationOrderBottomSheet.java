@@ -104,7 +104,11 @@ public class PresentationOrderBottomSheet extends BottomSheetCommon implements R
 
             for (String heading : mainActivityInterface.getTempSong().getSongSectionHeadings()) {
                 MyMaterialButton button = new MyMaterialButton(requireContext());
-                button.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                //button.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
+                button.setBackgroundTintList(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{mainActivityInterface.getPalette().secondary}
+                ));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.setMargins(12, 6, 6, 12);
                 params.setGravity(Gravity.CENTER_HORIZONTAL);
