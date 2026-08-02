@@ -621,6 +621,8 @@
     <string name="inline">පෙළට</string>
     <string name="inline_midi">පේළිගත MIDI විධාන</string>
     <string name="inline_midi_info">ගීත අංශයක් මත ක්ලික් කිරීමෙන් ක්‍රියාත්මක කළ හැකි MIDI විධාන</string>
+    <string name="inline_set_move_to_next">කට්ටලයේ ඊළඟ අයිතමයට ගීතය ඉඟි කරන්න</string>
+    <string name="inline_set_scroll_to_item">වත්මන් අයිතමයට අනුචලනය කරන්න</string>
     <string name="insert_guitar_tab">ගිටාර් ටැබ් එක ඇතුළු කරන්න</string>
     <string name="insert_guitar_tab_info">පෙරනිමි ගිටාර් ටැබ් රේඛා සාදන්න</string>
     <string name="insert_inline_abc">පේළිගත ABC ඇතුළු කරන්න</string>

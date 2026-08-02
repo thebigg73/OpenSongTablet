@@ -621,6 +621,8 @@
     <string name="inline">En línea</string>
     <string name="inline_midi">Comandos MIDI en línea</string>
     <string name="inline_midi_info">Comandos MIDI que se pueden activar haciendo clic en una sección de canción</string>
+    <string name="inline_set_move_to_next">Reproducir la canción para el siguiente elemento del conjunto.</string>
+    <string name="inline_set_scroll_to_item">Desplácese hasta el elemento actual.</string>
     <string name="insert_guitar_tab">Insertar tablatura de guitarra</string>
     <string name="insert_guitar_tab_info">Crear líneas de tablatura de guitarra predeterminadas</string>
     <string name="insert_inline_abc">Insertar ABC en línea</string>

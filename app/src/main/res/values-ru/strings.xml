@@ -621,6 +621,8 @@
     <string name="inline">В соответствии</string>
     <string name="inline_midi">Встроенные MIDI-команды</string>
     <string name="inline_midi_info">MIDI-команды, которые можно запустить, щелкнув раздел песни</string>
+    <string name="inline_set_move_to_next">Переключение песни на следующий элемент в сет-листе</string>
+    <string name="inline_set_scroll_to_item">Прокрутите до текущего элемента</string>
     <string name="insert_guitar_tab">Вкладка «Вставить гитару»</string>
     <string name="insert_guitar_tab_info">Создать строки табуляции гитары по умолчанию</string>
     <string name="insert_inline_abc">Вставить встроенную ABC</string>

@@ -621,6 +621,8 @@
     <string name="inline">Ενσωματωμένη</string>
     <string name="inline_midi">Ενσωματωμένες εντολές MIDI</string>
     <string name="inline_midi_info">Εντολές MIDI που μπορούν να ενεργοποιηθούν κάνοντας κλικ σε μια ενότητα τραγουδιού</string>
+    <string name="inline_set_move_to_next">Μετακίνηση τραγουδιού στο επόμενο στοιχείο στο σετ</string>
+    <string name="inline_set_scroll_to_item">Μεταβείτε στο τρέχον στοιχείο</string>
     <string name="insert_guitar_tab">Εισαγάγετε την καρτέλα Κιθάρα</string>
     <string name="insert_guitar_tab_info">Δημιουργήστε προεπιλεγμένες γραμμές καρτέλας κιθάρας</string>
     <string name="insert_inline_abc">Εισαγάγετε ενσωματωμένο ABC</string>

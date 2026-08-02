@@ -621,6 +621,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Vložené MIDI příkazy</string>
     <string name="inline_midi_info">MIDI příkazy, které lze spustit kliknutím na sekci skladby</string>
+    <string name="inline_set_move_to_next">Přechod skladby k další položce v sadě</string>
+    <string name="inline_set_scroll_to_item">Přejít na aktuální položku</string>
     <string name="insert_guitar_tab">Vložte kartu Guitar</string>
     <string name="insert_guitar_tab_info">Vytvořte výchozí kytarové tabulátory</string>
     <string name="insert_inline_abc">Vložit vložené ABC</string>

@@ -737,6 +737,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Inline MIDI commands</string>
     <string name="inline_midi_info">MIDI commands that can be triggered by clicking on a song section</string>
+    <string name="inline_set_move_to_next">Cue song to next item in set</string>
+    <string name="inline_set_scroll_to_item">Scroll to current item</string>
     <string name="insert_guitar_tab">Insert Guitar tab</string>
     <string name="insert_guitar_tab_info">Create default guitar tab lines</string>
     <string name="insert_inline_abc">Insert inline ABC</string>

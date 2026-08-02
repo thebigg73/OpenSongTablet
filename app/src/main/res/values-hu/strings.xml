@@ -621,6 +621,8 @@
     <string name="inline">Inline</string>
     <string name="inline_midi">Beágyazott MIDI-parancsok</string>
     <string name="inline_midi_info">MIDI-parancsok, amelyek egy dalszakaszra kattintva indíthatók el</string>
+    <string name="inline_set_move_to_next">Dal ugrása a készlet következő elemére</string>
+    <string name="inline_set_scroll_to_item">Görgetés az aktuális elemhez</string>
     <string name="insert_guitar_tab">Helyezze be a Gitár fület</string>
     <string name="insert_guitar_tab_info">Hozzon létre alapértelmezett gitár tabulátorvonalakat</string>
     <string name="insert_inline_abc">Szúrja be a soron belüli ABC-t</string>

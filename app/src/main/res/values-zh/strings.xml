@@ -621,6 +621,8 @@
     <string name="inline">排队</string>
     <string name="inline_midi">内联 MIDI 命令</string>
     <string name="inline_midi_info">可以通过单击歌曲部分触发的 MIDI 命令</string>
+    <string name="inline_set_move_to_next">将歌曲播放到下一首曲目</string>
+    <string name="inline_set_scroll_to_item">滚动到当前项目</string>
     <string name="insert_guitar_tab">插入吉他谱</string>
     <string name="insert_guitar_tab_info">创建默认的吉他标签线</string>
     <string name="insert_inline_abc">插入内联 ABC</string>

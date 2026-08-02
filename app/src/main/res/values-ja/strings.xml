@@ -621,6 +621,8 @@
     <string name="inline">列をなして</string>
     <string name="inline_midi">インライン MIDI コマンド</string>
     <string name="inline_midi_info">曲のセクションをクリックするとトリガーできるMIDIコマンド</string>
+    <string name="inline_set_move_to_next">セットリストの次の曲への合図</string>
+    <string name="inline_set_scroll_to_item">現在のアイテムまでスクロールしてください</string>
     <string name="insert_guitar_tab">「ギターを挿入」タブ</string>
     <string name="insert_guitar_tab_info">デフォルトのギタータブ線を作成する</string>
     <string name="insert_inline_abc">インラインABCを挿入</string>
