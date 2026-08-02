@@ -411,7 +411,9 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     }
 
     public void setSelection(int start, int end) {
-        editText.setSelection(start,end);
+        if (start>-1 && end>start && editText.length()>end) {
+            editText.setSelection(start, end);
+        }
     }
 
     public void setEnabled(boolean enabled) {
