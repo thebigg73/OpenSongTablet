@@ -128,7 +128,7 @@ public class DrumViewModel extends ViewModel {
             }
 
             if (song != null) {
-                if (song.getDrummer()!=null && !song.getDrummer().isEmpty()) {
+                if (song.getDrummer()!=null && !song.getDrummer().isEmpty() && !song.getDrummer().equals(".json")) {
                     // Check the file exists
                     Uri drummerUri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", song.getDrummer());
                     if (mainActivityInterface.getStorageAccess().uriExists(drummerUri)) {

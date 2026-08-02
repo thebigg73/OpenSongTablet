@@ -294,7 +294,6 @@ public class Drummer {
         ArrayList<String> drummerFileNames = new ArrayList<>();
 
         String matchText = timeSig!=null && timeSig.contains("/") ? timeSig.replace("/","_")+".json" : null;
-
         for (String drumFile : drumFiles) {
             if (matchText==null || drumFile.contains(matchText)) {
                 drummerFileNames.add(niceNames ? getNiceNameFromFilename(drumFile) : drumFile);
@@ -304,36 +303,37 @@ public class Drummer {
     }
 
     public void loadDrummerFile(String filename) {
-        try {
-            // Get the original bpm as this isn't saved in the drummer file
-            int bpm = mainActivityInterface.getDrumViewModel().getThisBpm();
+        if (filename!=null && !filename.isEmpty() && !filename.equals(".json")) {
+            try {
+                // Get the original bpm as this isn't saved in the drummer file
+                int bpm = mainActivityInterface.getDrumViewModel().getThisBpm();
 
-            // 1. Get the URI for the file
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", filename);
+                // 1. Get the URI for the file
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Drummer", "", filename);
 
-            // 2. Read the JSON string from the stream
-            String jsonString = mainActivityInterface.getStorageAccess().readTextFileToString(
-                    mainActivityInterface.getStorageAccess().getInputStream(uri));
+                // 2. Read the JSON string from the stream
+                String jsonString = mainActivityInterface.getStorageAccess().readTextFileToString(
+                        mainActivityInterface.getStorageAccess().getInputStream(uri));
 
-            if (jsonString != null && !jsonString.isEmpty()) {
-                // 3. Deserialize using the global Gson instance
-                DrumPatternJson pattern = MainActivity.gson.fromJson(jsonString, DrumPatternJson.class);
+                if (jsonString != null && !jsonString.isEmpty()) {
+                    // 3. Deserialize using the global Gson instance
+                    DrumPatternJson pattern = MainActivity.gson.fromJson(jsonString, DrumPatternJson.class);
 
-                // 4. Update the ViewModel
-                mainActivityInterface.getDrumViewModel().setDrumPatternJson(pattern);
-                mainActivityInterface.getDrumViewModel().setCurrentPattern(pattern);
-                mainActivityInterface.getDrumViewModel().updateAllTimingValues(pattern.getBeats(),pattern.getDivisions(),bpm);
+                    // 4. Update the ViewModel
+                    mainActivityInterface.getDrumViewModel().setDrumPatternJson(pattern);
+                    mainActivityInterface.getDrumViewModel().setCurrentPattern(pattern);
+                    mainActivityInterface.getDrumViewModel().updateAllTimingValues(pattern.getBeats(), pattern.getDivisions(), bpm);
 
-                mainActivityInterface.getDrumViewModel().stopDrummer();
-                updateActiveMap();
+                    mainActivityInterface.getDrumViewModel().stopDrummer();
+                    updateActiveMap();
 
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error loading custom drum pattern: " + filename, e);
+                // Fallback to default if loading fails
+                mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Error loading custom drum pattern: " + filename, e);
-            // Fallback to default if loading fails
-            mainActivityInterface.getDrumViewModel().prepareSongValues(mainActivityInterface.getSong());
         }
-
     }
 
     public void saveDrummerFile(String filename) {
