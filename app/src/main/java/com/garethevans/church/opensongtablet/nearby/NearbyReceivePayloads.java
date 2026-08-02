@@ -377,8 +377,8 @@ public class NearbyReceivePayloads {
                         mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
                     }
 
-                    // Check if we need to load the song in a different key.
-                    if (nearbyJson.getKey() != null) {
+                    // Check if we need to load the song in a different key.  Ignore if we are still indexing
+                    if (nearbyJson.getKey() != null && !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                         // Get the key of our song
                         needToTempTranspose = !nearbyJson.getKey().equals(mainActivityInterface.getSQLiteHelper().getKey(nearbyJson.getFolder(), nearbyJson.getFilename()));
                     }
