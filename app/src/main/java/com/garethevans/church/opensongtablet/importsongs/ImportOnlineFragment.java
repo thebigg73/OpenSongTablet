@@ -466,18 +466,20 @@ public class ImportOnlineFragment extends Fragment {
                 if (myView.onlineSource.getText()!=null && myView.onlineSource.getText().toString().equals("Google")) {
                     clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                     clipboardManagerListener = () -> {
-                        ClipData clipData = clipboardManager.getPrimaryClip();
-                        if (clipData != null) {
-                            ClipData.Item item = clipData.getItemAt(0);
-                            if (item != null) {
-                                CharSequence charSequence = item.getText();
-                                if (charSequence != null) {
-                                    clipboardText = charSequence.toString();
-                                    if (!clipboardText.isEmpty()) {
-                                        clipboardText = mainActivityInterface.getConvertTextSong().convertText(clipboardText);
-                                        // Remove this listener otherwise it keeps going!
-                                        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener);
-                                        processContent();
+                        if (clipboardManager!=null) {
+                            ClipData clipData = clipboardManager.getPrimaryClip();
+                            if (clipData != null) {
+                                ClipData.Item item = clipData.getItemAt(0);
+                                if (item != null) {
+                                    CharSequence charSequence = item.getText();
+                                    if (charSequence != null) {
+                                        clipboardText = charSequence.toString();
+                                        if (!clipboardText.isEmpty()) {
+                                            clipboardText = mainActivityInterface.getConvertTextSong().convertText(clipboardText);
+                                            // Remove this listener otherwise it keeps going!
+                                            clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener);
+                                            processContent();
+                                        }
                                     }
                                 }
                             }

@@ -45,18 +45,21 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
 
         if (oldSize > 0) {
             mainActivityInterface.getMainHandler().post(() -> {
-                        foundSets = new ArrayList<>();
-                        notifyItemRangeRemoved(0, oldSize);
-                    });
+                synchronized (lock) {
+                    foundSets = new ArrayList<>();
+                }
+                notifyItemRangeRemoved(0, oldSize);
+            });
         }
 
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             ArrayList<String> setsToUse = mainActivityInterface.getSetActions().getRequiredSets(whatView.equals("renameset"));
 
-            foundSets = new ArrayList<>();
+            // 1. Build a local temporary list first (no locks needed yet)
+            ArrayList<FoundSet> tempFoundSets = new ArrayList<>();
 
-            for (int i=0; i<setsToUse.size(); i++) {
-                Log.d(TAG,"setsToUse:"+setsToUse.get(i));
+            for (int i = 0; i < setsToUse.size(); i++) {
+                Log.d(TAG, "setsToUse:" + setsToUse.get(i));
                 String setToUse = setsToUse.get(i);
                 FoundSet foundSet = new FoundSet();
 
@@ -73,10 +76,8 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
 
                 // Set the tag which is what is shown on the screen to the user
                 if (whatView.equals("renameset")) {
-                    // Listing all, so include the main category just as the rest
                     foundSet.setTag("(" + foundSet.getCategory() + ") " + foundSet.getTitle());
                 } else {
-                    // Only looking in one category, so just show the title
                     foundSet.setTag(foundSet.getTitle());
                 }
 
@@ -94,16 +95,35 @@ public class SetManageAdapter extends RecyclerView.Adapter<SetManageViewHolder> 
                 foundSet.setChecked(checkedItems.contains(foundSet.getIdentifier()));
 
                 // Add this set item to the array
-                foundSets.add(foundSet);
+                tempFoundSets.add(foundSet);
             }
 
-            changeSortOrder();
+            // 2. Sort the temporary list before assigning it globally
+            String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder", "oldest");
+            switch (setsSortOrder) {
+                case "az":
+                    Collections.sort(tempFoundSets, (FoundSet a, FoundSet z) -> a.getTitle().compareTo(z.getTitle()));
+                    break;
+                case "za":
+                    Collections.sort(tempFoundSets, (FoundSet a, FoundSet z) -> z.getTitle().compareTo(a.getTitle()));
+                    break;
+                case "newest":
+                    Collections.sort(tempFoundSets, (o1, o2) -> Long.compare(o2.getLastModifiedLong(), o1.getLastModifiedLong()));
+                    break;
+                case "oldest":
+                    Collections.sort(tempFoundSets, (o1, o2) -> Long.compare(o1.getLastModifiedLong(), o2.getLastModifiedLong()));
+                    break;
+            }
 
-            // Notify the adapter of the changes
+            // 3. Safely swap the temp list into the actual foundSets inside a synchronized block
+            synchronized (lock) {
+                foundSets = tempFoundSets;
+            }
+
+            // Notify the adapter of the changes on the main thread
             mainActivityInterface.getMainHandler().post(() -> {
                 notifyItemRangeInserted(0, getItemCount());
-                if (setManageFragment!=null) {
-                    // Disable everything until we are done!
+                if (setManageFragment != null) {
                     setManageFragment.enableChanges(true);
                 }
             });

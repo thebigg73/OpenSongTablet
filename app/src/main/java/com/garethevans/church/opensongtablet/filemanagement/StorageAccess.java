@@ -970,7 +970,7 @@ public class StorageAccess {
 
             try (InputStream ignored = c.getContentResolver().openInputStream(uri)) {
                 return true;
-            } catch (Exception e) {
+            } catch (Throwable t) {
                 return false;
             }
         } else {
@@ -1189,35 +1189,6 @@ public class StorageAccess {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    /*private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
-
-        // Get the home folder as our start point
-        if (uriTreeHome == null) {
-            uriTreeHome = homeFolder(null);
-        }
-
-        if (uriTreeHome != null) {
-            String uriTreeHomeId = DocumentsContract.getTreeDocumentId(uriTreeHome);
-            String path = "";
-            if (!uriTreeHomeId.endsWith(appFolder)) {
-                path = "/" + appFolder;
-            }
-            if (folder != null && !folder.isEmpty()) {
-                path += "/" + folder;
-            }
-            if (subfolder != null && !subfolder.isEmpty() &&
-                    !subfolder.equals(c.getString(R.string.mainfoldername)) &&
-                    !subfolder.equals("MAIN")) {
-                path += "/" + subfolder;
-            }
-            if (filename != null && !filename.isEmpty()) {
-                path += "/" + filename;
-            }
-            return DocumentsContract.buildDocumentUriUsingTree(uriTreeHome, DocumentsContract.getTreeDocumentId(uriTreeHome) + path);
-        } else {
-            return null;
-        }
-    }*/
     private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
         if (uriTreeHome == null) {
             uriTreeHome = homeFolder(null);

@@ -790,7 +790,7 @@ public class ExportFragment extends Fragment {
     private Uri createMergedTextFile() {
         // If exporting songs in text format, they will also be merged
         Uri uri = null;
-        if (merged && !combinedSetText.toString().isEmpty()) {
+        if (merged && combinedSetText!=null && !combinedSetText.toString().isEmpty()) {
             uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",merged_text_file_string+".txt");
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Export","",merged_text_file_string+".txt");
             mainActivityInterface.getStorageAccess().writeFileFromString("Export","",merged_text_file_string+".txt",combinedSetText.toString(), false);

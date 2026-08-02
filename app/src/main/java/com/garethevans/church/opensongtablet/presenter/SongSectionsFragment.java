@@ -156,7 +156,8 @@ public class SongSectionsFragment extends Fragment {
                     return false;
                 });
 
-                if (getContext()!=null && mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                if (getContext()!=null && mainActivityInterface.getSong().getFiletype()!=null &&
+                        mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(getContext(),
                             mainActivityInterface, displayInterface, 600, 800,0);
@@ -168,7 +169,8 @@ public class SongSectionsFragment extends Fragment {
                     myView.recyclerView.setAdapter(pdfPageAdapter);
 
 
-                } else if (getContext()!=null && mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                } else if (getContext()!=null && mainActivityInterface.getSong().getFiletype()!=null &&
+                        mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                     ImageAdapter imageAdapter = new ImageAdapter(getContext(), this, mainActivityInterface, displayInterface, 600, 800);
                     myView.recyclerView.setAdapter(imageAdapter);
 

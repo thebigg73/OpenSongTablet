@@ -4375,18 +4375,16 @@ public class ProcessSong {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", filename);
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
             return getBitmapFromUri(uri, w, h);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public Bitmap getSongBitmap(String folder, String filename) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
         if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
             return getBitmapFromUri(uri, -1, -1);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public Bitmap getBitmapFromUri(Uri uri, int w, int h) {
@@ -4412,12 +4410,11 @@ public class ProcessSong {
                     return BitmapFactory.decodeStream(inputStream, null, options);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d(TAG,"Bitmap file doesn't exist - that's ok!");
                 return null;
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     // This bit deals with the song headings used for PDF prints and song sheet view
