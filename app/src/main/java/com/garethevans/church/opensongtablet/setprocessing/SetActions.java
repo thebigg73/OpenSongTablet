@@ -909,7 +909,7 @@ public class SetActions {
                     eventType = xpp.next();
                 }
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }

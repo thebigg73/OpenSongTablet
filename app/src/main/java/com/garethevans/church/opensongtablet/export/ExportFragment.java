@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.Future;
 
 public class ExportFragment extends Fragment {
 
@@ -74,7 +75,9 @@ public class ExportFragment extends Fragment {
     private String currentSongFolder, currentSongFile;
     private Song tempSong;
     private Song thisSong;
+    private Song currentlyLoadedSong;
     private String pdfName;
+    private Future<?> future;
 
     @Override
     public void onResume() {
@@ -107,6 +110,9 @@ public class ExportFragment extends Fragment {
 
         mainActivityInterface.getProcessSong().setMakingImageOrScreenShot(false);
         mainActivityInterface.getProcessSong().setMakingScaledScreenShot(false);
+
+        // Get a note of the current song
+        currentlyLoadedSong = mainActivityInterface.getSong();
 
         // Tint the progress text box
         mainActivityInterface.getMyThemeColors().tintPopup(myView.progressText);
@@ -499,7 +505,7 @@ public class ExportFragment extends Fragment {
 
     private void doExportSet() {
         // Do this in a new Thread
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+        future = mainActivityInterface.getThreadPoolExecutor().submit(() -> {
             // Keep all songs in a combined string for additional export
             combinedSetText = new StringBuilder();
 
@@ -562,6 +568,12 @@ public class ExportFragment extends Fragment {
 
                 for (int x=0; x<songsToAdd; x++) {
                     String id = ids[x];
+
+                    if (Thread.currentThread().isInterrupted()) {
+                        // Need to reset the mainActivity.song
+                        mainActivityInterface.setSong(currentlyLoadedSong);
+                        return; // Exit cleanly so the thread finishes and closes
+                    }
 
                     // Only add if we don't already have it (as we may have multiple references to
                     // songs in sets, especially is we have selected more than one set)
@@ -1091,6 +1103,11 @@ public class ExportFragment extends Fragment {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         mainActivityInterface.getMainHandler().post(() -> {
+            // Ensure the fragment is still attached to the activity before touching UI or starting intents
+            if (!isAdded() || getActivity() == null) {
+                return;
+            }
+
             // Create the Chooser
             Intent chooser = Intent.createChooser(intent, shareTitle);
             // IMPORTANT: The chooser also needs the flag to pass it down to the selected app
@@ -1643,7 +1660,7 @@ public class ExportFragment extends Fragment {
     }
 
     private void doPrint(boolean isSet) {
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+        future = mainActivityInterface.getThreadPoolExecutor().submit(() -> {
             // Get a PrintManager instance
             if (getActivity() != null) {
                 PrintManager printManager = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
@@ -1774,6 +1791,10 @@ public class ExportFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (future!=null) {
+            future.cancel(true);
         }
     }
 

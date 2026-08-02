@@ -294,19 +294,21 @@ public class SetManageFragment extends Fragment {
                 toolBarTitle = set_string + ": " + export_string;
                 webAddress = website_export_set_string;
                 mainActivityInterface.getMainHandler().post(() -> {
-                    myView.setItemSelected.setVisibility(View.VISIBLE);
-                    myView.setName.setVisibility(View.GONE);
-                    myView.overWrite.setVisibility(View.GONE);
-                    myView.newCategory.setVisibility(View.GONE);
-                    myView.setLoadInfo1.setVisibility(View.VISIBLE);
-                    myView.setLoadInfo2.setVisibility(View.VISIBLE);
-                    myView.setLoadFirst.setVisibility(View.GONE);
-                    myView.setLoadInfo2.setText(set_saved_not_current_string);
-                    myView.loadorsaveButton.setText(export_string);
-                    if (getContext() != null) {
-                        myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.share, getContext().getTheme()));
+                    if (myView!=null) {
+                        myView.setItemSelected.setVisibility(View.VISIBLE);
+                        myView.setName.setVisibility(View.GONE);
+                        myView.overWrite.setVisibility(View.GONE);
+                        myView.newCategory.setVisibility(View.GONE);
+                        myView.setLoadInfo1.setVisibility(View.VISIBLE);
+                        myView.setLoadInfo2.setVisibility(View.VISIBLE);
+                        myView.setLoadFirst.setVisibility(View.GONE);
+                        myView.setLoadInfo2.setText(set_saved_not_current_string);
+                        myView.loadorsaveButton.setText(export_string);
+                        if (getContext() != null) {
+                            myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.share, getContext().getTheme()));
+                        }
+                        myView.loadorsaveButton.setOnClickListener(v -> exportSet());
                     }
-                    myView.loadorsaveButton.setOnClickListener(v -> exportSet());
                 });
                 break;
 
@@ -349,83 +351,84 @@ public class SetManageFragment extends Fragment {
     private void setListener() {
         // Do this on the main thread
         mainActivityInterface.getMainHandler().post(() -> {
-            if (getContext() != null) {
+            if (getContext() != null && myView!=null) {
                 ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(
                         getContext(), myView.setCategory, R.layout.view_exposed_dropdown_item, categories);
                 myView.setCategory.setAdapter(exposedDropDownArrayAdapter);
-            }
-            myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(
-                    "whichSetCategory", mainActivityInterface.getMainfoldername()));
-            myView.setCategory.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (myView.setCategory.getUserEditing() && allowChanges) {
-                        // Only do this if we are expecting to change (not in rename mode)
-                        mainActivityInterface.getPreferences().setMyPreferenceString("whichSetCategory",myView.setCategory.getText().toString());
-                        mainActivityInterface.getMainHandler().post(() -> setManageAdapter.prepareSetManageInfos());
+                myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(
+                        "whichSetCategory", mainActivityInterface.getMainfoldername()));
+                myView.setCategory.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
-                }
-            });
 
-            myView.newCategory.setOnClickListener(v -> {
-                // Open up the Bottomsheet dialog fragment and get the name
-                if (getActivity() != null && allowChanges) {
-                    TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                            "SetManageFragment", new_category_string,
-                            new_category_string, null, null, null, true);
-                    textInputBottomSheet.show(getActivity().getSupportFragmentManager(), "TextInputBottomSheet");
-                }
-            });
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
 
-            String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder","oldest");
-            //activeColorStateList = ColorStateList.valueOf(activeColor);
-            activeColorStateList = new ColorStateList(
-                    new int[][]{new int[0]},
-                    new int[]{activeColor}
-            );
-            //inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
-            inactiveColorStateList = new ColorStateList(
-                    new int[][]{new int[0]},
-                    new int[]{inactiveColor}
-            );
-            changeSortIconColor(setsSortOrder);
-            myView.sortAZ.setOnClickListener(view -> {
-                if (allowChanges) {
-                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "az");
-                    changeSortIconColor("az");
-                    setManageAdapter.changeSortOrder();
-                    //setManageAdapter.prepareSetManageInfos();
-                }
-            });
-            myView.sortZA.setOnClickListener(view -> {
-                if (allowChanges) {
-                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "za");
-                    changeSortIconColor("za");
-                    setManageAdapter.changeSortOrder();
-                }
-            });
-            myView.sortOldest.setOnClickListener(view -> {
-                if (allowChanges) {
-                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "oldest");
-                    changeSortIconColor("oldest");
-                    setManageAdapter.changeSortOrder();
-                }
-            });
-            myView.sortNewest.setOnClickListener(view -> {
-                if (allowChanges) {
-                    mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "newest");
-                    changeSortIconColor("newest");
-                    setManageAdapter.changeSortOrder();
-                }
-            });
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (myView.setCategory.getUserEditing() && allowChanges) {
+                            // Only do this if we are expecting to change (not in rename mode)
+                            mainActivityInterface.getPreferences().setMyPreferenceString("whichSetCategory", myView.setCategory.getText().toString());
+                            mainActivityInterface.getMainHandler().post(() -> setManageAdapter.prepareSetManageInfos());
+                        }
+                    }
+                });
+
+                myView.newCategory.setOnClickListener(v -> {
+                    // Open up the Bottomsheet dialog fragment and get the name
+                    if (getActivity() != null && allowChanges) {
+                        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+                                "SetManageFragment", new_category_string,
+                                new_category_string, null, null, null, true);
+                        textInputBottomSheet.show(getActivity().getSupportFragmentManager(), "TextInputBottomSheet");
+                    }
+                });
+
+                String setsSortOrder = mainActivityInterface.getPreferences().getMyPreferenceString("setsSortOrder", "oldest");
+                //activeColorStateList = ColorStateList.valueOf(activeColor);
+                activeColorStateList = new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{activeColor}
+                );
+                //inactiveColorStateList = ColorStateList.valueOf(inactiveColor);
+                inactiveColorStateList = new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{inactiveColor}
+                );
+                changeSortIconColor(setsSortOrder);
+                myView.sortAZ.setOnClickListener(view -> {
+                    if (allowChanges) {
+                        mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "az");
+                        changeSortIconColor("az");
+                        setManageAdapter.changeSortOrder();
+                        //setManageAdapter.prepareSetManageInfos();
+                    }
+                });
+                myView.sortZA.setOnClickListener(view -> {
+                    if (allowChanges) {
+                        mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "za");
+                        changeSortIconColor("za");
+                        setManageAdapter.changeSortOrder();
+                    }
+                });
+                myView.sortOldest.setOnClickListener(view -> {
+                    if (allowChanges) {
+                        mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "oldest");
+                        changeSortIconColor("oldest");
+                        setManageAdapter.changeSortOrder();
+                    }
+                });
+                myView.sortNewest.setOnClickListener(view -> {
+                    if (allowChanges) {
+                        mainActivityInterface.getPreferences().setMyPreferenceString("setsSortOrder", "newest");
+                        changeSortIconColor("newest");
+                        setManageAdapter.changeSortOrder();
+                    }
+                });
+            }
         });
     }
 
@@ -440,9 +443,11 @@ public class SetManageFragment extends Fragment {
 
     private void prepareSetItems() {
         mainActivityInterface.getMainHandler().post(() -> {
-            myView.setLists.setItemAnimator(null);
-            myView.setLists.setAdapter(setManageAdapter);
-            setManageAdapter.prepareSetManageInfos();
+            if (myView!=null) {
+                myView.setLists.setItemAnimator(null);
+                myView.setLists.setAdapter(setManageAdapter);
+                setManageAdapter.prepareSetManageInfos();
+            }
         });
     }
 
@@ -825,7 +830,11 @@ public class SetManageFragment extends Fragment {
 
     public void showProgress(boolean showProgress) {
         if (myView!=null) {
-            myView.progressBar.post(() -> myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE));
+            myView.progressBar.post(() -> {
+                if (myView!=null) {
+                    myView.progressBar.setVisibility(allowChanges ? View.GONE : View.VISIBLE);
+                }
+            });
         }
     }
 
