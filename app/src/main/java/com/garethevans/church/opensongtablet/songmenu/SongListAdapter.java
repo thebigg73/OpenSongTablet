@@ -288,7 +288,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
                             // This wasn't in the set, so add it
                             boolean firstItem = mainActivityInterface.getCurrentSet().getCurrentSetSize()==0;
                             songItemViewHolder.itemChecked.setChecked(true);
-                            mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey, true);
+                            // Get the song capo
+                            String itemCapo = mainActivityInterface.getSQLiteHelper().getCapo(itemFolder,itemFilename);
+                            mainActivityInterface.getCurrentSet().addItemToSet(itemFolder, itemFilename, itemTitle, itemKey, itemCapo, true);
 
                             // Add the analytics
                             mainActivityInterface.getAnalyticsHelper().incrementSetCount(mainActivityInterface.getSQLiteHelper().

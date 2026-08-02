@@ -174,6 +174,7 @@ public interface MainActivityInterface {
     void notifyInlineSetHighlight();
     void notifySetFragment(String what, int position);
     void notifyInlineSetScrollToItem();
+    void notifyInlineSetCueItem(int fromPosition);
     int getSongWidth();
     Variations getVariations();
     SetMenuFragment getSetMenuFragment();

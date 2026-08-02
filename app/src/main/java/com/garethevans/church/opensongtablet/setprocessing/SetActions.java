@@ -183,6 +183,7 @@ public class SetActions {
 
                         mainActivityInterface.getCurrentSet().getSetItemInfo(x).songtitle = tempSong.getTitle();
                         mainActivityInterface.getCurrentSet().getSetItemInfo(x).songitem = x + 1;
+                        mainActivityInterface.getCurrentSet().getSetItemInfo(x).songcapo = tempSong.getCapo();
 
                         if (folder.equals("**Slides")) {
                             mainActivityInterface.getCurrentSet().getSetItemInfo(x).songicon = "Slides";
@@ -970,7 +971,7 @@ public class SetActions {
 
         if (!asExport && currentSet!=null) {
             // Only add to the current set if we aren't just preparing an export
-            currentSet.addItemToSet(path,name,name,key,true);
+            currentSet.addItemToSet(path,name,name,key,"",true);
         }
         xpp.next();
     }
@@ -1053,7 +1054,7 @@ public class SetActions {
 
         } else {
             if (currentSet!=null) {
-                currentSet.addItemToSet(tempSong.getFolder(), tempSong.getFilename(), tempSong.getTitle(), "",true);
+                currentSet.addItemToSet(tempSong.getFolder(), tempSong.getFilename(), tempSong.getTitle(), "", "", true);
             }
             // Now create the file in the Scripture/_cache folder
             writeTempSlide(folderScripture, cache, tempSong);

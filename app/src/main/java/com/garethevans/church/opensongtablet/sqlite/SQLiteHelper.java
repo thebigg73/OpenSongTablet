@@ -215,6 +215,16 @@ public class SQLiteHelper {
             return "";
         }
     }
+    public String getCapo(String folder, String filename) {
+        try {
+            // Retrieve the persistent instance managed by SQLiteOpenHelper
+            SQLiteDatabase db = getReadableDatabase();
+            return mainActivityInterface.getCommonSQL().getCapo(db, folder, filename);
+        } catch (OutOfMemoryError | Exception e) { // Keep both here
+            Log.e(TAG, "Error getting capo for song: " + folder + "/" + filename, e);
+            return "";
+        }
+    }
     public ArrayList<String> getThemeTags() {
         try {
             // Retrieve the persistent instance without using try-with-resources

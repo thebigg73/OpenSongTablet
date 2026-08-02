@@ -1071,12 +1071,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                             (filename!=null || title!=null)) {
                         filename = filename == null ? title : filename;
                         title = title == null ? filename : title;
-                        localSet.addItemToSet(serverFolder.getTitle(), filename, title, key, false);
+                        localSet.addItemToSet(serverFolder.getTitle(), filename, title, key, "",false);
                     }
 
                 } else if (itemType != null && itemType.equals("divider")) {
                     localSet.addItemToSet("/", mainActivityInterface.getSetActions().getDividerIdentifier(),
-                            mainActivityInterface.getSetActions().getDividerIdentifier(), null, false);
+                            mainActivityInterface.getSetActions().getDividerIdentifier(), null, "", false);
 
                 } else if (itemType != null && itemType.equals("slide") && itemTitle != null) {
                     itemTitle = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(itemTitle);

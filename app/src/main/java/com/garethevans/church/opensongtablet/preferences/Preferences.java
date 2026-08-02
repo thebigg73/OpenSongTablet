@@ -432,6 +432,7 @@ public class Preferences extends Activity {
     // ignorePlayServicesWarning        boolean     Has the user ticked the box to not show this again (def:false);
     // indexSkipAllowed                 boolean     Can we skip indexing (only allowed if it has been completed) (def:false)
     // inlineSet                        boolean     Should we show the inline setlist (def:true)
+    // inlineSetLongPress               String      Action when long pressing on an item in the inline set "cue" or "scroll" (def:scroll)
     // inlineSetPresenter               boolean     Should we show the inline setlist for Presenter mode (def:true)
     // inlineSetWidth                   float       The width (as a percentage of screen width) of the inline setlist (def:0.15f)
     // inlineSetWidthPresenter          float       The width (as a percentage of screen width) of the inline setlist in Presenter Mode (def:0.3f)

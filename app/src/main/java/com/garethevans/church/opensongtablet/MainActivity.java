@@ -2730,7 +2730,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             viewPager.setUserInputEnabled(false);
             TabLayout tabLayout = myView.menuTop.tabs;
             tabLayout.setTabTextColors(getPalette().textColor, getPalette().textColor);
-            tabLayout.setTabIconTint(ColorStateList.valueOf(getPalette().textColor));
+            //tabLayout.setTabIconTint(ColorStateList.valueOf(getPalette().textColor));
+            tabLayout.setTabIconTint(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{getPalette().textColor}
+            ));
             tabLayout.setSelectedTabIndicatorColor(getPalette().secondary);
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
                 switch (position) {
@@ -3059,6 +3063,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             performanceFragment.notifyInlineSetInserted(position);
         } else if (presenterValid()) {
             presenterFragment.notifyInlineSetInserted(position);
+        }
+    }
+    @Override
+    public void notifyInlineSetCueItem(int fromPosition) {
+        if (performanceValid()) {
+            performanceFragment.notifyInlineSetCueItem(fromPosition);
+        } else if (presenterValid()) {
+            presenterFragment.notifyInlineSetCueItem(fromPosition);
         }
     }
 

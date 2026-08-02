@@ -181,6 +181,7 @@ public class CurrentSet {
         setItemInfo.songfolder = thisSong.getFolder();
         setItemInfo.songfoldernice = thisSong.getFolder();
         setItemInfo.songkey = thisSong.getKey();
+        setItemInfo.songcapo = thisSong.getCapo();
         setItemInfo.songtitle = thisSong.getTitle();
         setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
         setItemInfos.add(setItemInfo);
@@ -189,13 +190,14 @@ public class CurrentSet {
         updateCurrentSetPreferences();
     }
 
-    public void addItemToSet(String folder, String filename, String title, String key, boolean doSave) {
+    public void addItemToSet(String folder, String filename, String title, String key, String capo, boolean doSave) {
         SetItemInfo setItemInfo = new SetItemInfo();
         setItemInfo.songfilename = filename;
         setItemInfo.songfolder = folder;
         setItemInfo.songfoldernice = folder;
         setItemInfo.songtitle = title;
         setItemInfo.songkey = key;
+        setItemInfo.songcapo = capo;
         setItemInfo.songforsetwork = mainActivityInterface.getSetActions().getSongForSetWork(setItemInfo);
         setItemInfo.songitem = (getCurrentSetSize()+1);
 
@@ -331,6 +333,7 @@ public class CurrentSet {
             song.setTitle(setItemInfo.songtitle);
             song.setFolder(setItemInfo.songfolder);
             song.setKey(setItemInfo.songkey);
+            song.setCapo(setItemInfo.songcapo);
             songsInSet.add(song);
         }
         return songsInSet;
@@ -367,6 +370,18 @@ public class CurrentSet {
             // Put the new values back into the setitems
             setItemInfos.set(fromPosition,toSetItemInfo);
             setItemInfos.set(toPosition,fromSetItemInfo);
+
+            // Update the preference
+            updateCurrentSetPreferences();
+        }
+    }
+
+    // Called when we long press on an item in the inline set (cue preference)
+    public void movePosition(int fromPosition, int toPosition) {
+        if (setItemInfos != null && getCurrentSetSize() > fromPosition && getCurrentSetSize() > toPosition) {
+            SetItemInfo itemToMove = setItemInfos.get(fromPosition);
+            setItemInfos.remove(fromPosition);
+            setItemInfos.add(getIndexSongInSet() + 1, itemToMove);
 
             // Update the preference
             updateCurrentSetPreferences();

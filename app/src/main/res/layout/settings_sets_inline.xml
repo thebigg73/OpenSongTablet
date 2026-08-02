@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -21,7 +22,8 @@
                 android:hint="@string/set_inline_info"
                 android:text="@string/set_inline" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:id="@+id/inlineSetBottomDivider" style="@style/MyDividerLine" />
 
             <LinearLayout
                 android:id="@+id/sliderLayout"
@@ -74,6 +76,9 @@
                 android:hint="@string/set_inline_info"
                 android:text="@string/set_inline" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine" />
+
             <LinearLayout
                 android:id="@+id/sliderLayoutPresenter"
                 android:layout_width="match_parent"
@@ -102,6 +107,21 @@
 
                 <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
             </LinearLayout>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/longPressInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/long_press_action"
+                android:layout_marginTop="16dp"/>
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/longPressAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="@string/inline_set_scroll_to_item"
+                app:textRight="@string/inline_set_move_to_next"/>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,7 +8,8 @@ public class SetItemInfo {
     public String songicon="";                  // Which type of icon based on the filetype
     public int songitem=-1;                     // Numbered position in the set
     public String songkey="";                   // The key of the song
-    public String songforsetwork="";               // The code for the song in the set preference
+    public String songcapo="";                  // The capo for the song (from database, not set)
+    public String songforsetwork="";            // The code for the song in the set preference
     public String uuid="";                      // The song uuid
     public void setItem(String songfolder, String songfilename, String songtitle, String songkey,
                         int songitem, String songforsetwork, String songicon, String uuid) {
@@ -20,5 +21,13 @@ public class SetItemInfo {
         this.songforsetwork = songforsetwork;
         this.songitem = songitem;
         this.songicon = songicon;
+        this.uuid = uuid;
+    }
+    public void setCapo(String capo) {
+        if (capo==null) {
+            songcapo = "";
+        } else {
+            songcapo = capo;
+        }
     }
 }

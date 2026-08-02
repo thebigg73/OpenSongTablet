@@ -735,6 +735,26 @@ public class CommonSQL {
         closeCursor(cursor);
         return key;
     }
+    public String getCapo(SQLiteDatabase db, String folder, String filename) {
+        String songId = getAnySongId(folder, filename);
+        String[] selectionArgs = new String[]{songId};
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
+
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        String capo = "";
+        // Get the first item (the matching songID)
+        if (cursor.moveToFirst()) {
+            capo = getValue(cursor, SQLite.COLUMN_CAPO);
+        }
+
+        if (capo == null) {
+            capo = "";
+        }
+
+        closeCursor(cursor);
+        return capo;
+    }
 
     // Alternative getFolders method that should be quicker:
     public ArrayList<String> getFolders(SQLiteDatabase db) {

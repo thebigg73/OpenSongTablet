@@ -74,7 +74,6 @@ public class MyToolbar extends Toolbar {
         };*/
         hideActionBarRunnable = () -> {
             if (this.getVisibility() == View.VISIBLE && !mainActivityInterface.needActionBar()) {
-                Log.d("ToolbarDebug", "Auto-hide timer triggered: Hiding toolbar and container.");
                 this.setVisibility(View.GONE);
                 if (getParent() instanceof View) {
                     ((View) getParent()).setVisibility(View.GONE);
@@ -487,7 +486,6 @@ public class MyToolbar extends Toolbar {
             }
         });
 
-        Log.d(TAG,"hideActionBar:"+hideActionBar+"  performanceMode:"+performanceMode+"  menuOpen:"+menuOpen);
         if (hideActionBar && performanceMode && !menuOpen) {
             try {
                 if (delayActionBarHide != null) {

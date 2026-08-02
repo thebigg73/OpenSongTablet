@@ -101,6 +101,7 @@ public class InlineSetFragment extends Fragment {
             myView.textSizeSliderPresenter.setValue(value4);
             myView.textSizeSliderPresenter.setHint(value4+"sp");
             myView.textSizeSliderPresenter.setHintTextSize(value4);
+            myView.longPressAction.setSliderPos(mainActivityInterface.getPreferences().getMyPreferenceString("inlineSetLongPress","scroll").equals("scroll") ? 0:1);
             checkChanged(null,myView.sliderLayout,myView.showInlineSet.getChecked());
             checkChanged(null,myView.sliderLayoutPresenter,myView.showInlineSetPresenter.getChecked());
         });
@@ -118,6 +119,12 @@ public class InlineSetFragment extends Fragment {
             myView.textSizeSliderPresenter.addOnChangeListener(new MyChangeListener("inlineSetTextSizePresenter"));
             myView.textSizeSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSize"));
             myView.textSizeSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSizePresenter"));
+            myView.longPressAction.addOnChangeListener(new Slider.OnChangeListener() {
+                @Override
+                public void onValueChange(@NonNull Slider slider, float v, boolean b) {
+                    mainActivityInterface.getPreferences().setMyPreferenceString("inlineSetLongPress", v==0 ? "scroll":"cue");
+                }
+            });
         });
     }
 
@@ -126,6 +133,13 @@ public class InlineSetFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(pref, isChecked);
         }
         linearLayout.post(() -> linearLayout.setVisibility(isChecked ? View.VISIBLE:View.GONE));
+
+        mainActivityInterface.getMainHandler().post(() -> {
+            if (myView != null) {
+                myView.longPressInfo.setVisibility(myView.showInlineSet.getChecked() || myView.showInlineSetPresenter.getChecked() ? View.VISIBLE : View.GONE);
+                myView.longPressAction.setVisibility(myView.showInlineSet.getChecked() || myView.showInlineSetPresenter.getChecked() ? View.VISIBLE : View.GONE);
+            }
+        });
 
         checkHotZoneConflict();
     }

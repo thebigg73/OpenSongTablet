@@ -307,6 +307,17 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             return "";
         }
     }
+    public String getCapo(String folder, String filename) {
+        try {
+            // Retrieve the persistent instance managed by SQLiteOpenHelper
+            SQLiteDatabase db = getReadableDatabase();
+            return mainActivityInterface.getCommonSQL().getCapo(db, folder, filename);
+        } catch (OutOfMemoryError | Exception e) { // Keep both here
+            // Logging the error is sufficient.
+            Log.e(TAG, "Error getting capo", e);
+            return "";
+        }
+    }
     public boolean songExists(String folder, String filename) {
         try {
             // Retrieve the persistent instance managed by SQLiteOpenHelper

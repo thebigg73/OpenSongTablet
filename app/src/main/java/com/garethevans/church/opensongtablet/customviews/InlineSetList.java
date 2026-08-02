@@ -42,6 +42,7 @@ public class InlineSetList extends RecyclerView {
     private final String highlightItem = "highlightItem", updateNumber = "updateNumber";
     private String no_set_string;
     private String divider_string;
+    private String longPressAction = "scroll";
     public InlineSetList(@NonNull Context context) {
         super(context);
         llm = new LinearLayoutManager(context);
@@ -66,6 +67,7 @@ public class InlineSetList extends RecyclerView {
         showInlinePresenter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("inlineSetPresenter", true);
         inlineSetListAdapter = new InlineSetListAdapter();
         setAdapter(inlineSetListAdapter);
+        longPressAction = mainActivityInterface.getPreferences().getMyPreferenceString("inlineSetLongPress","scroll");
         setVisibility(View.GONE);
         mode_presenter_string = c.getString(R.string.mode_presenter);
         no_set_string = c.getString(R.string.set_is_empty);
@@ -308,6 +310,16 @@ public class InlineSetList extends RecyclerView {
             checkVisibility();
         }
     }
+    public void notifyInlineSetCueItem(int fromPosition) {
+        if (mainActivityInterface!=null) {
+            mainActivityInterface.getMainHandler().post(() -> {
+                if (inlineSetListAdapter!=null) {
+                    inlineSetListAdapter.notifyDataSetChanged();
+                }
+            });
+            checkVisibility();
+        }
+    }
 
     // Remove an item at a specific location
     public void notifyInlineSetRemoved(int position) {
@@ -414,6 +426,22 @@ public class InlineSetList extends RecyclerView {
                                 textfn = textfn + " (" + si.songkey + ")";
                             }
 
+                            String songCapo = si.songcapo;
+                            if (songCapo !=null && !songCapo.isEmpty()) {
+                                songCapo = songCapo.replaceAll("\\D", "");
+                                String capoKey = "";
+                                if (!songCapo.isEmpty()) {
+                                    int capoInt = Integer.parseInt(songCapo);
+                                    if (si.songkey != null && !si.songkey.isEmpty()) {
+                                        capoKey = " (" + mainActivityInterface.getTranspose().numberToKey(
+                                                mainActivityInterface.getTranspose().transposeNumber(
+                                                        mainActivityInterface.getTranspose().keyToNumber(si.songkey), "-1", capoInt) + ")");
+                                    }
+                                    textsn = textsn + " [" + songCapo + capoKey + "]";
+                                    textfn = textfn + " [" + songCapo + capoKey + "]";
+                                }
+                            }
+
                             if (si.songfolder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                                     si.songfolder.contains("**Divider") ||
                                     si.songfolder.contains("**"+divider_string)) {
@@ -452,7 +480,11 @@ public class InlineSetList extends RecyclerView {
         private void setColor(InlineSetItemViewHolder holder, int cardColor) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.cardView.setCardBackgroundColor(cardColor);
-                holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+                //holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+                holder.cardView.setCardBackgroundColor(new ColorStateList(
+                        new int[][]{new int[0]},
+                        new int[]{cardColor}
+                ));
             } else {
                 holder.cardView.setBackgroundColor(cardColor);
             }
@@ -489,6 +521,23 @@ public class InlineSetList extends RecyclerView {
                     textsn = textsn + " (" + si.songkey + ")";
                     textfn = textfn + " (" + si.songkey + ")";
                 }
+
+                String songCapo = si.songcapo;
+                if (songCapo !=null && !songCapo.isEmpty()) {
+                    songCapo = songCapo.replaceAll("\\D", "");
+                    String capoKey = "";
+                    if (!songCapo.isEmpty()) {
+                        int capoInt = Integer.parseInt(songCapo);
+                        if (si.songkey != null && !si.songkey.isEmpty()) {
+                            capoKey = " (" + mainActivityInterface.getTranspose().numberToKey(
+                                    mainActivityInterface.getTranspose().transposeNumber(
+                                            mainActivityInterface.getTranspose().keyToNumber(si.songkey), "-1", capoInt) + ")");
+                        }
+                        textsn = textsn + " [" + songCapo + capoKey + "]";
+                        textfn = textfn + " [" + songCapo + capoKey + "]";
+                    }
+                }
+
                 setitemViewHolder.vSongTitle.setTextSize(textSize);
                 setitemViewHolder.vSongFilename.setTextSize(textSize);
                 setitemViewHolder.vSongTitle.setVisibility(useTitle ? View.VISIBLE : View.GONE);
@@ -514,9 +563,24 @@ public class InlineSetList extends RecyclerView {
                         }
                     });
                 }
+                int finalPosition1 = position;
                 setitemViewHolder.cardView.setOnLongClickListener(v1 -> {
                     if (mainActivityInterface != null) {
-                        scrollToItem(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                        // Depending on our user preference
+                        if (longPressAction.equals("scroll")) {
+                            // Scroll the list so we can see the current item
+                            scrollToItem(mainActivityInterface.getCurrentSet().getIndexSongInSet());
+                        } else if (longPressAction.equals("cue") && mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1) {
+                            // Check the item is valid for safety
+                            if (finalPosition1 < 0 || finalPosition1 >= mainActivityInterface.getCurrentSet().getCurrentSetSize() ||
+                                    finalPosition1==mainActivityInterface.getCurrentSet().getIndexSongInSet()+1 || finalPosition1 == mainActivityInterface.getCurrentSet().getIndexSongInSet()) {
+                                // Do nothing and consume the event
+                                return true;
+                            }
+                            // Move the positions
+                            mainActivityInterface.getCurrentSet().movePosition(finalPosition1,mainActivityInterface.getCurrentSet().getIndexSongInSet()+1);
+                            mainActivityInterface.getSetMenuFragment().notifyItemCueNext(finalPosition1);
+                        }
                     }
                     return true;
                 });

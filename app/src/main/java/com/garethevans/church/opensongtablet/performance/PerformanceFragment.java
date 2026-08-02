@@ -442,6 +442,15 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.notifyInlineSetScrollToItem();
         }
     }
+    public void notifyInlineSetCueItem(int fromPosition) {
+        if (myView!=null) {
+            try {
+                myView.inlineSetList.notifyInlineSetCueItem(fromPosition);
+            } catch (Exception e) {
+                Log.d(TAG,"Couldn't update inline set - might just not be shown currently");
+            }
+        }
+    }
 
 
     @SuppressWarnings("ConstantConditions")
@@ -1645,8 +1654,13 @@ public class PerformanceFragment extends Fragment {
                                         // v5 used portrait and landscape views.  However, now if we only have one
                                         // column, we will always load the portrait view
                                         // landscape is now for columns
-                                        Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                                                getHighlighterFile(0, 0);
+                                        Bitmap highlighterBitmap = null;
+                                        try {
+                                            highlighterBitmap = mainActivityInterface.getProcessSong().
+                                                    getHighlighterFile(0, 0);
+                                        } catch (Exception e) {
+                                            Log.d(TAG,"This is the error catch");
+                                        }
 
                                         if (highlighterBitmap == null) {
                                             // Clear the previous highlighter image

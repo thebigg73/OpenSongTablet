@@ -90,6 +90,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         int position = holder.getAbsoluteAdapterPosition();
         SetItemInfo si = mainActivityInterface.getCurrentSet().getSetItemInfo(position);
         String key = si.songkey;
+        String capo = si.songcapo;
         si.songitem = position+1;
         String titlesongname = si.songtitle;
         String filename = si.songfilename;
@@ -106,6 +107,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
             titlesongname = titlesongname + " (" + key + ")";
         } else {
             si.songkey = "";
+        }
+
+        if (capo !=null && !capo.isEmpty()) {
+            capo = capo.replaceAll("\\D","");
+            String capoKey = "";
+            if (!capo.isEmpty()) {
+                int capoInt = Integer.parseInt(capo);
+                if (key!=null && !key.isEmpty()) {
+                    capoKey = " (" + mainActivityInterface.getTranspose().numberToKey(
+                        mainActivityInterface.getTranspose().transposeNumber(
+                                mainActivityInterface.getTranspose().keyToNumber(key), "-1", capoInt) + ")");
+                }
+                titlesongname = titlesongname + " ["+capo + capoKey+"]";
+            }
         }
 
         // If we don't have a indexSongInSet, but this song should be it, do it
@@ -186,13 +201,24 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
 
         si.songicon = mainActivityInterface.getSetActions().getIconIdentifier(foldername,filename);
 
-        // Set the icon
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
-        Drawable drawable = AppCompatResources.getDrawable(c,icon);
-        if (drawable!=null) {
-            DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().textColor);
+
+        Drawable drawable = AppCompatResources.getDrawable(c, icon);
+        if (drawable != null) {
+            // 1. Make it mutable
+            Drawable mutableDrawable = drawable.mutate();
+
+            // 2. Apply your tint
+            DrawableCompat.setTint(mutableDrawable, mainActivityInterface.getPalette().textColor);
+
+            // 3. CRITICAL: You must manually provide bounds, since WithIntrinsicBounds isn't doing it for you anymore
+            mutableDrawable.setBounds(0, 0, mutableDrawable.getIntrinsicWidth(), mutableDrawable.getIntrinsicHeight());
+
+            // 4. Use standard setCompoundDrawables (NOT WithIntrinsicBounds)
+            holder.cardItem.setCompoundDrawables(mutableDrawable, null, null, null);
+        } else {
+            holder.cardItem.setCompoundDrawables(null, null, null, null);
         }
-        holder.cardItem.setCompoundDrawablesWithIntrinsicBounds(drawable,null,null,null);
     }
 
     @Override
@@ -264,7 +290,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private void setColor(SetListItemViewHolder holder, int cardColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.cardView.setCardBackgroundColor(cardColor);
-            holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+            //holder.cardView.setCardBackgroundColor(ColorStateList.valueOf(cardColor));
+            holder.cardView.setCardBackgroundColor(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{cardColor}
+            ));
         } else {
             holder.cardView.setBackgroundColor(cardColor);
         }
@@ -273,7 +303,11 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     private void setFABColor(MyFloatingActionButton fab, int fabColor) {
         fab.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
+            //fab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
+            fab.setBackgroundTintList(new ColorStateList(
+                    new int[][]{new int[0]},
+                    new int[]{fabColor}
+            ));
         } else {
             fab.setBackgroundColor(fabColor);
         }
@@ -383,6 +417,14 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         mainActivityInterface.getMainHandler().post(() -> notifyItemInserted(mainActivityInterface.getCurrentSet().getCurrentSetSize()-1));
         // Now update the inline set too
         mainActivityInterface.notifyInlineSetInserted();
+    }
+    // Insert cue next position
+    public void notifyInlineSetCueItem(int position) {
+        mainActivityInterface.getMainHandler().post(() -> {
+            notifyDataSetChanged();
+        });
+        // Now update the inline set too
+        mainActivityInterface.notifyInlineSetCueItem(position);
     }
 
     // This method is called when an item is swiped away or unticked in the song menu.
