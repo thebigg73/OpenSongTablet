@@ -152,6 +152,14 @@ public class SongListBuildIndex {
 
                 // We now iterate through each song in turn!
                 do {
+                    // Check if the thread has been interrupted (e.g. app closing / shutdownNow called)
+                    if (Thread.currentThread().isInterrupted()) {
+                        Log.d(TAG, "Indexing thread was interrupted, stopping early.");
+                        Log.d(TAG,"stating we do need to reindex");
+                        mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",false);
+                        break;
+                    }
+
                     mainActivityInterface.setIndexingSong(new Song());
 
                     // Set the folder and filename from the database entry
@@ -275,7 +283,10 @@ public class SongListBuildIndex {
             mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
 
             mainActivityInterface.getSetActions().checkMissingKeys();
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed",true);
+            if (!Thread.currentThread().isInterrupted()) {
+                Log.d(TAG,"stating we don't need to reindex");
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", true);
+            }
             returnString.append(c.getString(R.string.index_songs_end)).append("\n");
 
 

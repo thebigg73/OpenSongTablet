@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -63,7 +64,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             deeplink_manage_storage_string="", add_all_songs_to_set_string="", songs_string="";
     private String[] key_choice_string={};
     private boolean songMenuSortTitles;
-    private final Handler waitBeforeSearchHandler = new Handler();
+    private final Handler waitBeforeSearchHandler = new Handler(Looper.getMainLooper());
     private final Runnable waitBeforeSearchRunnable = this::prepareSearch;
     private String longClickFilename = "", longClickFolder="";
     private IndexAdapter indexAdapter;

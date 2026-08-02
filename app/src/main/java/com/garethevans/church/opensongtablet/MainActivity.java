@@ -214,6 +214,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -1949,59 +1950,61 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navHome() {
-        // NavHome always clears the backstack (no back navigation)
-        if (navController == null) {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            // NavHome always clears the backstack (no back navigation)
+            if (navController == null) {
+                try {
+                    setupActionbar();
+                    setupNavigation();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // 1. Identify your target root destination
+            int targetId = whichMode.equals(mode_presenter) ? R.id.presenterFragment : R.id.performanceFragment;
+            int currentId = -1;
+            if (navController.getCurrentDestination() != null) {
+                currentId = navController.getCurrentDestination().getId();
+            }
+
+            // 2. Clear the NavHostFragment's internal child fragment manager backstack directly
+            Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            if (navHostFragment != null) {
+                FragmentManager childFm = navHostFragment.getChildFragmentManager();
+                childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+
+            // 3. Reset the NavController state safely
             try {
-                setupActionbar();
-                setupNavigation();
+                NavGraph graph = navController.getGraph();
+                int oldStartId = graph.getStartDestinationId();
+
+                // Update the graph's official start destination to the new target
+                graph.setStartDestination(targetId);
+
+                NavOptions.Builder builder = new NavOptions.Builder()
+                        .setLaunchSingleTop(true);
+
+                if (oldStartId != targetId) {
+                    // Pop everything up to (and including) the old start destination
+                    // so it completely disappears from the back stack history.
+                    builder.setPopUpTo(oldStartId, true);
+                } else {
+                    // If we are already on the home graph, pop up to targetId exclusive
+                    // to clear any nested sub-pages the user drilled down into.
+                    builder.setPopUpTo(targetId, false);
+                }
+
+                if (targetId != currentId) {
+                    navController.navigate(targetId, null, builder.build());
+                }
+
             } catch (Exception e) {
+                getStorageAccess().updateCrashLog("Unable to navHome(): " + e);
                 e.printStackTrace();
             }
-        }
-
-        // 1. Identify your target root destination
-        int targetId = whichMode.equals(mode_presenter) ? R.id.presenterFragment : R.id.performanceFragment;
-        int currentId = -1;
-        if (navController.getCurrentDestination()!=null) {
-            currentId = navController.getCurrentDestination().getId();
-        }
-
-        // 2. Clear the NavHostFragment's internal child fragment manager backstack directly
-        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        if (navHostFragment != null) {
-            FragmentManager childFm = navHostFragment.getChildFragmentManager();
-            childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-
-        // 3. Reset the NavController state safely
-        try {
-            NavGraph graph = navController.getGraph();
-            int oldStartId = graph.getStartDestinationId();
-
-            // Update the graph's official start destination to the new target
-            graph.setStartDestination(targetId);
-
-            NavOptions.Builder builder = new NavOptions.Builder()
-                    .setLaunchSingleTop(true);
-
-            if (oldStartId != targetId) {
-                // Pop everything up to (and including) the old start destination
-                // so it completely disappears from the back stack history.
-                builder.setPopUpTo(oldStartId, true);
-            } else {
-                // If we are already on the home graph, pop up to targetId exclusive
-                // to clear any nested sub-pages the user drilled down into.
-                builder.setPopUpTo(targetId, false);
-            }
-
-            if (targetId != currentId) {
-                navController.navigate(targetId, null, builder.build());
-            }
-
-        } catch (Exception e) {
-            getStorageAccess().updateCrashLog("Unable to navHome(): " + e);
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override
@@ -5303,6 +5306,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             getDrumViewModel().stopAll();
             getDrumViewModel().getDrumSoundManager().release();
         }
+
+
+        // Stop any thread pools
+        // Stop any active thread pool tasks instantly
+        ExecutorService executor = getThreadPoolExecutor();
+        Log.d(TAG,"executor:"+executor);
+        if (executor != null) {
+            try {
+                executor.shutdownNow();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+
 
         // Keep a reference to connections if needed as bundle
 
