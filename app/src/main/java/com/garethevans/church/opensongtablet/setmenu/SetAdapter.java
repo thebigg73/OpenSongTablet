@@ -422,6 +422,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     public void notifyInlineSetCueItem(int position) {
         mainActivityInterface.getMainHandler().post(() -> {
             notifyDataSetChanged();
+            mainActivityInterface.getDisplayPrevNext().setPrevNext();
         });
         // Now update the inline set too
         mainActivityInterface.notifyInlineSetCueItem(position);
