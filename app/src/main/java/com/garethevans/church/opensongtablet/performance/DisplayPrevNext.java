@@ -259,7 +259,20 @@ public class DisplayPrevNext {
                     }
 
                     if (key != null && !key.isEmpty() && !key.equals("null")) {
-                        text = text + " (" + key + ")";
+
+                        // Look for capo information
+                        String capoInfo = "";
+                        if (setItemInfo.songcapo!=null && !setItemInfo.songcapo.isEmpty()) {
+                            capoInfo = setItemInfo.songcapo.replaceAll("\\D", "");
+                            if (!capoInfo.isEmpty()) {
+                                int capoInt = Integer.parseInt(capoInfo);
+                                String capoKey = " (" + mainActivityInterface.getTranspose().numberToKey(
+                                        mainActivityInterface.getTranspose().transposeNumber(
+                                                mainActivityInterface.getTranspose().keyToNumber(key), "-1", capoInt) + ")");
+                                capoInfo = " [" + capoInt + capoKey + "]";
+                            }
+                        }
+                        text = text + " (" + key + capoInfo + ")";
                     }
                 }
             } else if (isMenuMove(position)){
