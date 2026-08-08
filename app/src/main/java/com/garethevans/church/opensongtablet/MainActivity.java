@@ -1950,7 +1950,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navHome() {
-        new Handler(Looper.getMainLooper()).post(() -> {
+        getMainHandler().post(() -> {
             // NavHome always clears the backstack (no back navigation)
             if (navController == null) {
                 try {
@@ -1996,9 +1996,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     builder.setPopUpTo(targetId, false);
                 }
 
-                if (targetId != currentId) {
-                    navController.navigate(targetId, null, builder.build());
-                }
+                // I could check if we are already on the home page, but I can also use this to refresh
+                //if (targetId != currentId) {
+                navController.navigate(targetId, null, builder.build());
+                //}
 
             } catch (Exception e) {
                 getStorageAccess().updateCrashLog("Unable to navHome(): " + e);
