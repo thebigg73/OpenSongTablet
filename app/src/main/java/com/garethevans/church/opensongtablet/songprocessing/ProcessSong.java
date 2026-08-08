@@ -2030,14 +2030,14 @@ public class ProcessSong {
                 break;
             case 6: // Numeral
                 // Sorted longest to shortest: XII, XI, IX, VI, V, IV, III, II, I, X
-                CHORD_REGEX = Pattern.compile("\\b(XII|XI|IX|VI{1,3}|V|IV|III|II|I|X)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                CHORD_REGEX = Pattern.compile("\\b(XII|XI|IX|VI{1,3}|V|IV|III|II|I|X)(m|min|mi|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
                 break;
             case 7: // Euro alternative  A Bb B Cis/Des   - similar to 3, but not using B/H or Bb/B
-                CHORD_REGEX = Pattern.compile("([A-G](es|is)?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                CHORD_REGEX = Pattern.compile("([A-G](es|is)?)(m|min|mi|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
                 break;
             case 1: // Standard
             default:
-                CHORD_REGEX = Pattern.compile("([A-G][#b]?)(m|min|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
+                CHORD_REGEX = Pattern.compile("([A-G][#b]?)(m|min|mi|maj|dim|aug|sus|Δ)?([0-9+\\-]+)?(?=\\s|/|$)");
                 break;
 
         }
