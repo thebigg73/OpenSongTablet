@@ -383,7 +383,7 @@ public class CurrentSet {
             setItemInfos.remove(fromPosition);
             setItemInfos.add(getIndexSongInSet() + 1, itemToMove);
 
-            if (fromPosition<getIndexSongInSet()) {
+            if (fromPosition<getIndexSongInSet() && getIndexSongInSet()>0) {
                 // We need to move the current index back one
                 setIndexSongInSet(indexSongInSet-1);
             }
