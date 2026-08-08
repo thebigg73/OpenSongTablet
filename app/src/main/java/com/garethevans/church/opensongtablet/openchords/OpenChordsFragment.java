@@ -241,7 +241,7 @@ public class OpenChordsFragment extends Fragment {
         myView.refresh.setOnClickListener(view -> {
             // Query the server again
             Log.d(TAG,"clicked on update.  Should we query the server again? -yes");
-            mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
+            mainActivityInterface.getOpenChordsAPI().delayedQueryServer(200);
         });
         myView.downloadLayout.setOnClickListener(view -> {
             if (mainActivityInterface.getSongListBuildIndex()!=null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {

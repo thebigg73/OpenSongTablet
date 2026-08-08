@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -1748,31 +1749,29 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
         updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
 
-        Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
-        call.enqueue(new Callback<OpenChordsFolderObject>() {
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<OpenChordsFolderObject> call, @NonNull Response<OpenChordsFolderObject> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 receivedResponse();
-                // this method is called when we get response from our api.
+
+                // We actually don't need to do anything with the response
+                // Proceed with your usual UI updates and delayed query
                 if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-
-                    // Because we have changed something, we need to query again and compare content
                     delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<OpenChordsFolderObject> call, @NonNull Throwable t) {
-                // We received a response (even though it was a failure!)
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 receivedResponse();
+                t.printStackTrace();
 
-                // Alert the user to the error
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
 
-                // Allow the user interaction again
-                if (openChordsFragment!=null) {
+                if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(true);
                     openChordsFragment.updateFolderMessage();
                 }
@@ -2126,31 +2125,29 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     private void doQueryCall(OpenChordsFolderObject uploadFolderObject) {
-        Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
-        call.enqueue(new Callback<OpenChordsFolderObject>() {
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<OpenChordsFolderObject> call, @NonNull Response<OpenChordsFolderObject> response) {
-                // this method is called when we get response from our api.
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 receivedResponse();
+
+                // We actually don't need to do anything with the response
+                // Proceed with your usual UI updates and delayed query
                 if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-
-                    // Because we have changed something, we need to query again and compare content
                     delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<OpenChordsFolderObject> call, @NonNull Throwable t) {
-                // We received a response (even though it was a failure!)
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 receivedResponse();
+                t.printStackTrace();
 
-                // Alert the user to the error
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
 
-                // Allow the user interaction again
-                if (openChordsFragment!=null) {
+                if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(true);
                     openChordsFragment.updateFolderMessage();
                 }
@@ -2224,31 +2221,29 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
         updateConflictItem("lastForcePush");
 
-        Call<OpenChordsFolderObject> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
-        call.enqueue(new Callback<OpenChordsFolderObject>() {
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<OpenChordsFolderObject> call, @NonNull Response<OpenChordsFolderObject> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 receivedResponse();
-                // this method is called when we get response from our api.
+
+                // We actually don't need to do anything with the response
+                // Proceed with your usual UI updates and delayed query
                 if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(false);
                     updateProgress(c.getString(R.string.wait) + "\n");
-
-                    // Because we have changed something, we need to query again and compare content
                     delayedQueryServer(delayForQuery);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<OpenChordsFolderObject> call, @NonNull Throwable t) {
-                // We received a response (even though it was a failure!)
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 receivedResponse();
+                t.printStackTrace();
 
-                // Alert the user to the error
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.sync_server_noresponse_error));
 
-                // Allow the user interaction again
-                if (openChordsFragment!=null) {
+                if (openChordsFragment != null) {
                     openChordsFragment.changeButtonsEnable(true);
                     openChordsFragment.updateFolderMessage();
                 }

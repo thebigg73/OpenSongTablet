@@ -8,6 +8,7 @@ import com.garethevans.church.opensongtablet.openchords.OpenChordsLoginResponse;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsMusicXML;
 import com.garethevans.church.opensongtablet.openchords.OpenChordsReturnMessageObject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,7 +21,7 @@ public interface RetrofitInterface {
     @GET("folder/{id}")
     Call<OpenChordsFolderObject> getOpenChordsFolder(@Path("id") String id, @Query("userId") String userId);
     @POST("folder/{id}")
-    Call<OpenChordsFolderObject> postOpenChordsFolder(@Path("id") String id, @Body OpenChordsFolderObject openChordsFolderObject);
+    Call<OpenChordsFolderObject> postOpenChordsFolderOld(@Path("id") String id, @Body OpenChordsFolderObject openChordsFolderObject);
     @POST("login")
     Call<OpenChordsLoginResponse> getAuthToken(@Body OpenChordsLoginRequest loginRequest);
     @POST("tools/convert")
@@ -29,4 +30,8 @@ public interface RetrofitInterface {
     Call<OpenChordsReturnMessageObject> postOpenChordsFolderReadOnly(@Path("id") String id, @Body OpenChordsFolderPermissionsObject openChordsFolderPermissionsObject);
     @POST("folder/{id}/permissions/")
     Call<OpenChordsReturnMessageObject> postOpenChordsFolderOwner(@Path("id") String id,  @Body OpenChordsFolderPermissionsObject openChordsFolderPermissionsObject);
+
+    // This method is safer if we get no body returned
+    @POST("folder/{id}")
+    Call<ResponseBody> postOpenChordsFolder(@Path("id") String id, @Body OpenChordsFolderObject openChordsFolderObject);
 }
