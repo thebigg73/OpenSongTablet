@@ -2605,6 +2605,10 @@ public class ProcessSong {
         ArrayList<Integer> sectionColors = new ArrayList<>();
         htmlLyrics = new StringBuilder();
 
+        if (song.getFiletype()==null) {
+            song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song.getFilename()));
+        }
+
         // Set the regex for chord display (for superscript styles)
         mainActivityInterface.getTranspose().checkChordFormat(song);
         mainActivityInterface.getProcessSong().setChordRegex(song.getDetectedChordFormat());
@@ -4290,6 +4294,9 @@ public class ProcessSong {
         }
 
         String filename = songfolder.replace("/", "_") + "_" + songfilename;
+        if (song.getFiletype()==null) {
+            song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song.getFilename()));
+        }
 
         if ((song.getFiletype()!=null && song.getFiletype().equals("PDF")) ||
                 (song.getFilename()!=null && song.getFilename().toLowerCase().endsWith(".pdf"))) {

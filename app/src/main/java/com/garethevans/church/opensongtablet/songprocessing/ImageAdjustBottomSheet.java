@@ -187,6 +187,9 @@ public class ImageAdjustBottomSheet extends BottomSheetCommon {
         myView.cropImageView.setVisibility(View.INVISIBLE);
         Bitmap bmp = myView.cropImageView.getCroppedImage();
         Rect cropPoints = myView.cropImageView.getCropRect();
+        if (thisSong.getFiletype()==null) {
+            thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+        }
 
         if (thisSong.getFiletype().equals("PDF") && cropPoints!=null) {
             mainActivityInterface.getThreadPoolExecutor().execute(() -> {

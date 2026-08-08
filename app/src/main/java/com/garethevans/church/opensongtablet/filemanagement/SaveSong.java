@@ -55,6 +55,9 @@ public class SaveSong {
             if (folderChange || filenameChange) {
                 // We need to rename the entry in the database
                 mainActivityInterface.getSQLiteHelper().renameSong(oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
+                if (newSong.getFiletype()==null) {
+                    newSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(newSong.getFilename()));
+                }
                 if (newSong.getFiletype().equals("PDF") || newSong.getFiletype().equals("IMG")) {
                     // If it isn't an XML file, also update the persistent database
                     mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(
@@ -132,6 +135,10 @@ public class SaveSong {
 
             // First update the song database
             mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+
+            if (thisSong.getFiletype()==null) {
+                thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+            }
 
             // If this is a non-OpenSong song (PDF, IMG), update the persistent database
             if (!thisSong.getFiletype().equals("XML")) {

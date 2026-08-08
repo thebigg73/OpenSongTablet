@@ -235,6 +235,10 @@ public class SongActionsMenuFragment extends Fragment {
             String content = mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong());
 
             // Now write the file
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
+
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                 // Copy the actual file

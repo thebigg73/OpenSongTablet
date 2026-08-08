@@ -838,6 +838,10 @@ public class PerformanceFragment extends Fragment {
             // Set as not using pdfLandscape by default
             mainActivityInterface.getGestures().setPdfLandscapeView(false);
 
+            if (mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
+
             if (mainActivityInterface.getSong() != null &&
                     mainActivityInterface.getSong().getFiletype() != null &&
                     mainActivityInterface.getSong().getFolder() != null) {
@@ -1046,6 +1050,9 @@ public class PerformanceFragment extends Fragment {
 
     }
     private void prepareXMLView() {
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
         // If we are old Android and can't show a pdf, tell the user
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -1203,6 +1210,9 @@ public class PerformanceFragment extends Fragment {
                     myView.zoomLayout.setVisibility(View.GONE);
                     myView.highlighterView.setVisibility(View.GONE);
                     if (getContext() != null) {
+                        if (mainActivityInterface.getSong().getFiletype()==null) {
+                            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+                        }
                         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
                                 mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                             pdfPageAdapter = new PDFPageAdapter(getContext(), mainActivityInterface,
@@ -1427,6 +1437,9 @@ public class PerformanceFragment extends Fragment {
         displayInterface.updateDisplay("newSongLoaded");
         displayInterface.updateDisplay("setSongInfo");
         displayInterface.updateDisplay("initialiseInfoBarRequired");
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
         if (mainActivityInterface.getMode().equals(mode_stage) &&
                 mainActivityInterface.getSong().getFiletype().equals("XML") &&
                 !mainActivityInterface.getSong().getFolder().contains("**Image") &&
@@ -1929,6 +1942,9 @@ public class PerformanceFragment extends Fragment {
     public void selectSection(int position) {
         if (!mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().getIsHost() &&
             mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().hasValidConnections()) {
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
                     pdfPageAdapter!=null && pdfPageAdapter.getItemCount()>position && position>=0) {

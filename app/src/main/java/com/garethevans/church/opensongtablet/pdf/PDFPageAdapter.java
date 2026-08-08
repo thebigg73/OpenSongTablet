@@ -384,6 +384,10 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 }
 
                 // If stage mode or a pdf, update the presenter and send a nearby payload
+                if (mainActivityInterface.getSong().getFiletype()==null) {
+                    mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+                }
+
                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                     mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)

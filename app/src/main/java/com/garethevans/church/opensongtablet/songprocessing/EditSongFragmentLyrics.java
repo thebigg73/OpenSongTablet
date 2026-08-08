@@ -150,6 +150,10 @@ public class EditSongFragmentLyrics extends Fragment {
             mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong());
         }
 
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
                 mainActivityInterface.getSong() != null &&
                 mainActivityInterface.getSong().getFiletype() != null &&
@@ -185,6 +189,10 @@ public class EditSongFragmentLyrics extends Fragment {
 
     public void setupPreview() {
         // If we have a PDF or image, show a small preview window
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (getContext()!=null && mainActivityInterface.getTempSong().getFiletype()!=null) {
             if (mainActivityInterface.getTempSong().getFiletype().equals("PDF")) {
                 // Load in a preview if the version of Android is high enough
@@ -297,6 +305,9 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.addTextChangedListener(textWatcher);
 
         myView.ocr.setOnClickListener(v -> {
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
 
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

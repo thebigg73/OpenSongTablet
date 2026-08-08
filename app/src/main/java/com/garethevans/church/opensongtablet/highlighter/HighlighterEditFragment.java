@@ -138,6 +138,9 @@ public class HighlighterEditFragment extends Fragment {
                 availableWidth = myView.backgroundView.getWidth();
                 availableHeight = myView.backgroundView.getHeight();
                 Log.d(TAG, "available w x h:" + availableWidth + "x" + availableHeight);
+                if (mainActivityInterface.getSong().getFiletype()==null) {
+                    mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+                }
                 if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                     getImageFile();
 

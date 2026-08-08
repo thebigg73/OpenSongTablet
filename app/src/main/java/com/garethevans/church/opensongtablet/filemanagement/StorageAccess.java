@@ -1113,10 +1113,33 @@ public class StorageAccess {
         return isvalid;
     }
 
+    public String tryToFixFileTypeFromNull(String filename) {
+        if (filename==null) {
+            filename = "";
+        }
+        if (isSpecificFileExtension("image",filename)) {
+            return "IMG";
+        } else if (isSpecificFileExtension("pdf",filename)) {
+            return "PDF";
+        } else if (isSpecificFileExtension("chordpro",filename)) {
+            return "CHO";
+        } else if (isSpecificFileExtension("word",filename)) {
+            return "DOC";
+        } else if (isSpecificFileExtension("onsong",filename)) {
+            return "iOS";
+        } else if (isSpecificFileExtension("text",filename)) {
+            return "TXT";
+        } else if (!filename.contains(".")) {
+            return "XML";
+        } else {
+            return "";
+        }
+    }
     public boolean isSpecificFileExtension(String whichType, String filename) {
         String toCheck = "";
         switch (whichType.toLowerCase()) {
             case "image":
+            case "img":
                 toCheck = ".jpg.jpeg.gif.bmp.png";
                 break;
             case "pdf":

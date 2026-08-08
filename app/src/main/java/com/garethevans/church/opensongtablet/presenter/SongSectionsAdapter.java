@@ -57,6 +57,9 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         }
 
         // Because we could be using presentation order, we need to get a temp song section for the buttons
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
 
         for (int x = 0; x < mainActivityInterface.getSong().getPresoOrderSongSections().size(); x++) {
             // bits[0] = heading, bits[1] = content - heading
@@ -277,6 +280,10 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         // State we've started projection
         // This method checks that logo, black screen, blank screen are off too
         mainActivityInterface.getPresenterSettings().setStartedProjection(true);
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             mainActivityInterface.getSong().setPdfPageCurrent(thisPos);
         } else {
@@ -310,6 +317,10 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
                 Log.d(TAG,"bits[1]:"+bits[1]);
                 songSectionInfo.heading = bits[0];
                 songSectionInfo.content = bits[1];
+                if (mainActivityInterface.getSong().getFiletype()==null) {
+                    mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+                }
+
                 songSectionInfo.needsImage = !mainActivityInterface.getSong().getFiletype().equals("XML");
                 songSectionInfo.position = sectionEdited;
                 songSections.set(sectionEdited, songSectionInfo);

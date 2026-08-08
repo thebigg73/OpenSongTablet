@@ -72,6 +72,9 @@ public class HighlighterFragment extends Fragment {
         myView.timeToDisplayHighlighter.setValue(timeToDisplayHighlighter);
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
         hideView(myView.edit,mainActivityInterface.getMode().equals(mode_performance_string) ||
                 mainActivityInterface.getMode().equals(mode_hybrid_string));
         if (!mainActivityInterface.validScreenShotFile() && mainActivityInterface.getSong().getFiletype().equals("XML")) {
@@ -118,6 +121,9 @@ public class HighlighterFragment extends Fragment {
         myView.nestedScrollView.setFabToAnimate(myView.edit);
         
         myView.edit.setOnClickListener(v -> {
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+            }
             if (mainActivityInterface.validScreenShotFile() || !mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 mainActivityInterface.navigateToFragment(null, R.id.highlighterEditFragment);
             }

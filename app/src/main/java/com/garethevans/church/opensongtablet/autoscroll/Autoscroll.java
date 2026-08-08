@@ -462,8 +462,8 @@ public class Autoscroll {
         // If we are in Performance mode using a normal OpenSong song, we scroll the ZoomLayout
         // If we are in Stage mode, or viewing a pdf, we scroll the RecyclerView
         usingZoomLayout = mainActivityInterface.getMode().equals(mode_performance) &&
-                (mainActivityInterface.getSong().getFiletype().equals("XML") ||
-        mainActivityInterface.getSong().getFiletype().equals("IMG"));
+                (mainActivityInterface.getSong().getFiletype()!=null && (mainActivityInterface.getSong().getFiletype().equals("XML") ||
+        mainActivityInterface.getSong().getFiletype().equals("IMG")));
 
         if (myZoomLayout!=null && usingZoomLayout) {
             myZoomLayout.setIsUserTouching(false);

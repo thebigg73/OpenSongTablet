@@ -42,6 +42,9 @@ public class PDFPageBottomSheet extends BottomSheetCommon {
     private void setupViews() {
         int isPDFVisible;
         int isNotPDFVisible;
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             isPDFVisible = View.VISIBLE;
             isNotPDFVisible = View.GONE;

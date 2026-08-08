@@ -90,6 +90,10 @@ public class SongDetailsBottomSheet extends BottomSheetCommon {
         }
         myView.lyrics.setHint(mainActivityInterface.getSong().getLyrics());
 
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if ((mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null) &&
                 ((mainActivityInterface.getSong().getFiletype().equals("PDF") && Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG"))) {

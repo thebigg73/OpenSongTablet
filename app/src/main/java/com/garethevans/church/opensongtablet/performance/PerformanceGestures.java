@@ -888,6 +888,9 @@ public class PerformanceGestures {
 
     // This is for the scroll before move
     public boolean canScroll(boolean scrollDown) {
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
         // Check the ZoomLayout for XML
         if (myZoomLayout != null && myZoomLayout.getVisibility() == View.VISIBLE) {
             // Can we scroll down?
@@ -949,7 +952,9 @@ public class PerformanceGestures {
         if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_presenter)) &&
                 presenterRecyclerView != null) {
             int newPosition = getPosition(scrollDown);
-
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 mainActivityInterface.getSong().setPdfPageCurrent(newPosition);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
@@ -1030,6 +1035,9 @@ public class PerformanceGestures {
     private int getPosition(boolean scrollDown) {
         int currentPosition = mainActivityInterface.getSong().getCurrentSection();
         int finalPosition = mainActivityInterface.getSong().getPresoOrderSongSections().size() - 1;
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
 
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             currentPosition = mainActivityInterface.getSong().getPdfPageCurrent();
@@ -1215,6 +1223,10 @@ public class PerformanceGestures {
 
     // Highlighter edit
     public void highlighterEdit() {
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (ifPDFAndAllowed() || !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             actionInterface.navigateToFragment(c.getString(R.string.deeplink_highlighter), 0);
         }
@@ -1609,6 +1621,10 @@ public class PerformanceGestures {
 
     // The checks
     private boolean ifPDFAndAllowed() {
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 return true;

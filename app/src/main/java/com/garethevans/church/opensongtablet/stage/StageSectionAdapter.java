@@ -331,6 +331,10 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             }
             currentSection = position;
 
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
+
             // If this section of the song has inline MIDI messages, send them
             if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 final String message = mainActivityInterface.getSong().getInlineMidiMessages().get(position, "");

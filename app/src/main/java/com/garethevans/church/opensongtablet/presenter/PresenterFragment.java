@@ -301,6 +301,10 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("initialiseInfoBarRequired");
 
         // IV - Reset current values to 0
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (mainActivityInterface.getSong()!=null && mainActivityInterface.getSong().getFiletype()!=null &&
                 mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             mainActivityInterface.getSong().setPdfPageCurrent(0);

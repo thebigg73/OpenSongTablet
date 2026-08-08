@@ -916,6 +916,10 @@ public class SecondaryDisplay extends Presentation {
 
         // Decide if this is an XML and proceed accordingly
         // PDF and IMG files don't need this
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (mainActivityInterface.getSong().getFiletype().equals("XML") &&
         !mainActivityInterface.getSong().getFolder().contains("**Image") &&
         !mainActivityInterface.getSong().getFolder().contains("**"+c.getString(R.string.image))) {
@@ -952,6 +956,10 @@ public class SecondaryDisplay extends Presentation {
                     showPreview = false;
                 } else {
                     showPreview = mainActivityInterface.getPresenterSettings().getShowNextLinePreview();
+                }
+
+                if (mainActivityInterface.getSong().getFiletype()==null) {
+                    mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
                 }
 
                 if (showPreview &&
@@ -1075,6 +1083,10 @@ public class SecondaryDisplay extends Presentation {
         if (myView != null) {
             // IV - End new song status on showing a section
             isNewSong = false;
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
+
             if ((mainActivityInterface.getMode().equals(c.getString(R.string.mode_performance)) ||
                     mainActivityInterface.getMode().equals(c.getString(R.string.mode_hybrid))) &&
                     !mainActivityInterface.getSong().getFiletype().equals("IMG") &&

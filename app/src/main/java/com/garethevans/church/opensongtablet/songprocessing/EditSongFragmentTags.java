@@ -341,6 +341,9 @@ public class EditSongFragmentTags extends Fragment {
 
                 // Update the non-persistent database
                 mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
+                if (thisSong.getFiletype()==null) {
+                    thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+                }
 
                 // Update the persistent database if it isn't an XML file, but PDF/IMG
                 if (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) {

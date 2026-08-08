@@ -329,6 +329,9 @@ public class NearbyReceivePayloads {
                 nearbyJson.getSection()>=0) {
             boolean onSectionAlready;
             int totalSections;
+            if (mainActivityInterface.getSong().getFiletype()==null) {
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+            }
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                 onSectionAlready = mainActivityInterface.getSong().getPdfPageCurrent() == nearbyJson.getSection();
                 totalSections = mainActivityInterface.getSong().getPdfPageCount();

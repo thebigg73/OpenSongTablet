@@ -64,12 +64,15 @@ public class LoadSong {
         thisSong.setCurrentlyLoading(true);
 
         // We will add to this song and then return it to the MainActivity object
+        if (thisSong.getFiletype()==null) {
+            thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+        }
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
                 mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing() ||
                 thisSong.getFolder().contains("**") || thisSong.getFolder().startsWith("../") ||
                 thisSong.getFilename().endsWith(".txt") || thisSong.getFilename().endsWith(".onsong") ||
                 thisSong.getFilename().endsWith(".cho") ||
-                thisSong.getFiletype().equals("TXT") || thisSong.getFiletype().equals("CHO") || thisSong.getFiletype().equals("iOS")) {
+                (thisSong.getFiletype()!=null && (thisSong.getFiletype().equals("TXT") || thisSong.getFiletype().equals("CHO") || thisSong.getFiletype().equals("iOS")))) {
             // This is set to true once the index is completed, so we either haven't finished indexing
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
             return doLoadSongFile(thisSong, indexing);
@@ -148,6 +151,9 @@ public class LoadSong {
             // If this is an image or a PDF (or DOC or ZIP), we don't load a song object from the file
             // Instead we use the database, but the user will have to wait!
 
+            if (thisSong.getFiletype()==null) {
+                thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+            }
             if (!thisSong.getFiletype().equals("PDF") && !thisSong.getFiletype().equals("IMG") &&
                     !thisSong.getFiletype().equals("DOC") && !thisSong.getFilename().equals("ZIP")) {
 
@@ -406,6 +412,9 @@ public class LoadSong {
     public Song readFileAsXML(Song thisSong, String where, Uri uri, String utf) {
         // Don't do this if we have an unrecognised song format
         // Check for the import pass go allowance
+        if (thisSong.getFiletype()==null) {
+            thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+        }
         if ((importingFile && thisSong.getFiletype().equals("XML")) || !mainActivityInterface.getStorageAccess().badFileExtension(thisSong.getFilename())) {
             // Extract all of the key bits of the song
             if (mainActivityInterface.getStorageAccess().uriIsFile(uri) || mainActivityInterface.getStorageAccess().uriExists(uri)) {
@@ -634,6 +643,9 @@ public class LoadSong {
     public void fixSongs() {
         if (songsToFix!=null && !songsToFix.isEmpty()) {
             for (Song thisSong:songsToFix) {
+                if (thisSong.getFiletype()==null) {
+                    thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+                }
                 if (thisSong.getFiletype()!=null &&
                         (thisSong.getFiletype().equals("XML") || thisSong.getFiletype().equals("TXT")) &&
                         thisSong.getFilename()!=null &&

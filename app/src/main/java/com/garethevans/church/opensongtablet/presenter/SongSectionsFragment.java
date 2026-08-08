@@ -156,6 +156,10 @@ public class SongSectionsFragment extends Fragment {
                     return false;
                 });
 
+                if (mainActivityInterface.getSong().getFiletype()==null) {
+                    mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+                }
+
                 if (getContext()!=null && mainActivityInterface.getSong().getFiletype()!=null &&
                         mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {

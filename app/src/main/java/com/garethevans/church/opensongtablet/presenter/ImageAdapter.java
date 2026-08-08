@@ -77,6 +77,10 @@ public class ImageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
 
         // If this is a single image, set that up
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
+
         if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
             PDFPageItemInfo pdfPageItemInfo = new PDFPageItemInfo();
             pdfPageItemInfo.pageNum = 1;
@@ -259,6 +263,10 @@ public class ImageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 Log.d(TAG,"position:"+position);
 
                 // If stage mode or a pdf, update the presenter and send a nearby payload
+                if (mainActivityInterface.getSong().getFiletype()==null) {
+                    mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+                }
+
                 if (mainActivityInterface.getMode().equals(c.getString(R.string.mode_stage)) ||
                         mainActivityInterface.getSong().getFiletype().equals("PDF") ||
                         mainActivityInterface.getSong().getFiletype().equals("IMG")) {

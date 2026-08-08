@@ -384,6 +384,9 @@ public class NearbySendPayloads {
             nearbyJsonToSend.setSong(mainActivityInterface.getSong());
             xml = null;
         }
+        if (mainActivityInterface.getSong().getFiletype()==null) {
+            mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
+        }
         if (xml!=null && xml.getBytes().length < 30000 && mainActivityInterface.getSong().getFiletype().equals("XML") &&
                 mainActivityInterface.getSong().getFilename() != null &&
                 !mainActivityInterface.getStorageAccess().isIMGorPDF(mainActivityInterface.getSong())) {
@@ -423,7 +426,10 @@ public class NearbySendPayloads {
 
 
     private void addSongSection(NearbyJson nearbyJson, Song song) {
-        if (song.getFiletype().equals("PDF") || mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",song.getFilename())) {
+        if (song.getFiletype()==null) {
+            song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song).getFilename()));
+        }
+        if ((song.getFiletype()!=null && song.getFiletype().equals("PDF")) || mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",song.getFilename())) {
             nearbyJson.setSection(song.getPdfPageCurrent());
         } else {
             nearbyJson.setSection(song.getCurrentSection());

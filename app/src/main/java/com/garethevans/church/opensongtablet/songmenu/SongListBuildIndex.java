@@ -249,6 +249,10 @@ public class SongListBuildIndex {
 
                                 // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
                                 // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
+                                if (mainActivityInterface.getIndexingSong().getFiletype()==null) {
+                                    mainActivityInterface.getIndexingSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getIndexingSong().getFilename()));
+                                }
+
                                 if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
                                         mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
                                     mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(mainActivityInterface.getIndexingSong());
