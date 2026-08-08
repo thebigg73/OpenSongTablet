@@ -7,15 +7,14 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.TypedArrayUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.TextViewCompat;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
-import com.google.android.material.textview.MaterialTextView;
 
 @SuppressLint("PrivateResource")
-public class MyMaterialSimpleTextView extends MaterialTextView {
+public class MyMaterialSimpleTextView extends AppCompatTextView {
 
     private Palette palette;
     private int xmlDrawableResId = 0;
