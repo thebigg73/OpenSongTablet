@@ -122,7 +122,7 @@ public class HighlighterFragment extends Fragment {
         
         myView.edit.setOnClickListener(v -> {
             if (mainActivityInterface.getSong().getFiletype()==null) {
-                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
+                mainActivityInterface.getSong().setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(mainActivityInterface.getSong().getFilename()));
             }
             if (mainActivityInterface.validScreenShotFile() || !mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 mainActivityInterface.navigateToFragment(null, R.id.highlighterEditFragment);

@@ -427,7 +427,7 @@ public class NearbySendPayloads {
 
     private void addSongSection(NearbyJson nearbyJson, Song song) {
         if (song.getFiletype()==null) {
-            song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song).getFilename()));
+            song.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(song.getFilename()));
         }
         if ((song.getFiletype()!=null && song.getFiletype().equals("PDF")) || mainActivityInterface.getStorageAccess().isSpecificFileExtension("PDF",song.getFilename())) {
             nearbyJson.setSection(song.getPdfPageCurrent());
