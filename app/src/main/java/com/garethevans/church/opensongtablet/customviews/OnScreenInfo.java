@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -38,8 +39,10 @@ public class OnScreenInfo extends LinearLayout {
         @Override
         public void run() {
             if (!capoPulsing && capoInfoNeeded) {
-                capo.setVisibility(View.GONE);
-                capo.clearAnimation();
+                if (capo!=null) {
+                    capo.setVisibility(View.GONE);
+                    capo.clearAnimation();
+                }
             }
         }
     };
@@ -75,10 +78,14 @@ public class OnScreenInfo extends LinearLayout {
     public OnScreenInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
-        inflate(context, R.layout.view_on_screen_info, this);
+        //inflate(context, R.layout.view_on_screen_info, this);
+
+        Context themedContext = new android.view.ContextThemeWrapper(context, R.style.AppTheme);
+        LayoutInflater.from(themedContext).inflate(R.layout.view_on_screen_info, this, true);
+
         info = findViewById(R.id.info);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             info.setBackgroundTintList(new ColorStateList(
                     new int[][]{new int[0]},
@@ -214,5 +221,14 @@ public class OnScreenInfo extends LinearLayout {
 
     private void updatePalette() {
 
+    }
+
+    public ColorStateList getSafeColorStateList(Context context, int resId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return context.getColorStateList(resId);
+        } else {
+            //noinspection deprecation
+            return context.getResources().getColorStateList(resId);
+        }
     }
 }
