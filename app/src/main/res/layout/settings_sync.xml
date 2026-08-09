@@ -36,7 +36,7 @@
                 app:myFabSize="mini" />
         </LinearLayout>
 
-        <com.google.android.material.tabs.TabLayout
+        <com.garethevans.church.opensongtablet.customviews.MyTabLayout
             android:id="@+id/syncTabs"
             style="@style/menuTabs"
             android:layout_width="match_parent"

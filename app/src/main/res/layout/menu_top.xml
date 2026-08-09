@@ -10,13 +10,13 @@
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="@dimen/action_bar_size"
         android:layout_gravity="top"
         android:contentDescription="@string/close"
         android:padding="16dp"
         app:srcCompat="@drawable/arrow_left"/>
 
-    <com.google.android.material.tabs.TabLayout
+    <com.garethevans.church.opensongtablet.customviews.MyTabLayout
         android:id="@+id/tabs"
         style="@style/menuTabs"
         android:layout_width="0dp"

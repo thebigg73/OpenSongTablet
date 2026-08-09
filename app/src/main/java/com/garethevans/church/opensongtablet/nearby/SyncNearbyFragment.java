@@ -24,6 +24,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.databinding.SettingsSyncBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.customviews.MyTabLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -160,7 +161,7 @@ public class SyncNearbyFragment extends Fragment {
 
             myView.syncPager.setAdapter(syncViewPagerAdapter);
             myView.syncPager.setOffscreenPageLimit(2);
-            TabLayout tabLayout = myView.syncTabs;
+            MyTabLayout tabLayout = myView.syncTabs;
             tabLayout.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
             //tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
             tabLayout.setTabIconTint(new ColorStateList(
@@ -168,7 +169,7 @@ public class SyncNearbyFragment extends Fragment {
                     new int[]{mainActivityInterface.getPalette().textColor}
             ));
             tabLayout.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
-            new TabLayoutMediator(tabLayout, myView.syncPager, (tab, position) -> {
+            tabLayout.setupWithViewPager(myView.syncPager, (tab, position) -> {
                 switch (position) {
                     case 0:
                         tab.setText(songs_string);
@@ -183,9 +184,7 @@ public class SyncNearbyFragment extends Fragment {
                         tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.settings, null));
                         break;
                 }
-                // "removing" tooltip
-                TooltipCompat.setTooltipText(tab.view, null);
-            }).attach();
+            });
         }
 
         // Get a note of the connected devices into the exposedDropdown

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -23,6 +24,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -43,6 +45,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -103,6 +106,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialButton;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
+import com.garethevans.church.opensongtablet.customviews.MyTabLayout;
 import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.ActivityBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
@@ -393,6 +397,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Used if implementing Oboe using C++ injection
     /* static {System.loadLibrary("lowlatencyaudio");} */
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // Disables vector drawable appcompat inflation crashes on older platforms if applicable
+        androidx.appcompat.app.AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -485,7 +496,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         this.getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
         if (myView == null) {
-            myView = ActivityBinding.inflate(getLayoutInflater());
+            //myView = ActivityBinding.inflate(getLayoutInflater());
+
+            // Wrap the inflater context with AppCompat's theme wrapper
+            LayoutInflater themedInflater = getLayoutInflater().cloneInContext(this);
+            myView = ActivityBinding.inflate(themedInflater);
+
             try {
                 setContentView(myView.getRoot());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -970,7 +986,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private void setupActionbar() {
-        setSupportActionBar(myView.myToolbar);
+        // Explicitly clear the title so the Toolbar never initializes
+        // its internal AppCompatTextView title view on Lollipop
+        /*if (myView.myToolbar != null) {
+            myView.myToolbar.setTitle(null);
+        }
+        setSupportActionBar(myView.myToolbar);*/
     }
 
     @Override
@@ -1185,37 +1206,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     private void setupViews() {
-        windowFlags = new WindowFlags(this, this.getWindow());
-        ViewCompat.setOnApplyWindowInsetsListener(myView.getRoot(), (v, insets) -> {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ViewCompat.setOnApplyWindowInsetsListener(myView.getRoot(), (v, insets) -> {
 
-            // On first call, we get a reference to the windowinsetscompat
-            // We need this in the windowFlags class, so set it if it is null
-            // Also set the initial screen rotation
-            if (windowFlags.getInsetsCompat() == null) {
-                windowFlags.setInsetsCompat(insets);
-                windowFlags.setCurrentRotation(this.getWindow().getDecorView().getDisplay().getRotation());
-            }
+                // Extract raw values safely here where it's guarded by SDK >= M
+                boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+                int imeHeight = imeVisible ? insets.getInsets(WindowInsetsCompat.Type.ime()).bottom : 0;
+                int rotation = this.getWindow().getDecorView().getDisplay().getRotation();
 
-            // If we have opened the soft keyboard we can get the height
-            boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
-            if (imeVisible) {
-                windowFlags.setSoftKeyboardHeight(insets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
-            }
+                // Pass ONLY primitives and safe objects to WindowFlags
+                windowFlags.setCurrentRotation(rotation);
+                if (imeVisible) {
+                    windowFlags.setSoftKeyboardHeight(imeHeight);
+                }
 
-            // Moves the view to above the soft keyboard height if required
-            if (imeVisible) {
-                v.getRootView().setPadding(0, 0, 0, windowFlags.getSoftKeyboardHeight());
-            } else {
-                v.getRootView().setPadding(0, 0, 0, 0);
-            }
+                // Moves the view to above the soft keyboard height if required
+                if (imeVisible) {
+                    v.getRootView().setPadding(0, 0, 0, windowFlags.getSoftKeyboardHeight());
+                } else {
+                    v.getRootView().setPadding(0, 0, 0, 0);
+                }
 
-            // If the keyboard isn't visible, hide the other flags after a short delay
-            // This makes the mode immersive/sticky
-            if (!imeVisible) {
-                mainLooper.postDelayed(() -> windowFlags.hideOrShowSystemBars(), 1000);
-            }
-            return insets;
-        });
+                if (!imeVisible) {
+                    mainLooper.postDelayed(() -> windowFlags.hideOrShowSystemBars(), 1000);
+                }
+                return insets;
+            });
+        }
 
         if (getSupportActionBar() != null) {
             myView.myToolbar.initialiseToolbar(this, getSupportActionBar());
@@ -2732,7 +2749,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             viewPager.setOffscreenPageLimit(1);
             // Disable the swiping gesture
             viewPager.setUserInputEnabled(false);
-            TabLayout tabLayout = myView.menuTop.tabs;
+            MyTabLayout tabLayout = myView.menuTop.tabs;
             tabLayout.setTabTextColors(getPalette().textColor, getPalette().textColor);
             //tabLayout.setTabIconTint(ColorStateList.valueOf(getPalette().textColor));
             tabLayout.setTabIconTint(new ColorStateList(
@@ -2740,7 +2757,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     new int[]{getPalette().textColor}
             ));
             tabLayout.setSelectedTabIndicatorColor(getPalette().secondary);
-            new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            tabLayout.setupWithViewPager(viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
                         tab.setText(song_string);
@@ -2753,11 +2770,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 // "removing" tooltip
                 TooltipCompat.setTooltipText(tab.view, null);
-            }).attach();
+            });
 
             // Still try to remove tooltips
             for (int i = 0; i < tabLayout.getTabCount(); ++i) {
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
+                MyTabLayout.Tab tab = tabLayout.getTabAt(i);
                 if (tab == null) {
                     continue;
                 }

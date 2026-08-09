@@ -39,8 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:clickable="false"
-            tools:text="0:00"/>
+            android:clickable="false" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/autoscrollTotalTime"

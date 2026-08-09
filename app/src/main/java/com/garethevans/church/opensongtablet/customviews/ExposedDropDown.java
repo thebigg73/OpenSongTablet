@@ -7,6 +7,7 @@ import android.content.ContextWrapper;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -73,13 +74,17 @@ public class ExposedDropDown extends FrameLayout {
 
         autoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_bg);
 
-        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
-            windowInsetsCompat = insets;
-            return insets;
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
+                windowInsetsCompat = insets;
+                return insets;
+            });
+        }
 
-        if (window != null && window.getDecorView() != null) {
-            windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+            if (window != null && window.getDecorView() != null) {
+                windowInsetsControllerCompat = WindowCompat.getInsetsController(window, window.getDecorView());
+            }
         }
 
         // Read XML attributes
@@ -121,9 +126,11 @@ public class ExposedDropDown extends FrameLayout {
                 setPopupSize();
             }
 
-            if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
-                    windowInsetsControllerCompat != null) {
-                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
+                        windowInsetsControllerCompat != null) {
+                    windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+                }
             }
 
             if (event.getAction() == MotionEvent.ACTION_UP ||
@@ -138,9 +145,11 @@ public class ExposedDropDown extends FrameLayout {
         if (!dealingWithAlready) {
             dealingWithAlready = true;
 
-            if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
-                    windowInsetsControllerCompat != null) {
-                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (windowInsetsCompat != null && windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime()) &&
+                        windowInsetsControllerCompat != null) {
+                    windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.ime());
+                }
             }
 
             setPopupSize();

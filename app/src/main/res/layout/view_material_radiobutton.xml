@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="@color/dark_primary"
             tools:text="Main text" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="?attr/hintTextColor"
+            android:textColor="@color/light_hint"
             tools:text="Info text" />
 
     </LinearLayout>

@@ -3,13 +3,12 @@
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:tint="?attr/colorControlActivated">
+    android:viewportHeight="24">
 
     <!-- Teardrop pointing UP (correct alignment for left handle) -->
     <group android:translateX="-3" android:rotation="180" android:pivotX="12" android:pivotY="12">
         <path
-            android:fillColor="@android:color/white"
+            android:fillColor="@color/light_secondary"
             android:pathData="M12,2
                               C17.5228,2 22,6.4772 22,12
                               C22,17.5228 12,22 12,22

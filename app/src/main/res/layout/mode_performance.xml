@@ -5,7 +5,7 @@
     android:id="@+id/mypage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
+    android:background="@color/light_primary"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:descendantFocusability="blocksDescendants"

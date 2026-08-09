@@ -346,21 +346,22 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     public void setupKeyboardListener(View rootView) {
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
-            // Check if the keyboard (IME) is visible
-            boolean isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
+                // Check if the keyboard (IME) is visible
+                boolean isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
 
-            // Get the height of the keyboard in pixels
-            //int keyboardHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-            if (isKeyboardVisible) {
-                showQuickBar();
-            } else {
-                hideQuickBar();
-            }
+                // Get the height of the keyboard in pixels
+                if (isKeyboardVisible) {
+                    showQuickBar();
+                } else {
+                    hideQuickBar();
+                }
 
-            // Return insets so the system can continue processing them
-            return insets;
-        });
+                // Return insets so the system can continue processing them
+                return insets;
+            });
+        }
     }
 
     private void showQuickBar() {

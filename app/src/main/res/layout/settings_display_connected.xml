@@ -55,7 +55,7 @@
                     android:layout_gravity="bottom|end"
                     android:contentDescription="@string/media"
                     android:enabled="false"
-                    android:tint="?attr/colorSecondaryVariant"
+                    android:tint="@color/light_secondary_variant"
                     android:src="@drawable/play"/>
 
                 <View

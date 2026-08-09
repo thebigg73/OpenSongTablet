@@ -96,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textColor="?attr/hintTextColor"
+        android:textColor="@color/light_hint"
         android:visibility="gone"
         tools:text="Hint" />
 </LinearLayout>

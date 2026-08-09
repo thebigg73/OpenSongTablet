@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <size android:height="16dp"/>
-    <solid android:color="?attr/tunerOff"/>
+    <solid android:color="@color/light_tuner_off"/>
     <corners android:topLeftRadius="16dp"
         android:bottomLeftRadius="16dp"
         android:topRightRadius="16dp"

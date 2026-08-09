@@ -13,6 +13,7 @@
         <item name="android:paddingStart">0dp</item>
         <item name="android:paddingEnd">0dp</item>
     </style>
+    <style name="ToolbarBaseTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <!-- Button shapes -->
     <!-- ShapeAppearance for rounded corners -->
@@ -39,8 +40,8 @@
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Rounded</item>
 
         <!-- colors -->
-        <item name="backgroundTint">?attr/colorSecondary</item>
-        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="backgroundTint">@color/light_secondary</item>
+        <item name="android:textColor">#000</item>
 
         <!-- spacing -->
         <item name="android:padding">16dp</item>
@@ -50,7 +51,7 @@
     <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">?attr/colorSecondary</item>
         <item name="strokeWidth">2dp</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Rounded</item>
         <item name="android:padding">16dp</item>
     </style>
@@ -96,15 +97,15 @@
 
     <!-- FloatingActionButton -->
     <style name="FABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">?attr/colorSecondary</item>
-        <item name="rippleColor">?attr/colorSecondaryVariant</item>
+        <item name="backgroundTint">@color/light_secondary</item>
+        <item name="rippleColor">@color/light_secondary_variant</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Rounded</item>
     </style>
 
     <!-- Extended FAB -->
     <style name="ExtendedFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
-        <item name="backgroundTint">?attr/colorSecondary</item>
-        <item name="rippleColor">?attr/colorSecondaryVariant</item>
+        <item name="backgroundTint">@color/light_secondary</item>
+        <item name="rippleColor">@color/light_secondary_variant</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Button.Rounded</item>
     </style>
 
@@ -183,7 +184,7 @@
         <item name="elevation">8dp</item>
         <item name="strokeWidth">0dp</item>
         <item name="strokeColor">@color/transparent</item>
-        <item name="cardBackgroundColor">?attr/colorSecondary</item>
+        <item name="cardBackgroundColor">@color/light_secondary</item>
     </style>
 
     <!--> For the new settings menus -->
@@ -208,7 +209,7 @@
     </style>
     <style name="SettingsCardTitle">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
     </style>
 
     <!-- For the song and set menu -->
@@ -221,12 +222,12 @@
     <style name="cardView_Title">
         <item name="android:textAppearance">?attr/textAppearanceBody1</item>
         <item name="android:textSize">@dimen/text_medium</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
     </style>
     <style name="cardView_Subtitle">
         <item name="android:textAppearance">?attr/textAppearanceBody2</item>
         <item name="android:textSize">@dimen/text_small</item>
-        <item name="android:textColor">?attr/hintTextColor</item>
+        <item name="android:textColor">@color/light_hint</item>
     </style>
 
     <!-- Recycler view items -->
@@ -266,7 +267,7 @@
         <item name="android:layout_marginStart">0dp</item>
         <item name="android:layout_marginEnd">0dp</item>
         <item name="elevation">0dp</item>
-        <item name="cardBackgroundColor">?attr/colorSecondary</item>
+        <item name="cardBackgroundColor">@color/light_secondary</item>
         <item name="android:padding">0dp</item>
         <item name="cardUseCompatPadding">false</item>
         <item name="cardElevation">0dp</item>
@@ -281,14 +282,14 @@
         <item name="android:saveEnabled">false</item>
         <item name="android:isScrollContainer">true</item>
         <item name="textInputLayoutFocusedRectEnabled">false</item>
-        <item name="hintTextColor">?attr/hintTextColor</item>
+        <item name="hintTextColor">#000</item>
         <item name="hintEnabled">true</item>
         <item name="endIconTint">?attr/hintTextColor</item>
         <item name="elevationOverlayEnabled">false</item>
 
         <!-- The box around the text -->
         <item name="boxBackgroundMode">outline</item>
-        <item name="boxStrokeColor">?attr/hintTextColor</item>
+        <item name="boxStrokeColor">@color/light_hint</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxBackgroundColor">@color/transparent</item>
@@ -331,7 +332,7 @@
         <item name="android:focusable">true</item>
         <item name="android:textIsSelectable">true</item>
         <item name="textInputLayoutFocusedRectEnabled">false</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
         <item name="android:textSize">@dimen/text_medium</item>
 
         <!-- Max lines = 1 and set Enter to complete entry -->
@@ -344,8 +345,8 @@
         <item name="android:layout_gravity">top</item>
 
         <!-- The text position thumb and trailing icon colours -->
-        <item name="colorPrimary">?attr/hintTextColor</item>
-        <item name="colorOnSurface">?attr/hintTextColor</item>
+        <item name="colorPrimary">@color/light_hint</item>
+        <item name="colorOnSurface">@color/light_hint</item>
 
         <item name="backgroundColor">@color/transparent</item>
     </style>
@@ -394,7 +395,7 @@
         <item name="android:layout_margin">0dp</item>
         <item name="android:saveEnabled">false</item>
         <item name="android:textSize">@dimen/text_medium</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
         <item name="hintEnabled">true</item>
 
         <!-- The dropdown -->
@@ -423,34 +424,28 @@
 
     <style name="TextAppearance.MyApp.Body" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textColorHint">?attr/hintTextColor</item>
+        <item name="android:textColorHint">@color/light_hint</item>
     </style>
 
     <!-- Slider style -->
     <style name="MySliderStyle" parent="Widget.MaterialComponents.Slider">
         <!--<item name="materialThemeOverlay">@style/SliderOverlay</item>-->
         <item name="labelStyle">@style/SliderLabel</item>
-        <item name="trackColor">?attr/colorSecondary</item>
-        <item name="thumbColor">?attr/colorSecondaryVariant</item>
-        <item name="trackColorActive">?attr/colorSecondary</item>
-        <item name="trackColorInactive">?attr/colorSecondary</item>
-        <item name="tickColor">?attr/colorSecondaryVariant</item>
-        <item name="tickColorActive">?attr/colorSecondaryVariant</item>
-        <item name="tickColorInactive">?attr/colorSecondaryVariant</item>
+        <item name="trackColor">@color/light_secondary</item>
+        <item name="thumbColor">@color/light_secondary_variant</item>
+        <item name="trackColorActive">@color/light_secondary</item>
+        <item name="trackColorInactive">@color/light_secondary</item>
+        <item name="tickColor">@color/light_secondary_variant</item>
+        <item name="tickColorActive">@color/light_secondary_variant</item>
+        <item name="tickColorInactive">@color/light_secondary_variant</item>
     </style>
-    <!--
-    <style name="SliderOverlay">
-        <item name="colorPrimary">?attr/colorPrimary</item>
-        <item name="colorOnPrimary">?attr/colorOnPrimary</item>
-        <item name="colorOnSurface">?attr/colorOnSurface</item>
-    </style>
--->
+
     <style name="SliderLabel" parent="Widget.MaterialComponents.Tooltip">
-        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="backgroundTint">@color/light_secondary</item>
         <item name="android:textAppearance">@style/SliderLabelText</item>
     </style>
     <style name="SliderLabelText" parent="TextAppearance.MaterialComponents.Tooltip">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
     </style>
 
     <!-- Window animations -->
@@ -473,14 +468,14 @@
     <style name="MyAlertDialogTheme"
         parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <!-- Optional customizations -->
-        <item name="colorPrimary">?attr/colorOnPrimary</item>
-        <item name="colorOnPrimary">?attr/colorOnSurface</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorOnPrimary">#000</item>
         <item name="buttonBarPositiveButtonStyle">@style/MyDialogButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/MyDialogButton</item>
     </style>
 
     <style name="MyDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">#000</item>
     </style>
 
 

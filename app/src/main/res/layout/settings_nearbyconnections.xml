@@ -45,7 +45,6 @@
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/off"
                         style="@style/LeftButton"
-                        app:backgroundTint="?attr/colorSecondary"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -54,7 +53,6 @@
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/host"
                         style="@style/MiddleButton"
-                        app:backgroundTint="?attr/colorPrimaryVariant"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -63,7 +61,6 @@
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/client"
                         style="@style/RightButton"
-                        app:backgroundTint="?attr/colorPrimaryVariant"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -113,7 +110,6 @@
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/advertiseButton"
                         style="@style/LeftButton"
-                        app:backgroundTint="?attr/colorSurface"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -123,7 +119,6 @@
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialButton
                         android:id="@+id/discoverButton"
                         style="@style/RightButton"
-                        app:backgroundTint="?attr/colorSurface"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

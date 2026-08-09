@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:visibility="gone"
-            app:buttonTint="?attr/colorOnPrimary"/>
+            app:buttonTint="#000"/>
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/cardview_item"
@@ -50,7 +50,7 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="0dp"
                 android:text="@string/title"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="#000"
                 android:visibility="visible"/>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
@@ -63,7 +63,7 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="0dp"
                 android:text="@string/filename"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="#000"
                 android:visibility="gone"/>
 
         </FrameLayout>
@@ -93,14 +93,14 @@
             android:paddingEnd="4dp"
             android:paddingBottom="4dp"
             android:text="@string/mainfoldername"
-            android:textColor="?attr/colorOnPrimary" />
+            android:textColor="#000" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
             android:id="@+id/cardview_exists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/colorError"
-            android:textColor="?attr/colorOnError"
+            android:background="@color/light_error"
+            android:textColor="#000"
             android:text="@string/included_songs_already_have"
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"

@@ -106,9 +106,9 @@
                 android:valueFrom="0"
                 android:valueTo="100"
                 tools:ignore="VisualLintBounds"
-                app:trackColor="?attr/colorSurface"
-                app:trackColorInactive="?attr/colorSurface"
-                app:thumbColor="?attr/colorSecondaryVariant" />
+                app:trackColor="@color/light_primary"
+                app:trackColorInactive="@color/light_primary"
+                app:thumbColor="@color/light_secondary_variant" />
 
         </FrameLayout>
 
@@ -180,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_box"
-                        app:backgroundTint="?attr/colorSurface"/>
+                        app:backgroundTint="@color/light_primary"/>
 
                     <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                         android:id="@+id/masterBoost2"
@@ -280,5 +280,5 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="?attr/colorSecondaryVariant" />
+        android:background="@color/light_secondary_variant" />
 </LinearLayout>

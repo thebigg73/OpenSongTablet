@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -238,22 +239,23 @@ public class PresenterFragment extends Fragment {
             myView.viewPager.setAdapter(pageAdapter);
             myView.viewPager.setUserInputEnabled(false);
             //myView.presenterTabs.setTabTextColors(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
-            myView.presenterTabs.setTabTextColors(new ColorStateList(
-                    new int[][]{new int[0]},
-                    new int[]{mainActivityInterface.getPalette().textColor}
-            ));
+            myView.presenterTabs.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
+
             myView.presenterTabs.setBackgroundColor(mainActivityInterface.getPalette().background);
             myView.presenterTabs.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
-            new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
+
+            myView.presenterTabs.setupWithViewPager(myView.viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
                         tab.setText(song_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
                         break;
                     case 1:
                         tab.setText(extra_settings_string);
+                        tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.list_number, null));
                         break;
                 }
-            }).attach();
+            });
 
             // Show any showcase instructions required
             showTutorial();

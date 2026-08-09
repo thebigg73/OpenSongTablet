@@ -37,9 +37,9 @@
             android:valueTo="1"
             app:labelBehavior="gone"
             android:stepSize="1"
-            app:thumbColor="?attr/colorSecondaryVariant"
+            app:thumbColor="@color/light_secondary_variant"
             app:thumbRadius="8dp"
-            app:trackColor="?attr/colorSecondary"
+            app:trackColor="@color/light_secondary"
             app:trackHeight="8dp" />
 
         <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView

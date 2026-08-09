@@ -25,7 +25,6 @@
             android:layout_margin="16dp"
             android:gravity="center"
             android:text="@string/record"
-            app:backgroundTint="?attr/colorSecondaryVariant"
             app:icon="@drawable/record" />
 
         <LinearLayout
@@ -83,8 +82,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="@string/delete"
                         android:src="@drawable/delete"
-                        app:myFabSize="mini"
-                        app:backgroundTint="?attr/colorSecondaryVariant" />
+                        app:myFabSize="mini" />
                 </FrameLayout>
 
                 <FrameLayout

@@ -28,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/delete"
-        app:backgroundTint="?attr/colorError"
         app:useCompatPadding="true"
         android:contentDescription="@string/delete" />
 </TableRow>

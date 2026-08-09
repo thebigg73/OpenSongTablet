@@ -16,6 +16,7 @@ import android.widget.TextClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -36,18 +37,18 @@ public class MyToolbar extends Toolbar {
     private Context c;
     private MainActivityInterface mainActivityInterface;
     private ActionBar actionBar;
-    private final FrameLayout batteryholder;
-    private final MyMaterialSimpleTextView title;
-    private final MyMaterialSimpleTextView author;
-    private final MyMaterialSimpleTextView key;
-    private final MyMaterialSimpleTextView capo;
-    private final TextClock clock;
-    private final MyMaterialSimpleTextView tempo;
-    private final ImageView setIcon, batteryimage;
-    private final ConstraintLayout songandauthor;
-    private final LinearLayout metronomeLayout;
-    private final ArrayList<View> beatView;
-    private final MyMaterialSimpleTextView batterycharge;
+    private FrameLayout batteryholder;
+    private MyMaterialSimpleTextView title;
+    private MyMaterialSimpleTextView author;
+    private MyMaterialSimpleTextView key;
+    private MyMaterialSimpleTextView capo;
+    private TextClock clock;
+    private MyMaterialSimpleTextView tempo;
+    private ImageView setIcon, batteryimage;
+    private ConstraintLayout songandauthor;
+    private LinearLayout metronomeLayout;
+    private ArrayList<View> beatView;
+    private MyMaterialSimpleTextView batterycharge;
     private Handler delayActionBarHide;
     private Runnable hideActionBarRunnable;
     private int actionBarHideTime = 1200, additionalTopPadding = 0;
@@ -85,12 +86,14 @@ public class MyToolbar extends Toolbar {
         };
         updateClock();
     }
-    public MyToolbar(@NonNull Context context) {
-        this(context, null);
+
+
+    public MyToolbar(Context context) {
+        super(wrapContext(context), null, androidx.appcompat.R.attr.toolbarStyle);
     }
 
-    public MyToolbar(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public MyToolbar(Context context, AttributeSet attrs) {
+        super(wrapContext(context), attrs, androidx.appcompat.R.attr.toolbarStyle);
 
         View v = inflate(context,R.layout.view_toolbar_constraint,this);
 
@@ -141,6 +144,17 @@ public class MyToolbar extends Toolbar {
             mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_actionbar), 0);
         });
     }
+
+    public MyToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(wrapContext(context), attrs, defStyleAttr);
+    }
+
+    private static Context wrapContext(Context context) {
+        // Wrap the context in an AppCompat ThemeWrapper to ensure resource and
+        // color state lookups are safely intercepted by AppCompat on older APIs.
+        return new ContextThemeWrapper(context, R.style.ToolbarBaseTheme);
+    }
+
 
     // Deal with the preferences used for the actionbar
     private void updateActionBarPrefs() {

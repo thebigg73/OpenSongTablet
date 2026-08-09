@@ -67,6 +67,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_alignParentBottom="true"
-        android:background="?attr/colorSecondary" />
+        android:background="@color/light_secondary" />
 
 </RelativeLayout>

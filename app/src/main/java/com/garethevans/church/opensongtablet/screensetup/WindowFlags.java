@@ -16,6 +16,7 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.graphics.Insets;
 import androidx.core.view.DisplayCutoutCompat;
 import androidx.core.view.WindowCompat;
@@ -26,7 +27,634 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class WindowFlags {
 
-    /*
+    private final Window w;
+    private final MainActivityInterface mainActivityInterface;
+    private WindowInsetsControllerCompat windowInsetsControllerCompat;
+    private WindowInsetsCompat insetsCompat;
+    private DisplayCutoutCompat displayCutoutCompat;
+    private Insets navBars, statusBars;
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private final String TAG = "WindowFlags";
+    private final float density;
+    private int customMarginLeft, customMarginRight, customMarginBottom, customMarginTop,
+            statusHeight = 0, navHeight = 0,
+            roundedLeft = 0, roundedRight = 0, roundedBottom = 0, roundedTop = 0,
+            marginToolbarLeft, marginToolbarRight,
+            currentRotation, firstBootRotation, cutoutTop, cutoutBottom, currentRoundedTop = 0,
+            cutoutLeft, cutoutRight, softKeyboardHeight = 0, currentTopCutoutHeight = 0;
+    private String navBarPosition = "b";
+    private int[] totalMargins = new int[4];
+    private boolean immersiveMode, ignoreCutouts, navBarKeepSpace,
+            showStatus, showStatusInCutout, showNav, currentTopHasCutout, ignoreRoundedCorners,
+            gestureNavigation;
+
+    private int typeStatusBars;
+    private int typeNavBars;
+    private int typeIme;
+    private int typeSystemBars;
+    private int smallestScreenWidthDp;
+
+    // This is called once when the class is instantiated.
+    public WindowFlags(Context c, Window w) {
+        this.w = w;
+        mainActivityInterface = (MainActivityInterface) c;
+        windowInsetsControllerCompat = WindowCompat.getInsetsController(w, w.getDecorView());
+
+        // Safe initialization of inset types for API 23+ (bypassed on API 21/22 to prevent crashes)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            typeStatusBars = WindowInsetsHelper.getStatusBarsType();
+            typeNavBars = WindowInsetsHelper.getNavBarsType();
+            typeIme = WindowInsetsHelper.getImeType();
+            typeSystemBars = WindowInsetsHelper.getSystemBarsType();
+        } else {
+            typeStatusBars = 0;
+            typeNavBars = 0;
+            typeIme = 0;
+            typeSystemBars = 0;
+        }
+
+        // Make edge to edge
+        edgeToEdge();
+
+        // Get the display density, smallest width and current orientation
+        density = c.getResources().getDisplayMetrics().density;
+        smallestScreenWidthDp = c.getResources().getConfiguration().smallestScreenWidthDp;
+
+        // Get the preferences
+        getUpdatedPreferences();
+    }
+
+    // If we load in a profile, this is called
+    public void getUpdatedPreferences() {
+        navBarKeepSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean("navBarKeepSpace", false);
+        customMarginLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginLeft", 0);
+        customMarginRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginRight", 0);
+        customMarginTop = mainActivityInterface.getPreferences().getMyPreferenceInt("marginTop", 0);
+        customMarginBottom = mainActivityInterface.getPreferences().getMyPreferenceInt("marginBottom", 0);
+        immersiveMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("immersiveMode", true);
+        ignoreCutouts = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreCutouts", false);
+        ignoreRoundedCorners = mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners", true);
+        marginToolbarLeft = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarLeft", 0);
+        marginToolbarRight = mainActivityInterface.getPreferences().getMyPreferenceInt("marginToolbarRight", 0);
+        gestureNavigation = mainActivityInterface.getPreferences().getMyPreferenceBoolean("gestureNavigation", false);
+    }
+
+    // Initialise the WindowInsetsCompat from MainActivity (once it is ready)
+    public void setInsetsCompat(WindowInsetsCompat insetsCompat) {
+        this.insetsCompat = insetsCompat;
+        firstBootRotation = w.getDecorView().getDisplay().getRotation();
+        displayCutoutCompat = insetsCompat.getDisplayCutout();
+        navBars = insetsCompat.getInsetsIgnoringVisibility(typeNavBars);
+        statusBars = insetsCompat.getInsetsIgnoringVisibility(typeStatusBars);
+
+        // Set the defaults that don't change on rotation/actions
+        setSystemBarHeights();
+        setDeviceCutouts();
+        setRoundedCorners();
+
+        // Check if the top view has the cutout
+        setCurrentTopHasCutout();
+
+        // Decide if we should hide or show the system bars
+        hideOrShowSystemBars();
+
+        // Work out the margins for this orientation
+        setMargins();
+    }
+
+    public WindowInsetsCompat getInsetsCompat() {
+        return insetsCompat;
+    }
+
+    public void edgeToEdge() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.setStatusBarColor(Color.TRANSPARENT);
+            w.setNavigationBarColor(Color.TRANSPARENT);
+        } else {
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
+    private void setSystemBarHeights() {
+        statusHeight = statusBars.top;
+        checkNavBarHeight();
+    }
+
+    public void checkNavBarHeight() {
+        if (gestureNavigation) {
+            navHeight = 0;
+        } else {
+            navHeight = Math.max(navBars.bottom, Math.max(navBars.left, navBars.right));
+        }
+    }
+
+    public void setGestureNavigation(boolean gestureNavigation) {
+        this.gestureNavigation = gestureNavigation;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("gestureNavigation", gestureNavigation);
+    }
+
+    public boolean getGestureNavigation() {
+        return gestureNavigation;
+    }
+
+    public void setSoftKeyboardHeight(int softKeyboardHeight) {
+        this.softKeyboardHeight = softKeyboardHeight;
+    }
+
+    public int getSoftKeyboardHeight() {
+        return softKeyboardHeight;
+    }
+
+    public void hideKeyboard() {
+        if (insetsCompat != null) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> windowInsetsControllerCompat.hide(typeIme), 500);
+        }
+    }
+
+    public void showKeyboard() {
+        if (insetsCompat != null && !insetsCompat.isVisible(WindowInsetsCompat.Type.ime())) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> windowInsetsControllerCompat.show(typeIme), 1000);
+        }
+    }
+
+    public void adjustViewPadding(MainActivityInterface mainActivityInterface, View view) {
+        if (softKeyboardHeight > 0) {
+            view.setPadding(0, 0, 0, softKeyboardHeight);
+        } else {
+            view.setPadding(0, 0, 0, mainActivityInterface.getDisplayMetrics()[1] / 2);
+        }
+    }
+
+    public void hideOrShowSystemBars() {
+        showNav = !immersiveMode || navBarKeepSpace;
+        showStatus = !immersiveMode;
+        showStatusInCutout = currentTopHasCutout && !ignoreCutouts;
+
+        if (showStatus || showStatusInCutout) {
+            windowInsetsControllerCompat.show(typeStatusBars);
+        } else {
+            windowInsetsControllerCompat.hide(typeStatusBars);
+            windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+
+        if (showNav) {
+            windowInsetsControllerCompat.show(typeNavBars);
+        } else {
+            windowInsetsControllerCompat.hide(typeNavBars);
+            windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+
+        if (!showNav && !showStatus && !showStatusInCutout) {
+            windowInsetsControllerCompat.hide(typeSystemBars);
+            windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            w.setStatusBarColor(mainActivityInterface.getPalette().primary);
+        }
+
+        windowInsetsControllerCompat.setAppearanceLightStatusBars(!mainActivityInterface.getPalette().dark);
+    }
+
+    private void setDeviceCutouts() {
+        if (insetsCompat != null && displayCutoutCompat == null) {
+            displayCutoutCompat = insetsCompat.getDisplayCutout();
+        }
+        if (displayCutoutCompat != null) {
+            switch (firstBootRotation) {
+                case 1:
+                    cutoutTop = displayCutoutCompat.getSafeInsetLeft();
+                    cutoutLeft = displayCutoutCompat.getSafeInsetBottom();
+                    cutoutRight = displayCutoutCompat.getSafeInsetTop();
+                    cutoutBottom = displayCutoutCompat.getSafeInsetRight();
+                    break;
+                case 2:
+                    cutoutTop = displayCutoutCompat.getSafeInsetBottom();
+                    cutoutLeft = displayCutoutCompat.getSafeInsetRight();
+                    cutoutRight = displayCutoutCompat.getSafeInsetLeft();
+                    cutoutBottom = displayCutoutCompat.getSafeInsetTop();
+                    break;
+                case 3:
+                    cutoutTop = displayCutoutCompat.getSafeInsetRight();
+                    cutoutLeft = displayCutoutCompat.getSafeInsetTop();
+                    cutoutRight = displayCutoutCompat.getSafeInsetBottom();
+                    cutoutBottom = displayCutoutCompat.getSafeInsetLeft();
+                    break;
+                case 0:
+                default:
+                    cutoutTop = displayCutoutCompat.getSafeInsetTop();
+                    cutoutLeft = displayCutoutCompat.getSafeInsetLeft();
+                    cutoutRight = displayCutoutCompat.getSafeInsetRight();
+                    cutoutBottom = displayCutoutCompat.getSafeInsetBottom();
+                    break;
+            }
+
+            if (statusHeight == cutoutTop) {
+                statusHeight = (int) (24f * density);
+            }
+            if (navHeight > cutoutTop) {
+                navHeight -= cutoutTop;
+            }
+        }
+    }
+
+    private void setRoundedCorners() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            applyRoundedCorners(w, this);
+        }
+
+        roundedLeft = (int) (roundedLeft - (roundedLeft * Math.sin(Math.toRadians(45))));
+        roundedRight = (int) (roundedRight - (roundedRight * Math.sin(Math.toRadians(45))));
+        roundedTop = (int) (roundedTop - (roundedTop * Math.sin(Math.toRadians(45))));
+        roundedBottom = (int) (roundedBottom - (roundedBottom * Math.sin(Math.toRadians(45))));
+    }
+
+    public int getCurrentRoundedTop() {
+        return currentRoundedTop;
+    }
+
+    /** @noinspection SuspiciousNameCombination */
+    private void setCurrentTopHasCutout() {
+        switch (currentRotation) {
+            case 1:
+                currentTopHasCutout = cutoutLeft > 0;
+                currentTopCutoutHeight = cutoutLeft;
+                currentRoundedTop = roundedLeft;
+                break;
+            case 2:
+                currentTopHasCutout = cutoutBottom > 0;
+                currentTopCutoutHeight = cutoutBottom;
+                currentRoundedTop = roundedBottom;
+                break;
+            case 3:
+                currentTopHasCutout = cutoutRight > 0;
+                currentTopCutoutHeight = cutoutRight;
+                currentRoundedTop = roundedRight;
+                break;
+            case 0:
+            default:
+                currentTopHasCutout = cutoutTop > 0;
+                currentTopCutoutHeight = cutoutTop;
+                currentRoundedTop = roundedTop;
+                break;
+        }
+    }
+
+    public boolean getHasCutouts() {
+        return cutoutLeft > 0 || cutoutTop > 0 || cutoutRight > 0 || cutoutBottom > 0;
+    }
+
+    public int getCurrentTopCutoutHeight() {
+        return currentTopCutoutHeight;
+    }
+
+    public boolean getShowStatus() {
+        return showStatus;
+    }
+
+    public boolean getShowStatusInCutout() {
+        return showStatusInCutout;
+    }
+
+    public int getStatusHeight() {
+        return statusHeight;
+    }
+
+    public void setCurrentRotation(int currentRotation) {
+        this.currentRotation = currentRotation;
+        if (smallestScreenWidthDp >= 600 || currentRotation == Surface.ROTATION_0 ||
+                currentRotation == Surface.ROTATION_180) {
+            navBarPosition = "b";
+        } else if (currentRotation == Surface.ROTATION_90) {
+            navBarPosition = "r";
+        } else if (currentRotation == Surface.ROTATION_270) {
+            navBarPosition = "l";
+        }
+
+        setCurrentTopHasCutout();
+        checkNavBarHeight();
+        hideOrShowSystemBars();
+        setMargins();
+    }
+
+    public boolean getImmersiveMode() {
+        return immersiveMode;
+    }
+
+    public void setImmersiveMode(boolean immersiveMode) {
+        this.immersiveMode = immersiveMode;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("immersiveMode", immersiveMode);
+    }
+
+    public boolean getIgnoreCutouts() {
+        return ignoreCutouts;
+    }
+
+    public void setIgnoreCutouts(boolean ignoreCutouts) {
+        this.ignoreCutouts = ignoreCutouts;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreCutouts", ignoreCutouts);
+    }
+
+    public boolean getNavBarKeepSpace() {
+        return navBarKeepSpace;
+    }
+
+    public void setNavBarKeepSpace(boolean navBarKeepSpace) {
+        this.navBarKeepSpace = navBarKeepSpace;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("navBarKeepSpace", navBarKeepSpace);
+    }
+
+    public int getCustomMarginTop() {
+        return customMarginTop;
+    }
+
+    public void setCustomMarginTop(int customMarginTop, boolean doSave) {
+        this.customMarginTop = customMarginTop;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginTop", customMarginTop);
+        }
+    }
+
+    public int getCustomMarginLeft() {
+        return customMarginLeft;
+    }
+
+    public void setCustomMarginLeft(int customMarginLeft, boolean doSave) {
+        this.customMarginLeft = customMarginLeft;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginLeft", customMarginLeft);
+        }
+    }
+
+    public int getCustomMarginRight() {
+        return customMarginRight;
+    }
+
+    public void setCustomMarginRight(int customMarginRight, boolean doSave) {
+        this.customMarginRight = customMarginRight;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginRight", customMarginRight);
+        }
+    }
+
+    public int getCustomMarginBottom() {
+        return customMarginBottom;
+    }
+
+    public void setCustomMarginBottom(int customMarginBottom, boolean doSave) {
+        this.customMarginBottom = customMarginBottom;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginBottom", customMarginBottom);
+        }
+    }
+
+    public int getMarginToolbarLeft() {
+        return marginToolbarLeft;
+    }
+
+    public void setMarginToolbarLeft(int marginToolbarLeft, boolean doSave) {
+        this.marginToolbarLeft = marginToolbarLeft;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginToolbarLeft", marginToolbarLeft);
+        }
+    }
+
+    public int getMarginToolbarRight() {
+        return marginToolbarRight;
+    }
+
+    public void setMarginToolbarRight(int marginToolbarRight, boolean doSave) {
+        this.marginToolbarRight = marginToolbarRight;
+        if (doSave) {
+            mainActivityInterface.getPreferences().setMyPreferenceInt("marginToolbarRight", marginToolbarRight);
+        }
+    }
+
+    public void setMargins() {
+        int marginL, marginR, marginT, marginB;
+        int cutoutL, cutoutR, cutoutT, cutoutB;
+        int roundL, roundR, roundT, roundB;
+
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ignoreRoundedCorners", true)) {
+            roundL = 0;
+            roundR = 0;
+            roundB = 0;
+            roundT = 0;
+        } else {
+            roundL = roundedLeft;
+            roundR = roundedRight;
+            roundB = roundedBottom;
+            roundT = roundedTop;
+        }
+
+        if (getHasCutouts() && !ignoreCutouts) {
+            roundT = 0;
+        }
+
+        switch (currentRotation) {
+            case 1:
+                marginL = customMarginTop + roundT;
+                cutoutL = cutoutTop;
+                marginR = customMarginBottom + roundB;
+                cutoutR = cutoutBottom;
+                marginT = customMarginRight + roundR;
+                cutoutT = cutoutRight;
+                marginB = customMarginLeft + roundL;
+                cutoutB = cutoutLeft;
+                break;
+            case 2:
+                marginL = customMarginRight + roundR;
+                cutoutL = cutoutRight;
+                marginR = customMarginLeft + roundL;
+                cutoutR = cutoutLeft;
+                marginT = customMarginBottom + roundB;
+                cutoutT = cutoutBottom;
+                marginB = customMarginTop + roundT;
+                cutoutB = cutoutTop;
+                break;
+            case 3:
+                marginL = customMarginBottom + roundB;
+                cutoutL = cutoutBottom;
+                marginR = customMarginTop + roundT;
+                cutoutR = cutoutTop;
+                marginT = customMarginLeft + roundL;
+                cutoutT = cutoutLeft;
+                marginB = customMarginRight + roundR;
+                cutoutB = cutoutRight;
+                break;
+            case 0:
+            default:
+                marginL = customMarginLeft + roundL;
+                cutoutL = cutoutLeft;
+                marginR = customMarginRight + roundR;
+                cutoutR = cutoutRight;
+                marginT = customMarginTop + roundT;
+                cutoutT = cutoutTop;
+                marginB = customMarginBottom + roundB;
+                cutoutB = cutoutBottom;
+                break;
+        }
+
+        int nav = 0;
+        if (showNav) {
+            if (gestureNavigation) {
+                navHeight = 0;
+            }
+            nav = navHeight;
+        }
+        switch (navBarPosition) {
+            case "b":
+                marginB += nav;
+                break;
+            case "l":
+                marginL += nav;
+                break;
+            case "r":
+                marginR += nav;
+                break;
+        }
+
+        currentTopCutoutHeight = cutoutT;
+
+        if (ignoreCutouts) {
+            totalMargins = new int[]{marginL, marginT, marginR, marginB};
+        } else {
+            if (currentTopHasCutout && showStatusInCutout) {
+                cutoutT = 0;
+            }
+            totalMargins = new int[]{marginL + cutoutL, marginT + cutoutT, marginR + cutoutR, marginB + cutoutB};
+        }
+    }
+
+    public int[] getMargins() {
+        return totalMargins;
+    }
+
+    public boolean getHasRoundedCorners() {
+        return roundedLeft > 0 || roundedRight > 0 || roundedBottom > 0 || roundedTop > 0;
+    }
+
+    public boolean getIgnoreRoundedCorners() {
+        return ignoreRoundedCorners;
+    }
+
+    public void setIgnoreRoundedCorners(boolean ignoreRoundedCorners) {
+        this.ignoreRoundedCorners = ignoreRoundedCorners;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("ignoreRoundedCorners", ignoreRoundedCorners);
+    }
+
+    @SuppressLint("NewApi")
+    public Size getUsableScreenSize() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Insets insets = insetsCompat.getInsetsIgnoringVisibility(
+                    WindowInsetsCompat.Type.navigationBars()
+                            | WindowInsetsCompat.Type.displayCutout()
+                            | WindowInsetsCompat.Type.statusBars());
+
+            int insetsWidth = insets.left + insets.right;
+            int insetsHeight = insets.top + insets.bottom;
+
+            WindowMetrics windowMetrics = w.getWindowManager().getCurrentWindowMetrics();
+
+            int width = windowMetrics.getBounds().width() - insetsWidth;
+            int height = windowMetrics.getBounds().height() - insetsHeight;
+
+            return new Size(width, height);
+        } else {
+            android.graphics.Point size = new android.graphics.Point();
+            w.getWindowManager().getDefaultDisplay().getSize(size);
+            return new Size(size.x, size.y);
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    void applyRoundedCorners(Window w, WindowFlags flags) {
+        WindowInsets insets = w.getDecorView().getRootWindowInsets();
+        if (insets != null) {
+            RoundedCorner topLeft = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT);
+            RoundedCorner topRight = insets.getRoundedCorner(RoundedCorner.POSITION_TOP_RIGHT);
+            RoundedCorner bottomLeft = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT);
+            RoundedCorner bottomRight = insets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT);
+
+            if (topLeft != null) {
+                flags.roundedLeft = topLeft.getRadius();
+                flags.roundedTop = topLeft.getRadius();
+            }
+
+            if (topRight != null) {
+                flags.roundedRight = topRight.getRadius();
+                flags.roundedTop = Math.max(flags.roundedTop, topRight.getRadius());
+            }
+
+            if (bottomLeft != null) {
+                flags.roundedLeft = Math.max(flags.roundedLeft, bottomLeft.getRadius());
+                flags.roundedBottom = bottomLeft.getRadius();
+            }
+
+            if (bottomRight != null) {
+                flags.roundedRight = Math.max(flags.roundedRight, bottomRight.getRadius());
+                flags.roundedBottom = Math.max(flags.roundedBottom, bottomRight.getRadius());
+            }
+        }
+    }
+
+    // Isolated helper class to keep API 23+ WindowInsetsCompat.Type references
+    // safely away from the class verifier on API 21/22 devices.
+    @RequiresApi(Build.VERSION_CODES.M)
+    private static class WindowInsetsHelper {
+        static int getStatusBarsType() {
+            return WindowInsetsCompat.Type.statusBars();
+        }
+
+        static int getNavBarsType() {
+            return WindowInsetsCompat.Type.navigationBars();
+        }
+
+        static int getImeType() {
+            return WindowInsetsCompat.Type.ime();
+        }
+
+        static int getSystemBarsType() {
+            return WindowInsetsCompat.Type.systemBars();
+        }
+    }
+}
+/*
+package com.garethevans.church.opensongtablet.screensetup;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Size;
+import android.view.Display;
+import android.view.RoundedCorner;
+import android.view.Surface;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+import android.view.WindowMetrics;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.DisplayCutoutCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
+public class WindowFlags {
+
+    */
+/*
     Different options of window flags depending on user settings:
     * If the device has notches (camera, etc.) at the top of the screen,
       we can't draw the action bar over that.  Instead, we pad the actionbar
@@ -47,7 +675,8 @@ public class WindowFlags {
      * These are stored as safeCutoutL/R/T/B
      * On rotation of the device, the hasTopNotches checks if the temp top matches
 
-     */
+     *//*
+
 
     private final Window w;
     private final MainActivityInterface mainActivityInterface;
@@ -59,7 +688,9 @@ public class WindowFlags {
     private final String TAG = "WindowFlags";
     private final float density;
     private int customMarginLeft, customMarginRight, customMarginBottom, customMarginTop,
-            statusHeight = 0, navHeight = 0,
+            statusHeight = 0, navHeight = 0,*/
+/**//*
+
             roundedLeft = 0, roundedRight = 0, roundedBottom = 0, roundedTop = 0,
             marginToolbarLeft, marginToolbarRight,
             currentRotation, firstBootRotation, cutoutTop, cutoutBottom, currentRoundedTop = 0,
@@ -339,7 +970,9 @@ public class WindowFlags {
         return currentRoundedTop;
     }
 
-    /** @noinspection SuspiciousNameCombination*/
+    */
+/** @noinspection SuspiciousNameCombination*//*
+
     private void setCurrentTopHasCutout() {
         // We have already decided where the cutouts are (actual T, B, L, R)
         // These were calculated from the firstBootRotation when insets were calculated
@@ -671,4 +1304,4 @@ public class WindowFlags {
             }
         }
     }
-}
+}*/

@@ -14,9 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyToolbar;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetImportBundleBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.tabs.TabLayout;
+import com.garethevans.church.opensongtablet.customviews.MyTabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class ImportSetBundleFragment extends Fragment {
@@ -96,7 +97,7 @@ public class ImportSetBundleFragment extends Fragment {
             importSetBundleViewPager = myView.importSetBundleViewPager;
             importSetBundleViewPager.setAdapter(importBundleViewPagerAdapter);
             importSetBundleViewPager.setOffscreenPageLimit(1);
-            TabLayout tabLayout = myView.importSetBundleTabs;
+            MyTabLayout tabLayout = myView.importSetBundleTabs;
             tabLayout.setTabTextColors(mainActivityInterface.getPalette().textColor, mainActivityInterface.getPalette().textColor);
             //tabLayout.setTabIconTint(ColorStateList.valueOf(mainActivityInterface.getPalette().textColor));
             tabLayout.setTabIconTint(new ColorStateList(
@@ -105,7 +106,7 @@ public class ImportSetBundleFragment extends Fragment {
             ));
             tabLayout.setSelectedTabIndicatorColor(mainActivityInterface.getPalette().secondary);
 
-            new TabLayoutMediator(tabLayout, importSetBundleViewPager, (tab, position) -> {
+            tabLayout.setupWithViewPager(importSetBundleViewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
                         tab.setText(set_list);
@@ -116,7 +117,7 @@ public class ImportSetBundleFragment extends Fragment {
                         tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.music_note, null));
                         break;
                 }
-            }).attach();
+            });
             importSetBundleViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageSelected(int position) {

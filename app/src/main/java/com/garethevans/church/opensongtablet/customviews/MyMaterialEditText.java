@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -51,7 +50,6 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private final boolean restoreState;
     private int endIconMode;
     private Window window;
-    private WindowInsetsCompat windowInsetsCompat;
     private boolean isKeyboardVisible = false;
     private final Handler keyboardHandler = new Handler(Looper.getMainLooper());
     private View.OnFocusChangeListener externalFocusChangeListener;
@@ -236,11 +234,12 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         });
 
         // Track IME visibility
-        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
-            isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
-            windowInsetsCompat = insets;
-            return insets;
-        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> {
+                isKeyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+                return insets;
+            });
+        }
 
     }
 

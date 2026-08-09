@@ -93,7 +93,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             toolsNs:text="100%"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="#000"
             android:textSize="14sp"
             app:elevation="16dp"
             android:visibility="gone"/>

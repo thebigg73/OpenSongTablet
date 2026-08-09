@@ -123,7 +123,6 @@
                             android:layout_gravity="center"
                             android:background="@drawable/circle"
                             android:padding="8dp"
-                            app:backgroundTint="?attr/colorSecondary"
                             tools:text="0" />
                     </LinearLayout>
                     <com.garethevans.church.opensongtablet.customviews.MyDivider

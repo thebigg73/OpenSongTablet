@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -19,16 +20,10 @@ public class OnScreenInfo extends LinearLayout {
 
     private final LinearLayout info;
     private final LinearLayout capo;
-    private final MyImageView capoIcon;
-    private final MyMaterialSimpleTextView capoInfo;
-    private final LinearLayout autoscroll;
-    private final MyImageView autoscrollIcon;
-    private final MyMaterialSimpleTextView autoscrollTime;
-    private final MyMaterialSimpleTextView autoscrollTotalTime;
-    private final LinearLayout pad;
-    private final MyImageView padIcon;
-    private final MyMaterialSimpleTextView padTime;
-    private final MyMaterialSimpleTextView padTotalTime;
+    private final MyMaterialSimpleTextView capoInfo, autoscrollTime, autoscrollTotalTime,
+            padTime, padTotalTime;
+    private final LinearLayout autoscroll, pad;
+    private final MyImageView capoIcon, padIcon, autoscrollIcon;
     private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
     // IV - Needs to be longer to be seen after song load
     private final int delayTime = 5000;
@@ -80,13 +75,18 @@ public class OnScreenInfo extends LinearLayout {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
         //inflate(context, R.layout.view_on_screen_info, this);
 
-        Context themedContext = new android.view.ContextThemeWrapper(context, R.style.AppTheme);
-        LayoutInflater.from(themedContext).inflate(R.layout.view_on_screen_info, this, true);
+        //Context themedContext = new android.view.ContextThemeWrapper(context, R.style.AppTheme);
+        //LayoutInflater.from(themedContext).inflate(R.layout.view_on_screen_info, this, true);
+        //Context themedContext = new androidx.appcompat.view.ContextThemeWrapper(context, R.style.AppTheme);
+        //LayoutInflater.from(themedContext).inflate(R.layout.view_on_screen_info, this, true);
 
+        /*Context themedContext = new ContextThemeWrapper(context, R.style.AppTheme);
+        LayoutInflater.from(themedContext).inflate(R.layout.view_on_screen_info, this, true);
+*/
+        LayoutInflater.from(context).inflate(R.layout.view_on_screen_info, this, true);
         info = findViewById(R.id.info);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //info.setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             info.setBackgroundTintList(new ColorStateList(
                     new int[][]{new int[0]},
                     new int[]{mainActivityInterface.getPalette().secondary}
@@ -116,17 +116,17 @@ public class OnScreenInfo extends LinearLayout {
     }
 
     public void updateAlpha(Context c, MainActivityInterface mainActivityInterface) {
-        Drawable drawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.rounded_dialog_node,c.getTheme());
+        //Drawable drawable = ResourcesCompat.getDrawable(c.getResources(),R.drawable.rounded_dialog_node,c.getTheme());
+        Drawable drawable = ContextCompat.getDrawable(c, R.drawable.rounded_dialog_node);
         if (drawable!=null) {
             info.setBackground(drawable);
         }
         info.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonAlpha());
-        //int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         padTime.setTextColor(mainActivityInterface.getPalette().textColor);
         padTotalTime.setTextColor(mainActivityInterface.getPalette().textColor);
         capoInfo.setTextColor(mainActivityInterface.getPalette().textColor);
-        //autoscrollTime.setTextColor(mainActivityInterface.getPalette().textColor);
-        //autoscrollTotalTime.setTextColor(mainActivityInterface.getPalette().textColor);
+        autoscrollTime.setTextColor(mainActivityInterface.getPalette().textColor);
+        autoscrollTotalTime.setTextColor(mainActivityInterface.getPalette().textColor);
         //TextViewCompat.setCompoundDrawableTintList(autoscrollIcon, ColorStateList.valueOf(textColor));
         //TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
         /*TextViewCompat.setCompoundDrawableTintList(padIcon, new ColorStateList(new int[][]{new int[0]},
@@ -207,9 +207,6 @@ public class OnScreenInfo extends LinearLayout {
     public OnScreenInfo getOnScreenInfo() {
         return this;
     }
-    /*public void setFirstShowAutoscroll(boolean firstShowAutoscroll) {
-        this.firstShowAutoscroll = firstShowAutoscroll;
-    }*/
 
     public void showCapo(boolean show) {
         if (show && capoInfoNeeded) {
@@ -223,12 +220,4 @@ public class OnScreenInfo extends LinearLayout {
 
     }
 
-    public ColorStateList getSafeColorStateList(Context context, int resId) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.getColorStateList(resId);
-        } else {
-            //noinspection deprecation
-            return context.getResources().getColorStateList(resId);
-        }
-    }
 }

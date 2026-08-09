@@ -6,6 +6,26 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/myFAB"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:background="@drawable/rounded_dialog_node"
+        app:elevation="6dp"
+        android:scaleType="center"
+        android:contentDescription="@string/page_buttons" />
+</merge>
+    <!--
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/myFAB"
         android:layout_width="wrap_content"
@@ -16,4 +36,4 @@
         app:useCompatPadding="false"
         app:ensureMinTouchTargetSize="false"
         app:shapeAppearance="@style/ShapeAppearance.MyApp.Button.Rounded"/>
-</merge>
+</merge>-->
