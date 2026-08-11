@@ -212,8 +212,7 @@ public class SetManageFragment extends Fragment {
                     myView.setItemSelected.setHint(mainActivityInterface.getImportFilename());
                     myView.setName.setVisibility(View.VISIBLE);
                     myView.overWrite.setVisibility(View.VISIBLE);
-                    myView.setLoadInfo1.setVisibility(View.GONE);
-                    myView.setLoadInfo2.setVisibility(View.GONE);
+                    myView.setLoadInfo.setVisibility(View.GONE);
                     myView.setLoadFirst.setVisibility(View.GONE);
                     myView.setName.setText(setName);
                     myView.newCategory.setVisibility(View.VISIBLE);
@@ -233,8 +232,7 @@ public class SetManageFragment extends Fragment {
                     myView.setItemSelected.setVisibility(View.GONE);
                     myView.setName.setVisibility(View.VISIBLE);
                     myView.overWrite.setVisibility(View.VISIBLE);
-                    myView.setLoadInfo1.setVisibility(View.GONE);
-                    myView.setLoadInfo2.setVisibility(View.GONE);
+                    myView.setLoadInfo.setVisibility(View.GONE);
                     myView.setLoadFirst.setVisibility(View.GONE);
                     myView.setName.setText(setName);
                     myView.newCategory.setVisibility(View.VISIBLE);
@@ -254,8 +252,7 @@ public class SetManageFragment extends Fragment {
                     myView.setItemSelected.setVisibility(View.VISIBLE);
                     myView.setName.setVisibility(View.VISIBLE);
                     myView.overWrite.setVisibility(View.VISIBLE);
-                    myView.setLoadInfo1.setVisibility(View.GONE);
-                    myView.setLoadInfo2.setVisibility(View.GONE);
+                    myView.setLoadInfo.setVisibility(View.GONE);
                     myView.setLoadFirst.setVisibility(View.GONE);
                     myView.setName.setText(setName);
                     // Changing the category in rename mode shouldn't update the songs adapter
@@ -277,8 +274,8 @@ public class SetManageFragment extends Fragment {
                     myView.setItemSelected.setVisibility(View.VISIBLE);
                     myView.setName.setVisibility(View.GONE);
                     myView.overWrite.setVisibility(View.GONE);
-                    myView.setLoadInfo1.setVisibility(View.VISIBLE);
-                    myView.setLoadInfo2.setVisibility(View.GONE);
+                    myView.setLoadInfo.setVisibility(View.VISIBLE);
+                    myView.setLoadInfo.getHintView().setVisibility(View.GONE);
                     myView.setLoadFirst.setVisibility(View.GONE);
                     myView.newCategory.setVisibility(View.GONE);
                     myView.setCategory.setVisibility(View.VISIBLE);
@@ -299,10 +296,9 @@ public class SetManageFragment extends Fragment {
                         myView.setName.setVisibility(View.GONE);
                         myView.overWrite.setVisibility(View.GONE);
                         myView.newCategory.setVisibility(View.GONE);
-                        myView.setLoadInfo1.setVisibility(View.VISIBLE);
-                        myView.setLoadInfo2.setVisibility(View.VISIBLE);
+                        myView.setLoadInfo.setVisibility(View.VISIBLE);
                         myView.setLoadFirst.setVisibility(View.GONE);
-                        myView.setLoadInfo2.setText(set_saved_not_current_string);
+                        myView.setLoadInfo.setHint(set_saved_not_current_string);
                         myView.loadorsaveButton.setText(export_string);
                         if (getContext() != null) {
                             myView.loadorsaveButton.setIcon(VectorDrawableCompat.create(getResources(), R.drawable.share, getContext().getTheme()));
@@ -321,8 +317,7 @@ public class SetManageFragment extends Fragment {
                     myView.setName.setVisibility(View.GONE);
                     myView.overWrite.setVisibility(View.GONE);
                     myView.newCategory.setVisibility(View.GONE);
-                    myView.setLoadInfo1.setVisibility(View.VISIBLE);
-                    myView.setLoadInfo2.setVisibility(View.VISIBLE);
+                    myView.setLoadInfo.setVisibility(View.VISIBLE);
                     myView.setLoadFirst.setVisibility(View.VISIBLE);
                     myView.setLoadFirst.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("setLoadFirst", true));
                     myView.setLoadFirst.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("setLoadFirst", b));
