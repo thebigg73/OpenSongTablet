@@ -34,8 +34,8 @@ android {
         targetSdk = 36
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
-        versionCode = 483     // Also change in wear if we need to update that as well
-        versionName = '6.9.1' // Also change in wear if we need to update that as well
+        versionCode = 484     // Also change in wear if we need to update that as well
+        versionName = '6.9.2' // Also change in wear if we need to update that as well
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
@@ -126,8 +126,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     // Lifecycle for fragment control
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.8'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.8'
+    // DO NOT UPGRADE UNLESS DROPPING SUPPORT FOR LOLLIPOP
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.7'
+    // DO NOT UPGRADE UNLESS DROPPING SUPPORT FOR LOLLIPOP
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.7'
     implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.9.8'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     // The app preferences
@@ -136,12 +138,14 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
     // Downgrade from core 1.17.0 to support down to KitKat
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.activity:activity-ktx:1.13.0'
+    // DO NOT UPGRADE UNLESS DROPPING SUPPORT FOR LOLLIPOP
+    implementation 'androidx.activity:activity-ktx:1.12.4'
+    //implementation 'androidx.activity:activity-ktx:1.13.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
     // To allow Java time/date utilities on <Android 8
 
     // Material design and layouts
-    // Downgrade from 1.14.x to the latest stable 1.9.0 release that supports API 21/22
+    // DO NOT UPGRADE UNLESS DROPPING SUPPORT FOR LOLLIPOP
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.2.0' // RecyclerView (obviously)
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
@@ -149,7 +153,7 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.1.0'               // GridLayout (obviously)
     implementation 'androidx.cardview:cardview:1.0.0'
     // CardView for recycler list items
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
     // Constraint layouts with FAB
     implementation 'androidx.webkit:webkit:1.16.0'
 
@@ -160,7 +164,7 @@ dependencies {
     // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:22.3.1'
     // For casting obviously!
-    implementation 'com.google.android.gms:play-services-nearby:19.3.0'
+    implementation 'com.google.android.gms:play-services-nearby:19.4.0'
     // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1'
     // For OCR text recognition (PDF/Camera)
