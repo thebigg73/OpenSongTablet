@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.midi;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -39,6 +40,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+@TargetApi(Build.VERSION_CODES.M)
 public class Midi {
 
     private final Context c;

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -241,7 +242,7 @@ public class BootUpFragment extends Fragment {
 
                     // Set up the Bluetooth adapter in the MIDI class if it exists
                     // This also disconnects any BLEMidi devices that were externally paired
-                    if (mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
+                    if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
                         mainActivityInterface.getMidi().setupBluetoothManager();
                     }
 
