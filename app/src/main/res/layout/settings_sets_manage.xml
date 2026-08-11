@@ -1,148 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/DefaultView"
-        android:orientation="vertical">
-
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
-            android:id="@+id/setItemSelected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/set_selected" />
-
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
-            android:id="@+id/setName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/set_name"
-            android:text="@string/set_name"
-            app:endIconMode="clear_text" />
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            style="@style/DefaultView"
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/setCategory"
-                android:layout_width="0dp"
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/setItemSelected"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="2dp"
-                android:layout_weight="1"
-                android:hint="@string/category" />
+                android:layout_marginBottom="8dp"
+                android:text="@string/set_selected" />
 
-            <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
-                android:id="@+id/newCategory"
-                android:layout_width="wrap_content"
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+                android:id="@+id/setName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:contentDescription="@string/new_category"
-                android:src="@drawable/plus"
-                app:useCompatPadding="false" />
-        </LinearLayout>
-
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
-            android:id="@+id/overWrite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/overwrite" />
-
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-            android:id="@+id/setLoadInfo1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/file_choose_info" />
-
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-            android:id="@+id/setLoadInfo2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="@string/set_load_merge" />
-
-        <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
-            android:id="@+id/setLoadFirst"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/set_load_first_info"
-            android:text="@string/set_load_first" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:hint="@string/set_name"
+                android:text="@string/set_name"
+                app:endIconMode="clear_text" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
-                    android:id="@+id/sortAZ"
-                    android:layout_width="wrap_content"
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/setCategory"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/alphabetical_sort"
-                    android:src="@drawable/sort_az" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:hint="@string/category" />
 
                 <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
-                    android:id="@+id/sortZA"
+                    android:id="@+id/newCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/alphabetical_sort"
-                    android:src="@drawable/sort_za" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
-                    android:id="@+id/sortOldest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/set_sort"
-                    android:src="@drawable/sort_oldest" />
-
-                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
-                    android:id="@+id/sortNewest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/set_sort"
-                    android:src="@drawable/sort_newest" />
-
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/new_category"
+                    android:src="@drawable/plus"
+                    app:useCompatPadding="false" />
             </LinearLayout>
-        </HorizontalScrollView>
 
-        <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialCheckbox
+                android:id="@+id/overWrite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overwrite" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/setLists"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingBottom="96dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                android:id="@+id/setLoadInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/file_choose_info"
+                android:hint="@string/set_load_merge"/>
 
-    </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/setLoadFirst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/set_load_first_info"
+                android:text="@string/set_load_first" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/sortAZ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/alphabetical_sort"
+                        app:myFabSize="mini"
+                        android:src="@drawable/sort_az" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/sortZA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/alphabetical_sort"
+                        app:myFabSize="mini"
+                        android:src="@drawable/sort_za" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/sortOldest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/set_sort"
+                        app:myFabSize="mini"
+                        android:src="@drawable/sort_oldest" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                        android:id="@+id/sortNewest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:contentDescription="@string/set_sort"
+                        app:myFabSize="mini"
+                        android:src="@drawable/sort_newest" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <com.garethevans.church.opensongtablet.customviews.MyDivider style="@style/MyDividerLine" />
+
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/setLists"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="96dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <FrameLayout
         android:id="@+id/progressBar"
@@ -162,10 +167,10 @@
         android:id="@+id/loadorsaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
         android:layout_marginBottom="16dp"
         android:padding="16dp"
         android:text="@string/load"
         app:icon="@drawable/save" />
-</RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
