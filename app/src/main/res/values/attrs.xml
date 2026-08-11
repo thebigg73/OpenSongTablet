@@ -1,14 +1,14 @@
 <resources>
     <declare-styleable name="MaterialRadioButtonItem">
-        <attr name="android:text" format="string"/>
-        <attr name="android:hint" format="string"/>
-        <attr name="android:checked" format="boolean"/>
+        <attr name="android:text" format="string" />
+        <attr name="android:hint" format="string" />
+        <attr name="android:checked" format="boolean" />
         <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="MyFloatingActionButton">
-        <attr name="fabIcon" format="reference"/>
-        <attr name="android:src" format="reference"/>
+        <attr name="fabIcon" format="reference" />
+        <attr name="android:src" format="reference" />
         <attr name="android:alpha" />
         <attr name="myFabSize" format="enum">
             <enum name="normal" value="0" />
@@ -17,110 +17,110 @@
         <attr name="addTouchPadding" format="boolean" />
         <attr name="makeFlat" format="boolean" />
         <attr name="android:padding" />
-        <attr name="fabIconColor" format="integer"/>
-        <attr name="fabButtonColor" format="integer"/>
+        <attr name="fabIconColor" format="integer" />
+        <attr name="fabButtonColor" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="MyMaterialEditText">
-        <attr name="android:text"/>
-        <attr name="android:hint"/>
-        <attr name="android:digits"/>
-        <attr name="android:lines"/>
-        <attr name="android:minLines"/>
-        <attr name="android:maxLines"/>
-        <attr name="android:imeOptions"/>
-        <attr name="android:inputType"/>
-        <attr name="useMonospace" format="boolean"/>
-        <attr name="removeStyle" format="boolean"/>
-        <attr name="android:saveEnabled"/>
-        <attr name="endIconMode"/>
+        <attr name="android:text" />
+        <attr name="android:hint" />
+        <attr name="android:digits" />
+        <attr name="android:lines" />
+        <attr name="android:minLines" />
+        <attr name="android:maxLines" />
+        <attr name="android:imeOptions" />
+        <attr name="android:inputType" />
+        <attr name="useMonospace" format="boolean" />
+        <attr name="removeStyle" format="boolean" />
+        <attr name="android:saveEnabled" />
+        <attr name="endIconMode" />
         <attr name="suffixText" />
         <attr name="helperText" />
         <attr name="android:layout_gravity" />
-        <attr name="size"/>
+        <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="MyMaterialSlider">
-        <attr name="android:text"/>
-        <attr name="android:hint"/>
-        <attr name="android:valueFrom"/>
-        <attr name="android:valueTo"/>
-        <attr name="android:stepSize" format="float"/>
-        <attr name="android:value"/>
+        <attr name="android:text" />
+        <attr name="android:hint" />
+        <attr name="android:valueFrom" />
+        <attr name="android:valueTo" />
+        <attr name="android:stepSize" format="float" />
+        <attr name="android:value" />
         <attr name="trackColor" format="color" />
-        <attr name="thumbColor" format="color"/>
-        <attr name="trackHeight" format="dimension"/>
-        <attr name="thumbRadius" format="dimension"/>
-        <attr name="infoText" format="string"/>"
-        <attr name="adjustable" format="boolean"/>
+        <attr name="thumbColor" format="color" />
+        <attr name="trackHeight" format="dimension" />
+        <attr name="thumbRadius" format="dimension" />
+        <attr name="infoText" format="string" />"
+        <attr name="adjustable" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MyMaterialSwitch">
-        <attr name="android:text" format="string"/>
-        <attr name="android:hint" format="string"/>
-        <attr name="smallText" format="boolean"/>
+        <attr name="android:text" format="string" />
+        <attr name="android:hint" format="string" />
+        <attr name="smallText" format="boolean" />
         <attr name="size" />
-        <attr name="android:checked"/>
+        <attr name="android:checked" />
     </declare-styleable>
 
     <declare-styleable name="BottomSheetHandle">
-        <attr name="isDraggableX" format="boolean"/>
+        <attr name="isDraggableX" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="TextSlider">
-        <attr name="textLeft" format="string"/>
-        <attr name="textRight" format="string"/>
-        <attr name="value" format="integer"/>
-        <attr name="heading" format="string"/>
+        <attr name="textLeft" format="string" />
+        <attr name="textRight" format="string" />
+        <attr name="value" format="integer" />
+        <attr name="heading" format="string" />
         <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="TextThreeSlider">
-        <attr name="textL" format="string"/>
-        <attr name="textC" format="string"/>
-        <attr name="textR" format="string"/>
-        <attr name="chosen" format="integer"/>
-        <attr name="label" format="string"/>
-        <attr name="drawableL" format="reference"/>
-        <attr name="drawableR" format="reference"/>
-        <attr name="drawableC" format="reference"/>
+        <attr name="textL" format="string" />
+        <attr name="textC" format="string" />
+        <attr name="textR" format="string" />
+        <attr name="chosen" format="integer" />
+        <attr name="label" format="string" />
+        <attr name="drawableL" format="reference" />
+        <attr name="drawableR" format="reference" />
+        <attr name="drawableC" format="reference" />
         <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="DialogHeader">
-        <attr name="android:text" format="string"/>
+        <attr name="android:text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="DialogTitleClose">
-        <attr name="android:text" format="string"/>
+        <attr name="android:text" format="string" />
     </declare-styleable>
 
     <declare-styleable name="ExposedDropDown">
-        <attr name="android:text" format="string"/>
-        <attr name="android:hint" format="string"/>
+        <attr name="android:text" format="string" />
+        <attr name="android:hint" format="string" />
         <attr name="size" />
     </declare-styleable>
 
     <declare-styleable name="FastScroller">
-        <attr format="boolean" name="hideScrollbar" />
-        <attr format="boolean" name="showBubble" />
-        <attr format="boolean" name="showTrack" />
-        <attr format="color" name="bubbleColor" />
-        <attr format="color" name="bubbleTextColor" />
-        <attr format="color" name="handleColor" />
-        <attr format="color" name="scrollTrackColor" />
-        <attr format="dimension" name="bubbleTextSize" />
-        <attr format="enum" name="bubbleSize">
+        <attr name="hideScrollbar" format="boolean" />
+        <attr name="showBubble" format="boolean" />
+        <attr name="showTrack" format="boolean" />
+        <attr name="bubbleColor" format="color" />
+        <attr name="bubbleTextColor" format="color" />
+        <attr name="handleColor" format="color" />
+        <attr name="scrollTrackColor" format="color" />
+        <attr name="bubbleTextSize" format="dimension" />
+        <attr name="bubbleSize" format="enum">
             <enum name="normal" value="0" />
             <enum name="small" value="1" />
         </attr>
     </declare-styleable>
     <declare-styleable name="MyMaterialTextView">
         <attr name="myMaterialTextViewStyle" format="reference" />
-        <attr name="android:text" format="string"/>
-        <attr name="android:hint" format="string"/>
+        <attr name="android:text" format="string" />
+        <attr name="android:hint" format="string" />
         <attr name="mydrawable" format="reference" />
-        <attr name="showCheckMark" format="boolean"/>
+        <attr name="showCheckMark" format="boolean" />
         <attr name="showCheckBox" format="boolean" />
         <!-- Optional end FAB icon (if you later want one) -->
         <attr name="endFABVisibility" format="enum">
@@ -128,30 +128,51 @@
             <enum name="visible" value="1" />
             <enum name="gone" value="2" />
         </attr>
-        <attr name="endFABDrawable" format="reference"/>
+        <attr name="endFABDrawable" format="reference" />
         <attr name="size" format="string" />
         <!-- Optional start icon drawable -->
         <attr name="startIcon" format="reference" />
 
-        <attr name="tunerColor" format="reference"/>
-        <attr name="tunerOff" format="reference"/>
-        <attr name="tunerRed" format="reference"/>
-        <attr name="tunerGreen" format="reference"/>
+        <attr name="tunerColor" format="reference" />
+        <attr name="tunerOff" format="reference" />
+        <attr name="tunerRed" format="reference" />
+        <attr name="tunerGreen" format="reference" />
 
     </declare-styleable>
 
+
+    <declare-styleable name="MyMaterialExpandingTextView">
+        <attr name="myMaterialExpandingTextViewStyle" format="reference" />
+        <attr name="android:text" format="string" />
+        <attr name="android:hint" format="string" />
+        <attr name="myExpandingDrawable" format="reference" />
+        <attr name="showExpandingCheckMark" format="boolean" />
+        <attr name="showExpandingCheckBox" format="boolean" />
+        <!-- Optional end FAB icon -->
+        <attr name="endExpandingFABVisibility" format="enum">
+            <enum name="invisible" value="0" />
+            <enum name="visible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+        <attr name="endExpandingFABDrawable" format="reference" />
+        <attr name="expandingSize" format="string" />
+        <!-- Optional start icon drawable -->
+        <attr name="startExpandingIcon" format="reference" />
+    </declare-styleable>
+
+
     <declare-styleable name="MyRotaryDialView">
         <attr name="dialSize" format="enum">
-            <enum name="mini" value="0"/>
-            <enum name="normal" value="1"/>
-            <enum name="large" value="2"/>
-            <enum name="xlarge" value="3"/>
+            <enum name="mini" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="large" value="2" />
+            <enum name="xlarge" value="3" />
         </attr>
-        <attr name="android:valueFrom" format="integer"/>
-        <attr name="android:valueTo" format="integer"/>
-        <attr name="android:value" format="integer"/>
-        <attr name="android:text" format="string"/>
-        <attr name="showValuesAsText" format="boolean"/>
-        <attr name="suffixText" format="string"/>
+        <attr name="android:valueFrom" format="integer" />
+        <attr name="android:valueTo" format="integer" />
+        <attr name="android:value" format="integer" />
+        <attr name="android:text" format="string" />
+        <attr name="showValuesAsText" format="boolean" />
+        <attr name="suffixText" format="string" />
     </declare-styleable>
 </resources>
