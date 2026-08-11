@@ -84,8 +84,7 @@ public class ImportSetBundleSetFragment extends Fragment {
         // This view is also used in the SetManageFragment class (for osts files)
         if (getContext()!=null && myView!=null) {
             myView.setItemSelected.setVisibility(View.GONE);
-            myView.setLoadInfo1.setVisibility(View.GONE);
-            myView.setLoadInfo2.setVisibility(View.GONE);
+            myView.setLoadInfo.setVisibility(View.GONE);
             myView.loadorsaveButton.setText(import_set);
             myView.loadorsaveButton.setIcon(import_drawable);
 
