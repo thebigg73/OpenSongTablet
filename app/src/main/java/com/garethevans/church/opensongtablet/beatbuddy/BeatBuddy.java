@@ -102,24 +102,42 @@ public class BeatBuddy {
     // Load in the user preferences.  These can be changed from the helper class fragment
     // This updates the references here and saves the user preference in the set..() methods
     public void setPrefs() {
-        beatBuddyChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyChannel",1);
-        beatBuddyIncludeSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeSong",false);
-        beatBuddyIncludeTempo = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeTempo",false);
-        beatBuddyIncludeVolume = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeVolume",false);
-        beatBuddyIncludeHPVolume = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeHPVolume",false);
-        beatBuddyIncludeDrumKit = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeDrumKit",false);
-        beatBuddyAerosMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAerosMode",true);
-        beatBuddyUseImported = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyUseImported",false);
-        beatBuddyAutoLookup = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAutoLookup",true);
-        metronomeSyncWithBeatBuddy = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeSyncWithBeatBuddy",false);
-        beatBuddyVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyVolume",100);
-        beatBuddyHPVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyHPVolume",100);
+        if (mainActivityInterface != null) {
+            beatBuddyChannel = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyChannel", 1);
+            beatBuddyIncludeSong = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeSong", false);
+            beatBuddyIncludeTempo = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeTempo", false);
+            beatBuddyIncludeVolume = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeVolume", false);
+            beatBuddyIncludeHPVolume = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeHPVolume", false);
+            beatBuddyIncludeDrumKit = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyIncludeDrumKit", false);
+            beatBuddyAerosMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAerosMode", true);
+            beatBuddyUseImported = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyUseImported", false);
+            beatBuddyAutoLookup = mainActivityInterface.getPreferences().getMyPreferenceBoolean("beatBuddyAutoLookup", true);
+            metronomeSyncWithBeatBuddy = mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeSyncWithBeatBuddy", false);
+            beatBuddyVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyVolume", 100);
+            beatBuddyHPVolume = mainActivityInterface.getPreferences().getMyPreferenceInt("beatBuddyHPVolume", 100);
 
-        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            buildCommands();
-            checkDatabase();
-        });
+            Runnable task = () -> {
+                buildCommands();
+                checkDatabase();
+            };
+
+
+            try {
+                java.util.concurrent.ExecutorService executor = mainActivityInterface.getThreadPoolExecutor();
+                if (executor != null && !executor.isShutdown() && !executor.isTerminated()) {
+                    executor.execute(task);
+                } else {
+                    // Fallback: Run synchronously if the executor is dead to prevent crash/loss of initialization
+                    task.run();
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to execute setPrefs background tasks", e);
+                // Fallback execution
+                task.run();
+            }
+        }
     }
+
 
     // Commands received from gestures and sent via MIDI to connected BeatBuddy
     // These are prebuilt and stored rather than building each time to avoid any delay when performing

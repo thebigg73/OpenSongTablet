@@ -153,10 +153,22 @@ public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
             }
             if (getContext() != null) {
                 BBSongAdapter bbSongAdapter = new BBSongAdapter(getContext(), foundSongs, this);
-                myView.songsFound.setLayoutManager(new LinearLayoutManager(getContext()));
-                myView.songsFound.setAdapter(bbSongAdapter);
+                if (myView!=null) {
+                    myView.songsFound.post(() -> {
+                        if (myView!=null) {
+                            myView.songsFound.setLayoutManager(new LinearLayoutManager(getContext()));
+                            myView.songsFound.setAdapter(bbSongAdapter);
+                        }
+                    });
+                }
             }
-            myView.progressBarSongs.setVisibility(View.GONE);
+            if (myView!=null) {
+                myView.progressBarSongs.post(() -> {
+                    if (myView != null) {
+                        myView.progressBarSongs.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
     }
 
