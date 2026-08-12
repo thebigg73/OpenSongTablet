@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Kopieer abc-notasie na liedjie</string>
+    <string name="abc_editor">Abc webredakteur</string>
     <string name="abc_include_tab">Sluit tablatuur in</string>
     <string name="abc_include_tab_info">Wys instrumenttabel onder die musiekpartituur</string>
+    <string name="abc_inline_copy">Voeg inlyn abc-kode in</string>
     <string name="abc_inline_text">Inlyn ABC-teks</string>
     <string name="abc_inline_text_info">Kopieer die bogenoemde kode in \'n enkele reël van inlyn ABC-notasie wat in die liedjie se lirieke geplak kan word</string>
     <string name="abc_inline_width">ABC-notasie stafwydte</string>

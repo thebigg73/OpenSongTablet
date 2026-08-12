@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Kopiera abc-notation till låt</string>
+    <string name="abc_editor">Abc webbredaktör</string>
     <string name="abc_include_tab">Inkludera tabulatur</string>
     <string name="abc_include_tab_info">Visa instrumenttabellen under noten</string>
+    <string name="abc_inline_copy">Infoga inbäddad abc-kod</string>
     <string name="abc_inline_text">Inline ABC-text</string>
     <string name="abc_inline_text_info">Kopiera ovanstående kod till en enda rad med inline ABC-notation som kan klistras in i sångtexten</string>
     <string name="abc_inline_width">ABC notationsstavens bredd</string>

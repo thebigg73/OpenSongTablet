@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">将abc记谱法复制到歌曲中</string>
+    <string name="abc_editor">ABC网站编辑</string>
     <string name="abc_include_tab">包括指法谱</string>
     <string name="abc_include_tab_info">在乐谱下方显示乐器指法谱</string>
+    <string name="abc_inline_copy">插入内联 abc 代码</string>
     <string name="abc_inline_text">内嵌 ABC 文本</string>
     <string name="abc_inline_text_info">将以上代码复制到一行内联 ABC 符号中，该符号可以粘贴到歌词中</string>
     <string name="abc_inline_width">ABC 乐谱五线谱宽度</string>

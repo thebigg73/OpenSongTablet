@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">楽譜にabc記譜法をコピーする</string>
+    <string name="abc_editor">ABCウェブエディター</string>
     <string name="abc_include_tab">タブ譜を含める</string>
     <string name="abc_include_tab_info">楽譜の下に楽器のタブ譜を表示</string>
+    <string name="abc_inline_copy">インラインのabcコードを挿入</string>
     <string name="abc_inline_text">インラインABCテキスト</string>
     <string name="abc_inline_text_info">上記のコードを 1 行のインライン ABC 表記にコピーし、曲の歌詞に貼り付けることができます。</string>
     <string name="abc_inline_width">ABC譜の五線幅</string>

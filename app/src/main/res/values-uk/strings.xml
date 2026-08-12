@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Копіювати нотацію ABC до пісні</string>
+    <string name="abc_editor">Веб-редактор Abc</string>
     <string name="abc_include_tab">Включіть табулатуру</string>
     <string name="abc_include_tab_info">Показувати інструментальну табулатуру під партитурою</string>
+    <string name="abc_inline_copy">Вставити вбудований код ABC</string>
     <string name="abc_inline_text">Вбудований ABC текст</string>
     <string name="abc_inline_text_info">Скопіюйте наведений вище код в один рядок вбудованої нотації ABC, який можна вставити в текст пісні</string>
     <string name="abc_inline_width">Ширина штатної нотації ABC</string>

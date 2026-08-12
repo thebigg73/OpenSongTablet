@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Kopiere die ABC-Notation in das Lied</string>
+    <string name="abc_editor">ABC-Webredakteur</string>
     <string name="abc_include_tab">Fügen Sie Tabulatur hinzu</string>
     <string name="abc_include_tab_info">Instrumententabulatur unterhalb der Musikpartitur anzeigen</string>
+    <string name="abc_inline_copy">Inline-ABC-Code einfügen</string>
     <string name="abc_inline_text">Inline-ABC-Text</string>
     <string name="abc_inline_text_info">Kopieren Sie den obigen Code in eine einzelne Zeile der Inline-ABC-Notation, die in den Liedtext eingefügt werden kann</string>
     <string name="abc_inline_width">Notenzeilenbreite der ABC-Notation</string>

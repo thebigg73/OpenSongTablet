@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Zkopírujte notaci ABC do skladby</string>
+    <string name="abc_editor">Webový editor Abc</string>
     <string name="abc_include_tab">Zahrnout tabulaturu</string>
     <string name="abc_include_tab_info">Zobrazit tabulaturu nástroje pod notovým záznamem</string>
+    <string name="abc_inline_copy">Vložit vložený kód ABC</string>
     <string name="abc_inline_text">Vložený text ABC</string>
     <string name="abc_inline_text_info">Zkopírujte výše uvedený kód do jednoho řádku vložené notace ABC, kterou lze vložit do textu písně</string>
     <string name="abc_inline_width">Šířka notace ABC</string>

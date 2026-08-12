@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="a_hz" translatable="false">A (Hz)</string>
+    <string name="abc_add_to_song">Copy abc notation to song</string>
+    <string name="abc_editor">Abc web editor</string>
     <string name="abc_include_tab">Include tablature</string>
     <string name="abc_include_tab_info">Show instrument tablature below the music score</string>
+    <string name="abc_inline_copy">Insert inline abc code</string>
     <string name="abc_inline_text">Inline ABC text</string>
     <string name="abc_inline_text_info">Copy the above code into a single line of inline ABC notation that can be pasted into the song lyrics</string>
     <string name="abc_inline_width">ABC notation staff width</string>

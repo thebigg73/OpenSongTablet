@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">ගීතයට abc අංකනය පිටපත් කරන්න</string>
+    <string name="abc_editor">ඒබීසී වෙබ් සංස්කාරක</string>
     <string name="abc_include_tab">ටැබ්ලේචර් ඇතුළත් කරන්න</string>
     <string name="abc_include_tab_info">සංගීත ලකුණු වලට පහළින් උපකරණ ටැබ්ලචරය පෙන්වන්න</string>
+    <string name="abc_inline_copy">පේළිගත abc කේතය ඇතුළු කරන්න</string>
     <string name="abc_inline_text">පේළිගත ABC පෙළ</string>
     <string name="abc_inline_text_info">ඉහත කේතය ගීතයේ පදවලට ඇලවිය හැකි පේළිගත ABC අංකනයක තනි පේළියකට පිටපත් කරන්න</string>
     <string name="abc_inline_width">ABC අංකනය කාර්ය මණ්ඩල පළල</string>

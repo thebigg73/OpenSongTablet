@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Skopiuj notację ABC do piosenki</string>
+    <string name="abc_editor">Edytor stron internetowych ABC</string>
     <string name="abc_include_tab">Dołącz tabulaturę</string>
     <string name="abc_include_tab_info">Pokaż tabulaturę instrumentu pod partyturą</string>
+    <string name="abc_inline_copy">Wstaw kod ABC w linii</string>
     <string name="abc_inline_text">Wbudowany tekst ABC</string>
     <string name="abc_inline_text_info">Skopiuj powyższy kod do pojedynczego wiersza wbudowanego zapisu ABC, który można wkleić do tekstu utworu</string>
     <string name="abc_inline_width">Szerokość pięciolinii zapisu ABC</string>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Copiez la notation abc dans la chanson</string>
+    <string name="abc_editor">Éditeur web ABC</string>
     <string name="abc_include_tab">Inclure la tablature</string>
     <string name="abc_include_tab_info">Afficher la tablature de l\'instrument sous la partition musicale</string>
+    <string name="abc_inline_copy">Insérer le code abc en ligne</string>
     <string name="abc_inline_text">Texte ABC en ligne</string>
     <string name="abc_inline_text_info">Copiez le code ci-dessus sur une seule ligne de notation ABC en ligne qui peut être collée dans les paroles de la chanson.</string>
     <string name="abc_inline_width">Largeur de la portée de la notation ABC</string>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">ABC kotta másolása dalba</string>
+    <string name="abc_editor">ABC webszerkesztő</string>
     <string name="abc_include_tab">Tartalmazza a tabulatúrát</string>
     <string name="abc_include_tab_info">Mutasd a hangszer tablatúrát a kotta alatt</string>
+    <string name="abc_inline_copy">Szúrjon be beágyazott abc kódot</string>
     <string name="abc_inline_text">Inline ABC szöveg</string>
     <string name="abc_inline_text_info">Másolja a fenti kódot a soron belüli ABC jelölés egyetlen sorába, amelyet beilleszthet a dal szövegébe</string>
     <string name="abc_inline_width">ABC jelölés rúd szélessége</string>
