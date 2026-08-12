@@ -253,9 +253,14 @@
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
                 android:id="@+id/abc"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:hint="@string/music_score"
                 android:inputType="textMultiLine"
@@ -266,6 +271,15 @@
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform" />
+                <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+                    android:id="@+id/onlineAbc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fabIcon="@drawable/web"
+                    app:myFabSize="mini"
+                    app:addTouchPadding="true"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
                 android:layout_width="match_parent"

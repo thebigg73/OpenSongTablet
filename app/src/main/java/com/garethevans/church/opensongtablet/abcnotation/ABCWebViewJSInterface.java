@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -62,5 +63,4 @@ public class ABCWebViewJSInterface {
             }
         }
     }
-
 }

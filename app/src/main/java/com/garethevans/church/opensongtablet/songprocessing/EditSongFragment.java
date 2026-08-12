@@ -267,17 +267,21 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
                     if (oktoproceed && mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
                         // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
-                        mainActivityInterface.getMainHandler().post(() -> {
-                            if (mainActivityInterface != null) {
-                                mainActivityInterface.navHome();
-                            }
-                            alreadySaving = false;
-                        });
+                        if (mainActivityInterface!=null) {
+                            mainActivityInterface.getMainHandler().post(() -> {
+                                if (mainActivityInterface != null) {
+                                    mainActivityInterface.navHome();
+                                }
+                                alreadySaving = false;
+                            });
+                        }
                     } else if (oktoproceed) {
-                        mainActivityInterface.getMainHandler().post(() -> {
-                            mainActivityInterface.getShowToast().doIt(not_saved_string);
-                            alreadySaving = false;
-                        });
+                        if (mainActivityInterface!=null) {
+                            mainActivityInterface.getMainHandler().post(() -> {
+                                mainActivityInterface.getShowToast().doIt(not_saved_string);
+                                alreadySaving = false;
+                            });
+                        }
                     }
                 });
             }

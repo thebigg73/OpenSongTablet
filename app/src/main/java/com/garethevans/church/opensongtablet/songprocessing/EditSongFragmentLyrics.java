@@ -31,7 +31,9 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.ObjectKey;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.abcnotation.ABCEditorBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetAbcEditorBinding;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -55,7 +57,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private boolean addUndoStep = true;
     private String success_string="";
     private Bitmap bmp = null;
-    private String guitar_tab = "Guitar";
+    private String guitar_tab = "Guitar", inline_abc;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable runnable;
     private TextWatcher textWatcher;
@@ -127,6 +129,7 @@ public class EditSongFragmentLyrics extends Fragment {
         if (getContext()!=null) {
             success_string = getString(R.string.success);
             guitar_tab = getString(R.string.insert_guitar_tab);
+            inline_abc = getString(R.string.abc_inline_text);
         }
     }
     private void setupValues() {
@@ -376,10 +379,10 @@ public class EditSongFragmentLyrics extends Fragment {
             String[] chordsInKey = mainActivityInterface.getTranspose().getChordsInKey(mainActivityInterface.getTempSong().getKey());
             if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
                 // ChordPro options
-                strings = new String[]{"#[]", "#[V]", "#[P]", "#[C]", "#[B]", "#[T]", "{" + guitar_tab + "}"};
+                strings = new String[]{"#[]", "#[V]", "#[P]", "#[C]", "#[B]", "#[T]", "{" + guitar_tab + "}", "{" + inline_abc + "}"};
             } else {
                 // OpenSong options
-                strings = new String[]{"[]", "[V]", "[P]", "[C]", "[B]", "[T]", "{" + guitar_tab + "}"};
+                strings = new String[]{"[]", "[V]", "[P]", "[C]", "[B]", "[T]", "{" + guitar_tab + "}", "{" + inline_abc + "}"};
             }
 
             // Add the song sections and fixed chords
@@ -429,6 +432,10 @@ public class EditSongFragmentLyrics extends Fragment {
                             string = "{sot}" + string.replace(";", "").replace(" ", "") + "\n{eot}";
                         }
                         moveCursorBy = string.length();
+                        addingChord = false;
+                    } else if (string.equals("{" + inline_abc + "}")) {
+                        string = "abcEditor";
+                        moveCursorBy = 0;
                         addingChord = false;
                     } else if (string.startsWith("#")) {
                         // ChordPro comment
@@ -540,8 +547,11 @@ public class EditSongFragmentLyrics extends Fragment {
             String text = myView.lyrics.getText().toString();
             if (text.length() >= cursorPos && cursorPos != -1) {
                 if (bitToAdd.startsWith("__CHORD__")) {
-                    bitToAdd = bitToAdd.replace("__CHORD__","");
+                    bitToAdd = bitToAdd.replace("__CHORD__", "");
                     text = text.substring(0, cursorPos) + bitToAdd + "  " + text.substring(cursorPos);
+                } else if (bitToAdd.equals("abcEditor")) {
+                    ABCEditorBottomSheet abcEditorBottomSheet = new ABCEditorBottomSheet(EditSongFragmentLyrics.this,mainActivityInterface.getTempSong(),"inline");
+                    abcEditorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AbcEditor");
                 } else {
                     if (bitToAdd.startsWith("[") && bitToAdd.endsWith("]")) {
                         bitToAdd = "\n" + bitToAdd;
@@ -717,6 +727,20 @@ public class EditSongFragmentLyrics extends Fragment {
         }
         myView.lyrics.setText(fixedlyrics);
         mainActivityInterface.getShowToast().doIt(success_string);
+    }
+
+    public void insertInlineAbc(String abc) {
+        // Need to convert to inline abc
+        abc = ";#:" + abc.replace("\n","\\n");
+        // Insert a new line and then the text
+        if (cursorPos<0 || cursorPos>myView.lyrics.getText().length()) {
+            cursorPos = 0;
+        }
+
+        String before = myView.lyrics.getText().toString().substring(0,cursorPos);
+        String after = myView.lyrics.getText().toString().substring(cursorPos);
+        String newText = before + "\n" + abc + "\n" + after;
+        myView.lyrics.setText(newText);
     }
 
     @Override
