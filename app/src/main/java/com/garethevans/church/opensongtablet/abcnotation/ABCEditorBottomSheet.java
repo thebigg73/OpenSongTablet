@@ -1,65 +1,45 @@
 package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.RenderProcessGoneDetail;
-import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
-import androidx.webkit.WebSettingsCompat;
-import androidx.webkit.WebViewFeature;
-import androidx.webkit.internal.ApiFeature;
 
-import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAbcEditorBinding;
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
-import com.garethevans.church.opensongtablet.importsongs.MyJSInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.ThemeKeeper;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentFeatures;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentLyrics;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.shape.CornerFamily;
-import com.google.android.material.shape.MaterialShapeDrawable;
 
 public class ABCEditorBottomSheet extends BottomSheetCommon {
 
     private final String TAG = "ABCEditorBS";
     private MainActivityInterface mainActivityInterface;
     private BottomSheetAbcEditorBinding myView;
-    private String what = "";
-    private Fragment frag;
+    private final String what;
+    private final Fragment frag;
 
     private WebView webView;
-    private ABCWebViewJSInterface abcWebViewJSInterface;
-    private Song song;
+    private final Song song;
 
     public ABCEditorBottomSheet(Fragment frag, Song song, String what) {
         this.frag = frag;
@@ -76,7 +56,6 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
     @Override
     public void onResume() {
         super.onResume();
-        prepareStrings();
     }
 
     @Nullable
@@ -84,12 +63,8 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetAbcEditorBinding.inflate(inflater, container, false);
 
-        prepareStrings();
-
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
-        //myView.dialogHeading.setText(create_new_song);
-        //myView.dialogHeading.setWebHelp(mainActivityInterface,website_song_new);
 
         // Set up views
         setupViews();
@@ -98,13 +73,6 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
         setupListeners();
 
         return myView.getRoot();
-    }
-
-
-    private void prepareStrings() {
-        if (getContext()!=null) {
-
-        }
     }
 
     private void setupViews() {
@@ -173,7 +141,7 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
     @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         if (getContext() != null) {
-            abcWebViewJSInterface = new ABCWebViewJSInterface(getContext());
+            ABCWebViewJSInterface abcWebViewJSInterface = new ABCWebViewJSInterface(getContext());
 
             // For logging
             webView.setWebChromeClient(new WebChromeClient() {
@@ -185,11 +153,6 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
             });
 
             webView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    return false;
-                }
-
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                     return false;
@@ -268,10 +231,6 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
                 }
             });
 
-            // Force the "Wide Viewport" so it doesn't wrap lyric lines
-            //webView.getSettings().setUseWideViewPort(true);
-            //webView.getSettings().setLoadWithOverviewMode(true);
-
             webView.getSettings().getJavaScriptEnabled();
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setDomStorageEnabled(true);
@@ -284,7 +243,14 @@ public class ABCEditorBottomSheet extends BottomSheetCommon {
 
             webView.addJavascriptInterface(abcWebViewJSInterface,"AndroidBridge");
 
-            webView.loadUrl("https://abceditor.justchords.app/?hideHeader=1");
+            String darkPref = "&dark=";
+            if (mainActivityInterface.getMyThemeColors().getThemeName().equals("dark") ||
+            mainActivityInterface.getMyThemeColors().getThemeName().equals("custom1")) {
+                darkPref = darkPref + "1";
+            } else {
+                darkPref = darkPref + "0";
+            }
+            webView.loadUrl("https://abceditor.justchords.app/?hideHeader=1"+darkPref);
         }
     }
 
