@@ -287,12 +287,14 @@ public class MyFloatingActionButton extends FrameLayout {
     }
 
     public void setFABIconColor(int color) {
-        // Tint the icon
-        Drawable drawable = DrawableCompat.wrap(myFAB.getDrawable()).mutate();
+        // Tint the icon only if a drawable is present
+        Drawable drawable = myFAB.getDrawable();
+        if (drawable != null) {
+            Drawable wrapped = DrawableCompat.wrap(drawable).mutate();
+            DrawableCompat.setTint(wrapped, color);
+            myFAB.setImageDrawable(wrapped);
+        }
 
-        DrawableCompat.setTint(drawable, color);
-        myFAB.setImageDrawable(drawable);
-        //myFAB.setSupportImageTintList(ColorStateList.valueOf(color));
         myFAB.setSupportImageTintList(new ColorStateList(
                 new int[][]{new int[0]},
                 new int[]{color}
