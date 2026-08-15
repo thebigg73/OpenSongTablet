@@ -39,14 +39,16 @@ public class OpenChordsFragment extends Fragment {
     private String openchords_folder_doesnt_exist_string = "";
     private String sync_no_changes_required_string ="";
     private String wait_string = "";
+    private String processing_string;
     private String index_songs_wait_string = "";
     private String sync_querying_remote_string = "";
     private String owner_string, not_owner_string, read_only_string;
     private SettingsOpenchordsBinding myView;
-    private boolean folderChangedProgrammatically = false, changingReadOnlyProgrammatically = false;
-    private Handler checkQueryHandler = new Handler();
+    private boolean changingReadOnlyProgrammatically = false;
+    private Handler checkQueryHandler;
     private Runnable checkQueryRunnable;
     private String keepLocalFolderName;
+    private MyMaterialSimpleTextView progressView;
 
     @Override
     public void onResume() {
@@ -61,7 +63,6 @@ public class OpenChordsFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
         mainActivityInterface.getOpenChordsAPI().setOpenChordsFragment(this);
         mainActivityInterface.getOpenChordsAPI().removeCallbacks();
-        mainActivityInterface.getOpenChordsAPI().setWaitingForQueryResponse(false);
     }
 
     @Nullable
@@ -69,46 +70,66 @@ public class OpenChordsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsOpenchordsBinding.inflate(inflater, container, false);
 
-        myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+        // Everything else triggered on background thread with UI updates posted there
+        mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+            // Check we have an up to date record of our folders
+            mainActivityInterface.getOpenChordsAPI().initialiseRecords();
+            mainActivityInterface.getOpenChordsAPI().initialiseOpenChordsFolderAndUuid();
 
-        // Tint the progressBar as the secondary color
-        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+            // Prepare the strings needed for the app
+            prepareStrings();
 
-        changeButtonsEnable(false);
-        updateProgress(wait_string+"\n");
-        prepareStrings();
+            // Tint and theme checks
+            if (myView!=null) {
+                myView.getRoot().post(() -> {
+                    if (myView != null) {
+                                myView.getRoot().setBackgroundColor(mainActivityInterface.getPalette().background);
+                    }
+                });
+                myView.progressBar.post(()-> {
+                    if (myView!=null) {
+                        mainActivityInterface.getMyThemeColors().tintProgressBar(myView.progressBar);
+                    }
+                });
 
-        // Check we have an up to date record of our folders
-        mainActivityInterface.getOpenChordsAPI().initialiseRecords();
-        mainActivityInterface.getOpenChordsAPI().initialiseOpenChordsFolderAndUuid();
+                // Get the folder needed for sync
+                if (mainActivityInterface.getWhattodo().equals("openchordsintent")) {
+                    // We got here via an intent
+                    // Look for a local folder that matches the intent uuid
+                    // If not, set it to null
+                    mainActivityInterface.setWhattodo("");
+                    myView.folderToSync.post(() -> {
+                        myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
+                                getOpenSongFolderNameFromUUID(
+                                        mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
+                        Log.d(TAG, "here via the intent");
+                    });
+                } else {
+                    // Just set it to our preference
+                    Log.d(TAG,"folderToSync:"+mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName());
+                    myView.folderToSync.post(() -> myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName()));
+                }
 
-        setupViews();
-        setupListeners();
+                // Disable the buttons while stuff is prepared
+                changeButtonsEnable(false);
+                updateProgress(wait_string+"\n");
 
-        mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
+                setupRunnables();
+                setupViews();
+                setupListeners();
+
+
+                // This is our first call to the server now we have dealt with everything else
+                myView.folderToSync.post(()-> Log.d(TAG,"first query using folder:"+myView.folderToSync.getText().toString()));
+                mainActivityInterface.getOpenChordsAPI().delayedQueryServer(1000);
+            }
+        });
 
         return myView.getRoot();
     }
 
     private void prepareStrings() {
         if (getContext() != null) {
-            if (mainActivityInterface.getPalette().textColor == R.color.dark_color) {
-                myView.openChordsLogo.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white_blue));
-            } else {
-                Drawable drawable = AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white);
-                if (drawable!=null) {
-                    DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().textColor);
-                    myView.openChordsLogo.setImageDrawable(drawable);
-                }
-                myView.openChordsLogo.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white));
-            }
-
-            Drawable popup = AppCompatResources.getDrawable(getContext(), R.drawable.popup_bg);
-            if (popup!=null) {
-                DrawableCompat.setTint(popup,mainActivityInterface.getPalette().secondary);
-            }
-            myView.fakeToastLayout.setBackground(popup);
-
             openchords_string = getString(R.string.openchords);
             webAddress = getString(R.string.website_openchords);
             openchords_folder_doesnt_exist_string = getString(R.string.openchords_folder_doesnt_exist);
@@ -120,52 +141,72 @@ public class OpenChordsFragment extends Fragment {
             owner_string = getString(R.string.openchords_owner);
             not_owner_string = getString(R.string.openchords_not_owner);
             read_only_string = getString(R.string.openchords_readonly);
-
-            checkQueryRunnable = () -> {
-                if (mainActivityInterface!=null && mainActivityInterface.getSongListBuildIndex()!=null &&
-                        mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
-                    // Keep the user posted
-                    String progressText = index_songs_wait_string;
-                    if (mainActivityInterface.getSongMenuFragment() != null) {
-                        MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
-                        if (progressView != null && progressView.getText() != null) {
-                            progressText += "\n" + progressView.getText().toString();
-                        }
-                        updateProgress(progressText);
-                        checkQueryHandler.removeCallbacks(checkQueryRunnable);
-                        checkQueryHandler.postDelayed(checkQueryRunnable, 1000);
-                    }
-                } else {
-                    Log.d(TAG,"checkQueryRunnable");
-                    Log.d(TAG,"checkQueryRunnable() completed.  Should we query the server again?");
-                    //mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
-                }
-            };
+            processing_string = getString(R.string.processing);
+            progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
         }
     }
 
+    private void setupRunnables() {
+        if (checkQueryHandler==null) {
+            checkQueryHandler = mainActivityInterface.getMainHandler();
+        }
+        checkQueryRunnable = () -> {
+            if (mainActivityInterface!=null && mainActivityInterface.getSongListBuildIndex()!=null &&
+                    mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+                // Keep the user posted
+                String progressText = index_songs_wait_string;
+                if (mainActivityInterface.getSongMenuFragment() != null) {
+                    if (progressView != null && progressView.getText() != null) {
+                        progressText += "\n" + progressView.getText().toString();
+                    }
+                    updateProgress(progressText);
+                    checkQueryHandler.removeCallbacks(checkQueryRunnable);
+                    checkQueryHandler.postDelayed(checkQueryRunnable, 1000);
+                }
+            }
+        };
+    }
     private void setupViews() {
         if (getContext() != null) {
+            // Decide if we need a light or dark OpenChords logo
+            if (mainActivityInterface.getPalette().textColor == R.color.dark_color) {
+                myView.openChordsLogo.post(() -> myView.openChordsLogo.setImageDrawable(AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white_blue)));
+            } else {
+                Drawable drawable = AppCompatResources.getDrawable(getContext(),R.drawable.openchords_logo_white);
+                if (drawable!=null) {
+                    DrawableCompat.setTint(drawable,mainActivityInterface.getPalette().textColor);
+                    myView.openChordsLogo.post(() -> myView.openChordsLogo.setImageDrawable(drawable));
+                }
+            }
+
+            Drawable popup = AppCompatResources.getDrawable(getContext(), R.drawable.popup_bg);
+            if (popup!=null) {
+                DrawableCompat.setTint(popup,mainActivityInterface.getPalette().secondary);
+            }
+            myView.fakeToastLayout.post(() -> myView.fakeToastLayout.setBackground(popup));
+
             ExposedDropDownArrayAdapter exposedDropDownArrayAdapter =
                     new ExposedDropDownArrayAdapter(getContext(), myView.folderToSync,
                             R.layout.view_exposed_dropdown_item,
                             mainActivityInterface.getOpenChordsAPI().getValidFolders());
-            myView.folderToSync.setProgrammaticChange(true);
-            myView.folderToSync.setAdapter(exposedDropDownArrayAdapter);
-            folderChangedProgrammatically = true;
-            if (mainActivityInterface.getWhattodo().equals("openchordsintent")) {
-                // We got here via an intent
-                // Look for a local folder that matches the intent uuid
-                // If not, set it to null
-                mainActivityInterface.setWhattodo("");
-                myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
-                        getOpenSongFolderNameFromUUID(
-                                mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
-                Log.d(TAG,"here via the intent");
-            } else {
-                // Just set it to our preference
-                myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName());
-            }
+            myView.folderToSync.post(() -> {
+                myView.folderToSync.setProgrammaticChange(true);
+                myView.folderToSync.setAdapter(exposedDropDownArrayAdapter);
+                if (mainActivityInterface.getWhattodo().equals("openchordsintent")) {
+                    // We got here via an intent
+                    // Look for a local folder that matches the intent uuid
+                    // If not, set it to null
+                    mainActivityInterface.setWhattodo("");
+                    myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().
+                            getOpenSongFolderNameFromUUID(
+                                    mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderUuid()));
+                    Log.d(TAG, "here via the intent");
+                } else {
+                    // Just set it to our preference
+                    myView.folderToSync.setText(mainActivityInterface.getOpenChordsAPI().getOpenChordsFolderName());
+                }
+                myView.folderToSync.setProgrammaticChange(false);
+            });
 
             // Tint the background circle for the file counter
             //ColorStateList secondaryTint = ColorStateList.valueOf(mainActivityInterface.getPalette().secondary);
@@ -174,16 +215,16 @@ public class OpenChordsFragment extends Fragment {
                     new int[]{mainActivityInterface.getPalette().secondary}
             );
 
-            ViewCompat.setBackgroundTintList(myView.uploadCount, secondaryTint);
-            ViewCompat.setBackgroundTintList(myView.downloadCount, secondaryTint);
+            myView.uploadCount.post(() -> ViewCompat.setBackgroundTintList(myView.uploadCount, secondaryTint));
+            myView.downloadCount.post(() -> ViewCompat.setBackgroundTintList(myView.downloadCount, secondaryTint));
 
             // Set up the QR code
-            Glide.with(getContext()).load(mainActivityInterface.getOpenChordsAPI().getOpenChordsQRCode()).into(myView.openChordsQRImage);
+            myView.openChordsQRImage.post(() -> Glide.with(getContext()).load(mainActivityInterface.getOpenChordsAPI().getOpenChordsQRCode()).into(myView.openChordsQRImage));
         }
     }
 
     private void setupListeners() {
-        myView.folderToSync.addTextChangedListener(new TextWatcher() {
+        myView.folderToSync.post(() -> myView.folderToSync.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -194,129 +235,70 @@ public class OpenChordsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                // Update our choice and get the new uuid
-                if (getContext() != null && myView != null && myView.folderToSync.getText() != null &&
-                        !mainActivityInterface.getOpenChordsAPI().getIsServerResponse()) {
-                    // If we manually changed this, save the new folder name preference
-                    // Otherwise we are just updating the folder name from the server response
-                    if (!folderChangedProgrammatically && !myView.folderToSync.getProgrammaticChange()) {
-                        // We have manually changed the folder name
-                        String folderName = myView.folderToSync.getText().toString();
-                        mainActivityInterface.getOpenChordsAPI().setReceivedFolderLink(false);
-                        // Save our preference
-                        mainActivityInterface.getPreferences().setMyPreferenceString(
-                                "openChordsFolderName",folderName);
-                        // Update the API with our folderName and the uuid of the matching folder
-                        mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderName(folderName);
-                        if (mainActivityInterface.getOpenChordsAPI().
-                                getOpenSongFolderUuidFromName(folderName)!=null) {
-                            mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderUuid(
-                                    mainActivityInterface.getOpenChordsAPI().
-                                            getOpenSongFolderUuidFromName(folderName));
-                        }
-                        // Assume we want to get the foldername from the server
-                        keepLocalFolderName = null;
-                        mainActivityInterface.getOpenChordsAPI().setLocalFolderName(null);
-                        // Get the new QR code
-                        Glide.with(getContext()).load(mainActivityInterface.getOpenChordsAPI().
-                                getOpenChordsQRCode()).into(myView.openChordsQRImage);
-
-                        // Query the server
-                        Log.d(TAG,"changed our folder.  Should we query the server again? - yes!");
-                        mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
-                    }
-                } else if (myView!=null && myView.folderToSync.getText() != null && getContext()!=null) {
-                    String folderName = myView.folderToSync.getText().toString();
-                    Log.d(TAG, "server returned folder sent back from server:" + folderName);
-                    mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderName(folderName);
+                if (!myView.folderToSync.getProgrammaticChange()) {
+                    checkForUpdates();
+                } else {
+                    Log.d(TAG,"don't query as programmatic change");
                 }
-                mainActivityInterface.getOpenChordsAPI().setIsServerResponse(false);
-                myView.folderToSync.postDelayed(() -> {
-                    folderChangedProgrammatically = false;
-                    myView.folderToSync.setProgrammaticChange(false);
-                },200);
             }
-        });
-        myView.openChordsQRImage.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getOpenChordsAPI().getOpenChordsAddress()));
-        myView.refresh.setOnClickListener(view -> {
-            // Query the server again
-            Log.d(TAG,"clicked on update.  Should we query the server again? -yes");
-            mainActivityInterface.getOpenChordsAPI().delayedQueryServer(200);
-        });
-        myView.downloadLayout.setOnClickListener(view -> {
-            if (mainActivityInterface.getSongListBuildIndex()!=null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+        }));
+
+        myView.openChordsQRImage.post(() -> {
+                    myView.openChordsQRImage.setOnClickListener(view -> mainActivityInterface.openDocument(mainActivityInterface.getOpenChordsAPI().getOpenChordsAddress()));
+                    myView.refresh.setOnClickListener(view -> {
+                        // Query the server again
+                        Log.d(TAG, "clicked on update.  Should we query the server again? -yes");
+                        mainActivityInterface.getOpenChordsAPI().delayedQueryServer(200);
+                    });
+                });
+
+        myView.downloadLayout.post(() -> myView.downloadLayout.setOnClickListener(view -> {
+            if (mainActivityInterface.getSongListBuildIndex() != null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                 checkQueryHandler.removeCallbacks(checkQueryRunnable);
                 checkQueryHandler.post(checkQueryRunnable);
             } else {
                 OpenChordsBottomSheet openChordsBottomSheet = new OpenChordsBottomSheet(this, "download");
                 openChordsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "OpenChordsBottomSheet");
             }
-        });
-        myView.uploadLayout.setOnClickListener(view -> {
-            if (mainActivityInterface.getSongListBuildIndex()!=null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+        }));
+
+        myView.uploadLayout.post(() -> myView.uploadLayout.setOnClickListener(view -> {
+            if (mainActivityInterface.getSongListBuildIndex() != null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                 checkQueryHandler.removeCallbacks(checkQueryRunnable);
                 checkQueryHandler.post(checkQueryRunnable);
             } else {
                 OpenChordsBottomSheet openChordsBottomSheet = new OpenChordsBottomSheet(this, "upload");
                 openChordsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "OpenChordsBottomSheet");
             }
-        });
-        myView.linkLayout.setOnClickListener(view -> {
+        }));
+
+        myView.linkLayout.post(() -> myView.linkLayout.setOnClickListener(view -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, mainActivityInterface.getOpenChordsAPI().getOpenChordsAddress());
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
-        });
-        myView.forceChanges.setOnClickListener(view -> {
-            if (mainActivityInterface.getSongListBuildIndex()!=null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+        }));
+
+        myView.forceChanges.post(() -> myView.forceChanges.setOnClickListener(view -> {
+            if (mainActivityInterface.getSongListBuildIndex() != null && mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
                 checkQueryHandler.removeCallbacks(checkQueryRunnable);
                 checkQueryHandler.post(checkQueryRunnable);
             } else {
                 OpenChordsForceBottomSheet openChordsForceBottomSheet = new OpenChordsForceBottomSheet(this);
                 openChordsForceBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "OpenChordsForceBottomSheet");
             }
-        });
-        myView.readOnly.setOnCheckedChangeListener((compoundButton, readOnly) -> {
+        }));
+
+        myView.readOnly.post(() -> myView.readOnly.setOnCheckedChangeListener((compoundButton, readOnly) -> {
             // If we are the owner, we can push this change
             // We need to check we aren't just changing this programmatically
             if (!changingReadOnlyProgrammatically &&
-                mainActivityInterface.getOpenChordsAPI().getIsOwner()) {
+                    mainActivityInterface.getOpenChordsAPI().getIsOwner()) {
                 mainActivityInterface.getOpenChordsAPI().changeReadOnly(readOnly);
             }
-        });
-    }
-
-    public void openChordsFolderNotFound() {
-        mainActivityInterface.getMainHandler().post(() -> {
-            if (myView != null) {
-                myView.folderMessage.setText(openchords_folder_doesnt_exist_string);
-                //myView.downloadLayout.setVisibility(View.GONE);
-                changeButtonsEnable(true);
-            }
-        });
-    }
-
-    public void openChordsFolderDifferentFromLocal() {
-        // We already have the folder, but it has a different UUID
-        // Warn the user that downloading will replace the content of this folder
-        mainActivityInterface.getMainHandler().post(() -> {
-            if (myView != null) {
-                myView.folderMessage.setText(folder_exists_but_is_different_string);
-                //myView.uploadLayout.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    public void openChordsFolderFullySynced() {
-        mainActivityInterface.getMainHandler().post(() -> {
-            if (myView != null) {
-                if (mainActivityInterface.getOpenChordsAPI().getUploadCount() == 0 && mainActivityInterface.getOpenChordsAPI().getDownloadCount() == 0) {
-                    myView.folderMessage.setText(sync_no_changes_required_string);
-                }
-            }
-        });
+        }));
     }
 
     public void changeButtonsEnable(boolean enable) {
@@ -333,7 +315,6 @@ public class OpenChordsFragment extends Fragment {
     }
 
     public void justUpdateTitle(String title) {
-        folderChangedProgrammatically = true;
         mainActivityInterface.getMainHandler().post(() -> {
             myView.folderToSync.setProgrammaticChange(true);
             myView.folderToSync.setText(title);
@@ -341,10 +322,8 @@ public class OpenChordsFragment extends Fragment {
         });
     }
     public void updateFolderTitle(String title) {
-        folderChangedProgrammatically = true;
         mainActivityInterface.getMainHandler().post(() -> {
             myView.folderToSync.setProgrammaticChange(true);
-            mainActivityInterface.getOpenChordsAPI().setIsServerResponse(true);
             String titleToShow = title;
             if (keepLocalFolderName!=null) {
                 mainActivityInterface.getOpenChordsAPI().setLocalFolderName(keepLocalFolderName);
@@ -361,20 +340,17 @@ public class OpenChordsFragment extends Fragment {
             } else {
                 // Either the folder names are the same, or we didn't have a folder set (i.e. intent)
                 if (titleToShow!=null && !titleToShow.isEmpty()) {
-                    folderChangedProgrammatically = true;
                     myView.folderToSync.setProgrammaticChange(true);
                     myView.folderToSync.setText(titleToShow);
                     myView.folderToSync.postDelayed(() -> myView.folderToSync.setProgrammaticChange(false),200);
-                    folderChangedProgrammatically = false;
                 }
-                mainActivityInterface.getOpenChordsAPI().setIsServerResponse(false);
                 changeButtonsEnable(true);
             }
         });
     }
 
     public void queryOpenChordsServer() {
-        Log.d(TAG, "queryOpenChordsServer()   waitingForQueryResponse:" + mainActivityInterface.getOpenChordsAPI().getWaitingForQueryResponse());
+        Log.d(TAG, "queryOpenChordsServer()");
         checkQueryHandler.removeCallbacks(checkQueryRunnable);
         // Use the folder chosen to query the server and get the results
         mainActivityInterface.getMainHandler().post(() -> {
@@ -404,9 +380,9 @@ public class OpenChordsFragment extends Fragment {
             mainActivityInterface.getMainHandler().post(() -> {
                 if (myView != null) {
                     if (keepLocalFolderName!=null) {
-                        folderChangedProgrammatically = true;
                         myView.folderToSync.setProgrammaticChange(true);
                         myView.folderToSync.setText(keepLocalFolderName);
+                        mainActivityInterface.getOpenChordsAPI().setLocalFolderName(keepLocalFolderName);
                         myView.folderToSync.postDelayed(() -> myView.folderToSync.setProgrammaticChange(false),200);
                     }
                     changeButtonsEnable(true);
@@ -417,6 +393,7 @@ public class OpenChordsFragment extends Fragment {
                     Log.d(TAG,"isOwner:"+isOwner+"  isReadOnly:"+isReadOnly+"  folderExists:"+folderExists);
                     Log.d(TAG,"localFolderName:"+mainActivityInterface.getOpenChordsAPI().getLocalFolderName());
                     Log.d(TAG,"songsNotOnServerString:"+mainActivityInterface.getOpenChordsAPI().getSongsNotOnServerString());
+                    Log.d(TAG,"myView.folderToSync.getText().toString():"+myView.folderToSync.getText().toString());
                     for (OpenChordsCompareObject openChordsCompareObject:mainActivityInterface.getOpenChordsAPI().getLocalSongsCompareObjects()) {
                         Log.d(TAG,"localSong:"+openChordsCompareObject.getTitle() + "  "+ openChordsCompareObject.getLastModified());
                     }
@@ -439,8 +416,6 @@ public class OpenChordsFragment extends Fragment {
                     myView.readOnly.postDelayed(() -> changingReadOnlyProgrammatically = false,500);
                     updateFolderMessage();
 
-                    // Release the boolean check so we can query again if required
-                    mainActivityInterface.getOpenChordsAPI().setWaitingForQueryResponse(false);
                     mainActivityInterface.getOpenChordsAPI().removeCallbacks();
                 }
             });
@@ -455,7 +430,7 @@ public class OpenChordsFragment extends Fragment {
                     if (progressBits.length>0) {
                         myView.progressText.setText(progressBits[0]);
                     } else {
-                        myView.progressText.setText("");
+                        myView.progressText.setText(processing_string);
                     }
                     if (progressBits.length>1) {
                         myView.progressSubText.setText(progressBits[1]);
@@ -574,5 +549,42 @@ public class OpenChordsFragment extends Fragment {
         mainActivityInterface.getOpenChordsAPI().setOpenChordsFragment(null);
         mainActivityInterface.getOpenChordsAPI().clearSyncObjects();
         mainActivityInterface.getOpenChordsAPI().removeCallbacks();
+        mainActivityInterface.setWhattodo("");
+    }
+
+    private void checkForUpdates() {
+        // Deal with a change in the foldername.
+        // Only proceed if we haven't just changed and waiting on a response
+        if (getContext()!=null && myView!=null && myView.folderToSync.getText()!=null) {
+            // We have manually changed the folder name
+            String folderName = myView.folderToSync.getText().toString();
+            if (!folderName.isEmpty()) {
+                Log.d(TAG,"Starting to sync check with "+folderName);
+                mainActivityInterface.getOpenChordsAPI().setReceivedFolderLink(false);
+                // Save our preference by updating the API
+                Log.d(TAG,"setting the folderName:"+folderName);
+                mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderName(folderName);
+
+                if (mainActivityInterface.getOpenChordsAPI().
+                        getOpenSongFolderUuidFromName(folderName) != null) {
+                    mainActivityInterface.getOpenChordsAPI().setOpenChordsFolderUuid(
+                            mainActivityInterface.getOpenChordsAPI().
+                                    getOpenSongFolderUuidFromName(folderName));
+                }
+
+                // Get the new QR code
+                Glide.with(getContext()).load(mainActivityInterface.getOpenChordsAPI().
+                        getOpenChordsQRCode()).into(myView.openChordsQRImage);
+
+                // These are carried out on a background thread
+                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                    // 1. Query the server
+                    Log.d(TAG, "Querying the server");
+                    mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
+                });
+            }
+
+
+        }
     }
 }

@@ -148,7 +148,6 @@ public class OpenChordsFolderNameChangeBottomSheet extends BottomSheetCommon {
 
     private void updateTitleAndQuery(String newTitle) {
         // Pretend this has come from the server and update the title (so a query isn't run)
-        mainActivityInterface.getOpenChordsAPI().setIsServerResponse(true);
         openChordsFragment.justUpdateTitle(newTitle);
         // Now query the server
         mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);

@@ -193,54 +193,61 @@
             </LinearLayout>
         </ScrollView>
 
-        <FrameLayout
-            android:id="@+id/scrimOverlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/ScrimBackground"
-            android:visibility="gone" />
+
+
+
+
+
+           </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/scrimOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ScrimBackground"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:layout_gravity="center" />
 
         <LinearLayout
-            android:id="@+id/progressLayout"
-            android:layout_width="400dp"
+            android:id="@+id/fakeToastLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="@dimen/progress_bar_size"
-                android:layout_height="@dimen/progress_bar_size"
-                android:layout_gravity="center" />
-
-            <LinearLayout
-                android:id="@+id/fakeToastLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="400dp"
-                android:minHeight="128dp"
-                android:padding="16dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-                    android:id="@+id/progressText"
+            android:minWidth="400dp"
+            android:minHeight="128dp"
+            android:padding="16dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="16sp"
+            android:orientation="vertical">
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/progressText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="@dimen/text_large"
                 android:text="@string/processing" />
-                <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
-                    android:id="@+id/progressSubText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_medium"
-                    android:text="@string/wait" />
-            </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:id="@+id/progressSubText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/text_medium"
+                android:text="@string/wait" />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

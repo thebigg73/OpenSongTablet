@@ -321,6 +321,12 @@ public class SongListBuildIndex {
         // Get a timestamp of this update into preferences
         mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());
 
+        // If this was called from OpenChordsFragment, we need to tell it to query the server again
+        if (mainActivityInterface.getWhattodo().equals("openChordsSyncWait")) {
+            mainActivityInterface.setWhattodo("");
+            mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
+        }
+
         return returnString.toString();
     }
 

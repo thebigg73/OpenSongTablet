@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -62,7 +63,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     // The retrofit, server and fragment declarations
     private RetrofitInterface retrofitInterface;
     private OpenChordsFragment openChordsFragment;
-    private boolean isServerResponse = false;
     private final String conflictCheckFile = "conflictCheck.json";
     private OpenChordsConflictCheck openChordsConflictCheck;
     private ArrayList<OpenChordsConflictObject> openChordsConflictObjects = new ArrayList<>();
@@ -72,11 +72,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private final String openChordsUsername;
     private final String openChordsPassword;
 
-    private final Handler delayedQueryHandler = new Handler();
+    private final Handler delayedQueryHandler;
     private final Runnable delayedQueryRunnable = new Runnable() {
         @Override
         public void run() {
             if (openChordsFragment!=null) {
+                Log.d(TAG,"Runnable - about to trigger openChrodsFragment.queryOpenChordsServer()");
                 openChordsFragment.queryOpenChordsServer();
             }
         }
@@ -84,14 +85,12 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     private final Runnable resetIfNoResponseRunnable = new Runnable() {
         @Override
         public void run() {
-            waitingForQueryResponse = false;
             if (openChordsFragment!=null) {
                 openChordsFragment.changeButtonsEnable(true);
             }
         }
     };
-    private boolean waitingForQueryResponse = false;
-    private final long delayForQuery = 2000;
+    private final long delayForQuery = 1000;
     private final Handler waitMessageHandler = new Handler(Looper.getMainLooper());
     private final Runnable waitMessageRunnable = new Runnable() {
         @Override
@@ -109,6 +108,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public OpenChordsAPI(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
         this.c = c;
+
+        delayedQueryHandler = mainActivityInterface.getMainHandler();
 
         // Get the login credentials
         openChordsUsername = mainActivityInterface.getPreferences().getKey(c, "openchordsusername");
@@ -325,6 +326,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
     public void setOpenChordsFolderName(String openChordsFolderName) {
         this.openChordsFolderName = openChordsFolderName;
+        mainActivityInterface.getPreferences().setMyPreferenceString(
+                "openChordsFolderName", openChordsFolderName);
     }
 
     public String getLocalFolderName() {
@@ -336,7 +339,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     public void setLocalFolderName(String localFolderName) {
-        if (localFolderName == null) {
+        Log.d(TAG,"setLocalFolderName("+localFolderName+")");
+        if (localFolderName == null || localFolderName.isEmpty()) {
             this.localFolderName = openChordsFolderName;
         } else {
             this.localFolderName = localFolderName;
@@ -359,7 +363,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 Song localOpenSongSong = localOpenSongSongs.get(i);
                 // Only allow xml songs (no PDF/images)
                 if (!mainActivityInterface.getStorageAccess().isIMGorPDF(localOpenSongSong)) {
-                    updateProgress(c.getString(R.string.sync_checking_local_item) + "\n" + localOpenSongSong.getTitle());
+                    updateProgress(c.getString(R.string.sync_checking_local_item) + "\n" + "(" + (i+1) + "/" + localOpenSongSongs.size()+") "+ localOpenSongSong.getTitle());
                     localSongs.add(convertOpenSongToOpenChords(localOpenSongSong));
                     localSongsCompareObjects.add(createOpenChordsCompareObject(localOpenSongSong.getUuid(),
                             localOpenSongSong.getFilename(), localOpenSongSong.getLastModified(), "song"));
@@ -564,8 +568,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     boolean localObjectHasLastModified = localObjectLastModified>0;
 
                     // Find out which is newer (if both are the same, neither are true)
-                    boolean serverObjectIsLastModified = serverObjectLastModified > localObjectLastModified;
-                    boolean localObjectIsLastModified = localObjectLastModified > serverObjectLastModified;
+                    //boolean serverObjectIsLastModified = serverObjectLastModified > localObjectLastModified;
+                    //boolean localObjectIsLastModified = localObjectLastModified > serverObjectLastModified;
 
                     // Now decide what needs updated
                     if (!serverObjectHasLastModified && localObjectHasLastModified) {
@@ -724,35 +728,45 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 clearSyncObjects();
 
                 if (response.isSuccessful()) {
-                    isServerResponse = true;
+                    Log.d(TAG,"response:"+response);
                     serverFolder = (OpenChordsFolderObject) response.body();
                     folderIsDifferentUuid = false;
 
                     if (serverFolder != null) {
-
                         // Lets get the server objects we have found!
                         updateProgress(c.getString(R.string.sync_reading_remote_folder) + "\n");
 
+                        // Uncomment to save a local copy for testing
                         //String content = MainActivity.gson.toJson(serverFolder, OpenChordsFolderObject.class);
-                        //mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","ReceivedObject.json",content);
+                        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","ReceivedObject.json",content,false);
 
+                        Log.d(TAG,"serverFolder.getOwnerId():"+serverFolder.getOwnerId());
+                        Log.d(TAG,"openChordsUserUuid:"+openChordsUserUuid);
+                        Log.d(TAG,"getIsOwner():"+serverFolder.getIsOwner());
                         // Decide if we are the folder owner
                         if (serverFolder.getIsOwner()!=null) {
                             isOwner = serverFolder.getIsOwner();
                         } else {
                             isOwner = true;
                         }
+                        Log.d(TAG,"isOwner:"+isOwner);
+
                         // Decide if the folder is marked as read only
                         if (serverFolder.getReadonly()!=null) {
                             isReadOnly = serverFolder.getReadonly();
                         } else {
                             isReadOnly = false;
                         }
+                        Log.d(TAG,"isReadOnly:"+isReadOnly);
 
-                        if (serverFolder.getTitle() != null) {
+                        if (serverFolder.getTitle() != null && !serverFolder.getTitle().isEmpty()) {
                             openChordsFolderName = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(serverFolder.getTitle());
+                            Log.d(TAG,"openChordsFolderName:"+openChordsFolderName);
+
                             serverTags = serverFolder.getTags();
                             serverSongs = serverFolder.getSongs();
+
+
                             if (serverSongs != null) {
                                 removePointlessStuffFromSongs(serverSongs);
                             }
@@ -761,8 +775,18 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                                 removePointlessStuffFromSetLists(serverSetLists);
                             }
 
+                            Log.d(TAG,"serverTags:"+serverTags);
+                            Log.d(TAG,"serverSongs:"+serverSongs);
+                            Log.d(TAG,"serverSetLists:"+serverSetLists);
                             // Now create the server compare objects
                             createServerCompareObjects();
+                        } else {
+                            // This folder doesn't exist on the server
+                            Log.d(TAG,"This folder doesn't exist on the server");
+                            serverFolder = null;
+                            serverSongs.clear();
+                            serverTags.clear();
+                            serverSetLists.clear();
                         }
                     }
 
@@ -771,9 +795,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     serverSongs.clear();
                     serverTags.clear();
                     serverSetLists.clear();
-                    isServerResponse = false;
                 }
 
+                Log.d(TAG,"finished createServerCompareObjects - size somgs:"+serverSongsCompareObjects.size()+"  sets:"+serverSetListsCompareObjects.size());
                 // Now compare the local and server objects
                 updateProgress(c.getString(R.string.sync_comparing_local_and_remote) + "\n");
 
@@ -840,7 +864,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         openChordsFolderName = serverFolder.getTitle();
                         openChordsFragment.updateFolderTitle(openChordsFolderName);
                     }
-                    isServerResponse = false;
                     openChordsFragment.logChanges();
                 }
             }
@@ -861,15 +884,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             openChordsFragment.updateFolderMessage();
         }
     }
-
-    public boolean getIsServerResponse() {
-        return isServerResponse;
-    }
-
-    public void setIsServerResponse(boolean isServerResponse) {
-        this.isServerResponse = isServerResponse;
-    }
-
 
     private void updateProgress(String message) {
         // This displays a message to the screen.
@@ -1008,8 +1022,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 OpenChordsSetListSongItem openChordsSetListSongItem = serverSetListItem.getSongItem();
 
                 String itemType = serverSetListItem.getType();
-                String itemCustomData = serverSetListItem.getCustomData();
-                String itemLastUpdated = serverSetListItem.getLastUpdated();
+                //String itemCustomData = serverSetListItem.getCustomData();
+                //String itemLastUpdated = serverSetListItem.getLastUpdated();
                 String itemNotes = serverSetListItem.getNotes();
 
                 // Get the filename from the id
@@ -1331,11 +1345,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         }
     }
 
-    private String convertOpenSongSetNameToOpenChordsSetName(String openSongSetName) {
-        return mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(openSongSetName).
-                replace(getOpenSongSetCategoryStart(), "");
-    }
-
     private String getOpenSongSetCategoryStart() {
         return "OpenChords" + mainActivityInterface.getSetActions().getSetCategorySeparator();
     }
@@ -1473,7 +1482,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     Song newOpenSongSong = convertOpenChordsToOpenSong(filename, title, serverSong.getLastUpdated(), serverSong);
 
                     // If we have changed the title/filename, we need to update the database
-                    String oldtitle = existingSong.getTitle();
+                    //String oldtitle = existingSong.getTitle();
                     String oldfilename = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(existingSong.getFilename());
                     if (!oldfilename.equals(filename)) {
                         mainActivityInterface.getSQLiteHelper().deleteSong(getLocalFolderName(), mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(existingSong.getFilename()));
@@ -1747,9 +1756,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         uploadFolderObject.setSetLists(setsForUpload);
         uploadFolderObject.setTags(tagsForUpload);
 
-        updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
+        // If we are testing, this method writes the object to a file
+        doTestingFileWriteCheck(uploadFolderObject);
 
-        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
+        updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
+        Log.d(TAG,"about to upload.  ownerId:"+uploadFolderObject.getOwnerId()+"  userId:"+openChordsUserUuid+"  folderId:"+openChordsFolderUuid);
+
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(openChordsFolderUuid, openChordsUserUuid, uploadFolderObject);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -1933,16 +1946,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     setListItem.setNotes(trimmedOrNull(setListItem.getNotes()));
                     setListItem.setType(trimmedOrNull(setListItem.getType()));
                     setListItem.setCustomData(trimmedOrNull(setListItem.getCustomData()));
-                    if (setListItem.getSongItem() != null) {
-                        OpenChordsSetListSongItem songItem = setListItem.getSongItem();
-                        //songItem.setCapo(nullFromZero(songItem.getCapo()));
-                        //songItem.setTranspose(trimmedOrNull(songItem.getTranspose()));
-                    }
                 }
             }
         }
     }
-
 
     public void deleteLocalSongs() {
         // Do this in a new thread
@@ -2125,7 +2132,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
 
     private void doQueryCall(OpenChordsFolderObject uploadFolderObject) {
-        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(openChordsFolderUuid, openChordsUserUuid, uploadFolderObject);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -2173,14 +2180,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         return (integer == null || integer == 0) ? null : integer;
     }
 
-    private String removeUnnecessaryBitsFromJson(String json) {
-        //json = json.replace("\"capo\": 0,", "");
-        json = json.replace("\"tempo\": 0,", "");
-        json = json.replace("\"duration\": 0,", "");
-        json = json.replace("\"title\": \"\",", "");
-        return json;
-    }
-
     public void forcePush() {
         conflictItemRecords = new ArrayList<>();
         checkForConflictObject();
@@ -2221,7 +2220,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
 
         updateConflictItem("lastForcePush");
 
-        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(uploadFolderObject.getOwnerId(), uploadFolderObject);
+        // If we are testing, this method writes the object to a file
+        doTestingFileWriteCheck(uploadFolderObject);
+
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(openChordsFolderUuid, openChordsUserUuid, uploadFolderObject);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -2262,6 +2264,11 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         String folder = null;
         if (serverFolder!=null) {
             folder = serverFolder.getTitle();
+        }
+        mainActivityInterface.setWhattodo("openChordsSyncWait");
+        if (openChordsFragment!=null) {
+            openChordsFragment.changeButtonsEnable(false);
+            openChordsFragment.updateProgress(c.getString(R.string.processing));
         }
         mainActivityInterface.fullIndex(folder);
     }
@@ -2693,23 +2700,27 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         OpenChordsFolderPermissionsObject permissionsObject = new OpenChordsFolderPermissionsObject();
         permissionsObject.setReadonly(isReadOnly);
         permissionsObject.setUserID(openChordsUserUuid);
-        Call<OpenChordsReturnMessageObject> call = retrofitInterface.postOpenChordsFolderReadOnly(openChordsFolderUuid,permissionsObject);
-        call.enqueue(new Callback<OpenChordsReturnMessageObject>() {
+        Call<ResponseBody> call = retrofitInterface.postOpenChordsFolderReadOnly(openChordsFolderUuid,permissionsObject);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(@NonNull Call<OpenChordsReturnMessageObject> call, @NonNull Response<OpenChordsReturnMessageObject> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 receivedResponse();
                 // this method is called when we get response from our api.
-                if (response!=null && response.body()!=null) {
-                    openChordsFragment.changeButtonsEnable(false);
-                    updateProgress(c.getString(R.string.wait) + "\n");
+                try (ResponseBody responseBody = response.body()) {
+                    if (responseBody!=null) {
+                        openChordsFragment.changeButtonsEnable(false);
+                        updateProgress(c.getString(R.string.wait) + "\n");
 
-                    // Because we have changed something, we need to query again and compare content
-                    delayedQueryServer(delayForQuery);
+                        // Because we have changed something, we need to query again and compare content
+                        delayedQueryServer(delayForQuery);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<OpenChordsReturnMessageObject> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 // We received a response (even though it was a failure!)
                 receivedResponse();
 
@@ -2726,10 +2737,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     }
     public boolean getFolderExists() {
         return serverFolder != null;
-    }
-
-    public OpenChordsFolderObject getServerFolder() {
-        return serverFolder;
     }
 
     public boolean getFolderIsDifferentUuid() {
@@ -2765,6 +2772,13 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         return lastModifiedLong;
     }
 
+    public void doTestingFileWriteCheck(OpenChordsFolderObject testObject) {
+        // TODO Check if we're testing
+        // If so, uncomment
+        //String uploadObjectString = MainActivity.gson.toJson(testObject);
+        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",uploadObjectString,true);
+    }
+
     // So we don't get stuck in a loop and keep querying the server, we use the logic below
     // Once we start the query process, we keep a boolean flag record.
     // This is only reset once we finish the response action (or a failure/error happens)
@@ -2772,10 +2786,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     public void delayedQueryServer(long delayTime) {
         // Query the server again after a fixed delay
         removeCallbacks();
-        if (!waitingForQueryResponse) {
-            waitingForQueryResponse = true;
-            delayedQueryHandler.postDelayed(delayedQueryRunnable, delayTime);
-        }
+        Log.d(TAG,"Running delayedQueryRunnable()");
+        delayedQueryHandler.postDelayed(delayedQueryRunnable, delayTime);
         // Set the timeout safety check to 5s beyond our initial delay
         delayedQueryHandler.postDelayed(resetIfNoResponseRunnable,delayTime+5000);
     }
@@ -2783,12 +2795,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         delayedQueryHandler.removeCallbacks(delayedQueryRunnable);
         delayedQueryHandler.removeCallbacks(resetIfNoResponseRunnable);
     }
-    public void setWaitingForQueryResponse(boolean waitingForQueryResponse) {
-        this.waitingForQueryResponse = waitingForQueryResponse;
-    }
-    public boolean getWaitingForQueryResponse() {
-        return waitingForQueryResponse;
-    }
+
     public void receivedResponse() {
         removeCallbacks();
     }
