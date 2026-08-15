@@ -23,6 +23,7 @@ public class NearbyJson {
     private Integer section;        // The section to show
     private String message;         // The nearbyMessage to show
     private Song song;              // If we are sharing a pdf/image, also share the extra info from the database
+    private String songUuid;        // The uuid of the song being sent
     private ArrayList<ShareableObject> shareableSongObjects;        // If we are sharing song objects
     private ArrayList<ShareableObject> shareableSetObjects;         // If we are sharing set objects
     private ArrayList<ShareableObject> shareableProfileObjects;     // If we are sharing profile objects
@@ -65,6 +66,9 @@ public class NearbyJson {
     }
     public @Nullable Song getSong() {
         return song;
+    }
+    public @Nullable String getSongUuid() {
+        return songUuid;
     }
     public @Nullable ArrayList<ShareableObject> getShareableSongObjects() {
         return shareableSongObjects;
@@ -114,6 +118,9 @@ public class NearbyJson {
     }
     public void setSong(Song song) {
         this.song = song;
+    }
+    public void setSongUuid(String songUuid) {
+        this.songUuid = songUuid;
     }
     public void setShareableSongObjects(ArrayList<ShareableObject> shareableSongObjects) {
         this.shareableSongObjects = shareableSongObjects;
