@@ -182,8 +182,64 @@
             </intent-filter>
 
             <!-- Declaring the app is available to open these files -->
+            <!-- FILTER 1: Standard files (PDFs, Images, Standard XML/Text) - NO path restrictions -->
             <intent-filter>
-                <!--<action android:name="android.intent.action.SEND" />-->
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
+
+                <data android:mimeType="application/pdf"/>
+                <data android:mimeType="application/zip"/>
+                <data android:mimeType="image/*"/>
+                <data android:mimeType="text/plain"/>
+                <data android:mimeType="application/text"/>
+                <data android:mimeType="application/xml" />
+                <data android:mimeType="application/xhtml+xml" />
+                <data android:mimeType="text/xml" />
+                <data android:mimeType="application/octet-stream"/>
+            </intent-filter>
+
+            <!-- FILTER 2: Custom Song Extensions with Path Patterns -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
+                <data android:host="*"/>
+
+                <data android:pathPattern=".*\.osb"/>
+                <data android:pathSuffix=".osb" />
+                <data android:pathPattern=".*\.osbs"/>
+                <data android:pathSuffix=".osbs" />
+                <data android:pathPattern=".*\.ost"/>
+                <data android:pathSuffix=".ost" />
+                <data android:pathPattern=".*\.ossb"/>
+                <data android:pathSuffix=".ossb" />
+                <data android:pathPattern=".*\.osts"/>
+                <data android:pathSuffix=".osts" />
+                <data android:pathPattern=".*\.onsong"/>
+                <data android:pathSuffix=".onsong" />
+                <data android:pathPattern=".*\.backup"/>
+                <data android:pathSuffix=".backup" />
+                <data android:pathPattern=".*\.chordpro"/>
+                <data android:pathSuffix=".chordpro" />
+                <data android:pathPattern=".*\.chopro"/>
+                <data android:pathSuffix=".chopro" />
+                <data android:pathPattern=".*\.cho"/>
+                <data android:pathSuffix=".cho" />
+                <data android:pathPattern=".*\.pro"/>
+                <data android:pathSuffix=".pro" />
+                <data android:pathPattern=".*\.justchords"/>
+                <data android:pathSuffix=".justchords" />
+            </intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -201,7 +257,6 @@
                 <data android:mimeType="text/xml" />
                 <data android:mimeType="application/octet-stream"/>
 
-                <!-- The custom filetypes -->
                 <data android:mimeType="*/*"/>
                 <data android:pathPattern=".*\.osb"/>
                 <data android:pathPattern=".*\..*\.osb"/>
@@ -264,16 +319,8 @@
                 <data android:pathPattern=".*\..*\..*\..*\.justchords"/>
                 <data android:pathSuffix=".justchords" />
                 <data android:pathPattern=".*"/>
-
-                <!-- I could include this to allow opening song files with no extensions, however,
-                     this would then allow all files to be matched, which would annoy people
-
-                <data android:mimeType="*/*"/>
-                <data android:pathPattern=".*"/>
-                -->
-
-
             </intent-filter>
+            -->
 
         </activity>
 
