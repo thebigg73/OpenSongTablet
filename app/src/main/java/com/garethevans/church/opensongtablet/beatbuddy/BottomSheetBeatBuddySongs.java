@@ -33,7 +33,6 @@ public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
     private MainActivityInterface mainActivityInterface;
     private BottomSheetBeatBuddySongsBinding myView;
     private final BBCommandsFragment callingFragment;
-    private final BBSQLite bbsqLite;
     private ArrayList<String> uniqueFolders, uniqueTimeSignatures, uniqueDrumKits,
             myUniqueFolders;
     private ExposedDropDownArrayAdapter foldersAdapter, timeSignaturesAdapter, drumKitsAdapter,
@@ -43,13 +42,11 @@ public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
         // Default constructor required to avoid re-instantiation failures
         // Just close the bottom sheet
         callingFragment = null;
-        bbsqLite = null;
         dismiss();
     }
 
-    public BottomSheetBeatBuddySongs(BBCommandsFragment callingFragment, BBSQLite bbsqLite) {
+    public BottomSheetBeatBuddySongs(BBCommandsFragment callingFragment) {
         this.callingFragment = callingFragment;
-        this.bbsqLite = bbsqLite;
     }
 
     @Override
@@ -90,18 +87,18 @@ public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
         myView.progressBarSongs.setVisibility(View.VISIBLE);
 
         // Set up the adapters
-        if (getContext() != null && bbsqLite!=null) {
+        if (getContext() != null && mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
 
             try (ExecutorService executorService = Executors.newSingleThreadExecutor()) {
                 executorService.execute(() -> {
                     // Get the unique values for each of the folders, time signatures and drum kits
-                    uniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
-                            bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
-                    uniqueTimeSignatures = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_SIGNATURE,
-                            bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_SIGNATURE);
-                    uniqueDrumKits = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_KIT_NUM, bbsqLite.TABLE_NAME_DEFAULT_SONGS, bbsqLite.COLUMN_KIT_NUM);
-                    myUniqueFolders = bbsqLite.searchUniqueValues(bbsqLite.COLUMN_FOLDER_NUM + "," +
-                            bbsqLite.COLUMN_FOLDER_NAME, bbsqLite.TABLE_NAME_MY_SONGS, bbsqLite.COLUMN_FOLDER_NUM);
+                    uniqueFolders = mainActivityInterface.getBeatBuddy().getBbsqLite().searchUniqueValues(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NUM + "," +
+                            mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NAME, mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS, mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NUM);
+                    uniqueTimeSignatures = mainActivityInterface.getBeatBuddy().getBbsqLite().searchUniqueValues(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SIGNATURE,
+                            mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS, mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SIGNATURE);
+                    uniqueDrumKits = mainActivityInterface.getBeatBuddy().getBbsqLite().searchUniqueValues(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NUM, mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS, mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NUM);
+                    myUniqueFolders = mainActivityInterface.getBeatBuddy().getBbsqLite().searchUniqueValues(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NUM + "," +
+                            mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NAME, mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_SONGS, mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NUM);
 
                     myView.beatBuddyUseImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
 
@@ -141,14 +138,14 @@ public class BottomSheetBeatBuddySongs extends BottomSheetCommon {
     }
 
     private void getFoundSongs() {
-        if (bbsqLite!=null) {
+        if (mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
             myView.progressBarSongs.setVisibility(View.VISIBLE);
             // This gets called onCreateView and when an ExposedDropdown changes
             ArrayList<BBSong> foundSongs;
             if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-                foundSongs = bbsqLite.getMySongsByFolder(myView.folder.getText().toString());
+                foundSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().getMySongsByFolder(myView.folder.getText().toString());
             } else {
-                foundSongs = bbsqLite.getSongsByFilters(myView.folder.getText().toString(),
+                foundSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().getSongsByFilters(myView.folder.getText().toString(),
                         myView.timeSignature.getText().toString(), myView.drumKit.getText().toString());
             }
             if (getContext() != null) {

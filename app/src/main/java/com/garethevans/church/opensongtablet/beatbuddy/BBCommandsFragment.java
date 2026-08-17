@@ -43,7 +43,6 @@ public class BBCommandsFragment extends Fragment {
     private int fromSongMessages_channel, fromSongMessages_folderMSB, fromSongMessages_folderLSB,
             fromSongMessages_songPC, fromSongMessages_tempoMSB, fromSongMessages_tempoLSB,
             fromSongMessages_volumeCC, fromSongMessages_volumeHPCC, fromSongMessages_drumKitCC;
-    private BBSQLite bbsqLite;
     private String searchAerosFolder, searchAerosSong, searchDrumKit;
     private String webAddress;
 
@@ -69,8 +68,7 @@ public class BBCommandsFragment extends Fragment {
         myView = SettingsBeatbuddyCommandsBinding.inflate(inflater,container,false);
 
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            if (getContext()!=null) {
-                bbsqLite = new BBSQLite(getContext());
+            if (getContext()!=null && mainActivityInterface.getBeatBuddy().getBbsqLite()!=null ) {
                 myView.currentSongMessages.post(() -> myView.currentSongMessages.setLayoutManager(new LinearLayoutManager(getContext())));
                 midiMessagesAdapter = new MidiMessagesAdapter(getContext());
             }
@@ -110,9 +108,10 @@ public class BBCommandsFragment extends Fragment {
             drumkit_string = getString(R.string.drum_kit);
             playlist_string = getString(R.string.playlist);
             beat_buddy_string = getString(R.string.beat_buddy);
-            searchAerosSong = bbsqLite.COLUMN_FOLDER_NUM + "=? AND " + bbsqLite.COLUMN_SONG_NUM + "=?";
-            searchAerosFolder = bbsqLite.COLUMN_FOLDER_NUM + "=?";
-            searchDrumKit = bbsqLite.COLUMN_KIT_NUM + "=?";
+            searchAerosSong = mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NUM + "=? AND " +
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NUM + "=?";
+            searchAerosFolder = mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NUM + "=?";
+            searchDrumKit = mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NUM + "=?";
         }
     }
 
@@ -283,11 +282,11 @@ public class BBCommandsFragment extends Fragment {
                     myView.beatBuddyUseImported.setOnCheckedChangeListener((compoundButton, b) -> {
                         mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b);
                         setSliderHintText(myView.aerosFolder, null, searchAerosFolder, true,
-                                bbsqLite.COLUMN_FOLDER_NAME, (int) myView.aerosFolder.getValue(), -1);
+                                mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NAME, (int) myView.aerosFolder.getValue(), -1);
                         setSliderHintText(myView.aerosSong, song_string, searchAerosSong, true,
-                                bbsqLite.COLUMN_SONG_NAME, (int) myView.aerosFolder.getValue(), (int) myView.aerosSong.getValue());
+                                mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME, (int) myView.aerosFolder.getValue(), (int) myView.aerosSong.getValue());
                         setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
-                                bbsqLite.COLUMN_KIT_NAME, (int) myView.drumKit.getValue(), -1);
+                                mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NAME, (int) myView.drumKit.getValue(), -1);
                         checkBeatBuddyValues();
                     });
                 });
@@ -535,14 +534,14 @@ public class BBCommandsFragment extends Fragment {
             mainActivityInterface.getSong().setTempo("");
         } else if (prefName!=null && prefName.equals("aerosFolder")) {
             setSliderHintText(myView.aerosFolder,null,searchAerosFolder,true,
-                    bbsqLite.COLUMN_FOLDER_NAME,value,-1);
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NAME,value,-1);
         } else if (prefName!=null && prefName.equals("aerosSong")) {
             setSliderHintText(myView.aerosSong,song_string,searchAerosSong,true,
-                    bbsqLite.COLUMN_SONG_NAME,(int)myView.aerosFolder.getValue(),value);
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME,(int)myView.aerosFolder.getValue(),value);
             slider.setValue(value);
         } else if (prefName!=null && prefName.equals("beatBuddyDrumKit")) {
             setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
-                    bbsqLite.COLUMN_KIT_NAME, value, -1);
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NAME, value, -1);
         } else {
             slider.setHint(value + labelEnd);
             slider.setValue(value);
@@ -641,18 +640,18 @@ public class BBCommandsFragment extends Fragment {
                 mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong(),false);
             } else if (prefName!=null && prefName.equals("aerosFolder")) {
                 setSliderHintText(myView.aerosFolder, null, searchAerosFolder, true,
-                        bbsqLite.COLUMN_FOLDER_NAME, (int) value, -1);
+                        mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_FOLDER_NAME, (int) value, -1);
                 setSliderHintText(myView.aerosSong,song_string,searchAerosSong,true,
-                        bbsqLite.COLUMN_SONG_NAME,(int)value,(int)myView.aerosSong.getValue());
+                        mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME,(int)value,(int)myView.aerosSong.getValue());
                 slider.setValue(value);
 
             } else if (prefName!=null && prefName.equals("aerosSong")) {
                 setSliderHintText(myView.aerosSong, song_string, searchAerosSong, true,
-                        bbsqLite.COLUMN_SONG_NAME, (int) myView.aerosFolder.getValue(), (int) value);
+                        mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME, (int) myView.aerosFolder.getValue(), (int) value);
 
             } else if (prefName!=null && prefName.equals("beatBuddyDrumKit")) {
                 setSliderHintText(myView.drumKit, drumkit_string, searchDrumKit, false,
-                        bbsqLite.COLUMN_KIT_NAME, (int) value, -1);
+                        mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NAME, (int) value, -1);
             } else {
                 // Just set the hint
                 materialSlider.setHint(((int) value) + labelEnd);
@@ -674,10 +673,10 @@ public class BBCommandsFragment extends Fragment {
         String table;
         if (songs) {
             table = mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported() ?
-                    bbsqLite.TABLE_NAME_MY_SONGS:bbsqLite.TABLE_NAME_DEFAULT_SONGS;
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_SONGS:mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS;
         } else {
             table = mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported() ?
-                    bbsqLite.TABLE_NAME_MY_DRUMS:bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_DRUMS:mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_DRUMS;
         }
         querySearch = "SELECT DISTINCT " + getColumn + " FROM " + table +" WHERE " + querySearch;
         String[] args;
@@ -699,7 +698,7 @@ public class BBCommandsFragment extends Fragment {
             hint = prefix + " " + value;
         }
 
-        String lookedUpHint = bbsqLite.lookupValue(getColumn, querySearch, args);
+        String lookedUpHint = mainActivityInterface.getBeatBuddy().getBbsqLite().lookupValue(getColumn, querySearch, args);
         if (!lookedUpHint.isEmpty()) {
             lookedUpHint = ": "+lookedUpHint;
         }
@@ -887,9 +886,9 @@ public class BBCommandsFragment extends Fragment {
         // Built the default BB songs from the library
         // Do this on a separate thread
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-            if (bbsqLite!=null) {
+            if (mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
                 BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
-                        BBCommandsFragment.this,bbsqLite);
+                        BBCommandsFragment.this);
                 bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
                         "BottomSheetBeatBuddySongs");
             }
@@ -912,16 +911,16 @@ public class BBCommandsFragment extends Fragment {
 
     private void checkBeatBuddyValues() {
         // Decide which songs and kits to use
-        if (getContext()!=null) {
-            try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
-                String tableSongs = bbsqLite.TABLE_NAME_DEFAULT_SONGS;
-                String tableKits = bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+        if (getContext()!=null && mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
+            try {
+                String tableSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS;
+                String tableKits = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_DRUMS;
                 if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-                    tableSongs = bbsqLite.TABLE_NAME_MY_SONGS;
-                    tableKits = bbsqLite.TABLE_NAME_MY_DRUMS;
+                    tableSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_SONGS;
+                    tableKits = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_DRUMS;
                 }
-                ArrayList<String> songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
-                ArrayList<String> kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
+                ArrayList<String> songs = mainActivityInterface.getBeatBuddy().getBbsqLite().getUnique(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME, tableSongs);
+                ArrayList<String> kits = mainActivityInterface.getBeatBuddy().getBbsqLite().getUnique(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NAME, tableKits);
 
                 myView.beatBuddySong.post(() -> {
                     ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
@@ -978,6 +977,8 @@ public class BBCommandsFragment extends Fragment {
                         }
                     });
                 });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

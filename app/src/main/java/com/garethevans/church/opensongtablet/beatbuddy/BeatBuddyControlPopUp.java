@@ -9,10 +9,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.DialogHeader;
@@ -27,7 +25,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class BeatBuddyControlPopUp {
 
@@ -44,7 +41,6 @@ public class BeatBuddyControlPopUp {
     private LinearLayout minimiseLayout;
     private PopupWindow popupWindow;
     private FloatWindow floatWindow;
-    private BBSQLite bbsqLite;
     // The active save dial preferences
     private boolean beatBuddyControllerKitActive, beatBuddyControllerTempoActive,
                 beatBuddyControllerVolActive, beatBuddyControllerVolHPActive;
@@ -62,7 +58,6 @@ public class BeatBuddyControlPopUp {
     public BeatBuddyControlPopUp(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-        bbsqLite = new BBSQLite(c);
         posX = 0;
         posY = (int) ((float) mainActivityInterface.getToolbar().getActionBarHeight(mainActivityInterface.needActionBar()) * 1.2f);
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
@@ -205,7 +200,7 @@ public class BeatBuddyControlPopUp {
             // Handle action with the current value
             // The dial uses the drum kits in alphabetical order, so we need to look up the actual kit number
             String currentKit = beatBuddyDrumKitControl.getCurrentTextValue();
-            int kitNum = bbsqLite.getNumberFromKit(currentKit);
+            int kitNum = mainActivityInterface.getBeatBuddy().getBbsqLite().getNumberFromKit(currentKit);
             String drumKitHexCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
             mainActivityInterface.getMidi().sendMidiHexSequence(drumKitHexCode);
         });
@@ -234,7 +229,7 @@ public class BeatBuddyControlPopUp {
             public void afterTextChanged(Editable editable) {
                 if (!settingInitialValues) {
                     if (editable != null) {
-                        bbsqLite.sendSongMidiCodeFromName(c, editable.toString());
+                        mainActivityInterface.getBeatBuddy().getBbsqLite().sendSongMidiCodeFromName(c, editable.toString());
                     }
                 }
             }
@@ -354,16 +349,16 @@ public class BeatBuddyControlPopUp {
     private void getBeatBuddyValues(Context c) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Decide which songs and kits to use
-            if (c!=null) {
-                try (BBSQLite bbsqLite = new BBSQLite(c)) {
-                    String tableSongs = bbsqLite.TABLE_NAME_DEFAULT_SONGS;
-                    String tableKits = bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+            if (c!=null && mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
+                try {
+                    String tableSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS;
+                    String tableKits = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_DRUMS;
                     if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-                        tableSongs = bbsqLite.TABLE_NAME_MY_SONGS;
-                        tableKits = bbsqLite.TABLE_NAME_MY_DRUMS;
+                        tableSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_SONGS;
+                        tableKits = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_DRUMS;
                     }
-                    songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
-                    kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
+                    songs = mainActivityInterface.getBeatBuddy().getBbsqLite().getUnique(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME, tableSongs);
+                    kits = mainActivityInterface.getBeatBuddy().getBbsqLite().getUnique(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NAME, tableKits);
 
                     // Now we can populate the controls and enable them
                     setupControls();
@@ -472,7 +467,6 @@ public class BeatBuddyControlPopUp {
                 popupWindow = null;
             }
             mainActivityInterface.removeBeatBuddyControlPopUp();
-            bbsqLite = null;
         } catch (Exception e) {
             e.printStackTrace();
         }

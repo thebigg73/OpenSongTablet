@@ -16,11 +16,14 @@ public class BeatBuddy {
     final private MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     final private String TAG = "BeatBuddy";
+    private BBSQLite bbsqLite;
 
     // Control options are:
     private int beatBuddyChannel = 1, beatBuddyVolume = 100, beatBuddyHPVolume = 100,
             beatBuddyDrumKit = 1, incrementalVol = -1, incrementalHPVol = -1;
     private final int volumeIncrement = 5;
+    private boolean commandsBuilt = false;
+    private boolean defaultsBuilt = false;
 
     // Prebuilt commands
     private byte[] commandStart, commandStop, commandAccent, commandFill, commandTransition1,
@@ -84,17 +87,21 @@ public class BeatBuddy {
         return CC_Drum_kit;
     }
     // Initialise this helper class
+
     public BeatBuddy(Context c) {
         this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
         setPrefs();
+        bbsqLite = new BBSQLite(c);
     }
 
     private void checkDatabase() {
         // If the database file does not exist, create it
-        if (c!=null) {
-            try (BBSQLite bbsqLite = new BBSQLite(c)) {
-                bbsqLite.checkDefaultDatabase();
+        if (c!=null && getBbsqLite()!=null) {
+            try {
+                getBbsqLite().checkDefaultDatabase();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -121,20 +128,17 @@ public class BeatBuddy {
                 checkDatabase();
             };
 
-
             try {
                 java.util.concurrent.ExecutorService executor = mainActivityInterface.getThreadPoolExecutor();
                 if (executor != null && !executor.isShutdown() && !executor.isTerminated()) {
                     executor.execute(task);
                 } else {
-                    // Fallback: Run synchronously if the executor is dead to prevent crash/loss of initialization
-                    task.run();
+                    Log.w(TAG, "ThreadPoolExecutor unavailable. Skipping background initialization to prevent main-thread blocking.");
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Failed to execute setPrefs background tasks", e);
-                // Fallback execution
-                task.run();
             }
+
         }
     }
 
@@ -185,14 +189,34 @@ public class BeatBuddy {
                 mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Double_time,0));
         commandPauseToggle = mainActivityInterface.getMidi().returnBytesFromHexText(
                 mainActivityInterface.getMidi().buildMidiString("CC",beatBuddyChannel-1,CC_Pause_unpause,127));
+        commandsBuilt = true;
+    }
+
+    public BBSQLite getBbsqLite() {
+        if (bbsqLite==null) {
+            bbsqLite = new BBSQLite(c);
+        }
+        return bbsqLite;
     }
 
     public int tryAutoSend(Context c,MainActivityInterface mainActivityInterface, Song thisSong) {
+        if (!commandsBuilt) {
+            buildCommands();
+        }
+        if (!defaultsBuilt) {
+            bbsqLite.checkDefaultDatabase();
+            defaultsBuilt = true;
+        }
+
         if (getBeatBuddyAutoLookup()) {
-            try (BBSQLite bbsqLite = new BBSQLite(c)) {
-                return bbsqLite.checkAutoBeatBuddy(c, mainActivityInterface, thisSong);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (getBbsqLite()!=null) {
+                try {
+                    return getBbsqLite().checkAutoBeatBuddy(c, mainActivityInterface, thisSong);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            } else {
                 return 0;
             }
         } else {

@@ -37,7 +37,6 @@ public class BBImportFragment extends Fragment {
     private SettingsBeatbuddyImportBinding myView;
     private String beat_buddy_import_project="", website_beatbuddy_import="", success_string="",
             beat_buddy_import_error="", song_string="", kit_string="", error_string="";
-    private BBSQLite bbsqLite;
     private ArrayList<Integer> folder_nums, song_nums, kit_nums;
     private ArrayList<String> folder_codes, folder_names, song_names, kit_names, kit_codes, song_codes;
     private ActivityResultLauncher<Intent> importCSVLauncher;
@@ -49,7 +48,6 @@ public class BBImportFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        bbsqLite = new BBSQLite(getContext());
     }
 
     @Override
@@ -357,10 +355,10 @@ public class BBImportFragment extends Fragment {
         Log.d(TAG,"stringBuilder:"+stringBuilder);
 
         if (!stringBuilder.toString().isEmpty()) {
-            bbsqLite.clearMySongs();
-            bbsqLite.addMySongs(song_codes, song_nums, song_names, folder_codes, folder_nums, folder_names);
-            bbsqLite.clearMyDrums();
-            bbsqLite.addMyDrumKits(kit_nums, kit_names, kit_codes);
+            mainActivityInterface.getBeatBuddy().getBbsqLite().clearMySongs();
+            mainActivityInterface.getBeatBuddy().getBbsqLite().addMySongs(song_codes, song_nums, song_names, folder_codes, folder_nums, folder_names);
+            mainActivityInterface.getBeatBuddy().getBbsqLite().clearMyDrums();
+            mainActivityInterface.getBeatBuddy().getBbsqLite().addMyDrumKits(kit_nums, kit_names, kit_codes);
             myView.outcome.setText(success_string);
             myView.outcome.setHint(stringBuilder.toString());
             // Write the file
@@ -546,10 +544,10 @@ public class BBImportFragment extends Fragment {
             mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(false);
         } else {
             Log.d(TAG,"Success so far");
-            bbsqLite.clearMySongs();
-            bbsqLite.clearMyDrums();
-            bbsqLite.addMySongs(song_codes,song_nums,song_names,folder_codes,folder_nums,folder_names);
-            bbsqLite.addMyDrumKits(kit_nums, kit_names, kit_codes);
+            mainActivityInterface.getBeatBuddy().getBbsqLite().clearMySongs();
+            mainActivityInterface.getBeatBuddy().getBbsqLite().clearMyDrums();
+            mainActivityInterface.getBeatBuddy().getBbsqLite().addMySongs(song_codes,song_nums,song_names,folder_codes,folder_nums,folder_names);
+            mainActivityInterface.getBeatBuddy().getBbsqLite().addMyDrumKits(kit_nums, kit_names, kit_codes);
             myView.outcome.setText(success_string);
             myView.outcome.setHint(stringBuilder.toString());
             mainActivityInterface.getShowToast().doIt(success_string);

@@ -85,12 +85,16 @@ public class BBOptionsFragment extends Fragment {
     private void checkDatabase() {
         // If the database file does not exist, create it
         if (getContext()!=null) {
-            try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
+            try {
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    bbsqLite.checkDefaultDatabase();
-                    Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
-                    Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
+                    if (mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
+                        mainActivityInterface.getBeatBuddy().getBbsqLite().checkDefaultDatabase();
+                        Log.d(TAG, "myDrums:" + mainActivityInterface.getBeatBuddy().getBbsqLite().getMyDrumsCount());
+                        Log.d(TAG, "mySongs:" + mainActivityInterface.getBeatBuddy().getBbsqLite().getMySongsCount());
+                    }
                 });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -113,9 +117,8 @@ public class BBOptionsFragment extends Fragment {
         myView.beatBuddyBrowse.setOnClickListener((view) -> {
             try (ExecutorService executorService = Executors.newSingleThreadExecutor()) {
                 executorService.execute(() -> {
-                    BBSQLite bbsqLite = new BBSQLite(getContext());
                         BottomSheetBeatBuddySongs bottomSheetBeatBuddySongs = new BottomSheetBeatBuddySongs(
-                                null, bbsqLite);
+                                null);
                         bottomSheetBeatBuddySongs.show(mainActivityInterface.getMyFragmentManager(),
                                 "BottomSheetBeatBuddySongs");
                 });
@@ -132,13 +135,13 @@ public class BBOptionsFragment extends Fragment {
     }
 
     public void resetDatabase() {
-        if (getContext()!=null) {
-            try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
+        if (getContext()!=null && mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
+            try {
                 mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    bbsqLite.resetDatabase();
-                    bbsqLite.checkDefaultDatabase();
-                    Log.d(TAG, "myDrums:" + bbsqLite.getMyDrumsCount());
-                    Log.d(TAG, "mySongs:" + bbsqLite.getMySongsCount());
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().resetDatabase();
+                    mainActivityInterface.getBeatBuddy().getBbsqLite().checkDefaultDatabase();
+                    Log.d(TAG, "myDrums:" + mainActivityInterface.getBeatBuddy().getBbsqLite().getMyDrumsCount());
+                    Log.d(TAG, "mySongs:" + mainActivityInterface.getBeatBuddy().getBbsqLite().getMySongsCount());
                     mainActivityInterface.getMainHandler().post(() -> mainActivityInterface.getShowToast().doIt(success_string));
                 });
             } catch (Exception e) {
