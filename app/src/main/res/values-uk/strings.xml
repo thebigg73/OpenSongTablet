@@ -694,6 +694,7 @@
     <string name="looper">Петля</string>
     <string name="lyrics">Текст</string>
     <string name="lyrics_color">Текст пісні</string>
+    <string name="lyrics_monospace_font">Моноширинний шрифт</string>
     <string name="main_song_display">Основний дисплей пісні</string>
     <string name="mainfoldername">ГОЛОВНА</string>
     <string name="mandolin">Mандоліна</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Цю папку позначено як папку лише для читання</string>
     <string name="openchords_readonly_switch">Тільки для читання</string>
     <string name="openchords_readonly_switch_info">Змінити налаштування цієї папки для інших користувачів, які використовують посилання</string>
+    <string name="openchords_uuids">UUID-ідентифікатори OpenChords</string>
+    <string name="openchords_uuids_info">Перегляд і редагування облікових даних OpenChords</string>
+    <string name="openchords_uuids_warning">Не змінюйте їх, якщо не знаєте, що робите. Дізнайтеся більше на вебсайті за посиланням.</string>
     <string name="opensong_media">Аудіозаписи зберігаються в /OpenSong/Media/</string>
     <string name="optional">За бажанням</string>
     <string name="order">порядок</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">комунальні послуги</string>
     <string name="utilities_info">Інші інструменти для музикантів</string>
     <string name="utility">корисність</string>
+    <string name="uuid_not_valid">UUID недійсний</string>
     <string name="variation">Bаріація</string>
     <string name="variation_info">Зробіть копію цієї пісні, яку можна редагувати.  Цю пісню можна зберегти в набір і завантажити назад, але вона втрачається при очищенні набору</string>
     <string name="variation_make">Зробіть варіант предмета набору</string>

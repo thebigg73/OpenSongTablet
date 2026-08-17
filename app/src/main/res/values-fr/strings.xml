@@ -694,6 +694,7 @@
     <string name="looper">Boucleur</string>
     <string name="lyrics">Paroles</string>
     <string name="lyrics_color">Police des paroles </string>
+    <string name="lyrics_monospace_font">Police à chasse fixe</string>
     <string name="main_song_display">Affichage principal de la chanson</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandoline</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Ce dossier est marqué comme étant en lecture seule.</string>
     <string name="openchords_readonly_switch">Lecture seule</string>
     <string name="openchords_readonly_switch_info">Modifiez les paramètres de ce dossier pour les autres utilisateurs qui utilisent le lien.</string>
+    <string name="openchords_uuids">UUID OpenChords</string>
+    <string name="openchords_uuids_info">Consultez et modifiez vos identifiants OpenChords</string>
+    <string name="openchords_uuids_warning">Ne modifiez pas ces paramètres à moins de savoir ce que vous faites. Pour en savoir plus, consultez le site web en suivant le lien.</string>
     <string name="opensong_media">Les enregistrements audio sont enregistrés dans /OpenSong/Media/</string>
     <string name="optional">Optionnel</string>
     <string name="order">Commande</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Utilitaires</string>
     <string name="utilities_info">Autres outils pour les musiciens</string>
     <string name="utility">Utilitaire</string>
+    <string name="uuid_not_valid">L\'UUID n\'est pas valide</string>
     <string name="variation">Variation</string>
     <string name="variation_info">Faites une copie de cette chanson qui peut être éditée.  Cette chanson peut être enregistrée dans un ensemble et rechargée, mais elle est perdue lors de l’effacement de l’ensemble</string>
     <string name="variation_make">Faire une variation ensemble d\'objet</string>

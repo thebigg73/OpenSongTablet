@@ -1505,4 +1505,9 @@
     <string name="abc_add_to_song">Kopirajte abc notaciju u pesmu</string>
     <string name="abc_inline_copy">Umetnite ugrađeni ABC kod</string>
     <string name="abc_editor">ABC veb uređivač</string>
+    <string name="openchords_uuids">OpenChords UUID-ovi</string>
+    <string name="openchords_uuids_info">Pregledajte i uredite svoje OpenChords akreditive</string>
+    <string name="openchords_uuids_warning">Ne menjajte ovo osim ako ne znate šta radite. Saznajte više na veb-sajtu koristeći link.</string>
+    <string name="uuid_not_valid">UUID nije važeći</string>
+    <string name="lyrics_monospace_font">Monoprostorni font</string>
 </resources>

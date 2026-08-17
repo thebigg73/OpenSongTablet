@@ -694,6 +694,7 @@
     <string name="looper">ලූපර්</string>
     <string name="lyrics">ගී පද</string>
     <string name="lyrics_color">පද අකුරු</string>
+    <string name="lyrics_monospace_font">ඒකඅවකාශ අකුරු</string>
     <string name="main_song_display">ප්රධාන ගීත සංදර්ශකය</string>
     <string name="mainfoldername">ප්රධාන</string>
     <string name="mandolin">මැන්ඩලින්</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">මෙම ෆෝල්ඩරය කියවීමට පමණක් බව සලකුණු කර ඇත.</string>
     <string name="openchords_readonly_switch">කියවීමට පමණි</string>
     <string name="openchords_readonly_switch_info">සබැඳිය භාවිතා කරන අනෙකුත් පරිශීලකයින් සඳහා මෙම ෆෝල්ඩරයේ සැකසුම් වෙනස් කරන්න.</string>
+    <string name="openchords_uuids">OpenChords UUIDs</string>
+    <string name="openchords_uuids_info">ඔබගේ OpenChords අක්තපත්‍ර බලන්න සහ සංස්කරණය කරන්න</string>
+    <string name="openchords_uuids_warning">ඔබ කරන්නේ කුමක්දැයි නොදන්නේ නම් මේවා වෙනස් නොකරන්න. සබැඳිය භාවිතා කර වෙබ් අඩවියෙන් වැඩි විස්තර සොයා ගන්න.</string>
     <string name="opensong_media">ශ්‍රව්‍ය පටිගත කිරීම් /OpenSong/Media/ වෙත සුරකිනු ලැබේ</string>
     <string name="optional">විකල්ප</string>
     <string name="order">ඇණවුම් කරන්න</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">උපයෝගිතා</string>
     <string name="utilities_info">සංගීතඥයින් සඳහා වෙනත් මෙවලම්</string>
     <string name="utility">උපයෝගිතා</string>
+    <string name="uuid_not_valid">UUID වලංගු නොවේ.</string>
     <string name="variation">විචලනය</string>
     <string name="variation_info">සංස්කරණය කළ හැකි මෙම ගීතයේ පිටපතක් සාදන්න.  මෙම ගීතය කට්ටලයක් තුළ සුරැකිය හැකි අතර ආපසු පැටවිය හැක, නමුත් කට්ටලය ඉවත් කිරීමේදී අහිමි වේ</string>
     <string name="variation_make">කට්ටල අයිතමයේ වෙනසක් කරන්න</string>

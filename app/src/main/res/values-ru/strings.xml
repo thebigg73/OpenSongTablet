@@ -694,6 +694,7 @@
     <string name="looper">Лупер</string>
     <string name="lyrics">Текст песни</string>
     <string name="lyrics_color">Шрифт текста песни</string>
+    <string name="lyrics_monospace_font">Моноширинный шрифт</string>
     <string name="main_song_display">Основной экран песни</string>
     <string name="mainfoldername">ГЛАВНАЯ</string>
     <string name="mandolin">Mандолина</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Эта папка помечена как доступная только для чтения.</string>
     <string name="openchords_readonly_switch">Только для чтения</string>
     <string name="openchords_readonly_switch_info">Измените настройки этой папки для других пользователей, которые используют эту ссылку.</string>
+    <string name="openchords_uuids">UUID OpenChords</string>
+    <string name="openchords_uuids_info">Просматривайте и редактируйте свои учетные данные OpenChords.</string>
+    <string name="openchords_uuids_warning">Не меняйте эти параметры, если не знаете, что делаете. Подробнее можно узнать на сайте, перейдя по ссылке.</string>
     <string name="opensong_media">Аудиозаписи сохраняются в /OpenSong/Media/.</string>
     <string name="optional">Опционально</string>
     <string name="order">Заказ</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Утилиты</string>
     <string name="utilities_info">Другие утилиты для музыкантов</string>
     <string name="utility">Утилита</string>
+    <string name="uuid_not_valid">UUID недействителен</string>
     <string name="variation">Bариация</string>
     <string name="variation_info">Создает копию текущей песни (вариацию), которую можно редактировать.  Эту песню можно сохранить в сетлист и загрузить обратно, но она потеряется при очистке </string>
     <string name="variation_make">Создать вариацию песни в сетлисте</string>

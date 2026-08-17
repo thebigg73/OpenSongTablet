@@ -694,6 +694,7 @@
     <string name="looper">Pętla</string>
     <string name="lyrics">Tekst</string>
     <string name="lyrics_color">Czcionka tekstu</string>
+    <string name="lyrics_monospace_font">Czcionka o stałej szerokości</string>
     <string name="main_song_display">Główny wyświetlacz piosenki</string>
     <string name="mainfoldername">GŁÓWNA</string>
     <string name="mandolin">Mandolina</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Ten folder jest oznaczony jako tylko do odczytu</string>
     <string name="openchords_readonly_switch">Tylko do odczytu</string>
     <string name="openchords_readonly_switch_info">Zmień ustawienia tego folderu dla innych użytkowników korzystających z łącza</string>
+    <string name="openchords_uuids">Identyfikatory UUID OpenChords</string>
+    <string name="openchords_uuids_info">Wyświetl i edytuj swoje dane uwierzytelniające OpenChords</string>
+    <string name="openchords_uuids_warning">Nie zmieniaj tych ustawień, chyba że wiesz, co robisz. Więcej informacji znajdziesz na stronie internetowej, klikając link.</string>
     <string name="opensong_media">Nagrania audio są zapisywane w /OpenSong/Media/</string>
     <string name="optional">Opcjonalny</string>
     <string name="order">Zamówienie</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Narzędzia</string>
     <string name="utilities_info">Inne narzędzia dla muzyków</string>
     <string name="utility">Pożytek</string>
+    <string name="uuid_not_valid">UUID jest nieprawidłowy</string>
     <string name="variation">Wariant</string>
     <string name="variation_info">Zrób edytowalną kopię tej piosenki. Tę piosenkę można zapisać w zestawie i załadować z powrotem, ale zostanie utracona podczas czyszczenia zestawu</string>
     <string name="variation_make">Utwórz wariant elementu zestawu</string>

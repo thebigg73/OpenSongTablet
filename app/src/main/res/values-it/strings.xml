@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Testi</string>
     <string name="lyrics_color">Colore dei testi</string>
+    <string name="lyrics_monospace_font">Carattere a spaziatura fissa</string>
     <string name="main_song_display">Visualizzazione del brano principale</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandolino</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Questa cartella è contrassegnata come di sola lettura</string>
     <string name="openchords_readonly_switch">Solo lettura</string>
     <string name="openchords_readonly_switch_info">Modifica le impostazioni di questa cartella per gli altri utenti che utilizzano il collegamento</string>
+    <string name="openchords_uuids">UUID di OpenChords</string>
+    <string name="openchords_uuids_info">Visualizza e modifica le tue credenziali OpenChords</string>
+    <string name="openchords_uuids_warning">Non modificare questi parametri a meno che tu non sappia cosa stai facendo. Scopri di più sul sito web tramite il link.</string>
     <string name="opensong_media">Le registrazioni audio vengono salvate nella cartella /OpenSong/Media/</string>
     <string name="optional">Opzionale</string>
     <string name="order">Ordine</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Strumenti vari</string>
     <string name="utilities_info">Utilità varie per musicisti</string>
     <string name="utility">Utilità</string>
+    <string name="uuid_not_valid">L\'UUID non è valido</string>
     <string name="variation">Versione modificata</string>
     <string name="variation_info">Crea una copia modificata di questo brano. Il brano può essere salvato in file scaletta e caricato nuovamente ma viene perso definitivamente se si elimina la scaletta alla quale appartiene</string>
     <string name="variation_make">Creare una versione modificata del brano</string>

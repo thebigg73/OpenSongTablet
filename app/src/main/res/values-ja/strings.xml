@@ -694,6 +694,7 @@
     <string name="looper">ルーパー</string>
     <string name="lyrics">歌詞</string>
     <string name="lyrics_color">歌詞のフォント</string>
+    <string name="lyrics_monospace_font">等幅フォント</string>
     <string name="main_song_display">メインソングディスプレイ</string>
     <string name="mainfoldername">ホームページ</string>
     <string name="mandolin">マンドリン</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">このフォルダは読み取り専用としてマークされています</string>
     <string name="openchords_readonly_switch">読み取り専用</string>
     <string name="openchords_readonly_switch_info">このリンクを使用する他のユーザー向けに、このフォルダの設定を変更します。</string>
+    <string name="openchords_uuids">OpenChords UUID</string>
+    <string name="openchords_uuids_info">OpenChordsの認証情報を表示および編集する</string>
+    <string name="openchords_uuids_warning">何をしているのか理解していない限り、これらの設定を変更しないでください。詳細については、リンク先のウェブサイトをご覧ください。</string>
     <string name="opensong_media">オーディオ録音は /OpenSong/Media/ に保存されます。</string>
     <string name="optional">オプション</string>
     <string name="order">注文</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">ユーティリティ</string>
     <string name="utilities_info">ミュージシャンのための他のツール</string>
     <string name="utility">ユーティリティ</string>
+    <string name="uuid_not_valid">UUIDが無効です</string>
     <string name="variation">変化</string>
     <string name="variation_info">編集可能なこの曲のコピーを作成します。 この曲はセットに保存してロードし直すことができますが、セットをクリアすると失われます</string>
     <string name="variation_make">設定項目の変動を作ります</string>

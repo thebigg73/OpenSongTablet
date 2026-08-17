@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Lyrics</string>
     <string name="lyrics_color">Schrift Text</string>
+    <string name="lyrics_monospace_font">Monospace-Schriftart</string>
     <string name="main_song_display">Anzeige des Hauptlieds</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandoline</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Dieser Ordner ist als schreibgeschützt markiert.</string>
     <string name="openchords_readonly_switch">Nur lesen</string>
     <string name="openchords_readonly_switch_info">Ändern Sie die Einstellungen dieses Ordners für andere Benutzer, die den Link verwenden.</string>
+    <string name="openchords_uuids">OpenChords-UUIDs</string>
+    <string name="openchords_uuids_info">OpenChords-Zugangsdaten anzeigen und bearbeiten</string>
+    <string name="openchords_uuids_warning">Ändern Sie diese Einstellungen nur, wenn Sie genau wissen, was Sie tun. Weitere Informationen finden Sie auf der Website über den Link.</string>
     <string name="opensong_media">Audioaufnahmen werden unter /OpenSong/Media/ gespeichert.</string>
     <string name="optional">Optional</string>
     <string name="order">Befehl</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Dienstprogramme</string>
     <string name="utilities_info">Andere Werkzeuge für Musiker</string>
     <string name="utility">Dienstprogramm</string>
+    <string name="uuid_not_valid">Die UUID ist ungültig.</string>
     <string name="variation">Variation</string>
     <string name="variation_info">Erstellen Sie eine Kopie dieses Liedes, die bearbeitet werden kann.  Dieser Song kann in einem Set gespeichert und wieder geladen werden, geht aber beim Löschen des Sets verloren</string>
     <string name="variation_make">Variation erstellen</string>

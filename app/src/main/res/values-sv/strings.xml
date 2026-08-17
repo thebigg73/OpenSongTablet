@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Text</string>
     <string name="lyrics_color">Lyrics font</string>
+    <string name="lyrics_monospace_font">Monospace-teckensnitt</string>
     <string name="main_song_display">Huvudsångsdisplay</string>
     <string name="mainfoldername">HUVUDSAKLIG</string>
     <string name="mandolin">Mandolin</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Den här mappen är markerad som skrivskyddad</string>
     <string name="openchords_readonly_switch">Endast läsning</string>
     <string name="openchords_readonly_switch_info">Ändra inställningarna för den här mappen för andra användare som använder länken</string>
+    <string name="openchords_uuids">OpenChords UUID:er</string>
+    <string name="openchords_uuids_info">Visa och redigera dina OpenChords-inloggningsuppgifter</string>
+    <string name="openchords_uuids_warning">Ändra inte dessa om du inte vet vad du gör. Läs mer på webbplatsen via länken.</string>
     <string name="opensong_media">Ljudinspelningar sparas till /OpenSong/Media/</string>
     <string name="optional">Frivillig</string>
     <string name="order">Beställa</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Verktyg</string>
     <string name="utilities_info">Andra verktyg för musiker</string>
     <string name="utility">Nytta</string>
+    <string name="uuid_not_valid">UUID är inte giltigt</string>
     <string name="variation">Variation</string>
     <string name="variation_info">Gör en kopia av den här låten som kan redigeras.  Den här låten kan sparas i en uppsättning och laddas tillbaka, men går förlorad när du rensar uppsättningen</string>
     <string name="variation_make">Gör en uppsättning variabler</string>

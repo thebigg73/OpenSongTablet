@@ -867,6 +867,7 @@
     <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="lyrics">Lyrics</string>
     <string name="lyrics_color">Lyrics font</string>
+    <string name="lyrics_monospace_font">Monospace font</string>
     <string name="main_song_display">Main song display</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandolin</string>
@@ -1067,6 +1068,9 @@
     <string name="openchords_readonly">This folder is marked as read only</string>
     <string name="openchords_readonly_switch">Read only</string>
     <string name="openchords_readonly_switch_info">Change the settings of this folder for other users who use the link</string>
+    <string name="openchords_uuids">OpenChords UUIDs</string>
+    <string name="openchords_uuids_info">View and edit your OpenChords credentials</string>
+    <string name="openchords_uuids_warning">Do not change these unless you know what you are doing.  Find out more on the website using the link.</string>
     <string name="opensong" translatable="false">OpenSong</string>
     <string name="opensong_media">Audio recordings are saved to /OpenSong/Media/</string>
     <string name="optional">Optional</string>
@@ -1734,6 +1738,7 @@
     <string name="utilities">Utilities</string>
     <string name="utilities_info">Other tools for musicians</string>
     <string name="utility">Utility</string>
+    <string name="uuid_not_valid">UUID is not valid</string>
     <string name="variation">Variation</string>
     <string name="variation_info">Make a copy of this song that can be edited.  This song can be saved into a set and loaded back, but is lost when clearing the set</string>
     <string name="variation_make">Make a set item variation</string>

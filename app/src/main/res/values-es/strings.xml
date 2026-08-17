@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Letras</string>
     <string name="lyrics_color">Letras de fuente</string>
+    <string name="lyrics_monospace_font">Fuente monoespaciada</string>
     <string name="main_song_display">Visualización de la canción principal</string>
     <string name="mainfoldername">PRINCIPAL</string>
     <string name="mandolin">Mandolina</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Esta carpeta está marcada como de solo lectura.</string>
     <string name="openchords_readonly_switch">Solo lectura</string>
     <string name="openchords_readonly_switch_info">Cambiar la configuración de esta carpeta para otros usuarios que utilicen el enlace.</string>
+    <string name="openchords_uuids">UUID de OpenChords</string>
+    <string name="openchords_uuids_info">Consulta y edita tus credenciales de OpenChords.</string>
+    <string name="openchords_uuids_warning">No modifiques estos parámetros a menos que sepas lo que estás haciendo. Para obtener más información, visita el sitio web a través del enlace.</string>
     <string name="opensong_media">Las grabaciones de audio se guardan en /OpenSong/Media/</string>
     <string name="optional">Opcional</string>
     <string name="order">Orden</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Utilidades</string>
     <string name="utilities_info">Otras herramientas para músicos</string>
     <string name="utility">Utilidad</string>
+    <string name="uuid_not_valid">El UUID no es válido</string>
     <string name="variation">Variación</string>
     <string name="variation_info">Haz una copia de esta canción que pueda ser editada.  Esta canción se puede guardar en un conjunto y volver a cargar, pero se pierde al borrar el conjunto</string>
     <string name="variation_make">Hacer una variación elemento de conjunto</string>

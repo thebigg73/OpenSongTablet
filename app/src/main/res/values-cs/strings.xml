@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Text</string>
     <string name="lyrics_color">Texty písmo</string>
+    <string name="lyrics_monospace_font">Monospace písmo</string>
     <string name="main_song_display">Zobrazení hlavní skladby</string>
     <string name="mainfoldername">HLAVNÍ</string>
     <string name="mandolin">Mandolína</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Tato složka je označena jako pouze pro čtení.</string>
     <string name="openchords_readonly_switch">Pouze pro čtení</string>
     <string name="openchords_readonly_switch_info">Změnit nastavení této složky pro ostatní uživatele, kteří odkaz používají</string>
+    <string name="openchords_uuids">UUID OpenChords</string>
+    <string name="openchords_uuids_info">Zobrazení a úprava vašich přihlašovacích údajů OpenChords</string>
+    <string name="openchords_uuids_warning">Neměňte je, pokud nevíte, co děláte. Více se dozvíte na webových stránkách pomocí odkazu.</string>
     <string name="opensong_media">Zvukové nahrávky se ukládají do /OpenSong/Media/</string>
     <string name="optional">Volitelný</string>
     <string name="order">Objednávka</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Utility</string>
     <string name="utilities_info">Další nástroje pro hudebníky</string>
     <string name="utility">Utility</string>
+    <string name="uuid_not_valid">UUID není platné</string>
     <string name="variation">Změna</string>
     <string name="variation_info">Vytvořte kopii této skladby, kterou lze upravit.  Tato skladba může být uložena do sady a načtena zpět, ale je ztracena při vymazání sady</string>
     <string name="variation_make">Udělejte variaci set položek</string>

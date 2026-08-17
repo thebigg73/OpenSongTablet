@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Lyrics</string>
     <string name="lyrics_color">Lirieke font</string>
+    <string name="lyrics_monospace_font">Monospace-lettertipe</string>
     <string name="main_song_display">Hoofliedjie vertoon</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">Mandolien</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Hierdie vouer is as slegs leesbaar gemerk</string>
     <string name="openchords_readonly_switch">Lees slegs</string>
     <string name="openchords_readonly_switch_info">Verander die instellings van hierdie vouer vir ander gebruikers wat die skakel gebruik</string>
+    <string name="openchords_uuids">OpenChords UUID\'s</string>
+    <string name="openchords_uuids_info">Bekyk en wysig jou OpenChords-aanbevelingsbewyse</string>
+    <string name="openchords_uuids_warning">Moenie hierdie verander tensy jy weet wat jy doen nie. Vind meer uit op die webwerf deur die skakel te gebruik.</string>
     <string name="opensong_media">Oudio-opnames word gestoor na /OpenSong/Media/</string>
     <string name="optional">Opsioneel</string>
     <string name="order">Bestel</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Nutsprogramme</string>
     <string name="utilities_info">Ander gereedskap vir musikante</string>
     <string name="utility">Nut</string>
+    <string name="uuid_not_valid">UUID is nie geldig nie</string>
     <string name="variation">Variasie</string>
     <string name="variation_info">Maak \'n kopie van hierdie liedjie wat geredigeer kan word.  Hierdie liedjie kan in \'n stel gestoor word en teruggelaai word, maar gaan verlore wanneer die stel skoongemaak word</string>
     <string name="variation_make">Maak \'n stel item variasie</string>

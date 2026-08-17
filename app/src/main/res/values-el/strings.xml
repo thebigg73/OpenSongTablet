@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Lyrics</string>
     <string name="lyrics_color">Γραμματοσειρά στίχων</string>
+    <string name="lyrics_monospace_font">Γραμματοσειρά Monospace</string>
     <string name="main_song_display">Κύρια προβολή τραγουδιού</string>
     <string name="mainfoldername">ΚΕΝΤΡΙΚΟ</string>
     <string name="mandolin">Μαντολίνο</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Αυτός ο φάκελος έχει επισημανθεί ως μόνο για ανάγνωση</string>
     <string name="openchords_readonly_switch">Μόνο για ανάγνωση</string>
     <string name="openchords_readonly_switch_info">Αλλάξτε τις ρυθμίσεις αυτού του φακέλου για άλλους χρήστες που χρησιμοποιούν τον σύνδεσμο</string>
+    <string name="openchords_uuids">UUID OpenChords</string>
+    <string name="openchords_uuids_info">Προβολή και επεξεργασία των διαπιστευτηρίων σας στο OpenChords</string>
+    <string name="openchords_uuids_warning">Μην τα αλλάξετε αυτά εκτός αν γνωρίζετε τι κάνετε. Μάθετε περισσότερα στον ιστότοπο χρησιμοποιώντας τον σύνδεσμο.</string>
     <string name="opensong_media">Οι ηχογραφήσεις αποθηκεύονται στο /OpenSong/Media/</string>
     <string name="optional">Προαιρετικός</string>
     <string name="order">Παραγγελία</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Βοηθητικά προγράμματα</string>
     <string name="utilities_info">Άλλα εργαλεία για μουσικούς</string>
     <string name="utility">Χρησιμότητα</string>
+    <string name="uuid_not_valid">Το UUID δεν είναι έγκυρο</string>
     <string name="variation">Παραλαγή</string>
     <string name="variation_info">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού που μπορείτε να επεξεργαστείτε.  Αυτό το τραγούδι μπορεί να αποθηκευτεί σε ένα σετ και να φορτωθεί ξανά, αλλά χάνεται κατά την εκκαθάριση του σετ</string>
     <string name="variation_make">Τροποποίηση ενός στοιχείου της σειράς</string>

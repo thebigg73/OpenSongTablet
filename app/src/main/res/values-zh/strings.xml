@@ -694,6 +694,7 @@
     <string name="looper">环形使者</string>
     <string name="lyrics">歌词</string>
     <string name="lyrics_color">歌词字体</string>
+    <string name="lyrics_monospace_font">等宽字体</string>
     <string name="main_song_display">主曲显示</string>
     <string name="mainfoldername">MAIN</string>
     <string name="mandolin">曼多林</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">此文件夹标记为只读</string>
     <string name="openchords_readonly_switch">仅阅读</string>
     <string name="openchords_readonly_switch_info">更改此文件夹的设置，以便其他使用此链接的用户也能访问。</string>
+    <string name="openchords_uuids">OpenChords UUID</string>
+    <string name="openchords_uuids_info">查看和编辑您的 OpenChords 凭据</string>
+    <string name="openchords_uuids_warning">除非您清楚自己在做什么，否则请勿更改这些设置。点击链接访问网站了解更多信息。</string>
     <string name="opensong_media">录音保存到 /OpenSong/Media/</string>
     <string name="optional">选修的</string>
     <string name="order">命令</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">实用程序</string>
     <string name="utilities_info">音乐家的其他工具</string>
     <string name="utility">公用事业</string>
+    <string name="uuid_not_valid">UUID 无效</string>
     <string name="variation">变异变异变异变异变异变异\'变异</string>
     <string name="variation_info">复制这首可以编辑的歌曲。 这首歌曲可以保存到集合中并加载回，但在清除集合时会丢失</string>
     <string name="variation_make">制定一套项变化</string>

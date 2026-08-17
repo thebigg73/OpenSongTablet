@@ -694,6 +694,7 @@
     <string name="looper">Looper</string>
     <string name="lyrics">Dalszöveg</string>
     <string name="lyrics_color">Lyrics font</string>
+    <string name="lyrics_monospace_font">Egyenletes betűtípus</string>
     <string name="main_song_display">Fő dal megjelenítése</string>
     <string name="mainfoldername">FŐBB</string>
     <string name="mandolin">Mandolin</string>
@@ -881,6 +882,9 @@
     <string name="openchords_readonly">Ez a mappa írásvédettként van megjelölve</string>
     <string name="openchords_readonly_switch">Csak olvasható</string>
     <string name="openchords_readonly_switch_info">Módosítsa a mappa beállításait a hivatkozást használó többi felhasználó számára</string>
+    <string name="openchords_uuids">OpenChords UUID-k</string>
+    <string name="openchords_uuids_info">OpenChords hitelesítő adatainak megtekintése és szerkesztése</string>
+    <string name="openchords_uuids_warning">Ne változtasd meg ezeket, hacsak nem tudod, mit csinálsz. Tudj meg többet a weboldalon a linken keresztül.</string>
     <string name="opensong_media">A hangfelvételek mentése az /OpenSong/Media/ mappába</string>
     <string name="optional">Választható</string>
     <string name="order">Rendelés</string>
@@ -1454,6 +1458,7 @@
     <string name="utilities">Segédprogramok</string>
     <string name="utilities_info">Egyéb eszközök zenészek számára</string>
     <string name="utility">Hasznosság</string>
+    <string name="uuid_not_valid">Az UUID érvénytelen</string>
     <string name="variation">Variáció</string>
     <string name="variation_info">Készítsen másolatot erről a dalról, amely szerkeszthető.  Ez a dal elmenthető egy készletbe, és visszatölthető, de a készlet törlésekor elveszik</string>
     <string name="variation_make">Készíts egy sor tételváltozat</string>
