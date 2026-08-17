@@ -59,6 +59,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
             songFolderUUIDsFile = "songFolderUUIDs.json";
     private boolean receivedFolderLink = false, isOwner, isReadOnly, folderIsDifferentUuid;
     private String jwtToken;
+    private java.util.regex.Pattern UUID_REGEX =
+            java.util.regex.Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
     // The retrofit, server and fragment declarations
     private RetrofitInterface retrofitInterface;
@@ -115,6 +117,8 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         openChordsUsername = mainActivityInterface.getPreferences().getKey(c, "openchordsusername");
         openChordsPassword = mainActivityInterface.getPreferences().getKey(c, "openchordspassword");
         openChordsUserUuid = mainActivityInterface.getPreferences().getMyPreferenceString("openChordsUserUuid",null);
+
+        // Old versions may have used alternative UUID format, so don't check for UUID_REGEX here
         if (openChordsUserUuid == null) {
             openChordsUserUuid = UUID.randomUUID().toString();
             mainActivityInterface.getPreferences().setMyPreferenceString("openChordsUserUuid",openChordsUserUuid);
@@ -328,6 +332,18 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         this.openChordsFolderName = openChordsFolderName;
         mainActivityInterface.getPreferences().setMyPreferenceString(
                 "openChordsFolderName", openChordsFolderName);
+    }
+
+    public String getOpenChordsUserUuid() {
+        return openChordsUserUuid;
+    }
+
+    public void setOpenChordsUserUuid(String openChordsUserUuid) {
+        if (openChordsUserUuid == null || !UUID_REGEX.matcher(openChordsUserUuid).matches()) {
+            openChordsUserUuid = UUID.randomUUID().toString();
+        }
+        this.openChordsUserUuid = openChordsUserUuid;
+        mainActivityInterface.getPreferences().setMyPreferenceString("openChordsUserUuid",openChordsUserUuid);
     }
 
     public String getLocalFolderName() {
@@ -740,9 +756,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                         //String content = MainActivity.gson.toJson(serverFolder, OpenChordsFolderObject.class);
                         //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","ReceivedObject.json",content,false);
 
-                        Log.d(TAG,"serverFolder.getOwnerId():"+serverFolder.getOwnerId());
-                        Log.d(TAG,"openChordsUserUuid:"+openChordsUserUuid);
-                        Log.d(TAG,"getIsOwner():"+serverFolder.getIsOwner());
                         // Decide if we are the folder owner
                         if (serverFolder.getIsOwner()!=null) {
                             isOwner = serverFolder.getIsOwner();
@@ -1760,7 +1773,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         doTestingFileWriteCheck(uploadFolderObject);
 
         updateProgress(c.getString(R.string.sync_uploading_changes) + "\n");
-        Log.d(TAG,"about to upload.  ownerId:"+uploadFolderObject.getOwnerId()+"  userId:"+openChordsUserUuid+"  folderId:"+openChordsFolderUuid);
 
         Call<ResponseBody> call = retrofitInterface.postOpenChordsFolder(openChordsFolderUuid, openChordsUserUuid, uploadFolderObject);
         call.enqueue(new Callback<ResponseBody>() {
@@ -2510,7 +2522,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         if (!mainActivityInterface.getStorageAccess().uriExists(openSongFolderUri)) {
             // Create a new one
             openSongFolderObject = new OpenSongFolderObject();
-            openSongFolderObject.setOwnerID(String.valueOf(UUID.randomUUID()));
+            openSongFolderObject.setOwnerID(openChordsUserUuid);
             OpenSongFolderRecordObject openSongFolderRecordObject;
             // Go through each folder in our system and create a UUID
             openSongFolderRecordObjects = new ArrayList<>();
@@ -2574,6 +2586,16 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                 saveOpenSongFolderObject();
             }
         }
+    }
+
+    public void updateFolderObjectUUID(int index, String newUUID) {
+        openSongFolderRecordObjects.get(index).setFolderUuid(newUUID);
+        openSongFolderRecordObjects.get(index).setFolderOwnerUuid(openChordsUserUuid);
+        saveOpenSongFolderObject();
+    }
+
+    public ArrayList<OpenSongFolderRecordObject> getOpenSongFolderRecordObjects() {
+        return openSongFolderRecordObjects;
     }
 
     private void saveOpenSongFolderObject() {

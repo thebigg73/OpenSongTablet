@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/openchords_uuids"
+        app:webHelp="@string/website_openchords"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/extra_scroll_space_large">
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/openchords_uuids_warning"
+                android:padding="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.OpenChordsFolderUUIDLayout
+                android:id="@+id/userUUID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/user"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
+                android:id="@+id/folderUUIDs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

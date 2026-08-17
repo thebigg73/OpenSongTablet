@@ -53,6 +53,7 @@ public class OpenChordsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        prepareStrings();
         mainActivityInterface.updateToolbar(openchords_string);
         mainActivityInterface.updateToolbarHelp(webAddress);
     }
@@ -78,6 +79,8 @@ public class OpenChordsFragment extends Fragment {
 
             // Prepare the strings needed for the app
             prepareStrings();
+
+            mainActivityInterface.updateToolbar(openchords_string);
 
             // Tint and theme checks
             if (myView!=null) {
@@ -298,6 +301,11 @@ public class OpenChordsFragment extends Fragment {
                     mainActivityInterface.getOpenChordsAPI().getIsOwner()) {
                 mainActivityInterface.getOpenChordsAPI().changeReadOnly(readOnly);
             }
+        }));
+
+        myView.openChordsSettings.post(() -> myView.openChordsSettings.setOnClickListener(view -> {
+            OpenChordsUUIDBottomSheet openChordsUUIDBottomSheet = new OpenChordsUUIDBottomSheet(getContext());
+            openChordsUUIDBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"OpenChordsUUIDsBS");
         }));
     }
 

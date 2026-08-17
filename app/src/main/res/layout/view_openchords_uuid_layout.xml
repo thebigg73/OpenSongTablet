@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/uuidLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.garethevans.church.opensongtablet.customviews.MyMaterialEditText
+        android:id="@+id/uuidItem"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"/>
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+        android:id="@+id/uuidItemLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabIcon="@drawable/lock"
+        app:myFabSize="mini"
+        app:makeFlat="true"
+        android:layout_gravity="center"
+        android:padding="2dp"/>
+    <com.garethevans.church.opensongtablet.customviews.MyFloatingActionButton
+        android:id="@+id/uuidItemShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabIcon="@drawable/share_variant"
+        app:myFabSize="mini"
+        app:makeFlat="true"
+        android:layout_gravity="center"
+        android:padding="2dp"/>
+</LinearLayout>

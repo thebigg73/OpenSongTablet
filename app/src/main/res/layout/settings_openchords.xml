@@ -190,6 +190,16 @@
                     <com.garethevans.church.opensongtablet.customviews.MyDivider
                         style="@style/MyDividerLine"/>
                 </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
+                    android:id="@+id/openChordsSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/openchords_uuids"
+                    android:hint="@string/openchords_uuids_info" />
+                <com.garethevans.church.opensongtablet.customviews.MyDivider
+                    style="@style/MyDividerLine"/>
+
             </LinearLayout>
         </ScrollView>
 
@@ -204,7 +214,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/ScrimBackground"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/progressLayout"
