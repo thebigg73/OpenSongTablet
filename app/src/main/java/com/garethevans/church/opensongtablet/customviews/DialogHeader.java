@@ -3,11 +3,13 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
@@ -20,6 +22,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
     private final MyMaterialSimpleTextView textView;
     private final MyFloatingActionButton webHelp, closeButtonDialog, minimiseButtonDialog;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
+    private String webAddress = "";
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -38,18 +41,38 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
         closeButtonDialog.setClickable(true);
         closeButtonDialog.setOnClickListener(this);
 
-        int[] set = new int[]{android.R.attr.text};
-        TypedArray a = context.obtainStyledAttributes(attrs, set);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DialogHeader);
         try {
-            CharSequence text = a.getText(0);
+            // 1. Safely handle android:text
+            CharSequence text = a.getText(R.styleable.DialogHeader_android_text);
             if (text != null) {
-                textView.setText(text.toString());
+                // So both actual and preview work
+                textView.setText(text);
                 setText(text.toString());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            // 2. Safely handle webHelp attribute and toggle button visibility
+            webAddress = a.getString(R.styleable.DialogHeader_webHelp);
+            if (webAddress != null && !webAddress.isEmpty()) {
+                webHelp.setVisibility(View.VISIBLE);
+                // Safely get the interface from the context if it's implemented by the Activity
+                try {
+                    webHelp.setOnClickListener(v -> {
+                        MainActivityInterface listener = findMainActivityInterface(getContext());
+                        if (listener != null) {
+                            Log.d(TAG,"webAddress:"+webAddress);
+                            listener.openDocument(webAddress);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                webHelp.setVisibility(View.GONE);
+            }
+
         } finally {
-            a.recycle();
+            a.recycle(); // Always recycle the TypedArray
         }
 
         setPalette(new Palette(context));
@@ -73,6 +96,7 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     public void setWebHelp(MainActivityInterface mainActivityInterface, String webAddress) {
         // If we pass in a valid web address, we show the web help page
+        this.webAddress = webAddress;
         if (webAddress!=null && !webAddress.isEmpty()) {
             if (webHelp!=null) {
                 webHelp.post(() -> {
@@ -134,6 +158,23 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
             closeButtonDialog.setFABIconColor(palette.textColor);
             minimiseButtonDialog.setFABIconColor(palette.textColor);
             webHelp.setFABIconColor(palette.textColor);
+        }
+    }
+
+    private MainActivityInterface findMainActivityInterface(Context context) {
+        try {
+            while (context instanceof android.content.ContextWrapper) {
+                if (context instanceof MainActivityInterface) {
+                    return (MainActivityInterface) context;
+                }
+                context = ((android.content.ContextWrapper) context).getBaseContext();
+            }
+            if (context instanceof MainActivityInterface) {
+                return (MainActivityInterface) context;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
         }
     }
 }

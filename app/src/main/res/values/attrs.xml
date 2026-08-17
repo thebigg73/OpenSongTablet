@@ -89,6 +89,7 @@
 
     <declare-styleable name="DialogHeader">
         <attr name="android:text" format="string" />
+        <attr name="webHelp" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="DialogTitleClose">
@@ -174,5 +175,10 @@
         <attr name="android:text" format="string" />
         <attr name="showValuesAsText" format="boolean" />
         <attr name="suffixText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="OpenChordsFolderUUIDLayout">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
     </declare-styleable>
 </resources>

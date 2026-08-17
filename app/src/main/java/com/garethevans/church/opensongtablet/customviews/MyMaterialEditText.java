@@ -37,6 +37,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.Palette;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -57,6 +58,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
     private View.OnFocusChangeListener externalFocusChangeListener;
     private Palette palette;
     private Context c;
+    private Typeface monoTypeface;
 
     // By default this is a single line edit text
     // For multiline, the number of lines has to be specified (maxLines/lines)
@@ -188,11 +190,17 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
             });
         }
 
+        try {
+            MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
+            monoTypeface = mainActivityInterface.getMyFonts().getMonoFont();
+        } catch (Throwable t) {
+            monoTypeface = Typeface.createFromAsset(c.getAssets(), "font/Inconsolata.ttf");
+        }
 
         if (useMonospace) {
-            Typeface mono = Typeface.createFromAsset(c.getAssets(), "font/Inconsolata.ttf");
-            editText.setTypeface(mono);
+            editText.setTypeface(monoTypeface);
         }
+
         if (suffixText != null) {
             textInputLayout.setSuffixText(suffixText);
         }
@@ -230,8 +238,7 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 isKeyboardVisible = false;
             }
             if (useMonospace) {
-                Typeface mono = Typeface.createFromAsset(c.getAssets(), "font/Inconsolata.ttf");
-                editText.setTypeface(mono);
+                editText.setTypeface(monoTypeface);
             }
         });
 
@@ -308,6 +315,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
                 new int[][]{new int[0]},
                 new int[]{palette.hintColor}
         ));
+    }
+
+    public CharSequence getHint() {
+        return textInputLayout.getHint();
     }
 
     public void setOnEditorActionListener(MyMaterialSimpleTextView.OnEditorActionListener editorActionListener) {
@@ -420,6 +431,9 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
         editText.setEnabled(enabled);
     }
 
+    public boolean getEnabled() {
+        return editText.isEnabled();
+    }
     public void setFocusable(boolean focusable) {
         editText.setClickable(!focusable);
         editText.setFocusable(focusable);
@@ -454,6 +468,10 @@ public class MyMaterialEditText extends FrameLayout implements View.OnTouchListe
 
     public void setTypeface(Typeface typeface) {
         editText.setTypeface(typeface);
+    }
+    public void setMonoTypeface(Typeface monoTypeface) {
+        this.monoTypeface = monoTypeface;
+        editText.setTypeface(monoTypeface);
     }
 
     public Layout getLayout() {
