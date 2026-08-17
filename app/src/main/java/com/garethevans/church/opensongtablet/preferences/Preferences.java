@@ -407,6 +407,7 @@ public class Preferences extends Activity {
     // fontSizeMin                      float       The min font size (def:8.0f)
     // fontChord                        String      The name of the font used for the chords.  From fonts.google.com (def:lato)
     // fontLyric                        String      The name of the font used for the lyrics.  From fonts.google.com (def:lato)
+    // fontMono                         String      The name of the font used for editing the lyrics.  From fonts.google.com (def:Roboto Mono)
     // fontPreso                        String      The name of the font used for the preso.  From fonts.google.com (def:lato)
     // fontPresoInfo                    String      The name of the font used for the presoinfo.  From fonts.google.com (def:lato)
     // fontSizePreso                    float       The non-scale presentation font size (def:14.0f)

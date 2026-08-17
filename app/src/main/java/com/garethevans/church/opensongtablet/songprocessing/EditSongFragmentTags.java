@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.beatbuddy.BBSQLite;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
 import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
@@ -156,16 +155,16 @@ public class EditSongFragmentTags extends Fragment {
     private void checkBeatBuddyValues() {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Decide which songs and kits to use
-            if (getContext()!=null) {
-                try (BBSQLite bbsqLite = new BBSQLite(getContext())) {
-                    String tableSongs = bbsqLite.TABLE_NAME_DEFAULT_SONGS;
-                    String tableKits = bbsqLite.TABLE_NAME_DEFAULT_DRUMS;
+            if (getContext()!=null && mainActivityInterface.getBeatBuddy().getBbsqLite()!=null) {
+                try {
+                    String tableSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_SONGS;
+                    String tableKits = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_DEFAULT_DRUMS;
                     if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-                        tableSongs = bbsqLite.TABLE_NAME_MY_SONGS;
-                        tableKits = bbsqLite.TABLE_NAME_MY_DRUMS;
+                        tableSongs = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_SONGS;
+                        tableKits = mainActivityInterface.getBeatBuddy().getBbsqLite().TABLE_NAME_MY_DRUMS;
                     }
-                    ArrayList<String> songs = bbsqLite.getUnique(bbsqLite.COLUMN_SONG_NAME, tableSongs);
-                    ArrayList<String> kits = bbsqLite.getUnique(bbsqLite.COLUMN_KIT_NAME, tableKits);
+                    ArrayList<String> songs = mainActivityInterface.getBeatBuddy().getBbsqLite().getUnique(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_SONG_NAME, tableSongs);
+                    ArrayList<String> kits = mainActivityInterface.getBeatBuddy().getBbsqLite().getUnique(mainActivityInterface.getBeatBuddy().getBbsqLite().COLUMN_KIT_NAME, tableKits);
                     mainActivityInterface.getMainHandler().post(() -> {
                         if (myView != null) {
                             ExposedDropDownArrayAdapter songsAdapter = new ExposedDropDownArrayAdapter(getContext(), myView.beatBuddySong, R.layout.view_exposed_dropdown_item, songs);
@@ -188,6 +187,8 @@ public class EditSongFragmentTags extends Fragment {
                             myView.beatBuddyKit.setText(mainActivityInterface.getTempSong().getBeatbuddykit());
                         }
                     });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

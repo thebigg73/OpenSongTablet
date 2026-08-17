@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -29,7 +30,8 @@ import java.util.ArrayList;
 public class FontSetupFragment extends Fragment {
     private SettingsFontsBinding myView;
     private ArrayList<String> fontNames;
-    private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
+    private ArrayList<String> monoFontNames;
+    private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, fontMono, which;
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private String font_choose_string="", website_fonts_string="";
@@ -63,7 +65,7 @@ public class FontSetupFragment extends Fragment {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             // Got the fonts from Google
             fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
-
+            monoFontNames = mainActivityInterface.getMyFonts().getMonoFontsFromGoogle();
             try {
                 mainActivityInterface.getMainHandler().post(() -> {
                     if (fontNames!=null && !fontNames.isEmpty()) {
@@ -106,6 +108,7 @@ public class FontSetupFragment extends Fragment {
         myView.presoFont.setVisibility(visibility);
         myView.presoInfoFont.setVisibility(visibility);
         myView.stickyFont.setVisibility(visibility);
+        myView.monoFont.setVisibility(visibility);
     }
 
     private void getPreferences() {
@@ -114,6 +117,7 @@ public class FontSetupFragment extends Fragment {
         fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString("fontPreso","Lato");
         fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString("fontPresoInfo","Lato");
         fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString("fontSticky","Lato");
+        fontMono = mainActivityInterface.getPreferences().getMyPreferenceString("fontMono","Roboto Mono");
         mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 
@@ -123,6 +127,7 @@ public class FontSetupFragment extends Fragment {
         prepareExposedDropdown("fontSticky", myView.stickyFont, fontSticky);
         prepareExposedDropdown("fontPreso", myView.presoFont, fontPreso);
         prepareExposedDropdown("fontPresoInfo", myView.presoInfoFont, fontPresoInfo);
+        prepareExposedDropdown("fontMono", myView.monoFont, fontMono);
     }
 
     private void prepareExposedDropdown(String which, ExposedDropDown exposedDropDown, String defaultValue) {
@@ -130,12 +135,19 @@ public class FontSetupFragment extends Fragment {
             try {
                 exposedDropDown.post(() -> {
                     if (getContext()!=null) {
-                        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter =
-                                new ExposedDropDownArrayAdapter(getContext(), exposedDropDown,
+                        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter;
+                        if (which.equals("fontMono")) {
+                            exposedDropDownArrayAdapter =
+                                    new ExposedDropDownArrayAdapter(getContext(), exposedDropDown,
+                                            R.layout.view_exposed_dropdown_item, monoFontNames);
+                        } else {
+                            exposedDropDownArrayAdapter =
+                                    new ExposedDropDownArrayAdapter(getContext(), exposedDropDown,
                                         R.layout.view_exposed_dropdown_item, fontNames);
+                        }
+                        exposedDropDown.setText(defaultValue);
                         exposedDropDown.setAdapter(exposedDropDownArrayAdapter);
                     }
-                    exposedDropDown.setText(defaultValue);
                     exposedDropDown.addTextChangedListener(new MyTextWatcher(which));
                 });
             } catch (Exception e) {
@@ -184,18 +196,22 @@ public class FontSetupFragment extends Fragment {
             myView.stickyLorem.setTextSize(22.0f);
             myView.stickyLorem.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
 
+            // Set the mono preview
+            myView.monoLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+            myView.monoLorem.setTextSize(22.0f);
+            myView.monoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
+
             // Clicking on the previews will update them
             myView.songPreview.setOnClickListener(v -> updatePreviews());
             myView.presoPreview.setOnClickListener(v -> updatePreviews());
             myView.stickyLorem.setOnClickListener(v -> updatePreviews());
+            myView.monoLorem.setOnClickListener(v -> updatePreviews());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void updatePreviews() {
-
-        Log.d(TAG,"isAdded():"+isAdded());
         // Run this now and again in about 500ms and 3 seconds (to check loading of the font has happened)
         try {
             if (getActivity()!=null && isAdded()) {
@@ -210,6 +226,11 @@ public class FontSetupFragment extends Fragment {
 
                     // Set the sticky preview
                     myView.stickyLorem.post(() -> myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont()));
+
+                    // Set the mono preview
+                    Typeface monotf = mainActivityInterface.getMyFonts().getMonoFont();
+                    Log.d(TAG,"montf:"+monotf);
+                    myView.monoLorem.post(() -> myView.monoLorem.setTypeface(mainActivityInterface.getMyFonts().getMonoFont()));
 
                     // Change the values in other used locations
                     displayInterface.updateDisplay("setInfoStyles");
@@ -263,7 +284,7 @@ public class FontSetupFragment extends Fragment {
         public void afterTextChanged(Editable s) {
             // The preview method in setTypeFace deals with saving
             Log.d(TAG,"which:"+which+"  to:"+s);
-            mainActivityInterface.getMyFonts().changeFont(which,s.toString(),new Handler());
+            mainActivityInterface.getMyFonts().changeFont(which,s.toString(),mainActivityInterface.getMainHandler());
             updatePreviews();
         }
     }

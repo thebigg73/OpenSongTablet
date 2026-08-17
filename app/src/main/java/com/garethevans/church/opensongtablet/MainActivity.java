@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private ActivityBinding myView;
     private boolean bootUpCompleted = false;
-    private boolean rebooted = false, alreadyBackPressed = false;
+    private boolean rebooted = false;
 
     public static final Gson gson = new Gson();
 
@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private AnalyticsSQLiteHelper analyticsHelper;
     private AppPermissions appPermissions;
     private Autoscroll autoscroll;
-    private BeatBuddy beatBuddy;
+    private volatile BeatBuddy beatBuddy;
+    private final Object beatBuddyLock = new Object();
     private Bible bible;
     private CCLILog ccliLog;
     private CheckInternet checkInternet;
@@ -373,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String deeplink_import_osb = "", deeplink_sets_backup_restore = "", deeplink_onsong = "",
             deeplink_import_file = "", unknown = "", mainfoldername = "MAIN", deeplink_page_buttons = "",
             website_menu_set = "", website_menu_song = "", exit_confirm = "", deeplink_set_bundle = "",
-            error = "", deeplink_presenter = "", deeplink_performance = "", extra_settings = "",
+            error = "", extra_settings = "",
             action_button_info = "", song_sections = "", logo_info = "", blank_screen_info = "",
             black_screen_info = "", project_panic = "", song_title = "", long_press = "", edit_song = "",
             song_sections_project = "", menu_song_info = "", menu_set_info = "", add_songs = "",
@@ -426,6 +427,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Updating toolbar runnable
         updatingToolbarRunnable = () -> {
+            Log.d(TAG,"updatingToolbarRunnable()  webHelpAddress:"+webHelpAddress);
             updatingToolbarHelp = true;
             if (menuScreenHelp != null) {
                 menuScreenHelp.setVisible(webHelpAddress != null && !webHelpAddress.isEmpty());
@@ -742,8 +744,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             website_menu_song = getString(R.string.website_menu_song);
             exit_confirm = getString(R.string.exit_confirm);
             error = getString(R.string.error);
-            deeplink_presenter = getString(R.string.deeplink_presenter);
-            deeplink_performance = getString(R.string.deeplink_performance);
             extra_settings = getString(R.string.extra_settings);
             action_button_info = getString(R.string.action_button_info);
             song_sections = getString(R.string.song_sections);
@@ -821,7 +821,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 if (getStorageAccess().getFileSizeFromUri(fileOpenIntent.getData()) > 0) {
                     getPreferences().setMyPreferenceBoolean("intentAlreadyDealtWith", true);
                     importUri = fileOpenIntent.getData();
-                    Log.d(TAG, "intent received:" + importUri);
 
                     getMainHandler().post(() -> navController.popBackStack(navigationId, false));
 
@@ -1001,84 +1000,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void showActionBar() {
-        Log.d(TAG,"showActionBar() called");
         if (myView != null) {
             myView.myToolbar.showActionBar(settingsOpen);
             updateMargins();
         }
     }
 
-    /*@Override
-    public void updateMargins() {
-        if (myView != null && windowFlags != null) {
-            mainLooper.post(() -> {
-                // Get the user margins (additional)
-                int[] margins = windowFlags.getMargins();
-
-                // Work out top padding for status bar if shown
-                int additionalTop = getAdditionalTop();
-
-                // Set the toolbar paddings
-                if (myView != null) {
-                    myView.myToolbar.setAdditionalTopPadding(additionalTop);
-                    myView.myToolbar.setPadding(margins[0] + windowFlags.getMarginToolbarLeft(),
-                            margins[1] + additionalTop,
-                            margins[2] + windowFlags.getMarginToolbarRight(),
-                            0);
-                }
-
-                // Now set the paddings to the content page, the song menu and the page button
-                // If we are showing the status in the cutout
-                int statusPadding = 0;
-                int topPadding = 0;
-                if (myView != null) {
-                    boolean isToolbarShown = (settingsOpen || !myView.myToolbar.getHideActionBar() || myView.myAppBarLayout.getVisibility() == View.VISIBLE);
-
-                    if (isToolbarShown) {
-                        topPadding = myView.myToolbar.getActionBarHeight(true);
-                    } else {
-                        // Toolbar is hidden: return 0 for toolbar space so the underlying view fills the screen
-                        topPadding = 0;
-                    }
-                }
-                if (windowFlags.getShowStatusInCutout() && !windowFlags.getIgnoreCutouts()) {
-                    statusPadding += windowFlags.getCurrentTopCutoutHeight();
-                } else if (windowFlags.getShowStatus()) {
-                    statusPadding += windowFlags.getStatusHeight();
-                }
-
-                if (topPadding == 0 && windowFlags.getShowStatusInCutout() && windowFlags.getCurrentTopCutoutHeight() > 0) {
-                    // We need to add in the statusBar
-                    topPadding += statusPadding + margins[1];
-                }
-
-                *//*int bottomOfToolbar = getBottomOfToolbar();
-
-                if (myView != null) {
-                    myView.fragmentView.setPadding(margins[0], Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)), margins[2], margins[3]);
-                    myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
-                    myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
-                }*//*
-                int bottomOfToolbar = getBottomOfToolbar();
-                // If the toolbar is hidden, we want bottomOfToolbar to be 0 so it doesn't leave a gap
-                if (myView.myToolbar.getHideActionBar() && myView.myAppBarLayout.getVisibility() != View.VISIBLE) {
-                    bottomOfToolbar = 0;
-                }
-
-                if (myView != null) {
-                    myView.fragmentView.setPadding(
-                            margins[0],
-                            Math.max(margins[1] + additionalTop, Math.max(topPadding, bottomOfToolbar)),
-                            margins[2],
-                            margins[3]
-                    );
-                    myView.songMenuLayout.setPadding(margins[0], margins[1] + additionalTop, 0, margins[3]);
-                    myView.songMenuLayout.findViewById(R.id.menu_top).setPadding(windowFlags.getMarginToolbarLeft(), 0, 0, 0);
-
-                }
-            });
-        }
-    }*/
     @Override
     public void updateMargins() {
         if (myView != null && windowFlags != null) {
@@ -1097,10 +1024,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 int finalTopPadding;
 
                 // Check if auto-hide is active
-                boolean isAutoHiding = myView.myToolbar.getHideActionBar();
+                boolean isAutoHiding = false;
+                if (myView!=null) {
+                    isAutoHiding = myView.myToolbar.getHideActionBar();
+                }
 
                 // If settings are open OR auto-hide is turned off, we MUST push content down
-                if (settingsOpen || !isAutoHiding) {
+                if (myView!=null && (settingsOpen || !isAutoHiding)) {
                     int toolbarHeight = myView.myToolbar.getActionBarHeight(true);
                     finalTopPadding = Math.max(margins[1] + additionalTop, toolbarHeight);
                 } else {
@@ -1116,41 +1046,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
             });
         }
-    }
-
-    /*private int getBottomOfToolbar() {
-        int bottomOfToolbar = myView.myAppBarLayout.getBottom();
-        if (myView.myToolbar.getHideActionBar()) {
-            if (windowFlags.getShowStatus()) {
-                bottomOfToolbar = windowFlags.getStatusHeight();
-            } else if (windowFlags.getShowStatusInCutout()) {
-                bottomOfToolbar = windowFlags.getCurrentTopCutoutHeight();
-            } else {
-                bottomOfToolbar = 0;
-            }
-        }
-        return bottomOfToolbar;
-    }
-*/
-    private int getBottomOfToolbar() {
-        if (myView == null || myView.myAppBarLayout == null) {
-            return 0;
-        }
-
-        int visibility = myView.myAppBarLayout.getVisibility();
-        Log.d("ToolbarDebug", "myAppBarLayout visibility: " + (visibility == View.VISIBLE ? "VISIBLE" : (visibility == View.GONE ? "GONE" : "INVISIBLE")));
-
-        if (visibility != View.VISIBLE) {
-            Log.d("ToolbarDebug", "myAppBarLayout is not visible, returning 0 for bottomOfToolbar");
-            return 0;
-        }
-
-        int bottomOfToolbar = myView.myAppBarLayout.getBottom();
-        if (bottomOfToolbar == 0) {
-            bottomOfToolbar = (int) (56 * getResources().getDisplayMetrics().density);
-        }
-        Log.d("ToolbarDebug", "myAppBarLayout.getBottom() measured: " + bottomOfToolbar);
-        return bottomOfToolbar;
     }
 
     private int getAdditionalTop() {
@@ -1294,7 +1189,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMyThemeColors().getDefaultColors();
 
         // Typefaces
-        getMyFonts().setUpAppFonts(mainLooper, mainLooper, mainLooper, mainLooper, mainLooper);
+        getMyFonts().setUpAppFonts(mainLooper, mainLooper, mainLooper, mainLooper, mainLooper, mainLooper);
     }
 
     private void tintDrawerLayout() {
@@ -1458,7 +1353,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void setAlreadyBackPressed(boolean alreadyBackPressed) {
-        this.alreadyBackPressed = alreadyBackPressed;
     }
 
     public void interceptBackPressed() {
@@ -1560,10 +1454,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (navHostFragment == null || navController == null) {
             navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (navHostFragment != null) {
-                navController = navHostFragment.getNavController();
-            }
-
-            if (navController == null && navHostFragment!=null) {
                 navController = navHostFragment.getNavController();
             }
 
@@ -1695,17 +1585,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void navigateToFragment(String deepLink, int id) {
-        Log.d(TAG,"navigateToFragment() called");
         // Hide the abc notes if required
         showAbc(false, true);
 
         // Make sure we let the toolbar know we are in performance mode (or going there)
         // This is needed if we are hiding the toolbar
-        if (id==R.id.performanceFragment || (deepLink!=null && deepLink.equals(getString(R.string.deeplink_performance)))) {
-            getToolbar().setPerformanceMode(true);
-        } else {
-            getToolbar().setPerformanceMode(false);
-        }
+        getToolbar().setPerformanceMode(id == R.id.performanceFragment || (deepLink != null && deepLink.equals(getString(R.string.deeplink_performance))));
 
         // Hide the sticky notes if required
         showSticky(false, true);
@@ -1760,7 +1645,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 runOnUiThread(() -> {
                     try {
-                        Log.d(TAG,"navController:"+navController);
                         if (navController == null) {
                             setupActionbar();
                             setupNavigation();
@@ -1777,7 +1661,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             showActionBar();
         }
-
         checkToolbarMenuIcons();
     }
 
@@ -1963,10 +1846,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             // 1. Identify your target root destination
             int targetId = whichMode.equals(mode_presenter) ? R.id.presenterFragment : R.id.performanceFragment;
-            int currentId = -1;
-            if (navController.getCurrentDestination() != null) {
-                currentId = navController.getCurrentDestination().getId();
-            }
 
             // 2. Clear the NavHostFragment's internal child fragment manager backstack directly
             Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -2328,21 +2207,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateToolbarHelp(String webHelpAddress) {
         // Only proceed if it has changed
-        if ((this.webHelpAddress == null && webHelpAddress != null) ||
+        /*if ((this.webHelpAddress == null && webHelpAddress != null) ||
                 (this.webHelpAddress != null && webHelpAddress == null) ||
-                (!Objects.equals(this.webHelpAddress, webHelpAddress))) {
+                (!Objects.equals(this.webHelpAddress, webHelpAddress))) {*/
             // If a webAddress is supplied, setup and reveal the help button
             // or for a null or empty web address,hide the help button
             // Only allow this to happen after 200ms and only once (false repeats)
             // There is another check 800ms after opening the fragment
             if (!updatingToolbarHelp) {
-                this.webHelpAddress = webHelpAddress;
                 updatingToolbarHelp = true;
                 updatingToolbarHandler.removeCallbacks(updatingToolbarRunnable);
+                Log.d(TAG,"webHelpAddress:"+webHelpAddress+"  updatingToolBarHelp:"+updatingToolbarHelp);
+                this.webHelpAddress = webHelpAddress;
                 // For stability, run this on a delayed handler
                 updatingToolbarHandler.postDelayed(updatingToolbarRunnable, 200);
             }
-        }
+        //}
     }
 
     @Override
@@ -2496,7 +2376,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // The fragment should have already set a webHelpAddress 200ms after opening if required
         // This is a secondary check as the fragment won't send null/empty values.
         updatingToolbarHandler.removeCallbacks(updatingToolbarRunnable);
-        updatingToolbarHelp = false;
         updatingToolbarHandler.postDelayed(updatingToolbarRunnable, 800);
     }
 
@@ -3273,7 +3152,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public BeatBuddy getBeatBuddy() {
         if (beatBuddy == null) {
-            beatBuddy = new BeatBuddy(this);
+            synchronized (beatBuddyLock) {
+                if (beatBuddy == null) {
+                    beatBuddy = new BeatBuddy(this);
+                }
+            }
         }
         return beatBuddy;
     }
@@ -5312,7 +5195,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Stop any thread pools
         // Stop any active thread pool tasks instantly
         ExecutorService executor = getThreadPoolExecutor();
-        Log.d(TAG,"executor:"+executor);
         if (executor != null) {
             try {
                 executor.shutdownNow();

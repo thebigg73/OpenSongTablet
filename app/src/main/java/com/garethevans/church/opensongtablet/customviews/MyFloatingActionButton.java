@@ -110,7 +110,7 @@ public class MyFloatingActionButton extends FrameLayout {
         applyState();
     }
 
-    private void applyState() {
+    /*private void applyState() {
         // 1. Apply Alpha
         myFAB.setAlpha(targetAlpha);
 
@@ -125,6 +125,24 @@ public class MyFloatingActionButton extends FrameLayout {
         }
         if (targetIconColor != -1) {
             setFABIconColor(targetIconColor);
+        }
+    }*/
+
+    private void applyState() {
+        // 1. Apply Alpha
+        myFAB.setAlpha(targetAlpha);
+
+        // 2. Apply Colors first
+        if (targetButtonColor != -1) {
+            setFABButtonColor(targetButtonColor);
+        }
+        if (targetIconColor != -1) {
+            setFABIconColor(targetIconColor);
+        }
+
+        // 3. Apply Flat logic LAST so it definitively strips any strokes or tints applied by color methods
+        if (isFlat) {
+            makeFlat();
         }
     }
 

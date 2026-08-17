@@ -184,6 +184,7 @@ public class EditSongFragmentLyrics extends Fragment {
             if (myView!=null) {
                 myView.lyrics.setTextSize(editTextSize);
                 myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+                myView.lyrics.setMonoTypeface(mainActivityInterface.getMyFonts().getMonoFont());
             }
         });
 
