@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        style="@style/DefaultView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,12 +63,7 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        android:layout_width="@dimen/progress_bar_size"
-                        android:layout_height="@dimen/progress_bar_size"
-                        android:layout_below="@+id/devicesText"
-                        android:layout_centerInParent="true" />
+
                 </RelativeLayout>
                 <com.garethevans.church.opensongtablet.customviews.MyDivider
                     style="@style/MyDividerLine"/>
@@ -186,4 +181,18 @@
                 app:adjustable="true"/>
         </LinearLayout>
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/scrimOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ScrimBackground"
+        android:visibility="visible" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:layout_gravity="center"/>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

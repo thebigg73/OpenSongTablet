@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.media.midi.MidiDevice;
+import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiInputPort;
 import android.media.midi.MidiManager;
 import android.media.midi.MidiOutputPort;
@@ -215,8 +216,8 @@ public class Midi {
     private BluetoothGatt activeBluetoothGatt = null;
     private BluetoothGattCharacteristic activeGattCharacteristic = null;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
+    //@RequiresApi(api = Build.VERSION_CODES.M)
+    /*public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
         this.bluetoothDevice = bluetoothDevice;
 
         if (bluetoothDevice == null) return;
@@ -271,6 +272,118 @@ public class Midi {
 
             // Call your existing native MidiManager openBluetoothDevice() method here
             // openStandardMidiDevice(bluetoothDevice);
+        }
+    }*/
+    public void setBluetoothDevice(BluetoothDevice device) {
+        this.bluetoothDevice = device;
+        if (device == null) return;
+
+        int bondState = device.getBondState();
+
+        if (bondState == BluetoothDevice.BOND_BONDED) {
+            Log.d(TAG, "Device already bonded. Proceeding with connection...");
+            executeOpenDeviceWorkflow();
+        } else {
+            Log.d(TAG, "Device not bonded. Triggering createBond() and waiting for user confirmation...");
+
+            // Register receiver BEFORE calling createBond() so we don't miss the broadcast
+            try {
+                IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+                c.registerReceiver(bondReceiver, filter);
+                Log.d(TAG, "Bond BroadcastReceiver registered.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Request pairing
+            device.createBond();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void executeOpenDeviceWorkflow() {
+        if (bluetoothDevice == null) return;
+
+        // ABSOLUTE SAFETY GUARD: Refuse to open if not bonded
+        if (bluetoothDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
+            Log.w(TAG, "Blocked workflow attempt: Device is still not bonded!");
+            return;
+        }
+
+        if (useDirectGatt) {
+            DirectMidiGattCallback.MidiGattReadyListener listener = new DirectMidiGattCallback.MidiGattReadyListener() {
+                @Override
+                public void onMidiCharacteristicReady(BluetoothGattCharacteristic characteristic) {
+                    activeGattCharacteristic = characteristic;
+                    Log.d(TAG, "Direct GATT is fully ready for MIDI output!");
+                }
+
+                @Override
+                public void onDisconnected() {
+                    activeBluetoothGatt = null;
+                    activeGattCharacteristic = null;
+                }
+            };
+            DirectMidiGattCallback callback = new DirectMidiGattCallback(listener);
+            connectWithRetry(c, bluetoothDevice, callback);
+        } else {
+            activeBluetoothGatt = null;
+            activeGattCharacteristic = null;
+            openBleMidiDevice(bluetoothDevice);
+        }
+    }
+
+    public interface MidiDeviceOpenListener {
+        void onDeviceOpenedSuccessfully(MidiDevice device);
+        void onDeviceOpenFailed();
+    }
+
+    public interface OnMidiDeviceReadyListener {
+        void onReady(MidiDevice device);
+    }
+
+    private OnMidiDeviceReadyListener readyListener;
+
+    public void setOnMidiDeviceReadyListener(OnMidiDeviceReadyListener listener) {
+        this.readyListener = listener;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void initiateConnectionWorkflow() {
+        if (bluetoothDevice == null) return;
+
+        // ABSOLUTE SAFETY GUARD: Refuse to open if not bonded
+        if (bluetoothDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
+            Log.w(TAG, "Blocked workflow attempt: Device is still not bonded!");
+            return;
+        }
+
+        if (useDirectGatt) {
+            Log.d(TAG, "Routing via Direct GATT Fallback");
+
+            DirectMidiGattCallback.MidiGattReadyListener listener = new DirectMidiGattCallback.MidiGattReadyListener() {
+                @Override
+                public void onMidiCharacteristicReady(BluetoothGattCharacteristic characteristic) {
+                    activeGattCharacteristic = characteristic;
+                    Log.d(TAG, "Direct GATT is fully ready for MIDI output!");
+                }
+
+                @Override
+                public void onDisconnected() {
+                    activeBluetoothGatt = null;
+                    activeGattCharacteristic = null;
+                }
+            };
+
+            DirectMidiGattCallback callback = new DirectMidiGattCallback(listener);
+            connectWithRetry(c, bluetoothDevice, callback);
+
+        } else {
+            Log.d(TAG, "Routing via standard MidiManager pipeline");
+            activeBluetoothGatt = null;
+            activeGattCharacteristic = null;
+
+            openBleMidiDevice(bluetoothDevice);
         }
     }
 
@@ -338,7 +451,7 @@ public class Midi {
         }
     }
 
-    private final BroadcastReceiver bondReceiver = new BroadcastReceiver() {
+    /*private final BroadcastReceiver bondReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -355,6 +468,45 @@ public class Midi {
                         }
                     } else if (bondState == BluetoothDevice.BOND_NONE && previousBondState == BluetoothDevice.BOND_BONDING) {
                         Log.e(TAG, "Pairing failed or was rejected.");
+                    }
+                }
+            }
+        }
+    };*/
+
+    private final BroadcastReceiver bondReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                if (device != null && bluetoothDevice != null && device.getAddress().equals(bluetoothDevice.getAddress())) {
+                    int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
+                    int previousBondState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
+
+                    if (bondState == BluetoothDevice.BOND_BONDED) {
+                        Log.d(TAG, "Bond state changed: BONDED successfully! Proceeding with connection...");
+
+                        // Unregister receiver safely
+                        try {
+                            c.unregisterReceiver(this);
+                        } catch (Exception e) {
+                            // Receiver might already be unregistered
+                        }
+
+                        // Give One UI 1.2 seconds to settle encryption keys after pairing popup closes
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            executeOpenDeviceWorkflow();
+                        }, 1200);
+
+                    } else if (bondState == BluetoothDevice.BOND_NONE && previousBondState == BluetoothDevice.BOND_BONDING) {
+                        Log.e(TAG, "Bonding failed or was rejected by user.");
+                        try {
+                            c.unregisterReceiver(this);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -584,6 +736,16 @@ public class Midi {
     public boolean sendMidi(byte[] b) {
         boolean success = false;
 
+        if (useDirectGatt && activeGattCharacteristic != null && activeBluetoothGatt != null) {
+            Log.d(TAG, "sendMidi: Using Direct GATT fallback path.");
+            // ...
+        } else if (midiInputPort != null) {
+            Log.d(TAG, "sendMidi: Using standard MidiManager input port path.");
+            // ...
+        } else {
+            Log.e(TAG, "sendMidi: Both paths failed! activeGatt: " + activeBluetoothGatt + ", inputPort: " + midiInputPort);
+        }
+
         if (b==null || b.length==0) {
             return true;
         }
@@ -606,6 +768,7 @@ public class Midi {
                 // 3. Write the properly wrapped packet to the characteristic
                 activeGattCharacteristic.setValue(bleMidiPacket);
                 activeGattCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                //activeGattCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
                 success = activeBluetoothGatt.writeCharacteristic(activeGattCharacteristic);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -910,8 +1073,16 @@ public class Midi {
             }
             midiDevice = null;
         }
-        midiDeviceName = "";
-        midiDeviceAddress = "";
+        if (currentMidiDevice != null) {
+            try {
+                currentMidiDevice.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            currentMidiDevice = null;
+        }
+
+
         if (midiOutputPort != null && pedalMidiReceiver != null) {
             try {
                 midiOutputPort.disconnect(pedalMidiReceiver);
@@ -919,6 +1090,12 @@ public class Midi {
                 e.printStackTrace();
             }
         }
+
+        midiInputPort = null;
+        midiOutputPort = null;
+        midiDeviceName = "";
+        midiDeviceAddress = "";
+
         tryDisconnectBluetoothLE();
         if (activeBluetoothGatt != null) {
             activeBluetoothGatt.disconnect();
@@ -1363,6 +1540,40 @@ public class Midi {
         }
     }
 
+    // Class-level flag to block overlapping calls
+    private boolean isOpeningDevice = false;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void initializePortsAndListener(boolean enableListener) {
+        if (currentMidiDevice == null) {
+            Log.e(TAG, "Cannot initialize ports: currentMidiDevice is null");
+            return;
+        }
+
+        // Optional 400ms buffer if needed for BLE stack exposure
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            try {
+                MidiDeviceInfo deviceInfo = currentMidiDevice.getInfo();
+                if (deviceInfo != null && deviceInfo.getPorts() != null) {
+                    for (MidiDeviceInfo.PortInfo pi : deviceInfo.getPorts()) {
+                        if (pi.getType() == MidiDeviceInfo.PortInfo.TYPE_INPUT && midiInputPort == null) {
+                            midiInputPort = currentMidiDevice.openInputPort(pi.getPortNumber());
+                            Log.d(TAG, "Successfully bound MIDI Input Port: " + pi.getPortNumber());
+                        } else if (pi.getType() == MidiDeviceInfo.PortInfo.TYPE_OUTPUT && midiOutputPort == null) {
+                            midiOutputPort = currentMidiDevice.openOutputPort(pi.getPortNumber());
+                            if (enableListener) {
+                                enableMidiListener();
+                            }
+                            Log.d(TAG, "Successfully bound MIDI Output Port: " + pi.getPortNumber());
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 400);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void openBleMidiDevice(android.bluetooth.BluetoothDevice bluetoothDevice) {
         if (bluetoothDevice == null) {
@@ -1370,38 +1581,74 @@ public class Midi {
             return;
         }
 
-        // Guard: Prevent double-opening if we already have an active device/port
-        if (currentMidiDevice != null || midiInputPort != null) {
-            Log.w(TAG, "MIDI device or port is already open. Skipping duplicate open request.");
-            return;
+        // Guard against simultaneous open attempts
+        synchronized (this) {
+            if (isOpeningDevice) {
+                Log.w(TAG, "Open operation already in progress. Ignoring duplicate request for: " + bluetoothDevice.getAddress());
+                return;
+            }
+            isOpeningDevice = true;
         }
+
+        // 1. Force cleanup of any lingering previous connections before opening fresh
+        if (currentMidiDevice != null) {
+            try {
+                currentMidiDevice.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            currentMidiDevice = null;
+        }
+        midiInputPort = null;
+        midiOutputPort = null;
 
         midiManager = (MidiManager) c.getSystemService(Context.MIDI_SERVICE);
         if (midiManager == null) {
             Log.e(TAG, "MidiManager not available on this device.");
+            isOpeningDevice = false; // Reset lock on early exit
             return;
         }
 
+        Log.d(TAG, "Opening Bluetooth MIDI device via MidiManager for: " + bluetoothDevice.getAddress());
+
         midiManager.openBluetoothDevice(bluetoothDevice, midiDevice -> {
+            // Release the lock now that the asynchronous open callback has returned
+            isOpeningDevice = false;
+
             if (midiDevice == null) {
-                Log.e(TAG, "Failed to open Bluetooth MIDI device.");
+                Log.e(TAG, "Failed to open Bluetooth MIDI device (returned null proxy).");
                 return;
             }
 
             currentMidiDevice = midiDevice;
             setMidiDevice(midiDevice);
-            Log.d(TAG, "Device opened successfully!");
+            Log.d(TAG, "Device opened successfully via MidiManager!");
 
+            // 2. Extended delay (800ms) to bypass One UI post-bond socket stabilization lag
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (midiInputPort == null) {
-                    midiInputPort = currentMidiDevice.openInputPort(0);
+                try {
+                    if (midiInputPort == null) {
+                        midiInputPort = currentMidiDevice.openInputPort(0);
+                    }
+                    if (midiOutputPort == null) {
+                        midiOutputPort = currentMidiDevice.openOutputPort(0);
+                    }
+
+                    if (midiInputPort != null && midiOutputPort != null) {
+                        Log.d(TAG, "Successfully bound MIDI Input & Output Ports!");
+                        enableMidiListener();
+
+                        // NOTIFY UI THAT EVERYTHING IS READY
+                        if (readyListener != null) {
+                            readyListener.onReady(currentMidiDevice);
+                        }
+                    } else {
+                        Log.e(TAG, "Failed to bind one or more MIDI ports. Input: " + midiInputPort + ", Output: " + midiOutputPort);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (midiInputPort != null) {
-                    Log.d(TAG, "MidiInputPort ready: " + midiInputPort);
-                } else {
-                    Log.e(TAG, "MidiInputPort returned null.");
-                }
-            }, 500);
+            }, 800);
         }, new Handler(Looper.getMainLooper()));
     }
 
