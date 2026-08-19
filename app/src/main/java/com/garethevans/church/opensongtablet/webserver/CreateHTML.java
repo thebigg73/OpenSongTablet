@@ -108,9 +108,10 @@ public class CreateHTML {
 
         for (int x = 0; x < songIds.size(); x++) {
             SongId songId = songIds.get(x);
-            html.append("<div class=\"");
-            html.append(songId.getFolder());
-            html.append(" item clickable\" onclick=\"javascript:goToSong('").append(songId.getFolder().replace("'","\\'").replace("\"","\\")).append("','").append(songId.getFilename().replace("'","\\'").replace("\"","\\")).append("')\">");
+            // In getSongMenuHTML
+            html.append("<div class=\"item clickable\" data-folder=\"").append(songId.getFolder()).append("\" ");
+            html.append("<div class=\"item clickable\" data-folder=\"").append(songId.getFolder()).append("\" ");
+            html.append("onclick=\"javascript:goToSong('").append(songId.getFolder().replace("'","\\'").replace("\"","\\")).append("','").append(songId.getFilename().replace("'","\\'").replace("\"","\\")).append("')\">");
             html.append(songId.getFilename());
             if (songId.getKey()!=null && !songId.getKey().isEmpty()) {
                 html.append(" (");
@@ -358,13 +359,10 @@ public class CreateHTML {
 
         if (!songMenu) {
             string += "  function filterByFolder() {}\n";
-        } else {
-            string += "  function filterByFolder() {\n";
+        } else {string += "  function filterByFolder() {\n";
             string += "    const folderName = document.getElementById('folderChooser').value;\n";
-            string += "    // Loop ONLY through elements that have the 'item' class\n";
             string += "    document.querySelectorAll('.item').forEach(div => {\n";
-            string += "      // If folderName is \"Band\", it checks if the div has the \"Band\" class\n";
-            string += "      if (div.classList.contains(folderName)) {\n";
+            string += "      if (div.getAttribute('data-folder') === folderName) {\n";
             string += "        div.style.display = 'block';\n";
             string += "      } else {\n";
             string += "        div.style.display = 'none';\n";
