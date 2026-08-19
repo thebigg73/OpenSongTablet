@@ -684,9 +684,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private boolean dealingWithClick = false;
     @Override
     public void onItemClicked(int position, String folder, String filename, String key, boolean inSet) {
-        if (!dealingWithClick) {
+        if (!dealingWithClick && mainActivityInterface != null && myView != null) {
             dealingWithClick = true;
             myView.songListRecyclerView.stopScroll();
+
             mainActivityInterface.getWindowFlags().hideKeyboard();
             // Default the slide animations to be next (R2L)
             mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
@@ -701,6 +702,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             }
             mainActivityInterface.getMainHandler().postDelayed(() -> dealingWithClick = false, 200);
         }
+
     }
 
     @Override

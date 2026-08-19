@@ -251,10 +251,12 @@ public class AudioPlayerPopUp {
             }
         });
         mediaPlayer.setOnCompletionListener(mediaPlayer -> {
-            isPlaying = false;
-            isPaused = false;
-            seekBar.setValue(seekBar.getValueTo());
-            updateTime();
+            if (seekBar!=null) {
+                isPlaying = false;
+                isPaused = false;
+                seekBar.setValue(seekBar.getValueTo());
+                updateTime();
+            }
         });
         if (mainActivityInterface.getImportUri()!=null && c!=null) {
             try {
