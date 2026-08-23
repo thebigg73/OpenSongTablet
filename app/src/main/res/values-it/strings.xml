@@ -823,6 +823,8 @@
     <string name="music_score_popup">Finestra popup dello spartito (abc).</string>
     <string name="my_band">Importare brani di band</string>
     <string name="my_church">Importare brani ecclesiatici di esempio</string>
+    <string name="neaby_bluetooth_only">Forza l\'adesione solo al Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Alcuni dispositivi meno recenti non consentono connessioni Wi-Fi Direct. Se è possibile stabilire una connessione tramite Bluetooth, questa opzione impedisce al dispositivo di tentare di passare al Wi-Fi Direct per migliorare la velocità. Attiva questa opzione solo se riscontri problemi di connessione con dispositivi vecchi o economici.</string>
     <string name="nearby_devices">Dispositivi nelle vicinanze</string>
     <string name="nearby_files_copied">Files copiati:</string>
     <string name="nearby_files_failed">Files non completati:</string>

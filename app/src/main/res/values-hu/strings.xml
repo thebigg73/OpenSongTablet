@@ -823,6 +823,8 @@
     <string name="music_score_popup">Kotta (abc) felugró ablak</string>
     <string name="my_band">Import sáv minta dalok</string>
     <string name="my_church">Import Church minta dalok</string>
+    <string name="neaby_bluetooth_only">Csak Bluetooth használatára kényszerítve</string>
+    <string name="nearby_bluetooth_only_info">Néhány régebbi eszköz nem engedélyezi a közvetlen WiFi kapcsolatot. Ha Bluetooth-on keresztül lehet kapcsolatot létesíteni, ez az opció megakadályozza, hogy az eszköz megpróbáljon közvetlen WiFi kapcsolatra váltani a sebesség javítása érdekében. Csak akkor kapcsold be ezt az opciót, ha régebbi vagy olcsó eszközökön kapcsolódási problémákat tapasztalsz.</string>
     <string name="nearby_devices">Közeli eszközök</string>
     <string name="nearby_files_copied">Másolt fájlok:</string>
     <string name="nearby_files_failed">Sikertelen fájlok:</string>

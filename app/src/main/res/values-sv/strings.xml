@@ -823,6 +823,8 @@
     <string name="music_score_popup">Popup-fönster för musikpartitur (abc).</string>
     <string name="my_band">Importera bandprov låtar</string>
     <string name="my_church">Importera kyrkans provlåtar</string>
+    <string name="neaby_bluetooth_only">Tvinga fastna endast vid Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Vissa äldre enheter tillåter inte WiFi Direct-anslutningar. Om en anslutning kan upprättas via Bluetooth hindrar det här alternativet enheten från att försöka växla till WiFi Direct för att förbättra hastigheten. Aktivera bara detta om du har anslutningsproblem på gamla eller budgetenheter.</string>
     <string name="nearby_devices">Enheter i närheten</string>
     <string name="nearby_files_copied">Filer kopierade:</string>
     <string name="nearby_files_failed">Filer misslyckades:</string>

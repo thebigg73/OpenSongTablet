@@ -823,6 +823,8 @@
     <string name="music_score_popup">Popup-Fenster „Musikpartitur (abc)“.</string>
     <string name="my_band">Band Beispielsongs importieren</string>
     <string name="my_church">Kirchen Beispielsongs importieren</string>
+    <string name="neaby_bluetooth_only">Nur Bluetooth verwenden</string>
+    <string name="nearby_bluetooth_only_info">Einige ältere Geräte unterstützen keine WLAN-Direktverbindungen. Wenn eine Bluetooth-Verbindung möglich ist, verhindert diese Option, dass das Gerät versucht, auf WLAN-Direkt umzuschalten, um die Geschwindigkeit zu verbessern. Aktivieren Sie diese Option nur, wenn Sie Verbindungsprobleme mit älteren oder günstigen Geräten haben.</string>
     <string name="nearby_devices">Geräte in der Nähe</string>
     <string name="nearby_files_copied">Kopierte Dateien:</string>
     <string name="nearby_files_failed">Dateien fehlgeschlagen:</string>

@@ -823,6 +823,8 @@
     <string name="music_score_popup">Αναδυόμενο παράθυρο παρτιτούρας (abc).</string>
     <string name="my_band">Εισαγωγή τραγουδιών δείγματος μπάντας</string>
     <string name="my_church">Εισάγετε δείγματα τραγουδιών της Εκκλησίας</string>
+    <string name="neaby_bluetooth_only">Αναγκαστικό stick μόνο σε Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Ορισμένες παλαιότερες συσκευές δεν επιτρέπουν συνδέσεις WiFi Direct. Εάν είναι δυνατή η πραγματοποίηση σύνδεσης μέσω Bluetooth, αυτή η επιλογή σταματά την προσπάθεια της συσκευής να μεταβεί σε WiFi Direct για να βελτιώσει την ταχύτητα. Ενεργοποιήστε την μόνο εάν αντιμετωπίζετε προβλήματα σύνδεσης σε παλιές ή οικονομικές συσκευές.</string>
     <string name="nearby_devices">Κοντινές συσκευές</string>
     <string name="nearby_files_copied">Αρχεία που αντιγράφηκαν:</string>
     <string name="nearby_files_failed">Τα αρχεία απέτυχαν:</string>

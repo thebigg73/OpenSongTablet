@@ -823,6 +823,8 @@
     <string name="music_score_popup">Ventana emergente de partitura musical (abc)</string>
     <string name="my_band">Canciones de Import Band</string>
     <string name="my_church">Canciones de la muestra de la iglesia de la importación</string>
+    <string name="neaby_bluetooth_only">Forzar el dispositivo a usar solo Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Algunos dispositivos antiguos no permiten conexiones Wi-Fi Direct. Si se puede establecer una conexión mediante Bluetooth, esta opción impide que el dispositivo intente cambiar a Wi-Fi Direct para mejorar la velocidad. Actívala solo si tienes problemas de conexión en dispositivos antiguos o de gama baja.</string>
     <string name="nearby_devices">Dispositivos cercanos</string>
     <string name="nearby_files_copied">Archivos copiados:</string>
     <string name="nearby_files_failed">Los archivos fallaron:</string>

@@ -1510,4 +1510,6 @@
     <string name="openchords_uuids_warning">Ne menjajte ovo osim ako ne znate šta radite. Saznajte više na veb-sajtu koristeći link.</string>
     <string name="uuid_not_valid">UUID nije važeći</string>
     <string name="lyrics_monospace_font">Monoprostorni font</string>
+    <string name="neaby_bluetooth_only">Prisilno se drži samo Bluetooth-a</string>
+    <string name="nearby_bluetooth_only_info">Neki stariji uređaji ne dozvoljavaju direktne WiFi veze. Ako se veza može uspostaviti putem Bluetooth-a, ova opcija sprečava uređaj da pokuša da se prebaci na WiFi direktno povezivanje radi poboljšanja brzine. Uključite ovo samo ako imate problema sa vezom na starijim ili jeftinijim uređajima.</string>
 </resources>

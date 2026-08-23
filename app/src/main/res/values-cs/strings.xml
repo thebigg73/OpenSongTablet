@@ -823,6 +823,8 @@
     <string name="music_score_popup">Vyskakovací okno hudební partitury (abc).</string>
     <string name="my_band">Importovat skladby</string>
     <string name="my_church">Importovat církevní vzorové písně</string>
+    <string name="neaby_bluetooth_only">Vynutit pouze Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Některá starší zařízení neumožňují přímé připojení přes WiFi. Pokud lze připojení navázat přes Bluetooth, tato možnost zabrání zařízení v pokusu o přepnutí na přímé připojení přes WiFi za účelem zvýšení rychlosti. Tuto možnost zapněte pouze v případě, že máte problémy s připojením na starších nebo levnějších zařízeních.</string>
     <string name="nearby_devices">Blízká zařízení</string>
     <string name="nearby_files_copied">Zkopírované soubory:</string>
     <string name="nearby_files_failed">Soubory se nezdařily:</string>

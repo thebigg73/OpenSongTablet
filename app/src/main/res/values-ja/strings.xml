@@ -823,6 +823,8 @@
     <string name="music_score_popup">楽譜(abc)ポップアップウィンドウ</string>
     <string name="my_band">バンドのサンプル曲をインポートする</string>
     <string name="my_church">教会のサンプル曲をインポートする</string>
+    <string name="neaby_bluetooth_only">スティックをBluetoothのみに強制的に接続します</string>
+    <string name="nearby_bluetooth_only_info">古いデバイスの中には、Wi-Fi Direct接続に対応していないものがあります。Bluetoothで接続できる場合、このオプションを有効にすると、デバイスが速度向上のためにWi-Fi Directに切り替えようとするのを阻止します。古いデバイスや低価格デバイスで接続の問題が発生している場合にのみ、このオプションを有効にしてください。</string>
     <string name="nearby_devices">近くのデバイス</string>
     <string name="nearby_files_copied">コピーされたファイル:</string>
     <string name="nearby_files_failed">ファイルが失敗しました:</string>

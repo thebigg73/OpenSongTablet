@@ -823,6 +823,8 @@
     <string name="music_score_popup">Wyskakujące okienko z partyturą muzyczną (abc).</string>
     <string name="my_band">Importuj przykładowe piosenki Zespołu</string>
     <string name="my_church">Importuj przykładowe piosenki z Kościoła</string>
+    <string name="neaby_bluetooth_only">Wymuś przejście tylko na Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Niektóre starsze urządzenia nie obsługują połączeń Wi-Fi Direct. Jeśli połączenie Bluetooth jest możliwe, ta opcja zapobiega próbom przełączenia urządzenia na Wi-Fi Direct w celu zwiększenia prędkości. Włącz tę opcję tylko wtedy, gdy masz problemy z połączeniem na starszych lub tańszych urządzeniach.</string>
     <string name="nearby_devices">Urządzenia w pobliżu</string>
     <string name="nearby_files_copied">Skopiowane pliki:</string>
     <string name="nearby_files_failed">Pliki nie powiodły się:</string>

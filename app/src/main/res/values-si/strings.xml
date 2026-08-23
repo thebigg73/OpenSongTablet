@@ -823,6 +823,8 @@
     <string name="music_score_popup">සංගීත ලකුණු (abc) උත්පතන කවුළුව</string>
     <string name="my_band">සංගීත කණ්ඩායම් ආදර්ශ ගීත ආනයනය කරන්න</string>
     <string name="my_church">පල්ලියේ ආදර්ශ ගීත ආනයනය කරන්න</string>
+    <string name="neaby_bluetooth_only">බ්ලූටූත් වෙත පමණක් බලෙන් අලවන්න</string>
+    <string name="nearby_bluetooth_only_info">සමහර පැරණි උපාංග WiFi සෘජු සම්බන්ධතා වලට ඉඩ නොදේ. බ්ලූටූත් හරහා සම්බන්ධතාවයක් ඇති කළ හැකි නම්, වේගය වැඩි දියුණු කිරීම සඳහා උපාංගය WiFi සෘජු වෙත මාරු වීමට උත්සාහ කිරීම මෙම විකල්පය නවත්වයි. පැරණි හෝ අයවැය උපාංගවල සම්බන්ධතා ගැටළු තිබේ නම් පමණක් මෙය ක්‍රියාත්මක කරන්න.</string>
     <string name="nearby_devices">ආසන්න උපාංග</string>
     <string name="nearby_files_copied">පිටපත් කරන ලද ගොනු:</string>
     <string name="nearby_files_failed">ගොනු අසාර්ථක විය:</string>

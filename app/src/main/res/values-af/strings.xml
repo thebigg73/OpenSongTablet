@@ -823,6 +823,8 @@
     <string name="music_score_popup">Musiek partituur (abc) pop-up venster</string>
     <string name="my_band">Invoer Band voorbeeld liedjies</string>
     <string name="my_church">Voer kerkmonsterliedjies in</string>
+    <string name="neaby_bluetooth_only">Forseer om slegs aan Bluetooth vas te hou</string>
+    <string name="nearby_bluetooth_only_info">Sommige ouer toestelle laat nie WiFi Direct-verbindings toe nie. As \'n verbinding in Bluetooth gemaak kan word, keer hierdie opsie dat die toestel probeer om oor te skakel na WiFi Direct om die spoed te verbeter. Skakel dit slegs aan as jy verbindingsprobleme op ou of begrotingstoestelle ondervind.</string>
     <string name="nearby_devices">Nabygeleë toestelle</string>
     <string name="nearby_files_copied">Lêers gekopieer:</string>
     <string name="nearby_files_failed">Lêers het misluk:</string>

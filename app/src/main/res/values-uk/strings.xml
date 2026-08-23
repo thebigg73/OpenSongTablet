@@ -823,6 +823,8 @@
     <string name="music_score_popup">Спливаюче вікно ноти (abc).</string>
     <string name="my_band">Імпорт пісень з файлу групи</string>
     <string name="my_church">Імпорт пісень з файлу церкви</string>
+    <string name="neaby_bluetooth_only">Примусово використовувати лише Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Деякі старіші пристрої не дозволяють пряме підключення через Wi-Fi. Якщо підключення можна встановити через Bluetooth, ця опція зупиняє спроби пристрою переключитися на пряме підключення через Wi-Fi для покращення швидкості. Увімкніть цю опцію, лише якщо у вас виникли проблеми з підключенням на старих або бюджетних пристроях.</string>
     <string name="nearby_devices">Пристрої поблизу</string>
     <string name="nearby_files_copied">Скопійовано файлів:</string>
     <string name="nearby_files_failed">Помилка файлів:</string>

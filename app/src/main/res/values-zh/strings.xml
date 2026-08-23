@@ -823,6 +823,8 @@
     <string name="music_score_popup">乐谱 (abc) 弹出窗口</string>
     <string name="my_band">导入乐队示例歌曲</string>
     <string name="my_church">进口教会样品歌曲</string>
+    <string name="neaby_bluetooth_only">强制仅使用蓝牙</string>
+    <string name="nearby_bluetooth_only_info">某些老旧设备不支持 Wi-Fi 直连。如果可以通过蓝牙建立连接，此选项会阻止设备尝试切换到 Wi-Fi 直连以提高速度。仅当您在使用老旧或低端设备时遇到连接问题，才启用此选项。</string>
     <string name="nearby_devices">附近的设备</string>
     <string name="nearby_files_copied">复制的文件：</string>
     <string name="nearby_files_failed">文件失败：</string>

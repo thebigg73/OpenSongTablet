@@ -1003,6 +1003,8 @@
     <string name="music_score_popup">Music score (abc) popup window</string>
     <string name="my_band">Import Band sample songs</string>
     <string name="my_church">Import Church sample songs</string>
+    <string name="neaby_bluetooth_only">Force stick to Bluetooth only</string>
+    <string name="nearby_bluetooth_only_info">Some older devices do not allow WiFi direct connections.  If a connection can be made in Bluetooth, this option stops the device trying to switch to WiFi direct to improve the speed.  Only switch this on if you are having connection issues on old or budget devices</string>
     <string name="nearby_devices">Nearby devices</string>
     <string name="nearby_files_copied">Files copied:</string>
     <string name="nearby_files_failed">Files failed:</string>

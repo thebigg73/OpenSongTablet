@@ -823,6 +823,8 @@
     <string name="music_score_popup">Fenêtre contextuelle de partition musicale (abc)</string>
     <string name="my_band">Bandes d\'échange de bandes d\'importation</string>
     <string name="my_church">Import Church exemple de chansons</string>
+    <string name="neaby_bluetooth_only">Force stick uniquement Bluetooth</string>
+    <string name="nearby_bluetooth_only_info">Certains appareils plus anciens ne prennent pas en charge les connexions Wi-Fi Direct. Si une connexion Bluetooth est possible, cette option empêche l\'appareil de basculer vers le Wi-Fi Direct pour améliorer la vitesse. N\'activez cette option que si vous rencontrez des problèmes de connexion avec des appareils anciens ou d\'entrée de gamme.</string>
     <string name="nearby_devices">Appareils à proximité</string>
     <string name="nearby_files_copied">Fichiers copiés:</string>
     <string name="nearby_files_failed">Les fichiers ont échoué:</string>
