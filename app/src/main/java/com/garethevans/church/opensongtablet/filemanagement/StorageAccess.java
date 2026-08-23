@@ -2167,7 +2167,7 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listSongs_SAF(String mainfolder, boolean showAll) {
+   /* private ArrayList<String> listSongs_SAF(String mainfolder, boolean showAll) {
         // This gets all songs (including any subfolders)
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem("Songs", "", "");
@@ -2217,6 +2217,71 @@ public class StorageAccess {
             // Check we only have valid songIds
             ArrayList<String> checkedSongIds = new ArrayList<>();
             // We will remove and warn about bad file extensions
+            for (String songId : songIds) {
+                if (!badFileExtension(songId)) {
+                    checkedSongIds.add(songId);
+                }
+            }
+            return checkedSongIds;
+        }
+    }*/
+    private ArrayList<String> listSongs_SAF(String mainfolder, boolean showAll) {
+        ArrayList<String> songIds = new ArrayList<>();
+        Uri uri = getUriForItem("Songs", "", "");
+        String songFolderId = getDocumentsContractId(uri);
+        Uri children = getChildren(uri, songFolderId);
+
+        // Attempt to clear the cache
+        ContentResolver contentResolver = c.getContentResolver();
+        try {
+            contentResolver.notifyChange(uri, null);
+            contentResolver.notifyChange(children, null); // Also notify the child tier
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<Uri> dirNodes = new LinkedList<>();
+        dirNodes.add(children);
+
+        while (!dirNodes.isEmpty()) {
+            Uri currentDir = dirNodes.remove(0);
+
+            // Query projection for performance
+            String[] projection = {
+                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                    DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                    DocumentsContract.Document.COLUMN_MIME_TYPE
+            };
+
+            try (Cursor cursor = contentResolver.query(currentDir, projection, null, null, null)) {
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        final String docId = cursor.getString(0);
+                        final String displayName = cursor.getString(1);
+                        final String mime = cursor.getString(2);
+
+                        if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
+                            // It's a subdirectory; add it to queue for traversal
+                            dirNodes.add(getChildren(currentDir, docId));
+                        } else {
+                            // It's a file. Format relative path based on your hierarchy logic
+                            String relativePath = songFolderAndFileOnly(docId, mainfolder);
+                            if (relativePath != null && !relativePath.isEmpty()) {
+                                songIds.add(relativePath);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // Log this explicitly so user bug reports catch traversal crashes
+                e.printStackTrace();
+            }
+        }
+
+        if (showAll) {
+            return songIds;
+        } else {
+            ArrayList<String> checkedSongIds = new ArrayList<>();
             for (String songId : songIds) {
                 if (!badFileExtension(songId)) {
                     checkedSongIds.add(songId);
