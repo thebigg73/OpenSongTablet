@@ -527,6 +527,7 @@ public class Preferences extends Activity {
     // midiSendAuto                     boolean     Should the midi info in the song be sent on song load automatically (def:false)
     // multiLineVerseKeepCompact        boolean     Should multiline verses be kept compact (def:false)
     // navBarKeepSpace                  boolean     Should the app avoid writing in the bottom navbar space (def:false)
+    // nearbyBluetoothOnlyConnection    boolean     Should nearby connections stick to Bluetooth (useful for older devices)
     // nearbyFileSharing                boolean     Should we allow connected devices to get our files (def:true)
     // nearbyHostMenuOnly               boolean     Should the host only listen for clients when the nearby menu is open (def:false)
     // nearbyHostPassthrough            boolean     Allows a host to pass on messages received from other hosts rather than blocking (def:true);

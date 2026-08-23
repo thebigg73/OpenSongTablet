@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.nearby;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -24,7 +25,9 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionOptions;
 import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionType;
 import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
@@ -66,12 +69,13 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     private boolean nearbyFileSharing;                  // Allow connected users to get my files
     private SimpleArrayMap<String, String> discoveredDevices;  // The discovered and permission granted devices
     private SimpleArrayMap<String, String> connectedDevices;   // The currently connected devices
-
+    private boolean nearbyBluetoothOnlyConnection;
     // Advertising variables
     private boolean nearbyTemporaryAdvertise = false;   // Do we only advertise for 10 secs?
     private boolean advertiseInfoRequired = true;       // Alert to let the user know what settings will be used when advertising
     private boolean isAdvertising = false;              // Are we advertising?
     private AdvertisingOptions advertisingOptions;      // Advertising options
+    private ConnectionOptions connectionOptions;        // Connection options
     private boolean tempAdvertiseShowStart = true;      // Show the start advertise text
     private boolean tempAdvertiseShowStop = false;      // Show the stop advertise text
     private int countAdvertise = 0;                     // How many times we have attempted advertising (so we don't keep trying indefinitely)
@@ -84,6 +88,10 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
     private DiscoveryOptions discoveryOptions;          // Discovery options
     private int countDiscovery = 0;                     // How many times we have attempted discovery (so we don't keep trying indefinitely)
 
+    // Singleton callbacks
+    private ConnectionLifecycleCallback connectionLifecycleCallback;
+    private EndpointDiscoveryCallback endpointDiscoveryCallback;
+
     NearbyConnectionManager(Activity activity, Context c, NearbyActions nearbyActions) {
         this.activity = activity;
         this.c = c;
@@ -94,6 +102,10 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
         // Initialise the connections
         connectedDevices = new SimpleArrayMap<>();
         discoveredDevices = new SimpleArrayMap<>();
+
+        // Initialize single instance callbacks here
+        initConnectionLifecycleCallback();
+        initEndpointDiscoveryCallback();
 
         getUpdatedPreferences();
     }
@@ -117,6 +129,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                     nearbyStrategy = Strategy.P2P_CLUSTER;
                     break;
             }
+            nearbyBluetoothOnlyConnection = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyBluetoothOnlyConnection",false);
             setNearbyStrategy(nearbyStrategy);
             nearbyPreferredHost = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyPreferredHost", false);
             if (nearbyPreferredHost && firstBoot) {
@@ -133,8 +146,8 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             e.printStackTrace();
         }
 
-        advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
-        discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
+        //advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
+        //discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
 
         // If we have chosen to, start the default advertise/discover action
         if (firstBoot && nearbyStartOnBoot && nearbyPreferredHost && mainActivityInterface.getAppPermissions().hasNearbyPermissions()) {
@@ -152,9 +165,150 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
         firstBoot = false;
     }
 
+    // Initialise the callbacks to use as a singleton
+    private void initConnectionLifecycleCallback() {
+        connectionLifecycleCallback = new ConnectionLifecycleCallback() {
+            @Override
+            public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
+                String endpointName = connectionInfo.getEndpointName();
+                Log.d(TAG, "Connection initiated   endpointId:" + endpointId + "  (" + endpointName + ")");
+
+                if (recognisedDiscoveredDevice(endpointId, connectionInfo.getEndpointName())) {
+                    Log.d(TAG, "We have previously connected to " + endpointId + " (" + endpointName + ").  Attempt reconnect");
+                    delayAcceptConnection(endpointId, connectionInfo.getEndpointName());
+                } else {
+                    Log.d(TAG, "Device wasn't previously connected: " + endpointId + " (" + endpointName + ").  Get connection permission");
+                    if (connectionsOpen || !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false)) {
+                        CustomAlertDialog.showStyledDialog(
+                                c, mainActivityInterface,
+                                c.getString(R.string.connections_accept) + " " + endpointName,
+                                c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationDigits(),
+                                (DialogInterface d, int which) -> {
+                                    nearbyActions.getNearbyReceivePayloads().setForceReload(true);
+                                    delayAcceptConnection(endpointId, endpointName);
+                                },
+                                (DialogInterface d, int which) ->
+                                        Nearby.getConnectionsClient(activity).rejectConnection(endpointId),
+                                R.drawable.alert
+                        );
+                    } else {
+                        Log.d(TAG, "reject connection to " + endpointId + " (" + endpointName + ").  User not accepting new connections");
+                        Nearby.getConnectionsClient(activity).rejectConnection(endpointId);
+                    }
+                }
+            }
+
+            @Override
+            public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
+                String endpointName = getNameMatchingId(endpointId);
+                Log.d(TAG, "onConnectionResult()  endpointName:" + endpointName);
+                switch (connectionResolution.getStatus().getStatusCode()) {
+                    case ConnectionsStatusCodes.STATUS_OK:
+                    case ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT:
+                        Log.d(TAG, "connections status either ok or already connected");
+                        updateConnectedEndpoints(endpointId, endpointName, true);
+                        updateDiscoveredEndpoints(endpointId, endpointName, true);
+                        nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_connected) + " " + endpointId + " (" + endpointName + ")");
+                        nearbyActions.getNearbyReceivePayloads().setForceReload(true);
+                        if (isHost) {
+                            nearbyActions.getNearbySendPayloads().sendSongPayload();
+                        }
+                        break;
+                    case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
+                        Log.d(TAG, "Rejected");
+                        updateConnectedEndpoints(endpointId, endpointName, false);
+                        updateDiscoveredEndpoints(endpointId, endpointName, false);
+                        nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.cancel));
+                        break;
+                    case ConnectionsStatusCodes.STATUS_ERROR:
+                        Log.d(TAG, "Error status code");
+                        nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname() +
+                                " <-> " + endpointName);
+                        updateDiscoveredEndpoints(endpointId, endpointName, false);
+                        updateConnectedEndpoints(endpointId, endpointName, false);
+                        break;
+                    default:
+                        Log.d(TAG, "Unknown status code");
+                        break;
+                }
+            }
+
+            @Override
+            public void onDisconnected(@NonNull String endpointId) {
+                Log.d(TAG, "onDisconnected: " + endpointId);
+                String endpointName = getNameMatchingId(endpointId);
+                updateConnectedEndpoints(endpointId, endpointName, false);
+                nearbyActions.getNearbyLogs().updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) + " " + endpointName);
+
+                Handler h = mainActivityInterface.getMainHandler();
+                if (!isHost) {
+                    h.postDelayed(() -> {
+                        countDiscovery = 0;
+                        doTempDiscover();
+                    }, 2000);
+                } else {
+                    h.postDelayed(() -> {
+                        countAdvertise = 0;
+                        doTempAdvertise();
+                    }, 2000);
+                }
+            }
+        };
+    }
+
+    private void initEndpointDiscoveryCallback() {
+        endpointDiscoveryCallback = new EndpointDiscoveryCallback() {
+            @Override
+            public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
+                String endpointName = discoveredEndpointInfo.getEndpointName();
+                Log.d(TAG, "EndpointDiscoveryCallback  endpoint:" + endpointId + " (" + endpointName + ")");
+                if (!recognisedDiscoveredDevice(endpointId, endpointName)) {
+                    Log.d(TAG, endpointId + " (" + endpointName + ") is not a recognised device, so attempt connection with permission");
+                    Nearby.getConnectionsClient(activity)
+                            .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback, connectionOptions)
+                            .addOnSuccessListener((Void unused) -> {
+                                Log.d(TAG, "On success.  Trying to connect to host : " + endpointId + " (" + endpointName + ")");
+                                nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_searching));
+                            })
+                            .addOnFailureListener((Exception e) -> {
+                                Log.d(TAG, "On failure: " + (((ApiException) e).getStatus().getStatusMessage()));
+                                if (((ApiException) e).getStatusCode() == ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT) {
+                                    Log.d(TAG, endpointId + " (" + endpointName + ") was already connected");
+                                    updateConnectedEndpoints(endpointId, endpointName, true);
+                                    updateDiscoveredEndpoints(endpointId, endpointName, true);
+                                    nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_connected) + " " + endpointName);
+                                    nearbyActions.getNearbyReceivePayloads().loadLastSong();
+                                    stopDiscovery();
+                                } else {
+                                    Log.d(TAG, "A general error");
+                                    nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_failure) + " " + endpointName);
+                                }
+                            });
+                } else {
+                    Log.d(TAG, endpointId + " (" + endpointName + ") already a recognised device.  Try to connect automatically");
+                    delayAcceptConnection(endpointId, endpointName);
+                }
+            }
+
+            @Override
+            public void onEndpointLost(@NonNull String endpointId) {
+                String endpointName = getNameMatchingId(endpointId);
+                Log.d(TAG, "onEndpointLost: " + endpointId + " (" + endpointName + ")");
+                updateConnectedEndpoints(endpointId, endpointName, false);
+                nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_disconnect) + " " + endpointName);
+                if (!isHost) {
+                    Handler h = mainActivityInterface.getMainHandler();
+                    h.postDelayed(() -> {
+                        countDiscovery = 0;
+                        doTempDiscover();
+                    }, 2000);
+                }
+            }
+        };
+    }
 
     // Set the strategy as either cluster (many to many) or star (one to many).
-    public void setNearbyStrategy(Strategy nearbyStrategy) {
+    /*public void setNearbyStrategy(Strategy nearbyStrategy) {
         if (isEmulator()) {
             Log.d(TAG,"Emulator, so force P2P_STAR");
             nearbyStrategy = Strategy.P2P_STAR;
@@ -162,6 +316,34 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
         this.nearbyStrategy = nearbyStrategy;
         advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
+        if (nearbyBluetoothOnlyConnection) {
+            advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).setConnectionType(ConnectionType.NON_DISRUPTIVE).build();
+        } else {
+            advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
+        }
+        discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
+        if (nearbyStrategy.equals(Strategy.P2P_CLUSTER)) {
+            nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_mode_cluster));
+        } else if (nearbyStrategy.equals(Strategy.P2P_STAR)) {
+            nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_mode_star));
+        } else {
+            nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_mode_single));
+        }
+    }*/
+    public void setNearbyStrategy(Strategy nearbyStrategy) {
+        if (isEmulator()) {
+            Log.d(TAG,"Emulator, so force P2P_STAR");
+            nearbyStrategy = Strategy.P2P_STAR;
+        }
+
+        this.nearbyStrategy = nearbyStrategy;
+        if (nearbyBluetoothOnlyConnection) {
+            advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).setConnectionType(ConnectionType.NON_DISRUPTIVE).build();
+            connectionOptions = new ConnectionOptions.Builder().setConnectionType(ConnectionType.NON_DISRUPTIVE).build();
+        } else {
+            advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
+            connectionOptions = new ConnectionOptions.Builder().build();
+        }
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
         if (nearbyStrategy.equals(Strategy.P2P_CLUSTER)) {
             nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_mode_cluster));
@@ -171,6 +353,8 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             nearbyActions.getNearbyLogs().updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_mode_single));
         }
     }
+
+
     public String getNearbyStrategyType() {
         if (nearbyStrategy == Strategy.P2P_STAR) {
             return "star";
@@ -209,7 +393,18 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             }
 
             try {
-                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                BluetoothAdapter bluetoothAdapter = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    BluetoothManager bluetoothManager = c.getSystemService(BluetoothManager.class);
+                    if (bluetoothManager != null) {
+                        bluetoothAdapter = bluetoothManager.getAdapter();
+                    }
+                }
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || bluetoothAdapter == null) {
+                    bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                }
+
                 if (bluetoothAdapter != null && mainActivityInterface.getAppPermissions().checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
                     bluetoothName = bluetoothAdapter.getName();
                 }
@@ -274,7 +469,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                     tempDiscoverShowStart = false;
                 }
                 Nearby.getConnectionsClient(activity)
-                        .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
+                        .startDiscovery(serviceId, endpointDiscoveryCallback, discoveryOptions)
                         .addOnSuccessListener(
                                 (Void unused) -> {
                                     // We're discovering!
@@ -366,7 +561,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                 tempAdvertiseShowStart = false;
             }
             Nearby.getConnectionsClient(activity)
-                    .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
+                    .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback, advertisingOptions)
                     .addOnSuccessListener(
                             (Void unused) -> {
                                 // We're advertising!
@@ -391,7 +586,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             startAdvertising();
         } else {
             // After a short delay, advertise
-            new Handler().postDelayed(() -> {
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
                 try {
                     startAdvertising();
                 } catch (Exception e) {
@@ -400,7 +595,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
             }, 200);
 
             // After 10 seconds, stop advertising
-            new Handler().postDelayed(() -> {
+            mainActivityInterface.getMainHandler().postDelayed(() -> {
                 try {
                     tempAdvertiseShowStop = countAdvertise >= 2;
                     if (hasValidConnections()) {
@@ -489,7 +684,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
     // Make the connections
     // THIS IS USED IF WE ARE ADVERTISING AND A CLIENT INITIATES THE CONNECTION
-    private ConnectionLifecycleCallback connectionLifecycleCallback() {
+    /*private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
@@ -606,9 +801,9 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
                 }
             }
         };
-    }
+    }*/
     // THIS IS USED IF WE ARE DISCOVERING AND HAVE DISCOVERED A DEVICE ADVERTISING A CONNECTION
-    private EndpointDiscoveryCallback endpointDiscoveryCallback() {
+    /*private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
@@ -676,20 +871,22 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
 
         };
-    }
+    }*/
     // ONCE PERMISSION FOR CONNECTIONS HAVE BEEN ACCEPTED, CONNECT!
     private void delayAcceptConnection(String endpointId, String endpointName) {
         // For stability add a small delay
-        Handler waitAccept = new Handler();
-        waitAccept.postDelayed(() -> {
-            // Add a note of the nice name on to the endpointId
-            Log.d(TAG, "about to try and accept " + endpointId + " ("+endpointName+")");
-            updateDiscoveredEndpoints(endpointId, endpointName, true);
-            updateConnectedEndpoints(endpointId, endpointName, true);
-            // The user confirmed, so we can accept the connection.
-            Nearby.getConnectionsClient(activity)
-                    .acceptConnection(endpointId, nearbyActions.getNearbyReceivePayloads().payloadCallback());
-        }, 200);
+        Handler waitAccept = mainActivityInterface.getMainHandler();
+        //waitAccept.postDelayed(() -> {
+        waitAccept.post(() -> {
+                // Add a note of the nice name on to the endpointId
+                Log.d(TAG, "about to try and accept " + endpointId + " ("+endpointName+")");
+                updateDiscoveredEndpoints(endpointId, endpointName, true);
+                updateConnectedEndpoints(endpointId, endpointName, true);
+                // The user confirmed, so we can accept the connection.
+                Nearby.getConnectionsClient(activity)
+                        .acceptConnection(endpointId, nearbyActions.getNearbyReceivePayloads().payloadCallback());
+            });
+        //    },200);
     }
 
 
@@ -926,7 +1123,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
     public void clearEndpoints() {
         // Do this with a delay
-        new Handler().postDelayed(() -> {
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
             connectedDevices.clear();
             discoveredDevices.clear();
         },500);
@@ -934,7 +1131,7 @@ public class NearbyConnectionManager implements NearbyConnectionsManagementInter
 
     public void stopAllEndpoints() {
         try {
-            Nearby.getConnectionsClient(c).stopAllEndpoints();
+            Nearby.getConnectionsClient(activity).stopAllEndpoints();
         } catch (Exception e) {
             e.printStackTrace();
         }

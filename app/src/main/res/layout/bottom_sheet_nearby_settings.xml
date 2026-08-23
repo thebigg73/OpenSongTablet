@@ -161,6 +161,13 @@
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/nearbyBluetoothOnlyConnection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nearby_bluetooth_only_info"
+                android:text="@string/neaby_bluetooth_only"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
                 android:id="@+id/nearbyFileSharing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
