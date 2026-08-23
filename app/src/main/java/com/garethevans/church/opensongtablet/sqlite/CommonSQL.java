@@ -370,12 +370,25 @@ public class CommonSQL {
             }
         }
         if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
-            sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
+            // 1. Lowercase the user's search query for SQLite
+            String lowerTitleVal = titleVal.toLowerCase();
+
+            // 2. Use standard LOWER() instead of the REPLACE cascade to avoid parser overflow
+            sqlMatch += "(" +
+                    "LOWER(" + SQLite.COLUMN_TITLE + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_FILENAME + ") LIKE ? " +
+                    ") AND ";
+
+            // 3. Add the arguments
+            args.add("%" + lowerTitleVal + "%");
+            args.add("%" + lowerTitleVal + "%");
+
+            /*sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? ) AND ";
             args.add("%" + titleVal + "%");
-            args.add("%" + titleVal + "%");
+            args.add("%" + titleVal + "%");*/
         }
-        if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
+        /*if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
             sqlMatch += "(" + SQLite.COLUMN_LYRICS + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? OR ";
             sqlMatch += SQLite.COLUMN_TITLE + " LIKE ? OR ";
@@ -394,6 +407,24 @@ public class CommonSQL {
             args.add("%" + filterVal + "%");
             args.add("%" + filterVal + "%");
             args.add("%" + filterVal + "%");
+        }*/
+        if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
+            String lowerFilterVal = filterVal.toLowerCase();
+            sqlMatch += "(" +
+                    "LOWER(" + SQLite.COLUMN_LYRICS + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_FILENAME + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_TITLE + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_COPYRIGHT + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_HYMNNUM + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_CCLI + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_USER1 + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_USER2 + ") LIKE ? OR " +
+                    "LOWER(" + SQLite.COLUMN_USER3 + ") LIKE ? " +
+                    ") AND ";
+
+            for (int i = 0; i < 9; i++) {
+                args.add("%" + lowerFilterVal + "%");
+            }
         }
 
         if (!sqlMatch.isEmpty()) {
@@ -429,6 +460,7 @@ public class CommonSQL {
                 String ti = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_TITLE));
                 String th = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
                 String at = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ALTTHEME));
+                String ly = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_LYRICS));
                 String uu = "";
                 try {
                     uu = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_UUID));
@@ -443,6 +475,7 @@ public class CommonSQL {
                 song.setTitle(ti);
                 song.setTheme(th);
                 song.setAlttheme(at);
+                song.setLyrics(ly);
                 song.setUuid(uu);
 
                 songs.add(song);
@@ -456,9 +489,48 @@ public class CommonSQL {
         // close cursor connection
         closeCursor(cursor);
 
+        // --- ACCENT-INSENSITIVE IN-MEMORY POST-FILTER ---
+        java.util.Iterator<Song> iterator = songs.iterator();
+        while (iterator.hasNext()) {
+            Song song = iterator.next();
+            boolean matches = true;
+
+            // 1. If filtering globally, check all fields
+            if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
+                String cleanFilterVal = stripAccents(filterVal);
+                String combinedFields = stripAccents(
+                        song.getTitle() + " " +
+                                song.getFilename() + " " +
+                                song.getAuthor() + " " +
+                                song.getTheme() + " " +
+                                song.getAlttheme() + " " +
+                                song.getLyrics()
+                );
+                if (!combinedFields.contains(cleanFilterVal)) {
+                    matches = false;
+                }
+            }
+
+            // 2. If searching by title specifically, check only title and filename
+            if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
+                String cleanTitleVal = stripAccents(titleVal);
+                String cleanSongTitle = stripAccents(song.getTitle());
+                String cleanSongFilename = stripAccents(song.getFilename());
+
+                if (!cleanSongTitle.contains(cleanTitleVal) && !cleanSongFilename.contains(cleanTitleVal)) {
+                    matches = false;
+                }
+            }
+
+            if (!matches) {
+                iterator.remove();
+            }
+        }
+        // ------------------------------------------------
+
         // Because the song sorting from SQL ignores accented characters (non-English),
         // we need to set up a custom collator
-        Comparator<Song> comparator = (o1, o2) -> {
+        /*Comparator<Song> comparator = (o1, o2) -> {
             //Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
             Collator collator = Collator.getInstance();
             collator.setStrength(Collator.SECONDARY);
@@ -471,9 +543,49 @@ public class CommonSQL {
         Collections.sort(songs, comparator);
 
         //Return the songs
+        return songs;*/
+
+        // Because the song sorting from SQL ignores accented characters...
+        Comparator<Song> comparator = (o1, o2) -> {
+            Collator collator = Collator.getInstance();
+            collator.setStrength(Collator.SECONDARY);
+            if (songMenuSortTitles) {
+                return collator.compare(o1.getTitle(), o2.getTitle());
+            } else {
+                return collator.compare(o1.getFilename(), o2.getFilename());
+            }
+        };
+        Collections.sort(songs, comparator);
+
         return songs;
     }
 
+    // This helps strips out diacritical characters (accents, etc.) when searching the song database
+    private String stripAccents(String input) {
+        if (input == null) return "";
+        String normalized = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
+    }
+    private String getAccentInsensitiveColumn(String columnName) {
+        // Pairs of accented characters and their replacements (covers standard European, Dutch, Czech, etc.)
+        String[][] replacements = {
+                {"á", "a"}, {"à", "a"}, {"ä", "a"}, {"â", "a"}, {"ě", "e"},
+                {"é", "e"}, {"è", "e"}, {"ë", "e"}, {"ê", "e"}, {"í", "i"},
+                {"ì", "i"}, {"ï", "i"}, {"î", "i"}, {"ó", "o"}, {"ò", "o"},
+                {"ö", "o"}, {"ô", "o"}, {"ú", "u"}, {"ù", "u"}, {"ü", "u"},
+                {"û", "u"}, {"ů", "u"}, {"ý", "y"}, {"č", "c"}, {"ď", "d"},
+                {"ň", "n"}, {"ř", "r"}, {"š", "s"}, {"ť", "t"}, {"ž", "z"}
+        };
+
+        // Start with the base lowercase column
+        String sql = "LOWER(" + columnName + ")";
+
+        // Wrap it dynamically
+        for (String[] pair : replacements) {
+            sql = "REPLACE(" + sql + ", '" + pair[0] + "', '" + pair[1] + "')";
+        }
+        return sql;
+    }
 
     // This checks the database for files that don't actually exist
     // A reference to the Song object (folder/filename only) is returned
