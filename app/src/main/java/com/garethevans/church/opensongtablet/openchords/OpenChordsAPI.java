@@ -1146,7 +1146,9 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
     // Convert OpenSong objects into OpenChords objects
     public OpenChordsSong convertOpenSongToOpenChords(Song openSongSong) {
         OpenChordsSong openChordsSong = new OpenChordsSong();
-
+        if (openSongSong.getUuid()==null) {
+            openSongSong.setUuid(String.valueOf(UUID.randomUUID()));
+        }
         openChordsSong.setId(openSongSong.getUuid());
         openChordsSong.setTitle(jsonNullIfEmpty(openSongSong.getFilename()));
         openChordsSong.setRawData(jsonNullIfEmpty(mainActivityInterface.getConvertJustChords().getJustChordsLyrics(openSongSong)));

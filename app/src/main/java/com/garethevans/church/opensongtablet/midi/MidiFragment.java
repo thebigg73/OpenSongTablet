@@ -53,7 +53,7 @@ public class MidiFragment extends Fragment {
 
     private BluetoothLeScanner bluetoothLeScanner;
     private MidiDeviceInfo[] usbMidiDevices;
-    private ArrayList<BluetoothDevice> bluetoothDevices;
+    private ArrayList<BluetoothDevice> bluetoothDevices = new ArrayList<>();
     private ArrayList<String> usbNames, usbManufact;
     ActivityResultLauncher<String[]> midiScanPermissions;
     ActivityResultLauncher<Intent> bluetoothOnCheck;
@@ -555,7 +555,9 @@ public class MidiFragment extends Fragment {
                                 });
 
                                 // Trigger the device setting pipeline (handles bonding checks & auto-connect)
-                                mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
+                                if (bluetoothDevices!=null && bluetoothDevices.size()>=finalX) {
+                                    mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
+                                }
 
                                 if (bluetoothscan) {
                                     // Stop scanning

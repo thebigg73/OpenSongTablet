@@ -775,18 +775,22 @@ public class PerformanceFragment extends Fragment {
     }
     private void setupSlideOut() {
         // Set up the type of animate in
-        if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-            animSlideOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_left);
-        } else {
-            animSlideOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
+        if (getContext()!=null) {
+            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                animSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_left);
+            } else {
+                animSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
+            }
         }
     }
     private void setupSlideIn() {
         // Set up the type of animate in
-        if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-        } else {
-            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+        if (getContext()!=null) {
+            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                animSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
+            } else {
+                animSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
+            }
         }
     }
     private void prepareSongViews() {

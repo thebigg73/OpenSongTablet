@@ -666,10 +666,16 @@ public class LoadSong {
                     //
                     // <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
                     // All < and > in the content are already encoded, so these are definitely tags!
-                    content = content.replace(">\n\n<",">\n<");
-                    content = content.replace(">\n  \n<",">\n<");
-                    content = content.replace(">\n\n  <",">\n  <");
-                    content = content.replace(">\n  \n  <",">\n  <");
+                    // If we have empty lines between tags, fix that safely.
+                    // Only run replacements if the patterns actually exist in the file to save memory
+                    if (content.contains(">\n\n<") || content.contains(">\n  \n<") ||
+                            content.contains(">\n\n  <") || content.contains(">\n  \n  <")) {
+
+                        content = content.replace(">\n\n<", ">\n<")
+                                .replace(">\n  \n<", ">\n<")
+                                .replace(">\n\n  <", ">\n  <")
+                                .replace(">\n  \n  <", ">\n  <");
+                    }
 
                     // Corrupted XML files with </song> before the end
                     if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
