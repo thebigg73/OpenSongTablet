@@ -20,6 +20,7 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.SuperscriptSpan;
@@ -2053,15 +2054,19 @@ public class ProcessSong {
         SpannableString span = new SpannableString(line);
         Matcher m = CHORD_REGEX.matcher(line);
 
+        // Apply background colour highlight to whole chord if required
+        if (highlightColorOrNull!=null) {
+            try {
+                span.setSpan(new BackgroundColorSpan(highlightColorOrNull), 0, line.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         while (m.find()) {
             int rootStart = m.start(1), rootEnd = m.end(1);
             int qualStart = m.start(2), qualEnd = m.end(2);
             int extStart = m.start(3), extEnd = m.end(3);
-
-            // Apply background colour highlight to whole chord if required
-            if (highlightColorOrNull!=null) {
-                span.setSpan(new BackgroundColorSpan(highlightColorOrNull), rootStart, m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
 
             // Styling logic based on selected style
             switch (methodFromChordDisplay) {
@@ -2079,6 +2084,7 @@ public class ProcessSong {
                     break;
             }
         }
+
         return span;
     }
 
