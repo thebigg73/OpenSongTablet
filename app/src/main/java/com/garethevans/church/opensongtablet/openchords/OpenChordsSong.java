@@ -133,7 +133,7 @@ public class OpenChordsSong {
         this.lastUpdated = lastUpdated;
     }
     public void setTags(@Nullable String[] tags) {
-        this.tags = getTags();
+        this.tags = tags;
     }
     public void setStructure(@Nullable ArrayList<OpenChordsSongStructureItem> structure) {
         this.structure = structure;

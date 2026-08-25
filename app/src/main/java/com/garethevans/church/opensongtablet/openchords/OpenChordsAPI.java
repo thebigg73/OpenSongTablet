@@ -776,9 +776,29 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                             openChordsFolderName = mainActivityInterface.getStorageAccess().removeWhiteSpaceFromFilename(serverFolder.getTitle());
                             Log.d(TAG,"openChordsFolderName:"+openChordsFolderName);
 
-                            serverTags = serverFolder.getTags();
-                            serverSongs = serverFolder.getSongs();
+                            if (serverTags==null) {
+                                serverTags = new ArrayList<>();
+                            }
+                            serverTags.clear();
+                            ArrayList<OpenChordsTag> tempServerTags = serverFolder.getTags();
+                            if (tempServerTags==null) {
+                                tempServerTags = new ArrayList<>();
+                            }
 
+                            // Since JC and OpenChords are the boss of the tag and the uuids, remove duplicates
+                            // OpenSongApp simply copies the uuids of the server values
+                            // This also strips out duplicates
+
+                            StringBuilder serverTagsCheck = new StringBuilder();
+                            for (int i=0; i<tempServerTags.size(); i++) {
+                                String thisTagTitle = tempServerTags.get(i).getTitle()+"\n";
+                                if (!serverTagsCheck.toString().contains(thisTagTitle)) {
+                                    serverTagsCheck.append(thisTagTitle);
+                                    serverTags.add(tempServerTags.get(i));
+                                }
+                            }
+
+                            serverSongs = serverFolder.getSongs();
 
                             if (serverSongs != null) {
                                 removePointlessStuffFromSongs(serverSongs);
@@ -788,14 +808,10 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                                 removePointlessStuffFromSetLists(serverSetLists);
                             }
 
-                            Log.d(TAG,"serverTags:"+serverTags);
-                            Log.d(TAG,"serverSongs:"+serverSongs);
-                            Log.d(TAG,"serverSetLists:"+serverSetLists);
                             // Now create the server compare objects
                             createServerCompareObjects();
                         } else {
                             // This folder doesn't exist on the server
-                            Log.d(TAG,"This folder doesn't exist on the server");
                             serverFolder = null;
                             serverSongs.clear();
                             serverTags.clear();
@@ -810,7 +826,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     serverSetLists.clear();
                 }
 
-                Log.d(TAG,"finished createServerCompareObjects - size somgs:"+serverSongsCompareObjects.size()+"  sets:"+serverSetListsCompareObjects.size());
                 // Now compare the local and server objects
                 updateProgress(c.getString(R.string.sync_comparing_local_and_remote) + "\n");
 
@@ -1183,9 +1198,6 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         openChordsSong.setCopyright(jsonNullIfEmpty(openSongSong.getCopyright()));
         openChordsSong.setCcli(jsonNullIfEmpty(openSongSong.getCcli()));
         openChordsSong.setLastUpdated(jsonNullIfEmpty(openSongSong.getLastModified()));
-        // To add tags, we need to cycle through our tags
-        // Look for the tag id already saved in the server
-        // If they are found, get their uuid, if not, create a new one
         if (openSongSong.getTheme() != null) {
             StringBuilder newTags = new StringBuilder();
             String[] localTags = openSongSong.getTheme().split(";");
@@ -1195,7 +1207,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
                     for (int j = 0; j < serverTags.size(); j++) {
                         OpenChordsTag serverTag = serverTags.get(j);
                         if (serverTag.getTitle() != null && serverTag.getTitle().equals(localTag)) {
-                            newTags.append(serverTag.getId());
+                            newTags.append(serverTag.getId()).append("\n");
                             found = true;
                         }
                         if (found) {
@@ -2800,7 +2812,7 @@ public class OpenChordsAPI implements Callback<OpenChordsFolderObject> {
         // TODO Check if we're testing
         // If so, uncomment
         //String uploadObjectString = MainActivity.gson.toJson(testObject);
-        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",uploadObjectString,true);
+        //mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","testingFolderObject.json",uploadObjectString,false);
     }
 
     // So we don't get stuck in a loop and keep querying the server, we use the logic below
