@@ -101,6 +101,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.boldChorus.setChecked(getChecked("displayBoldChorus",false));
         myView.showChords.setChecked(getChecked("displayChords",true));
         myView.showLyrics.setChecked(getChecked("displayLyrics",true));
+        myView.hideInlineMidi.setChecked(getChecked("hideInlineMidi",false));
         myView.presoOrder.setChecked(getChecked("usePresentationOrder",false));
         myView.keepMultiline.setChecked(getChecked("multiLineVerseKeepCompact",false));
         myView.trimSections.setChecked(getChecked("trimSections",true));
@@ -221,6 +222,10 @@ public class DisplayExtraFragment extends Fragment {
         });
         myView.showLyrics.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayLyrics",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
+        });
+        myView.hideInlineMidi.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("hideInlineMidi",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.presoOrder.setOnCheckedChangeListener((buttonView, isChecked) -> {

@@ -160,6 +160,15 @@
                 android:text="@string/show_lyrics"
                 android:hint="@string/show_lyrics_info"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/hideInlineMidi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/hide_inline_midi"
+                android:hint="@string/hide_inline_midi_info"/>
+
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/bracketsStyle"
                 android:layout_width="match_parent"

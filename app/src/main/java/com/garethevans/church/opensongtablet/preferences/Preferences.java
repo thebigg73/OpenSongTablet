@@ -423,6 +423,7 @@ public class Preferences extends Activity {
     // hideActionBar                    boolean     Should the action bar auto hide (def:false)
     // hideActionBarTime                int         How long should the action bar be visible for before hiding (def:1200)
     // hideInfoBar                      boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: false)
+    // hideInlineMidi                   boolean     Should inline MIDI comment lines be hidden on song display (def:false)
     // hideLyricsBox                    boolean     Should we hide the box around the lyrics (def:false)
     // hotZoneBottomCenterShort         String      The action for short pressing on this hot zone (def:scrolldown)
     // hotZoneBottomCenterLong          String      The action for short pressing on this hot zone (def:"")
