@@ -549,6 +549,8 @@
     <string name="help">Допомога (онлайн)</string>
     <string name="hex_color_code">Шістнадцятковий код кольору</string>
     <string name="hide">Сховати</string>
+    <string name="hide_inline_midi">Приховати вбудований MIDI</string>
+    <string name="hide_inline_midi_info">Приховати будь-які вбудовані MIDI-повідомлення в тексті пісні (інакше вони відображатимуться як рядок коментарів)</string>
     <string name="highligher_drag">Перетягніть панель інструментів за допомогою цієї кнопки</string>
     <string name="highligher_tool_current">Тут відображається ваш поточний інструмент маркетера.  Натисніть на нього, щоб змінити інструмент або його налаштування</string>
     <string name="highlight">Маркер</string>

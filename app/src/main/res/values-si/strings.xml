@@ -549,6 +549,8 @@
     <string name="help">උදව් (මාර්ගගත)</string>
     <string name="hex_color_code">Hex වර්ණ කේතය</string>
     <string name="hide">සඟවන්න</string>
+    <string name="hide_inline_midi">පේළිගත MIDI සඟවන්න</string>
+    <string name="hide_inline_midi_info">ගීත පදවල ඇති ඕනෑම පේළිගත MIDI පණිවිඩ සඟවන්න (එසේ නොමැතිනම් ඒවා අදහස් දැක්වීමේ පේළියක් ලෙස පෙන්වනු ඇත)</string>
     <string name="highligher_drag">මෙම බොත්තම භාවිතයෙන් මෙවලම් පෙට්ටිය වටා ඇදගෙන යන්න</string>
     <string name="highligher_tool_current">මෙය ඔබගේ වත්මන් උද්දීපන මෙවලම පෙන්වයි.  මෙවලම හෝ එහි සැකසුම් වෙනස් කිරීමට එය මත ක්ලික් කරන්න</string>
     <string name="highlight">උද්දීපනය කරන්නා</string>

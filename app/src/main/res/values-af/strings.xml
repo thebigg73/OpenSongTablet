@@ -549,6 +549,8 @@
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hekskleurkode</string>
     <string name="hide">Steek weg</string>
+    <string name="hide_inline_midi">Versteek inlyn MIDI</string>
+    <string name="hide_inline_midi_info">Versteek enige inlyn MIDI-boodskappe in die liedjielirieke (andersins word hulle as kommentaarlyn vertoon)</string>
     <string name="highligher_drag">Sleep die gereedskapskis rond met hierdie knoppie</string>
     <string name="highligher_tool_current">Dit wys jou huidige highlighter-instrument.  Klik daarop om die instrument of die instellings daarvan te verander.</string>
     <string name="highlight">Highlighter</string>

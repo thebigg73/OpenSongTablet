@@ -549,6 +549,8 @@
     <string name="help">Помощь (онлайн)</string>
     <string name="hex_color_code">Hex код цвета</string>
     <string name="hide">Спрятать</string>
+    <string name="hide_inline_midi">Скрыть встроенные MIDI-данные</string>
+    <string name="hide_inline_midi_info">Скройте все встроенные MIDI-сообщения в тексте песни (иначе они будут отображаться как комментарии).</string>
     <string name="highligher_drag">Перетаскивайте набор инструментов с помощью этой кнопки</string>
     <string name="highligher_tool_current">Это покажет ваш выбранный маркер. Нажмите на него, чтобы изменить инструмент или его настройки</string>
     <string name="highlight">Маркер</string>

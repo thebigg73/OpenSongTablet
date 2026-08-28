@@ -549,6 +549,8 @@
     <string name="help">帮助（在线）</string>
     <string name="hex_color_code">十六进制颜色代码</string>
     <string name="hide">隐藏</string>
+    <string name="hide_inline_midi">隐藏内联 MIDI</string>
+    <string name="hide_inline_midi_info">隐藏歌词中的所有内联 MIDI 信息（否则它们会显示为注释行）</string>
     <string name="highligher_drag">使用此按钮拖动工具箱</string>
     <string name="highligher_tool_current">这会显示您当前的荧光笔工具。 单击它以更改工具或其设置。</string>
     <string name="highlight">荧光笔</string>

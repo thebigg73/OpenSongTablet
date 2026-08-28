@@ -549,6 +549,8 @@
     <string name="help">Guida (online)</string>
     <string name="hex_color_code">Codice colore esadecimale</string>
     <string name="hide">Nascondi</string>
+    <string name="hide_inline_midi">Nascondi il MIDI in linea</string>
+    <string name="hide_inline_midi_info">Nascondi eventuali messaggi MIDI incorporati nel testo della canzone (altrimenti verranno visualizzati come commenti).</string>
     <string name="highligher_drag">Utilizzare questo pulsante per spostare la casella degli strumenti</string>
     <string name="highligher_tool_current">Visualizza lo strumento evidenziatore attivo.  Cliccare per modificare lo strumento/impostazioni</string>
     <string name="highlight">Evidenziatore</string>

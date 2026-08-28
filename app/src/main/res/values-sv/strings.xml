@@ -549,6 +549,8 @@
     <string name="help">Hjälp (Online)</string>
     <string name="hex_color_code">Hex färgkod</string>
     <string name="hide">Dölj</string>
+    <string name="hide_inline_midi">Dölj inline-MIDI</string>
+    <string name="hide_inline_midi_info">Dölj eventuella inline-MIDI-meddelanden i låttexten (annars visas de som kommentarsrad)</string>
     <string name="highligher_drag">Dra runt verktygslådan med den här knappen</string>
     <string name="highligher_tool_current">Då visas ditt aktuella överstrykningspenna.  Klicka på den för att ändra verktyget eller dess inställningar</string>
     <string name="highlight">Highlighter</string>

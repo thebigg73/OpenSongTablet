@@ -549,6 +549,8 @@
     <string name="help">Ajuda (Online)</string>
     <string name="hex_color_code">Código de cor hexadecimal</string>
     <string name="hide">Ocultar</string>
+    <string name="hide_inline_midi">Ocultar MIDI embutido</string>
+    <string name="hide_inline_midi_info">Oculte quaisquer mensagens MIDI embutidas na letra da música (caso contrário, elas serão exibidas como uma linha de comentário).</string>
     <string name="highligher_drag">Arraste a caixa de ferramentas usando este botão</string>
     <string name="highligher_tool_current">Isso mostra sua ferramenta de marcador atual.  Clique nele para alterar a ferramenta ou suas configurações</string>
     <string name="highlight">Marcador</string>

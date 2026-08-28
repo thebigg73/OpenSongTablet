@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="abc_add_to_song">Kopirajte abc notaciju u pesmu</string>
+    <string name="abc_editor">ABC veb uređivač</string>
     <string name="abc_include_tab">Uključite tabulaturu</string>
     <string name="abc_include_tab_info">Prikaži tablaturu instrumenata ispod muzičke partiture</string>
+    <string name="abc_inline_copy">Umetnite ugrađeni ABC kod</string>
     <string name="abc_inline_text">Inline ABC tekst</string>
     <string name="abc_inline_text_info">Kopirajte gornji kod u jednu liniju ugrađene ABC notacije koja se može nalepiti u tekst pesme</string>
     <string name="abc_inline_width">ABC notacija širina osoblja</string>
@@ -546,6 +549,8 @@
     <string name="help">Pomoć (Online)</string>
     <string name="hex_color_code">Heksadecimalni kod boja</string>
     <string name="hide">Sakriti</string>
+    <string name="hide_inline_midi">Sakrij ugrađeni MIDI</string>
+    <string name="hide_inline_midi_info">Sakrij sve ugrađene MIDI poruke u tekstu pesme (inače će se prikazati kao komentar)</string>
     <string name="highligher_drag">Prevucite okvir sa alatkama pomoću ovog dugmeta</string>
     <string name="highligher_tool_current">Ovo prikazuje trenutnu alatku za marker.  Kliknite na njega da biste promenili alatku ili njene postavke</string>
     <string name="highlight">Alat za isticanje</string>
@@ -621,6 +626,8 @@
     <string name="inline">Umetnute</string>
     <string name="inline_midi">Umetnute MIDI komande</string>
     <string name="inline_midi_info">MIDI komande koje se mogu aktivirati klikom na odeljak pesme</string>
+    <string name="inline_set_move_to_next">Cue pesma za sledeću stavku u setu</string>
+    <string name="inline_set_scroll_to_item">Dođite do trenutne stavke</string>
     <string name="insert_guitar_tab">Ubaci karticu Gitara</string>
     <string name="insert_guitar_tab_info">Kreirajte podrazumevane linije tabulatora gitare</string>
     <string name="insert_inline_abc">Ubacite inline ABC</string>
@@ -689,6 +696,7 @@
     <string name="looper">sadržina</string>
     <string name="lyrics">Tekst</string>
     <string name="lyrics_color">Font teksta pesme</string>
+    <string name="lyrics_monospace_font">Monoprostorni font</string>
     <string name="main_song_display">Prikaz glavne pesme</string>
     <string name="mainfoldername">PESME</string>
     <string name="mandolin">Mandolina</string>
@@ -817,6 +825,8 @@
     <string name="music_score_popup">Muzička partitura (abc) popup prozor</string>
     <string name="my_band">Uvoz primera pesama bendova</string>
     <string name="my_church">Uvoz primera crkvenih pesama</string>
+    <string name="neaby_bluetooth_only">Prisilno se drži samo Bluetooth-a</string>
+    <string name="nearby_bluetooth_only_info">Neki stariji uređaji ne dozvoljavaju direktne WiFi veze. Ako se veza može uspostaviti putem Bluetooth-a, ova opcija sprečava uređaj da pokuša da se prebaci na WiFi direktno povezivanje radi poboljšanja brzine. Uključite ovo samo ako imate problema sa vezom na starijim ili jeftinijim uređajima.</string>
     <string name="nearby_devices">Uređaji u blizini</string>
     <string name="nearby_files_copied">Fajlovi kopirani:</string>
     <string name="nearby_files_failed">Fajlovi nisu uspeli:</string>
@@ -876,6 +886,9 @@
     <string name="openchords_readonly">Ova fascikla je označena kao samo za čitanje</string>
     <string name="openchords_readonly_switch">Samo za čitanje</string>
     <string name="openchords_readonly_switch_info">Promenite postavke ovog foldera za druge korisnike koji koriste vezu</string>
+    <string name="openchords_uuids">OpenChords UUID-ovi</string>
+    <string name="openchords_uuids_info">Pregledajte i uredite svoje OpenChords akreditive</string>
+    <string name="openchords_uuids_warning">Ne menjajte ovo osim ako ne znate šta radite. Saznajte više na veb-sajtu koristeći link.</string>
     <string name="opensong_media">Audio snimci se čuvaju na OpenSongMedia</string>
     <string name="optional">Opciono</string>
     <string name="order">Porudžbine</string>
@@ -1449,6 +1462,7 @@
     <string name="utilities">Komunalne usluge</string>
     <string name="utilities_info">Drugi alati za muzičare</string>
     <string name="utility">Uporediti</string>
+    <string name="uuid_not_valid">UUID nije važeći</string>
     <string name="variation">Varijacija</string>
     <string name="variation_info">Napravite kopiju ove pesme koja se može uređivati.  Ova pesma se može sačuvati u kompletu i učitati nazad, ali se gubi prilikom raščišćavanja seta</string>
     <string name="variation_make">Napravite varijaciju set stavke</string>
@@ -1500,16 +1514,4 @@
     <string name="worship">Oboћavaju</string>
     <string name="zone">Zona</string>
     <string name="zoom_level">Nivo zumiranja</string>
-    <string name="inline_set_scroll_to_item">Dođite do trenutne stavke</string>
-    <string name="inline_set_move_to_next">Cue pesma za sledeću stavku u setu</string>
-    <string name="abc_add_to_song">Kopirajte abc notaciju u pesmu</string>
-    <string name="abc_inline_copy">Umetnite ugrađeni ABC kod</string>
-    <string name="abc_editor">ABC veb uređivač</string>
-    <string name="openchords_uuids">OpenChords UUID-ovi</string>
-    <string name="openchords_uuids_info">Pregledajte i uredite svoje OpenChords akreditive</string>
-    <string name="openchords_uuids_warning">Ne menjajte ovo osim ako ne znate šta radite. Saznajte više na veb-sajtu koristeći link.</string>
-    <string name="uuid_not_valid">UUID nije važeći</string>
-    <string name="lyrics_monospace_font">Monoprostorni font</string>
-    <string name="neaby_bluetooth_only">Prisilno se drži samo Bluetooth-a</string>
-    <string name="nearby_bluetooth_only_info">Neki stariji uređaji ne dozvoljavaju direktne WiFi veze. Ako se veza može uspostaviti putem Bluetooth-a, ova opcija sprečava uređaj da pokuša da se prebaci na WiFi direktno povezivanje radi poboljšanja brzine. Uključite ovo samo ako imate problema sa vezom na starijim ili jeftinijim uređajima.</string>
 </resources>

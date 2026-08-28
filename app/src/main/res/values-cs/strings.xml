@@ -549,6 +549,8 @@
     <string name="help">Help (online)</string>
     <string name="hex_color_code">Hexadecimální kód barvy</string>
     <string name="hide">Skrýt</string>
+    <string name="hide_inline_midi">Skrýt vložené MIDI</string>
+    <string name="hide_inline_midi_info">Skrýt všechny MIDI zprávy v textu písně (jinak se zobrazují jako komentář)</string>
     <string name="highligher_drag">Přetáhněte panel nástrojů pomocí tohoto tlačítka</string>
     <string name="highligher_tool_current">Zobrazí se váš aktuální nástroj zvýrazňovače.  Kliknutím na něj změníte nástroj nebo jeho nastavení.</string>
     <string name="highlight">Zvýrazňovač</string>

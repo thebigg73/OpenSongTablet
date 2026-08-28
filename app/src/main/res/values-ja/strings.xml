@@ -549,6 +549,8 @@
     <string name="help">ヘルプ（オンライン）</string>
     <string name="hex_color_code">16進カラーコード</string>
     <string name="hide">隠す</string>
+    <string name="hide_inline_midi">インラインMIDIを非表示にする</string>
+    <string name="hide_inline_midi_info">歌詞の中にインラインMIDIメッセージが含まれている場合は、それらを非表示にしてください（非表示にしないとコメント行として表示されてしまいます）。</string>
     <string name="highligher_drag">このボタンを使用してツールボックスをドラッグします</string>
     <string name="highligher_tool_current">これは、現在の蛍光ペンツールを示しています。 それをクリックして、ツールまたはその設定を変更します</string>
     <string name="highlight">蛍光ペン</string>

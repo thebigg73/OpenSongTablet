@@ -664,6 +664,8 @@
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>
     <string name="hide">Hide</string>
+    <string name="hide_inline_midi">Hide inline MIDI</string>
+    <string name="hide_inline_midi_info">Hide any inline MIDI messages in the song lyrics (otherwise they display as comment line)</string>
     <string name="highligher_drag">Drag the toolbox around using this button</string>
     <string name="highligher_tool_current">This shows your current highlighter tool.  Click on it to change the tool or its settings</string>
     <string name="highlight">Highlighter</string>

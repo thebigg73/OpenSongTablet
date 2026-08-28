@@ -549,6 +549,8 @@
     <string name="help">Βοήθεια (Online)</string>
     <string name="hex_color_code">Hex χρωματικός κωδικός</string>
     <string name="hide">Κρύβω</string>
+    <string name="hide_inline_midi">Απόκρυψη ενσωματωμένου MIDI</string>
+    <string name="hide_inline_midi_info">Απόκρυψη τυχόν ενσωματωμένων μηνυμάτων MIDI στους στίχους του τραγουδιού (διαφορετικά εμφανίζονται ως γραμμή σχολίου)</string>
     <string name="highligher_drag">Σύρετε την εργαλειοθήκη χρησιμοποιώντας αυτό το κουμπί</string>
     <string name="highligher_tool_current">Αυτό εμφανίζει το τρέχον εργαλείο επισήμανσης.  Κάντε κλικ σε αυτό για να αλλάξετε το εργαλείο ή τις ρυθμίσεις του.</string>
     <string name="highlight">Υψηλός φωτισμός</string>

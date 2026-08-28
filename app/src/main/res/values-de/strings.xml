@@ -549,6 +549,8 @@
     <string name="help">Hilfe (Online)</string>
     <string name="hex_color_code">Hex-Farbcode</string>
     <string name="hide">Ausblenden</string>
+    <string name="hide_inline_midi">Inline-MIDI ausblenden</string>
+    <string name="hide_inline_midi_info">Blende alle im Liedtext eingebetteten MIDI-Nachrichten aus (ansonsten werden sie als Kommentarzeile angezeigt).</string>
     <string name="highligher_drag">Ziehen Sie die Toolbox mit dieser Schaltfläche</string>
     <string name="highligher_tool_current">Hier wird Ihr aktuelles Textmarker-Tool angezeigt.  Klicken Sie darauf, um das Werkzeug oder seine Einstellungen zu ändern.</string>
     <string name="highlight">Textmarker</string>

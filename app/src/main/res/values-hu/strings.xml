@@ -549,6 +549,8 @@
     <string name="help">Segítség (Online)</string>
     <string name="hex_color_code">Hex színkód</string>
     <string name="hide">Elrejt</string>
+    <string name="hide_inline_midi">Beágyazott MIDI elrejtése</string>
+    <string name="hide_inline_midi_info">Rejtse el a dalszövegbe ágyazott MIDI-üzeneteket (különben kommentként jelennek meg)</string>
     <string name="highligher_drag">Húzza körbe az eszköztárat ezzel a gombbal</string>
     <string name="highligher_tool_current">Ekkor megjelenik az aktuális kiemelő eszköz.  Kattintson rá az eszköz vagy annak beállításainak módosításához</string>
     <string name="highlight">Kiemelő</string>

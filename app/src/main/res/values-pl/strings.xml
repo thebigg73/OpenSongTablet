@@ -549,6 +549,8 @@
     <string name="help">Pomoc (online)</string>
     <string name="hex_color_code">Kod szesnastkowy (hex) koloru</string>
     <string name="hide">Ukryj</string>
+    <string name="hide_inline_midi">Ukryj wbudowany MIDI</string>
+    <string name="hide_inline_midi_info">Ukryj wszystkie wbudowane komunikaty MIDI w tekście utworu (w przeciwnym razie będą wyświetlane jako wiersz komentarza)</string>
     <string name="highligher_drag">Przeciągnij przybornik za pomocą tego przycisku</string>
     <string name="highligher_tool_current">Spowoduje to wyświetlenie aktualnego narzędzia zakreślacza.  Kliknij go, aby zmienić narzędzie lub jego ustawienia</string>
     <string name="highlight">Zakreślacz</string>

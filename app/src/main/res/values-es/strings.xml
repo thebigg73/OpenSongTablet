@@ -549,6 +549,8 @@
     <string name="help">Ayuda (Online)</string>
     <string name="hex_color_code">Código hexadecimal de colores</string>
     <string name="hide">Esconder</string>
+    <string name="hide_inline_midi">Ocultar MIDI en línea</string>
+    <string name="hide_inline_midi_info">Oculta cualquier mensaje MIDI en línea en la letra de la canción (de lo contrario, se mostrará como una línea de comentario).</string>
     <string name="highligher_drag">Arrastre la caja de herramientas con este botón</string>
     <string name="highligher_tool_current">Esto muestra su herramienta de resaltado actual.  Haga clic en él para cambiar la herramienta o su configuración</string>
     <string name="highlight">Resaltador</string>
