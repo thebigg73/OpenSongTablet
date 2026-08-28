@@ -42,13 +42,14 @@ import com.google.android.material.slider.Slider;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class MidiFragment extends Fragment {
 
     private SettingsMidiBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final String TAG = "MidiFragment";
 
-    private final Handler selected = new Handler();
+    private final Handler selected = new Handler(Looper.getMainLooper());
     private final Runnable runnable = this::displayCurrentDevice;
 
     private BluetoothLeScanner bluetoothLeScanner;
@@ -554,12 +555,12 @@ public class MidiFragment extends Fragment {
                                     selected.postDelayed(runnable, 1000);
                                 });
 
-                                // Trigger the device setting pipeline (handles bonding checks & auto-connect)
-                                if (bluetoothDevices!=null && bluetoothDevices.size()>=finalX) {
-                                    mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
-                                }
-
                                 if (bluetoothscan) {
+                                    // Trigger the device setting pipeline (handles bonding checks & auto-connect)
+                                    if (bluetoothDevices!=null && bluetoothDevices.size()>finalX) {
+                                        mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
+                                    }
+
                                     // Stop scanning
                                     bleScanHandler.removeCallbacks(stopBleScan);
                                     bleScanHandler.post(stopBleScan);
@@ -571,17 +572,24 @@ public class MidiFragment extends Fragment {
                                     mainActivityInterface.getMidi().setBluetoothDevice(bluetoothDevices.get(finalX));
 
                                 } else {
+                                    Log.d(TAG,"Setting a USB MIDI connection");
                                     mainActivityInterface.getMidi().setMidiDeviceName(null);
                                     mainActivityInterface.getMidi().setMidiDeviceName(usbNames.get(finalX));
                                     mainActivityInterface.getMidi().setMidiDeviceAddress(usbManufact.get(finalX));
 
+                                    for (int i=0; i<usbNames.size(); i++) {
+                                        Log.d(TAG,"usbNames("+i+"):"+usbNames.get(i)+"  manufacturer:"+usbManufact.get(i));
+                                    }
+                                    Log.d(TAG,"midiMgr:"+midiMgr);
                                     // Handle USB devices normally
                                     if (midiMgr != null) {
                                         try {
                                             midiMgr.openDevice(usbMidiDevices[finalX], device -> {
+                                                Log.d(TAG,"openDevice:"+device+"  "+device.getInfo());
                                                 mainActivityInterface.getMidi().setMidiDevice(device);
                                                 setupDevice(device);
                                                 selected.postDelayed(runnable, 1000);
+                                                mainActivityInterface.getMainHandler().post(() -> displayProgressBar(false));
                                             }, null);
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -647,17 +655,16 @@ public class MidiFragment extends Fragment {
     }
 
     // Connect or disconnect devices
-    // Connect or disconnect devices
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void setupDevice(MidiDevice device) {
+        Log.d(TAG,"setupDevice("+device+")");
         if (device != null) {
             mainActivityInterface.getMainHandler().post(() -> {
                 // Pass the device to your Midi helper and let it handle port binding internally
-                Midi midiHelper = mainActivityInterface.getMidi();
-                midiHelper.setMidiDevice(device);
+                mainActivityInterface.getMidi().setMidiDevice(device);
 
                 // Call a single unified method in Midi.java to open ports and enable listeners
-                midiHelper.initializePortsAndListener(myView.midiInput.getChecked());
+                mainActivityInterface.getMidi().initializePortsAndListener(myView.midiInput.getChecked());
             });
         }
     }
@@ -672,8 +679,7 @@ public class MidiFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (bluetoothLeScanner != null && mainActivityInterface.getAppPermissions().hasMidiScanPermissions() &&
-                Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+        if (bluetoothLeScanner != null && mainActivityInterface.getAppPermissions().hasMidiScanPermissions()) {
             try {
                 bluetoothLeScanner.stopScan(scanCallback);
             } catch (SecurityException e) {
