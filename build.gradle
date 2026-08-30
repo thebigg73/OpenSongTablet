@@ -8,16 +8,16 @@ buildscript {
     }
     dependencies {
         // AGP 9.1.0 is fine, but it's very strict
-        classpath 'com.android.tools.build:gradle:9.3.1'
+        classpath 'com.android.tools.build:gradle:9.3.2'
 
         // Bump this to the latest 2.9.7 to support AGP 9 APIs
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.8'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.7'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.10.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.8'
         classpath 'com.google.gms:google-services:4.5.0'
 
         // Add these lines so the plugins are available for your modules
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.10'
-        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.2.10'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.0'
+        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.4.0'
     }
 }
 

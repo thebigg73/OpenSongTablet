@@ -74,7 +74,7 @@ dependencies {
 
 
     // Lifecycle and ViewModel integration
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
 
     // --- ADD THESE LINES ---
     // Tooling is required for Previews and layout inspection
@@ -83,5 +83,5 @@ dependencies {
 
     // Add this line to resolve the Theme.SplashScreen references
     implementation("androidx.core:core-splashscreen:1.2.0")
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.11.2'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.12.0'
 }
