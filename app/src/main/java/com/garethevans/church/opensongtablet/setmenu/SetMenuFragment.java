@@ -283,11 +283,11 @@ public class SetMenuFragment extends Fragment {
             mainActivityInterface.getMainHandler().post(() -> setAdapter.insertItem());
         }
     }
-    // Notify when adding a song to cue next
-    public void notifyItemCueNext(int position) {
+    // Notify when adding a song to cue next (adding after current index)
+    public void notifyItemCueNext() {
         // The item was moved in the currentSetList already, just update the adapter
         if (setAdapter!=null && mainActivityInterface.getCurrentSet().getCurrentSetSize()>0) {
-            mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyInlineSetCueItem(position));
+            mainActivityInterface.getMainHandler().post(() -> setAdapter.notifyInlineSetCueItem());
         }
     }
     public void notifyItemRemoved(int position) {

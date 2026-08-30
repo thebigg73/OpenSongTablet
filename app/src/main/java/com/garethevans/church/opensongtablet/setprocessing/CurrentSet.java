@@ -376,17 +376,23 @@ public class CurrentSet {
         }
     }
 
-    // Called when we long press on an item in the inline set (cue preference)
-    public void movePosition(int fromPosition, int toPosition) {
-        if (setItemInfos != null && getCurrentSetSize() > fromPosition && getCurrentSetSize() > toPosition) {
+    // Called when we long press on an item in the inline set (cue preference to move)
+    public void movePosition(int fromPosition) {
+        // We are moving the item to the position after the current index position
+        if (setItemInfos != null && getCurrentSetSize() > fromPosition) {
+            // Get the item we are moving
             SetItemInfo itemToMove = setItemInfos.get(fromPosition);
-            setItemInfos.remove(fromPosition);
-            setItemInfos.add(getIndexSongInSet() + 1, itemToMove);
 
-            if (fromPosition<getIndexSongInSet() && getIndexSongInSet()>0) {
-                // We need to move the current index back one
-                setIndexSongInSet(indexSongInSet-1);
+            // Remove it from the set list
+            setItemInfos.remove(fromPosition);
+
+            // If this item was before the current index, we move the index back by one
+            if (fromPosition<getIndexSongInSet()) {
+                indexSongInSet --;
             }
+
+            // Now place the item after the current index
+            setItemInfos.add(getIndexSongInSet() + 1, itemToMove);
 
             // Update the preference
             updateCurrentSetPreferences();

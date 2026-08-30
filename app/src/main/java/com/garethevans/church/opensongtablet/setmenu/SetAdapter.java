@@ -419,13 +419,13 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
         mainActivityInterface.notifyInlineSetInserted();
     }
     // Insert cue next position
-    public void notifyInlineSetCueItem(int position) {
+    public void notifyInlineSetCueItem() {
         mainActivityInterface.getMainHandler().post(() -> {
             notifyDataSetChanged();
             mainActivityInterface.getDisplayPrevNext().setPrevNext();
         });
         // Now update the inline set too
-        mainActivityInterface.notifyInlineSetCueItem(position);
+        mainActivityInterface.notifyInlineSetCueItem();
     }
 
     // This method is called when an item is swiped away or unticked in the song menu.
@@ -548,14 +548,6 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
     @Override
     public void onRowSelected(SetListItemViewHolder myViewHolder) {
         myViewHolder.itemView.setSelected(false);
-    }
-
-    public void recoverCurrentSetPosition() {
-        // Get the set position as we might have moved things around
-        mainActivityInterface.getMainHandler().post(() -> {
-            notifyItemChanged(mainActivityInterface.getCurrentSet().getPrevIndexSongInSet(),unhighlightItem);
-            notifyItemChanged(mainActivityInterface.getCurrentSet().getIndexSongInSet(),highlightItem);
-        });
     }
 
     // When we load a song, we stop any highlight changes until loading is completed

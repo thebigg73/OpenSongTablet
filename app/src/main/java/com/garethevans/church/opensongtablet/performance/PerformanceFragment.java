@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -84,7 +85,7 @@ public class PerformanceFragment extends Fragment {
     private ImageSlideAdapter imageSlideAdapter;
     private StageSectionAdapter stageSectionAdapter;
     private RecyclerLayoutManager recyclerLayoutManager;
-    private final Handler dealWithExtraStuffOnceSettledHandler = new Handler();
+    private final Handler dealWithExtraStuffOnceSettledHandler = new Handler(Looper.getMainLooper());
     private final Runnable dealWithExtraStuffOnceSettledRunnable = this::dealWithExtraStuffOnceSettled;
     private String mainfoldername="", mode_performance="", mode_presenter="", mode_stage="", mode_hybrid="",
             not_allowed="", image_string="", nearby_large_file_string="", inline_set_string="";
@@ -92,8 +93,8 @@ public class PerformanceFragment extends Fragment {
     @SuppressWarnings("FieldCanBeLocal")
     // GE - hidden this option, but reserving the right to reinstate even just for me
     private final int graceTime = 1500;
-    private final Handler sendSongAfterDelayHandler = new Handler(),
-        autoHideHighlighterHandler = new Handler();
+    private final Handler sendSongAfterDelayHandler = new Handler(Looper.getMainLooper()),
+        autoHideHighlighterHandler = new Handler(Looper.getMainLooper());
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
         if (mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongPayload()) {
@@ -110,7 +111,7 @@ public class PerformanceFragment extends Fragment {
         }
     };
 
-    private final Handler resetSendSongAfterDelayHandler = new Handler();
+    private final Handler resetSendSongAfterDelayHandler = new Handler(Looper.getMainLooper());
     private final Runnable resetSendSongAfterDelayRunnable = () -> {
         sendSongDelay = 0;
         mainActivityInterface.getNearbyActions().getNearbySendPayloads().setSendSongDelayActive(false);
@@ -442,10 +443,10 @@ public class PerformanceFragment extends Fragment {
             myView.inlineSetList.notifyInlineSetScrollToItem();
         }
     }
-    public void notifyInlineSetCueItem(int fromPosition) {
+    public void notifyInlineSetCueItem() {
         if (myView!=null) {
             try {
-                myView.inlineSetList.notifyInlineSetCueItem(fromPosition);
+                myView.inlineSetList.notifyInlineSetCueItem();
             } catch (Exception e) {
                 Log.d(TAG,"Couldn't update inline set - might just not be shown currently");
             }
@@ -684,7 +685,7 @@ public class PerformanceFragment extends Fragment {
                         }
 
                         // Now slide out the song and after a delay start the next bit of the processing
-                        if (myView != null && myView.recyclerView!=null) {
+                        if (myView != null) {
                             myView.recyclerView.post(() -> {
                                 if (myView!=null) {
                                     try {
@@ -1588,31 +1589,33 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getPad().autoStartPad();
 
             // Update any midi commands (if any)
-            if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() ||
-                    mainActivityInterface.getVoiceLive().getVoiceLiveSendKey() ||
-                    mainActivityInterface.getMidi().getMidiSendAuto()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup() ||
+                        mainActivityInterface.getVoiceLive().getVoiceLiveSendKey() ||
+                        mainActivityInterface.getMidi().getMidiSendAuto()) {
 
-                int delay = 0;
-                // Send BeatBuddy autosong if required
-                if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
-                    delay += mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
+                    int delay = 0;
+                    // Send BeatBuddy autosong if required
+                    if (mainActivityInterface.getBeatBuddy().getBeatBuddyAutoLookup()) {
+                        delay += mainActivityInterface.getBeatBuddy().tryAutoSend(getContext(),mainActivityInterface,mainActivityInterface.getSong());
+                    }
+
+                    // Send the VoiceLive key if required
+                    if (mainActivityInterface.getVoiceLive().getVoiceLiveSendKey()) {
+                        delay += mainActivityInterface.getVoiceLive().tryAutoSend(mainActivityInterface.getSong());
+                    }
+
+                    if (mainActivityInterface.getMidi().getMidiSendAuto()) {
+                        mainActivityInterface.getMainHandler().postDelayed(() -> {
+                            // These are addition to beatbuddy, so sent afterwards
+                            mainActivityInterface.getMidi().buildSongMidiMessages();
+                            mainActivityInterface.getMidi().sendSongMessages();
+                        }, delay);
+                    }
+
+                    // Update the BeatBuddyControlPopUp (if visible)
+                    mainActivityInterface.updateBeatBuddyControlPopUp();
                 }
-
-                // Send the VoiceLive key if required
-                if (mainActivityInterface.getVoiceLive().getVoiceLiveSendKey()) {
-                    delay += mainActivityInterface.getVoiceLive().tryAutoSend(mainActivityInterface.getSong());
-                }
-
-                if (mainActivityInterface.getMidi().getMidiSendAuto()) {
-                    mainActivityInterface.getMainHandler().postDelayed(() -> {
-                        // These are addition to beatbuddy, so sent afterwards
-                        mainActivityInterface.getMidi().buildSongMidiMessages();
-                        mainActivityInterface.getMidi().sendSongMessages();
-                    }, delay);
-                }
-
-                // Update the BeatBuddyControlPopUp (if visible)
-                mainActivityInterface.updateBeatBuddyControlPopUp();
             }
 
             // Check the set index

@@ -1851,7 +1851,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (navHostFragment != null) {
                 FragmentManager childFm = navHostFragment.getChildFragmentManager();
-                childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                if (!childFm.isStateSaved()) {
+                    childFm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                } else {
+                    // Safely queue it for when the activity comes back to the foreground
+                    childFm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
             }
 
             // 3. Reset the NavController state safely
@@ -2949,11 +2954,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public void notifyInlineSetCueItem(int fromPosition) {
+    public void notifyInlineSetCueItem() {
         if (performanceValid()) {
-            performanceFragment.notifyInlineSetCueItem(fromPosition);
+            performanceFragment.notifyInlineSetCueItem();
         } else if (presenterValid()) {
-            presenterFragment.notifyInlineSetCueItem(fromPosition);
+            presenterFragment.notifyInlineSetCueItem();
         }
     }
 
@@ -3127,7 +3132,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Midi getMidi() {
         if (midi == null) {
-            midi = new Midi(this, this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                midi = new Midi(this, this);
+            }
         }
         return midi;
     }
@@ -4690,6 +4697,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return localWiFiHost;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void openDocument(String location) {
         // Most locations are passed in from the string.xml file.  They are listed under website_xxx
@@ -5174,7 +5182,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // If we had a bluetooth MIDI device, cancel the connection and unpair
         if (getMidi()!=null) {
-            getMidi().tryDisconnectBluetoothLE();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getMidi().tryDisconnectBluetoothLE();
+            }
         }
 
         if (getMultiTrackPlayer()!=null) {

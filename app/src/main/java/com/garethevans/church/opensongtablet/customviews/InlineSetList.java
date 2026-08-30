@@ -310,7 +310,7 @@ public class InlineSetList extends RecyclerView {
             checkVisibility();
         }
     }
-    public void notifyInlineSetCueItem(int fromPosition) {
+    public void notifyInlineSetCueItem() {
         if (mainActivityInterface!=null) {
             mainActivityInterface.getMainHandler().post(() -> {
                 if (inlineSetListAdapter!=null) {
@@ -577,9 +577,13 @@ public class InlineSetList extends RecyclerView {
                                 // Do nothing and consume the event
                                 return true;
                             }
-                            // Move the positions
-                            mainActivityInterface.getCurrentSet().movePosition(finalPosition1,mainActivityInterface.getCurrentSet().getIndexSongInSet()+1);
-                            mainActivityInterface.getSetMenuFragment().notifyItemCueNext(finalPosition1);
+
+                            // Now move the item to the position after the current index item
+                            mainActivityInterface.getCurrentSet().movePosition(finalPosition1);
+                            mainActivityInterface.getSetMenuFragment().notifyItemCueNext();
+
+                            // Finally croll the list so we can see the current item we moved
+                            scrollToItem(mainActivityInterface.getCurrentSet().getIndexSongInSet()+1);
                         }
                     }
                     return true;

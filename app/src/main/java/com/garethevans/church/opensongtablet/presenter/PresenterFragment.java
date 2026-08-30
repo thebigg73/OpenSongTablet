@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.presenter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,7 +41,7 @@ public class PresenterFragment extends Fragment {
     private String presenter_mode_string="", mainfoldername_string="", song_string="",
             extra_settings_string="", nearby_large_file_string;
     private int sendSongDelay = 0;
-    private final Handler sendSongAfterDelayHandler = new Handler();
+    private final Handler sendSongAfterDelayHandler = new Handler(Looper.getMainLooper());
     private final Runnable sendSongAfterDelayRunnable = () -> {
         // IV - The send is always called by the 'if' and will return true if a large file has been sent
         if (mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendSongPayload()) {
@@ -48,7 +49,7 @@ public class PresenterFragment extends Fragment {
         }
         sendSongDelay = 3000;
     };
-    private final Handler resetSendSongAfterDelayHandler = new Handler();
+    private final Handler resetSendSongAfterDelayHandler = new Handler(Looper.getMainLooper());
     private final Runnable resetSendSongAfterDelayRunnable = () -> {
         sendSongDelay = 0;
         mainActivityInterface.getNearbyActions().getNearbySendPayloads().setSendSongDelayActive(false);
@@ -349,9 +350,11 @@ public class PresenterFragment extends Fragment {
         // If a song has MIDI messages and we're intent on sending it automatically, do that
         // The MIDI class checks for valid connections
         // Update any midi commands (if any)
-        if (mainActivityInterface.getMidi().getMidiSendAuto()) {
-            mainActivityInterface.getMidi().buildSongMidiMessages();
-            mainActivityInterface.getMidi().sendSongMessages();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (mainActivityInterface.getMidi().getMidiSendAuto()) {
+                mainActivityInterface.getMidi().buildSongMidiMessages();
+                mainActivityInterface.getMidi().sendSongMessages();
+            }
         }
 
         // Stop any pointless calls to update set highlighting while processing
@@ -550,10 +553,10 @@ public class PresenterFragment extends Fragment {
             myView.inlineSetList.post(() -> myView.inlineSetList.notifyInlineSetScrollToItem());
         }
     }
-    public void notifyInlineSetCueItem(int fromPosition) {
+    public void notifyInlineSetCueItem() {
         if (myView!=null) {
             try {
-                myView.inlineSetList.notifyInlineSetCueItem(fromPosition);
+                myView.inlineSetList.notifyInlineSetCueItem();
             } catch (Exception e) {
                 Log.d(TAG,"Couldn't update inline set - might just not be shown currently");
             }
