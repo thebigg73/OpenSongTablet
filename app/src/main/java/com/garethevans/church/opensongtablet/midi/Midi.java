@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.midi;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -40,7 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-@androidx.annotation.RequiresApi(Build.VERSION_CODES.M)
+@TargetApi(Build.VERSION_CODES.M)
 public class Midi {
 
     private final Context c;
@@ -590,7 +591,7 @@ public class Midi {
             } else if (midiInputPort != null) {
                 Log.d(TAG, "sendMidi: Using standard MidiManager input port path.");
             } else {
-                Log.e(TAG, "sendMidi: Both paths failed! activeGatt: " + activeBluetoothGatt + ", inputPort: " + midiInputPort);
+                Log.e(TAG, "sendMidi: Both paths failed! activeGatt: " + activeBluetoothGatt + ", inputPort:null");
             }
         }
 
@@ -959,47 +960,6 @@ public class Midi {
         activeGattCharacteristic = null;
         useDirectGatt = false;
     }
-    /*public void disconnectDevice() {
-        if (midiDevice != null) {
-            try {
-                midiDevice.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            midiDevice = null;
-        }
-        if (currentMidiDevice != null) {
-            try {
-                currentMidiDevice.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            currentMidiDevice = null;
-        }
-
-
-        if (midiOutputPort != null && pedalMidiReceiver != null) {
-            try {
-                midiOutputPort.disconnect(pedalMidiReceiver);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        setMidiInputPort(null);
-        setMidiOutputPort(null);
-        midiDeviceName = "";
-        midiDeviceAddress = "";
-
-        tryDisconnectBluetoothLE();
-        if (activeBluetoothGatt != null) {
-            activeBluetoothGatt.disconnect();
-            activeBluetoothGatt.close();
-            activeBluetoothGatt = null;
-        }
-        activeGattCharacteristic = null;
-        useDirectGatt = false;
-    }*/
 
     public void tryDisconnectBluetoothLE() {
         // This unbonds so pairing is reinitialised next time

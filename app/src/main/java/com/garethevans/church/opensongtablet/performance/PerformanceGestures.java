@@ -1351,30 +1351,38 @@ public class PerformanceGestures {
 
     // Open the song midi bottom sheet
     public void songMidi() {
-        MidiSongBottomSheet midiSongBottomSheet = new MidiSongBottomSheet();
-        midiSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"midiSongBottomSheet");
+        if (isMidiAllowed()) {
+            MidiSongBottomSheet midiSongBottomSheet = new MidiSongBottomSheet();
+            midiSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "midiSongBottomSheet");
+        }
     }
 
     // Open the midi settings
     public void editMidi() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi),0);
+        if (isMidiAllowed()) {
+            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_midi), 0);
+        }
     }
 
     // Open the MIDI board
     public void openMidiBoard() {
-        MidiBoardBottomSheet midiBoardBottomSheet = new MidiBoardBottomSheet();
-        midiBoardBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MidiBoardBottomSheet");
+        if (isMidiAllowed()) {
+            MidiBoardBottomSheet midiBoardBottomSheet = new MidiBoardBottomSheet();
+            midiBoardBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "MidiBoardBottomSheet");
+        }
     }
 
     // Toggle auto MIDI send on/off
     public void toggleMidiSend() {
-        boolean newPref = !mainActivityInterface.getMidi().getMidiSendAuto();
-        if (newPref) {
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto)+": "+c.getString(R.string.on));
-        } else {
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto)+": "+c.getString(R.string.off));
+        if (isMidiAllowed()) {
+            boolean newPref = !mainActivityInterface.getMidi().getMidiSendAuto();
+            if (newPref) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto) + ": " + c.getString(R.string.on));
+            } else {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_auto) + ": " + c.getString(R.string.off));
+            }
+            mainActivityInterface.getMidi().setMidiSendAuto(newPref);
         }
-        mainActivityInterface.getMidi().setMidiSendAuto(newPref);
     }
 
     // Get the bible settings
@@ -1402,8 +1410,10 @@ public class PerformanceGestures {
     }
 
     public void invertPDF() {
-        mainActivityInterface.getMyThemeColors().setInvertPDF(!mainActivityInterface.getMyThemeColors().getInvertPDF());
-        mainActivityInterface.navHome();
+        if (ifPDFAllowed()) {
+            mainActivityInterface.getMyThemeColors().setInvertPDF(!mainActivityInterface.getMyThemeColors().getInvertPDF());
+            mainActivityInterface.navHome();
+        }
     }
 
     public void shareSong() {
@@ -1414,129 +1424,193 @@ public class PerformanceGestures {
 
     // The BeatBuddy stuff
     public void beatBuddy() {
-        mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_beatbuddy_commands),0);
+        if (isMidiAllowed()) {
+            mainActivityInterface.navigateToFragment(c.getString(R.string.deeplink_beatbuddy_commands),0);
+        }
     }
     public void beatBuddyController() {
-        mainActivityInterface.toggleBeatBuddyControlPopUp();
+        if (isMidiAllowed()) {
+            mainActivityInterface.toggleBeatBuddyControlPopUp();
+        }
     }
     public void beatBuddyStart() {
-        mainActivityInterface.getBeatBuddy().beatBuddyStart();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyStart();
+        }
     }
     public void beatBuddyStop() {
-        mainActivityInterface.getBeatBuddy().beatBuddyStop();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyStop();
+        }
     }
     public void beatBuddyPause() {
-        mainActivityInterface.getBeatBuddy().beatBuddyPause();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyPause();
+        }
     }
     public void beatBuddyAccent() {
-        mainActivityInterface.getBeatBuddy().beatBuddyAccent();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyAccent();
+        }
     }
     public void beatBuddyFill() {
-        mainActivityInterface.getBeatBuddy().beatBuddyFill();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyFill();
+        }
     }
     public void beatBuddyTransition1() {
-        mainActivityInterface.getBeatBuddy().beatBuddyTransition1();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyTransition1();
+        }
     }
     public void beatBuddyTransition2() {
-        mainActivityInterface.getBeatBuddy().beatBuddyTransition2();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyTransition2();
+        }
     }
     public void beatBuddyTransition3() {
-        mainActivityInterface.getBeatBuddy().beatBuddyTransition3();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyTransition3();
+        }
     }
     public void beatBuddyTransitionNext() {
-        mainActivityInterface.getBeatBuddy().beatBuddyTransitionNext();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyTransitionNext();
+        }
     }
     public void beatBuddyTransitionPrev() {
-        mainActivityInterface.getBeatBuddy().beatBuddyTransitionPrev();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyTransitionPrev();
+        }
     }
     public void beatBuddyTransitionExit() {
-        mainActivityInterface.getBeatBuddy().beatBuddyTransitionExit();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyTransitionExit();
+        }
     }
     public void beatBuddyExclusiveTransition1() {
-        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition1();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition1();
+        }
     }
     public void beatBuddyExclusiveTransition2() {
-        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition2();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition2();
+        }
     }
     public void beatBuddyExclusiveTransition3() {
-        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition3();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransition3();
+        }
     }
     public void beatBuddyExclusiveTransitionNext() {
-        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionNext();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionNext();
+        }
     }
     public void beatBuddyExclusiveTransitionPrev() {
-        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionPrev();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionPrev();
+        }
     }
     public void beatBuddyExclusiveTransitionExit() {
-        mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionExit();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyExclusiveTransitionExit();
+        }
     }
     public void beatBuddyHalfTime() {
-        mainActivityInterface.getBeatBuddy().beatBuddyHalfTime();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyHalfTime();
+        }
     }
     public void beatBuddyHalfTimeExit() {
-        mainActivityInterface.getBeatBuddy().beatBuddyHalfTimeExit();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyHalfTimeExit();
+        }
     }
     public void beatBuddyDoubleTime() {
-        mainActivityInterface.getBeatBuddy().beatBuddyDoubleTime();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyDoubleTime();
+        }
     }
     public void beatBuddyDoubleTimeExit() {
-        mainActivityInterface.getBeatBuddy().beatBuddyDoubleTimeExit();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyDoubleTimeExit();
+        }
     }
     public void beatBuddyVolUp() {
-        mainActivityInterface.getBeatBuddy().beatBuddyVolUp();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyVolUp();
+        }
     }
     public void beatBuddyVolDown() {
-        mainActivityInterface.getBeatBuddy().beatBuddyVolDown();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyVolDown();
+        }
     }
     public void beatBuddyVolHPUp() {
-        mainActivityInterface.getBeatBuddy().beatBuddyVolHPUp();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyVolHPUp();
+        }
     }
     public void beatBuddyVolHPDown() {
-        mainActivityInterface.getBeatBuddy().beatBuddyVolHPDown();
+        if (isMidiAllowed()) {
+            mainActivityInterface.getBeatBuddy().beatBuddyVolHPDown();
+        }
     }
     public void midiAction(int which) {
-        mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));
-        if (mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessageMIDIAction()) {
-            mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendMessage(which);
+        if (isMidiAllowed()) {
+            mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getMidiAction(which));
+            if (mainActivityInterface.getNearbyActions().getNearbyMessages().getNearbyMessageMIDIAction()) {
+                mainActivityInterface.getNearbyActions().getNearbySendPayloads().sendMessage(which);
+            }
         }
     }
     public void sysexStart() {
-        mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStartCode());
+        if (isMidiAllowed()) {
+            mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStartCode());
+        }
     }
     public void sysexStop() {
-        mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStopCode());
+        if (isMidiAllowed()) {
+            mainActivityInterface.getMidi().sendMidiHexSequence(mainActivityInterface.getMidi().getSysexStopCode());
+        }
     }
     public void midiClock() {
-        // Start or stop the MIDI clock.  This will trigger messages to the user
-        // Only allow if MIDI device
-        if (mainActivityInterface.getMidi().getMidiDevice()!=null) {
-            boolean currValue= mainActivityInterface.getDrumViewModel().getMidiClock().getIsRunning();
-            if (currValue) {
-                // Tell the user
-                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock)+": "+c.getString(R.string.start));
+        if (isMidiAllowed()) {
+            // Start or stop the MIDI clock.  This will trigger messages to the user
+            // Only allow if MIDI device
+            if (mainActivityInterface.getMidi().getMidiDevice() != null) {
+                boolean currValue = mainActivityInterface.getDrumViewModel().getMidiClock().getIsRunning();
+                if (currValue) {
+                    // Tell the user
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock) + ": " + c.getString(R.string.start));
+                } else {
+                    // Tell the user
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock) + ": " + c.getString(R.string.stop));
+                }
+                mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(!currValue);
             } else {
-                // Tell the user
-                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock)+": "+c.getString(R.string.stop));
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_no_devices));
+                mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
             }
-            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(!currValue);
-        } else {
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.connections_no_devices));
-            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
         }
     }
     public void midiClockBurst() {
-        // Find out if we were sending this already
-        boolean sendingalready = mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode();
-        if (!sendingalready) {
-            // Switch off the master MIDI clock send
-            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
-            // Tell the user
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst) + ": " + c.getString(R.string.on));
-        } else {
-            // Tell the user
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst)+": "+c.getString(R.string.off));
+        if (isMidiAllowed()) {
+            // Find out if we were sending this already
+            boolean sendingalready = mainActivityInterface.getDrumViewModel().getMidiClock().getMidiClockBurstMode();
+            if (!sendingalready) {
+                // Switch off the master MIDI clock send
+                mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClock(false);
+                // Tell the user
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst) + ": " + c.getString(R.string.on));
+            } else {
+                // Tell the user
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_clock_short_burst) + ": " + c.getString(R.string.off));
+            }
+            mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClockBurstMode(!sendingalready);
         }
-        mainActivityInterface.getDrumViewModel().getMidiClock().setMidiClockBurstMode(!sendingalready);
     }
 
     // Nearby messages
@@ -1626,7 +1700,7 @@ public class PerformanceGestures {
         }
 
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (ifPDFAllowed()) {
                 return true;
             } else {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
@@ -1635,5 +1709,12 @@ public class PerformanceGestures {
         } else {
             return false;
         }
+    }
+
+    private boolean ifPDFAllowed() {
+        return Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP;
+    }
+    private boolean isMidiAllowed() {
+        return Build.VERSION.SDK_INT>=Build.VERSION_CODES.M;
     }
 }

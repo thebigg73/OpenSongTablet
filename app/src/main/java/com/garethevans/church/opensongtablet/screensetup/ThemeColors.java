@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -60,7 +59,6 @@ public class ThemeColors {
             pdfBridgeColor, pdfCommentColor, pdfPreChorusColor, pdfTagColor, pdfChordsColor,
             pdfCustomColor, pdfHighlightChordColor, pdfHighlightHeadingColor;
     private int abcPopupColor, abcPopupTextColor;
-    private int appCompatDelegate = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
     public ThemeColors(Context c) {
         this.c = c;
@@ -311,7 +309,7 @@ public class ThemeColors {
     }
 
     public int getAppCompatDelegate() {
-        return appCompatDelegate;
+        return AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
     }
 
     public void updatePDFTheme(String pdfTheme, boolean savePref) {
@@ -936,22 +934,22 @@ public class ThemeColors {
     }
 
     // For the set menus
-    public int getSetActiveColor(View view) {
+    public int getSetActiveColor() {
         return mainActivityInterface.getPalette().secondary;
     }
-    public int getSetInactiveColor(View view) {
+    public int getSetInactiveColor() {
         return mainActivityInterface.getPalette().primaryVariant;
     }
-    public int getSetDraggedColor(View view) {
+    public int getSetDraggedColor() {
         return mainActivityInterface.getPalette().secondaryVariant;
     }
-    public int getSetBackgroundColor(View view) {
+    public int getSetBackgroundColor() {
         return mainActivityInterface.getPalette().primary;
     }
-    public int getColorOnSurface(View view) {
+    public int getColorOnSurface() {
         return mainActivityInterface.getPalette().onSurface;
     }
-    public int getHintTextColor(View view) {
+    public int getHintTextColor() {
         return mainActivityInterface.getPalette().hintColor;
     }
 

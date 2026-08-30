@@ -33,7 +33,6 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.ABCEditorBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MyMaterialSimpleTextView;
-import com.garethevans.church.opensongtablet.databinding.BottomSheetAbcEditorBinding;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;

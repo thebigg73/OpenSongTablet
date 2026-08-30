@@ -41,6 +41,7 @@ public class VersionNumber {
             versionName = "?";
         }
     }
+    @SuppressWarnings("deprecation")
     private void setVersionCode() {
         if (packageInfo!=null) {
             versionCode = packageInfo.versionCode;

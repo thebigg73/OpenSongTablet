@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
     private String sampleText, font_browse_string="", lorem_string="", deeplink_fonts_string="";
     private ArrayList<String> fontNames, alphaList;
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onAttach(@NonNull Context context) {

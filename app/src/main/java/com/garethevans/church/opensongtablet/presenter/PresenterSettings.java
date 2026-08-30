@@ -4,8 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.Gravity;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 

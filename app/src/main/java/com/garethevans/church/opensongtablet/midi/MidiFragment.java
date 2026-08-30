@@ -70,11 +70,9 @@ public class MidiFragment extends Fragment {
                 displayProgressBar(false);
                 myView.searchDevices.setEnabled(true);
                 myView.foundDevicesLayout.setEnabled(true);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (bluetoothLeScanner!=null) {
+                if (bluetoothLeScanner!=null) {
                         bluetoothLeScanner.stopScan(scanCallback);
                     }
-                }
             } catch (Exception e) {
                 Log.d(TAG,"Unable to stop the Bluetooth scan.  Likely closed the fragment!");
                 e.printStackTrace();
@@ -228,7 +226,6 @@ public class MidiFragment extends Fragment {
     }
 
     // Set the view listeners
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setListeners() {
         myView.enableBluetooth.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -301,7 +298,6 @@ public class MidiFragment extends Fragment {
     }
 
     // Scan for devices (USB or Bluetooth)
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScan() {
         if (getActivity()!=null) {
             // Try to initialise the midi manager
@@ -317,7 +313,7 @@ public class MidiFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressWarnings("deprecation")
     private void startScanUSB() {
 
         if (mainActivityInterface.getMidi().getMidiManager() != null) {
@@ -364,7 +360,6 @@ public class MidiFragment extends Fragment {
     }
 
     @SuppressLint("MissingPermission") // Permissions are checked prior to calling this!
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScanBluetooth() {
         // To get here, we know we have permission as we've already checked!
         bluetoothDevices = new ArrayList<>();
@@ -373,42 +368,6 @@ public class MidiFragment extends Fragment {
         myView.foundDevicesLayout.removeAllViews();
         myView.devicesText.setVisibility(View.GONE);
 
-        /*// 1. ADD BONDED DEVICES FIRST
-        List<BluetoothDevice> bondedDevices = mainActivityInterface.getMidi().getBondedMidiDevices();
-        for (BluetoothDevice device : bondedDevices) {
-            ParcelUuid[] uuids = device.getUuids();
-            boolean isMidi = false;
-            String targetUuid = mainActivityInterface.getMidi().getUuidBle();
-
-            if (uuids != null) {
-                for (ParcelUuid uuid : uuids) {
-                    Log.d("MidiFragment", "Checking device: " + device.getName() + " with UUID: " + uuid.toString());
-                    if (targetUuid != null && uuid.toString().equalsIgnoreCase(targetUuid)) {
-                        isMidi = true;
-                        break;
-                    }
-                }
-            }
-
-            // Fallback or explicit check for known names if UUID check is too strict
-            if (!isMidi && device.getName() != null) {
-                if (device.getName().contains("WIDI") || device.getName().contains("W90 Pro")) {
-                    isMidi = true;
-                }
-            }
-
-            if (isMidi && !bluetoothDevices.contains(device)) {
-                bluetoothDevices.add(device);
-                Log.d("MidiFragment", "Added to layout list: " + device.getName());
-            }
-        }
-
-        // Force UI update safely on the Main Thread
-        if (!bluetoothDevices.isEmpty()) {
-            requireActivity().runOnUiThread(() -> updateDevices(true));
-        }*/
-
-        // 2. CONTINUE WITH LIVE BLE SCAN FOR UNBONDED DEVICES
         // Scan specified BLE devices only with ScanFilter
         ScanFilter scanFilter =
                 new ScanFilter.Builder()
@@ -442,7 +401,6 @@ public class MidiFragment extends Fragment {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -493,7 +451,6 @@ public class MidiFragment extends Fragment {
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateDevices(boolean bluetoothscan) {
         if (getActivity()!=null) {
             try {
@@ -609,7 +566,6 @@ public class MidiFragment extends Fragment {
 
 
     // Send midi data for testing
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void sendTestNote() {
         try {
             String s1on = mainActivityInterface.getMidi().buildMidiString("NoteOn", 1, 60, 100); // C

@@ -199,10 +199,9 @@ public class SetListItemCallback extends ItemTouchHelper.Callback {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         myViewHolder.cardView.setCardBackgroundColor(
-                                //ColorStateList.valueOf(mainActivityInterface.getMyThemeColors().getSetDraggedColor(viewHolder.itemView))
                                 new ColorStateList(
                                         new int[][]{new int[0]},
-                                        new int[]{mainActivityInterface.getMyThemeColors().getSetDraggedColor(viewHolder.itemView)}
+                                        new int[]{mainActivityInterface.getMyThemeColors().getSetDraggedColor()}
                                 )
                         );
                     }

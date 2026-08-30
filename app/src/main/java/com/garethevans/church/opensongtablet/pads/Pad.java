@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,8 +36,8 @@ public class Pad {
     private float pad1VolL, pad1VolR, pad2VolL, pad2VolR;
     private Timer pad1FadeTimer, pad2FadeTimer;
     private TimerTask pad1FadeTimerTask, pad2FadeTimerTask;
-    private final Handler pad1FadeTimerHandler = new Handler();
-    private final Handler pad2FadeTimerHandler = new Handler();
+    private final Handler pad1FadeTimerHandler = new Handler(Looper.getMainLooper());
+    private final Handler pad2FadeTimerHandler = new Handler(Looper.getMainLooper());
     private final LinearLayout pad;
     private final MyMaterialSimpleTextView padTime;
     private final MyMaterialSimpleTextView padTotalTime;
@@ -46,7 +47,7 @@ public class Pad {
     private CharSequence padPauseTime;
     private Timer padPlayTimer;
     private TimerTask padPlayTimerTask;
-    private final Handler padPlayTimerHandler = new Handler();
+    private final Handler padPlayTimerHandler = new Handler(Looper.getMainLooper());
     private boolean pad1Prepared, pad2Prepared;
     private final String pad_auto, link_audio, pad_key_error, pad_file_error,
             pad_custom_pad_error, pad_off, stopping;
@@ -359,7 +360,7 @@ public class Pad {
                             loadAndStart(1);
                         }
                         padInQuickFade = 0;
-                        new Handler().post(() -> endFadeTimer(1));
+                        mainActivityInterface.getMainHandler().post(() -> endFadeTimer(1));
                     }
                 });
                 }
@@ -413,7 +414,7 @@ public class Pad {
                                 loadAndStart(2);
                             }
                             padInQuickFade = 0;
-                            new Handler().post(() -> endFadeTimer(2));
+                            mainActivityInterface.getMainHandler().post(() -> endFadeTimer(2));
                         }
                     });
                 }

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.metronome;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
@@ -82,7 +83,7 @@ public class MetronomeTapTempo {
             if (tapTempoHandlerReset != null) {
                 tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
             } else {
-                tapTempoHandlerReset = new Handler();
+                tapTempoHandlerReset = new Handler(Looper.getMainLooper());
             }
             tapTempoHandlerReset.postDelayed(tapTempoRunnableReset, 500);
         };
@@ -189,9 +190,9 @@ public class MetronomeTapTempo {
         if (tapTempoHandlerCheck!=null) {
             tapTempoHandlerCheck.removeCallbacks(tapTempoRunnableCheck);
         } else {
-            tapTempoHandlerCheck = new Handler();
+            tapTempoHandlerCheck = new Handler(Looper.getMainLooper());
         }
-        tapTempoHandlerCheck = new Handler();
+        tapTempoHandlerCheck = new Handler(Looper.getMainLooper());
         tapTempoHandlerCheck.postDelayed(tapTempoRunnableCheck,1500);
     }
 

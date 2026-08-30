@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -39,7 +40,7 @@ public class ABCPopup {
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "ABCPopup";
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable autoCloseScoreRunnable = this::closeScore;
     private InlineAbcObject inlineAbcObject;
     private InlineAbcWebView inlineAbcWebView;
@@ -89,6 +90,7 @@ public class ABCPopup {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
+    @SuppressWarnings("deprecation")
     private void setupViews() {
         Log.d(TAG, "ABC PopUpViews");
         // The popup
@@ -222,7 +224,7 @@ public class ABCPopup {
     }
 
     private void dealWithAutohide() {
-        Handler handler = new Handler();
+        Handler handler = new Handler(Looper.getMainLooper());
         long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {

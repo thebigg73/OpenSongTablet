@@ -3132,9 +3132,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Midi getMidi() {
         if (midi == null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                midi = new Midi(this, this);
-            }
+            midi = new Midi(this, this);
         }
         return midi;
     }
@@ -5502,8 +5500,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (beatBuddyControlPopup!=null) {
             beatBuddyControlPopup.destroyPopup();
         } else {
-            beatBuddyControlPopup = new BeatBuddyControlPopUp(this);
-            beatBuddyControlPopup.floatPlayer(myView.getRoot());
+            // Only allow if Marshmallow or later
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                beatBuddyControlPopup = new BeatBuddyControlPopUp(this);
+                beatBuddyControlPopup.floatPlayer(myView.getRoot());
+            }
         }
     }
     @Override

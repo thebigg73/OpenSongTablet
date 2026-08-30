@@ -155,16 +155,16 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                 si.songfolder.contains("**"+mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                 si.songfolder.contains("**Divider")) {
             thisTextColor = mainActivityInterface.getPalette().hintColor;
-            setColor(holder,mainActivityInterface.getMyThemeColors().getSetBackgroundColor(holder.cardView));
-            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardEdit));
+            setColor(holder,mainActivityInterface.getMyThemeColors().getSetBackgroundColor());
+            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor());
 
         } else if (currentSetItem) {
-            setColor(holder,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardView));
-            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardEdit));
+            setColor(holder,mainActivityInterface.getMyThemeColors().getSetActiveColor());
+            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetInactiveColor());
 
         } else {
-            setColor(holder,mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardView));
-            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardEdit));
+            setColor(holder,mainActivityInterface.getMyThemeColors().getSetInactiveColor());
+            setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor());
         }
 
         holder.cardItem.setTextSize(titleSize);
@@ -245,20 +245,20 @@ public class SetAdapter extends RecyclerView.Adapter<SetListItemViewHolder> impl
                     // We want to update the highlight colour to on/off
 
                     if (payload.equals(highlightItem)) {
-                        setColor(holder, mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardView));
-                        setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardEdit));
+                        setColor(holder, mainActivityInterface.getMyThemeColors().getSetActiveColor());
+                        setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetInactiveColor());
 
                     } else if (payload.equals(unhighlightItem)) {
                         if (folder.equals(mainActivityInterface.getSetActions().getDividerIdentifier()) ||
                                 folder.contains("**Divider") ||
                                 folder.contains("**"+divider_string)) {
                             thisTextColor = mainActivityInterface.getPalette().hintColor;
-                            setColor(holder, mainActivityInterface.getMyThemeColors().getSetBackgroundColor(holder.cardView));
+                            setColor(holder, mainActivityInterface.getMyThemeColors().getSetBackgroundColor());
 
                         } else {
-                            setColor(holder, mainActivityInterface.getMyThemeColors().getSetInactiveColor(holder.cardView));
+                            setColor(holder, mainActivityInterface.getMyThemeColors().getSetInactiveColor());
                         }
-                        setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor(holder.cardEdit));
+                        setFABColor(holder.cardEdit,mainActivityInterface.getMyThemeColors().getSetActiveColor());
                         holder.cardFilename.setTextColor(thisTextColor);
                         holder.cardFilename.setTextColor(thisTextColor);
                         holder.cardFolder.setTextColor(thisTextColor);

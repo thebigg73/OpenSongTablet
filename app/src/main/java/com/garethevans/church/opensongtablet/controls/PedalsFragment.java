@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -350,7 +351,7 @@ public class PedalsFragment extends Fragment {
         currentMidiCode = mainActivityInterface.getPedalActions().getMidiCode(which);
         buttonCodes[which].setText(pedal_waiting_string);
         buttonMidis[which].setText(pedal_waiting_string);
-        pageButtonWaiting = new Handler();
+        pageButtonWaiting = new Handler(Looper.getMainLooper());
         stopListening = () -> {
             buttonCodes[which].setText(charFromInt(currentPedalCode));
             buttonMidis[which].setText(currentMidiCode);

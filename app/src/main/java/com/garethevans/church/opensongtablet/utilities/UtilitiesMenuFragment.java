@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MyMaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsUtilitiesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -25,7 +26,7 @@ public class UtilitiesMenuFragment extends Fragment {
     private SettingsUtilitiesBinding myView;
     private String beatBuddy_string = "", utilities_string="", aeros_string="",
             deeplink_database_utilities="", voiceLive_string, deeplink_drummer,
-            audio_player_popup_string="";
+            audio_player_popup_string="", not_allowed_string;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,6 +80,7 @@ public class UtilitiesMenuFragment extends Fragment {
             deeplink_database_utilities = getString(R.string.deeplink_database_utilities);
             deeplink_drummer = getString(R.string.deeplink_drummer_settings);
             audio_player_popup_string = getString(R.string.audio_player) + " ("+getString(R.string.popup)+")";
+            not_allowed_string = getString(R.string.not_available) + " (Android M+)";
         }
     }
 
@@ -86,10 +88,21 @@ public class UtilitiesMenuFragment extends Fragment {
         // Hide the multitrack player if not running Lollipop or later
         myView.mutitrackPlayer.setVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? View.VISIBLE:View.GONE);
 
+        // Hide any MIDI utilities if lower than Android Marshmallow
+        checkIfAllowed(myView.aeros);
+        checkIfAllowed(myView.beatBuddy);
+        checkIfAllowed(myView.voiceLive);
+
         // Add the word popup to the audioplayer popup
         myView.audioPlayerPopUp.setText(audio_player_popup_string);
     }
 
+    private void checkIfAllowed(MyMaterialTextView textView) {
+        if (!isMidiAllowed()) {
+            textView.setHint(not_allowed_string);
+            textView.setEnabled(false);
+        }
+    }
 
     private void setupListeners() {
         myView.soundMeter.setOnClickListener(v -> {
@@ -145,5 +158,9 @@ public class UtilitiesMenuFragment extends Fragment {
         }
         intent.addFlags(mainActivityInterface.getStorageAccess().getAddReadUriFlags());
         mainActivityInterface.selectFile(intent);
+    }
+
+    private boolean isMidiAllowed() {
+        return Build.VERSION.SDK_INT>=Build.VERSION_CODES.M;
     }
 }

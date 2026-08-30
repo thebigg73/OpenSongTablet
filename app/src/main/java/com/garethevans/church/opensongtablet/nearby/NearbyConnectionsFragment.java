@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -560,7 +559,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.advertiseButton.setBackgroundTintList(onColor);
 
         // After a short delay, advertise
-        new Handler().postDelayed(() -> {
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
             try {
                 mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().startAdvertising();
                 myView.advertiseButton.setOnClickListener(view -> enableConnectionButtons());
@@ -586,7 +585,7 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.discoverButton.setBackgroundTintList(onColor);
 
         // After a short delay, discover
-        new Handler().postDelayed(() -> {
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
             try {
                 mainActivityInterface.getNearbyActions().getNearbyConnectionManagement().startDiscovery();
                 myView.discoverButton.setOnClickListener(view -> enableConnectionButtons());

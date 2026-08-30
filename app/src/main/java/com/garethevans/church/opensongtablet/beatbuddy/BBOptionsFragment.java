@@ -126,12 +126,7 @@ public class BBOptionsFragment extends Fragment {
         });
         myView.useImported.setChecked(mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported());
         myView.useImported.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getBeatBuddy().setBeatBuddyUseImported(b));
-        myView.beatBuddyControlPopUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainActivityInterface.toggleBeatBuddyControlPopUp();
-            }
-        });
+        myView.beatBuddyControlPopUp.setOnClickListener(view -> mainActivityInterface.toggleBeatBuddyControlPopUp());
     }
 
     public void resetDatabase() {

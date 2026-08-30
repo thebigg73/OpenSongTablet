@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class ActionBarSettingsFragment extends Fragment {
         mainActivityInterface.updateToolbarHelp(webAddress);
 
         // IV - Set the battery/clock visible but not clickable (floatval 0)
-        new Handler().postDelayed(() -> {
+        mainActivityInterface.getMainHandler().postDelayed(() -> {
             if (myView != null) {
                 mainActivityInterface.updateActionBarSettings("showBatteryHolder", 0.0f, true);
             }

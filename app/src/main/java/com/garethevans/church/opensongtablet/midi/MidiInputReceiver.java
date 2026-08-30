@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.midi.MidiReceiver;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -23,9 +24,9 @@ public class MidiInputReceiver extends MidiReceiver {
     private final int nx_start=128, nx_end=143, no_start=144, no_end=159,
             cc_start=176, cc_end=191, pc_start=192, pc_end=207;
     private int msbChosen, pcChosen;
-    private final Handler songMessageHander = new Handler();
+    private final Handler songMessageHander = new Handler(Looper.getMainLooper());
     private final Runnable songMessageRunnable;
-    private final Handler longPressHandler = new Handler();
+    private final Handler longPressHandler = new Handler(Looper.getMainLooper());
     private final Runnable longPressRunnable;
     private int longPressNote = -1;
     private boolean listeningForLongPress = false;

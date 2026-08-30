@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
     private String file_string = "", deeplink_export_string = "", deeplink_edit_string = "",
             deeplink_song_actions_string = "", deeplink_import_string = "", search_index_wait_string = "",
             added_to_set_string = "", variation_string = "", index_rebuild_string = "", quick_string = "", full_string = "";
-    private final Handler updateCurrentSongHandler = new Handler();
+    private final Handler updateCurrentSongHandler = new Handler(Looper.getMainLooper());
     private final Runnable updateCurrentSongRunnable = this::updateFolderAndFilename;
     private String songFolder, songFilename;
 

@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -36,7 +37,7 @@ public class StickyPopUp {
     private int stickyWidth;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "StickyPopUp";
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable autoCloseStickyRunnable = this::closeSticky;
 
     private final Context c;
@@ -220,7 +221,7 @@ public class StickyPopUp {
     }
 
     private void dealWithAutohide() {
-        handler = new Handler();
+        handler = new Handler(Looper.getMainLooper());
         long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {

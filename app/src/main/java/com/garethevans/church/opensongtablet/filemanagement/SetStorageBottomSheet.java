@@ -11,16 +11,12 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.customviews.BottomSheetCommon;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetStorageChooseBinding;
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SetStorageBottomSheet extends BottomSheetCommon {
-
-    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mainActivityInterface = (MainActivityInterface) context;
     }
 
     @Nullable

@@ -32,10 +32,8 @@ public class PageButtons {
     // Everything available for the buttons
     private ArrayList<String> actions, text, shortText, longText;
     private ArrayList<Integer> drawableIds;
-    private int pageButtonColor;
     private float pageButtonAlpha;
     private boolean pageButtonMini, pageButtonHide;
-    private int pageButtonIconColor;
 
     // My buttons in the main activity
     private LinearLayout pageButtonsLayout;
@@ -78,7 +76,6 @@ public class PageButtons {
         custom6.hide();
         custom7.hide();
         custom8.hide();
-        pageButtonColor = mainActivityInterface.getPalette().secondary;
         int size = FloatingActionButton.SIZE_NORMAL;
         if (pageButtonMini) {
             size = FloatingActionButton.SIZE_MINI;
@@ -86,7 +83,6 @@ public class PageButtons {
 
         // The main button
         actionButton.setSize(size);
-        //actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
 
         custom1.setSize(size);
         custom2.setSize(size);
@@ -136,7 +132,6 @@ public class PageButtons {
         }
     }
     public void updateColors() {
-        //pageButtonColor = MaterialColors.getColor(c, com.google.android.material.R.attr.colorSecondary,c.getResources().getColor(R.color.dark_secondary));
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonAlpha();
         if (pageButtonsLayout!=null) {
             pageButtonsLayout.setAlpha(pageButtonAlpha);
@@ -430,9 +425,6 @@ public class PageButtons {
         if (pageButtonsLayout!=null) {
             // The alpha is set on the linear layout, not the individual buttons
             pageButtonsLayout.setAlpha(pageButtonAlpha);
-
-            // Tint the button
-            //fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
 
             // If this is the main page button, set it's drawable
             Drawable drawable = fab.getDrawable();

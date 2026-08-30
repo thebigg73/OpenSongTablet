@@ -22,8 +22,8 @@ public class TimerEngine {
     private int tickCounter = 0;
     private int pulsesPerStep = 6; // Default to 16th notes (Straight)
 
-    private ScheduledThreadPoolExecutor executor;
-    private ScheduledThreadPoolExecutor turnOffExecutor;
+    private final ScheduledThreadPoolExecutor executor;
+    private final ScheduledThreadPoolExecutor turnOffExecutor;
     private ScheduledFuture<?> clockTask;
 
     private final MainActivityInterface mainActivityInterface;
@@ -31,6 +31,7 @@ public class TimerEngine {
     private boolean isRunning = false;
 
     private boolean midiClock = false;
+    @SuppressWarnings("FieldCanBeLocal")
     private boolean midiClockStartStop = false;
 
     public TimerEngine(Context c) {

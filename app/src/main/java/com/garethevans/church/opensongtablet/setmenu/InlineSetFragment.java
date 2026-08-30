@@ -119,12 +119,7 @@ public class InlineSetFragment extends Fragment {
             myView.textSizeSliderPresenter.addOnChangeListener(new MyChangeListener("inlineSetTextSizePresenter"));
             myView.textSizeSlider.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSize"));
             myView.textSizeSliderPresenter.addOnSliderTouchListener(new MySliderTouchListener("inlineSetTextSizePresenter"));
-            myView.longPressAction.addOnChangeListener(new Slider.OnChangeListener() {
-                @Override
-                public void onValueChange(@NonNull Slider slider, float v, boolean b) {
-                    mainActivityInterface.getPreferences().setMyPreferenceString("inlineSetLongPress", v==0 ? "scroll":"cue");
-                }
-            });
+            myView.longPressAction.addOnChangeListener((slider, v, b) -> mainActivityInterface.getPreferences().setMyPreferenceString("inlineSetLongPress", v==0 ? "scroll":"cue"));
         });
     }
 

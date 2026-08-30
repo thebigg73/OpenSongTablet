@@ -34,6 +34,7 @@ public class DrumSoundManager {
     private DrumKit drumKit;
     private DrumKit cajonKit;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final String drumKickVol = "drumKickVol", drumSnareVol = "drumSnareVol", drumRimShotVol = "drumRimShotVol",
             drumStickVol = "drumStickVol", drumHatClosedVol = "drumHatClosedVol", drumHatOpenVol = "drumHatOpenVol",
             drumTomLoVol = "drumTomLoVol", drumTomMidVol = "drumTomMidVol", drumTomHiVol = "drumTomHiVol",
@@ -66,7 +67,7 @@ public class DrumSoundManager {
 
     public void initialiseDrumSounds(Context context) {
         // Inside initialiseDrumSounds or the constructor
-        AudioAttributes audioAttributes = null;
+        AudioAttributes audioAttributes;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
             audioAttributes = new AudioAttributes.Builder()

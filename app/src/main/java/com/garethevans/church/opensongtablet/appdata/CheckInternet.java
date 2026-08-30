@@ -18,6 +18,7 @@ public class CheckInternet {
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "CheckInternet";
 
+    @SuppressWarnings("deprecation")
     public boolean isNetworkConnected(Context c, MainActivityInterface mainActivityInterface) {
         boolean onlyUseWiFi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("download_wifi_only",true);
         ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -46,6 +47,7 @@ public class CheckInternet {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public void checkConnection(Context c, Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
         mainActivityInterface.getThreadPoolExecutor().execute(() -> {
             boolean connected = false;

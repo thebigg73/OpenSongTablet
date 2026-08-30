@@ -32,7 +32,7 @@ public class MidiClockFragment extends Fragment {
     private final String TAG = "MidiClockFragment";
     private MainActivityInterface mainActivityInterface;
     private String midi_clock_string="", midi_clock_webpage="", test_string="",
-            stop_string="", no_device_string="", start_string="", on_string="";
+            stop_string="", start_string="", on_string="";
     private Drawable play_icon, stop_icon;
     private SettingsMidiClockBinding myView;
     private ScheduledExecutorService midiTestExecutor;
@@ -95,7 +95,6 @@ public class MidiClockFragment extends Fragment {
             on_string = getString(R.string.on);
             play_icon = AppCompatResources.getDrawable(getContext(),R.drawable.play);
             stop_icon = AppCompatResources.getDrawable(getContext(),R.drawable.stop);
-            no_device_string = getContext().getString(R.string.connections_no_devices);
         }
     }
 

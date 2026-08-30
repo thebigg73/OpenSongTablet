@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,7 +45,7 @@ public class SyncNearbyFragment extends Fragment {
     private SettingsSyncBinding myView;
     @SuppressWarnings("FieldCanBeLocal")
     private String  sets_string = "", profiles_string = "", songs_string = "",
-            no_response_string = "", info_string="", content_error_string = "",
+            no_response_string = "", info_string="",
             chosenDevice = "", sync_extracting_string="";
     private boolean syncSongPrepared = false;
     private boolean syncSetPrepared = false;
@@ -54,7 +55,7 @@ public class SyncNearbyFragment extends Fragment {
     private SyncItemsFragment syncSongFragment, syncSetFragment, syncProfileFragment;
     private final ArrayList<String> connectedDeviceNames = new ArrayList<>();
     private boolean timeout = false;
-    private final Handler progressTextClearHandler = new Handler();
+    private final Handler progressTextClearHandler = new Handler(Looper.getMainLooper());
     private final Runnable progressTextClearRunnable = new Runnable() {
         @Override
         public void run() {
@@ -67,7 +68,7 @@ public class SyncNearbyFragment extends Fragment {
             });
         }
     };
-    private final Handler timeoutHandler = new Handler();
+    private final Handler timeoutHandler = new Handler(Looper.getMainLooper());
     private final Runnable timeoutRunnable = new Runnable() {
         @Override
         public void run() {
@@ -124,7 +125,6 @@ public class SyncNearbyFragment extends Fragment {
             profiles_string = getString(R.string.profile);
             songs_string = getString(R.string.songs);
             no_response_string = getString(R.string.sync_server_noresponse_error);
-            content_error_string  = getString(R.string.sync_content_error);
             String title_string = getString(R.string.sync);
             String web_help = getString(R.string.website_sync);
             sync_extracting_string = getString(R.string.sync_extracting);

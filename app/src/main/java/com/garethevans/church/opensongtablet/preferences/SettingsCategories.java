@@ -102,7 +102,6 @@ public class SettingsCategories extends Fragment {
             setPlayEnabled(mainActivityInterface.getAlertChecks().getHasPlayServices());
 
             // If they don't have midi functionality, remove this
-            //setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI));
             setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M);
         } else {
             setPlayEnabled(false);

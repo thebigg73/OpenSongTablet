@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.aeros;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,10 +66,14 @@ public class AerosFragment extends Fragment {
         myView.aerosChannel.setLabelFormatter(value -> String.valueOf((int)value));
         myView.aerosChannel.setAdjustableButtons(true);
         myView.aerosChannel.setHint(String.valueOf(mainActivityInterface.getAeros().getAerosChannel()));
-        myView.midiDelay.setValue(mainActivityInterface.getMidi().getMidiDelay());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            myView.midiDelay.setValue(mainActivityInterface.getMidi().getMidiDelay());
+        }
         myView.midiDelay.setLabelFormatter(value -> (int)value + " ms");
         myView.midiDelay.setAdjustableButtons(true);
-        myView.midiDelay.setHint(mainActivityInterface.getMidi().getMidiDelay()+" ms");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            myView.midiDelay.setHint(mainActivityInterface.getMidi().getMidiDelay()+" ms");
+        }
     }
 
     private void setupListeners() {
@@ -77,7 +82,9 @@ public class AerosFragment extends Fragment {
             myView.aerosChannel.setHint(String.valueOf((int)value));
         });
         myView.midiDelay.addOnChangeListener((slider, value, fromUser) -> {
-            mainActivityInterface.getMidi().setMidiDelay((int)value);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mainActivityInterface.getMidi().setMidiDelay((int)value);
+            }
             myView.midiDelay.setHint((int)value+" ms");
         });
     }

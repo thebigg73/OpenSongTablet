@@ -26,15 +26,10 @@ public class ImportSetItemAdapter  extends RecyclerView.Adapter<ImportSetItemVie
 
     private final String TAG = "ImportSetItemAdapter";
     private final MainActivityInterface mainActivityInterface;
-    private final int alreadyExistsColor, doesntExistColor;
-    private final String processing_string;
     private final ArrayList<Boolean> itemsChecked;
 
     public ImportSetItemAdapter(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
-        processing_string = c.getString(R.string.processing);
-        alreadyExistsColor = mainActivityInterface.getPalette().errorColor;
-        doesntExistColor = mainActivityInterface.getPalette().secondary;
         itemsChecked = new ArrayList<>();
         Log.d(TAG,"currentSet.size():"+mainActivityInterface.getCurrentSet().getCurrentSetSize());
         for (int i=0;i<mainActivityInterface.getCurrentSet().getCurrentSetSize();i++) {

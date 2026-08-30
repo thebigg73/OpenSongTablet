@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SongsDatabase extends SQLiteOpenHelper {
-    private static SongsDatabase instance;
+    private static volatile SongsDatabase instance;
     private static final int DATABASE_VERSION = 11;
     private static final String TAG = "SongsDatabase";
     private static final ReentrantLock lock = new ReentrantLock();
@@ -88,10 +88,6 @@ public class SongsDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Handle migrations here if you ever change your table schema
-    }
-
-    public static void nullifyInstance() {
-        instance = null;
     }
 
     @Override

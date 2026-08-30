@@ -151,15 +151,6 @@ public class BBSQLite extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // After upgrade, make the changes required based on the new number
         // For now, nothing required as we haven't changed
-        /*
-        if (oldVersion < 5) {
-        try {
-                db.execSQL("ALTER TABLE " + SQLite.ANALYTICS_TABLE_NAME + " ADD COLUMN " + SQLite.COLUMN_SET_COUNT + " INTEGER DEFAULT 0;");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-         }
-         */
     }
 
     public void checkDefaultDatabase() {
@@ -1096,32 +1087,6 @@ public class BBSQLite extends SQLiteOpenHelper {
         return "";
     }
 
-
-    /*public int getNumberFromKit(String kitname) {
-        int foundKit = -1;
-        SQLiteDatabase db = getReadableDatabase();
-        try {
-            String queryKit;
-            if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-                queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_MY_DRUMS + " ";
-            } else {
-                queryKit = "SELECT " + COLUMN_KIT_NUM + " FROM " + TABLE_NAME_DEFAULT_DRUMS + " ";
-            }
-            String[] args = new String[]{kitname};
-            queryKit += "WHERE " + COLUMN_KIT_NAME + "=?";
-            Cursor cursor = db.rawQuery(queryKit, args);
-            if (cursor != null && cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                foundKit = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_KIT_NUM));
-            }
-            closeCursor(cursor);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return foundKit;
-    }*/
-
     public int getNumberFromKit(String kitname) {
         int foundKit = -1;
         SQLiteDatabase db = getReadableDatabase();
@@ -1155,31 +1120,6 @@ public class BBSQLite extends SQLiteOpenHelper {
         }
         return foundKit;
     }
-
-
-    /*public String getDrumKitForNumber(int number) {
-        String kitName = "";
-        SQLiteDatabase db = getReadableDatabase();
-        try {
-            String queryKit;
-            if (mainActivityInterface.getBeatBuddy().getBeatBuddyUseImported()) {
-                queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_MY_DRUMS + " ";
-            } else {
-                queryKit = "SELECT " + COLUMN_KIT_NAME + " FROM " + TABLE_NAME_DEFAULT_DRUMS + " ";
-            }
-            String[] args = new String[]{String.valueOf(number)};
-            queryKit += "WHERE " + COLUMN_KIT_NUM + "=?";
-            Cursor cursor = db.rawQuery(queryKit, args);
-            if (cursor != null && cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                kitName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KIT_NAME));
-            }
-            closeCursor(cursor);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return kitName;
-    }*/
 
     public String getDrumKitForNumber(int number) {
         String kitName = "";

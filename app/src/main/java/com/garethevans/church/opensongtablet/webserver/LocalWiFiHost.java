@@ -7,6 +7,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -22,7 +23,7 @@ public class LocalWiFiHost {
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = "LocalWiFiHost";
-    private final Handler localWifiHandler = new Handler();
+    private final Handler localWifiHandler = new Handler(Looper.getMainLooper());
     private WifiManager.LocalOnlyHotspotReservation reservation;
     private WifiConfiguration configuration;
     private String ssid;

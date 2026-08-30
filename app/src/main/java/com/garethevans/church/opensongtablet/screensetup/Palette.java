@@ -41,6 +41,7 @@ public final class Palette {
         setColors(context);
     }
 
+    @SuppressWarnings("deprecation")
     public void setColors(Context context) {
         try {
             background = ResourcesCompat.getColor(context.getResources(), dark ? R.color.dark_primary : R.color.light_primary, null);

@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.ABCEditorBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.databinding.BottomSheetAbcEditorBinding;
 import com.garethevans.church.opensongtablet.databinding.EditSongFeaturesBinding;
 import com.garethevans.church.opensongtablet.drummer.DrumCalculations;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
@@ -502,12 +501,9 @@ public class EditSongFragmentFeatures extends Fragment {
                 myView.overrideAbcSlider.updateAlphas();
             });
 
-            myView.onlineAbc.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ABCEditorBottomSheet abcEditorBottomSheet = new ABCEditorBottomSheet(EditSongFragmentFeatures.this,mainActivityInterface.getTempSong(),"abc");
-                    abcEditorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AbcEditor");
-                }
+            myView.onlineAbc.setOnClickListener(view -> {
+                ABCEditorBottomSheet abcEditorBottomSheet = new ABCEditorBottomSheet(EditSongFragmentFeatures.this,mainActivityInterface.getTempSong(),"abc");
+                abcEditorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AbcEditor");
             });
             // The preview override
             myView.overridePreviewSlider.addOnChangeListener((slider, value, fromUser) -> {

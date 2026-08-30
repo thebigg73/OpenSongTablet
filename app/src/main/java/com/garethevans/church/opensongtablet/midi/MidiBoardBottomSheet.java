@@ -116,6 +116,7 @@ public class MidiBoardBottomSheet extends BottomSheetCommon {
         myView.boardSlider2.initialiseSliderValues(boardSliderName.get(2),boardSliderChannel.get(2),boardSliderCC.get(2),boardSliderVal.get(2));
     }
 
+    @SuppressWarnings("deprecation")
     private void setUpButton(int whichButton) {
         String name = boardButtonName.get(whichButton);
         String midi = boardButtonMIDI.get(whichButton);
@@ -218,6 +219,7 @@ public class MidiBoardBottomSheet extends BottomSheetCommon {
 
     }
 
+    @SuppressWarnings("deprecation")
     public void addCommand(String buttonName, String newCommand) {
         // We know the button as we clicked on it!
         if (whichButtonToEdit!=-1) {

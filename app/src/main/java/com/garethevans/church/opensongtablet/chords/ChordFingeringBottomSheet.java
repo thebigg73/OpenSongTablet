@@ -28,7 +28,7 @@ public class ChordFingeringBottomSheet extends BottomSheetCommon {
     private BottomSheetChordsFingeringBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String website_chords_fingering_string="", capo_chords_string="", capo_fret_string="",
-            transpose_string="", chord_fingering_string="", custom_string="";
+            transpose_string="", chord_fingering_string="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,7 +75,6 @@ public class ChordFingeringBottomSheet extends BottomSheetCommon {
             capo_chords_string = getString(R.string.capo_chords);
             capo_fret_string = getString(R.string.capo_fret);
             transpose_string = getString(R.string.transpose);
-            custom_string = getString(R.string.custom);
             chord_fingering_string = getString(R.string.chord_fingering);
         }
     }

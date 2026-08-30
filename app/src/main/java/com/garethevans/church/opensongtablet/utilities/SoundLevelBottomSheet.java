@@ -8,6 +8,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,7 +152,7 @@ public class SoundLevelBottomSheet extends BottomSheetCommon {
 
                     try {
                         audio.startRecording();
-                        audioRecordHandler = new Handler();
+                        audioRecordHandler = new Handler(Looper.getMainLooper());
                         audioRecordHandler.postDelayed(r, 50);
                     } catch (Exception e) {
                         e.printStackTrace();

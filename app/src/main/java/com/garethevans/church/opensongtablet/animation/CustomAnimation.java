@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.animation;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -39,7 +40,7 @@ public class CustomAnimation {
     }
 
     public void fadeActionButton(MyFloatingActionButton fab, float fadeTo) {
-        new Handler().postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             fab.setAlpha(1.0f);
             fab.animate().alpha(fadeTo).setDuration(800);
             },400);

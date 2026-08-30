@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -233,7 +234,7 @@ public class SwipeFragment extends Fragment {
             ArrayList<Runnable> runnables = new ArrayList<>();
 
             for (int x = 0; x < updatesRequired; x++) {
-                handlers.add(new Handler());
+                handlers.add(new Handler(Looper.getMainLooper()));
                 runnables.add(() -> {
                     // Now go through each bit of the animation
                     newX = startX + moveByX;
@@ -253,7 +254,7 @@ public class SwipeFragment extends Fragment {
             }
 
             // Finally release the animation lock
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 mainActivityInterface.getDrawNotes().setSwipeAnimate(false);
                 mainActivityInterface.getDrawNotes().resetSwipe();
                 dealingWith = false;

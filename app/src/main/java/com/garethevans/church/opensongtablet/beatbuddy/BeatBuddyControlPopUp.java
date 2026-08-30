@@ -52,7 +52,7 @@ public class BeatBuddyControlPopUp {
 
     private ArrayList<String> songs = new ArrayList<>();
     private ArrayList<String> kits = new ArrayList<>();
-    private Palette palette;
+    private final Palette palette;
 
     // Initialise the popup class
     public BeatBuddyControlPopUp(Context c) {
@@ -112,7 +112,6 @@ public class BeatBuddyControlPopUp {
         View myView = View.inflate(c, R.layout.view_beatbuddy_control_popup, null);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //myView.findViewById(R.id.layout).setBackgroundTintList(ColorStateList.valueOf(mainActivityInterface.getPalette().secondary));
             myView.findViewById(R.id.layout).setBackgroundTintList(new ColorStateList(
                     new int[][]{new int[0]},
                     new int[]{mainActivityInterface.getPalette().secondary}
@@ -165,44 +164,42 @@ public class BeatBuddyControlPopUp {
     }
 
     private void setListeners() {
-        dialogHeader.getCloseButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainActivityInterface.toggleBeatBuddyControlPopUp();
-            }
-        });
-        dialogHeader.getMinimiseButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleMinimise();
-            }
-        });
+        dialogHeader.getCloseButton().setOnClickListener(view -> mainActivityInterface.toggleBeatBuddyControlPopUp());
+        dialogHeader.getMinimiseButton().setOnClickListener(view -> toggleMinimise());
         // Fires whenever the dial/value is tapped or adjusted
         beatBuddyTempoControl.setTapTempoEnabled(true);
         beatBuddyTempoControl.setOnDialClickListener(currentValue -> {
             // Handle action with the current value
-            String tempoHexSequence = mainActivityInterface.getBeatBuddy().getTempoCode(currentValue);
-            mainActivityInterface.getMidi().sendMidiHexSequence(tempoHexSequence);
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                String tempoHexSequence = mainActivityInterface.getBeatBuddy().getTempoCode(currentValue);
+                mainActivityInterface.getMidi().sendMidiHexSequence(tempoHexSequence);
+            }
         });
         beatBuddyVolumeControl.setOnDialClickListener(currentValue -> {
             // Handle action with the current value
             mainActivityInterface.getBeatBuddy().setBeatBuddyVolume(currentValue);
-            String volumeHexSequence = mainActivityInterface.getBeatBuddy().getVolumeCode();
-            mainActivityInterface.getMidi().sendMidiHexSequence(volumeHexSequence);
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                String volumeHexSequence = mainActivityInterface.getBeatBuddy().getVolumeCode();
+                mainActivityInterface.getMidi().sendMidiHexSequence(volumeHexSequence);
+            }
         });
         beatBuddyHeadphoneVolumeControl.setOnDialClickListener(currentValue -> {
             // Handle action with the current value
             mainActivityInterface.getBeatBuddy().setBeatBuddyHPVolume(currentValue);
-            String volumeHPHexSequence = mainActivityInterface.getBeatBuddy().getVolumeHPCode();
-            mainActivityInterface.getMidi().sendMidiHexSequence(volumeHPHexSequence);
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                String volumeHPHexSequence = mainActivityInterface.getBeatBuddy().getVolumeHPCode();
+                mainActivityInterface.getMidi().sendMidiHexSequence(volumeHPHexSequence);
+            }
         });
         beatBuddyDrumKitControl.setOnDialClickListener(currentValue -> {
             // Handle action with the current value
             // The dial uses the drum kits in alphabetical order, so we need to look up the actual kit number
-            String currentKit = beatBuddyDrumKitControl.getCurrentTextValue();
-            int kitNum = mainActivityInterface.getBeatBuddy().getBbsqLite().getNumberFromKit(currentKit);
-            String drumKitHexCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
-            mainActivityInterface.getMidi().sendMidiHexSequence(drumKitHexCode);
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+                String currentKit = beatBuddyDrumKitControl.getCurrentTextValue();
+                int kitNum = mainActivityInterface.getBeatBuddy().getBbsqLite().getNumberFromKit(currentKit);
+                String drumKitHexCode = mainActivityInterface.getBeatBuddy().getDrumKitCode(kitNum);
+                mainActivityInterface.getMidi().sendMidiHexSequence(drumKitHexCode);
+            }
         });
         beatBuddyTempoControl.setOnDialLongClickListener(dimmed -> {
             // Change our preference

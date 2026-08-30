@@ -383,31 +383,8 @@ public class CommonSQL {
             args.add("%" + lowerTitleVal + "%");
             args.add("%" + lowerTitleVal + "%");
 
-            /*sqlMatch += "(" + SQLite.COLUMN_TITLE + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? ) AND ";
-            args.add("%" + titleVal + "%");
-            args.add("%" + titleVal + "%");*/
         }
-        /*if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
-            sqlMatch += "(" + SQLite.COLUMN_LYRICS + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_FILENAME + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_TITLE + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_COPYRIGHT + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_HYMNNUM + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_CCLI + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_USER1 + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_USER2 + " LIKE ? OR ";
-            sqlMatch += SQLite.COLUMN_USER3 + " LIKE ? )";
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-            args.add("%" + filterVal + "%");
-        }*/
+
         if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
             String lowerFilterVal = filterVal.toLowerCase();
             sqlMatch += "(" +
@@ -526,24 +503,6 @@ public class CommonSQL {
                 iterator.remove();
             }
         }
-        // ------------------------------------------------
-
-        // Because the song sorting from SQL ignores accented characters (non-English),
-        // we need to set up a custom collator
-        /*Comparator<Song> comparator = (o1, o2) -> {
-            //Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
-            Collator collator = Collator.getInstance();
-            collator.setStrength(Collator.SECONDARY);
-            if (songMenuSortTitles) {
-                return collator.compare(o1.getTitle(), o2.getTitle());
-            } else {
-                return collator.compare(o1.getFilename(), o2.getFilename());
-            }
-        };
-        Collections.sort(songs, comparator);
-
-        //Return the songs
-        return songs;*/
 
         // Because the song sorting from SQL ignores accented characters...
         Comparator<Song> comparator = (o1, o2) -> {
