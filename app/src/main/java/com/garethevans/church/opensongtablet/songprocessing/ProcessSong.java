@@ -2057,7 +2057,8 @@ public class ProcessSong {
         // Apply background colour highlight to whole chord if required
         if (highlightColorOrNull!=null) {
             try {
-                span.setSpan(new BackgroundColorSpan(highlightColorOrNull), 0, line.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                String trimmedLine = line.trim();
+                span.setSpan(new BackgroundColorSpan(highlightColorOrNull), 0, trimmedLine.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
