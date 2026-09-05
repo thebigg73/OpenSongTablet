@@ -275,11 +275,14 @@ public class CommonSQL {
 
         // Wrap in try-with-resources if using newer Android/Java,
         // otherwise keep manual close in finally
+        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("\nAbout to initialise the database with the songs found in the storage\n");
         try (SQLiteStatement stmt = db.compileStatement(sql)) {
             db.beginTransactionNonExclusive(); // Better for concurrent access
             try {
                 ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
-                for (String s : songIds) {
+                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Songs to process:"+songIds.size());
+                for (int i=0; i<songIds.size(); i++) {
+                    String s = songIds.get(i);
                     String filename;
                     String foldername;
                     // Only add song files, so if it ends with / this loop skips
@@ -303,17 +306,29 @@ public class CommonSQL {
                         stmt.bindString(4, filename);
                         stmt.executeInsert(); // Use executeInsert() for ID return
                         stmt.clearBindings();
+                        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex((i+1)+". "+foldername+"/"+filename+" initialised in database");
                     }
                 }
                 db.setTransactionSuccessful();
             } catch (Exception e) {
                 // CRITICAL: Log the actual SQLite error
-                Log.e(TAG, "TRANSACTION FAILED: " + e.getMessage(), e);
+                if (e.getMessage()!=null) {
+                    Log.e(TAG, "TRANSACTION FAILED:" + e, e);
+                    mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("TRANSACTION FAILED:"+e.getMessage());
+                } else {
+                    mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("TRANSACTION FAILED:"+e);
+                }
             } finally {
                 db.endTransaction();
             }
         } catch (Exception e) {
-            Log.e(TAG, "Statement compilation failed: " + e.getMessage());
+            if (e.getMessage()!=null) {
+                Log.e(TAG, "Statement compilation failed: " + e.getMessage());
+                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Statement compilation failed:"+e.getMessage());
+            } else {
+                Log.e(TAG,"Statement compilation failed:" + e);
+                mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("Statement compilation failed:"+e);
+            }
         }
     }
     public String getValue(Cursor cursor, String index) {

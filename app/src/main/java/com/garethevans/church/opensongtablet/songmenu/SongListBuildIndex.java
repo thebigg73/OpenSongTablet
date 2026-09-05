@@ -33,6 +33,9 @@ public class SongListBuildIndex {
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongListBuildIndex";
+    private boolean logIndexing = false;
+    private StringBuilder logIndex = new StringBuilder();
+    private MyMaterialSimpleTextView progressText;
 
     public SongListBuildIndex(Context c) {
         this.c = c;
@@ -46,6 +49,13 @@ public class SongListBuildIndex {
     }
     public boolean getIndexRequired() {
         return indexRequired;
+    }
+
+    public void setLogIndexing(boolean logIndexing) {
+        this.logIndexing = logIndexing;
+    }
+    public boolean getLogIndexing() {
+        return logIndexing;
     }
 
     private boolean checkForUUIDLastMod = false;
@@ -89,8 +99,16 @@ public class SongListBuildIndex {
     // This creates a basic database from the song files.
     // This is only called when we are full indexing
     public void buildBasicFromFiles() {
+        mainActivityInterface.getShowToast().doIt(c.getString(R.string.index_songs_start));
+        if (mainActivityInterface.getSongMenuFragment()==null) {
+            progressText = mainActivityInterface.getSongMenuFragment().getProgressText();
+        }
+
+        addStringToLogIndex("Building the list of songs and initialise database");
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(false);
+        addArrayToLogIndex(songIds);
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
+
         if (fullIndexRequired) {
             mainActivityInterface.getSQLiteHelper().resetDatabase();
             mainActivityInterface.getSQLiteHelper().insertFast();
@@ -101,26 +119,30 @@ public class SongListBuildIndex {
 
     // This scans the files (quick and full).
     // Quick scan only updates newer files than the database
-    public String fullIndex(MyMaterialSimpleTextView progressText, String specificFolder) {
+    public String fullIndex(MyMaterialSimpleTextView useableProgressText, String specificFolder) {
         // The basic database was created on boot.
         // Now comes the time-consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
         indexComplete = false;
+        progressText = useableProgressText;
 
+        addStringToLogIndex("\nBuilding the full index\n");
         Log.d(TAG,"fullIndex()");
-        if (progressText!=null) {
-            progressText.post(() -> {
-                Drawable drawable = AppCompatResources.getDrawable(c, R.drawable.rectangle);
-                if (drawable != null) {
-                    DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().secondary);
+        if (useableProgressText!=null) {
+            useableProgressText.post(() -> {
+                if (useableProgressText!=null) {
+                    Drawable drawable = AppCompatResources.getDrawable(c, R.drawable.rectangle);
+                    if (drawable != null) {
+                        DrawableCompat.setTint(drawable, mainActivityInterface.getPalette().secondary);
+                    }
+                    useableProgressText.setBackground(drawable);
+                    int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
+                    useableProgressText.setPadding(padding, padding, padding, padding);
+                    useableProgressText.setText("0%");
+                    useableProgressText.setPalette(mainActivityInterface.getPalette());
+                    useableProgressText.setTextColor(mainActivityInterface.getPalette().textColor);
+                    useableProgressText.setVisibility(View.VISIBLE);
                 }
-                progressText.setBackground(drawable);
-                int padding = Math.round(c.getResources().getDimension(R.dimen.box_padding));
-                progressText.setPadding(padding, padding, padding, padding);
-                progressText.setText("0%");
-                progressText.setPalette(mainActivityInterface.getPalette());
-                progressText.setTextColor(mainActivityInterface.getPalette().textColor);
-                progressText.setVisibility(View.VISIBLE);
             });
         }
 
@@ -150,6 +172,7 @@ public class SongListBuildIndex {
                 int totalSongs = cursor.getCount();
                 cursor.moveToFirst();
 
+                addStringToLogIndex("Songs in the database to update:"+cursor.getCount()+"\n");
                 // We now iterate through each song in turn!
                 do {
                     // Check if the thread has been interrupted (e.g. app closing / shutdownNow called)
@@ -172,6 +195,7 @@ public class SongListBuildIndex {
                         mainActivityInterface.getIndexingSong().setFolder(cursor.getString(indexFolder));
                         mainActivityInterface.getIndexingSong().setFilename(cursor.getString(indexFilename));
 
+                        String songinfo = "";
                         // Now we have the info to open the file and extract what we need
                         if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
                             // Get the uri, utf and inputStream for the file
@@ -195,10 +219,11 @@ public class SongListBuildIndex {
 
                                     mainActivityInterface.getLoadSong().readFileAsXML(mainActivityInterface.getIndexingSong(), "Songs",
                                             uri, utf);
-
+                                    songinfo = songinfo + "XML file read correctly";
 
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
+                                    songinfo = songinfo + "Not XML file";
                                     mainActivityInterface.setIndexingSong(tryToFixSong(mainActivityInterface.getIndexingSong(), uri));
                                 }
                             } else if (needToUpdate || fullIndexRequired) {
@@ -208,12 +233,15 @@ public class SongListBuildIndex {
                                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf", mainActivityInterface.getIndexingSong().getFilename())) {
                                     // This is a PDF
                                     mainActivityInterface.getIndexingSong().setFiletype("PDF");
+                                    songinfo = songinfo + "PDF file";
                                 } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image", mainActivityInterface.getIndexingSong().getFilename())) {
                                     // This is an Image
                                     mainActivityInterface.getIndexingSong().setFiletype("IMG");
+                                    songinfo = songinfo + "IMG file";
                                 } else {
                                     // Unknown
                                     mainActivityInterface.getIndexingSong().setFiletype("?");
+                                    songinfo = songinfo + "Unknown file";
                                 }
                             }
 
@@ -225,13 +253,15 @@ public class SongListBuildIndex {
                                     // If the file doesn't have an uuid or lastModifiedDate in it (older file), add one
                                     if (mainActivityInterface.getIndexingSong().getUuid() == null || mainActivityInterface.getIndexingSong().getUuid().isEmpty()) {
                                         mainActivityInterface.getIndexingSong().setUuid(String.valueOf(UUID.randomUUID()));
-                                        Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a UUID");
+                                        Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFolder()+"/"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a UUID");
+                                        songinfo = songinfo + ", didn't have uuid";
                                         needToSaveAgain = true;
                                         newUUID = true;
                                     }
                                     if (mainActivityInterface.getIndexingSong().getLastModified() == null || mainActivityInterface.getIndexingSong().getLastModified().isEmpty()) {
                                         mainActivityInterface.getIndexingSong().setLastModified(mainActivityInterface.getTimeTools().getNowIsoTime());
-                                        Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a last modified date");
+                                        Log.d(TAG,"song:"+mainActivityInterface.getIndexingSong().getFolder()+"/"+mainActivityInterface.getIndexingSong().getFilename()+"  doesn't have a last modified date");
+                                        songinfo = songinfo + ", didn't have last modified";
                                         needToSaveAgain = true;
                                         newLastModified = true;
                                     }
@@ -247,6 +277,7 @@ public class SongListBuildIndex {
                                         mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
                                 mainActivityInterface.getCommonSQL().updateSong(db, mainActivityInterface.getIndexingSong());
 
+                                songinfo = songinfo + ", updating database entry for " + mainActivityInterface.getIndexingSong().getFolder()+"/"+mainActivityInterface.getIndexingSong().getFilename();
                                 // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
                                 // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
                                 if (mainActivityInterface.getIndexingSong().getFiletype()==null) {
@@ -259,12 +290,13 @@ public class SongListBuildIndex {
                                 }
                             }
                         }
+                        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex((cursor.getPosition()+1)+". Updating song "+mainActivityInterface.getIndexingSong().getFolder()+"/"+mainActivityInterface.getIndexingSong().getFilename() + " " + songinfo);
                     }
                     int position = cursor.getPosition();
-                    if (progressText!=null) {
-                        progressText.post(() -> {
+                    if (useableProgressText!=null) {
+                        useableProgressText.post(() -> {
                             String progValue = (Math.round(Math.floor(((float) position / (float) totalSongs) * 100))) + "%  (" + position + "/" + totalSongs + ")";
-                            progressText.setText(progValue);
+                            useableProgressText.setText(progValue);
                         });
                     }
 
@@ -272,8 +304,8 @@ public class SongListBuildIndex {
 
             }
             db.setTransactionSuccessful();
-            if (progressText!=null) {
-                progressText.post(() -> progressText.setVisibility(View.GONE));
+            if (useableProgressText!=null) {
+                useableProgressText.post(() -> useableProgressText.setVisibility(View.GONE));
             }
             cursor.close();
             indexRequired = false;
@@ -309,8 +341,15 @@ public class SongListBuildIndex {
         }
 
         // Make sure we hide the progress text
+        if (useableProgressText!=null) {
+            useableProgressText.post(() -> useableProgressText.setVisibility(View.GONE));
+        }
         if (progressText!=null) {
-            progressText.post(() -> progressText.setVisibility(View.GONE));
+            progressText.post(() -> {
+                if (progressText != null) {
+                    progressText.setVisibility(View.GONE);
+                }
+            });
         }
 
         currentlyIndexing = false;
@@ -327,6 +366,8 @@ public class SongListBuildIndex {
             mainActivityInterface.getOpenChordsAPI().delayedQueryServer(0);
         }
 
+        saveIndexLog();
+        progressText = null;
         return returnString.toString();
     }
 
@@ -422,6 +463,26 @@ public class SongListBuildIndex {
         }
 
         return thisSong;
+    }
+
+    public void addStringToLogIndex(String string) {
+        if (logIndexing && logIndex!=null && string!=null) {
+            logIndex.append(string).append("\n");
+        }
+    }
+    public void addArrayToLogIndex(ArrayList<String> arrayList) {
+        if (logIndexing && logIndex!=null && arrayList!=null) {
+            for (int i=0; i<arrayList.size(); i++) {
+                logIndex.append(arrayList.get(i)).append("\n");
+            }
+        }
+    }
+    private void saveIndexLog() {
+        if (logIndexing && logIndex!=null) {
+            mainActivityInterface.getStorageAccess().makeSureFileIsRegistered("Settings","","songIndexLog.txt",true);
+            mainActivityInterface.getStorageAccess().writeFileFromString("Settings","","songIndexLog.txt",logIndex.toString(),false);
+        }
+        logIndex = new StringBuilder();
     }
 
 }

@@ -935,12 +935,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        try {
-            //myView.getRoot().removeAllViews();
-            myView = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void addAllSongsToSet() {

@@ -585,6 +585,17 @@ public class LoadSong {
                                         thisSong.setHasExtraStuff(true);
                                         break;
                                 }
+                            } else if (eventType == XmlPullParser.TEXT) {
+                                String text = xpp.getText();
+                                if (text != null && text.contains("/n")) {
+                                    // Rogue text found inside the XML tree, flag for fixing
+                                    if (songsToFix == null) {
+                                        songsToFix = new ArrayList<>();
+                                    }
+                                    if (!songsToFix.contains(thisSong)) {
+                                        songsToFix.add(thisSong);
+                                    }
+                                }
                             }
                             // If it isn't an xml file, an error is about to be thrown
                             try {
@@ -642,6 +653,8 @@ public class LoadSong {
 
     public void fixSongs() {
         if (songsToFix!=null && !songsToFix.isEmpty()) {
+            // Let the user know we are fixing songs
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.fix)+" "+c.getString(R.string.songs).toLowerCase()+" ("+songsToFix.size()+")");
             for (Song thisSong:songsToFix) {
                 if (thisSong.getFiletype()==null) {
                     thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));
@@ -661,6 +674,13 @@ public class LoadSong {
                         e.printStackTrace();
                     }
 
+                    Log.d(TAG,"content:"+content);
+
+                    // Songs with rogue /n instead of \n
+                    if (content.contains(">/n")) {
+                        content = content.replace(">/n",">\n");
+                    }
+
                     // If we have empty lines between tags, fix that. e.g.
                     // <pad_file></pad_file>
                     //
@@ -676,6 +696,8 @@ public class LoadSong {
                                 .replace(">\n\n  <", ">\n  <")
                                 .replace(">\n  \n  <", ">\n  <");
                     }
+
+
 
                     // Corrupted XML files with </song> before the end
                     if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
@@ -739,7 +761,7 @@ public class LoadSong {
                     int style_start = full_text.indexOf("<style");
                     int style_end = full_text.indexOf("</style>");
                     if (style_end > style_start && style_start > -1) {
-                        extraStuff += full_text.substring(style_start, style_end + 8) + "/n";
+                        extraStuff += full_text.substring(style_start, style_end + 8) + "\n";
                     }
                     int backgrounds_start = full_text.indexOf("<backgrounds");
                     int backgrounds_end = full_text.indexOf("</backgrounds>");
@@ -749,7 +771,7 @@ public class LoadSong {
                         backgrounds_end += 14;
                     }
                     if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
-                        extraStuff += full_text.substring(backgrounds_start, backgrounds_end) + "/n";
+                        extraStuff += full_text.substring(backgrounds_start, backgrounds_end) + "\n";
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

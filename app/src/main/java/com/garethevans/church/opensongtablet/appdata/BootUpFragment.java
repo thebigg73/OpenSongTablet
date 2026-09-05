@@ -17,6 +17,8 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
+
 /*
 This fragment is the first one that the main activity loads up.
 It checks that we are clear to proceed - we have the required storage permissions and that we
@@ -196,6 +198,10 @@ public class BootUpFragment extends Fragment {
                     }
                     updateMessage();
 
+                    if (needIndex || fullIndexRequired) {
+                        mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
+                    }
+
                     mainActivityInterface.getStorageAccess().fixBadSongs();
 
                     // Load in the setCurrent
@@ -305,7 +311,6 @@ public class BootUpFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         myView = null;
-        Log.d(TAG,"setting fragment to null");
         mainActivityInterface.registerFragment(null,"BootUpFragment");
     }
 

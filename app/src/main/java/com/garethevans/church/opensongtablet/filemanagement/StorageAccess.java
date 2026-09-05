@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.util.Base64;
@@ -2157,6 +2158,7 @@ public class StorageAccess {
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
+                //return listSongs_SAF(mainfolder, showAllIncludingBad);
                 return listSongs_SAF(mainfolder, showAllIncludingBad);
             } else {
                 return listSongs_File(mainfolder, showAllIncludingBad);
@@ -2167,64 +2169,6 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-   /* private ArrayList<String> listSongs_SAF(String mainfolder, boolean showAll) {
-        // This gets all songs (including any subfolders)
-        ArrayList<String> songIds = new ArrayList<>();
-        Uri uri = getUriForItem("Songs", "", "");
-
-        // Now get a documents contract at this location
-        String songFolderId = getDocumentsContractId(uri);
-
-        // Get the child folders
-        Uri children = getChildren(uri, songFolderId);
-        ContentResolver contentResolver = c.getContentResolver();
-
-        // Keep track of our directory hierarchy
-        List<Uri> dirNodes = new LinkedList<>();
-        dirNodes.add(children);
-
-        while (!dirNodes.isEmpty()) {
-            children = dirNodes.remove(0); // get the item from top
-            Cursor cursor = contentResolver.query(children, new String[]{
-                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
-                    DocumentsContract.Document.COLUMN_DISPLAY_NAME,
-                    DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null);
-            try {
-                if (cursor != null) {
-                    while (cursor.moveToNext()) {
-                        final String docId = cursor.getString(0);
-                        final String mime = cursor.getString(2);
-                        if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime) && docId.contains("OpenSong")) {
-                            final Uri newNode = getChildren(children, docId);
-                            dirNodes.add(newNode);
-                            if (docId.contains("OpenSong/Songs/")) {
-                                songIds.add(songFolderAndFileOnly(docId + "/", mainfolder)); // In case the folder is empty add it as a songId
-                            }
-                        } else if (docId.contains("OpenSong/Songs/")) {
-                            songIds.add(songFolderAndFileOnly(docId, mainfolder));
-                        }
-                    }
-                    cursor.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (showAll) {
-            return songIds;
-        } else {
-            // Check we only have valid songIds
-            ArrayList<String> checkedSongIds = new ArrayList<>();
-            // We will remove and warn about bad file extensions
-            for (String songId : songIds) {
-                if (!badFileExtension(songId)) {
-                    checkedSongIds.add(songId);
-                }
-            }
-            return checkedSongIds;
-        }
-    }*/
     private ArrayList<String> listSongs_SAF(String mainfolder, boolean showAll) {
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem("Songs", "", "");
@@ -2288,6 +2232,69 @@ public class StorageAccess {
                 }
             }
             return checkedSongIds;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private ArrayList<String> listSongs_DocumentFile(String mainfolder, boolean showAll) {
+        ArrayList<String> songIds = new ArrayList<>();
+        Uri songsUri = getUriForItem("Songs", "", "");
+
+        if (songsUri == null) return songIds;
+
+        String rootDocId = DocumentsContract.getTreeDocumentId(songsUri);
+        traverseDirectoryFast(songsUri, rootDocId, mainfolder, "", songIds);
+
+        if (showAll) {
+            return songIds;
+        } else {
+            ArrayList<String> checkedSongIds = new ArrayList<>();
+            for (String songId : songIds) {
+                if (!badFileExtension(songId)) {
+                    checkedSongIds.add(songId);
+                }
+            }
+            return checkedSongIds;
+        }
+    }
+
+    private void traverseDirectoryFast(Uri treeUri, String parentDocId, String mainfolder, String relativePath, ArrayList<String> songIds) {
+        Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, parentDocId);
+
+        String[] projection = {
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                DocumentsContract.Document.COLUMN_MIME_TYPE
+        };
+
+        try (android.database.Cursor cursor = c.getContentResolver().query(childrenUri, projection, null, null, null)) {
+            if (cursor == null) return;
+
+            int idIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DOCUMENT_ID);
+            int nameIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_DISPLAY_NAME);
+            int mimeIndex = cursor.getColumnIndex(DocumentsContract.Document.COLUMN_MIME_TYPE);
+
+            while (cursor.moveToNext()) {
+                String docId = cursor.getString(idIndex);
+                String name = cursor.getString(nameIndex);
+                String mimeType = cursor.getString(mimeIndex);
+
+                if (name == null) continue;
+
+                boolean isDirectory = DocumentsContract.Document.MIME_TYPE_DIR.equals(mimeType);
+
+                if (isDirectory) {
+                    String nextPath = relativePath.isEmpty() ? name : relativePath + "/" + name;
+                    traverseDirectoryFast(treeUri, docId, mainfolder, nextPath, songIds);
+                } else {
+                    String finalId = relativePath.isEmpty()
+                            ? mainfolder + "/" + name
+                            : relativePath + "/" + name;
+                    songIds.add(finalId);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private ArrayList<String> listSongs_File(String mainfolder, boolean showAll) {
@@ -2360,13 +2367,20 @@ public class StorageAccess {
         // This creates a file in the app storage with a list of song folders/filenames
         StringBuilder stringBuilder = new StringBuilder();
 
+        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("songIds size:"+songIds.size());
         // Remove songs that aren't valid filetypes for the song database
         ArrayList<String> newSongIds = new ArrayList<>();
         for (int x=0; x<songIds.size(); x++) {
+            String message = songIds.get(x);
             if (validDatabaseFile(null,songIds.get(x))) {
                 newSongIds.add(songIds.get(x));
+                message = message + " - valid file";
+            } else {
+                message = message + " - not valid file";
             }
+            mainActivityInterface.getSongListBuildIndex().addStringToLogIndex(message);
         }
+        mainActivityInterface.getSongListBuildIndex().addStringToLogIndex("updated songIds size:"+newSongIds.size());
 
         // Sort the array
         Collator collator;
@@ -2965,7 +2979,6 @@ public class StorageAccess {
             try (BufferedOutputStream bos = new BufferedOutputStream(outputStream)) {
                 bos.write(content.getBytes(StandardCharsets.UTF_8));
                 bos.flush();
-                Log.d(TAG, "file was written");
                 return true;
             } catch (Exception e) {
                 Log.e(TAG, "Error writing string to stream", e);

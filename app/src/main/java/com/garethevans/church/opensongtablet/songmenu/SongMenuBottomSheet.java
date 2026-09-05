@@ -145,29 +145,8 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
             }
         });
         myView.rebuildIndexFull.setOnClickListener(v -> {
-            if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                mainActivityInterface.getThreadPoolExecutor().execute(() -> {
-                    // Make this a complete rebuild of the database, rather than an update scan
-                    mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
-                    mainActivityInterface.getSQLiteHelper().resetDatabase();
-                    mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
-                    mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
-                    mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
-                    mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
-                    mainActivityInterface.indexSongs();
-                });
-                dismiss();
-            } else {
-                dismiss();
-                String progressText = "";
-                if (mainActivityInterface.getSongMenuFragment() != null) {
-                    MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
-                    if (progressView != null && progressView.getText() != null) {
-                        progressText = " " + progressView.getText().toString();
-                    }
-                }
-                mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string + progressText, myView.getRoot());
-            }
+            mainActivityInterface.getSongListBuildIndex().setLogIndexing(true);
+            rebuildFull();
         });
         myView.rebuildIndexQuick.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
@@ -197,6 +176,32 @@ public class SongMenuBottomSheet extends BottomSheetCommon {
         });
     }
 
+
+    private void rebuildFull() {
+        if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+            mainActivityInterface.getThreadPoolExecutor().execute(() -> {
+                // Make this a complete rebuild of the database, rather than an update scan
+                mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(0);
+                mainActivityInterface.getSQLiteHelper().resetDatabase();
+                mainActivityInterface.getSongListBuildIndex().setFullIndexRequired(true);
+                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean("indexSkipAllowed", false);
+                mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
+                mainActivityInterface.indexSongs();
+            });
+            dismiss();
+        } else {
+            dismiss();
+            String progressText = "";
+            if (mainActivityInterface.getSongMenuFragment() != null) {
+                MyMaterialSimpleTextView progressView = mainActivityInterface.getSongMenuFragment().getProgressText();
+                if (progressView != null && progressView.getText() != null) {
+                    progressText = " " + progressView.getText().toString();
+                }
+            }
+            mainActivityInterface.getShowToast().doItBottomSheet(search_index_wait_string + progressText, myView.getRoot());
+        }
+    }
     private void navigateTo(String deepLink) {
         mainActivityInterface.closeDrawer(true);
         if (deepLink != null) {
