@@ -440,8 +440,10 @@ public class ImportOSBFragment extends Fragment {
                                 }
                             }
                             if (ze.getName().contains("/")) {
-                                filefolder = ze.getName().substring(0, ze.getName().lastIndexOf("/"));
-                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", filefolder, ze.getName().replace(filefolder + "/", ""));
+                                int lastSlash = ze.getName().lastIndexOf('/');
+                                filefolder = ze.getName().substring(0, lastSlash);
+                                String filenameOnly = ze.getName().substring(lastSlash + 1);
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", filefolder, filenameOnly);
                             }
 
                             // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
@@ -481,7 +483,8 @@ public class ImportOSBFragment extends Fragment {
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, final_file_uri, null, "Settings", "", SQLite.NON_OS_DATABASE_NAME);
                                 } else {
-                                    filename = ze.getName().replace(filefolder, "").replace("/", "");
+                                    int lastSlash = ze.getName().lastIndexOf('/');
+                                    filename = (lastSlash != -1) ? ze.getName().substring(lastSlash + 1) : ze.getName();
                                     stringBuilder.append("\n").append(TAG).append(" Create Songs/").append(filefolder).append("/").append(filename);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             true, file_uri, null, "Songs", filefolder, filename);
@@ -533,7 +536,9 @@ public class ImportOSBFragment extends Fragment {
                             if (alive) {
                                 mainActivityInterface.getMainHandler().post(() -> {
                                     message = connections_searching + " (" + item + "/" + allZipItems.size() + ")";
-                                    myView.progressText.setText(message);
+                                    if (myView!=null) {
+                                        myView.progressText.setText(message);
+                                    }
                                 });
                             }
                         }
@@ -557,10 +562,12 @@ public class ImportOSBFragment extends Fragment {
 
                     mainActivityInterface.getMainHandler().post(() -> {
                         mainActivityInterface.allowNavigationUp(true);
-                        myView.progressBar.setVisibility(View.GONE);
-                        myView.progressText.setText("");
-                        myView.progressText.setVisibility(View.GONE);
-                        myView.createBackupFAB.setEnabled(true);
+                        if (myView!=null) {
+                            myView.progressBar.setVisibility(View.GONE);
+                            myView.progressText.setText("");
+                            myView.progressText.setVisibility(View.GONE);
+                            myView.createBackupFAB.setEnabled(true);
+                        }
                         mainActivityInterface.closeDrawer(true);
 
                         // Update the songid file
@@ -568,7 +575,7 @@ public class ImportOSBFragment extends Fragment {
                         mainActivityInterface.getStorageAccess().writeSongIDFile(songids);
 
                         // Update the song index
-                        if (myView.includePersistentDB.getChecked()) {
+                        if (myView!=null && myView.includePersistentDB.getChecked()) {
                             mainActivityInterface.getNonOpenSongSQLiteHelper().copyUserDatabase();
                         }
                         mainActivityInterface.getSQLiteHelper().insertFast();
@@ -587,9 +594,11 @@ public class ImportOSBFragment extends Fragment {
                 mainActivityInterface.allowNavigationUp(true);
                 if (getContext() != null && alive) {
                     mainActivityInterface.getMainHandler().post(() -> {
-                        myView.progressText.setText(error_string);
-                        myView.progressBar.setVisibility(View.GONE);
-                        myView.createBackupFAB.setEnabled(true);
+                        if (myView!=null) {
+                            myView.progressText.setText(error_string);
+                            myView.progressBar.setVisibility(View.GONE);
+                            myView.createBackupFAB.setEnabled(true);
+                        }
                     });
                 }
             }
