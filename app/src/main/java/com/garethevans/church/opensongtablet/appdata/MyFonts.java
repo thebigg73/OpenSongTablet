@@ -123,7 +123,6 @@ public class MyFonts {
 
     public void changeFont(String which, String fontName, Handler handler) {
         // Save the preferences
-        Log.d(TAG,"save preference: "+which+"  - "+fontName);
         mainActivityInterface.getPreferences().setMyPreferenceString(which,fontName);
         // Update the font
         if (fontName.startsWith("Fonts/")) {
@@ -193,7 +192,6 @@ public class MyFonts {
 
     private void doSetDesiredFont(String which, Typeface typeface, String fontName,MyMaterialSimpleTextView textView) {
         // Set the desired font
-        Log.d(TAG,"which:"+which+"  fontName:"+fontName);
         switch (which) {
             case "fontLyric":
                 setLyricFont(fontName,typeface);

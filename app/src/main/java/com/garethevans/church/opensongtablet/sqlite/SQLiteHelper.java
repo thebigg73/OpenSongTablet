@@ -48,7 +48,6 @@ public class SQLiteHelper {
 
     public synchronized void resetDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d("Database", "Is database read-only? " + db.isReadOnly());
         // If it's read-only, it's likely a stale/locked connection
         if (db.isReadOnly()) {
             Log.w("Database", "Database is read-only, forcing close and retry.");

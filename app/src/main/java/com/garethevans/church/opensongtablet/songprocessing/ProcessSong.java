@@ -283,7 +283,8 @@ public class ProcessSong {
 
         if (thisSong.getHasExtraStuff()) {
             String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(thisSong).trim();
-            myNEWXML += "  " + extraStuff + "\n";
+            Log.d(TAG,"extraStuff:"+extraStuff);
+            myNEWXML += "  " + extraStuff.trim() + "\n";
         }
         myNEWXML += "</song>";
         return myNEWXML;

@@ -427,7 +427,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Updating toolbar runnable
         updatingToolbarRunnable = () -> {
-            Log.d(TAG,"updatingToolbarRunnable()  webHelpAddress:"+webHelpAddress);
             updatingToolbarHelp = true;
             if (menuScreenHelp != null) {
                 menuScreenHelp.setVisible(webHelpAddress != null && !webHelpAddress.isEmpty());
@@ -2222,7 +2221,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (!updatingToolbarHelp) {
                 updatingToolbarHelp = true;
                 updatingToolbarHandler.removeCallbacks(updatingToolbarRunnable);
-                Log.d(TAG,"webHelpAddress:"+webHelpAddress+"  updatingToolBarHelp:"+updatingToolbarHelp);
                 this.webHelpAddress = webHelpAddress;
                 // For stability, run this on a delayed handler
                 updatingToolbarHandler.postDelayed(updatingToolbarRunnable, 200);
@@ -2606,6 +2604,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 viewPagerAdapter.createFragment(0);
             }
             if (songMenuFragment == null) {
+                Log.d(TAG,"viewPagerAdapter.menuFragments[0]:"+viewPagerAdapter.menuFragments[0]);
                 songMenuFragment = (SongMenuFragment) viewPagerAdapter.menuFragments[0];
             }
             if (setMenuFragment == null) {
