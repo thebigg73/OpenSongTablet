@@ -296,6 +296,7 @@ public interface MainActivityInterface {
     NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
     CommonSQL getCommonSQL();
     AnalyticsSQLiteHelper getAnalyticsHelper();
+    void showRepairSongs();
 
     // Web activities
     WebDownload getWebDownload();

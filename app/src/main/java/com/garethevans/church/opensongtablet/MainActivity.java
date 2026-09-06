@@ -179,6 +179,7 @@ import com.garethevans.church.opensongtablet.songprocessing.EditSongFragment;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentTags;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.RepairSongsBottomSheet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongActionsMenuFragment;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
@@ -2706,6 +2707,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         closeDrawer(myView.drawerLayout.isOpen());
     }
 
+    @Override
+    public void showRepairSongs() {
+        try {
+            RepairSongsBottomSheet repairSongsBottomSheet = new RepairSongsBottomSheet();
+            repairSongsBottomSheet.show(getMyFragmentManager(),"RepairSongs");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void indexSongs() {
         getThreadPoolExecutor().execute(() -> {

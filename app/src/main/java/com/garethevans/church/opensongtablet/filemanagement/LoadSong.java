@@ -651,10 +651,18 @@ public class LoadSong {
         songsToFix = null;
     }
 
+    public void promptToFixSongs() {
+        if (songsToFix!=null && !songsToFix.isEmpty()) {
+            mainActivityInterface.showRepairSongs();
+        }
+    }
+    public ArrayList<Song> getSongsToFix() {
+        return songsToFix;
+    }
     public void fixSongs() {
         if (songsToFix!=null && !songsToFix.isEmpty()) {
             // Let the user know we are fixing songs
-            mainActivityInterface.getShowToast().doIt(c.getString(R.string.fix)+" "+c.getString(R.string.songs).toLowerCase()+" ("+songsToFix.size()+")");
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.repair_songs));
             for (Song thisSong:songsToFix) {
                 if (thisSong.getFiletype()==null) {
                     thisSong.setFiletype(mainActivityInterface.getStorageAccess().tryToFixFileTypeFromNull(thisSong.getFilename()));

@@ -2866,41 +2866,32 @@ public class StorageAccess {
      * @return true if success
      */
     public boolean writeFileFromString(String folder, String subfolder, String filename, String content, boolean appendToExisting) {
-        Log.d(TAG,"writeFileFromString("+folder+","+subfolder+","+filename+","+content);
         // 1. Attempt to get the existing URI
         Uri fileUri = getUriForItem(folder, subfolder, filename);
         OutputStream outputStream = null;
 
-        Log.d(TAG,"fileUri:"+fileUri);
         try {
             // 2. Try the "Happy Path" (file/folders already exists)
             String mode = appendToExisting ? "wa" : "wt";
             outputStream = c.getContentResolver().openOutputStream(fileUri, mode);
-            Log.d(TAG,"fileUri existed and we have a valid output stream");
         } catch (Exception e) {
             // 3. Fallback: File or folders don't exist
             fileUri = createNewFile(folder, subfolder, filename);
-            Log.d(TAG,"fileUri did not exist, so need to try again.  New fileUri:"+fileUri);
         }
 
         // 4. If Happy Path failed, try opening the newly created file
         if (outputStream == null && fileUri != null) {
             try {
-                Log.d(TAG,"try to create the outputStream again");
                 outputStream = c.getContentResolver().openOutputStream(fileUri, "wt");
             } catch (Exception e) {
-                Log.e(TAG, "Final attempt to open stream failed for: " + filename);
                 return false;
             }
         }
 
         // 5. Final validation before writing
         if (outputStream == null || content == null) {
-            Log.d(TAG, "output stream or content was null");
             return false;
         }
-
-        Log.d(TAG, "File stream ready for writing: " + filename);
 
         // 6. Write the data using try-with-resources (Auto-closes streams)
         return writeFileFromString(content, outputStream);

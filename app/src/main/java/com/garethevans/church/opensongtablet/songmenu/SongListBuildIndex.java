@@ -356,9 +356,6 @@ public class SongListBuildIndex {
 
         currentlyIndexing = false;
 
-        // Any songs with rogue endings would've been logged, so fix if needed
-        mainActivityInterface.getLoadSong().fixSongs();
-
         // Get a timestamp of this update into preferences
         mainActivityInterface.getStorageAccess().setDatabaseLastUpdate(System.currentTimeMillis());
 
@@ -370,6 +367,10 @@ public class SongListBuildIndex {
 
         saveIndexLog();
         progressText = null;
+
+        // Any songs with rogue endings would've been logged, so fix if needed
+        mainActivityInterface.getLoadSong().promptToFixSongs();
+
         return returnString.toString();
     }
 
