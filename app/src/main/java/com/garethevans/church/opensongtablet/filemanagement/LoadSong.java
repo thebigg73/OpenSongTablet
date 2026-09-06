@@ -673,9 +673,6 @@ public class LoadSong {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    Log.d(TAG,"content:"+content);
-
                     // Songs with rogue /n instead of \n
                     if (content.contains(">/n")) {
                         content = content.replace(">/n",">\n");
