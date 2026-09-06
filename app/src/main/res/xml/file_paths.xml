@@ -6,4 +6,8 @@
     <external-files-path name="Backups" path="Backups/" />
     <files-path name="files" path="/"/>
     <files-path name="export" path="export/" />
+    <!-- Exposes files in context.getFilesDir() -->
+    <files-path name="internal_files" path="." />
+    <!-- Exposes files in context.getCacheDir() -->
+    <cache-path name="internal_cache" path="." />
 </paths>

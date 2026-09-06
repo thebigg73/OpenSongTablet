@@ -33,13 +33,14 @@ public class SongListBuildIndex {
     private final MainActivityInterface mainActivityInterface;
     @SuppressWarnings({"unused","FieldCanBeLocal"})
     private final String TAG = "SongListBuildIndex";
-    private boolean logIndexing = false;
+    private boolean logIndexing;
     private StringBuilder logIndex = new StringBuilder();
     private MyMaterialSimpleTextView progressText;
 
     public SongListBuildIndex(Context c) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
+        logIndexing = mainActivityInterface.getPreferences().getMyPreferenceBoolean("logIndexing",false);
     }
 
     // This is true if we need to scan the song folder (quick or full)
@@ -53,6 +54,7 @@ public class SongListBuildIndex {
 
     public void setLogIndexing(boolean logIndexing) {
         this.logIndexing = logIndexing;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("logIndexing",logIndexing);
     }
     public boolean getLogIndexing() {
         return logIndexing;

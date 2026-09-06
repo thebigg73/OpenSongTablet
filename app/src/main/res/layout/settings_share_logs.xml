@@ -86,6 +86,42 @@
             <com.garethevans.church.opensongtablet.customviews.MyDivider
                 style="@style/MyDividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MyMaterialSwitch
+                android:id="@+id/songIndexDebug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/song_index_debug_info"
+                android:text="@string/song_index_debug" />
+
+            <LinearLayout
+                android:id="@+id/songIndexDebugLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+                    android:id="@+id/songIndexDebugReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/reset"
+                    android:contentDescription="@string/reset"
+                    app:icon="@drawable/delete" />
+
+                <com.garethevans.church.opensongtablet.customviews.MyExtendedFloatingActionButton
+                    android:id="@+id/songIndexDebugShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/share"
+                    android:contentDescription="@string/share"
+                    app:icon="@drawable/share" />
+            </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MyDivider
+                style="@style/MyDividerLine" />
+
             <com.garethevans.church.opensongtablet.customviews.MyMaterialTextView
                 android:id="@+id/crashView"
                 android:layout_width="match_parent"
