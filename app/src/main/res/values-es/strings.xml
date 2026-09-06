@@ -1041,6 +1041,9 @@
     <string name="remove">Eliminar</string>
     <string name="rename">Cambiar el nombre de</string>
     <string name="rename_info">Cambiar el nombre o cambiar la categoría de un conjunto guardado</string>
+    <string name="repair_songs">Reparar canciones automáticamente</string>
+    <string name="repair_songs_found">Canciones que deben ser reparadas</string>
+    <string name="repair_songs_info">Se han encontrado algunas canciones en tu almacenamiento con problemas menores (generalmente errores de formato XML). Será necesario reparar estos archivos para que la indexación funcione correctamente.</string>
     <string name="repeat_mode">Modo de repetición</string>
     <string name="repeat_mode_count">Número de comandos de tecla hacia arriba para calificar como una pulsación larga (en el tiempo indicado anteriormente)</string>
     <string name="repeat_mode_info">En el caso de los pedales que envían comandos repetidos de tecla hacia abajo y hacia arriba, esto puede simular una acción de pulsación larga</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Características de la canción</string>
     <string name="song_features_warning">Estos valores se configuran mejor utilizando las opciones de funciones de canciones dedicadas en el menú de configuración. Guarde la canción primero. Sin embargo, puede editar manualmente los valores aquí.</string>
     <string name="song_files_separate">Archivos de canciones</string>
+    <string name="song_index_debug">Depurar la indexación de canciones</string>
+    <string name="song_index_debug_info">Si tienes problemas al indexar las canciones, puedes crear registros adicionales para compartirlos con el autor.</string>
     <string name="song_list_filter_reset">Borrar filtros de canciones al cargar</string>
     <string name="song_list_filter_reset_info">Al cargar una canción desde una lista de reproducción o recibida desde un dispositivo conectado, es posible que los filtros de la lista de canciones no coincidan con la canción actual. Desactive esta opción para ignorar este problema y mantener los filtros seleccionados.</string>
     <string name="song_menu_checkboxes">Mostrar casillas de verificación en el menú de canciones</string>

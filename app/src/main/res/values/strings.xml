@@ -1234,6 +1234,9 @@
     <string name="remove">Remove</string>
     <string name="rename">Rename</string>
     <string name="rename_info">Rename or change the category of a saved set</string>
+    <string name="repair_songs">Automatically repair songs</string>
+    <string name="repair_songs_found">Songs to be repaired</string>
+    <string name="repair_songs_info">Some songs have been found in your storage with minor issues (usually simple XML formatting issues).  These files will need to be repaired for the indexing to work properly.</string>
     <string name="repeat_mode">Repeat mode</string>
     <string name="repeat_mode_count">Number of key up commands to qualify as a long press (in the time stated above)</string>
     <string name="repeat_mode_info">For pedals that send repeated key down and up commands this can simulate a long press action</string>
@@ -1380,6 +1383,8 @@
     <string name="song_features">Song features</string>
     <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
     <string name="song_files_separate">Song files</string>
+    <string name="song_index_debug">Debug song indexing</string>
+    <string name="song_index_debug_info">If you are having problems when indexing songs you can create extra logs to share with the author</string>
     <string name="song_list_filter_reset">Clear song filters on load</string>
     <string name="song_list_filter_reset_info">When loading a song from a set list or received from a connected device, your song list filters may not match the current song.  Turn this off to ignore this and keep the filters chosen</string>
     <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>

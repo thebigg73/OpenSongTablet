@@ -1041,6 +1041,9 @@
     <string name="remove">ඉවත් කරන්න</string>
     <string name="rename">නැවත නම් කරන්න</string>
     <string name="rename_info">සුරකින ලද කට්ටලයක ප්‍රවර්ගය නැවත නම් කරන්න හෝ වෙනස් කරන්න</string>
+    <string name="repair_songs">ගීත ස්වයංක්‍රීයව අලුත්වැඩියා කරන්න</string>
+    <string name="repair_songs_found">අලුත්වැඩියා කළ යුතු ගීත</string>
+    <string name="repair_songs_info">ඔබගේ ගබඩාවේ ඇති සමහර ගීත සුළු ගැටළු සහිතව (සාමාන්‍යයෙන් සරල XML ආකෘතිකරණ ගැටළු) සොයාගෙන ඇත. සුචිගත කිරීම නිසි ලෙස ක්‍රියාත්මක වීමට මෙම ගොනු අලුත්වැඩියා කිරීමට අවශ්‍ය වනු ඇත.</string>
     <string name="repeat_mode">නැවත නැවත මාදිලිය</string>
     <string name="repeat_mode_count">දිගු එබීමක් ලෙස සුදුසුකම් ලැබීමට යතුරු උඩු විධාන ගණන (ඉහත සඳහන් කර ඇති කාලය තුළ)</string>
     <string name="repeat_mode_info">නැවත නැවතත් යතුර පහළට සහ ඉහළට යවන පෙඩල් සඳහා මෙය දිගු තද කිරීමේ ක්‍රියාවක් අනුකරණය කළ හැක</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">ගීත විශේෂාංග</string>
     <string name="song_features_warning">මෙම අගයන් සැකසීම් මෙනුවේ කැප වූ ගීත විශේෂාංග විකල්ප භාවිතයෙන් වඩාත් හොඳින් සකසා ඇත. මුලින්ම ගීතය සුරකින්න. කෙසේ වෙතත්, ඔබට මෙහි අගයන් අතින් සංස්කරණය කළ හැක.</string>
     <string name="song_files_separate">ගීත ගොනු</string>
+    <string name="song_index_debug">ගීත සුචිගත කිරීම නිදොස් කරන්න</string>
+    <string name="song_index_debug_info">ගීත සුචිගත කිරීමේදී ඔබට ගැටළු තිබේ නම්, කතුවරයා සමඟ බෙදා ගැනීමට ඔබට අමතර ලොග් සෑදිය හැකිය.</string>
     <string name="song_list_filter_reset">පූරණය වන විට ගීත පෙරහන් හිස් කරන්න</string>
     <string name="song_list_filter_reset_info">කට්ටල ලැයිස්තුවකින් ගීතයක් පූරණය කරන විට හෝ සම්බන්ධිත උපාංගයකින් ලැබෙන විට, ඔබේ ගීත ලැයිස්තු පෙරහන් වත්මන් ගීතයට නොගැලපේ. මෙය නොසලකා හැරීමට සහ පෙරහන් තෝරාගෙන තබා ගැනීමට මෙය අක්‍රිය කරන්න.</string>
     <string name="song_menu_checkboxes">ගීත මෙනුවේ කට්ටල පිරික්සුම් කොටු පෙන්වන්න</string>

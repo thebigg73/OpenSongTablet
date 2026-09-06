@@ -1041,6 +1041,9 @@
     <string name="remove">Usunąć</string>
     <string name="rename">Zmień nazwę</string>
     <string name="rename_info">Zmień nazwę lub kategorię zapisanego zestawu</string>
+    <string name="repair_songs">Automatyczna naprawa utworów</string>
+    <string name="repair_songs_found">Piosenki do naprawy</string>
+    <string name="repair_songs_info">W Twojej pamięci masowej znaleziono kilka utworów z drobnymi problemami (zazwyczaj są to proste błędy formatowania XML). Aby indeksowanie działało poprawnie, te pliki będą wymagały naprawy.</string>
     <string name="repeat_mode">Tryb powtarzania</string>
     <string name="repeat_mode_count">Liczba komend Up, aby zakwalifikować się jako długie naciśnięcie (w czasie podanym powyżej)</string>
     <string name="repeat_mode_info">W przypadku pedałów, które wysyłają powtarzające się polecenia w dół i w górę, może to symulować długie naciśnięcie</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Funkcje piosenki</string>
     <string name="song_features_warning">Te wartości najlepiej ustawić za pomocą dedykowanych opcji funkcji piosenki w menu ustawień. Najpierw zapisz piosenkę. Możesz jednak ręcznie edytować wartości tutaj.</string>
     <string name="song_files_separate">Pliki utworów</string>
+    <string name="song_index_debug">Debugowanie indeksowania utworów</string>
+    <string name="song_index_debug_info">Jeśli masz problemy z indeksowaniem utworów, możesz utworzyć dodatkowe dzienniki i udostępnić je autorowi</string>
     <string name="song_list_filter_reset">Wyczyść filtry utworów podczas ładowania</string>
     <string name="song_list_filter_reset_info">Podczas ładowania utworu z listy utworów lub odbierania go z podłączonego urządzenia, filtry listy utworów mogą nie pasować do bieżącego utworu. Wyłącz tę opcję, aby zignorować ten problem i zachować wybrane filtry.</string>
     <string name="song_menu_checkboxes">Pokaż zaznaczone pola wyboru w menu piosenki</string>

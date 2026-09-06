@@ -1041,6 +1041,9 @@
     <string name="remove">Remover</string>
     <string name="rename">Rebatizar</string>
     <string name="rename_info">Renomeie ou altere a categoria de um conjunto salvo</string>
+    <string name="repair_songs">Reparar músicas automaticamente</string>
+    <string name="repair_songs_found">Músicas a serem reparadas</string>
+    <string name="repair_songs_info">Foram encontradas algumas músicas em seu armazenamento com problemas menores (geralmente problemas simples de formatação XML). Esses arquivos precisarão ser reparados para que a indexação funcione corretamente.</string>
     <string name="repeat_mode">Modo de repetição</string>
     <string name="repeat_mode_count">Número de comandos de tecla para cima para se qualificar como uma pressão longa (no tempo indicado acima)</string>
     <string name="repeat_mode_info">Para pedais que enviam comandos repetidos para baixo e para cima, isso pode simular uma longa ação de pressionar</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Recursos da música</string>
     <string name="song_features_warning">Esses valores são melhor definidos usando as opções de recursos de música dedicados no menu de configurações. Salve a música primeiro. Você pode, no entanto, editar manualmente os valores aqui.</string>
     <string name="song_files_separate">Arquivos de música</string>
+    <string name="song_index_debug">Indexação de músicas depuradas</string>
+    <string name="song_index_debug_info">Se você estiver com problemas ao indexar músicas, pode criar registros adicionais para compartilhar com o autor.</string>
     <string name="song_list_filter_reset">Limpar filtros de música ao carregar</string>
     <string name="song_list_filter_reset_info">Ao carregar uma música de uma lista de reprodução ou recebida de um dispositivo conectado, os filtros da sua lista de músicas podem não corresponder à música atual. Desative esta opção para ignorar esse problema e manter os filtros selecionados.</string>
     <string name="song_menu_checkboxes">Mostrar caixas de seleção no menu de músicas</string>

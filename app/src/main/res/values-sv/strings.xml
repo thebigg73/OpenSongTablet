@@ -1041,6 +1041,9 @@
     <string name="remove">Ta bort</string>
     <string name="rename">Döpa om</string>
     <string name="rename_info">Byt namn på eller ändra kategorin för en sparad uppsättning</string>
+    <string name="repair_songs">Reparera låtar automatiskt</string>
+    <string name="repair_songs_found">Låtar som ska repareras</string>
+    <string name="repair_songs_info">Vissa låtar har hittats i ditt lagringsutrymme med mindre problem (vanligtvis enkla XML-formateringsproblem). Dessa filer måste repareras för att indexeringen ska fungera korrekt.</string>
     <string name="repeat_mode">Upprepat läge</string>
     <string name="repeat_mode_count">Antal tangentkommandon för att kvalificera sig som ett långt tryck (under den tid som anges ovan)</string>
     <string name="repeat_mode_info">För pedaler som skickar upprepade kommandon för tangent ner och upp kan detta simulera en lång tryckning</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Låtfunktioner</string>
     <string name="song_features_warning">Dessa värden ställs bäst in med de dedikerade sångfunktionsalternativen i inställningsmenyn. Spara låten först. Du kan dock redigera värdena manuellt här.</string>
     <string name="song_files_separate">Låtfiler</string>
+    <string name="song_index_debug">Felsöka låtindexering</string>
+    <string name="song_index_debug_info">Om du har problem med att indexera låtar kan du skapa extra loggar att dela med upphovsmannen.</string>
     <string name="song_list_filter_reset">Rensa låtfilter vid laddning</string>
     <string name="song_list_filter_reset_info">När du laddar en låt från en spellista eller tar emot den från en ansluten enhet kanske dina filter för låtlistan inte matchar den aktuella låten. Stäng av detta för att ignorera detta och behålla de valda filtren.</string>
     <string name="song_menu_checkboxes">Visa inställda kryssrutor i låtmenyn</string>

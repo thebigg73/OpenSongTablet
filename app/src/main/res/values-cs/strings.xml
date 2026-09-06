@@ -1041,6 +1041,9 @@
     <string name="remove">Odstranit</string>
     <string name="rename">Přejmenovat</string>
     <string name="rename_info">Přejmenujte nebo změňte kategorii uložené sady</string>
+    <string name="repair_songs">Automaticky opravovat skladby</string>
+    <string name="repair_songs_found">Písně k opravě</string>
+    <string name="repair_songs_info">Ve vašem úložišti byly nalezeny některé skladby s drobnými problémy (obvykle jednoduché problémy s formátováním XML). Aby indexování fungovalo správně, bude nutné tyto soubory opravit.</string>
     <string name="repeat_mode">Režim opakování</string>
     <string name="repeat_mode_count">Počet příkazů pro stisknutí klávesy, které se kvalifikují jako dlouhé stisknutí (ve výše uvedeném čase)</string>
     <string name="repeat_mode_info">U pedálů, které vysílají opakované příkazy kláves dolů a nahoru, to může simulovat dlouhý stisk</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Vlastnosti písně</string>
     <string name="song_features_warning">Tyto hodnoty lze nejlépe nastavit pomocí možností vyhrazených funkcí skladby v nabídce nastavení. Nejprve skladbu uložte. Zde však můžete ručně upravit hodnoty.</string>
     <string name="song_files_separate">Soubory písní</string>
+    <string name="song_index_debug">Ladění indexování skladeb</string>
+    <string name="song_index_debug_info">Pokud máte problémy s indexováním skladeb, můžete si vytvořit další protokoly, které budete moci sdílet s autorem.</string>
     <string name="song_list_filter_reset">Vymazat filtry skladeb při načítání</string>
     <string name="song_list_filter_reset_info">Při načítání skladby ze seznamu skladeb nebo při přijímání z připojeného zařízení se filtry seznamu skladeb nemusí shodovat s aktuální skladbou. Vypnutím této funkce tuto funkci ignorujete a ponecháte vybrané filtry.</string>
     <string name="song_menu_checkboxes">Zobrazit zaškrtávací políčka v nabídce skladby</string>

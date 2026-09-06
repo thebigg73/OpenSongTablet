@@ -1041,6 +1041,9 @@
     <string name="remove">Retirer</string>
     <string name="rename">Renomer</string>
     <string name="rename_info">Renommer ou modifier la catégorie d\'un ensemble enregistré</string>
+    <string name="repair_songs">Réparation automatique des chansons</string>
+    <string name="repair_songs_found">Chansons à réparer</string>
+    <string name="repair_songs_info">Certains morceaux présents dans votre espace de stockage présentent des problèmes mineurs (généralement de simples problèmes de formatage XML). Ces fichiers devront être réparés pour que l\'indexation fonctionne correctement.</string>
     <string name="repeat_mode">Mode de répétition</string>
     <string name="repeat_mode_count">Nombre de touches vers le haut pour être considéré comme un appui long (dans le temps indiqué ci-dessus)</string>
     <string name="repeat_mode_info">Pour les pédales qui envoient des commandes répétées de touches vers le bas et vers le haut, cela peut simuler une action d’appui long</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Caractéristiques de la chanson</string>
     <string name="song_features_warning">Ces valeurs sont mieux définies à l\'aide des options de fonction de chanson dédiées dans le menu des paramètres. Enregistrez d\'abord le morceau. Vous pouvez cependant modifier manuellement les valeurs ici.</string>
     <string name="song_files_separate">Fichiers de chansons</string>
+    <string name="song_index_debug">Indexation des chansons de débogage</string>
+    <string name="song_index_debug_info">Si vous rencontrez des problèmes lors de l\'indexation des chansons, vous pouvez créer des journaux supplémentaires à partager avec l\'auteur.</string>
     <string name="song_list_filter_reset">Effacer les filtres musicaux au chargement</string>
     <string name="song_list_filter_reset_info">Lors du chargement d\'un morceau depuis une playlist ou reçu d\'un appareil connecté, les filtres de votre playlist peuvent ne pas correspondre au morceau en cours. Désactivez cette option pour ignorer ce problème et conserver les filtres sélectionnés.</string>
     <string name="song_menu_checkboxes">Afficher les cases à cocher dans le menu de la chanson</string>

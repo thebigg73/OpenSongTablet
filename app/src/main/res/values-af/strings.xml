@@ -1041,6 +1041,9 @@
     <string name="remove">Verwyder</string>
     <string name="rename">Hernoem</string>
     <string name="rename_info">Hernoem of verander die kategorie van \'n gestoorde stel</string>
+    <string name="repair_songs">Herstel liedjies outomaties</string>
+    <string name="repair_songs_found">Liedjies wat herstel moet word</string>
+    <string name="repair_songs_info">Sommige liedjies is in jou berging gevind met geringe probleme (gewoonlik eenvoudige XML-formateringsprobleme). Hierdie lêers sal herstel moet word sodat die indeksering behoorlik kan werk.</string>
     <string name="repeat_mode">Herhaal modus</string>
     <string name="repeat_mode_count">Aantal sleutelopdragte om as \'n lang druk te kwalifiseer (in die tyd hierbo genoem)</string>
     <string name="repeat_mode_info">Vir pedale wat herhaalde sleutel-af- en op-opdragte stuur, kan dit \'n lang drukaksie simuleer</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Lied kenmerke</string>
     <string name="song_features_warning">Hierdie waardes word die beste gestel deur die toegewyde liedjie-funksie-opsies in die instellingskieslys te gebruik. Stoor eers die liedjie. U kan egter die waardes hier handmatig wysig.</string>
     <string name="song_files_separate">Liedjie lêers</string>
+    <string name="song_index_debug">Ontfouting van liedjieindeksering</string>
+    <string name="song_index_debug_info">As jy probleme ondervind met die indeksering van liedjies, kan jy ekstra logboeke skep om met die outeur te deel.</string>
     <string name="song_list_filter_reset">Vee liedjiefilters uit tydens laai</string>
     <string name="song_list_filter_reset_info">Wanneer jy \'n liedjie vanaf \'n stellys laai of vanaf \'n gekoppelde toestel ontvang, mag jou liedjielysfilters nie met die huidige liedjie ooreenstem nie. Skakel dit af om dit te ignoreer en die gekose filters te behou.</string>
     <string name="song_menu_checkboxes">Wys verstek bokse in die lied menu</string>

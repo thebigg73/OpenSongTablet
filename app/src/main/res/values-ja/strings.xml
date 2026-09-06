@@ -1041,6 +1041,9 @@
     <string name="remove">取り除く</string>
     <string name="rename">リネーム</string>
     <string name="rename_info">保存したセットのカテゴリの名前を変更または変更する</string>
+    <string name="repair_songs">曲を自動的に修復する</string>
+    <string name="repair_songs_found">修復が必要な楽曲</string>
+    <string name="repair_songs_info">ストレージ内の一部の楽曲に軽微な問題（通常は単純なXMLフォーマットの問題）が見つかりました。インデックス作成を正しく機能させるには、これらのファイルを修復する必要があります。</string>
     <string name="repeat_mode">リピートモード</string>
     <string name="repeat_mode_count">長押しと見なされるキーアップコマンドの数(上記の時間内)</string>
     <string name="repeat_mode_info">キーを押し下げたり上ったりするコマンドを繰り返すペダルの場合、これは長押しアクションをシミュレートできます</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">曲の特徴</string>
     <string name="song_features_warning">これらの値は、設定メニューの専用の曲機能オプションを使用して設定するのが最適です。 最初に曲を保存します。 ただし、ここで値を手動で編集できます。</string>
     <string name="song_files_separate">ソングファイル</string>
+    <string name="song_index_debug">デバッグソングのインデックス作成</string>
+    <string name="song_index_debug_info">曲のインデックス作成時に問題が発生した場合は、追加のログを作成して作者と共有することができます。</string>
     <string name="song_list_filter_reset">読み込み時に曲のフィルターをクリアする</string>
     <string name="song_list_filter_reset_info">セットリストから曲を読み込む場合、または接続されたデバイスから曲を読み込む場合、曲リストのフィルターが現在の曲と一致しない場合があります。これをオフにすると、このエラーを無視して選択したフィルターが維持されます。</string>
     <string name="song_menu_checkboxes">ソングメニューで設定したチェックボックスを表示する</string>

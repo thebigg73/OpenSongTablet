@@ -1041,6 +1041,9 @@
     <string name="remove">Távolítsa el</string>
     <string name="rename">Átnevezése</string>
     <string name="rename_info">A mentett készlet kategóriájának átnevezése vagy módosítása</string>
+    <string name="repair_songs">Zeneszámok automatikus javítása</string>
+    <string name="repair_songs_found">Javításra váró dalok</string>
+    <string name="repair_songs_info">Néhány dalt találtunk a tárhelyedben kisebb problémákkal (általában egyszerű XML formázási problémákkal). Ezeket a fájlokat javítani kell ahhoz, hogy az indexelés megfelelően működjön.</string>
     <string name="repeat_mode">Ismétlési mód</string>
     <string name="repeat_mode_count">A hosszú lenyomásnak minősülő billentyűkombinációs parancsok száma (a fent megadott idő alatt)</string>
     <string name="repeat_mode_info">Azoknál a pedáloknál, amelyek ismételt billentyűle- és felgombolási parancsokat küldenek, ez hosszú lenyomási műveletet szimulálhat</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">A dal jellemzői</string>
     <string name="song_features_warning">Ezeket az értékeket a legjobban a beállítások menüben található dal funkció opcióival lehet beállítani. Először mentse el a dalt. Itt azonban manuálisan is szerkesztheti az értékeket.</string>
     <string name="song_files_separate">Dalfájlok</string>
+    <string name="song_index_debug">Dalok indexelésének hibakeresése</string>
+    <string name="song_index_debug_info">Ha problémái vannak a dalok indexelésével, létrehozhat extra naplókat, amelyeket megoszthat a szerzővel.</string>
     <string name="song_list_filter_reset">Zeneszám-szűrők törlése betöltéskor</string>
     <string name="song_list_filter_reset_info">Amikor egy dalt betöltesz egy lejátszási listából vagy csatlakoztatott eszközről fogadsz, a dallista szűrői nem biztos, hogy egyeznek az aktuális dallal. Kapcsold ki ezt a funkciót, ha ezt figyelmen kívül szeretnéd hagyni, és meg szeretnéd tartani a kiválasztott szűrőket.</string>
     <string name="song_menu_checkboxes">Itt található készlet jelölőnégyzetet dal menü</string>

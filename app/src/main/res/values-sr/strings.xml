@@ -1041,6 +1041,9 @@
     <string name="remove">Uklonite</string>
     <string name="rename">Promeniti ime</string>
     <string name="rename_info">Preimenujte ili promenite kategoriju sačuvanog skupa</string>
+    <string name="repair_songs">Automatski popravi pesme</string>
+    <string name="repair_songs_found">Pesme koje treba popraviti</string>
+    <string name="repair_songs_info">Neke pesme su pronađene u vašem skladištu sa manjim problemima (obično jednostavni problemi sa XML formatiranjem). Ove fajlove je potrebno popraviti da bi indeksiranje funkcionisalo ispravno.</string>
     <string name="repeat_mode">Režim ponavljanja</string>
     <string name="repeat_mode_count">Broj komandi tastera naviše za kvalifikovanje kao dugačka štampa (u gore navedenom vremenu)</string>
     <string name="repeat_mode_info">Za pedale koje šalju ponovljen taster nadole i na gore komande ovo može da simulira dugu radnju štampe</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Karakteristike pesme</string>
     <string name="song_features_warning">Ove vrednosti se najbolje podešavaju korišćenjem posebnih opcija za pesmu u meniju podešavanja. Prvo sačuvajte pesmu. Međutim, ovde možete ručno urediti vrednosti.</string>
     <string name="song_files_separate">Fajlovi pesama</string>
+    <string name="song_index_debug">Otklanjanje grešaka u indeksiranju pesama</string>
+    <string name="song_index_debug_info">Ako imate problema prilikom indeksiranja pesama možete kreirati dodatne zapise koje ćete podeliti sa autorom</string>
     <string name="song_list_filter_reset">Obrišite filtere pesama pri učitavanju</string>
     <string name="song_list_filter_reset_info">Prilikom učitavanja pesme sa set liste ili primljene sa povezanog uređaja, filteri liste pesama možda neće odgovarati trenutnoj pesmi.  Isključite ovo da biste ignorisali ovo i zadržali izabrane filtere</string>
     <string name="song_menu_checkboxes">Prikazivanje ček boksa u meniju pesama</string>

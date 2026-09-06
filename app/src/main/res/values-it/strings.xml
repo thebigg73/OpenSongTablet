@@ -1041,6 +1041,9 @@
     <string name="remove">Rimuovere</string>
     <string name="rename">Rinominare</string>
     <string name="rename_info">Rinominare o modificare la categoria di una scaletta salvata</string>
+    <string name="repair_songs">Ripara automaticamente i brani</string>
+    <string name="repair_songs_found">Canzoni da riparare</string>
+    <string name="repair_songs_info">Alcuni brani presenti nella memoria del dispositivo presentano piccoli problemi (di solito semplici problemi di formattazione XML). Questi file dovranno essere riparati affinché l\'indicizzazione funzioni correttamente.</string>
     <string name="repeat_mode">Modalità di ripetizione</string>
     <string name="repeat_mode_count">Numero di comandi tastiera ricevuti dal pedale per identificare una pressione prolungata (nel tempo sopra indicato)</string>
     <string name="repeat_mode_info">Per i pedali che inviano ripetuti comandi di tasti su e giù, questo può simulare un\'azione di pressione prolungata</string>
@@ -1186,6 +1189,8 @@
     <string name="song_features">Caratteristiche del brano</string>
     <string name="song_features_warning">Questi valori possono essere impostati al meglio modificando le opzioni presenti nella voce di menu Impostazioni/Gestione del brano; si consiglia di salvare prima il brano. È tuttavia possibile modificare manualmente i valori qui.</string>
     <string name="song_files_separate">Singoli files di brani</string>
+    <string name="song_index_debug">Indicizzazione dei brani di debug</string>
+    <string name="song_index_debug_info">Se riscontri problemi durante l\'indicizzazione dei brani, puoi creare dei log aggiuntivi da condividere con l\'autore.</string>
     <string name="song_list_filter_reset">Cancella i filtri dei brani al caricamento</string>
     <string name="song_list_filter_reset_info">Quando si carica un brano da una playlist o ricevuto da un dispositivo connesso, i filtri della playlist potrebbero non corrispondere al brano corrente. Disattiva questa opzione per ignorare questo messaggio e mantenere i filtri selezionati.</string>
     <string name="song_menu_checkboxes">Mostra le caselle di controllo nel menu dei brani</string>
