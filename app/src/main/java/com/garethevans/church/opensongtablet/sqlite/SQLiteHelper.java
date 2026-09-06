@@ -47,25 +47,8 @@ public class SQLiteHelper {
     }
 
     public synchronized void resetDatabase() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        // If it's read-only, it's likely a stale/locked connection
-        if (db.isReadOnly()) {
-            Log.w("Database", "Database is read-only, forcing close and retry.");
-            db.close(); // Close the stale connection
-            // Do NOT call getWritableDatabase() again here, just let the next call handle it
-            return;
-        }
-
-        db.beginTransaction();
-        try {
-            db.execSQL("DELETE FROM " + SQLite.TABLE_NAME);
-            db.execSQL("DELETE FROM sqlite_sequence WHERE name='" + SQLite.TABLE_NAME + "'");
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-            Log.e("Database", "Error clearing table", e);
-        } finally {
-            db.endTransaction();
-        }
+        Log.d(TAG,"resetDatabase() called");
+        songsDb.resetDatabase(c);
     }
 
     // Create, delete and update entries
