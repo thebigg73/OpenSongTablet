@@ -35,7 +35,7 @@ public class SongsDatabase extends SQLiteOpenHelper {
                     instance = null;
                 }
 
-                // 2. Perform the physical file deletions
+                // 2. Perform the physical file deletions (this database is no longer used)
                 File oldDbFile = mainActivityInterface.getStorageAccess().getAppSpecificFile("Database", "", SQLite.DATABASE_NAME);
                 if (oldDbFile.exists()) {
                     Log.d(TAG, "Old DB file removed: " + oldDbFile.delete());
@@ -95,5 +95,21 @@ public class SongsDatabase extends SQLiteOpenHelper {
         super.onConfigure(db);
         // Enables WAL mode - can read while writing
         db.enableWriteAheadLogging();
+    }
+
+    public synchronized void resetDatabase(Context context) {
+        Log.d(TAG, "resetDatabase() called");
+
+        // 1. Get the current writable database connection and close it if open
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+
+        // 2. Completely delete the physical database file and its WAL/journal files
+        context.deleteDatabase(SQLite.DATABASE_NAME);
+
+        // 3. Reinitialize a fresh database file via the helper
+        SQLiteDatabase freshDb = this.getWritableDatabase();
     }
 }

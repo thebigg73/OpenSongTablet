@@ -127,24 +127,30 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             return;
         }
 
-        currentDB.beginTransaction();
-
         try {
             currentDB.execSQL("ATTACH DATABASE '" + dbToImport + "' AS tempDb");
 
-            String sql = (overwrite)
-                    ? "REPLACE INTO main." + SQLite.TABLE_NAME + " SELECT * FROM tempDb." + SQLite.TABLE_NAME
-                    : "INSERT OR IGNORE INTO main." + SQLite.TABLE_NAME + " SELECT * FROM tempDb." + SQLite.TABLE_NAME;
+            try {
+                currentDB.beginTransaction();
 
-            currentDB.execSQL(sql);
-            currentDB.execSQL("DETACH DATABASE tempDb");
+                String sql = (overwrite)
+                        ? "REPLACE INTO main." + SQLite.TABLE_NAME + " SELECT * FROM tempDb." + SQLite.TABLE_NAME
+                        : "INSERT OR IGNORE INTO main." + SQLite.TABLE_NAME + " SELECT * FROM tempDb." + SQLite.TABLE_NAME;
 
-            currentDB.setTransactionSuccessful();
-        } catch (OutOfMemoryError | Exception e) { // Keep both here
+                currentDB.execSQL(sql);
+                currentDB.setTransactionSuccessful();
+            } finally {
+                currentDB.endTransaction();
+            }
+
+        } catch (OutOfMemoryError | Exception e) {
             Log.e(TAG, "Database import failed", e);
         } finally {
-            currentDB.endTransaction();
-            // Do NOT call currentDB.close()!
+            try {
+                currentDB.execSQL("DETACH DATABASE tempDb");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to detach tempDb", e);
+            }
         }
     }
 
