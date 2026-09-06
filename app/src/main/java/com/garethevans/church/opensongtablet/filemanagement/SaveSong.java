@@ -105,8 +105,9 @@ public class SaveSong {
                 }
             }
 
-            // Update the MIDI clock
-            //mainActivityInterface.getMidi().calculateMidiClock(newSong);
+            // Scans the database again
+            mainActivityInterface.getSQLiteHelper().deleteSong(oldFolder,oldFilename);
+            mainActivityInterface.updateSongList();
 
             return saveSuccessful;
 
