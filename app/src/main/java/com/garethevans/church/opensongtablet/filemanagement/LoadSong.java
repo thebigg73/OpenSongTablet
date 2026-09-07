@@ -435,8 +435,10 @@ public class LoadSong {
 
                         // Extract all of the stuff we need
                         eventType = xpp.getEventType();
+                        String lastTag = "";
                         while (eventType != XmlPullParser.END_DOCUMENT) {
                             if (eventType == XmlPullParser.START_TAG) {
+                                lastTag = xpp.getName();
                                 switch (xpp.getName()) {
                                     case "author":
                                         try {
@@ -586,14 +588,20 @@ public class LoadSong {
                                         break;
                                 }
                             } else if (eventType == XmlPullParser.TEXT) {
-                                String text = xpp.getText();
-                                if (text != null && text.contains("/n")) {
-                                    // Rogue text found inside the XML tree, flag for fixing
-                                    if (songsToFix == null) {
-                                        songsToFix = new ArrayList<>();
-                                    }
-                                    if (!songsToFix.contains(thisSong)) {
-                                        songsToFix.add(thisSong);
+                                // Rogue text found inside the XML tree, flag for fixing
+                                // Only happens after the backgrounds or style tags
+                                if (lastTag.equals("style")|| lastTag.equals("backgrounds")) {
+                                    String text = xpp.getText();
+                                    if (text != null && text.contains("/n") && text.length()<10) {
+                                        Log.d(TAG,"text:"+text+"  text.length:"+text.length()+" in song "+thisSong.getFilename());
+                                        // Rogue text found inside the XML tree, flag for fixing
+                                        // We need it to be less than 10 chars as we could have encoded image with /n
+                                        if (songsToFix == null) {
+                                            songsToFix = new ArrayList<>();
+                                        }
+                                        if (!songsToFix.contains(thisSong)) {
+                                            songsToFix.add(thisSong);
+                                        }
                                     }
                                 }
                             }
