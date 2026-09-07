@@ -105,9 +105,20 @@ public class SaveSong {
                 }
             }
 
-            // Scans the database again
-            mainActivityInterface.getSQLiteHelper().deleteSong(oldFolder,oldFilename);
-            mainActivityInterface.updateSongList();
+            if (folderChange || filenameChange) {
+                // Remove the old file
+                mainActivityInterface.getSQLiteHelper().deleteSong(oldFolder, oldFilename);
+            }
+            // Scans the database again and updates the song menu
+            try {
+                mainActivityInterface.updateSongList();
+                if (mainActivityInterface.getSongMenuFragment() != null) {
+                    mainActivityInterface.getSongMenuFragment().refreshSongListDisplay();
+                    mainActivityInterface.getSongMenuFragment().prepareSearch();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return saveSuccessful;
 

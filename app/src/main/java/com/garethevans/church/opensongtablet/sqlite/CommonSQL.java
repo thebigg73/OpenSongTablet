@@ -140,8 +140,11 @@ public class CommonSQL {
 
         String songid = getAnySongId(folder, filename);
 
+        Log.d(TAG,"createSong("+folder+","+filename+")");
+
         // If it doesn't already exist, create it
         if (!songIdExists(db,songid)) {
+            Log.d(TAG,"doesn't exist, so add it");
             ContentValues values = new ContentValues();
             values.put(SQLite.COLUMN_SONGID, songid);
             values.put(SQLite.COLUMN_FOLDER, folder);
@@ -161,9 +164,14 @@ public class CommonSQL {
 
             // Insert the new row
             try {
-                db.insert(SQLite.TABLE_NAME, null, values);
+                long newRowId = db.insert(SQLite.TABLE_NAME, null, values);
+                if (newRowId != -1) {
+                    Log.d(TAG, "Added to the table with row ID: " + newRowId);
+                } else {
+                    Log.e(TAG, "Insert failed, returned -1");
+                }
             } catch (Exception e) {
-                Log.d(TAG, songid + " already exists in the table, not able to create.");
+                e.printStackTrace();
             }
         }
     }
@@ -335,7 +343,6 @@ public class CommonSQL {
         return cursor.getString(cursor.getColumnIndexOrThrow(index));
     }
 
-
     // Search for values in the table
     public ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
                                              boolean searchByArtist, boolean searchByKey, boolean searchByTag,
@@ -358,64 +365,71 @@ public class CommonSQL {
                 args.add(folderVal + "%");
             }
         }
+
+        // --- FIXED: ACCENT & PUNCTUATION INSENSITIVE ARTIST SEARCH VIA GLOB ---
         if (searchByArtist && artistVal != null && !artistVal.isEmpty()) {
-            sqlMatch += SQLite.COLUMN_AUTHOR + " LIKE ? AND ";
-            args.add("%" + artistVal + "%");
+            String wildcardPattern = "*" + convertToAccentWildcard(artistVal) + "*";
+            sqlMatch += "LOWER(" + SQLite.COLUMN_AUTHOR + ") GLOB ? AND ";
+            args.add(wildcardPattern);
         }
+
+
         if (searchByKey && keyVal != null && !keyVal.isEmpty()) {
             sqlMatch += SQLite.COLUMN_KEY + "= ? AND ";
             args.add(keyVal);
         }
+
+        // --- FIXED: ACCENT & PUNCTUATION INSENSITIVE TAG SEARCH VIA GLOB ---
         if (searchByTag && tagVal != null && !tagVal.isEmpty()) {
             String[] tagArray = StringUtils.splitPreserveAllTokens(tagVal, ";");
             if (tagArray.length > 0) {
                 sqlMatch += "(";
                 StringBuilder tempSqlMatch = new StringBuilder();
                 for (int i = 0, max = tagArray.length; i < max; i++) {
-                    //sqlMatch += SQLite.COLUMN_THEME + " LIKE ? OR " + SQLite.COLUMN_ALTTHEME + " LIKE ?";
-                    tempSqlMatch.append(SQLite.COLUMN_THEME).append(" LIKE ? OR ").append(SQLite.COLUMN_ALTTHEME).append(" LIKE ?");
+                    String wildcardPattern = "*" + convertToAccentWildcard(tagArray[i]) + "*";
+                    tempSqlMatch.append("LOWER(").append(SQLite.COLUMN_THEME).append(") GLOB ? OR ")
+                            .append("LOWER(").append(SQLite.COLUMN_ALTTHEME).append(") GLOB ?");
                     if (i < max - 1) {
                         tempSqlMatch.append(" OR ");
-                        //sqlMatch += " OR ";
                     }
-                    args.add("%" + tagArray[i] + "%");
-                    args.add("%" + tagArray[i] + "%");
+                    args.add(wildcardPattern);
+                    args.add(wildcardPattern);
                 }
                 sqlMatch += tempSqlMatch + ") AND ";
             }
         }
-        if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
-            // 1. Lowercase the user's search query for SQLite
-            String lowerTitleVal = titleVal.toLowerCase();
 
-            // 2. Use standard LOWER() instead of the REPLACE cascade to avoid parser overflow
+        // --- FIXED: ACCENT & PUNCTUATION INSENSITIVE TITLE SEARCH VIA GLOB ---
+        if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
+            String wildcardPattern = "*" + convertToAccentWildcard(titleVal) + "*";
+
             sqlMatch += "(" +
-                    "LOWER(" + SQLite.COLUMN_TITLE + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_FILENAME + ") LIKE ? " +
+                    "LOWER(" + SQLite.COLUMN_TITLE + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_FILENAME + ") GLOB ? " +
                     ") AND ";
 
-            // 3. Add the arguments
-            args.add("%" + lowerTitleVal + "%");
-            args.add("%" + lowerTitleVal + "%");
-
+            args.add(wildcardPattern);
+            args.add(wildcardPattern);
         }
 
+        // --- FIXED: ACCENT & PUNCTUATION INSENSITIVE GLOBAL FILTER VIA GLOB ---
         if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
-            String lowerFilterVal = filterVal.toLowerCase();
+            String wildcardPattern = "*" + convertToAccentWildcard(filterVal) + "*";
+
             sqlMatch += "(" +
-                    "LOWER(" + SQLite.COLUMN_LYRICS + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_FILENAME + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_TITLE + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_COPYRIGHT + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_HYMNNUM + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_CCLI + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_USER1 + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_USER2 + ") LIKE ? OR " +
-                    "LOWER(" + SQLite.COLUMN_USER3 + ") LIKE ? " +
+                    "LOWER(" + SQLite.COLUMN_LYRICS + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_FILENAME + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_TITLE + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_COPYRIGHT + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_HYMNNUM + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_CCLI + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_USER1 + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_USER2 + ") GLOB ? OR " +
+                    "LOWER(" + SQLite.COLUMN_USER3 + ") GLOB ? " +
                     ") AND ";
 
             for (int i = 0; i < 9; i++) {
-                args.add("%" + lowerFilterVal + "%");
+                args.add(wildcardPattern);
             }
         }
 
@@ -481,7 +495,7 @@ public class CommonSQL {
         // close cursor connection
         closeCursor(cursor);
 
-        // --- ACCENT-INSENSITIVE IN-MEMORY POST-FILTER ---
+        // --- ACCENT & PUNCTUATION INSENSITIVE IN-MEMORY POST-FILTER ---
         java.util.Iterator<Song> iterator = songs.iterator();
         while (iterator.hasNext()) {
             Song song = iterator.next();
@@ -489,8 +503,8 @@ public class CommonSQL {
 
             // 1. If filtering globally, check all fields
             if (searchByFilter && filterVal != null && !filterVal.isEmpty()) {
-                String cleanFilterVal = stripAccents(filterVal);
-                String combinedFields = stripAccents(
+                String cleanFilterVal = normalizeForSearch(filterVal);
+                String combinedFields = normalizeForSearch(
                         song.getTitle() + " " +
                                 song.getFilename() + " " +
                                 song.getAuthor() + " " +
@@ -505,9 +519,9 @@ public class CommonSQL {
 
             // 2. If searching by title specifically, check only title and filename
             if (searchByTitle && titleVal != null && !titleVal.isEmpty()) {
-                String cleanTitleVal = stripAccents(titleVal);
-                String cleanSongTitle = stripAccents(song.getTitle());
-                String cleanSongFilename = stripAccents(song.getFilename());
+                String cleanTitleVal = normalizeForSearch(titleVal);
+                String cleanSongTitle = normalizeForSearch(song.getTitle());
+                String cleanSongFilename = normalizeForSearch(song.getFilename());
 
                 if (!cleanSongTitle.contains(cleanTitleVal) && !cleanSongFilename.contains(cleanTitleVal)) {
                     matches = false;
@@ -540,6 +554,40 @@ public class CommonSQL {
         String normalized = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
         return normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
     }
+
+    private String convertToAccentWildcard(String input) {
+        if (input == null) return "";
+
+        // 1. Strip out diacritics/accents first
+        String text = stripAccents(input);
+
+        // 2. Remove problematic punctuation characters that interfere with GLOB
+        // This strips out: [ ] ? * , . - ; : ( ) !
+        text = text.replaceAll("[\\[\\]\\?\\*,\\.\\-;:()!]", "");
+
+        // 3. Clean up whitespace: Replace all tabs/newlines/multiple spaces with a single space
+        text = text.replaceAll("\\s+", " ").trim();
+
+        // 4. Map the normalized text to bracketed wildcard expressions for SQLite GLOB
+        return text.replace("a", "[aáàäâãå]")
+                .replace("e", "[eéèëêě]")
+                .replace("i", "[iíìïî]")
+                .replace("o", "[oóòöôõø]")
+                .replace("u", "[uúùüûů]")
+                .replace("c", "[cçč]")
+                .replace("n", "[nñň]")
+                .replace("s", "[sš]")
+                .replace("z", "[zž]");
+    }
+
+    private String normalizeForSearch(String input) {
+        if (input == null) return "";
+        // Strip accents, remove punctuation, collapse multiple spaces to one, and lowercase
+        String normalized = stripAccents(input);
+        normalized = normalized.replaceAll("[\\[\\]\\?\\*,\\.\\-;:()!]", "");
+        return normalized.replaceAll("\\s+", " ").trim();
+    }
+
     private String getAccentInsensitiveColumn(String columnName) {
         // Pairs of accented characters and their replacements (covers standard European, Dutch, Czech, etc.)
         String[][] replacements = {

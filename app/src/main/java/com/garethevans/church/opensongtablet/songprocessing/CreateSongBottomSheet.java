@@ -230,6 +230,9 @@ public class CreateSongBottomSheet extends BottomSheetCommon {
                     error = true;
                     e.printStackTrace();
                 }
+            } else {
+                // Add to the database
+                mainActivityInterface.getSQLiteHelper().createSong(folder, filename);
             }
 
             if (!error) {
