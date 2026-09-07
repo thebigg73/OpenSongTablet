@@ -593,7 +593,6 @@ public class LoadSong {
                                 if (lastTag.equals("style")|| lastTag.equals("backgrounds")) {
                                     String text = xpp.getText();
                                     if (text != null && text.contains("/n") && text.length()<10) {
-                                        Log.d(TAG,"text:"+text+"  text.length:"+text.length()+" in song "+thisSong.getFilename());
                                         // Rogue text found inside the XML tree, flag for fixing
                                         // We need it to be less than 10 chars as we could have encoded image with /n
                                         if (songsToFix == null) {
