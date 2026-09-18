@@ -105,10 +105,11 @@ public class SaveSong {
                 }
             }
 
-            if (folderChange || filenameChange) {
+            if ((folderChange || filenameChange) && saveSuccessful) {
                 // Remove the old file
                 mainActivityInterface.getSQLiteHelper().deleteSong(oldFolder, oldFilename);
             }
+
             // Scans the database again and updates the song menu
             try {
                 mainActivityInterface.updateSongList();
