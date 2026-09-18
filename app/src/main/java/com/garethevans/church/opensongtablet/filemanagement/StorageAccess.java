@@ -2161,7 +2161,6 @@ public class StorageAccess {
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
-                //return listSongs_SAF(mainfolder, showAllIncludingBad);
                 return listSongs_SAF(mainfolder, showAllIncludingBad);
             } else {
                 return listSongs_File(mainfolder, showAllIncludingBad);
@@ -2210,7 +2209,8 @@ public class StorageAccess {
                         if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
                             // It's a subdirectory; add it to queue for traversal
                             dirNodes.add(getChildren(currentDir, docId));
-                        } else {
+                        } else if (displayName!=null && !displayName.startsWith(".")) {
+                            // Ignore any hidden system files that start with a '.' such as .ttxfolder from DriveSync
                             // It's a file. Format relative path based on your hierarchy logic
                             String relativePath = songFolderAndFileOnly(docId, mainfolder);
                             if (relativePath != null && !relativePath.isEmpty()) {
@@ -2283,6 +2283,7 @@ public class StorageAccess {
         filename = filename.toLowerCase();
         // Check for ".xxx" or ".xxxx" extension that isn't wanted
         if (filename.contains(".") &&
+                !filename.startsWith(".") &&
                 filename.length()>=5 &&
                 (filename.lastIndexOf(".")==filename.length()-4 ||
                         filename.lastIndexOf(".")==filename.length()-5) &&
